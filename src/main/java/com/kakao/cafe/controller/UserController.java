@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -33,5 +34,11 @@ public class UserController {
         userService.add(user);
         logger.info("New User added: " + user);
         return "redirect:/user";
+    }
+
+    @GetMapping("/user")
+    public String getUserList(Model model) {
+        model.addAttribute("userlist", userService.getList());
+        return "userlist";
     }
 }

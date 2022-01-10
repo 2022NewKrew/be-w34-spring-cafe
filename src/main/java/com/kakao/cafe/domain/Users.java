@@ -12,6 +12,17 @@ public class Users {
         list.add(Objects.requireNonNull(user));
     }
 
+    public boolean checkIdExist(final User user) {
+        final String id = user.getId();
+
+        for (User u : list) {
+            if (id.equals(u.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<User> getList() {
         return Collections.unmodifiableList(list);
     }

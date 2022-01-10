@@ -19,7 +19,8 @@ public class User {
     public static final int EMAIL_MIN = 7;
     public static final int EMAIL_MAX = 127;
 
-    private long idx;
+    private static long auto_increment = 1;
+    private final long idx;
     private final String id;
     private final String password;
     private final String name;
@@ -33,6 +34,7 @@ public class User {
     ) throws IllegalArgumentException
     {
         validate(id, password, name, email);
+        this.idx = auto_increment++;
         this.id = id.trim();
         this.password = SecurePassword.genPassword(password);
         this.name = name.trim();
