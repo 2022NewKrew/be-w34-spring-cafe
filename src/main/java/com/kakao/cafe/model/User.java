@@ -1,4 +1,4 @@
-package com.kakao.cafe.web;
+package com.kakao.cafe.model;
 
 public class User {
     private static long offset = 0;
@@ -29,5 +29,9 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public long getId() {
+        return id;
     }
 }
