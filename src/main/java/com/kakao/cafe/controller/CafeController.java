@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Log4j2
 @RequiredArgsConstructor
 public class CafeController {
-//    private final BoardService boardService;
-//    private final MemberService memberService;
 
     @GetMapping("/")
     public String index() {

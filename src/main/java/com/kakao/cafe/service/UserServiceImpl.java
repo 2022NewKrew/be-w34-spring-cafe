@@ -1,7 +1,11 @@
 package com.kakao.cafe.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MemberServiceImpl implements MemberService {
+@Log4j2
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService {
 }
