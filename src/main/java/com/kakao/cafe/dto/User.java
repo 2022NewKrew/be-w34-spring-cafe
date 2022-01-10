@@ -4,13 +4,11 @@ public class User implements Dto<com.kakao.cafe.entity.User> {
 
     private final String id;
     private final String name;
-    private final String password;
     private final String email;
 
-    private User(String id, String name, String password, String email) {
+    private User(String id, String name, String email) {
         this.id = id;
         this.name = name;
-        this.password = password;
         this.email = email;
     }
 
@@ -20,10 +18,6 @@ public class User implements Dto<com.kakao.cafe.entity.User> {
 
     public String getName() {
         return name;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getEmail() {
@@ -36,7 +30,6 @@ public class User implements Dto<com.kakao.cafe.entity.User> {
                 .email(email)
                 .id(id)
                 .name(name)
-                .password(password)
                 .build();
     }
 
@@ -44,7 +37,6 @@ public class User implements Dto<com.kakao.cafe.entity.User> {
 
         private String id;
         private String name;
-        private String password;
         private String email;
 
         public Builder id(String id) {
@@ -57,18 +49,13 @@ public class User implements Dto<com.kakao.cafe.entity.User> {
             return this;
         }
 
-        public Builder password(String password) {
-            this.password = password;
-            return this;
-        }
-
         public Builder email(String email) {
             this.email = email;
             return this;
         }
 
         public User build() {
-            return new User(id, name, password, email);
+            return new User(id, name, email);
         }
     }
 }

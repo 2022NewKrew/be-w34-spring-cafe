@@ -36,7 +36,6 @@ public class User implements Entity<com.kakao.cafe.dto.User> {
                 .email(email)
                 .id(id)
                 .name(name)
-                .password(password)
                 .build();
     }
 
