@@ -20,8 +20,12 @@ public class UserService {
         users.add(user);
     }
 
-    private synchronized User createUser(UserRequest userRequest) {
-        return new User(++autoIncrementId, userRequest);
+    private User createUser(UserRequest userRequest) {
+        return new User(getNextId(), userRequest);
+    }
+
+    private synchronized long getNextId() {
+        return ++autoIncrementId;
     }
 
     public List<UserDto> getUsers() {
