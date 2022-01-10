@@ -1,0 +1,33 @@
+{{>common/header}}
+<div class="container">
+    <div class="introduce-box">
+        <br>
+        <h1>유저리스트</h1>
+        <h6>참여자를 확인할 수 있습니다</h6>
+    </div>
+    <div class="board">
+        <br>
+        <div class="list-count">
+            전체 유저 {{user-count}}명
+        </div>
+        <table class="table table-horizontal table-bordered">
+            <thead class="thead-strong">
+            <tr>
+                <td>닉네임</td>
+                <td>이메일</td>
+                <td>회원가입일</td>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            {{#users}}
+            <tr>
+                <td>{{username}}</td>
+                <td>{{email}}</td>
+                <td>{{createdAt}}</td>
+            </tr>
+            {{/users}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{>common/footer}}
