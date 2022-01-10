@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Question;
-import com.kakao.cafe.domain.QuestionCreateRequest;
+import com.kakao.cafe.dto.QuestionCreateRequest;
 import com.kakao.cafe.repository.QuestionRepository;
 import com.kakao.cafe.repository.QuestionRepositoryImpl;
 import org.springframework.stereotype.Service;

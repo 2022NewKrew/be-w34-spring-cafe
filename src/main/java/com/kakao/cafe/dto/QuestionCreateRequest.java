@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.dto;
 
 public class QuestionCreateRequest {
     private String writer;

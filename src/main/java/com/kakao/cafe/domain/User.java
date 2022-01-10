@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.dto.UserCreateRequest;
+
 public class User {
     private Long id;
     private String userId;

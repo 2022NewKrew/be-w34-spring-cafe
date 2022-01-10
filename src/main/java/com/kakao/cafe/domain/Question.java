@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.dto.QuestionCreateRequest;
+
 import java.time.LocalDateTime;
 
 public class Question {
