@@ -21,4 +21,12 @@ public class MemoryUserRepository implements UserRepository{
     public List<User> findAll() {
         return store;
     }
+
+    @Override
+    public User findByUserId(String userId) {
+        return store.stream().
+                filter(u -> u.getUserId().equals(userId)).
+                findFirst().
+                orElseThrow(() -> new IllegalArgumentException());
+    }
 }
