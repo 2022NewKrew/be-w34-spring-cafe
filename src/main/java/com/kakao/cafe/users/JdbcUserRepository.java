@@ -3,6 +3,8 @@ package com.kakao.cafe.users;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -29,6 +31,12 @@ public class JdbcUserRepository implements UserRepository {
     public Optional<User> findByEmail(String email) {
         System.out.println("TODO");
         return Optional.of(null);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        System.out.println("TODO");
+        return new ArrayList<>();
     }
 
 }

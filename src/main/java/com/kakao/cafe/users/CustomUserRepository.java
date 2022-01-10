@@ -4,12 +4,13 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Primary
 @Repository
 public class CustomUserRepository implements UserRepository {
 
-    private Map<String, User> userMap;
+    private final Map<String, User> userMap;
 
     public CustomUserRepository() {
         userMap = new HashMap<>();
@@ -31,6 +32,11 @@ public class CustomUserRepository implements UserRepository {
     public Optional<User> findByEmail(String email) {
         System.out.println("TODO");
         return Optional.of(null);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return new ArrayList<>(userMap.values());
     }
 
 }
