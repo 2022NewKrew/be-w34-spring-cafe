@@ -36,7 +36,7 @@ public class UserController {
     public String findAll(Model model) {
         logger.info("회원 목록");
         model.addAttribute("users", users);
-        return "resources/templates/user";
+        return "user/list";
     }
 
     @GetMapping("/users/{userId}")
@@ -47,7 +47,7 @@ public class UserController {
                 .findFirst()
                 .orElseThrow(NoSuchElementException::new);
         model.addAttribute("profile", target);
-        return "/resources/templates/user/profile";
+        return "user/profile";
     }
 
 }
