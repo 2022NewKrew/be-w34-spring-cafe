@@ -33,7 +33,10 @@ public class UserController {
             @RequestParam("name") String name,
             @RequestParam("email") String email
     ) {
-        userService.create(userId, password, name, email);
+        var user = userService.create(userId, password, name, email);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user already exists");
+        }
         return "redirect:/users";
     }
 

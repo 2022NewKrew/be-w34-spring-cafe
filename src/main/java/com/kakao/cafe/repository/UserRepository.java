@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepository {
@@ -23,6 +24,10 @@ public class UserRepository {
     }
 
     public User create(User user) {
+        User existing = find(user.getId()).orElse(null);
+        if (existing != null) {
+            return null;
+        }
         data.add(user);
         return user;
     }
@@ -32,17 +37,25 @@ public class UserRepository {
     }
 
     public User get(String id) {
-        return data.stream()
-                .filter(user -> user.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return find(id).orElse(null);
     }
 
     public User login(String id, String password) {
+        Optional<User> found = find(id);
+        if (found.isEmpty()) {
+            return null;
+        }
+        User user = found.get();
+        boolean ok = user.getPassword().equals(password);
+        if (!ok) {
+            return null;
+        }
+        return user;
+    }
+
+    private Optional<User> find(String id) {
         return data.stream()
                 .filter(user -> user.getId().equals(id))
-                .filter(user -> user.getPassword().equals(password))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 }
