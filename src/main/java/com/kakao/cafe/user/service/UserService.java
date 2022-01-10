@@ -50,7 +50,7 @@ public class UserService {
 
     /**
      * 입력 인자로 들어온 id에 해당하는 User 정보 반환
-     * @param id: 원하는 User의 id
+     * @param id: 원하는 User 의 id
      */
     public UserInfoResponse getUserProfile(Integer id) {
         Optional<User> user = this.userRepository.findById(id);

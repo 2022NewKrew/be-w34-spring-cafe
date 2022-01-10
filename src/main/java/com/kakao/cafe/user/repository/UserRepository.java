@@ -9,6 +9,7 @@ import java.util.*;
 public class UserRepository {
 
     private final List<User> userList;
+    private Integer identity = 0;
 
     private UserRepository() {
         this.userList = new ArrayList<>();
@@ -20,17 +21,12 @@ public class UserRepository {
                             .findFirst();
     }
 
-    public Integer save(User newUser) {
-        int newId = this.count() + 1;
-        newUser.setId(newId);
+    public int save(User newUser) {
+        newUser.setId(++this.identity);
 
         this.userList.add(newUser);
 
-        return newId;
-    }
-
-    public Integer count() {
-        return this.userList.size();
+        return this.identity;
     }
 
     public List<User> findAll() {

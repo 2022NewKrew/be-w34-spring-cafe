@@ -76,7 +76,7 @@ public class UserController {
     /**
      * 사용자 상세 정보 페이지 접속 [GET]
      * @param id: 요청 사용자 ID(PK)
-     * @throws UserNotFoundException: 해당 ID의 User가 존재하지 않을 경우 발생
+     * @throws UserNotFoundException: 해당 ID 의 User 가 존재하지 않을 경우 발생
      */
     @GetMapping("/user/{id}")
     public String getUserProfilePage(Model model, @PathVariable("id") Integer id) {
