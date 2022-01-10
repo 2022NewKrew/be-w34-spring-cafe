@@ -1,0 +1,2 @@
+### static html test
+GET http://{{hostname}}/
