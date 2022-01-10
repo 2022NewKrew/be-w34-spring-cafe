@@ -9,5 +9,5 @@ public class CafeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CafeApplication.class, args);
 	}
-
 }
+
