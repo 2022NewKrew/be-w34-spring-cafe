@@ -1,2 +1,5 @@
-### static html test
-GET http://{{hostname}}/
+### 정적 페이지 가져오기
+GET {{host}}/
+
+### 간단 API 테스트
+GET {{host}}/api/hello
