@@ -11,6 +11,16 @@ import java.util.List;
 public class UserRepository {
 
     private final List<User> data = new ArrayList<>();
+    {
+        data.add(
+                new User.Builder()
+                        .id("test")
+                        .email("test@example.com")
+                        .password("1234")
+                        .name("test")
+                        .build()
+        );
+    }
 
     public User create(User user) {
         data.add(user);
@@ -19,5 +29,12 @@ public class UserRepository {
 
     public List<User> list() {
         return Collections.unmodifiableList(data);
+    }
+
+    public User get(String id) {
+        return data.stream()
+                .filter(user -> user.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 }

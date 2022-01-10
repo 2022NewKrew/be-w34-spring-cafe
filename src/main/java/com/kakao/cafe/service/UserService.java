@@ -31,4 +31,8 @@ public class UserService {
     public List<User> list() {
         return userRepository.list();
     }
+
+    public User get(String id) {
+        return userRepository.get(id);
+    }
 }
