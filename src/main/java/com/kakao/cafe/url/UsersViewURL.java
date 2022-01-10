@@ -11,6 +11,7 @@ public enum UsersViewURL {
 
     private String mappingUrl;
     private boolean isRedirect;
+
     UsersViewURL(String mappingUrl) {
         this.mappingUrl = mappingUrl;
     }
