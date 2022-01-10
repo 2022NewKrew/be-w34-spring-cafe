@@ -1,0 +1,5 @@
+### get users
+GET http://localhost:8080/users
+
+### get user
+GET http://localhost:8080/users/aa
