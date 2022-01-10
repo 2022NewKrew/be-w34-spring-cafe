@@ -1,10 +1,10 @@
-package com.kakao.cafe;
+package com.kakao.cafe.bew34springcafe;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CafeApplicationTests {
+class BeW34SpringCafeApplicationTests {
 
     @Test
     void contextLoads() {
