@@ -11,7 +11,6 @@ author: bootply.com
 
 @import url(http://fonts.googleapis.com/css?family=Roboto:400);
 body {
-  background-color:#e0e0e0;
   -webkit-font-smoothing: antialiased;
   font: normal 14px Roboto,arial,sans-serif;
 }
@@ -20,9 +19,11 @@ body {
 .navbar-default .dropdown-menu {background-color:#ffffff;}
 .navbar-default .dropdown-menu li > a {padding-left:30px;}
 
-.header {background-color:#ffffff;border-width:0;}
+.header {background-color:#ffffff;border-width:0;
+    padding-left: 200px;
+    padding-right: 200px;}
 .header .navbar-collapse {background-color:#ffffff;}
-.btn,.form-control,.panel,.list-group,.well {border-radius:1px;box-shadow:0 0 0;}
+.btn,.panel,.list-group,.well {border-radius:1px;box-shadow:0 0 0;}
 .form-control {border-color:#d7d7d7;}
 .btn-primary {border-color:transparent;}
 .btn-primary,.label-primary,.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {background-color:#4285f4;}
@@ -100,13 +101,14 @@ h3,h4,h5 {
 }
 
 #main {
- padding-top:120px;
+    padding-top:80px;
+    padding-left: 200px!important;
+    padding-right: 200px!important;
 }
 
 .content-main {
     position:relative;
     padding:1em;
-    padding-right: 1em;
     border-bottom:1px
 }
 .qna-header {
@@ -201,3 +203,7 @@ h3,h4,h5 {
     padding-right: 2.5em;
 }
 
+.form-control {
+    width: 320px;
+    height: 48px;
+}
