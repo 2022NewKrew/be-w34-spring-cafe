@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+/* User 클래스와 분기하기 위해 생성*/
 public class UserForm {
     private String userId;
     private String password;
