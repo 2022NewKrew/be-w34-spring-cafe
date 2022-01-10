@@ -24,7 +24,6 @@ public class UserController {
         return "/user/form";
     }
 
-
     @GetMapping("/users")
     public String showUsers(Model model) {
         model.addAttribute("users", userService.findAll());
