@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUserId(String userId) {
         User foundUser = null;
-        for(User user:userList)
-            if(Objects.equals(user.getUserId(), userId))
+        for (User user : userList)
+            if (Objects.equals(user.getUserId(), userId))
                 foundUser = user;
         return foundUser;
     }

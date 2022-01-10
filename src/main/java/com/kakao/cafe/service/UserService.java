@@ -4,7 +4,7 @@ import com.kakao.cafe.vo.User;
 
 import java.util.List;
 
-public interface UserService{
+public interface UserService {
     void insertUser(User user);
 
     List<User> getUserList();
