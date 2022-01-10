@@ -1,10 +1,10 @@
-package com.kakao.cafe.api.service;
+package com.kakao.cafe.web.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.domain.Users;
+import com.kakao.cafe.web.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,5 +22,8 @@ public class UserService {
     return userRepository.save(user);
   }
 
+  public Users getAllUsers() {
+    return userRepository.findAll();
+  }
 
 }

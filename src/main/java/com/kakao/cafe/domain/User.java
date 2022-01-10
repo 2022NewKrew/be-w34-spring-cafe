@@ -1,10 +1,11 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.api.dto.SignUpDTO;
+import com.kakao.cafe.web.dto.SignUpDTO;
 import java.sql.Timestamp;
 
 public class User {
 
+  private int index;
   private String email;
   private String nickName;
   private String password;
@@ -19,8 +20,23 @@ public class User {
     this.password = password;
   }
 
+  private User(int index, String email, String nickName, String password, Timestamp createAt,
+      Timestamp lastLoginAt) {
+    this.index = index;
+    this.email = email;
+    this.nickName = nickName;
+    this.password = password;
+    this.createAt = createAt;
+    this.lastLoginAt = lastLoginAt;
+  }
+
   public static User of(SignUpDTO signUpDTO) {
     return new User(signUpDTO.getEmail(), signUpDTO.getNickName(), signUpDTO.getPassword());
+  }
+
+  public static User of(int index, String email, String nickName, String password, Timestamp createAt,
+      Timestamp lastLoginAt) {
+    return new User(index, email, nickName, password, createAt, lastLoginAt);
   }
 
   public void setPasswordEncrypted() {
@@ -65,6 +81,14 @@ public class User {
 
   public void setLastLoginAt(Timestamp lastLoginAt) {
     this.lastLoginAt = lastLoginAt;
+  }
+
+  public int getIndex() {
+    return index;
+  }
+
+  public void setIndex(int index) {
+    this.index = index;
   }
 
   @Override

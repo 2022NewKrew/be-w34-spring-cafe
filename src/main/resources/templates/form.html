@@ -33,7 +33,7 @@
 <header class="navigation">
   <nav class="navbar navbar-expand-lg  py-4" id="navbar">
     <div class="container">
-      <a class="navbar-brand" href="index.html">
+      <a class="navbar-brand" href="/">
         KAKAO<span>.LEO.JUNG</span>
       </a>
 
@@ -43,7 +43,7 @@
 
       <div class="collapse navbar-collapse text-center" id="navbarsExample09">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item"><a class="nav-link" href="/">멤버리스트</a></li>
+          <li class="nav-item"><a class="nav-link" href="/users">멤버리스트</a></li>
           <li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>
           <li class="nav-item active">
             <a class="nav-link" href="/signup">회원가입 <span class="sr-only">(current)</span></a>
@@ -432,7 +432,7 @@ Essential Scripts
       const email = document.getElementById('email').value;
       const nickName = document.getElementById('nickName').value;
       const password = document.getElementById('password').value;
-      const response = await fetch('/user', {
+      const response = await fetch('/api/user', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json'
@@ -450,9 +450,6 @@ Essential Scripts
     });
 
   }
-
-
-
 
 </script>
 

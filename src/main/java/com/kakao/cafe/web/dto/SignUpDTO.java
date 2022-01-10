@@ -1,4 +1,4 @@
-package com.kakao.cafe.api.dto;
+package com.kakao.cafe.web.dto;
 
 public class SignUpDTO {
 

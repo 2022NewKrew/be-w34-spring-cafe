@@ -1,8 +1,8 @@
-package com.kakao.cafe.api.controller;
+package com.kakao.cafe.web.controller;
 
-import com.kakao.cafe.api.dto.ResponseDTO;
-import com.kakao.cafe.api.dto.SignUpDTO;
-import com.kakao.cafe.api.service.UserService;
+import com.kakao.cafe.web.dto.ResponseDTO;
+import com.kakao.cafe.web.dto.SignUpDTO;
+import com.kakao.cafe.web.service.UserService;
 import com.kakao.cafe.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +25,11 @@ public class UserController {
     this.userService = userService;
   }
 
-  @PostMapping("/user")
+  @PostMapping("/api/user")
   public ResponseEntity<ResponseDTO> createUser(@RequestBody SignUpDTO signUpDTO) {
     userService.createUser(User.of(signUpDTO));
     return ResponseEntity.status(HttpStatus.FOUND)
-        .header(HttpHeaders.LOCATION, "/")
+        .header(HttpHeaders.LOCATION, "/users")
         .body(ResponseDTO.createSuccess());
   }
 
