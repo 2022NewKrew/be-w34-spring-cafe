@@ -7,7 +7,7 @@
     </section>
     <section class="p-2 m-4">
         <div class="text-secondary mb-1">
-            전체 글 10개
+            전체 글 {{posts.size}}개
         </div>
 
         <table class="table table-hover align-middle">
@@ -20,30 +20,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td class="p-3 col-md-3">게시물 제목</td>
-                <td class="p-3 col-md-1 text-center">닉네임</td>
-                <td class="p-3 col-md-1 text-center">YYYY-MM-DD</td>
-                <td class="p-3 col-md-1 text-center">0</td>
-            </tr>
-            <tr>
-                <td class="p-3 col-md-3">게시물 제목</td>
-                <td class="p-3 col-md-1 text-center">닉네임</td>
-                <td class="p-3 col-md-1 text-center">YYYY-MM-DD</td>
-                <td class="p-3 col-md-1 text-center">0</td>
-            </tr>
-            <tr>
-                <td class="p-3 col-md-3">게시물 제목</td>
-                <td class="p-3 col-md-1 text-center">닉네임</td>
-                <td class="p-3 col-md-1 text-center">YYYY-MM-DD</td>
-                <td class="p-3 col-md-1 text-center">0</td>
-            </tr>
-            <tr>
-                <td class="p-3 col-md-3">게시물 제목</td>
-                <td class="p-3 col-md-1 text-center">닉네임</td>
-                <td class="p-3 col-md-1 text-center">YYYY-MM-DD</td>
-                <td class="p-3 col-md-1 text-center">0</td>
-            </tr>
+            {{#posts.dtoList}}
+                <tr>
+                    <td class="p-3 col-md-3">{{title}}</td>
+                    <td class="p-3 col-md-1 text-center">{{writerEmail}}</td>
+                    <td class="p-3 col-md-1 text-center">{{regDate}}</td>
+                    <td class="p-3 col-md-1 text-center">{{viewCount}}</td>
+                </tr>
+            {{/posts.dtoList}}
             </tbody>
         </table>
         <ul class="pagination">
@@ -52,14 +36,15 @@
                     <span aria-hidden="true">&lt;</span>
                 </a>
             </li>
-            <li class="page-item"><a class="page-link border-0 text-dark" href="#">1</a></li>
-            <li class="page-item"><a class="page-link border-0 text-dark" href="#">2</a></li>
-            <li class="page-item"><a class="page-link border-0 text-dark" href="#">3</a></li>
+            {{#posts.pageList}}
+                <li class="page-item"><a class="page-link border-0 text-dark" href="#">{{this}}</a></li>
+            {{/posts.pageList}}
             <li class="page-item">
                 <a class="page-link border-0 text-dark" href="#" aria-label="Next">
                     <span aria-hidden="true">&gt;</span>
                 </a>
             </li>
+
         </ul>
     </section>
 </main>
