@@ -1,10 +1,13 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class MemoryUserRepositoryTest {
@@ -23,7 +26,22 @@ class MemoryUserRepositoryTest {
         memoryUserRepository.save(user);
 
         User foundMember = memoryUserRepository.findUserByUserId("leaf").get();
-        Assertions.assertThat(foundMember).isEqualTo(user);
+        assertThat(foundMember).isEqualTo(user);
+    }
+
+    @Test
+    @DisplayName("회원 전체 조회")
+    void testOfFindUsers() {
+        User user1 = new User("leaf1", "1234", "김남현1", "leaf1.hyeon@kakaocorp.com");
+        User user2 = new User("leaf2", "1234", "김남현2", "leaf2.hyeon@kakaocorp.com");
+        User user3 = new User("leaf3", "1234", "김남현3", "leaf3.hyeon@kakaocorp.com");
+        memoryUserRepository.save(user1);
+        memoryUserRepository.save(user2);
+        memoryUserRepository.save(user3);
+
+        List<User> users = memoryUserRepository.findAll();
+        assertThat(users.size()).isEqualTo(3);
+        assertThat(users).contains(user1, user2, user3);
     }
 
 }

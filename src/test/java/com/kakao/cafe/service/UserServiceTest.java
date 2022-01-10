@@ -13,7 +13,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -44,7 +47,18 @@ class UserServiceTest {
         User user = new User("leaf", "1", "1", "1");
         BDDMockito.given(memoryUserRepository.findUserByUserId("leaf")).willReturn(Optional.of(user));
         User foundUser = userService.findUserByUserId("leaf");
-        Assertions.assertThat(foundUser.getUserId()).isEqualTo(user.getUserId());
+        assertThat(foundUser.getUserId()).isEqualTo(user.getUserId());
+    }
+
+    @Test
+    @DisplayName("회원 전체 조회")
+    void testOfFindAll() {
+        User user1 = new User("leaf1", "1", "1", "1");
+        User user2 = new User("leaf2", "1", "1", "1");
+        User user3 = new User("leaf3", "1", "1", "1");
+        BDDMockito.given(memoryUserRepository.findAll()).willReturn(List.of(user1, user2, user3));
+        List<User> users = userService.findAll();
+        assertThat(users).contains(user1, user2, user3);
     }
 
     @Test

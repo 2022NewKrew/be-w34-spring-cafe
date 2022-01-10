@@ -25,6 +25,10 @@ public class MemoryUserRepository implements UserRepository {
                 .findAny();
     }
 
+    @Override
+    public List<User> findAll() {
+        return List.copyOf(userDataBase);
+    }
 
 }
 
