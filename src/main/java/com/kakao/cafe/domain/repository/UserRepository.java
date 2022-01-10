@@ -1,0 +1,25 @@
+package com.kakao.cafe.domain.repository;
+
+import com.kakao.cafe.domain.model.User;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.springframework.stereotype.Component;
+
+@Component
+public class UserRepository {
+
+    private final List<User> users;
+
+    public UserRepository() {
+        this.users = new ArrayList<>();
+    }
+
+    public void addUser(User user) {
+        users.add(user);
+    }
+
+    public List<User> findUsers() {
+        return Collections.unmodifiableList(users);
+    }
+}
