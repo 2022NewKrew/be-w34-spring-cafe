@@ -19,4 +19,9 @@ public class User {
     public UserDto toDto() {
         return new UserDto(id, username, nickname, email);
     }
+
+    public boolean isEqualUserId(long id) {
+        return this.id == id;
+    }
+
 }

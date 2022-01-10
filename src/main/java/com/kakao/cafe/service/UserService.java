@@ -29,4 +29,12 @@ public class UserService {
                 .map(User::toDto)
                 .collect(Collectors.toList());
     }
+
+    public UserDto findById(Long id) {
+        return users.stream()
+                .filter(u -> u.isEqualUserId(id))
+                .findFirst()
+                .map(User::toDto)
+                .orElse(null);
+    }
 }

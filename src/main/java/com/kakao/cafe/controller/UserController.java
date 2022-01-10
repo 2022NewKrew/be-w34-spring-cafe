@@ -33,4 +33,12 @@ public class UserController {
 
         return "redirect:/users";
     }
+
+    @GetMapping("/{userId}")
+    public String profile(@PathVariable Long userId, Model model) {
+        UserDto user = userService.findById(userId);
+        model.addAttribute("user", user);
+
+        return "user/profile";
+    }
 }
