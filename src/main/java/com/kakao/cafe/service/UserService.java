@@ -45,6 +45,7 @@ public class UserService {
             logger.error("id : " + userId + " " + NOT_FOUND_USER_MESSAGE);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, NOT_FOUND_USER_MESSAGE);
         }
+        
         return Result.from(foundUser.get());
     }
 }

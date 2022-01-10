@@ -22,16 +22,16 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/create")
-    public String create(@ModelAttribute UserDTO.Create dto) {
-        userService.create(dto);
+    public String create(@ModelAttribute UserDTO.Create createDTO) {
+        userService.create(createDTO);
 
         return "redirect:/users/list";
     }
 
     @GetMapping("/list")
     public ModelAndView readAll(Map<String, Object> model) {
-        List<Result> userDTOs = userService.readAll();
-        model.put("users", userDTOs);
+        List<Result> resultDTOs = userService.readAll();
+        model.put("users", resultDTOs);
 
         return new ModelAndView("user/list", model);
     }
@@ -39,8 +39,8 @@ public class UserController {
     @GetMapping("/{userId}")
     public ModelAndView read(Map<String, Object> model,
         @PathVariable String userId) {
-        UserDTO.Result userDTO = userService.readByUserId(userId);
-        model.put("user", userDTO);
+        UserDTO.Result resultDTO = userService.readByUserId(userId);
+        model.put("user", resultDTO);
 
         return new ModelAndView("user/profile", model);
     }
