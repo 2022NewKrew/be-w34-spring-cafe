@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class UserService {
 
+    private static final String ALREADY_EXISTS_ID_MESSAGE = "중복된 사용자 ID 입니다.";
     private static final String NOT_FOUND_USER_MESSAGE = "입력한 사용자를 찾을 수 없습니다.";
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class.getSimpleName());
@@ -26,6 +27,10 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void create(Create createDto) {
+        if (userRepository.findUserByUserId(createDto.getUserId()).isPresent()) {
+            logger.error("id : " + createDto.getUserId() + ALREADY_EXISTS_ID_MESSAGE);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ALREADY_EXISTS_ID_MESSAGE);
+        }
         User user = User.of(createDto.getUserId(), createDto.getPassword(),
             createDto.getName(), createDto.getEmail());
 
