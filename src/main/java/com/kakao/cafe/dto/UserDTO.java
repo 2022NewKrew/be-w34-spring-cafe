@@ -1,6 +1,6 @@
 package com.kakao.cafe.dto;
 
-import com.kakao.cafe.domain.model.User;
+import com.kakao.cafe.model.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.model;
+package com.kakao.cafe.model;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

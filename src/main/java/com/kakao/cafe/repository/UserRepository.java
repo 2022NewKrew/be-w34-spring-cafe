@@ -1,6 +1,6 @@
-package com.kakao.cafe.domain.repository;
+package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.model.User;
+import com.kakao.cafe.model.User;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

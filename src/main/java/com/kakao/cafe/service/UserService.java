@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.model.User;
-import com.kakao.cafe.domain.repository.UserRepository;
+import com.kakao.cafe.model.User;
+import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Result;
