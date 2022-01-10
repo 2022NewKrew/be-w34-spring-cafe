@@ -12,10 +12,16 @@ repositories {
 	mavenCentral()
 }
 
+ext.webjarsFontawesomeVersion = "4.7.0"
+ext.webjarsBootstrapVersion = "5.1.3"
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
 }
 
 test {
