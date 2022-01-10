@@ -12,12 +12,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void create(User user) {
-        userRepository.create(user);
+    public void save(User user) {
+        userRepository.save(user);
     }
 
-    public List<User> getUserList() {
-        return userRepository.getUserList();
+    public List<User> getAllUser() {
+        return userRepository.getAllUser();
     }
 
     public User findById(String userId) {

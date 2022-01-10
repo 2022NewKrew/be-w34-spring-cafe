@@ -13,12 +13,12 @@ public class UserLocalRepository implements UserRepository {
     }
 
     @Override
-    public void create(User user) {
+    public void save(User user) {
         userList.add(user);
     }
 
     @Override
-    public List<User> getUserList() {
+    public List<User> getAllUser() {
         return userList;
     }
 
