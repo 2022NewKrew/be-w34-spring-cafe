@@ -2,13 +2,13 @@ package com.kakao.cafe.users;
 
 public class UserRequest {
 
-    private String userId;
+    private final String userId;
 
-    private String password;
+    private final String password;
 
-    private String name;
+    private final String name;
 
-    private String email;
+    private final String email;
 
     public UserRequest(String userId, String password, String name, String email) {
         this.userId = userId;
