@@ -1,0 +1,2 @@
+
+POST http://localhost:8080/users?userId=yuk888&password=123&name=호눅스2&email=wook961206@naver.com
