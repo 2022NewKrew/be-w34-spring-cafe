@@ -1,6 +1,8 @@
 package com.kakao.cafe.entity;
 
-public class User implements Entity<com.kakao.cafe.dto.User> {
+import com.kakao.cafe.dto.UserDto;
+
+public class User implements Entity<UserDto> {
 
     private final String id;
     private final String name;
@@ -31,8 +33,8 @@ public class User implements Entity<com.kakao.cafe.dto.User> {
     }
 
     @Override
-    public com.kakao.cafe.dto.User toDto() {
-        return new com.kakao.cafe.dto.User.Builder()
+    public UserDto toDto() {
+        return new UserDto.Builder()
                 .email(email)
                 .id(id)
                 .name(name)

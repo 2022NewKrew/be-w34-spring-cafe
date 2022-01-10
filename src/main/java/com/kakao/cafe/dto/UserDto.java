@@ -1,12 +1,14 @@
 package com.kakao.cafe.dto;
 
-public class User implements Dto<com.kakao.cafe.entity.User> {
+import com.kakao.cafe.entity.User;
+
+public class UserDto implements Dto<User> {
 
     private final String id;
     private final String name;
     private final String email;
 
-    private User(String id, String name, String email) {
+    private UserDto(String id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -25,8 +27,8 @@ public class User implements Dto<com.kakao.cafe.entity.User> {
     }
 
     @Override
-    public com.kakao.cafe.entity.User toEntity() {
-        return new com.kakao.cafe.entity.User.Builder()
+    public User toEntity() {
+        return new User.Builder()
                 .email(email)
                 .id(id)
                 .name(name)
@@ -54,8 +56,8 @@ public class User implements Dto<com.kakao.cafe.entity.User> {
             return this;
         }
 
-        public User build() {
-            return new User(id, name, email);
+        public UserDto build() {
+            return new UserDto(id, name, email);
         }
     }
 }

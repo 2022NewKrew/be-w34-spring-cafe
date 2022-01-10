@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.User;
+import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,7 +41,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String list(Model model) {
-        List<User> users = userService.list();
+        List<UserDto> users = userService.list();
         model.addAttribute("users", users);
         return "users";
     }
@@ -52,7 +52,7 @@ public class UserController {
         if (id.equals("me")) {
             parsedId = (String) session.getAttribute("id");
         }
-        User user = userService.get(parsedId);
+        UserDto user = userService.get(parsedId);
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
         }
