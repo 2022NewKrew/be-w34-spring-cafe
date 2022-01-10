@@ -17,8 +17,8 @@ $./gradlew bootRun
 - mustache + bootstrap 템플릿은 따로 가져와 커스텀했습니다..
 - spring jdbc 연결 - h2
 
-### Todo
-[] 예외 핸들링 - ExceptionHandler 처리 및 UI 대응개발
-[] 로깅 - Aspectj 공통 IN/OUT 처리
-[] 입력값 예외 - validation 및 Exceptionhandler로 처리
-[] 테스트코드 작성
+### Todo - 지금 생각나는 것.
+- [ ] 예외 핸들링 - ExceptionHandler 처리 및 UI 대응개발
+- [ ] 로깅 - Aspectj 공통 IN/OUT 처리
+- [ ] 입력값 예외 - validation 및 Exceptionhandler로 처리
+- [ ] 테스트코드 작성
