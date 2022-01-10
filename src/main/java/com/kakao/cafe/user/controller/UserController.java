@@ -4,6 +4,7 @@ import com.kakao.cafe.user.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -23,25 +24,19 @@ public class UserController {
 
     @PostMapping("/user/create")
     public String createUser(User user) {
-        logger.info(String.valueOf(user));
-        logger.info(user.getUserId());
-        logger.info(user.getEmail());
-        logger.info(user.getName());
-        logger.info(user.getPassword());
+//        logger.info(String.valueOf(user));
+//        logger.info(user.getUserId());
+//        logger.info(user.getEmail());
+//        logger.info(user.getName());
+//        logger.info(user.getPassword());
         users.add(user);
         logger.info("{}", users);
-//        new User(user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
-//        users.add(user);
-
-
-        return "redirect:/";
+        return "redirect:/users";
     }
 
-    @GetMapping("/user/list")
-    public String memberList(List<User> users) {
-        for (User user : users) {
-            System.out.println(user);
-        }
+    @GetMapping("/users")
+    public String memberList(Model model) {
+        model.addAttribute("users", users);
         return "user/list";
     }
 }
