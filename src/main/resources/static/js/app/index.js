@@ -7,6 +7,12 @@ var main = {
         $('#btn-login').on('click', function () {
             _this.login();
         })
+        $('#go-home').on('click', function () {
+            _this.goHome();
+        })
+    },
+    goHome : function () {
+        window.location.href = '/user/list'
     },
     enroll : function () {
         var data = {
