@@ -5,4 +5,7 @@ GET {{host}}/
 GET {{host}}/api/hello
 
 ### 템플릿 동작 테스트
-GET {{host}}/hello?name=banana&sugar=60
+GET {{host}}/fruit?name=banana&sugar=60
+
+### Post 동작 확인
+POST {{host}}/fruit?name=mango&sugar=90
