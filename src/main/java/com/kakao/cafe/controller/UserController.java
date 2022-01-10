@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserCreateRequest;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ public class UserController {
     private final UserService userService = new UserService();
 
     @PostMapping("")
-    public String signUp(@ModelAttribute User user){
+    public String signUp(@ModelAttribute UserCreateRequest user){
         logger.info("POST:/users 회원가입 {}", user.getUserId());
         userService.signUp(user);
         return "redirect:/users";

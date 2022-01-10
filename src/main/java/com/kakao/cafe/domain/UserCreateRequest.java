@@ -1,26 +1,10 @@
 package com.kakao.cafe.domain;
 
-public class User {
-    private Long id;
+public class UserCreateRequest {
     private String userId;
     private String password;
     private String name;
     private String email;
-
-    public User(UserCreateRequest userCreateRequest) {
-        this.userId = userCreateRequest.getUserId();
-        this.password = userCreateRequest.getPassword();
-        this.name = userCreateRequest.getName();
-        this.email = userCreateRequest.getEmail();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUserId() {
         return userId;

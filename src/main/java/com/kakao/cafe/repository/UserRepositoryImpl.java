@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.User;
 
 import java.util.*;
 
-public class MemoryUserRepository implements UserRepository{
+public class UserRepositoryImpl implements UserRepository{
     private static Map<Long, User> store = new HashMap<>();
     private static long sequence = 0L;
 

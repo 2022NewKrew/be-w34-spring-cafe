@@ -8,8 +8,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MemoryUserRepositoryTest {
-    MemoryUserRepository repository = new MemoryUserRepository();
+class UserRepositoryImplTest {
+    UserRepositoryImpl repository = new UserRepositoryImpl();
 
     @AfterEach
     public void afterEach(){

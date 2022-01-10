@@ -1,7 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.MemoryUserRepository;
+import com.kakao.cafe.domain.UserCreateRequest;
+import com.kakao.cafe.repository.UserRepositoryImpl;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,10 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository = new MemoryUserRepository();
+    private final UserRepository userRepository = new UserRepositoryImpl();
 
-    public Long signUp(User user) {
+    public Long signUp(UserCreateRequest userDTO) {
+        User user = new User(userDTO);
         validateDuplicateUserId(user);
         return userRepository.save(user).getId();
     }
