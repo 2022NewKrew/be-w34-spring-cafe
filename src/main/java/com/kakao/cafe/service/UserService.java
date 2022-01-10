@@ -20,4 +20,8 @@ public class UserService {
     public List<User> findAll(){
         return users.getUsers();
     }
+
+    public User findbyId(int id){
+        return users.findById(id);
+    }
 }

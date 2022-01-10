@@ -15,4 +15,10 @@ public class Users {
         users.add(new User(maxIndex, userSaveDto));
         maxIndex++;
     }
+
+    public User findById(int id){
+        return users.stream().filter(user -> user.getId()==id)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException());
+    }
 }
