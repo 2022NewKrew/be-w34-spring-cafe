@@ -1,8 +1,10 @@
 package com.kakao.cafe.users;
 
+import com.kakao.cafe.exceptions.DuplicatedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -14,8 +16,11 @@ public class UserService {
     }
 
     public UserDto signUp(SignUpRequest signUpRequest) {
-        User user = new User(signUpRequest.getUserId(), signUpRequest.getPassword(), signUpRequest.getName(), signUpRequest.getEmail());
+        if (isDuplicatedUserId(signUpRequest.getUserId())) {
+            throw new DuplicatedException("중복 ID 입니다.");
+        }
 
+        User user = new User(signUpRequest.getUserId(), signUpRequest.getPassword(), signUpRequest.getName(), signUpRequest.getEmail());
         User savedUser = userRepository.save(user);
 
         return UserDto.toDto(savedUser);
@@ -26,5 +31,11 @@ public class UserService {
                 .stream()
                 .map(UserDto::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public boolean isDuplicatedUserId(String userId) {
+        Optional<User> user = userRepository.findByUserId(userId);
+
+        return user.isPresent();
     }
 }
