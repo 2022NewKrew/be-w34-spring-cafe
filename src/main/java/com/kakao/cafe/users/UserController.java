@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -53,7 +55,7 @@ public class UserController {
 
     @PostMapping(path = "/create")
     public String createUser(UserRequest userRequest, Model model) {
-        System.out.println("hello");
+        userService.createUser(new User(userRequest));
         return "redirect:/user/list";
     }
 
