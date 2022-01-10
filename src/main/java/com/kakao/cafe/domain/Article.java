@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain;
 
 import com.kakao.cafe.controller.dto.QuestionDto;
+import com.kakao.cafe.repository.dto.ArticleResult;
 import com.kakao.cafe.util.PostIdGenerator;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,19 @@ public class Article {
     private Article() {}
 
     public static Article from(QuestionDto dto) {
+        Article article = new Article();
+
+        article.setPostId(PostIdGenerator.nextId());
+        article.setContent(dto.getContent());
+        article.setTitle(dto.getTitle());
+        article.setWriter(dto.getWriter());
+        article.setCreatedAt(LocalDateTime.now());
+        article.setNumOfComment(0L);
+
+        return article;
+    }
+
+    public static Article from(ArticleResult dto) {
         Article article = new Article();
 
         article.setPostId(PostIdGenerator.nextId());

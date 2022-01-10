@@ -2,6 +2,7 @@ package com.kakao.cafe.domain;
 
 
 import com.kakao.cafe.controller.dto.UserJoinDto;
+import com.kakao.cafe.repository.dto.UserResult;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,7 @@ public class User {
     private String password;
 
     private User() {}
+
     public static User from(UserJoinDto dto) {
         User user = new User();
         user.setUserId(dto.getUserId());
@@ -24,6 +26,14 @@ public class User {
         return user;
     }
 
+    public static User from(UserResult dto) {
+        User user = new User();
+        user.setUserId(dto.getUserId());
+        user.setEmail(dto.getEmail());
+        user.setName(dto.getName());
+        user.setPassword(dto.getPassword());
+        return user;
+    }
 
     public boolean chcekPassword(String password) {
         return this.password.equals(password);

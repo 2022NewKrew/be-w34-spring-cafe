@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Repository
+//@Repository
 public class ArticleMemoryRepository implements ArticleRepository {
 
     private Map<Long, Article> postList = new HashMap<>();
