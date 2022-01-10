@@ -8,6 +8,7 @@
 - [x] template 구현
   - [x] static 의 html 파일을 template 으로 이동
     - [x] configuration 설정
+    - [x] application.properties 설정
 - [ ] Service 처리
   - [ ] Service 객체 생성 ( 어노테이션 )
   - [ ] Service 연결 및 호출
@@ -24,7 +25,15 @@
 - 경로는 예제에 나온 것처럼 "/users" 가 아닌, "/user" 기반
 - Router 가 아니라 Controller 라는 명칭을 사용한다.
 - Configuration 사용을 위해선 WebMvcConfigurer 를 implements 하고, @Configuration 작성 필요
+- Mustache 가 적용되지 않던 이유는, 외부 주소에서 .html 파일을 직접 접근하는 형태였기 떄문
+  - 템플릿 적용이 되지않고 문서 자체가 반환되어 생긴 문제로, 반환 문자열의 확장자 .html 을 제거하여 해결
+- 추가로 MvcConfiguration 에서 "addResourceHandlers" 는 외부에서 templates 에 접근할 수 있도록 작성된 코드이므로, 삭제
+  - 대신 mustache 적용이 되도록 "MustacheViewResolver" 적용이 반드시 필요 
+  - application.prop 로도 해당 기능을 적용 가능 ( 이 경우,. @Configuration 클래스는 불필요 )
 
 # 참고 사이트
-- https://gs.saro.me/dev?tn=486
-- https://velog.io/@swchoi0329/Mustache%EB%A1%9C-%ED%99%94%EB%A9%B4-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0#template-engine
+- Collection 관련
+  - https://mkyong.com/java8/java-8-convert-map-to-list/
+- Mustache 관련
+  - https://gs.saro.me/dev?tn=486
+  - https://velog.io/@swchoi0329/Mustache%EB%A1%9C-%ED%99%94%EB%A9%B4-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0#template-engine

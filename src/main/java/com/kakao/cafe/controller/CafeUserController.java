@@ -8,6 +8,7 @@ import com.kakao.cafe.url.UsersViewURL;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -23,11 +24,11 @@ public class CafeUserController {
         return UsersViewURL.USER_SIGN_IN.getMappingUrl();
     }
 
-
     @GetMapping()
     String getUserList (Model model) { // 유저 목록
         List<User> userList = cafeUserService.getUserList();
         model.addAttribute("userList", userList);
+//        ModelAndView()
         return UsersViewURL.USER_GET_LIST_VIEW.getMappingUrl();
     }
 
