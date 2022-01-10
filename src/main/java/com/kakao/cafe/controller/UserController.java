@@ -51,8 +51,12 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public String profile(@PathVariable("id") String id, Model model) {
-        var entity = userService.get(id);
+    public String profile(@PathVariable("id") String id, Model model, HttpSession session) {
+        String parsedId = id;
+        if (id.equals("me")) {
+            parsedId = (String) session.getAttribute("id");
+        }
+        var entity = userService.get(parsedId);
         if (entity == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
         }
