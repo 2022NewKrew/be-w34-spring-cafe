@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
     @Test
-    @DisplayName("사용자 아이디는 영문자와 숫자만으로 이루어져야 한다.")
+    @DisplayName("사용자 아이디는 영문자와 숫자만으로 이루어지고 길이는 20글자 이하여야 한다.")
     void invalidUserIdForm() {
 
     }
