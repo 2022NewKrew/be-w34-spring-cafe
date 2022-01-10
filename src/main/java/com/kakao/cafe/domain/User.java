@@ -9,6 +9,8 @@ public class User {
     private String name;
     private String email;
 
+    public User() {}
+
     public User(UserCreateRequest userCreateRequest) {
         this.userId = userCreateRequest.getUserId();
         this.password = userCreateRequest.getPassword();
