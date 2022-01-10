@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.6.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "io.freefair.lombok" version "6.3.0"
 	id 'java'
 }
 
@@ -13,7 +14,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	implementation 'pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.4'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
