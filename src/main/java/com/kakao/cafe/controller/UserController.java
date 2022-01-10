@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String signUp(@ModelAttribute UserRequest userRequest) {
+    public String signUp(UserRequest userRequest) {
         userService.signUp(userRequest);
 
         return "redirect:/users";
