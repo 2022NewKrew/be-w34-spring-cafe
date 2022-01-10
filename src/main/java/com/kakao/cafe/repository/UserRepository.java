@@ -37,4 +37,12 @@ public class UserRepository {
                 .findFirst()
                 .orElse(null);
     }
+
+    public User login(String id, String password) {
+        return data.stream()
+                .filter(user -> user.getId().equals(id))
+                .filter(user -> user.getPassword().equals(password))
+                .findFirst()
+                .orElse(null);
+    }
 }

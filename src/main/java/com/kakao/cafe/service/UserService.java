@@ -35,4 +35,8 @@ public class UserService {
     public User get(String id) {
         return userRepository.get(id);
     }
+
+    public User login(String id, String password) {
+        return userRepository.login(id, password);
+    }
 }

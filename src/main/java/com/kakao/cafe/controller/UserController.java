@@ -8,9 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,5 +56,20 @@ public class UserController {
         User user = entity.toDto();
         model.addAttribute("user", user);
         return "profile";
+    }
+
+    @PostMapping("/user/login")
+    public String login(
+            @RequestParam("userId") String userId,
+            @RequestParam("password") String password,
+            HttpSession session
+    ) {
+        var entity = userService.login(userId, password);
+        if (entity == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "login failed");
+        }
+        String id = entity.getId();
+        session.setAttribute("id", id);
+        return "redirect:/users/" + id;
     }
 }
