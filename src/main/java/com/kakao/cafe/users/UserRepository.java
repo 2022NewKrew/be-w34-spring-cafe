@@ -6,7 +6,7 @@ public interface UserRepository {
 
     void update(User user);
 
-    Optional<User> findById(long id);
+    Optional<User> findById(String id);
 
     Optional<User> findByEmail(String email);
 

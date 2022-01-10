@@ -22,7 +22,7 @@ public class CustomUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(long id) {
+    public Optional<User> findById(String id) {
         System.out.println("TODO");
         return Optional.of(null);
     }
