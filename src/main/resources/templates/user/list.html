@@ -12,7 +12,7 @@
               </thead>
               <tbody>
                 {{#users}}
-                    <th scope="row">2</th> <td>{{userId}}</td> <td>{{name}}</td> <td>{{email}}</td><td><a href="/users/{{userId}}" class="btn btn-success" role="button">수정</a></td>
+                    <th scope="row">2</th> <td><a href="/users/{{userId}}">{{userId}}</a></td> <td>{{name}}</td> <td>{{email}}</td><td><a href="/users/{{userId}}/update" class="btn btn-success" role="button">수정</a></td>
                 {{/users}}
               </tbody>
           </table>

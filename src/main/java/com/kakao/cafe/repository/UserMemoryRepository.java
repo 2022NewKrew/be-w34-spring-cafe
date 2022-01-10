@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
-public class UserMemoryRepository implements UserRepository{
+public class UserMemoryRepository implements UserRepository {
 
     private Map<String, User> userList = new HashMap<>();
 
