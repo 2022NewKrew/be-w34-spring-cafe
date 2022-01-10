@@ -26,4 +26,9 @@ public class ArticleService {
     public List<Question> findAllQuestions(){
         return questionRepository.findAll();
     }
+
+    public QuestionDetailResponse findOneQuestion(Long id) {
+        Question question = questionRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        return new QuestionDetailResponse(question);
+    }
 }
