@@ -14,9 +14,9 @@
                     <th>#</th> <th>사용자 아이디</th> <th>이름</th> <th>이메일</th><th></th>
                 </tr>
               </thead>
-              <tbody onclick="clickUser(this)" >
+              <tbody>
                 {{#users}}
-                <tr>
+                <tr onclick="clickUser(this)">
                         <th scope="row" id="userPK">{{id}}</th>
                         <td>
                             {{userId}}
