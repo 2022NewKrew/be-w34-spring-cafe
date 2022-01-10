@@ -12,9 +12,16 @@ public class UserService {
 
     private final UserRepository userRepository = new MemoryUserRepository();
 
-    //TODO 아이디 중복확인, ...
-    public void signUp(User user) {
-        userRepository.save(user);
+    public Long signUp(User user) {
+        validateDuplicateUserId(user);
+        return userRepository.save(user).getId();
+    }
+
+    private void validateDuplicateUserId(User user){
+        userRepository.findByUserId(user.getUserId())
+                .ifPresent(seru -> {
+                    throw new IllegalStateException("가입할 수 없는 ID입니다.");
+                });
     }
 
     public List<User> findAllUsers() {
