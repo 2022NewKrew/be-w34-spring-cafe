@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -42,10 +41,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String list(Model model) {
-        List<User> users = userService.list()
-                .stream()
-                .map(com.kakao.cafe.entity.User::toDto)
-                .collect(Collectors.toList());
+        List<User> users = userService.list();
         model.addAttribute("users", users);
         return "users";
     }
@@ -56,11 +52,10 @@ public class UserController {
         if (id.equals("me")) {
             parsedId = (String) session.getAttribute("id");
         }
-        var entity = userService.get(parsedId);
-        if (entity == null) {
+        User user = userService.get(parsedId);
+        if (user == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
         }
-        User user = entity.toDto();
         model.addAttribute("user", user);
         return "profile";
     }

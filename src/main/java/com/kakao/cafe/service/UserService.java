@@ -1,12 +1,13 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.entity.User;
+import com.kakao.cafe.dto.User;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -20,26 +21,41 @@ public class UserService {
 
     @Nullable
     public User create(String id, String password, String name, String email) {
-        User user = new User.Builder()
+        com.kakao.cafe.entity.User user = new com.kakao.cafe.entity.User.Builder()
                 .id(id)
                 .password(password)
                 .name(name)
                 .email(email)
                 .build();
-        return userRepository.create(user);
+        com.kakao.cafe.entity.User created = userRepository.create(user);
+        if (created == null) {
+            return null;
+        }
+        return created.toDto();
     }
 
     public List<User> list() {
-        return userRepository.list();
+        return userRepository.list()
+                .stream()
+                .map(com.kakao.cafe.entity.User::toDto)
+                .collect(Collectors.toList());
     }
 
     @Nullable
     public User get(String id) {
-        return userRepository.get(id);
+        com.kakao.cafe.entity.User found = userRepository.get(id);
+        if (found == null) {
+            return null;
+        }
+        return found.toDto();
     }
 
     @Nullable
     public User login(String id, String password) {
-        return userRepository.login(id, password);
+        com.kakao.cafe.entity.User found = userRepository.login(id, password);
+        if (found == null) {
+            return null;
+        }
+        return found.toDto();
     }
 }
