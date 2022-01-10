@@ -1,11 +1,10 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.UserEntity;
+import com.kakao.cafe.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserRepository {
@@ -16,6 +15,10 @@ public class UserRepository {
         entity.setId(seq++);
         db.put(entity.getId(), entity);
         return entity;
+    }
+
+    public List<UserEntity> findAll() {
+        return new ArrayList<>(db.values());
     }
 
     public Optional<UserEntity> findById(Long id) {

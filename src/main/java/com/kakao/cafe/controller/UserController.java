@@ -1,13 +1,17 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.request.SignupReqDto;
+import com.kakao.cafe.dto.response.UserResDto;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -25,8 +29,9 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String getUsers() {
-        // show all users
+    public String getUsers(Model model) {
+        List<UserResDto> users = userService.getUsers();
+        model.addAttribute("users", users);
         return "/user/list";
     }
 
@@ -35,7 +40,7 @@ public class UserController {
         return "/user/form";
     }
 
-    @PostMapping("/users")
+    @PostMapping("/users/signup")
     public String signup(@ModelAttribute SignupReqDto signupReqDto) {
         // signup and redirect
         userService.signup(signupReqDto);
