@@ -32,7 +32,7 @@ public class UserController {
             @RequestParam("name") String name,
             @RequestParam("email") String email
     ) {
-        var user = userService.create(userId, password, name, email);
+        UserDto user = userService.create(userId, password, name, email);
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user already exists");
         }
@@ -66,11 +66,11 @@ public class UserController {
             @RequestParam("password") String password,
             HttpSession session
     ) {
-        var entity = userService.login(userId, password);
-        if (entity == null) {
+        UserDto user = userService.login(userId, password);
+        if (user == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "login failed");
         }
-        String id = entity.getId();
+        String id = user.getId();
         session.setAttribute("id", id);
         return "redirect:/users/" + id;
     }
