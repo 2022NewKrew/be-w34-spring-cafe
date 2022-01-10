@@ -1,6 +1,8 @@
 package com.kakao.cafe.users;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,13 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+    private UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping(path = "/form")
     public String createUserForm() {
@@ -43,7 +52,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/create")
-    public String createUser() {
+    public String createUser(UserRequest userRequest, Model model) {
         System.out.println("hello");
         return "redirect:/user/list";
     }
