@@ -1,12 +1,11 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserRequest;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,7 +28,9 @@ public class UserController {
     }
 
     @PostMapping
-    public String signUp() {
+    public String signUp(@ModelAttribute UserRequest userRequest) {
+        userService.signUp(userRequest);
+
         return "redirect:/users";
     }
 }
