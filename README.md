@@ -1,6 +1,6 @@
 # be-w34-spring-cafe
 * 작업 명세(완료한 것에 O표시)
-  * Logger 사용
+  * Logger 사용 O
   * get, post 테스트
   * 회원가입 기능 구현
   * 회원목록 기능 구현
