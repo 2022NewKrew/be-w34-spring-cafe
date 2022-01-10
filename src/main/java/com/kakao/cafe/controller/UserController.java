@@ -18,7 +18,7 @@ public class UserController {
     }
 
     @GetMapping("/user/create")
-    public String createUser(
+    public String create(
             @RequestParam("userId") String userId,
             @RequestParam("password") String password,
             @RequestParam("name") String name,
@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String listUsers(Model model) {
+    public String list(Model model) {
         model.addAttribute("users", userService.list());
         return "users";
     }
