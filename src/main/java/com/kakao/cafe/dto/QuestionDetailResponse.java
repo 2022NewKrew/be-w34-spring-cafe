@@ -16,7 +16,7 @@ public class QuestionDetailResponse {
         this.userId = question.getWriter().getId();
         this.writer = question.getWriter().getUserId();
         this.questionId = question.getId();
-        this.createdDateTime = question.getCreatedDateTime().format(DateTimeFormatter.ofPattern("YYYY-MM-DD hh:mm"));
+        this.createdDateTime = question.getCreatedDateTime().format(DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm"));
         this.title = question.getTitle();
         this.contents = question.getContents();
     }
