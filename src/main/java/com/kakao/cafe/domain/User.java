@@ -1,48 +1,25 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.dto.UserDto;
+
 import java.util.Objects;
 
 public class User {
-    private final Long id;
+    private Long id;
     private final String userId;
     private String password;
     private String name;
     private String email;
 
-    public static class Builder {
-        private final Long id;
-        private final String userId;
-        private String password;
-        private String name = "";
-        private String email = "";
-
-        public Builder(Long id, String userId, String password) {
-            this.id = id;
-            this.userId = userId;
-            this.password = password;
-        }
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public User build() {
-            return new User(this);
-        }
+    public static User of(String userId, String password, String name, String email) {
+        return new User(userId, password, name, email);
     }
 
-    private User(Builder builder) {
-        id = builder.id;
-        userId = builder.userId;
-        password = builder.password;
-        name = builder.name;
-        email = builder.email;
+    private User(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
     public Long getId() {
@@ -59,6 +36,26 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public UserDto exportDto() {
+        return UserDto.of(userId, password, name, email);
     }
 
     @Override
