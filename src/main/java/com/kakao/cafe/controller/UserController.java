@@ -23,6 +23,11 @@ public class UserController {
         return "/user/list";
     }
 
+    @GetMapping("/login")
+    public String userLogin() {
+        return "/user/login";
+    }
+
     @GetMapping("/signup")
     public String userSignUpForm(Model model) {
         model.addAttribute("user", new User());
