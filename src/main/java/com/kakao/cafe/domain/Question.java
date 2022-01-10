@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class Question {
     private Long id;
-    private String writer;
+    private User writer;
     private String title;
     private String contents;
     private LocalDateTime createdDateTime;
@@ -15,9 +15,9 @@ public class Question {
         createdDateTime = LocalDateTime.now();
     }
 
-    public Question(QuestionCreateRequest questionCreateRequest) {
+    public Question(QuestionCreateRequest questionCreateRequest, User writer) {
         createdDateTime = LocalDateTime.now();
-        this.writer = questionCreateRequest.getWriter();
+        this.writer = writer;
         this.title = questionCreateRequest.getTitle();
         this.contents = questionCreateRequest.getContents();
     }
@@ -26,11 +26,15 @@ public class Question {
         return id;
     }
 
-    public String getWriter() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getWriter() {
         return writer;
     }
 
-    public void setWriter(String writer) {
+    public void setWriter(User writer) {
         this.writer = writer;
     }
 
@@ -50,7 +54,12 @@ public class Question {
         this.contents = contents;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
     }
 }
