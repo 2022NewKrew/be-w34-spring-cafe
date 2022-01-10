@@ -2,7 +2,7 @@
 <div class="card" style="border: 0;">
     <article class="card-body mx-auto" style="max-width: 500px; min-width:300px;">
         <h2 class="card-title m-3 text-center">회원목록</h2>
-        {{#users}}
+
         <table class="table text-center">
             <thead>
             <tr>
@@ -10,17 +10,18 @@
                 <th>이름</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody class="align-middle">
+            {{#users}}
             <tr>
                 <td><a href="/user/view/{{id}}">{{id}}</a></td>
                 <td>{{name}}</td>
             </tr>
+            {{/users}}
             </tbody>
         </table>
-        {{/users}}
-        {{^user}}
+        {{^users}}
         <h3 class="mt-5">회원 정보가 존재하지 않습니다.</h3>
-        {{/user}}
+        {{/users}}
     </article>
 </div>
 {{>template/footer}}

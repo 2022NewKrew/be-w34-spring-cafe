@@ -3,9 +3,9 @@
     <article class="card-body mx-auto" style="max-width: 500px; min-width:300px;">
         <h2 class="card-title m-3 text-center">회원가입</h2>
         <form method="post" action="/user/register">
-            <table class="text-end">
+            <table class="table align-middle">
                 <tr>
-                    <th>
+                    <th class="text-end">
                         ID: &nbsp;
                     </th>
                     <td>
@@ -13,27 +13,27 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>
+                    <th class="text-end">
                         PW: &nbsp;
                     </th>
                     <td>
-                        <input type="password" name="password" class="form-control" placeholder="비밀번호">
+                        <input type="password" name="password" class="form-control" placeholder="비밀번호" required>
                     </td>
                 </tr>
                 <tr>
-                    <th>
+                    <th class="text-end">
                         Name: &nbsp;
                     </th>
                     <td>
-                        <input type="text" name="name" class="form-control" placeholder="이름">
+                        <input type="text" name="name" class="form-control" placeholder="이름" required>
                     </td>
                 </tr>
                 <tr>
-                    <th>
+                    <th class="text-end">
                         Email: &nbsp;
                     </th>
                     <td>
-                        <input type="email" name="email" class="form-control" placeholder="이메일">
+                        <input type="email" name="email" class="form-control" placeholder="이메일" required>
                     </td>
                 </tr>
             </table>
