@@ -1,11 +1,10 @@
 package com.kakao.cafe.user.controller;
 
 import com.kakao.cafe.user.domain.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +13,13 @@ import java.util.List;
 public class UserController {
     private List<User> users = new ArrayList<>();
 
-    @RequestMapping("/abcdef")
+    Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @GetMapping("/signup")
     public String user() {
-        return "form";
+        String msg = "hello";
+        int v = 2022;
+        logger.info("{} Spring api: {}", msg, v);
+        return "users/form";
     }
-
-//    @PostMapping("/")
-
 }
