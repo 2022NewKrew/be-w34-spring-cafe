@@ -8,4 +8,5 @@ import java.util.List;
 public interface UserService {
     void add(@NonNull final User user);
     List<User> getList();
+    User getUser(@NonNull final String id);
 }

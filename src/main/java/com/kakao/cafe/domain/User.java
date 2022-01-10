@@ -6,6 +6,7 @@ import com.kakao.cafe.util.SecurePassword;
 import java.util.Objects;
 
 public class User {
+    public static final User NONE = new User();
     public static final String ID_REGEX = "[0-9a-z]+";
     public static final int ID_MIN = 6;
     public static final int ID_MAX = 12;
@@ -41,7 +42,15 @@ public class User {
         this.email = email.trim();
     }
 
-    public void validate(
+    private User() {
+        this.idx = 0;
+        this.id = "none";
+        this.password = "";
+        this.name = "";
+        this.email = "";
+    }
+
+    private void validate(
             final String id,
             final String password,
             final String name,
@@ -91,6 +100,10 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean isNotNone() {
+        return !this.equals(NONE);
     }
 
     // Auto-gen code

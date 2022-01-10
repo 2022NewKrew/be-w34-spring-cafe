@@ -9,6 +9,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Objects;
@@ -30,15 +31,28 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public String processSignUp(@NonNull User user) {
+    public String processSignUp(@NonNull final User user) {
         userService.add(user);
         logger.info("New User added: " + user);
         return "redirect:/user";
     }
 
     @GetMapping("/user")
-    public String getUserList(Model model) {
+    public String getUserList(final Model model) {
         model.addAttribute("userlist", userService.getList());
         return "user";
+    }
+
+    @GetMapping("/user/{id}")
+    public String getUserProfile(
+            @PathVariable("id") @NonNull final String id,
+            final Model model
+    )
+    {
+        final User user = userService.getUser(id);
+        if (user.isNotNone()) {
+            model.addAttribute("user", user);
+        }
+        return "user/profile";
     }
 }

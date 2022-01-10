@@ -24,4 +24,9 @@ public class UserManager implements UserService {
     public List<User> getList() {
         return users.getList();
     }
+
+    @Override
+    public User getUser(@NonNull final String id) {
+        return users.find(id);
+    }
 }

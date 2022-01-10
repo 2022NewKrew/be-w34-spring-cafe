@@ -23,6 +23,16 @@ public class Users {
         return false;
     }
 
+    public User find(final String id) {
+        Objects.requireNonNull(id);
+        for (User u : list) {
+            if (id.equals(u.getId())) {
+                return u;
+            }
+        }
+        return User.NONE;
+    }
+
     public List<User> getList() {
         return Collections.unmodifiableList(list);
     }
