@@ -1,4 +1,26 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.entity.User;
+
 public interface UserService {
+    String register(UserDto dto);
+
+    default User dtoToEntity(UserDto dto) {
+        return User.builder()
+                .email(dto.getEmail())
+                .username(dto.getUsername())
+                .password(dto.getPassword())
+                .build();
+    }
+
+    default UserDto entityToDto(User entity) {
+        return UserDto.builder()
+                .email(entity.getEmail())
+                .username(entity.getUsername())
+                .password(entity.getPassword())
+                .regDate(entity.getRegDate())
+                .modDate(entity.getModDate())
+                .build();
+    }
 }
