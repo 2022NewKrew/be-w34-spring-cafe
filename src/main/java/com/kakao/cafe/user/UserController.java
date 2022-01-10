@@ -49,5 +49,4 @@ public class UserController {
         model.addAttribute("profile", target);
         return "user/profile";
     }
-
 }
