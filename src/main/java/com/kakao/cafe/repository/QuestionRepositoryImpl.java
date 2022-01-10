@@ -2,10 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Question;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class QuestionRepositoryImpl implements QuestionRepository{
 
@@ -21,11 +18,11 @@ public class QuestionRepositoryImpl implements QuestionRepository{
 
     @Override
     public Optional<Question> findById(Long id) {
-        return Optional.empty();
+        return Optional.ofNullable(store.get(id));
     }
 
     @Override
     public List<Question> findAll() {
-        return null;
+        return new ArrayList<>(store.values());
     }
 }

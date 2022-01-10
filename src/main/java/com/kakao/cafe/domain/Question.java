@@ -1,12 +1,20 @@
 package com.kakao.cafe.domain;
 
+import java.time.LocalDateTime;
+
 public class Question {
     private Long id;
     private String writer;
     private String title;
     private String contents;
+    private LocalDateTime createdDateTime;
+
+    public Question(){
+        createdDateTime = LocalDateTime.now();
+    }
 
     public Question(QuestionCreateRequest questionCreateRequest) {
+        createdDateTime = LocalDateTime.now();
         this.writer = questionCreateRequest.getWriter();
         this.title = questionCreateRequest.getTitle();
         this.contents = questionCreateRequest.getContents();
