@@ -19,6 +19,12 @@ public class User {
         this.id = id;
     }
 
+    public void update(String name, String password, String email) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+    }
+
     public Long getId() {
         return id;
     }
