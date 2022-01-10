@@ -21,4 +21,10 @@ public class GlobalExceptionHandler {
     public String userNotFound() {
         return "error/nosuchuser";
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String illegalArgument() {
+        return "error/illegalargument";
+    }
 }
