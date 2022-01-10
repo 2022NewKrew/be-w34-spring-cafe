@@ -7,11 +7,8 @@ import org.springframework.stereotype.Controller;
 public class User extends NamedEntity {
 
     private String userId;
-
     private String password;
-
     private String email;
-
     private String profileImage;
 
     public String getUserId() {

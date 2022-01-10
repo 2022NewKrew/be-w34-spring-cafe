@@ -16,18 +16,32 @@ public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @GetMapping("/signup")
-    public String createUser() {
-        return "user/form";
-    }
+//    @GetMapping("/user/form")
+//    public String createUser() {
+//        return "user/form";
+//    }
 
-    @PostMapping("/signup")
+    @PostMapping("/user/create")
     public String createUser(User user) {
-        users.add(user);
-        logger.info(user.getName());
+        logger.info(String.valueOf(user));
         logger.info(user.getUserId());
         logger.info(user.getEmail());
+        logger.info(user.getName());
+        logger.info(user.getPassword());
+        users.add(user);
+        logger.info("{}", users);
+//        new User(user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+//        users.add(user);
 
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/user/list")
+    public String memberList(List<User> users) {
+        for (User user : users) {
+            System.out.println(user);
+        }
         return "user/list";
     }
 }
