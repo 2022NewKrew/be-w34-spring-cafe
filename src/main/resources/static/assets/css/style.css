@@ -1,0 +1,12 @@
+.navLogo {
+    width: 12%;
+}
+
+.nav-item button {
+    width: 90px;
+    margin-left: 0.5rem;
+}
+
+#mainJumbotron {
+    background-color: #FFCD00;
+}

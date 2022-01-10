@@ -1,0 +1,46 @@
+{{>template/header}}
+<div class="card" style="border: 0;">
+    <article class="card-body mx-auto" style="max-width: 500px; min-width:300px;">
+        <h2 class="card-title m-3 text-center">회원가입</h2>
+        <form method="post" action="/user/register">
+            <table class="text-end">
+                <tr>
+                    <th>
+                        ID: &nbsp;
+                    </th>
+                    <td>
+                        <input type="text" name="id" class="form-control" placeholder="아이디" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        PW: &nbsp;
+                    </th>
+                    <td>
+                        <input type="password" name="password" class="form-control" placeholder="비밀번호">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Name: &nbsp;
+                    </th>
+                    <td>
+                        <input type="text" name="name" class="form-control" placeholder="이름">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Email: &nbsp;
+                    </th>
+                    <td>
+                        <input type="email" name="email" class="form-control" placeholder="이메일">
+                    </td>
+                </tr>
+            </table>
+            <div class="row mt-3">
+                <button type="submit" class="btn btn-dark">회원가입</button>
+            </div>
+        </form>
+    </article>
+</div>
+{{>template/footer}}
