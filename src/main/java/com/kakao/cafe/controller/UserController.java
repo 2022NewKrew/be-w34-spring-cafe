@@ -16,11 +16,15 @@ public class UserController {
     private final UserService userService;
 
 
-
     @PostMapping("/user/create")
     public String singUp(SignUpDTO signUpDTO){
         userService.signUp(signUpDTO);
         return "redirect:/users";
+    }
+
+    @GetMapping("/user/form")
+    public String createForm(){
+        return "user/form";
     }
 
     @GetMapping("/users")
