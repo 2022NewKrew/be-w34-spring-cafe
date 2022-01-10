@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.entity.User;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class UserRepository {
         );
     }
 
+    @Nullable
     public User create(User user) {
         // NOTE 중복 확인을 Repository에서 해야 할 지, Service에서 해야 할지?
         User existing = find(user.getId()).orElse(null);
@@ -38,10 +40,12 @@ public class UserRepository {
         return Collections.unmodifiableList(data);
     }
 
+    @Nullable
     public User get(String id) {
         return find(id).orElse(null);
     }
 
+    @Nullable
     public User login(String id, String password) {
         Optional<User> found = find(id);
         if (found.isEmpty()) {
