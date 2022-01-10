@@ -5,14 +5,15 @@
 		<meta charset="utf-8">
 		<title>SLiPP Java Web Programming</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
 		<!--[if lt IE 9]>
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-		<link href="css/styles.css" rel="stylesheet">
+		<link href="/css/styles.css" rel="stylesheet">
 	</head>
 	
 	<body>
+
 <nav class="navbar navbar-fixed-top header">
  	<div class="col-md-12">
         <div class="navbar-header">
@@ -82,11 +83,31 @@
    <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
       <div class="panel panel-default qna-list">
           <ul class="list">
-              <li>
+              {{#articles}}
+                <li>
+                    <div class="wrap">
+                        <div class="main">
+                            <strong class="subject">
+                                <a href="./qna/show.html">{{title}}</a>
+                            </strong>
+                            <div class="auth-info">
+                                <i class="icon-add-comment"></i>
+                                <span class="time">2016-01-15 18:47</span>
+                                <a href="./user/profile.html" class="author">{{author}}</a>
+                            </div>
+                            <div class="reply" title="댓글">
+                                <i class="icon-reply"></i>
+                                <span class="point">{{num}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+              {{/articles}}
+            <li>
                   <div class="wrap">
                       <div class="main">
                           <strong class="subject">
-                              <a href="./qna/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
+                              <a href="./qna/show.html">{{test}}</a>
                           </strong>
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
@@ -139,7 +160,16 @@
         </div>
     </div>
 </div>
-
+<tr>
+    <td>num</td>
+    <td>tile</td>
+    <td>author</td>
+</tr>
+<tr>
+    <td>num</td>
+    <td>tile</td>
+    <td>author</td>
+</tr>
 <!--login modal-->
 <!--
 <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
