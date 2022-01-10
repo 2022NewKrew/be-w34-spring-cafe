@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -48,5 +49,13 @@ public class UserController {
         model.addAttribute("user_accounts", userAccounts);
         logger.info(userAccounts.toString());
         return "user/list";
+    }
+
+    @GetMapping("{userID}")
+    public String profile(@PathVariable("userID") String userID, Model model){
+        UserAccountDTO userAccountDTO = new UserAccountDTO(DataStorage.lookUpUserInfo(userID));
+
+        model.addAttribute("user_account", userAccountDTO);
+        return "user/profile";
     }
 }
