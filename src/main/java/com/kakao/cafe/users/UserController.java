@@ -3,10 +3,7 @@ package com.kakao.cafe.users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -49,7 +46,13 @@ public class UserController {
 
     @GetMapping(path = "/profile")
     public String userProfile() {
-        System.out.println("profile");
+        return "user/profile";
+    }
+
+    @GetMapping(path = "/profile/{userId}")
+    public String userProfile(@PathVariable String userId, Model model) {
+        User user = userService.getUserById(userId);
+        model.addAttribute("user", user);
         return "user/profile";
     }
 
