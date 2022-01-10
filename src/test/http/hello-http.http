@@ -3,3 +3,6 @@ GET {{host}}/
 
 ### 간단 API 테스트
 GET {{host}}/api/hello
+
+### 템플릿 동작 테스트
+GET {{host}}/hello?name=banana&sugar=60
