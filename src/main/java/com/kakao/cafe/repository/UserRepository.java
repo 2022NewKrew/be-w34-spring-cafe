@@ -13,17 +13,6 @@ import java.util.Optional;
 public class UserRepository {
 
     private final List<User> data = new ArrayList<>();
-    // TODO 테스트 데이터 삭제
-    {
-        data.add(
-                new User.Builder()
-                        .id("test")
-                        .email("test@example.com")
-                        .password("1234")
-                        .name("test")
-                        .build()
-        );
-    }
 
     @Nullable
     public User create(User user) {

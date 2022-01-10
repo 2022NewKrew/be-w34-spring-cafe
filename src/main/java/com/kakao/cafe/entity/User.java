@@ -2,6 +2,8 @@ package com.kakao.cafe.entity;
 
 import com.kakao.cafe.dto.UserDto;
 
+import java.util.Objects;
+
 public class User implements Entity<UserDto> {
 
     private final String id;
@@ -31,6 +33,19 @@ public class User implements Entity<UserDto> {
                 .id(id)
                 .name(name)
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(password, user.password) && Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, password, email);
     }
 
     public static class Builder {
