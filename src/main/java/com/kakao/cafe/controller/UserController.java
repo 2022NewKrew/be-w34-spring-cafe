@@ -2,6 +2,8 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.vo.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,8 @@ import java.util.List;
 public class UserController {
     @Resource(name = "userService")
     UserService userService;
+
+    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping
     String users(Model model) {
@@ -34,14 +38,15 @@ public class UserController {
     @GetMapping("/create")
     String create(User user) {
         userService.insertUser(user);
+        logger.info("create User : Email : {}, Name : {}", user.getEmail(), user.getName());
+
         return "redirect:/users";
     }
 
     @GetMapping("/{userId}")
     String profile(@PathVariable String userId, Model model) {
         User user = userService.getUserByUserId(userId);
-        model.addAttribute("name", user.getName());
-        model.addAttribute("email", user.getEmail());
+        model.addAttribute("user", user);
 
         return "user/profile";
     }
