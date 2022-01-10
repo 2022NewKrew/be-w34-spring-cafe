@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     private final List<User> users = new CopyOnWriteArrayList<>();
-    private long autoIncrementId = 0;
+    private final AtomicLong sequenceId = new AtomicLong();
 
     public void signUp(UserRequest userRequest) {
         User user = createUser(userRequest);
@@ -21,11 +22,7 @@ public class UserService {
     }
 
     private User createUser(UserRequest userRequest) {
-        return new User(getNextId(), userRequest);
-    }
-
-    private synchronized long getNextId() {
-        return ++autoIncrementId;
+        return new User(sequenceId.incrementAndGet(), userRequest);
     }
 
     public List<UserDto> getUsers() {
