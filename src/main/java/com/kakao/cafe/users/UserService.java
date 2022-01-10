@@ -20,4 +20,8 @@ public class UserService {
         userRepository.update(user);
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.getAllUsers();
+    }
+
 }

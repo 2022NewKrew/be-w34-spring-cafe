@@ -25,13 +25,13 @@ public class UserController {
 
     @GetMapping(path = "/form")
     public String createUserForm() {
-        System.out.println("form");
         return "user/form";
     }
 
     @GetMapping(path = "/list")
-    public String userList() {
-        System.out.println("list");
+    public String userList(Model model) {
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("users", users);
         return "user/list";
     }
 
