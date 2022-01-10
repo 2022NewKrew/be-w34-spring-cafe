@@ -19,7 +19,7 @@ public class UserService {
 
     private void validateDuplicateUserId(User user){
         userRepository.findByUserId(user.getUserId())
-                .ifPresent(seru -> {
+                .ifPresent(u -> {
                     throw new IllegalStateException("가입할 수 없는 ID입니다.");
                 });
     }
@@ -30,5 +30,8 @@ public class UserService {
 
     public User findOneUser(String userId) {
         return userRepository.findByUserId(userId).get();
+    }
+    public User findOneUser(Long id) {
+        return userRepository.findById(id).get();
     }
 }

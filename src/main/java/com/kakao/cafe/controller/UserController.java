@@ -29,10 +29,10 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/{userId}")
-    public String viewPersonalUser(@PathVariable String userId, Model model){
-        logger.info("GET:/users/{} 유저정보조회", userId);
-        model.addAttribute("user", userService.findOneUser(userId));
+    @GetMapping("/{id}")
+    public String viewPersonalUser(@PathVariable Long id, Model model){
+        logger.info("GET:/users/{} 유저정보조회", id);
+        model.addAttribute("user", userService.findOneUser(id));
         return "user/profile";
     }
 
