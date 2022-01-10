@@ -53,7 +53,7 @@ public class UserRepository {
             return null;
         }
         User user = found.get();
-        boolean ok = user.getPassword().equals(password);
+        boolean ok = user.checkPassword(password);
         if (!ok) {
             return null;
         }

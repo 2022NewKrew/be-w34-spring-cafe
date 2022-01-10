@@ -18,14 +18,6 @@ public class UserDto implements Dto<User> {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
     @Override
     public User toEntity() {
         return new User.Builder()

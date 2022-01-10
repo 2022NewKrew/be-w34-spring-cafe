@@ -20,16 +20,8 @@ public class User implements Entity<UserDto> {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
+    public boolean checkPassword(String password) {
+        return this.password.equals(password);
     }
 
     @Override
