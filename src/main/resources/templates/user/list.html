@@ -2,7 +2,7 @@
 <html lang="kr">
 {{> partial/header}}
 <body>
-{{> partial/top-nav-ber}}
+{{> partial/top-nav-bar}}
 {{> partial/middle-nav-bar}}
 
 <div class="container" id="main">
@@ -14,13 +14,12 @@
                     <th>#</th> <th>사용자 아이디</th> <th>이름</th> <th>이메일</th><th></th>
                 </tr>
               </thead>
-              <tbody onclick="clickUser()" >
+              <tbody onclick="clickUser(this)" >
                 {{#users}}
                 <tr>
                         <th scope="row" id="userPK">{{id}}</th>
                         <td>
                             {{userId}}
-<!--                            <a href="/users/{{id}}">{{userId}}</a>-->
                         </td>
                         <td>{{name}}</td>
                         <td>{{email}}</td>
@@ -34,9 +33,9 @@
 </div>
 
 <script>
-const clickUser = (e) => {
-    console.log(e);
-    // window.location("/users/"+)
+const clickUser = (o) => {
+    const url = "/users/"+o.querySelector('#userPK').textContent;
+    document.location.href = url;
 }
 </script>
 
