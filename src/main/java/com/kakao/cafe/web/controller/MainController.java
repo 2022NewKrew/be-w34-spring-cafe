@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 
   private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+  private final UserService userService;
+
+  public MainController(UserService userService) {
+    this.userService = userService;
+  }
 
   private final UserService userService;
 
