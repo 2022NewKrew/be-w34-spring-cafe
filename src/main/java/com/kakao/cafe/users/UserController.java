@@ -1,0 +1,46 @@
+package com.kakao.cafe.users;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+
+
+@RestController
+public class UserController {
+    private ArrayList<User> users = new ArrayList<>();
+    Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @PostMapping("/createAccount")
+    public String createAccount(String ID, String password, String nickname, String email){
+        logger.info("POST /createAccount : {} 생성", ID);
+        User user = new User(ID,password,nickname,email);
+        users.add(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/users")
+    public String getUsers(Model model){
+        logger.info("GET /users : 유저 전체목록 조회");
+        model.addAttribute("users", users);
+        return "account/list";
+    }
+
+    @GetMapping("/users/{ID}")
+    public String getUser(String ID, Model model){
+        logger.info("GET /users/{} : {} 유저 조회",ID,ID);
+        User profile = null;
+        for(User user : users){
+            if(user.getID() == ID){
+                profile = user;
+            }
+        }
+        model.addAttribute("profile", profile);
+        return "user/profile";
+    }
+}
