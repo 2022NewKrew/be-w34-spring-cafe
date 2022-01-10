@@ -17,11 +17,7 @@
               <tbody>
               {{#users}}
                   <tr onclick="location.href='/users/{{userId}}'">
-                      <th scope="row" id="{{userId}}">
-                          <script>
-                              document.getElementById("{{userId}}").innerHTML = getIndex()
-                          </script>
-                      </th>
+                      <th scope="row">{{index}}</th>
                       <td>{{userId}}</td>
                       <td>{{name}}</td>
                       <td>{{email}}</td>

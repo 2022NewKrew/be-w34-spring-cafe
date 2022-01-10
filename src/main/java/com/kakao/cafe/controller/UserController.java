@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.UserElementDto;
 import com.kakao.cafe.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,20 +11,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
     private final List<User> users = new ArrayList<>();
 
-    @GetMapping()
+    @GetMapping
     public String showUsers(Model model) {
-        model.addAttribute("users", users);
-        model.addAttribute("users.index", 1);
+        model.addAttribute("users", getUserElementDtos());
         return "list";
     }
 
-    @PostMapping()
+    @PostMapping
     public String register(User user) {
         users.add(user);
         return "redirect:users";
@@ -42,5 +44,12 @@ public class UserController {
                 .filter(user -> user.getUserId().equals(targetId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("찾고자 하는 사용자가 없습니다!"));
+    }
+
+    private List<UserElementDto> getUserElementDtos() {
+        return IntStream
+                .range(0, users.size())
+                .mapToObj(index -> new UserElementDto(users.get(index), index + 1))
+                .collect(Collectors.toList());
     }
 }
