@@ -15,4 +15,13 @@ public class UserService {
     public List<User> getAllUser(){
         return userRepository.getUsers();
     }
+
+    public User getUserByUserId(String userId){
+        for(User user : userRepository.getUsers()){
+            if(user.getUserId().equals(userId)){
+                return user;
+            }
+        }
+        return new User("", "", "", ""); //의미없는 user객체를 반환 .
+    }
 }

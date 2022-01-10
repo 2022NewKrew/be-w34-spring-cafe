@@ -5,6 +5,7 @@ import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,4 +26,16 @@ public class UserController {
         userService.userCreate(user);
         return "redirect:/user/list.html";
     }
+
+
+
+    //회원개인프로필 확인
+    @GetMapping(value = "/users/{userId}")
+    public String userProfile(@PathVariable("userId") String userId, Model model){
+        User user = userService.getUserByUserId(userId);
+        model.addAttribute("name", user.getName());
+        model.addAttribute("email", user.getEmail());
+        return "/user/profile";
+    }
+
 }
