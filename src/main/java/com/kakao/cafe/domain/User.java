@@ -1,24 +1,32 @@
 package com.kakao.cafe.domain;
 
 public class User {
-    private String userID;
-    private String userPW;
-    private String userName;
-    private String userEmail;
+    private String userId;
+    private String password;
+    private String name;
+    private String email;
 
-    public String getUserID() {
-        return userID;
+    //setter 대신 객체는 항상 생성자로만 생성하도록 구성.
+    public User(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
-    public String getUserPW() {
-        return userPW;
+    public String getUserId() {
+        return userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getPassword() {
+        return password;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
