@@ -24,8 +24,7 @@ public class UserService {
                 .name(name)
                 .email(email)
                 .build();
-        userRepository.create(user);
-        return user;
+        return userRepository.create(user);
     }
 
     public List<User> list() {
