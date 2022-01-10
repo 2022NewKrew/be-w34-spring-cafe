@@ -16,4 +16,7 @@ public class User {
         this.password = userRequest.getPassword();
     }
 
+    public UserDto toDto() {
+        return new UserDto(id, username, nickname, email);
+    }
 }

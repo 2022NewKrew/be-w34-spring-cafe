@@ -1,11 +1,13 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.domain.UserRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -22,7 +24,9 @@ public class UserService {
         return new User(++autoIncrementId, userRequest);
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<UserDto> getUsers() {
+        return users.stream()
+                .map(User::toDto)
+                .collect(Collectors.toList());
     }
 }

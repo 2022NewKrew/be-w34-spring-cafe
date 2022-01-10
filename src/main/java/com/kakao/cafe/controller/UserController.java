@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.domain.UserRequest;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping
     public String users(Model model) {
-        List<User> users = userService.getUsers();
+        List<UserDto> users = userService.getUsers();
         model.addAttribute("users", users);
 
         return "user/list";
