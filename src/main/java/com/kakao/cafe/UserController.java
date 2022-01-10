@@ -18,6 +18,7 @@ public class UserController {
 
     private List<User> userList = new ArrayList<>();
 
+    // form으로 작성된 정보를 받아서 user 객체 생성하고 저장
     @PostMapping("/user/create")
     public String signUp(User user) {
         userList.add(user);
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/user/form.html")
-    public String form() {
+    public String toSignUpPage() {
         return "/user/form";
     }
 
@@ -36,7 +37,7 @@ public class UserController {
         return "/user/list";
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user/profile/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model) {
         User foundUser = null;
         for (User user : userList) {
