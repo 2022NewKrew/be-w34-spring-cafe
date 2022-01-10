@@ -1,1 +1,31 @@
 # be-w34-spring-cafe
+
+
+## 설명
+```
+간단한 웹서비스 목적입니다.
+html을 동적으로 보여줍니다.
+데이터 저장은 DB가 아닌 현재는 메모리 저장으로 구현되어있습니다.
+```
+## 구조
+```
+users
+- User
+- UserService
+- UserController
+- UserDto
+- UserRepostiory
+    - MemoryUserRepository
+```
+
+## URL
+```
+회원가입 : /users/from
+사용자 목록 : /users
+```
+
+## 기능구현
+```
+회원가입
+사용자 목록 기능 구현
+```
