@@ -1,4 +1,10 @@
 {{>header}}
+<script>
+    let index = 1
+    const getIndex = ()=>{
+        return index++
+    }
+</script>
 <div class="container" id="main">
    <div class="col-md-10 col-md-offset-1">
       <div class="panel panel-default">
@@ -10,9 +16,13 @@
               </thead>
               <tbody>
               {{#users}}
-              <tr>
-                  <th scope="row">1</th> <td>{{userId}}</td> <td>{{name}}</td> <td>{{email}}</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
-              </tr>
+                  <tr onclick="location.href='/users/{{userId}}'">
+                      <th scope="row">{{index}}</th>
+                      <td>{{userId}}</td>
+                      <td>{{name}}</td>
+                      <td>{{email}}</td>
+                      <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                  </tr>
               {{/users}}
               </tbody>
           </table>
