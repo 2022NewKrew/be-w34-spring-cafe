@@ -15,6 +15,5 @@ public class ArticleLocalRepository implements ArticleRepository{
     @Override
     public void save(Article article) {
         articleList.add(article);
-        System.out.println(article);
     }
 }
