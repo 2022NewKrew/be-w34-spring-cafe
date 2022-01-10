@@ -37,7 +37,7 @@ public class UserController {
         return "/user/list";
     }
 
-    @GetMapping("/user/profile/{userId}")
+    @GetMapping("/user/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model) {
         User foundUser = null;
         for (User user : userList) {
