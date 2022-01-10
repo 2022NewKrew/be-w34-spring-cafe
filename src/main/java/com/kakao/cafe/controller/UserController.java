@@ -13,7 +13,7 @@ public class UserController {
     UserService userService = new UserService();
 
     //회원가입 목록 확인
-    @RequestMapping(value = "/user/list.html")
+    @RequestMapping(value = {"/user/list.html", "templates/user/list.html"})
     public String userPrintAll(Model model){
         model.addAttribute("users", userService.getAllUser());
         return "/user/list";
