@@ -1,6 +1,6 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.entity;
 
-public class User {
+public class User implements Entity<com.kakao.cafe.dto.User> {
 
     private final String id;
     private final String name;
@@ -28,6 +28,16 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public com.kakao.cafe.dto.User toDto() {
+        return new com.kakao.cafe.dto.User.Builder()
+                .email(email)
+                .id(id)
+                .name(name)
+                .password(password)
+                .build();
     }
 
     public static class Builder {
