@@ -30,7 +30,7 @@ public class UserController {
      */
     @GetMapping("/user/login")
     public String getLoginPage() {
-        logger.info("[GET] /user/login - 로그인 페이지 접속");
+        this.logger.info("[GET] /user/login - 로그인 페이지 접속");
         return "user/login";
     }
 
@@ -39,7 +39,7 @@ public class UserController {
      */
     @GetMapping("/user/join")
     public String getJoinPage() {
-        logger.info("[GET] /user/join - 회원가입 페이지 접속");
+        this.logger.info("[GET] /user/join - 회원가입 페이지 접속");
         return "user/join";
     }
 
@@ -50,14 +50,14 @@ public class UserController {
      */
     @PostMapping("/user/join")
     public String createUser(UserCreateRequest req, Model model) {
-        logger.info("[POST] /user - 유저 회원가입 요청");
+        this.logger.info("[POST] /user - 유저 회원가입 요청");
         try {
-            userService.createUser(req);
-            List<UserInfoResponse> userList = userService.getUserList();
+            this.userService.createUser(req);
+            List<UserInfoResponse> userList = this.userService.getUserList();
             model.addAttribute("users", userList);
             return "user/list";
         } catch(DuplicateUserIdException e) {
-            logger.info("[ERROR] - {}", e.getMessage());
+            this.logger.info("[ERROR] - {}", e.getMessage());
             return "../static/index";
         }
     }
@@ -67,8 +67,8 @@ public class UserController {
      */
     @GetMapping("/user")
     public String getUserListPage(Model model) {
-        logger.info("[GET] /user - 유저 리스트 페이지 접속");
-        List<UserInfoResponse> userList = userService.getUserList();
+        this.logger.info("[GET] /user - 유저 리스트 페이지 접속");
+        List<UserInfoResponse> userList = this.userService.getUserList();
         model.addAttribute("users", userList);
         return "user/list";
     }
@@ -80,14 +80,14 @@ public class UserController {
      */
     @GetMapping("/user/{id}")
     public String getUserProfilePage(Model model, @PathVariable("id") Integer id) {
-        logger.info("[GET] /user/{} - (id: {}) 유저 상세정보(프로필) 페이지 접속", id, id);
+        this.logger.info("[GET] /user/{} - (id: {}) 유저 상세정보(프로필) 페이지 접속", id, id);
         try {
-            UserInfoResponse userProfile = userService.getUserProfile(id);
+            UserInfoResponse userProfile = this.userService.getUserProfile(id);
             model.addAttribute("user", userProfile);
 
             return "user/profile";
         } catch(UserNotFoundException e) {
-            logger.info("[ERROR] - {}", e.getMessage());
+            this.logger.info("[ERROR] - {}", e.getMessage());
             return "user/list";
         }
     }

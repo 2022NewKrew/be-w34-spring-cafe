@@ -28,21 +28,21 @@ public class UserService {
      * @return Integer: 가입 성공시, PK를 반환해 줌. (사용하든 안하든 맘대로)
      */
     public Integer createUser(UserCreateRequest req) {
-        Optional<User> user = userRepository.findByUserId(req.getUserId());
+        Optional<User> user = this.userRepository.findByUserId(req.getUserId());
 
         if(user.isPresent()) {
             throw new DuplicateUserIdException();
         }
 
         User newUser = new User(req);
-        return userRepository.save(newUser);
+        return this.userRepository.save(newUser);
     }
 
     /**
      * 유저 리스트 반환 로직
      */
     public List<UserInfoResponse> getUserList() {
-        List<User> userList = userRepository.findAll();
+        List<User> userList = this.userRepository.findAll();
 
         return userList.stream()
                 .map(UserInfoResponse::new).collect(Collectors.toUnmodifiableList());
@@ -53,7 +53,7 @@ public class UserService {
      * @param id: 원하는 User의 id
      */
     public UserInfoResponse getUserProfile(Integer id) {
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = this.userRepository.findById(id);
 
         return new UserInfoResponse(
                 user.orElseThrow(UserNotFoundException::new)

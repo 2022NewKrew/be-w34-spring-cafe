@@ -11,7 +11,7 @@ public class UserRepository {
     private final List<User> userList;
 
     private UserRepository() {
-        userList = new ArrayList<>();
+        this.userList = new ArrayList<>();
     }
 
     public Optional<User> findByUserId(String userId) {
@@ -34,11 +34,11 @@ public class UserRepository {
     }
 
     public List<User> findAll() {
-        return Collections.unmodifiableList(userList);
+        return Collections.unmodifiableList(this.userList);
     }
 
     public Optional<User> findById(Integer id) {
-        return userList.stream()
+        return this.userList.stream()
                        .filter(user -> Objects.equals(user.getId(), id))
                        .findFirst();
     }
