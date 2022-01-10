@@ -10,17 +10,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @Controller
-@RequestMapping("/users")
 public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private List<User> users = new ArrayList<>();
 
-    @GetMapping("")
+    @GetMapping("/users")
     public String users(Model model) {
         model.addAttribute("users", users);
         return "/user/list";
+    }
+
+    @GetMapping("/users/{userId}")
+    public String profile(@PathVariable String userId, Model model) {
+        User selectedUser = users.stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findFirst()
+                .orElse(null);
+        model.addAttribute("user", selectedUser);
+        return "/user/profile";
     }
 
     @GetMapping("/signup")
