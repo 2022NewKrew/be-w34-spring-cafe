@@ -1,0 +1,8 @@
+spring:
+  mustache:
+    suffix: .html
+    cache: false
+
+handlebars:
+  suffix: .html
+  cache: false
