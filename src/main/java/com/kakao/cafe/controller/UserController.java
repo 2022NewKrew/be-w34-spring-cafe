@@ -4,6 +4,7 @@ import com.kakao.cafe.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -17,7 +18,8 @@ public class UserController {
     private List<User> users = new ArrayList<>();
 
     @GetMapping("")
-    public String users() {
+    public String users(Model model) {
+        model.addAttribute("users", users);
         return "/user/list";
     }
 
