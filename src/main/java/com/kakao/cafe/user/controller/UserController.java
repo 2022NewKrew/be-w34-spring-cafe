@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +17,17 @@ public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("/signup")
-    public String user() {
-        String msg = "hello";
-        int v = 2022;
-        logger.info("{} Spring api: {}", msg, v);
-        return "users/form";
+    public String createUser() {
+        return "user/form";
+    }
+
+    @PostMapping("/signup")
+    public String createUser(User user) {
+        users.add(user);
+        logger.info(user.getName());
+        logger.info(user.getUserId());
+        logger.info(user.getEmail());
+
+        return "user/list";
     }
 }

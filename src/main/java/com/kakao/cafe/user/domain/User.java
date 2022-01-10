@@ -14,5 +14,15 @@ public class User extends NamedEntity {
 
     private String profileImage;
 
+    public String getUserId() {
+        return userId;
+    }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
