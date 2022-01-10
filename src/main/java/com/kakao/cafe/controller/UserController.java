@@ -10,36 +10,32 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private List<User> users = new ArrayList<>();
 
-    @GetMapping("/users")
+    @GetMapping("")
     public String users(Model model) {
         model.addAttribute("users", users);
-        return "/user/list";
+        return "user/list";
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public String profile(@PathVariable String userId, Model model) {
         User selectedUser = users.stream()
                 .filter(user -> user.getUserId().equals(userId))
                 .findFirst()
                 .orElse(null);
         model.addAttribute("user", selectedUser);
-        return "/user/profile";
-    }
-
-    @GetMapping("/signup")
-    public String signUp() {
-        return "/user/form";
+        return "user/profile";
     }
 
     @PostMapping("/signup")
     public String createUser(User user) {
         users.add(user);
-        return "redirect:/users";
+        return "redirect:users";
     }
 }
