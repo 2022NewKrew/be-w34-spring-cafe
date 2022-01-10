@@ -24,9 +24,9 @@ public class UserController {
         this.userService = Objects.requireNonNull(userService);
     }
 
-    @GetMapping("/user/form")
+    @GetMapping("/user/signup")
     public String getSignUp() {
-        return "user/form";
+        return "user/signup";
     }
 
     @PostMapping("/user")
