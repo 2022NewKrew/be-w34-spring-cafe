@@ -9,4 +9,8 @@ public interface ArticleRepository {
 
     void update(Article article);
 
+    Optional<Article> findByTitle(String title);
+
+    List<Article> getAllArticles();
+
 }

@@ -1,12 +1,17 @@
 package com.kakao.cafe.article;
 
+import org.springframework.lang.NonNull;
+
 public class Article {
 
+    @NonNull
     private String writer;
-
+    @NonNull
     private String title;
-
+    @NonNull
     private String contents;
+
+    private String time;
 
     public Article(ArticleRequest articleRequest) {
         this.writer = articleRequest.getWriter();
@@ -26,4 +31,11 @@ public class Article {
         return contents;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 }
