@@ -1,0 +1,2 @@
+### /users
+POST http://localhost:8080/users?email=test&password=test&nickname=test
