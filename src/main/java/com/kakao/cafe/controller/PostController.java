@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.PostDto;
+import com.kakao.cafe.dto.PostCreateRequest;
 import com.kakao.cafe.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,8 +24,8 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public String write(PostDto postDto) {
-        postService.write(postDto);
+    public String write(PostCreateRequest requestDto) {
+        postService.write(requestDto);
         return "redirect:/";
     }
 

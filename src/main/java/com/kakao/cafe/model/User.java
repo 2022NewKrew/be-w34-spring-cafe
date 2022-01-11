@@ -1,6 +1,6 @@
 package com.kakao.cafe.model;
 
-import com.kakao.cafe.dto.RegisterUserRequestDto;
+import com.kakao.cafe.dto.UserRegisterRequest;
 import java.util.UUID;
 
 public class User {
@@ -19,7 +19,7 @@ public class User {
         this.email = email;
     }
 
-    public static User of(RegisterUserRequestDto requestDto) {
+    public static User of(UserRegisterRequest requestDto) {
         return new User(requestDto.getUserId(), requestDto.getPassword(), requestDto.getName(), requestDto.getEmail());
     }
 

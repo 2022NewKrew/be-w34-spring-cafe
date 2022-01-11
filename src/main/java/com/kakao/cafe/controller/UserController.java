@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserRegisterRequest;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String register(UserDto requestDto) {
+    public String register(UserRegisterRequest requestDto) {
         userService.register(requestDto);
         return "redirect:/users";
     }

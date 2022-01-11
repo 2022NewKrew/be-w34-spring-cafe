@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserMemoryRepository implements UserRepository {
+public class MemoryUserRepository implements UserRepository {
 
     private static final List<User> userList = new ArrayList<>();
 
