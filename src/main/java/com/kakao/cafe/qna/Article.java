@@ -1,6 +1,5 @@
 package com.kakao.cafe.qna;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

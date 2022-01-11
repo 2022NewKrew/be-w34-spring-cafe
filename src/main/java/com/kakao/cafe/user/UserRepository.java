@@ -1,7 +1,6 @@
 package com.kakao.cafe.user;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by melodist
