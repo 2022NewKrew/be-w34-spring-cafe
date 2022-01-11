@@ -1,5 +1,6 @@
 package com.kakao.cafe.web.controller.mvc;
 
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.Users;
 import com.kakao.cafe.web.dto.UserDTO;
 import com.kakao.cafe.web.service.UserService;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class MainController {
@@ -32,13 +34,20 @@ public class MainController {
   }
 
   @GetMapping("/users")
-  public String users(Model model) throws Exception {
+  public String users(Model model) {
     Users users = userService.getAllUsers();
     model.addAttribute("users", users.stream()
         .map(UserDTO::new)
         .collect(Collectors.toList()));
 
     return "list";
+  }
+
+  @GetMapping("/users/{email}")
+  public String users(Model model, @PathVariable("email") String email) {
+    User user = userService.getUserByEmail(email);
+    model.addAttribute("user", new UserDTO(user));
+    return "profile";
   }
 
   @GetMapping("/signup")

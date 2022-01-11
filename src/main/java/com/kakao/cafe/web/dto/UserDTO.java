@@ -8,7 +8,10 @@ public class UserDTO {
   private int index;
   private String email;
   private String nickName;
+  private String summary;
+  private String profile;
   private Timestamp createAt;
+  private Timestamp modifiedAt;
   private Timestamp lastLoginAt;
 
   public UserDTO() {
@@ -19,7 +22,10 @@ public class UserDTO {
     this.index = user.getIndex();
     this.email = user.getEmail();
     this.nickName = user.getNickName();
+    this.summary = user.getSummary();
+    this.profile = user.getProfile();
     this.createAt = user.getCreateAt();
+    this.modifiedAt = user.getModifiedAt();
     this.lastLoginAt = user.getLastLoginAt();
   }
 
@@ -63,4 +69,41 @@ public class UserDTO {
     this.lastLoginAt = lastLoginAt;
   }
 
+  public Timestamp getModifiedAt() {
+    return modifiedAt;
+  }
+
+  public void setModifiedAt(Timestamp modifiedAt) {
+    this.modifiedAt = modifiedAt;
+  }
+
+  public String getSummary() {
+    return summary;
+  }
+
+  public void setSummary(String summary) {
+    this.summary = summary;
+  }
+
+  public String getProfile() {
+    return profile;
+  }
+
+  public void setProfile(String profile) {
+    this.profile = profile;
+  }
+
+  @Override
+  public String toString() {
+    return "UserDTO{" +
+        "index=" + index +
+        ", email='" + email + '\'' +
+        ", nickName='" + nickName + '\'' +
+        ", summary='" + summary + '\'' +
+        ", profile='" + profile + '\'' +
+        ", createAt=" + createAt +
+        ", modifiedAt=" + modifiedAt +
+        ", lastLoginAt=" + lastLoginAt +
+        '}';
+  }
 }
