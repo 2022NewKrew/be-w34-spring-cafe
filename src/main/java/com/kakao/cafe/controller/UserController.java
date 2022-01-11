@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class UserController {
 
     // 회원 가입 로직
     @PostMapping("/user/signup")
-    public String addNewMember(@ModelAttribute UserDto userDto) {
+    public String addNewMember(UserDto userDto) {
         log.info("{}", userDto.getUserId());
         log.info("{}", userDto.getPassword());
         log.info("{}", userDto.getName());

@@ -22,11 +22,12 @@ public class UserService {
     public List<UserDto> getUserList() {
         List<UserDto> userList = new ArrayList<>();
         for (User user : this.userRepository.findAllUsers()) {
-            UserDto userDTO = UserDto.builder()
-                    .userId(user.getUserId())
-                    .name(user.getName())
-                    .email(user.getEmail())
-                    .build();
+//            UserDto userDTO = UserDto.builder()
+//                    .userId(user.getUserId())
+//                    .name(user.getName())
+//                    .email(user.getEmail())
+//                    .build();
+            UserDto userDTO = new UserDto(user.getUserId(), user.getName(), user.getEmail());
             userList.add(userDTO);
         }
         return userList;
