@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.user;
 
 public class User {
+    private Long id;
     private String email;
     private String nickname;
     private String password;
@@ -11,35 +12,23 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public Long getId() {
+        return id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getNickname() {
         return nickname;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", nickname='" + nickname + '\'' +
-                '}';
     }
 }
