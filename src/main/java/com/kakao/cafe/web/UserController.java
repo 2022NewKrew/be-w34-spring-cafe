@@ -16,11 +16,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/form")
-    public String getUserForm() {
-        return "user/form";
-    }
-
     @PostMapping("/create")
     public String createUser(String userId, String password, String name, String email) {
         userService.create(new UserCreateRequestDto(userId, password, name, email));

@@ -23,11 +23,6 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("/qna/form")
-    public String getArticleForm() {
-        return "qna/form";
-    }
-
     @PostMapping("/questions")
     public String createArticle(String writer, String title, String contents) {
         articleService.create(new ArticleCreateRequestDto(writer, title, contents));
