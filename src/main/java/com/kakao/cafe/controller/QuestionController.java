@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -45,7 +42,18 @@ public class QuestionController {
         model.addAttribute("questions", questions);
         model.addAttribute("size", questions.size());
 
-        return "qna/show";
+        return "qna/list";
+
+    }
+
+    @GetMapping("/{id}")
+    public String viewQuestionDetail(@PathVariable("id") Long id, Model model) {
+
+        QuestionDto question = modelMapper.map(questionService.findOne(id), QuestionDto.class);
+
+        model.addAttribute("question", question);
+
+        return "qna/detail";
 
     }
 

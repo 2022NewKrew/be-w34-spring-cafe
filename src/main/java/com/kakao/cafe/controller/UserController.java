@@ -61,7 +61,7 @@ public class UserController {
         return "user/update_form";
     }
 
-    @PostMapping("/{id}/update")
+    @PutMapping("/{id}/update")
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) {
 
         User user = userService.findOne(id);
