@@ -1,0 +1,17 @@
+{{>layout/header}}
+<body>
+{{#user}}
+  <div class="profile-container">
+    <div>{{userId}}</div>
+    <div>{{nickname}}</div>
+    <div>{{email}}</div>
+  </div>
+{{/user}}
+</body>
+
+<style>
+  .profile-container {
+    max-width: 1048px;
+    margin: 100px auto;
+  }
+</style>

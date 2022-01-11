@@ -1,0 +1,80 @@
+<body>
+{{>layout/header}}
+<div class="sign-up-container">
+  <form class="form-container" action="/users" method="post" name="sign-up">
+    <div class="form-title">회원가입</div>
+    <div>
+      <div class="form-group">
+        <label for="email" class="form-label">이메일</label>
+        <input class="form-control" id="email" name="email" placeholder="이메일을 입력해주세요">
+      </div>
+      <div class="form-group">
+        <label for="nickname" class="form-label">닉네임</label>
+        <input class="form-control" id="nickname" name="nickname" placeholder="닉네임을 입력해주세요">
+      </div>
+      <div class="form-group">
+        <label for="password" class="form-label">비밀 번호</label>
+        <input class="form-control" id="password" name="password" type="password"
+               placeholder="비밀번호를 입력해주세요">
+      </div>
+    </div>
+    <button class="form-btn" type="submit">완료</button>
+  </form>
+</div>
+</body>
+
+<style>
+  .sign-up-container {
+    display: flex;
+    width: 320px;
+    flex-direction: column;
+    margin: auto;
+  }
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 350px;
+    margin-top: 100px;
+  }
+
+  .form-title {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 46px;
+    text-align: center;
+  }
+
+  .form-label {
+    min-width: 80px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid #eeeeee;
+  }
+
+  .form-group label {
+    color: #666666;
+  }
+
+  .form-control {
+    flex: 1;
+    height: 32px;
+    border: 0;
+  }
+
+  .form-btn {
+    color: white;
+    background-color: black;
+    margin: 0 auto;
+    min-width: 230px;
+    height: 43px;
+    cursor: pointer;
+  }
+</style>
