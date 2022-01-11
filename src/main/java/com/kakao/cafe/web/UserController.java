@@ -12,7 +12,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -57,13 +56,9 @@ public class UserController {
     }
 
     private User findUserWithId(String userId) {
-        Optional<User> matchingUser = userList.stream()
+        return userList.stream()
                 .filter(user -> user.getUserId().equals(userId))
-                .findFirst();
-        if (matchingUser.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
-
-        return matchingUser.get();
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 }
