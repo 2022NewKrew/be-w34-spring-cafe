@@ -1,5 +1,6 @@
 package com.kakao.cafe.articles;
 
+import com.kakao.cafe.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class ArticleService {
     }
 
     public ArticleDto getArticleById(Long id) {
-        Article article = articleRepository.findById(id).get();
+        Article article = articleRepository.findById(id).orElseThrow(() -> new NotFoundException("게시글이 존재하지 않습니다."));
 
         return ArticleDto.toDto(article);
     }
