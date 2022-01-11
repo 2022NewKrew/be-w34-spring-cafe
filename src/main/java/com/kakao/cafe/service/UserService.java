@@ -2,14 +2,19 @@ package com.kakao.cafe.service;
 
 import java.util.List;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.request.UserCreateRequestDto;
-import com.kakao.cafe.dto.response.UserFindResponseDto;
+import com.kakao.cafe.dto.request.UserCreateRequestDTO;
+import com.kakao.cafe.dto.request.UserUpdateRequestDTO;
+import com.kakao.cafe.dto.response.UserFindResponseDTO;
+import com.kakao.cafe.dto.response.UserInfoResponseDTO;
 
 public interface UserService {
-	void save(UserCreateRequestDto user);
+	void create(UserCreateRequestDTO userCreateRequestDTO);
 
-	List<UserFindResponseDto> getAllUser();
+	List<UserFindResponseDTO> getAllUser();
 
-	UserFindResponseDto getUserById(int id);
+	UserFindResponseDTO getUserById(int id);
+
+	UserInfoResponseDTO getUserInfoById(int id);
+
+	void update(int id, UserUpdateRequestDTO userUpdateRequestDTO);
 }

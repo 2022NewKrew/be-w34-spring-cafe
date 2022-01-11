@@ -2,7 +2,7 @@ package com.kakao.cafe.repository;
 
 import java.util.List;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.entity.User;
 
 public interface UserRepository {
 	void save(User user);
