@@ -2,6 +2,7 @@ package com.kakao.cafe.advice;
 
 import com.kakao.cafe.dto.ErrorResponse;
 import com.kakao.cafe.exception.AlreadyExistUserException;
+import com.kakao.cafe.exception.QnaNotFoundException;
 import com.kakao.cafe.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException userNotFoundException) {
         ErrorResponse errorResponse = new ErrorResponse(404, userNotFoundException.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(QnaNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleQnaNotFoundException(QnaNotFoundException qnaNotFoundException) {
+        ErrorResponse errorResponse = new ErrorResponse(404, qnaNotFoundException.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }
