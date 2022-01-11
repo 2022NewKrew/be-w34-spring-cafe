@@ -24,7 +24,7 @@ public class MemoryUserRepository implements UserRepository{
     public List<User> findAll() {
         return users;
     }
-
+  
     @Override
     public User findUserByUserId(String userId) {
         for (User user: users) {

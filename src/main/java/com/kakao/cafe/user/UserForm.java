@@ -1,16 +1,17 @@
 package com.kakao.cafe.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
 /**
+ * 회원 등록 화면에서 데이터를 전달 받을 폼 객체
+ *
  * Created by melodist
  * Date: 2022-01-10 010
- * Time: 오후 1:38
+ * Time: 오후 1:45
  */
-@Getter
-@AllArgsConstructor
-public class User {
+
+@Data
+public class UserForm {
 
     private String userId; // 사용자 아이디
     private String password; // 비밀번호

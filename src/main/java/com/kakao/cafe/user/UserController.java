@@ -47,4 +47,5 @@ public class UserController {
         model.addAttribute("user", new UserDto(user));
         return "user/profile";
     }
+
 }

@@ -4,3 +4,4 @@ server:
 handlebars:
   suffix: .hbs
   cache: false
+  
