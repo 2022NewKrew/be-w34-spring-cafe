@@ -23,6 +23,7 @@ public class UserController {
     //회원가입요청
     @PostMapping(value = "/user/create")
     public String userCreate(User user, Model model){
+        userService.setNextUserSequence(user); //유저의 고유번호를 지정
         userService.userCreate(user);
         return "redirect:/user/list.html";
     }

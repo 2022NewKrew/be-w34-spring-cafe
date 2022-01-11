@@ -5,6 +5,7 @@ public class User {
     private String password;
     private String name;
     private String email;
+    private Long sequence;
 
     //setter 대신 객체는 항상 생성자로만 생성하도록 구성.
     public User(String userId, String password, String name, String email) {
@@ -28,5 +29,13 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 }
