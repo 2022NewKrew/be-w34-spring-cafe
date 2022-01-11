@@ -6,9 +6,9 @@ import com.kakao.cafe.web.dto.UserDTO;
 import java.util.*;
 
 public class MemoryUserRepository implements UserRepository {
-    Map<String, User> userList;
+    Map<String, User> userMap;
 
-    public MemoryUserRepository() { this.userList = new HashMap<>(); }
+    public MemoryUserRepository() { this.userMap = new HashMap<>(); }
 
     @Override
     public User save(UserDTO userDTO) {
@@ -16,18 +16,18 @@ public class MemoryUserRepository implements UserRepository {
                 userDTO.getPassword(),
                 userDTO.getName(),
                 userDTO.getEmail());
-        userList.put(userDTO.getUserId(), user);
+        userMap.put(userDTO.getUserId(), user);
         return user;
     }
 
     @Override
     public List<User> getUserList() {
-        return new ArrayList<User>(userList.values());
+        return new ArrayList<User>(userMap.values());
     }
 
     @Override
     public User getUserById(String userId) {
-        Optional<User> foundUser = userList.values().stream()
+        Optional<User> foundUser = userMap.values().stream()
                 .filter(user -> user.getUserId().equals(userId))
                 .findFirst();
         return foundUser.orElse(null);

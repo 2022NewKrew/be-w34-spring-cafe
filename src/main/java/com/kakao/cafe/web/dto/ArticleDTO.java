@@ -1,24 +1,14 @@
 package com.kakao.cafe.web.dto;
 
 public class ArticleDTO {
-    private int id;
     private String writer;
     private String title;
     private String contents;
 
-    public ArticleDTO(int id, String writer, String title, String contents) {
-        this.id = id;
+    public ArticleDTO(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents= contents;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getWriter() {

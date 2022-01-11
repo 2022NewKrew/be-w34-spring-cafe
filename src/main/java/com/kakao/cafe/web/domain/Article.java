@@ -1,18 +1,16 @@
 package com.kakao.cafe.web.domain;
 
-import com.kakao.cafe.web.dto.ArticleDTO;
-
 public class Article {
     private int id;
-    private String author;
+    private String writer;
     private String title;
-    private String content;
+    private String contents;
 
-    public Article(ArticleDTO articleDTO) {
-        this.id = articleDTO.getId();
-        this.author = articleDTO.getWriter();
-        this.title = articleDTO.getTitle();
-        this.content = articleDTO.getContents();
+    public Article(int id, String writer, String title, String contents) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
     }
 
     public int getId() {
@@ -23,12 +21,12 @@ public class Article {
         this.id = id;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getWriter() {
+        return writer;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 
     public String getTitle() {
@@ -39,11 +37,11 @@ public class Article {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getContents() {
+        return contents;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 }
