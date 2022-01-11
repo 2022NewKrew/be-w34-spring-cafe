@@ -5,6 +5,9 @@ import com.kakao.cafe.domain.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public class PostRepositoryImpl implements PostRepository {
     private final RogerDB rogerDB;
@@ -17,5 +20,10 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public void save(Post post) {
         rogerDB.getPost().add(post);
+    }
+
+    @Override
+    public Optional<List<Post>> findAll() {
+        return Optional.ofNullable(rogerDB.getPost());
     }
 }

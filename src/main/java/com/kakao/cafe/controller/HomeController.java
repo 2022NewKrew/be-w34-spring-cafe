@@ -15,6 +15,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
+        model.addAttribute("postList", postService.getList());
         return "index";
     }
 }

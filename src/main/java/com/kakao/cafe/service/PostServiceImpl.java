@@ -2,9 +2,14 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.dto.PostCreateDto;
+import com.kakao.cafe.dto.PostListDto;
 import com.kakao.cafe.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -19,5 +24,15 @@ public class PostServiceImpl implements PostService {
     public void create(PostCreateDto postCreateDto) {
         Post post = Post.of(postCreateDto);
         postRepository.save(post);
+    }
+
+    @Override
+    public List<PostListDto> getList() {
+        Optional<List<Post>> postList = postRepository.findAll();
+
+        return postList.map(posts -> posts
+                .stream()
+                .map(PostListDto::of)
+                .collect(Collectors.toList())).orElse(null);
     }
 }
