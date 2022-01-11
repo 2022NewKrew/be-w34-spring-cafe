@@ -8,6 +8,7 @@ public class Article {
     private String title;
     private String contents;
     private Date date;
+    private Long sequence;
 
     public Article(String writer, String title, String contents) {
         this.name = writer;
@@ -30,5 +31,9 @@ public class Article {
 
     public String getDate(){
         return date.toString();
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 }

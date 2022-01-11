@@ -15,6 +15,7 @@ public class ArticleController {
     //새로운 질문 생성
     @PostMapping(value = "/qna/create")
     public String createArticle(Article article, Model model){
+        article.setSequence(articleService.getNextArticleSequence());
         articleService.articleCreate(article);
         return "redirect:/";
     }

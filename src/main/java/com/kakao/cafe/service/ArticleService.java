@@ -12,6 +12,10 @@ public class ArticleService {
         articleRepository.addArticle(article);
     }
 
+    public Long getNextArticleSequence(){
+        return Long.valueOf(articleRepository.getAllAlticles().size() + 1);
+    }
+
     public List<Article> getAllArticles(){
         return articleRepository.getAllAlticles();
     }
