@@ -72,4 +72,46 @@ public class UserDto {
 
     }
 
+    public static class UpdateUserProfileRequest {
+        private String originPassword;
+        private String changedPassword;
+        private String email;
+        private String name;
+
+        public String getOriginPassword() {
+            return originPassword;
+        }
+
+        public String getChangedPassword() {
+            return changedPassword;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public User toUserEntity(String userId) {
+            return new User(userId, changedPassword, name, email);
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setOriginPassword(String originPassword) {
+            this.originPassword = originPassword;
+        }
+
+        public void setChangedPassword(String changedPassword) {
+            this.changedPassword = changedPassword;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
 }

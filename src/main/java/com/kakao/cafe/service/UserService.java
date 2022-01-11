@@ -23,7 +23,7 @@ public class UserService {
 
     public void createUser(UserDto.CreateUserProfileRequest createUserProfileRequest) throws AlreadyExistUserException {
         localUserRepository.findByUserId(createUserProfileRequest.getUserId()).ifPresent(m -> {
-            throw new AlreadyExistUserException("Already Exist User (user id: " + createUserProfileRequest.getUserId() +")");
+            throw new AlreadyExistUserException("Already Exist User (user id: " + createUserProfileRequest.getUserId() + ")");
         });
 
         User user = createUserProfileRequest.toUserEntity();
@@ -41,4 +41,14 @@ public class UserService {
         return UserDto.UserProfileResponse.of(user);
     }
 
+    public void updateUser(String userId, UserDto.UpdateUserProfileRequest updateUserProfileRequest) {
+        User user = localUserRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException("Not Found User (user id: " + userId + ")"));
+
+        if (!user.isCorrectPassword(updateUserProfileRequest.getOriginPassword())) {
+            throw new IllegalArgumentException("Password is incorrect");
+        }
+
+        user.updateUserProfile(updateUserProfileRequest.toUserEntity(userId));
+    }
 }

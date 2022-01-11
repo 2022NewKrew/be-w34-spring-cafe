@@ -44,4 +44,17 @@ public class UserController {
         userService.createUser(createUserProfileRequest);
         return "redirect:/users";
     }
+
+    @GetMapping("/{userId}/form")
+    public String updateUserHtml(@PathVariable("userId") String userId, Model model) {
+        UserDto.UserProfileResponse userProfileResponse = userService.readUser(userId);
+        model.addAttribute("user", userProfileResponse);
+        return "user/updateForm";
+    }
+
+    @PostMapping("/{userId}")
+    public String updateUser(@PathVariable("userId") String userId, @ModelAttribute("user") UserDto.UpdateUserProfileRequest updateUserProfileRequest) {
+        userService.updateUser(userId, updateUserProfileRequest);
+        return "redirect:/users";
+    }
 }
