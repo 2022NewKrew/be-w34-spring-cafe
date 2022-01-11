@@ -21,36 +21,36 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value="/user/form.html")
+    @GetMapping(value = "/user/form.html")
     public String getSignUp() {
         return "user/form";
     }
 
-    @GetMapping(value="/user/list.html")
+    @GetMapping(value = "/user/list.html")
     public String getUserList(Model model) {
-        model.addAttribute("userList",userService.getUserRepository().getUserList().getUserList());
-        model.addAttribute("userListSize",userService.getUserRepository().getUserList().getUserList().size());
+        model.addAttribute("userList", userService.getUserRepository().getUserList().getUserList());
+        model.addAttribute("userListSize", userService.getUserRepository().getUserList().getUserList().size());
         return "user/list";
     }
 
     @PostMapping(value = "/user/create")
     public String postSignUp(User user) {
-        logger.info("user:{}",user);
+        logger.info("user:{}", user);
         userService.getUserRepository().getUserList().add(user);
-        logger.info("userList:{}",userService.getUserRepository().getUserList());
+        logger.info("userList:{}", userService.getUserRepository().getUserList());
         return "redirect:/user/list.html";
     }
 
     @PostMapping(value = "/user/login_check")
-    public String postLoginCheck(){
+    public String postLoginCheck() {
         return "user/login_success";
     }
 
     @GetMapping(value = "user/profile/{userId}")
-    public String getUserProfile(@PathVariable String userId,Model model){
+    public String getUserProfile(@PathVariable String userId, Model model) {
         User user = userService.getUserRepository().getUserList().findByUserId(userId);
-        logger.info("user:{}",user);
-        model.addAttribute("user",user);
+        logger.info("user:{}", user);
+        model.addAttribute("user", user);
         return "/user/profile";
     }
 }
