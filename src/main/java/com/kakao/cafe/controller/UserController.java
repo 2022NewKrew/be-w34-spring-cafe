@@ -1,4 +1,4 @@
-package com.kakao.cafe.web;
+package com.kakao.cafe.controller;
 
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.UserService;
