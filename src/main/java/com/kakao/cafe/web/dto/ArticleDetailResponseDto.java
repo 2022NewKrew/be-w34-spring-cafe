@@ -1,10 +1,11 @@
 package com.kakao.cafe.web.dto;
 
-public class ArticleListResponseDto {
+public class ArticleDetailResponseDto {
 
     private Long id;
     private String writer;
     private String title;
+    private String contents;
 
     public Long getId() {
         return id;
@@ -28,5 +29,13 @@ public class ArticleListResponseDto {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 }

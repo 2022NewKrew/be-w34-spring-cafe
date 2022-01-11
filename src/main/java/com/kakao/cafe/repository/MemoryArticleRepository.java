@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.article.Article;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MemoryArticleRepository implements ArticleRepository {
 
@@ -20,5 +21,10 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return List.copyOf(articleList);
+    }
+
+    @Override
+    public Optional<Article> findById(Long id) {
+        return articleList.stream().filter(article -> article.getId().equals(id)).findFirst();
     }
 }
