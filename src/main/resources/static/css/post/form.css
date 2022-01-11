@@ -174,3 +174,8 @@ li {
     display: flex;
     flex-direction: column;
 }
+
+.text-warning {
+    color: red;
+    padding: 3%;
+}

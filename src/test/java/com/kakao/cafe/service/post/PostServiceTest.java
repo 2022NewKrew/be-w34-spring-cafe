@@ -1,6 +1,6 @@
 package com.kakao.cafe.service.post;
 
-import com.kakao.cafe.domain.user.UserRepository;
+import com.kakao.cafe.domain.post.PostRepository;
 import com.kakao.cafe.model.post.PostWriteRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,11 +16,11 @@ class PostServiceTest {
     @Autowired
     private PostService postService;
     @Autowired
-    private UserRepository userRepository;
+    private PostRepository postRepository;
 
     @AfterEach
     void cleanup() {
-        userRepository.deleteAll();
+        postRepository.deleteAll();
     }
 
     @DisplayName("정상적으로 게시글을 저장할 때, 에러가 발생하지 않아야 한다.")
