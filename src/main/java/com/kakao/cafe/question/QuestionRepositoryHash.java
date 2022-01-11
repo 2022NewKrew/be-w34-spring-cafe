@@ -1,5 +1,6 @@
 package com.kakao.cafe.question;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Map;
  *
  * @author jm.hong
  */
+@Slf4j
 @Repository
 public class QuestionRepositoryHash implements QuestionRepository {
 
