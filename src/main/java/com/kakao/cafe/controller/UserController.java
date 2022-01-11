@@ -28,13 +28,6 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/user/form.html")
-    public String form() {
-        logger.info("[GET] 회원 가입 페이지");
-
-        return "/user/form";
-    }
-
     @GetMapping("/user/{id}")
     public String profile(@PathVariable Long id, Model model) {
         logger.info("[GET] 회원 프로필 페이지");
