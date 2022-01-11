@@ -1,11 +1,12 @@
 package com.kakao.cafe.dto.user;
 
 import com.kakao.cafe.domain.Entity.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Getter
-// @Builder
-public class UserDto {
+@AllArgsConstructor
+public class SignUpDto {
     private String userId;
     private String password;
     private String name;
@@ -19,11 +20,5 @@ public class UserDto {
                 .email(this.email)
                 .build();
         return user;
-    }
-
-    public UserDto(String userId, String name, String email) {
-        this.userId = userId;
-        this.name = name;
-        this.email = email;
     }
 }
