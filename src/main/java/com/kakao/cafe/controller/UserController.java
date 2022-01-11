@@ -9,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-
 @Controller
 public class UserController {
 
@@ -25,19 +23,18 @@ public class UserController {
     @GetMapping("users")
     public String findUsers(Model model) {
         model.addAttribute("users", userService.findAll());
-        return "list";
+        return "/user/list";
     }
 
     @GetMapping("users/{userId}")
     public String findUserOne(@PathVariable String userId, Model model) {
         model.addAttribute("user", userService.findByUserId(userId));
-        return "profile";
+        return "/user/profile";
     }
 
     @PostMapping("users")
-    public String signup(@ModelAttribute UserForm userForm) {
-        User user = new User(userForm.getUserId(), userForm.getPassword(), userForm.getName(), userForm.getEmail()); //user생성부분 질문하기
-        String userId = userService.create(user);
+    public String signup(@ModelAttribute UserDto userDto) {
+        String userId = userService.create(userDto);
         logger.info(userId + " success");
         return "redirect:/users";
     }

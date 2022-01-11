@@ -32,7 +32,8 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public void save(User user) {
+    public int save(User user) {
         users.add(user);
+        return user.getId();
     }
 }
