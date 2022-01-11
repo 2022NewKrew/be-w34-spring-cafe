@@ -33,7 +33,7 @@ public class UserRepository {
     }
 
     @Nullable
-    public User getById(String id) {
+    public User getById(long id) {
         return find(User::getId, id).orElse(null);
     }
 

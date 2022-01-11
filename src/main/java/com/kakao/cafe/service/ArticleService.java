@@ -8,6 +8,9 @@ import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ArticleService {
 
@@ -20,7 +23,7 @@ public class ArticleService {
         this.userRepository = userRepository;
     }
 
-    public ArticleDto create(String ownerId, String author, String title, String content) {
+    public ArticleDto create(long ownerId, String author, String title, String content) {
         User owner = userRepository.getById(ownerId);
         Article entity = new Article.Builder()
                 .owner(owner)

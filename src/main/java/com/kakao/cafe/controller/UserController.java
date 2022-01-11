@@ -30,12 +30,15 @@ public class UserController {
             @RequestParam("userId") String userId,
             @RequestParam("password") String password,
             @RequestParam("name") String name,
-            @RequestParam("email") String email
+            @RequestParam("email") String email,
+            HttpSession session
     ) {
         UserDto user = userService.create(userId, password, name, email);
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user already exists");
         }
+        long id = user.getId();
+        session.setAttribute("id", id);
         return "redirect:/users";
     }
 
@@ -48,9 +51,9 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String profile(@PathVariable("id") String id, Model model, HttpSession session) {
-        String parsedId = id;
+        long parsedId = Long.parseLong(id);
         if (id.equals("me")) {
-            parsedId = (String) session.getAttribute("id");
+            parsedId = (long) session.getAttribute("id");
         }
         UserDto user = userService.get(parsedId);
         if (user == null) {
@@ -70,7 +73,7 @@ public class UserController {
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "login failed");
         }
-        String id = user.getUserId();
+        long id = user.getId();
         session.setAttribute("id", id);
         return "redirect:/users/" + id;
     }

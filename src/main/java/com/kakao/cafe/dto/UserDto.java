@@ -16,8 +16,8 @@ public class UserDto implements Dto<User> {
         this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
+    public long getId() {
+        return id;
     }
 
     @Override
