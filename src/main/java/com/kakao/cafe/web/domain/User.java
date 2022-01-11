@@ -5,7 +5,6 @@ public class User {
     private int id;
     private String userId;
     private String password;
-    private String name;
     private String email;
 
     public int getId() {
@@ -32,13 +31,6 @@ public class User {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getEmail() {
         return email;
@@ -54,7 +46,6 @@ public class User {
                 "id=" + id +
                 ", userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }
