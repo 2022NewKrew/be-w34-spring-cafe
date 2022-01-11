@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -34,5 +36,16 @@ public class UserController {
         }
         model.addAttribute("users", userList);
         return "user/list";
+    }
+
+    @GetMapping("/users/{userId}")
+    public String getUserProfile(@PathVariable String userId, Model model) {
+        logger.info("[getUserProfile] userId = {}", userId);
+        List<User> matchUsers = users.stream().filter(x -> x.getUserId().equals(userId)).collect(Collectors.toList());
+        logger.info("matchUsers = {}", matchUsers);
+        User matchUser = matchUsers.get(0);
+        model.addAttribute("name", matchUser.getName());
+        model.addAttribute("email", matchUser.getEmail());
+        return "user/profile";
     }
 }
