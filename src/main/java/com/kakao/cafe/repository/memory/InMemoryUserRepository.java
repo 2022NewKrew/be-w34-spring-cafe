@@ -2,7 +2,6 @@ package com.kakao.cafe.repository.memory;
 
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.UserRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;

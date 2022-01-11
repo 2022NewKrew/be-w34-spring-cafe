@@ -1,11 +1,10 @@
 package com.kakao.cafe.entity;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class BaseEntity {
-    protected Long id;
     protected final LocalDateTime createdTime;
+    protected Long id;
 
     public BaseEntity(LocalDateTime createdTime) {
         this.createdTime = createdTime;
