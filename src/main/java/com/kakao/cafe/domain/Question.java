@@ -11,25 +11,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Question {
     private Long id;
-    private User writer;
+    private Long writer;
     private String title;
     private String contents;
     private LocalDateTime createdDateTime;
 
     @Builder
-    public Question(Long id, User writer, String title, String contents, LocalDateTime createdDateTime) {
+    public Question(Long id, Long writer, String title, String contents, LocalDateTime createdDateTime) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.createdDateTime = createdDateTime;
-    }
-
-    public Question(QuestionCreateRequest questionCreateRequest, User writer) {
-        createdDateTime = LocalDateTime.now();
-        this.writer = writer;
-        this.title = questionCreateRequest.getTitle();
-        this.contents = questionCreateRequest.getContents();
     }
 
     //TODO

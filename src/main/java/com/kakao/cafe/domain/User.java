@@ -12,12 +12,6 @@ public class User {
     private String name;
     private String email;
 
-    public User(UserCreateRequest userCreateRequest) {
-        this.nickname = userCreateRequest.getUserId();
-        this.password = userCreateRequest.getPassword();
-        this.name = userCreateRequest.getName();
-        this.email = userCreateRequest.getEmail();
-    }
 
     @Builder
     public User(Long id, String nickname, String password, String name, String email) {

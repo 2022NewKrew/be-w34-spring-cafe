@@ -12,9 +12,9 @@ public class QuestionDetailResponse {
     private String title;
     private String contents;
 
-    public QuestionDetailResponse(Question question) {
-        this.userId = question.getWriter().getId();
-        this.writer = question.getWriter().getNickname();
+    public QuestionDetailResponse(Question question, String writerNickname) {
+        this.userId = question.getWriter();
+        this.writer = writerNickname;
         this.questionId = question.getId();
         this.createdDateTime = question.getCreatedDateTime().format(DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm"));
         this.title = question.getTitle();

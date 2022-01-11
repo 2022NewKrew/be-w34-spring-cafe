@@ -17,7 +17,7 @@ public class UserController {
 
     @PostMapping("")
     public String signUp(@ModelAttribute UserCreateRequest user){
-        logger.info("POST:/users 회원가입 {}", user.getUserId());
+        logger.info("POST:/users 회원가입 {}", user.getNickname());
         userService.signUp(user);
         return "redirect:/users";
     }

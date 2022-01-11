@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequestMapping("questions")
 public class ArticleController {
@@ -18,7 +20,7 @@ public class ArticleController {
     @PostMapping("")
     public String createQuestion(@ModelAttribute QuestionCreateRequest question){
         logger.info("POST:/questions 게시물등록 {}", question.getTitle());
-        articleService.saveQuestion(question);
+        articleService.saveQuestion(question, LocalDateTime.now());
         return "redirect:/";
     }
     @GetMapping("{id}")
