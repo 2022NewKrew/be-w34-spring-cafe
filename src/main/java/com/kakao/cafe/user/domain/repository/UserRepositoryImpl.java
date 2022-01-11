@@ -3,7 +3,10 @@ package com.kakao.cafe.user.domain.repository;
 import com.kakao.cafe.user.domain.entity.User;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -14,13 +17,7 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public Optional<User> getUser(String userId) {
-        System.out.println(idToUser.size());
-
-        if(!idToUser.containsKey(userId)){
-            return Optional.empty();
-        }
-
-        return Optional.of(idToUser.get(userId));
+        return Optional.ofNullable(idToUser.getOrDefault(userId, null));
     }
 
     @Override

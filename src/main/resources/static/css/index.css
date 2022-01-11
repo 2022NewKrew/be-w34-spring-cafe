@@ -125,4 +125,11 @@ td {
 .post-write-btn:hover {
     background-color: #ffcd00;
     color: black;
+    cursor: pointer;
+}
+
+.clickable-list-item:hover{
+    background-color: #ffcd00;
+    color: black;
+    cursor: pointer;
 }

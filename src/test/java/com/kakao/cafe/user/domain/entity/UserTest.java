@@ -15,8 +15,7 @@ class UserTest {
     @MethodSource("wrongConstructParameters")
     void failedCreateWhenWrongParameters(String userId, String password, String name, String email){
         assertThatThrownBy(() -> new User(userId, password, name, email))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("검증");
+                .isInstanceOfAny(IllegalArgumentException.class, NullPointerException.class);
     }
 
     private static Stream<Arguments> wrongConstructParameters(){

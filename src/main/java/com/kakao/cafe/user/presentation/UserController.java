@@ -34,7 +34,7 @@ public class UserController {
     public String joinForm(){
         logger.info("회원가입 시도합니다.");
 
-        return "users/form";
+        return "user/form";
     }
 
     @PostMapping("")
@@ -43,7 +43,7 @@ public class UserController {
         User user = joinService.save(userMapper.toUser(joinRequest));
 
         model.addAttribute("user", userMapper.toDto(user));
-        return "users/join_success";
+        return "user/join_success";
     }
 
     @GetMapping("")
@@ -56,7 +56,7 @@ public class UserController {
         logger.debug(String.valueOf(users.size()));
 
         model.addAttribute("users", users);
-        return "users/list";
+        return "user/list";
     }
 
     @GetMapping("/{id}")
@@ -65,6 +65,6 @@ public class UserController {
         UserDto userDto = userMapper.toDto(user);
 
         model.addAttribute("user", userDto);
-        return "users/profile";
+        return "user/profile";
     }
 }
