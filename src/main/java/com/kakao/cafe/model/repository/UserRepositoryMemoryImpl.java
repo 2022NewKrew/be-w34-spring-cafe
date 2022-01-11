@@ -1,21 +1,40 @@
 package com.kakao.cafe.model.repository;
 
 import com.kakao.cafe.model.domain.User;
+import com.kakao.cafe.model.dto.UserDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
 public class UserRepositoryMemoryImpl implements UserRepository {
-    private final Map<String, User> userMap = new HashMap<>();
+    private static final Map<Long, User> storedUsers = new HashMap<>();
+    private static long maxID = 0L;
+
+    private Optional<User> findUserInStoredUsers(long id) {
+        return Optional.ofNullable(storedUsers.get(id));
+    }
+
+    private Optional<User> findUserInStoredUsers(String userId) {
+        return storedUsers.values().stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findFirst();
+    }
+
+    private Optional<User> findUserInStoredUsers(String userId, String password) {
+        return storedUsers.values().stream()
+                .filter(user -> user.getUserId().equals(userId) && user.getPassword().equals(password))
+                .findFirst();
+    }
 
     @Override
-    public boolean insertUser(User user) {
-        if (userMap.containsKey(user.getId())) {
+    public boolean insertUser(UserDTO userDTO) {
+        if (findUserInStoredUsers(userDTO.getUserId()).isEmpty()) {
             return false;
         }
 
-        userMap.put(user.getId(), user);
+        User newUser = new User(maxID++, userDTO);
+        storedUsers.put(newUser.getId(), newUser);
         return false;
     }
 
@@ -23,7 +42,7 @@ public class UserRepositoryMemoryImpl implements UserRepository {
     public List<User> selectAllUsers() {
         List<User> userList = new ArrayList<>();
 
-        for (Map.Entry<String, User> entry : userMap.entrySet()) {
+        for (Map.Entry<Long, User> entry : storedUsers.entrySet()) {
             userList.add(entry.getValue());
         }
 
@@ -31,40 +50,42 @@ public class UserRepositoryMemoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> selectUserByID(String id) {
-        if (!userMap.containsKey(id)) {
-            return Optional.empty();
-        }
-
-        return Optional.of(userMap.get(id));
+    public Optional<User> selectUserById(Long id) {
+        return findUserInStoredUsers(id);
     }
 
     @Override
-    public Optional<User> selectUserByLoginInfo(String id, String password) {
-        if (!userMap.containsKey(id) || !userMap.get(id).getPassword().equals(password)) {
-            return Optional.empty();
-        }
-
-        return Optional.of(userMap.get(id));
+    public Optional<User> selectUserByUserId(String userId) {
+        return findUserInStoredUsers(userId);
     }
 
     @Override
-    public boolean updateUser(User user) {
-        if (!userMap.containsKey(user.getId())) {
+    public Optional<User> selectUserByLoginInfo(String userId, String password) {
+        return findUserInStoredUsers(userId, password);
+    }
+
+    @Override
+    public boolean updateUser(UserDTO userDTO) {
+        Optional<User> foundUser = findUserInStoredUsers(userDTO.getUserId());
+
+        if (foundUser.isEmpty()) {
             return false;
         }
 
-        userMap.put(user.getId(), user);
+        User newUser = new User(foundUser.get().getId(), userDTO);
+        storedUsers.put(newUser.getId(), newUser);
         return true;
     }
 
     @Override
-    public boolean deleteUser(String id, String password) {
-        if (!userMap.containsKey(id) || !userMap.get(id).getPassword().equals(password)) {
+    public boolean deleteUser(String userId, String password) {
+        Optional<User> foundUser = findUserInStoredUsers(userId, password);
+
+        if (foundUser.isEmpty()) {
             return false;
         }
 
-        userMap.remove(id);
+        storedUsers.remove(foundUser.get().getId());
         return true;
     }
 }

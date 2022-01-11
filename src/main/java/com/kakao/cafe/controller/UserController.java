@@ -1,25 +1,18 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.model.domain.User;
+import com.kakao.cafe.model.dto.UserDTO;
 import com.kakao.cafe.model.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
-
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("/register")
     public String goRegisterView() {
@@ -27,8 +20,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String userRegister(User user) {
-        userService.registerUser(user);
+    public String userRegister(UserDTO userDTO) {
+        userService.registerUser(userDTO);
         return "redirect:/user/list";
     }
 
@@ -38,9 +31,9 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/view/{id}")
-    public String userView(@PathVariable("id") String id, Model model) {
-        model.addAttribute("user", userService.findUserByID(id));
+    @GetMapping("/view/{userId}")
+    public String userView(@PathVariable("userId") String userId, Model model) {
+        model.addAttribute("user", userService.findUserByUserId(userId));
         return "user/view";
     }
 }
