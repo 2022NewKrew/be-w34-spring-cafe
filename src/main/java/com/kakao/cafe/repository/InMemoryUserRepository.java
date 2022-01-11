@@ -4,13 +4,14 @@ import com.kakao.cafe.domain.User;
 
 import java.util.*;
 
-public class MemoryUserRepository implements UserRepository{
+public class InMemoryUserRepository implements UserRepository{
     private static Map<Long, User> store = new HashMap<>();
     private static long sequence = 0L;
 
     @Override
     public User save(User user) {
-        user.setId(++sequence);
+        if(!store.containsKey(user.getId()))
+            user.setId(++sequence);
         store.put(user.getId(), user);
         return user;
     }
@@ -21,9 +22,9 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
+    public Optional<User> findByNickname(String nickname) {
         return store.values().stream()
-                .filter(user -> user.getUserId().equals(userId))
+                .filter(user -> user.getNickname().equals(nickname))
                 .findAny();
     }
 
