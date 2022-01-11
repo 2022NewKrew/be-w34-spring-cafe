@@ -1,0 +1,97 @@
+{{>layout/header}}
+{{>layout/navbar}}
+<main class="">
+    <section class="bg-kakao p-5 m-4">
+        안녕하세요,
+        <h4>카카오 교육 페이지입니다.</h4>
+    </section>
+    <section class="p-2 m-4">
+        <div class="text-secondary mb-1">
+            전체 글 {{posts.totalCount}}개
+        </div>
+
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th class="p-3 col-md-3 text-secondary text-center" scope="col">제목</th>
+                <th class="p-3 col-md-1 text-secondary text-center" scope="col">작성자</th>
+                <th class="p-3 col-md-1 text-secondary text-center" scope="col">작성일자</th>
+                <th class="p-3 col-md-1 text-secondary text-center" scope="col">조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#posts.dtoList}}
+                <tr>
+                    <td class="p-3 col-md-3">{{title}}</td>
+                    <td class="p-3 col-md-1 text-center">{{writerEmail}}</td>
+                    <td class="p-3 col-md-1 text-center">{{regDate}}</td>
+                    <td class="p-3 col-md-1 text-center">{{viewCount}}</td>
+                </tr>
+            {{/posts.dtoList}}
+            </tbody>
+        </table>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <ul class="pagination">
+                        {{#posts.hasPrev}}
+                            <li class="page-item">
+                                <a class="page-link border-0 text-dark" href="list?page={{posts.prev}}"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&lt;</span>
+                                </a>
+                            </li>
+                        {{/posts.hasPrev}}
+                        {{^posts.hasPrev}}
+                            <li class="page-item disabled">
+                                <a class="page-link border-0 text-black-50" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&lt;</span>
+                                </a>
+                            </li>
+                        {{/posts.hasPrev}}
+                        {{#posts.pageList}}
+                            <li class="page-item"><a class="page-link border-0 text-dark" href="list?page={{this}}
+                                ">{{this}}</a>
+                            </li>
+                        {{/posts.pageList}}
+                        {{#posts.hasNext}}
+                            <li class="page-item">
+                                <a class="page-link border-0 text-dark" href="list?page={{posts.next}}"
+                                aria-label="Next">
+                                <span aria-hidden="true">&gt;</span>
+                                </a>
+                            </li>
+                        {{/posts.hasNext}}
+                        {{^posts.hasNext}}
+                            <li class="page-item disabled">
+                                <a class="page-link border-0 text-black-50" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&gt;</span>
+                                </a>
+                            </li>
+                        {{/posts.hasNext}}
+                    </ul>
+                </div>
+                <div class="col">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                            </div>
+                            <div class="col">
+                            </div>
+                            <div class="col">
+                                {{#auth.username}}
+                                    <a class="text-center nav-menu-item border bg-dark text-white nav-link active"
+                                       aria-current="page"
+                                       href="/board/post">
+                                        글쓰기
+                                    </a>
+                                {{/auth.username}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{{>layout/footer}}

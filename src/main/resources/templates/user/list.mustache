@@ -1,0 +1,67 @@
+{{>layout/header}}
+{{>layout/navbar}}
+<main class="">
+    <section class="bg-kakao p-5 m-4">
+        멤버리스트
+        <h4>참여자를 확인할 수 있습니다.</h4>
+    </section>
+    <section class="p-2 m-4">
+        <div class="text-secondary mb-1">
+            전체 멤버 {{users.totalCount}}명
+        </div>
+
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th class="p-3 col-md-3 text-secondary text-center" scope="col">닉네임</th>
+                <th class="p-3 col-md-1 text-secondary text-center" scope="col">이메일</th>
+                <th class="p-3 col-md-1 text-secondary text-center" scope="col">회원가입일</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#users.dtoList}}
+                <tr>
+                    <td class="p-3 col-md-3">{{username}}</td>
+                    <td class="p-3 col-md-1 text-center">{{email}}</td>
+                    <td class="p-3 col-md-1 text-center">{{regDate}}</td>
+                </tr>
+            {{/users.dtoList}}
+            </tbody>
+        </table>
+        <ul class="pagination">
+            {{#users.hasPrev}}
+                <li class="page-item">
+                    <a class="page-link border-0 text-dark" href="list?page={{users.prev}}" aria-label="Previous">
+                    <span aria-hidden="true">&lt;</span>
+                    </a>
+                </li>
+            {{/users.hasPrev}}
+            {{^users.hasPrev}}
+                <li class="page-item disabled">
+                    <a class="page-link border-0 text-black-50" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&lt;</span>
+                    </a>
+                </li>
+            {{/users.hasPrev}}
+            {{#users.pageList}}
+                <li class="page-item"><a class="page-link border-0 text-dark" href="list?page={{this}}">{{this}}</a>
+                </li>
+            {{/users.pageList}}
+            {{#users.hasNext}}
+                <li class="page-item">
+                    <a class="page-link border-0 text-dark" href="list?page={{users.next}}" aria-label="Next">
+                    <span aria-hidden="true">&gt;</span>
+                    </a>
+                </li>
+            {{/users.hasNext}}
+            {{^users.hasNext}}
+                <li class="page-item disabled">
+                    <a class="page-link border-0 text-black-50" href="#" aria-label="Next">
+                        <span aria-hidden="true">&gt;</span>
+                    </a>
+                </li>
+            {{/users.hasNext}}
+        </ul>
+    </section>
+</main>
+{{>layout/footer}}
