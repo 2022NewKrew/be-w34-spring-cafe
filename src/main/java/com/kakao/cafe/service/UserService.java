@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.UserDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,18 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findByUserId(String userId) {
-        return userRepository.findByUserId(userId);
+    public UserDto findByUserId(String userId) {
+        return UserDto.from(userRepository.findByUserId(userId));
     }
 
-    public String create(User user) {
-        userRepository.save(user);
-        return user.getUserId();
+    public int updateUser(String userId, UserDto userDto) {
+        User user= userRepository.findByUserId(userId);
+        user.update(userDto.getPassword(), userDto.getName(), userDto.getEmail());
+        return userRepository.save(user);
+    }
+
+    public int create(UserDto userDto) {
+        User user = userDto.toEntity();
+        return userRepository.save(user);
     }
 }

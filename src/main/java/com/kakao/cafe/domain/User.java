@@ -2,13 +2,27 @@ package com.kakao.cafe.domain;
 
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+
 public class User {
 
-    private String userId;
+    private static int lastId = 1;
+    private final int id;
+    private final String userId;
     private int password;
     private String name;
     private String email;
+
+    public User(String userId, int password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.id = lastId++;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public String getEmail() {
         return email;
@@ -24,6 +38,12 @@ public class User {
 
     public String getUserId() {
         return userId;
+    }
+
+    public void update(int password, String name, String email) {
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
     @Override

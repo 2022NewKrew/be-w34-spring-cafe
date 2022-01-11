@@ -15,11 +15,13 @@ public class MemoryUserRepository implements UserRepository {
         users = new ArrayList<>();
         users.add(new User("wldus", 123, "jiyeon", "dhso@kk.kk"));
     }
-
+    
+    @Override
     public List<User> findAll() {
         return users;
     }
 
+    @Override
     public User findByUserId(String userId) {
         for (User user : users) {
             if (userId.equals(user.getUserId())) {
@@ -29,7 +31,16 @@ public class MemoryUserRepository implements UserRepository {
         return null;
     }
 
-    public void save(User user) {
+    @Override
+    public int save(User user) {
+        for (int i=0; i<users.size(); i++) {
+            if (users.get(i).getUserId().equals(user.getUserId())) {
+                users.set(i, user);
+                return users.get(i).getId();
+            }
+        }
         users.add(user);
+        return user.getId();
     }
+
 }

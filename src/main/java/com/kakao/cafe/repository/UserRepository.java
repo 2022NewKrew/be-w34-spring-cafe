@@ -8,6 +8,6 @@ public interface UserRepository {
 
     List<User> findAll();
     User findByUserId(String userId);
-    void save(User user);
+    int save(User user);
 
 }
