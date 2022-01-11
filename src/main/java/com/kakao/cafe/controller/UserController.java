@@ -20,7 +20,7 @@ public class UserController {
     private final List<User> userList = new ArrayList<>();
 
     @GetMapping("/user")
-    public String getUserList(User user, Model model) {
+    public String getUserList(Model model) {
         logger.info("[GET] 유저 리스트 페이지");
 
         model.addAttribute("userList", userList);
