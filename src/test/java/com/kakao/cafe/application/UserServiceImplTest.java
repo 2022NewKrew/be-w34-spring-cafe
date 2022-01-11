@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
@@ -26,6 +28,29 @@ class UserServiceImplTest {
 
     @Mock
     UserRepository userRepository;
+
+    @DisplayName("모든 유저의 목록을 조회할 수 있다")
+    @Test
+    void checkFindAllUserList() {
+        // given
+        List<User> users = List.of(
+                new User("2wls", "0224", "윤이진", "483759@naver.com"),
+                new User("1234", "1234", "1234", "1234@naver.com")
+        );
+        given(userRepository.findAll())
+                .willReturn(users);
+
+        // when
+        List<User> userList = userService.findAllUser();
+
+        //then
+        assertThat(userList)
+                .extracting("userId", "password", "name", "email")
+                .containsExactly(
+                        tuple("2wls", "0224", "윤이진", "483759@naver.com"),
+                        tuple("1234", "1234", "1234", "1234@naver.com")
+                );
+    }
 
     @DisplayName("기존에 존재하지 않는 사용자는 회원 가입이 가능하다")
     @Test
