@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.Entity.User;
 import lombok.*;
 
 @Getter
-@NoArgsConstructor
+// @Builder
 public class UserDto {
     private String userId;
     private String password;
@@ -21,10 +21,8 @@ public class UserDto {
         return user;
     }
 
-    @Builder
-    public UserDto(String userId, String password, String name, String email) {
+    public UserDto(String userId, String name, String email) {
         this.userId = userId;
-        this.password = password;
         this.name = name;
         this.email = email;
     }
