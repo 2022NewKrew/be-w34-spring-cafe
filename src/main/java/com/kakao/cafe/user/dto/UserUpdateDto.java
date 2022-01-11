@@ -1,8 +1,13 @@
 package com.kakao.cafe.user.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 public class UserUpdateDto {
+    @NotEmpty
     private String userId;
+    @NotEmpty
     private String name;
+    @NotEmpty
     private String email;
 
     public String getUserId() {

@@ -3,7 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.question.Question;
 import com.kakao.cafe.question.QuestionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +18,7 @@ import java.util.List;
 public class QuestionController {
 
     private final QuestionService questionService;
+    private final ModelMapper modelMapper;
 
     @PostMapping("/create")
     public String insertQuestion(Question question) {

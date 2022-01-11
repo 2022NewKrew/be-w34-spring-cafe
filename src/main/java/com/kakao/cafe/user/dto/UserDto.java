@@ -1,5 +1,7 @@
 package com.kakao.cafe.user.dto;
 
+import com.kakao.cafe.user.User;
+
 public class UserDto {
     private Long id;
     private String userId;
@@ -12,13 +14,6 @@ public class UserDto {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public UserDto(Long id, String userId, String name, String email) {
-        this.id = id;
-        this.userId = userId;
-        this.name = name;
-        this.email = email;
     }
 
     public String getUserId() {
