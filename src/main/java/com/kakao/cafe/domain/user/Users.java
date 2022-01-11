@@ -1,8 +1,7 @@
 package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.dto.UserSaveDto;
+import com.kakao.cafe.dto.UserRequestDto;
 import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +10,13 @@ public class Users {
     private List<User> users = new ArrayList<User>();
     private int maxIndex = 0;
 
-    public void addUser(UserSaveDto userSaveDto){
-        users.add(new User(maxIndex, userSaveDto));
+    public void addUser(UserRequestDto userRequestDto){
+        users.add(new User(maxIndex, userRequestDto));
         maxIndex++;
+    }
+
+    public void updateUser(int id, UserRequestDto userRequestDto){
+        findById(id).update(userRequestDto);
     }
 
     public User findById(int id){

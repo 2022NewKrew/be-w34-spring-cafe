@@ -2,7 +2,6 @@ package com.kakao.cafe.domain.question;
 
 import com.kakao.cafe.dto.QuestionSaveDto;
 import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
 

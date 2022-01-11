@@ -4,7 +4,6 @@ import com.kakao.cafe.domain.question.Question;
 import com.kakao.cafe.domain.question.Questions;
 import com.kakao.cafe.dto.QuestionSaveDto;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
