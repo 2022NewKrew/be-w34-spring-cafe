@@ -9,7 +9,7 @@ public class Article {
     private final String title;
     private final String contents;
     private final LocalDateTime date;
-    private final List<ArticleComment> comments;
+    private final List<Article> comments;
 
     public Article(ArticleDTO articleDTO){
         this.writer = articleDTO.getWriter();
@@ -24,5 +24,9 @@ public class Article {
     }
     public ArticleDTO toArticleDTO(){
         return new ArticleDTO(writer, title, contents);
+    }
+
+    public List<Article> getComments() {
+        return comments;
     }
 }

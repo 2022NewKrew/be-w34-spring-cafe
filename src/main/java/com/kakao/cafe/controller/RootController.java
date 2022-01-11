@@ -19,7 +19,6 @@ public class RootController {
     @GetMapping
     String root(Model model){
         List<ArticleDTO> articles = ArticleTable.allArticleInfo();
-
         logger.info(articles.toString());
         model.addAttribute("articles", articles);
 

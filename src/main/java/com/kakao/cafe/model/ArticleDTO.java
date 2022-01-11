@@ -8,8 +8,9 @@ public class ArticleDTO {
     private final String title;
     private final String contents;
     private final LocalDateTime date;
+    private int index;
     private int commentSize;
-    private List<ArticleComment> comments;
+    private List<ArticleDTO> comments;
 
     public ArticleDTO(String writer, String title, String contents) {
         this.writer = writer;
@@ -34,11 +35,15 @@ public class ArticleDTO {
         return date;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
     public int getCommentSize() {
         return commentSize;
     }
 
-    public List<ArticleComment> getComments() {
+    public List<ArticleDTO> getComments() {
         return comments;
     }
 
@@ -46,8 +51,12 @@ public class ArticleDTO {
         this.commentSize = commentSize;
     }
 
-    public void setComments(List<ArticleComment> comments) {
+    public void setComments(List<ArticleDTO> comments) {
         this.comments = comments;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     @Override
@@ -56,6 +65,10 @@ public class ArticleDTO {
                 "writer='" + writer + '\'' +
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
+                ", date=" + date +
+                ", index=" + index +
+                ", commentSize=" + commentSize +
+                ", comments=" + comments +
                 '}';
     }
 }

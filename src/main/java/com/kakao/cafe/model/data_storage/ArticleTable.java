@@ -38,6 +38,7 @@ public class ArticleTable {
         for(Map.Entry<Integer, Article> entry: DB.entrySet()){
             ArticleDTO articleDTO = entry.getValue().toArticleDTO();
             articleDTO.setCommentSize(entry.getValue().commentSize());
+            articleDTO.setIndex(entry.getKey());
             articleList.add(articleDTO);
         }
 
