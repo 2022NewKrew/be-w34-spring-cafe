@@ -1,6 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.repository.MemoryUserRepository;
+import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.web.dto.UserCreateRequestDto;
 import com.kakao.cafe.web.dto.UserListResponseDto;
 import com.kakao.cafe.web.dto.UserProfileResponseDto;
@@ -15,19 +17,17 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-    private static final List<User> userList = new ArrayList<>();
-    private static long idNumber = 0L;
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
+    private final UserRepository userRepository = new MemoryUserRepository();
 
     public void create(UserCreateRequestDto requestDto) {
-        User user = new User(++idNumber, requestDto.getUserId(), requestDto.getPassword(), requestDto.getName(), requestDto.getEmail());
-        userList.add(user);
+        User user = userRepository.signUp(new User(requestDto.getUserId(), requestDto.getPassword(), requestDto.getName(), requestDto.getEmail()));
         logger.info("{} 계정 생성", user.getUserId());
     }
 
     public List<UserListResponseDto> findAll() {
         List<UserListResponseDto> responseDtoList = new ArrayList<>();
-        for (User user : userList) {
+        for (User user : userRepository.findAll()) {
             UserListResponseDto responseDto = new UserListResponseDto();
             responseDto.setId(user.getId());
             responseDto.setUserId(user.getUserId());
@@ -40,7 +40,7 @@ public class UserService {
 
     public UserProfileResponseDto findByUserId(String userId) {
         UserProfileResponseDto responseDto = new UserProfileResponseDto();
-        Optional<User> foundUser = userList.stream().filter(user -> user.getUserId().equals(userId)).findFirst();
+        Optional<User> foundUser = userRepository.findByUserId(userId);
         if (foundUser.isPresent()) {
             responseDto.setUserId(foundUser.get().getUserId());
             responseDto.setEmail(foundUser.get().getEmail());
