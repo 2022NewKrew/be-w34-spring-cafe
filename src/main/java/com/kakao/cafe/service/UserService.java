@@ -1,11 +1,10 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.Users;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.Users;
 import com.kakao.cafe.dto.UserSaveDto;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
