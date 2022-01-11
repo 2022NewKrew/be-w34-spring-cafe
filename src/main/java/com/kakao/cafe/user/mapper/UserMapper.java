@@ -1,7 +1,7 @@
-package com.kakao.cafe.mapper;
+package com.kakao.cafe.user.mapper;
 
-import com.kakao.cafe.dto.response.UserResDto;
-import com.kakao.cafe.entity.UserEntity;
+import com.kakao.cafe.user.dto.response.UserResDto;
+import com.kakao.cafe.user.entity.UserEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

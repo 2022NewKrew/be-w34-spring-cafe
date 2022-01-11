@@ -1,4 +1,4 @@
-package com.kakao.cafe.dto.response;
+package com.kakao.cafe.user.dto.response;
 
 public class UserResDto {
     private Long id;

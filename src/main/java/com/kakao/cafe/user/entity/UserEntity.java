@@ -1,4 +1,4 @@
-package com.kakao.cafe.entity;
+package com.kakao.cafe.user.entity;
 
 public class UserEntity {
     private Long id;
@@ -36,5 +36,11 @@ public class UserEntity {
 
     public String getEmail() {
         return email;
+    }
+
+    public void update(String password, String name, String email) {
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 }

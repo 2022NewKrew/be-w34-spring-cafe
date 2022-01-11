@@ -1,12 +1,12 @@
-package com.kakao.cafe.dto.request;
+package com.kakao.cafe.user.dto.request;
 
-public class SignupReqDto {
+public class UserFormReqDto {
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    public SignupReqDto(String userId, String password, String name, String email) {
+    public UserFormReqDto(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
