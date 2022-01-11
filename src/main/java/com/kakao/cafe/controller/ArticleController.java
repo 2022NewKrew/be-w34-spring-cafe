@@ -29,9 +29,13 @@ public class ArticleController {
 
     @GetMapping("/{index}")
     public String getArticle(@PathVariable Long index, Model model) {
-        ArticleDto article = articleService.findById(index);
+        try {
+            ArticleDto article = articleService.findById(index);
+            model.addAttribute("article", article);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("article", null);
+        }
 
-        model.addAttribute("article", article);
         return "qna/show";
     }
 }
