@@ -20,10 +20,9 @@ import java.util.Objects;
 public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    public void setUserService(final UserService userService) {
+    UserController(UserService userService) {
         this.userService = Objects.requireNonNull(userService);
     }
 

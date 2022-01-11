@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.ArticleDto;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,9 @@ import java.util.Objects;
 public class ArticleController {
     Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
-    private ArticleService articleService;
+    private final ArticleService articleService;
 
-    @Autowired
-    public void setArticleService(final ArticleService articleService) {
+    ArticleController(ArticleService articleService) {
         this.articleService = Objects.requireNonNull(articleService);
     }
 
