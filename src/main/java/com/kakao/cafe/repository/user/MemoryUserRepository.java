@@ -15,7 +15,7 @@ public class MemoryUserRepository implements UserRepository {
     private List<User> userList = Collections.synchronizedList(new ArrayList<>());
 
     @Override
-    public Long save(User user) {
+    public Long insertUser(User user) {
         user.setId(Long.valueOf(userList.size() + 1));
         userList.add(user);
         return Long.valueOf(userList.size());

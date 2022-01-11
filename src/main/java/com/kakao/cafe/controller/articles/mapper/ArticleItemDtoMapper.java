@@ -1,7 +1,7 @@
-package com.kakao.cafe.controller.mapper;
+package com.kakao.cafe.controller.articles.mapper;
 
-import com.kakao.cafe.controller.dto.ArticleDetailDto;
-import com.kakao.cafe.controller.dto.ArticleItemDto;
+import com.kakao.cafe.controller.articles.dto.ArticleDetailDto;
+import com.kakao.cafe.controller.articles.dto.ArticleItemDto;
 import com.kakao.cafe.domain.Article;
 
 public class ArticleItemDtoMapper {

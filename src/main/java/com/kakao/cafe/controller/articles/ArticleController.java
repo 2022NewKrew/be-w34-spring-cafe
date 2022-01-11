@@ -1,9 +1,8 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.controller.articles;
 
-import com.kakao.cafe.controller.dto.ArticleDetailDto;
-import com.kakao.cafe.controller.dto.ArticleItemDto;
-import com.kakao.cafe.controller.dto.ArticleWriteRequestDto;
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.controller.articles.dto.ArticleDetailDto;
+import com.kakao.cafe.controller.articles.dto.ArticleItemDto;
+import com.kakao.cafe.controller.articles.dto.ArticleWriteRequestDto;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

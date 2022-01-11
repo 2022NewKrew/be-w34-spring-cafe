@@ -1,7 +1,9 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.controller.users;
 
+import com.kakao.cafe.controller.users.dto.UserItemDto;
+import com.kakao.cafe.controller.users.dto.UserProfileDto;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.controller.dto.SignUpRequestDto;
+import com.kakao.cafe.controller.users.dto.SignUpRequestDto;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,22 +30,25 @@ public class UserController {
 
     @GetMapping("/users")
     public String users(Model model) {
-        List<User> users = usersService.getUsersAll();
+        List<UserItemDto> users = usersService.getUsersAll();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @PostMapping("/users")
     public String signUp(SignUpRequestDto signUpRequestDto) {
-        usersService.signUp(User.of(signUpRequestDto.getUserId(), signUpRequestDto.getPassword(), signUpRequestDto.getName(), signUpRequestDto.getEmail()));
+        usersService.signUp(signUpRequestDto.getUserId(),
+                signUpRequestDto.getPassword(),
+                signUpRequestDto.getName(),
+                signUpRequestDto.getEmail());
         return "redirect:/users";
     }
 
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable String userId, Model model) {
-        User findUser = usersService.getUser(userId);
-        model.addAttribute("user", findUser);
-        logger.info(findUser.toString());
+        UserProfileDto userProfile = usersService.getUserProfile(userId);
+        logger.info(userProfile.toString());
+        model.addAttribute("user", userProfile);
         return "user/profile";
     }
 }

@@ -1,8 +1,8 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.dto.ArticleDetailDto;
-import com.kakao.cafe.controller.dto.ArticleItemDto;
-import com.kakao.cafe.controller.mapper.ArticleItemDtoMapper;
+import com.kakao.cafe.controller.articles.dto.ArticleDetailDto;
+import com.kakao.cafe.controller.articles.dto.ArticleItemDto;
+import com.kakao.cafe.controller.articles.mapper.ArticleItemDtoMapper;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.article.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;

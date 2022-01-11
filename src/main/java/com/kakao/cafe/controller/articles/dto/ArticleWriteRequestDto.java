@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller.dto;
+package com.kakao.cafe.controller.articles.dto;
 
 public class ArticleWriteRequestDto {
 

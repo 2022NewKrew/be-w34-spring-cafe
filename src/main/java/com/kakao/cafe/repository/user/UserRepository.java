@@ -5,7 +5,7 @@ import com.kakao.cafe.domain.User;
 import java.util.List;
 
 public interface UserRepository {
-    Long save(User user);
+    Long insertUser(User user);
 
     List<User> findAll();
 

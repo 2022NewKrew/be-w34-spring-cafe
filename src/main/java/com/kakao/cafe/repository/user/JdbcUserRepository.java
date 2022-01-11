@@ -22,7 +22,7 @@ public class JdbcUserRepository implements UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Long save(User user) {
+    public Long insertUser(User user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(conn -> {
             PreparedStatement ps = conn.prepareStatement("insert into users(userId,password,userName,email) VALUES(?,?,?,?)");
