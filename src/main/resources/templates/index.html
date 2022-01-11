@@ -40,7 +40,7 @@
                             <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
                         </ul>
                     </li>
-                    <li><a href="./user/list.html"><i class="glyphicon glyphicon-user"></i></a></li>
+                    <li><a href="/users"><i class="glyphicon glyphicon-user"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -118,6 +118,31 @@
                       </div>
                   </div>
               </li>
+
+              {{ #articles }}
+
+                  <li>
+                      <div class="wrap">
+                          <div class="main">
+                              <strong class="subject">
+                                  <a href="/questions/{{id}}">{{title}}</a>
+                              </strong>
+                              <div class="auth-info">
+                                  <i class="icon-add-comment"></i>
+                                  <span class="time">2016-01-15 18:47</span>
+                                  <a href="/users/{{id}}" class="author">{{writer}}</a>
+                              </div>
+                              <div class="reply" title="댓글">
+                                  <i class="icon-reply"></i>
+                                  <span class="point">8</span>
+                              </div>
+                          </div>
+                      </div>
+                  </li>
+
+              {{ /articles }}
+
+
           </ul>
           <div class="row">
               <div class="col-md-3"></div>
@@ -133,7 +158,7 @@
                 </ul>
               </div>
               <div class="col-md-3 qna-write">
-                  <a href="./questions/form" class="btn btn-primary pull-right" role="button">질문하기</a>
+                  <a href="/questions/form" class="btn btn-primary pull-right" role="button">질문하기</a>
               </div>
           </div>
         </div>
