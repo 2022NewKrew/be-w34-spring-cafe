@@ -5,15 +5,15 @@ public class User {
     private final long id;
     private final String userId;
     private final String password;
-    private final String name;
+    private final String nickname;
     private final String email;
 
-    public User(String userId, String password, String name, String email) {
+    public User(String userId, String password, String nickname, String email) {
         offset += 1;
         this.id = offset;
         this.userId = userId;
         this.password = password;
-        this.name = name;
+        this.nickname = nickname;
         this.email = email;
     }
 
@@ -22,13 +22,13 @@ public class User {
         return "User{" +
                 "userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
+                ", nickname='" + nickname + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
     public long getId() {
