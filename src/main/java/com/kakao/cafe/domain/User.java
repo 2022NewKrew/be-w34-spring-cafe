@@ -1,8 +1,8 @@
 package com.kakao.cafe.domain;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
 
-@RequiredArgsConstructor
+@Builder
 public class User {
     private final String userId;
     private final String password;

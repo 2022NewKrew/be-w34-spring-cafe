@@ -15,20 +15,24 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void singUp(UserSignUpRequestDto userSignUpRequestDto) {
-        User user = new User(userSignUpRequestDto.getUserId(), userSignUpRequestDto.getPassword()
-                , userSignUpRequestDto.getName(), userSignUpRequestDto.getEmail());
+    public void signUp(UserSignUpRequestDto userSignUpRequestDto) {
+        User user = User.builder()
+                .userId(userSignUpRequestDto.getUserId())
+                .password(userSignUpRequestDto.getPassword())
+                .name(userSignUpRequestDto.getName())
+                .email(userSignUpRequestDto.getEmail())
+                .build();
+
         userRepository.save(user);
     }
 
     public User findUserByUserId(String userId) {
-        return userRepository.findUserByUserId(userId)
+        return userRepository.findByUserId(userId)
                 .orElseThrow(() -> {
                     throw new UserNotFoundException("사용자를 찾을수 없습니다.");
                 });
 
     }
-
 
     public List<User> findAll() {
         return userRepository.findAll();

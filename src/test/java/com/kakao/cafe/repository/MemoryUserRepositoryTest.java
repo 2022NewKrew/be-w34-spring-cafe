@@ -22,19 +22,21 @@ class MemoryUserRepositoryTest {
     @Test
     @DisplayName("아이디로 회원 조회")
     void testOfFindUserByUserId() {
-        User user = new User("leaf", "1234", "김남현", "leaf.hyeon@kakaocorp.com");
+        User user = User.builder()
+                .userId("leaf")
+                .build();
         memoryUserRepository.save(user);
 
-        User foundMember = memoryUserRepository.findUserByUserId("leaf").get();
+        User foundMember = memoryUserRepository.findByUserId("leaf").get();
         assertThat(foundMember).isEqualTo(user);
     }
 
     @Test
     @DisplayName("회원 전체 조회")
     void testOfFindUsers() {
-        User user1 = new User("leaf1", "1234", "김남현1", "leaf1.hyeon@kakaocorp.com");
-        User user2 = new User("leaf2", "1234", "김남현2", "leaf2.hyeon@kakaocorp.com");
-        User user3 = new User("leaf3", "1234", "김남현3", "leaf3.hyeon@kakaocorp.com");
+        User user1 = User.builder().build();
+        User user2 = User.builder().build();
+        User user3 = User.builder().build();
         memoryUserRepository.save(user1);
         memoryUserRepository.save(user2);
         memoryUserRepository.save(user3);

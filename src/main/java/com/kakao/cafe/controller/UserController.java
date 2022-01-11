@@ -40,7 +40,7 @@ public class UserController {
 
     @PostMapping()
     public String signUp(@ModelAttribute UserSignUpRequestDto userSignUpRequestDto) {
-        userService.singUp(userSignUpRequestDto);
+        userService.signUp(userSignUpRequestDto);
         return "redirect:/users";
     }
 
