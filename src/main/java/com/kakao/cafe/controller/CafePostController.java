@@ -34,7 +34,7 @@ public class CafePostController {
     String getPostList(Model model) {
         List<Post> postList = cafePostService.getPostList();
         model.addAttribute("postList", postList);
-        return "/index";
+        return "/post/list";
     }
 
     @GetMapping("/content/{postId}")
