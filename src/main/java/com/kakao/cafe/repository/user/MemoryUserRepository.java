@@ -1,4 +1,4 @@
-package com.kakao.cafe.repository.users;
+package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.User;
 import org.springframework.beans.factory.annotation.Qualifier;

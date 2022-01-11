@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.users.UserRepository;
+import com.kakao.cafe.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UsersService {
+public class UserService {
 
     private UserRepository userRepository;
 
     @Autowired
-    public UsersService(
+    public UserService(
             @Qualifier("jdbcUserRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
     }

@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.dto;
+package com.kakao.cafe.service.dto;
 
 public class SignUpRequestDto {
 

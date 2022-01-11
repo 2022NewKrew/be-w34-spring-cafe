@@ -1,7 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.users.JdbcUsersRepository;
+import com.kakao.cafe.repository.user.JdbcUserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
@@ -27,7 +27,7 @@ class UsersRepositoryTest {
         User user = new User("1", "1", "1", "1@1");
 
         // when
-        JdbcUsersRepository usersRepository = new JdbcUsersRepository(jdbcTemplate);
+        JdbcUserRepository usersRepository = new JdbcUserRepository(jdbcTemplate);
         Long savedUserId = usersRepository.save(user);
 
         // then
