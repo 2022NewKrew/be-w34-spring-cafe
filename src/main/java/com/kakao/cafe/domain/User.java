@@ -4,7 +4,7 @@ import com.kakao.cafe.dto.UserCreateRequest;
 
 public class User {
     private Long id;
-    private String userId;
+    private String nickname;
     private String password;
     private String name;
     private String email;
@@ -12,7 +12,7 @@ public class User {
     public User() {}
 
     public User(UserCreateRequest userCreateRequest) {
-        this.userId = userCreateRequest.getUserId();
+        this.nickname = userCreateRequest.getUserId();
         this.password = userCreateRequest.getPassword();
         this.name = userCreateRequest.getName();
         this.email = userCreateRequest.getEmail();
@@ -26,12 +26,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getPassword() {

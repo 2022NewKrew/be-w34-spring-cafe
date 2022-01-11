@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.Question;
 
 import java.util.*;
 
-public class QuestionRepositoryImpl implements QuestionRepository{
+public class InMemoryQuestionRepository implements QuestionRepository{
 
     private static Map<Long, Question> store = new HashMap<>();
     private static long sequence = 0L;

@@ -16,7 +16,7 @@ public class QuestionListResponse {
         this.questionId = question.getId();
         this.title = question.getTitle();
         this.createdDateTime = question.getCreatedDateTime().format(DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm"));
-        this.writer = question.getWriter().getUserId();
+        this.writer = question.getWriter().getNickname();
         this.userId = question.getWriter().getId();
         this.numberOfReply = 99;
     }

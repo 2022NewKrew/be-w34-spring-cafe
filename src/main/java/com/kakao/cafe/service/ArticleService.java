@@ -6,9 +6,9 @@ import com.kakao.cafe.dto.QuestionCreateRequest;
 import com.kakao.cafe.dto.QuestionDetailResponse;
 import com.kakao.cafe.dto.QuestionListResponse;
 import com.kakao.cafe.repository.QuestionRepository;
-import com.kakao.cafe.repository.QuestionRepositoryImpl;
+import com.kakao.cafe.repository.InMemoryQuestionRepository;
 import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.repository.UserRepositoryImpl;
+import com.kakao.cafe.repository.InMemoryUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
-    private final QuestionRepository questionRepository = new QuestionRepositoryImpl();
-    private final UserRepository userRepository = new UserRepositoryImpl();
+    private final QuestionRepository questionRepository = new InMemoryQuestionRepository();
+    private final UserRepository userRepository = new InMemoryUserRepository();
 
     public Long saveQuestion(QuestionCreateRequest questionDTO) {
         User writer = userRepository.findByUserId(questionDTO.getWriter()).orElseThrow(IllegalArgumentException::new);

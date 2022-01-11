@@ -8,8 +8,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserRepositoryImplTest {
-    UserRepositoryImpl repository = new UserRepositoryImpl();
+class InMemoryUserRepositoryTest {
+    InMemoryUserRepository repository = new InMemoryUserRepository();
 
     @AfterEach
     public void afterEach(){
@@ -19,7 +19,7 @@ class UserRepositoryImplTest {
     @Test
     public void save(){
         User user = new User();
-        user.setUserId("weather");
+        user.setNickname("weather");
 
         repository.save(user);
 
@@ -30,11 +30,11 @@ class UserRepositoryImplTest {
     @Test
     public void findByUserId(){
         User user1 = new User();
-        user1.setUserId("weather");
+        user1.setNickname("weather");
         repository.save(user1);
 
         User user2 = new User();
-        user2.setUserId("white");
+        user2.setNickname("white");
         repository.save(user2);
 
         User result = repository.findByUserId("weather").get();
@@ -45,11 +45,11 @@ class UserRepositoryImplTest {
     @Test
     public void findAll(){
         User user1 = new User();
-        user1.setUserId("weather");
+        user1.setNickname("weather");
         repository.save(user1);
 
         User user2 = new User();
-        user2.setUserId("white");
+        user2.setNickname("white");
         repository.save(user2);
 
         List<User> result = repository.findAll();

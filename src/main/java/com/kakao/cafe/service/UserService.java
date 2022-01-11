@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserCreateRequest;
-import com.kakao.cafe.repository.UserRepositoryImpl;
+import com.kakao.cafe.repository.InMemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository = new UserRepositoryImpl();
+    private final UserRepository userRepository = new InMemoryUserRepository();
 
     public Long signUp(UserCreateRequest userDTO) {
         User user = new User(userDTO);
@@ -20,7 +20,7 @@ public class UserService {
     }
 
     private void validateDuplicateUserId(User user){
-        userRepository.findByUserId(user.getUserId())
+        userRepository.findByUserId(user.getNickname())
                 .ifPresent(u -> {
                     throw new IllegalStateException("가입할 수 없는 ID입니다.");
                 });

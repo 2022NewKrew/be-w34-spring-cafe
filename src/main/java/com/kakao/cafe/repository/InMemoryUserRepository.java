@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.User;
 
 import java.util.*;
 
-public class UserRepositoryImpl implements UserRepository{
+public class InMemoryUserRepository implements UserRepository{
     private static Map<Long, User> store = new HashMap<>();
     private static long sequence = 0L;
 
@@ -23,7 +23,7 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public Optional<User> findByUserId(String userId) {
         return store.values().stream()
-                .filter(user -> user.getUserId().equals(userId))
+                .filter(user -> user.getNickname().equals(userId))
                 .findAny();
     }
 
