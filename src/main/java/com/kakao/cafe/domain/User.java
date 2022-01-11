@@ -58,29 +58,10 @@ public class User {
             final String email
     )
     {
-        checkString("id", id, ID_REGEX, ID_MIN, ID_MAX);
-        checkString("password", password, PW_REGEX, PW_MIN, PW_MAX);
-        checkString("name", name, NAME_REGEX, NAME_MIN, NAME_MAX);
-        checkString("email", email, EMAIL_REGEX, EMAIL_MIN, EMAIL_MAX);
-    }
-
-    private void checkString(
-            final String name,
-            final String str,
-            final String regex,
-            final int min,
-            final int max
-    )
-    {
-        Checker.checkIntMinMax(min, max);
-        final String trimmed = str.trim();
-        final int len = trimmed.length();
-        if (!trimmed.matches(regex)) {
-            throw new IllegalArgumentException(name + " is invalid!");
-        }
-        if (len < min || len > max) {
-            throw new IllegalArgumentException(name + " length is out of bound [" + min + ", " + max + "]");
-        }
+        Checker.checkString("id", id, ID_REGEX, ID_MIN, ID_MAX);
+        Checker.checkString("password", password, PW_REGEX, PW_MIN, PW_MAX);
+        Checker.checkString("name", name, NAME_REGEX, NAME_MIN, NAME_MAX);
+        Checker.checkString("email", email, EMAIL_REGEX, EMAIL_MIN, EMAIL_MAX);
     }
 
     public long getIdx() {
