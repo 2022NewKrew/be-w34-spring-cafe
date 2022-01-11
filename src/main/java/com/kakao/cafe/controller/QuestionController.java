@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("questions")
+@RequestMapping("/questions")
 public class QuestionController {
 
     @Autowired
@@ -32,5 +32,10 @@ public class QuestionController {
         model.addAttribute("size", questions.size());
         return "qna/show";
 
+    }
+
+    @GetMapping("/create")
+    public String viewQuestionForm() {
+        return "qna/form";
     }
 }

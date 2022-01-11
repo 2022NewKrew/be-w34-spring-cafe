@@ -35,4 +35,9 @@ public class UserController {
         return "user/list";
     }
 
+    @GetMapping("/create")
+    public String viewQuestionForm() {
+        return "user/form";
+    }
+
 }

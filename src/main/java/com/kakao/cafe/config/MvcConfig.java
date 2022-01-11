@@ -11,10 +11,11 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
-        registry.addViewController("/users/create").setViewName("user/form");
-        registry.addViewController("/").setViewName("home");
-        registry.addViewController("/home").setViewName("home");
-        registry.addViewController("/questions/create").setViewName("qna/form");
+        //TODO : GET POST 구분
+//        registry.addViewController("/users/create").setViewName("user/form");
+//        registry.addViewController("/").setViewName("home");
+//        registry.addViewController("/home").setViewName("home");
+//        registry.addViewController("/questions/create").setViewName("qna/form");
 
     }
 }
