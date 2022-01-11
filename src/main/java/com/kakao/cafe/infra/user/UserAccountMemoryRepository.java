@@ -5,21 +5,22 @@ import com.kakao.cafe.domain.user.UserAccountRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class UserAccountMemoryRepositoryImpl implements UserAccountRepository {
+public class UserAccountMemoryRepository implements UserAccountRepository {
 
     private final Map<Long, UserAccount> userAccountMap;
 
-    public UserAccountMemoryRepositoryImpl() {
-        this.userAccountMap = new HashMap<>();
+    public UserAccountMemoryRepository() {
+        this.userAccountMap = new ConcurrentHashMap<>();
     }
 
     @Override
-    public Optional<UserAccount> save(UserAccount userAccount) {
+    public UserAccount save(UserAccount userAccount) {
         userAccountMap.put(userAccount.getUserAccountId(), userAccount);
 
-        return Optional.of(userAccount);
+        return userAccount;
     }
 
     @Override
@@ -44,4 +45,8 @@ public class UserAccountMemoryRepositoryImpl implements UserAccountRepository {
         userAccountMap.remove(id);
     }
 
+    @Override
+    public void deleteAll() {
+        userAccountMap.clear();
+    }
 }
