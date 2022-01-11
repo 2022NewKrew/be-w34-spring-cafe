@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -19,11 +19,10 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/users")
     public String signup(@Valid UserSignupRequest user, Errors errors, RedirectAttributes rttr) {
         try {
             validateParams(errors);
@@ -44,12 +43,24 @@ public class UserController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/users")
     public String getUsers(Model model) {
         List<UserDto> users = userService.getAllUsers();
         model.addAttribute("sizeOfUsers", users.size());
         model.addAttribute("users", users);
         return "user/list";
+    }
+
+    @GetMapping("/users/{id}")
+    public String getUser(@PathVariable long id, Model model, RedirectAttributes rttr) {
+        try {
+            model.addAttribute("user", userService.getUserById(id));
+            return "user/profile";
+        } catch (Exception e) {
+            e.printStackTrace();
+            rttr.addFlashAttribute("msg", e.getMessage());
+            return "redirect:/users";
+        }
     }
 
 }
