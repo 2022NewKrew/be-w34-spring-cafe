@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.constant;
 
 public final class RedirectedURL {
     private RedirectedURL() {

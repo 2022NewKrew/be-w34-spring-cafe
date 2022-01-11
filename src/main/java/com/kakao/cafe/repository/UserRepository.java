@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.user.SimpleUserInfo;
 
 import java.util.*;
 
@@ -30,6 +31,10 @@ public class UserRepository implements Repository<User, Long> {
 
     public List<User> findAll(Integer pageNum, Integer pageSize) {
         Integer startIndex = (pageNum -1) * pageSize;
+        return new ArrayList<>();
+    }
+
+    public List<SimpleUserInfo> getListOfSimpleUserInfo(Integer pageNum, Integer pageSize) {
         return new ArrayList<>();
     }
 
@@ -70,6 +75,11 @@ public class UserRepository implements Repository<User, Long> {
     public void delete(User user) {
         Long userId = user.getId();
         users.remove(userId);
+    }
+
+    @Override
+    public int countAll() {
+        return users.size();
     }
 
     public Long getMaxId() {

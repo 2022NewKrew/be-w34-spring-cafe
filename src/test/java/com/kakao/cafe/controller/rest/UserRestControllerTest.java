@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller.rest;
 
-import com.kakao.cafe.controller.RedirectedURL;
+import com.kakao.cafe.constant.RedirectedURL;
 import com.kakao.cafe.dto.user.ProfileUpdateDto;
 import com.kakao.cafe.dto.user.UserJoinDto;
 import com.kakao.cafe.service.UserService;

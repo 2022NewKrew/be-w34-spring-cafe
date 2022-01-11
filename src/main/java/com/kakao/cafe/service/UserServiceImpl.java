@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.user.ProfileUpdateDto;
+import com.kakao.cafe.dto.user.SimpleUserInfo;
 import com.kakao.cafe.dto.user.UserJoinDto;
 import com.kakao.cafe.error.exception.duplication.UserEmailDuplicationException;
 import com.kakao.cafe.error.exception.duplication.UserNickNameDuplicationException;
@@ -33,8 +34,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll(Integer pageNum, Integer pageSize) {
-        return userRepository.findAll(pageNum, pageSize);
+    public List<SimpleUserInfo> getListOfSimpleUserInfo(Integer pageNum, Integer pageSize) {
+        return userRepository.getListOfSimpleUserInfo(pageNum, pageSize);
     }
 
     @Override
@@ -67,5 +68,10 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByNickName(newNickName) && !newNickName.equals(targetUserNickName)) {
             throw new UserNickNameDuplicationException(UserErrorMsg.USER_NICKNAME_DUPLICATED.getDescription());
         }
+    }
+
+    @Override
+    public int countAll() {
+        return userRepository.countAll();
     }
 }

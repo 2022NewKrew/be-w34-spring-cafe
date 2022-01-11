@@ -100,17 +100,17 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("특정 페이지의 모든 유저 반환 -> 정상")
-    void findAll() {
+    @DisplayName("특정 페이지의 모든 유저 간단 정보 반환 -> 정상")
+    void getListOfSimpleUserInfo() {
         //Given
         Integer pageNum = 1;
         Integer pageSize = 10;
 
         //When
-        userService.findAll(pageNum, pageSize);
+        userService.getListOfSimpleUserInfo(pageNum, pageSize);
 
         //Then
-        then(userRepository).should(times(1)).findAll(pageNum, pageSize);
+        then(userRepository).should(times(1)).getListOfSimpleUserInfo(pageNum, pageSize);
     }
 
     @Test
@@ -233,5 +233,19 @@ class UserServiceImplTest {
 
         //Then
         then(userRepository).should(times(1)).save(userInRepo);
+    }
+
+    @Test
+    @DisplayName("모든 유저 수 반환 -> 정상")
+    void count() {
+        //Given
+        int numOfUser = 123;
+        given(userRepository.countAll()).willReturn(numOfUser);
+
+        //When
+        int result = userService.countAll();
+
+        //Then
+        assertEquals(numOfUser, result);
     }
 }

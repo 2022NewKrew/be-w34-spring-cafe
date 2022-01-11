@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class UserDtoForList {
+public class SimpleUserInfo {
     private String email;
     private String nickName;
     private String joinDate;

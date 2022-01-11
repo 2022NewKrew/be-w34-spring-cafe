@@ -10,4 +10,6 @@ public interface Repository<T, ID> {
     T save(T t);
 
     void delete(T t);
+
+    int countAll();
 }
