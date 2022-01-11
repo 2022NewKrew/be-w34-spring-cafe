@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    {{> common/head}}
+</head>
+<body>
+{{> common/nav}}
+
+<div class="container" id="main">
+   <div class="col-md-10 col-md-offset-1">
+      <div class="panel panel-default">
+          <table class="table table-hover">
+              <thead>
+                <tr>
+                    <th>#</th> <th>사용자 아이디</th> <th>이름</th> <th>이메일</th><th></th>
+                </tr>
+              </thead>
+              <tbody>
+              {{#users}}
+                <tr>
+                    <th scope="row">{{index}}</th> <td><a href="/users/{{userId}}">{{nickName}}</a></td> <td>{{name}}</td> <td>{{email}}</td><td><a href="/users/{{userId}}/form" class="btn btn-success" role="button">수정</a></td>
+                </tr>
+              {{/users}}
+              </tbody>
+          </table>
+        </div>
+    </div>
+</div>
+
+<!-- script references -->
+{{> common/footer}}
+	</body>
+</html>
