@@ -20,7 +20,7 @@ public class HomeController {
     private final HomeService homeService;
 
     @GetMapping("")
-    public String articleList(Model model){
+    public String articleList(Model model) {
         List<ArticleListDto> articleList = homeService.articleList();
         model.addAttribute("articleList", articleList);
         logger.info("Retrieve {} articles", articleList.size());

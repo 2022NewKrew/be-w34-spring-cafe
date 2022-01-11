@@ -16,7 +16,7 @@ public class HomeService {
 
     private final ArticleRepository articleRepository;
 
-    public List<ArticleListDto> articleList(){
+    public List<ArticleListDto> articleList() {
         return articleRepository.findAllArticles().stream()
                 .map(ArticleMapper::toArticleListDto)
                 .collect(Collectors.toList());

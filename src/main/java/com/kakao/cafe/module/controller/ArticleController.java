@@ -22,14 +22,14 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("")
-    public String postArticle(ArticlePostDto articlePostDto){
+    public String postArticle(ArticlePostDto articlePostDto) {
         articleService.postArticle(articlePostDto);
         logger.info("Post Article : {}", articlePostDto.getTitle());
         return "redirect:/";
     }
 
     @GetMapping("/{id}")
-    public String showArticle(@PathVariable Long id, Model model){
+    public String showArticle(@PathVariable Long id, Model model) {
         ArticleReadDto article = articleService.showArticle(id);
         model.addAttribute("article", article);
         logger.info("Get Article : {}", id);

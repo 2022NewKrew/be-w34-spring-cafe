@@ -9,7 +9,13 @@ public class User {
 
     private final Long id;
     private final String userId;
-    private final String password;
-    private final String name;
-    private final String email;
+    private String password;
+    private String name;
+    private String email;
+
+    public void update(String password, String name, String email) {
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
 }
