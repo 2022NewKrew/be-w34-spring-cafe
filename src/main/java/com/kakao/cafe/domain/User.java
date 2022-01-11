@@ -55,7 +55,7 @@ public class User {
     }
 
     public UserDto exportDto() {
-        return UserDto.of(userId, password, name, email);
+        return UserDto.of(id, userId, password, name, email);
     }
 
     @Override

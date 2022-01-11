@@ -7,11 +7,12 @@ public class UserDto {
     private String name;
     private String email;
 
-    public static UserDto of(String userId, String password, String name, String email) {
-        return new UserDto(userId, password, name, email);
+    public static UserDto of(Long id, String userId, String password, String name, String email) {
+        return new UserDto(id, userId, password, name, email);
     }
 
-    private UserDto(String userId, String password, String name, String email) {
+    private UserDto(Long id, String userId, String password, String name, String email) {
+        this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;

@@ -31,6 +31,9 @@ public class UserController {
     @GetMapping()
     public String getUserList(Model model) {
         List<UserDto> users = userService.readAll();
+        if(users.size() > 0) {
+            logger.info("getUserList: {}, {}, {}", users.get(0).getId(), users.get(0).getUserId(), users.get(0).getName());
+        }
         model.addAttribute("users", users);
         return "user/list";
     }
