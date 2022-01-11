@@ -21,4 +21,8 @@ public class UserService {
     public List<User> getUserList() {
         return memoryUserRepository.getUserList();
     }
+
+    public User getUserById(String userId) {
+        return memoryUserRepository.getUserById(userId);
+    }
 }

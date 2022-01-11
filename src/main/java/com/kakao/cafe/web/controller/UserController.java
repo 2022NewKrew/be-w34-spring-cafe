@@ -3,13 +3,12 @@ package com.kakao.cafe.web.controller;
 import com.kakao.cafe.web.domain.User;
 import com.kakao.cafe.web.dto.UserDTO;
 import com.kakao.cafe.web.service.UserService;
-import org.apache.juli.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -40,9 +39,16 @@ public class UserController {
     @PostMapping("/user/create")
     public String createUser(String userId, String password, String name, String email) {
         UserDTO userDTO = new UserDTO(userId, password, name, email);
-        System.out.println(userDTO.getUserId());
-        logger.info(userDTO.toString());
-        logger.info(userService.signUp(userDTO).toString());
+        userService.signUp(userDTO);
         return "redirect:/user";
+    }
+
+    @GetMapping("/user/{userId}")
+    public String getUserProfile(Model model, @PathVariable String userId) {
+        User user = userService.getUserById(userId);
+        System.out.println(user);
+        model.addAttribute("name", user.getName());
+        model.addAttribute("email", user.getEmail());
+        return "/user/profile";
     }
 }
