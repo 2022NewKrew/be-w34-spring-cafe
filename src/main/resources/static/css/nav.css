@@ -1,0 +1,102 @@
+.navigation_bar {
+    position: absolute;
+    width: 1040px;
+    height: 64px;
+    left: 200px;
+    top: 0px;
+}
+
+#kakao_ci {
+    position: absolute;
+    width: 72px;
+    height: 24px;
+    left: 0px;
+    top: 20px;
+}
+
+#member_list {
+    position: absolute;
+    width: 65px;
+    height: 20px;
+    left: 788px;
+    top: 22px;
+
+    /* LinkSmall */
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+
+    color: #666666;
+}
+
+#login {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 8px 16px;
+
+    position: absolute;
+    width: 71px;
+    height: 36px;
+    left: 877px;
+    top: 14px;
+
+    background: #000000;
+}
+
+#login_text {
+    position: static;
+    width: 39px;
+    height: 20px;
+    left: 16px;
+    top: 8px;
+
+    /* LinkSmall */
+
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    text-align: center;
+
+    color : white;
+}
+
+#register {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 8px 16px;
+
+    position: absolute;
+    width: 84px;
+    height: 36px;
+    left: 956px;
+    top: 14px;
+
+    background: #000000;
+}
+
+#register_text {
+    position: static;
+    width: 52px;
+    height: 20px;
+    left: 16px;
+    top: 8px;
+
+    /* LinkSmall */
+
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    text-align: center;
+
+    color : #FFFFFF;
+
+}
