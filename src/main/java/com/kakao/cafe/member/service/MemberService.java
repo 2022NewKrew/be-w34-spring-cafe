@@ -4,37 +4,35 @@ import com.kakao.cafe.member.domain.Member;
 import com.kakao.cafe.member.dto.MemberRequestDTO;
 import com.kakao.cafe.member.dto.MemberResponseDTO;
 import com.kakao.cafe.member.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    @Autowired
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
-
     public Long join(MemberRequestDTO memberRequestDTO) {
-        validateDuplicateUserId(memberRequestDTO.getUserId());
-        validateCheckPassword(memberRequestDTO);
-        Member member = memberRequestDTO.toMember();
+        validateDuplicateEmail(memberRequestDTO.getEmail());
+        Member member = memberRequestDTO.toMember(LocalDate.now());
+        validateCheckPassword(member, memberRequestDTO.getPasswordCheck());
         return memberRepository.save(member);
     }
 
-    private void validateDuplicateUserId(String userId) {
-        if (memberRepository.findByUserId(userId) != null) {
-            throw new IllegalArgumentException("이미 존재하는 유저 아이디입니다.");
+    private void validateDuplicateEmail(String email) {
+        if (memberRepository.findByEmail(email) != null) {
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
     }
 
-    private void validateCheckPassword(MemberRequestDTO memberRequestDTO) {
-        if (memberRequestDTO.checkPassword()) {
+    private void validateCheckPassword(Member member, String passwordCheck) {
+        if (!member.checkPassword(passwordCheck)) {
             throw new IllegalArgumentException("패스워드 확인이 일치하지 않습니다.");
         }
     }
