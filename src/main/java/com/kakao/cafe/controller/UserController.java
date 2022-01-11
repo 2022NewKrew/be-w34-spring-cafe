@@ -25,7 +25,7 @@ public class UserController {
     @PostMapping("/create")
     public String create(UserDto user) {
         userService.signup(user);
-        return "redirect:/";
+        return "redirect:/users/list";
     }
 
     @GetMapping("/list")
