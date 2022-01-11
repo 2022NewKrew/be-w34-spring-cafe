@@ -45,5 +45,4 @@ public class User {
         this.userName = userUpdateForm.getUserName();
         this.email = userUpdateForm.getEmail();
     }
-
 }
