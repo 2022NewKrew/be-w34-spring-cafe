@@ -19,4 +19,9 @@ public class ArticleRepository {
         return articles.size();
     }
 
+    public List<Article> findAll(){
+        return articles;
+    }
+
+
 }

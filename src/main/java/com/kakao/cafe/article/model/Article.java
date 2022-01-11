@@ -14,5 +14,5 @@ public class Article {
     private final String author;
     private final String title;
     private final String contents;
-    private final Date uploadDate;
+    private final Date uploadTime;
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -20,8 +21,11 @@ public class ArticleService {
                 .author(articleRequest.getAuthor())
                 .title(articleRequest.getTitle())
                 .contents(articleRequest.getContents())
-                .uploadDate(new Date())
+                .uploadTime(new Date())
                 .build());
+    }
 
+    public List<Article> getAllArticles(){
+        return articleRepository.findAll();
     }
 }
