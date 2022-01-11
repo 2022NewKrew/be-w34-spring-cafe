@@ -45,6 +45,12 @@ public class AccountController {
         return "user/signup_success";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
     @GetMapping("/mypage/edit")
     public String editMyAccountForm() {
         return "todo"; // TODO

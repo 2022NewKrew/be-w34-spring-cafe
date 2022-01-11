@@ -20,26 +20,26 @@ public class UserRepository {
         userList.add(User.builder()
                 .email("kina.lee@kakaocorp.com")
                 .username("키나")
-                .password("password1234")
+                .password("1234")
                 .build()
                 .init());
         userList.add(User.builder()
                 .email("eroica.b@kakaocorp.com")
                 .username("에로이카")
-                .password("password1234")
+                .password("1234")
                 .build()
                 .init());
         userList.add(User.builder()
                 .email("june.kim@kakaocorp.com")
                 .username("준")
-                .password("password1234")
+                .password("1234")
                 .build()
                 .init());
         IntStream.rangeClosed(1, 50).forEach(value -> {
             userList.add(User.builder()
                     .email(String.format("tester.%d@kakaocorp.com", value))
                     .username(String.format("테스터%d", value))
-                    .password("password1234")
+                    .password("1234")
                     .build()
                     .init());
         });
