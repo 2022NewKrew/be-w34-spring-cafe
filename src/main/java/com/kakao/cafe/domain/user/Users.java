@@ -11,8 +11,14 @@ public class Users {
     private int maxIndex = 0;
 
     public void addUser(UserRequestDto userRequestDto){
-        users.add(new User(maxIndex, userRequestDto));
-        maxIndex++;
+        try{
+            findByStringId(userRequestDto.getStringId());
+            return;
+        }
+        catch (IllegalArgumentException e){
+            users.add(new User(maxIndex, userRequestDto));
+            maxIndex++;
+        }
     }
 
     public void updateUser(int id, UserRequestDto userRequestDto){
@@ -21,6 +27,12 @@ public class Users {
 
     public User findById(int id){
         return users.stream().filter(user -> user.getId()==id)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException());
+    }
+
+    public User findByStringId(String stringId){
+        return users.stream().filter(user -> user.getStringId().equals(stringId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException());
     }
