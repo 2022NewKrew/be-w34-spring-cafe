@@ -1,9 +1,13 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.model.User;
+import com.kakao.cafe.repository.UserMemoryRepository;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -15,9 +19,16 @@ public class UserService {
     }
 
     public void signUp(User user) {
-        if(!userRepository.signUp(user)){
+        if (!userRepository.signUp(user)) {
             throw new IllegalArgumentException();
         }
     }
 
+    public List<User> findAllUsers() {
+        return userRepository.findAllUsers();
+    }
+
+    public User findUserById(String userId) {
+        return Optional.ofNullable(userRepository.findUserByUserId(userId)).orElseThrow(IllegalArgumentException::new);
+    }
 }

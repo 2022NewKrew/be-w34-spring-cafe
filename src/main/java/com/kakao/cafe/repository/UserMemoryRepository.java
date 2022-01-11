@@ -3,9 +3,11 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.model.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserMemoryRepository implements UserRepository {
@@ -24,11 +26,11 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public List<User> findAllUsers() {
-        return null;
+        return users.values().stream().collect(Collectors.toUnmodifiableList());
     }
 
     @Override
-    public User findUserByUserId() {
-        return null;
+    public User findUserByUserId(String userId) {
+        return users.get(userId);
     }
 }

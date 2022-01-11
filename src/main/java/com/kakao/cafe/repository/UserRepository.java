@@ -7,5 +7,5 @@ import java.util.List;
 public interface UserRepository {
     boolean signUp(User user);
     List<User> findAllUsers();
-    User findUserByUserId();
+    User findUserByUserId(String userId);
 }
