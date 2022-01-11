@@ -1,10 +1,18 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.dto.user;
 
-public class User {
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
+public class UserDto {
+
+    @NotBlank
     private String userId;
+    @NotBlank
     private String password;
+    @NotBlank
     private String name;
+    @NotBlank
+    @Email
     private String email;
 
     public String getUserId() {
@@ -41,7 +49,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDto{" +
                 "userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
