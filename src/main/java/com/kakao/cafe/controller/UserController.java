@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
@@ -22,29 +23,36 @@ public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping
-    String users(Model model) {
+    String getUsers(Model model) {
         List<User> userList = userService.getUserList();
         model.addAttribute("users", userList);
 
         return "user/list";
     }
 
-    @GetMapping("/form")
-    String form() {
-
-        return "user/form";
-    }
-
-    @GetMapping("/create")
-    String create(User user) {
+    @PostMapping("/create")
+    String createUser(User user) {
         userService.insertUser(user);
-        logger.info("create User : Email : {}, Name : {}", user.getEmail(), user.getName());
+        logger.info("create User -> Email : {}, Name : {}", user.getEmail(), user.getName());
 
         return "redirect:/users";
     }
 
+    @GetMapping("/{userId}/form")
+    String getUserForm(@PathVariable String userId, Model model) {
+        User user = userService.getUserByUserId(userId);
+        model.addAttribute("user", user);
+        return "user/updateForm";
+    }
+
+    @PostMapping("/{userId}/update")
+    String updateUser(User user) {
+        userService.updateUser(user);
+        return "redirect:/users";
+    }
+
     @GetMapping("/{userId}")
-    String profile(@PathVariable String userId, Model model) {
+    String getUserProfile(@PathVariable String userId, Model model) {
         User user = userService.getUserByUserId(userId);
         model.addAttribute("user", user);
 

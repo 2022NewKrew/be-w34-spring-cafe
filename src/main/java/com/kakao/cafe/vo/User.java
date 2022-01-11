@@ -6,6 +6,12 @@ public class User {
     private String name;
     private String email;
 
+    public void updateProfile(User other) {
+        password = other.password;
+        name = other.name;
+        email = other.email;
+    }
+
     public String getEmail() {
         return email;
     }

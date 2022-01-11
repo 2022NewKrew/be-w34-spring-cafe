@@ -24,10 +24,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUserId(String userId) {
-        User foundUser = null;
-        for (User user : userList)
-            if (Objects.equals(user.getUserId(), userId))
-                foundUser = user;
-        return foundUser;
+        for (User user : userList) {
+            if (Objects.equals(user.getUserId(), userId)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void updateUser(User updateUser) {
+        String userId = updateUser.getUserId();
+
+        for (User user : userList) {
+            if (Objects.equals(user.getUserId(), userId)) {
+                user.updateProfile(updateUser);
+                return;
+            }
+        }
+
     }
 }
