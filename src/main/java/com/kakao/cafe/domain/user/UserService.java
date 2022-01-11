@@ -2,6 +2,7 @@ package com.kakao.cafe.domain.user;
 
 import com.kakao.cafe.domain.user.dto.UserCreateRequestDto;
 import com.kakao.cafe.domain.user.dto.UserResponseDto;
+import com.kakao.cafe.domain.user.dto.UserUpdateRequestDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private Logger logger = LoggerFactory.getLogger(UserService.class);
-
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -24,13 +23,18 @@ public class UserService {
         return userRepository.findAll().stream().map(UserResponseDto::new).collect(Collectors.toList());
     }
 
-    public UserResponseDto retrieveUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+    public UserResponseDto retrieveUser(String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
         return new UserResponseDto(user);
     }
 
+    public Long updateUser(String userId, UserUpdateRequestDto requestDto) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+        user.update(requestDto.getName(), requestDto.getPassword(), requestDto.getEmail());
+        return userRepository.save(user);
+    }
+
     public Long createUser(UserCreateRequestDto requestDto) {
-        logger.info("유저 생성 User ID : {}, Email : {}, Name : {}", requestDto.getUserId(), requestDto.getEmail(), requestDto.getName());
         return userRepository.save(requestDto.toUser());
     }
 }

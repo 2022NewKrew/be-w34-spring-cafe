@@ -9,6 +9,10 @@ public class UserCreateRequestDto {
     private String name;
     private String email;
 
+    public User toUser() {
+        return new User(userId, password, name, email);
+    }
+
     public String getName() {
         return name;
     }
@@ -39,9 +43,5 @@ public class UserCreateRequestDto {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public User toUser() {
-        return new User(userId, password, name, email);
     }
 }
