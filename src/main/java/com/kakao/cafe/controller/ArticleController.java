@@ -16,7 +16,7 @@ public class ArticleController {
     @PostMapping(value = "/qna/create")
     public String createArticle(Article article, Model model){
         articleService.articleCreate(article);
-        return "redirect:/index.html";
+        return "redirect:/";
     }
 
     //index.html에 노출되는 질문리스트
