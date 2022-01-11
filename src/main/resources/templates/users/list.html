@@ -10,7 +10,7 @@
                 </tr>
               </thead>
               <tbody>
-              {{#users.userList}}
+              {{#users}}
                 <tr>
                     <th scope="row">1</th>
                     <td>{{userId}}</td>
@@ -18,7 +18,7 @@
                     <td>{{email}}</td>
                     <td><a href="/users/{{& userId}}" class="btn btn-success" role="button">수정</a></td>
                 </tr>
-              {{/users.userList}}
+              {{/users}}
               </tbody>
           </table>
         </div>

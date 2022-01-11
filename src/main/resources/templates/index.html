@@ -7,7 +7,7 @@
     </section>
     <section class="p-2 m-4">
         <div class="text-secondary mb-1">
-            전체 글 {{posts.size}}개
+            전체 글 {{articles.size}}개
         </div>
 
         <table class="table table-hover align-middle">
@@ -20,14 +20,14 @@
             </tr>
             </thead>
             <tbody>
-            {{#posts.dtoList}}
+            {{#articles}}
             <tr>
                 <td class="p-3 col-md-3">{{title}}</td>
-                <td class="p-3 col-md-1 text-center">{{writerEmail}}</td>
-                <td class="p-3 col-md-1 text-center">{{regDate}}</td>
-                <td class="p-3 col-md-1 text-center">{{viewCount}}</td>
+                <td class="p-3 col-md-1 text-center">{{writer}}</td>
+                <td class="p-3 col-md-1 text-center">{{date}}</td>
+                <td class="p-3 col-md-1 text-center">{{view}}</td>
             </tr>
-            {{/posts.dtoList}}
+            {{/articles}}
             </tbody>
         </table>
         <ul class="pagination">
@@ -36,16 +36,20 @@
                     <span aria-hidden="true">&lt;</span>
                 </a>
             </li>
-            {{#posts.pageList}}
-            <li class="page-item"><a class="page-link border-0 text-dark" href="#">{{this}}</a></li>
-            {{/posts.pageList}}
+            {{#pageList}}
+            <li class="page-item"><a class="page-link border-0 text-dark" href="#">{{num}}</a></li>
+            {{/pageList}}
             <li class="page-item">
                 <a class="page-link border-0 text-dark" href="#" aria-label="Next">
                     <span aria-hidden="true">&gt;</span>
                 </a>
             </li>
-
         </ul>
+        <div>
+            <a href = "/qna/form">
+                글쓰기
+            </a>
+        </div>
     </section>
 </main>
 {{>layout/footer}}
