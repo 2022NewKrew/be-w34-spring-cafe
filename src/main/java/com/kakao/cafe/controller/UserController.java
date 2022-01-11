@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.data_storage.AccountTable;
 import com.kakao.cafe.model.UserAccount;
 import com.kakao.cafe.model.UserAccountDTO;
+import com.kakao.cafe.model.data_storage.AccountTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -64,9 +64,10 @@ public class UserController {
     }
 
     @PostMapping("{userId}/form")
-    public String updateForm(@PathVariable("userId") String userId, UserAccountDTO userAccountDTO){
-
-        if(AccountTable.lookUpUserInfo(userId).isVaildPassword(userAccountDTO.getPassword()))
+    public String updateForm(@PathVariable("userId") String userId, String curPassword, UserAccountDTO userAccountDTO){
+        logger.info(curPassword);
+        logger.info(userAccountDTO.toString());
+        if(AccountTable.lookUpUserInfo(userId).isVaildPassword(curPassword))
             AccountTable.saveUserInto(userId, UserAccount.createUserAccount(true, userAccountDTO));
         return "redirect:/user";
     }
