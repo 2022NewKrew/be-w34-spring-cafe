@@ -17,16 +17,26 @@ public class UserRepositoryImpl implements UserRepository {
         this.users = new HashMap<>();
     }
 
+    @Override
     public void add(User user) {
         users.put(user.getUserId(), user);
     }
 
+    @Override
     public List<User> findAllUsers() {
         return users.values().stream()
             .collect(Collectors.toUnmodifiableList());
     }
 
+    @Override
     public Optional<User> findUserByUserId(String userId) {
         return Optional.ofNullable(users.get(userId));
+    }
+
+    @Override
+    public Optional<User> findUserByName(String name) {
+        return users.values().stream()
+            .filter(user -> user.getName().equals(name))
+            .findFirst();
     }
 }
