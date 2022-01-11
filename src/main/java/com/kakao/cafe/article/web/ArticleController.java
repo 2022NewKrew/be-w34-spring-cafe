@@ -4,6 +4,7 @@ import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.article.web.dto.ArticleSaveDto;
 import com.kakao.cafe.article.web.dto.ArticleShowDto;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +33,7 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String articleAdd(ArticleSaveDto articleSaveDto) {
+    public String articleAdd(@Valid ArticleSaveDto articleSaveDto) {
         articleService.addArticle(articleSaveDto);
         return "redirect:/";
     }

@@ -3,23 +3,23 @@ package com.kakao.cafe.user.repository;
 import com.kakao.cafe.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public class SimpleUserRepository implements UserRepository {
 
     private final List<User> users = new ArrayList<>();
 
     @Override
-    public Optional<User> save(User user) {
+    public void save(User user) {
         synchronized (users) {
             if (isDuplicated(user.getUserId())) {
-                return Optional.empty();
+                throw new NoSuchElementException("존재하지 않는 userId 입니다.");
             }
             users.add(user);
         }
-        return Optional.of(user);
     }
 
     private boolean isDuplicated(String userId) {

@@ -4,6 +4,7 @@ import com.kakao.cafe.user.service.UserService;
 import com.kakao.cafe.user.web.dto.UserSaveDto;
 import com.kakao.cafe.user.web.dto.UserShowDto;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String userAdd(UserSaveDto userSaveDto) {
+    public String userAdd(@Valid UserSaveDto userSaveDto) {
         userService.addUser(userSaveDto);
         return "redirect:/users";
     }
