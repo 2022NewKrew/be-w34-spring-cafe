@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -30,8 +31,16 @@ public class UserController {
 
     @GetMapping("users")
     public String viewUserList(Model model){
-        model.addAttribute("users", UserList.getInstance().getUserList());
+        UserList userList = UserList.getInstance();
+        model.addAttribute("users", userList.getUserList());
+        model.addAttribute("size",userList.getSize());
         return "/user/list";
+    }
+
+    @GetMapping("users/{name}")
+    public String viewUserProfile(@PathVariable String name, Model model){
+        logger.info("profile:{}",model.addAttribute("userInfo",UserList.getInstance().findByName(name)));
+        return "/user/profile";
     }
 
 }

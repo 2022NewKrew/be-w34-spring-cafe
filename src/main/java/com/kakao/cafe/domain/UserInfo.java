@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain;
 
+import org.apache.catalina.User;
+
 public class UserInfo {
     private String signUpDate;
     private String password;
@@ -21,5 +23,9 @@ public class UserInfo {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public boolean hasEqualName(String otherName){
+        return otherName.equals(this.name);
     }
 }

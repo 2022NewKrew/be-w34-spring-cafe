@@ -9,7 +9,6 @@ public class TimeGenerator {
     }
 
     static String todayDate(){
-        LocalDate now = LocalDate.now();
         LocalDate seoulToday = LocalDate.now(ZoneId.of("Asia/Seoul"));
         return seoulToday.toString();
     }
