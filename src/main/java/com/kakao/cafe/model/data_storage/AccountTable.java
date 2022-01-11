@@ -19,20 +19,20 @@ public class AccountTable {
 
     /**
      * User 정보가 존재하는지 판단합니다.
-     * @param userID    userID
-     * @return          userID 가 DB에 존재하는지 여부
+     * @param userId    userId
+     * @return          userId 가 DB에 존재하는지 여부
      */
-    public static boolean isExistUserAccount(String userID){
-        return DB.containsKey(userID);
+    public static boolean contains(String userId){
+        return DB.containsKey(userId);
     }
 
     /**
      * UserID 를 이용해 user 정보를 받아오는 메서드입니다.
-     * @param userID    UserID
+     * @param userId    UserId
      * @return          User 정보
      */
-    public static UserAccount lookUpUserInfo(String userID){
-        return DB.get(userID);
+    public static UserAccount lookUpUserInfo(String userId){
+        return DB.get(userId);
     }
 
     /**

@@ -36,7 +36,7 @@ public class UserController {
         UserAccount userAccount = UserAccount.createUserAccount(false, userAccountDTO);
 
         if(!Objects.isNull(userAccount))
-            AccountTable.saveUserInto(userAccountDTO.getUserID(), userAccount);
+            AccountTable.saveUserInto(userAccountDTO.getUserId(), userAccount);
 
         return "redirect:/user";
     }
@@ -50,22 +50,22 @@ public class UserController {
         return "/user/list";
     }
 
-    @GetMapping("{userID}")
-    public String profile(@PathVariable("userID") String userID, Model model){
-        UserAccountDTO userAccountDTO = AccountTable.lookUpUserInfo(userID).toUserAccountDTO();
+    @GetMapping("{userId}")
+    public String profile(@PathVariable("userId") String userId, Model model){
+        UserAccountDTO userAccountDTO = AccountTable.lookUpUserInfo(userId).toUserAccountDTO();
 
         model.addAttribute("user_account", userAccountDTO);
         return "/user/profile";
     }
 
-    @GetMapping("{userID}/form")
-    public String updateForm(@PathVariable("userID") String userID){
+    @GetMapping("{userId}/form")
+    public String updateForm(@PathVariable("userId") String userId){
         return "/user/update_form";
     }
 
-    @PostMapping("{userID}/form")
-    public String updateForm(@PathVariable("userID") String userID, UserAccountDTO userAccountDTO){
-        AccountTable.saveUserInto(userID, UserAccount.createUserAccount(true, userAccountDTO));
+    @PostMapping("{userId}/form")
+    public String updateForm(@PathVariable("userId") String userId, UserAccountDTO userAccountDTO){
+        AccountTable.saveUserInto(userId, UserAccount.createUserAccount(true, userAccountDTO));
         return "redirect:/user";
     }
 }

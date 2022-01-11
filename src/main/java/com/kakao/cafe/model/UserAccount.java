@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
  * User 계정 정보 클래스입니다.
  */
 public class UserAccount {
-    private final String userID;
+    private final String userId;
     private final String password;
     private final String name;
     private final String email;
@@ -20,7 +20,7 @@ public class UserAccount {
      * @param userAccountDTO UserAccountDTO 객체
      */
     private UserAccount(UserAccountDTO userAccountDTO) {
-        this.userID = userAccountDTO.getUserID();
+        this.userId = userAccountDTO.getUserId();
         this.password = userAccountDTO.getPassword();
         this.name = userAccountDTO.getName();
         this.email = userAccountDTO.getEmail();
@@ -32,7 +32,7 @@ public class UserAccount {
      * @return                  UserAccount 객체
      */
     public static UserAccount createUserAccount(boolean isUpdateProcess, UserAccountDTO userAccountDTO){
-        if(isUpdateProcess || !AccountTable.isExistUserAccount(userAccountDTO.getUserID()))
+        if(isUpdateProcess || !AccountTable.contains(userAccountDTO.getUserId()))
             return new UserAccount(userAccountDTO);
 
         return null;
@@ -43,7 +43,7 @@ public class UserAccount {
         UserAccountDTO userAccountDTO = null;
 
         try {
-            userAccountDTO = new UserAccountDTO(userID, sha256.encrypt(password), name, email);
+            userAccountDTO = new UserAccountDTO(userId, sha256.encrypt(password), name, email);
         } catch (NoSuchAlgorithmException e) {
 
         }
