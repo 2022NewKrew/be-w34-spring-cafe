@@ -1,0 +1,38 @@
+{{>template/header}}
+<div class="card" style="border: 0;">
+    <article class="card-body mx-auto" style="max-width: 500px; min-width:300px;">
+        <h2 class="card-title m-3 text-center">회원정보</h2>
+        {{#user}}
+        <table class="table align-middle">
+            <tr>
+                <th class="text-end">
+                    ID: &nbsp;
+                </th>
+                <td>
+                    {{id}}
+                </td>
+            </tr>
+            <tr>
+                <th class="text-end">
+                    Name: &nbsp;
+                </th>
+                <td>
+                    {{name}}
+                </td>
+            </tr>
+            <tr>
+                <th class="text-end">
+                    Email: &nbsp;
+                </th>
+                <td>
+                    {{email}}
+                </td>
+            </tr>
+        </table>
+        {{/user}}
+        <div class="row mt-3">
+            <button type="button" class="btn btn-dark" onclick="location.href='/user/list'">회원 목록</button>
+        </div>
+    </article>
+</div>
+{{>template/footer}}
