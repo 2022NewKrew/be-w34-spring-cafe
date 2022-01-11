@@ -5,16 +5,10 @@ import com.kakao.cafe.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepository {
-    static private List<User> users = new ArrayList<>(); //DB와 동기화될 리스트.
-
+public interface UserRepository {
     //전체유저의 목록을 반환
-    public List<User> getUsers() {
-        return users;
-    }
+    public List<User> getUsers();
 
     //회원가입처리
-    public void addUser(User user){
-        users.add(user);
-    }
+    public void addUser(User user);
 }

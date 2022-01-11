@@ -1,12 +1,13 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.UserMemoryRepository;
 import com.kakao.cafe.repository.UserRepository;
 
 import java.util.List;
 
 public class UserService {
-    private UserRepository userRepository = new UserRepository();
+    private UserRepository userRepository = new UserMemoryRepository();
 
     public void userCreate(User user){
         setNextUserSequence(user);
