@@ -35,7 +35,10 @@
                 <tbody>
                 {{#users}}
                 <tr>
-                    <td>{{this.username}}</td> <td><a href="/users/{{this.id}}"/>{{this.nickname}}</td><td>{{this.email}}</td>
+                    <td>{{this.username}}</td>
+                    <td><a href="/users/{{this.id}}"/>{{this.nickname}}</td>
+                    <td>{{this.email}}</td>
+                    <td><a href="/users/{{this.id}}/form" role="button">수정</a></td>
                 </tr>
                 {{/users}}
                 </tbody>

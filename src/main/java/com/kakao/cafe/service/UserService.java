@@ -2,7 +2,8 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserDto;
-import com.kakao.cafe.domain.user.UserRequest;
+import com.kakao.cafe.domain.user.UserCreateRequest;
+import com.kakao.cafe.domain.user.UserUpdateRequest;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void signUp(UserRequest userRequest) {
-        User user = new User(userRequest);
+    public void signUp(UserCreateRequest userCreateRequest) {
+        User user = new User(userCreateRequest);
         userRepository.save(user);
     }
 
@@ -33,5 +34,12 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 크루입니다."))
                 .toDto();
+    }
+
+    public void update(Long id, UserUpdateRequest userUpdateRequest) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 크루입니다."));
+        user.update(userUpdateRequest);
+        userRepository.update(user);
     }
 }

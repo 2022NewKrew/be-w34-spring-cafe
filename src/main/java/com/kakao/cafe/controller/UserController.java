@@ -1,7 +1,9 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.user.UserDto;
-import com.kakao.cafe.domain.user.UserRequest;
+import com.kakao.cafe.domain.user.UserCreateRequest;
+import com.kakao.cafe.domain.user.UserUpdateRequest;
+import com.kakao.cafe.exception.InvalidPasswordException;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,8 +30,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String signUp(UserRequest userRequest) {
-        userService.signUp(userRequest);
+    public String signUp(UserCreateRequest userCreateRequest) {
+        userService.signUp(userCreateRequest);
 
         return "redirect:/users";
     }
@@ -44,5 +46,33 @@ public class UserController {
         }
 
         return "user/profile";
+    }
+
+    @GetMapping("/{userId}/form")
+    public String updateForm(@PathVariable Long userId, Model model) {
+        try {
+            UserDto user = userService.findById(userId);
+            model.addAttribute("user", user);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", "존재하지 않는 크루입니다.");
+            return "error";
+        }
+
+        return "user/updateForm";
+    }
+
+    @PostMapping("/{userId}/update")
+    public String updateUser(@PathVariable Long userId, UserUpdateRequest userUpdateRequest, Model model) {
+        try {
+            userService.update(userId, userUpdateRequest);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", "존재하지 않는 크루입니다.");
+            return "error";
+        } catch (InvalidPasswordException e) {
+            model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+            return "error";
+        }
+
+        return "redirect:/";
     }
 }

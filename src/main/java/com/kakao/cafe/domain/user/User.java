@@ -1,5 +1,9 @@
 package com.kakao.cafe.domain.user;
 
+import com.kakao.cafe.exception.InvalidPasswordException;
+
+import javax.naming.directory.InvalidAttributesException;
+
 public class User {
 
     private Long id;
@@ -8,15 +12,28 @@ public class User {
     private String email;
     private String password;
 
-    public User(UserRequest userRequest) {
-        this.username = userRequest.getUsername();
-        this.nickname = userRequest.getNickname();
-        this.email = userRequest.getEmail();
-        this.password = userRequest.getPassword();
+    public User(UserCreateRequest request) {
+        this.username = request.getUsername();
+        this.nickname = request.getNickname();
+        this.email = request.getEmail();
+        this.password = request.getPassword();
     }
 
     public UserDto toDto() {
         return new UserDto(id, username, nickname, email);
+    }
+
+    public void update(UserUpdateRequest request) {
+        validatePassword(request.getPassword());
+        this.nickname = request.getNickname();
+        this.email = request.getEmail();
+        this.password = request.getPassword();
+    }
+
+    private void validatePassword(String newPassword) {
+        if (!password.equals(newPassword)) {
+            throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
+        }
     }
 
     public void setId(Long id) {

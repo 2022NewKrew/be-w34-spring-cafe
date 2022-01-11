@@ -1,13 +1,13 @@
 package com.kakao.cafe.domain.user;
 
-public class UserRequest {
+public class UserCreateRequest {
 
     private final String username;
     private final String nickname;
     private final String email;
     private final String password;
 
-    public UserRequest(String username, String nickname, String email, String password) {
+    public UserCreateRequest(String username, String nickname, String email, String password) {
         this.username = username;
         this.nickname = nickname;
         this.email = email;
