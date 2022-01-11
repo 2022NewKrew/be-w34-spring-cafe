@@ -1,0 +1,21 @@
+{{>layout/header}}
+<link href="/css/user/profile.css" rel="stylesheet">
+
+<body>
+<div class="background">
+    {{>layout/navigation}}
+
+    <div class="container" id="main">
+        <header class="post-header">
+            <p class="title">프로필</p>
+        </header>
+        <div class="media">
+            <div class="info-container">
+                <h2>{{user.userId}}</h2>
+                <h3>{{user.email}}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+{{>layout/footer}}
