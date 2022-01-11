@@ -3,30 +3,16 @@ package com.kakao.cafe.model;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class UserTest {
     @Test
-    @DisplayName("사용자 아이디는 영문자와 숫자만으로 이루어지고 길이는 20글자 이하여야 한다.")
-    void invalidUserIdForm() {
-
-    }
-
-    @Test
-    @DisplayName("비밀번호는 8~32자여야 한다.")
-    void invalidPasswordLength() {
-
-    }
-
-    @Test
-    @DisplayName("이름의 길이는 20글자 이하여야 한다.")
-    void invalidLengthOfName() {
-
-    }
-
-    @Test
-    @DisplayName("이메일은 표준 이메일 주소 형식을 만족시켜야 한다.")
-    void invalidEmailForm() {
-
+    @DisplayName("정상적인 사용자 아이디, 비밀번호, 이름, 이메일이 주어졌을 때 객체가 생성되어야 한다.")
+    void create() {
+        String userId = "charlie123";
+        String password = "charlie.password.1234";
+        String name = "김찬민";
+        String email = "charlie.p1@kakaocorp.com";
+        assertDoesNotThrow(() -> new User(userId, password, name, email));
     }
 }
