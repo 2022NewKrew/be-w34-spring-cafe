@@ -8,8 +8,6 @@ import com.kakao.cafe.article.repository.ArticleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,15 +18,8 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     public void writeArticle(ArticleRequest articleRequest){
-        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-        articleRepository.save(Article.builder()
-                .id((long) articleRepository.getNumberOfArticles() + 1)
-                .author(articleRequest.getAuthor())
-                .title(articleRequest.getTitle())
-                .contents(articleRequest.getContents())
-                .uploadTime(date.format(new Date()))
-                .build());
+        Long id = articleRepository.getNumberOfArticles() + 1;
+        articleRepository.save(articleRequest.toEntity(id));
     }
 
     public List<ArticlePreviewDto> getAllArticlePreview(){
@@ -41,5 +32,4 @@ public class ArticleService {
         Article article = articleRepository.findOneById(id);
         return ArticlePostDto.of(article);
     }
-
 }

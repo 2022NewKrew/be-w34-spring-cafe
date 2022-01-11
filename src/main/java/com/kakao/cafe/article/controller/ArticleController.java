@@ -1,6 +1,5 @@
 package com.kakao.cafe.article.controller;
 
-import com.kakao.cafe.article.model.Article;
 import com.kakao.cafe.article.model.ArticlePostDto;
 import com.kakao.cafe.article.model.ArticleRequest;
 import com.kakao.cafe.article.service.ArticleService;

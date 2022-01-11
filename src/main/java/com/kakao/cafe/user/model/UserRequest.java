@@ -11,4 +11,14 @@ public class UserRequest {
     private final String name;
     private final String password;
     private final String email;
+
+    public User toEntity(Long id){
+        return User.builder()
+                .id(id)
+                .userId(userId)
+                .name(name)
+                .password(password)
+                .email(email)
+                .build();
+    }
 }

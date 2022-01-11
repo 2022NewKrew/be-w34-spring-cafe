@@ -16,8 +16,8 @@ public class ArticleRepository {
         articles.add(article);
     }
 
-    public int getNumberOfArticles(){
-        return articles.size();
+    public Long getNumberOfArticles(){
+        return (long) articles.size();
     }
 
     public List<Article> findAll(){

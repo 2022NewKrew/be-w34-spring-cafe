@@ -18,13 +18,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void signUp(UserRequest userRequest){
-        Long numberOfUsers = userRepository.getNumberOfUsers();
-        userRepository.save(User.builder()
-                        .id(numberOfUsers+1)
-                        .userId(userRequest.getUserId())
-                        .name(userRequest.getName())
-                        .password(userRequest.getPassword())
-                        .email(userRequest.getEmail()).build());
+        Long id = userRepository.getNumberOfUsers() + 1;
+        userRepository.save(userRequest.toEntity(id));
     }
 
     public List<UserDto> getUsersList(){
