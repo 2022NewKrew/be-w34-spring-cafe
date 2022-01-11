@@ -1,12 +1,12 @@
 package com.kakao.cafe.interfaces.user.dto.request;
 
-public class UserDto {
+public class JoinUserRequestDto {
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    public UserDto(String userId, String password, String name, String email) {
+    public JoinUserRequestDto(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
