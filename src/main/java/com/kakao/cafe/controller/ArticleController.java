@@ -34,7 +34,7 @@ public class ArticleController {
     }
 
     @GetMapping("/{key}")
-    public String articleShow(@PathVariable("key")long key, Model model) {
+    public String articleShow(@PathVariable("key") long key, Model model) {
         model.addAttribute("article", articleService.findByKeyForShow(key));
         return "article/show";
     }
