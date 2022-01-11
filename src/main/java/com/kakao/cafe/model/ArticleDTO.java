@@ -3,6 +3,11 @@ package com.kakao.cafe.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * author    : brody.moon
+ * version   : 1.0
+ * Article 클래스에서 로직을 제거하고 데이터 전송을 위해 따로 만든 클래스입니다.
+ */
 public class ArticleDTO {
     private final String writer;
     private final String title;

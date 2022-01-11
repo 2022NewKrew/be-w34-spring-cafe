@@ -8,6 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * author    : brody.moon
+ * version   : 1.0
+ * DB 대신 임시로 사용하는 저장소입니다.
+ *
+ */
 public class ArticleTable {
     private static final Map<Integer, Article> DB = new HashMap<>();
 

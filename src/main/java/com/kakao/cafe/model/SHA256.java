@@ -3,6 +3,11 @@ package com.kakao.cafe.model;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * author    : brody.moon
+ * version   : 1.0
+ * password 를 암호화해주는 클래스입니다.
+ */
 public class SHA256 {
 
     public String encrypt(String text) throws NoSuchAlgorithmException {

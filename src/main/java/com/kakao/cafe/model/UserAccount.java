@@ -38,6 +38,11 @@ public class UserAccount {
         return null;
     }
 
+    /**
+     * UserAccount 클래스를 DTO 클래스로 매핑해주는 메서드입니다.
+     * password 는 암호화 해서 저장합니다.
+     * @return  DTO 클래스
+     */
     public UserAccountDTO toUserAccountDTO(){
         SHA256 sha256 = new SHA256();
         UserAccountDTO userAccountDTO = null;
