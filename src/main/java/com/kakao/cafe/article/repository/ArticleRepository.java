@@ -3,10 +3,7 @@ package com.kakao.cafe.article.repository;
 import com.kakao.cafe.article.entity.ArticleEntity;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class ArticleRepository {
@@ -21,5 +18,9 @@ public class ArticleRepository {
 
     public List<ArticleEntity> findAll() {
         return new ArrayList<>(db.values());
+    }
+
+    public Optional<ArticleEntity> findById(Long id) {
+        return Optional.ofNullable(db.get(id));
     }
 }

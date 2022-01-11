@@ -1,6 +1,7 @@
 package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.article.dto.request.ArticleReqDto;
+import com.kakao.cafe.article.dto.response.ArticleDetailResDto;
 import com.kakao.cafe.article.dto.response.ArticleResDto;
 import com.kakao.cafe.article.service.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -29,5 +31,13 @@ public class ArticleController {
     public String saveArticle(@ModelAttribute ArticleReqDto articleReqDto) {
         articleService.saveArticle(articleReqDto);
         return "redirect:/";
+    }
+
+    @GetMapping("/articles/{id}")
+    public String getArticle(@PathVariable Long id, Model model) {
+        ArticleDetailResDto article = articleService.getArticle(id);
+        model.addAttribute("article", article);
+
+        return "/qna/show";
     }
 }

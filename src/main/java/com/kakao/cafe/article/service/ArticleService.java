@@ -1,6 +1,7 @@
 package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.dto.request.ArticleReqDto;
+import com.kakao.cafe.article.dto.response.ArticleDetailResDto;
 import com.kakao.cafe.article.dto.response.ArticleResDto;
 import com.kakao.cafe.article.entity.ArticleEntity;
 import com.kakao.cafe.article.mapper.ArticleMapper;
@@ -29,6 +30,13 @@ public class ArticleService {
 
     public List<ArticleResDto> getAllArticles() {
         List<ArticleEntity> articleEntities = articleRepository.findAll();
-        return articleMapper.toDtoList(articleEntities);
+        return articleMapper.toArticleResDtoList(articleEntities);
+    }
+
+    public ArticleDetailResDto getArticle(Long id) {
+        ArticleEntity articleEntity = articleRepository.findById(id)
+                .orElseThrow();
+
+        return articleMapper.toArticleDetailResDto(articleEntity);
     }
 }

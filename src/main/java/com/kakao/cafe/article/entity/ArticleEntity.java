@@ -16,7 +16,7 @@ public class ArticleEntity {
     private String writer;
     private String title;
     private String contents;
-    private String createdAt;
+    private LocalDateTime createdAt;
     private List<Object> comments = new ArrayList<>(); // todo: 미구현
 
     @Builder
@@ -24,7 +24,7 @@ public class ArticleEntity {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
+        this.createdAt = LocalDateTime.now();
     }
 
     public void setId(Long id) {
