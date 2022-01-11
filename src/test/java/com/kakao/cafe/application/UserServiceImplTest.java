@@ -31,10 +31,11 @@ class UserServiceImplTest {
     @Test
     void checkFindUserByUserId() {
         // given
-        Optional<User> expectedUser = Optional.of(new User("2wls", "0224", "윤이진", "483759@naver.com"));
+        User expectedUser = new User("2wls", "0224", "윤이진", "483759@naver.com");
+        Optional<User> expectedOptionalUser = Optional.of(expectedUser);
         String userId = "2wls";
         given(userRepository.findByUserId(userId))
-                .willReturn(expectedUser);
+                .willReturn(expectedOptionalUser);
 
         // when
         User user = userService.findByUserId(userId);
@@ -42,8 +43,8 @@ class UserServiceImplTest {
         //then
         verify(userRepository).findByUserId(userId);
         assertThat(user)
-                .extracting("userId", "password", "name", "email")
-                .isEqualTo(tuple("2wls", "0224", "윤이진", "483759@naver.com"));
+                .usingRecursiveComparison()
+                .isEqualTo(expectedUser);
     }
 
     @DisplayName("존재하지 않는 유저 ID로 사용자 조회를 할 수 없다")
@@ -58,7 +59,7 @@ class UserServiceImplTest {
         ThrowableAssert.ThrowingCallable runnable = () -> userService.findByUserId(userIdThatDoesNotExist);
 
         //then
-        verify(userRepository).findByUserId(userIdThatDoesNotExist);
+//        verify(userRepository).findByUserId(userIdThatDoesNotExist);
         assertThatThrownBy(runnable).isInstanceOf(IllegalArgumentException.class);
     }
 

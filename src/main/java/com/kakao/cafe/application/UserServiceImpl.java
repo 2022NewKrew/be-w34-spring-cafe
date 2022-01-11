@@ -17,8 +17,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUserId(String userId) {
-        return null;
+    public User findByUserId(String userId) throws IllegalArgumentException {
+        Optional<User> optionalUser = userRepository.findByUserId(userId);
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+
+        return optionalUser.get();
     }
 
     @Override
