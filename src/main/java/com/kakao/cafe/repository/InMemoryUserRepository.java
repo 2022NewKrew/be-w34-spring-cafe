@@ -21,9 +21,9 @@ public class InMemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
+    public Optional<User> findByNickname(String nickname) {
         return store.values().stream()
-                .filter(user -> user.getNickname().equals(userId))
+                .filter(user -> user.getNickname().equals(nickname))
                 .findAny();
     }
 

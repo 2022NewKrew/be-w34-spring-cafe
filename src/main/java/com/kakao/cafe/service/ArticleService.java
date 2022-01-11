@@ -5,10 +5,10 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.QuestionCreateRequest;
 import com.kakao.cafe.dto.QuestionDetailResponse;
 import com.kakao.cafe.dto.QuestionListResponse;
-import com.kakao.cafe.repository.QuestionRepository;
 import com.kakao.cafe.repository.InMemoryQuestionRepository;
-import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.repository.InMemoryUserRepository;
+import com.kakao.cafe.repository.QuestionRepository;
+import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class ArticleService {
     private final UserRepository userRepository = new InMemoryUserRepository();
 
     public Long saveQuestion(QuestionCreateRequest questionDTO) {
-        User writer = userRepository.findByUserId(questionDTO.getWriter()).orElseThrow(IllegalArgumentException::new);
+        User writer = userRepository.findByNickname(questionDTO.getWriter()).orElseThrow(IllegalArgumentException::new);
         Question question = new Question(questionDTO, writer);
         return questionRepository.save(question).getId();
     }

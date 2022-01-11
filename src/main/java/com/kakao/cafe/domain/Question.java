@@ -1,9 +1,14 @@
 package com.kakao.cafe.domain;
 
 import com.kakao.cafe.dto.QuestionCreateRequest;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Getter
+@NoArgsConstructor
 public class Question {
     private Long id;
     private User writer;
@@ -11,8 +16,13 @@ public class Question {
     private String contents;
     private LocalDateTime createdDateTime;
 
-    public Question(){
-        createdDateTime = LocalDateTime.now();
+    @Builder
+    public Question(Long id, User writer, String title, String contents, LocalDateTime createdDateTime) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.createdDateTime = createdDateTime;
     }
 
     public Question(QuestionCreateRequest questionCreateRequest, User writer) {
@@ -22,44 +32,8 @@ public class Question {
         this.contents = questionCreateRequest.getContents();
     }
 
-    public Long getId() {
-        return id;
-    }
-
+    //TODO
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getWriter() {
-        return writer;
-    }
-
-    public void setWriter(User writer) {
-        this.writer = writer;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
-
-    public LocalDateTime getCreatedDateTime() {
-        return createdDateTime;
-    }
-
-    public void setCreatedDateTime(LocalDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
     }
 }

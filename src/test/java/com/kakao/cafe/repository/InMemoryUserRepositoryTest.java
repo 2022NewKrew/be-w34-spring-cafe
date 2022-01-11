@@ -37,7 +37,7 @@ class InMemoryUserRepositoryTest {
         user2.setNickname("white");
         repository.save(user2);
 
-        User result = repository.findByUserId("weather").get();
+        User result = repository.findByNickname("weather").get();
 
         assertEquals(result, user1);
     }
