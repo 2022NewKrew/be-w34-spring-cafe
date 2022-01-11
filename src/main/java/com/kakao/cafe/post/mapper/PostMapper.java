@@ -5,15 +5,17 @@ import com.kakao.cafe.post.domain.entity.Post;
 import com.kakao.cafe.post.presentation.dto.CreatePostRequest;
 import com.kakao.cafe.post.presentation.dto.PostDetailDto;
 import com.kakao.cafe.post.presentation.dto.PostDto;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+@Component
 public class PostMapper {
     private static final int SUMMARY_SIZE = 20;
 
-    public static PostDto toPostDto(Post post) {
+    public PostDto toPostDto(Post post) {
         String summary =  post.getContent().length() > SUMMARY_SIZE
                 ? post.getContent().substring(0, SUMMARY_SIZE)
                 : post.getContent();
@@ -21,7 +23,7 @@ public class PostMapper {
         return new PostDto(post.getId(), post.getTitle(), post.getWriterName(), summary);
     }
 
-    public static PostDetailDto toPostDetailDto(Post post){
+    public PostDetailDto toPostDetailDto(Post post){
         List<String> commentStrings = post.getComments()
                 .stream()
                 .map(Comment::toString)
@@ -30,7 +32,7 @@ public class PostMapper {
         return new PostDetailDto(post.getId(), post.getTitle(), post.getContent(), post.getWriterName(), commentStrings);
     }
 
-    public static Post toEntity(CreatePostRequest createPostRequest) {
+    public Post toEntity(CreatePostRequest createPostRequest) {
         String defaultName = "아무개"; // session 적용 전 잠시
         return new Post(createPostRequest.getTitle(), createPostRequest.getContent(), defaultName);
     }

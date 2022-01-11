@@ -3,7 +3,6 @@ package com.kakao.cafe.post.domain.entity;
 import com.kakao.cafe.util.ValidationService;
 import lombok.Getter;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 

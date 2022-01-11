@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -17,12 +16,13 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class IndexController {
     private final PostInfoService postInfoService;
+    private final PostMapper postMapper;
 
     @GetMapping("")
     public String getIndexPage(Model model){
         List<PostDto> postDtos = postInfoService.getPosts(1)
                 .stream()
-                .map(PostMapper::toPostDto)
+                .map(postMapper::toPostDto)
                 .collect(toList());
 
         model.addAttribute("posts", postDtos);

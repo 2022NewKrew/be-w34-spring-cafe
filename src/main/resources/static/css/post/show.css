@@ -160,3 +160,7 @@ li {
     display: flex;
     flex-direction: column;
 }
+
+.panel.panel-default{
+    width: inherit;
+}
