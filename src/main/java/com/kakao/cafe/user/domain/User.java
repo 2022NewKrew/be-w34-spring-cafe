@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User {
 
-    private int id;
+    private Long id;
 
     private String userId;
 
@@ -18,7 +18,7 @@ public class User {
 
     private String email;
 
-    public User(int id, SignUpDTO signUpDTO) {
+    public User(Long id, SignUpDTO signUpDTO) {
         this.id = id;
         this.userId = signUpDTO.getUserId();
         this.password = signUpDTO.getPassword();

@@ -1,10 +1,9 @@
 package com.kakao.cafe.article.dto;
 
 import com.kakao.cafe.article.domain.Article;
-import lombok.Getter;
 
 
-@Getter
+
 public class ArticleViewDTO {
 
     private Long id;
