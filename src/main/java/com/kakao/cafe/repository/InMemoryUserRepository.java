@@ -10,7 +10,8 @@ public class InMemoryUserRepository implements UserRepository{
 
     @Override
     public User save(User user) {
-        user.setId(++sequence);
+        if(!store.containsKey(user.getId()))
+            user.setId(++sequence);
         store.put(user.getId(), user);
         return user;
     }
