@@ -22,7 +22,6 @@ public class UsersController {
 
     @PostMapping("/users")
     public String Signin(UsersCreateRequestDto requestDto) {
-        System.out.println(requestDto.getUserId());
         users.add(new User(requestDto.getUserId(), requestDto.getPassword(), requestDto.getPassword(), requestDto.getEmail()));
         return "redirect:/users";
     }
