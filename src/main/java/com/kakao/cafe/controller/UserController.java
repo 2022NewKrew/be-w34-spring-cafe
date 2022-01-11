@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.DataStorage;
+import com.kakao.cafe.model.data_storage.AccountTable;
 import com.kakao.cafe.model.UserAccount;
 import com.kakao.cafe.model.UserAccountDTO;
 import org.slf4j.Logger;
@@ -32,27 +32,28 @@ public class UserController {
     }
 
     @PostMapping("form")
-    public String form(String userId, String password, String name, String email, Model model){
-        UserAccount userAccount = UserAccount.createUserAccount(userId, password, name, email);
+    public String form(UserAccountDTO userAccountDTO){
+        logger.info(userAccountDTO + "");
+        UserAccount userAccount = UserAccount.createUserAccount(userAccountDTO);
 
         if(!Objects.isNull(userAccount))
-            DataStorage.saveUserInto(userId, userAccount);
+            AccountTable.saveUserInto(userAccountDTO.getUserID(), userAccount);
 
         return "redirect:/user";
     }
 
     @GetMapping
     public String userInfo(Model model){
-        List<UserAccountDTO> userAccounts = DataStorage.allUserAccountInfo();
+        List<UserAccountDTO> userAccounts = AccountTable.allUserAccountInfo();
 
         model.addAttribute("user_accounts", userAccounts);
-        logger.info(userAccounts.toString());
+
         return "/user/list";
     }
 
     @GetMapping("{userID}")
     public String profile(@PathVariable("userID") String userID, Model model){
-        UserAccountDTO userAccountDTO = new UserAccountDTO(DataStorage.lookUpUserInfo(userID));
+        UserAccountDTO userAccountDTO = AccountTable.lookUpUserInfo(userID).toUserAccountDTO();
 
         model.addAttribute("user_account", userAccountDTO);
         return "user/profile";

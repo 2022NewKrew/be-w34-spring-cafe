@@ -1,4 +1,7 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.model.data_storage;
+
+import com.kakao.cafe.model.UserAccount;
+import com.kakao.cafe.model.UserAccountDTO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +14,7 @@ import java.util.Map;
  * DB 대신 임시로 사용하는 저장소입니다.
  *
  */
-public class DataStorage {
+public class AccountTable {
     public static final Map<String, UserAccount> DB = new HashMap<>();
 
     /**
@@ -48,7 +51,7 @@ public class DataStorage {
         List<UserAccountDTO> userAccountList = new ArrayList<>();
 
         for(Map.Entry<String, UserAccount> entry: DB.entrySet()){
-            userAccountList.add(new UserAccountDTO(entry.getValue()));
+            userAccountList.add(entry.getValue().toUserAccountDTO());
         }
 
         return userAccountList;
