@@ -12,4 +12,8 @@ public interface UserRepository {
     List<User> findAll();
 
     Optional<User> findByUserId(String userId);
+
+    Optional<User> findById(Long id);
+
+    void updateUser(Long id, User updateUser);
 }

@@ -28,4 +28,14 @@ public class MemoryUserRepository implements UserRepository{
                 .filter(member -> member.getUserId().equals(userId))
                 .findAny();
     }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return Optional.ofNullable(store.get(id));
+    }
+
+    @Override
+    public void updateUser(Long id, User updateUser) {
+        store.replace(id,updateUser);
+    }
 }
