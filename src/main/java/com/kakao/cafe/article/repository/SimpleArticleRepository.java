@@ -20,7 +20,7 @@ public class SimpleArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(Long id) {
-        return Optional.of(articles.get(Math.toIntExact(id)));
+        return Optional.of(articles.get(Math.toIntExact(id - 1)));
     }
 
     @Override
