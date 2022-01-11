@@ -24,9 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String signUp(String userId, String password, String name, String email) {
-        int index = users.size() + 1;
-        User user = new User(index,userId, password, name, email);
+    public String signUp(User user) {
         users.add(user);
         return "redirect:/users";
     }
