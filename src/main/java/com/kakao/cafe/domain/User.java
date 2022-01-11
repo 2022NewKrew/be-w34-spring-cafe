@@ -1,23 +1,14 @@
 package com.kakao.cafe.domain;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
-@RequiredArgsConstructor
+@Builder
+@Getter
 public class User {
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
 }

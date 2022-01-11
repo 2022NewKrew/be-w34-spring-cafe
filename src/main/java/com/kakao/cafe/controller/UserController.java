@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    public String findAll(Model model) {
+    public String getAll(Model model) {
         List<User> users = userService.findAll();
         model.addAttribute("users", users.stream()
                 .map(UserQueryResponseDto::new)
@@ -30,8 +30,8 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/{userId}")
-    public String findUser(@PathVariable("userId") String userId, Model model) {
+    @GetMapping("/profiles/{userId}")
+    public String getUserProfile(@PathVariable("userId") String userId, Model model) {
         User foundUser = userService.findUserByUserId(userId);
         UserProfileResponseDto userProfileResponseDto = new UserProfileResponseDto(foundUser);
         model.addAttribute("user", userProfileResponseDto);
@@ -40,7 +40,7 @@ public class UserController {
 
     @PostMapping()
     public String signUp(@ModelAttribute UserSignUpRequestDto userSignUpRequestDto) {
-        userService.singUp(userSignUpRequestDto);
+        userService.signUp(userSignUpRequestDto);
         return "redirect:/users";
     }
 

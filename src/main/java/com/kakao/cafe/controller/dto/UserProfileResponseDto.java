@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 public class UserProfileResponseDto {
 
-    private final String name;
+    private final String userId;
     private final String email;
 
     public UserProfileResponseDto(User foundUser) {
-        name = foundUser.getName();
+        userId = foundUser.getUserId();
         email = foundUser.getEmail();
     }
 }
