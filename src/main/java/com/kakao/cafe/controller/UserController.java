@@ -35,7 +35,7 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{userId}")
     public String getUser(@PathVariable String userId, Model model) {
         UserDto user = userService.read(userId).get();
         model.addAttribute("user", user);
