@@ -30,8 +30,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String create(@ModelAttribute UserCreateRequest requestDto) {
-        userService.create(requestDto.toEntity());
+    public String save(@ModelAttribute UserCreateRequest requestDto) {
+        userService.save(requestDto.toEntity());
         return "redirect:/users";
     }
 
