@@ -3,7 +3,7 @@ package com.kakao.cafe.user.service;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class SignUpResultViewDTO {
-    public String email;
+public class GetProfileResponseDTO {
     public String nickName;
+    public String email;
 }

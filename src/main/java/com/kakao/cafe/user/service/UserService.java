@@ -15,15 +15,14 @@ public class UserService {
 
     public void createUser(String email, String nickName, String passWord, LocalDateTime signUpDate) {
         userRepository.persist(new CreateUserDTO(email, nickName, passWord, signUpDate));
-//        userRepository.persist(new User(email, nickName, passWord, signUpDate));
     }
 
-    public SignUpResultViewDTO getSignUpResultViewData(Long userId) {
+    public GetSignUpResultResponseDTO getSignUpResultViewData(Long userId) {
         User user = userRepository.find(userId);
-        return new SignUpResultViewDTO(user.getEmail(), user.getNickName());
+        return new GetSignUpResultResponseDTO(user.getEmail(), user.getNickName());
     }
 
-    public AllUserViewDTO getAllUserViewData(Long startIndex, Long endIndex) {
+    public FindAllUserResponseDTO getAllUserViewData(Long startIndex, Long endIndex) {
         ArrayList<User> userCollection = userRepository.findAll();
         if (startIndex < 0) {
             startIndex = 0L;
@@ -32,23 +31,27 @@ public class UserService {
             endIndex = userCollection.size() + 1L;
         }
         if (startIndex > userCollection.size() || startIndex >= endIndex) {
-            return new AllUserViewDTO(new ArrayList<User>());
+            return new FindAllUserResponseDTO(new ArrayList<User>());
         }
         Stream<User> stream = userCollection.stream();
         if (startIndex > 0) {
             stream = stream.skip(startIndex);
         }
-        return new AllUserViewDTO(stream.limit(endIndex - startIndex).collect(Collectors.toCollection(ArrayList::new)));
+        return new FindAllUserResponseDTO(stream.limit(endIndex - startIndex).collect(Collectors.toCollection(ArrayList::new)));
     }
 
-    public AllUserViewDTO getAllUserViewData(Long startIndex) {
+    public FindAllUserResponseDTO getAllUserViewData(Long startIndex) {
         ArrayList<User> users = userRepository.findAll()
                 .stream().skip(startIndex).collect(Collectors.toCollection(ArrayList::new));
-        return new AllUserViewDTO(users);
+        return new FindAllUserResponseDTO(users);
     }
 
-    public ProfileViewDTO getUserProfile(Long userId) {
+    public GetProfileResponseDTO getUserProfile(Long userId) {
         User user = userRepository.find(userId);
-        return new ProfileViewDTO(user.getNickName(), user.getEmail());
+        return new GetProfileResponseDTO(user.getNickName(), user.getEmail());
+    }
+
+    public String findUserNickNameById(Long userId) {
+        return userRepository.find(userId).getNickName();
     }
 }

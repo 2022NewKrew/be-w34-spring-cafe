@@ -1,10 +1,9 @@
 package com.kakao.cafe.user.service;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 @AllArgsConstructor
-public class ProfileViewDTO {
-    public String nickName;
+public class GetSignUpResultResponseDTO {
     public String email;
+    public String nickName;
 }

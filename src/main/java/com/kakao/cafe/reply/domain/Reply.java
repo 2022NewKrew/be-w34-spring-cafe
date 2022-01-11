@@ -1,14 +1,17 @@
 package com.kakao.cafe.reply.domain;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Reply {
-    private Long replayId;
-    private Long articleId;
-    private Long authorId;
-    private String contents;
+    private final Long replayId;
+    private final Long articleId;
+    private final Long authorId;
+    private final String contents;
+    private final LocalDateTime writeTime;
 }

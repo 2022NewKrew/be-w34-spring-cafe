@@ -48,7 +48,7 @@ class UserServiceTest {
         userService.createUser("email1@gmail.com", "춘식이", "12345", LocalDateTime.now());
 
         // when
-        SignUpResultViewDTO signUpResultViewDTO = userService.getSignUpResultViewData(0L);
+        GetSignUpResultResponseDTO signUpResultViewDTO = userService.getSignUpResultViewData(0L);
 
         // then
         assertThat(signUpResultViewDTO.email).isEqualTo("email1@gmail.com");
@@ -64,12 +64,12 @@ class UserServiceTest {
         }
 
         // when
-        AllUserViewDTO allUserViewDTO1 = userService.getAllUserViewData(0L, 10L);
-        AllUserViewDTO allUserViewDTO2 = userService.getAllUserViewData(0L, 0L);
-        AllUserViewDTO allUserViewDTO3 = userService.getAllUserViewData(-1L, 5L);
-        AllUserViewDTO allUserViewDTO4 = userService.getAllUserViewData(10L, 1L);
-        AllUserViewDTO allUserViewDTO5 = userService.getAllUserViewData(0L);
-        AllUserViewDTO allUserViewDTO6 = userService.getAllUserViewData(10L, 100L);
+        FindAllUserResponseDTO allUserViewDTO1 = userService.getAllUserViewData(0L, 10L);
+        FindAllUserResponseDTO allUserViewDTO2 = userService.getAllUserViewData(0L, 0L);
+        FindAllUserResponseDTO allUserViewDTO3 = userService.getAllUserViewData(-1L, 5L);
+        FindAllUserResponseDTO allUserViewDTO4 = userService.getAllUserViewData(10L, 1L);
+        FindAllUserResponseDTO allUserViewDTO5 = userService.getAllUserViewData(0L);
+        FindAllUserResponseDTO allUserViewDTO6 = userService.getAllUserViewData(10L, 100L);
 
         // then
         assertThat(allUserViewDTO1.allUserDataList.size()).isEqualTo(10);
@@ -89,7 +89,7 @@ class UserServiceTest {
         userService.createUser("email1@gmail.com", "춘식이", "12345", LocalDateTime.now());
 
         // when
-        ProfileViewDTO profileViewDTO = userService.getUserProfile(0L);
+        GetProfileResponseDTO profileViewDTO = userService.getUserProfile(0L);
 
         // then
         assertThat(profileViewDTO.email).isEqualTo("email1@gmail.com");
@@ -100,10 +100,10 @@ class UserServiceTest {
     @DisplayName("공백 DTO 생성 테스트")
     void testEmptyDTO() throws Exception {
         // given
-        AllUserViewDTO allUserViewDTO;
+        FindAllUserResponseDTO allUserViewDTO;
 
         // when
-        allUserViewDTO = new AllUserViewDTO(new ArrayList<User>());
+        allUserViewDTO = new FindAllUserResponseDTO(new ArrayList<User>());
 
         // then
         assertThat(allUserViewDTO.allUserDataList.size()).isEqualTo(0);

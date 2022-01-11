@@ -7,15 +7,20 @@ import java.util.HashMap;
 
 public class UserRepository {
     private static Long idSequence = 0L;
-    private static HashMap<Long, User> userDB = new HashMap<>();
+    private final static HashMap<Long, User> userDB = new HashMap<>();
 
-    private static UserRepository userRepository = new UserRepository();
+    private final static UserRepository userRepository = new UserRepository();
+
+    public static UserRepository getRepository() {
+        return userRepository;
+    }
 
     private UserRepository() {
     }
 
-    public static UserRepository getRepository() {
-        return userRepository;
+    public void clear() {
+        idSequence = 0L;
+        userDB.clear();
     }
 
     public User find(Long id) {
@@ -26,18 +31,9 @@ public class UserRepository {
         return new ArrayList<>(userDB.values());
     }
 
-    public Long persist(CreateUserDTO dto) throws IllegalArgumentException{
+    public void persist(CreateUserDTO dto) {
         userDB.put(idSequence, new User(idSequence, dto.email, dto.nickName, dto.password, dto.signUpDate));
         idSequence += 1;
-        return idSequence;
     }
 
-    public void clear() {
-        idSequence = 0L;
-        userDB.clear();
-    }
-
-    public Long getLastIdSequenceNumber() {
-        return idSequence;
-    }
 }

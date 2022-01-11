@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Getter
-public class AllUserViewDTO {
+public class FindAllUserResponseDTO {
     public ArrayList<OneUserDataDTO> allUserDataList;
 
-    public AllUserViewDTO(ArrayList<User> list) {
+    public FindAllUserResponseDTO(ArrayList<User> list) {
         this.allUserDataList = list.stream().map(user -> new OneUserDataDTO(user.getNickName(), user.getEmail(), user.getSignUpDate().toString())).collect(Collectors.toCollection(ArrayList::new));
     }
 
