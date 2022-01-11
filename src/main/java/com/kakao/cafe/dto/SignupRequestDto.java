@@ -2,10 +2,10 @@ package com.kakao.cafe.dto;
 
 public class SignupRequestDto {
 
-    String userId;
-    String password;
-    String name;
-    String email;
+    private final String userId;
+    private final String password;
+    private final String name;
+    private final String email;
 
     public SignupRequestDto(String userId, String password, String name, String email) {
         this.userId = userId;

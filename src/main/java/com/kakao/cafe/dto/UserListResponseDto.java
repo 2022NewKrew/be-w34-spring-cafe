@@ -2,9 +2,9 @@ package com.kakao.cafe.dto;
 
 public class UserListResponseDto {
 
-    String userId;
-    String name;
-    String email;
+    private final String userId;
+    private final String name;
+    private final String email;
 
     public UserListResponseDto(String userId, String name, String email) {
         this.userId = userId;

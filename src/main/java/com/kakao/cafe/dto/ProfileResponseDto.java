@@ -2,8 +2,8 @@ package com.kakao.cafe.dto;
 
 public class ProfileResponseDto {
 
-    String name;
-    String email;
+    private final String name;
+    private final String email;
 
     public ProfileResponseDto(String name, String email) {
         this.name = name;
