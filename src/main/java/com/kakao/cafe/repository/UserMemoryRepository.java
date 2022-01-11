@@ -27,4 +27,9 @@ public class UserMemoryRepository implements UserRepository {
     public User findById(String userId) {
         return userList.get(userId);
     }
+
+    @Override
+    public void update(User user) {
+
+    }
 }

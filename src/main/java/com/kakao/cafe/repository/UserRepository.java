@@ -11,4 +11,6 @@ public interface UserRepository {
     List<User> findAll();
 
     User findById(String userId);
+
+    void update(User user);
 }

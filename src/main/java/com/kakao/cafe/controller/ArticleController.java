@@ -1,37 +1,34 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.dto.ArticleResponseDto;
-import com.kakao.cafe.controller.dto.QuestionDto;
+import com.kakao.cafe.controller.dto.ArticleDto;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.util.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/articles")
 public class ArticleController {
+
     private final ArticleService postService;
+    private final Validator validator;
 
-    @GetMapping("qna/form")
-    public String getForm() {
-        return "qna/form";
-    }
-
-    @PostMapping("/questions")
-    public String createQuestion(@ModelAttribute QuestionDto questionDto) {
-        postService.createPost(questionDto);
+    @PostMapping("")
+    public String createQuestion(@ModelAttribute ArticleDto articleDto) {
+        validator.ArticleCheck(articleDto);
+        postService.createPost(articleDto);
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{id}")
+    @GetMapping("/{id}")
     public String getArticleInfo(@PathVariable Long id, Model model) {
         ArticleResponseDto article = postService.findById(id);
         model.addAttribute("article", article);
-        return "qna/show";
+        return "qna/detail";
     }
 }

@@ -38,9 +38,8 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호 불일치");
         }
         user.updateEmailAndName(dto.getEmail(), dto.getName());
+        userRepository.update(user);
     }
-
-
 
     private boolean isAlreadyExist(UserJoinDto dtoUser) {
         return userRepository.findAll().stream().anyMatch(user -> user.getUserId().equals(dtoUser.getUserId()));

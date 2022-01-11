@@ -13,24 +13,29 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ArticleJdbcRepository implements ArticleRepository {
 
+    private static AtomicLong id = new AtomicLong(0L);
     private final JdbcTemplate jdbcTemplate;
 
     public ArticleJdbcRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.execute("create table article (id BIGINT NOT NULL, writer varchar(15), title varchar(50), content varchar(255), createdAt DATE, numOfComment number)");
+        jdbcTemplate.execute("create table article (id BIGINT NOT NULL, writer varchar(15), title varchar(50), content TEXT, createdAt DATE, numOfComment number)");
     }
 
     @Override
-    public void save(Article article) {
+    public Long save(Article article) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("article");
 
+        long articleId = id.incrementAndGet();
+        article.setArticleId(articleId);
+
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("id", article.getPostId());
+        parameters.put("id", articleId);
         parameters.put("content", article.getContent());
         parameters.put("title", article.getTitle());
         parameters.put("writer", article.getWriter());
@@ -38,6 +43,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
         parameters.put("numOfComment", article.getNumOfComment());
 
         jdbcInsert.execute(new MapSqlParameterSource(parameters));
+        return articleId;
     }
 
     @Override

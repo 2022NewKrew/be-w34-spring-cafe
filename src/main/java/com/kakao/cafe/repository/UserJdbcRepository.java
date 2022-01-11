@@ -22,7 +22,7 @@ public class UserJdbcRepository implements UserRepository{
     public UserJdbcRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
 
-        jdbcTemplate.execute("create table users (id varchar(15) PRIMARY KEY, email varchar(30), name varchar(15), password varchar(30))");
+        jdbcTemplate.execute("create table users (id varchar(15) PRIMARY KEY, email varchar(40), name varchar(20), password varchar(30))");
     }
 
     @Override
@@ -49,6 +49,11 @@ public class UserJdbcRepository implements UserRepository{
         List<User> query = jdbcTemplate.query("select * from users where id=?", userRowMapper(), userId);
 
         return query.stream().findAny().orElseThrow(() -> new NoSuchUser("그런 사용자는 없습니다."));
+    }
+
+    @Override
+    public void update(User user) {
+        jdbcTemplate.update("update users set name=?, email=? where id = ?", user.getName(), user.getEmail(), user.getUserId());
     }
 
     private RowMapper<User> userRowMapper() {
