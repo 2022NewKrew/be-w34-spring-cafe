@@ -17,11 +17,6 @@ public class UserController {
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final List<User> users = new ArrayList<>();
 
-    @GetMapping("user/signup")
-    public String getSignup() {
-        return "user/form";
-    }
-
     @PostMapping("users")
     public String postSignup(String userId, String password, String name, String email) {
         int uid = users.size() + 1;
