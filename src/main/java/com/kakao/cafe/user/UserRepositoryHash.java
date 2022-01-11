@@ -6,7 +6,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * UserRepository의 구현체입니다.
  * Database를 사용하면 안되어 HashMap으로 데이터베이스를 구성합니다.
+ *
+ * @author jm.hong
  */
 @Repository
 public class UserRepositoryHash implements UserRepository {
@@ -36,6 +39,7 @@ public class UserRepositoryHash implements UserRepository {
 
     @Override
     public Long save(User user) {
+
         user.setId(autoIncrementNumber);
         inMemoryDatabase.put(autoIncrementNumber++, user);
         return autoIncrementNumber;
@@ -48,6 +52,7 @@ public class UserRepositoryHash implements UserRepository {
 
     @Override
     public List<User> findAll() {
+
         // TODO stream 으로 변경
         List<User> users = new ArrayList<>();
         List<Long> keys = new ArrayList<>(inMemoryDatabase.keySet());
@@ -62,7 +67,6 @@ public class UserRepositoryHash implements UserRepository {
     @Override
     public boolean update(User user) {
 
-
         User origin = inMemoryDatabase.get(user.getId());
 
         if (origin == null) {
@@ -74,7 +78,6 @@ public class UserRepositoryHash implements UserRepository {
         origin.setEmail(user.getEmail());
 
         inMemoryDatabase.put(user.getId(), origin);
-
 
         return true;
     }

@@ -5,6 +5,11 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
+/**
+ * 질문글 생성폼에대한 DTO입니다.
+ *
+ * @author jm.hong
+ */
 @Getter
 @Setter
 public class QuestionCreateDto {

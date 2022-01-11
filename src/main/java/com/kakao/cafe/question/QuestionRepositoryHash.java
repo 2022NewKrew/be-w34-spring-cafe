@@ -7,6 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * HashMap 으로 만든 QuestionRepository 의 구현체입니다.
+ * 생성시 2개의 질문글을 등록합니다.
+ *
+ * @author jm.hong
+ */
 @Repository
 public class QuestionRepositoryHash implements QuestionRepository {
 
