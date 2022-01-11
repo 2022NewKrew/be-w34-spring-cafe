@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserMapper {
-    private UserMapper() {}
+    private UserMapper() {
+    }
 
     public static User convertJoinUserDtoToEntity(JoinUserRequestDto joinUserRequestDto) {
         return new User(joinUserRequestDto.getUserId(),
