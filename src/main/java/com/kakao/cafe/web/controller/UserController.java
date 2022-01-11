@@ -20,12 +20,6 @@ public class UserController {
     private static final List<User> users = new ArrayList<>();
     private static int sequence = 0;
 
-    @GetMapping("/user/form")
-    public String form() {
-        logger.info("GET /user/form: response user form page");
-        return "user/form";
-    }
-
     @PostMapping("/users")
     public String createUser(User user) {
         logger.info("POST /users: request {}", user);
