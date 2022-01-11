@@ -31,19 +31,38 @@
             </tbody>
         </table>
         <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link border-0 text-dark" href="#" aria-label="Previous">
+            {{#posts.hasPrev}}
+                <li class="page-item">
+                    <a class="page-link border-0 text-dark" href="list?page={{posts.prev}}" aria-label="Previous">
                     <span aria-hidden="true">&lt;</span>
-                </a>
-            </li>
+                    </a>
+                </li>
+            {{/posts.hasPrev}}
+            {{^posts.hasPrev}}
+                <li class="page-item disabled">
+                    <a class="page-link border-0 text-black-50" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&lt;</span>
+                    </a>
+                </li>
+            {{/posts.hasPrev}}
             {{#posts.pageList}}
-                <li class="page-item"><a class="page-link border-0 text-dark" href="#">{{this}}</a></li>
+                <li class="page-item"><a class="page-link border-0 text-dark" href="list?page={{this}}">{{this}}</a>
+                </li>
             {{/posts.pageList}}
-            <li class="page-item">
-                <a class="page-link border-0 text-dark" href="#" aria-label="Next">
+            {{#posts.hasNext}}
+                <li class="page-item">
+                    <a class="page-link border-0 text-dark" href="list?page={{posts.next}}" aria-label="Next">
                     <span aria-hidden="true">&gt;</span>
-                </a>
-            </li>
+                    </a>
+                </li>
+            {{/posts.hasNext}}
+            {{^posts.hasNext}}
+                <li class="page-item disabled">
+                    <a class="page-link border-0 text-black-50" href="#" aria-label="Next">
+                        <span aria-hidden="true">&gt;</span>
+                    </a>
+                </li>
+            {{/posts.hasNext}}
 
         </ul>
     </section>

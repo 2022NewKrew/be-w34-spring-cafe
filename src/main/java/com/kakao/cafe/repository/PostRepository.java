@@ -40,7 +40,7 @@ public class PostRepository {
                 .viewCount(10L)
                 .build()
                 .init());
-        IntStream.rangeClosed(1, 50).forEach(value -> {
+        IntStream.rangeClosed(1, 100).forEach(value -> {
             postList.add(Post.builder()
                     .postId(1L)
                     .title(String.format("Dummy Post %d", value))
@@ -57,7 +57,7 @@ public class PostRepository {
     }
 
     public Page<Post> findAll(Pageable pageable) {
-        int totalPage = (int) Math.ceil(postList.size() / (double) pageable.getSize()) * 10;
+        int totalPage = (int) Math.ceil(postList.size() / (double) pageable.getSize());
         int fromIndex = pageable.getPage() * pageable.getSize();
         if (fromIndex >= postList.size())
             return new Page<Post>(new ArrayList<>(), totalPage, pageable);

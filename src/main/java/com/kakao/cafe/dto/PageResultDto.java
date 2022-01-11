@@ -19,7 +19,8 @@ public class PageResultDto<DTO, EN> {
     private int size;
     private int start, end;
 
-    private boolean prev, next;
+    private int prev, next;
+    private boolean hasPrev, hasNext;
 
     private List<Integer> pageList;
 
@@ -35,9 +36,13 @@ public class PageResultDto<DTO, EN> {
 
         int tempEnd = (int) (Math.ceil(page / 10.0)) * 10;
         start = tempEnd - 9;
-        prev = start > 1;
+        hasPrev = start > 1;
         end = totalPage > tempEnd ? tempEnd : totalPage;
-        next = totalPage > tempEnd;
+        hasNext = totalPage > tempEnd;
+        if (hasPrev)
+            prev = start - 1;
+        if (hasNext)
+            next = end + 1;
 
         pageList = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
     }
