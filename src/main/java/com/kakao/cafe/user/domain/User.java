@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 public class User {
 
+    private Long id;
     private final String username;
     private final String password;
     private final String name;
     private final String email;
-    private Long id;
 
     @Builder
     public User(String username, String password, String name, String email) {
