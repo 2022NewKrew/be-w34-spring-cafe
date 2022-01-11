@@ -62,7 +62,22 @@ class UserRepositoryTest {
     }
 
     @Test
-    void get() {
+    void getById() {
+        User user = subject.getById(1);
+
+        assertNotNull(user);
+        assertEquals(1, user.getId());
+    }
+
+    @Test
+    void getById_nonExisting() {
+        User user = subject.getById(999);
+
+        assertNull(user);
+    }
+
+    @Test
+    void getByUserId() {
         User user = subject.getByUserId("id");
 
         assertNotNull(user);
@@ -70,7 +85,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void get_nonExisting() {
+    void getByUserId_nonExisting() {
         User user = subject.getByUserId("id1");
 
         assertNull(user);

@@ -19,7 +19,7 @@ public class UserRepository {
     @Nullable
     public User create(SignUp signUp) {
         // NOTE 중복 확인을 Repository에서 해야 할 지, Service에서 해야 할지?
-        User existing = find(User::getUserId, signUp.getUserId()).orElse(null);
+        User existing = getBy(User::getUserId, signUp.getUserId()).orElse(null);
         if (existing != null) {
             // NOTE Exception을 던지는 것이 더 나을 것 같다. 옳은 접근인가?
             return null;
@@ -36,17 +36,17 @@ public class UserRepository {
 
     @Nullable
     public User getById(long id) {
-        return find(User::getId, id).orElse(null);
+        return getBy(User::getId, id).orElse(null);
     }
 
     @Nullable
     public User getByUserId(String userId) {
-        return find(User::getUserId, userId).orElse(null);
+        return getBy(User::getUserId, userId).orElse(null);
     }
 
     @Nullable
     public User login(String userId, String password) {
-        Optional<User> found = find(User::getUserId, userId);
+        Optional<User> found = getBy(User::getUserId, userId);
         if (found.isEmpty()) {
             return null;
         }
@@ -58,7 +58,7 @@ public class UserRepository {
         return user;
     }
 
-    private <T> Optional<User> find(Function<User, T> getter, T value) {
+    private <T> Optional<User> getBy(Function<User, T> getter, T value) {
         return data.stream()
                 .filter(user -> getter.apply(user).equals(value))
                 .findFirst();
