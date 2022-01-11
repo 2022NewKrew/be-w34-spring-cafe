@@ -1,41 +1,60 @@
 package com.kakao.cafe.module.controller;
 
-import com.kakao.cafe.module.model.dto.UserDto;
 import com.kakao.cafe.module.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.kakao.cafe.module.model.dto.UserDtos.*;
 
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
-    @PostMapping("/create")
-    public String signUp(UserDto userDto){
-        userService.signUp(userDto);
-        return "redirect:/users/list";
+    @PostMapping("")
+    public String signUp(UserSignUpDto userSignUpDto) {
+        userService.signUp(userSignUpDto);
+        logger.info("Create User : {}", userSignUpDto.getName());
+        return "redirect:/users";
     }
 
-    @GetMapping("/list")
-    public String userList(Model model){
+    @GetMapping("")
+    public String userList(Model model) {
         List<UserDto> userList = userService.userList();
         model.addAttribute("userList", userList);
+        logger.info("Retrieve {} users", userList.size());
         return "user/list";
     }
 
-    @GetMapping("/{sn}")
-    public String profile(@PathVariable Long sn, Model model){
-        UserDto user = userService.findUser(sn);
+    @GetMapping("/{id}")
+    public String profile(@PathVariable Long id, Model model) {
+        UserDto user = userService.findUser(id);
         model.addAttribute("user", user);
+        logger.info("Get User Profile : {}", id);
         return "user/profile";
+    }
+
+    @GetMapping("/{id}/form")
+    public String getUpdateForm(@PathVariable Long id, Model model) {
+        UserDto user = userService.findUser(id);
+        model.addAttribute("user", user);
+        logger.info("Get User Update Form : {}", id);
+        return "user/updateForm";
+    }
+
+    @PutMapping("/{id}")
+    public String updateUser(@PathVariable Long id, UserUpdateDto userUpdateDto) {
+        userService.updateUser(id, userUpdateDto);
+        logger.info("Update User : {}", id);
+        return "redirect:/users";
     }
 }
