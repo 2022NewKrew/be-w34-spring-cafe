@@ -17,9 +17,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUserId(String userId) {
+        return null;
+    }
+
+    @Override
     public List<User> findAllUser() {
         return userRepository.findAll();
     }
+
 
     @Override
     public void join(User user) throws IllegalArgumentException {

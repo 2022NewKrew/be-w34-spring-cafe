@@ -13,10 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.assertj.core.api.Assertions.tuple;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
 import static org.mockito.Mockito.never;
@@ -29,7 +27,42 @@ class UserServiceImplTest {
     @Mock
     UserRepository userRepository;
 
-    @DisplayName("모든 유저의 목록을 조회할 수 있다")
+    @DisplayName("유저 ID로 사용자를 조회할 수 있다")
+    @Test
+    void checkFindUserByUserId() {
+        // given
+        Optional<User> expectedUser = Optional.of(new User("2wls", "0224", "윤이진", "483759@naver.com"));
+        String userId = "2wls";
+        given(userRepository.findByUserId(userId))
+                .willReturn(expectedUser);
+
+        // when
+        User user = userService.findByUserId(userId);
+
+        //then
+        verify(userRepository).findByUserId(userId);
+        assertThat(user)
+                .extracting("userId", "password", "name", "email")
+                .isEqualTo(tuple("2wls", "0224", "윤이진", "483759@naver.com"));
+    }
+
+    @DisplayName("존재하지 않는 유저 ID로 사용자 조회를 할 수 없다")
+    @Test
+    void checkFindNonExistUserByUserIdException() {
+        // given
+        String userIdThatDoesNotExist = "2wls";
+        given(userRepository.findByUserId(userIdThatDoesNotExist))
+                .willReturn(Optional.empty());
+
+        // when
+        ThrowableAssert.ThrowingCallable runnable = () -> userService.findByUserId(userIdThatDoesNotExist);
+
+        //then
+        verify(userRepository).findByUserId(userIdThatDoesNotExist);
+        assertThatThrownBy(runnable).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("모든 사용자의 목록을 조회할 수 있다")
     @Test
     void checkFindAllUserList() {
         // given
@@ -44,6 +77,7 @@ class UserServiceImplTest {
         List<User> userList = userService.findAllUser();
 
         //then
+        verify(userRepository).findAll();
         assertThat(userList)
                 .extracting("userId", "password", "name", "email")
                 .containsExactly(
@@ -79,7 +113,7 @@ class UserServiceImplTest {
         ThrowableAssert.ThrowingCallable runnable = () -> userService.join(user);
 
         //then
-        assertThatThrownBy(runnable).isInstanceOf(IllegalArgumentException.class);
         verify(userRepository, never()).save(any(User.class));
+        assertThatThrownBy(runnable).isInstanceOf(IllegalArgumentException.class);
     }
 }
