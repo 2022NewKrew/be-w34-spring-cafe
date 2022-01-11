@@ -12,4 +12,5 @@
 ## 구현내용
 - Domain에 User 및 UserList 객체 생성.
 - id,email 에서의 Exception 처리.
+- mustache를 이용하여 java List를 templates 페이지에서 동적으로 출력.
 - User , UserList 객체에 Test 실행.
