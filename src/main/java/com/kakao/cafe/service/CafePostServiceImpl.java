@@ -12,7 +12,11 @@ import java.util.List;
 public class CafePostServiceImpl implements CafePostService {
 
     @Autowired
-    CafePostDao cafePostDao = new CafePostDaoImpl();
+    private CafePostDao cafePostDao;
+
+    public CafePostServiceImpl() {
+        cafePostDao = new CafePostDaoImpl();
+    }
 
     @Override
     public void writePost(Post newPost) {

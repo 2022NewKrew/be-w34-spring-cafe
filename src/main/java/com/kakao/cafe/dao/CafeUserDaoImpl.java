@@ -4,6 +4,7 @@ import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,11 @@ import java.util.Map;
 @Repository
 public class CafeUserDaoImpl implements CafeUserDao {
 
-    Map<String, User> userMap = new HashMap<>();
+    Map<String, User> userMap;
+
+    public CafeUserDaoImpl() {
+        userMap = new HashMap<>();
+    }
 
     @Override
     public void signIn(User newUser) {

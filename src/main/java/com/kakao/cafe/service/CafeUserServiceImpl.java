@@ -10,7 +10,11 @@ import java.util.List;
 @Service
 public class CafeUserServiceImpl implements CafeUserService {
 
-    private CafeUserDao cafeUserDao = new CafeUserDaoImpl();
+    private CafeUserDao cafeUserDao;
+
+    public CafeUserServiceImpl() {
+        cafeUserDao = new CafeUserDaoImpl();
+    }
 
     @Override
     public void signIn(User newUser) {

@@ -9,7 +9,11 @@ import java.util.List;
 @Repository
 public class CafePostDaoImpl implements CafePostDao {
 
-    List<Post> postList = new ArrayList<>();
+    List<Post> postList;
+
+    public CafePostDaoImpl() {
+        postList = new ArrayList<>();
+    }
 
     @Override
     public void writePost(Post newPost) {

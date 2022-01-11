@@ -16,7 +16,11 @@ import java.util.List;
 @RequestMapping(UserRedirect.USER_BASE_URL)
 public class CafeUserController {
 
-    CafeUserService cafeUserService = new CafeUserServiceImpl();
+    CafeUserService cafeUserService;
+
+    public CafeUserController () {
+        cafeUserService = new CafeUserServiceImpl();
+    }
 
     @GetMapping("/sign-in")
     String userViewSignIn() {
