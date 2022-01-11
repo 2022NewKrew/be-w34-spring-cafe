@@ -1,6 +1,7 @@
 package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.article.model.Article;
+import com.kakao.cafe.article.model.ArticlePostDto;
 import com.kakao.cafe.article.model.ArticleRequest;
 import com.kakao.cafe.article.service.ArticleService;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,7 @@ public class ArticleController {
 
     @GetMapping("/show/{id}")
     public String getArticleShowPage(@PathVariable String id, Model model){
-        Article article = articleService.getArticleById(Long.parseLong(id));
+        ArticlePostDto article = articleService.getArticleById(Long.parseLong(id));
         model.addAttribute("article", article);
 
         return "/qna/show";

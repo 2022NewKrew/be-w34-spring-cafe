@@ -1,6 +1,7 @@
 package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.model.Article;
+import com.kakao.cafe.article.model.ArticlePostDto;
 import com.kakao.cafe.article.model.ArticlePreviewDto;
 import com.kakao.cafe.article.model.ArticleRequest;
 import com.kakao.cafe.article.repository.ArticleRepository;
@@ -36,7 +37,9 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public Article getArticleById(Long id){
-        return articleRepository.findOneById(id);
+    public ArticlePostDto getArticleById(Long id){
+        Article article = articleRepository.findOneById(id);
+        return ArticlePostDto.of(article);
     }
+
 }
