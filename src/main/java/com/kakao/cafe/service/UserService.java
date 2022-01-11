@@ -9,6 +9,7 @@ public class UserService {
     private UserRepository userRepository = new UserRepository();
 
     public void userCreate(User user){
+        setNextUserSequence(user);
         userRepository.addUser(user);
     }
 
@@ -25,7 +26,7 @@ public class UserService {
         return new User("", "", "", ""); //의미없는 user객체를 반환 .
     }
 
-    public void setNextUserSequence(User user){
+    private void setNextUserSequence(User user){
         if(user == null){
             return;
         }

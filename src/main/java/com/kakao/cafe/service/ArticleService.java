@@ -9,6 +9,7 @@ public class ArticleService {
     static private ArticleRepository articleRepository = new ArticleRepository();
 
     public void articleCreate(Article article){
+        setNextArticleSequence(article); //고유번호지정
         articleRepository.addArticle(article);
     }
 
@@ -16,7 +17,7 @@ public class ArticleService {
         //validation 은 나중에 추가.
         return articleRepository.getArticles().get(Math.toIntExact(sequence));
     }
-    public void setNextArticleSequence(Article article){
+    private void setNextArticleSequence(Article article){
         if(article == null){
             return;
         }
