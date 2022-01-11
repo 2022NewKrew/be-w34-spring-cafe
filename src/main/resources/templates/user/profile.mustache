@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="kr">
+{{> layout/header}}
+<body>
+    {{> layout/navbar}}
+    <div class="container">
+        <div class="display-title">프로필 조회</div>
+        <div class="media">
+            <img class="thumbnail pull-left" src="/images/80-text.png" />
+            <div class="media-body">
+                <div>이메일: {{user.email}}</div>
+                <div>닉네임: {{user.name}}</div>
+            </div>
+        </div>
+    </div>
+    {{> layout/scripts}}
+</body>
+</html>
