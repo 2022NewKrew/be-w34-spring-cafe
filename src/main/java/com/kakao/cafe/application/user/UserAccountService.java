@@ -1,12 +1,12 @@
 package com.kakao.cafe.application.user;
 
-import com.kakao.cafe.application.dto.UserAccountEnrollCommand;
+import com.kakao.cafe.application.dto.command.UserAccountEnrollCommand;
+import com.kakao.cafe.application.exception.IdNotFoundException;
 import com.kakao.cafe.domain.user.UserAccount;
 import com.kakao.cafe.domain.user.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -17,19 +17,12 @@ public class UserAccountService {
 
     public UserAccount enroll(UserAccountEnrollCommand command) {
         duplicateCheck(command.getEmail());
-        UserAccount userAccount = UserAccount.builder()
-                .password(command.getPassword())
-                .username(command.getUsername())
-                .email(command.getEmail())
-                .createdAt(LocalDate.now())
-                .build();
-
-        return userAccountRepository.save(userAccount).orElseThrow(IllegalAccessError::new);
+        return userAccountRepository.save(command.toEntity());
     }
 
     private void duplicateCheck(String email) {
         if(userAccountRepository.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("유효하지 않는 값입니다");
         }
     }
 
@@ -39,6 +32,6 @@ public class UserAccountService {
 
     public UserAccount getUserInfo(Long id) {
         return userAccountRepository.findById(id)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new IdNotFoundException("유효하지 않는 값입니다"));
     }
 }
