@@ -5,9 +5,9 @@
 ### 회원가입
 
 
-| URL        | 기능            | Path Variable | Request Body | Response Model | Response View Name    |
-|------------|---------------|---------------|--------------|----------------|-----------------------|
-| POST /join | 입력 정보로 회원가입   | X             | X            | X              | (redirect) GET /users |
+| URL         | 기능            | Path Variable | Request Body | Response Model | Response View Name    |
+|-------------|---------------|---------------|--------------|----------------|-----------------------|
+| POST /users | 입력 정보로 회원가입   | X             | X            | X              | (redirect) GET /users |
 
 
 ### 회원 목록
@@ -18,7 +18,7 @@
 
 ### 회원 프로필
 
-| URL       | 기능        | Path Variable | Request Body | Response Model | Response View Name |
-|-----------|-----------|---------------|--------------|----------------|--------------------|
-| GET /user | 회원 프로필 조회 | userId        | X            | user           | user/profile       |
+| URL                | 기능        | Path Variable | Request Body | Response Model    | Response View Name |
+|--------------------|-----------|---------------|--------------|-------------------|--------------------|
+| GET /user/{userId} | 회원 프로필 조회 | userId        | X            | user(name, email) | user/profile       |
 
