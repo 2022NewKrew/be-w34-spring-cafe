@@ -4,10 +4,10 @@
 {{>layout/header}}
 
 <div id="main">
-    <div style="display: flex; min-width: 1040px; align-items: center">
+    <div style="display: flex; min-width: 1040px; justify-content: center">
         <div style="display: flex; flex-direction: column; margin-top:80px; min-width:680px; width: 680px">
             <span style="font-size: 32px; font-weight: 500">{{post.title}}</span>
-            <div style="display:flex; justify-content: center; color: #666; margin-top: 40px; height: 52px; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
+            <div style="display:flex; align-items: center; color: #666; margin-top: 40px; height: 52px; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
                 <span style="margin-right: 5px">작성자:</span>
                 <span style="margin-right: 32px">{{post.writer.userId}}</span>
                 <span style="margin-right: 5px">작성일자: </span>
@@ -18,12 +18,10 @@
             <div style="margin-top: 40px">
                 <span style="font-size: 16px">{{post.contents}}</span>
             </div>
-
             <div style="margin-top: 80px">
                 <span>댓글 0개</span>
                 <hr/>
             </div>
-
             <button type="button" class="post-button">
                 <a href="/" class="alt-color" style="text-decoration: none; color: white">목록으로</a>
             </button>
