@@ -1,10 +1,10 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.user.UserId;
+import com.kakao.cafe.dto.user.ProfileResponseDto;
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.dto.ProfileResponseDto;
-import com.kakao.cafe.dto.SignupRequestDto;
-import com.kakao.cafe.dto.UserListResponseDto;
+import com.kakao.cafe.dto.user.SignupRequestDto;
+import com.kakao.cafe.dto.user.UserListResponseDto;
 import com.kakao.cafe.mapper.UserMapper;
 
 import com.kakao.cafe.service.UserService;

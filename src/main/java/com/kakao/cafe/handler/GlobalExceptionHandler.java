@@ -1,6 +1,7 @@
 package com.kakao.cafe.handler;
 
 import com.kakao.cafe.exception.DuplicateUserException;
+import com.kakao.cafe.exception.NoSuchArticleException;
 import com.kakao.cafe.exception.NoSuchUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -27,6 +28,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String illegalArgument() {
         return "error/illegalargument";
+    }
+
+    @ExceptionHandler(NoSuchArticleException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String articleNotFound() {
+        return "error/nosucharticle";
     }
 
     @ExceptionHandler(BindException.class)
