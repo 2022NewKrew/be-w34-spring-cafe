@@ -1,13 +1,17 @@
-<header class="flex align-center justify-between mt-4 mb-8">
-    <a href="/">
-        <img src="/images/logo.png" alt="카카오 로고"/>
-    </a>
-    <div class="flex align-center space-x-4">
-        <button>멤버리스트</button>
-        <button class="bg-black text-white px-5 py-2">로그인</button>
-        <a href="/signup" class="bg-black text-white px-5 py-2">회원가입</a>
+<nav class="navbar navbar-fixed-top header">
+    <div class="col-md-12">
+        <div class="navbar-header">
+            <a href="/" class="navbar-brand">
+                <img src="/images/KakaoCI.png" />
+            </a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="">멤버 리스트</a></li>
+            <li><a href="" class="black-component" role="button">로그인</a></li>
+            <li><a href="/signup" class="black-component" role="button">회원가입</a></li>
+        </ul>
     </div>
-</header>
+</nav>
 
 <script>
     {{#msg}}
