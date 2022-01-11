@@ -48,4 +48,15 @@ public class UserController {
         model.addAttribute("email", matchUser.getEmail());
         return "user/profile";
     }
+
+    @GetMapping("/user/{id}/form")
+    public String updateForm(@PathVariable String id, Model model) {
+        logger.info("[updateForm] id = {}", id);
+        User selectedUser = users.stream().filter(x -> x.getUserId().equals(id)).collect(Collectors.toList()).get(0);
+        model.addAttribute("userId", selectedUser.getUserId());
+        model.addAttribute("password", selectedUser.getPassword());
+        model.addAttribute("name", selectedUser.getName());
+        model.addAttribute("email", selectedUser.getEmail());
+        return "user/updateForm";
+    }
 }
