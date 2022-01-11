@@ -6,7 +6,7 @@ import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.entity.User;
 
 public interface UserService {
-    String register(UserDto dto);
+    UserDto register(UserDto dto);
 
     PageResultDto<UserDto, User> getList(PageRequestDto requestDto);
 
