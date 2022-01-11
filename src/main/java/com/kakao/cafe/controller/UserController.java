@@ -26,7 +26,6 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @PostMapping("/users")
     public String registerUser(@RequestParam("userId") String nickName,
                                @RequestParam("name") String name,
@@ -69,7 +68,6 @@ public class UserController {
         model.addAttribute("user", modifyingUserForm);
         return "/user/updateForm";
     }
-
 
     @GetMapping("/user/form")
     public String userForm() {

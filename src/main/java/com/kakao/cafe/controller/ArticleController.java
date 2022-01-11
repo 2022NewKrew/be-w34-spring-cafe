@@ -42,5 +42,4 @@ public class ArticleController {
         model.addAttribute("article", articleShowFormWithContents);
         return "qna/show";
     }
-
 }
