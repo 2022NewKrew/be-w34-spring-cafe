@@ -1,14 +1,16 @@
 package com.kakao.cafe.web.dto;
 
 import com.kakao.cafe.domain.user.User;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class UserCreateRequestTest {
 
+    @DisplayName("toEntity 테스트")
     @Test
-    public void toEntity_테스트() {
+    public void testUserCreateRequestDto() {
         //given
         final String userId = "clo.d";
         final String password = "1234";
