@@ -1,6 +1,5 @@
 package com.kakao.cafe;
 
-import com.kakao.cafe.domain.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
