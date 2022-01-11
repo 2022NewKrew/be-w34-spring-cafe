@@ -11,15 +11,22 @@ author: bootply.com
 
 @import url(http://fonts.googleapis.com/css?family=Roboto:400);
 body {
-  background-color:#e0e0e0;
+  background-color:white;
   -webkit-font-smoothing: antialiased;
   font: normal 14px Roboto,arial,sans-serif;
+    padding-left: 5%;
+    padding-right: 5%;
 }
+
+main {
+    border: 1px solid black;
+}
+/*
 .navbar-default {background-color:#f4f4f4;margin-top:50px;border-width:0;z-index:5;}
 .navbar-default .navbar-nav > .active > a,.navbar-default .navbar-nav > li:hover > a {border:0 solid #4285f4;border-bottom-width:2px;font-weight:800;background-color:transparent;}
 .navbar-default .dropdown-menu {background-color:#ffffff;}
 .navbar-default .dropdown-menu li > a {padding-left:30px;}
-
+*/
 .header {background-color:#ffffff;border-width:0;}
 .header .navbar-collapse {background-color:#ffffff;}
 .btn,.form-control,.panel,.list-group,.well {border-radius:1px;box-shadow:0 0 0;}
@@ -88,6 +95,90 @@ h3,h4,h5 {
 /* end theme */
 
 /* template layout*/
+h4 {
+    font-size: 24px;
+}
+
+.d-flex{
+
+}
+
+.flex-column{
+    text-align: center;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.w-100{
+    width: 100%;
+}
+
+.mt-5{
+    margin-top: 5%;
+}
+
+.input-group {
+    text-align: center;
+    width: 40%;
+    margin: 0 auto;
+}
+
+.nav-menu-item{
+    margin: 10px;
+    padding: 10px;
+}
+
+.text-black{
+    color: black;
+}
+
+.text-white{
+    color: white;
+}
+
+.bg-transparent{
+    background-color: transparent;
+}
+
+.bg-dark{
+    background-color: black;
+}
+
+.nav-container {
+    vertical-align: center;
+}
+
+.navbar-brand {
+    width: 10%;
+    height: 10%;
+}
+
+.align-middle {
+
+}
+
+.w-75 {
+
+}
+
+.p-3 {
+    padding: 3%;
+}
+
+.p-5 {
+    padding: 5%;
+}
+
+.m-4 {
+    margin: 4%;
+}
+
+.bg-kakao{
+    background-color: #FEE500;
+}
+
+
+/*  */
 #subnav {
  position:fixed;
  width:100%;
@@ -200,4 +291,3 @@ h3,h4,h5 {
     padding-top: 1.4em;
     padding-right: 2.5em;
 }
-
