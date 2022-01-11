@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 @ToString
-@Getter
 public class Article {
 
     private static final AtomicLong idGenerator;
@@ -34,5 +33,29 @@ public class Article {
         this.title = title;
         this.body = body;
         this.createdAt = createdAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getAuthorName() {
+        return author.getName();
+    }
+
+    public String getAuthorUserId() {
+        return author.getUserId();
     }
 }

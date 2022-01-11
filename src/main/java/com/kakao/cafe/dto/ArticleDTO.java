@@ -34,8 +34,8 @@ public interface ArticleDTO {
         String createdAt;
 
         public static Result from(Article article) {
-            return new Result(article.getId(), article.getAuthor().getUserId(),
-                article.getAuthor().getName(), article.getTitle(), article.getBody(),
+            return new Result(article.getId(), article.getAuthorUserId(),
+                article.getAuthorName(), article.getTitle(), article.getBody(),
                 article.getCreatedAt().format(DateTimeFormatter.ofPattern(dateTimePattern)));
         }
     }
