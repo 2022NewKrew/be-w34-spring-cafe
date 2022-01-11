@@ -1,4 +1,4 @@
-package com.kakao.cafe.web;
+package com.kakao.cafe.controller;
 
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.UserService;
@@ -32,7 +32,6 @@ public class UserController {
 
     @GetMapping
     public String getUserList(Model model) {
-        logger.info("Display users' List");
         List<User> userList = userService.getUserList();
         model.addAttribute("userList", userList);
         return "user/list";
