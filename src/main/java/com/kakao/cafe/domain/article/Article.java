@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain.article;
 
+import org.apache.tomcat.jni.Local;
+
 import java.time.LocalDateTime;
 
 public class Article {
@@ -8,12 +10,18 @@ public class Article {
     private String title;
     private String content;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Article(String author, String title, String content) {
+        this(author, title, content, LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public Article(String author, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.author = author;
         this.title = title;
         this.content = content;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -38,5 +46,9 @@ public class Article {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

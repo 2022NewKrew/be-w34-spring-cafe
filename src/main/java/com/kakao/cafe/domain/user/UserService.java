@@ -30,7 +30,7 @@ public class UserService {
 
     public Long updateUser(String userId, UserUpdateRequestDto requestDto) {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
-        user.update(requestDto.getName(), requestDto.getPassword(), requestDto.getEmail());
+        user.updateProfile(new Profile(requestDto.getName(), requestDto.getEmail()), requestDto.getPassword());
         return userRepository.save(user);
     }
 
