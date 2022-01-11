@@ -27,6 +27,7 @@ public class UserService {
         if (userRepository.findUserByUserId(createDto.getUserId()).isPresent()) {
             logger.error("id : {} {}", createDto.getUserId(),
                 UserError.ALREADY_EXISTS.getMessage());
+
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                 UserError.ALREADY_EXISTS.getMessage());
         }
@@ -48,6 +49,7 @@ public class UserService {
         Optional<User> foundUser = userRepository.findUserByUserId(userId);
         if (foundUser.isEmpty()) {
             logger.error("id : {} {}", userId, UserError.NOT_FOUND.getMessage());
+
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                 UserError.NOT_FOUND.getMessage());
         }
