@@ -1,0 +1,14 @@
+{{>layout/header}}
+<link href="/css/member/joinSuccess.css" rel="stylesheet">
+{{>layout/navigationBar}}
+<div class="container" id="main">
+    <header class="post-header">
+        <p class="title">가입이 완료되었습니다!</p>
+    </header>
+    {{#member}}
+    <p class="user-info"> 이메일: {{email}}</p>
+    <p class="user-info"> 닉네임: {{nickName}}</p>
+    {{/member}}
+    <a href="/" class="btn">홈으로</a>
+</div>
+{{>layout/footer}}
