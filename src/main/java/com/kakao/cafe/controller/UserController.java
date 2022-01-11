@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping("/signup")
     public String getSignUp() {
-        return "signup.mustache";
+        return "signup";
     }
 
     @PostMapping("/user")
@@ -45,7 +45,7 @@ public class UserController {
     @GetMapping("/user")
     public String getUserList(final Model model) {
         model.addAttribute("userlist", userService.getList());
-        return "user.mustache";
+        return "user";
     }
 
     @GetMapping("/user/{id}")
@@ -59,6 +59,6 @@ public class UserController {
             model.addAttribute("user", userDto);
         } catch (NoSuchElementException ignored) {}
 
-        return "profile.mustache";
+        return "user/profile";
     }
 }

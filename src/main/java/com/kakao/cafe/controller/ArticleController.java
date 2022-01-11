@@ -29,7 +29,7 @@ public class ArticleController {
     @GetMapping("/")
     public String getArticles(final Model model) {
         model.addAttribute("articles", articleService.getList());
-        return "index.mustache";
+        return "index";
     }
 
     @GetMapping("/articles")
@@ -39,7 +39,7 @@ public class ArticleController {
 
     @GetMapping("/articles/new")
     public String newArticle() {
-        return "new.mustache";
+        return "articles/new";
     }
 
     @PostMapping("/articles")
@@ -60,6 +60,6 @@ public class ArticleController {
             model.addAttribute("article", articleDto);
         } catch (NoSuchElementException ignored) {}
 
-        return "detail.mustache";
+        return "articles/detail";
     }
 }
