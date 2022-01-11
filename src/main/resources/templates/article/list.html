@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>SLiPP Java Web Programming</title>
+    <title>회원 목록</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -40,7 +40,7 @@
                         <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
                     </ul>
                 </li>
-                <li><a href="../user/list.html"><i class="glyphicon glyphicon-user"></i></a></li>
+                <li><a href="list.html"><i class="glyphicon glyphicon-user"></i></a></li>
             </ul>
         </div>
     </div>
@@ -67,9 +67,9 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="../index.html">Posts</a></li>
+                <li class="active"><a href="/users">Articles</a></li>
                 <li><a href="../user/login.html" role="button">로그인</a></li>
-                <li><a href="../user/form.html" role="button">회원가입</a></li>
+                <li><a href="./form.html" role="button">회원가입</a></li>
                 <li><a href="#" role="button">로그아웃</a></li>
                 <li><a href="#" role="button">개인정보수정</a></li>
             </ul>
@@ -84,27 +84,22 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>사용자 아이디</th>
-                    <th>이름</th>
-                    <th>이메일</th>
+                    <th>작성자</th>
+                    <th>제목</th>
+                    <th>내용</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
+                {{#articles}}
                 <tr>
-                    <th scope="row">1</th>
-                    <td>javajigi</td>
-                    <td>자바지기</td>
-                    <td>javajigi@sample.net</td>
+                    <th scope="row">{{@index_1}}</th>
+                    <td><a href="/">{{writer}}</a> </td>
+                    <td>{{title}}</td>
+                    <td>{{contents}}</td>
                     <td><a href="#" class="btn btn-success" role="button">수정</a></td>
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>slipp</td>
-                    <td>슬립</td>
-                    <td>slipp@sample.net</td>
-                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
-                </tr>
+                {{/articles}}
                 </tbody>
             </table>
         </div>
