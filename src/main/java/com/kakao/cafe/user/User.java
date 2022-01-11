@@ -1,5 +1,7 @@
 package com.kakao.cafe.user;
 
+import java.util.Objects;
+
 public class User {
     public String userId;
     public String password;
@@ -14,7 +16,7 @@ public class User {
     }
 
     public boolean isSameUser(String targetUserId) {
-        return this.userId == targetUserId;
+        return Objects.equals(this.userId, targetUserId);
     }
 
     public String getUserId() {
