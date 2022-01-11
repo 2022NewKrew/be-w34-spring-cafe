@@ -1,0 +1,49 @@
+package com.kakao.cafe.infra.post;
+
+import com.kakao.cafe.domain.post.QuestionPost;
+import com.kakao.cafe.domain.post.QuestionPostRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
+@Repository
+public class QuestionPostMemoryRepository implements QuestionPostRepository {
+
+    private final Map<Long, QuestionPost> postMap;
+
+    public QuestionPostMemoryRepository() {
+        this.postMap = new ConcurrentHashMap<>();
+    }
+
+    @Override
+    public QuestionPost save(QuestionPost questionPost) {
+        postMap.put(questionPost.getQuestionPostId(), questionPost);
+
+        return questionPost;
+    }
+
+    @Override
+    public Optional<QuestionPost> findById(Long id) {
+        QuestionPost questionPost = postMap.get(id);
+        return Optional.of(questionPost);
+    }
+
+    @Override
+    public List<QuestionPost> findAll() {
+        return new ArrayList<>(postMap.values());
+    }
+
+    @Override
+    public void delete(Long id) {
+        postMap.remove(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        postMap.clear();
+    }
+}

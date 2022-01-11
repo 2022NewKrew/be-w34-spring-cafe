@@ -10,9 +10,37 @@ var main = {
         $('#go-home').on('click', function () {
             _this.goHome();
         })
+        $('#btn-qna-post').on('click', function () {
+            _this.qnaPost();
+        })
+        $('#btn-write').on('click', function () {
+            _this.write();
+        })
+    },
+    write : function () {
+        window.location.href = '/posts/form'
+    },
+    qnaPost : function () {
+        var data = {
+            title: $('#title').val(),
+            content: $('#question').val(),
+            userAccountId: 0
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/api/posts',
+            dataType: 'json',
+            accept: 'application/json',
+            contentType: 'application/json; charset-utf-8',
+            data: JSON.stringify(data)
+        }).done(function () {
+            window.location.href = '/';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
     },
     goHome : function () {
-        window.location.href = '/user/list'
+        window.location.href = '/'
     },
     enroll : function () {
         var data = {
@@ -22,13 +50,13 @@ var main = {
         };
         $.ajax({
             type: 'POST',
-            url: '/api/user',
+            url: '/api/users',
             dataType: 'json',
             accept: 'application/json',
             contentType: 'application/json; charset-utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            window.location.href = '/user/success';
+            window.location.href = '/users/success';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -40,13 +68,13 @@ var main = {
         };
         $.ajax({
             type: 'POST',
-            url: '/api/user/login',
+            url: '/api/users/login',
             dataType: 'json',
             contentType: 'application/json; charset-utf-8',
             data: JSON.stringify(data)
         }).done(function () {
             alert('로그인 성공');
-            window.location.href = '/'; // (1)
+            window.location.href = '/';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });

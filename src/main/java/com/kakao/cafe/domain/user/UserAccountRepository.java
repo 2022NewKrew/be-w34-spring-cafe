@@ -5,12 +5,15 @@ import java.util.Optional;
 
 public interface UserAccountRepository {
 
-    Optional<UserAccount> save(UserAccount userAccount);
+    UserAccount save(UserAccount userAccount);
 
-    Optional<UserAccount> find(Long id);
+    Optional<UserAccount> findById(Long id);
+
+    Optional<UserAccount> findByEmail(String email);
 
     List<UserAccount> findAll();
 
     void delete(Long id);
 
+    void deleteAll();
 }

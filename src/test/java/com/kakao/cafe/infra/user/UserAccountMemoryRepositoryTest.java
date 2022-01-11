@@ -3,6 +3,7 @@ package com.kakao.cafe.infra.user;
 import com.kakao.cafe.domain.user.UserAccount;
 import com.kakao.cafe.domain.user.UserAccountRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class UserAccountMemoryRepositoryImplTest {
+class UserAccountMemoryRepositoryTest {
 
     @Autowired
     UserAccountRepository accountRepository;
@@ -34,25 +35,29 @@ class UserAccountMemoryRepositoryImplTest {
             .createdAt(LocalDate.now())
             .build();
 
+    @AfterEach
+    void tearDown() {
+        accountRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("저장 테스트")
     void save() {
 
-        UserAccount result = accountRepository.save(testUser1).orElseThrow(IllegalArgumentException::new);
+        UserAccount result = accountRepository.save(testUser1);
 
-        Assertions.assertThat(result.getUserAccountId()).isNotNull();
-        Assertions.assertThat(result.getUsername()).isEqualTo(testUser1.getUsername());
-        Assertions.assertThat(result.getEmail()).isEqualTo(testUser1.getEmail());
-        Assertions.assertThat(result.getPassword()).isEqualTo(testUser1.getPassword());
+        System.out.println(result);
+        System.out.println(testUser1);
+        Assertions.assertThat(result).isEqualTo(testUser1);
     }
 
     @Test
     @DisplayName("찾기 테스트")
     void find() {
 
-        UserAccount saved = accountRepository.save(testUser1).orElseThrow(IllegalArgumentException::new);
+        UserAccount saved = accountRepository.save(testUser1);
 
-        UserAccount found = accountRepository.find(saved.getUserAccountId()).orElseThrow(IllegalArgumentException::new);
+        UserAccount found = accountRepository.findById(saved.getUserAccountId()).orElseThrow(IllegalArgumentException::new);
 
         Assertions.assertThat(found.getUserAccountId()).isEqualTo(saved.getUserAccountId());
     }
@@ -67,5 +72,4 @@ class UserAccountMemoryRepositoryImplTest {
 
         Assertions.assertThat(found.size()).isEqualTo(2);
     }
-
 }

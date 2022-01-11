@@ -1,7 +1,8 @@
-package com.kakao.cafe.presentation;
+package com.kakao.cafe.presentation.user;
 
 import com.kakao.cafe.application.user.UserAccountService;
 import com.kakao.cafe.domain.user.UserAccount;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,14 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserAccountController {
 
     private final UserAccountService userAccountService;
-
-    public UserAccountController(UserAccountService userAccountService) {
-        this.userAccountService = userAccountService;
-    }
 
     @GetMapping("/signup")
     public String signup() {
@@ -43,12 +41,10 @@ public class UserAccountController {
         return "users";
     }
 
-    @GetMapping("/detail/{id}")
+    @GetMapping("/{id}/detail")
     public String userInfo(@PathVariable(name = "id") Long id, Model model) {
         UserAccount userInfo = userAccountService.getUserInfo(id);
-        model.addAttribute("email", userInfo.getEmail());
-        model.addAttribute("username", userInfo.getUsername());
-        model.addAttribute("createdAt", userInfo.getCreatedAt());
+        model.addAttribute("userInfo", userInfo);
         return "userInfo";
     }
 }
