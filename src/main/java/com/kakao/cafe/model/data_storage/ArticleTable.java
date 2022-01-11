@@ -36,7 +36,9 @@ public class ArticleTable {
         List<ArticleDTO> articleList = new ArrayList<>();
 
         for(Map.Entry<Integer, Article> entry: DB.entrySet()){
-            articleList.add(entry.getValue().toArticleDTO());
+            ArticleDTO articleDTO = entry.getValue().toArticleDTO();
+            articleDTO.setCommentSize(entry.getValue().commentSize());
+            articleList.add(articleDTO);
         }
 
         return articleList;
