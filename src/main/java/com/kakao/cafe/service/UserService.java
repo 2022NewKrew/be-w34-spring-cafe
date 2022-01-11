@@ -4,6 +4,8 @@ import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.web.dto.UserCreateRequestDto;
 import com.kakao.cafe.web.dto.UserListResponseDto;
 import com.kakao.cafe.web.dto.UserProfileResponseDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,12 +15,14 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private static final List<User> userList = new ArrayList<>();
     private static long idNumber = 0L;
 
     public void create(UserCreateRequestDto requestDto) {
         User user = new User(++idNumber, requestDto.getUserId(), requestDto.getPassword(), requestDto.getName(), requestDto.getEmail());
         userList.add(user);
+        logger.info("{} 계정 생성", user.getUserId());
     }
 
     public List<UserListResponseDto> findAll() {
