@@ -25,16 +25,16 @@ public class UserController {
         return "/user/form";
     }
 
-    @GetMapping("/users")
-    public String showUsers(Model model) {
-        model.addAttribute("users", userService.findAll());
-        return "/user/list";
-    }
-
     @PostMapping("/users")
     public String create(@ModelAttribute UserCreateRequest requestDto) {
         userService.create(requestDto.toEntity());
         return "redirect:/users";
+    }
+
+    @GetMapping("/users")
+    public String showUsers(Model model) {
+        model.addAttribute("users", userService.findAll());
+        return "/user/list";
     }
 
     @GetMapping("/users/{userId}")
