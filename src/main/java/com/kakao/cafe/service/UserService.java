@@ -29,4 +29,11 @@ public class UserService {
         List<UserEntity> userEntityList = userRepository.findAll();
         return userMapper.toUserResDtoList(userEntityList);
     }
+
+    public UserResDto getUser(String userId) {
+        UserEntity userEntity = userRepository.findByUserId(userId)
+                .orElseThrow();
+
+        return userMapper.toUserResDto(userEntity);
+    }
 }

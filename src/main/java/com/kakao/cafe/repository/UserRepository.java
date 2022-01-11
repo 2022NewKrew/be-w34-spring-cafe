@@ -24,4 +24,10 @@ public class UserRepository {
     public Optional<UserEntity> findById(Long id) {
         return Optional.ofNullable(db.get(id));
     }
+
+    public Optional<UserEntity> findByUserId(String userId) {
+        return db.values().stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findAny();
+    }
 }
