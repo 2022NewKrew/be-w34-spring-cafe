@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserForm;
 import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,8 +47,27 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String findUser(@PathVariable("userId") String userId, Model model) {
-        User user = userService.findUser(userId);
+        User user = userService.findUser(userId).get();
         model.addAttribute("user" , user);
         return "user/profile";
+    }
+
+    @GetMapping("/users/{id}/form")
+    public String createUserUpdateForm(@PathVariable("id") Long id, Model model) {
+        User user = userService.findUser(id).get();
+        model.addAttribute("user" , user);
+        return "user/updateForm";
+    }
+    @PostMapping("/users/{id}/update")
+    public String update(@PathVariable("id") Long id, UserForm form, Model model) {
+        User updateUser = new User();
+        updateUser.setId(id);
+        updateUser.setUserId(form.getUserId());
+        updateUser.setEmail(form.getEmail());
+        updateUser.setName(form.getName());
+        updateUser.setPassword(form.getPassword());
+        userService.updateUserInfo(id,updateUser);
+
+        return "redirect:/users";
     }
 }

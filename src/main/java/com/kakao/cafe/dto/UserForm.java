@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.dto;
 
 /* User 클래스와 분기하기 위해 생성*/
 public class UserForm {

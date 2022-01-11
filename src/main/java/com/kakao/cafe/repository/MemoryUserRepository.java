@@ -19,11 +19,23 @@ public class MemoryUserRepository implements UserRepository{
 
     @Override
     public List<User> findAll() {
-        return (List<User>) store.values();
+        return new ArrayList<>(store.values());
     }
 
     @Override
-    public User findByUserId(String userId) {
-        return store.get(userId);
+    public Optional<User> findByUserId(String userId) {
+        return store.values().stream()
+                .filter(member -> member.getUserId().equals(userId))
+                .findAny();
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return Optional.ofNullable(store.get(id));
+    }
+
+    @Override
+    public void updateUser(Long id, User updateUser) {
+        store.replace(id,updateUser);
     }
 }
