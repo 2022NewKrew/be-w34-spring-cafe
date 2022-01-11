@@ -10,12 +10,11 @@ import org.springframework.stereotype.Service;
 public class JoinService {
     private final UserRepository userRepository;
 
-    public User createUser(String userId, String password, String name, String email){
-        if(userRepository.getUser(userId).isPresent()){
+    public User save(User user){
+        if(userRepository.getUser(user.getUserId()).isPresent()){
             throw new IllegalArgumentException("id가 중복됩니다.");
         }
 
-        User user = new User(userId, password, name, email);
         userRepository.save(user);
         return user;
     }
