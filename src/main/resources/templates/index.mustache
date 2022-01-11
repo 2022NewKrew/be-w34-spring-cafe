@@ -15,14 +15,14 @@
         <div style="margin-top: 40px; width: 100%">
             <span style="color: #666; font-size: 14px">전체 글 {{postListInfo.total}}개</span>
             <div style="display: flex; flex-direction: column; margin-top: 16px">
-                <div style="display: flex; align-items: center; justify-content: center; justify-content: space-between; border-top: 1px solid #eee; border-bottom: 1px solid #eee; height: 55px">
+                <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #eee; border-bottom: 1px solid #eee; height: 55px">
                     <span style="text-align: center; width: 500px">제목</span>
                     <span style="text-align: center; width: 140px">작성자</span>
                     <span style="text-align: center; width: 140px">작성일자</span>
                     <span style="text-align: center; width: 140px">조회수</span>
                 </div>
                 {{#postListInfo.postList}}
-                <a href="/questions/{{id}}" style="display: flex;  align-items: center; justify-content: center; justify-content: space-between; height: 64px; border-bottom: 1px solid #eee; color: black; font-size: 16px; text-decoration: none">
+                <a href="/questions/{{id}}" style="display: flex;  align-items: center; justify-content: space-between; height: 64px; border-bottom: 1px solid #eee; color: black; font-size: 16px; text-decoration: none">
                     <span style="text-align: left; width: 500px; padding-left: 24px">{{title}}</span>
                     <span style="text-align: center; width: 140px">{{writer.userId}}</span>
                     <span style="text-align: center; width: 140px">{{createdAt}}</span>

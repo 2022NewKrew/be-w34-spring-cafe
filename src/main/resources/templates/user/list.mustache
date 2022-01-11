@@ -11,29 +11,27 @@
                 <span style="font-size: 24px">참여자를 확인할 수 있습니다.</span>
             </div>
         </div>
-        <span style="margin-top: 40px; margin-bottom: 16px; color: #666; align-self: start">전체 멤버 {{userListInfo.total}}명</span>
-          <table class="table table-hover">
-              <thead>
-                <tr>
-                    <th>#</th>
-                    <th>사용자 아이디</th>
-                    <th>이름</th>
-                    <th>이메일</th>
-                    <th>가입 날짜</th>
-                </tr>
-              </thead>
-              <tbody>
+        <div style="margin-top: 40px; width: 100%">
+            <span style="color: #666; align-self: start">전체 멤버 {{userListInfo.total}}명</span>
+              <div style="display: flex; flex-direction: column; margin-top: 16px">
+                  <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #eee; border-bottom: 1px solid #eee; height: 55px">
+                      <span style="text-align: center; width: 80px">#</span>
+                      <span style="text-align: center; width: 140px">사용자 아이디</span>
+                      <span style="text-align: center; width: 140px">이름</span>
+                      <span style="text-align: center; width: 180px">이메일</span>
+                      <span style="text-align: center; width: 140px">가입 날짜</span>
+                  </div>
                   {{#userListInfo.userList}}
-                      <tr>
-                          <th scope="row">{{id}}</th>
-                          <td><a href="/users/{{userId}}">{{userId}}</a></td>
-                          <td>{{name}}</td>
-                          <td>{{email}}</td>
-                          <td>{{createdAt}}</td>
-                      </tr>
+                  <div  style="display: flex; align-items: center; justify-content: space-between; height: 64px; border-bottom: 1px solid #eee; color: black; font-size: 16px; text-decoration: none">
+                      <span style="text-align: center; width: 80px;">{{id}}</span>
+                      <span style="text-align: center; width: 140px;"><a href="/users/{{userId}}">{{userId}}</a></span>
+                      <span style="text-align: center; width: 140px;">{{name}}</span>
+                      <span style="text-align: center; width: 180px;">{{email}}</span>
+                      <span style="text-align: center; width: 140px;">{{createdAt}}</span>
+                  </div>
                   {{/userListInfo.userList}}
-              </tbody>
-          </table>
+              </div>
+        </div>
     </div>
 </div>
 

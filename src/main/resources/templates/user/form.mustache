@@ -8,23 +8,23 @@
       <div class="content-main" style="display: flex; flex-direction: column; align-items: center">
           <span style="margin-bottom: 50px; font-size: 32px; font-weight: bold;">회원가입</span>
           <form style="display: flex; flex-direction: column; align-items: center" name="question" method="post" action="/users">
-              <div class="form-control" style="display: flex; margin-bottom: 10px">
-                  <label for="userId" style="align-self: center; color: #666; width:80px">아이디</label>
+              <div class="input-control">
+                  <span for="userId" style="align-self: center; color: #666; width:80px">아이디</span>
                   <input id="userId" name="userId" style="border:none; outline:none" placeholder="User ID">
               </div>
-              <div class="form-control" style="display: flex; margin-bottom: 10px">
-                  <label for="password" style="align-self: center; color: #666; width:80px">비밀번호</label>
+              <div class="input-control">
+                  <span for="password" style="align-self: center; color: #666; width:80px">비밀번호</span>
                   <input type="password" id="password" style="border:none; outline:none" name="password" placeholder="Password">
               </div>
-              <div class="form-control" style="display: flex; margin-bottom: 10px">
-                  <label for="name" style="align-self: center; color: #666; width:80px">이름</label>
+              <div class="input-control">
+                  <span style="align-self: center; color: #666; width:80px">이름</span>
                   <input id="name" name="name" style="border:none; outline:none" placeholder="Name">
               </div>
-              <div class="form-control" style="display: flex; margin-bottom: 10px">
-                  <label for="email" style="align-self: center; color: #666; width:80px">이메일</label>
+              <div class="input-control">
+                  <span for="email" style="align-self: center; color: #666; width:80px">이메일</span>
                   <input type="email" id="email" name="email" style="border:none; outline:none" placeholder="Email">
               </div>
-              <button type="submit" style="margin-top: 20px; width: 230px; height: 43px; border: none; background-color: black; color:white">
+              <button type="submit" class="post-button alt-color" style="align-self: center!important; margin-top: 20px; width: 230px!important; height: 43px!important">
                   회원가입
               </button>
           </form>

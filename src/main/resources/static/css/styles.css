@@ -55,7 +55,7 @@ body {
 }
 
 .form-control {
-    border-color: #d7d7d7;
+    border-color: #eee;
 }
 
 .btn-primary {
@@ -545,7 +545,9 @@ h3, h4, h5 {
     padding-right: 2.5em;
 }
 
-.form-control {
+.input-control {
     width: 320px;
     height: 48px;
+    border: 1px solid #eee; display: flex; margin-bottom: 10px;
+    padding: 8px 16px 8px 16px;
 }
