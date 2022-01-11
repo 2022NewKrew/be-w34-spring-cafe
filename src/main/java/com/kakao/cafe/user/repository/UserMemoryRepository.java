@@ -1,6 +1,6 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.user.repository;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.user.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

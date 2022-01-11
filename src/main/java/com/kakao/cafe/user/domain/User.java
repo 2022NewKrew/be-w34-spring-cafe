@@ -1,6 +1,6 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.user.domain;
 
-import com.kakao.cafe.dto.SignUpDTO;
+import com.kakao.cafe.user.dto.SignUpDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

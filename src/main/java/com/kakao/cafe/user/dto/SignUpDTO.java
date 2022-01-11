@@ -1,4 +1,4 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
