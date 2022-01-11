@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.UserService;
+import com.kakao.cafe.user.dto.UserCreateDto;
 import com.kakao.cafe.user.dto.UserDto;
 import com.kakao.cafe.user.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/users")
@@ -22,8 +24,9 @@ public class UserController {
     private final ModelMapper modelMapper;
 
     @PostMapping(value = "/create")
-    public String insertUser(User user) {
+    public String insertUser(@ModelAttribute("user") @Valid UserCreateDto userCreateDto) {
 
+        User user = modelMapper.map(userCreateDto, User.class);
         Long id = userService.save(user);
 
         return "redirect:/";
@@ -31,7 +34,11 @@ public class UserController {
 
     @GetMapping
     public String viewUserList(Model model) {
-        List<User> users = userService.findAll();
+
+        List<UserDto> users = userService.findAll()
+                .stream()
+                .map(u -> modelMapper.map(u, UserDto.class))
+                .collect(Collectors.toList());
 
         model.addAttribute("users", users);
 

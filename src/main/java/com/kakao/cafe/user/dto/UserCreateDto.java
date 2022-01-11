@@ -3,19 +3,18 @@ package com.kakao.cafe.user.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
-public class UserUpdateDto {
+public class UserCreateDto {
     @NotEmpty
     private String userId;
     @NotEmpty
-    private String name;
+    private String password;
     @NotEmpty
+    private String name;
+    @NotEmpty @Email
     private String email;
-
-    public String getUserId() {
-        return userId;
-    }
 }
