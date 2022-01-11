@@ -4,9 +4,11 @@ public class User {
     private String userId;
     private String password;
     private String name;
+
     private String email;
 
-    public User() {}
+    public User() {
+    }
 
     public User(User user) {
         this.userId = user.getUserId();
@@ -46,5 +48,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }
 

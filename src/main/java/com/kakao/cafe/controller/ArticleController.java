@@ -11,13 +11,13 @@ import com.kakao.cafe.domain.ArticleList;
 
 @Controller
 public class ArticleController {
+    private final ArticleList articleList = new ArticleList();
 
-    private ArticleList articleList = new ArticleList();
     public ArticleController() {}
 
     @PostMapping("/questions")
     public String createArticle(String title, String content) {
-        articleList.addArticle(new Article(title, content, articleList.getArticleListSize()+1));
+        articleList.addArticle(new Article(title, content, articleList.getArticleListSize() + 1));
         return "redirect:/";
     }
 
@@ -27,7 +27,6 @@ public class ArticleController {
         return "index";
     }
 
-
     @GetMapping("/articles/{index}")
     public String showDetailedArticle(@PathVariable Integer index, Model model) {
         Article article = articleList.getArticleWithIndex(index);
@@ -35,6 +34,5 @@ public class ArticleController {
         model.addAttribute("content", article.getContent());
         return "qna/show";
     }
-
-
 }
+
