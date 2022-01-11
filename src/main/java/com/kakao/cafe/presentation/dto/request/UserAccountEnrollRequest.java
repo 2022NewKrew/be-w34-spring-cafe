@@ -1,6 +1,6 @@
-package com.kakao.cafe.presentation.dto;
+package com.kakao.cafe.presentation.dto.request;
 
-import com.kakao.cafe.application.dto.UserAccountEnrollCommand;
+import com.kakao.cafe.application.dto.command.UserAccountEnrollCommand;
 import lombok.Data;
 
 import javax.validation.constraints.Email;

@@ -1,4 +1,4 @@
-package com.kakao.cafe.presentation.dto;
+package com.kakao.cafe.presentation.dto.response;
 
 import lombok.Data;
 
