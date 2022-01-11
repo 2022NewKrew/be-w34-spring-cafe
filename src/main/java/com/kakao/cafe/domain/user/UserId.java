@@ -29,10 +29,6 @@ public class UserId {
         return Objects.equals(value, that.getValue());
     }
 
-    public boolean equals(String value) {
-        return this.value.equals(value);
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(value);

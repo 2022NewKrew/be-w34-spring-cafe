@@ -1,7 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.ProfileResponseDto;
+import com.kakao.cafe.domain.user.UserId;
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.dto.ProfileResponseDto;
 import com.kakao.cafe.dto.SignupRequestDto;
 import com.kakao.cafe.dto.UserListResponseDto;
 import com.kakao.cafe.mapper.UserMapper;
@@ -28,16 +29,6 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    @GetMapping("/")
-    public String index(Model model) {
-        List<User> userList = userService.getUserList();
-        List<UserListResponseDto> dtoList = userList.stream()
-                .map(userMapper::userToUserListResponseDto)
-                .collect(Collectors.toList());
-        model.addAttribute("users", dtoList);
-        return "users/list";
-    }
-
     @PostMapping("/users")
     public String requestSignup(@Valid SignupRequestDto dto) {
         User user = userMapper.signupRequestDtoToUser(dto);
@@ -57,7 +48,8 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String requestUserProfile(@PathVariable String userId, Model model) {
-        User user = userService.findUserById(userId);
+        UserId id = new UserId(userId);
+        User user = userService.findUserById(id);
         ProfileResponseDto dto = userMapper.userToProfileResponseDto(user);
         model.addAttribute("user", dto);
         return "users/profile";

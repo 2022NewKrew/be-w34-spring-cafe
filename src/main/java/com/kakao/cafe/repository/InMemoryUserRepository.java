@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.user.User;
 
+import com.kakao.cafe.domain.user.UserId;
 import com.kakao.cafe.domain.user.Users;
 import com.kakao.cafe.exception.DuplicateUserException;
 import java.util.List;
@@ -32,7 +33,7 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findUserById(String id) {
+    public Optional<User> findUserById(UserId id) {
         return users.findByUserId(id);
     }
 }

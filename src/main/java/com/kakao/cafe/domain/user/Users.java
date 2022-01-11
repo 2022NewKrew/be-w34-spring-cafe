@@ -25,7 +25,7 @@ public class Users {
                 .anyMatch((existingUser) -> existingUser.getId().equals(user.getId()));
     }
 
-    public Optional<User> findByUserId(String userId) {
+    public Optional<User> findByUserId(UserId userId) {
         return userList.stream()
                 .filter((user) -> user.getId().equals(userId))
                 .findAny();
