@@ -16,11 +16,11 @@ public class Users {
         return this.userList;
     }
 
-    public synchronized void add(User user) {
+    public void add(User user) {
         userList.add(user);
     }
 
-    public synchronized boolean isUserDuplicated(User user) {
+    public boolean isUserDuplicated(User user) {
         return userList.stream()
                 .anyMatch((existingUser) -> existingUser.getId().equals(user.getId()));
     }
