@@ -9,7 +9,7 @@ public class UserService {
     private UserRepository userRepository = new UserRepository();
 
     public void userCreate(User user){
-        userRepository.userAdd(user);
+        userRepository.addUser(user);
     }
 
     public List<User> getAllUser(){

@@ -14,7 +14,7 @@ public class UserRepository {
     }
 
     //회원가입처리
-    public void userAdd(User user){
+    public void addUser(User user){
         users.add(user);
     }
 }

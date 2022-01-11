@@ -12,7 +12,7 @@ public class ArticleRepository {
         articles.add(article);
     }
 
-    public List<Article> getAllAlticles(){
+    public List<Article> getArticles(){
         return articles;
     }
 }
