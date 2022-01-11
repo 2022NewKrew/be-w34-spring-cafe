@@ -22,14 +22,14 @@ public class UserController {
 
     @GetMapping
     public String findUsers(Model model) {
-        List<UserDto.userProfileResponse> readUserResponses = userService.readUsers();
+        List<UserDto.UserProfileResponse> readUserResponses = userService.readUsers();
         model.addAttribute("users", readUserResponses);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String findUser(@PathVariable("userId") String userId, Model model) {
-        UserDto.userProfileResponse readUserResponse = userService.readUser(userId);
+        UserDto.UserProfileResponse readUserResponse = userService.readUser(userId);
         model.addAttribute("user", readUserResponse);
         return "user/profile";
     }
@@ -40,8 +40,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String makeUser(@RequestParam("userId") String userId, @RequestParam("password") String password, @RequestParam("name") String name, @RequestParam("email") String email) {
-        userService.createUser(userId, password, email, name);
+    public String makeUser(@ModelAttribute("user") UserDto.CreateUserProfileRequest createUserProfileRequest) {
+        userService.createUser(createUserProfileRequest);
         return "redirect:/users";
     }
 }

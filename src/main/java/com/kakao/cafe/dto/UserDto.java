@@ -4,19 +4,19 @@ import com.kakao.cafe.domain.User;
 
 public class UserDto {
 
-    public static class userProfileResponse {
-        String userId;
-        String name;
-        String email;
+    public static class UserProfileResponse {
+        private String userId;
+        private String name;
+        private String email;
 
-        public userProfileResponse(String userId, String name, String email) {
+        public UserProfileResponse(String userId, String name, String email) {
             this.userId = userId;
             this.name = name;
             this.email = email;
         }
 
-        public static userProfileResponse of(User user) {
-            return new userProfileResponse(user.getUserId(), user.getName(), user.getEmail());
+        public static UserProfileResponse of(User user) {
+            return new UserProfileResponse(user.getUserId(), user.getName(), user.getEmail());
         }
 
         public String getUserId() {
@@ -26,6 +26,50 @@ public class UserDto {
         public String getName() {
             return name;
         }
+    }
+
+    public static class CreateUserProfileRequest {
+        private String userId;
+        private String password;
+        private String email;
+        private String name;
+
+        public User toUserEntity() {
+            return new User(userId, password, name, email);
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
     }
 
 }

@@ -21,24 +21,24 @@ public class UserService {
         this.localUserRepository = userRepository;
     }
 
-    public void createUser(String userId, String password, String email, String name) throws AlreadyExistUserException {
-        localUserRepository.findByUserId(userId).ifPresent(m -> {
+    public void createUser(UserDto.CreateUserProfileRequest createUserProfileRequest) throws AlreadyExistUserException {
+        localUserRepository.findByUserId(createUserProfileRequest.getUserId()).ifPresent(m -> {
             throw new AlreadyExistUserException("Already Exist User");
         });
 
-        User user = new User(userId, password, name, email);
+        User user = createUserProfileRequest.toUserEntity();
         localUserRepository.save(user);
     }
 
-    public List<UserDto.userProfileResponse> readUsers() {
+    public List<UserDto.UserProfileResponse> readUsers() {
         return localUserRepository.findAll().stream()
-                .map(UserDto.userProfileResponse::of)
+                .map(UserDto.UserProfileResponse::of)
                 .collect(Collectors.toList());
     }
 
-    public UserDto.userProfileResponse readUser(String userId) throws UserNotFoundException {
+    public UserDto.UserProfileResponse readUser(String userId) throws UserNotFoundException {
         User user = localUserRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException("Not Found User"));
-        return UserDto.userProfileResponse.of(user);
+        return UserDto.UserProfileResponse.of(user);
     }
 
 }
