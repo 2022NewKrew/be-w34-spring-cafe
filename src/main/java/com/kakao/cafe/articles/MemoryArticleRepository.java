@@ -34,7 +34,8 @@ public class MemoryArticleRepository implements ArticleRepository {
         return articles;
     }
 
-    public int getArticlesSize() {
+    @Override
+    public int getSize() {
         return articles.size();
     }
 }
