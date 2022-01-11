@@ -36,7 +36,7 @@ public class UserController {
 
     @PostMapping("users")
     public String signup(@ModelAttribute UserForm userForm) {
-        User user = new User(userForm.getUserId(), userForm.getPassword(), userForm.getName(), userForm.getEmail());
+        User user = new User(userForm.getUserId(), userForm.getPassword(), userForm.getName(), userForm.getEmail()); //user생성부분 질문하기
         String userId = userService.create(user);
         logger.info(userId + " success");
         return "redirect:/users";
