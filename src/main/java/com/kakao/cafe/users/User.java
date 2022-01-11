@@ -28,4 +28,20 @@ public class User {
     public String getEmail() {
         return email;
     }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
