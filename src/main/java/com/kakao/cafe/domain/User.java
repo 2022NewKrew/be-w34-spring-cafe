@@ -1,11 +1,17 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.service.user.dto.UserUpdateForm;
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class User {
     private Long id;
-    private final String userId;
-    private final String password;
-    private final String userName;
-    private final String email;
+    private String userId;
+    private String password;
+    private String userName;
+    private String email;
 
     public User(String userId, String password, String userName, String email) {
         this.userId = userId;
@@ -26,36 +32,17 @@ public class User {
         return new User(userId, password, userName, email);
     }
 
-    public static User createEmptyUser() {
-        return new User(0L, "", "", "", "");
-    }
-
-    public void setId(Long id) {
+    public void updateId(Long id) {
         this.id = id;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("User{id=%d, userId=%s, password=%s, userName=%s, email=%s}", id, userId, password, userName, email);
+    public void update(UserUpdateForm userUpdateForm) {
+        this.userId = userUpdateForm.getUserId();
+        boolean isUpdatePassword = !userUpdateForm.getPassword().equals("");
+        if(isUpdatePassword) {
+            this.password = userUpdateForm.getPassword();
+        }
+        this.userName = userUpdateForm.getUserName();
+        this.email = userUpdateForm.getEmail();
     }
 }
