@@ -1,10 +1,8 @@
 package com.kakao.cafe.article.model;
 
+import com.kakao.cafe.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Getter
 @AllArgsConstructor
@@ -19,7 +17,7 @@ public class ArticleRequest {
                 .author(author)
                 .title(title)
                 .contents(contents)
-                .uploadTime((new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(new Date()))
+                .uploadTime(DateUtils.getCurrentDate())
                 .build();
     }
 }
