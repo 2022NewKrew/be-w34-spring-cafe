@@ -34,6 +34,10 @@ public class Article implements Entity<ArticleDto> {
         this.id = id;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }

@@ -6,6 +6,7 @@ import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,5 +40,14 @@ public class ArticleService {
                 .stream()
                 .map(Article::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Nullable
+    public ArticleDto getById(long id) {
+        Article found = repository.getById(id);
+        if (found == null) {
+            return null;
+        }
+        return found.toDto();
     }
 }

@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.entity.Article;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -24,5 +25,13 @@ public class ArticleRepository {
 
     public List<Article> list() {
         return Collections.unmodifiableList(data);
+    }
+
+    @Nullable
+    public Article getById(long id) {
+        return data.stream()
+                .filter(article -> article.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 }
