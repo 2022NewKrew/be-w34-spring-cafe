@@ -17,4 +17,4 @@
 # step3
 - [x] h2 database 연결 및 전환
 - [x] stream 사용시 orelse(null)보단 exception
-- [ ] template header footer 분리
+- [x] template header footer 분리

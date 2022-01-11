@@ -41,4 +41,9 @@ public class ArticleController {
         articleService.save(article);
         return "redirect:/";
     }
+
+    @GetMapping("/articles/write")
+    public String write(){
+        return "qna/form";
+    }
 }

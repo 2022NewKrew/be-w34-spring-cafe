@@ -39,4 +39,9 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("/signup")
+    public String singUp(){
+        return "user/form";
+    }
+
 }
