@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.article.ArticleDto;
 import com.kakao.cafe.domain.article.ArticleRequest;
+import com.kakao.cafe.exception.EntityNotFoundException;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,8 +33,8 @@ public class ArticleController {
         try {
             ArticleDto article = articleService.findById(index);
             model.addAttribute("article", article);
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", "존재하지 않는 게시글입니다.");
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
 

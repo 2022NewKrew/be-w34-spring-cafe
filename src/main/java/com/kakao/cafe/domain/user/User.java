@@ -2,8 +2,6 @@ package com.kakao.cafe.domain.user;
 
 import com.kakao.cafe.exception.InvalidPasswordException;
 
-import javax.naming.directory.InvalidAttributesException;
-
 public class User {
 
     private Long id;

@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.user.UserDto;
 import com.kakao.cafe.domain.user.UserCreateRequest;
 import com.kakao.cafe.domain.user.UserUpdateRequest;
+import com.kakao.cafe.exception.EntityNotFoundException;
 import com.kakao.cafe.exception.InvalidPasswordException;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -41,8 +42,9 @@ public class UserController {
         try {
             UserDto user = userService.findById(userId);
             model.addAttribute("user", user);
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("user", null);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
         }
 
         return "user/profile";
@@ -53,8 +55,8 @@ public class UserController {
         try {
             UserDto user = userService.findById(userId);
             model.addAttribute("user", user);
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", "존재하지 않는 크루입니다.");
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
 
@@ -65,11 +67,8 @@ public class UserController {
     public String updateUser(@PathVariable Long userId, UserUpdateRequest userUpdateRequest, Model model) {
         try {
             userService.update(userId, userUpdateRequest);
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", "존재하지 않는 크루입니다.");
-            return "error";
-        } catch (InvalidPasswordException e) {
-            model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+        } catch (EntityNotFoundException | InvalidPasswordException e) {
+            model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
 
