@@ -52,5 +52,19 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("/{userId}/form")
+    public String updateForm(@PathVariable String userId, Model model){
+        User user = userService.findByUserId(userId);
+        model.addAttribute("user", user);
+        return "user/updateForm";
+    }
+
+    @PostMapping("/{userId}/update")
+    public String updateUser(@PathVariable String userId, UserForm userForm){
+        logger.info("POST /{userId}/update");
+        userForm.setUserId(userId);
+        userService.updateUser(User.of(userForm));
+        return "redirect:/users";
+    }
 
 }

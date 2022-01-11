@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
+//@Repository
 public class MemoryUserRepository implements UserRepository{
 
     private static Map<Long, User> store = new HashMap<>();
@@ -20,12 +20,11 @@ public class MemoryUserRepository implements UserRepository{
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.empty();
+        return Optional.ofNullable(store.get(id));
     }
 
     @Override
-    public Optional<User> finadByUserId(String userId) {
-        System.out.println("userId: %s" + userId);
+    public Optional<User> findByUserId(String userId) {
         return store.values().stream()
                 .filter(user -> user.getUserId().equals(userId))
                 .findAny();
@@ -40,4 +39,11 @@ public class MemoryUserRepository implements UserRepository{
     public Optional<User> findByName(String name) {
         return Optional.empty();
     }
+
+    @Override
+    public User update(User user) {
+        store.put(user.getId(), user);
+        return user;
+    }
+
 }
