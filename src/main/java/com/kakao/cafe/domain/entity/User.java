@@ -1,36 +1,42 @@
-package com.kakao.cafe.entity;
+package com.kakao.cafe.domain.entity;
 
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.service.dto.UserDto;
 
 import java.util.Objects;
 
-public class User implements Entity<UserDto> {
+public class User {
 
-    private final String id;
+    private final long id;
+    private final String userId;
     private final String name;
     private final String password;
     private final String email;
 
-    private User(String id, String name, String password, String email) {
+    private User(long id, String userId, String name, String password, String email) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
         this.password = password;
         this.email = email;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public boolean checkPassword(String password) {
         return this.password.equals(password);
     }
 
-    @Override
     public UserDto toDto() {
         return new UserDto.Builder()
-                .email(email)
                 .id(id)
+                .email(email)
+                .userId(userId)
                 .name(name)
                 .build();
     }
@@ -40,23 +46,29 @@ public class User implements Entity<UserDto> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(password, user.password) && Objects.equals(email, user.email);
+        return Objects.equals(userId, user.userId) && Objects.equals(name, user.name) && Objects.equals(password, user.password) && Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, password, email);
+        return Objects.hash(userId, name, password, email);
     }
 
     public static class Builder {
 
-        private String id;
+        private long id;
+        private String userId;
         private String name;
         private String password;
         private String email;
 
-        public Builder id(String id) {
+        public Builder id(long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder userId(String userId) {
+            this.userId = userId;
             return this;
         }
 
@@ -76,7 +88,7 @@ public class User implements Entity<UserDto> {
         }
 
         public User build() {
-            return new User(id, name, password, email);
+            return new User(id, userId, name, password, email);
         }
     }
 }

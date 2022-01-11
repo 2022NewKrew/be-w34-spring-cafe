@@ -1,6 +1,7 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.domain.repository;
 
-import com.kakao.cafe.entity.User;
+import com.kakao.cafe.domain.entity.SignUp;
+import com.kakao.cafe.domain.entity.User;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Repository
 public class UserRepository {
@@ -15,13 +17,15 @@ public class UserRepository {
     private final List<User> data = new ArrayList<>();
 
     @Nullable
-    public User create(User user) {
+    public User create(SignUp signUp) {
         // NOTE 중복 확인을 Repository에서 해야 할 지, Service에서 해야 할지?
-        User existing = find(user.getId()).orElse(null);
+        User existing = getBy(User::getUserId, signUp.getUserId()).orElse(null);
         if (existing != null) {
             // NOTE Exception을 던지는 것이 더 나을 것 같다. 옳은 접근인가?
             return null;
         }
+        long id = data.size() + 1;
+        User user = signUp.createUser(id);
         data.add(user);
         return user;
     }
@@ -31,13 +35,18 @@ public class UserRepository {
     }
 
     @Nullable
-    public User get(String id) {
-        return find(id).orElse(null);
+    public User getById(long id) {
+        return getBy(User::getId, id).orElse(null);
     }
 
     @Nullable
-    public User login(String id, String password) {
-        Optional<User> found = find(id);
+    public User getByUserId(String userId) {
+        return getBy(User::getUserId, userId).orElse(null);
+    }
+
+    @Nullable
+    public User login(String userId, String password) {
+        Optional<User> found = getBy(User::getUserId, userId);
         if (found.isEmpty()) {
             return null;
         }
@@ -49,9 +58,9 @@ public class UserRepository {
         return user;
     }
 
-    private Optional<User> find(String id) {
+    private <T> Optional<User> getBy(Function<User, T> getter, T value) {
         return data.stream()
-                .filter(user -> user.getId().equals(id))
+                .filter(user -> getter.apply(user).equals(value))
                 .findFirst();
     }
 }
