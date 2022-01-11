@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -23,7 +24,11 @@ public class UserController {
 
     @PostMapping
     public String create(@ModelAttribute Create createDTO) {
-        userService.create(createDTO);
+        try {
+            userService.create(createDTO);
+        } catch (ResponseStatusException e) {
+            return "redirect:/users/form-failed";
+        }
 
         return "redirect:/users";
     }
