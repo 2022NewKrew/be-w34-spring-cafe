@@ -1,8 +1,11 @@
 package com.kakao.cafe.articles;
 
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
