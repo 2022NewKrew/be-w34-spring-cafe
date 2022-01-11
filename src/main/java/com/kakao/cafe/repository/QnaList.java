@@ -4,17 +4,18 @@ import com.kakao.cafe.domain.Qna;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class QnaList {
 
-    private final ArrayList<Qna> qnaList;
+    private final List<Qna> qnaList;
 
     private QnaList() {
         qnaList = new ArrayList<>();
     }
 
-    public ArrayList<Qna> getQnaList() {
+    public List<Qna> getQnaList() {
         return qnaList;
     }
 

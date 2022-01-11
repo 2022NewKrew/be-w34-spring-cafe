@@ -4,17 +4,18 @@ import com.kakao.cafe.domain.User;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
 public class UserList {
-    private final ArrayList<User> userList;
+    private final List<User> userList;
 
     private UserList() {
         userList = new ArrayList<>();
     }
 
-    public ArrayList<User> getUserList() {
+    public List<User> getUserList() {
         return userList;
     }
 
