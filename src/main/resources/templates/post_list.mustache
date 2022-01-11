@@ -1,0 +1,33 @@
+{{> layout/header}}
+{{> layout/navbar}}
+
+<div class="container">
+    <h1 class="mt-5">글 목록</h1>
+    <hr>
+
+    <a class="btn btn-primary" href="/posts/new" role="button">글 작성</a>
+
+    <table class="table caption-top">
+        <caption>글 총 {{posts.size}}개</caption>
+        <thead class="table-light">
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">writer</th>
+            <th scope="col">title</th>
+            <th scope="col">body</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#posts}}
+            <tr>
+                <th>{{id}}</th>
+                <td>{{writer}}</td>
+                <td>{{title}}</td>
+                <td>{{body}}</td>
+            </tr>
+        {{/posts}}
+        </tbody>
+    </table>
+</div>
+
+{{> layout/footer}}

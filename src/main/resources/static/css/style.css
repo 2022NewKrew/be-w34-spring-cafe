@@ -1,0 +1,106 @@
+html,
+body {
+    overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+
+@media (max-width: 767.98px) {
+    .offcanvas-collapse {
+        position: fixed;
+        top: 56px; /* Height of navbar */
+        bottom: 0;
+        width: 100%;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        overflow-y: auto;
+        background-color: var(--bs-gray-dark);
+        transition: -webkit-transform .3s ease-in-out;
+        transition: transform .3s ease-in-out;
+        transition: transform .3s ease-in-out, -webkit-transform .3s ease-in-out;
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+    }
+    .offcanvas-collapse.open {
+        -webkit-transform: translateX(-1rem);
+        transform: translateX(-1rem); /* Account for horizontal padding on navbar */
+    }
+}
+
+.nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+}
+
+.nav-scroller .nav {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    color: rgba(255, 255, 255, .75);
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+.nav-underline .nav-link {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+    font-size: .875rem;
+    color: var(--bs-secondary);
+}
+
+.nav-underline .nav-link:hover {
+    color: var(--bs-blue);
+}
+
+.nav-underline .active {
+    font-weight: 500;
+    color: var(--bs-gray-dark);
+}
+
+.text-white-50 { color: rgba(255, 255, 255, .5); }
+
+.bg-yellow { background-color: #fae100; }
+
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+.lh-100 { line-height: 1; }
+.lh-125 { line-height: 1.25; }
+.lh-150 { line-height: 1.5; }
+
+.bd-callout{
+    padding:1.25rem;
+    margin-top:1.25rem;
+    margin-bottom:1.25rem;
+    border:1px solid #e9ecef;
+    border-left-width:.25rem;
+    border-radius:.25rem
+}
+.bd-callout h4{
+    margin-bottom:.25rem
+}
+.bd-callout p:last-child{
+    margin-bottom:0
+}
+.bd-callout code{
+    border-radius:.25rem
+}
+.bd-callout+.bd-callout{
+    margin-top:-.25rem
+}
+.bd-callout-info{
+    border-left-color:#5bc0de
+}
+.bd-callout-warning{
+    border-left-color:#f0ad4e
+}
+.bd-callout-danger{
+    border-left-color:#d9534f
+}

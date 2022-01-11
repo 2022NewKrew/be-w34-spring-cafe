@@ -1,0 +1,23 @@
+{{> layout/header}}
+{{> layout/navbar}}
+
+<div class="container">
+    <h1 class="mt-5">유저 프로필</h1>
+    <hr>
+
+    {{#user?}}
+    <div class="card" style="width: 18rem;">
+        <img src="https://via.placeholder.com/150" class="card-img-top" alt="profile image">
+        <div class="card-body">
+            <h5 class="card-title">{{nickname}}</h5>
+            <ul>
+                <li>ID: {{id}}</li>
+                <li>email: {{email}}</li>
+                <li>password: {{password}}</li>
+            </ul>
+        </div>
+    </div>
+    {{/user?}}
+</div>
+
+{{> layout/footer}}
