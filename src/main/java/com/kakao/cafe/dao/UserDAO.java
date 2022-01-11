@@ -8,22 +8,22 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.*;
 
 @Repository
-public class UserDAO {
+public interface UserDAO {
 
-    private final List<User> users = new ArrayList<>();
+    List<User> users = new ArrayList<>();
 
-    public List<User> findAllUser() {
+    default List<User> findAllUser() {
         return users;
     }
 
-    public User filterUserById(String userId) {
+    default User filterUserById(String userId) {
         return users.stream()
                 .filter(user -> user.getUserId().equals(userId))
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public void createUser(User user) {
+    default void createUser(User user) {
         users.add(user);
     }
 
