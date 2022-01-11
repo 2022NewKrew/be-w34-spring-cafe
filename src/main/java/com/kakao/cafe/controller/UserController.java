@@ -17,25 +17,20 @@ public class UserController {
 
 
     @PostMapping("/user/create")
-    public String singUp(SignUpDTO signUpDTO){
+    public String singUp(SignUpDTO signUpDTO) {
         userService.signUp(signUpDTO);
         return "redirect:/users";
     }
 
-    @GetMapping("/user/form")
-    public String createForm(){
-        return "user/form";
-    }
-
     @GetMapping("/users")
-    public String getAllUsers(Model model){
-        model.addAttribute("users",userService.getAllUsers());
+    public String getAllUsers(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
         return "user/list";
     }
 
     @GetMapping("/users/{userId}")
-    public String getUserByUserId(@PathVariable("userId") String userId, Model model){
-        model.addAttribute("user",userService.findByUserId(userId).orElseThrow(()-> new RuntimeException("유저가 존재하지 않습니다."))
+    public String getUserByUserId(@PathVariable("userId") String userId, Model model) {
+        model.addAttribute("user", userService.findByUserId(userId).orElseThrow(() -> new RuntimeException("유저가 존재하지 않습니다."))
         );
         return "user/profile";
     }
