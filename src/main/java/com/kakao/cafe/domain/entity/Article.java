@@ -1,19 +1,30 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.domain.entity;
 
-import com.kakao.cafe.entity.Article;
+// NOTE domain 레이어의 객체가 service 레이어 객체를 참조하는 게 괜찮은가?
+// 그렇지 않게 하려면 ArticleDto.fromEntity(...)와 같이 접근해야 하는데
+// 게터가 필요하다는 문제가 생김
+import com.kakao.cafe.service.dto.ArticleDto;
+import com.kakao.cafe.service.dto.UserDto;
 
 import java.util.Date;
 
-public class ArticleDto implements Dto<Article> {
+public class Article {
 
     private long id;
-    private final UserDto owner;
+    private final User owner;
     private final String author;
     private final String title;
     private final String content;
-    private final Date createdAt;
+    private Date createdAt;
 
-    private ArticleDto(long id, UserDto owner, String author, String title, String content, Date createdAt) {
+    private Article(
+            long id,
+            User owner,
+            String author,
+            String title,
+            String content,
+            Date createdAt
+    ) {
         this.id = id;
         this.owner = owner;
         this.author = author;
@@ -22,11 +33,26 @@ public class ArticleDto implements Dto<Article> {
         this.createdAt = createdAt;
     }
 
-    @Override
-    public Article toEntity() {
-        return new Article.Builder()
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public ArticleDto toDto() {
+        UserDto ownerDto = null;
+        if (owner != null) {
+            ownerDto = owner.toDto();
+        }
+        return new ArticleDto.Builder()
                 .id(id)
-                .owner(owner.toEntity())
+                .owner(ownerDto)
                 .author(author)
                 .title(title)
                 .content(content)
@@ -37,7 +63,7 @@ public class ArticleDto implements Dto<Article> {
     public static class Builder {
 
         private long id;
-        private UserDto owner;
+        private User owner;
         private String author;
         private String title;
         private String content;
@@ -48,7 +74,7 @@ public class ArticleDto implements Dto<Article> {
             return this;
         }
 
-        public Builder owner(UserDto owner) {
+        public Builder owner(User owner) {
             this.owner = owner;
             return this;
         }
@@ -73,8 +99,8 @@ public class ArticleDto implements Dto<Article> {
             return this;
         }
 
-        public ArticleDto build() {
-            return new ArticleDto(id, owner, author, title, content, createdAt);
+        public Article build() {
+            return new Article(id, owner, author, title, content, createdAt);
         }
     }
 }

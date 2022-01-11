@@ -1,10 +1,11 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.ArticleDto;
-import com.kakao.cafe.entity.Article;
-import com.kakao.cafe.entity.User;
-import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.service.dto.ArticleDto;
+import com.kakao.cafe.domain.entity.Article;
+import com.kakao.cafe.domain.entity.User;
+import com.kakao.cafe.domain.repository.ArticleRepository;
+import com.kakao.cafe.domain.repository.UserRepository;
+import com.kakao.cafe.service.dto.DraftDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,13 @@ public class ArticleService {
         this.userRepository = userRepository;
     }
 
-    public ArticleDto create(long ownerId, String author, String title, String content) {
+    public ArticleDto create(long ownerId, DraftDto draft) {
         User owner = userRepository.getById(ownerId);
         Article entity = new Article.Builder()
                 .owner(owner)
-                .author(author)
-                .title(title)
-                .content(content)
+                .author(draft.getAuthor())
+                .title(draft.getTitle())
+                .content(draft.getContent())
                 .build();
         return repository.create(entity).toDto();
     }

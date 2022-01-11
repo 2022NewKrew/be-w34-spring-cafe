@@ -1,6 +1,6 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.domain.repository;
 
-import com.kakao.cafe.entity.User;
+import com.kakao.cafe.domain.entity.User;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 

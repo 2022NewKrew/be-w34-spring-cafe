@@ -1,8 +1,10 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.UserDto;
-import com.kakao.cafe.entity.User;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.domain.entity.User;
+import com.kakao.cafe.domain.repository.UserRepository;
+import com.kakao.cafe.service.dto.CredentialsDto;
+import com.kakao.cafe.service.dto.SignUpDto;
+import com.kakao.cafe.service.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,12 @@ public class UserService {
     }
 
     @Nullable
-    public UserDto create(String id, String password, String name, String email) {
+    public UserDto create(SignUpDto signUp) {
         User user = new User.Builder()
-                .id(id)
-                .password(password)
-                .name(name)
-                .email(email)
+                .userId(signUp.getUserId())
+                .password(signUp.getPassword())
+                .name(signUp.getName())
+                .email(signUp.getEmail())
                 .build();
         User created = userRepository.create(user);
         if (created == null) {
@@ -52,8 +54,11 @@ public class UserService {
     }
 
     @Nullable
-    public UserDto login(String id, String password) {
-        User found = userRepository.login(id, password);
+    public UserDto login(CredentialsDto credentials) {
+        User found = userRepository.login(
+                credentials.getUserId(),
+                credentials.getPassword()
+        );
         if (found == null) {
             return null;
         }

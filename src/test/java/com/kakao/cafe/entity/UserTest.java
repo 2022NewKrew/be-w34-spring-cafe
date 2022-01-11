@@ -1,5 +1,6 @@
 package com.kakao.cafe.entity;
 
+import com.kakao.cafe.domain.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,7 +17,7 @@ class UserTest {
     @BeforeEach
     void setUp() {
         subject = new User.Builder()
-                .id("id")
+                .userId("id")
                 .password("password")
                 .email("email")
                 .name("name")

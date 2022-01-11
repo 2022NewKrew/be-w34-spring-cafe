@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.entity.User;
+import com.kakao.cafe.domain.entity.User;
+import com.kakao.cafe.domain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,7 @@ class UserRepositoryTest {
     void setUp() {
         subject = new UserRepository();
         User user = new User.Builder()
-                .id("id")
+                .userId("id")
                 .password("password")
                 .name("name")
                 .email("email@example.com")
@@ -27,7 +28,7 @@ class UserRepositoryTest {
     @Test
     void create() {
         User user = new User.Builder()
-                .id("id2")
+                .userId("id2")
                 .password("password")
                 .name("name")
                 .email("email@example.com")
@@ -41,13 +42,13 @@ class UserRepositoryTest {
     @Test
     void create_uniqueId() {
         User user1 = new User.Builder()
-                .id("id1")
+                .userId("id1")
                 .password("password")
                 .name("name")
                 .email("email@example.com")
                 .build();
         User user2 = new User.Builder()
-                .id("id2")
+                .userId("id2")
                 .password("password")
                 .name("name")
                 .email("email@example.com")
@@ -66,7 +67,7 @@ class UserRepositoryTest {
     @Test
     void create_duplicate() {
         User user = new User.Builder()
-                .id("id")
+                .userId("id")
                 .password("password1")
                 .name("name1")
                 .email("email1@example.com")

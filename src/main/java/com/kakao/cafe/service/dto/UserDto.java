@@ -1,8 +1,6 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.service.dto;
 
-import com.kakao.cafe.entity.User;
-
-public class UserDto implements Dto<User> {
+public class UserDto {
 
     private final long id;
     private final String userId;
@@ -18,15 +16,6 @@ public class UserDto implements Dto<User> {
 
     public long getId() {
         return id;
-    }
-
-    @Override
-    public User toEntity() {
-        return new User.Builder()
-                .email(email)
-                .id(userId)
-                .name(name)
-                .build();
     }
 
     public static class Builder {

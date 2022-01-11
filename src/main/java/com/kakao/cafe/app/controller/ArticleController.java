@@ -1,19 +1,18 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.app.controller;
 
-import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.app.request.ArticleRequest;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.dto.ArticleDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+
 @Controller
 public class ArticleController {
 
@@ -25,17 +24,12 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public String write(
-            @RequestParam(value="writer") String author,
-            @RequestParam String title,
-            @RequestParam(value="contents") String content,
-            HttpSession session
-    ) {
+    public String write(@ModelAttribute ArticleRequest request, HttpSession session) {
         Long ownerId = (Long) session.getAttribute("id");
         if (ownerId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
         }
-        service.create(ownerId, author, title, content);
+        service.create(ownerId, request.toDraftDto());
         return "redirect:/";
     }
 

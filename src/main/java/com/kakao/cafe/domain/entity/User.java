@@ -1,10 +1,10 @@
-package com.kakao.cafe.entity;
+package com.kakao.cafe.domain.entity;
 
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.service.dto.UserDto;
 
 import java.util.Objects;
 
-public class User implements Entity<UserDto> {
+public class User {
 
     private long id;
     private final String userId;
@@ -36,7 +36,6 @@ public class User implements Entity<UserDto> {
         return this.password.equals(password);
     }
 
-    @Override
     public UserDto toDto() {
         return new UserDto.Builder()
                 .id(id)
@@ -67,12 +66,12 @@ public class User implements Entity<UserDto> {
         private String password;
         private String email;
 
-        public Builder id(long id) {
+        public Builder userId(long id) {
             this.id = id;
             return this;
         }
 
-        public Builder id(String userId) {
+        public Builder userId(String userId) {
             this.userId = userId;
             return this;
         }
