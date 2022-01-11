@@ -12,7 +12,7 @@ public class UserRepositoryImpl implements UserRepository {
     private Long SEQ_NO_OF_USERS = 0L;
 
     @Override
-    public void save(User user) throws IllegalArgumentException {
+    public void save(User user) {
         if (ObjectUtils.isEmpty(user)) {
             throw new IllegalArgumentException("사용자의 정보가 없어서 저장할 수 없습니다.");
         }

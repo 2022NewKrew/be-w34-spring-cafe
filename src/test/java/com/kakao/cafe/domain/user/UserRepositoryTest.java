@@ -40,6 +40,7 @@ class UserRepositoryTest {
 
     @AfterEach
     void cleanup() {
+        users.clear();
         userRepository.deleteAll();
     }
 
