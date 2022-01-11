@@ -27,15 +27,33 @@ public class UserController {
     @PostMapping("/users")
     public String addUser(User user) {
         userList.add(user);
-        return "redirect:users/";
+        return "redirect:/users/";
     }
 
     @GetMapping("/users/{userId}")
     public String printProfile(@PathVariable String userId, Model model) {
         User target = findUserWithId(userId);
-        model.addAttribute("name", target.getName());
-        model.addAttribute("email", target.getEmail());
+        model.addAttribute("name", target.getName())
+                .addAttribute("email", target.getEmail());
         return "user/profile";
+    }
+
+    @GetMapping("/users/{userId}/form")
+    public String updateForm(@PathVariable String userId, Model model) {
+        User target = findUserWithId(userId);
+        model.addAttribute("userId", target.getUserId())
+                .addAttribute("password", target.getPassword())
+                .addAttribute("name", target.getName())
+                .addAttribute("email", target.getEmail());
+        return "user/updateForm";
+    }
+
+    @PostMapping("users/{userId}/update")
+    public String updateUser(@PathVariable String userId, User user) {
+        User target = findUserWithId(userId);
+        int index = userList.indexOf(target);
+        userList.set(index, user);
+        return "redirect:/users/";
     }
 
     private User findUserWithId(String userId) {
