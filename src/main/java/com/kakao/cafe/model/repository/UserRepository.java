@@ -8,10 +8,10 @@ import java.util.Optional;
 
 public interface UserRepository {
     boolean insertUser(UserDTO userDTO);
-    List<User> selectAllUsers();
-    Optional<User> selectUserById(Long id);
-    Optional<User> selectUserByUserId(String userId);
-    Optional<User> selectUserByLoginInfo(String userId, String password);
+    List<UserDTO> selectAllUsers();
+    Optional<UserDTO> selectUserById(Long id);
+    Optional<UserDTO> selectUserByUserId(String userId);
+    Optional<UserDTO> selectUserByLoginInfo(String userId, String password);
     boolean updateUser(UserDTO userDTO);
     boolean deleteUser(String userId, String password);
 }

@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface UserService {
     boolean registerUser(UserDTO userDTO);
-    List<User> findAllUsers();
-    User findUserById(Long id);
-    User findUserByUserId(String userId);
-    User findUserByLoginInfo(String userId, String password);
+    List<UserDTO> findAllUsers();
+    UserDTO findUserById(Long id);
+    UserDTO findUserByUserId(String userId);
+    UserDTO findUserByLoginInfo(String userId, String password);
     boolean modifyUser(UserDTO userDTO);
     boolean withdrawUser(String userId, String password);
 }

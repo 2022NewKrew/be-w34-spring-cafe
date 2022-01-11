@@ -2,6 +2,7 @@ package com.kakao.cafe.model.repository;
 
 import com.kakao.cafe.model.domain.User;
 import com.kakao.cafe.model.dto.UserDTO;
+import com.kakao.cafe.util.exception.UserNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -28,6 +29,16 @@ public class UserRepositoryMemoryImpl implements UserRepository {
                 .findFirst();
     }
 
+    private Optional<UserDTO> getUserDTOFromUser(Optional<User> foundUser) {
+        if (foundUser.isEmpty()) {
+            return Optional.empty();
+        }
+
+        User user = foundUser.get();
+        return Optional.of(new UserDTO(user.getUserId(), user.getPassword(),
+                user.getName(), user.getEmail()));
+    }
+
     @Override
     public boolean insertUser(UserDTO userDTO) {
         if (findUserInStoredUsers(userDTO.getUserId()).isPresent()) {
@@ -40,23 +51,30 @@ public class UserRepositoryMemoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> selectAllUsers() {
-       return new ArrayList<>(storedUsers.values());
+    public List<UserDTO> selectAllUsers() {
+        List<UserDTO> allUsers = new ArrayList<>();
+
+        for (User user : storedUsers.values()) {
+            allUsers.add(new UserDTO(user.getUserId(), user.getPassword(),
+                    user.getName(), user.getEmail()));
+        }
+
+        return allUsers;
     }
 
     @Override
-    public Optional<User> selectUserById(Long id) {
-        return findUserInStoredUsers(id);
+    public Optional<UserDTO> selectUserById(Long id) {
+        return getUserDTOFromUser(findUserInStoredUsers(id));
     }
 
     @Override
-    public Optional<User> selectUserByUserId(String userId) {
-        return findUserInStoredUsers(userId);
+    public Optional<UserDTO> selectUserByUserId(String userId) {
+        return getUserDTOFromUser(findUserInStoredUsers(userId));
     }
 
     @Override
-    public Optional<User> selectUserByLoginInfo(String userId, String password) {
-        return findUserInStoredUsers(userId, password);
+    public Optional<UserDTO> selectUserByLoginInfo(String userId, String password) {
+        return getUserDTOFromUser(findUserInStoredUsers(userId, password));
     }
 
     @Override

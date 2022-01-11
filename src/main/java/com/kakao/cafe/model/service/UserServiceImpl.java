@@ -1,6 +1,5 @@
 package com.kakao.cafe.model.service;
 
-import com.kakao.cafe.model.domain.User;
 import com.kakao.cafe.model.dto.UserDTO;
 import com.kakao.cafe.model.repository.UserRepository;
 import com.kakao.cafe.util.exception.UserDuplicatedException;
@@ -26,13 +25,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllUsers() {
+    public List<UserDTO> findAllUsers() {
         return userRepository.selectAllUsers();
     }
 
     @Override
-    public User findUserById(Long id) {
-        Optional<User> selectedUser = userRepository.selectUserById(id);
+    public UserDTO findUserById(Long id) {
+        Optional<UserDTO> selectedUser = userRepository.selectUserById(id);
 
         if (selectedUser.isEmpty()) {
             throw new UserNotFoundException("해당 정보와 일치하는 회원이 존재하지 않습니다.");
@@ -42,8 +41,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByUserId(String userId) {
-        Optional<User> selectedUser = userRepository.selectUserByUserId(userId);
+    public UserDTO findUserByUserId(String userId) {
+        Optional<UserDTO> selectedUser = userRepository.selectUserByUserId(userId);
 
         if (selectedUser.isEmpty()) {
             throw new UserNotFoundException("해당 정보와 일치하는 회원이 존재하지 않습니다.");
@@ -53,8 +52,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByLoginInfo(String userId, String password) {
-        Optional<User> selectedUser = userRepository.selectUserByLoginInfo(userId, password);
+    public UserDTO findUserByLoginInfo(String userId, String password) {
+        Optional<UserDTO> selectedUser = userRepository.selectUserByLoginInfo(userId, password);
 
         if (selectedUser.isEmpty()) {
             throw new UserNotFoundException("해당 정보와 일치하는 회원이 존재하지 않습니다.");
