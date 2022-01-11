@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class MemoryUserRepository implements UserRepository{
     private static final Map<Long,User> store = new ConcurrentHashMap<>();
     private static long sequence = 0L;
@@ -18,7 +19,7 @@ public class MemoryUserRepository implements UserRepository{
 
     @Override
     public List<User> findAll() {
-        return (List<User>) store.values();
+        return new ArrayList<>(store.values());
     }
 
     @Override

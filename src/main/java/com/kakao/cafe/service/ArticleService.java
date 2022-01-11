@@ -20,4 +20,7 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    public List<Article> findArticleList() {
+        return articleRepository.findAll();
+    }
 }
