@@ -60,10 +60,10 @@ public class PostRepository {
         int totalPage = (int) Math.ceil(postList.size() / (double) pageable.getSize());
         int fromIndex = pageable.getPage() * pageable.getSize();
         if (fromIndex >= postList.size())
-            return new Page<Post>(new ArrayList<>(), totalPage, pageable);
+            return new Page<Post>(new ArrayList<>(), totalPage, postList.size(), pageable);
         int toIndex = fromIndex + pageable.getSize();
         if (toIndex >= postList.size())
             toIndex = postList.size();
-        return new Page<Post>(postList.subList(fromIndex, toIndex), totalPage, pageable);
+        return new Page<Post>(postList.subList(fromIndex, toIndex), totalPage, postList.size(), pageable);
     }
 }

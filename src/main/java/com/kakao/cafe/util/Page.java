@@ -14,5 +14,6 @@ import java.util.List;
 public class Page<EN> {
     private List<EN> entityList;
     private int totalPage;
+    private int totalCount;
     Pageable pageable;
 }
