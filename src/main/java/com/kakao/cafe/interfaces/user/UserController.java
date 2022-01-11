@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("users")
 public class UserController {
 
     private final UserService userService;
@@ -22,19 +22,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public String getAllUser(Model model) {
         List<User> userList = userService.findAllUser();
         List<UserDto> userDtoList = UserMapper.convertUserEntityListToDtoList(userList);
         model.addAttribute("users", userDtoList);
-        return "member/list";
+        return "user/list";
     }
 
-    @PostMapping("/join")
+    @PostMapping("")
     public String joinUser(UserDto userDto) {
         User user = UserMapper.convertUserDtoToEntity(userDto);
         userService.join(user);
-        return "redirect:/user/all";
+        return "redirect:/users";
     }
 
 }
