@@ -1,4 +1,4 @@
-package com.kakao.cafe.user;
+package com.kakao.cafe.user.dto;
 
 public class UserDto {
     private Long id;

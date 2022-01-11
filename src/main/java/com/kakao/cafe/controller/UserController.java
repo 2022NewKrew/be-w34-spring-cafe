@@ -1,15 +1,13 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.user.User;
-import com.kakao.cafe.user.UserDto;
+import com.kakao.cafe.user.dto.UserDto;
 import com.kakao.cafe.user.UserService;
+import com.kakao.cafe.user.dto.UserUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -49,7 +47,22 @@ public class UserController {
         UserDto userDto = new UserDto(user.getId(), user.getUserId(), user.getName(), user.getEmail());
 
         model.addAttribute("user", userDto);
+
         return "user/update_form";
+    }
+
+    @PostMapping("/{id}/update")
+    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") UserUpdateDto userUpdateDto, Model model) {
+
+        User user = userService.findOne(id);
+        System.out.println(user.getId());
+        user.setUserId(userUpdateDto.getUserId());
+        user.setEmail(userUpdateDto.getEmail());
+        user.setName(userUpdateDto.getName());
+
+        userService.update(user);
+
+        return "redirect:/";
     }
 
 }

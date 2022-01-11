@@ -3,23 +3,23 @@
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
             <div class="panel-heading"><h4>User Update Form</h4></div>
-            <form action="/user/{{user.id}}/update" method="post" class="panel-body" name="user">
+            <form action="/users/{{user.id}}/update" method="post" class="panel-body" name="user">
                 <div class="well well-sm">
                     <div class="media user-update-form-list">
                         <label for="id" class="user-update-form-item">userId</label>
-                        <input id="id" class="user-update-form-item" type="text" value="{{user.userId}}" />
+                        <input id="id" class="user-update-form-item" type="text" name="userId" value="{{user.userId}}" />
                     </div>
                 </div>
                 <div class="well well-sm">
                     <div class="media user-update-form-list">
                         <label for="id" class="user-update-form-item">name</label>
-                        <input id="id" class="user-update-form-item" type="text" value="{{user.name}}" />
+                        <input id="id" class="user-update-form-item" type="text" name="name" value="{{user.name}}" />
                     </div>
                 </div>
                 <div class="well well-sm">
                     <div class="media user-update-form-list">
                         <label for="id" class="user-update-form-item">email</label>
-                        <input id="id" class="user-update-form-item" type="email" value="{{user.email}}" />
+                        <input id="id" class="user-update-form-item" type="email" name="email" value="{{user.email}}" />
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success clearfix pull-right">수정하기</button>

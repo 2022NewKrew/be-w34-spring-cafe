@@ -58,4 +58,24 @@ public class UserRepositoryHash implements UserRepository {
 
         return users;
     }
+
+    @Override
+    public boolean update(User user) {
+
+
+        User origin = inMemoryDatabase.get(user.getId());
+
+        if (origin == null) {
+            return false;
+        }
+
+        origin.setUserId(user.getUserId());
+        origin.setName(user.getName());
+        origin.setEmail(user.getEmail());
+
+        inMemoryDatabase.put(user.getId(), origin);
+
+
+        return true;
+    }
 }

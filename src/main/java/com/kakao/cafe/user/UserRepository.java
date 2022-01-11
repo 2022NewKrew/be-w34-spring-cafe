@@ -8,4 +8,6 @@ public interface UserRepository {
     User findOne(Long id);
 
     List<User> findAll();
+
+    boolean update(User user);
 }
