@@ -25,7 +25,7 @@ public class UserService {
     }
 
     private void validateDuplicateUser(User user) {
-        userRepository.finadByUserId(user.getUserId())
+        userRepository.findByUserId(user.getUserId())
                 .ifPresent(u -> {throw new IllegalStateException("이미 존재하는 회원입니다.");});
     }
 
@@ -34,8 +34,20 @@ public class UserService {
     }
 
     public User findByUserId(String userId){
-        Optional<User> user = userRepository.finadByUserId(userId);
+        Optional<User> user = userRepository.findByUserId(userId);
         if (user.isEmpty()) throw new IllegalArgumentException("일치하는 아이디가 없습니다.");
         return user.get();
+    }
+
+    public User updateUser(User user) {
+        User findUser = findByUserId(user.getUserId());
+        checkPassword(user, findUser);
+        user.setId(findUser.getId());
+        return userRepository.update(user);
+    }
+
+    private void checkPassword(User user, User findUser) {
+        if (!user.getPassword().equals(findUser.getPassword()))
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
     }
 }

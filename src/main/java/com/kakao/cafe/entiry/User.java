@@ -2,6 +2,8 @@ package com.kakao.cafe.entiry;
 
 import com.kakao.cafe.dto.UserForm;
 
+import java.time.LocalDateTime;
+
 public class User {
 
     private Long id;
@@ -9,12 +11,25 @@ public class User {
     private String password;
     private String name;
     private String email;
+    private LocalDateTime joinDateTime;
+
+    public User() {}
 
     public User(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
+        this.joinDateTime = LocalDateTime.now();
+    }
+
+    public User(Long id, String userId, String password, String name, String email, LocalDateTime joinDateTime) {
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.joinDateTime = joinDateTime;
     }
 
     public static User of(UserForm userForm){
@@ -59,5 +74,25 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDateTime getJoinDateTime() {
+        return joinDateTime;
+    }
+
+    public void setJoinDateTime(LocalDateTime joinDateTime) {
+        this.joinDateTime = joinDateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", joinDateTime=" + joinDateTime +
+                '}';
     }
 }
