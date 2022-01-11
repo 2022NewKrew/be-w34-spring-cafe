@@ -1,8 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticleDto;
-import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +29,7 @@ public class ArticleController {
     @GetMapping("/")
     public String getArticles(final Model model) {
         model.addAttribute("articles", articleService.getList());
-        return "index";
+        return "index.mustache";
     }
 
     @GetMapping("/articles")
@@ -41,7 +39,7 @@ public class ArticleController {
 
     @GetMapping("/articles/new")
     public String newArticle() {
-        return "articles/new";
+        return "new.mustache";
     }
 
     @PostMapping("/articles")
@@ -62,6 +60,6 @@ public class ArticleController {
             model.addAttribute("article", articleDto);
         } catch (NoSuchElementException ignored) {}
 
-        return "articles/detail";
+        return "detail.mustache";
     }
 }
