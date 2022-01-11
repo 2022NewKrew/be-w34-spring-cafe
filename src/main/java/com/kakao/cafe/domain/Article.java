@@ -33,6 +33,10 @@ public class Article {
         return date.toString();
     }
 
+    public Long getSequence() {
+        return sequence;
+    }
+
     public void setSequence(Long sequence) {
         this.sequence = sequence;
     }

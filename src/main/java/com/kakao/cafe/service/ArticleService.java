@@ -12,6 +12,11 @@ public class ArticleService {
         articleRepository.addArticle(article);
     }
 
+    public Article getArticle(Long sequence){
+        //validation 은 나중에 추가.
+        return articleRepository.getAllAlticles().get(Math.toIntExact(sequence));
+    }
+
     public Long getNextArticleSequence(){
         return Long.valueOf(articleRepository.getAllAlticles().size() + 1);
     }
