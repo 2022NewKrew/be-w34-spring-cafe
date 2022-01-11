@@ -1,7 +1,10 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.Repository.ArticleLocalRepository;
+import com.kakao.cafe.Repository.ArticleRepository;
 import com.kakao.cafe.Repository.UserLocalRepository;
 import com.kakao.cafe.Repository.UserRepository;
+import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,5 +31,15 @@ public class MvcConfiguration implements WebMvcConfigurer {
     @Bean
     public UserRepository userRepository(){
         return new UserLocalRepository();
+    }
+
+    @Bean
+    public ArticleService articleService(){
+        return new ArticleService(articleRepository());
+    }
+
+    @Bean
+    public ArticleRepository articleRepository(){
+        return new ArticleLocalRepository();
     }
 }

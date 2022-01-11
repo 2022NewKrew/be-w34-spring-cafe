@@ -23,21 +23,20 @@ public class UserController {
 
     @GetMapping("/users")
     public String userList(Model model) {
-        List<User> userList = userService.getUserList();
+        List<User> userList = userService.getAllUser();
         model.addAttribute("userList", userList);
         return "/user/list";
     }
 
     @PostMapping("/users")
-    public String userPost(@ModelAttribute User user) {
-        userService.create(user);
+    public String signUp(@ModelAttribute User user) {
+        userService.save(user);
         return "redirect:/users";
     }
 
     @GetMapping("/users/{userId}")
     public String userInfo(@PathVariable String userId, Model model) {
         User user = userService.findById(userId);
-        System.out.println(user);
         model.addAttribute("user", user);
         return "user/profile";
     }
