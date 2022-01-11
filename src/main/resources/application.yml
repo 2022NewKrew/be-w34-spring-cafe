@@ -1,0 +1,6 @@
+spring:
+  mustache:
+    suffix: .html
+    cache: false
+server:
+  port: 8090
