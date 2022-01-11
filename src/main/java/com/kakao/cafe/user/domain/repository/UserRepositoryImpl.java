@@ -4,11 +4,13 @@ import com.kakao.cafe.user.domain.entity.User;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 public class UserRepositoryImpl implements UserRepository{
-    private final Map<String, User> idToUser = new TreeMap<>();
-    private final List<User> userList = new ArrayList<>();
+    private final Map<String, User> idToUser = new ConcurrentHashMap<>();
+    private final List<User> userList = new CopyOnWriteArrayList<>();
 
     @Override
     public Optional<User> getUser(String userId) {
