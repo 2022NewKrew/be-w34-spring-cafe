@@ -1,8 +1,8 @@
-package com.kakao.cafe.service;
+package com.kakao.cafe.user.service;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.UserMemoryRepository;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.repository.UserMemoryRepository;
+import com.kakao.cafe.user.repository.UserRepository;
 
 import java.util.List;
 

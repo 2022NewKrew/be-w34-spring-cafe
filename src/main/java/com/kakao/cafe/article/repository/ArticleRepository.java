@@ -1,6 +1,6 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.article.repository;
 
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.article.domain.Article;
 
 import java.util.List;
 

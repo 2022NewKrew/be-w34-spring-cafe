@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.article.domain;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

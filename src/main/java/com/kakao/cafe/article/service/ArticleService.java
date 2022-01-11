@@ -1,8 +1,8 @@
-package com.kakao.cafe.service;
+package com.kakao.cafe.article.service;
 
-import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.repository.ArticleMemoryRepository;
-import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.repository.ArticleMemoryRepository;
+import com.kakao.cafe.article.repository.ArticleRepository;
 
 import java.util.List;
 

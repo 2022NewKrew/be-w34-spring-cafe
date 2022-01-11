@@ -1,8 +1,7 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.article.controller;
 
-import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
