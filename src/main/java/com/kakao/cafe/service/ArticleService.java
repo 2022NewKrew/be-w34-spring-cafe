@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.dto.ArticleRegisterRequestDto;
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.ArticleNotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +14,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticleService {
 
+    private final UserService userService;
     private final ArticleRepository articleRepository;
 
 
     public void register(ArticleRegisterRequestDto articleRegisterRequestDto) {
+        User writer = userService.findUserByUserId(articleRegisterRequestDto.getWriterId());
         Article article = Article.builder()
                 .title(articleRegisterRequestDto.getTitle())
-                .writer(articleRegisterRequestDto.getWriter())
+                .writer(writer)
                 .contents(articleRegisterRequestDto.getContents())
                 .build();
         articleRepository.save(article);

@@ -2,8 +2,10 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.dto.ArticleRegisterRequestDto;
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.ArticleNotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,8 @@ class ArticleServiceTest {
     ArticleService articleService;
     @Mock
     ArticleRepository articleRepository;
+    @Mock
+    UserService userService;
 
     @Test
     @DisplayName("아이디로 게시글 조회")
@@ -62,7 +66,10 @@ class ArticleServiceTest {
     @DisplayName("게시글 등록")
     void testOfRegister() {
         ArticleRegisterRequestDto articleRegisterRequestDto = ArticleRegisterRequestDto.builder()
+                .writerId("leaf")
                 .build();
+
+        BDDMockito.given(userService.findUserByUserId("leaf")).willReturn(User.builder().build());
         articleService.register(articleRegisterRequestDto);
         BDDMockito.then(articleRepository).should().save(BDDMockito.any());
     }

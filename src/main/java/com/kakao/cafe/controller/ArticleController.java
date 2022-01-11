@@ -1,12 +1,16 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.controller.dto.ArticleQueryDetailResponseDto;
 import com.kakao.cafe.controller.dto.ArticleRegisterRequestDto;
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/articles")
@@ -16,7 +20,16 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping
-    public void register(@ModelAttribute ArticleRegisterRequestDto articleRegisterRequestDto) {
-
+    public String register(@ModelAttribute ArticleRegisterRequestDto articleRegisterRequestDto) {
+        articleService.register(articleRegisterRequestDto);
+        return "redirect:/";
     }
+
+    @GetMapping("/{id}")
+    public String getArticle(@PathVariable("id") Long id, Model model) {
+        Article article = articleService.findById(id);
+        model.addAttribute("article", new ArticleQueryDetailResponseDto(article));
+        return "/qna/show";
+    }
+
 }

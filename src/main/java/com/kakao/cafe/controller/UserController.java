@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    public String findAll(Model model) {
+    public String getAll(Model model) {
         List<User> users = userService.findAll();
         model.addAttribute("users", users.stream()
                 .map(UserQueryResponseDto::new)
@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public String findUser(@PathVariable("userId") String userId, Model model) {
+    public String getUserProfile(@PathVariable("userId") String userId, Model model) {
         User foundUser = userService.findUserByUserId(userId);
         UserProfileResponseDto userProfileResponseDto = new UserProfileResponseDto(foundUser);
         model.addAttribute("user", userProfileResponseDto);
