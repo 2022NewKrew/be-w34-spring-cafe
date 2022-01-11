@@ -7,14 +7,14 @@ public class User {
     private final int id;
 
     private String userId;
-    private String pw;
+    private String password;
     private String name;
     private String email;
 
-    public User(int id, String userId, String pw, String name, String email) {
+    public User(int id, String userId, String password, String name, String email) {
         this.id = id;
         this.userId = userId;
-        this.pw = pw;
+        this.password = password;
         this.name = name;
         this.email = email;
     }
@@ -31,12 +31,12 @@ public class User {
         this.userId = userId;
     }
 
-    public String getPw() {
-        return pw;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPw(String pw) {
-        this.pw = pw;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
