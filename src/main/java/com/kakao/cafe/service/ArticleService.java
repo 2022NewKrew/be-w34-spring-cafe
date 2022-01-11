@@ -1,12 +1,13 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.repository.ArticleMemoryRepository;
 import com.kakao.cafe.repository.ArticleRepository;
 
 import java.util.List;
 
 public class ArticleService {
-    static private ArticleRepository articleRepository = new ArticleRepository();
+    private ArticleRepository articleRepository = new ArticleMemoryRepository();
 
     public void articleCreate(Article article){
         setNextArticleSequence(article); //고유번호지정
