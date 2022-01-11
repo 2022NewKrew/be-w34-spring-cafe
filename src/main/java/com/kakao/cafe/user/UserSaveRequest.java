@@ -1,15 +1,12 @@
 package com.kakao.cafe.user;
 
-import java.io.Serializable;
-
-public class UserSaveRequest implements Serializable {
+public class UserSaveRequest {
     private String userId;
     private String password;
     private String name;
     private String email;
 
     public User toUser() {
-        System.out.println(userId);
         return new User(
                 this.userId,
                 this.password,
