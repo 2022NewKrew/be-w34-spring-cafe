@@ -1,26 +1,31 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.dto.QuestionDTO;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 @Repository
 public class ArticleMemoryRepository implements ArticleRepository {
 
-    private static List<Article> articleList = new ArrayList<>();
+    private static Map<Long, Article> articleMap = new TreeMap<>();
 
     @Override
-    public Article save(Article article) {
-        articleList.add(article);
+    public Article save(QuestionDTO articleDTO) {
+        Article article = new Article(articleMap.size() + 1L, articleDTO);
+        articleMap.put(articleMap.size() + 1L, article);
         return article;
     }
 
     @Override
+    public Optional<Article> findById(Long id) {
+        return Optional.ofNullable(articleMap.get(id));
+    }
+
+    @Override
     public List<Article> findAll() {
-        return Collections.unmodifiableList(articleList);
+        return List.copyOf(articleMap.values());
     }
 }
