@@ -11,4 +11,6 @@ public interface UserRepository {
 
     User save(User user);
     List<User> findAll();
+    User findUserByUserId(String userId);
+
 }
