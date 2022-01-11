@@ -27,5 +27,4 @@ public class UserController {
         logger.info("userList:{}", UserList.getInstance());
         return "redirect:/users";
     }
-
 }
