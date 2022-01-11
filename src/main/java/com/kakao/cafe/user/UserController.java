@@ -4,10 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +17,11 @@ public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/users")
-    public String save(
-            @RequestParam String userId,
-            @RequestParam String password,
-            @RequestParam String name,
-            @RequestParam String email
-    ) {
+    public String save(@ModelAttribute UserSaveRequest request) {
         logger.info("회원 가입");
-        User newUser = new User(userId, password, name, email);
+        User newUser = request.toUser();
         users.add(newUser);
+        logger.info("Added user\n" + newUser);
         return "redirect:/users";
     }
 
@@ -36,6 +29,7 @@ public class UserController {
     public String findAll(Model model) {
         logger.info("회원 목록");
         model.addAttribute("users", users);
+        logger.info("Listed users\n" + users);
         return "user/list";
     }
 
