@@ -1,0 +1,21 @@
+POST http://localhost:8080/users
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="id"
+
+jiyolla
+--WebAppBoundary
+Content-Disposition: form-data; name="name"
+
+jinyoung
+--WebAppBoundary
+Content-Disposition: form-data; name="password"
+
+password
+--WebAppBoundary
+Content-Disposition: form-data; name="email"
+
+frank@example.com
+
+###
