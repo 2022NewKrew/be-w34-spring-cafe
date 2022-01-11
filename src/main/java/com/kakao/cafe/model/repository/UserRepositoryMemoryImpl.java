@@ -5,6 +5,7 @@ import com.kakao.cafe.model.dto.UserDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserRepositoryMemoryImpl implements UserRepository {
@@ -29,7 +30,7 @@ public class UserRepositoryMemoryImpl implements UserRepository {
 
     @Override
     public boolean insertUser(UserDTO userDTO) {
-        if (findUserInStoredUsers(userDTO.getUserId()).isEmpty()) {
+        if (findUserInStoredUsers(userDTO.getUserId()).isPresent()) {
             return false;
         }
 
@@ -40,13 +41,7 @@ public class UserRepositoryMemoryImpl implements UserRepository {
 
     @Override
     public List<User> selectAllUsers() {
-        List<User> userList = new ArrayList<>();
-
-        for (Map.Entry<Long, User> entry : storedUsers.entrySet()) {
-            userList.add(entry.getValue());
-        }
-
-        return userList;
+       return new ArrayList<>(storedUsers.values());
     }
 
     @Override
