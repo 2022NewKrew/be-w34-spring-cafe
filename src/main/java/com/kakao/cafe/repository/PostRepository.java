@@ -3,6 +3,7 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.model.Post;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface PostRepository {
 
@@ -10,5 +11,5 @@ public interface PostRepository {
 
     List<Post> findAll();
 
-    Optional<Post> findById(Long id);
+    Optional<Post> findById(UUID id);
 }

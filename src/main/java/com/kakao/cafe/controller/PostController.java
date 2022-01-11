@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.PostCreateRequest;
 import com.kakao.cafe.service.PostService;
+import java.util.UUID;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public String getPostById(@PathVariable("postId") Long id, Model model) {
+    public String getPostById(@PathVariable("postId") UUID id, Model model) {
         model.addAttribute("post",
                 postService.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다.")));

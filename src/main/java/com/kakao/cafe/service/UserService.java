@@ -21,7 +21,7 @@ public class UserService {
     }
 
     public User register(UserRegisterRequest requestDto) {
-        return userRepository.save(User.of(requestDto));
+        return userRepository.save(requestDto.toEntity());
     }
 
     public Optional<User> findByUserId(String userId) {

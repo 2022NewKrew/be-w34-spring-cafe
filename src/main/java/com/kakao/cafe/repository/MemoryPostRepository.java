@@ -4,6 +4,7 @@ import com.kakao.cafe.model.Post;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -23,7 +24,7 @@ public class MemoryPostRepository implements PostRepository {
     }
 
     @Override
-    public Optional<Post> findById(Long id) {
+    public Optional<Post> findById(UUID id) {
         return postList.stream()
                 .filter(post -> id.equals(post.getId()))
                 .findFirst();

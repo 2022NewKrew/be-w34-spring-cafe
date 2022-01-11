@@ -7,6 +7,7 @@ import com.kakao.cafe.repository.PostRepository;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,10 +28,10 @@ public class PostService {
     public Post write(PostCreateRequest requestDto) {
         User writer = userRepository.findByName(requestDto.getWriter())
                 .orElseThrow(() -> new IllegalArgumentException("닉네임과 일치하는 회원정보가 없습니다."));
-        return postRepository.save(Post.of(requestDto, writer));
+        return postRepository.save(requestDto.toEntity(writer));
     }
 
-    public Optional<Post> findById(Long id) {
+    public Optional<Post> findById(UUID id) {
         return postRepository.findById(id);
     }
 }
