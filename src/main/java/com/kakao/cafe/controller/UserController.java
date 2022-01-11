@@ -37,16 +37,16 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/users/{userId}")
-    public String showUser(@PathVariable UUID userId, Model model) {
-        userService.findById(userId).ifPresent(user -> model.addAttribute("user", user));
-        return "user/profile";
-    }
-
     @PostMapping("/users")
     public String createUser(@ModelAttribute CreateUserDto createUserDto) {
         UUID createdUserId = userService.join(createUserDto);
         logger.info("[Log] 유저가 생성되었습니다. {}", createdUserId);
         return "redirect:/users";
+    }
+
+    @GetMapping("/users/{userId}")
+    public String showUser(@PathVariable UUID userId, Model model) {
+        userService.findById(userId).ifPresent(user -> model.addAttribute("user", user));
+        return "user/profile";
     }
 }
