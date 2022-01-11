@@ -6,15 +6,15 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 
 @Repository
-public interface ArticleDAO {
+public class ArticleDAO {
 
-    List<Article> articleList = new ArrayList<>();
+    private List<Article> articleList = new ArrayList<>();
 
-    default List<Article> findAllArticle() {
+    public List<Article> findAllArticle() {
         return articleList;
     }
 
-    default void writeArticle(Article article) {
+    public void writeArticle(Article article) {
         articleList.add(article);
     }
 }

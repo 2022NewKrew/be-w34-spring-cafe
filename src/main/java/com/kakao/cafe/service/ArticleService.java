@@ -9,7 +9,7 @@ import java.util.*;
 @Service
 public class ArticleService {
 
-    private ArticleDAO articleDAO;
+    private final ArticleDAO articleDAO;
 
     public ArticleService(ArticleDAO articleDAO) {
         this.articleDAO = articleDAO;
