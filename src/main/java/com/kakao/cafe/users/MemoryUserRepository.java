@@ -29,7 +29,7 @@ public class MemoryUserRepository implements UserRepository {
             }
         }
 
-        return Optional.ofNullable(null);
+        return Optional.empty();
     }
 
     @Override
