@@ -22,7 +22,7 @@ public class ArticleController {
     public String write(
             @RequestParam(value="writer") String author,
             @RequestParam String title,
-            @RequestParam String content,
+            @RequestParam(value="contents") String content,
             HttpSession session
     ) {
         String ownerId = (String) session.getAttribute("id");
