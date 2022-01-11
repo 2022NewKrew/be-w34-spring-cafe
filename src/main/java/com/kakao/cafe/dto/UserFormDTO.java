@@ -8,8 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserFormDTO {
-    private String userId;
-    private String userName;
-    private String userPw;
-    private String userEmail;
+    private String id;
+    private String name;
+    private String pw;
+    private String email;
 }

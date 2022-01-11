@@ -1,12 +1,9 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserFormDTO;
-import com.kakao.cafe.mapper.UserMapper;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +31,7 @@ public class UserController {
 
     @GetMapping("/signup")
     public String userSignUpForm() {
-        return "/user/form";
+        return "/user/signup";
     }
 
     @PostMapping("/signup")
@@ -44,8 +41,20 @@ public class UserController {
     }
 
     @GetMapping("/{key}")
-    public String userProfile(@PathVariable Long key, Model model) {
+    public String userProfile(@PathVariable long key, Model model) {
         model.addAttribute("user", userService.findByKey(key));
-        return "/user/profile";
+        return "user/profile";
+    }
+
+    @GetMapping("/{key}/update")
+    public String userUpdateForm(@PathVariable long key, Model model) {
+        model.addAttribute("user", userService.findByKey(key));
+        return "user/form";
+    }
+
+    @PostMapping("/{key}/update")
+    public String userUpdate(@PathVariable long key, UserFormDTO userFormDTO) {
+        userService.updateByKey(key, userFormDTO);
+        return "redirect:/user";
     }
 }

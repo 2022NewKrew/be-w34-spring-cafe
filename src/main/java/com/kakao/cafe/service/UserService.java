@@ -29,4 +29,8 @@ public class UserService {
     public User findByKey(long key) {
         return userMapper.selectByKey(key);
     }
+
+    public void updateByKey(long key, UserFormDTO userFormDTO) {
+        userMapper.update(key, userFormDTO);
+    }
 }
