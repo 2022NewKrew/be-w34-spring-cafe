@@ -14,20 +14,15 @@ public class ArticlePostRequest {
     @Size(min = 10)
     private final String body;
 
-    @NotBlank
-    private final String writer;
-
-    public ArticlePostRequest(String title, String body, String writer) {
+    public ArticlePostRequest(String title, String body) {
         this.title = title;
         this.body = body;
-        this.writer = writer;
     }
 
     public Article toEntity() {
         return Article.builder()
             .title(title)
             .body(body)
-            .writer(writer)
             .build();
     }
 }

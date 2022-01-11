@@ -1,9 +1,7 @@
 package com.kakao.cafe.article.controller;
 
-import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.dto.ArticlePostRequest;
 import com.kakao.cafe.article.service.ArticleService;
-import java.util.List;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,8 +26,7 @@ public class ArticleController {
 
     @GetMapping
     public String getAllArticles(Model model) {
-        List<Article> articles = articleService.getAllArticles();
-        model.addAttribute("articles", articles);
+        model.addAttribute("articles", articleService.getAllArticles());
         return "index";
     }
 

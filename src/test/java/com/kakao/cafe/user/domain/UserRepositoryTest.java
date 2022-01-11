@@ -6,10 +6,7 @@ import com.kakao.cafe.user.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(SpringExtension.class)
 class UserRepositoryTest {
 
     private UserRepository userRepository;
@@ -20,16 +17,14 @@ class UserRepositoryTest {
     void setUp() {
         userRepository = new MemoryUserRepository();
         user1 = User.builder()
-            .username("jin")
-            .password("password")
-            .name("woojin")
             .email("jin.jang@kakaocorp.com")
+            .password("password")
+            .username("jin")
             .build();
         user2 = User.builder()
-            .username("tom")
-            .password("password")
-            .name("tom")
             .email("tom@kakaocorp.com")
+            .password("password")
+            .username("tom")
             .build();
     }
 
