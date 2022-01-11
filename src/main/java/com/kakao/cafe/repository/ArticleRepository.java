@@ -21,4 +21,8 @@ public class ArticleRepository {
         data.add(article);
         return article;
     }
+
+    public List<Article> list() {
+        return Collections.unmodifiableList(data);
+    }
 }

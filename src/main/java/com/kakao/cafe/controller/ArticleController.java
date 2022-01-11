@@ -37,4 +37,11 @@ public class ArticleController {
         service.create(ownerId, author, title, content);
         return "redirect:/";
     }
+
+    @GetMapping("/")
+    public String list(Model model) {
+        List<ArticleDto> articles = service.list();
+        model.addAttribute("articles", articles);
+        return "index";
+    }
 }

@@ -33,4 +33,11 @@ public class ArticleService {
                 .build();
         return repository.create(entity).toDto();
     }
+
+    public List<ArticleDto> list() {
+        return repository.list()
+                .stream()
+                .map(Article::toDto)
+                .collect(Collectors.toList());
+    }
 }
