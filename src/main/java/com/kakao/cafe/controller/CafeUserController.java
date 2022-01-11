@@ -13,15 +13,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class CafeUserController {
 
     CafeUserService cafeUserService = new CafeUserServiceImpl();
 
-    @PostMapping()
+    @GetMapping("/sign-in")
+    String userViewSignIn() {
+        return "/user/login";
+    }
+    @GetMapping("/sign-up")
+    String userViewSingUp() {
+        return "/user/form";
+    }
+
+    @PostMapping("/sign-in")
     String signIn(User newUser){ // 회원가입
         cafeUserService.signIn(newUser);
-        return UserViewURL.USER_SIGN_IN.getMappingUrl();
+        return "redirect:/users/list";
     }
 
     @GetMapping("/list")
@@ -29,7 +38,7 @@ public class CafeUserController {
         List<User> userList = cafeUserService.getUserList();
         model.addAttribute("userList", userList);
         model.addAttribute("userCnt", CollectionHelper.getItemNumberOfList(userList));
-        return UserViewURL.USER_GET_LIST_VIEW.getMappingUrl();
+        return "/user/list";
     }
 
     @GetMapping("/profile/{userId}")
@@ -38,6 +47,6 @@ public class CafeUserController {
         if( user != null) {
             model.addAttribute("user", user);
         }
-        return UserViewURL.USER_GET_PROFILE_VIEW.getMappingUrl();
+        return "/user/profile";
     }
 }

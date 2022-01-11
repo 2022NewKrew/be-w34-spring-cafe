@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.model.Post;
 import com.kakao.cafe.service.CafePostService;
+import com.kakao.cafe.service.CafePostServiceImpl;
 import com.kakao.cafe.url.PostViewURL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,30 +15,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/post")
+@RequestMapping("/posts")
 public class CafePostController {
 
-    @Autowired
-    CafePostService cafePostService;
+    CafePostService cafePostService = new CafePostServiceImpl();
 
-    @PostMapping()
+    @GetMapping("/write")
+    String postViewWrite() {
+        return "/post/form";
+    }
+
+    @PostMapping("/write")
     String writePost (Post newPost) {
         cafePostService.writePost(newPost);
-        return PostViewURL.POST_WRITE.getMappingUrl();
+        return "redirect:/posts/list";
     }
 
     @GetMapping("/list")
     String getPostList(Model model) {
         List<Post> postList = cafePostService.getPostList();
-        model.addAttribute(postList);
-        return PostViewURL.POST_GET_LIST_VIEW.getMappingUrl();
+        model.addAttribute("postList", postList);
+        return "/index";
     }
 
     @GetMapping("/content/{postId}")
     String getPostContent(Model model, @PathVariable("postId") String postId) {
         Post post = cafePostService.getPostContent(postId);
-        model.addAttribute(post);
-        return PostViewURL.POST_GET_CONTENT_VIEW.getMappingUrl();
+        model.addAttribute("post", post);
+        return "/post/show";
     }
 
 
