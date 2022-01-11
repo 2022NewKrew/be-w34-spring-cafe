@@ -13,6 +13,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         registry.addViewController("/").setViewName("/index");
         registry.addViewController("/signup").setViewName("/user/form");
+        registry.addViewController("/posts/write").setViewName("/post/form");
     }
 
 }
