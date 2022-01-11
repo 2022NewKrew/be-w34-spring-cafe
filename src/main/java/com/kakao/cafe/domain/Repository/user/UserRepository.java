@@ -21,9 +21,11 @@ public class UserRepository {
         return users;
     }
 
-    public User findUserById(int uuid) throws UserNotExistException {
-        if (0 <= uuid && uuid < users.size()) {
-            return users.get(uuid);
+    public User findUserByUserId(String userId) throws UserNotExistException {
+        for (User user : users) {
+            if (user.getUserId().equals(userId)) {
+                return user;
+            }
         }
         throw new UserNotExistException();
     }

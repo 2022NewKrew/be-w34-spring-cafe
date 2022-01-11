@@ -3,6 +3,7 @@ package com.kakao.cafe.service.user;
 import com.kakao.cafe.domain.Entity.User;
 import com.kakao.cafe.domain.Repository.user.UserRepository;
 import com.kakao.cafe.dto.user.UserDto;
+import com.kakao.cafe.exceptions.UserNotExistException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +23,20 @@ public class UserService {
     public List<UserDto> getUserList() {
         List<UserDto> userList = new ArrayList<>();
         for (User user : this.userRepository.findAllUsers()) {
-//            UserDto userDTO = UserDto.builder()
-//                    .userId(user.getUserId())
-//                    .name(user.getName())
-//                    .email(user.getEmail())
-//                    .build();
             UserDto userDTO = new UserDto(user.getUserId(), user.getName(), user.getEmail());
             userList.add(userDTO);
         }
         return userList;
+    }
+
+    public UserDto getUserByUserId(String userId) {
+        try {
+            User user = this.userRepository.findUserByUserId(userId);
+            UserDto userDto = new UserDto(user.getUserId(), user.getName(), user.getEmail());
+            return userDto;
+        } catch (UserNotExistException e) {
+            return new UserDto(null, null, null);
+        }
     }
 
 
