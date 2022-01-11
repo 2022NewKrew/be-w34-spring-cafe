@@ -1,14 +1,15 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.user.UserDto;
+import com.kakao.cafe.dto.user.SignUpDto;
+import com.kakao.cafe.exceptions.NoSuchUserException;
 import com.kakao.cafe.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Slf4j
 @Controller
@@ -27,8 +28,13 @@ public class UserController {
     // 회원 정보 페이지
     @GetMapping("/users/{userId}")
     public String showUser(@PathVariable String userId, Model model) {
-        model.addAttribute("user", this.userService.getUserByUserId(userId));
-        return "user/profile";
+        try {
+            model.addAttribute("user", this.userService.getUserByUserId(userId));
+            return "user/profile";
+        } catch (NoSuchUserException e) {
+            return "error";
+        }
+
     }
 
     // 회원가입 페이지
@@ -39,12 +45,12 @@ public class UserController {
 
     // 회원 가입 로직
     @PostMapping("/user/signup")
-    public String addNewUser(UserDto userDto) {
-        log.info("{}", userDto.getUserId());
-        log.info("{}", userDto.getPassword());
-        log.info("{}", userDto.getName());
-        log.info("{}", userDto.getEmail());
-        this.userService.saveNewUser(userDto);
+    public String addNewUser(SignUpDto signUpDto) {
+        log.info("{}", signUpDto.getUserId());
+        log.info("{}", signUpDto.getPassword());
+        log.info("{}", signUpDto.getName());
+        log.info("{}", signUpDto.getEmail());
+        this.userService.saveNewUser(signUpDto);
         return "redirect:/users";
     }
 
