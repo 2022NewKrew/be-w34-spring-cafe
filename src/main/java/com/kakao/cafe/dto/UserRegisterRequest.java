@@ -1,5 +1,7 @@
 package com.kakao.cafe.dto;
 
+import com.kakao.cafe.model.User;
+
 public class UserRegisterRequest {
 
     private final String userId;
@@ -14,19 +16,7 @@ public class UserRegisterRequest {
         this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
+    public User toEntity() {
+        return new User.Builder(userId, password, name, email).build();
     }
 }
