@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.dto.PostCreateDto;
+
 import java.time.LocalDate;
 
 public class Post {
@@ -22,6 +24,15 @@ public class Post {
         this.createdAt = createdAt;
         this.writer = writer;
         this.viewCount = viewCount;
+    }
+
+    public static Post of(PostCreateDto postCreateDto) {
+        return new Post(postSeq++,
+                postCreateDto.getTitle(),
+                postCreateDto.getContent(),
+                LocalDate.now(),
+                new User(),
+                0);
     }
 
     public int getId() {
