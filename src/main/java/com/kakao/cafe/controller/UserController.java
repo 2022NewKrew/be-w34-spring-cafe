@@ -65,7 +65,9 @@ public class UserController {
 
     @PostMapping("{userId}/form")
     public String updateForm(@PathVariable("userId") String userId, UserAccountDTO userAccountDTO){
-        AccountTable.saveUserInto(userId, UserAccount.createUserAccount(true, userAccountDTO));
+
+        if(AccountTable.lookUpUserInfo(userId).isVaildPassword(userAccountDTO.getPassword()))
+            AccountTable.saveUserInto(userId, UserAccount.createUserAccount(true, userAccountDTO));
         return "redirect:/user";
     }
 }

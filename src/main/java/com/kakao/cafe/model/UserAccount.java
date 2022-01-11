@@ -39,6 +39,17 @@ public class UserAccount {
     }
 
     /**
+     * password 일치 여부 확인하는 메서드입니다.
+     * @param password  사용자 요청 password
+     * @return          password 가 일치하는지 여부
+     */
+    public boolean isVaildPassword(String password){
+        if(this.password.equals(password))
+            return true;
+        return false;
+    }
+
+    /**
      * UserAccount 클래스를 DTO 클래스로 매핑해주는 메서드입니다.
      * password 는 암호화 해서 저장합니다.
      * @return  DTO 클래스
