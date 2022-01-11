@@ -11,6 +11,6 @@ public interface MyRepository<T, I> {
 
     void save(T entity);
 
-    T update(T entity);
+    void update(T entity);
 
 }

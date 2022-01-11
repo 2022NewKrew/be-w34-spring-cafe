@@ -27,4 +27,11 @@ public class User {
         return this.id == id;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User) {
+            return this.id == ((User) obj).id;
+        }
+        return false;
+    }
 }

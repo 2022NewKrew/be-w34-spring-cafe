@@ -33,7 +33,8 @@ public class UserRepository implements MyRepository<User, Long> {
     }
 
     @Override
-    public User update(User entity) {
-        return null;
+    public void update(User entity) {
+        int index = users.indexOf(entity);
+        users.set(index, entity);
     }
 }

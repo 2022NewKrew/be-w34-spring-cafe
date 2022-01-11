@@ -18,4 +18,12 @@ public class Article {
     public boolean isEqualUserId(long id) {
         return this.id == id;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Article) {
+            return this.id == ((Article) obj).id;
+        }
+        return false;
+    }
 }
