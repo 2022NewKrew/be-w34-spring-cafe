@@ -1,5 +1,8 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.dto.ArticleDetailDto;
+import com.kakao.cafe.controller.dto.ArticleItemDto;
+import com.kakao.cafe.controller.mapper.ArticleItemDtoMapper;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.article.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -19,12 +23,16 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public List<Article> getArticleAll() {
-        return articleRepository.findAll();
+    public List<ArticleItemDto> getArticleAll() {
+        List<Article> articles = articleRepository.findAll();
+        return articles.stream()
+                .map(ArticleItemDtoMapper::toArticleItemDto)
+                .collect(Collectors.toList());
     }
 
-    public Article getArticle(Long articleId) {
-        return articleRepository.findById(articleId).orElseThrow();
+    public ArticleDetailDto getArticleDetail(Long articleId) {
+        Article article = articleRepository.findById(articleId).orElseThrow();
+        return ArticleItemDtoMapper.toArticleDetailDto(article);
     }
 
     public Long writeArticle(String writer, String title, String contents) {

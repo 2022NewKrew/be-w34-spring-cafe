@@ -1,25 +1,22 @@
 package com.kakao.cafe.controller.dto;
 
-public class QnaWriteRequestDto {
-
-    private String writer;
-
+public class ArticleDetailDto {
     private String title;
-
+    private String writer;
     private String contents;
 
-    public QnaWriteRequestDto(String writer, String title, String contents) {
-        this.writer = writer;
+    public ArticleDetailDto(String title, String writer, String contents) {
         this.title = title;
+        this.writer = writer;
         this.contents = contents;
-    }
-
-    public String getWriter() {
-        return writer;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public String getWriter() {
+        return writer;
     }
 
     public String getContents() {
@@ -28,9 +25,9 @@ public class QnaWriteRequestDto {
 
     @Override
     public String toString() {
-        return "QnaWriteRequestDto{" +
-                "writer='" + writer + '\'' +
-                ", title='" + title + '\'' +
+        return "ArticleDetailDto{" +
+                "title='" + title + '\'' +
+                ", writer='" + writer + '\'' +
                 ", contents='" + contents + '\'' +
                 '}';
     }

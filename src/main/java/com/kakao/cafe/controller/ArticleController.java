@@ -1,6 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.QnaWriteRequestDto;
+import com.kakao.cafe.controller.dto.ArticleDetailDto;
+import com.kakao.cafe.controller.dto.ArticleItemDto;
+import com.kakao.cafe.controller.dto.ArticleWriteRequestDto;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
@@ -28,24 +30,21 @@ public class ArticleController {
 
     @GetMapping("/")
     public String list(Model model) {
-        List<Article> articleList = articleService.getArticleAll();
-        logger.info(articleList.toString());
-        model.addAttribute("articles", articleList);
+        List<ArticleItemDto> articles = articleService.getArticleAll();
+        model.addAttribute("articles", articles);
         return "qna/list";
     }
 
     @GetMapping("/articles/{articleId}")
     public String details(@PathVariable Long articleId, Model model) {
-        Article article = articleService.getArticle(articleId);
-        logger.info(article.toString());
-        model.addAttribute("article", article);
+        ArticleDetailDto articleDetail = articleService.getArticleDetail(articleId);
+        model.addAttribute("article", articleDetail);
         return "qna/show";
     }
 
-    @PostMapping("/questions")
-    public String questions(QnaWriteRequestDto qnaWriteRequestDto) {
-        logger.info(qnaWriteRequestDto.toString());
-        articleService.writeArticle(qnaWriteRequestDto.getWriter(), qnaWriteRequestDto.getTitle(), qnaWriteRequestDto.getContents());
+    @PostMapping("/articles")
+    public String questions(ArticleWriteRequestDto articleWriteRequest) {
+        articleService.writeArticle(articleWriteRequest.getWriter(), articleWriteRequest.getTitle(), articleWriteRequest.getContents());
         return "redirect:/";
     }
 }
