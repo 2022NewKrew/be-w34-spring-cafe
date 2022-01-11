@@ -3,7 +3,6 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.model.DataStorage;
 import com.kakao.cafe.model.UserAccount;
 import com.kakao.cafe.model.UserAccountDTO;
-import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,7 @@ public class UserController {
 
     @GetMapping("form")
     public String form(){
-        return "user/form";
+        return "/user/form";
     }
 
     @PostMapping("form")
@@ -42,13 +41,13 @@ public class UserController {
         return "redirect:/user";
     }
 
-    @GetMapping("")
+    @GetMapping
     public String userInfo(Model model){
         List<UserAccountDTO> userAccounts = DataStorage.allUserAccountInfo();
 
         model.addAttribute("user_accounts", userAccounts);
         logger.info(userAccounts.toString());
-        return "user/list";
+        return "/user/list";
     }
 
     @GetMapping("{userID}")
