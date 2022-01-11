@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.dto.AuthDto;
 import com.kakao.cafe.dto.PageRequestDto;
 import com.kakao.cafe.dto.PageResultDto;
 import com.kakao.cafe.dto.UserDto;
@@ -23,10 +24,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto register(UserDto dto) {
         User entity = dtoToEntity(dto);
-        log.info(entity);
         userRepository.save(entity);
-        log.info("[signup] user entity: " + entity);
-        return entityToDto(entity);
+        try {
+            return entityToDto(userRepository.findbyIdAndPassword(entity));
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public AuthDto login(UserDto dto) {
+        User entity = dtoToEntity(dto);
+        try {
+            return entityToDto(userRepository.findbyIdAndPassword(entity)).getAuthDto();
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return null;
+        }
     }
 
     @Override

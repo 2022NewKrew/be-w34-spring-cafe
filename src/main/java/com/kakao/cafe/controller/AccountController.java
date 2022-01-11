@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.AuthDto;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/account")
@@ -21,7 +24,12 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public String login() {
+    public String login(UserDto userDto, HttpSession session) {
+        AuthDto authDto = userService.login(userDto);
+        if (authDto == null) {
+            return "redirect:/account/login";
+        }
+        session.setAttribute("auth", authDto);
         return "redirect:/";
     }
 

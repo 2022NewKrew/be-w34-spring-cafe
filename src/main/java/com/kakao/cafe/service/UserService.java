@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.dto.AuthDto;
 import com.kakao.cafe.dto.PageRequestDto;
 import com.kakao.cafe.dto.PageResultDto;
 import com.kakao.cafe.dto.UserDto;
@@ -7,6 +8,8 @@ import com.kakao.cafe.entity.User;
 
 public interface UserService {
     UserDto register(UserDto dto);
+
+    AuthDto login(UserDto dto);
 
     PageResultDto<UserDto, User> getList(PageRequestDto requestDto);
 

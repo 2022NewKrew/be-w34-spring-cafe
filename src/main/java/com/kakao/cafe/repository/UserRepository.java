@@ -49,6 +49,14 @@ public class UserRepository {
         userList.add(entity.init());
     }
 
+    public User findbyIdAndPassword(User entity) throws Exception {
+        return userList.stream()
+                .filter(user -> user.getEmail().equals(entity.getEmail()))
+                .filter(user -> user.getPassword().equals(entity.getPassword()))
+                .findFirst()
+                .orElseThrow(() -> new Exception("Login Error"));
+    }
+
     public Page<User> findAll(Pageable pageable) {
         int totalPage = (int) Math.ceil(userList.size() / (double) pageable.getSize());
         int fromIndex = pageable.getPage() * pageable.getSize();

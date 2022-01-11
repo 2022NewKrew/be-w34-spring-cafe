@@ -16,4 +16,11 @@ public class UserDto {
     private String username;
     private String password;
     private LocalDateTime regDate, modDate;
+
+    public AuthDto getAuthDto() {
+        return AuthDto.builder()
+                .email(this.email)
+                .username(this.username)
+                .build();
+    }
 }
