@@ -1,11 +1,13 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.service.user.dto.UserUpdateForm;
+
 public class User {
     private Long id;
-    private final String userId;
-    private final String password;
-    private final String userName;
-    private final String email;
+    private String userId;
+    private String password;
+    private String userName;
+    private String email;
 
     public User(String userId, String password, String userName, String email) {
         this.userId = userId;
@@ -24,10 +26,6 @@ public class User {
 
     public static User of(String userId, String password, String userName, String email) {
         return new User(userId, password, userName, email);
-    }
-
-    public static User createEmptyUser() {
-        return new User(0L, "", "", "", "");
     }
 
     public void setId(Long id) {
@@ -52,6 +50,16 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public void update(UserUpdateForm userUpdateForm) {
+        this.userId = userUpdateForm.getUserId();
+        boolean isUpdatePassword = !userUpdateForm.getPassword().equals("");
+        if(isUpdatePassword) {
+            this.password = userUpdateForm.getPassword();
+        }
+        this.userName = userUpdateForm.getUserName();
+        this.email = userUpdateForm.getEmail();
     }
 
     @Override

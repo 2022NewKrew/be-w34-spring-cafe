@@ -1,4 +1,4 @@
-package com.kakao.cafe.service;
+package com.kakao.cafe.service.article;
 
 import com.kakao.cafe.controller.articles.dto.ArticleDetailDto;
 import com.kakao.cafe.controller.articles.dto.ArticleItemDto;

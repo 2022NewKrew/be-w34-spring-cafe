@@ -1,15 +1,18 @@
-package com.kakao.cafe.service;
+package com.kakao.cafe.service.user;
 
+import com.kakao.cafe.controller.users.dto.UserInfoDto;
 import com.kakao.cafe.controller.users.dto.UserItemDto;
 import com.kakao.cafe.controller.users.dto.UserProfileDto;
 import com.kakao.cafe.controller.users.mapper.UserDtoMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.user.UserRepository;
+import com.kakao.cafe.service.user.dto.UserUpdateForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,8 +39,19 @@ public class UserService {
     }
 
     public UserProfileDto getUserProfile(String userId) {
-        User findUser = userRepository.findByUserId(userId);
+        User findUser = userRepository.findByUserId(userId).orElseThrow();
         return UserDtoMapper.toUserProfileDto(findUser);
+    }
+
+    public UserInfoDto getUserInfo(Long id) {
+        User findUser = userRepository.findById(id).orElseThrow();
+        return UserDtoMapper.toUserInfoDto(findUser);
+    }
+
+    public Long updateUser(UserUpdateForm updateForm) {
+        User updateUser = userRepository.findById(updateForm.getId()).orElseThrow();
+        updateUser.update(updateForm);
+        return userRepository.updateUser(updateUser);
     }
 
 }

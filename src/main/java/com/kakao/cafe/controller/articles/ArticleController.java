@@ -3,7 +3,7 @@ package com.kakao.cafe.controller.articles;
 import com.kakao.cafe.controller.articles.dto.ArticleDetailDto;
 import com.kakao.cafe.controller.articles.dto.ArticleItemDto;
 import com.kakao.cafe.controller.articles.dto.ArticleWriteRequestDto;
-import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.article.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Qualifier("memoryUserRepository")
@@ -29,10 +30,23 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User findByUserId(String userId) {
+    public Optional<User> findByUserId(String userId) {
         return userList.stream()
                 .filter(user -> userId.equals(user.getUserId()))
-                .findFirst()
-                .orElse(User.createEmptyUser());
+                .findFirst();
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return userList.stream()
+                .filter(user -> id.equals(user.getId()))
+                .findFirst();
+    }
+
+    @Override
+    public Long updateUser(User updateUser) {
+        int userIndex = (int)(updateUser.getId() - 1);
+        userList.set(userIndex, updateUser);
+        return updateUser.getId();
     }
 }

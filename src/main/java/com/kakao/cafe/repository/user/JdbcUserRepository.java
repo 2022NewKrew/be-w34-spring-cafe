@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Qualifier("jdbcUserRepository")
@@ -41,7 +42,17 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public User findByUserId(String userId) {
+    public Optional<User> findByUserId(String userId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Long updateUser(User user) {
         return null;
     }
 }
