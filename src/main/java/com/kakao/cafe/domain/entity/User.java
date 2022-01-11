@@ -1,10 +1,10 @@
-package com.kakao.cafe.domain.user;
+package com.kakao.cafe.domain.entity;
 
 public class User {
     private final String userId;
-    private String password;
-    private String name;
-    private String email;
+    private final  String password;
+    private final String name;
+    private final String email;
 
     public User(String userId, String password, String name, String email) {
         this.userId = userId;
