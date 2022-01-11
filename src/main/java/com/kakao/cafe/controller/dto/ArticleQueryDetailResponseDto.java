@@ -6,11 +6,11 @@ public class ArticleQueryDetailResponseDto {
 
     private final String title;
     private final String contents;
-    private final String writerName;
+    private final String writerId;
 
     public ArticleQueryDetailResponseDto(Article article) {
         this.title = article.getTitle();
         this.contents = article.getContents();
-        this.writerName = article.getWriter().getName();
+        this.writerId = article.getWriter().getUserId();
     }
 }

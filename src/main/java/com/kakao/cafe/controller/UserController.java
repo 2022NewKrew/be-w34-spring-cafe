@@ -30,7 +30,7 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/profiles/{userId}")
     public String getUserProfile(@PathVariable("userId") String userId, Model model) {
         User foundUser = userService.findUserByUserId(userId);
         UserProfileResponseDto userProfileResponseDto = new UserProfileResponseDto(foundUser);
