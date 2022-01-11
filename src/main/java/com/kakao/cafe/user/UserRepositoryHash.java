@@ -14,11 +14,31 @@ public class UserRepositoryHash implements UserRepository {
     private static Map<Long, User> inMemoryDatabase = new HashMap<>();
     private static long autoIncrementNumber = 0L;
 
+    // 임시 데이터입니다.
+    static {
+        User user1 = new User();
+        user1.setName("Hongjeongmin");
+        user1.setId(autoIncrementNumber);
+        user1.setUserId("jm.hong");
+        user1.setPassword("jm.hong");
+        user1.setEmail("jm.hong@kakaocorp.com");
+        inMemoryDatabase.put(autoIncrementNumber++, user1);
+
+        User user2 = new User();
+        user2.setName("Kimgisun");
+        user2.setId(autoIncrementNumber);
+        user2.setUserId("kim.gi");
+        user2.setPassword("kim.gi");
+        user2.setEmail("kim.gi@kakaocorp.com");
+        inMemoryDatabase.put(autoIncrementNumber++, user2);
+    }
+
+
     @Override
     public Long save(User user) {
         user.setId(autoIncrementNumber);
-        inMemoryDatabase.put(autoIncrementNumber, user);
-        return autoIncrementNumber++;
+        inMemoryDatabase.put(autoIncrementNumber++, user);
+        return autoIncrementNumber;
     }
 
     @Override

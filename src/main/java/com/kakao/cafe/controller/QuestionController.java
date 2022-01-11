@@ -18,11 +18,6 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    @GetMapping("/create")
-    public String viewQuestionForm() {
-        return "qna/form";
-    }
-
     @PostMapping("/create")
     public String insertQuestion(Question question) {
         Long id = questionService.save(question);

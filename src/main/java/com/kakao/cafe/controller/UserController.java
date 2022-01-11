@@ -18,11 +18,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/create")
-    public String viewUserForm() {
-        return "user/form";
-    }
-
     @PostMapping(value = "/create")
     public String insertUser(User user) {
 
@@ -39,4 +34,5 @@ public class UserController {
 
         return "user/list";
     }
+
 }
