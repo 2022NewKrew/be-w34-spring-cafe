@@ -15,7 +15,7 @@ public class ArticleDto {
         return title;
     }
 
-    public String getWritter() {
+    public String getWriter() {
         return writer;
     }
 
