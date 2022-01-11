@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
+    // 차후에 사용 예정인 클래스 ( 리뷰에선 무시 )
 
     private final static String CLASSPATH_PREFIX = "classpath:";
     private final static String PATH_OF_STATIC = "static/";
