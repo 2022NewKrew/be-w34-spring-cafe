@@ -1,6 +1,7 @@
-package com.kakao.cafe.user.controller;
+package com.kakao.cafe.controller;
 
-import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.vo.User;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,26 +18,25 @@ public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-//    @GetMapping("/user/form")
-//    public String createUser() {
-//        return "user/form";
-//    }
+    @GetMapping("/user/form")
+    public String createUser() {
+        return "user/form";
+    }
 
-    @PostMapping("/user/create")
+    @PostMapping("/users")
     public String createUser(User user) {
-//        logger.info(String.valueOf(user));
-//        logger.info(user.getUserId());
-//        logger.info(user.getEmail());
-//        logger.info(user.getName());
-//        logger.info(user.getPassword());
         users.add(user);
+        logger.info("{} {} {} {}", user, user.getUserId(), user.getEmail(), user.getPassword());
         logger.info("{}", users);
         return "redirect:/users";
     }
 
     @GetMapping("/users")
     public String memberList(Model model) {
-        model.addAttribute("users", users);
+//        model.addAttribute("users", users);
+        for (User user : users) {
+            model.addAttribute("users", user);
+        }
         return "user/list";
     }
 }
