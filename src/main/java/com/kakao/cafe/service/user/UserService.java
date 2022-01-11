@@ -33,4 +33,10 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public UserDto getUserById(long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+        return modelMapper.map(user, UserDto.class);
+    }
+
 }

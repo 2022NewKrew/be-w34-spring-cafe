@@ -86,4 +86,32 @@ class UserServiceTest {
         assertThat(users.size()).isEqualTo(size);
     }
 
+    @DisplayName("id를 이용하여 조회한 회원 정보는 등록된 회원 정보와 같아야 한다.")
+    @Test
+    void getUserById() {
+        User user = User.builder()
+                .email("test@test.com")
+                .nickname("테스터")
+                .password("1234")
+                .build();
+        userRepository.save(user);
+        long id = user.getId();
+
+        UserDto foundUser = userService.getUserById(id);
+        assertThat(foundUser.getId()).isEqualTo(user.getId());
+        assertThat(foundUser.getEmail()).isEqualTo(user.getEmail());
+        assertThat(foundUser.getNickname()).isEqualTo(user.getNickname());
+        assertThat(foundUser.getPassword()).isEqualTo(user.getPassword());
+        assertThat(foundUser.getCreatedAt()).isEqualTo(user.getCreatedAt());
+    }
+
+    @DisplayName("등록되지 않은 회원 정보를 조회하면 에러를 발생시켜야 한다.")
+    @Test
+    void getUserByIdNotSignup() {
+        long id = 100;
+
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+           UserDto user = userService.getUserById(id);
+        });
+    }
 }
