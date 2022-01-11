@@ -13,7 +13,7 @@
         </div>
 
         <div style="margin-top: 40px">
-            <span style="color: #666; font-size: 14px">전체 글 {{total}}개</span>
+            <span style="color: #666; font-size: 14px">전체 글 {{postListInfo.total}}개</span>
             <div style="display: flex; flex-direction: column; margin-top: 16px">
                 <div style="border-top: 1px solid #eee; border-bottom: 1px solid #eee; height: 55px">
                     <span>제목</span>
@@ -21,14 +21,14 @@
                     <span>작성일자</span>
                     <span>조회수</span>
                 </div>
-                {{#postList}}
+                {{#postListInfo.postList}}
                 <a href="/qna/{{postId}}" style="height: 64px">
                     <span>{{title}}</span>
                     <span>{{writer.userId}}</span>
                     <span>{{createdAt}}</span>
                     <span>{{viewCount}}</span>
                 </a>
-                {{/postList}}
+                {{/postListInfo.postList}}
             </div>
         </div>
     </div>

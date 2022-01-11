@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.dto.PostCreateDto;
-import com.kakao.cafe.dto.PostListDto;
+import com.kakao.cafe.dto.PostListItemDto;
 import com.kakao.cafe.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,12 +27,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostListDto> getList() {
+    public List<PostListItemDto> getList() {
         Optional<List<Post>> postList = postRepository.findAll();
 
         return postList.map(posts -> posts
                 .stream()
-                .map(PostListDto::of)
+                .map(PostListItemDto::of)
                 .collect(Collectors.toList())).orElse(null);
     }
 }
