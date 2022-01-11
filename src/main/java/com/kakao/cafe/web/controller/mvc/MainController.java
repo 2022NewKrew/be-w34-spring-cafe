@@ -1,4 +1,4 @@
-package com.kakao.cafe.web.controller;
+package com.kakao.cafe.web.controller.mvc;
 
 import com.kakao.cafe.domain.Users;
 import com.kakao.cafe.web.dto.UserDTO;
@@ -32,11 +32,12 @@ public class MainController {
   }
 
   @GetMapping("/users")
-  public String users(Model model) {
+  public String users(Model model) throws Exception {
     Users users = userService.getAllUsers();
     model.addAttribute("users", users.stream()
         .map(UserDTO::new)
         .collect(Collectors.toList()));
+
     return "list";
   }
 

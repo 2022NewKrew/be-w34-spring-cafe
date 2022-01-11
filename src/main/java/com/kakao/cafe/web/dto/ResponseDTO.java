@@ -7,7 +7,7 @@ public class ResponseDTO {
   private String message;
   private HttpStatus result;
 
-  private ResponseDTO(String message, HttpStatus result) {
+  protected ResponseDTO(String message, HttpStatus result) {
     this.message = message;
     this.result = result;
   }
