@@ -15,11 +15,12 @@ import java.util.*;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final UserService userService;
     private List<User> users = new ArrayList<>();
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping()
     public String userListView(Model model) {
