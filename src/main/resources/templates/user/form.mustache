@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="kr">
+{{> layout/header}}
+<body>
+    {{> layout/navbar}}
+    <div class="container">
+        <div class="jumbotron bg-none">
+            <div class="display-title">회원가입</div>
+        </div>
+        <form style="width: 50%; margin: 0 auto;" action="/users" method="post">
+            <div class="input-kakao-group">
+                <span class="input-kakao-group-addon">이메일</span>
+                <input class="input-kakao" type="email" id="email" name="email" placeholder="이메일을 입력해주세요" />
+            </div>
+            <div class="input-kakao-group">
+                <span class="input-kakao-group-addon">닉네임</span>
+                <input class="input-kakao" type="text" id="name" name="name" placeholder="닉네임을 입력해주세요" />
+            </div>
+            <div class="input-kakao-group">
+                <span class="input-kakao-group-addon">패스워드</span>
+                <input class="input-kakao" type="password" id="password" name="password" placeholder="패스워드를 입력해주세요" />
+            </div>
+            <button type="submit" class=" btn-kakao">완료</button>
+        </form>
+    </div>
+    {{> layout/scripts}}
+</body>
+</html>

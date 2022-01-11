@@ -1,0 +1,76 @@
+.display-title {
+    font-family: Noto Sans KR;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 46px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+body {
+    // styleName: TextRegular;
+    font-family: Noto Sans KR, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px;
+    letter-spacing: 0;
+    text-align: left;
+}
+
+.font-small {
+    // styleName: TextSmall;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.input-kakao-group {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.input-kakao-group-addon {
+    position: absolute;
+    left: 16px;
+    top: 10px;
+}
+
+.input-kakao {
+    width: 100%;
+    padding: 8px 8px 8px 96px;
+    border: 1px solid #EEEEEE;
+}
+
+.btn-kakao {
+    background-color: black;
+    color: white;
+    border: 2px solid black;
+    padding: 8px 16px;
+}
+
+.btn-kakao:hover {
+    background-color: #FFCD00;
+    color: black;
+    border: 2px solid #FFCD00;
+    padding: 8px 16px;
+}
+
+.btn-kakao:focus {
+    background-color: black;
+    border: 2px solid #FFCD00;
+    color: white;
+}
+
+.bg-kakao {
+    background-color: #FFCD00;
+}
+
+.bg-none {
+    background-color: inherit;
+}
+
+.border-none {
+    border: none;
+}
