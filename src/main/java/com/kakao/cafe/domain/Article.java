@@ -11,7 +11,7 @@ public class Article {
         this.contents = contents;
     }
 
-    public String getWriter() {
+    public String getName() {
         return name;
     }
 
