@@ -29,6 +29,6 @@ public class ArticleLocalRepository implements ArticleRepository {
         return articleList.stream()
                 .filter(x -> x.getId().toString().equals(id))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> {throw new IllegalArgumentException("존재하지 않는 Id 입니다");});
     }
 }

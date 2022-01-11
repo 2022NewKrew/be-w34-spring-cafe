@@ -38,7 +38,7 @@ public class UserH2Repository implements UserRepository {
                 .query(sql, memberRowMapper(), userId)
                 .stream()
                 .findAny()
-                .orElse(null);
+                .orElseThrow(() -> {throw new IllegalArgumentException("존재하지 않는 Id 입니다");});
     }
 
     private RowMapper<User> memberRowMapper() {
