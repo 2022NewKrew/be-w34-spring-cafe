@@ -28,4 +28,8 @@ public class ArticleService {
     public List<Article> getAllArticles(){
         return articleRepository.findAll();
     }
+
+    public Article getArticleById(Long id){
+        return articleRepository.findOneById(id);
+    }
 }

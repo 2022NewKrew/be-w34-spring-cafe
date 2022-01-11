@@ -1,10 +1,13 @@
 package com.kakao.cafe.article.controller;
 
+import com.kakao.cafe.article.model.Article;
 import com.kakao.cafe.article.model.ArticleRequest;
 import com.kakao.cafe.article.service.ArticleService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -27,8 +30,11 @@ public class ArticleController {
         return "/qna/form";
     }
 
-    @GetMapping("/show")
-    public String getArticleShowPage(){
+    @GetMapping("/show/{id}")
+    public String getArticleShowPage(@PathVariable String id, Model model){
+        Article article = articleService.getArticleById(Long.parseLong(id));
+        model.addAttribute("article", article);
+
         return "/qna/show";
     }
 }
