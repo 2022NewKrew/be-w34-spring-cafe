@@ -32,7 +32,6 @@ public class UserController {
 
     @GetMapping
     public String getUserList(Model model) {
-        logger.info("Display users' List");
         List<User> userList = userService.getUserList();
         model.addAttribute("userList", userList);
         return "user/list";
