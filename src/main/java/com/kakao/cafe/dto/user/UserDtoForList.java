@@ -1,4 +1,4 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.dto.user;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,11 +1,13 @@
 package com.kakao.cafe.controller.rest;
 
 import com.kakao.cafe.controller.RedirectedURL;
-import com.kakao.cafe.dto.UserJoinDto;
+import com.kakao.cafe.dto.user.ProfileUpdateDto;
+import com.kakao.cafe.dto.user.UserJoinDto;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,13 +24,22 @@ public class UserRestController {
     @PostMapping("/users/form")
     public void join(UserJoinDto userJoinDto, HttpServletResponse response) throws IOException {
         String redirectedURL = RedirectedURL.AFTER_JOIN;
-        encodePassword(userJoinDto);
+        userJoinDto.setPassword(encodePassword(userJoinDto.getPassword()));
         userService.join(userJoinDto);
 
         response.sendRedirect(redirectedURL);
     }
 
-    private void encodePassword(UserJoinDto userJoinDto) {
-        userJoinDto.setPassword(passwordEncoder.encode(userJoinDto.getPassword()));
+    @PutMapping("/users/upadate")
+    public void updateProfile(ProfileUpdateDto profileUpdateDto, HttpServletResponse response) throws IOException {
+        String redirectedURL = RedirectedURL.AFTER_UPDATE_PROFILE;
+        profileUpdateDto.setPassword(encodePassword(profileUpdateDto.getPassword()));
+        userService.updateProfile(profileUpdateDto);
+
+        response.sendRedirect(redirectedURL);
+    }
+
+    private String encodePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 }

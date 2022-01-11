@@ -1,11 +1,13 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserJoinDto;
+import com.kakao.cafe.dto.user.ProfileUpdateDto;
+import com.kakao.cafe.dto.user.UserJoinDto;
 import com.kakao.cafe.error.exception.duplication.UserEmailDuplicationException;
 import com.kakao.cafe.error.exception.duplication.UserNickNameDuplicationException;
 import com.kakao.cafe.error.exception.nonexist.UserNotFoundedException;
 import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.testutil.user.UserDtoUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,10 +32,10 @@ import static org.mockito.Mockito.times;
 class UserServiceImplTest {
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @InjectMocks
-    UserServiceImpl userService;
+    private UserServiceImpl userService;
 
     private User userInRepo;
 
@@ -60,7 +62,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("id 로 User 찾기 -> 존재함")
-    void findById() {
+    void findById_exist() {
         //Given
         Long existId = userInRepo.getId();
         given(userRepository.findById(existId)).willReturn(Optional.of(userInRepo));
@@ -70,6 +72,45 @@ class UserServiceImplTest {
 
         //Then
         assertEquals(userInRepo, result);
+    }
+
+    @Test
+    @DisplayName("email 로 User 찾기 -> 존재하지 않음")
+    void findByEmail_nonExist() {
+        //Given
+        String nonExistEmail = "nonExist@kakao.com";
+        given(userRepository.findByEmail(nonExistEmail)).willReturn(Optional.empty());
+
+        //When, Then
+        assertThrows(UserNotFoundedException.class, () -> userService.findByEmail(nonExistEmail));
+    }
+
+    @Test
+    @DisplayName("email 로 User 찾기 -> 존재")
+    void findByEmail_exist() {
+        //Given
+        String existEmail = userInRepo.getEmail();
+        given(userRepository.findByEmail(existEmail)).willReturn(Optional.of(userInRepo));
+
+        //When
+        User result = userService.findByEmail(existEmail);
+
+        //Then
+        assertEquals(userInRepo, result);
+    }
+
+    @Test
+    @DisplayName("특정 페이지의 모든 유저 반환 -> 정상")
+    void findAll() {
+        //Given
+        Integer pageNum = 1;
+        Integer pageSize = 10;
+
+        //When
+        userService.findAll(pageNum, pageSize);
+
+        //Then
+        then(userRepository).should(times(1)).findAll(pageNum, pageSize);
     }
 
     @Test
@@ -108,15 +149,13 @@ class UserServiceImplTest {
         String nonExistNickName = "nonExist";
         given(userRepository.existsByEmail(alreadyExistEmail)).willReturn(true);
 
-        UserJoinDto dto = getUserJoinDTOInstance(alreadyExistEmail, nonExistNickName);
+        UserJoinDto dto = UserDtoUtil.createUserJoinDto(alreadyExistEmail, nonExistNickName);
 
         //When, Then
         assertThrows(UserEmailDuplicationException.class, () -> userService.join(dto));
 
         then(userRepository).should(never()).save(any());
     }
-
-    private
 
     @Test
     @DisplayName("유저 추가 -> 이미 존재하는 nickName")
@@ -127,7 +166,7 @@ class UserServiceImplTest {
         given(userRepository.existsByEmail(nonExistEmail)).willReturn(false);
         given(userRepository.existsByNickName(alreadyExistNickName)).willReturn(true);
 
-        UserJoinDto dto = getUserJoinDTOInstance(nonExistEmail, alreadyExistNickName);
+        UserJoinDto dto = UserDtoUtil.createUserJoinDto(nonExistEmail, alreadyExistNickName);
 
         //When, Then
         assertThrows(UserNickNameDuplicationException.class, () -> userService.join(dto));
@@ -144,7 +183,7 @@ class UserServiceImplTest {
         given(userRepository.existsByEmail(nonExistEmail)).willReturn(false);
         given(userRepository.existsByNickName(nonExistNickName)).willReturn(false);
 
-        UserJoinDto dto = getUserJoinDTOInstance(nonExistEmail, nonExistNickName);
+        UserJoinDto dto = UserDtoUtil.createUserJoinDto(nonExistEmail, nonExistNickName);
 
         //When
         userService.join(dto);
@@ -153,11 +192,46 @@ class UserServiceImplTest {
         then(userRepository).should(times(1)).save(any(User.class));
     }
 
-    private UserJoinDto getUserJoinDTOInstance(String email, String nickName) {
-        return UserJoinDto.builder()
-                .email(email)
-                .nickName(nickName)
-                .password("abcd1234!")
-                .build();
+    @Test
+    @DisplayName("프로필 업데이트 -> 해당 아이디의 유저 없음")
+    void updateProfile_nonExistUser() {
+        //Given
+        Long nonExistId = Long.valueOf(251);
+        ProfileUpdateDto dto = UserDtoUtil.createProfileUpdateDto(nonExistId);
+        given(userRepository.findById(nonExistId)).willReturn(Optional.empty());
+
+        //When, Then
+        assertThrows(UserNotFoundedException.class, () -> userService.updateProfile(dto));
+    }
+
+    @Test
+    @DisplayName("프로필 업데이트 -> 다른 사람과 동일한 닉네임으로 변경")
+    void updateProfile_nickNameDuplication() {
+        //Given
+        String duplicatedNickName = "duplicated";
+        Long userInRepoId = userInRepo.getId();
+        ProfileUpdateDto dto = UserDtoUtil.createProfileUpdateDto(userInRepoId, duplicatedNickName);
+        given(userRepository.findById(userInRepoId)).willReturn(Optional.of(userInRepo));
+        given(userRepository.existsByNickName(duplicatedNickName)).willReturn(true);
+
+        //When, Then
+        assertThrows(UserNickNameDuplicationException.class, () -> userService.updateProfile(dto));
+    }
+
+    @Test
+    @DisplayName("프로필 업데이트 -> 정상")
+    void updateProfile() {
+        //Given
+        String newNickName = "newNick";
+        Long userInRepoId = userInRepo.getId();
+        ProfileUpdateDto dto = UserDtoUtil.createProfileUpdateDto(userInRepoId, newNickName);
+        given(userRepository.findById(userInRepoId)).willReturn(Optional.of(userInRepo));
+        given(userRepository.existsByNickName(newNickName)).willReturn(false);
+
+        //When
+        userService.updateProfile(dto);
+
+        //Then
+        then(userRepository).should(times(1)).save(userInRepo);
     }
 }

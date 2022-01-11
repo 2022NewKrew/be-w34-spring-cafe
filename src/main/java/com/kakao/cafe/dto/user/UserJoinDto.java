@@ -1,4 +1,4 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.dto.user;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.util.DateUtil;
@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class UserJoinDto {
     private String email;

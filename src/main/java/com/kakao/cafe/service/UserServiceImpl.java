@@ -1,7 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserJoinDto;
+import com.kakao.cafe.dto.user.ProfileUpdateDto;
+import com.kakao.cafe.dto.user.UserJoinDto;
 import com.kakao.cafe.error.exception.duplication.UserEmailDuplicationException;
 import com.kakao.cafe.error.exception.duplication.UserNickNameDuplicationException;
 import com.kakao.cafe.error.exception.nonexist.UserNotFoundedException;
@@ -51,5 +52,20 @@ public class UserServiceImpl implements UserService {
         }
         User newUser = userJoinDTO.toUserWithCurrentDate();
         return userRepository.save(newUser);
+    }
+
+    @Override
+    public User updateProfile(ProfileUpdateDto profileUpdateDto) {
+        Long targetUserId = profileUpdateDto.getId();
+        User targetUser = findById(targetUserId);
+        checkDuplicationForNewNickName(profileUpdateDto.getNickName(), targetUser.getNickName());
+        profileUpdateDto.updateUser(targetUser);
+        return userRepository.save(targetUser);
+    }
+
+    private void checkDuplicationForNewNickName(String newNickName, String targetUserNickName) {
+        if (userRepository.existsByNickName(newNickName) && !newNickName.equals(targetUserNickName)) {
+            throw new UserNickNameDuplicationException(UserErrorMsg.USER_NICKNAME_DUPLICATED.getDescription());
+        }
     }
 }
