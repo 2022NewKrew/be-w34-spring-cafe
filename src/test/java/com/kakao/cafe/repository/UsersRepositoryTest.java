@@ -28,7 +28,11 @@ class UsersRepositoryTest {
 
         // when
         JdbcUserRepository usersRepository = new JdbcUserRepository(jdbcTemplate);
+<<<<<<< HEAD
         Long savedUserId = usersRepository.insertUser(user);
+=======
+        Long savedUserId = usersRepository.save(user);
+>>>>>>> 21a0e77 (review 사항 반영)
 
         // then
         assertThat(savedUserId).isGreaterThan(0L);

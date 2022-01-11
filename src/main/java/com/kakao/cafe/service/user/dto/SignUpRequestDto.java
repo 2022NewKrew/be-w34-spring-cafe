@@ -1,4 +1,8 @@
+<<<<<<< HEAD:src/main/java/com/kakao/cafe/service/user/dto/SignUpRequestDto.java
 package com.kakao.cafe.service.user.dto;
+=======
+package com.kakao.cafe.service.dto;
+>>>>>>> 21a0e77 (review 사항 반영):src/main/java/com/kakao/cafe/service/dto/SignUpRequestDto.java
 
 public class SignUpRequestDto {
 
