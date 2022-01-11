@@ -32,7 +32,7 @@ public class UserController {
     public String userList(Model model) {
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
-        return "users_list";
+        return "user_list";
     }
 
     /**
@@ -45,7 +45,7 @@ public class UserController {
     public String userProfile(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id).orElseThrow(RuntimeException::new);
         model.addAttribute("user", user);
-        return "users_profile";
+        return "user_profile";
     }
 
     @GetMapping("/signup")
