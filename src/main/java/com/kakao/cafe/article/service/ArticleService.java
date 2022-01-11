@@ -6,7 +6,8 @@ import com.kakao.cafe.article.repository.ArticleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -15,13 +16,15 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public void registerArticle(ArticleRequest articleRequest){
+    public void writeArticle(ArticleRequest articleRequest){
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
         articleRepository.save(Article.builder()
                 .id((long) articleRepository.getNumberOfArticles() + 1)
                 .author(articleRequest.getAuthor())
                 .title(articleRequest.getTitle())
                 .contents(articleRequest.getContents())
-                .uploadTime(new Date())
+                .uploadTime(date.format(new Timestamp(System.currentTimeMillis())))
                 .build());
     }
 

@@ -19,8 +19,8 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("/question")
-    public String registerArticle(ArticleRequest articleRequest){
-        articleService.registerArticle(articleRequest);
+    public String writeArticle(ArticleRequest articleRequest){
+        articleService.writeArticle(articleRequest);
 
         return "redirect:/";
     }
