@@ -1,4 +1,7 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.model.data_storage;
+
+import com.kakao.cafe.model.UserAccount;
+import com.kakao.cafe.model.UserAccountDTO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,25 +14,25 @@ import java.util.Map;
  * DB 대신 임시로 사용하는 저장소입니다.
  *
  */
-public class DataStorage {
-    public static final Map<String, UserAccount> DB = new HashMap<>();
+public class AccountTable {
+    private static final Map<String, UserAccount> DB = new HashMap<>();
 
     /**
      * User 정보가 존재하는지 판단합니다.
-     * @param userID    userID
-     * @return          userID 가 DB에 존재하는지 여부
+     * @param userId    userId
+     * @return          userId 가 DB에 존재하는지 여부
      */
-    public static boolean isExistUserAccount(String userID){
-        return DB.containsKey(userID);
+    public static boolean contains(String userId){
+        return DB.containsKey(userId);
     }
 
     /**
      * UserID 를 이용해 user 정보를 받아오는 메서드입니다.
-     * @param userID    UserID
+     * @param userId    UserId
      * @return          User 정보
      */
-    public static UserAccount lookUpUserInfo(String userID){
-        return DB.get(userID);
+    public static UserAccount lookUpUserInfo(String userId){
+        return DB.get(userId);
     }
 
     /**
@@ -47,8 +50,11 @@ public class DataStorage {
     public static List<UserAccountDTO> allUserAccountInfo(){
         List<UserAccountDTO> userAccountList = new ArrayList<>();
 
+        int i = 1;
         for(Map.Entry<String, UserAccount> entry: DB.entrySet()){
-            userAccountList.add(new UserAccountDTO(entry.getValue()));
+            UserAccountDTO userAccountDTO = entry.getValue().toUserAccountDTO();
+            userAccountDTO.setIndex(i++);
+            userAccountList.add(userAccountDTO);
         }
 
         return userAccountList;

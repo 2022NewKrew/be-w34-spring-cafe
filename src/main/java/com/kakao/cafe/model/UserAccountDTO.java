@@ -6,20 +6,21 @@ package com.kakao.cafe.model;
  * UserAccount 클래스에서 로직을 제거하고 데이터 전송을 위해 따로 만든 클래스입니다.
  */
 public class UserAccountDTO {
-    private final String userID;
+    private final String userId;
     private final String password;
     private final String name;
     private final String email;
+    private int index;
 
-    public UserAccountDTO(UserAccount userAccount) {
-        this.userID = userAccount.getUserID();
-        this.password = userAccount.getPassword();
-        this.name = userAccount.getName();
-        this.email = userAccount.getEmail();
+    public UserAccountDTO(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getUserId() {
+        return userId;
     }
 
     public String getPassword() {
@@ -32,5 +33,19 @@ public class UserAccountDTO {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    @Override
+    public String toString() {
+        return "UserAccountDTO{" +
+                "userID='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

@@ -1,9 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.DataStorage;
 import com.kakao.cafe.model.UserAccount;
 import com.kakao.cafe.model.UserAccountDTO;
-import org.apache.catalina.User;
+import com.kakao.cafe.model.data_storage.AccountTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -29,33 +28,47 @@ public class UserController {
 
     @GetMapping("form")
     public String form(){
-        return "user/form";
+        return "/user/form";
     }
 
     @PostMapping("form")
-    public String form(String userId, String password, String name, String email, Model model){
-        UserAccount userAccount = UserAccount.createUserAccount(userId, password, name, email);
+    public String form(UserAccountDTO userAccountDTO){
+        UserAccount userAccount = UserAccount.createUserAccount(false, userAccountDTO);
 
         if(!Objects.isNull(userAccount))
-            DataStorage.saveUserInto(userId, userAccount);
+            AccountTable.saveUserInto(userAccountDTO.getUserId(), userAccount);
 
         return "redirect:/user";
     }
 
-    @GetMapping("")
+    @GetMapping
     public String userInfo(Model model){
-        List<UserAccountDTO> userAccounts = DataStorage.allUserAccountInfo();
+        List<UserAccountDTO> userAccounts = AccountTable.allUserAccountInfo();
 
         model.addAttribute("user_accounts", userAccounts);
-        logger.info(userAccounts.toString());
-        return "user/list";
+
+        return "/user/list";
     }
 
-    @GetMapping("{userID}")
-    public String profile(@PathVariable("userID") String userID, Model model){
-        UserAccountDTO userAccountDTO = new UserAccountDTO(DataStorage.lookUpUserInfo(userID));
+    @GetMapping("{userId}")
+    public String profile(@PathVariable("userId") String userId, Model model){
+        UserAccountDTO userAccountDTO = AccountTable.lookUpUserInfo(userId).toUserAccountDTO();
 
         model.addAttribute("user_account", userAccountDTO);
-        return "user/profile";
+        return "/user/profile";
+    }
+
+    @GetMapping("{userId}/form")
+    public String updateForm(@PathVariable("userId") String userId){
+        return "/user/update_form";
+    }
+
+    @PostMapping("{userId}/form")
+    public String updateForm(@PathVariable("userId") String userId, String curPassword, UserAccountDTO userAccountDTO){
+        logger.info(curPassword);
+        logger.info(userAccountDTO.toString());
+        if(AccountTable.lookUpUserInfo(userId).isVaildPassword(curPassword))
+            AccountTable.saveUserInto(userId, UserAccount.createUserAccount(true, userAccountDTO));
+        return "redirect:/user";
     }
 }
