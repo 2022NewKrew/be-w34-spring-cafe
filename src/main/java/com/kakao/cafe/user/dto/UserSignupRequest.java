@@ -4,9 +4,7 @@ import com.kakao.cafe.user.domain.User;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import lombok.Getter;
 
-@Getter
 public class UserSignupRequest {
 
     @NotBlank
@@ -21,7 +19,7 @@ public class UserSignupRequest {
     @Size(min = 2, max = 15)
     private final String name;
 
-    @Email
+    @Email(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")
     private final String email;
 
     public UserSignupRequest(String username, String password, String name, String email) {
