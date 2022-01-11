@@ -31,7 +31,7 @@ public class ArticleController {
 
         model.addAttribute("articles", articleDtoList);
 
-        return "article/list";
+        return "index";
     }
 
     @GetMapping("/{id}")
@@ -39,6 +39,6 @@ public class ArticleController {
         ArticleDto articleDto = articleService.getArticleById(id);
         model.addAttribute("article", articleDto);
 
-        return "article/show";
+        return "qna/show";
     }
 }
