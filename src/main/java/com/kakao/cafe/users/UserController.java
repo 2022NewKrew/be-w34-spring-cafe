@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-
 @RestController
 public class UserController {
     private ArrayList<User> users = new ArrayList<>();
