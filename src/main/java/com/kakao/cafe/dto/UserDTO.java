@@ -1,6 +1,8 @@
 package com.kakao.cafe.dto;
 
 import com.kakao.cafe.model.User;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,16 +13,20 @@ public interface UserDTO {
     @AllArgsConstructor
     class Create {
 
+        @NotBlank
         String userId;
+        @NotBlank
         String password;
+        @NotBlank
         String name;
+        @NotBlank @Pattern(regexp = "(\\w+\\.)*\\w+@(\\w+\\.)+\\w{2,3}")
         String email;
     }
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     class Result {
 
-        Integer id;
+        Long id;
         String userId;
         String name;
         String email;

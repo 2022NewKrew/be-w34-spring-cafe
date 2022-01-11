@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.UserDTO.Create;
-import com.kakao.cafe.dto.UserDTO.Result;
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.dto.ArticleDTO.Create;
+import com.kakao.cafe.dto.ArticleDTO.Result;
+import com.kakao.cafe.service.ArticleService;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -15,20 +15,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserController {
+public class ArticleController {
 
-    private static final Logger logger = LoggerFactory.getLogger(
-        UserController.class.getSimpleName());
-    private final UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
-    @PostMapping
+    private final ArticleService articleService;
+
+    @PostMapping("/articles")
     public String create(@ModelAttribute @Validated Create createDTO,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -36,32 +34,31 @@ public class UserController {
                 .forEach(fieldError -> logger.error("Caused Field : {}, Message : {}",
                     fieldError.getField(),
                     fieldError.getDefaultMessage()));
-            return "redirect:/users/form-failed";
+            return "redirect:/qna/form-failed";
         }
 
         try {
-            userService.create(createDTO);
+            articleService.create(createDTO);
         } catch (ResponseStatusException e) {
-            return "redirect:/users/form-failed";
+            return "redirect:/qna/form-failed";
         }
-
-        return "redirect:/users";
+        return "redirect:/";
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ModelAndView readAll(Map<String, Object> model) {
-        List<Result> resultDTOs = userService.readAll();
-        model.put("users", resultDTOs);
+        List<Result> resultDTOs = articleService.readAll();
+        model.put("articles", resultDTOs);
 
-        return new ModelAndView("user/list", model);
+        return new ModelAndView("index", model);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/articles/{articleId}")
     public ModelAndView read(Map<String, Object> model,
-        @PathVariable String userId) {
-        Result resultDTO = userService.readByUserId(userId);
-        model.put("user", resultDTO);
+        @PathVariable Long articleId) {
+        Result resultDTO = articleService.readById(articleId);
+        model.put("article", resultDTO);
 
-        return new ModelAndView("user/profile", model);
+        return new ModelAndView("qna/show", model);
     }
 }

@@ -1,10 +1,11 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.model.User;
-import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Result;
+import com.kakao.cafe.error.UserError;
+import com.kakao.cafe.model.User;
+import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,38 +20,41 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class UserService {
 
-    private static final String ALREADY_EXISTS_ID_MESSAGE = "중복된 사용자 ID 입니다.";
-    private static final String NOT_FOUND_USER_MESSAGE = "입력한 사용자를 찾을 수 없습니다.";
-
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
 
     public void create(Create createDto) {
         if (userRepository.findUserByUserId(createDto.getUserId()).isPresent()) {
-            logger.error("id : " + createDto.getUserId() + ALREADY_EXISTS_ID_MESSAGE);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ALREADY_EXISTS_ID_MESSAGE);
+            logger.error("User ID : {} {}", createDto.getUserId(),
+                UserError.ALREADY_EXISTS.getMessage());
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                UserError.ALREADY_EXISTS.getMessage());
         }
+
         User user = User.of(createDto.getUserId(), createDto.getPassword(),
             createDto.getName(), createDto.getEmail());
 
-        userRepository.addUser(user);
+        userRepository.add(user);
         logger.info("User Created : " + user);
     }
 
     public List<UserDTO.Result> readAll() {
-        return userRepository.findUsers().stream()
+        return userRepository.findAllUsers().stream()
             .map(Result::from)
-            .collect(Collectors.toList());
+            .collect(Collectors.toUnmodifiableList());
     }
 
     public UserDTO.Result readByUserId(String userId) {
         Optional<User> foundUser = userRepository.findUserByUserId(userId);
         if (foundUser.isEmpty()) {
-            logger.error("id : " + userId + " " + NOT_FOUND_USER_MESSAGE);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, NOT_FOUND_USER_MESSAGE);
+            logger.error("User ID : {} {}", userId, UserError.NOT_FOUND.getMessage());
+
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                UserError.NOT_FOUND.getMessage());
         }
-        
+
         return Result.from(foundUser.get());
     }
 }
