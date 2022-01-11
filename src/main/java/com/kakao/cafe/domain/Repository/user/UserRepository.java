@@ -1,33 +1,31 @@
 package com.kakao.cafe.domain.Repository.user;
 
 import com.kakao.cafe.domain.Entity.User;
-import com.kakao.cafe.exceptions.NoSuchUserException;
+import com.kakao.cafe.exceptions.UserNotExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
 public class UserRepository {
-    private static final Map<String, User> users = new HashMap<>();
+    private static final List<User> users = new ArrayList<>();
 
     public void saveUser(User user) {
-        users.put(user.getUserId(), user);
+        users.add(user);
     }
 
     public List<User> findAllUsers() {
-        return new ArrayList<>(users.values());
+        return users;
     }
 
-    public User findUserByUserId(String userId) throws NoSuchUserException {
-        if (users.containsKey(userId)) {
-            return users.get(userId);
+    public User findUserById(int uuid) throws UserNotExistException {
+        if (0 <= uuid && uuid < users.size()) {
+            return users.get(uuid);
         }
-        throw new NoSuchUserException();
+        throw new UserNotExistException();
     }
 
 }

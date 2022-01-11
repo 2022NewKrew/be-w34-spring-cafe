@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>회원 목록</title>
+    <title>SLiPP Java Web Programming</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -67,7 +67,7 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="/users">Users</a></li>
+                <li class="active"><a href="../index.html">Users</a></li>
                 <li><a href="../user/login.html" role="button">로그인</a></li>
                 <li><a href="./form.html" role="button">회원가입</a></li>
                 <li><a href="#" role="button">로그아웃</a></li>
@@ -93,8 +93,8 @@
                 <tbody>
                 {{#users}}
                 <tr>
-                    <th scope="row">{{@index_1}}</th>
-                    <td><a href="/users/{{userId}}">{{userId}}</a> </td>
+                    <th scope="row">{{user.name}}</th>
+                    <td><a href="/users">{{userId}}</a> </td>
                     <td>{{name}}</td>
                     <td>{{email}}</td>
                     <td><a href="#" class="btn btn-success" role="button">수정</a></td>
