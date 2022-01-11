@@ -26,12 +26,12 @@ public class Post {
         this.viewCount = viewCount;
     }
 
-    public static Post of(PostCreateDto postCreateDto) {
+    public static Post of(PostCreateDto postCreateDto, User user) {
         return new Post(postSeq++,
                 postCreateDto.getTitle(),
-                postCreateDto.getContent(),
+                postCreateDto.getContents(),
                 LocalDate.now(),
-                new User(),
+                user,
                 0);
     }
 

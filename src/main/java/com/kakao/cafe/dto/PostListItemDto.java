@@ -7,15 +7,17 @@ import java.time.LocalDate;
 public class PostListItemDto {
     private int id;
     private String title;
+    private int viewCount;
     private LocalDate createdAt;
     private UserDto writer;
 
     public PostListItemDto() {
     }
 
-    public PostListItemDto(int id, String title, LocalDate createdAt, UserDto writer) {
+    public PostListItemDto(int id, String title, int viewCount, LocalDate createdAt, UserDto writer) {
         this.id = id;
         this.title = title;
+        this.viewCount = viewCount;
         this.createdAt = createdAt;
         this.writer = writer;
     }
@@ -23,6 +25,7 @@ public class PostListItemDto {
     public static PostListItemDto of(Post post) {
         return new PostListItemDto(post.getId(),
                 post.getTitle(),
+                post.getViewCount(),
                 post.getCreatedAt(),
                 UserDto.of(post.getWriter()));
     }
@@ -57,5 +60,13 @@ public class PostListItemDto {
 
     public void setWriter(UserDto writer) {
         this.writer = writer;
+    }
+
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
     }
 }
