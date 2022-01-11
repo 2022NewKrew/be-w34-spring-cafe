@@ -18,7 +18,6 @@ public class ArticleController {
     @PostMapping("/questions")
     public String postQuestion(ArticleDto article) {
         articleService.saveArticle(article);
-        System.out.println(article);
         return "redirect:/";
     }
 }

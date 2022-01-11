@@ -12,4 +12,8 @@ public class ArticleRepository {
     public void save(ArticleDto article) {
         articleList.add(article);
     }
+
+    public List<ArticleDto> getAllArticles() {
+        return articleList;
+    }
 }
