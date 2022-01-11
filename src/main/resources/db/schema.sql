@@ -3,9 +3,9 @@ DROP TABLE IF EXISTS user;
 CREATE TABLE user
 (
     id     BigInt       not null auto_increment,
-    user_id     varchar(256) not null,
-    user_name   varchar(256) not null,
-    user_pw     varchar(256) not null,
-    user_email  varchar(256) not null,
+    userId     varchar(256) not null,
+    userName   varchar(256) not null,
+    userPw     varchar(256) not null,
+    userEmail  varchar(256) not null,
     primary key (id)
 );

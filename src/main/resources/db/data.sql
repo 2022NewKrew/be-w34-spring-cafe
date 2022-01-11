@@ -1,2 +1,2 @@
-insert into user(user_id, user_pw, user_name, user_email)
+insert into user(userId, userPw, userName, userEmail)
             values('worldbright', 'asdf', 'shyun', 'shuyn.cream@kakaocorp.com');
