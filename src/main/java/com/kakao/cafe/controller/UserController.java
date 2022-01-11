@@ -1,7 +1,6 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.vo.User;
 
 import com.kakao.cafe.vo.UserDto;
 import lombok.RequiredArgsConstructor;
