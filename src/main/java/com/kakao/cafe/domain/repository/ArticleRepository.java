@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.repository;
 
 import com.kakao.cafe.domain.entity.Article;
+import com.kakao.cafe.domain.entity.Draft;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
@@ -14,11 +15,10 @@ public class ArticleRepository {
 
     private final List<Article> data = new ArrayList<>();
 
-    public Article create(Article article) {
+    public Article create(Draft draft) {
         long id = data.size() + 1;
-        article.setId(id);
         Date createdAt = new Date();
-        article.setCreatedAt(createdAt);
+        Article article = draft.createArticle(id, createdAt);
         data.add(article);
         return article;
     }

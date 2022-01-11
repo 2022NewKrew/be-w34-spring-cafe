@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.domain.repository.UserRepository;
 import com.kakao.cafe.service.dto.CredentialsDto;
@@ -24,13 +25,8 @@ public class UserService {
 
     @Nullable
     public UserDto create(SignUpDto signUp) {
-        User user = new User.Builder()
-                .userId(signUp.getUserId())
-                .password(signUp.getPassword())
-                .name(signUp.getName())
-                .email(signUp.getEmail())
-                .build();
-        User created = userRepository.create(user);
+        SignUp entity = signUp.toEntity();
+        User created = userRepository.create(entity);
         if (created == null) {
             return null;
         }

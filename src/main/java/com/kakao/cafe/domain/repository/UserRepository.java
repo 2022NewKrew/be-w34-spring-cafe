@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain.repository;
 
+import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -16,14 +17,15 @@ public class UserRepository {
     private final List<User> data = new ArrayList<>();
 
     @Nullable
-    public User create(User user) {
+    public User create(SignUp signUp) {
         // NOTE 중복 확인을 Repository에서 해야 할 지, Service에서 해야 할지?
-        User existing = find(User::getUserId, user.getUserId()).orElse(null);
+        User existing = find(User::getUserId, signUp.getUserId()).orElse(null);
         if (existing != null) {
             // NOTE Exception을 던지는 것이 더 나을 것 같다. 옳은 접근인가?
             return null;
         }
-        user.setId(data.size() + 1);
+        long id = data.size() + 1;
+        User user = signUp.createUser(id);
         data.add(user);
         return user;
     }

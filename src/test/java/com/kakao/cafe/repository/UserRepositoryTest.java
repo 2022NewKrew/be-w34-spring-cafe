@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository;
 
+import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.domain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,46 +17,26 @@ class UserRepositoryTest {
     @BeforeEach
     void setUp() {
         subject = new UserRepository();
-        User user = new User.Builder()
-                .userId("id")
-                .password("password")
-                .name("name")
-                .email("email@example.com")
-                .build();
-        subject.create(user);
+        SignUp signUp = new SignUp("id", "password", "name", "");
+        subject.create(signUp);
     }
 
     @Test
     void create() {
-        User user = new User.Builder()
-                .userId("id2")
-                .password("password")
-                .name("name")
-                .email("email@example.com")
-                .build();
+        SignUp signUp = new SignUp("id1", "password", "name", "");
 
-        User result = subject.create(user);
+        User result = subject.create(signUp);
 
-        assertEquals(user, result);
+        assertEquals(signUp.createUser(1), result);
     }
 
     @Test
     void create_uniqueId() {
-        User user1 = new User.Builder()
-                .userId("id1")
-                .password("password")
-                .name("name")
-                .email("email@example.com")
-                .build();
-        User user2 = new User.Builder()
-                .userId("id2")
-                .password("password")
-                .name("name")
-                .email("email@example.com")
-                .build();
+        SignUp signUp1 = new SignUp("id1", "password", "name", "");
+        SignUp signUp2 = new SignUp("id2", "password", "name", "");
 
-        User created1 = subject.create(user1);
-        User created2 = subject.create(user2);
+        User created1 = subject.create(signUp1);
+        User created2 = subject.create(signUp2);
 
         assertNotNull(created1);
         assertNotNull(created2);
@@ -66,14 +47,9 @@ class UserRepositoryTest {
 
     @Test
     void create_duplicate() {
-        User user = new User.Builder()
-                .userId("id")
-                .password("password1")
-                .name("name1")
-                .email("email1@example.com")
-                .build();
+        SignUp signUp = new SignUp("id", "password", "name", "");
 
-        User result = subject.create(user);
+        User result = subject.create(signUp);
 
         assertNull(result);
     }

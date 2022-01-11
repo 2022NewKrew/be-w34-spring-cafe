@@ -33,16 +33,8 @@ public class Article {
         this.createdAt = createdAt;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public long getId() {
         return id;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     public ArticleDto toDto() {

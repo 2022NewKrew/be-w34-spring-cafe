@@ -1,5 +1,8 @@
 package com.kakao.cafe.service.dto;
 
+import com.kakao.cafe.domain.entity.Draft;
+import com.kakao.cafe.domain.entity.User;
+
 public class DraftDto {
 
     private final String author;
@@ -12,15 +15,7 @@ public class DraftDto {
         this.content = content;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
+    public Draft toEntity(User owner) {
+        return new Draft(owner, author, title, content);
     }
 }

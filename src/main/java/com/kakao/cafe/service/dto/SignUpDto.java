@@ -1,5 +1,7 @@
 package com.kakao.cafe.service.dto;
 
+import com.kakao.cafe.domain.entity.SignUp;
+
 public class SignUpDto {
 
     private final String userId;
@@ -14,19 +16,7 @@ public class SignUpDto {
         this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
+    public SignUp toEntity() {
+        return new SignUp(userId, password, name, email);
     }
 }

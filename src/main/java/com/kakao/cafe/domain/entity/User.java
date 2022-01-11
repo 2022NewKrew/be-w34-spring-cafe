@@ -20,10 +20,6 @@ public class User {
         this.email = email;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public long getId() {
         return id;
     }
@@ -66,7 +62,7 @@ public class User {
         private String password;
         private String email;
 
-        public Builder userId(long id) {
+        public Builder id(long id) {
             this.id = id;
             return this;
         }
