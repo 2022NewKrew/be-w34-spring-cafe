@@ -17,11 +17,12 @@ public class UserRepository {
     @Nullable
     public User create(User user) {
         // NOTE 중복 확인을 Repository에서 해야 할 지, Service에서 해야 할지?
-        User existing = find(user.getId()).orElse(null);
+        User existing = find(user.getUserId()).orElse(null);
         if (existing != null) {
             // NOTE Exception을 던지는 것이 더 나을 것 같다. 옳은 접근인가?
             return null;
         }
+        user.setId(data.size() + 1);
         data.add(user);
         return user;
     }
@@ -51,7 +52,7 @@ public class UserRepository {
 
     private Optional<User> find(String id) {
         return data.stream()
-                .filter(user -> user.getId().equals(id))
+                .filter(user -> user.getUserId().equals(id))
                 .findFirst();
     }
 }

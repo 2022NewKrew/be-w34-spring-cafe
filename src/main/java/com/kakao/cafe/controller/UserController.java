@@ -70,7 +70,7 @@ public class UserController {
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "login failed");
         }
-        String id = user.getId();
+        String id = user.getUserId();
         session.setAttribute("id", id);
         return "redirect:/users/" + id;
     }

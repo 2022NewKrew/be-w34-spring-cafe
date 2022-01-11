@@ -4,37 +4,45 @@ import com.kakao.cafe.entity.User;
 
 public class UserDto implements Dto<User> {
 
-    private final String id;
+    private final long id;
+    private final String userId;
     private final String name;
     private final String email;
 
-    private UserDto(String id, String name, String email) {
+    private UserDto(long id, String userId, String name, String email) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
         this.email = email;
     }
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
     @Override
     public User toEntity() {
         return new User.Builder()
                 .email(email)
-                .id(id)
+                .id(userId)
                 .name(name)
                 .build();
     }
 
     public static class Builder {
 
-        private String id;
+        private long id;
+        private String userId;
         private String name;
         private String email;
 
-        public Builder id(String id) {
+        public Builder id(long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder userId(String userId) {
+            this.userId = userId;
             return this;
         }
 
@@ -49,7 +57,7 @@ public class UserDto implements Dto<User> {
         }
 
         public UserDto build() {
-            return new UserDto(id, name, email);
+            return new UserDto(id, userId, name, email);
         }
     }
 }

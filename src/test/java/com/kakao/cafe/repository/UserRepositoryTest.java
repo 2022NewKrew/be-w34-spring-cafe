@@ -39,6 +39,31 @@ class UserRepositoryTest {
     }
 
     @Test
+    void create_uniqueId() {
+        User user1 = new User.Builder()
+                .id("id1")
+                .password("password")
+                .name("name")
+                .email("email@example.com")
+                .build();
+        User user2 = new User.Builder()
+                .id("id2")
+                .password("password")
+                .name("name")
+                .email("email@example.com")
+                .build();
+
+        User created1 = subject.create(user1);
+        User created2 = subject.create(user2);
+
+        assertNotNull(created1);
+        assertNotNull(created2);
+        long id1 = created1.getId();
+        long id2 = created2.getId();
+        assertNotEquals(id1, id2);
+    }
+
+    @Test
     void create_duplicate() {
         User user = new User.Builder()
                 .id("id")
@@ -64,7 +89,7 @@ class UserRepositoryTest {
         User user = subject.get("id");
 
         assertNotNull(user);
-        assertEquals("id", user.getId());
+        assertEquals("id", user.getUserId());
     }
 
     @Test
@@ -79,7 +104,7 @@ class UserRepositoryTest {
         User user = subject.login("id", "password");
 
         assertNotNull(user);
-        assertEquals("id", user.getId());
+        assertEquals("id", user.getUserId());
     }
 
     @Test
