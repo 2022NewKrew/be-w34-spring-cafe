@@ -9,10 +9,11 @@ import java.util.*;
 public class UserRepository {
 
     private final List<User> userList;
-    private Integer identity = 0;
+    private Integer identity;
 
     private UserRepository() {
         this.userList = new ArrayList<>();
+        this.identity = 0;
     }
 
     public Optional<User> findByUserId(String userId) {

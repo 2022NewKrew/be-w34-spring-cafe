@@ -19,10 +19,11 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger;
 
     private UserController(UserService userService) {
         this.userService = userService;
+        this.logger = LoggerFactory.getLogger(UserController.class);
     }
 
     /**
