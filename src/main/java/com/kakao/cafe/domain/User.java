@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 public class User {
 
     private static int lastId = 1;
-    private int id;
-    private String userId;
+    private final int id;
+    private final String userId;
     private int password;
     private String name;
     private String email;
@@ -38,6 +38,12 @@ public class User {
 
     public String getUserId() {
         return userId;
+    }
+
+    public void update(int password, String name, String email) {
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
     @Override

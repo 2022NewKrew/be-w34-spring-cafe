@@ -22,13 +22,18 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findByUserId(String userId) {
-        return userRepository.findByUserId(userId);
+    public UserDto findByUserId(String userId) {
+        return UserDto.from(userRepository.findByUserId(userId));
     }
 
-    public String create(UserDto userDto) {
+    public int updateUser(String userId, UserDto userDto) {
+        User user= userRepository.findByUserId(userId);
+        user.update(userDto.getPassword(), userDto.getName(), userDto.getEmail());
+        return userRepository.save(user);
+    }
+
+    public int create(UserDto userDto) {
         User user = userDto.toEntity();
-        userRepository.save(user);
-        return user.getUserId();
+        return userRepository.save(user);
     }
 }

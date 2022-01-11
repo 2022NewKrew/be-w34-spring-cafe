@@ -1,6 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("users")
 public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -20,23 +20,36 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("users")
+    @GetMapping
     public String findUsers(Model model) {
         model.addAttribute("users", userService.findAll());
         return "/user/list";
     }
 
-    @GetMapping("users/{userId}")
+    @GetMapping("{userId}")
     public String findUserOne(@PathVariable String userId, Model model) {
         model.addAttribute("user", userService.findByUserId(userId));
         return "/user/profile";
     }
 
-    @PostMapping("users")
+    @PostMapping
     public String signup(@ModelAttribute UserDto userDto) {
-        String userId = userService.create(userDto);
-        logger.info(userId + " success");
+        int id = userService.create(userDto);
         return "redirect:/users";
     }
+
+    @GetMapping("{userId}/form")
+    public String showUpdateForm(@PathVariable String userId, Model model) {
+        model.addAttribute("user", userService.findByUserId(userId));
+        return "/user/userform";
+    }
+
+    @PostMapping("{userId}")
+    public String updateUser(@PathVariable String userId, @ModelAttribute UserDto userDto) {
+        userService.updateUser(userId, userDto);
+        return "redirect:/users";
+    }
+
+
 
 }

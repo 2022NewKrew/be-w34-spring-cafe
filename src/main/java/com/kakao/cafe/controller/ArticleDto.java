@@ -2,10 +2,11 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.Date;
 
-@AllArgsConstructor
+@Getter
 public class ArticleDto {
 
     private String title;
@@ -25,6 +26,6 @@ public class ArticleDto {
     }
 
     public static ArticleDto from(Article article) {
-        return new ArticleDto(article.getTitle(), article.getContent(), article.getWriter(), article.getDate());
+        return new ArticleDto(article.getTitle(), article.getContent(), article.getWriter());
     }
 }

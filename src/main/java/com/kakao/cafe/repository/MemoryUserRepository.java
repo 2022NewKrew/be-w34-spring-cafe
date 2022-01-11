@@ -33,7 +33,14 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public int save(User user) {
+        for (int i=0; i<users.size(); i++) {
+            if (users.get(i).getUserId().equals(user.getUserId())) {
+                users.set(i, user);
+                return users.get(i).getId();
+            }
+        }
         users.add(user);
         return user.getId();
     }
+
 }
