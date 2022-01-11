@@ -10,12 +10,12 @@ import java.util.Date;
 
 public class Article {
 
-    private long id;
+    private final long id;
     private final User owner;
     private final String author;
     private final String title;
     private final String content;
-    private Date createdAt;
+    private final Date createdAt;
 
     private Article(
             long id,
