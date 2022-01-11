@@ -11,9 +11,10 @@ public class UserRepository {
     private static Long seq = 1L;
 
     public UserEntity save(UserEntity entity) {
-        entity.setId(seq++);
-        db.put(entity.getId(), entity);
-        return entity;
+        if (entity.getId() == null) {
+            return create(entity);
+        }
+        return update(entity);
     }
 
     public List<UserEntity> findAll() {
@@ -28,5 +29,16 @@ public class UserRepository {
         return db.values().stream()
                 .filter(user -> user.getUserId().equals(userId))
                 .findAny();
+    }
+
+    private UserEntity create(UserEntity userEntity) {
+        userEntity.setId(seq++);
+        db.put(userEntity.getId(), userEntity);
+        return userEntity;
+    }
+
+    private UserEntity update(UserEntity userEntity) {
+        db.replace(userEntity.getId(), userEntity);
+        return userEntity;
     }
 }

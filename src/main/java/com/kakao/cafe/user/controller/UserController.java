@@ -1,6 +1,6 @@
 package com.kakao.cafe.user.controller;
 
-import com.kakao.cafe.user.dto.request.SignupReqDto;
+import com.kakao.cafe.user.dto.request.UserFormReqDto;
 import com.kakao.cafe.user.dto.response.UserResDto;
 import com.kakao.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -29,10 +29,10 @@ public class UserController {
     }
 
     @PostMapping("/users/signup")
-    public String signup(@ModelAttribute SignupReqDto signupReqDto) {
+    public String signup(@ModelAttribute UserFormReqDto userFormReqDto) {
         // signup and redirect
-        userService.signup(signupReqDto);
-        return "redirect:/users";
+        userService.signup(userFormReqDto);
+        return "redirect:/users/" + userFormReqDto.getUserId();
     }
 
     @GetMapping("/users/{userId}")
@@ -40,5 +40,18 @@ public class UserController {
         UserResDto user = userService.getUser(userId);
         model.addAttribute("user", user);
         return "/user/profile";
+    }
+
+    @GetMapping("/users/{userId}/form")
+    public String getUserForm(@PathVariable String userId, Model model) {
+        UserResDto user = userService.getUser(userId);
+        model.addAttribute("user", user);
+        return "/user/updateForm";
+    }
+
+    @PostMapping("/users/{userId}/form")
+    public String updateUser(@PathVariable String userId, @ModelAttribute UserFormReqDto userFormReqDto) {
+        userService.updateUser(userId, userFormReqDto);
+        return "redirect:/users";
     }
 }

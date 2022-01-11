@@ -2,7 +2,7 @@ package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.dto.response.UserResDto;
 import com.kakao.cafe.user.entity.UserEntity;
-import com.kakao.cafe.user.dto.request.SignupReqDto;
+import com.kakao.cafe.user.dto.request.UserFormReqDto;
 import com.kakao.cafe.user.mapper.UserMapper;
 import com.kakao.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,8 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public void signup(SignupReqDto signupReqDto) {
-        UserEntity userEntity = new UserEntity(signupReqDto.getUserId(), signupReqDto.getPassword(), signupReqDto.getName(), signupReqDto.getEmail());
+    public void signup(UserFormReqDto userFormReqDto) {
+        UserEntity userEntity = new UserEntity(userFormReqDto.getUserId(), userFormReqDto.getPassword(), userFormReqDto.getName(), userFormReqDto.getEmail());
         userRepository.save(userEntity);
     }
 
@@ -35,5 +35,13 @@ public class UserService {
                 .orElseThrow();
 
         return userMapper.toUserResDto(userEntity);
+    }
+
+    public void updateUser(String userId, UserFormReqDto userFormReqDto) {
+        UserEntity userEntity = userRepository.findByUserId(userId)
+                .orElseThrow();
+
+        userEntity.update(userFormReqDto.getPassword(), userFormReqDto.getName(), userFormReqDto.getEmail());
+        userRepository.save(userEntity);
     }
 }
