@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.UserDTO;
+import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Result;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
@@ -21,14 +21,14 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/create")
-    public String create(@ModelAttribute UserDTO.Create createDTO) {
+    @PostMapping
+    public String create(@ModelAttribute Create createDTO) {
         userService.create(createDTO);
 
-        return "redirect:/users/list";
+        return "redirect:/users";
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ModelAndView readAll(Map<String, Object> model) {
         List<Result> resultDTOs = userService.readAll();
         model.put("users", resultDTOs);
@@ -37,9 +37,9 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ModelAndView read(Map<String, Object> model,
+    public ModelAndView readByUserId(Map<String, Object> model,
         @PathVariable String userId) {
-        UserDTO.Result resultDTO = userService.readByUserId(userId);
+        Result resultDTO = userService.readByUserId(userId);
         model.put("user", resultDTO);
 
         return new ModelAndView("user/profile", model);

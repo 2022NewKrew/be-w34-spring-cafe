@@ -31,6 +31,7 @@ public class UserService {
             logger.error("id : " + createDto.getUserId() + ALREADY_EXISTS_ID_MESSAGE);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ALREADY_EXISTS_ID_MESSAGE);
         }
+
         User user = User.of(createDto.getUserId(), createDto.getPassword(),
             createDto.getName(), createDto.getEmail());
 
