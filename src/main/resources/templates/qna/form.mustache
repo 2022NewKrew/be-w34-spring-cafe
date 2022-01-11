@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<div lang="kr">
+
+{{>layout/header}}
+
+<div id="main">
+    <div style="min-width: 1040px; display: flex; justify-content: center">
+        <div style="margin-top: 50px; min-width:680px; width: 680px">
+            <span style="font-size: 32px">글쓰기</span>
+
+            <form style="display: flex; flex-direction: column; margin-top: 40px" name="question" method="post" action="/questions">
+                <div style="border: 1px solid #eee; display: flex; flex-direction: column; padding: 20px;">
+                    <span style="font-size: 16px">글쓴이</span>
+                    <input style="margin-top: 10px; outline: none; border: none" id="writer" name="writer" placeholder="글쓴이를 입력하세요."/>
+                </div>
+                <div style="margin-top: 16px; border: 1px solid #eee; display: flex; flex-direction: column; padding: 20px;">
+                    <span style="font-size: 16px">제목</span>
+                    <input style="margin-top: 10px; outline: none; border: none" type="text" id="title" name="title" placeholder="제목을 입력하세요."/>
+                </div>
+                <div style="margin-top: 16px; border: 1px solid #eee; display: flex; flex-direction: column; padding: 20px;">
+                    <span style="font-size: 16px">내용</span>
+                    <textarea style="margin-top: 10px; outline: none; border: none" name="contents" id="contents" placeholder="내용을 입력하세요" rows="5"></textarea>
+                </div>
+                <div style="display: flex; align-self: end">
+                    <button type="submit" class="post-button" style="margin-right: 20px">
+                        <span class="alt-color">질문하기</span>
+                    </button>
+                    <button type="button" class="post-button">
+                        <a href="/" class="alt-color" style="text-decoration: none; color: white">목록으로</a>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{>layout/footer}}

@@ -14,6 +14,9 @@ public class User {
     private String name;
     private LocalDate createdAt;
 
+    public User() {
+    }
+
     public User(int id, String userId, String password, String email, String name, LocalDate createdAt) {
         this.id = id;
         this.userId = userId;
