@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.PostCreateDto;
+import com.kakao.cafe.dto.PostDetailDto;
 import com.kakao.cafe.dto.PostListItemDto;
 import com.kakao.cafe.repository.PostRepository;
 import com.kakao.cafe.repository.UserRepository;
@@ -43,5 +44,13 @@ public class PostServiceImpl implements PostService {
                 .stream()
                 .map(PostListItemDto::of)
                 .collect(Collectors.toList())).orElse(null);
+    }
+
+    @Override
+    public PostDetailDto get(int questionId) {
+        Post post = postRepository.findById(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("post not found"));
+        post.updateViewCount();
+        return PostDetailDto.of(post);
     }
 }

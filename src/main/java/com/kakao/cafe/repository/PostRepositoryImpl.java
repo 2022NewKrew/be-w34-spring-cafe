@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
@@ -25,5 +26,12 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public Optional<List<Post>> findAll() {
         return Optional.ofNullable(rogerDB.getPost());
+    }
+
+    @Override
+    public Optional<Post> findById(int questionId) {
+        return rogerDB.getPost().stream()
+                .filter(post -> post.getId() == questionId)
+                .findFirst();
     }
 }

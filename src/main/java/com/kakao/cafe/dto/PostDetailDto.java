@@ -1,0 +1,84 @@
+package com.kakao.cafe.dto;
+
+import com.kakao.cafe.domain.Post;
+
+import java.time.LocalDate;
+
+public class PostDetailDto {
+    private int id;
+    private String title;
+    private String contents;
+    private LocalDate createdAt;
+    private int viewCount;
+
+    private UserDto writer;
+
+    public PostDetailDto() {
+    }
+
+    public PostDetailDto(int id, String title, String contents, LocalDate createdAt, int viewCount, UserDto writer) {
+        this.id = id;
+        this.title = title;
+        this.contents = contents;
+        this.createdAt = createdAt;
+        this.viewCount = viewCount;
+        this.writer = writer;
+    }
+
+    public static PostDetailDto of(Post post) {
+        return new PostDetailDto(post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                post.getCreatedAt(),
+                post.getViewCount(),
+                UserDto.of(post.getWriter()));
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public UserDto getWriter() {
+        return writer;
+    }
+
+    public void setWriter(UserDto writer) {
+        this.writer = writer;
+    }
+}
