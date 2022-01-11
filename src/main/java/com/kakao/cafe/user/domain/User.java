@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User {
 
+    private int id;
+
     private String userId;
 
     private String password;
@@ -16,10 +18,11 @@ public class User {
 
     private String email;
 
-    public User(SignUpDTO signUpDTO){
-        this.userId=signUpDTO.getUserId();
-        this.password=signUpDTO.getPassword();
-        this.name=signUpDTO.getName();
-        this.email=signUpDTO.getEmail();
+    public User(int id, SignUpDTO signUpDTO) {
+        this.id = id;
+        this.userId = signUpDTO.getUserId();
+        this.password = signUpDTO.getPassword();
+        this.name = signUpDTO.getName();
+        this.email = signUpDTO.getEmail();
     }
 }

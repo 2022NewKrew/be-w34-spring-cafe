@@ -1,19 +1,22 @@
 package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.dto.SignUpDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserMemoryRepository implements UserRepository{
+public class UserMemoryRepository implements UserRepository {
 
     private static List<User> userList = new ArrayList<>();
 
     @Override
-    public User save(User user) {
+    public User save(SignUpDTO signUpDTO) {
+        User user = new User(userList.size() + 1, signUpDTO);
         userList.add(user);
         return user;
     }
@@ -27,6 +30,6 @@ public class UserMemoryRepository implements UserRepository{
 
     @Override
     public List<User> findAll() {
-        return userList;
+        return Collections.unmodifiableList(userList);
     }
 }

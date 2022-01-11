@@ -30,7 +30,8 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String getUserByUserId(@PathVariable("userId") String userId, Model model) {
-        model.addAttribute("user", userService.findByUserId(userId).orElseThrow(() -> new RuntimeException("유저가 존재하지 않습니다."))
+        model.addAttribute("user", userService.findByUserId(userId).orElseThrow(()
+                -> new RuntimeException("유저가 존재하지 않습니다."))
         );
         return "user/profile";
     }
