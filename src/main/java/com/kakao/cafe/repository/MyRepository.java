@@ -9,7 +9,7 @@ public interface MyRepository<T, I> {
 
     List<T> findAll();
 
-    T save(T entity);
+    void save(T entity);
 
     T update(T entity);
 

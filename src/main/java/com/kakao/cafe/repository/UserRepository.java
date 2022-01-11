@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.user.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,10 +27,9 @@ public class UserRepository implements MyRepository<User, Long> {
     }
 
     @Override
-    public User save(User entity) {
-        entity = entity.setId(sequenceId.incrementAndGet());
+    public void save(User entity) {
+        entity.setId(sequenceId.incrementAndGet());
         users.add(entity);
-        return entity;
     }
 
     @Override

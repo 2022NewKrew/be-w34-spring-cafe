@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.UserDto;
-import com.kakao.cafe.domain.UserRequest;
+import com.kakao.cafe.domain.user.UserDto;
+import com.kakao.cafe.domain.user.UserRequest;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
