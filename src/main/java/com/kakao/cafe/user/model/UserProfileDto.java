@@ -1,20 +1,13 @@
 package com.kakao.cafe.user.model;
 
-public class UserProfileDto {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
+@Builder
+public class UserProfileDto {
     private final String name;
     private final String email;
-
-    public UserProfileDto(String name, String email) {
-        this.name = name;
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
 }

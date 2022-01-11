@@ -1,7 +1,9 @@
 package com.kakao.cafe.user.model;
 
-public class User {
+import lombok.Getter;
 
+@Getter
+public class User {
     private final Long id;
     private final String userId;
     private final String name;
@@ -14,26 +16,6 @@ public class User {
         this.name = userRequest.getName();
         this.password = userRequest.getPassword();
         this.email = userRequest.getEmail();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public UserDto toUserDto(){
