@@ -1,11 +1,13 @@
-package com.kakao.cafe.web;
+package com.kakao.cafe.web.controller;
 
-import com.kakao.cafe.domain.users.Users;
+import com.kakao.cafe.domain.Users;
 import com.kakao.cafe.web.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -15,32 +17,31 @@ public class UsersApiController {
     private final UserService userService = new UserService();
 
     @GetMapping
-    public String getUsers(Model model) {
+    String getUsers(Model model) {
         List<Users> userList = userService.getUserList();
         model.addAttribute("users", userList);
         return "users/list";
     }
 
     @GetMapping("/form")
-    public String getForm() {
+    String getForm() {
         return "users/form";
     }
 
     @GetMapping("/login")
-    public String login() {
+    String login() {
         return "users/login";
     }
 
-
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model) {
-        Users user =  userService.getByUserId(id);
+    String findById(@PathVariable Long id, Model model) {
+        Users user = userService.getByUserId(id);
         model.addAttribute("user", user);
         return "users/profile";
     }
 
     @GetMapping("/profile")
-    public String getProfile(Users user, Model model) {
+    String getProfile(Users user, Model model) {
         model.addAttribute("user", user);
         return "users/profile";
     }

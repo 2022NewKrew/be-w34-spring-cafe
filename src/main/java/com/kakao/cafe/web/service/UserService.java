@@ -1,13 +1,13 @@
 package com.kakao.cafe.web.service;
 
-import com.kakao.cafe.domain.users.Users;
+import com.kakao.cafe.domain.Users;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
-    private int id = 0;
     private final List<Users> userList = new ArrayList<>();
+    private Long id = 0L;
 
     public List<Users> getUserList() {
         return userList;
@@ -19,8 +19,8 @@ public class UserService {
         userList.add(user);
     }
 
-    public Users getByUserId(Long id) throws IllegalArgumentException {
-        for (Users user: userList) {
+    public Users getByUserId(Long id) {
+        for (Users user : userList) {
             if (user.getId() == id)
                 return user;
         }
