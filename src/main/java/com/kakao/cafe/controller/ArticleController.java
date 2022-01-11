@@ -1,12 +1,14 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.model.Article;
+import com.kakao.cafe.model.ArticleRequest;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -23,14 +25,23 @@ public class ArticleController {
 
     @GetMapping("/")
     public String getArticleList(Model model) {
+        logger.info("get article list");
         List<Article> articleList = articleService.getArticleList();
         model.addAttribute("articleList", articleList);
         return "index";
     }
 
     @PostMapping("/qna/create")
-    public String createQuestion(Article article) {
-        articleService.createQuestion(article);
+    public String createQuestion(ArticleRequest articleRequest) {
+        logger.info("create article");
+        articleService.createQuestion(articleRequest);
         return "redirect:/";
+    }
+
+    @GetMapping("/articles/{index}")
+    public String getArticleInfo(@PathVariable("index") String index, Model model) {
+        Article article = articleService.findById(index);
+        model.addAttribute("article", article);
+        return "qna/show";
     }
 }
