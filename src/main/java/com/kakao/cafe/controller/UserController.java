@@ -30,7 +30,7 @@ public class UserController {
 
 
     //회원개인프로필 확인
-    @GetMapping(value = "/users/{userId}")
+    @GetMapping(value = {"/users/{userId}", "/user/profile.html"})
     public String userProfile(@PathVariable("userId") String userId, Model model){
         User user = userService.getUserByUserId(userId);
         model.addAttribute("name", user.getName());

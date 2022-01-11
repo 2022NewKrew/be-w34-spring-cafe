@@ -20,7 +20,7 @@ public class ArticleController {
     }
 
     //index.html에 노출되는 질문리스트
-    @RequestMapping(value = {"/", "index.html"})
+    @RequestMapping(value = {"/", "/index.html"})
     public String showArticleList(Model model) {
         model.addAttribute("articles", articleService.getAllArticles());
 
@@ -28,7 +28,7 @@ public class ArticleController {
     }
 
     //상세 질문글 확인
-    @GetMapping(value = "/articles/{sequence}")
+    @GetMapping(value = "/qnas/{sequence}")
     public String showArticle(@PathVariable("sequence") Long sequence, Model model){
         Article article = articleService.getArticle(sequence - 1);
         model.addAttribute("name", article.getName());
