@@ -1,0 +1,35 @@
+POST http://localhost:8080/users
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="username"
+
+author_username
+--WebAppBoundary
+Content-Disposition: form-data; name="password"
+
+password
+--WebAppBoundary
+Content-Disposition: form-data; name="email"
+
+author@example.com
+
+###
+POST http://localhost:8080/articles
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="title"
+
+article_title
+--WebAppBoundary--
+Content-Disposition: form-data; name="author_username"
+
+author_username
+--WebAppBoundary--
+Content-Disposition: form-data; name="content"
+
+Some text doesn't worth reading
+--WebAppBoundary--
+
+###
