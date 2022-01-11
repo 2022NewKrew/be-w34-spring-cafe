@@ -16,7 +16,11 @@ public class UserService {
     private final ModelMapper modelMapper;
 
     public void signupUser(UserSignupRequest user) {
-        userRepository.save(modelMapper.map(user, User.class));
+        userRepository.save(User.builder()
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .password(user.getPassword())
+                .build());
     }
 
 }
