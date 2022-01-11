@@ -1,12 +1,11 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.vo.User;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service

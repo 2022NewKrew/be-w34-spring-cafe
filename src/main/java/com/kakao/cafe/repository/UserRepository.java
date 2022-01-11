@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.vo.User;
 
 import java.util.List;
 import java.util.Optional;

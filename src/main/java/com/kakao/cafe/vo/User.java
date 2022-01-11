@@ -1,4 +1,4 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.vo;
 
 import lombok.Getter;
 import lombok.Setter;
