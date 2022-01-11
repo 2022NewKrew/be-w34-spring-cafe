@@ -59,4 +59,21 @@ public class UserController {
         model.addAttribute("email", selectedUser.getEmail());
         return "user/updateForm";
     }
+
+    @PostMapping("/user/{oldUserId}/update")
+    public String updateUserInfo(@PathVariable String oldUserId, String userId, String password, String name, String email) {
+        logger.info("[updateUserInfo] oldUserId = {}, newUserId = {}, password = {}, name = {}, email = {}", oldUserId, userId, password, name, email);
+        for(int i = 0; i < users.size(); i++) {
+            updateMatchedUser(i, oldUserId, new User(userId, password, name, email));
+        }
+        logger.info("[updateUserInfo] cannot found user - {}", oldUserId);
+        return "redirect:/users";
+    }
+
+    private void updateMatchedUser(int i, String oldUserId, User newUser) {
+        if(users.get(i).getUserId().equals(oldUserId)) {
+            logger.info("[updateUserInfo] user info updated");
+            users.set(i, newUser);
+        }
+    }
 }
