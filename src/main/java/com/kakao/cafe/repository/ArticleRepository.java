@@ -16,4 +16,10 @@ public class ArticleRepository {
     public List<ArticleDto> getAllArticles() {
         return articleList;
     }
+
+    public ArticleDto getByIndex(int index) {
+        if (index <= articleList.size() && index > 0)
+            return articleList.get(index-1);
+        return null;
+    }
 }

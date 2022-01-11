@@ -21,6 +21,8 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
+    public UserDto findUserByName(String name) { return userRepository.findByName(name); }
+
     public List<UserDto> getUserList() {
         return userRepository.getAllUsers();
     }

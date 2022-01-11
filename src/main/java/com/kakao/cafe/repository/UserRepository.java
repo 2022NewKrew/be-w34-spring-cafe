@@ -25,6 +25,14 @@ public class UserRepository {
         return null;
     }
 
+    public UserDto findByName(String name) {
+        for (UserDto user : userList) {
+            if (user.getName().equals(name))
+                return user;
+        }
+        return null;
+    }
+
     public List<UserDto> getAllUsers() {
         return userList;
     }

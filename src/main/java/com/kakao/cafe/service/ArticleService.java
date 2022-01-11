@@ -20,4 +20,8 @@ public class ArticleService {
     public List<ArticleDto> getArticleList() {
         return articleRepository.getAllArticles();
     }
+
+    public ArticleDto getArticleBy(int index) {
+        return articleRepository.getByIndex(index);
+    }
 }
