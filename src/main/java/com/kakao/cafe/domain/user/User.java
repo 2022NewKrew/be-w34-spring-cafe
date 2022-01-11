@@ -15,12 +15,12 @@ public class User {
         this.password = userRequest.getPassword();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public UserDto toDto() {
         return new UserDto(id, username, nickname, email);
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public boolean isEqualUserId(long id) {
