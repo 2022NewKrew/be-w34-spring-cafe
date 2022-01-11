@@ -23,7 +23,7 @@
   - Lombok을 활용하여 Getter 및 생성자 등을 구현
 - `repository`와 `service`는 확장성, 재사용성을 위해 인터페이스를 정의하여 사용
 - 현재 단계에서는 `repository`는 메모리에 저장하도록 구현
-    - `Map<String, User>` 활용, 여기`서 키 값은 사용자 ID
+    - `Map<String, User>` 활용, 여기서 키 값은 사용자 ID
 - HTML, CSS를 디자인 참고 자료를 활용하여 제작
 - Template Engine (Mustache)을 활용하여 동적 페이지 구성
 - 중복된 회원이나 없는 회원을 찾을 때의 예외처리 및 오류 화면 출력
