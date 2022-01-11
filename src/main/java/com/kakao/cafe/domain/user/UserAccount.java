@@ -39,7 +39,15 @@ public class UserAccount {
         return this.email.equals(email);
     }
 
+    public boolean checkUserAccountId(Long id) {
+        return Objects.equals(this.userAccountId, id);
+    }
+
     public Long getUserAccountId() {
         return userAccountId;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
