@@ -23,22 +23,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users/login")
-    public String login() {
-
-        return "/user/login";
-    }
-
     @GetMapping("/users")
     public String getUsers(Model model) {
         List<UserResDto> users = userService.getUsers();
         model.addAttribute("users", users);
         return "/user/list";
-    }
-
-    @GetMapping("/users/signup")
-    public String getSignupForm() {
-        return "/user/form";
     }
 
     @PostMapping("/users/signup")
