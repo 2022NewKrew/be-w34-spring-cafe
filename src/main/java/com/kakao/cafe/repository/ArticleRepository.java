@@ -1,12 +1,14 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.article.Article;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Repository
 public class ArticleRepository implements MyRepository<Article, Long> {
 
     private final List<Article> articles = new CopyOnWriteArrayList<>();

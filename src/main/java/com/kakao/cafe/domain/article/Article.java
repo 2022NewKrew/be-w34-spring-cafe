@@ -11,6 +11,10 @@ public class Article {
         this.description = articleRequest.getDescription();
     }
 
+    public ArticleDto toDto() {
+        return new ArticleDto(id, title, description);
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
