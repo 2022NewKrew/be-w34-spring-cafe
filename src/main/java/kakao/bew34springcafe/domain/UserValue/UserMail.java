@@ -5,4 +5,9 @@ public class UserMail {
     public UserMail(final String umail){
         this.umail= umail;
     }
+
+    @Override
+    public String toString() {
+        return this.umail;
+    }
 }

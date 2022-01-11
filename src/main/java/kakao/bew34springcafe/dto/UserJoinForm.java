@@ -2,7 +2,6 @@ package kakao.bew34springcafe.dto;
 
 import kakao.bew34springcafe.domain.UserValue.UserId;
 import kakao.bew34springcafe.domain.UserValue.UserMail;
-import kakao.bew34springcafe.domain.UserValue.UserName;
 import kakao.bew34springcafe.domain.UserValue.UserPw;
 
 public class UserJoinForm {
@@ -10,18 +9,32 @@ public class UserJoinForm {
     private UserMail umail;
     private UserPw upw;
 
-    public void UserJoinForm(UserId uid, UserPw upw, UserMail umail){
-        this.uid = uid;
-        this.upw = upw;
-        this.umail = umail;
+
+    public void UserJoinForm(String uid, String upw, String umail){
+        this.uid = new UserId(uid);
+        this.upw = new UserPw(upw);
+        this.umail = new UserMail(umail);
     }
+
+    public UserId getUid() {
+        return this.uid;
+    }
+
+    public UserMail getUmail() {
+        return this.umail;
+    }
+
+    public UserPw getUpw() {
+        return this.upw;
+    }
+
 
     @Override
     public String toString() {
         return "UserJoinForm{" +
-                "uid=" + uid +
-                ", umail=" + umail +
-                ", upw=" + upw +
+                "uid=" + this.uid.toString() +
+                ", umail=" + this.umail.toString() +
+                ", upw=" + this.upw.toString() +
                 '}';
     }
 }

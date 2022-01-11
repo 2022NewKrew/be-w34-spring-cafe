@@ -6,4 +6,9 @@ public class UserName {
     public UserName (final String uname){
         this.uname = uname;
     }
+
+    @Override
+    public String toString() {
+        return this.uname;
+    }
 }

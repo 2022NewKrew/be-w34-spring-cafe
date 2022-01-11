@@ -5,4 +5,9 @@ public class UserId {
     public UserId(final String uid){
         this.uid = uid;
     }
+
+    @Override
+    public String toString() {
+        return this.uid;
+    }
 }
