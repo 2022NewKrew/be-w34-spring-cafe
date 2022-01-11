@@ -30,7 +30,7 @@ public class UserController {
         return "signup";
     }
 
-    @PostMapping("/user")
+    @PostMapping("/users")
     public String processSignUp(
             @NonNull final UserDto userDto,
             @RequestParam("password") @NonNull final String password
@@ -38,16 +38,16 @@ public class UserController {
     {
         userService.add(userDto, password);
         logger.info("New User added: " + userDto.getId());
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     public String getUserList(final Model model) {
         model.addAttribute("userlist", userService.getList());
-        return "user";
+        return "users/userlist";
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     public String getUserProfile(
             @PathVariable("id") @NonNull final String id,
             final Model model
@@ -58,6 +58,6 @@ public class UserController {
             model.addAttribute("user", userDto);
         } catch (NoSuchElementException ignored) {}
 
-        return "user/profile";
+        return "users/profile";
     }
 }
