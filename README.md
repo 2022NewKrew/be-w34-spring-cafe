@@ -90,5 +90,5 @@
 <br>
 
 # In Progress
-- UserDTO 생성 예정
+- ~~UserDTO 생성 예정~~
 - 페이지에서 나타나는 내용들 수정

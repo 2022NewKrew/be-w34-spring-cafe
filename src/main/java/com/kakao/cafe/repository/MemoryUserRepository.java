@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.vo.User;
+import com.kakao.cafe.vo.UserDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -12,8 +13,8 @@ public class MemoryUserRepository implements UserRepository{
     private static long sequence = 0L;
 
     @Override
-    public void save(User user) {
-        user.setId(++sequence);
+    public void save(UserDto userDto) {
+        User user = new User(++sequence, userDto);
         userStore.put(user.getId(), user);
     }
 
