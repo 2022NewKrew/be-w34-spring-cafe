@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Result;
+import com.kakao.cafe.error.UserError;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
@@ -19,13 +20,13 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class UserService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
 
     public void create(Create createDto) {
         if (userRepository.findUserByUserId(createDto.getUserId()).isPresent()) {
-            logger.error("id : {} {}", createDto.getUserId(),
+            logger.error("User ID : {} {}", createDto.getUserId(),
                 UserError.ALREADY_EXISTS.getMessage());
 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -42,13 +43,13 @@ public class UserService {
     public List<UserDTO.Result> readAll() {
         return userRepository.findAllUsers().stream()
             .map(Result::from)
-            .collect(Collectors.toList());
+            .collect(Collectors.toUnmodifiableList());
     }
 
     public UserDTO.Result readByUserId(String userId) {
         Optional<User> foundUser = userRepository.findUserByUserId(userId);
         if (foundUser.isEmpty()) {
-            logger.error("id : {} {}", userId, UserError.NOT_FOUND.getMessage());
+            logger.error("User ID : {} {}", userId, UserError.NOT_FOUND.getMessage());
 
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                 UserError.NOT_FOUND.getMessage());

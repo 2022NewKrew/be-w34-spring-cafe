@@ -38,6 +38,7 @@ public class UserController {
                     fieldError.getDefaultMessage()));
             return "redirect:/users/form-failed";
         }
+
         try {
             userService.create(createDTO);
         } catch (ResponseStatusException e) {
@@ -56,7 +57,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ModelAndView readByUserId(Map<String, Object> model,
+    public ModelAndView read(Map<String, Object> model,
         @PathVariable String userId) {
         Result resultDTO = userService.readByUserId(userId);
         model.put("user", resultDTO);

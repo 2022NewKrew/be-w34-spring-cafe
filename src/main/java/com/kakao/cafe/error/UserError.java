@@ -1,4 +1,4 @@
-package com.kakao.cafe.service;
+package com.kakao.cafe.error;
 
 public enum UserError {
     ALREADY_EXISTS("중복된 사용자 ID 입니다."),
