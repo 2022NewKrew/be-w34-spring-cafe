@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.SignUpRequestDto;
-import com.kakao.cafe.service.UsersService;
+import com.kakao.cafe.domain.dto.SignUpRequestDto;
+import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +17,12 @@ import java.util.List;
 @Controller
 public class UsersController {
 
-    private UsersService usersService;
+    private UserService usersService;
 
     private static Logger logger = LoggerFactory.getLogger(UsersController.class);
 
     @Autowired
-    public UsersController(UsersService usersService) {
+    public UsersController(UserService usersService) {
         this.usersService = usersService;
     }
 

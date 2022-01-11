@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.User;
 
 import java.util.List;
 
-public interface UsersRepository {
+public interface UserRepository {
     Long save(User user);
 
     List<User> findAll();

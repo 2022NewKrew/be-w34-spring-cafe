@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository.users;
 
 import com.kakao.cafe.domain.User;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -8,7 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Repository
-public class MemoryUsersRepository implements UsersRepository{
+@Qualifier("memoryUserRepository")
+public class MemoryUserRepository implements UserRepository {
 
     private List<User> userList = Collections.synchronizedList(new ArrayList<>());
 

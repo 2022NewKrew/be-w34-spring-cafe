@@ -1,8 +1,8 @@
 package com.kakao.cafe.repository.users;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -12,12 +12,13 @@ import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
-public class JdbcUsersRepository implements UsersRepository {
+@Qualifier("jdbcUserRepository")
+public class JdbcUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbcUsersRepository(JdbcTemplate jdbcTemplate) {
+    public JdbcUserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
