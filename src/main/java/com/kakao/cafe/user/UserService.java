@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by melodist
@@ -26,5 +27,9 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public User findUserByUserId(String userId) {
+        return userRepository.findUserByUserId(userId);
     }
 }

@@ -6,10 +6,7 @@ import com.github.jknack.handlebars.springmvc.HandlebarsViewResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.allegro.tech.boot.autoconfigure.handlebars.HandlebarsHelper;
 
 import java.util.HashMap;
@@ -49,5 +46,12 @@ public class UserController {
         userService.addUser(newUser);
 
         return "redirect:/user";
+    }
+
+    @GetMapping("/{userId}")
+    public String userProfile(Model model, @PathVariable("userId") String userId) {
+        User user = userService.findUserByUserId(userId);
+        model.addAttribute("user", user);
+        return "user/profile";
     }
 }

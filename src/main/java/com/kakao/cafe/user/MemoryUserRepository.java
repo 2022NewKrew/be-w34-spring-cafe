@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by melodist
@@ -23,5 +24,15 @@ public class MemoryUserRepository implements UserRepository{
     @Override
     public List<User> findAll() {
         return users;
+    }
+
+    @Override
+    public User findUserByUserId(String userId) {
+        for (User user: users) {
+            if (user.getUserId().equals(userId)) {
+                return user;
+            }
+        }
+        return null;
     }
 }

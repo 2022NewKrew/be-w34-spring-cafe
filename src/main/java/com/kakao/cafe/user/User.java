@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class User {
-
+    
     private String userId; // 사용자 아이디
     private String password; // 비밀번호
     private String name; // 이름

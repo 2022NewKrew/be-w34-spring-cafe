@@ -1,6 +1,7 @@
 package com.kakao.cafe.user;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by melodist
@@ -11,4 +12,5 @@ public interface UserRepository {
 
     User save(User user);
     List<User> findAll();
+    User findUserByUserId(String userId);
 }
