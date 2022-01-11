@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository("userRepository")
+@Repository
 public class InMemoryUserRepository implements UserRepository{
 
     private final Map<String, User> users = new HashMap<>();
