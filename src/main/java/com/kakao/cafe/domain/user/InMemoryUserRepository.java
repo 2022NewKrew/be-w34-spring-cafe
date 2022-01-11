@@ -14,7 +14,7 @@ public class InMemoryUserRepository implements UserRepository {
     public User add(User user) {
         user.setId(++sequence);
         store.put(user.getId(), user);
-        return null;
+        return user;
     }
 
     @Override

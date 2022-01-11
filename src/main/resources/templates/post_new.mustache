@@ -1,0 +1,21 @@
+{{> layout/header}}
+{{> layout/navbar}}
+
+<div class="container">
+    <h1 class="mt-5">글 작성</h1>
+    <hr>
+
+    <form method="post">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title">
+        </div>
+        <div class="mb-3">
+            <label for="body" class="form-label">body</label>
+            <textarea class="form-control" id="body" name="body"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+{{> layout/footer}}

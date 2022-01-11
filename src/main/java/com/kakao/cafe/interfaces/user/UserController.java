@@ -44,12 +44,13 @@ public class UserController {
     @GetMapping("/users/{id}")
     public String userProfile(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id).orElseThrow(RuntimeException::new);
+        logger.info("[유저 조회] {}", user);
         model.addAttribute("user", user);
         return "user_profile";
     }
 
     @GetMapping("/signup")
-    public String signupPage() {
+    public String signup() {
         return "signup";
     }
 
