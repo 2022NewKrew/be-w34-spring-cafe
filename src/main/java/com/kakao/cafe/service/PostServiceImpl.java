@@ -21,11 +21,15 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public Long register(PostDto dto) {
+    public PostDto register(PostDto dto) {
         Post entity = dtoToEntity(dto);
         log.info(entity);
-        postRepository.save(entity);
-        return entity.getPostId();
+        try {
+            return entityToDto(postRepository.findById(postRepository.save(entity)));
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return null;
+        }
     }
 
     @Override

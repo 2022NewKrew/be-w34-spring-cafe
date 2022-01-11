@@ -26,8 +26,10 @@ public class Post extends BaseEntity {
         return super.getRegDate();
     }
 
-    public Post init() {
+    public Post init(Long postId) {
         super.register();
+        this.postId = postId;
+        this.viewCount = 0L;
         return this;
     }
 }
