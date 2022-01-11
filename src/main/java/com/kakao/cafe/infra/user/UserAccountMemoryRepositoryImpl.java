@@ -10,7 +10,6 @@ import java.util.*;
 public class UserAccountMemoryRepositoryImpl implements UserAccountRepository {
 
     private final Map<Long, UserAccount> userAccountMap;
-    private static Long id = 0L;
 
     public UserAccountMemoryRepositoryImpl() {
         this.userAccountMap = new HashMap<>();
@@ -18,21 +17,21 @@ public class UserAccountMemoryRepositoryImpl implements UserAccountRepository {
 
     @Override
     public Optional<UserAccount> save(UserAccount userAccount) {
-        UserAccount account = UserAccount.builder()
-                        .userAccountId(id)
-                        .username(userAccount.getUsername())
-                        .password(userAccount.getPassword())
-                        .email(userAccount.getEmail())
-                        .createdAt(userAccount.getCreatedAt()).build();
-        userAccountMap.put(id++, account);
+        userAccountMap.put(userAccount.getUserAccountId(), userAccount);
 
-        return Optional.of(account);
+        return Optional.of(userAccount);
     }
 
     @Override
-    public Optional<UserAccount> find(Long id) {
+    public Optional<UserAccount> findById(Long id) {
         UserAccount userAccount = userAccountMap.get(id);
         return Optional.of(userAccount);
+    }
+    @Override
+    public Optional<UserAccount> findByEmail(String email) {
+        return userAccountMap.values().stream()
+                .filter(v -> v.checkEmail(email))
+                .findAny();
     }
 
     @Override

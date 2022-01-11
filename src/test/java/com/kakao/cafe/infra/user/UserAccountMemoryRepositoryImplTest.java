@@ -40,10 +40,9 @@ class UserAccountMemoryRepositoryImplTest {
 
         UserAccount result = accountRepository.save(testUser1).orElseThrow(IllegalArgumentException::new);
 
-        Assertions.assertThat(result.getUserAccountId()).isNotNull();
-        Assertions.assertThat(result.getUsername()).isEqualTo(testUser1.getUsername());
-        Assertions.assertThat(result.getEmail()).isEqualTo(testUser1.getEmail());
-        Assertions.assertThat(result.getPassword()).isEqualTo(testUser1.getPassword());
+        System.out.println(result);
+        System.out.println(testUser1);
+        Assertions.assertThat(result).isEqualTo(testUser1);
     }
 
     @Test
@@ -52,7 +51,7 @@ class UserAccountMemoryRepositoryImplTest {
 
         UserAccount saved = accountRepository.save(testUser1).orElseThrow(IllegalArgumentException::new);
 
-        UserAccount found = accountRepository.find(saved.getUserAccountId()).orElseThrow(IllegalArgumentException::new);
+        UserAccount found = accountRepository.findById(saved.getUserAccountId()).orElseThrow(IllegalArgumentException::new);
 
         Assertions.assertThat(found.getUserAccountId()).isEqualTo(saved.getUserAccountId());
     }
@@ -68,4 +67,10 @@ class UserAccountMemoryRepositoryImplTest {
         Assertions.assertThat(found.size()).isEqualTo(2);
     }
 
+    @Test
+    @DisplayName("중복 확인")
+    void duplicateCheck() {
+
+
+    }
 }
