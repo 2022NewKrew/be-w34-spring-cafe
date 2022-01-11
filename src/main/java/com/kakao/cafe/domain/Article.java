@@ -51,7 +51,7 @@ public class Article {
             final String body
     )
     {
-        Checker.checkString("author", author, AUTHOR_REGEX,AUTHOR_MIN, AUTHOR_MAX);
+        Checker.checkString("author", author, AUTHOR_REGEX, AUTHOR_MIN, AUTHOR_MAX);
         Checker.checkString("title", title, TITLE_MIN, TITLE_MAX);
         Checker.checkString("body", body, BODY_MIN, BODY_MAX);
     }
