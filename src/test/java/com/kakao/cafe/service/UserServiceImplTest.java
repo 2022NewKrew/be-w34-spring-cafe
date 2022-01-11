@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserJoinDTO;
+import com.kakao.cafe.dto.UserJoinDto;
 import com.kakao.cafe.error.exception.duplication.UserEmailDuplicationException;
 import com.kakao.cafe.error.exception.duplication.UserNickNameDuplicationException;
 import com.kakao.cafe.error.exception.nonexist.UserNotFoundedException;
@@ -108,7 +108,7 @@ class UserServiceImplTest {
         String nonExistNickName = "nonExist";
         given(userRepository.existsByEmail(alreadyExistEmail)).willReturn(true);
 
-        UserJoinDTO dto = getUserJoinDTOInstance(alreadyExistEmail, nonExistNickName);
+        UserJoinDto dto = getUserJoinDTOInstance(alreadyExistEmail, nonExistNickName);
 
         //When, Then
         assertThrows(UserEmailDuplicationException.class, () -> userService.join(dto));
@@ -127,7 +127,7 @@ class UserServiceImplTest {
         given(userRepository.existsByEmail(nonExistEmail)).willReturn(false);
         given(userRepository.existsByNickName(alreadyExistNickName)).willReturn(true);
 
-        UserJoinDTO dto = getUserJoinDTOInstance(nonExistEmail, alreadyExistNickName);
+        UserJoinDto dto = getUserJoinDTOInstance(nonExistEmail, alreadyExistNickName);
 
         //When, Then
         assertThrows(UserNickNameDuplicationException.class, () -> userService.join(dto));
@@ -144,7 +144,7 @@ class UserServiceImplTest {
         given(userRepository.existsByEmail(nonExistEmail)).willReturn(false);
         given(userRepository.existsByNickName(nonExistNickName)).willReturn(false);
 
-        UserJoinDTO dto = getUserJoinDTOInstance(nonExistEmail, nonExistNickName);
+        UserJoinDto dto = getUserJoinDTOInstance(nonExistEmail, nonExistNickName);
 
         //When
         userService.join(dto);
@@ -153,8 +153,8 @@ class UserServiceImplTest {
         then(userRepository).should(times(1)).save(any(User.class));
     }
 
-    private UserJoinDTO getUserJoinDTOInstance(String email, String nickName) {
-        return UserJoinDTO.builder()
+    private UserJoinDto getUserJoinDTOInstance(String email, String nickName) {
+        return UserJoinDto.builder()
                 .email(email)
                 .nickName(nickName)
                 .password("abcd1234!")
