@@ -1,4 +1,4 @@
-package com.kakao.cafe.adapter.out.infra.persistence;
+package com.kakao.cafe.adapter.out.infra.persistence.user;
 
 import com.kakao.cafe.domain.user.User;
 

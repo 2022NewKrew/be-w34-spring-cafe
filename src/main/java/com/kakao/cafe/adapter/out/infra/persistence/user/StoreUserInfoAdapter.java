@@ -1,4 +1,4 @@
-package com.kakao.cafe.adapter.out.infra.persistence;
+package com.kakao.cafe.adapter.out.infra.persistence.user;
 
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.application.user.dto.UsersInfo;

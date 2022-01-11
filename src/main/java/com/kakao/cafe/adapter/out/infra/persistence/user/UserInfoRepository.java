@@ -1,4 +1,4 @@
-package com.kakao.cafe.adapter.out.infra.persistence;
+package com.kakao.cafe.adapter.out.infra.persistence.user;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
-@Component("userInfoRepository")
+@Component
 public class UserInfoRepository {
 
     private final Map<String, UserInfoEntity> repository;
