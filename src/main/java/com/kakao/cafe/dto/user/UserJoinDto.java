@@ -2,10 +2,8 @@ package com.kakao.cafe.dto.user;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.util.DateUtil;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder

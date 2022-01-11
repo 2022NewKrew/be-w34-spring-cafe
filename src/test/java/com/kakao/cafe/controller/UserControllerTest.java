@@ -3,7 +3,6 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.constant.PageSize;
 import com.kakao.cafe.dto.user.SimpleUserInfo;
 import com.kakao.cafe.service.UserService;
-import lombok.Data;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
