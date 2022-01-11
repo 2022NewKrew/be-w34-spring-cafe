@@ -1,10 +1,16 @@
 package com.kakao.cafe.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class SignupRequestDto {
 
+    @NotBlank
     private final String userId;
+    @NotBlank
     private final String password;
+    @NotBlank
     private final String name;
+    @NotBlank
     private final String email;
 
     public SignupRequestDto(String userId, String password, String name, String email) {

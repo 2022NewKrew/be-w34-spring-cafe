@@ -10,6 +10,7 @@ import com.kakao.cafe.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String requestSignup(SignupRequestDto dto) {
+    public String requestSignup(@Valid SignupRequestDto dto) {
         User user = userMapper.signupRequestDtoToUser(dto);
         userService.registerUser(user);
         return "redirect:/users";
