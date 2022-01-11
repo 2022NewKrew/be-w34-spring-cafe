@@ -79,11 +79,13 @@
                             <div class="col">
                             </div>
                             <div class="col">
-                                <a class="text-center nav-menu-item border bg-dark text-white nav-link active"
-                                   aria-current="page"
-                                   href="/board/post">
-                                    글쓰기
-                                </a>
+                                {{#auth.username}}
+                                    <a class="text-center nav-menu-item border bg-dark text-white nav-link active"
+                                       aria-current="page"
+                                       href="/board/post">
+                                        글쓰기
+                                    </a>
+                                {{/auth.username}}
                             </div>
                         </div>
                     </div>
