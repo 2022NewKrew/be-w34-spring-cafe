@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
     private Long id;
-    private String email;
+    private String email;       // UNIQUE
     private String nickname;
     private String password;
     private LocalDateTime createdAt;
