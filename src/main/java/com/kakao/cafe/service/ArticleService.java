@@ -16,9 +16,11 @@ public class ArticleService {
         //validation 은 나중에 추가.
         return articleRepository.getAllAlticles().get(Math.toIntExact(sequence));
     }
-
-    public Long getNextArticleSequence(){
-        return Long.valueOf(articleRepository.getAllAlticles().size() + 1);
+    public void setNextArticleSequence(Article article){
+        if(article == null){
+            return;
+        }
+        article.setSequence(Long.valueOf(articleRepository.getAllAlticles().size() + 1));
     }
 
     public List<Article> getAllArticles(){
