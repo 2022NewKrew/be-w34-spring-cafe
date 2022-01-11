@@ -34,7 +34,7 @@ public class SimpleUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> find(String userId) {
+    public Optional<User> findByUserId(String userId) {
         return users.stream()
             .filter(user -> user.getUserId().equals(userId))
             .findFirst();

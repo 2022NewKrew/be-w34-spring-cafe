@@ -19,7 +19,8 @@ public class UserService {
         User user = User.builder()
             .userId(userSaveDto.getUserId())
             .name(userSaveDto.getName())
-            .email(userSaveDto.getEmail()).password(userSaveDto.getPassword())
+            .email(userSaveDto.getEmail())
+            .password(userSaveDto.getPassword())
             .build();
         userRepository.save(user);
     }
@@ -40,7 +41,7 @@ public class UserService {
     }
 
     public UserShowDto findUser(String userId) {
-        return userRepository.find(userId)
+        return userRepository.findByUserId(userId)
             .map(this::createUserShowDto)
             .orElseThrow(() -> new IllegalArgumentException("invalid userId"));
     }
