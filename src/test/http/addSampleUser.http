@@ -2,13 +2,9 @@ POST http://localhost:8080/users
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
-Content-Disposition: form-data; name="id"
+Content-Disposition: form-data; name="username"
 
-jiyolla
---WebAppBoundary
-Content-Disposition: form-data; name="name"
-
-jinyoung
+frank
 --WebAppBoundary
 Content-Disposition: form-data; name="password"
 
