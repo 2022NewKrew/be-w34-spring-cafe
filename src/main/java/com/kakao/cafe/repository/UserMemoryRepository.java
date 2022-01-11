@@ -28,4 +28,11 @@ public class UserMemoryRepository implements UserRepository {
                 .filter(user -> userId.equals(user.getUserId()))
                 .findFirst();
     }
+
+    @Override
+    public Optional<User> findByName(String name) {
+        return userList.stream()
+                .filter(user -> name.equals(user.getName()))
+                .findFirst();
+    }
 }
