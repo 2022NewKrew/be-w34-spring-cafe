@@ -32,4 +32,5 @@ public class UserService {
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
     }
+
 }

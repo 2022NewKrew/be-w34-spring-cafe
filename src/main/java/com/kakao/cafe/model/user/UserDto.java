@@ -17,7 +17,6 @@ public class UserDto {
     private LocalDateTime createdAt;
 
     public String formattedCreatedAt() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return createdAt.format(formatter);
+        return createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 }
