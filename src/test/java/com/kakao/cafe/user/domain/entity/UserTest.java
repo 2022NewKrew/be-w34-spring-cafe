@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.*;
 
 class UserTest {
-
     @ParameterizedTest
     @DisplayName("잘못된 파라미터가 주어질때 User 생성 실패")
     @MethodSource("wrongConstructParameters")
