@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 
+import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.CafeUserService;
 import com.kakao.cafe.service.CafeUserServiceImpl;
@@ -24,10 +25,11 @@ public class CafeUserController {
         return UsersViewURL.USER_SIGN_IN.getMappingUrl();
     }
 
-    @GetMapping()
+    @GetMapping("/list")
     String getUserList (Model model) { // 유저 목록
         List<User> userList = cafeUserService.getUserList();
         model.addAttribute("userList", userList);
+        model.addAttribute("userCnt", CollectionHelper.getItemNumberOfList(userList));
         return UsersViewURL.USER_GET_LIST_VIEW.getMappingUrl();
     }
 

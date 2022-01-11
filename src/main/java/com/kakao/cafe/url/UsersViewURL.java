@@ -1,7 +1,7 @@
 package com.kakao.cafe.url;
 
 public enum UsersViewURL {
-    USER_SIGN_IN("", true),
+    USER_SIGN_IN("/list", true),
     USER_GET_LIST_VIEW("/list", false),
     USER_GET_PROFILE_VIEW("/profile", false),
     ;

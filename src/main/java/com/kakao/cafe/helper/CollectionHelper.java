@@ -8,4 +8,11 @@ public class CollectionHelper {
     public static <U,T> List<T> convertMapToList (Map<U,T> map) {
         return map.values().stream().collect(Collectors.toList());
     }
+
+    public static <T> int getItemNumberOfList (List<T> list) {
+        if( list == null ) {
+            return 0;
+        }
+        return list.size();
+    }
 }
