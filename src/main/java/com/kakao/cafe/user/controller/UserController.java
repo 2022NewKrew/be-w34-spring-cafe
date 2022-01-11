@@ -4,6 +4,7 @@ import com.kakao.cafe.user.model.UserDto;
 import com.kakao.cafe.user.model.UserProfileDto;
 import com.kakao.cafe.user.model.UserRequest;
 import com.kakao.cafe.user.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +16,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user")
+@AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("/list")
     public String getUserLists(Model model){

@@ -5,32 +5,31 @@ import com.kakao.cafe.user.model.UserDto;
 import com.kakao.cafe.user.model.UserProfileDto;
 import com.kakao.cafe.user.model.UserRequest;
 import com.kakao.cafe.user.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
-    UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     public void signUp(UserRequest userRequest){
-        Long numberOfUsers = userRepository.getNumberOfUsers();
-        userRepository.save(new User(numberOfUsers + 1, userRequest));
+        Long id = userRepository.getNumberOfUsers() + 1;
+        userRepository.save(userRequest.toEntity(id));
     }
 
     public List<UserDto> getUsersList(){
         return userRepository.find()
-                .stream().map(User::toUserDto)
+                .stream().map(UserDto::of)
                 .collect(Collectors.toList());
     }
 
     public UserProfileDto getUserProfile(String userId){
-        return userRepository.findOneByUserId(userId).toProfileDto();
+        User user = userRepository.findOneByUserId(userId);
+        return UserProfileDto.of(user);
     }
 }
