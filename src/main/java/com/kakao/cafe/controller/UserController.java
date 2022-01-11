@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kakao.cafe.service.UserService;
 import domain.User;
 import org.slf4j.Logger;
@@ -27,9 +28,9 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/list.html")
-    public String getUserList(Model model) {
+    public String getUserList(Model model) throws JsonProcessingException {
+        model.addAttribute("userListSize", userService.getUserRepository().getUserList().size());
         model.addAttribute("userList", userService.getUserRepository().getUserList().getUserList());
-        model.addAttribute("userListSize", userService.getUserRepository().getUserList().getUserList().size());
         return "user/list";
     }
 
@@ -37,7 +38,7 @@ public class UserController {
     public String postSignUp(User user) {
         logger.info("user:{}", user);
         userService.getUserRepository().getUserList().add(user);
-        logger.info("userList:{}", userService.getUserRepository().getUserList());
+        logger.info("userList:{}", userService.getUserRepository().getUserList().getUserList());
         return "redirect:/user/list.html";
     }
 

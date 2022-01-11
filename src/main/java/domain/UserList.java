@@ -1,5 +1,7 @@
 package domain;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,6 +15,10 @@ public class UserList {
         userList = new ArrayList<>();
     }
 
+    public int size() {
+        return userList.size();
+    }
+
     private static class LazyHolder{
         private static final UserList USER_LIST =  new UserList();
     }
@@ -21,12 +27,12 @@ public class UserList {
         return LazyHolder.USER_LIST;
     }
 
-    public void add(User user) {
-        userList.add(user);
+    public List<User> getUserList(){
+        return userList;
     }
 
-    public List<User> getUserList() {
-        return userList;
+    public void add(User user) {
+        userList.add(user);
     }
 
     public User findByUserId(String userId) {
