@@ -6,6 +6,7 @@ import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.CafeUserService;
 import com.kakao.cafe.service.CafeUserServiceImpl;
 import com.kakao.cafe.url.UserRedirect;
+import com.kakao.cafe.url.UserView;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,17 +25,17 @@ public class CafeUserController {
 
     @GetMapping("/sign-in")
     String userViewSignIn() {
-        return "/user/login";
+        return UserView.USER_VIEW_SIGN_IN;
     }
     @GetMapping("/sign-up")
     String userViewSingUp() {
-        return "/user/form";
+        return UserView.USER_VIEW_SIGN_UP;
     }
 
     @PostMapping("/sign-in")
     String signIn(User newUser){ // 회원가입
         cafeUserService.signIn(newUser);
-        return "redirect:/users/list";
+        return UserRedirect.USER_REDIRECT_LIST;
     }
 
     @GetMapping("/list")
@@ -42,7 +43,7 @@ public class CafeUserController {
         List<User> userList = cafeUserService.getUserList();
         model.addAttribute("userList", userList);
         model.addAttribute("userCnt", CollectionHelper.getItemNumberOfList(userList));
-        return "/user/list";
+        return UserView.USER_VIEW_LIST;
     }
 
     @GetMapping("/profile/{userId}")
@@ -51,6 +52,6 @@ public class CafeUserController {
         if( user != null) {
             model.addAttribute("user", user);
         }
-        return "/user/profile";
+        return UserView.USER_VIEW_PROFILE;
     }
 }

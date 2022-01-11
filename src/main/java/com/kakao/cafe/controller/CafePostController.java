@@ -4,6 +4,7 @@ import com.kakao.cafe.model.Post;
 import com.kakao.cafe.service.CafePostService;
 import com.kakao.cafe.service.CafePostServiceImpl;
 import com.kakao.cafe.url.PostRedirect;
+import com.kakao.cafe.url.PostView;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,27 +26,27 @@ public class CafePostController {
 
     @GetMapping("/write")
     String postViewWrite() {
-        return "/post/form";
+        return PostView.POST_VIEW_WRITE;
     }
 
     @PostMapping("/write")
     String writePost (Post newPost) {
         cafePostService.writePost(newPost);
-        return "redirect:/posts/list";
+        return PostRedirect.POST_REDIRECT_LIST;
     }
 
     @GetMapping("/list")
     String getPostList(Model model) {
         List<Post> postList = cafePostService.getPostList();
         model.addAttribute("postList", postList);
-        return "/post/list";
+        return PostView.POST_VIEW_LIST;
     }
 
     @GetMapping("/content/{postId}")
     String getPostContent(Model model, @PathVariable("postId") String postId) {
         Post post = cafePostService.getPostContent(postId);
         model.addAttribute("post", post);
-        return "/post/show";
+        return PostView.POST_VIEW_CONTENT;
     }
 
 

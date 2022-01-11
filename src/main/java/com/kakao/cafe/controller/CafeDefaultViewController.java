@@ -1,12 +1,13 @@
-package com.kakao.cafe.controller.view;
+package com.kakao.cafe.controller;
 
+import com.kakao.cafe.url.PostRedirect;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class CafeDefaultViewController {
-    @GetMapping("/")
+    @GetMapping()
     String forwardDefaultUrl () {
-        return "redirect:/posts/list";
+        return PostRedirect.POST_REDIRECT_LIST;
     }
 }
