@@ -24,14 +24,19 @@ public class CafeUserDaoImpl implements CafeUserDao {
 
     @Override
     public List<User> getUserList() {
-        return CollectionHelper.convertMapToList(userMap);
+        List<User> userList = CollectionHelper.convertMapToList(userMap);
+        userList.forEach(user -> user.setPassword(null));
+        return userList;
     }
 
     @Override
     public User getUserProfile(String userId) {
         User user = null;
         if( userId != null ) {
-            userMap.getOrDefault(userId, null);
+            user = userMap.getOrDefault(userId, null);
+        }
+        if( user != null) {
+            user.setPassword(null);
         }
         return user;
     }

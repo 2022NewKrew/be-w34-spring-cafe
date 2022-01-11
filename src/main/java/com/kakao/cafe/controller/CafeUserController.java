@@ -28,7 +28,6 @@ public class CafeUserController {
     String getUserList (Model model) { // 유저 목록
         List<User> userList = cafeUserService.getUserList();
         model.addAttribute("userList", userList);
-//        ModelAndView()
         return UsersViewURL.USER_GET_LIST_VIEW.getMappingUrl();
     }
 
