@@ -19,22 +19,22 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/create")
+    @PostMapping("")
     public String signUp(UserDto userDto){
         userService.signUp(userDto);
-        return "redirect:/users/list";
+        return "redirect:/users";
     }
 
-    @GetMapping("/list")
+    @GetMapping("")
     public String userList(Model model){
         List<UserDto> userList = userService.userList();
         model.addAttribute("userList", userList);
         return "user/list";
     }
 
-    @GetMapping("/{sn}")
-    public String profile(@PathVariable Long sn, Model model){
-        UserDto user = userService.findUser(sn);
+    @GetMapping("/{id}")
+    public String profile(@PathVariable Long id, Model model){
+        UserDto user = userService.findUser(id);
         model.addAttribute("user", user);
         return "user/profile";
     }
