@@ -21,8 +21,20 @@ public class UserDao {
         return resultUsers.get(0);
     }
 
+    public int getIndex(String userId) {
+        List<Integer> resultIndex = users.stream().filter(user -> user.getUserId().equals(userId)).map(user -> users.indexOf(user)).collect(Collectors.toList());
+        if(resultIndex.size() == 0)
+            return -1;
+        return resultIndex.get(0);
+    }
+
     public void addUser(User user) {
         users.add(user);
+    }
+
+    public void updateUser(User user) {
+        int index = getIndex(user.getUserId());
+        users.set(index, user);
     }
 
 }

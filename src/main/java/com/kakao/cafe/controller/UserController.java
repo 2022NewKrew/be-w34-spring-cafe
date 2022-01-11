@@ -36,4 +36,17 @@ public class UserController {
         return "/user/profile";
     }
 
+    @GetMapping("/users/{userId}/form")
+    public String updateForm(@PathVariable String userId, Model model) {
+        User user = userDao.getUser(userId);
+        model.addAttribute("userId", userId);
+        return "/user/updateForm";
+    }
+
+    @PostMapping("/user/edit")
+    public String editUser(User user) {
+        userDao.updateUser(user);
+        return "redirect:/users";
+    }
+
 }
