@@ -39,17 +39,17 @@ public class UserService {
     }
 
     public UserProfileDto getUserProfile(String userId) {
-        User findUser = userRepository.findByUserId(userId).orElseThrow();
+        User findUser = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
         return UserDtoMapper.toUserProfileDto(findUser);
     }
 
     public UserInfoDto getUserInfo(Long id) {
-        User findUser = userRepository.findById(id).orElseThrow();
+        User findUser = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
         return UserDtoMapper.toUserInfoDto(findUser);
     }
 
     public Long updateUser(UserUpdateForm updateForm) {
-        User updateUser = userRepository.findById(updateForm.getId()).orElseThrow();
+        User updateUser = userRepository.findById(updateForm.getId()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
         updateUser.update(updateForm);
         return userRepository.updateUser(updateUser);
     }
