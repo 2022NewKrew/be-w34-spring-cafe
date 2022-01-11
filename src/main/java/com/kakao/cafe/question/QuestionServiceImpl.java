@@ -1,20 +1,24 @@
 package com.kakao.cafe.question;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
 
-    @Autowired
-    QuestionRepository questionRepository;
+    private final QuestionRepository questionRepository;
 
     @Override
     public Long save(Question question) {
+
         question.updateTime();
+
         return questionRepository.save(question);
+
     }
 
     @Override

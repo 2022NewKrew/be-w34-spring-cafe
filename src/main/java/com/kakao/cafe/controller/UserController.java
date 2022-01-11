@@ -4,6 +4,7 @@ import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.dto.UserDto;
 import com.kakao.cafe.user.UserService;
 import com.kakao.cafe.user.dto.UserUpdateDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,9 +14,9 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
     private UserService userService;
 
     @PostMapping(value = "/create")
@@ -55,7 +56,6 @@ public class UserController {
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") UserUpdateDto userUpdateDto, Model model) {
 
         User user = userService.findOne(id);
-        System.out.println(user.getId());
         user.setUserId(userUpdateDto.getUserId());
         user.setEmail(userUpdateDto.getEmail());
         user.setName(userUpdateDto.getName());
