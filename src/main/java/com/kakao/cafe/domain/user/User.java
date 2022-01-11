@@ -2,13 +2,15 @@ package com.kakao.cafe.domain.user;
 
 import com.kakao.cafe.model.UserModel;
 
+import java.util.Objects;
+
 public class User {
     private final Email email;
     private final ID id;
     private final Name name;
     private final Password password;
 
-    public User(Email email, ID id, Name name, Password password){
+    public User(Email email, ID id, Name name, Password password) {
         this.email = email;
         this.id = id;
         this.name = name;
@@ -51,18 +53,48 @@ public class User {
         return password.getPassword();
     }
 
-
-    boolean canModify(String userId, String password){
+    public boolean canModify(String userId, String password) {
         return this.id.is(userId) && this.password.is(password);
     }
 
-    public static class Builder{
+    public boolean canModify(String password) {
+        return this.password.is(password);
+    }
+
+    public boolean passwordIs(String password) {
+        return this.password.is(password);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id.getId(), user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "email=" + email +
+                ", id=" + id +
+                ", name=" + name +
+                ", password=" + password +
+                '}';
+    }
+
+    public static class Builder {
         String email;
         String id;
         String name;
         String password;
 
-        public Builder email(String email){
+        public Builder email(String email) {
             this.email = email;
             return this;
         }
@@ -77,14 +109,13 @@ public class User {
             return this;
         }
 
-        public Builder password(String password){
+        public Builder password(String password) {
             this.password = password;
             return this;
         }
 
-        public User build(){
+        public User build() {
             return new User(this);
         }
     }
-
 }

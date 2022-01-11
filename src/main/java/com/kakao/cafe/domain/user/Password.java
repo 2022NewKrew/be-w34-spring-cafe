@@ -32,4 +32,11 @@ public class Password {
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public String toString() {
+        return "Password{" +
+                "password='" + password + '\'' +
+                '}';
+    }
 }

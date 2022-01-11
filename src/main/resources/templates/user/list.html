@@ -85,7 +85,11 @@
               <tbody>
               {{#users}}
                 <tr>
-                    <th scope="row">1</th> <td><a href="/users/{{userId}}">{{userId}}</a></td> <td>{{name}}</td> <td>{{email}}</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                    <th scope="row">1</th>
+                    <td><a href="/users/{{userId}}">{{userId}}</a></td>
+                    <td>{{name}}</td>
+                    <td>{{email}}</td>
+                    <td><a class="btn btn-success" href="/users/form/{{userId}}" role="button">수정</a></td>
                 </tr>
               {{/users}}
               </tbody>

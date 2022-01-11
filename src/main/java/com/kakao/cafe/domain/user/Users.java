@@ -1,7 +1,5 @@
 package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.domain.post.Writer;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +9,10 @@ public class Users {
 
     public Users() {
         users = new ArrayList<>();
+    }
+
+    public Users(List<User> users) {
+        this.users = users;
     }
 
     public Users(User... users) {
@@ -31,10 +33,17 @@ public class Users {
         return users;
     }
 
-    public Writer writer(String userId){
-        User target = getByUserId(userId);
-        if(target == null)
-            throw new IllegalArgumentException("없는 사용자입니다!");
-        return new Writer(target);
+    public boolean update(String id, String oldPassword, User newInformation) {
+        User target = getByUserId(id);
+        if (target == null) return false;
+        if (!target.passwordIs(oldPassword)) return false;
+        int targetIndex = users.indexOf(target);
+        users.remove(target);
+        users.add(targetIndex, newInformation);
+        return true;
+    }
+
+    public int size() {
+        return users.size();
     }
 }
