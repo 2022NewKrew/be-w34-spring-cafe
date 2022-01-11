@@ -1,8 +1,7 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.domain.repository;
 
 import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
-import com.kakao.cafe.domain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package com.kakao.cafe.entity;
+package com.kakao.cafe.domain.entity;
 
 import com.kakao.cafe.domain.entity.User;
 import org.junit.jupiter.api.BeforeEach;
