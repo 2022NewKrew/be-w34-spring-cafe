@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.service.dto.SignUpRequestDto;
+import com.kakao.cafe.controller.dto.SignUpRequestDto;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

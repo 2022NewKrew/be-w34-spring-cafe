@@ -17,12 +17,12 @@
    <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
       <div class="panel panel-default qna-list">
           <ul class="list">
-              {{# articles}}
+              {{#articles}}
               <li>
                   <div class="wrap">
                       <div class="main">
                           <strong class="subject">
-                              <a href="qna/show.html">{{this.title}}</a>
+                              <a href="articles/{{this.id}}">{{this.title}}</a>
                           </strong>
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
