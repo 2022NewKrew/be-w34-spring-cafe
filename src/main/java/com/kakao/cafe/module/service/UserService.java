@@ -5,9 +5,11 @@ import com.kakao.cafe.module.model.dto.UserDto;
 import com.kakao.cafe.module.model.mapper.UserMapper;
 import com.kakao.cafe.module.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static com.kakao.cafe.module.model.mapper.UserMapper.*;
@@ -35,7 +37,7 @@ public class UserService {
         return toUserDto(userRepository.findUserById(id));
     }
 
-    private void validateDuplicateName(String name){
+    private void validateDuplicateName(String name) {
         userRepository.findUserByName(name)
                 .ifPresent(e -> {
                     throw new IllegalArgumentException("이미 존재하는 이름입니다.");
