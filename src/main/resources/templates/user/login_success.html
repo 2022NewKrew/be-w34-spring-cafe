@@ -9,22 +9,18 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="/css/index.css" rel="stylesheet">
+    <link href="/css/user/login_success.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
     {{>layout/header}}
-    <div class="description">
-        <div class="desc-container">
-            <p class="desc-big">멤버 정보</p><br>
-            {{#user}}
-            <h2>닉네임: {{this.nickname}}</h2>
-            <p>이메일: {{this.email}}</p>
-            {{/user}}
-            {{^user}}
-            <h2>존재하지 않는 유저입니다.</h2>
-            {{/user}}
-        </div>
+    <div class="container" id="main">
+        <header class="post-header">
+            <p class="title">가입이 완료되었습니다!</p>
+        </header>
+        <p class="user-info"> 이메일: sam@codesquad.kr</p>
+        <p class="user-info"> 닉네임: 멋진삼</p>
+        <a href="/" class="btn">홈으로</a>
     </div>
 </div>
 </body>
