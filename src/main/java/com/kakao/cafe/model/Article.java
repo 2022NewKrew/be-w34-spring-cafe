@@ -1,19 +1,19 @@
 package com.kakao.cafe.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Article {
     private final int id;
     private final String title;
     private final String writer;
-    private final Date createDate;
+    private final LocalDateTime createDate;
     private final String contents;
 
     public Article(int id, String title, String writer, String contents) {
         this.id = id;
         this.title = title;
         this.writer = writer;
-        this.createDate = new Date();
+        this.createDate = LocalDateTime.now();
         this.contents = contents;
     }
 
@@ -29,7 +29,7 @@ public class Article {
         return writer;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
