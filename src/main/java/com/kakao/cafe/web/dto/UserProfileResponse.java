@@ -5,21 +5,12 @@ import com.kakao.cafe.domain.user.User;
 import java.util.Optional;
 
 public class UserProfileResponse {
-    private String name;
-    private String email;
+    private final String name;
+    private final String email;
 
-    public UserProfileResponse(Optional<User> userVO) {
-        this.name = userVO.get().getName();
-        this.email = userVO.get().getEmail();
-    }
-
-    public User toEntity() {
-        User user = new User();
-
-        user.setName(name);
-        user.setEmail(email);
-
-        return user;
+    public UserProfileResponse(Optional<User> user) {
+        this.name = user.get().getName();
+        this.email = user.get().getEmail();
     }
 
     public String getName() {
@@ -28,13 +19,5 @@ public class UserProfileResponse {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }
