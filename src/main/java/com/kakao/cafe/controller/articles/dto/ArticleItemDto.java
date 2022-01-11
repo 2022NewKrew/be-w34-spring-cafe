@@ -1,25 +1,14 @@
 package com.kakao.cafe.controller.articles.dto;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
+@RequiredArgsConstructor
+@Getter
+@ToString
 public class ArticleItemDto {
-    private Long id;
-    private String title;
-    private String writer;
-
-    public ArticleItemDto(Long id, String title, String writer) {
-        this.id = id;
-        this.title = title;
-        this.writer = writer;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
+    private final Long id;
+    private final String title;
+    private final String writer;
 }

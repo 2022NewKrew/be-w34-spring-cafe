@@ -1,5 +1,10 @@
 package com.kakao.cafe.domain;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class Article {
     private Long id;
     private String writer;
@@ -14,22 +19,6 @@ public class Article {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public static Article of(String writer, String title, String contents) {

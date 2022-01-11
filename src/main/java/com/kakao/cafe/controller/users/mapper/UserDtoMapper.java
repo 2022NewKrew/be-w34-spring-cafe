@@ -21,6 +21,12 @@ public class UserDtoMapper {
     }
 
     public static UserUpdateForm toUserUpdateForm(Long id, UpdateRequestDto updateRequest) {
-        return new UserUpdateForm(id, updateRequest.getUserId(), updateRequest.getPassword(), updateRequest.getName(), updateRequest.getEmail());
+        return UserUpdateForm.builder()
+                .id(id)
+                .userId(updateRequest.getUserId())
+                .password(updateRequest.getPassword())
+                .userName(updateRequest.getName())
+                .email(updateRequest.getEmail())
+                .build();
     }
 }

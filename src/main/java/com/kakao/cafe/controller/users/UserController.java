@@ -3,6 +3,7 @@ package com.kakao.cafe.controller.users;
 import com.kakao.cafe.controller.users.dto.*;
 import com.kakao.cafe.controller.users.mapper.UserDtoMapper;
 import com.kakao.cafe.service.user.UserService;
+import com.kakao.cafe.service.user.dto.UserUpdateForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,6 @@ public class UserController {
     @GetMapping("{userId}")
     public String profile(@PathVariable String userId, Model model) {
         UserProfileDto userProfile = userService.getUserProfile(userId);
-        logger.info(userProfile.toString());
         model.addAttribute("user", userProfile);
         return "user/profile";
     }
@@ -55,14 +55,14 @@ public class UserController {
     @GetMapping("{id}/form")
     public String showUpdateForm(@PathVariable Long id, Model model) {
         UserInfoDto userInfo = userService.getUserInfo(id);
-        logger.info(userInfo.toString());
         model.addAttribute("user", userInfo);
         return "user/updateForm";
     }
 
     @PostMapping("{id}/update")
     public String updateUser(@PathVariable Long id, UpdateRequestDto updateRequestDto) {
-        userService.updateUser(UserDtoMapper.toUserUpdateForm(id, updateRequestDto));
+        UserUpdateForm userUpdateForm = UserDtoMapper.toUserUpdateForm(id, updateRequestDto);
+        userService.updateUser(userUpdateForm);
         return "redirect:/users";
     }
 }

@@ -17,7 +17,7 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public Long insertUser(User user) {
-        user.setId(Long.valueOf(userList.size() + 1));
+        user.updateId(Long.valueOf(userList.size() + 1));
         userList.add(user);
         return Long.valueOf(userList.size());
     }

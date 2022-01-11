@@ -1,37 +1,14 @@
 package com.kakao.cafe.controller.articles.dto;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
+@RequiredArgsConstructor
+@Getter
+@ToString
 public class ArticleWriteRequestDto {
-
-    private String writer;
-
-    private String title;
-
-    private String contents;
-
-    public ArticleWriteRequestDto(String writer, String title, String contents) {
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    @Override
-    public String toString() {
-        return "QnaWriteRequestDto{" +
-                "writer='" + writer + '\'' +
-                ", title='" + title + '\'' +
-                ", contents='" + contents + '\'' +
-                '}';
-    }
+    private final String writer;
+    private final String title;
+    private final String contents;
 }
