@@ -1,4 +1,4 @@
-package com.kakao.cafe.dto.request;
+package com.kakao.cafe.article.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

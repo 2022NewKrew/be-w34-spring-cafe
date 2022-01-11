@@ -1,6 +1,6 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.article.repository;
 
-import com.kakao.cafe.entity.ArticleEntity;
+import com.kakao.cafe.article.entity.ArticleEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

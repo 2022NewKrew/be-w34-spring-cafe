@@ -1,10 +1,10 @@
-package com.kakao.cafe.service;
+package com.kakao.cafe.user.service;
 
-import com.kakao.cafe.dto.response.UserResDto;
-import com.kakao.cafe.entity.UserEntity;
-import com.kakao.cafe.dto.request.SignupReqDto;
-import com.kakao.cafe.mapper.UserMapper;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.user.dto.response.UserResDto;
+import com.kakao.cafe.user.entity.UserEntity;
+import com.kakao.cafe.user.dto.request.SignupReqDto;
+import com.kakao.cafe.user.mapper.UserMapper;
+import com.kakao.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,8 +1,8 @@
-package com.kakao.cafe.service;
+package com.kakao.cafe.article.service;
 
-import com.kakao.cafe.dto.request.ArticleReqDto;
-import com.kakao.cafe.entity.ArticleEntity;
-import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.article.dto.request.ArticleReqDto;
+import com.kakao.cafe.article.entity.ArticleEntity;
+import com.kakao.cafe.article.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

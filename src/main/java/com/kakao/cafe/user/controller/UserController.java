@@ -1,10 +1,8 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.user.controller;
 
-import com.kakao.cafe.dto.request.SignupReqDto;
-import com.kakao.cafe.dto.response.UserResDto;
-import com.kakao.cafe.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.kakao.cafe.user.dto.request.SignupReqDto;
+import com.kakao.cafe.user.dto.response.UserResDto;
+import com.kakao.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

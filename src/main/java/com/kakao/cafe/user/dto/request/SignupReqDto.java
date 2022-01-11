@@ -1,25 +1,16 @@
-package com.kakao.cafe.entity;
+package com.kakao.cafe.user.dto.request;
 
-public class UserEntity {
-    private Long id;
+public class SignupReqDto {
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    public UserEntity(String userId, String password, String name, String email) {
+    public SignupReqDto(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getUserId() {

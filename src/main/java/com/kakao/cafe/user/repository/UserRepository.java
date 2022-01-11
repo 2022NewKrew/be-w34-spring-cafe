@@ -1,10 +1,9 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.user.repository;
 
-import com.kakao.cafe.entity.UserEntity;
+import com.kakao.cafe.user.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public class UserRepository {

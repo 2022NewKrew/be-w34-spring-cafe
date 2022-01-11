@@ -1,4 +1,4 @@
-package com.kakao.cafe.entity;
+package com.kakao.cafe.article.entity;
 
 
 import lombok.Builder;
