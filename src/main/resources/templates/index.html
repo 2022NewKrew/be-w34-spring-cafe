@@ -6,5 +6,16 @@
 </head>
 <body>
 <a href="user/signUp">회원가입</a>
+<a href="article/post">게시글 쓰기</a>
+<br/>
+<br/>
+<header>
+    <p>글 목록</p>
+</header>
+{{#articles}}
+<li>
+    <a href="article/{{id}}">{{title}}</a>
+</li>
+{{/articles}}
 </body>
 </html>
