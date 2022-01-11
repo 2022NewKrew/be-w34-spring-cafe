@@ -1,37 +1,36 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.User;
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.dao.UserDao;
+import com.kakao.cafe.dto.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class UserController {
 
-    private List<User> users = new ArrayList<>();
-    private UserService userService = new UserService();
+    private UserDao userDao = new UserDao();
 
     @GetMapping("/users")
     public String getUsers(Model model) {
+        List<User> users = userDao.getUsers();
         model.addAttribute("users", users);
         return "/user/list";
     }
 
     @PostMapping("/user/create")
     public String signUp(User user) {
-        users.add(user);
+        userDao.addUser(user);
         return "redirect:/users";
     }
 
     @GetMapping("/users/{userId}")
     public String getProfile(@PathVariable String userId, Model model) {
-        User user = userService.getUser(userId, users);
+        User user = userDao.getUser(userId);
         model.addAttribute("user", user);
         return "/user/profile";
     }
