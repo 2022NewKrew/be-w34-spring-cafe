@@ -201,3 +201,24 @@ h3,h4,h5 {
     padding-right: 2.5em;
 }
 
+.user-update-form-list {
+    display: flex;
+}
+
+.user-update-form-item:first-child {
+    font-size: 16px;
+    margin: 2px 8px 0 0;
+    width: 60px;
+}
+
+.user-update-form-item:last-child {
+    flex: 1 1 auto;
+}
+
+.qna-comment-slipp-articles {
+    list-style-type: none;
+}
+
+.qna-doc-content {
+    padding-top: 15px;
+}

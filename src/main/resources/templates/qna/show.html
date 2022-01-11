@@ -8,8 +8,8 @@
           </header>
           <div class="content-main">
               <div class="qna-comment">
-                  <div class="qna-comment-slipp">
-                      <p class="qna-comment-count"><strong>{{size}}</strong>개의 질문</p>
+                  <em class="qna-comment-count"><strong>{{size}}</strong>개의 질문</em>
+                    <div class="qna-comment-slipp">
                       <ul class="qna-comment-slipp-articles">
                           {{#questions}}
                           <li class="article" id="answer-1405">
@@ -24,7 +24,7 @@
                                       </a>
                                   </div>
                               </div>
-                              <div class="article-doc comment-doc">
+                              <div class="article-doc comment-doc qna-doc-content">
                                   <p>{{contents}}</p>
                               </div>
                               <div class="article-util">

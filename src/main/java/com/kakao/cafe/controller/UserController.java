@@ -1,11 +1,13 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.user.User;
+import com.kakao.cafe.user.UserDto;
 import com.kakao.cafe.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,8 +38,18 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    public String viewQuestionForm() {
+    public String viewUserCreateForm() {
         return "user/form";
+    }
+
+    @GetMapping("/{id}/update")
+    public String viewUserUpdateForm(@PathVariable("id") Long id, Model model) {
+
+        User user = userService.findOne(id);
+        UserDto userDto = new UserDto(user.getId(), user.getUserId(), user.getName(), user.getEmail());
+
+        model.addAttribute("user", userDto);
+        return "user/update_form";
     }
 
 }
