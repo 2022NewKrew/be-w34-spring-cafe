@@ -10,6 +10,7 @@ public class UserAccountDTO {
     private final String password;
     private final String name;
     private final String email;
+    private int index;
 
     public UserAccountDTO(String userID, String password, String name, String email) {
         this.userID = userID;
@@ -32,6 +33,10 @@ public class UserAccountDTO {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     @Override

@@ -50,8 +50,11 @@ public class AccountTable {
     public static List<UserAccountDTO> allUserAccountInfo(){
         List<UserAccountDTO> userAccountList = new ArrayList<>();
 
+        int i = 1;
         for(Map.Entry<String, UserAccount> entry: DB.entrySet()){
-            userAccountList.add(entry.getValue().toUserAccountDTO());
+            UserAccountDTO userAccountDTO = entry.getValue().toUserAccountDTO();
+            userAccountDTO.setIndex(i++);
+            userAccountList.add(userAccountDTO);
         }
 
         return userAccountList;
