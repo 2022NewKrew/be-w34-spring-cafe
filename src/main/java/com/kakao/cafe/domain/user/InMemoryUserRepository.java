@@ -2,7 +2,10 @@ package com.kakao.cafe.domain.user;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository("userRepository")
 public class InMemoryUserRepository implements UserRepository{
@@ -15,8 +18,8 @@ public class InMemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public Optional<User> findById(String userId) {
-        return Optional.ofNullable(users.get(userId));
+    public User findById(String userId) {
+        return users.get(userId);
     }
 
     @Override
