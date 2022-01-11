@@ -12,8 +12,8 @@ public class Users {
         list.add(Objects.requireNonNull(user));
     }
 
-    public boolean checkIdExist(final User user) {
-        final String id = user.getId();
+    public boolean checkIdExist(final String id) {
+        Objects.requireNonNull(id);
 
         for (User u : list) {
             if (id.equals(u.getId())) {

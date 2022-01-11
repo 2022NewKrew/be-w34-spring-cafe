@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Controller
@@ -25,15 +27,19 @@ public class UserController {
         this.userService = Objects.requireNonNull(userService);
     }
 
-    @GetMapping("/user/signup")
+    @GetMapping("/signup")
     public String getSignUp() {
-        return "user/signup";
+        return "signup";
     }
 
     @PostMapping("/user")
-    public String processSignUp(@NonNull final User user) {
-        userService.add(user);
-        logger.info("New User added: " + user);
+    public String processSignUp(
+            @NonNull final UserDto userDto,
+            @RequestParam("password") @NonNull final String password
+    )
+    {
+        userService.add(userDto, password);
+        logger.info("New User added: " + userDto.getId());
         return "redirect:/user";
     }
 
@@ -49,10 +55,11 @@ public class UserController {
             final Model model
     )
     {
-        final User user = userService.getUser(id);
-        if (user.isNotNone()) {
-            model.addAttribute("user", user);
-        }
+        try {
+            final UserDto userDto = userService.getUser(id);
+            model.addAttribute("user", userDto);
+        } catch (NoSuchElementException ignored) {}
+
         return "user/profile";
     }
 }

@@ -2,6 +2,7 @@ package com.kakao.cafe.domain;
 
 import com.kakao.cafe.util.Checker;
 import com.kakao.cafe.util.SecurePassword;
+import org.springframework.lang.NonNull;
 
 import java.util.Objects;
 
@@ -28,10 +29,10 @@ public class User {
     private final String email;
 
     public User(
-            final String id,
-            final String password,
-            final String name,
-            final String email
+            @NonNull final String id,
+            @NonNull final String password,
+            @NonNull final String name,
+            @NonNull final String email
     ) throws IllegalArgumentException
     {
         validate(id, password, name, email);
@@ -102,8 +103,8 @@ public class User {
         return email;
     }
 
-    public boolean isNotNone() {
-        return !this.equals(NONE);
+    public boolean isNone() {
+        return this.equals(NONE);
     }
 
     // Auto-gen code
