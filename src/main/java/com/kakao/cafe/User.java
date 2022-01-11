@@ -1,10 +1,14 @@
 package com.kakao.cafe;
 
 public class User {
+    private static int lastIndex = 1;
+    private int index;
     private String userId;
     private String email;
     private String name;
     private String password;
+
+    public int getIndex() { return index; }
 
     public String getUserId() {
         return userId;
@@ -21,6 +25,8 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    public void setIndex() { this.index = lastIndex++; }
 
     public void setUserId(String userId) {
         this.userId = userId;
