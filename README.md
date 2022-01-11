@@ -4,12 +4,19 @@
   * get, post 테스트 O
   * 역할에 따른 패키지 분리 O
     * controller : 요청이 들어오면 추상화된 동작 지시
-    * domain : dto, 데이터만 가지고 있는 객체
+    * domain : 관련된 모든 데이터 가지고 있는 객체
+    * dto : 서비스에 쓰이는 데이터만 가지고 있는 객체
     * view : 보여주는 로직 구현
     * service : 비즈니스 로직 구현
     * repository : DB에 데이터를 저장
-  * 회원가입 기능 구현
   * 회원목록 기능 구현
+    * 회원목록 controller
+    * User domain
+    * showUserList service
+      * userList domain은 List에서 더 추가해야할 기능이 없는 거 같아서 구현 안함
+    * UserListView view
+  * 회원가입 기능 구현
+    * 회원가입 routing 구현
   * 회원 프로필 조회
   * static, template 분리
     * mustache 생성
