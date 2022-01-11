@@ -1,0 +1,30 @@
+{{>common/header}}
+<div class="container">
+    {{#post}}
+    <br>
+    <div>
+        <h1>{{title}}</h1>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col order-last">
+            작성자: {{author}}
+        </div>
+        <div class="col">
+            작성일자: {{date}}
+        </div>
+        <div class="col order-first">
+            조회: {{viewCount}}
+        </div>
+    </div>
+    <br>
+    <div>
+        <p class="lead">
+            {{content}}
+        </p>
+    </div>
+    {{/post}}
+    <br>
+    <button type="button" class="btn btn-primary" id="go-home">목록으로</button>
+</div>
+{{>common/footer}}
