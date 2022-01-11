@@ -2,7 +2,6 @@ package com.kakao.cafe.domain;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class UserList {
@@ -20,6 +19,9 @@ public class UserList {
         return InnerInstanceClass.instance;
     }
 
+    public List<UserInfo> getUserList(){
+        return userList;
+    }
     public void addUser(UserInfo userInfo) {
         userList.add(userInfo);
     }

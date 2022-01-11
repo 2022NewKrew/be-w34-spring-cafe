@@ -1,26 +1,25 @@
 package com.kakao.cafe.domain;
 
 public class UserInfo {
-    String userId;
-    String password;
-    String name;
-    String email;
+    private String signUpDate;
+    private String password;
+    private String name;
+    private String email;
 
-    public UserInfo(String userId, String password, String name, String email) {
-        this.userId= userId;
+    public UserInfo(String password, String name, String email) {
         this.password = password;
         this.name = name;
         this.email = email;
+        this.signUpDate = TimeGenerator.todayDate();
     }
 
     @Override
     public String toString() {
         return "UserInfo{" +
-                "id='" + userId + '\'' +
+                "singUpDate='" + signUpDate + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }
-
 }

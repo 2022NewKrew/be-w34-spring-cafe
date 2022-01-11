@@ -6,6 +6,7 @@ import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -24,7 +25,13 @@ public class UserController {
     public String signUp(UserInfo userInfo){
         logger.info("user:{}",userInfo);
         UserService.userSingUp(userInfo);
-        logger.info("userList:{}", UserList.getInstance());
         return "redirect:/users";
     }
+
+    @GetMapping("users")
+    public String viewUserList(Model model){
+        model.addAttribute("users", UserList.getInstance().getUserList());
+        return "/user/list";
+    }
+
 }
