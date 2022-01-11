@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.modelmapper:modelmapper:2.4.2'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.1'
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'

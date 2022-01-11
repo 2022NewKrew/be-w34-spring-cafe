@@ -7,17 +7,17 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    final String insert = "INSERT INTO user(userId, userName, userPw, userEmail) values(#{user.userId}, #{user.userName}, #{user.userPw}, #{user.userEmail})";
-    final String select = "SELECT * FROM user";
-    final String selectById = "SELECT * FROM user where id = #{id}";
+    String insert = "INSERT INTO user(userId, userName, userPw, userEmail) values(#{user.userId}, #{user.userName}, #{user.userPw}, #{user.userEmail})";
+    String select = "SELECT * FROM user";
+    String selectByKey = "SELECT * FROM user where key = #{key}";
 
     @Insert(insert)
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Options(useGeneratedKeys = true, keyProperty = "key")
     int insert(@Param("user") User user);
 
     @Select(select)
     List<User> findAll();
 
-    @Select(selectById)
-    User findById(Long id);
+    @Select(selectByKey)
+    User findByKey(Long key);
 }
