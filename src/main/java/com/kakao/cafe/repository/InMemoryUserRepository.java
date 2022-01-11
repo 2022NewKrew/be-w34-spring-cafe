@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class InMemoryUserRepository implements UserRepository {
 
-    volatile Users users;
+    private final Users users;
 
     public InMemoryUserRepository() {
         this.users = new Users();

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public class Users {
 
-    volatile List<User> userList;
+    private final List<User> userList;
 
     public Users() {
         this.userList = new ArrayList<>();
