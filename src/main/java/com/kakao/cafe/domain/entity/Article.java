@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.article;
+package com.kakao.cafe.domain.entity;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

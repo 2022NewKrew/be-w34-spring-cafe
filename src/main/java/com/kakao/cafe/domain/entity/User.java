@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.user;
+package com.kakao.cafe.domain.entity;
 
 public class User {
     private final String userId;
