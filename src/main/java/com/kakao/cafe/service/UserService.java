@@ -1,20 +1,22 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.model.User;
-import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
+@Service
 public class UserService {
 
-    private final UserRepository userRepository = new MemoryUserRepository();
+    private final UserRepository userRepository;
 
-    public Long join(User user){
+    public void addUser(User user){
         validateDuplicateUser(user);
         userRepository.save(user);
-        return user.getId();
     }
 
     private void validateDuplicateUser(User user) {
@@ -28,8 +30,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findOne(Long id){
-        return userRepository.findById(id);
+    public User findUserById(Long id){
+        return userRepository.findById(id).get();
     }
 
 }
