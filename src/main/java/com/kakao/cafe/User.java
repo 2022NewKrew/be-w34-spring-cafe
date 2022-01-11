@@ -5,24 +5,24 @@ import java.util.UUID;
 
 public class User {
 
-    private UUID user_id;
+    private UUID userId;
+    private String email;
     private String nickname;
     private String password;
-    private String email;
 
     public User(CreateUserDto createUserDto) {
-        this.user_id = UUID.randomUUID();
+        this.userId = UUID.randomUUID();
         this.email = createUserDto.getEmail();
         this.nickname = createUserDto.getNickname();
         this.password = createUserDto.getPassword();
     }
 
-    public UUID getUser_id() {
-        return user_id;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setUser_id(UUID user_id) {
-        this.user_id = user_id;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public String getNickname() {

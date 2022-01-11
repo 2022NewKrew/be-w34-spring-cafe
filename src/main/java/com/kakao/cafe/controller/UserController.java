@@ -1,8 +1,10 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.CafeApplication;
+import com.kakao.cafe.User;
 import com.kakao.cafe.dto.CreateUserDto;
 import com.kakao.cafe.service.UserService;
+import java.util.List;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,14 @@ public class UserController {
     @GetMapping("user/form")
     public String getSignUp(Model model) {
         return "user/form";
+    }
+
+    @GetMapping("/users")
+    public String showUsers(Model model) {
+        List<User> users = userService.getAll();
+        System.out.println(users);
+        model.addAttribute(model.addAttribute("users", users));
+        return "user/list";
     }
 
     @PostMapping("/users")
