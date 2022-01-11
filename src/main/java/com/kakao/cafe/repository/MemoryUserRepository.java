@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.User;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.CreateUserDto;
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +21,8 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(UUID id) {
-        return Optional.ofNullable(store.get(id));
+    public Optional<User> findById(UUID userId) {
+        return Optional.ofNullable(store.get(userId));
     }
 
     @Override

@@ -1,10 +1,11 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.User;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.CreateUserDto;
 import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,10 @@ public class UserService {
 
     public List<User> getAll() {
         return this.userRepository.getAll();
+    }
+
+    public Optional<User> findById(UUID userId) {
+        return this.userRepository.findById(userId);
     }
 
 }

@@ -12,9 +12,12 @@
   </div>
   {{#users}}
     <div class="user-row">
-      <span class="user-text-box">{{userId}}</span>
-      <span class="user-text-box">{{email}}</span>
-      <span class="user-text-box">{{nickname}}</span>
+      <span class="user-text-box click-box"
+            onclick="location.href='/users/{{userId}}'">{{userId}}</span>
+      <span class="user-text-box click-box"
+            onclick="location.href='/users/{{userId}}'">{{email}}</span>
+      <span class="user-text-box click-box"
+            onclick="location.href='/users/{{userId}}'">{{nickname}}</span>
     </div>
   {{/users}}
 </div>
@@ -52,5 +55,9 @@
     height: 32px;
     min-width: 230px;
     text-align: center;
+  }
+
+  .click-box {
+    cursor: pointer;
   }
 </style>

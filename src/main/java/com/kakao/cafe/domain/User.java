@@ -1,4 +1,4 @@
-package com.kakao.cafe;
+package com.kakao.cafe.domain;
 
 import com.kakao.cafe.dto.CreateUserDto;
 import java.util.UUID;
