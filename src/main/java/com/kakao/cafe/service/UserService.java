@@ -21,7 +21,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findUser(String userId) {
+    public Optional<User> findUser(String userId) {
         return userRepository.findByUserId(userId);
     }
 

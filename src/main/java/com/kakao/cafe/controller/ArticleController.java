@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -45,6 +46,12 @@ public class ArticleController {
         articleService.save(article);
         return "redirect:/";
     }
-
+    @GetMapping("/articles/{id}")
+    public String findUser(@PathVariable("id") Long articleId, Model model) {
+        Article article = articleService.findArticle(articleId);
+        model.addAttribute("article" , article);
+        System.out.println(article.toString());
+        return "qna/show";
+    }
 
 }

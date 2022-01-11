@@ -25,4 +25,9 @@ public class MemoryArticleRepository implements ArticleRepository{
     public List<Article> findAll() {
         return new ArrayList<>(store.values());
     }
+
+    @Override
+    public Article findById(Long id) {
+        return store.get(id);
+    }
 }

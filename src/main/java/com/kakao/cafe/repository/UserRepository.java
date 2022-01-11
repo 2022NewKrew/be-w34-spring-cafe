@@ -1,9 +1,9 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface UserRepository {
@@ -11,5 +11,5 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    User findByUserId(String userId);
+    Optional<User> findByUserId(String userId);
 }
