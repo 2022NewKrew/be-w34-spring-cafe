@@ -16,14 +16,8 @@
     {{>layout/header}}
     <div class="description">
         <div class="desc-container">
-            <p class="desc-big">멤버 정보</p><br>
-            {{#user}}
-            <h2>닉네임: {{this.nickname}}</h2>
-            <p>이메일: {{this.email}}</p>
-            {{/user}}
-            {{^user}}
-            <h2>존재하지 않는 유저입니다.</h2>
-            {{/user}}
+            <p class="desc-big">에러</p><br>
+            <p>{{errorMessage}}</p>
         </div>
     </div>
 </div>
