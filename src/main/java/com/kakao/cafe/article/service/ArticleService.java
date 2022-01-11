@@ -3,16 +3,18 @@ package com.kakao.cafe.article.service;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import com.kakao.cafe.article.repository.CreateArticleRequestDTO;
-import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.service.FindAllUserResponseDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Service
+@RequiredArgsConstructor
 public class ArticleService {
 
-    ArticleRepository articleRepository = ArticleRepository.getRepository();
+    private final ArticleRepository articleRepository;
 
     public void createArticle(Long authorId, String title, String contents ){
         articleRepository.persist(new CreateArticleRequestDTO(title, authorId, contents));

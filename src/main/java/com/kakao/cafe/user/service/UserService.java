@@ -3,18 +3,22 @@ package com.kakao.cafe.user.service;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.repository.CreateUserDTO;
 import com.kakao.cafe.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Service
+@RequiredArgsConstructor
 public class UserService {
 
-    UserRepository userRepository = UserRepository.getRepository();
+    private final UserRepository userRepository;
 
-    public void createUser(String email, String nickName, String passWord, LocalDateTime signUpDate) {
-        userRepository.persist(new CreateUserDTO(email, nickName, passWord, signUpDate));
+    public Long createUser(String email, String nickName, String passWord, LocalDateTime signUpDate) {
+        return userRepository.persist(new CreateUserDTO(email, nickName, passWord, signUpDate));
     }
 
     public GetSignUpResultResponseDTO getSignUpResultViewData(Long userId) {
