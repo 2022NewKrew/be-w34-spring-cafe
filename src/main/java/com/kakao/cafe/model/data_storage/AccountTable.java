@@ -15,7 +15,7 @@ import java.util.Map;
  *
  */
 public class AccountTable {
-    public static final Map<String, UserAccount> DB = new HashMap<>();
+    private static final Map<String, UserAccount> DB = new HashMap<>();
 
     /**
      * User 정보가 존재하는지 판단합니다.

@@ -33,7 +33,6 @@ public class UserController {
 
     @PostMapping("form")
     public String form(UserAccountDTO userAccountDTO){
-        logger.info(userAccountDTO + "");
         UserAccount userAccount = UserAccount.createUserAccount(userAccountDTO);
 
         if(!Objects.isNull(userAccount))

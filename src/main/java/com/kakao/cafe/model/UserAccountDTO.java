@@ -6,10 +6,10 @@ package com.kakao.cafe.model;
  * UserAccount 클래스에서 로직을 제거하고 데이터 전송을 위해 따로 만든 클래스입니다.
  */
 public class UserAccountDTO {
-    private String userID;
-    private String password;
-    private String name;
-    private String email;
+    private final String userID;
+    private final String password;
+    private final String name;
+    private final String email;
 
     public UserAccountDTO(String userID, String password, String name, String email) {
         this.userID = userID;
