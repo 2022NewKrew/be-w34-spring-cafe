@@ -33,7 +33,7 @@ public class UserController {
 
     @PostMapping("form")
     public String form(UserAccountDTO userAccountDTO){
-        UserAccount userAccount = UserAccount.createUserAccount(userAccountDTO);
+        UserAccount userAccount = UserAccount.createUserAccount(false, userAccountDTO);
 
         if(!Objects.isNull(userAccount))
             AccountTable.saveUserInto(userAccountDTO.getUserID(), userAccount);
@@ -55,6 +55,17 @@ public class UserController {
         UserAccountDTO userAccountDTO = AccountTable.lookUpUserInfo(userID).toUserAccountDTO();
 
         model.addAttribute("user_account", userAccountDTO);
-        return "user/profile";
+        return "/user/profile";
+    }
+
+    @GetMapping("{userID}/form")
+    public String updateForm(@PathVariable("userID") String userID){
+        return "/user/update_form";
+    }
+
+    @PostMapping("{userID}/form")
+    public String updateForm(@PathVariable("userID") String userID, UserAccountDTO userAccountDTO){
+        AccountTable.saveUserInto(userID, UserAccount.createUserAccount(true, userAccountDTO));
+        return "redirect:/user";
     }
 }

@@ -31,8 +31,8 @@ public class UserAccount {
      * @param userAccountDTO    UserAccountDTO 객체
      * @return                  UserAccount 객체
      */
-    public static UserAccount createUserAccount(UserAccountDTO userAccountDTO){
-        if(!AccountTable.isExistUserAccount(userAccountDTO.getUserID()))
+    public static UserAccount createUserAccount(boolean isUpdateProcess, UserAccountDTO userAccountDTO){
+        if(isUpdateProcess || !AccountTable.isExistUserAccount(userAccountDTO.getUserID()))
             return new UserAccount(userAccountDTO);
 
         return null;
