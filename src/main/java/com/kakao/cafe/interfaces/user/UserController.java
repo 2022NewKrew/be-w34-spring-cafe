@@ -4,12 +4,13 @@ import com.kakao.cafe.application.UserService;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.interfaces.user.dto.UserMapper;
 import com.kakao.cafe.interfaces.user.dto.request.UserDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("user")
@@ -22,8 +23,10 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public String getAllUser() {
-        userService.getAllUserList();
+    public String getAllUser(Model model) {
+        List<User> userList = userService.findAllUser();
+        List<UserDto> userDtoList = UserMapper.convertUserEntityListToDtoList(userList);
+        model.addAttribute("users", userDtoList);
         return "member/list";
     }
 
