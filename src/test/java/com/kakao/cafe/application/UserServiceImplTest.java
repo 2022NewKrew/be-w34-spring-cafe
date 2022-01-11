@@ -2,7 +2,6 @@ package com.kakao.cafe.application;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
-import com.kakao.cafe.interfaces.user.dto.request.UserDto;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -32,12 +32,11 @@ class UserServiceImplTest {
     void checkUserJoin() {
         // given
         User user = new User("2wls", "0224", "윤이진", "483759@naver.com");
-        UserDto userDto = new UserDto("2wls", "0224", "윤이진", "483759@naver.com");
         given(userRepository.findByUserId("2wls"))
                 .willReturn(Optional.empty());
 
         // when
-        userService.join(userDto);
+        userService.join(user);
 
         //then
         verify(userRepository).save(any(User.class));
@@ -48,12 +47,11 @@ class UserServiceImplTest {
     void checkDuplicatedUserJoinException() {
         // given
         User user = new User("2wls", "0224", "윤이진", "483759@naver.com");
-        UserDto userDto = new UserDto("2wls", "0224", "윤이진", "483759@naver.com");
         given(userRepository.findByUserId("2wls"))
                 .willReturn(Optional.of(user));
 
         // when
-        ThrowableAssert.ThrowingCallable runnable = () -> userService.join(userDto);
+        ThrowableAssert.ThrowingCallable runnable = () -> userService.join(user);
 
         //then
         assertThatThrownBy(runnable).isInstanceOf(IllegalArgumentException.class);

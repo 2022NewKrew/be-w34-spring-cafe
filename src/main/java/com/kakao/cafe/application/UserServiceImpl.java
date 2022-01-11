@@ -2,10 +2,9 @@ package com.kakao.cafe.application;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
-import com.kakao.cafe.interfaces.user.dto.UserMapper;
-import com.kakao.cafe.interfaces.user.dto.request.UserDto;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,13 +17,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void join(UserDto userDto) throws IllegalArgumentException {
-        Optional<User> optionalUser = userRepository.findByUserId(userDto.getUserId());
+    public List<User> getAllUserList() {
+        return null;
+    }
+
+    @Override
+    public void join(User user) throws IllegalArgumentException {
+        Optional<User> optionalUser = userRepository.findByUserId(user.getUserId());
         if (optionalUser.isPresent()) {
             throw new IllegalArgumentException();
         }
 
-        User user = UserMapper.convertUserDtoToEntity(userDto);
         userRepository.save(user);
     }
 

@@ -6,7 +6,7 @@ import com.kakao.cafe.interfaces.user.dto.request.UserDto;
 public class UserMapper {
     private UserMapper() {}
 
-    public static User convertUserDtoToEntity(UserDto userDto) {
+    public static com.kakao.cafe.domain.user.User convertUserDtoToEntity(UserDto userDto) {
         return new User(userDto.getUserId(),
                 userDto.getPassword(),
                 userDto.getName(),

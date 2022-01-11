@@ -1,7 +1,11 @@
 package com.kakao.cafe.application;
 
-import com.kakao.cafe.interfaces.user.dto.request.UserDto;
+
+import com.kakao.cafe.domain.user.User;
+
+import java.util.List;
 
 public interface UserService {
-    void join(UserDto userDto);
+    void join(User user);
+    List<User> getAllUserList();
 }
