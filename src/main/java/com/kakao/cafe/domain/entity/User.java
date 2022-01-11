@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class User {
 
-    private long id;
+    private final long id;
     private final String userId;
     private final String name;
     private final String password;
