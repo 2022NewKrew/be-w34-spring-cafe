@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public class QuestionController {
     private final ModelMapper modelMapper;
 
     @PostMapping("/create")
-    public String insertQuestion(@ModelAttribute("question") QuestionCreateDto questionCreateDto) {
+    public String insertQuestion(@ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto) {
 
         Question question = modelMapper.map(questionCreateDto, Question.class);
         Long id = questionService.save(question);
