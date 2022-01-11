@@ -8,16 +8,17 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     String insert = "INSERT INTO user(userId, userName, userPw, userEmail) values(#{user.userId}, #{user.userName}, #{user.userPw}, #{user.userEmail})";
-    String select = "SELECT * FROM user";
+    String selectAll = "SELECT * FROM user";
     String selectByKey = "SELECT * FROM user where key = #{key}";
 
     @Insert(insert)
     @Options(useGeneratedKeys = true, keyProperty = "key")
-    int insert(@Param("user") User user);
+    long insert(@Param("user") User user);
 
-    @Select(select)
-    List<User> findAll();
+
+    @Select(selectAll)
+    List<User> selectAll();
 
     @Select(selectByKey)
-    User findByKey(Long key);
+    User selectByKey(Long key);
 }
