@@ -1,12 +1,11 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.entiry.Article;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 //@Repository
-public class MemotyArticleRepository implements ArticleRepository{
+public class MemoryArticleRepository implements ArticleRepository{
 
     private static Map<Long, Article> store = new HashMap<>();
     private static Long sequence = 0L;
