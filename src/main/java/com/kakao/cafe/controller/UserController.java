@@ -13,7 +13,6 @@ import java.util.*;
 public class UserController {
 
     private final UserService userService;
-    private final List<User> users = new ArrayList<>();
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -21,13 +20,14 @@ public class UserController {
 
     @GetMapping()
     public String userListView(Model model) {
+        List<User> users = userService.getUserList();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String profileView(@PathVariable String userId, Model model) {
-        User user = userService.filterUserById(users, userId);
+        User user = userService.filterUserById(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
@@ -38,8 +38,8 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String createUser(User user) {
-        users.add(user);
+    public String signup(User user) {
+        userService.signupUser(user);
         return "redirect:";
     }
 }
