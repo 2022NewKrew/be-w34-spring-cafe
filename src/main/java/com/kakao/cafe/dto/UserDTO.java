@@ -20,7 +20,7 @@ public interface UserDTO {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     class Result {
 
-        Integer id;
+        Long id;
         String userId;
         String name;
         String email;

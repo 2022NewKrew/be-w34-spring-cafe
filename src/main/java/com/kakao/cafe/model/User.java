@@ -1,12 +1,14 @@
 package com.kakao.cafe.model;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import lombok.ToString;
 
+@ToString(exclude = "password")
 public class User {
 
-    private static final AtomicInteger idGenerator;
+    private static final AtomicLong idGenerator;
 
-    private final int id;
+    private final Long id;
 
     private final String userId;
     private final String password;
@@ -14,7 +16,7 @@ public class User {
     private final String email;
 
     static {
-        idGenerator = new AtomicInteger(1);
+        idGenerator = new AtomicLong(1L);
     }
 
     public static User of(String userId, String password, String name, String email) {
@@ -29,18 +31,7 @@ public class User {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-            "id=" + id +
-            ", userId='" + userId + '\'' +
-            ", password='" + password + '\'' +
-            ", name='" + name + '\'' +
-            ", email='" + email + '\'' +
-            '}';
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
