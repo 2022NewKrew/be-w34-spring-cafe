@@ -1,11 +1,13 @@
 package com.kakao.cafe.model.user;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Setter
 @ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
