@@ -8,6 +8,12 @@ public class User extends NamedEntity {
     private String email;
     private String profileImage;
 
+    public User(String userId, String password, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.email = email;
+    }
+
     public String getUserId() {
         return userId;
     }
