@@ -19,11 +19,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/form")
-    public String userForm() {
-        return "user/form";
-    }
-
     @GetMapping
     public String userList(Model model) {
         List<UserShowDto> userShowDtoList = userService.findAllUser();
