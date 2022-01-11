@@ -41,7 +41,7 @@ public class UserAccountController {
         return "users";
     }
 
-    @GetMapping("/detail/{id}")
+    @GetMapping("/{id}/detail")
     public String userInfo(@PathVariable(name = "id") Long id, Model model) {
         UserAccount userInfo = userAccountService.getUserInfo(id);
         model.addAttribute("userInfo", userInfo);
