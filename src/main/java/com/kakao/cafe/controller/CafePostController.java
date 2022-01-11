@@ -3,8 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.model.Post;
 import com.kakao.cafe.service.CafePostService;
 import com.kakao.cafe.service.CafePostServiceImpl;
-import com.kakao.cafe.url.PostViewURL;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kakao.cafe.url.PostRedirect;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/posts")
+@RequestMapping(PostRedirect.POST_BASE_URL)
 public class CafePostController {
 
     CafePostService cafePostService = new CafePostServiceImpl();

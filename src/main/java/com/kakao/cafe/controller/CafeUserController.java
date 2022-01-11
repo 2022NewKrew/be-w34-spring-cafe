@@ -5,7 +5,7 @@ import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.CafeUserService;
 import com.kakao.cafe.service.CafeUserServiceImpl;
-import com.kakao.cafe.url.UserViewURL;
+import com.kakao.cafe.url.UserRedirect;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping(UserRedirect.USER_BASE_URL)
 public class CafeUserController {
 
     CafeUserService cafeUserService = new CafeUserServiceImpl();
