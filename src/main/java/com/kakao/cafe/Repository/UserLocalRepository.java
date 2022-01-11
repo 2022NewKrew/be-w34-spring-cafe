@@ -14,6 +14,8 @@ public class UserLocalRepository implements UserRepository {
 
     @Override
     public void save(User user) {
+        int curSize = userList.size() + 1;
+        user.setId((long)curSize);
         userList.add(user);
     }
 
