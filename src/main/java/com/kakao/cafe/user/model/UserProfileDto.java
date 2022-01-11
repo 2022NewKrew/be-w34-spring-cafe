@@ -5,9 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
 public class UserProfileDto {
     private final String name;
     private final String email;
+
+    public static UserProfileDto of(User user){
+        return UserProfileDto.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .build();
+    }
 }
