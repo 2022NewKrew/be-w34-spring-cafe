@@ -7,10 +7,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.entity.User;
 
 @Repository
-public class LocalUserRepositoryImpl implements UserRepository {
+public class UserLocalRepositoryImpl implements UserRepository {
 	private static Map<Integer, User> userMap = new HashMap<>();
 	private static int sequence = 0;
 

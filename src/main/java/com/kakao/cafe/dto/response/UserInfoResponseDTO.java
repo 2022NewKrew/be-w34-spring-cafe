@@ -1,15 +1,13 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @AllArgsConstructor
 @Builder
 @Getter
-@Setter
-public class User {
+public class UserInfoResponseDTO {
 	private int id;
 	private String userId;
 	private String password;
