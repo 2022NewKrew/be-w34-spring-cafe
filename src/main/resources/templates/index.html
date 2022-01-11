@@ -10,12 +10,12 @@
           <div class="wrap">
             <div class="main">
               <strong class="subject">
-                <a href="/post/{{id}}">{{title}}</a>
+                <a href="/posts/{{id}}">{{title}}</a>
               </strong>
               <div class="auth-info">
                 <i class="icon-add-comment"></i>
                 <span class="time">{{createdAt}}</span>
-                <a href="/user/{{writer.userId}}" class="writer">{{writer.name}}</a>
+                <a href="/users/{{writer.userId}}" class="writer">{{writer.name}}</a>
               </div>
               <div class="reply" title="댓글">
                 <i class="icon-reply"></i>
@@ -40,7 +40,7 @@
           </ul>
         </div>
         <div class="col-md-3 qna-write">
-          <a href="/post/form" class="btn btn-primary pull-right" role="button">작성하기</a>
+          <a href="/posts/form" class="btn btn-primary pull-right" role="button">작성하기</a>
         </div>
       </div>
     </div>

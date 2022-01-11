@@ -22,13 +22,13 @@
 
 ### 📌 URL Convention
 
-| url                 | 기능                  |
-|---------------------|---------------------|
-| `GET` /user         | List all users      |
-| `POST` /user        | Create a new user   |
-| `GET` /user/form    | Get a register form |
-| `GET` /user/:userId | Get a user profile  |
-| `GET` /             | List all posts      |
-| `POST` /post        | Create a new post   |
-| `GET` /post/form    | Get a post form     |
-| `GET` /post/:postId | Get a post detail   |
+| url                  | 기능                  |
+|----------------------|---------------------|
+| `GET` /users         | List all users      |
+| `POST` /users        | Create a new user   |
+| `GET` /users/form    | Get a register form |
+| `GET` /users/:userId | Get a user profile  |
+| `GET` /              | List all posts      |
+| `POST` /posts        | Create a new post   |
+| `GET` /posts/form    | Get a post form     |
+| `GET` /posts/:postId | Get a post detail   |

@@ -23,17 +23,17 @@ public class PostController {
         return "index";
     }
 
-    @PostMapping("/post")
+    @PostMapping("/posts")
     public String write(PostDto postDto) {
         postService.write(postDto);
         return "redirect:/";
     }
 
-    @GetMapping("/post/{postId}")
+    @GetMapping("/posts/{postId}")
     public String getPostById(@PathVariable("postId") Long id, Model model) {
         model.addAttribute("post",
                 postService.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다.")));
-        return "post/show";
+        return "posts/show";
     }
 }

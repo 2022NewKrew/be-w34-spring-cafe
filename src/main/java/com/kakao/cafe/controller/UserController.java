@@ -15,23 +15,23 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     public String getUserList(Model model) {
         model.addAttribute("userList", userService.getUserList());
-        return "user/list";
+        return "users/list";
     }
 
-    @PostMapping("/user")
+    @PostMapping("/users")
     public String register(UserDto requestDto) {
         userService.register(requestDto);
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public String getUserByUserId(@PathVariable("userId") String userId, Model model) {
         model.addAttribute("user",
                 userService.findByUserId(userId)
                         .orElseThrow(() -> new IllegalArgumentException("해당 아이디의 유저가 존재하지 않습니다.")));
-        return "user/profile";
+        return "users/profile";
     }
 }
