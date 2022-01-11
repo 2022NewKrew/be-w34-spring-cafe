@@ -33,7 +33,8 @@ public class ArticleController {
             ArticleDto article = articleService.findById(index);
             model.addAttribute("article", article);
         } catch (IllegalArgumentException e) {
-            model.addAttribute("article", null);
+            model.addAttribute("errorMessage", "존재하지 않는 게시글입니다.");
+            return "error";
         }
 
         return "article/show";
