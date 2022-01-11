@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
@@ -28,7 +29,7 @@ public class UserController {
 
     @GetMapping(path = "/list")
     public String userList(Model model) {
-        List<User> users = userService.getAllUsers();
+        List<UserDto> users = userService.getAllUsers().stream().map(UserDto::new).collect(Collectors.toList());
         model.addAttribute("users", users);
         return "user/list";
     }
@@ -53,7 +54,7 @@ public class UserController {
     @GetMapping(path = "/profile/{userId}")
     public String userProfile(@PathVariable String userId, Model model) {
         User user = userService.getUserById(userId);
-        model.addAttribute("user", user);
+        model.addAttribute("user", new UserDto(user));
         return "user/profile";
     }
 

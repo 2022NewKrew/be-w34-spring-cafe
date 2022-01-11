@@ -14,7 +14,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    @Autowired(required = false)
+    @Autowired
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }

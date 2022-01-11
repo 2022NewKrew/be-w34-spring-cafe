@@ -27,7 +27,7 @@ public class ArticleController {
     @GetMapping(path = "/show/{title}")
     public String showArticle(@PathVariable String title, Model model) {
         Article article = articleService.findByTitle(title);
-        model.addAttribute("article", article);
+        model.addAttribute("article", new ArticleDto(article));
         return "qna/show";
     }
 
