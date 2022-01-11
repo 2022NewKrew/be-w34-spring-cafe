@@ -1,17 +1,11 @@
 package com.kakao.cafe.user;
 
-import com.github.jknack.handlebars.Handlebars;
-import com.github.jknack.handlebars.springmvc.HandlebarsView;
-import com.github.jknack.handlebars.springmvc.HandlebarsViewResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.allegro.tech.boot.autoconfigure.handlebars.HandlebarsHelper;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by melodist
@@ -37,12 +31,11 @@ public class UserController {
     }
 
     @PostMapping("")
-    public String addUser(UserForm userForm) {
-        System.out.println("userForm = " + userForm);
-        User newUser = new User(userForm.getName(),
-                userForm.getPassword(),
-                userForm.getName(),
-                userForm.getEmail());
+    public String addUser(UserDto userDto) {
+        User newUser = new User(userDto.getName(),
+                userDto.getPassword(),
+                userDto.getName(),
+                userDto.getEmail());
         userService.addUser(newUser);
 
         return "redirect:/user";
@@ -51,7 +44,7 @@ public class UserController {
     @GetMapping("/{userId}")
     public String userProfile(Model model, @PathVariable("userId") String userId) {
         User user = userService.findUserByUserId(userId);
-        model.addAttribute("user", user);
+        model.addAttribute("user", new UserDto(user));
         return "user/profile";
     }
 }

@@ -11,7 +11,14 @@ import lombok.Data;
  */
 
 @Data
-public class UserForm {
+public class UserDto {
+
+    public UserDto(User user) {
+        this.userId = user.getUserId();
+        this.password = user.getPassword();
+        this.name = user.getName();
+        this.email = user.getEmail();
+    }
 
     private String userId; // 사용자 아이디
     private String password; // 비밀번호
