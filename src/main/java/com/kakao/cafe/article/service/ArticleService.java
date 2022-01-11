@@ -1,14 +1,16 @@
 package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.model.Article;
+import com.kakao.cafe.article.model.ArticlePreviewDto;
 import com.kakao.cafe.article.model.ArticleRequest;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -24,12 +26,14 @@ public class ArticleService {
                 .author(articleRequest.getAuthor())
                 .title(articleRequest.getTitle())
                 .contents(articleRequest.getContents())
-                .uploadTime(date.format(new Timestamp(System.currentTimeMillis())))
+                .uploadTime(date.format(new Date()))
                 .build());
     }
 
-    public List<Article> getAllArticles(){
-        return articleRepository.findAll();
+    public List<ArticlePreviewDto> getAllArticlePreview(){
+        return articleRepository.findAll()
+                .stream().map(ArticlePreviewDto::of)
+                .collect(Collectors.toList());
     }
 
     public Article getArticleById(Long id){

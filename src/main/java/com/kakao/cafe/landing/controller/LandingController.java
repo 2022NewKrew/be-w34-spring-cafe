@@ -1,6 +1,6 @@
 package com.kakao.cafe.landing.controller;
 
-import com.kakao.cafe.article.model.Article;
+import com.kakao.cafe.article.model.ArticlePreviewDto;
 import com.kakao.cafe.article.service.ArticleService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ public class LandingController {
 
     @GetMapping
     public String getLandingPage(Model model){
-        List<Article> articles = articleService.getAllArticles();
+        List<ArticlePreviewDto> articles = articleService.getAllArticlePreview();
         model.addAttribute("articles", articles);
 
         return "/index";
