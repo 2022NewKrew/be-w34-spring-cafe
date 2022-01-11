@@ -36,6 +36,6 @@ public class ArticleController {
             model.addAttribute("article", null);
         }
 
-        return "qna/show";
+        return "article/show";
     }
 }
