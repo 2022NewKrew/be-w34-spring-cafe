@@ -23,7 +23,7 @@ public class UserService {
 
     public void createUser(UserDto.CreateUserProfileRequest createUserProfileRequest) throws AlreadyExistUserException {
         localUserRepository.findByUserId(createUserProfileRequest.getUserId()).ifPresent(m -> {
-            throw new AlreadyExistUserException("Already Exist User");
+            throw new AlreadyExistUserException("Already Exist User (user id: " + createUserProfileRequest.getUserId() +")");
         });
 
         User user = createUserProfileRequest.toUserEntity();
@@ -37,7 +37,7 @@ public class UserService {
     }
 
     public UserDto.UserProfileResponse readUser(String userId) throws UserNotFoundException {
-        User user = localUserRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException("Not Found User"));
+        User user = localUserRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException("Not Found User (user id: " + userId + ")"));
         return UserDto.UserProfileResponse.of(user);
     }
 
