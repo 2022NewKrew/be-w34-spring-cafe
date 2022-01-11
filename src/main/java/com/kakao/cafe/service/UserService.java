@@ -1,10 +1,14 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.dto.PageRequestDto;
+import com.kakao.cafe.dto.PageResultDto;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.entity.User;
 
 public interface UserService {
     String register(UserDto dto);
+
+    PageResultDto<UserDto, User> getList(PageRequestDto requestDto);
 
     default User dtoToEntity(UserDto dto) {
         return User.builder()

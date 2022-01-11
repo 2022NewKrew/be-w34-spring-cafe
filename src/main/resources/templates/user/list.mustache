@@ -7,7 +7,7 @@
     </section>
     <section class="p-2 m-4">
         <div class="text-secondary mb-1">
-            전체 멤버 10명
+            전체 멤버 {{users.totalCount}}명
         </div>
 
         <table class="table table-hover align-middle">
@@ -19,52 +19,48 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td class="p-3 col-md-3">키나님</td>
-                <td class="p-3 col-md-1 text-center">kina.lee@kakaocorp.com</td>
-                <td class="p-3 col-md-1 text-center">2022-01-10</td>
-            </tr>
-            <tr>
-                <td class="p-3 col-md-3">키나님</td>
-                <td class="p-3 col-md-1 text-center">kina.lee@kakaocorp.com</td>
-                <td class="p-3 col-md-1 text-center">2022-01-10</td>
-            </tr>
-            <tr>
-                <td class="p-3 col-md-3">키나님</td>
-                <td class="p-3 col-md-1 text-center">kina.lee@kakaocorp.com</td>
-                <td class="p-3 col-md-1 text-center">2022-01-10</td>
-            </tr>
-            <tr>
-                <td class="p-3 col-md-3">키나님</td>
-                <td class="p-3 col-md-1 text-center">kina.lee@kakaocorp.com</td>
-                <td class="p-3 col-md-1 text-center">2022-01-10</td>
-            </tr>
-            <tr>
-                <td class="p-3 col-md-3">키나님</td>
-                <td class="p-3 col-md-1 text-center">kina.lee@kakaocorp.com</td>
-                <td class="p-3 col-md-1 text-center">2022-01-10</td>
-            </tr>
-            <tr>
-                <td class="p-3 col-md-3">키나님</td>
-                <td class="p-3 col-md-1 text-center">kina.lee@kakaocorp.com</td>
-                <td class="p-3 col-md-1 text-center">2022-01-10</td>
-            </tr>
+            {{#users.dtoList}}
+                <tr>
+                    <td class="p-3 col-md-3">{{username}}</td>
+                    <td class="p-3 col-md-1 text-center">{{email}}</td>
+                    <td class="p-3 col-md-1 text-center">{{regDate}}</td>
+                </tr>
+            {{/users.dtoList}}
             </tbody>
         </table>
         <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link border-0 text-dark" href="#" aria-label="Previous">
+            {{#users.hasPrev}}
+                <li class="page-item">
+                    <a class="page-link border-0 text-dark" href="list?page={{users.prev}}" aria-label="Previous">
                     <span aria-hidden="true">&lt;</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link border-0 text-dark" href="#">1</a></li>
-            <li class="page-item"><a class="page-link border-0 text-dark" href="#">2</a></li>
-            <li class="page-item"><a class="page-link border-0 text-dark" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link border-0 text-dark" href="#" aria-label="Next">
+                    </a>
+                </li>
+            {{/users.hasPrev}}
+            {{^users.hasPrev}}
+                <li class="page-item disabled">
+                    <a class="page-link border-0 text-black-50" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&lt;</span>
+                    </a>
+                </li>
+            {{/users.hasPrev}}
+            {{#users.pageList}}
+                <li class="page-item"><a class="page-link border-0 text-dark" href="list?page={{this}}">{{this}}</a>
+                </li>
+            {{/users.pageList}}
+            {{#users.hasNext}}
+                <li class="page-item">
+                    <a class="page-link border-0 text-dark" href="list?page={{users.next}}" aria-label="Next">
                     <span aria-hidden="true">&gt;</span>
-                </a>
-            </li>
+                    </a>
+                </li>
+            {{/users.hasNext}}
+            {{^users.hasNext}}
+                <li class="page-item disabled">
+                    <a class="page-link border-0 text-black-50" href="#" aria-label="Next">
+                        <span aria-hidden="true">&gt;</span>
+                    </a>
+                </li>
+            {{/users.hasNext}}
         </ul>
     </section>
 </main>
