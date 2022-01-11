@@ -2,7 +2,6 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.ArticleDTO.Create;
 import com.kakao.cafe.dto.ArticleDTO.Result;
-import com.kakao.cafe.model.Article;
 import com.kakao.cafe.service.ArticleService;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
