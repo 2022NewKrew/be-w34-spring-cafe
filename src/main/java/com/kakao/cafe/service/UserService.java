@@ -44,7 +44,7 @@ public class UserService {
 
     @Nullable
     public UserDto get(String id) {
-        User found = userRepository.get(id);
+        User found = userRepository.getByUserId(id);
         if (found == null) {
             return null;
         }

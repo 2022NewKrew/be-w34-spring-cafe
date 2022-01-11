@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Repository
 public class UserRepository {
@@ -17,7 +18,7 @@ public class UserRepository {
     @Nullable
     public User create(User user) {
         // NOTE 중복 확인을 Repository에서 해야 할 지, Service에서 해야 할지?
-        User existing = find(user.getUserId()).orElse(null);
+        User existing = find(User::getUserId, user.getUserId()).orElse(null);
         if (existing != null) {
             // NOTE Exception을 던지는 것이 더 나을 것 같다. 옳은 접근인가?
             return null;
@@ -32,13 +33,18 @@ public class UserRepository {
     }
 
     @Nullable
-    public User get(String id) {
-        return find(id).orElse(null);
+    public User getById(String id) {
+        return find(User::getId, id).orElse(null);
     }
 
     @Nullable
-    public User login(String id, String password) {
-        Optional<User> found = find(id);
+    public User getByUserId(String userId) {
+        return find(User::getUserId, userId).orElse(null);
+    }
+
+    @Nullable
+    public User login(String userId, String password) {
+        Optional<User> found = find(User::getUserId, userId);
         if (found.isEmpty()) {
             return null;
         }
@@ -50,9 +56,9 @@ public class UserRepository {
         return user;
     }
 
-    private Optional<User> find(String id) {
+    private <T> Optional<User> find(Function<User, T> getter, T value) {
         return data.stream()
-                .filter(user -> user.getUserId().equals(id))
+                .filter(user -> getter.apply(user).equals(value))
                 .findFirst();
     }
 }
