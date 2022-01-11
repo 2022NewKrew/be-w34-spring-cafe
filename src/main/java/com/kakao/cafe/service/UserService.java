@@ -21,7 +21,7 @@ public class UserService {
 
     public User findById(String userId) {
         for(User user : userList) {
-            if (user.getUserId().equals(userId)) return user;
+            if (user.getUserId() == Integer.parseInt(userId)) return user;
         }
         return null;
     }

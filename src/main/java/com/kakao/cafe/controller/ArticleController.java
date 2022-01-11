@@ -25,7 +25,6 @@ public class ArticleController {
 
     @GetMapping("/")
     public String getArticleList(Model model) {
-        logger.info("get article list");
         List<Article> articleList = articleService.getArticleList();
         model.addAttribute("articleList", articleList);
         return "index";
@@ -33,7 +32,6 @@ public class ArticleController {
 
     @PostMapping("/qna/create")
     public String createQuestion(ArticleRequest articleRequest) {
-        logger.info("create article");
         articleService.createQuestion(articleRequest);
         return "redirect:/";
     }

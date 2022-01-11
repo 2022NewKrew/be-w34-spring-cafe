@@ -1,25 +1,19 @@
 package com.kakao.cafe.model;
 
 public class ArticleRequest {
-    private String writer;
-    private String title;
-    private String contents;
+    private final String title;
+    private final String content;
 
-    public ArticleRequest(String writer, String title, String contents) {
-        this.writer = writer;
+    public ArticleRequest(String title, String content) {
         this.title = title;
-        this.contents = contents;
-    }
-
-    public String getWriter() {
-        return this.writer;
+        this.content = content;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getContents() {
-        return contents;
+    public String getContent() {
+        return content;
     }
 }
