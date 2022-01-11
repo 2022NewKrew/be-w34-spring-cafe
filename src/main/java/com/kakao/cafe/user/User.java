@@ -1,50 +1,33 @@
 package com.kakao.cafe.user;
 
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * 회원정보의 엔티티입니다.
+ *
+ * @author jm.hong
+ */
+@Getter @Setter
 public class User {
+    /**
+     * 고유 ID 값입니다 [PK]
+     */
     private Long id;
+    /**
+     * 회원 아이디입니다.
+     */
     private String userId;
+    /**
+     * 회원의 비밀번호 입니다.
+     */
     private String password;
+    /**
+     * 회원의 이름입니다.
+     */
     private String name;
+    /**
+     * 회원의 이메일 주소입니다.
+     */
     private String email;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
 }

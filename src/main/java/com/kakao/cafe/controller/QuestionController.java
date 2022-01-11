@@ -2,29 +2,30 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.question.Question;
 import com.kakao.cafe.question.QuestionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kakao.cafe.question.dto.QuestionCreateDto;
+import com.kakao.cafe.question.dto.QuestionDto;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("questions")
+@RequestMapping("/questions")
+@RequiredArgsConstructor
 public class QuestionController {
 
-    @Autowired
-    private QuestionService questionService;
-
-    @GetMapping("/create")
-    public String viewQuestionForm() {
-        return "qna/form";
-    }
+    private final QuestionService questionService;
+    private final ModelMapper modelMapper;
 
     @PostMapping("/create")
-    public String insertQuestion(Question question) {
+    public String insertQuestion(@ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto) {
+
+        Question question = modelMapper.map(questionCreateDto, Question.class);
         Long id = questionService.save(question);
 
         return "redirect:/";
@@ -32,10 +33,32 @@ public class QuestionController {
 
     @GetMapping
     public String viewQuestionList(Model model) {
-        List<Question> questions = questionService.findAll();
+
+        List<QuestionDto> questions = questionService.findAll()
+                .stream()
+                .map(q -> modelMapper.map(q, QuestionDto.class))
+                .collect(Collectors.toList());
+
         model.addAttribute("questions", questions);
         model.addAttribute("size", questions.size());
-        return "qna/show";
 
+        return "qna/list";
+
+    }
+
+    @GetMapping("/{id}")
+    public String viewQuestionDetail(@PathVariable("id") Long id, Model model) {
+
+        QuestionDto question = modelMapper.map(questionService.findOne(id), QuestionDto.class);
+
+        model.addAttribute("question", question);
+
+        return "qna/detail";
+
+    }
+
+    @GetMapping("/create")
+    public String viewQuestionForm() {
+        return "qna/form";
     }
 }

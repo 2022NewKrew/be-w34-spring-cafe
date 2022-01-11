@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.kakao.cafe"},{"l":"com.kakao.cafe.config"},{"l":"com.kakao.cafe.controller"},{"l":"com.kakao.cafe.question"},{"l":"com.kakao.cafe.question.dto"},{"l":"com.kakao.cafe.user"},{"l":"com.kakao.cafe.user.dto"}]
