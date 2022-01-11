@@ -15,6 +15,6 @@ public class PostTest {
                 .email("writer@kakao.com")
                 .build());
         PostModel postModel = new PostModel("writer1", "hello", "world");
-        new Post(postModel, users);
+        new Post(postModel);
     }
 }

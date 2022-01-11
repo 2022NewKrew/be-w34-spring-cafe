@@ -16,4 +16,11 @@ public class ID {
     public String getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "ID{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }

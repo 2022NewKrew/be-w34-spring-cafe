@@ -4,23 +4,26 @@ import com.kakao.cafe.domain.post.Post;
 
 public class PostModel {
 
-    private static int idxCursor = 1;
-
-    private int idx;
+    private long id = -1;
     private String writer;
     private String title;
     private String contents;
 
-    public PostModel(){
+    public PostModel() {
 
     }
 
-    public PostModel(String writer, String title, String contents){
+    public PostModel(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+    }
 
-        this.idx = idxCursor++;
+    public PostModel(String writer, String title, String contents, long id) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.id = id;
     }
 
     public String getWriter() {
@@ -35,8 +38,11 @@ public class PostModel {
         return contents;
     }
 
-    public int getIdx() {
-        return idx;
+    public static PostModel fromPost(Post post) {
+        return new PostModel(post.getWriter(),
+                post.getTitle(),
+                post.getContents(),
+                post.getId());
     }
 
     public void setWriter(String writer) {
@@ -51,17 +57,15 @@ public class PostModel {
         this.contents = contents;
     }
 
-    public static PostModel fromPost(Post post){
-        return new PostModel(post.getWriter().getId(),
-                post.getTitle(),
-                post.getContents());
+    public long getId() {
+        return id;
     }
-
 
     @Override
     public String toString() {
         return "PostModel{" +
-                "writer='" + writer + '\'' +
+                "id=" + id +
+                ", writer='" + writer + '\'' +
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
                 '}';

@@ -7,19 +7,16 @@ public class Posts {
 
     private final List<Post> posts;
 
-    public Posts(){
+    public Posts() {
         posts = new ArrayList<>();
     }
 
-    public void add(Post post){
-        posts.add(post);
+    public Posts(List<Post> posts) {
+        this.posts = posts;
     }
 
-    public Post get(int idx){
-        idx-=1;
-        if(posts.size() <= idx || idx < 0)
-            throw new IllegalArgumentException("존재하지 않는 번호입니다!");
-        return posts.get(idx);
+    public int size() {
+        return posts.size();
     }
 
     public List<Post> getPosts() {
