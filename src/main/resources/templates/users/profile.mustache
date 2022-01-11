@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    {{> partials/head}}
+    <title>사용자 정보</title>
+</head>
+<body>
+{{> partials/header}}
+<div class="container" id="main">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4>Profiles</h4></div>
+            <div class="panel-body">
+                <div class="well well-sm">
+                    <div class="media">
+                        {{#user}}
+                        <a class="thumbnail pull-left" href="#">
+                            <img class="media-object" src="/images/80-text.png">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{name}}</h4>
+                            <p>
+                                <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-envelope"></span>&nbsp;{{email}}</a>
+                            </p>
+                        </div>
+                        {{/user}}
+                        {{^user}}
+                        <a class="thumbnail pull-left">
+                            <img class="media-object" src="/images/80-text.png">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading">존재하지 않는 유저</h4>
+                            <p>
+                                존재하지 않는 유저입니다.
+                            </p>
+                        </div>
+                        {{/user}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> partials/footer}}
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    {{> partials/head}}
+    <title>회원가입</title>
+</head>
+<body>
+{{> partials/header}}
+<div class="container" id="main">
+   <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default content-main">
+          <form name="signup" method="post" action="/users">
+              <div class="form-group">
+                  <label for="id">사용자 아이디 (영어 소문자 및 숫자 6 ~ 12자리)</label>
+                  <input class="form-control" id="id" name="id" placeholder="User ID">
+              </div>
+              <div class="form-group">
+                  <label for="password">비밀번호 (영어 대소문자 및 숫자 8 ~ 18자리)</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+              </div>
+              <div class="form-group">
+                  <label for="name">이름</label>
+                  <input class="form-control" id="name" name="name" placeholder="Name">
+              </div>
+              <div class="form-group">
+                  <label for="email">이메일</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+              </div>
+              <button type="submit" class="btn btn-success clearfix pull-right">회원가입</button>
+              <div class="clearfix"></div>
+          </form>
+        </div>
+    </div>
+</div>
+
+{{> partials/footer}}
+</body>
+</html>

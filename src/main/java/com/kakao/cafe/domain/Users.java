@@ -12,8 +12,8 @@ public class Users {
         list.add(Objects.requireNonNull(user));
     }
 
-    public boolean checkIdExist(final User user) {
-        final String id = user.getId();
+    public boolean checkIdExist(final String id) {
+        Objects.requireNonNull(id);
 
         for (User u : list) {
             if (id.equals(u.getId())) {
@@ -21,6 +21,16 @@ public class Users {
             }
         }
         return false;
+    }
+
+    public User find(final String id) {
+        Objects.requireNonNull(id);
+        for (User u : list) {
+            if (id.equals(u.getId())) {
+                return u;
+            }
+        }
+        return User.NONE;
     }
 
     public List<User> getList() {
