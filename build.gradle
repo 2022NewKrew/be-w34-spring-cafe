@@ -4,7 +4,7 @@ plugins {
 	id 'java'
 }
 
-group = 'com.kakao'
+group = 'com.kakao.cafe'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -14,8 +14,10 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 }
 
 test {
