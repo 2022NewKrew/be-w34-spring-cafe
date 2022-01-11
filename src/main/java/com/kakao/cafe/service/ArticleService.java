@@ -19,7 +19,13 @@ public class ArticleService {
         return articleDAO.findAllArticle();
     }
 
+    public Article filterArticleByIndex(int index) {
+        return articleDAO.filterArticleByIndex(index - 1);
+    }
+
     public void writeArticle(Article article) {
+        int id = articleDAO.getArticleListSize() + 1;
+        article.setId(id);
         articleDAO.writeArticle(article);
     }
 }

@@ -10,7 +10,7 @@ import java.util.*;
 @Repository
 public class UserDAO {
 
-    private List<User> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
 
     public List<User> findAllUser() {
         return users;

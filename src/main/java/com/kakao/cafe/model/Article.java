@@ -2,14 +2,19 @@ package com.kakao.cafe.model;
 
 public class Article {
 
-    private String writer;
-    private String title;
-    private String contents;
+    private int id;
+    private final String writer;
+    private final String title;
+    private final String contents;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getWriter() {
@@ -22,5 +27,9 @@ public class Article {
 
     public String getContents() {
         return contents;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
