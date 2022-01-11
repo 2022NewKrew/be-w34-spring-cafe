@@ -48,10 +48,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String profile(@PathVariable("id") String id, Model model, HttpSession session) {
-        long parsedId = Long.parseLong(id);
-        if (id.equals("me")) {
-            parsedId = (long) session.getAttribute("id");
-        }
+        long parsedId = parseId(session, id);
         UserDto user = userService.get(parsedId);
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
@@ -69,5 +66,20 @@ public class UserController {
         long id = user.getId();
         session.setAttribute("id", id);
         return "redirect:/users/" + id;
+    }
+
+    private long parseId(HttpSession session, String id) {
+        if (id.equals("me")) {
+            return getId(session);
+        }
+        return Long.parseLong(id);
+    }
+
+    private long getId(HttpSession session) {
+        Object attr = session.getAttribute("id");
+        if (attr == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "login required");
+        }
+        return (long) attr;
     }
 }
