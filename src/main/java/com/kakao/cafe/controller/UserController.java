@@ -21,21 +21,21 @@ public class UserController {
     private Logger logger = LoggerFactory.getLogger(UserController.class);
     private List<User> users = new ArrayList<>();
 
-    @GetMapping("")
-    public String users(Model model) {
+    @GetMapping()
+    public String userListView(Model model) {
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
-    public String profile(@PathVariable String userId, Model model) {
+    public String profileView(@PathVariable String userId, Model model) {
         User user = userService.filterUserById(users, userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
 
     @GetMapping("/signup")
-    public String signup() {
+    public String signupView() {
         return "user/form";
     }
 
