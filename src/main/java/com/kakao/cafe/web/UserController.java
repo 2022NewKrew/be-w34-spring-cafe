@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserController {
     @GetMapping("/user/form")
     public String userForm() {
-        return "user/form";
+        return "/user/form";
     }
 
-    @GetMapping("/user/list")
+    @GetMapping("user/list")
     public String userList() {
-        return "user/list";
+        return "/user/list";
     }
 
     @PostMapping("/user/create")
