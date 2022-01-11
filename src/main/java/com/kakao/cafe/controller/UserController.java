@@ -36,8 +36,12 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public String profile(@PathVariable Long userId, Model model) {
-        UserDto user = userService.findById(userId);
-        model.addAttribute("user", user);
+        try {
+            UserDto user = userService.findById(userId);
+            model.addAttribute("user", user);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("user", null);
+        }
 
         return "user/profile";
     }
