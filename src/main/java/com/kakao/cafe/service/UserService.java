@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserResponseDto;
+import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +16,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void create(UserDto userDto) {
-        userRepository.save(userDto);
+    public void create(UserRequestDto userRequestDto) {
+        userRepository.save(userRequestDto);
     }
 
-    public List<UserDto> readAll() {
+    public List<UserResponseDto> readAll() {
         return userRepository.findAll();
     }
 
-    public Optional<UserDto> read(String userId) {
+    public Optional<UserResponseDto> read(String userId) {
         return userRepository.findByUserId(userId);
     }
 }

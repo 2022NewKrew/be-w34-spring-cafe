@@ -1,30 +1,20 @@
 package com.kakao.cafe.dto;
 
-public class UserDto {
-    private Long id;
+public class UserRequestDto {
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    public static UserDto of(Long id, String userId, String password, String name, String email) {
-        return new UserDto(id, userId, password, name, email);
+    public static UserRequestDto of(String userId, String password, String name, String email) {
+        return new UserRequestDto(userId, password, name, email);
     }
 
-    private UserDto(Long id, String userId, String password, String name, String email) {
-        this.id = id;
+    public UserRequestDto(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUserId() {

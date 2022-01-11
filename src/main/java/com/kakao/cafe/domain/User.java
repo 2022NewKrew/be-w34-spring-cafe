@@ -1,7 +1,5 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.dto.UserDto;
-
 import java.util.Objects;
 
 public class User {
@@ -52,10 +50,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public UserDto exportDto() {
-        return UserDto.of(id, userId, password, name, email);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.controller.UserController;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserResponseDto;
+import com.kakao.cafe.dto.UserRequestDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -23,26 +23,26 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public UserDto save(UserDto userDto) {
+    public UserResponseDto save(UserRequestDto userDto) {
         User user = User.of(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
         user.setId(++sequence);
         logger.info("save: {}, {}", user.getId(), user.getUserId());
         users.add(user);
-        return userDto;
+        return UserResponseDto.of(user.getId(), user.getUserId(), user.getName(), user.getEmail());
     }
 
     @Override
-    public Optional<UserDto> findByUserId(String userId) {
+    public Optional<UserResponseDto> findByUserId(String userId) {
         return users.stream()
                 .filter(user -> user.getUserId().equals(userId))
-                .map(user -> user.exportDto())
+                .map(user -> UserResponseDto.of(user.getId(), user.getUserId(), user.getName(), user.getEmail()))
                 .findFirst();
     }
 
     @Override
-    public List<UserDto> findAll() {
+    public List<UserResponseDto> findAll() {
         return users.stream()
-                .map(user -> user.exportDto())
+                .map(user -> UserResponseDto.of(user.getId(), user.getUserId(), user.getName(), user.getEmail()))
                 .collect(Collectors.toUnmodifiableList());
     }
 }
