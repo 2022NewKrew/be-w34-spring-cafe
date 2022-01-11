@@ -21,7 +21,7 @@ public class UserRestController {
 
     private final PasswordEncoder passwordEncoder;
 
-    @PostMapping("/users/form")
+    @PostMapping("/users/join")
     public void join(UserJoinDto userJoinDto, HttpServletResponse response) throws IOException {
         String redirectedURL = RedirectedURL.AFTER_JOIN;
         userJoinDto.setPassword(encodePassword(userJoinDto.getPassword()));
@@ -30,7 +30,7 @@ public class UserRestController {
         response.sendRedirect(redirectedURL);
     }
 
-    @PutMapping("/users/upadate")
+    @PutMapping("/users/update")
     public void updateProfile(ProfileUpdateDto profileUpdateDto, HttpServletResponse response) throws IOException {
         String redirectedURL = RedirectedURL.AFTER_UPDATE_PROFILE;
         profileUpdateDto.setPassword(encodePassword(profileUpdateDto.getPassword()));
