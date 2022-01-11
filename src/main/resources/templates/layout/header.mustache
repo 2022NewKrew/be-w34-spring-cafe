@@ -1,0 +1,39 @@
+<body>
+<header>
+  <div class="container">
+    <img alt="logo" src="/images/KakaoCI.png"/>
+    <div>
+      <span class="header_menu" onclick="location.href='/user/form'">멤버 리스트</span>
+      <span class="header_btn" onclick="location.href='/user/form'">로그인</span>
+      <span class="header_btn" onclick="location.href='/user/form'">회원가입</span>
+    </div>
+  </div>
+</header>
+</body>
+<style>
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 1040px;
+    height: 40px;
+  }
+
+  .header_menu {
+    height: 20px;
+    padding: 8px 16px;
+    color: #666666;
+    cursor: pointer;
+  }
+
+  .header_btn {
+    height: 20px;
+    padding: 8px 16px;
+    text-align: center;
+    color: white;
+    background-color: black;
+    cursor: pointer;
+  }
+</style>
