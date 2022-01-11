@@ -1,15 +1,19 @@
 package com.kakao.cafe.user;
 
 import com.kakao.cafe.user.dto.request.UserRequest;
+import com.kakao.cafe.user.dto.response.UserResponse;
 import com.kakao.cafe.user.dto.response.UsersResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/users")
 public class UsersController {
 
     private final Logger logger = LoggerFactory.getLogger(UsersController.class);
@@ -20,7 +24,7 @@ public class UsersController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping()
     public String viewUsers(Model model) {
         logger.info("유저목록");
         UsersResponse usersResponse = userService.findAll();
@@ -28,9 +32,17 @@ public class UsersController {
         return "user/list";
     }
 
-    @PostMapping(value = "/users")
+    @PostMapping()
     public String createUser(UserRequest userRequest) {
         userService.save(userRequest);
         return "redirect:/users";
     }
+
+    @GetMapping("/{userId}")
+    public String viewUser(@PathVariable String userId, Model model) {
+        UserResponse userResponse = userService.findById(userId);
+        model.addAttribute("user", userResponse);
+        return "user/profile";
+    }
+
 }

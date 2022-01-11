@@ -26,4 +26,15 @@ public class UserRepository {
     public Users findAll() {
         return new Users(new ArrayList<>(users.values()));
     }
+
+    public User findById(String userId) {
+        validateUser(userId);
+        return users.get(userId);
+    }
+
+    private void validateUser(String userId) {
+        if (!users.containsKey(userId)) {
+            throw new IllegalArgumentException("존재하지 않는 아이디입니다.");
+        }
+    }
 }

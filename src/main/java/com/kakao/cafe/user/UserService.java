@@ -1,6 +1,7 @@
 package com.kakao.cafe.user;
 
 import com.kakao.cafe.user.dto.request.UserRequest;
+import com.kakao.cafe.user.dto.response.UserResponse;
 import com.kakao.cafe.user.dto.response.UsersResponse;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +20,9 @@ public class UserService {
 
     public UsersResponse findAll() {
         return UsersResponse.toResponse(userRepository.findAll());
+    }
+
+    public UserResponse findById(String userId) {
+        return UserResponse.toResponse(userRepository.findById(userId));
     }
 }
