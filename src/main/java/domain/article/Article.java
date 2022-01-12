@@ -21,12 +21,4 @@ public class Article {
         this.createDate = LocalDate.now().toString();
         this.views = 0;
     }
-
-    public String getCreateUserId() {
-        return createUserId;
-    }
-    public String getCreateDate() {
-        return createDate;
-    }
-
 }
