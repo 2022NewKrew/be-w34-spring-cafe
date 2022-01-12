@@ -48,6 +48,9 @@ public class UserRepositoryImpl implements UserRepository {
         if (findById(user.getId()).isEmpty()) {
             throw new IllegalArgumentException("등록되지 않은 사용자 입니다.");
         }
+        if (findByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("이미 등록된 이메일입니다.");
+        }
         users.put(user.getId(), user);
     }
 

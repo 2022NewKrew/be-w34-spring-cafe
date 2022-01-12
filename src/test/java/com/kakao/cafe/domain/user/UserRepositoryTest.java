@@ -177,6 +177,33 @@ class UserRepositoryTest {
         });
     }
 
+    @DisplayName("등록된 이메일을 포함한 사용자의 정보를 업데이트 요청하면 에러를 발생시켜야 한다.")
+    @Test
+    public void updateDuplicatedEmail() {
+        String email = createEmailForTest(100);
+        String nickname = "테스터";
+        String password = "1234";
+        User user = User.builder()
+                .email(email)
+                .nickname(nickname)
+                .password(password)
+                .build();
+        userRepository.save(user);
+        String updatedEmail = createEmailForTest(0);
+        String updatedNickname = "TEST";
+        String updatedPassword = "test";
+        User userForUpdate = User.builder()
+                .id(user.getId())
+                .email(updatedEmail)
+                .nickname(updatedNickname)
+                .password(updatedPassword)
+                .build();
+
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            userRepository.update(userForUpdate);
+        });
+    }
+
     @DisplayName("등록된 사용자의 정보를 업데이트 요청하면 요청한 정보와 동일해야 한다.")
     @Test
     void update() {
