@@ -1,7 +1,9 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.Users;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
@@ -9,30 +11,30 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private static final List<User> userList = new ArrayList<>();
+    private final Users users;
+
+    public MemoryUserRepository() {
+        this.users = new Users(Collections.synchronizedList(new ArrayList<>()));
+    }
 
     @Override
     public User save(User user) {
-        userList.add(user);
+        users.add(user);
         return user;
     }
 
     @Override
     public List<User> findAll() {
-        return userList;
+        return users.getUsers();
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return userList.stream()
-                .filter(user -> userId.equals(user.getUserId()))
-                .findFirst();
+        return users.findByUserId(userId);
     }
 
     @Override
     public Optional<User> findByName(String name) {
-        return userList.stream()
-                .filter(user -> name.equals(user.getName()))
-                .findFirst();
+        return users.findByName(name);
     }
 }

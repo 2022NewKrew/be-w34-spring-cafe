@@ -1,7 +1,9 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.model.Post;
+import com.kakao.cafe.model.Posts;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -10,23 +12,26 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MemoryPostRepository implements PostRepository {
 
-    private static final List<Post> postList = new ArrayList<>();
+    private final Posts posts;
+
+    public MemoryPostRepository() {
+        this.posts = new Posts(Collections.synchronizedList(new ArrayList<>()));
+    }
+
 
     @Override
     public Post save(Post post) {
-        postList.add(post);
+        posts.add(post);
         return post;
     }
 
     @Override
     public List<Post> findAll() {
-        return postList;
+        return posts.getPosts();
     }
 
     @Override
     public Optional<Post> findById(UUID id) {
-        return postList.stream()
-                .filter(post -> id.equals(post.getId()))
-                .findFirst();
+        return posts.findById(id);
     }
 }
