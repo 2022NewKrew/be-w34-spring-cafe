@@ -35,9 +35,4 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("/questions/form")
-    public String getQnaForm() {
-        return "/qna/form";
-    }
-
 }
