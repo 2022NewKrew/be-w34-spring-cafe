@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,8 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        jdbcTemplate.update("INSERT INTO users (username, password, name, email) VALUES (?, ?, ?, ?)",
+        jdbcTemplate.update(
+                "INSERT INTO users (username, password, name, email) VALUES (?, ?, ?, ?)",
                 user.getUserName().getValue(),
                 user.getPassword().getValue(),
                 user.getName().getValue(),
@@ -38,13 +40,21 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findUserByName(UserName id) {
-        User user = jdbcTemplate.queryForObject("SELECT * FROM users WHERE username = ?", rowMapper, id.getValue());
-        return Optional.ofNullable(user);
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * "
+                    + "FROM users WHERE username = ?", rowMapper, id.getValue()));
+        } catch (EmptyResultDataAccessException exception) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public Optional<User> findUserById(UUID id) {
-        User user = jdbcTemplate.queryForObject("SELECT * FROM users WHERE users_id = ?", rowMapper, id.toString());
-        return Optional.ofNullable(user);
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * "
+                    + "FROM users WHERE users_id = ?", rowMapper, id.toString()));
+        } catch (EmptyResultDataAccessException exception) {
+            return Optional.empty();
+        }
     }
 }

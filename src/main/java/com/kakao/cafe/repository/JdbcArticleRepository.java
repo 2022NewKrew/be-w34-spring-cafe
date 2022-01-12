@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -37,8 +38,12 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findArticleById(UUID id) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM "
-                + "articles INNER JOIN users USING(users_id) "
-                + "WHERE articles_id = ?", rowMapper, id.toString()));
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM "
+                    + "articles INNER JOIN users USING(users_id) "
+                    + "WHERE articles_id = ?", rowMapper, id.toString()));
+        } catch (EmptyResultDataAccessException exception) {
+            return Optional.empty();
+        }
     }
 }
