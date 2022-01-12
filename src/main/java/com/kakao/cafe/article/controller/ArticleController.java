@@ -27,7 +27,7 @@ public class ArticleController {
         return "/index";
     }
 
-    @PostMapping("/questions")
+    @PostMapping("/articles")
     public String saveArticle(@ModelAttribute ArticleReqDto articleReqDto) {
         articleService.saveArticle(articleReqDto);
         return "redirect:/";
