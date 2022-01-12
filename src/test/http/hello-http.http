@@ -9,3 +9,6 @@ GET {{host}}/fruit?name=banana&sugar=60
 
 ### Post 동작 확인
 POST {{host}}/fruit?name=mango&sugar=90
+
+### MVCConfig으로 폼 동작 확인
+GET {{host}}/form
