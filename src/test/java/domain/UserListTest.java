@@ -1,5 +1,7 @@
 package domain;
 
+import domain.user.User;
+import domain.user.UserList;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

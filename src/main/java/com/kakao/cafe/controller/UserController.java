@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kakao.cafe.service.UserService;
-import domain.User;
+import domain.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/list.html")
-    public String getUserList(Model model) throws JsonProcessingException {
+    public String getUserList(Model model) {
         model.addAttribute("userListSize", userService.getUserRepository().getUserList().size());
         model.addAttribute("userList", userService.getUserRepository().getUserList().getUserList());
         return "user/list";

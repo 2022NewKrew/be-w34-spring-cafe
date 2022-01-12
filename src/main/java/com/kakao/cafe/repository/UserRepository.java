@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import domain.UserList;
+import domain.user.UserList;
 import org.springframework.stereotype.Repository;
 
 @Repository
