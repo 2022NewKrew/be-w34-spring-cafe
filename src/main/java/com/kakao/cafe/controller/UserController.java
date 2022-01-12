@@ -52,11 +52,8 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute User user, HttpSession session) {
-        //유효한 user인지 받고
-        //session에 등록
-        session.setAttribute("curUser", user);
-        System.out.println("세션 출력");
-        System.out.println(session.getAttribute("curUser"));
+        User curUser = userService.isvalidateLogin(user);
+        session.setAttribute("curUser", curUser);
         return "redirect:/";
     }
 
