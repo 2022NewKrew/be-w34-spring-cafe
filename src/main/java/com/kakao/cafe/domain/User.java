@@ -3,11 +3,12 @@ package com.kakao.cafe.domain;
 import java.util.UUID;
 
 public class User {
-    UUID id;
-    String userId;
-    String password;
-    String name;
-    String email;
+
+    private final UUID id;
+    private final String userId;
+    private final String password;
+    private final String name;
+    private final String email;
 
     public User(String userId, String password, String name, String email) {
         this.id = UUID.randomUUID();
