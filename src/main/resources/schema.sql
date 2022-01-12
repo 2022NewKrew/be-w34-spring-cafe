@@ -1,17 +1,21 @@
-create table tb_user
+DROP TABLE IF EXISTS TB_USER;
+
+CREATE TABLE IF NOT EXISTS TB_USER
 (
-    id       BIGINT PRIMARY KEY,
-    userId   VARCHAR(32) UNIQUE,
+    id       BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id   VARCHAR(32) UNIQUE,
     password VARCHAR(32),
     name     VARCHAR(16),
     email    VARCHAR(64)
 );
 
-CREATE TABLE tb_article
+DROP TABLE IF EXISTS TB_ARTICLE;
+
+CREATE TABLE IF NOT EXISTS TB_ARTICLE
 (
-    id        BIGINT PRIMARY KEY,
+    id        BIGINT PRIMARY KEY AUTO_INCREMENT,
     writer    VARCHAR(32),
     title     VARCHAR(128),
     contents  VARCHAR(2048),
-    createdAt TIMESTAMP
+    created_at TIMESTAMP
 );

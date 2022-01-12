@@ -1,2 +1,2 @@
-INSERT INTO TB_USER
-VALUES (1, 'carrot', '1234', '당근', 'carrot.ez@kakaocorp.com');
+INSERT INTO TB_USER(USER_ID, PASSWORD, NAME, EMAIL)
+VALUES ('carrot', '1234', '당근', 'carrot.ez@kakaocorp.com');
