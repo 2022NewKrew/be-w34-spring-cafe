@@ -10,7 +10,7 @@ public class ArticleDetailResponseDto {
 
     public ArticleDetailResponseDto(String title, String content, String writer, String createdAt, int viewCount) {
         this.title = title;
-        this.content = content;
+        this.content = content.replace("\n", "<br>");
         this.writer = writer;
         this.createdAt = createdAt;
         this.viewCount = viewCount;
