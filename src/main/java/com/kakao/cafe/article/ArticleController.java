@@ -23,12 +23,12 @@ public class ArticleController {
     @GetMapping(value = {"/", "/articles"})
     public String listArticles(Model model) {
         model.addAttribute("articles", Article.getArticles());
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable Long id, Model model) {
         model.addAttribute("article", Article.findArticleById(id));
-        return "/article/show";
+        return "article/show";
     }
 }

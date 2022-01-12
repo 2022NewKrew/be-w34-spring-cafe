@@ -1,14 +1,17 @@
 package com.kakao.cafe.article;
 
 import com.kakao.cafe.user.User;
+import com.kakao.cafe.user.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-
 public class Article {
+    // Temporary workaround
+    private static UserService userService = TemporaryBeanContextUtil.getBean(UserService.class);
+
     // Simulate in-memory database
     private static final List<Article> articles = new ArrayList<>();
     private static Long next_id = 0L;
@@ -34,7 +37,7 @@ public class Article {
         // created.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         created = LocalDateTime.now();
         modified = LocalDateTime.now();
-        author = User.findUserByUsername(author_username);
+        author = userService.findUserByUsername(author_username);
         // Simulate in-memory database
     }
 
