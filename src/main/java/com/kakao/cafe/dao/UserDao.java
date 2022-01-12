@@ -1,6 +1,6 @@
 package com.kakao.cafe.dao;
 
-import com.kakao.cafe.dto.User;
+import com.kakao.cafe.vo.User;
 
 import java.util.ArrayList;
 import java.util.List;

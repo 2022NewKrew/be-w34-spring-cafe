@@ -1,6 +1,6 @@
 package com.kakao.cafe.dao;
 
-import com.kakao.cafe.dto.Article;
+import com.kakao.cafe.vo.Article;
 
 import java.util.ArrayList;
 import java.util.List;
