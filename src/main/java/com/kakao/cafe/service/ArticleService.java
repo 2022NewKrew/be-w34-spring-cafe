@@ -1,38 +1,45 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.dto.ArticleFormDTO;
-import com.kakao.cafe.dto.ArticleShowDTO;
-import com.kakao.cafe.dto.ArticleShowListDTO;
-import com.kakao.cafe.mapper.ArticleMapper;
+import com.kakao.cafe.dto.ArticleDTO;
+import com.kakao.cafe.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class ArticleService {
-    private final ModelMapper modelMapper;
-    private final ArticleMapper articleMapper;
+    private final ArticleRepository articleRepository;
 
     public List<Article> findAll() {
-        return articleMapper.selectAll();
+        return articleRepository.selectAll();
     }
 
-    public List<ArticleShowListDTO> findAllShowListDTO() {
-        return articleMapper.selectAllForList();
+    public List<ArticleDTO> findAllDTO() {
+        List<Article> articleList = findAll();
+        return articleList.stream().map(article -> article.getDTO()).collect(Collectors.toList());
     }
 
-    public ArticleShowDTO findByKeyForShow(long key) {
-        return articleMapper.selectByKeyForShow(key);
+    public Optional<Article> findByKey(Long key) {
+        return articleRepository.selectByKey(key);
     }
 
-    public long join(ArticleFormDTO articleFormDTO) {
-        Article article = modelMapper.map(articleFormDTO, Article.class);
+    public Optional<ArticleDTO> findByKeyDTO(Long key) {
+        Optional<Article> article = findByKey(key);
+        log.info("asdf" + article.get().getTitle());
+        return article.map(Article::getDTO);
+    }
+
+    public long join(ArticleDTO articleDTO) {
+        Article article = Article.fromDTOWithoutPostTime(articleDTO);
         article.setPostTime(LocalDateTime.now());
-        return articleMapper.insert(article);
+        return articleRepository.insert(article);
     }
 }

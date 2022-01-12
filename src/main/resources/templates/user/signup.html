@@ -17,6 +17,7 @@
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
           <form name="user" method="post" action="/user/signup">
+              {{#user}}
               <div class="form-group">
                   <label for="userId">사용자 아이디</label>
                   <input class="form-control" id="userId" name="id" placeholder="User ID">
@@ -35,6 +36,7 @@
               </div>
               <button type="submit" class="btn btn-success clearfix pull-right">회원가입</button>
               <div class="clearfix" />
+              {{/user}}
           </form>
         </div>
     </div>
