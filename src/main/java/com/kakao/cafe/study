@@ -1,0 +1,6 @@
+service는 repository와 domain을 활용하여 business logic을 작성하는 곳.
+    용어나 그런것들 비즈니스 의존적으로 설계
+    Repository는 주로 개발스러운 용어 사용
+
+Option + Command + V => Method의 반환형을 만들어 줌
+Ctrl + T => Refactoring Option 제공(드래그 한 부분만 메소드로 추출 가능)
