@@ -3,9 +3,11 @@ package com.kakao.cafe.article.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.user.domain.User;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
+@Builder
 public class ArticleShowResponse {
 
     public final String authorId;
@@ -15,15 +17,16 @@ public class ArticleShowResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd' 'HH:mm", timezone = "Asia/Seoul")
     public final LocalDateTime createdAt;
 
-    public ArticleShowResponse(User author, Article article) {
-        this.authorId = author.getUserId();
-        this.authorName = author.getName();
-        this.title = article.getTitle();
-        this.content = article.getContent();
-        this.createdAt = article.getCreatedAt();
-    }
-
     public static ArticleShowResponse valueOf(Article article) {
-        return new ArticleShowResponse(article.getAuthor(), article);
+        User author = article.getAuthor();
+        return ArticleShowResponse.builder()
+                .authorId(author.getUserId())
+                .authorName(author.getName())
+                .title(article.getTitle())
+                .content(article.getContent())
+                .createdAt(article.getCreatedAt())
+                .build();
+
+
     }
 }

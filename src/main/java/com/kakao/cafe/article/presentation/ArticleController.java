@@ -42,7 +42,7 @@ public class ArticleController {
         return new ModelAndView("index", model);
     }
 
-    @GetMapping("{articleId}")
+    @GetMapping("/{articleId}")
     public ModelAndView findById(@PathVariable String articleId, Map<String, Object> model) {
         log.info(this.getClass() + ": 게시글 상세보기");
         ArticleShowResponse articleShowResponse = articleService.findById(articleId);

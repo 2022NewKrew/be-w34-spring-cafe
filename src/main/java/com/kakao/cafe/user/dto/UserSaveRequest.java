@@ -12,11 +12,6 @@ public class UserSaveRequest {
     public String email;
 
     public User toUser() {
-        return User.valueOf(
-                this.userId,
-                this.password,
-                this.name,
-                this.email
-        );
+        return User.valueOf(this.userId, this.password, this.name, this.email);
     }
 }

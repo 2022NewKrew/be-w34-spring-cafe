@@ -1,7 +1,9 @@
 package com.kakao.cafe.user.dto;
 
 import com.kakao.cafe.user.domain.User;
+import lombok.Builder;
 
+@Builder
 public class UserListResponse {
 
     public int index;
@@ -9,14 +11,12 @@ public class UserListResponse {
     public String name;
     public String email;
 
-    public UserListResponse(int index, User user) {
-        this.index = index;
-        userId = user.getUserId();
-        name = user.getName();
-        email = user.getEmail();
-    }
-
     public static UserListResponse valueOf(int index, User user) {
-        return new UserListResponse(index, user);
+        return UserListResponse.builder()
+                .index(index)
+                .userId(user.getUserId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .build();
     }
 }
