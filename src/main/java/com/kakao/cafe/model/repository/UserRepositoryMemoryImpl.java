@@ -1,104 +1,99 @@
 package com.kakao.cafe.model.repository;
 
 import com.kakao.cafe.model.domain.User;
-import com.kakao.cafe.model.dto.UserDTO;
 import com.kakao.cafe.util.exception.UserNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public class UserRepositoryMemoryImpl implements UserRepository {
     private static final Map<Long, User> storedUsers = new HashMap<>();
     private static long maxID = 0L;
 
-    private Optional<User> findUserInStoredUsers(long id) {
-        return Optional.ofNullable(storedUsers.get(id));
+    private User findUserInStoredUsers(long id) {
+        return storedUsers.get(id);
     }
 
-    private Optional<User> findUserInStoredUsers(String userId) {
+    private User findUserInStoredUsers(String userId) {
         return storedUsers.values().stream()
                 .filter(user -> user.getUserId().equals(userId))
-                .findFirst();
+                .findFirst()
+                .orElse(null);
     }
 
-    private Optional<User> findUserInStoredUsers(String userId, String password) {
+    private User findUserInStoredUsers(String userId, String password) {
         return storedUsers.values().stream()
                 .filter(user -> user.getUserId().equals(userId) && user.getPassword().equals(password))
-                .findFirst();
-    }
-
-    private Optional<UserDTO> getUserDTOFromUser(Optional<User> foundUser) {
-        if (foundUser.isEmpty()) {
-            return Optional.empty();
-        }
-
-        User user = foundUser.get();
-        return Optional.of(new UserDTO(user.getUserId(), user.getPassword(),
-                user.getName(), user.getEmail()));
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
-    public boolean insertUser(UserDTO userDTO) {
-        if (findUserInStoredUsers(userDTO.getUserId()).isPresent()) {
+    public boolean saveUser(User user) {
+        if (findUserInStoredUsers(user.getUserId()) != null) {
             return false;
         }
 
-        User newUser = new User(maxID++, userDTO);
+        User newUser = User.builder()
+                .id(maxID++)
+                .userId(user.getUserId())
+                .password(user.getPassword())
+                .name(user.getName())
+                .email(user.getEmail())
+                .build();
         storedUsers.put(newUser.getId(), newUser);
-        return false;
+        return true;
     }
 
     @Override
-    public List<UserDTO> selectAllUsers() {
-        List<UserDTO> allUsers = new ArrayList<>();
-
-        for (User user : storedUsers.values()) {
-            allUsers.add(new UserDTO(user.getUserId(), user.getPassword(),
-                    user.getName(), user.getEmail()));
-        }
-
-        return allUsers;
+    public List<User> findAllUsers() {
+        return new ArrayList<>(storedUsers.values());
     }
 
     @Override
-    public Optional<UserDTO> selectUserById(Long id) {
-        return getUserDTOFromUser(findUserInStoredUsers(id));
+    public Optional<User> findUserById(Long id) {
+        return Optional.ofNullable(findUserInStoredUsers(id));
     }
 
     @Override
-    public Optional<UserDTO> selectUserByUserId(String userId) {
-        return getUserDTOFromUser(findUserInStoredUsers(userId));
+    public Optional<User> findUserByUserId(String userId) {
+        return Optional.ofNullable(findUserInStoredUsers(userId));
     }
 
     @Override
-    public Optional<UserDTO> selectUserByLoginInfo(String userId, String password) {
-        return getUserDTOFromUser(findUserInStoredUsers(userId, password));
+    public Optional<User> findUserByLoginInfo(String userId, String password) {
+        return Optional.ofNullable(findUserInStoredUsers(userId, password));
     }
 
     @Override
-    public boolean updateUser(UserDTO userDTO) {
-        Optional<User> foundUser = findUserInStoredUsers(userDTO.getUserId());
+    public boolean modifyUser(User user) {
+        User foundUser = findUserInStoredUsers(user.getUserId());
 
-        if (foundUser.isEmpty()) {
+        if (foundUser == null) {
             return false;
         }
 
-        User newUser = new User(foundUser.get().getId(), userDTO);
+        User newUser = User.builder()
+                .id(foundUser.getId())
+                .userId(user.getUserId())
+                .password(user.getPassword())
+                .name(user.getName())
+                .email(user.getEmail())
+                .build();
         storedUsers.put(newUser.getId(), newUser);
         return true;
     }
 
     @Override
     public boolean deleteUser(String userId, String password) {
-        Optional<User> foundUser = findUserInStoredUsers(userId, password);
+        User foundUser = findUserInStoredUsers(userId, password);
 
-        if (foundUser.isEmpty()) {
+        if (foundUser == null) {
             return false;
         }
 
-        storedUsers.remove(foundUser.get().getId());
+        storedUsers.remove(foundUser.getId());
         return true;
     }
 }

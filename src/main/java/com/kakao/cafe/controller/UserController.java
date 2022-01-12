@@ -1,7 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.domain.User;
-import com.kakao.cafe.model.dto.UserDTO;
+import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,8 +19,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String userRegister(UserDTO userDTO) {
-        userService.registerUser(userDTO);
+    public String userRegister(UserDto userDto) {
+        userService.registerUser(userDto);
         return "redirect:/user/list";
     }
 

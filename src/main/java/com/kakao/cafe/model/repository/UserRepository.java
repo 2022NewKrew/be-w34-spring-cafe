@@ -1,17 +1,19 @@
 package com.kakao.cafe.model.repository;
 
 import com.kakao.cafe.model.domain.User;
-import com.kakao.cafe.model.dto.UserDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
-    boolean insertUser(UserDTO userDTO);
-    List<UserDTO> selectAllUsers();
-    Optional<UserDTO> selectUserById(Long id);
-    Optional<UserDTO> selectUserByUserId(String userId);
-    Optional<UserDTO> selectUserByLoginInfo(String userId, String password);
-    boolean updateUser(UserDTO userDTO);
+    boolean saveUser(User user);
+
+    List<User> findAllUsers();
+    Optional<User> findUserById(Long id);
+    Optional<User> findUserByUserId(String userId);
+    Optional<User> findUserByLoginInfo(String userId, String password);
+
+    boolean modifyUser(User user);
+
     boolean deleteUser(String userId, String password);
 }
