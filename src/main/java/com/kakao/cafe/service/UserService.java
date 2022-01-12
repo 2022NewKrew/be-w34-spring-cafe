@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.repository.RepositoryInterface;
 import com.kakao.cafe.repository.UserRepository;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @ExceptionHandler
     private void validateDuplicateUser(User user) {
         // 중복 ID 체크
         userRepository.findByName(user.getName())
@@ -34,6 +36,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    @ExceptionHandler
     public User findOne(Long userId){
         Optional<User> user = userRepository.findById(userId);
         if(user.isPresent()){
