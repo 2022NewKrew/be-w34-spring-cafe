@@ -10,22 +10,18 @@ public class User {
     private String email;
     private String password;
 
-    public User(UserCreateRequest request) {
-        this.username = request.getUsername();
-        this.nickname = request.getNickname();
-        this.email = request.getEmail();
-        this.password = request.getPassword();
+    public User(String username, String nickname, String email, String password) {
+        this.username = username;
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
     }
 
-    public UserDto toDto() {
-        return new UserDto(id, username, nickname, email);
-    }
-
-    public void update(UserUpdateRequest request) {
-        validatePassword(request.getPassword());
-        this.nickname = request.getNickname();
-        this.email = request.getEmail();
-        this.password = request.getPassword();
+    public void update(String nickname, String email, String password, String newPassword) {
+        validatePassword(password);
+        this.nickname = nickname;
+        this.email = email;
+        this.password = newPassword;
     }
 
     private void validatePassword(String newPassword) {
@@ -40,6 +36,27 @@ public class User {
 
     public boolean isEqualUserId(long id) {
         return this.id == id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 
     @Override

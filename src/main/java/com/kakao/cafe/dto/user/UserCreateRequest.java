@@ -1,4 +1,6 @@
-package com.kakao.cafe.domain.user;
+package com.kakao.cafe.dto.user;
+
+import com.kakao.cafe.domain.user.User;
 
 public class UserCreateRequest {
 
@@ -14,19 +16,7 @@ public class UserCreateRequest {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
+    public User toEntity() {
+        return new User(username, nickname, email, password);
     }
 }
