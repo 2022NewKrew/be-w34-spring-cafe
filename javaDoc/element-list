@@ -1,7 +1,10 @@
 com.kakao.cafe
 com.kakao.cafe.config
 com.kakao.cafe.controller
+com.kakao.cafe.log
 com.kakao.cafe.question
 com.kakao.cafe.question.dto
+com.kakao.cafe.question.mapper
 com.kakao.cafe.user
 com.kakao.cafe.user.dto
+com.kakao.cafe.user.mapper
