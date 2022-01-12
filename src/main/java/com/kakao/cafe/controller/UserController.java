@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,14 +20,14 @@ public class UserController {
 
     @GetMapping()
     public String userListView(Model model) {
-        List<User> users = userService.getUserList();
+        List<UserDto> users = userService.getUserList();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String profileView(@PathVariable String userId, Model model) {
-        User user = userService.filterUserById(userId);
+        UserDto user = userService.filterUserById(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup(User user) {
+    public String signup(UserDto user) {
         userService.signupUser(user);
         return "redirect:";
     }
