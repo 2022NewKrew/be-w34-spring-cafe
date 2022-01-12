@@ -16,41 +16,18 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+class UserUpdateServiceTest {
+
     @Mock
     private UserRepository userRepository;
 
     @InjectMocks
-    private UserService userService;
+    private UserUpdateService userUpdateService;
 
-    private static Stream<Arguments> provideUsers() {
-        return Stream.of(
-                Arguments.of("clo.d", "testPassword", "dongwoon", "clo.d@kakaocorp.com")
-        );
-    }
-
-    @DisplayName("ID검색 테스트")
-    @MethodSource("provideUsers")
-    @ParameterizedTest
-    public void searchId(String userId, String password, String name, String email) {
-        //given
-        final UserCreateRequest dto = new UserCreateRequest(userId, password, name, email);
-        final User givenUser = dto.toEntity();
-
-        given(userRepository.findById(userId)).willReturn(givenUser);
-
-        //when
-        User findUser = userService.findById(userId);
-
-        //then
-        assertThat(findUser).isEqualTo(givenUser);
-    }
-
-    @DisplayName("저장소 회원정보 수정 패스워드 일치, 불일치 체크")
+    @DisplayName("회원정보 수정 패스워드 일치, 불일치 체크")
     @MethodSource("provideUsers")
     @ParameterizedTest
     public void userUpdateValidPasswordCorrect(String userId, String password, String name, String email) {
@@ -68,8 +45,14 @@ public class UserServiceTest {
         givenUser.setEmail(modifiedEmail);
 
         //then
-        assertThatNoException().isThrownBy( () -> userService.update(userId, password, givenUser));
+        assertThatNoException().isThrownBy( () -> userUpdateService.update(userId, password, givenUser));
 
-        assertThatIllegalArgumentException().isThrownBy(() -> userService.update(userId, incorrectPassword, givenUser));
+        assertThatIllegalArgumentException().isThrownBy(() -> userUpdateService.update(userId, incorrectPassword, givenUser));
+    }
+
+    private static Stream<Arguments> provideUsers() {
+        return Stream.of(
+                Arguments.of("clo.d", "testPassword", "dongwoon", "clo.d@kakaocorp.com")
+        );
     }
 }

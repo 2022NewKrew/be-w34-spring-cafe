@@ -1,7 +1,9 @@
 package com.kakao.cafe.web;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.service.user.UserService;
+import com.kakao.cafe.service.user.UserCreateService;
+import com.kakao.cafe.service.user.UserFindService;
+import com.kakao.cafe.service.user.UserUpdateService;
 import com.kakao.cafe.web.dto.UserListResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,7 +30,13 @@ class UserControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private UserService userService;
+    private UserFindService userFindService;
+
+    @MockBean
+    private UserCreateService userCreateService;
+
+    @MockBean
+    private UserUpdateService userUpdateService;
 
     @DisplayName("회원 목록 출력 테스트")
     @MethodSource("provideUsers")
@@ -36,7 +44,7 @@ class UserControllerTest {
     public void showUsers(List<User> users) throws Exception {
         //given
         String url = "/users";
-        given(this.userService.findAll()).willReturn(users);
+        given(this.userFindService.findAll()).willReturn(users);
         List<UserListResponse> provideUsers = users.stream().map(UserListResponse::new).collect(Collectors.toList());
 
         //when
@@ -78,7 +86,7 @@ class UserControllerTest {
     @ParameterizedTest
     public void getModifyUserForm(User user) throws Exception {
         String url = "/users/" + user.getUserId() + "/form";
-        given(this.userService.findById(user.getUserId())).willReturn(user);
+        given(this.userFindService.findById(user.getUserId())).willReturn(user);
 
         mvc.perform(get(url).param("userId", user.getUserId()))
                 .andExpect(status().is2xxSuccessful())

@@ -6,21 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
-public class UserService {
+public class UserUpdateService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserUpdateService(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    @Transactional
-    public void save(User user) {
-        userRepository.save(user);
     }
 
     @Transactional
@@ -33,15 +26,5 @@ public class UserService {
         if(!user.getPassword().equals(password)) {
             throw new IllegalArgumentException("Password Incorrect : " + user.getUserId());
         }
-    }
-
-    @Transactional(readOnly = true)
-    public User findById(String id) {
-        return userRepository.findById(id);
-    }
-
-    @Transactional(readOnly = true)
-    public List<User> findAll() {
-        return userRepository.findAll();
     }
 }
