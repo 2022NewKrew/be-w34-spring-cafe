@@ -1,28 +1,35 @@
 package com.kakao.cafe.user;
 
 public class User {
-    private final String id;
-    private final String name;
+    private final String username;
     private final String password;
     private final String email;
+    private Long id;
 
-    public String getId() {
-        return id;
-    }
-
-    public User(String id, String name, String password, String email) {
-        this.id = id;
-        this.name = name;
+    public User(String username, String password, String email) {
+        this.username = username;
         this.password = password;
         this.email = email;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return "User{" + "id=" + id + ", username='" + username + '\'' + ", email='" + email + '\'' + '}';
     }
 }

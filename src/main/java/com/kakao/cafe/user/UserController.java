@@ -2,42 +2,42 @@ package com.kakao.cafe.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
-    List<User> users = new ArrayList<>();
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final UserService userService;
 
-    @PostMapping("/users")
-    public String processCreationForm(User user) {
-        logger.info("User before new registration: " + users);
-        users.add(user);
-        logger.info("User after new registration: " + users);
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("")
+    public String processCreationForm(UserFormCreationDTO userFormCreationDTO) {
+        logger.info("Users before: {}", userService.getAllUserViewDTOUsers());
+        userService.registerUser(userFormCreationDTO);
+        logger.info("Users after: {}", userService.getAllUserViewDTOUsers());
         return "redirect:/users";
     }
 
-    @GetMapping("/users")
+    @GetMapping("")
     public String listUsers(Model model) {
-        model.addAttribute("users", users);
-        return "/user/list";
+        model.addAttribute("users", userService.getAllUserViewDTOUsers());
+        return "user/list";
     }
 
-    @GetMapping("/users/{id}")
-    public String showUser(@PathVariable String id, Model model) {
-        model.addAttribute("user", findUserById(id));
-        return "/user/profile";
-    }
-
-    private User findUserById(String userId) {
-        return users.stream().filter(user -> user.getId().equals(userId)).findFirst().orElseThrow(NoSuchElementException::new);
+    @GetMapping("/{username}")
+    public String showUser(@PathVariable String username, Model model) {
+        model.addAttribute("user", userService.getUserViewDTOByUsername(username));
+        return "user/profile";
     }
 }
