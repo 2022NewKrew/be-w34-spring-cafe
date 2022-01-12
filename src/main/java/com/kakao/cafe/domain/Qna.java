@@ -13,6 +13,13 @@ public class Qna {
         this.contents = contents;
     }
 
+    public Qna(Integer index, String writer, String title, String contents) {
+        this.index = index;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+    }
+
     public Integer getIndex() {
         return index;
     }
