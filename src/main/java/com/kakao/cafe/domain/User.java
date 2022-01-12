@@ -103,7 +103,7 @@ public class User {
 
 
   public static User createEmpty() {
-    return new User(0, null, null, null,
+    return new User(null, null, null, null, null,
         null, null, null, null, null);
   }
 

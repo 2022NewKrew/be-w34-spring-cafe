@@ -6,8 +6,6 @@ import com.kakao.cafe.exception.InvalidAuthenticationException;
 import com.kakao.cafe.exception.NoEmailFoundException;
 import com.kakao.cafe.utils.SessionUtils;
 import com.kakao.cafe.web.repository.UserRepository;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
