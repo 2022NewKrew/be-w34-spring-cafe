@@ -19,10 +19,6 @@ public class User extends NamedEntity {
         return userId;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public String getEmail() {
         return email;
     }

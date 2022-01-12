@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Service("userService")
-public class UserServiceImpl implements UserService{
+@Service("userService2")
+public class UserServiceImpl2 implements UserService {
     private final List<User> users = new ArrayList<>();
 
     @Override
