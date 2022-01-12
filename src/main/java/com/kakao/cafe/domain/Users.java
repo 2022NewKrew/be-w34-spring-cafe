@@ -1,12 +1,11 @@
 package com.kakao.cafe.domain;
 
 public class Users {
-    private Long id;
+    private int id;
     private String userId;
     private String password;
     private String name;
     private String email;
-
     public Users(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
@@ -14,16 +13,40 @@ public class Users {
         this.email = email;
     }
 
-    public long getId() {
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

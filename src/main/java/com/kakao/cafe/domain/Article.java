@@ -3,28 +3,25 @@ package com.kakao.cafe.domain;
 import java.time.LocalDateTime;
 
 public class Article {
-    private Long id;
-    private String author;
+    private final String author;
+    private final LocalDateTime createdAt;
+    private int id;
     private String title;
     private String content;
-    private LocalDateTime createdAt;
 
     public Article(String author, String title, String content) {
         this.author = author;
         this.title = title;
         this.content = content;
+        this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
 }

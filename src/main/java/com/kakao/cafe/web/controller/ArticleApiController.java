@@ -27,7 +27,7 @@ public class ArticleApiController {
     }
 
     @GetMapping("/articles/{id}")
-    String findById(@PathVariable Long id, Model model) {
+    String findById(@PathVariable int id, Model model) {
         Article article = articleService.getByArticleId(id);
         model.addAttribute("article", article);
         return "articles/show";
