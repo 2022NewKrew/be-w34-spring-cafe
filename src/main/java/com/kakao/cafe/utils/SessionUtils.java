@@ -34,7 +34,7 @@ public class SessionUtils {
 
   public static void logout() {
     HttpSession session = getSession();
-    session.removeAttribute(SessionUtils.LOGIN);
+    session.invalidate();
   }
 
 }
