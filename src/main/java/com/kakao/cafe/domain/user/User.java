@@ -30,16 +30,12 @@ public class User {
         }
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public boolean isEqualUserId(long id) {
-        return this.id == id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -66,7 +62,7 @@ public class User {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof User) {
-            return isEqualUserId(((User) obj).id);
+            return this.id.equals(((User) obj).id);
         }
         return false;
     }
