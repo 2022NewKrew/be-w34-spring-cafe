@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.application;
 
+import com.kakao.cafe.common.exception.EntityNotFoundException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
 import com.kakao.cafe.user.dto.UserListResponse;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.kakao.cafe.common.ErrorMessage.USER_ID_DUPLICATION_EXCEPTION;
+import static com.kakao.cafe.common.exception.ExceptionMessage.USER_ID_DUPLICATION_EXCEPTION;
 
 @Service
 @Slf4j
@@ -21,13 +22,9 @@ public class UserService {
 
     public void save(UserSaveRequest request) {
         log.info(this.getClass() + ": 회원 가입");
-        try {
-            validateUserIdDuplication(request.userId);
-            User newUser = request.toUser();
-            userRepository.save(newUser);
-        } catch (Exception e) {
-            log.info(e.toString());
-        }
+        validateUserIdDuplication(request.userId);
+        User newUser = request.toUser();
+        userRepository.save(newUser);
     }
 
     public void validateUserIdDuplication(String userId) throws IllegalArgumentException {
@@ -47,6 +44,9 @@ public class UserService {
     public UserProfileResponse findById(String userId) {
         log.info(this.getClass() + ": 회원 프로필");
         User user = userRepository.findByIdOrNull(userId);
+        if(user == null) {
+            EntityNotFoundException.throwNotExistsByField(User.class, "userId", userId);
+        }
         return UserProfileResponse.valueOf(user);
     }
 }

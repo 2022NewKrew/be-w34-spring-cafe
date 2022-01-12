@@ -6,10 +6,11 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.kakao.cafe.common.ErrorMessage.INVALID_EMAIL_FORM_EXCEPTION;
+import static com.kakao.cafe.common.exception.ExceptionMessage.INVALID_EMAIL_FORM_EXCEPTION;
 
 @Getter
 public class User {
+
     private final String userId;
     private final String password;
     private final String name;

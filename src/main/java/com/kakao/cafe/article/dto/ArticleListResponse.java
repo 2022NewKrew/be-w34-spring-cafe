@@ -7,6 +7,7 @@ import com.kakao.cafe.user.domain.User;
 import java.time.LocalDateTime;
 
 public class ArticleListResponse {
+
     public final String articleId;
     public final String authorId;
     public final String authorName;

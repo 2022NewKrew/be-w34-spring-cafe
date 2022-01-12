@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Getter
 public class Article {
+
     private final String id;
     private final User author;
     private final String title;
@@ -16,7 +17,7 @@ public class Article {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd' 'HH:mm", timezone = "Asia/Seoul")
     private final LocalDateTime createdAt;
 
-    public Article(User user, String title, String content) {
+    private Article(User user, String title, String content) {
         this.id = UUID.randomUUID().toString();
         this.author = user;
         this.title = title;

@@ -6,6 +6,7 @@ import com.kakao.cafe.article.dto.ArticleListResponse;
 import com.kakao.cafe.article.dto.ArticleSaveRequest;
 import com.kakao.cafe.article.dto.ArticleShowResponse;
 import com.kakao.cafe.article.infra.ArticleRepositoryImpl;
+import com.kakao.cafe.common.exception.EntityNotFoundException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
 import com.kakao.cafe.user.infra.UserRepositoryImpl;
@@ -25,6 +26,9 @@ public class ArticleService {
         log.info(this.getClass() + ": 게시글 작성");
         String authorName = request.writer;
         User author = userRepository.findByUserNameOrNull(authorName);
+        if(author == null) {
+            EntityNotFoundException.throwNotExistsByField(User.class, "userName", authorName);
+        }
         Article article = request.toArticle(author);
         articleRepository.save(article);
     }
@@ -40,6 +44,9 @@ public class ArticleService {
     public ArticleShowResponse findById(String articleId) {
         log.info(this.getClass() + ": 게시글 상세보기");
         Article article = articleRepository.findByIdOrNull(articleId);
+        if(article == null) {
+            EntityNotFoundException.throwNotExistsByField(Article.class, "id", articleId);
+        }
         return ArticleShowResponse.valueOf(article);
     }
 }
