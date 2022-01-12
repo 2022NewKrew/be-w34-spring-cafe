@@ -48,8 +48,9 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String writeArticle(@NonNull final ArticleDto articleDto) {
-        // (when login impl) getCurrentUser(); -> add userId in articleDto
+        // (when login impl) getCurrentUser(); -> update userId, userName in articleDto
         articleDto.setUserId(User.NONE.getId());
+        articleDto.setUserName(User.NONE.getName());
         articleService.add(articleDto);
         logger.info("New Article added: " + articleDto.getTitle());
         return "redirect:/";

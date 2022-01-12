@@ -1,15 +1,16 @@
 package com.kakao.cafe.domain;
 
+import org.springframework.lang.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class Articles {
     private static final List<Article> list = new ArrayList<>();
 
-    public void add(final Article article) {
-        list.add(Objects.requireNonNull(article));
+    public void add(@NonNull final Article article) {
+        list.add(article);
     }
 
     public Article find(final long idx) {

@@ -1,20 +1,19 @@
 package com.kakao.cafe.domain;
 
+import org.springframework.lang.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class Users {
     private static final List<User> list = new ArrayList<>();
 
-    public void add(final User user) {
-        list.add(Objects.requireNonNull(user));
+    public void add(@NonNull final User user) {
+        list.add(user);
     }
 
-    public boolean checkIdExist(final String id) {
-        Objects.requireNonNull(id);
-
+    public boolean checkIdExist(@NonNull final String id) {
         for (User u : list) {
             if (id.equals(u.getId())) {
                 return true;
@@ -23,8 +22,7 @@ public class Users {
         return false;
     }
 
-    public User findById(final String id) {
-        Objects.requireNonNull(id);
+    public User findById(@NonNull final String id) {
         if (User.NONE.getId().equals(id)) {
             return User.NONE;
         }
