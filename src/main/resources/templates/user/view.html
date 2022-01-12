@@ -29,10 +29,15 @@
                 </td>
             </tr>
         </table>
-        {{/user}}
         <div class="row mt-3">
-            <button type="button" class="btn btn-dark" onclick="location.href='/user/list'">회원 목록</button>
+            <div class="col-lg-6">
+                <button type="button" class="btn btn-dark" onclick="location.href='/user/list'">회원 목록</button>
+            </div>
+            <div class="col-lg-6">
+                <button type="button" class="btn btn-dark" onclick="location.href='/user/modify/{{userId}}'">회원정보 수정</button>
+            </div>
         </div>
+        {{/user}}
     </article>
 </div>
 {{>template/footer}}

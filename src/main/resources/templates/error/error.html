@@ -1,3 +1,7 @@
 {{>template/header}}
-<h2 class="mt-3 text-center">{{errorMessage}}</h2>
+<!--<h2 class="mt-3 text-center">{{errorMessage}}</h2>-->
+<script>
+    alert('{{errorMessage}}')
+    history.back();
+</script>
 {{>template/footer}}

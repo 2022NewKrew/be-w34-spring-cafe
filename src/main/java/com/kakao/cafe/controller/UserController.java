@@ -35,4 +35,22 @@ public class UserController {
         model.addAttribute("user", userService.findUserByUserId(userId));
         return "user/view";
     }
+
+    @GetMapping("/modify/{userId}")
+    public String userModifyView(@PathVariable("userId") String userId, Model model) {
+        model.addAttribute("user", userService.findUserByUserId(userId));
+        return "user/modify";
+    }
+
+    @PutMapping("/modify/{userId}")
+    public String userModify(@PathVariable("userId") String userId, String oldPassword,
+                             String newPassword, String name, String email) {
+        userService.findUserByLoginInfo(userId, oldPassword);
+        userService.modifyUser(UserDto.builder()
+                .userId(userId)
+                .password(newPassword)
+                .name(name)
+                .email(email).build());
+        return "redirect:/user/list";
+    }
 }
