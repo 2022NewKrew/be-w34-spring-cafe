@@ -1,4 +1,4 @@
-package com.kakao.cafe.common;
+package com.kakao.cafe.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -21,6 +21,6 @@ public class MvcConfiguration implements WebMvcConfigurer {
 
         registry.addViewController("/users/form").setViewName("user/form");
         registry.addViewController("/users/login").setViewName("user/login");
-        registry.addViewController("/questions/form").setViewName("qna/form");
+        registry.addViewController("/qna/form").setViewName("qna/form");
     }
 }
