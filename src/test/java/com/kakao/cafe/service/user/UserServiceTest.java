@@ -4,13 +4,16 @@ import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.model.user.UserDto;
 import com.kakao.cafe.model.user.UserSignupRequest;
+import com.kakao.cafe.model.user.UserUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -24,6 +27,22 @@ class UserServiceTest {
     @Autowired
     private UserRepository userRepository;
 
+    private User user;
+
+    @BeforeEach
+    void setup() {
+        String email = "abc1234@abc.com";
+        String nickname = "ABC";
+        String password = "abcdef";
+        LocalDateTime createdAt = LocalDateTime.now();
+        user = User.builder()
+                .email(email)
+                .nickname(nickname)
+                .password(password)
+                .createdAt(createdAt)
+                .build();
+        userRepository.save(user);
+    }
     @AfterEach
     void cleanup() {
         userRepository.deleteAll();
@@ -102,7 +121,7 @@ class UserServiceTest {
 
         List<UserDto> users = userService.getAllUsers();
         log.info("{}", users);
-        assertThat(users.size()).isEqualTo(size);
+        assertThat(users.size()).isEqualTo(size + 1);
     }
 
     @DisplayName("id를 이용하여 조회한 회원 정보는 등록된 회원 정보와 같아야 한다.")
@@ -132,5 +151,112 @@ class UserServiceTest {
         assertThatIllegalArgumentException().isThrownBy(() -> {
            UserDto user = userService.getUserById(id);
         });
+    }
+
+    @DisplayName("등록된 사용자의 정보를 업데이트 요청하면 id와 회원가입 일자를 제외한 다른 정보들은 업데이트되어야 한다.")
+    @Test
+    void updateUser() {
+        String updatedEmail = "test@test.com";
+        String updatedNickname = "TEST";
+        String updatedPassword = "test";
+        UserUpdateRequest updateRequest = UserUpdateRequest.builder()
+                .email(updatedEmail)
+                .nickName(updatedNickname)
+                .currentPassword(user.getPassword())
+                .password(updatedPassword)
+                .build();
+        long id = user.getId();
+
+        userService.updateUser(user.getId(), updateRequest);
+        User updatedUser = userRepository.findById(id).orElse(null);
+
+        assertThat(updatedUser).isNotNull();
+        assertThat(updatedUser.getId()).isEqualTo(user.getId());
+        assertThat(updatedUser.getCreatedAt()).isEqualTo(updatedUser.getCreatedAt());
+        assertThat(updatedUser.getEmail()).isEqualTo(updatedEmail);
+        assertThat(updatedUser.getNickname()).isEqualTo(updatedNickname);
+        assertThat(updatedUser.getPassword()).isEqualTo(updatedPassword);
+        assertThat(updatedUser.getUpdatedAt()).isNotNull();
+    }
+
+    @DisplayName("등록되지 않은 사용자의 정보를 업데이트 요청하면 에러를 발생시켜야 한다.")
+    @Test
+    void updateUserNotSignup() {
+        String updatedEmail = "test@test.com";
+        String updatedNickname = "TEST";
+        String updatedPassword = "test";
+        UserUpdateRequest updateRequest = UserUpdateRequest.builder()
+                .email(updatedEmail)
+                .nickName(updatedNickname)
+                .currentPassword(user.getPassword())
+                .password(updatedPassword)
+                .build();
+        long id = user.getId() + 1;
+
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            userService.updateUser(id, updateRequest);
+        });
+    }
+
+    @DisplayName("입력한 비밀번호와 현재 비밀번호가 다르면 에러를 발생시켜야 한다.")
+    @Test
+    void updateUserNotEqualCurrentPassword() {
+        String updatedEmail = "test@test.com";
+        String updatedNickname = "TEST";
+        String updatedPassword = "test";
+        UserUpdateRequest updateRequest = UserUpdateRequest.builder()
+                .email(updatedEmail)
+                .nickName(updatedNickname)
+                .currentPassword(user.getPassword() + 1)
+                .password(updatedPassword)
+                .build();
+        long id = user.getId();
+
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            userService.updateUser(id, updateRequest);
+        });
+    }
+
+    @DisplayName("입력한 이메일이 본인의 이전 이메일이 아닌 다른 등록된 이메일과 중복된다면 에러를 발생시켜야 한다.")
+    @Test
+    void updateUserDuplicatedEmail() {
+        String email = "test@test.com";
+        User anotherUser = User.builder()
+                .email(email)
+                .nickname("테스터")
+                .password("1234")
+                .build();
+        userRepository.save(anotherUser);
+        String updatedEmail = email;
+        String updatedNickname = "TEST";
+        String updatedPassword = "test";
+        UserUpdateRequest updateRequest = UserUpdateRequest.builder()
+                .email(updatedEmail)
+                .nickName(updatedNickname)
+                .currentPassword(user.getPassword())
+                .password(updatedPassword)
+                .build();
+        long id = user.getId();
+
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            userService.updateUser(id, updateRequest);
+        });
+    }
+
+    @DisplayName("입력한 이메일이 이전의 본인의 이메일이라면 에러가 발생하지 않아야 한다.")
+    @Test
+    void updateUserSameWithPrevEmail() {
+        String updatedEmail = user.getEmail();
+        String updatedNickname = "TEST";
+        String updatedPassword = "test";
+        UserUpdateRequest updateRequest = UserUpdateRequest.builder()
+                .email(updatedEmail)
+                .nickName(updatedNickname)
+                .currentPassword(user.getPassword())
+                .password(updatedPassword)
+                .build();
+        long id = user.getId();
+
+        userService.updateUser(id, updateRequest);
     }
 }
