@@ -22,13 +22,13 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>닉네임</th> <th>이메일</th> <th>회원가입일</th><th></th>
+                    <th>번호</th> <th>닉네임</th> <th>이메일</th> <th>회원가입일</th><th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {{#userList}}
                 <tr>
-                    <td><a href = "/user/profile/{{userId}}"><strong>{{userId}}</strong></a></td> <td>{{email}}</td><td>{{registerDate}}</td>
+                    <td>{{@index_1}}</td> </td><td><a href = "/user/profile/{{userId}}"><strong>{{userId}}</strong></a></td> <td>{{email}}</td><td>{{registerDate}}</td>
                 </tr>
                 {{/userList}}
                 </tbody>
