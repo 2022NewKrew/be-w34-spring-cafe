@@ -1,13 +1,16 @@
 package com.kakao.cafe.domain.post;
 
-import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.interfaces.common.PostDto;
+import com.kakao.cafe.interfaces.common.UserDto;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface PostRepository {
-    Post add(Post post);
-    Optional<Post> findById(long id);
-    List<Post> findAllByWriter(User user);
-    List<Post> findAll();
+    PostDto add(PostDto postDto);
+    Optional<PostDto> findById(long id);
+    List<PostDto> findAllByWriter(UserDto user);
+    List<PostDto> findAll();
 }
