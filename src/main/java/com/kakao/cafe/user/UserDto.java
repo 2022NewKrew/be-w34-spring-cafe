@@ -1,6 +1,7 @@
 package com.kakao.cafe.user;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 회원 등록 화면에서 데이터를 전달 받을 폼 객체
@@ -11,6 +12,7 @@ import lombok.Data;
  */
 
 @Data
+@NoArgsConstructor
 public class UserDto {
 
     public UserDto(User user) {
