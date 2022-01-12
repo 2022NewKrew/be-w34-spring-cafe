@@ -2,15 +2,25 @@ package com.kakao.cafe.domain.article;
 
 import com.kakao.cafe.domain.user.User;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Article {
 
-    ArticleId articleId;
-    Title title;
-    Content content;
-    User writer;
-    LocalDateTime createdAt;
-    ViewCount viewCount;
+    private UUID articleId;
+    private final Title title;
+    private final Content content;
+    private final User writer;
+    private final LocalDateTime createdAt;
+    private final ViewCount viewCount;
+
+    public Article(UUID articleId, Title title, Content content, User writer, LocalDateTime createdAt, ViewCount viewCount) {
+        this.articleId = articleId;
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+        this.createdAt = createdAt;
+        this.viewCount = viewCount;
+    }
 
     public Article(Title title, Content content, User writer) {
         this.title = title;
@@ -20,7 +30,7 @@ public class Article {
         this.viewCount = new ViewCount();
     }
 
-    public ArticleId getArticleId() {
+    public UUID getArticleId() {
         return articleId;
     }
 
@@ -44,8 +54,8 @@ public class Article {
         return viewCount;
     }
 
-    public void setArticleId(int id) {
-        this.articleId = new ArticleId(id);
+    public void setArticleId(UUID id) {
+        this.articleId = id;
     }
 
     public void increaseViewCount() {

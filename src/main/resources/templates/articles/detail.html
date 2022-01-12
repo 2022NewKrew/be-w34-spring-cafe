@@ -5,11 +5,11 @@
   <meta charset="utf-8">
   <title>kakao Java Web Programming</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link href="../css/reset.css" rel="stylesheet">
+  <link href="/css/reset.css" rel="stylesheet">
   <!--[if lt IE 9]>
   <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-  <link href="../css/post/show.css" rel="stylesheet">
+  <link href="/css/post/show.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -24,7 +24,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="active"><a href="/users">멤버 리스트</a></li>
         <li><a class="black-component" href="#" role="button">로그인</a></li>
-        <li><a class="black-component" href="signup" role="button">회원가입</a></li>
+        <li><a class="black-component" href="/signup" role="button">회원가입</a></li>
       </ul>
     </div>
   </nav>
@@ -39,7 +39,7 @@
           <article class="article">
             <div class="article-header">
               <div class="article-header-text">
-                <p class="article-content">{{article.writer}}</p>
+                <p class="article-content">작성자: {{article.writer}}</p>
                 <p class="article-content">
                   작성일자: {{article.createdAt}}
                 </p>
@@ -47,7 +47,7 @@
               </div>
             </div>
             <div class="article-doc">
-              <p>{{article.content}}</p>
+              <p>{{{article.content}}}</p>
             </div>
           </article>
 

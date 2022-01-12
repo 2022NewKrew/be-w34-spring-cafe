@@ -1,9 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.ArticleId;
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserId;
+import com.kakao.cafe.domain.user.UserName;
 import com.kakao.cafe.dto.article.ArticleDetailResponseDto;
 import com.kakao.cafe.dto.article.ArticleListResponseDto;
 import com.kakao.cafe.dto.article.ArticleRegisterRequestDto;
@@ -11,6 +10,7 @@ import com.kakao.cafe.mapper.ArticleMapper;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -44,17 +44,16 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String requestArticleRegister(@Valid ArticleRegisterRequestDto dto) {
-        UserId userId = new UserId(dto.getUserId());
-        User user = userService.findUserById(userId);
+        UserName userName = new UserName(dto.getUserName());
+        User user = userService.findUserByUserName(userName);
         Article article = articleMapper.articleRegisterRequestDtoToArticle(dto, user);
         articleService.registerArticle(article);
         return "redirect:/";
     }
 
     @GetMapping("/articles/{articleId}")
-    public String requestArticleDetail(@PathVariable int articleId, Model model) {
-        ArticleId id = new ArticleId(articleId);
-        Article article = articleService.findArticleById(id);
+    public String requestArticleDetail(@PathVariable UUID articleId, Model model) {
+        Article article = articleService.findArticleById(articleId);
         ArticleDetailResponseDto dto = articleMapper.articleToArticleDetailResponseDto(article);
         model.addAttribute("article", dto);
         return "articles/detail";

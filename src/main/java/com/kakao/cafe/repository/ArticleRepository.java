@@ -1,9 +1,9 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.ArticleId;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface ArticleRepository {
 
@@ -11,5 +11,5 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
-    Optional<Article> findArticleById(ArticleId id);
+    Optional<Article> findArticleById(UUID id);
 }

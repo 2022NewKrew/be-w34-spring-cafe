@@ -5,20 +5,20 @@ import javax.validation.constraints.NotBlank;
 public class ArticleRegisterRequestDto {
 
     @NotBlank
-    private final String userId;
+    private final String userName;
     @NotBlank
     private final String title;
     @NotBlank
     private final String content;
 
-    public ArticleRegisterRequestDto(String userId, String title, String content) {
-        this.userId = userId;
+    public ArticleRegisterRequestDto(String userName, String title, String content) {
+        this.userName = userName;
         this.title = title;
         this.content = content;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
     public String getTitle() {
