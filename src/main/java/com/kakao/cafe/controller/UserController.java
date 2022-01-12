@@ -34,7 +34,6 @@ public class UserController {
 
     @PostMapping
     public String createUser(User user) {
-        logger.info("{} {} {}", user, user.getUserId(), user.getEmail());
         userService.join(user);
         return "redirect:/users";
     }

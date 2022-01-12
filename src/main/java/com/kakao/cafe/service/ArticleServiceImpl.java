@@ -24,11 +24,9 @@ public class ArticleServiceImpl implements ArticleService{
 
     @Override
     public Article findByArticleId(Integer articleId) {
-        for (Article article : articles) {
-            if (Objects.equals(article.getArticleId(), articleId)) {
-                return article;
-            }
-        }
-        return null;
+        return articles.stream()
+                .filter(article -> Objects.equals(article.getArticleId(), articleId))
+                .findFirst()
+                .orElse(null);
     }
 }

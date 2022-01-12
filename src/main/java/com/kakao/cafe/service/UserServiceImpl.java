@@ -23,11 +23,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User findById(String userId) {
-        for (User user : users) {
-            if (Objects.equals(user.getUserId(), userId)) {
-                return user;
-            }
-        }
-        return null;
+        return users.stream()
+                .filter(user -> Objects.equals(user.getUserId(), userId))
+                .findFirst()
+                .orElse(null);
     }
 }
