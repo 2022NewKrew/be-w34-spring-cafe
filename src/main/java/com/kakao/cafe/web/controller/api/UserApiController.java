@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 @EnableSession
-public class UserController {
+public class UserApiController {
 
-  private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+  private static final Logger logger = LoggerFactory.getLogger(UserApiController.class);
   private final UserService userService;
 
-  public UserController(UserService userService) {
+  public UserApiController(UserService userService) {
     this.userService = userService;
   }
 

@@ -15,18 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @EnableSession
-public class MainController {
+public class UserPageController {
 
-  private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+  private static final Logger logger = LoggerFactory.getLogger(UserPageController.class);
   private final UserService userService;
 
-  public MainController(UserService userService) {
+  public UserPageController(UserService userService) {
     this.userService = userService;
-  }
-
-  @GetMapping("/")
-  public String index(Model model) {
-    return "index";
   }
 
   @GetMapping("/users")
@@ -51,16 +46,6 @@ public class MainController {
     model.addAttribute("isLoginUser", isLoginUser);
 
     return "profile";
-  }
-
-  @GetMapping("/signup")
-  public String signUp(Model model) {
-    return "form";
-  }
-
-  @GetMapping("/login")
-  public String login(Model model) {
-    return "login";
   }
 
 }
