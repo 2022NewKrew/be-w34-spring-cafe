@@ -14,7 +14,7 @@ public class Member {
     private String nickName;
     private String password;
     private LocalDate createDate;
-
+  
     public void setId(Long id) {
         this.id = id;
     }
