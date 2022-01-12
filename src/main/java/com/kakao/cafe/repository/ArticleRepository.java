@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
 public class ArticleRepository {
     private final List<ArticleDto> articleList = new ArrayList<>();
 
@@ -17,7 +16,7 @@ public class ArticleRepository {
         return articleList;
     }
 
-    public ArticleDto getByIndex(int index) {
+    public ArticleDto findByIndex(int index) {
         if (index <= articleList.size() && index > 0)
             return articleList.get(index-1);
         return null;

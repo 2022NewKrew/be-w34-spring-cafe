@@ -11,30 +11,41 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.NoSuchElementException;
+
 @Controller
 @RequestMapping("/articles")
 public class ArticleController {
     private final ArticleService articleService;
     private final UserService userService;
 
-    ArticleController(ArticleService articleService, UserService userService) {
+    public ArticleController(ArticleService articleService, UserService userService) {
         this.articleService = articleService;
         this.userService = userService;
     }
 
     @PostMapping("/questions")
     public String postQuestion(ArticleDto article) {
-        article.setId(articleService.getArticleList().size() + 1);
-        articleService.saveArticle(article);
+        article.setId(articleService.nextArticleId());
+        articleService.postArticle(article);
         return "redirect:/";
     }
 
     @GetMapping("/{index}")
     public String showArticle(@PathVariable int index, Model model) {
-        ArticleDto article = articleService.getArticleBy(index);
-        UserDto writer = userService.findUserByName(article.getWriter());
-        model.addAttribute("article", article);
-        model.addAttribute("writer", writer);
+        ArticleDto article;
+        UserDto writer;
+
+        try {
+            article = articleService.findByIndex(index);
+            writer = userService.findByName(article.getWriter());
+            model.addAttribute("article", article);
+            model.addAttribute("writer", writer);
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
+
         return "/qna/show";
     }
 }

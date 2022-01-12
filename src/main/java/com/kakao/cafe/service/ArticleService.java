@@ -2,18 +2,18 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.repository.ArticleRepository;
-import org.springframework.stereotype.Service;
-import java.util.List;
 
-@Service
+import java.util.List;
+import java.util.NoSuchElementException;
+
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
-    public void saveArticle(ArticleDto article) {
+    public void postArticle(ArticleDto article) {
         articleRepository.save(article);
     }
 
@@ -21,7 +21,14 @@ public class ArticleService {
         return articleRepository.getAllArticles();
     }
 
-    public ArticleDto getArticleBy(int index) {
-        return articleRepository.getByIndex(index);
+    public ArticleDto findByIndex(int index) {
+        ArticleDto article = articleRepository.findByIndex(index);
+        if (article == null)
+            throw new NoSuchElementException("해당 Index를 가진 article이 존재하지 않음");
+        return article;
+    }
+
+    public int nextArticleId() {
+        return articleRepository.getAllArticles().size() + 1;
     }
 }

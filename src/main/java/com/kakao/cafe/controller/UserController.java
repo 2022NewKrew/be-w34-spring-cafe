@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.service.UserService;
+import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -11,13 +12,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.NoSuchElementException;
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
-    UserController(UserService userService){
+    public UserController(UserService userService){
         this.userService = userService;
     }
 
@@ -36,7 +39,16 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model) {
-        model.addAttribute("user", userService.findUserById(userId));
+        UserDto user;
+
+        try {
+            user = userService.findById(userId);
+            model.addAttribute("user", user);
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
+
         return "/user/profile";
     }
 }

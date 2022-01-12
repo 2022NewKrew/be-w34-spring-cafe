@@ -1,8 +1,5 @@
 package com.kakao.cafe.dto;
 
-/**
- *  사용자의 정보를 나타내는 User entity class
- */
 public class UserDto {
     private String userId;
     private String email;
