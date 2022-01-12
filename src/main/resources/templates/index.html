@@ -1,48 +1,46 @@
 {{>layout/header}}
-{{>layout/nav}}
-<div class="container" id="main">
-  <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
-    <div class="panel panel-default qna-list">
-      <ul class="list">
-        {{#articles}}
-        <li>
-          <div class="wrap">
-            <div class="main">
-              <strong class="subject">
-                <a href="article/{{id}}">{{title}}</a>
-              </strong>
-              <div class="auth-info">
-                <i class="icon-add-comment"></i>
-                <span class="time">2016-01-15 18:47</span>
-                <a class="author" href="user/{{writer}}">{{writer}}</a>
-              </div>
-              <div class="reply" title="댓글">
-                <i class="icon-reply"></i>
-                <span class="point">8</span>
-              </div>
-            </div>
-          </div>
-        </li>
-        {{/articles}}
-      </ul>
-      <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 text-center">
-          <ul class="pagination center-block" style="display:inline-block;">
-            <li><a href="#">«</a></li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">»</a></li>
-          </ul>
-        </div>
-        <div class="col-md-3 qna-write">
-          <a class="btn btn-primary pull-right" href="article/form" role="button">질문하기</a>
-        </div>
+<link href="/css/index.css" rel="stylesheet">
+<body>
+<div class="background">
+  {{>layout/nav}}
+  <div class="description">
+    <div class="desc-container">
+      <p class="desc-small">안녕하세요</p>
+      <p class="desc-big">카카오 교육 페이지 입니다.</p>
+    </div>
+  </div>
+
+  <p class="total_num">전체 글 {{articles.size}}개</p>
+
+  <div class="container" id="main">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="panel panel-default">
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일자</th>
+            <th>조회수</th>
+          </tr>
+          </thead>
+          <tbody>
+          {{#articles}}
+          <tr>
+            <td><a href="/article/{{articleId}}">{{title}}</a></td>
+            <td><a href="/user/{{authorId}}">{{authorName}}</a></td>
+            <td>{{createdAt}}</td>
+            <td>{{viewCount}}</td>
+          </tr>
+          {{/articles}}
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
+  <div class="post-btn-container">
+    <a class="post-write-btn" href="/article/form"
+       class="btn btn-primary pull-right" role="button">글쓰기</a>
   </div>
 </div>
 
@@ -122,4 +120,5 @@
   </div>
 </div>
 -->
-{{>layout/footer}}
+</body>
+</html>

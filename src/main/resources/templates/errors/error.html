@@ -1,6 +1,13 @@
 {{>layout/header}}
-{{>layout/nav}}
-<div class="container" id="main">
-  {{message}}
+<link href="/css/index.css" rel="stylesheet">
+<body>
+<div class="background">
+  {{>layout/nav}}
+  <div class="description">
+    <div class="desc-container">
+      <p class="desc-big">{{message}}</p>
+    </div>
+  </div>
 </div>
-{{>layout/footer}}
+</body>
+</html>

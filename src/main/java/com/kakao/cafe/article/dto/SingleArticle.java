@@ -1,17 +1,16 @@
-package com.kakao.cafe.article.domain;
+package com.kakao.cafe.article.dto;
 
 import java.time.LocalDateTime;
 import lombok.Builder;
-import lombok.Getter;
 
-@Getter
 @Builder
-public class Article {
+public class SingleArticle {
 
-    private Long id;
+    private Long articleId;
     private String title;
     private String body;
     private LocalDateTime createdAt;
     private int viewCount;
     private Long authorId;
+    private String authorName;
 }

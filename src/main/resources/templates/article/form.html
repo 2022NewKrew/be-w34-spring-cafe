@@ -1,25 +1,34 @@
 {{>layout/header}}
-{{>layout/nav}}
-<div class="container" id="main">
-  <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
-    <div class="panel panel-default content-main">
-      <form action="/article" method="post" name="question">
-        <div class="form-group">
-          <label for="writer">글쓴이</label>
-          <input class="form-control" id="writer" name="writer" placeholder="글쓴이"/>
+<link href="/css/article/form.css" rel="stylesheet">
+<body>
+<div class="background">
+  {{>layout/nav}}
+  <div class="container" id="main">
+    <header class="post-header">
+      <p class="title">글쓰기</p>
+    </header>
+    <form class="submit-write" method="post" action="/article">
+      <div class="text-box">
+        <div class="comment-writer-container">
+          <p class="post-title">제목</p>
         </div>
         <div class="form-group">
-          <label for="title">제목</label>
-          <input class="form-control" id="title" name="title" placeholder="제목" type="text"/>
+          <textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요"></textarea>
+        </div>
+      </div>
+
+      <div class="text-box">
+        <div class="comment-writer-container">
+          <p class="post-content">내용</p>
         </div>
         <div class="form-group">
-          <label for="body">내용</label>
-          <textarea class="form-control" id="body" name="body" rows="5"></textarea>
+          <textarea class="form-control" id="body" name="body"
+                    placeholder="내용을 입력하세요"></textarea>
         </div>
-        <button class="btn btn-success clearfix pull-right" type="submit">질문하기</button>
-        <div class="clearfix"/>
-      </form>
-    </div>
+      </div>
+      <input class="post-write-btn" type="submit" value="등록"/>
+    </form>
   </div>
 </div>
-{{>layout/footer}}
+</body>
+</html>

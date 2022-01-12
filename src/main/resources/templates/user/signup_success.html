@@ -1,0 +1,16 @@
+{{>layout/header}}
+<link href="/css/user/login_success.css" rel="stylesheet">
+<body>
+<div class="background">
+  {{>layout/nav}}
+  <div class="container" id="main">
+    <header class="post-header">
+      <p class="title">가입이 완료되었습니다!</p>
+    </header>
+    <p class="user-info"> 이메일: {{email}}</p>
+    <p class="user-info"> 닉네임: {{username}}</p>
+    <a href="/" class="btn">홈으로</a>
+  </div>
+</div>
+</body>
+</html>

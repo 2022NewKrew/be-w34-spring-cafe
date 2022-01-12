@@ -7,34 +7,28 @@ import javax.validation.constraints.Size;
 
 public class UserSignupRequest {
 
-    @NotBlank
-    @Size(min = 2, max = 15)
-    private final String username;
+    @Email(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")
+    private final String email;
 
     @NotBlank
     @Size(min = 8, max = 20)
     private final String password;
 
     @NotBlank
-    @Size(min = 2, max = 15)
-    private final String name;
+    @Size(min = 2, max = 10)
+    private final String username;
 
-    @Email(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")
-    private final String email;
-
-    public UserSignupRequest(String username, String password, String name, String email) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
+    public UserSignupRequest(String email, String password, String username) {
         this.email = email;
+        this.password = password;
+        this.username = username;
     }
 
     public User toEntity() {
         return User.builder()
-            .username(username)
-            .password(password)
-            .name(name)
             .email(email)
+            .password(password)
+            .username(username)
             .build();
     }
 }

@@ -1,22 +1,25 @@
 {{>layout/header}}
-{{>layout/nav}}
-<div class="container" id="main">
-  <div class="col-md-6 col-md-offset-3">
-    <div class="panel panel-default content-main">
-      <form action="/users/login" method="post" name="question">
-        <div class="form-group">
-          <label for="userId">사용자 아이디</label>
-          <input class="form-control" id="userId" name="userId" placeholder="id">
-        </div>
-        <div class="form-group">
-          <label for="password">비밀번호</label>
-          <input class="form-control" id="password" name="password" placeholder="password"
-                 type="password">
-        </div>
-        <button class="btn btn-success clearfix pull-right" type="submit">로그인</button>
-        <div class="clearfix"/>
-      </form>
-    </div>
+<link href="/css/user/login.css" rel="stylesheet">
+<body>
+<div class="background">
+  {{>layout/nav}}
+  <div class="container" id="main">
+    <header class="post-header">
+      <p class="title">로그인</p>
+    </header>
+    <form name="question" class="info-container" method="post" action="/user">
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
+      </div>
+      <div class="form-group">
+        <label for="password">비밀번호</label>
+        <input type="password" class="form-control" id="password" name="password"
+               placeholder="비밀번호를 입력하세요">
+      </div>
+      <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
+    </form>
   </div>
 </div>
-{{>layout/footer}}
+</body>
+</html>
