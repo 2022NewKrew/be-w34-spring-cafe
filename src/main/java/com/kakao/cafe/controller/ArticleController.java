@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("articles")
+@RequestMapping("/articles")
 public class ArticleController {
 
     private final ArticleService articleService;
