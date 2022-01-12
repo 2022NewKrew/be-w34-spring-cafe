@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.exceptions.InvalidUser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +29,7 @@ public class UserRepository {
 
     public User findByUserId(String id) {
         User findUser = userList.stream().filter(user -> Objects.equals(user.getUserId(), id)).findAny()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
+                .orElseThrow(() -> new InvalidUser("사용자 ID가 없습니다"));
 
         return findUser;
     }
