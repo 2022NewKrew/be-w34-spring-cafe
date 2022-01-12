@@ -24,7 +24,6 @@ public class ArticleService {
         log.info(this.getClass() + ": 글쓰기");
         String authorName = request.writer;
         User author = userRepository.findByUserNameOrNull(authorName);
-        log.info(author.toString());
         Article article = request.toArticle(author);
         articleRepository.save(article);
     }
@@ -32,7 +31,6 @@ public class ArticleService {
     public List<ArticleListResponse> findAll() {
         log.info(this.getClass() + ": 글 목록");
         List<Article> articles = articleRepository.findAll();
-        log.info(articles.toString());
         return articles.stream()
                 .map(ArticleListResponse::valueOf)
                 .collect(Collectors.toList());

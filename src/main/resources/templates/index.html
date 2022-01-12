@@ -4,9 +4,8 @@
    <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
       <div class="panel panel-default qna-list">
           <ul class="list">
+              {{#articles}}
               <li>
-                  <tbody>
-                  {{#articles}}
                   <div class="wrap">
                       <div class="main">
                           <strong class="subject">
@@ -15,7 +14,7 @@
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
                               <span class="time">{{createdAt}}</span>
-                              <a href="user/profile" class="author">{{authorName}}</a>
+                              <a href="users/{{authorId}}" class="author">{{authorName}}</a>
                           </div>
                           <div class="reply" title="댓글">
                               <i class="icon-reply"></i>
@@ -23,9 +22,8 @@
                           </div>
                       </div>
                   </div>
-                  {{/articles}}
-                  </tbody>
               </li>
+              {{/articles}}
               <li>
                   <div class="wrap">
                       <div class="main">
