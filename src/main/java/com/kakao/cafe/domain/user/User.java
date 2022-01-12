@@ -1,18 +1,10 @@
 package com.kakao.cafe.domain.user;
 
-import java.util.Objects;
-
 public class User {
     private Long id;
     private String email;
     private String nickname;
     private String password;
-
-    public User(String email, String nickname, String password) {
-        this.email = email;
-        this.nickname = nickname;
-        this.password = password;
-    }
 
     public Long getId() {
         return id;
@@ -26,34 +18,66 @@ public class User {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getNickname() {
         return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getPassword() {
         return password;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id.equals(user.id) && email.equals(user.email) && nickname.equals(user.nickname) && password.equals(user.password);
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, nickname, password);
-    }
+    public static final class UserBuilder {
+        private Long id;
+        private String email;
+        private String nickname;
+        private String password;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        private UserBuilder() {
+        }
+
+        public static UserBuilder anUser() {
+            return new UserBuilder();
+        }
+
+        public UserBuilder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public UserBuilder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public UserBuilder withNickname(String nickname) {
+            this.nickname = nickname;
+            return this;
+        }
+
+        public UserBuilder withPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public User build() {
+            User user = new User();
+            user.id = this.id;
+            user.nickname = this.nickname;
+            user.email = this.email;
+            user.password = this.password;
+            return user;
+        }
     }
 }

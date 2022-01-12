@@ -1,11 +1,12 @@
 {{> layout/header}}
+<body>
 {{> layout/navbar}}
 
 <div class="container">
     <h1 class="mt-5">유저 프로필</h1>
     <hr>
 
-    {{#user?}}
+    {{#userDto}}
     <div class="card" style="width: 18rem;">
         <img src="https://via.placeholder.com/150" class="card-img-top" alt="profile image">
         <div class="card-body">
@@ -17,7 +18,9 @@
             </ul>
         </div>
     </div>
-    {{/user?}}
+    {{/userDto}}
 </div>
 
 {{> layout/footer}}
+</body>
+</html>
