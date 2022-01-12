@@ -6,20 +6,33 @@ import com.kakao.cafe.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.sound.midi.Soundbank;
 import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
 
-    private final DataSource dataSource;
+//    private final DataSource dataSource;
+//
+//    public MvcConfiguration(DataSource dataSource) {
+//        System.out.println("시작@@@@@@@@@@@@@");
+//        this.dataSource = dataSource;
+//    }
 
-    public MvcConfiguration(DataSource dataSource) {
-        this.dataSource = dataSource;
+    @Bean
+    public DataSource dataSource() {
+        return new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.H2)
+                .setName("kakaodb")
+                .addScript("classpath:schema.sql").build();
     }
+
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -35,7 +48,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
 
     @Bean
     public UserRepository userRepository() {
-        return new UserH2Repository(dataSource);
+        return new UserH2Repository(dataSource());
     }
 
     @Bean
@@ -45,6 +58,6 @@ public class MvcConfiguration implements WebMvcConfigurer {
 
     @Bean
     public ArticleRepository articleRepository() {
-        return new ArticleH2Repository(dataSource);
+        return new ArticleH2Repository(dataSource());
     }
 }
