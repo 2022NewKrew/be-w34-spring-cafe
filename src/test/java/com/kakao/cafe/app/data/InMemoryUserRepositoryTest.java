@@ -62,10 +62,12 @@ class InMemoryUserRepositoryTest {
 
     @Test
     void getById() {
-        User user = subject.getById(1);
+        long id = subject.list().get(0).getId();
+
+        User user = subject.getById(id);
 
         assertNotNull(user);
-        assertEquals(1, user.getId());
+        assertEquals(id, user.getId());
     }
 
     @Test

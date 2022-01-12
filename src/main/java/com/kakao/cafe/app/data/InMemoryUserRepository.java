@@ -15,6 +15,8 @@ import java.util.function.Function;
 @Repository
 public class InMemoryUserRepository implements UserRepository {
 
+    private static long idCounter = 0;
+
     private final List<User> data = new ArrayList<>();
 
     @Override
@@ -26,7 +28,8 @@ public class InMemoryUserRepository implements UserRepository {
             // NOTE Exception을 던지는 것이 더 나을 것 같다. 옳은 접근인가?
             return null;
         }
-        long id = data.size() + 1;
+        idCounter++;
+        long id = idCounter;
         User user = signUp.createUser(id);
         data.add(user);
         return user;
