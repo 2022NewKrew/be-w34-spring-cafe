@@ -8,6 +8,7 @@ import com.kakao.cafe.user.repository.UserMemoryRepository;
 import com.kakao.cafe.user.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserService {
@@ -22,11 +23,11 @@ public class UserService {
     }
 
     public User getUserByUserId(String userId){
-        for(User user : userRepository.getUsers()){
-            if(user.getUserId().equals(userId)){
-                return user;
-            }
+        Optional<User> optionalUser = userRepository.getUsers().stream().filter((user) -> {return user.getUserId().equals(userId);}).findAny();
+        if(optionalUser.isPresent()){
+            return optionalUser.get();
         }
+
 
         throw new RuntimeException("유저 아이디에 해당하는 유저가 없습니다.");
     }

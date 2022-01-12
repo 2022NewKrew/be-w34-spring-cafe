@@ -15,7 +15,10 @@ public class ArticleService {
     }
 
     public Article getArticle(Long sequence){
-        //validation 은 나중에 추가.
+        if(sequence < 0 || sequence >= articleRepository.getArticles().size()){
+            throw new RuntimeException("범위에 없는 sequence가 입력되었습니다.");
+        }
+
         return articleRepository.getArticles().get(Math.toIntExact(sequence));
     }
 
