@@ -2,13 +2,11 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.user.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private static final List<User> userList = new ArrayList<>();
+    private static final Map<Long, User> userMap = new HashMap<>();
     private static Long idNumber = 0L;
 
     @Override
@@ -18,18 +16,17 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public User signUp(User user) {
-        user.setId(++idNumber);
-        userList.add(user);
+        userMap.put(user.getId(), user);
         return user;
     }
 
     @Override
     public List<User> findAll() {
-        return List.copyOf(userList);
+        return List.copyOf(userMap.values());
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return userList.stream().filter(user -> user.getUserId().equals(userId)).findFirst();
+        return userMap.values().stream().filter(user -> user.getUserId().equals(userId)).findFirst();
     }
 }
