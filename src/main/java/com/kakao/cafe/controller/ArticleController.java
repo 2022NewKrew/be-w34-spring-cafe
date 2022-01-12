@@ -35,10 +35,7 @@ public class ArticleController {
         return getArticles(model);
     }
 
-    @GetMapping("/articles/new")
-    public String newArticle() {
-        return "articles/new";
-    }
+    // Get /articles/new -> "articles/new"
 
     @PostMapping("/articles")
     public String writeArticle(@NonNull final ArticleDto articleDto) {

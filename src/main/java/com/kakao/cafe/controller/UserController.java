@@ -25,10 +25,7 @@ public class UserController {
         this.userService = Objects.requireNonNull(userService);
     }
 
-    @GetMapping("/signup")
-    public String getSignUp() {
-        return "users/signup";
-    }
+    // Get /signup -> "users/signup"
 
     @PostMapping("/users")
     public String processSignUp(
