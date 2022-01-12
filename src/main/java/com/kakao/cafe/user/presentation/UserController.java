@@ -1,5 +1,9 @@
-package com.kakao.cafe.user;
+package com.kakao.cafe.user.presentation;
 
+import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.dto.UserListResponse;
+import com.kakao.cafe.user.dto.UserProfileResponse;
+import com.kakao.cafe.user.dto.UserSaveRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -11,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import static com.kakao.cafe.user.UserController.USER_URI;
+import static com.kakao.cafe.user.presentation.UserController.USER_URI;
 
 @Controller
 @RequestMapping(USER_URI)

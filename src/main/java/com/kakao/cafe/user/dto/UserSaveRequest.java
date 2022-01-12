@@ -1,10 +1,12 @@
-package com.kakao.cafe.user;
+package com.kakao.cafe.user.dto;
+
+import com.kakao.cafe.user.domain.User;
 
 public class UserSaveRequest {
-    private String userId;
-    private String password;
-    private String name;
-    private String email;
+    public String userId;
+    public String password;
+    public String name;
+    public String email;
 
     public User toUser() {
         return new User(
