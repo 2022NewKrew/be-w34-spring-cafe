@@ -1,4 +1,4 @@
-package com.kakao.cafe.DTO;
+package com.kakao.cafe.Model;
 
 import lombok.Data;
 

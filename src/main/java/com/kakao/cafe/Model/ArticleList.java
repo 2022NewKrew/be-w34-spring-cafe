@@ -1,4 +1,4 @@
-package com.kakao.cafe.DTO;
+package com.kakao.cafe.Model;
 
 import lombok.Data;
 
@@ -16,15 +16,7 @@ public class ArticleList {
     }
 
     public void add(ArticleDTO articleDTO){
-        articleDTO.setPostIdx(++this.totalCount);
+        articleDTO.setArticleIdx(++this.totalCount);
         this.articleList.add(articleDTO);
-    }
-
-    @Override
-    public String toString() {
-        return "PostList{" +
-                "postList=" + articleList +
-                ", totalCount=" + totalCount +
-                '}';
     }
 }
