@@ -1,20 +1,20 @@
 package com.kakao.cafe.web;
 
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.user.UserService;
 import com.kakao.cafe.web.dto.UserCreateRequest;
 import com.kakao.cafe.web.dto.UserListResponse;
 import com.kakao.cafe.web.dto.UserProfileResponse;
+import com.kakao.cafe.web.dto.UserUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -24,18 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/form")
-    public String form() {
-        return "/user/form";
-    }
-
-    @PostMapping("/users")
-    public String save(@ModelAttribute UserCreateRequest requestDto) {
-        userService.save(requestDto.toEntity());
-        return "redirect:/users";
-    }
-
-    @GetMapping("/users")
+    @GetMapping()
     public String showUsers(Model model) {
         model.addAttribute("users", userService.findAll().stream()
                 .map(UserListResponse::new)
@@ -43,13 +32,19 @@ public class UserController {
         return "/user/list";
     }
 
-    @GetMapping("/users/{userId}")
+    @PostMapping()
+    public String save(@ModelAttribute UserCreateRequest requestDto) {
+        userService.save(requestDto.toEntity());
+        return "redirect:/users";
+    }
+
+    @GetMapping("/{userId}")
     public String showUser(@PathVariable String userId, Model model) {
         model.addAttribute("user", new UserProfileResponse(userService.findById(userId)));
         return "/user/profile";
     }
 
-    @GetMapping("/users/{userId}/form")
+    @GetMapping("/{userId}/form")
     public String updateForm(@PathVariable String userId, Model model) {
         model.addAttribute("userId", userId);
         UserProfileResponse userProfileResponse = new UserProfileResponse(userService.findById(userId));
@@ -57,6 +52,16 @@ public class UserController {
         model.addAttribute("email", userProfileResponse.getEmail());
 
         return "/user/updateForm";
+    }
+
+    @PostMapping("/{userId}/update")
+    public String update(@PathVariable String userId, @ModelAttribute UserUpdateRequest requestDto) {
+        User user = userService.findById(userId);
+        user.setName(requestDto.getName());
+        user.setEmail(requestDto.getEmail());
+        userService.update(userId, user);
+
+        return "redirect:/users";
     }
 
 }

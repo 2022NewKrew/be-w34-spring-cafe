@@ -18,6 +18,11 @@ public class InMemoryUserRepository implements UserRepository{
     }
 
     @Override
+    public void update(String id, User user) {
+        users.put(id, user);
+    }
+
+    @Override
     public User findById(String userId) {
         return users.get(userId);
     }

@@ -23,6 +23,11 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
+    public void update(String userId, User user) {
+        userRepository.update(userId, user);
+    }
+
     @Transactional(readOnly = true)
     public User findById(String id) {
         return userRepository.findById(id);

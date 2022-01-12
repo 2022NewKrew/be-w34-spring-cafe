@@ -46,17 +46,18 @@ public class UserRepositoryTest {
         User user = dto.toEntity();
         userRepository.save(user);
 
-        String modifiedPassword = "modifiedPassword";
         String modifiedName = "modifiedName";
         String modifiedEmail = "modifiedEmail";
 
+        user.setName(modifiedName);
+        user.setEmail(modifiedEmail);
+
         //when
-   //     userRepository.update(modifiedPassword, modifiedName, modifiedEmail);
+        userRepository.update(userId, user);
 
         //then
         User savedUser = userRepository.findById(userId);
 
-        assertThat(savedUser.getPassword()).isEqualTo(modifiedPassword);
         assertThat(savedUser.getName()).isEqualTo(modifiedName);
         assertThat(savedUser.getEmail()).isEqualTo(modifiedEmail);
     }
