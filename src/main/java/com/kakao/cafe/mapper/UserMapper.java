@@ -5,9 +5,9 @@ import com.kakao.cafe.domain.user.Name;
 import com.kakao.cafe.domain.user.Password;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserId;
-import com.kakao.cafe.dto.ProfileResponseDto;
-import com.kakao.cafe.dto.SignupRequestDto;
-import com.kakao.cafe.dto.UserListResponseDto;
+import com.kakao.cafe.dto.user.ProfileResponseDto;
+import com.kakao.cafe.dto.user.SignupRequestDto;
+import com.kakao.cafe.dto.user.UserListResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component

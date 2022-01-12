@@ -9,7 +9,7 @@
   <!--[if lt IE 9]>
   <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-  <link href="/css/user/list.css" rel="stylesheet">
+  <link href="/css/index.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -31,12 +31,12 @@
 
   <div class="description">
     <div class="desc-container">
-      <p class="desc-small">멤버리스트</p>
-      <p class="desc-big">참여자를 확인할 수 있습니다.</p>
+      <p class="desc-small">안녕하세요</p>
+      <p class="desc-big">카카오 교육 페이지 입니다.</p>
     </div>
   </div>
 
-  <p class="total_num">전체 멤버 {{users.size}}명</p>
+  <p class="total_num">전체 글 {{articles.size}}개</p>
 
   <div class="container" id="main">
     <div class="col-md-10 col-md-offset-1">
@@ -44,24 +44,29 @@
         <table class="table table-hover">
           <thead>
           <tr>
-            <th>사용자 아이디</th>
-            <th>이름</th>
-            <th>이메일</th>
-            <th></th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일자</th>
+            <th>조회수</th>
           </tr>
           </thead>
           <tbody>
-          {{#users}}
+          {{#articles}}
           <tr>
-            <td><a href="/users/{{userId}}">{{userId}}</a></td>
-            <td>{{name}}</td>
-            <td>{{email}}</td>
+            <td><a href="/articles/{{articleId}}">{{title}}</a></td>
+            <td>{{writer}}</td>
+            <td>{{createdAt}}</td>
+            <td>{{viewCount}}</td>
           </tr>
-          {{/users}}
+          {{/articles}}
           </tbody>
         </table>
       </div>
     </div>
+  </div>
+  <div class="post-btn-container">
+    <a class="post-write-btn" href="/article/form" class="btn btn-primary pull-right"
+       role="button">글쓰기</a>
   </div>
 </div>
 </body>
