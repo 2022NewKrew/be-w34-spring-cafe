@@ -1,7 +1,7 @@
 package com.kakao.cafe.application.user;
 
 import com.kakao.cafe.domain.user.FindUserPort;
-import com.kakao.cafe.domain.user.SignUpUserPort;
+import com.kakao.cafe.domain.user.UpdateUserPort;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserVo;
 import org.junit.jupiter.api.DisplayName;
@@ -21,47 +21,46 @@ import static org.mockito.BDDMockito.verify;
 import static org.mockito.Mockito.never;
 
 @ExtendWith(MockitoExtension.class)
-class SignUpFindUserServiceTest {
+class UpdateUserServiceTest {
 
     @InjectMocks
-    SignUpUserService signUpUserService;
+    UpdateUserService updateUserService;
 
     @Mock
     FindUserPort findUserPort;
 
     @Mock
-    SignUpUserPort signUpUserPort;
+    UpdateUserPort updateUserPort;
 
-    @DisplayName("기존에 존재하지 않는 사용자는 회원 가입이 가능하다")
+    @DisplayName("사용자의 정보를 수정할 수 있다.")
     @Test
     void checkUserJoin() {
         // given
-        UserVo user = new UserVo("2wls", "0224", "윤이진", "483759@naver.com");
+        UserVo userVo = new UserVo("2wls", "0224", "윤이진", "483759@naver.com");
         given(findUserPort.findByUserId("2wls"))
-                .willReturn(Optional.empty());
+                .willReturn(Optional.of(userVo.convertVoToEntity()));
 
         // when
-        signUpUserService.join(user);
+        updateUserService.updateInformation(userVo);
 
         //then
-        verify(signUpUserPort).save(any(User.class));
+        verify(updateUserPort).save(any(User.class));
     }
 
-    @DisplayName("이미 존재하는 사용자는 회원 가입을 할 수 없다")
+    @DisplayName("존재하지 않는 사용자는 정보를 수정할 수 없다.")
     @Test
     void checkDuplicatedUserJoinException() {
         // given
         UserVo userVo = new UserVo("2wls", "0224", "윤이진", "483759@naver.com");
-        User user = new User("2wls", "0224", "윤이진", "483759@naver.com");
         given(findUserPort.findByUserId("2wls"))
-                .willReturn(Optional.of(user));
+                .willReturn(Optional.empty());
 
         // when
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> signUpUserService.join(userVo));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> updateUserService.updateInformation(userVo));
 
         //then
         assertThat(exception.getMessage())
-                .isEqualTo("이미 존재하는 ID는 가입할 수 없습니다.");
-        verify(signUpUserPort, never()).save(any(User.class));
+                .isEqualTo("존재하지 않는 사용자의 정보를 수정할 수 없습니다.");
+        verify(updateUserPort, never()).save(any(User.class));
     }
 }
