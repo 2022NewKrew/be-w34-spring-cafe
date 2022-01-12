@@ -7,18 +7,20 @@ function alertModal() {
 
 }
 
-/**
- * 프로필 상세로 이동
- * @param email
- */
-function goProfileDetail(email) {
-  const encodedEmail = encodeURIComponent(email);
-  location.href = '/users/' + encodedEmail;
-}
 
 /**
  * 로그아웃
  */
-function logout() {
-  alert("준비중입니다.");
+async function logout() {
+  const response = await fetch('/api/logout', {
+    method: 'POST'
+  });
+
+  if(response.redirected) {
+    location.href = response.url;
+    return;
+  }
+
+  const parsedResponse = await response.json();
+  alert(parsedResponse.message + '(' + parsedResponse.code + ')');
 }

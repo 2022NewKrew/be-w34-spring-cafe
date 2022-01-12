@@ -14,7 +14,7 @@
         <ul class="navbar-nav ml-auto">
           {{#isLogin}}
           <li class="nav-item">
-            <a class="nav-link" href="#" onclick="goProfileDetail('{{session.email}}')">{{session.nickName}} </a>
+            <a class="nav-link" href="/users/{{session.id}}" >{{session.nickName}} </a>
           </li>
           <li class="nav-item nav-link" style="color:#7a7a7a">
             님 반갑습니다.

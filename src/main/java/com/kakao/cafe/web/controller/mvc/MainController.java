@@ -47,10 +47,10 @@ public class MainController {
     return "list";
   }
 
-  @GetMapping("/users/{email}")
-  public String users(Model model, @PathVariable("email") String email) {
+  @GetMapping("/users/{id}")
+  public String users(Model model, @PathVariable("id") Long id) {
 
-    User user = userService.findUserByEmail(email);
+    User user = userService.findUserById(id);
     boolean isLoginUser = userService.isLoginUser(user);
 
     model.addAttribute("user", new UserDTO(user));

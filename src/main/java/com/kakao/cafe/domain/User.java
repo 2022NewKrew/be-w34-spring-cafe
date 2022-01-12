@@ -12,8 +12,9 @@ public class User {
   public static String DEFAULT_SUMMARY = "자기소개를 입력해주세요.";
   public static String DEFAULT_PROFILE = "https://t1.daumcdn.net/cfile/tistory/994F3E4D5FC9FCFF03";
 
-  private int index;
-  private final String email;
+  private Integer index;
+  private final Long id;
+  private String email;
   private String nickName;
   private String password;
   private String summary;
@@ -23,9 +24,11 @@ public class User {
   private Timestamp lastLoginAt;
 
 
-  private User(int index, String email, String nickName, String summary, String profile,
+  private User(Integer index, Long id, String email, String nickName, String summary,
+      String profile,
       String password, Timestamp createAt, Timestamp modifiedAt, Timestamp lastLoginAt) {
     this.index = index;
+    this.id = id;
     this.email = email;
     this.nickName = nickName;
     this.summary = StringUtils.isNotBlank(summary) ? summary : DEFAULT_SUMMARY;
@@ -33,8 +36,7 @@ public class User {
     this.password = password;
     this.createAt = createAt != null ? createAt : new Timestamp(System.currentTimeMillis());
     this.modifiedAt = modifiedAt != null ? modifiedAt : new Timestamp(System.currentTimeMillis());
-    this.lastLoginAt =
-        lastLoginAt != null ? lastLoginAt : new Timestamp(System.currentTimeMillis());
+    this.lastLoginAt = lastLoginAt;
   }
 
 
@@ -49,7 +51,7 @@ public class User {
     }
 
     return new User(
-        0, email, nickName, null,
+        null, null, email, nickName, null,
         null, password, null, null, null);
   }
 
@@ -62,22 +64,28 @@ public class User {
       throw new NoRequiredValueException();
     }
 
-    return new User(0, email, "", null,
+    return new User(null, null, email, null, null,
         null, password, null, null, null);
   }
 
+  public static User of(Long id, User user) {
+    return new User(null, id, user.getEmail(), user.getNickName(), user.getSummary(),
+        user.getProfile(), user.getPassword(), user.getCreateAt(), user.getModifiedAt(),
+        user.getLastLoginAt());
+  }
 
-  public static User create(int index, String email, String nickName,
+
+  public static User create(Integer index, Long id, String email, String nickName,
       String summary, String profile, String password,
       Timestamp createAt, Timestamp modifiedAt, Timestamp lastLoginAt) {
 
-    return new User(index, email, nickName, summary, profile,
+    return new User(index, id, email, nickName, summary, profile,
         password, createAt, modifiedAt, lastLoginAt);
   }
 
 
   public static User createEmpty() {
-    return new User(0, null, null, null,
+    return new User(null, null, null, null, null,
         null, null, null, null, null);
   }
 
@@ -91,6 +99,9 @@ public class User {
     this.lastLoginAt = new Timestamp(System.currentTimeMillis());
   }
 
+  public Long getId() {
+    return id;
+  }
 
   public String getEmail() {
     return email;

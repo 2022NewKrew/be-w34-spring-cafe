@@ -24,9 +24,16 @@
           {{#users}}
           <tr>
             <th scope="row">{{index}}</th>
-            <td><a href="#" onclick="goProfileDetail('{{email}}')">{{email}}</a></td>
+            <td><a href="/users/{{id}}">{{email}}</a></td>
             <td>{{nickName}}</td>
-            <td>{{lastLoginAt}}</td>
+            <td style="font-family:Hind">
+              {{#lastLoginAt}}
+                {{lastLoginAt}}
+              {{/lastLoginAt}}
+              {{^lastLoginAt}}
+                접속 이력 없음
+              {{/lastLoginAt}}
+            </td>
           </tr>
           {{/users}}
           </tbody>

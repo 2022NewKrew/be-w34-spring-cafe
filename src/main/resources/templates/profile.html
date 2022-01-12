@@ -25,10 +25,17 @@
           <div class="about-item pr-3 mb-5 mb-lg-0">
             <span class="h6 text-color">Our cafe user</span>
             <h2 class="mt-3 mb-4 position-relative content-title">{{user.summary}}</h2>
-            <p class="mb-5">
+            <p class="mb-5" style="font-family: Hind;">
               Email : {{user.email}}<br>
               Nickname : {{user.nickName}}<br>
-              Last login at : {{user.lastLoginAt}}<br>
+              Last login at :
+              {{#user.lastLoginAt}}
+              {{user.lastLoginAt}}
+              {{/user.lastLoginAt}}
+              {{^user.lastLoginAt}}
+                접속 이력 없음
+              {{/user.lastLoginAt}}
+                <br>
               First joined at : {{user.createAt}}<br>
             </p>
 

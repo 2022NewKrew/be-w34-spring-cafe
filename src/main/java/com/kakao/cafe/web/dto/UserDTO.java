@@ -5,7 +5,8 @@ import java.sql.Timestamp;
 
 public class UserDTO {
 
-  private int index;
+  private Integer index;
+  private Long id;
   private String email;
   private String nickName;
   private String summary;
@@ -20,6 +21,7 @@ public class UserDTO {
 
   public UserDTO(User user) {
     this.index = user.getIndex();
+    this.id = user.getId();
     this.email = user.getEmail();
     this.nickName = user.getNickName();
     this.summary = user.getSummary();
@@ -29,12 +31,20 @@ public class UserDTO {
     this.lastLoginAt = user.getLastLoginAt();
   }
 
-  public int getIndex() {
+  public Integer getIndex() {
     return index;
   }
 
-  public void setIndex(int index) {
+  public void setIndex(Integer index) {
     this.index = index;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getEmail() {
@@ -97,6 +107,7 @@ public class UserDTO {
   public String toString() {
     return "UserDTO{" +
         "index=" + index +
+        ", id=" + id +
         ", email='" + email + '\'' +
         ", nickName='" + nickName + '\'' +
         ", summary='" + summary + '\'' +
