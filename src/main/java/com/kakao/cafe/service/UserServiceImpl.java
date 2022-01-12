@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.user.ProfileUpdateDto;
+import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.SimpleUserInfo;
 import com.kakao.cafe.dto.user.UserJoinDto;
 import com.kakao.cafe.error.exception.duplication.UserEmailDuplicationException;
@@ -34,6 +34,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ProfileDto findProfileById(Long id) {
+        Optional<ProfileDto> optionalProfileDto = userRepository.findProfileById(id);
+        return optionalProfileDto.orElseThrow(() -> new UserNotFoundedException(UserErrorMsg.USER_NOT_FOUNDED.getDescription()));
+    }
+
+    @Override
     public List<SimpleUserInfo> getListOfSimpleUserInfo(Integer pageNum, Integer pageSize) {
         return userRepository.getListOfSimpleUserInfo(pageNum, pageSize);
     }
@@ -56,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateProfile(ProfileUpdateDto profileUpdateDto) {
+    public User updateProfile(ProfileDto profileUpdateDto) {
         Long targetUserId = profileUpdateDto.getId();
         User targetUser = findById(targetUserId);
         checkDuplicationForNewNickName(profileUpdateDto.getNickName(), targetUser.getNickName());

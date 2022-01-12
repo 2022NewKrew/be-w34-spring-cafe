@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller.rest;
 
 import com.kakao.cafe.constant.RedirectedURL;
-import com.kakao.cafe.dto.user.ProfileUpdateDto;
+import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.UserJoinDto;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.testutil.user.UserDtoUtil;
@@ -60,7 +60,7 @@ class UserRestControllerTest {
     @DisplayName("프로필 수정 -> 정상")
     void updateProfile() throws IOException {
         //Given
-        ProfileUpdateDto dto = UserDtoUtil.createProfileUpdateDto();
+        ProfileDto dto = UserDtoUtil.createProfileDto();
         String passwordBeforeEncode = dto.getPassword();
 
         //When

@@ -1,7 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.user.ProfileUpdateDto;
+import com.kakao.cafe.dto.user.ProfileDto;
+import com.kakao.cafe.dto.user.SimpleUserInfo;
 import com.kakao.cafe.dto.user.UserJoinDto;
 import com.kakao.cafe.error.exception.duplication.UserEmailDuplicationException;
 import com.kakao.cafe.error.exception.duplication.UserNickNameDuplicationException;
@@ -16,6 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -100,17 +103,45 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("ID로 ProfileDTO 반환 -> 해당 ID의 유저 존재하지 않음")
+    void findProfileById_nonExist() {
+        //Given
+        Long nonExistUserId = Long.valueOf(2512);
+        given(userRepository.findProfileById(nonExistUserId)).willReturn(Optional.empty());
+
+        //When, Then
+        assertThrows(UserNotFoundedException.class, () -> userService.findProfileById(nonExistUserId));
+    }
+
+    @Test
+    @DisplayName("ID로 ProfileDTO 반환 -> 정상")
+    void findProfileById() {
+        //Given
+        Long userId = Long.valueOf(24);
+        ProfileDto profileDto = UserDtoUtil.createProfileDto(userId);
+        given(userRepository.findProfileById(userId)).willReturn(Optional.of(profileDto));
+
+        //When
+        ProfileDto result = userService.findProfileById(userId);
+
+        //Then
+        assertEquals(profileDto, result);
+    }
+
+    @Test
     @DisplayName("특정 페이지의 모든 유저 간단 정보 반환 -> 정상")
     void getListOfSimpleUserInfo() {
         //Given
         Integer pageNum = 1;
         Integer pageSize = 10;
+        List<SimpleUserInfo> simpleUserInfoList = new ArrayList<>();
+        given(userRepository.getListOfSimpleUserInfo(pageNum, pageSize)).willReturn(simpleUserInfoList);
 
         //When
-        userService.getListOfSimpleUserInfo(pageNum, pageSize);
+        List<SimpleUserInfo> result = userService.getListOfSimpleUserInfo(pageNum, pageSize);
 
         //Then
-        then(userRepository).should(times(1)).getListOfSimpleUserInfo(pageNum, pageSize);
+        assertEquals(simpleUserInfoList, result);
     }
 
     @Test
@@ -197,7 +228,7 @@ class UserServiceImplTest {
     void updateProfile_nonExistUser() {
         //Given
         Long nonExistId = Long.valueOf(251);
-        ProfileUpdateDto dto = UserDtoUtil.createProfileUpdateDto(nonExistId);
+        ProfileDto dto = UserDtoUtil.createProfileDto(nonExistId);
         given(userRepository.findById(nonExistId)).willReturn(Optional.empty());
 
         //When, Then
@@ -210,7 +241,7 @@ class UserServiceImplTest {
         //Given
         String duplicatedNickName = "duplicated";
         Long userInRepoId = userInRepo.getId();
-        ProfileUpdateDto dto = UserDtoUtil.createProfileUpdateDto(userInRepoId, duplicatedNickName);
+        ProfileDto dto = UserDtoUtil.createProfileDto(userInRepoId, duplicatedNickName);
         given(userRepository.findById(userInRepoId)).willReturn(Optional.of(userInRepo));
         given(userRepository.existsByNickName(duplicatedNickName)).willReturn(true);
 
@@ -219,12 +250,29 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("프로필 업데이트 -> 정상")
-    void updateProfile() {
+    @DisplayName("프로필 업데이트 -> 정상, User nickName 변화 확인")
+    void updateProfile_checkUserNickName() {
         //Given
         String newNickName = "newNick";
         Long userInRepoId = userInRepo.getId();
-        ProfileUpdateDto dto = UserDtoUtil.createProfileUpdateDto(userInRepoId, newNickName);
+        ProfileDto dto = UserDtoUtil.createProfileDto(userInRepoId, newNickName);
+        given(userRepository.findById(userInRepoId)).willReturn(Optional.of(userInRepo));
+        given(userRepository.existsByNickName(newNickName)).willReturn(false);
+
+        //When
+        userService.updateProfile(dto);
+
+        //Then
+        assertEquals(newNickName, userInRepo.getNickName());
+    }
+
+    @Test
+    @DisplayName("프로필 업데이트 -> 정상, Repository 동작 확인")
+    void updateProfile_checkRepo() {
+        //Given
+        String newNickName = "newNick";
+        Long userInRepoId = userInRepo.getId();
+        ProfileDto dto = UserDtoUtil.createProfileDto(userInRepoId, newNickName);
         given(userRepository.findById(userInRepoId)).willReturn(Optional.of(userInRepo));
         given(userRepository.existsByNickName(newNickName)).willReturn(false);
 

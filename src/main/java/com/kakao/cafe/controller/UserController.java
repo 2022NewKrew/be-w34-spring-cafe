@@ -1,11 +1,13 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.constant.PageSize;
+import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.SimpleUserInfo;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,6 +28,16 @@ public class UserController {
         mav.addObject("userInfos", userInfos);
 
         mav.setViewName("userList");
+        return mav;
+    }
+
+    @GetMapping("/users/{userId}")
+    public ModelAndView userProfile(@PathVariable("userId") Long userId, ModelAndView mav) {
+        ProfileDto profileDto = userService.findProfileById(userId);
+        mav.addObject("profile", profileDto);
+
+        mav.setViewName("userProfile");
+
         return mav;
     }
 }

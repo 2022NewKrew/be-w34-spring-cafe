@@ -1,8 +1,10 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.SimpleUserInfo;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 
 /**
@@ -26,6 +28,10 @@ public class UserRepository implements Repository<User, Long> {
                 return Optional.of(user);
             }
         }
+        return Optional.empty();
+    }
+
+    public Optional<ProfileDto> findProfileById(Long id) {
         return Optional.empty();
     }
 

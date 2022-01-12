@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller.rest;
 
 import com.kakao.cafe.constant.RedirectedURL;
-import com.kakao.cafe.dto.user.ProfileUpdateDto;
+import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.UserJoinDto;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,10 +31,10 @@ public class UserRestController {
     }
 
     @PutMapping("/users/update")
-    public void updateProfile(ProfileUpdateDto profileUpdateDto, HttpServletResponse response) throws IOException {
+    public void updateProfile(ProfileDto profileDto, HttpServletResponse response) throws IOException {
         String redirectedURL = RedirectedURL.AFTER_UPDATE_PROFILE;
-        profileUpdateDto.setPassword(encodePassword(profileUpdateDto.getPassword()));
-        userService.updateProfile(profileUpdateDto);
+        profileDto.setPassword(encodePassword(profileDto.getPassword()));
+        userService.updateProfile(profileDto);
 
         response.sendRedirect(redirectedURL);
     }

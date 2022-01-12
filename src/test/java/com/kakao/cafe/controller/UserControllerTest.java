@@ -1,8 +1,10 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.constant.PageSize;
+import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.SimpleUserInfo;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.testutil.user.UserDtoUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,5 +58,19 @@ class UserControllerTest {
         then(mav).should(times(1)).setViewName("userList");
     }
 
+    @Test
+    @DisplayName("유저 프로필 화면 반환 -> 정상, check mav")
+    void userProfile() {
+        //Given
+        Long userId = Long.valueOf(25);
+        ProfileDto profileDto = UserDtoUtil.createProfileDto(userId);
+        given(userService.findProfileById(userId)).willReturn(profileDto);
 
+        //When
+        userController.userProfile(userId, mav);
+
+        //Then
+        then(mav).should(times(1)).addObject("profile", profileDto);
+        then(mav).should(times(1)).setViewName("userProfile");
+    }
 }

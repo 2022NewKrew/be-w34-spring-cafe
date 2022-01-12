@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ProfileUpdateDto {
+public class ProfileDto {
     private Long id;
     private String nickName;
     private String password;
