@@ -24,8 +24,11 @@ public class UserController {
 
     @PostMapping("/users")
     public String signup(@Valid UserSignupRequest user, Errors errors, RedirectAttributes rttr) {
+        if (errors.hasFieldErrors()) {
+            errors.getFieldErrors().forEach(error -> rttr.addFlashAttribute(error.getField(), error.getDefaultMessage()));
+            return "redirect:/signup";
+        }
         try {
-            validateParams(errors);
             userService.signupUser(user);
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,13 +37,6 @@ public class UserController {
         }
         rttr.addFlashAttribute("msg", "회원가입에 성공하였습니다.");
         return "redirect:/users";
-    }
-
-    private void validateParams(Errors errors) {
-        if (errors.hasErrors()) {
-            errors.getAllErrors().forEach(error -> log.warn("{}", error.getDefaultMessage()));
-            throw new IllegalArgumentException("형식에 맞지 않는 입력 값입니다.");
-        }
     }
 
     @GetMapping("/users")

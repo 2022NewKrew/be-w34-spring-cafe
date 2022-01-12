@@ -183,3 +183,7 @@ li {
 label {
     width: 25%;
 }
+
+.text-warning {
+    color: red;
+}
