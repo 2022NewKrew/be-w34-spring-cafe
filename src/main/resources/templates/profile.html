@@ -32,18 +32,18 @@
               First joined at : {{user.createAt}}<br>
             </p>
 
-            <a href="#" class="btn btn-main btn-round-full">MODIFY</a>
+            {{#isLoginUser}}
+              <a href="#" onclick="navigateModifyProfile('{{session.email}}')" class="btn btn-main btn-round-full">내 정보 수정</a>
+            {{/isLoginUser}}
+
           </div>
         </div>
         <div class="col-lg-6 col-md-6">
           <div class="about-item-img">
 <!--            <figure class="figure">-->
-<!--              <img src="{{user.profile}}" class="figure-img img-fluid rounded" alt="...">-->
-<!--              <figcaption class="figure-caption">A caption for the above image.</figcaption>-->
+<!--              <img src="{{user.profile}}" class="figure-img img-fluid rounded" alt="..." style="width:100%">-->
+<!--              <figcaption class="figure-caption">{{user.summary}}</figcaption>-->
 <!--            </figure>-->
-<!--            <div class="img"><img src="{{user.profile}}" class="rounded mx-auto d-block" alt="..."></div>-->
-<!--            <img src="{{user.profile}}" alt="" class="img-fluid">-->
-<!--            <div class="col-md-4 px-0">-->
               <img src="{{user.profile}}" class="img-fluid" style="width: 100%">
 <!--            </div>-->
           </div>
@@ -52,33 +52,6 @@
     </div>
   </section>
   <!-- Section About End -->
-
-
-<!--  <section class="about-info section pt-0">-->
-<!--    <div class="container">-->
-<!--      <div class="row justify-content-center">-->
-<!--        <div class="col-lg-4 col-md-6 col-sm-6">-->
-<!--          <div class="about-info-item mb-4 mb-lg-0">-->
-<!--            <h3 class="mb-3"><span class="text-color mr-2 text-md ">01.</span>Our Mission</h3>-->
-<!--            <p>llum similique ducimus accusamus laudantium praesentium, impedit quaerat, itaque maxime sunt deleniti voluptas distinctio .</p>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="col-lg-4 col-md-6 col-sm-6">-->
-<!--          <div class="about-info-item mb-4 mb-lg-0">-->
-<!--            <h3 class="mb-3"><span class="text-color mr-2 text-md">02.</span>Vission</h3>-->
-<!--            <p>llum similique ducimus accusamus laudantium praesentium, impedit quaerat, itaque maxime sunt deleniti voluptas distinctio .</p>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="col-lg-4 col-md-6 col-sm-6">-->
-<!--          <div class="about-info-item mb-4 mb-lg-0">-->
-<!--            <h3 class="mb-3"><span class="text-color mr-2 text-md">03.</span>Our Approach</h3>-->
-<!--            <p>llum similique ducimus accusamus laudantium praesentium, impedit quaerat, itaque maxime sunt deleniti voluptas distinctio .</p>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </section>-->
-
 
 </div>
 
@@ -90,6 +63,12 @@ Essential Scripts
     // Handler when the DOM is fully loaded
 
   });
+
+  function navigateModifyProfile(email) {
+
+    alert('준비중입니다.');
+
+  }
 
 </script>
 

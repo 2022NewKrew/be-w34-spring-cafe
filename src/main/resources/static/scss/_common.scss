@@ -40,6 +40,7 @@ input[type="email"],input[type="password"],input[type="text"],input[type="tel"]{
   padding: 1rem 2.5rem;
   text-transform: uppercase;
   border-radius:0;
+  font-family: "Hind";
   @include transition (all, 0.2s, ease);
 
    &.btn-icon {

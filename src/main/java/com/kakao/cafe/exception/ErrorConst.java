@@ -11,7 +11,8 @@ public enum ErrorConst {
   DB_KEY_DUPLICATED("해당 데이터가 이미 있습니다.", "LC_001", HttpStatus.BAD_REQUEST, DuplicateKeyException.class),
   NO_EMAIL_FOUND("해당 이메일 데이터가 없습니다.", "LC_002", HttpStatus.BAD_REQUEST, NoEmailFoundException.class),
   INVALID_AUTHENTICATION("로그인 정보가 잘못되었습니다. EMAIL 또는 PASSWORD 를 다시 확인하세요.", "LC_003", HttpStatus.BAD_REQUEST, InvalidAuthenticationException.class),
-  NO_MATCHING_UPDATE("갱신할 데이터가 없습니다.", "LC_004", HttpStatus.BAD_REQUEST, NoMatchingForUpdateException.class)
+  NO_MATCHING_UPDATE("갱신할 데이터가 없습니다.", "LC_004", HttpStatus.BAD_REQUEST, NoMatchingForUpdateException.class),
+  NO_REQUIRED_VALUE("필수 값이 부족합니다. 다시 한번 확인해주세요.", "LC_005", HttpStatus.BAD_REQUEST, NoRequiredValueException.class);
   ;
 
   private final String message;

@@ -11,6 +11,7 @@ public class MVCExceptionHandler {
   @ExceptionHandler(Exception.class)
   private String handleException(Exception e, Model model) {
     ErrorConst error = ErrorConst.findBy(e);
+    e.printStackTrace();
     model.addAttribute("error", ErrorDTO.of(error));
     return "error_custom";
   }

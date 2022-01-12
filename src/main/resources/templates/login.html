@@ -359,26 +359,33 @@ Essential Scripts
 
   function setup() {
     const login = document.getElementById('login');
-    login.addEventListener('click', async () => {
-
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify({email, password})
-      });
-
-      if(response.redirected) {
-        location.href = response.url;
-        return;
+    login.addEventListener('click', submitLogin);
+    document.addEventListener('keyup', e => {
+      if(e.key === 'Enter') {
+        submitLogin();
       }
+    })
+  }
 
-      const parsedResponse = await response.json();
-      alert(parsedResponse.message + '(' + parsedResponse.code + ')');
+  async function submitLogin() {
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({email, password})
     });
+
+    if(response.redirected) {
+      location.href = response.url;
+      return;
+    }
+
+    const parsedResponse = await response.json();
+    alert(parsedResponse.message + '(' + parsedResponse.code + ')');
 
   }
 

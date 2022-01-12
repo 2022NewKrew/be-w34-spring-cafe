@@ -1,11 +1,11 @@
 package com.kakao.cafe.web.controller.api;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.web.common.EnableSession;
 import com.kakao.cafe.web.dto.LoginDTO;
 import com.kakao.cafe.web.dto.ResponseDTO;
 import com.kakao.cafe.web.dto.SignUpDTO;
 import com.kakao.cafe.web.service.UserService;
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
+@EnableSession
 public class UserController {
 
   private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -29,6 +30,7 @@ public class UserController {
 
   @PostMapping("/user")
   public ResponseEntity<ResponseDTO> createUser(@RequestBody SignUpDTO signUpDTO) {
+
     userService.createUser(User.of(signUpDTO));
 
     return ResponseEntity.status(HttpStatus.FOUND)
@@ -37,14 +39,23 @@ public class UserController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<ResponseDTO> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request) {
-    userService.login(User.of(loginDTO), request);
+  public ResponseEntity<ResponseDTO> login(@RequestBody LoginDTO loginDTO) {
+
+    userService.login(User.of(loginDTO));
 
     return ResponseEntity.status(HttpStatus.FOUND)
         .header(HttpHeaders.LOCATION, "/")
         .body(ResponseDTO.createSuccess());
   }
 
+  @PostMapping("/logout")
+  public ResponseEntity<ResponseDTO> logout() {
 
+    userService.logout();
+
+    return ResponseEntity.status(HttpStatus.FOUND)
+        .header(HttpHeaders.LOCATION, "/")
+        .body(ResponseDTO.createSuccess());
+  }
 
 }

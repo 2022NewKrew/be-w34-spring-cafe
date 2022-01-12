@@ -24,7 +24,7 @@
           {{#users}}
           <tr>
             <th scope="row">{{index}}</th>
-            <td><a href="#" onclick="goDetail('{{email}}')">{{email}}</a></td>
+            <td><a href="#" onclick="goProfileDetail('{{email}}')">{{email}}</a></td>
             <td>{{nickName}}</td>
             <td>{{lastLoginAt}}</td>
           </tr>
@@ -46,11 +46,6 @@ Essential Scripts
     // Handler when the DOM is fully loaded
 
   });
-
-  function goDetail(email) {
-    const encodedEmail = encodeURIComponent(email);
-    location.href = '/users/' + encodedEmail;
-  }
 
 </script>
 

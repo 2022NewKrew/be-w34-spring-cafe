@@ -2,6 +2,7 @@ package com.kakao.cafe.web.controller.mvc;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.Users;
+import com.kakao.cafe.web.common.EnableSession;
 import com.kakao.cafe.web.dto.UserDTO;
 import com.kakao.cafe.web.service.UserService;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
+@EnableSession
 public class MainController {
 
   private static final Logger logger = LoggerFactory.getLogger(MainController.class);
@@ -29,13 +31,15 @@ public class MainController {
   }
 
   @GetMapping("/")
-  public String index() {
+  public String index(Model model) {
     return "index";
   }
 
   @GetMapping("/users")
   public String users(Model model) {
+
     Users users = userService.findAllUsers();
+
     model.addAttribute("users", users.stream()
         .map(UserDTO::new)
         .collect(Collectors.toList()));
@@ -45,18 +49,23 @@ public class MainController {
 
   @GetMapping("/users/{email}")
   public String users(Model model, @PathVariable("email") String email) {
+
     User user = userService.findUserByEmail(email);
+    boolean isLoginUser = userService.isLoginUser(user);
+
     model.addAttribute("user", new UserDTO(user));
+    model.addAttribute("isLoginUser", isLoginUser);
+
     return "profile";
   }
 
   @GetMapping("/signup")
-  public String signUp() {
+  public String signUp(Model model) {
     return "form";
   }
 
   @GetMapping("/login")
-  public String login() {
+  public String login(Model model) {
     return "login";
   }
 

@@ -12,11 +12,24 @@
 
       <div class="collapse navbar-collapse text-center" id="navbarsExample09">
         <ul class="navbar-nav ml-auto">
+          {{#isLogin}}
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="goProfileDetail('{{session.email}}')">{{session.nickName}} </a>
+          </li>
+          <li class="nav-item nav-link" style="color:#7a7a7a">
+            님 반갑습니다.
+          </li>
+          {{/isLogin}}
           <li class="nav-item">
             <a class="nav-link" href="/users">멤버리스트 <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>
-          <li class="nav-item"><a class="nav-link" href="/signup">회원가입</a></li>
+          {{^isLogin}}
+            <li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>
+            <li class="nav-item"><a class="nav-link" href="/signup">회원가입</a></li>
+          {{/isLogin}}
+          {{#isLogin}}
+            <li class="nav-item"><a class="nav-link" href="#" onclick="logout()">로그아웃</a></li>
+          {{/isLogin}}
         </ul>
       </div>
     </div>

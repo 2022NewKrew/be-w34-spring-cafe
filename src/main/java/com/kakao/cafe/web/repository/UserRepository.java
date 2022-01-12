@@ -55,15 +55,18 @@ public class UserRepository {
   }
 
   public Users findAll() {
-    String query = "SELECT * FROM USERS;";
+    String query = "SELECT * FROM USERS ORDER BY CREATE_AT, EMAIL;";
     List<User> users = jdbcTemplate.query(query, new UserMapper());
     return Users.of(users);
   }
 
   public Optional<User> findByEmail(String email) {
     String query = "SELECT * FROM USERS WHERE EMAIL = ?";
-    User user = jdbcTemplate.queryForObject(query, new UserMapper(), email);
-    return Optional.ofNullable(user);
+    List<User> user = jdbcTemplate.query(query, new UserMapper(), email);
+    if(user.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.ofNullable(user.get(0));
   }
 
   public int delete(User user) {
@@ -83,7 +86,7 @@ public class UserRepository {
       Timestamp createAt = rs.getTimestamp("CREATE_AT");
       Timestamp modifiedAt = rs.getTimestamp("MODIFIED_AT");
       Timestamp lastLoginAt = rs.getTimestamp("LAST_LOGIN_AT");
-      return User.of(rowNum + 1, email, nickName, summary, profile, password, createAt, modifiedAt,
+      return User.create(rowNum + 1, email, nickName, summary, profile, password, createAt, modifiedAt,
           lastLoginAt);
     }
   }

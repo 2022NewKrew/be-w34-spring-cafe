@@ -15,6 +15,7 @@ public class RestExceptionHandler {
   @ExceptionHandler(Exception.class)
   private ResponseEntity<ErrorDTO> handleException(Exception e) {
     ErrorConst error = ErrorConst.findBy(e);
+    e.printStackTrace();
     return ResponseEntity.status(error.getStatus())
         .body(ErrorDTO.of(error));
   }
