@@ -21,7 +21,7 @@ public class ArticleController {
     private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
     private final ArticleService articleService;
 
-    @PostMapping("")
+    @PostMapping
     public String postArticle(ArticlePostDto articlePostDto) {
         articleService.postArticle(articlePostDto);
         logger.info("Post Article : {}", articlePostDto.getTitle());

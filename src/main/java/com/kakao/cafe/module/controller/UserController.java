@@ -20,14 +20,14 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
-    @PostMapping("")
+    @PostMapping
     public String signUp(UserSignUpDto userSignUpDto) {
         userService.signUp(userSignUpDto);
         logger.info("Create User : {}", userSignUpDto.getName());
         return "redirect:/users";
     }
 
-    @GetMapping("")
+    @GetMapping
     public String userList(Model model) {
         List<UserDto> userList = userService.userList();
         model.addAttribute("userList", userList);
