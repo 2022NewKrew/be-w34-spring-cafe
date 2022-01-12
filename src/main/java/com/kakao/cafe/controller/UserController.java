@@ -1,8 +1,10 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserService;
+import com.kakao.cafe.dto.UserSignupRequest;
+import com.kakao.cafe.service.UserService;
 import java.util.List;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,18 +19,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
     private final UserService userService;
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/create")
-    public String signUp(User user) {
+    public String signUp(@Valid UserSignupRequest userDto) {
+        User user = userDto.toEntity();
         logger.info("[POST] /create 회원가입하기");
-        logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getName());
+        logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getUserName());
 
-        userService.insertUser(user);
+        userService.register(user);
 
         return "redirect:/users";
     }
@@ -43,18 +46,12 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/form")
-    String form() {
-        logger.info("[GET] /form");
-        return "user/form";
-    }
-
     @GetMapping("/{userId}")
     public String userProfile(@PathVariable String userId, Model model) {
         logger.info("[GET] /{userId} 프로필 조회");
 
         User user = userService.getUserById(userId);
-        logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getName());
+        logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getUserName());
         model.addAttribute("user", user);
 
         return "user/profile";
