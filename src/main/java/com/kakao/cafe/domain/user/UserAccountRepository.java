@@ -13,6 +13,8 @@ public interface UserAccountRepository {
 
     List<UserAccount> findAll();
 
+    void update(UserAccount userAccount);
+
     void delete(Long id);
 
     void deleteAll();

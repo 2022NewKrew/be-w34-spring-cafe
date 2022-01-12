@@ -87,6 +87,18 @@ public class QuestionPostJdbcRepository implements QuestionPostRepository {
     }
 
     @Override
+    public void update(QuestionPost questionPost) {
+        String sql = "update question_post set title = ?, content = ?, view_count = ? where question_post_id = ?";
+
+        jdbcTemplate.update(sql,
+                questionPost.getTitle(),
+                questionPost.getContent(),
+                questionPost.getViewCount(),
+                questionPost.getQuestionPostId());
+
+    }
+
+    @Override
     public void delete(Long id) {
         String sql = "delete from question_post where id = ?";
         jdbcTemplate.update(sql, id);

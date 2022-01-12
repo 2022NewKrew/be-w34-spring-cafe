@@ -40,6 +40,11 @@ public class QuestionPostMemoryRepository implements QuestionPostRepository {
     }
 
     @Override
+    public void update(QuestionPost questionPost) {
+        postMap.put(questionPost.getQuestionPostId(), questionPost);
+    }
+
+    @Override
     public void delete(Long id) {
         postMap.remove(id);
     }

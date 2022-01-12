@@ -70,5 +70,6 @@ public class QuestionPostService {
         QuestionPost questionPost = questionPostRepository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException("유효하지 않는 값입니다"));
         questionPost.viewCountIncrease();
+        questionPostRepository.update(questionPost);
     }
 }

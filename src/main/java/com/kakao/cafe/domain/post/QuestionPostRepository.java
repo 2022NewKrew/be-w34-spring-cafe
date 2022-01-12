@@ -11,6 +11,8 @@ public interface QuestionPostRepository {
 
     List<QuestionPost> findAll();
 
+    void update(QuestionPost questionPost);
+
     void delete(Long id);
 
     void deleteAll();

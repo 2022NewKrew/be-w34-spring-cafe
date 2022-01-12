@@ -47,6 +47,11 @@ public class UserAccountMemoryRepository implements UserAccountRepository {
     }
 
     @Override
+    public void update(UserAccount userAccount) {
+        userAccountMap.put(userAccount.getUserAccountId(), userAccount);
+    }
+
+    @Override
     public void delete(Long id) {
         userAccountMap.remove(id);
     }

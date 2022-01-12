@@ -92,4 +92,19 @@ class QuestionPostJdbcRepositoryTest {
 
         Assertions.assertThat(result.size()).isEqualTo(2);
     }
+
+    @Test
+    @Transactional
+    void updateTest() {
+        //given
+        QuestionPost questionPost = questionPostRepository.save(testPost1);
+
+        //when
+        questionPost.viewCountIncrease();
+        questionPostRepository.update(questionPost);
+
+        //then
+        QuestionPost result = questionPostRepository.findById(questionPost.getQuestionPostId()).orElseThrow(IllegalAccessError::new);
+        Assertions.assertThat(result.getViewCount()).isEqualTo(1);
+    }
 }

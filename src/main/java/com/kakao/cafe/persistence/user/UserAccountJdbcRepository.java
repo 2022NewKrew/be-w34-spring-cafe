@@ -1,5 +1,6 @@
 package com.kakao.cafe.persistence.user;
 
+import com.kakao.cafe.domain.post.QuestionPost;
 import com.kakao.cafe.domain.user.UserAccount;
 import com.kakao.cafe.domain.user.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -105,6 +104,13 @@ public class UserAccountJdbcRepository implements UserAccountRepository {
                         .createdAt(result.getTimestamp("created_at").toLocalDateTime())
                         .build());
         return userAccounts;
+    }
+
+    @Override
+    public void update(UserAccount userAccount) {
+        String sql = "update user_account set username = ?, password = ?, where user_account_id = ?";
+
+        jdbcTemplate.update(sql, userAccount.getUsername(), userAccount.getPassword(), userAccount.getUserAccountId());
     }
 
     @Override
