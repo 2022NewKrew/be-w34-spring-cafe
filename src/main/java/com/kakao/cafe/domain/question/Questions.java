@@ -1,7 +1,7 @@
 package com.kakao.cafe.domain.question;
 
-import com.kakao.cafe.dto.QuestionSaveDto;
 import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +10,9 @@ public class Questions {
     private List<Question> questions = new ArrayList<Question>();
     private int maxIndex = 0;
 
-    public void addQuestion(QuestionSaveDto QuestionSaveDto){
-        questions.add(new Question(maxIndex, QuestionSaveDto));
+    public void addQuestion(Question question){
+        question.setId(maxIndex);
+        questions.add(question);
         maxIndex++;
     }
 

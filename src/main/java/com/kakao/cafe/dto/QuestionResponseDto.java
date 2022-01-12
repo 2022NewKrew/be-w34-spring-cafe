@@ -1,25 +1,24 @@
-package com.kakao.cafe.domain.question;
+package com.kakao.cafe.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class Question {
+@Setter
+public class QuestionResponseDto {
     private int id;
     private String title;
     private String writer;
     private String contents;
     private LocalDateTime createdDateTime;
 
-    public Question(String title, String writer, String contents) {
+    public QuestionResponseDto(int id, String title, String writer, String contents, LocalDateTime createdDateTime) {
+        this.id = id;
         this.title = title;
         this.writer = writer;
         this.contents = contents;
-        this.createdDateTime =  LocalDateTime.now();
-    }
-
-    public void setId(int id){
-        this.id = id;
+        this.createdDateTime = createdDateTime;
     }
 }

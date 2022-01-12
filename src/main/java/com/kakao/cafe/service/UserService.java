@@ -1,9 +1,11 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.Users;
 import com.kakao.cafe.dto.UserRequestDto;
+import com.kakao.cafe.dto.UserResponseDto;
+import com.kakao.cafe.dto.mapper.UserMapper;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -12,18 +14,18 @@ public class UserService {
     private Users users = new Users();
 
     public void save(UserRequestDto userRequestDto){
-        users.addUser(userRequestDto);
+        users.addUser(UserMapper.INSTANCE.toEntity(userRequestDto));
     }
 
     public void update(int id, UserRequestDto userRequestDto){
-        users.updateUser(id, userRequestDto);
+        users.updateUser(id, UserMapper.INSTANCE.toEntity(userRequestDto));
     }
 
-    public List<User> findAll(){
-        return users.getUsers();
+    public List<UserResponseDto> findAll(){
+        return UserMapper.INSTANCE.toDtoList(users.getUsers());
     }
 
-    public User findbyId(int id){
-        return users.findById(id);
+    public UserResponseDto findbyId(int id){
+        return UserMapper.INSTANCE.toDto(users.findById(id));
     }
 }

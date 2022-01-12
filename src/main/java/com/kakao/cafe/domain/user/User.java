@@ -1,6 +1,5 @@
 package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.dto.UserRequestDto;
 import lombok.Getter;
 
 @Getter
@@ -11,18 +10,21 @@ public class User {
     private String name;
     private String email;
 
-    public User(int id, UserRequestDto userRequestDto){
-        this.id = id;
-        this.stringId = userRequestDto.getStringId();
-        this.password = userRequestDto.getPassword();
-        this.name = userRequestDto.getName();
-        this.email = userRequestDto.getEmail();
+    public User(String stringId, String password, String name, String email){
+        this.stringId = stringId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
-    public void update(UserRequestDto userRequestDto){
-        this.stringId = userRequestDto.getStringId();
-        this.password = userRequestDto.getPassword();
-        this.name = userRequestDto.getName();
-        this.email = userRequestDto.getEmail();
+    public void update(User user){
+        this.stringId = user.getStringId();
+        this.password = user.getPassword();
+        this.name = user.getName();
+        this.email = user.getEmail();
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 }

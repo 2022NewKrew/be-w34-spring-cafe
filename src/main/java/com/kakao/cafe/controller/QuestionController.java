@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.QuestionSaveDto;
+import com.kakao.cafe.dto.QuestionRequestDto;
 import com.kakao.cafe.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,8 +22,8 @@ public class QuestionController {
     }
 
     @PostMapping("/questions")
-    public String save(@ModelAttribute() QuestionSaveDto questionSaveDto) {
-        questionService.save(questionSaveDto);
+    public String save(@ModelAttribute() QuestionRequestDto questionRequestDto) {
+        questionService.save(questionRequestDto);
         return "redirect:/";
     }
 
