@@ -8,7 +8,8 @@ import java.util.List;
 
 @Getter
 public class Users {
-    private List<User> users = new ArrayList<>();
+
+    private final List<User> users = new ArrayList<>();
 
     public void addUser(UserDto userDto) {
         users.add(new User(users.size() + 1, userDto));
