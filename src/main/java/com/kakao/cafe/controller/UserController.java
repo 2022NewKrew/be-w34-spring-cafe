@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping
-    public String memberList(Model model) {
+    public String userList(Model model) {
         List<User> userList = userService.getUsers();
         model.addAttribute("users", userList);
         return "user/list";
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public String member(@PathVariable String userId, Model model) {
+    public String user(@PathVariable String userId, Model model) {
         User user = userService.findById(userId);
         model.addAttribute("user", user);
         return "user/profile";
