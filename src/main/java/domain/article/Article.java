@@ -1,7 +1,12 @@
 package domain.article;
 
+import lombok.Getter;
+import lombok.ToString;
+
 import java.time.LocalDate;
 
+@Getter
+@ToString
 public class Article {
     private final String title;
     private final String content;
@@ -17,34 +22,11 @@ public class Article {
         this.views = 0;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
     public String getCreateUserId() {
         return createUserId;
     }
-
     public String getCreateDate() {
         return createDate;
     }
 
-    public int getViews() {
-        return views;
-    }
-
-    @Override
-    public String toString() {
-        return "Article{" +
-                "title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", createUserId='" + createUserId + '\'' +
-                ", createDate='" + createDate + '\'' +
-                ", views=" + views +
-                '}';
-    }
 }

@@ -1,11 +1,14 @@
 package domain.user;
 
+import lombok.Getter;
+import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@ToString
 public class UserList {
     private final List<User> userList;
 
@@ -36,12 +39,4 @@ public class UserList {
     public User findByUserId(String userId) {
         return userList.stream().filter(user -> user.getUserId().equals(userId)).findFirst().orElse(null);
     }
-
-    @Override
-    public String toString() {
-        return "UserList{" +
-                "userList=" + userList +
-                '}';
-    }
-
 }
