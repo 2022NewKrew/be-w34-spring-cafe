@@ -14,37 +14,38 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleInfoPort {
 
-    private final ArticleInfoRepository articleInfoRepository;
+    private final ArticleInfoRepository inMemoryArticleInfoRepository;
 
-    public StoreArticleInfoAdapter(ArticleInfoRepository articleInfoRepository) {
-        this.articleInfoRepository = articleInfoRepository;
+    public StoreArticleInfoAdapter(ArticleInfoRepository inMemoryArticleInfoRepository) {
+        this.inMemoryArticleInfoRepository = inMemoryArticleInfoRepository;
     }
 
     @Override
     public void registerArticle(Article article) {
-        articleInfoRepository.save(ArticleInfoEntity.from(article));
+        inMemoryArticleInfoRepository.save(ArticleInfoEntity.from(article));
     }
 
     @Override
     public ArticleList getListOfAllArticles() {
-        List<ArticleListEntry> articleInfoList = articleInfoRepository.getAllArticleList()
-                                                                      .stream()
-                                                                      .map(a -> new ArticleListEntry(
-                                                                          a.getId(),
-                                                                          a.getWriter(),
-                                                                          a.getTitle(),
-                                                                          a.getCreatedAt()
-                                                                           .format(DateTimeFormatter.ofPattern(
-                                                                               "yyyy-MM-dd HH:mm"))
-                                                                      ))
-                                                                      .collect(Collectors.toList());
+        List<ArticleListEntry> articleInfoList = inMemoryArticleInfoRepository.getAllArticleList()
+                                                                              .stream()
+                                                                              .map(a -> new ArticleListEntry(
+                                                                                  a.getId(),
+                                                                                  a.getWriter(),
+                                                                                  a.getTitle(),
+                                                                                  a.getCreatedAt().format(
+                                                                                      DateTimeFormatter.ofPattern(
+                                                                                          "yyyy-MM-dd HH:mm"))
+                                                                              ))
+                                                                              .collect(Collectors.toList());
 
         return ArticleList.from(articleInfoList);
     }
 
     public ArticleDetail findArticleByIndex(int index) {
-        ArticleInfoEntity articleInfoEntity = articleInfoRepository.findByIndex(index)
-                                                                   .orElseThrow(RuntimeException::new);        // TODO : 새로운 Exception 정의 필요
+        // TODO : 새로운 Exception 정의 필요
+        ArticleInfoEntity articleInfoEntity = inMemoryArticleInfoRepository.findByIndex(index)
+                                                                           .orElseThrow(RuntimeException::new);
 
         return new ArticleDetail(
             articleInfoEntity.getId(),

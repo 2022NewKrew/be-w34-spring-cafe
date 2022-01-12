@@ -12,35 +12,35 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort {
 
-    private final UserInfoRepository userInfoRepository;
+    private final UserInfoRepository inMemoryUserInfoRepository;
 
-    public StoreUserInfoAdapter(UserInfoRepository userInfoRepository) {
-        this.userInfoRepository = userInfoRepository;
+    public StoreUserInfoAdapter(UserInfoRepository inMemoryUserInfoRepository) {
+        this.inMemoryUserInfoRepository = inMemoryUserInfoRepository;
     }
 
     @Override
     public void registerUser(User user) {
-        userInfoRepository.save(UserInfoEntity.from(user));
+        inMemoryUserInfoRepository.save(UserInfoEntity.from(user));
     }
 
     @Override
     public UsersInfo getAllUsersInfo() {
-        List<UserInfo> userInfoList = userInfoRepository.getAllUserList()
-                                                        .stream()
-                                                        .map(u -> new UserInfo(
-                                                            u.getUserId(),
-                                                            u.getName(),
-                                                            u.getEmail()
-                                                        ))
-                                                        .collect(Collectors.toList());
+        List<UserInfo> userInfoList = inMemoryUserInfoRepository.getAllUserList()
+                                                                .stream()
+                                                                .map(u -> new UserInfo(
+                                                                    u.getUserId(),
+                                                                    u.getName(),
+                                                                    u.getEmail()
+                                                                ))
+                                                                .collect(Collectors.toList());
 
         return UsersInfo.from(userInfoList);
     }
 
     @Override
     public UserInfo findUserByUserId(String userId) {
-        UserInfoEntity userInfoEntity = userInfoRepository.findByUserId(userId)
-                                                          .orElseThrow(RuntimeException::new);        // TODO : 새로운 Exception 정의 필요
+        UserInfoEntity userInfoEntity = inMemoryUserInfoRepository.findByUserId(userId)
+                                                                  .orElseThrow(RuntimeException::new);        // TODO : 새로운 Exception 정의 필요
 
         return new UserInfo(
             userInfoEntity.getUserId(),
