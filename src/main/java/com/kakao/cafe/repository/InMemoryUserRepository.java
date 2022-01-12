@@ -10,7 +10,7 @@ import java.util.Objects;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class InMemoryUserRepository {
+public class InMemoryUserRepository implements UserRepository {
 
     private final List<User> userList;
 
@@ -22,11 +22,12 @@ public class InMemoryUserRepository {
         return userList.stream().anyMatch(user -> user.getUserId().equals(findUser.getUserId()));
     }
 
-    public void save(User user) {
+    public User save(User user) {
         if (isDuplicate(user)) {
             throw new DuplicateUserException("사용자가 이미 존재합니다");
         }
         userList.add(user);
+        return user;
     }
 
     public List<User> findAll() {
