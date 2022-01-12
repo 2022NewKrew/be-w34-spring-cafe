@@ -2,12 +2,13 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.user.User;
 
-import com.kakao.cafe.domain.user.UserId;
+import com.kakao.cafe.domain.user.UserName;
 import com.kakao.cafe.domain.user.Users;
 import com.kakao.cafe.exception.DuplicateUserException;
 import java.util.List;
 
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -33,7 +34,12 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findUserById(UserId id) {
-        return users.findByUserId(id);
+    public Optional<User> findUserByName(UserName id) {
+        return users.findByUserName(id);
+    }
+
+    @Override
+    public Optional<User> findUserById(UUID id) {
+        return users.findById(id);
     }
 }

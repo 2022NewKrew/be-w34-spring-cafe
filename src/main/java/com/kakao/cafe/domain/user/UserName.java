@@ -2,11 +2,11 @@ package com.kakao.cafe.domain.user;
 
 import java.util.Objects;
 
-public class UserId {
+public class UserName {
 
     private final String value;
 
-    public UserId(String value) {
+    public UserName(String value) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("잘못된 입력입니다.");
         }
@@ -25,7 +25,7 @@ public class UserId {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        UserId that = (UserId) o;
+        UserName that = (UserName) o;
         return Objects.equals(value, that.getValue());
     }
 

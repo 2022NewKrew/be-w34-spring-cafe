@@ -32,7 +32,7 @@ public class ArticleMapper {
     public ArticleDetailResponseDto articleToArticleDetailResponseDto(Article article) {
         String title = article.getTitle().getValue();
         String content = article.getContent().getValue();
-        String writer = article.getWriter().getName().getValue();
+        String writer = article.getWriter().getUserName().getValue();
         String createdAt = article.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         int viewCount = article.getViewCount().getValue();
 

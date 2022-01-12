@@ -1,21 +1,36 @@
 package com.kakao.cafe.domain.user;
 
+import java.util.UUID;
+
 public class User {
 
-    private final UserId id;
+    private UUID id;
+    private final UserName userName;
     private final Password password;
     private final Name name;
     private final Email email;
 
-    public User(UserId id, Password password, Name name, Email email) {
+    public User(UUID id, UserName userName, Password password, Name name, Email email) {
         this.id = id;
+        this.userName = userName;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    public UserId getId() {
+    public User(UserName userName, Password password, Name name, Email email) {
+        this.userName = userName;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
+
+    public UUID getId() {
         return id;
+    }
+
+    public UserName getUserName() {
+        return userName;
     }
 
     public Name getName() {
@@ -24,5 +39,9 @@ public class User {
 
     public Email getEmail() {
         return email;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

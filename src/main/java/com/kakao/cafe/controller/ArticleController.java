@@ -3,7 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleId;
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserId;
+import com.kakao.cafe.domain.user.UserName;
 import com.kakao.cafe.dto.article.ArticleDetailResponseDto;
 import com.kakao.cafe.dto.article.ArticleListResponseDto;
 import com.kakao.cafe.dto.article.ArticleRegisterRequestDto;
@@ -44,8 +44,8 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String requestArticleRegister(@Valid ArticleRegisterRequestDto dto) {
-        UserId userId = new UserId(dto.getUserId());
-        User user = userService.findUserById(userId);
+        UserName userName = new UserName(dto.getUserName());
+        User user = userService.findUserByUserName(userName);
         Article article = articleMapper.articleRegisterRequestDtoToArticle(dto, user);
         articleService.registerArticle(article);
         return "redirect:/";

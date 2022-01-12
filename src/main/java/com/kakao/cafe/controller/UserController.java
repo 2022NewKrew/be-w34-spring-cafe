@@ -1,6 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.user.UserId;
 import com.kakao.cafe.dto.user.ProfileResponseDto;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.user.SignupRequestDto;
@@ -9,6 +8,7 @@ import com.kakao.cafe.mapper.UserMapper;
 
 import com.kakao.cafe.service.UserService;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -47,9 +47,8 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    public String requestUserProfile(@PathVariable String userId, Model model) {
-        UserId id = new UserId(userId);
-        User user = userService.findUserById(id);
+    public String requestUserProfile(@PathVariable UUID userId, Model model) {
+        User user = userService.findUserById(userId);
         ProfileResponseDto dto = userMapper.userToProfileResponseDto(user);
         model.addAttribute("user", dto);
         return "users/profile";

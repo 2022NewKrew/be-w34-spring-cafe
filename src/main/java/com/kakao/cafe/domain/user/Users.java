@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class Users {
 
@@ -18,20 +19,29 @@ public class Users {
     }
 
     public void add(User user) {
+        user.setId(UUID.randomUUID());
         userList.add(user);
     }
 
     public boolean isUserDuplicated(User user) {
         synchronized (userList) {
             return userList.stream()
-                    .anyMatch((existingUser) -> existingUser.getId().equals(user.getId()));
+                    .anyMatch((existingUser) -> existingUser.getUserName().equals(user.getUserName()));
         }
     }
 
-    public Optional<User> findByUserId(UserId userId) {
+    public Optional<User> findByUserName(UserName userName) {
         synchronized (userList){
             return userList.stream()
-                    .filter((user) -> user.getId().equals(userId))
+                    .filter((user) -> user.getUserName().equals(userName))
+                    .findAny();
+        }
+    }
+
+    public Optional<User> findById(UUID id) {
+        synchronized (userList){
+            return userList.stream()
+                    .filter((user) -> user.getId().equals(id))
                     .findAny();
         }
     }
