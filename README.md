@@ -12,9 +12,9 @@
 - [x] html 중복 제거하기
 
 # 2단계
-- [ ] 글쓰기(post)
-  - [ ] 완료 후 index 페이지로 redirect
-- [ ] 글목록 조회(get)
-  - [ ] 작성한 글 목록 반환
-- [ ] 상세보기(get)
-  - [ ] articles/{id} 로 조회
+- [x] 글쓰기(post)
+  - [x] 완료 후 index 페이지로 redirect
+- [x] 글목록 조회(get)
+  - [x] 작성한 글 목록 반환
+- [x] 상세보기(get)
+  - [x] questions/{id} 로 조회

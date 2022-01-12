@@ -2,6 +2,7 @@ package com.kakao.cafe.qna;
 
 import com.kakao.cafe.qna.domain.Qna;
 import com.kakao.cafe.qna.dto.request.QnaRequest;
+import com.kakao.cafe.qna.dto.response.QnaResponse;
 import com.kakao.cafe.qna.dto.response.QnasResponse;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,10 @@ public class QnaService {
     public QnasResponse findAll() {
         List<Qna> qnas = qnaRepository.findAll();
         return QnasResponse.qnasToResponse(qnas);
+    }
+
+    public QnaResponse findById(long id) {
+        Qna qna = qnaRepository.findById(id);
+        return QnaResponse.qnaToResponse(id, qna);
     }
 }
