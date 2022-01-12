@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.article.WriteArticleDto;
+import com.kakao.cafe.exceptions.NoSuchArticleException;
 import com.kakao.cafe.service.article.ArticleService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +28,12 @@ public class ArticleController {
     // 게시글 상세 내용 조회
     @GetMapping("/articles/{articleId}")
     public String showArticle(@PathVariable int articleId, Model model) {
-        model.addAttribute("article", this.articleService.getArticleById(articleId));
-        return "article/show";
+        try {
+            model.addAttribute("article", this.articleService.getArticleById(articleId));
+            return "article/show";
+        } catch (NoSuchArticleException e) {
+            return "error";
+        }
     }
 
     // 게시글 작성 양식

@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.Entity.Article;
 import com.kakao.cafe.domain.Repository.article.ArticleRepository;
 import com.kakao.cafe.dto.article.ReferArticleDto;
 import com.kakao.cafe.dto.article.WriteArticleDto;
+import com.kakao.cafe.exceptions.NoSuchArticleException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class ArticleService {
         return articleList;
     }
 
-    public ReferArticleDto getArticleById(int articleId) {
+    public ReferArticleDto getArticleById(int articleId) throws NoSuchArticleException {
         Article article = this.articleRepository.findArticleById(articleId);
         ReferArticleDto articleDto = new ReferArticleDto(article.getArticleId(), article.getWriter(), article.getTitle(), article.getContents());
         return articleDto;

@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.Repository.article;
 
 import com.kakao.cafe.domain.Entity.Article;
+import com.kakao.cafe.exceptions.NoSuchArticleException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +23,10 @@ public class ArticleRepository {
         return new ArrayList<>(articles.values());
     }
 
-    public Article findArticleById(int articleId) {
-        return articles.get(articleId);
+    public Article findArticleById(int articleId) throws NoSuchArticleException {
+        if (articles.containsKey(articleId)) {
+            return articles.get(articleId);
+        }
+        throw new NoSuchArticleException();
     }
 }
