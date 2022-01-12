@@ -13,9 +13,9 @@ import java.util.Map;
  * 생성시 2개의 질문글을 등록합니다.
  *
  * @author jm.hong
+ * @deprecated H2 데이터베이스가 나와 해당 구현체는 사라집니다.
  */
 @Slf4j
-@Repository
 public class QuestionRepositoryHash implements QuestionRepository {
 
     private static Map<Long, Question> inMemoryDatabase = new HashMap<>();

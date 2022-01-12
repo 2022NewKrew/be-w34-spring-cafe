@@ -1,5 +1,6 @@
 package com.kakao.cafe.question;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ public interface QuestionRepository {
      * @param question 질문글에 대한 정보를 담은 엔티티 입니다.
      * @return DataBased에 저장된 Key값을 반환합니다.
      */
-    Long save(Question question);
+    Long save(Question question) throws SQLException;
 
     /**
      * key 값에 해당하는 질문글 엔티티를 불러옵니다.

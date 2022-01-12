@@ -17,6 +17,10 @@ public class Question {
      */
     private Long id;
     /**
+     * 외래키
+     */
+    private Long memberId;
+    /**
      * 질문글 작성자(User.userId) 입니다
      */
     private String writer;
