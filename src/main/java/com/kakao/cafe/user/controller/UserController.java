@@ -2,6 +2,7 @@ package com.kakao.cafe.user.controller;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserCreateDTO;
+import com.kakao.cafe.user.dto.UserListDTO;
 import com.kakao.cafe.user.dto.UserProfileDTO;
 import com.kakao.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 public class UserController {
     UserService userService = new UserService();
@@ -18,7 +22,9 @@ public class UserController {
     //회원가입 목록 확인
     @GetMapping(value = "/user/list")
     public String userPrintAll(Model model){
-        model.addAttribute("users", userService.getAllUser());
+        List<User> users = userService.getAllUser();
+        List<UserListDTO> usersListDTO = users.stream().map(UserListDTO::new).collect(Collectors.toList());
+        model.addAttribute("users", usersListDTO); //userService에서 DTO를 만들어서 반환하는 것 보다 controller에서 바꾸는 것이 더 유연해보임. (추후 List<User> 타입의 로직을 처리해야할 수도 있을 것 같음)
         return "/user/list";
     }
 
