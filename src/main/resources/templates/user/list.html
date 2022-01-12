@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <title>kakao Java Web Programming</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="../css/reset.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="../css/user/list.css" rel="stylesheet">
+    <link href="/css/user/list.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -49,7 +49,7 @@
                 <tbody>
                 {{#userList}}
                 <tr>
-                    <td><a href = "/user/profile/{{userId}}">{{userId}}</a></td> <td>{{email}}</td><td>{{registerDate}}</td>
+                    <td><a href = "/user/profile/{{userId}}"><strong>{{userId}}</strong></a></td> <td>{{email}}</td><td>{{registerDate}}</td>
                 </tr>
                 {{/userList}}
                 </tbody>
