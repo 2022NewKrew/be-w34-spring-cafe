@@ -1,16 +1,20 @@
 package com.kakao.cafe.domain;
 
 public class User {
-    private String uID;
+    private final String uID;
     private String password;
     private String name;
     private String email;
+    private String pictureAddress;
+
+    private static final String DUMMY_ADDRESS = "/images/80-text.png";
 
     public User(String uID, String password, String name, String email) {
         this.uID = uID;
         this.password = password;
         this.name = name;
         this.email = email;
+        this.pictureAddress = DUMMY_ADDRESS;
     }
 
     public String getUID() {
@@ -35,5 +39,13 @@ public class User {
 
     public void setEmail(String eMail) {
         this.email = eMail;
+    }
+
+    public String getPictureAddress() {
+        return pictureAddress;
+    }
+
+    public void setPictureAddress(String pictureAddress) {
+        this.pictureAddress = pictureAddress;
     }
 }

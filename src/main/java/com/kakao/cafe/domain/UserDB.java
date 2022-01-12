@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain;
 
 import com.kakao.cafe.DTO.UserInfoDTO;
+import com.kakao.cafe.DTO.UserProfileDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,5 +34,14 @@ public class UserDB {
         }
 
         return userInfoLst;
+    }
+
+    public UserProfileDTO getUserProfile(String uID) {
+        for (User user : userLst) {
+            if (user.getUID().equals(uID)) {
+                return new UserProfileDTO(user.getName(), user.getEmail(), user.getPictureAddress());
+            }
+        }
+        return null;
     }
 }
