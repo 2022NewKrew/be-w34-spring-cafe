@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.dto.user.UserCreateRequest;
 import com.kakao.cafe.dto.user.UserUpdateRequest;
-import com.kakao.cafe.exception.EntityNotFoundException;
+import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -38,13 +38,13 @@ public class UserService {
 
     public UserDto findById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 크루입니다."));
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 크루입니다."));
         return new UserDto(user);
     }
 
     public void update(Long id, UserUpdateRequest userUpdateRequest) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 크루입니다."));
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 크루입니다."));
         user.update(
                 userUpdateRequest.getNickname(),
                 userUpdateRequest.getEmail(),

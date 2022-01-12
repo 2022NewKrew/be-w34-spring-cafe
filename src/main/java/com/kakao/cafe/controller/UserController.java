@@ -3,8 +3,8 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.dto.user.UserCreateRequest;
 import com.kakao.cafe.dto.user.UserUpdateRequest;
-import com.kakao.cafe.exception.EntityNotFoundException;
 import com.kakao.cafe.exception.InvalidPasswordException;
+import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +42,7 @@ public class UserController {
         try {
             UserDto user = userService.findById(userId);
             model.addAttribute("user", user);
-        } catch (EntityNotFoundException e) {
+        } catch (UserNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
@@ -55,7 +55,7 @@ public class UserController {
         try {
             UserDto user = userService.findById(userId);
             model.addAttribute("user", user);
-        } catch (EntityNotFoundException e) {
+        } catch (UserNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
@@ -67,7 +67,7 @@ public class UserController {
     public String updateUser(@PathVariable Long userId, UserUpdateRequest userUpdateRequest, Model model) {
         try {
             userService.update(userId, userUpdateRequest);
-        } catch (EntityNotFoundException | InvalidPasswordException e) {
+        } catch (UserNotFoundException | InvalidPasswordException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }

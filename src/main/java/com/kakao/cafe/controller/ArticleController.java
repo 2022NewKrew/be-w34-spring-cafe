@@ -2,14 +2,11 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.dto.article.ArticleRequest;
-import com.kakao.cafe.exception.EntityNotFoundException;
+import com.kakao.cafe.exception.ArticleNotFoundException;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("articles")
@@ -33,7 +30,7 @@ public class ArticleController {
         try {
             ArticleDto article = articleService.findById(index);
             model.addAttribute("article", article);
-        } catch (EntityNotFoundException e) {
+        } catch (ArticleNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
