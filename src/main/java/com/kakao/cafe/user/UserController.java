@@ -22,22 +22,22 @@ public class UserController {
     }
 
     @PostMapping("")
-    public String processCreationForm(User user) {
-        logger.info("Users before: {}", userService.getAllUsers());
-        userService.registerUser(user);
-        logger.info("Users after: {}", userService.getAllUsers());
+    public String processCreationForm(UserFormCreationDTO userFormCreationDTO) {
+        logger.info("Users before: {}", userService.getAllUserViewDTOUsers());
+        userService.registerUser(userFormCreationDTO);
+        logger.info("Users after: {}", userService.getAllUserViewDTOUsers());
         return "redirect:/users";
     }
 
     @GetMapping("")
     public String listUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("users", userService.getAllUserViewDTOUsers());
         return "user/list";
     }
 
     @GetMapping("/{username}")
     public String showUser(@PathVariable String username, Model model) {
-        model.addAttribute("user", userService.findUserByUsername(username));
+        model.addAttribute("user", userService.getUserViewDTOByUsername(username));
         return "user/profile";
     }
 }
