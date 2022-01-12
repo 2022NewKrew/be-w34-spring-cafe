@@ -2,13 +2,13 @@ package com.kakao.cafe.DTO;
 
 public class UserInfoDTO {
     private final int idx;
-    private final String uID;
+    private final String userId;
     private final String name;
     private final String email;
 
-    public UserInfoDTO(int idx, String uID, String name, String email) {
+    public UserInfoDTO(int idx, String userId, String name, String email) {
         this.idx = idx;
-        this.uID = uID;
+        this.userId = userId;
         this.name = name;
         this.email = email;
     }
@@ -17,8 +17,8 @@ public class UserInfoDTO {
         return idx;
     }
 
-    public String getUID() {
-        return uID;
+    public String getUserId() {
+        return userId;
     }
 
     public String getName() {
