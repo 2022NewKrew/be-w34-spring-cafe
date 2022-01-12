@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserService;
+import com.kakao.cafe.service.UserService;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,5 +1,6 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
