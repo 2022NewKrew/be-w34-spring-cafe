@@ -18,9 +18,9 @@
 
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">Profile</p>
+            <p class="title">Profiles</p>
         </header>
-        <form name="question" class="info-container" method="post" action="/users">
+        <form name="question" class="info-container" method="get" action="/users">
             <div class="form-group">
                 <label for="name" id="name">이름</label>
                 <label for="name">{{user.name}}</label>
@@ -29,7 +29,7 @@
                 <label for="email" id="email">이메일</label>
                 <label for="email">{{user.email}}</label>
             </div>
-            <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
+            <button type="submit" class="btn btn-success clearfix pull-right">확인</button>
         </form>
     </div>
 </div>
