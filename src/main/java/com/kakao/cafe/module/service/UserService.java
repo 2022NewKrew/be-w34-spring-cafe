@@ -2,7 +2,6 @@ package com.kakao.cafe.module.service;
 
 import com.kakao.cafe.infra.exception.DuplicateNameException;
 import com.kakao.cafe.module.model.domain.User;
-import com.kakao.cafe.module.model.dto.UserDtos;
 import com.kakao.cafe.module.model.mapper.UserMapper;
 import com.kakao.cafe.module.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +18,10 @@ import static com.kakao.cafe.module.model.mapper.UserMapper.*;
 public class UserService {
 
     private final UserRepository userRepository;
-    private Long autoIncrementId = 0L;
 
     public void signUp(UserSignUpDto userSignUpDto) {
         validateDuplicateName(userSignUpDto.getName());
-        User user = toUser(autoIncrementId++, userSignUpDto.getUserId(), userSignUpDto.getPassword(),
+        User user = toUser(0L, userSignUpDto.getUserId(), userSignUpDto.getPassword(),
                 userSignUpDto.getName(), userSignUpDto.getEmail());
         userRepository.addUser(user);
     }
@@ -41,7 +39,9 @@ public class UserService {
     public void updateUser(Long id, UserUpdateDto userUpdateDto) {
         User user = userRepository.findUserById(id);
         validatePassword(user.getPassword(), userUpdateDto.getPassword());
-        user.update(userUpdateDto.getNewPassword(), userUpdateDto.getName(), userUpdateDto.getEmail());
+
+        User updateUserInfo = new User(id, user.getUserId(), userUpdateDto.getNewPassword(), userUpdateDto.getName(), userUpdateDto.getEmail());
+        userRepository.updateUser(updateUserInfo);
     }
 
     private void validateDuplicateName(String name) {

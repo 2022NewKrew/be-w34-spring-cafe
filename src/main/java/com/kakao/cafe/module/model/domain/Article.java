@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Article {
 
     private final Long id;
-    private final User author;
+    private final Long authorId;
     private final String title;
     private final String contents;
     private final LocalDateTime created;

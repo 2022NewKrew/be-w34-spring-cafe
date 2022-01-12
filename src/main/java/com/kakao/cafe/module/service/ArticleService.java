@@ -19,16 +19,17 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
-    private Long autoIncrementId = 0L;
 
     public void postArticle(ArticlePostDto articlePostDto) {
-        Article article = toArticle(autoIncrementId++, findAuthor(articlePostDto.getAuthor()), articlePostDto.getTitle(),
+        Article article = toArticle(0L, findAuthor(articlePostDto.getAuthor()).getId(), articlePostDto.getTitle(),
                 articlePostDto.getContents(), LocalDateTime.now(), 0, 0);
         articleRepository.addArticle(article);
     }
 
     public ArticleReadDto showArticle(Long id) {
-        return toArticleReadDto(articleRepository.findArticleById(id));
+        Article article = articleRepository.findArticleById(id);
+        User author = userRepository.findUserById(article.getAuthorId());
+        return toArticleReadDto(article, author);
     }
 
     private User findAuthor(String name) {
