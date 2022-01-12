@@ -1,8 +1,10 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserRegisterRequest;
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.service.UserService;
-import lombok.RequiredArgsConstructor;
+import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,28 +12,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user")
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/users")
     public String getUserList(Model model) {
         model.addAttribute("userList", userService.getUserList());
-        return "user/list";
+        return "users/list";
     }
 
-    @PostMapping("/user")
-    public String register(UserDto requestDto) {
+    @PostMapping("/users")
+    public String register(@Valid UserRegisterRequest requestDto) {
         userService.register(requestDto);
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public String getUserByUserId(@PathVariable("userId") String userId, Model model) {
         model.addAttribute("user",
                 userService.findByUserId(userId)
-                        .orElseThrow(() -> new IllegalArgumentException("해당 아이디의 유저가 존재하지 않습니다.")));
-        return "user/profile";
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND)));
+        return "users/profile";
     }
 }
