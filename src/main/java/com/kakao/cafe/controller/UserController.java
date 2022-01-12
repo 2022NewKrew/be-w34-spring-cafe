@@ -21,7 +21,7 @@ public class UserController {
 
     @PostMapping("/users")
     public String addUser(@ModelAttribute UserDto userDto) {
-        logger.info("POST /user {}", userDto);
+        logger.info("POST /users {}", userDto);
         userService.addUser(userDto);
         return "redirect:/users";
     }

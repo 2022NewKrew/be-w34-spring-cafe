@@ -10,9 +10,13 @@ import java.util.Date;
 @Getter
 @Setter
 public class ArticleDto {
-    private int id;
+    private String author;
     private String title;
     private String content;
-    private Date createAt;
 
+    public String toString(){
+        return String.format("{author = %s," +
+                "title = %s," +
+                "content = %s}", author, title, content);
+    }
 }
