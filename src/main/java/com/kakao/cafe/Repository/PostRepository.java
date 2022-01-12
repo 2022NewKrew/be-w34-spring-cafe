@@ -1,6 +1,6 @@
 package com.kakao.cafe.Repository;
 
-import com.kakao.cafe.model.Article.Post;
+import com.kakao.cafe.model.Post.Post;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,12 +12,12 @@ public class PostRepository {
     private final List<Post> postList = new CopyOnWriteArrayList<>();
     private final AtomicLong sequenceId = new AtomicLong();
 
-    public void add(Post post) {
-        post.setId(sequenceId.incrementAndGet());
-        postList.add(post);
-    }
-
     public List<Post> getPostList() {
         return postList;
+    }
+
+    public void add(Post post) {
+        post.setId(sequenceId.incrementAndGet());
+        this.postList.add(post);
     }
 }

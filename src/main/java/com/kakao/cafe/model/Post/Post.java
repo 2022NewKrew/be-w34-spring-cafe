@@ -1,4 +1,4 @@
-package com.kakao.cafe.model.Article;
+package com.kakao.cafe.model.Post;
 
 public class Post {
     private Long id;
@@ -14,7 +14,11 @@ public class Post {
         this.id = id;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
     public PostResponseDto toResponseDto() {
-        return new PostResponseDto(title, content);
+        return new PostResponseDto(id, title, content);
     }
 }

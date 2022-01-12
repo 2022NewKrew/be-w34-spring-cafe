@@ -1,4 +1,4 @@
-package com.kakao.cafe.model.Article;
+package com.kakao.cafe.model.Post;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
