@@ -32,10 +32,10 @@ public class ArticleInfoController {
         return VIEWS_ARTICLE_LIST;
     }
 
-    @GetMapping("/articles/{index}")
-    public String displayArticleDetail(@PathVariable int index, Model model) {
-        Article article = getArticleInfoUseCase.getArticleDetail(index);
-        if (article.getId() == index) {
+    @GetMapping("/articles/{id}")
+    public String displayArticleDetail(@PathVariable int id, Model model) {
+        Article article = getArticleInfoUseCase.getArticleDetail(id);
+        if (article.getId() == id) {
             log.info("{} is opened", article.getTitle());
             model.addAttribute("article", article);
             return VIEWS_ARTICLE_DETAIL;
