@@ -1,5 +1,6 @@
-package com.kakao.cafe.vo;
+package com.kakao.cafe.domain;
 
+import com.kakao.cafe.vo.UserDto;
 import lombok.Getter;
 
 @Getter
