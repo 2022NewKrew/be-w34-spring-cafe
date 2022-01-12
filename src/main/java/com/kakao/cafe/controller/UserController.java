@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserRepository;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -22,12 +22,11 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/users/{id}")
-    public String getUser(@PathVariable String id, Model model) {
-        User user = userRepository.getUserList().get(Integer.parseInt(id));
-        model.addAttribute("name", user.getName());
-        model.addAttribute("email", user.getEmail());
-        return "user/profile";
+    @PostMapping("/user/create")
+    public String addUser(User user) {
+        logger.info("user = {}", user);
+        userRepository.save(user);
+        return "redirect:/users";
     }
 
     @GetMapping("/users")
@@ -36,11 +35,24 @@ public class UserController {
         return "user/list";
     }
 
-    @PostMapping("/user/create")
-    public String addUser(User user) {
-        logger.info("user = {}", user);
-        userRepository.save(user);
-        return "redirect:/users";
+    @GetMapping("/users/{id}")
+    public String getUser(@PathVariable Integer id, Model model) {
+        User user = userRepository.getUserList().get(id);
+        model.addAttribute("user", user);
+        return "user/profile";
     }
 
+    @GetMapping("/users/{id}/form")
+    public String getUpdateForm(@PathVariable Integer id, Model model) {
+        User user = userRepository.getUserList().get(id);
+        model.addAttribute("user",user);
+        return "user/updateForm";
+    }
+
+    @PostMapping("/users/{id}/update")
+    public String updateUser(@PathVariable Integer id, User user){
+        logger.info("user = {}", user);
+        userRepository.getUserList().set(id,user);
+        return "redirect:/users";
+    }
 }
