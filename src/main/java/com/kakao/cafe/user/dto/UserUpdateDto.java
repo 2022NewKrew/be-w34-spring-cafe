@@ -19,8 +19,4 @@ public class UserUpdateDto {
     private String name;
     @NotEmpty
     private String email;
-
-    public String getUserId() {
-        return userId;
-    }
 }

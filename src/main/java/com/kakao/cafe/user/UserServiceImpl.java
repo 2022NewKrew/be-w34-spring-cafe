@@ -1,8 +1,10 @@
 package com.kakao.cafe.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -10,6 +12,7 @@ import java.util.List;
  *
  * @author jm.hong
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -18,7 +21,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long save(User user) {
-        return userRepository.save(user);
+        Long id = null;
+
+        try {
+            id = userRepository.save(user);
+        } catch (SQLException e) {
+            log.error("USER TABLE SAVE 실패 SQLState : {}",e.getSQLState());
+        }
+
+        return id;
     }
 
     @Override
@@ -33,6 +44,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean update(User user) {
-        return userRepository.update(user);
+
+        User origin = userRepository.findOne(user.getId());
+        origin.setUserId(user.getUserId());
+        origin.setEmail(user.getEmail());
+        origin.setName(user.getName());
+
+        log.debug(origin.toString());
+
+        return userRepository.update(origin);
     }
 }

@@ -1,17 +1,17 @@
 package com.kakao.cafe.user;
 
-import org.springframework.stereotype.Repository;
-
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * UserRepository의 구현체입니다.
  * Database를 사용하면 안되어 HashMap으로 데이터베이스를 구성합니다.
  *
  * @author jm.hong
+ * @deprecated H2 DataBase 버전이 추가되어 향후 삭제됩니다.
  */
-@Repository
 public class UserRepositoryHash implements UserRepository {
 
     private static Map<Long, User> inMemoryDatabase = new HashMap<>();

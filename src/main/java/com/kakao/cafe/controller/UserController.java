@@ -6,6 +6,7 @@ import com.kakao.cafe.user.dto.UserCreateDto;
 import com.kakao.cafe.user.dto.UserDto;
 import com.kakao.cafe.user.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -64,9 +66,20 @@ public class UserController {
     @PostMapping("/{id}/update")
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) {
 
-        User user = modelMapper.map(userService.findOne(id),User.class);
+        System.out.println(userUpdateDto.getUserId() +" userId");
+        //TODO: model Mapper 매핑에러
+        //User user = modelMapper.map(userUpdateDto, User.class);
 
-        userService.update(user);
+        User user = new User();
+        user.setId(id);
+        user.setName(userUpdateDto.getName());
+        user.setEmail(userUpdateDto.getEmail());
+        user.setUserId(userUpdateDto.getUserId());
+
+
+        if (!userService.update(user)) {
+            log.info("회원 정보 수정 실패 에러페이지로 이동");
+        }
 
         return "redirect:/";
     }

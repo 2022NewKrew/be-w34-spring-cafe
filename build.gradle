@@ -23,6 +23,9 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
 
+	implementation'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'com.h2database:h2:2.0.206'
+
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	testCompileOnly 'org.projectlombok:lombok:1.18.22'

@@ -1,5 +1,6 @@
 package com.kakao.cafe.user;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ public interface UserRepository {
      * @param user 회원 정보 엔티티
      * @return Database 에 저장된 key 값
      */
-    Long save(User user);
+    Long save(User user) throws SQLException;
 
     /**
      * key 값에 해당하는 회원정보를 반환합니다.
