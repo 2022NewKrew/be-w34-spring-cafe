@@ -17,12 +17,12 @@
 
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">회원가입</p>
+            <p class="title">회원정보 수정</p>
         </header>
-        <form name="question" class="info-container" method="post" action="/users">
+        <form name="question" class="info-container" method="post" action="/users/{{userId}}/update">
             <div class="form-group">
                 <label for="userId">닉네임</label>
-                <input class="form-control" id="userId" name="userId" placeholder="닉네임을 입력하세요">
+                <input class="form-control" id="userId" name="userId" placeholder="닉네임을 입력하세요" value="{{userId}}" disabled>
             </div>
             <div class="form-group">
                 <label for="password">비밀번호</label>
@@ -30,13 +30,13 @@
             </div>
             <div class="form-group">
                 <label for="userId">이름</label>
-                <input type="name" class="form-control" id="name" name="name" placeholder="이름을 입력하세요">
+                <input type="name" class="form-control" id="name" name="name" placeholder="이름을 입력하세요" value="{{name}}">
             </div>
             <div class="form-group">
                 <label for="email">이메일</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
+                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요" value="{{email}}">
             </div>
-            <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
+            <button type="submit" class="btn btn-success clearfix pull-right">수정</button>
         </form>
     </div>
 </div>

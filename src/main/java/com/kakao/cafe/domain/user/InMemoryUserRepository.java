@@ -1,33 +1,34 @@
 package com.kakao.cafe.domain.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
-@Repository("userRepository")
+@Repository
 public class InMemoryUserRepository implements UserRepository{
 
-    private final List<User> users;
+    private final Map<String, User> users = new HashMap<>();
 
-    @Autowired
-    public InMemoryUserRepository(List<User> users) {
-        this.users = users;
+    @Override
+    public void save(User user) {
+        users.put(user.getUserId(), user);
     }
 
     @Override
-    public void create(User user) {
-        users.add(user);
+    public void update(String id, String password, User user) {
+        users.put(id, user);
     }
 
     @Override
-    public Optional<User> findById(String userId) {
-        return users.stream().filter(e -> e.getUserId().equals(userId)).findAny();
+    public User findById(String userId) {
+        return users.get(userId);
     }
 
     @Override
     public List<User> findAll() {
-        return users;
+        return new ArrayList<>(users.values());
     }
 }

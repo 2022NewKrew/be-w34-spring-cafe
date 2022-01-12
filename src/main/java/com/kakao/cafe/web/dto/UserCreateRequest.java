@@ -3,20 +3,16 @@ package com.kakao.cafe.web.dto;
 import com.kakao.cafe.domain.user.User;
 
 public class UserCreateRequest {
-    private String userId;
-    private String password;
-    private String name;
-    private String email;
+    private final String userId;
+    private final String password;
+    private final String name;
+    private final String email;
 
-    public UserCreateRequest() {
-
-    }
-
-    public UserCreateRequest(User user) {
-        this.userId = user.getUserId();
-        this.password = user.getPassword();
-        this.name = user.getName();
-        this.email = user.getEmail();
+    public UserCreateRequest(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
     public User toEntity() {
@@ -44,21 +40,5 @@ public class UserCreateRequest {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }
