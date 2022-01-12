@@ -26,7 +26,7 @@ public class ArticleController {
     public String findArticleList(Model model) {
         List<Article> articles = articleService.findArticleList();
         model.addAttribute("articles" , articles);
-        return "index";
+        return "qna/list";
     }
 
     @PostMapping("/questions")
