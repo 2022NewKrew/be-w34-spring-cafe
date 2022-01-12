@@ -26,9 +26,9 @@ public class UserController {
     @PostMapping("/create")
     public String signUp(User user) {
         logger.info("[POST] /create 회원가입하기");
-        logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getName());
+        logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getUserName());
 
-        userService.insertUser(user);
+        userService.register(user);
 
         return "redirect:/users";
     }
@@ -48,7 +48,7 @@ public class UserController {
         logger.info("[GET] /{userId} 프로필 조회");
 
         User user = userService.getUserById(userId);
-        logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getName());
+        logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getUserName());
         model.addAttribute("user", user);
 
         return "user/profile";
