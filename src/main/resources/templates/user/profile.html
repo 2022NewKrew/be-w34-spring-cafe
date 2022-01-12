@@ -9,8 +9,9 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="/css/user/form.css" rel="stylesheet">
+    <link href="/css/user/profile.css" rel="stylesheet">
 </head>
+
 <body>
 <div class="background">
     {{>layout/navbar}}
@@ -21,20 +22,15 @@
         </header>
         <form name="question" class="info-container" method="post" action="/users">
             <div class="form-group">
-                <label for="userId">닉네임</label>
-                <input class="form-control" id="userId" name="userId" placeholder="닉네임을 입력하세요">
-            </div>
-            <div class="form-group">
-                <label for="password">비밀번호</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요">
+                <p class="title">{{}}</label>
             </div>
             <div class="form-group">
                 <label for="userId">이름</label>
-                <input type="name" class="form-control" id="name" name="name" placeholder="이름을 입력하세요">
+                <input type="name" class="form-control" id="name" name="name" value="{{user.name}}" disabled>
             </div>
             <div class="form-group">
                 <label for="email">이메일</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
+                <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" disabled>
             </div>
             <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
         </form>
