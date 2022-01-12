@@ -20,4 +20,11 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     public List<Article> findAll() {
         return currentArticles;
     }
+
+    @Override
+    public Article findByIdOrNull(String articleId) {
+        return currentArticles.stream()
+                .filter(article -> article.isSameArticleById(articleId))
+                .findFirst().orElse(null);
+    }
 }
