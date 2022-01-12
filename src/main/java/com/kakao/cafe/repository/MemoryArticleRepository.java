@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
+
 public class MemoryArticleRepository implements ArticleRepository{
 
     private static final List<Article> store = Collections.synchronizedList(new ArrayList<Article>());
