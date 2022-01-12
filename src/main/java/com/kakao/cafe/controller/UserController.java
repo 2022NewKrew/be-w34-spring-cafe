@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserForm;
+import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String create(UserForm form) {
+    public String create(UserDto form) {
         User user = new User();
         user.setUserId(form.getUserId());
         user.setEmail(form.getEmail());
@@ -54,7 +54,7 @@ public class UserController {
         return "user/updateForm";
     }
     @PostMapping("/users/{id}/update")
-    public String update(@PathVariable("id") Long id, UserForm form, Model model) {
+    public String update(@PathVariable("id") Long id, UserDto form, Model model) {
         User updateUser = new User();
         updateUser.setId(id);
         updateUser.setUserId(form.getUserId());

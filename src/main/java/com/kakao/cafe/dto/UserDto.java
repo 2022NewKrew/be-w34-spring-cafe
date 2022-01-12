@@ -1,7 +1,7 @@
 package com.kakao.cafe.dto;
 
 /* User 클래스와 분기하기 위해 생성*/
-public class UserForm {
+public class UserDto {
     private String userId;
     private String password;
     private String name;

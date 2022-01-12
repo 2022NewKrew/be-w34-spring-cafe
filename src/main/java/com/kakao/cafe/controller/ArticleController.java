@@ -1,9 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.ArticleForm;
-import com.kakao.cafe.dto.UserForm;
+import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +30,7 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String create(ArticleForm form) {
+    public String create(ArticleDto form) {
         Article article = new Article();
         article.setWriter(form.getWriter());
         article.setTitle(form.getTitle());

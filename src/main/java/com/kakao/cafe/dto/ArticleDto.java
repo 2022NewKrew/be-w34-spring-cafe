@@ -1,6 +1,6 @@
 package com.kakao.cafe.dto;
 
-public class ArticleForm {
+public class ArticleDto {
     private String writer;
     private String title;
     private String contents;
