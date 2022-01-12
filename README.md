@@ -18,3 +18,5 @@
 - [x] h2 database 연결 및 전환
 - [x] stream 사용시 orelse(null)보단 exception
 - [x] template header footer 분리
+- [x] session을 사용하여 로그인 구현
+- [ ] domain 객체를 dto로 세분화
