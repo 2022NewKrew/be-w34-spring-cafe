@@ -16,7 +16,7 @@ public class ArticleRepository {
     private static final Map<Integer, Article> articles = new HashMap<>();
 
     public void postNewArticle(Article article) {
-        articles.put(articles.size() + 1, article);
+        articles.put(article.getArticleId(), article);
     }
 
     public List<Article> findAllArticles() {
@@ -28,5 +28,9 @@ public class ArticleRepository {
             return articles.get(articleId);
         }
         throw new NoSuchArticleException();
+    }
+
+    public int getNextArticleId() {
+        return articles.size() + 1;
     }
 }

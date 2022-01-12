@@ -17,7 +17,7 @@ public class ArticleService {
     private ArticleRepository articleRepository;
 
     public void postNewArticle(WriteArticleDto articleDto) {
-        this.articleRepository.postNewArticle(articleDto.toEntity(articleRepository.findAllArticles().size() + 1));
+        this.articleRepository.postNewArticle(articleDto.toEntity(articleRepository.getNextArticleId()));
     }
 
     public List<ReferArticleDto> getArticleList() {
