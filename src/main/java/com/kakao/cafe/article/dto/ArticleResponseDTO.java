@@ -3,6 +3,8 @@ package com.kakao.cafe.article.dto;
 import com.kakao.cafe.article.domain.Article;
 import lombok.Getter;
 
+import java.time.format.DateTimeFormatter;
+
 @Getter
 public class ArticleResponseDTO {
 
@@ -17,6 +19,6 @@ public class ArticleResponseDTO {
         this.title = article.getTitle();
         this.content = article.getContent();
         this.author = article.getAuthor();
-        this.createDate = article.getCreateDateString();
+        this.createDate = article.getCreateDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 }
