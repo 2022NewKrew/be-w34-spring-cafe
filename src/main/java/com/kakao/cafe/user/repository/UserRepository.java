@@ -1,18 +1,21 @@
 package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.entity.User;
+import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
 public class UserRepository {
 
     private final List<User> userList;
-    private Integer identity = 0;
+    private Integer identity;
 
     private UserRepository() {
         this.userList = new ArrayList<>();
+        this.identity = 0;
     }
 
     public Optional<User> findByUserId(String userId) {
@@ -23,6 +26,8 @@ public class UserRepository {
 
     public int save(User newUser) {
         newUser.setId(++this.identity);
+        LocalDateTime createdAt = LocalDateTime.now();
+        newUser.setCreatedAt(createdAt);
 
         this.userList.add(newUser);
 
