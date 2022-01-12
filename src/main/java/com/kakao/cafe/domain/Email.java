@@ -8,15 +8,22 @@ import lombok.Getter;
 public class Email {
     private static final String format = "^[A-Za-z20-9._-]+@[a-zA-z0-9]+\\.[a-z]+$";
 
-    private String email;
+    private final String email;
 
     public Email(String email) {
+        validateNull(email);
         validateFormat(email);
         this.email = email;
     }
 
+    private void validateNull(String email) {
+        if (email == null) {
+            throw new UserException(ErrorCode.INVALID_NULL_VALUE);
+        }
+    }
+
     private void validateFormat(String email) {
-        if(!email.matches(format)) {
+        if (!email.matches(format)) {
             throw new UserException(ErrorCode.INVALID_USER_EMAIL);
         }
     }
