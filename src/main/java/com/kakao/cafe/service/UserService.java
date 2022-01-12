@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.Users;
+import com.kakao.cafe.domain.user.UserRepositoryNoDB;
 import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.dto.UserResponseDto;
 import com.kakao.cafe.dto.mapper.UserMapper;
@@ -12,24 +12,24 @@ import java.util.List;
 @Service
 public class UserService {
     //DB생성 전까지 users 변수에 임시 저장
-    private Users users = new Users();
+    private UserRepositoryNoDB userRepositoryNoDB = new UserRepositoryNoDB();
 
     public void save(UserRequestDto userRequestDto){
-        users.addUser(UserMapper.INSTANCE.toEntity(userRequestDto));
+        userRepositoryNoDB.save(UserMapper.INSTANCE.toEntity(userRequestDto));
     }
 
     public void update(int id, UserRequestDto userRequestDto){
-        User user = users.findById(id);
+        User user = userRepositoryNoDB.findById(id);
         if (userRequestDto.getStringId().equals(user.getStringId()) && userRequestDto.getPrevPassword().equals(user.getPassword())){
-            users.updateUser(id, UserMapper.INSTANCE.toEntity(userRequestDto));
+            userRepositoryNoDB.update(id, UserMapper.INSTANCE.toEntity(userRequestDto));
         }
     }
 
     public List<UserResponseDto> findAll(){
-        return UserMapper.INSTANCE.toDtoList(users.getUsers());
+        return UserMapper.INSTANCE.toDtoList(userRepositoryNoDB.findAll());
     }
 
     public UserResponseDto findbyId(int id){
-        return UserMapper.INSTANCE.toDto(users.findById(id));
+        return UserMapper.INSTANCE.toDto(userRepositoryNoDB.findById(id));
     }
 }

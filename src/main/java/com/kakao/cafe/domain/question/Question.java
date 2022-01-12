@@ -10,13 +10,13 @@ public class Question {
     private String title;
     private String writer;
     private String contents;
-    private LocalDateTime createdDateTime;
+    private LocalDateTime createdAt;
 
     public Question(String title, String writer, String contents) {
         this.title = title;
         this.writer = writer;
         this.contents = contents;
-        this.createdDateTime =  LocalDateTime.now();
+        this.createdAt =  LocalDateTime.now();
     }
 
     public void setId(int id){

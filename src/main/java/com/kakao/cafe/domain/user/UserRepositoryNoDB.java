@@ -1,16 +1,18 @@
 package com.kakao.cafe.domain.user;
 
 import lombok.Getter;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class Users {
+@Repository
+public class UserRepositoryNoDB implements UserRepository {
     private List<User> users = new ArrayList<User>();
     private int maxIndex = 0;
 
-    public void addUser(User user){
+    public void save(User user){
         try{
             findByStringId(user.getStringId());
             return;
@@ -22,7 +24,7 @@ public class Users {
         }
     }
 
-    public void updateUser(int id, User user){
+    public void update(int id, User user){
         findById(id).update(user);
     }
 
@@ -36,5 +38,9 @@ public class Users {
         return users.stream().filter(user -> user.getStringId().equals(stringId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException());
+    }
+
+    public List<User> findAll(){
+        return users;
     }
 }

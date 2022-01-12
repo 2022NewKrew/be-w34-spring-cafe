@@ -12,13 +12,13 @@ public class QuestionResponseDto {
     private String title;
     private String writer;
     private String contents;
-    private LocalDateTime createdDateTime;
+    private LocalDateTime createdAt;
 
-    public QuestionResponseDto(int id, String title, String writer, String contents, LocalDateTime createdDateTime) {
+    public QuestionResponseDto(int id, String title, String writer, String contents, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.writer = writer;
         this.contents = contents;
-        this.createdDateTime = createdDateTime;
+        this.createdAt = createdAt;
     }
 }

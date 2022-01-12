@@ -18,7 +18,6 @@ public class User {
     }
 
     public void update(User user){
-        this.stringId = user.getStringId();
         this.password = user.getPassword();
         this.name = user.getName();
         this.email = user.getEmail();
