@@ -1,8 +1,5 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.url.PostRedirect;
-import com.kakao.cafe.url.PostView;
-import com.kakao.cafe.url.UserView;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

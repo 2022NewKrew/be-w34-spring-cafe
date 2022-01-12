@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.Post;
 import com.kakao.cafe.service.CafePostService;
 import com.kakao.cafe.service.CafePostServiceImpl;
@@ -39,6 +40,7 @@ public class CafePostController {
     String getPostList(Model model) {
         List<Post> postList = cafePostService.getPostList();
         model.addAttribute("postList", postList);
+        model.addAttribute("postCnt", CollectionHelper.getItemNumberOfList(postList));
         return PostView.POST_VIEW_LIST;
     }
 
