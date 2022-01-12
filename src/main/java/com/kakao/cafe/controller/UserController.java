@@ -1,7 +1,6 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.DTO.SignInDTO;
-import com.kakao.cafe.DTO.UserInfoDTO;
 import com.kakao.cafe.domain.UserDB;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -36,11 +33,6 @@ public class UserController {
     @GetMapping()
     public String getUserList(Model model) {
         model.addAttribute("users", userDB.getUserInfoLst());
-        List<UserInfoDTO> foo = userDB.getUserInfoLst();
-
-        for (UserInfoDTO a : foo) {
-            logger.info("Successful SignUp; ID={}", a.getUID());
-        }
         return "user/list";
     }
 }

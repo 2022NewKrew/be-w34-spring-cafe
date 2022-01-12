@@ -13,10 +13,6 @@ public class User {
         this.email = email;
     }
 
-    public boolean isSameUser(String givenUID) {
-        return uID.equals(givenUID);
-    }
-
     public String getUID() {
         return uID;
     }

@@ -15,7 +15,7 @@ public class UserDB {
 
     public boolean SignUp(String uID, String password, String name, String email) {
         for (User A : userLst) {
-            if (A.isSameUser(uID)) {
+            if (A.getUID().equals(uID)) {
                 return false;
             }
         }
