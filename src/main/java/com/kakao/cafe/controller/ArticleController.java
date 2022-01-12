@@ -1,7 +1,6 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.ArticleId;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserName;
 import com.kakao.cafe.dto.article.ArticleDetailResponseDto;
@@ -11,6 +10,7 @@ import com.kakao.cafe.mapper.ArticleMapper;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -52,9 +52,8 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{articleId}")
-    public String requestArticleDetail(@PathVariable int articleId, Model model) {
-        ArticleId id = new ArticleId(articleId);
-        Article article = articleService.findArticleById(id);
+    public String requestArticleDetail(@PathVariable UUID articleId, Model model) {
+        Article article = articleService.findArticleById(articleId);
         ArticleDetailResponseDto dto = articleMapper.articleToArticleDetailResponseDto(article);
         model.addAttribute("article", dto);
         return "articles/detail";

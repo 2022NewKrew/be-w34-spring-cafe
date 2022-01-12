@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class ArticleMapper {
 
     public ArticleListResponseDto articleToArticleListResponseDto(Article article) {
-        int articleId = article.getArticleId().getValue();
+        String articleId = article.getArticleId().toString();
         String title = article.getTitle().getValue();
         String writer = article.getWriter().getName().getValue();
         String createdAt = article.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));

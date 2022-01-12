@@ -1,10 +1,10 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.ArticleId;
 import com.kakao.cafe.domain.article.Articles;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -27,7 +27,7 @@ public class InMemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findArticleById(ArticleId id) {
+    public Optional<Article> findArticleById(UUID id) {
         return articles.findByArticleId(id);
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class Articles {
 
@@ -18,11 +19,11 @@ public class Articles {
     }
 
     public void add(Article article) {
-        article.setArticleId(articleList.size() + 1);
+        article.setArticleId(UUID.randomUUID());
         articleList.add(article);
     }
 
-    public Optional<Article> findByArticleId(ArticleId articleId) {
+    public Optional<Article> findByArticleId(UUID articleId) {
         synchronized (articleList) {
             return articleList.stream()
                     .filter((article) -> article.getArticleId().equals(articleId))

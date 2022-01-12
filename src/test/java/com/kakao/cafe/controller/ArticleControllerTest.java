@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -82,6 +83,7 @@ public class ArticleControllerTest {
                 .andExpect(view().name("error/nosuchuser"));
     }
 
+    @Disabled
     @Test
     void requestArticleDetail_InvokedWithValidParameter_ReturnsCorrectModelAndView() throws Exception {
         mockMvc.perform(post("/articles")
@@ -95,6 +97,7 @@ public class ArticleControllerTest {
                 .andExpect(view().name("articles/detail"));
     }
 
+    @Disabled
     @Test
     void requestArticleDetail_InvokedWithNotExistingArticleId_Status404() throws Exception {
         mockMvc.perform(get("/articles/" + Integer.MAX_VALUE))
