@@ -2,6 +2,7 @@ package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserCreateDTO;
+import com.kakao.cafe.user.dto.UserProfileDTO;
 import com.kakao.cafe.user.repository.UserMemoryRepository;
 import com.kakao.cafe.user.repository.UserRepository;
 
@@ -18,10 +19,10 @@ public class UserService {
         return userRepository.getUsers();
     }
 
-    public User getUserByUserId(String userId){
+    public UserProfileDTO getUserByUserId(String userId){
         for(User user : userRepository.getUsers()){
             if(user.getUserId().equals(userId)){
-                return user;
+                return new UserProfileDTO(user);
             }
         }
 

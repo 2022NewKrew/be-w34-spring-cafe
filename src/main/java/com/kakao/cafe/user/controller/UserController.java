@@ -2,6 +2,7 @@ package com.kakao.cafe.user.controller;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserCreateDTO;
+import com.kakao.cafe.user.dto.UserProfileDTO;
 import com.kakao.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,9 +34,9 @@ public class UserController {
     //회원개인프로필 확인
     @GetMapping(value = "/users/{userId}")
     public String userProfile(@PathVariable("userId") String userId, Model model){
-        User user = userService.getUserByUserId(userId);
-        model.addAttribute("name", user.getName());
-        model.addAttribute("email", user.getEmail());
+        UserProfileDTO userProfileDTO = userService.getUserByUserId(userId);
+        model.addAttribute("name", userProfileDTO.getName());
+        model.addAttribute("email", userProfileDTO.getEmail());
         return "/user/profile";
     }
 
