@@ -34,9 +34,7 @@ public class UserService {
     }
 
     public User findByUserId(String userId){
-        Optional<User> user = userRepository.findByUserId(userId);
-        if (user.isEmpty()) throw new IllegalArgumentException("일치하는 아이디가 없습니다.");
-        return user.get();
+        return userRepository.findByUserId(userId).orElseThrow(() -> {throw new IllegalArgumentException("일치하는 아이디가 없습니다.");});
     }
 
     public User updateUser(User user) {

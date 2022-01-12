@@ -23,7 +23,6 @@ public class ArticleService {
     }
 
     public Article register(Article article) {
-        article.setContents(article.getContents().replace("\r\n", "<br>"));
         return articleRepository.save(article);
     }
 
