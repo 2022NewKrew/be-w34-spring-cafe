@@ -4,9 +4,11 @@ import com.kakao.cafe.application.ArticleService;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleVo;
 import com.kakao.cafe.interfaces.article.dto.ArticleMapper;
+import com.kakao.cafe.interfaces.article.dto.response.ArticleListResponseDto;
 import com.kakao.cafe.interfaces.article.dto.response.ArticleResponseDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,11 +25,22 @@ public class ArticleController {
 
     @GetMapping("/")
     public ModelAndView readAllArticles(ModelAndView modelAndView) {
-        List<Article> articles = articleService.readAll();
-        List<ArticleResponseDto> articleResponseDtoList = ArticleMapper.convertEntityListToResponseDtoList(articles);
+        List<Article> articles = articleService.findAll();
+        List<ArticleListResponseDto> articleResponseDtoList = ArticleMapper.convertEntityListToResponseDtoList(articles);
 
         modelAndView.addObject("articles", articleResponseDtoList);
         modelAndView.setViewName("index");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/articles/{index}")
+    public ModelAndView readArticleByIndex(@PathVariable int index, ModelAndView modelAndView) {
+        Article article = articleService.findById(index);
+        ArticleResponseDto articleResponseDto = ArticleMapper.convertEntityToResponseDto(article);
+
+        modelAndView.addObject("article", articleResponseDto);
+        modelAndView.setViewName("qna/show");
 
         return modelAndView;
     }

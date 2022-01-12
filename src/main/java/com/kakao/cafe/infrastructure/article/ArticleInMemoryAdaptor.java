@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
@@ -19,7 +20,7 @@ public class ArticleInMemoryAdaptor implements ArticlePort {
     @Override
     public void save(ArticleVo article) {
         articles.add(
-                new Article(index.getAndIncrement(),
+                new Article(index.incrementAndGet(),
                         article.getWriter(),
                         LocalDateTime.now(),
                         article.getTitle(),
@@ -29,5 +30,13 @@ public class ArticleInMemoryAdaptor implements ArticlePort {
     @Override
     public List<Article> findAll() {
         return Collections.unmodifiableList(articles);
+    }
+
+    @Override
+    public Optional<Article> findById(int index) {
+        if (index - 1 >= articles.size()) {
+            return Optional.empty();
+        }
+        return Optional.of(articles.get(index - 1));
     }
 }

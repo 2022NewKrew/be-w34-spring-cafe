@@ -3,22 +3,22 @@ package com.kakao.cafe.domain.article;
 import java.time.LocalDateTime;
 
 public class Article {
-    private final int index;
+    private final int id;
     private final String writer;
     private final LocalDateTime createdAt;
     private final String title;
     private final String contents;
 
-    public Article(int index, String writer, LocalDateTime createdAt, String title, String contents) {
-        this.index = index;
+    public Article(int id, String writer, LocalDateTime createdAt, String title, String contents) {
+        this.id = id;
         this.writer = writer;
         this.createdAt = createdAt;
         this.title = title;
         this.contents = contents;
     }
 
-    public int getIndex() {
-        return index;
+    public int getId() {
+        return id;
     }
 
     public String getWriter() {

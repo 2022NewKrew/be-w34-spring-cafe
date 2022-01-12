@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.article.ArticlePort;
 import com.kakao.cafe.domain.article.ArticleVo;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ArticleService {
 
@@ -18,7 +19,16 @@ public class ArticleService {
         articlePort.save(articleVo);
     }
 
-    public List<Article> readAll() {
+    public List<Article> findAll() {
         return articlePort.findAll();
+    }
+
+    public Article findById(int id) throws IllegalArgumentException {
+        Optional<Article> optionalArticle = articlePort.findById(id);
+        if (optionalArticle.isEmpty()) {
+            throw new IllegalArgumentException("잘못 된 index 입니다");
+        }
+
+        return optionalArticle.get();
     }
 }
