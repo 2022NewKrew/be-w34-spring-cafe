@@ -59,4 +59,16 @@ public class UserController {
         }
     }
 
+    @GetMapping("/users/{id}/update")
+    public String getUpdateForm(@PathVariable long id, Model model, RedirectAttributes rttr) {
+        try {
+            model.addAttribute("user", userService.getUserById(id));
+            return "/user/updateForm";
+        } catch (Exception e) {
+            e.printStackTrace();
+            rttr.addFlashAttribute("msg", e.getMessage());
+            return "redirect:/users";
+        }
+    }
+
 }

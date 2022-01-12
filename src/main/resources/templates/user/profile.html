@@ -23,6 +23,9 @@
             <p class="user-info"> 이메일: {{ email }}</p>
             <p class="user-info"> 닉네임: {{ nickname }}</p>
             <p class="user-info"> 가입일자 : {{ formattedCreatedAt }}</p>
+            <a href="/users/{{id}}/update">
+                <button>수정</button>
+            </a>
         {{/user}}
     </div>
 </div>
