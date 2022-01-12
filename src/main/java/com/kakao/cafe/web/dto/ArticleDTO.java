@@ -34,4 +34,13 @@ public class ArticleDTO {
     public void setContent(String contents) {
         this.contents = contents;
     }
+
+    @Override
+    public String toString() {
+        return "ArticleDTO{" +
+                "writer='" + writer + '\'' +
+                ", title='" + title + '\'' +
+                ", contents='" + contents + '\'' +
+                '}';
+    }
 }

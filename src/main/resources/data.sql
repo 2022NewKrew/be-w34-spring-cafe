@@ -1,0 +1,1 @@
+INSERT INTO ARTICLE (WRITER, TITLE, CONTENTS) VALUES ('ksc', '삽질킹', '삽질만 합니다.');

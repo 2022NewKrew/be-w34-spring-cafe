@@ -2,9 +2,11 @@ package com.kakao.cafe.web.repository;
 
 import com.kakao.cafe.web.domain.User;
 import com.kakao.cafe.web.dto.UserDTO;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+@Repository
 public class MemoryUserRepository implements UserRepository {
     Map<String, User> userMap;
 
@@ -22,7 +24,7 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> getUserList() {
-        return new ArrayList<User>(userMap.values());
+        return new ArrayList<>(userMap.values());
     }
 
     @Override
