@@ -1,4 +1,4 @@
-package com.kakao.cafe.infra.user;
+package com.kakao.cafe.persistence.user;
 
 import com.kakao.cafe.domain.user.UserAccount;
 import com.kakao.cafe.domain.user.UserAccountRepository;
@@ -7,32 +7,31 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UserAccountMemoryRepositoryTest {
 
     @Autowired
+    @Qualifier("simple-account-db")
     UserAccountRepository accountRepository;
 
     UserAccount testUser1 = UserAccount.builder()
             .email("edward@kakao.com")
             .password("1234")
             .username("edward")
-            .createdAt(LocalDate.now())
+            .createdAt(LocalDateTime.now())
             .build();
 
     UserAccount testUser2 = UserAccount.builder()
             .email("peach@kakao.com")
             .password("4321")
             .username("peach")
-            .createdAt(LocalDate.now())
+            .createdAt(LocalDateTime.now())
             .build();
 
     @AfterEach

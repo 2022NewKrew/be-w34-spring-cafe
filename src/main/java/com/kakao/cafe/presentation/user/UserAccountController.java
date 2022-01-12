@@ -18,21 +18,6 @@ public class UserAccountController {
 
     private final UserAccountService userAccountService;
 
-    @GetMapping("/signup")
-    public String signup() {
-        return "form";
-    }
-
-    @GetMapping("/login")
-    public String login() {
-        return "loginform";
-    }
-
-    @GetMapping("/success")
-    public String success() {
-        return "success";
-    }
-
     @GetMapping("/list")
     public String userList(Model model) {
         List<UserAccount> users = userAccountService.getAllUser();

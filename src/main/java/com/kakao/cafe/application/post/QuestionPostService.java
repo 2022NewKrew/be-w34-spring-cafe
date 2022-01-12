@@ -8,18 +8,26 @@ import com.kakao.cafe.application.user.UserAccountService;
 import com.kakao.cafe.domain.post.QuestionPost;
 import com.kakao.cafe.domain.post.QuestionPostRepository;
 import com.kakao.cafe.domain.user.UserAccount;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.time.format.DateTimeFormatter.ofPattern;
+
 @Service
-@RequiredArgsConstructor
+@Transactional
 public class QuestionPostService {
 
     private final QuestionPostRepository questionPostRepository;
     private final UserAccountService userAccountService;
+
+    public QuestionPostService(@Qualifier("jdbc-question-db") QuestionPostRepository questionPostRepository, UserAccountService userAccountService) {
+        this.questionPostRepository = questionPostRepository;
+        this.userAccountService = userAccountService;
+    }
 
     public QuestionPost save(QuestionPostSaveCommand command) {
         return questionPostRepository.save(command.toEntity());
@@ -29,7 +37,14 @@ public class QuestionPostService {
         List<QuestionPost> questionPosts = questionPostRepository.findAll();
 
         List<QuestionPostDetailResult> result = questionPosts.stream()
-                .map(post -> post.toResult(userAccountService.getUserInfo(post.getUserAccountId()).getUsername()))
+                .map(post -> new QuestionPostDetailResult(
+                        post.getQuestionPostId(),
+                        post.getTitle(),
+                        post.getContent(),
+                        post.getCreatedAt().format(ofPattern("yyyy-MM-dd HH:mm:ss")),
+                        post.getViewCount(),
+                        userAccountService.getUserInfo(post.getUserAccountId()).getUsername())
+                )
                 .collect(Collectors.toList());
 
         return new QuestionPostDetailListResult(result);
@@ -41,7 +56,14 @@ public class QuestionPostService {
 
         UserAccount userAccount = userAccountService.getUserInfo(questionPost.getUserAccountId());
 
-        return questionPost.toResult(userAccount.getUsername());
+        return new QuestionPostDetailResult(
+                questionPost.getQuestionPostId(),
+                questionPost.getTitle(),
+                questionPost.getContent(),
+                questionPost.getCreatedAt().format(ofPattern("yyyy-MM-dd HH:mm:ss")),
+                questionPost.getViewCount(),
+                userAccount.getUsername()
+        );
     }
 
     public void clickPost(Long id) {

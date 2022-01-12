@@ -1,34 +1,26 @@
 package com.kakao.cafe.domain.user;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
-import java.time.LocalDate;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
+import java.time.LocalDateTime;
 
 @ToString(exclude = {"password"})
-@Builder
+@EqualsAndHashCode
+@Getter
 public class UserAccount {
 
-    private static final AtomicLong idGenerator;
-
     private final Long userAccountId;
-
     private final String username;
-
     private final String password;
-
     private final String email;
+    private final LocalDateTime createdAt;
 
-    private final LocalDate createdAt;
-
-    static {
-        idGenerator = new AtomicLong();
-    }
-
-    public UserAccount(Long userAccountId, String username, String password, String email, LocalDate createdAt) {
-        this.userAccountId = Objects.requireNonNullElseGet(userAccountId, idGenerator::getAndIncrement);
+    @Builder
+    public UserAccount(Long userAccountId, String username, String password, String email, LocalDateTime createdAt) {
+        this.userAccountId = userAccountId;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -37,10 +29,6 @@ public class UserAccount {
 
     public boolean checkEmail(String email) {
         return this.email.equals(email);
-    }
-
-    public boolean checkUserAccountId(Long id) {
-        return Objects.equals(this.userAccountId, id);
     }
 
     public Long getUserAccountId() {

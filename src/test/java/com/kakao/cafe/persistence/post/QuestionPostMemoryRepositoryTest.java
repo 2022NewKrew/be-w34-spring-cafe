@@ -1,4 +1,4 @@
-package com.kakao.cafe.infra.post;
+package com.kakao.cafe.persistence.post;
 
 import com.kakao.cafe.domain.post.QuestionPost;
 import com.kakao.cafe.domain.post.QuestionPostRepository;
@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.List;
 public class QuestionPostMemoryRepositoryTest {
 
     @Autowired
+    @Qualifier("simple-question-db")
     QuestionPostRepository questionPostRepository;
 
     QuestionPost testPost1 = QuestionPost.builder()
@@ -59,8 +61,6 @@ public class QuestionPostMemoryRepositoryTest {
         questionPostRepository.save(testPost1);
         questionPostRepository.save(testPost2);
 
-        System.out.println(testPost1);
-        System.out.println(testPost2);
         List<QuestionPost> result = questionPostRepository.findAll();
 
         Assertions.assertThat(result.size()).isEqualTo(2);

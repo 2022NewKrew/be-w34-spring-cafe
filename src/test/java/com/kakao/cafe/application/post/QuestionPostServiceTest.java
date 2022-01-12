@@ -67,6 +67,7 @@ public class QuestionPostServiceTest {
         QuestionPostDetailResult postDetail = questionPostService.getPostDetail(postId);
 
         //then
-        Assertions.assertThat(postDetail).isEqualTo(expected);
+        Assertions.assertThat(postDetail.getQuestionPostId()).isEqualTo(expected.getQuestionPostId());
+        Assertions.assertThat(postDetail.getAuthor()).isEqualTo(expected.getAuthor());
     }
 }

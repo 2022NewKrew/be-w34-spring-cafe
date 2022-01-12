@@ -16,11 +16,6 @@ public class QuestionPostController {
 
     private final QuestionPostService questionPostService;
 
-    @GetMapping("/form")
-    public String writePost() {
-        return "qnaform";
-    }
-
     @GetMapping("/{id}/detail")
     public String postDetail(@PathVariable(name = "id") Long id, Model model) {
         QuestionPostDetailResult postDetail = questionPostService.getPostDetail(id);
