@@ -19,9 +19,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void publishArticle(ArticleRequest articleRequest) {
-        Article article = new Article(articleRequest.getTitle(), articleRequest.getDescription());
-        articleRepository.save(article);
+    public void publishArticle(ArticleRequest request) {
+        articleRepository.save(request.toEntity());
     }
 
     public List<ArticleDto> getArticles() {

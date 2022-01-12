@@ -20,14 +20,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void signUp(UserCreateRequest userCreateRequest) {
-        User user = new User(
-                userCreateRequest.getUsername(),
-                userCreateRequest.getNickname(),
-                userCreateRequest.getEmail(),
-                userCreateRequest.getPassword()
-        );
-        userRepository.save(user);
+    public void signUp(UserCreateRequest request) {
+        userRepository.save(request.toEntity());
     }
 
     public List<UserDto> getUsers() {

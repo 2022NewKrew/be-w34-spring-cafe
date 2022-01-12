@@ -1,5 +1,7 @@
 package com.kakao.cafe.dto.article;
 
+import com.kakao.cafe.domain.article.Article;
+
 public class ArticleRequest {
 
     private final String title;
@@ -10,11 +12,7 @@ public class ArticleRequest {
         this.description = description;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
+    public Article toEntity() {
+        return new Article(title, description);
     }
 }
