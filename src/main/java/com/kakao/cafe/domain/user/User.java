@@ -15,11 +15,12 @@ public class User {
     private LocalDateTime createdAt;
 
     @Builder
-    public User(String email, String nickname, String password) {
+    public User(Long id, String email, String nickname, String password, LocalDateTime createdAt) {
+        this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = createdAt;
     }
 
     // 데이터베이스를 사용하지 않고, 메모리에 데이터를 저장하는 방식이기 때문에 필요함.

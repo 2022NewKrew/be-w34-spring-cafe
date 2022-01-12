@@ -46,6 +46,25 @@ class UserServiceTest {
         });
     }
 
+    @DisplayName("정상적으로 회원가입을 진행하면 회원가입 일자가 null이 아니여야 한다.")
+    @Test
+    void signupUserForCheckingCreatedAt() {
+        String email = "test@test.com";
+        String nickname = "테스터";
+        String password = "1234";
+        UserSignupRequest user = UserSignupRequest.builder()
+                .email(email)
+                .nickname(nickname)
+                .password(password)
+                .build();
+
+        userService.signupUser(user);
+        User signupUser = userRepository.findByEmail(email).orElse(null);
+
+        assertThat(signupUser).isNotNull();
+        assertThat(signupUser.getCreatedAt()).isNotNull();
+    }
+
     @DisplayName("이미 등록된 이메일을 이용하여 회원가입을 진행하면 에러가 발생한다.")
     @Test
     void signupUserWithDuplicatedEmail() {

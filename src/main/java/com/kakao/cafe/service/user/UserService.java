@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,7 @@ public class UserService {
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .password(user.getPassword())
+                .createdAt(LocalDateTime.now())
                 .build());
     }
 
