@@ -2,14 +2,13 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.MemoryArticleRepository;
 import com.kakao.cafe.web.dto.ArticleCreateRequestDto;
 import com.kakao.cafe.web.dto.ArticleDetailResponseDto;
 import com.kakao.cafe.web.dto.ArticleListResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +17,13 @@ import java.util.Optional;
 public class ArticleService {
 
     private final Logger logger = LoggerFactory.getLogger(ArticleService.class);
-    private final ArticleRepository articleRepository = new MemoryArticleRepository();
+    private final ArticleRepository articleRepository;
+
+    @Autowired
+    public ArticleService(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
+
 
     public void create(ArticleCreateRequestDto requestDto) {
         Long id = articleRepository.generateId();
