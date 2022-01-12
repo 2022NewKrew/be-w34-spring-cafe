@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.article.ArticleDto;
+import com.kakao.cafe.dto.article.WriteArticleDto;
 import com.kakao.cafe.service.article.ArticleService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class ArticleController {
 
     // 게시글 작성
     @PostMapping("/article/post")
-    public String postNewArticle(ArticleDto articleDto) {
+    public String postNewArticle(WriteArticleDto articleDto) {
         log.info("{}", articleDto.getWriter());
         log.info("{}", articleDto.getTitle());
         log.info("{}", articleDto.getContents());

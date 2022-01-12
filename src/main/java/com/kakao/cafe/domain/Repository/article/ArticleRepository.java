@@ -5,22 +5,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
 public class ArticleRepository {
-    private static final List<Article> articles = new ArrayList<>();
+    private static final Map<Integer, Article> articles = new HashMap<>();
 
     public void postNewArticle(Article article) {
-        articles.add(article);
+        articles.put(articles.size() + 1, article);
     }
 
     public List<Article> findAllArticles() {
-        return articles;
+        return new ArrayList<>(articles.values());
     }
 
     public Article findArticleById(int articleId) {
-        return articles.get(articleId - 1);
+        return articles.get(articleId);
     }
 }
