@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.post.PostRepository;
 import com.kakao.cafe.model.post.PostDto;
 import com.kakao.cafe.model.post.PostWriteRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,10 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
+@Slf4j
 @SpringBootTest
 class PostServiceTest {
 
@@ -32,6 +35,7 @@ class PostServiceTest {
                     .writer("작성자")
                     .title("게시글 제목" + i)
                     .content("게시글 내용 " + i)
+                    .createdAt(LocalDateTime.now())
                     .build();
             postRepository.save(post);
         }
@@ -57,6 +61,23 @@ class PostServiceTest {
         assertThatNoException().isThrownBy(() -> {
             postService.writePost(post);
         });
+    }
+
+    @DisplayName("게시글을 저장하면, 작성일자가 null이 아니여야 한다.")
+    @Test
+    void writePostForCheckingCreatedAt() {
+        String writer = "작성자";
+        String title = "게시글 제목";
+        String content = "게시글 내용";
+        PostWriteRequest post = PostWriteRequest.builder()
+                .writer(writer)
+                .title(title)
+                .content(content)
+                .build();
+
+        postService.writePost(post);
+        List<Post> posts = postRepository.findAll();
+        posts.forEach(p -> assertThat(p.getCreatedAt()).isNotNull());
     }
 
     @DisplayName("등록된 게시글의 수와 조회한 게시글의 총 개수는 같아야 한다.")

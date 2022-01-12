@@ -15,11 +15,12 @@ public class Post {
     private LocalDateTime createdAt;
 
     @Builder
-    public Post(String writer, String title, String content) {
+    public Post(Long id, String writer, String title, String content, LocalDateTime createdAt) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.content = content;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = createdAt;
     }
 
     // 데이터베이스를 사용하지 않고, 메모리에 데이터를 저장하는 방식이기 때문에 필요함.
