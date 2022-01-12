@@ -1,12 +1,10 @@
 package com.kakao.cafe.application.dto.result;
 
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @RequiredArgsConstructor
-@ToString
-@EqualsAndHashCode
+@Getter
 public class QuestionPostDetailResult {
 
     private final Long questionPostId;
