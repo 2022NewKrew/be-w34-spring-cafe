@@ -1,22 +1,16 @@
 package com.kakao.cafe.domain.post;
 
-import com.kakao.cafe.application.dto.result.QuestionPostDetailResult;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 
 @ToString
 @EqualsAndHashCode
 @Getter
 public class QuestionPost {
-
-    private static final AtomicLong idGenerator;
 
     private final Long questionPostId;
     private final String title;
@@ -25,13 +19,9 @@ public class QuestionPost {
     private int viewCount;
     private final Long userAccountId;
 
-    static {
-        idGenerator = new AtomicLong();
-    }
-
     @Builder
     public QuestionPost(Long questionPostId, String title, String content, LocalDateTime createdAt, int viewCount, Long userAccountId) {
-        this.questionPostId = Objects.requireNonNullElseGet(questionPostId, idGenerator::getAndIncrement);
+        this.questionPostId = questionPostId;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;

@@ -2,6 +2,7 @@ package com.kakao.cafe.persistence.post;
 
 import com.kakao.cafe.domain.post.QuestionPost;
 import com.kakao.cafe.domain.post.QuestionPostRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
+@Qualifier("simple-question-db")
 public class QuestionPostMemoryRepository implements QuestionPostRepository {
 
     private final Map<Long, QuestionPost> postMap;

@@ -8,21 +8,26 @@ import com.kakao.cafe.application.user.UserAccountService;
 import com.kakao.cafe.domain.post.QuestionPost;
 import com.kakao.cafe.domain.post.QuestionPostRepository;
 import com.kakao.cafe.domain.user.UserAccount;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
 
 @Service
-@RequiredArgsConstructor
+@Transactional
 public class QuestionPostService {
 
     private final QuestionPostRepository questionPostRepository;
     private final UserAccountService userAccountService;
+
+    public QuestionPostService(@Qualifier("jdbc-question-db") QuestionPostRepository questionPostRepository, UserAccountService userAccountService) {
+        this.questionPostRepository = questionPostRepository;
+        this.userAccountService = userAccountService;
+    }
 
     public QuestionPost save(QuestionPostSaveCommand command) {
         return questionPostRepository.save(command.toEntity());

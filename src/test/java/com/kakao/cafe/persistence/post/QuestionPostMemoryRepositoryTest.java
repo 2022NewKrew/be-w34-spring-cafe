@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.List;
 public class QuestionPostMemoryRepositoryTest {
 
     @Autowired
+    @Qualifier("simple-question-db")
     QuestionPostRepository questionPostRepository;
 
     QuestionPost testPost1 = QuestionPost.builder()
