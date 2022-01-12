@@ -3,6 +3,8 @@ package com.kakao.cafe.member.dto;
 import com.kakao.cafe.member.domain.Member;
 import lombok.Getter;
 
+import java.time.format.DateTimeFormatter;
+
 @Getter
 public class MemberResponseDTO {
 
@@ -15,6 +17,6 @@ public class MemberResponseDTO {
         this.id = member.getId();
         this.email = member.getEmail();
         this.nickName = member.getNickName();
-        this.createDate = member.getCreateDateString();
+        this.createDate = member.getCreateDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 }

@@ -1,5 +1,5 @@
 {{>layout/header}}
-<link href="css/index.css" rel="stylesheet">
+<link href="/css/index.css" rel="stylesheet">
 {{>layout/navigationBar}}
 <div class="description">
     <div class="desc-container">
@@ -22,7 +22,10 @@
                 <tbody>
                 {{#articles}}
                 <tr>
-                    <td><a href="/articles/{{id}}">{{title}}</a></td> <td>{{author}}</td> <td>{{createDate}}</td> <td>0</td>
+                    <td style="width:50%"><a href="/articles/{{id}}">{{title}}</a></td>
+                    <td>{{author}}</td>
+                    <td>{{createDate}}</td>
+                    <td>0</td>
                 </tr>
                 {{/articles}}
                 </tbody>

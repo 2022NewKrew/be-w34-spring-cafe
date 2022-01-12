@@ -39,6 +39,10 @@
     color: black;
 }
 
+table a:hover {
+    text-decoration: underline;
+}
+
 .navbar-right {
     display: flex;
 }
@@ -125,4 +129,13 @@ td {
 .post-write-btn:hover {
     background-color: #ffcd00;
     color: black;
+}
+
+.error-message {
+    color: #ffcd00;
+    font-size: 50px;
+    font-weight: bold;
+    width: 900px;
+    margin: 30px auto 30px;
+    text-align: center;
 }

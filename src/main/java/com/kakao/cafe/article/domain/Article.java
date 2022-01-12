@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Getter
 @Builder
@@ -18,9 +17,5 @@ public class Article {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getCreateDateString() {
-        return createDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 }

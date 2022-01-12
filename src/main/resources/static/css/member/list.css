@@ -39,6 +39,10 @@
     color: black;
 }
 
+table a:hover {
+    text-decoration: underline;
+}
+
 .navbar-right {
     display: flex;
 }

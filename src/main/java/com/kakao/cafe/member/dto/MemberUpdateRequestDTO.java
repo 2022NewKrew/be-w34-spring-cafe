@@ -8,10 +8,11 @@ import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
-public class MemberRequestDTO {
+public class MemberUpdateRequestDTO {
 
     private String email;
     private String nickName;
+    private String currentPassword;
     private String password;
     private String passwordCheck;
 
