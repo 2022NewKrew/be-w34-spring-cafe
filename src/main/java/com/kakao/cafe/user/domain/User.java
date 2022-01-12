@@ -9,8 +9,8 @@ public class User {
 
     private Long id;
     private String email;
-    private String username;
     private String password;
+    private String username;
 
     public void setId(Long id) {
         this.id = id;

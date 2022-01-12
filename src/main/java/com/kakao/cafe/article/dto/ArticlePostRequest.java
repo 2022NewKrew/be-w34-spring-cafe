@@ -7,11 +7,11 @@ import javax.validation.constraints.Size;
 public class ArticlePostRequest {
 
     @NotBlank
-    @Size(min = 2)
+    @Size(min = 2, max = 20)
     private final String title;
 
     @NotBlank
-    @Size(min = 10)
+    @Size(min = 10, max = 5000)
     private final String body;
 
     public ArticlePostRequest(String title, String body) {

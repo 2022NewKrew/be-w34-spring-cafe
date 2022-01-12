@@ -15,7 +15,7 @@ public class UserSignupRequest {
     private final String password;
 
     @NotBlank
-    @Size(min = 2, max = 15)
+    @Size(min = 2, max = 10)
     private final String username;
 
     public UserSignupRequest(String email, String password, String username) {
