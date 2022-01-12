@@ -18,7 +18,7 @@ public class UserService {
     public User findByUserId(String userId) throws IllegalArgumentException {
         Optional<User> optionalUser = userPort.findByUserId(userId);
         if (optionalUser.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("존재하지 않는 ID는 조회할 수 없습니다.");
         }
 
         return optionalUser.get();
@@ -31,7 +31,7 @@ public class UserService {
     public void join(UserVo userVo) throws IllegalArgumentException {
         Optional<User> optionalUser = userPort.findByUserId(userVo.getUserId());
         if (optionalUser.isPresent()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("이미 존재하는 ID는 가입할 수 없습니다.");
         }
 
         userPort.save(userVo.convertVoToEntity());

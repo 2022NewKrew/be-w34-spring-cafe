@@ -3,7 +3,6 @@ package com.kakao.cafe.application;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserPort;
 import com.kakao.cafe.domain.user.UserVo;
-import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +13,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
@@ -51,17 +52,17 @@ class UserServiceTest {
 
     @DisplayName("존재하지 않는 유저 ID로 사용자 조회를 할 수 없다")
     @Test
-    void checkFindNonExistUserByUserIdException() {
+    void checkFindNonExistUserByUserIdException() throws Exception {
         // given
         String userIdThatDoesNotExist = "2wls";
         given(userPort.findByUserId(userIdThatDoesNotExist))
                 .willReturn(Optional.empty());
 
         // when
-        ThrowableAssert.ThrowingCallable runnable = () -> userService.findByUserId(userIdThatDoesNotExist);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> userService.findByUserId(userIdThatDoesNotExist));
 
-        //then
-        assertThatThrownBy(runnable).isInstanceOf(IllegalArgumentException.class);
+        assertThat(exception.getMessage())
+                .isEqualTo("존재하지 않는 ID는 조회할 수 없습니다.");
         verify(userPort).findByUserId(userIdThatDoesNotExist);
     }
 
@@ -114,10 +115,11 @@ class UserServiceTest {
                 .willReturn(Optional.of(user));
 
         // when
-        ThrowableAssert.ThrowingCallable runnable = () -> userService.join(userVo);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> userService.join(userVo));
 
         //then
+        assertThat(exception.getMessage())
+                .isEqualTo("이미 존재하는 ID는 가입할 수 없습니다.");
         verify(userPort, never()).save(any(User.class));
-        assertThatThrownBy(runnable).isInstanceOf(IllegalArgumentException.class);
     }
 }
