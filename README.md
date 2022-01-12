@@ -6,6 +6,7 @@
 간단한 웹서비스 목적입니다.
 html을 동적으로 보여줍니다.
 데이터 저장은 DB가 아닌 현재는 메모리 저장으로 구현되어있습니다.
+-> Jdbc와 H2를 이용하여 인메모리 디비 저장으로 변경되었습니다.
 ```
 ## 구조
 ```
@@ -16,6 +17,7 @@ users
 - UserDto
 - UserRepostiory
     - MemoryUserRepository
+    - JdbcUserRepository
     
 articles
 - Article
