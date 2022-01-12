@@ -24,12 +24,6 @@ public class MainController {
     this.userService = userService;
   }
 
-  private final UserService userService;
-
-  public MainController(UserService userService) {
-    this.userService = userService;
-  }
-
   @GetMapping("/")
   public String index(Model model) {
     return "index";
