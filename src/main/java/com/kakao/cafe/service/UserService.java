@@ -21,7 +21,8 @@ public class UserService {
     private final UserRepository userRepository = new MemoryUserRepository();
 
     public void create(UserCreateRequestDto requestDto) {
-        User user = userRepository.signUp(new User(requestDto.getUserId(), requestDto.getPassword(), requestDto.getName(), requestDto.getEmail()));
+        Long id = userRepository.generateId();
+        User user = userRepository.signUp(new User(id, requestDto.getUserId(), requestDto.getPassword(), requestDto.getName(), requestDto.getEmail()));
         logger.info("{} 계정 생성", user.getUserId());
     }
 

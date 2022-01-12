@@ -12,6 +12,11 @@ public class MemoryUserRepository implements UserRepository {
     private static Long idNumber = 0L;
 
     @Override
+    public Long generateId() {
+        return ++idNumber;
+    }
+
+    @Override
     public User signUp(User user) {
         user.setId(++idNumber);
         userList.add(user);
