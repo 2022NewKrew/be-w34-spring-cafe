@@ -1,12 +1,14 @@
 package com.kakao.cafe.user.domain;
 
+import lombok.Getter;
+
 import java.util.Objects;
 
 public class User {
-    private String userId;
-    private String password;
-    private String name;
-    private String email;
+    @Getter private final String userId;
+    private final String password;
+    @Getter private final String name;
+    @Getter private final String email;
 
     public User(String userId, String password, String name, String email) {
         this.userId = userId;
@@ -17,17 +19,5 @@ public class User {
 
     public boolean isSameUser(String targetUserId) {
         return Objects.equals(this.userId, targetUserId);
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
     }
 }

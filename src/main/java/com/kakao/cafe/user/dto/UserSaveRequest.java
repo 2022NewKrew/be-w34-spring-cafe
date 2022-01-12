@@ -1,12 +1,14 @@
 package com.kakao.cafe.user.dto;
 
 import com.kakao.cafe.user.domain.User;
+import lombok.Setter;
 
 public class UserSaveRequest {
-    public String userId;
-    public String password;
-    public String name;
-    public String email;
+
+    @Setter public String userId;
+    @Setter public String password;
+    @Setter public String name;
+    @Setter public String email;
 
     public User toUser() {
         return new User(
@@ -15,21 +17,5 @@ public class UserSaveRequest {
                 this.name,
                 this.email
         );
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }
