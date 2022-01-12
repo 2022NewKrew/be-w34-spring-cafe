@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 @Builder
 public class ProfileDto {
-    private Long id;
-    private String nickName;
+    private final Long id;
+    private final String nickName;
     private String password;
 
     public void updateUser(User user) {

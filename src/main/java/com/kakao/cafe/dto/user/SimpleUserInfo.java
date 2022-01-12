@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class SimpleUserInfo {
-    private String email;
-    private String nickName;
-    private String joinDate;
+    private final String email;
+    private final String nickName;
+    private final String joinDate;
 }

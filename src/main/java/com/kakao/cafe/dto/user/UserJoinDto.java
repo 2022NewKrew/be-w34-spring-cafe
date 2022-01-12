@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 @Builder
 public class UserJoinDto {
-    private String email;
+    private final String email;
     private String password;
-    private String nickName;
+    private final String nickName;
 
     public User toUserWithCurrentDate() {
         return User.builder()
