@@ -5,10 +5,7 @@ import com.kakao.cafe.controller.dto.UserJoinDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.AlreadyExistId;
 import com.kakao.cafe.repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -74,7 +71,10 @@ class UserServiceTest {
         userFormDto.setName(updateName);
 
         //when
+        userRepository.save(user);
         userService.updateUser(userId, userFormDto);
+
+        user = userRepository.findById(user.getUserId()).get();
 
         //then
         assertThat(user.getName()).isEqualTo(updateName);
@@ -92,6 +92,8 @@ class UserServiceTest {
         userFormDto.setEmail(updateEmail);
         userFormDto.setName(updateName);
 
+        //when
+        userRepository.save(user);
         //then
         Assertions.assertThrows(IllegalArgumentException.class, () -> userService.updateUser(userId, userFormDto));
     }

@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class UserJdbcRepository implements UserRepository{
@@ -45,10 +46,10 @@ public class UserJdbcRepository implements UserRepository{
     }
 
     @Override
-    public User findById(String userId) {
+    public Optional<User> findById(String userId) {
         List<User> query = jdbcTemplate.query("select * from users where id=?", userRowMapper(), userId);
 
-        return query.stream().findAny().orElseThrow(() -> new NoSuchUser("그런 사용자는 없습니다."));
+        return query.stream().findAny();
     }
 
     @Override

@@ -37,7 +37,7 @@ class UserJdbcRepositoryTest {
         userJdbcRepository.save(user);
 
         // then
-        User byId = userJdbcRepository.findById(userId);
+        User byId = userJdbcRepository.findById(userId).get();
         Assertions.assertThat(byId).isEqualTo(user);
     }
 
@@ -58,7 +58,7 @@ class UserJdbcRepositoryTest {
         UserJoinDto dto2 = new UserJoinDto();
         dto2.setPassword("1234");
         dto2.setEmail("kakao@com");
-        dto2.setUserId(userId);
+        dto2.setUserId(userId2);
         dto2.setName("lsh");
 
         //when
