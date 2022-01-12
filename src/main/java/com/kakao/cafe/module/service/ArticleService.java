@@ -1,5 +1,6 @@
 package com.kakao.cafe.module.service;
 
+import com.kakao.cafe.infra.exception.NoSuchDataException;
 import com.kakao.cafe.module.model.domain.Article;
 import com.kakao.cafe.module.model.domain.User;
 import com.kakao.cafe.module.repository.ArticleRepository;
@@ -32,6 +33,6 @@ public class ArticleService {
 
     private User findAuthor(String name) {
         return userRepository.findUserByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 작성자입니다."));
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 작성자입니다."));
     }
 }

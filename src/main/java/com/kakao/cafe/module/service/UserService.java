@@ -1,5 +1,6 @@
 package com.kakao.cafe.module.service;
 
+import com.kakao.cafe.infra.exception.DuplicateNameException;
 import com.kakao.cafe.module.model.domain.User;
 import com.kakao.cafe.module.model.dto.UserDtos;
 import com.kakao.cafe.module.model.mapper.UserMapper;
@@ -46,7 +47,7 @@ public class UserService {
     private void validateDuplicateName(String name) {
         userRepository.findUserByName(name)
                 .ifPresent(e -> {
-                    throw new IllegalArgumentException("이미 존재하는 이름입니다.");
+                    throw new DuplicateNameException("이미 존재하는 이름입니다.");
                 });
     }
 
