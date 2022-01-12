@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 @Controller
 public class ArticleController {
@@ -25,7 +26,7 @@ public class ArticleController {
     }
 
     @PostMapping("/question")
-    String question(Article article) {
+    String question(@Valid Article article) {
         articleService.insertArticle(article);
         logger.info("create Article -> Writer : {}, Title : {}", article.getWriter(), article.getTitle());
         return "redirect:/";

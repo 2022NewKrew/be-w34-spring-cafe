@@ -1,13 +1,27 @@
 package com.kakao.cafe.vo;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class User {
     private final Long id;
+
+    @NotNull
+    @Size(min = 1, max = 20)
     private final String userId;
-    private final String time;
+
+    @NotNull
+    @Size(min = 1, max = 20)
     private final String password;
+
+    @Email
+    @NotNull
+    @Size(min = 1, max = 50)
     private final String email;
+
+    private final String time;
 
     public User(Long id, String userId, String password, String email, String time) {
         this.id = id;

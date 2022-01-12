@@ -1,5 +1,6 @@
 package com.kakao.cafe.vo;
 
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class Article {
@@ -7,7 +8,11 @@ public class Article {
     private final String writer;
     private final Long writerId;
     private final String time;
+
+    @Size(min = 1, max = 100)
     private final String title;
+
+    @Size(min = 1, max = 1000)
     private final String contents;
 
 

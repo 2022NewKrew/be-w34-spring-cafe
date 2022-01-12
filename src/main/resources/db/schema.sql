@@ -1,3 +1,4 @@
+drop table if exists UserTable;
 create table if not exists UserTable
 (
     id       bigint      not null primary key auto_increment,
@@ -7,6 +8,7 @@ create table if not exists UserTable
     time     DATETIME    not null
 );
 
+drop table if exists ArticleTable;
 create table if not exists ArticleTable
 (
     id       bigint     not null primary key auto_increment,

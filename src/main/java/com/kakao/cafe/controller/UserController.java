@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    String createUser(User user) {
+    String createUser(@Valid User user) {
         userService.insertUser(user);
         logger.info("create User -> UserId : {}, Email : {}", user.getUserId(), user.getEmail());
 
@@ -48,7 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/update")
-    String updateUser(User user) {
+    String updateUser(@Valid User user) {
         userService.updateUser(user);
         logger.info("update User -> UserId : {}, Email : {}", user.getUserId(), user.getEmail());
         return "redirect:/users";
