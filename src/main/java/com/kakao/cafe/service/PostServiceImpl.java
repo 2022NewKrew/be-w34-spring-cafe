@@ -4,6 +4,7 @@ import com.kakao.cafe.dto.PageRequestDto;
 import com.kakao.cafe.dto.PageResultDto;
 import com.kakao.cafe.dto.PostDto;
 import com.kakao.cafe.entity.Post;
+import com.kakao.cafe.exception.CafeException;
 import com.kakao.cafe.repository.PostRepository;
 import com.kakao.cafe.util.Page;
 import com.kakao.cafe.util.Pageable;
@@ -31,7 +32,7 @@ public class PostServiceImpl implements PostService {
     public PostDto getPost(Long postId) {
         Optional<Post> result = postRepository.findById(postId);
         if (result.isEmpty())
-            throw new RuntimeException("글 못찾겠엉");
+            throw new CafeException();
         return entityToDto(result.get());
     }
 
