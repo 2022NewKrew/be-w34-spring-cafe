@@ -1,10 +1,11 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.user.ProfileDto;
+import com.kakao.cafe.dto.user.SimpleUserInfo;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
+import javax.swing.text.html.Option;
+import java.util.*;
 
 /**
  * DB 연동 전 임시 사용
@@ -18,6 +19,29 @@ public class UserRepository implements Repository<User, Long> {
             return Optional.of(users.get(id));
         }
         return Optional.empty();
+    }
+
+    public Optional<User> findByEmail(String email) {
+        for (Map.Entry<Long, User> userEntry : users.entrySet()) {
+            User user = userEntry.getValue();
+            if (user.getEmail().equals(email)) {
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<ProfileDto> findProfileById(Long id) {
+        return Optional.empty();
+    }
+
+    public List<User> findAll(Integer pageNum, Integer pageSize) {
+        Integer startIndex = (pageNum -1) * pageSize;
+        return new ArrayList<>();
+    }
+
+    public List<SimpleUserInfo> getListOfSimpleUserInfo(Integer pageNum, Integer pageSize) {
+        return new ArrayList<>();
     }
 
     public boolean existsByEmail(String email) {
@@ -57,6 +81,11 @@ public class UserRepository implements Repository<User, Long> {
     public void delete(User user) {
         Long userId = user.getId();
         users.remove(userId);
+    }
+
+    @Override
+    public int countAll() {
+        return users.size();
     }
 
     public Long getMaxId() {
