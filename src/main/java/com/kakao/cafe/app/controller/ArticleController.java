@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
@@ -28,10 +25,11 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String write(@ModelAttribute ArticleRequest request, HttpSession session) {
-        ArticleDto article = service.create(session.getId(), request.toDraftDto());
-        if (article == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "login required");
+        Long ownerId = (Long) session.getAttribute("id");
+        if (ownerId == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
         }
+        service.create(ownerId, request.toDraftDto());
         return "redirect:/";
     }
 

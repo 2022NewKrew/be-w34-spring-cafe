@@ -1,19 +1,20 @@
 package com.kakao.cafe.domain.repository;
 
-import com.kakao.cafe.domain.entity.Session;
 import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Repository
 public class UserRepository {
 
     private final List<User> data = new ArrayList<>();
-    private final Map<String, Session> sessionMap = new HashMap<>();
 
     @Nullable
     public User create(SignUp signUp) {
@@ -55,14 +56,6 @@ public class UserRepository {
             return null;
         }
         return user;
-    }
-
-    public void saveSession(Session session) {
-        sessionMap.put(session.getId(), session);
-    }
-
-    public Session getSession(String sessionId) {
-        return sessionMap.get(sessionId);
     }
 
     private <T> Optional<User> getBy(Function<User, T> getter, T value) {
