@@ -20,11 +20,11 @@ public class User {
   private String email;
   private String nickName;
   private String password;
-  private String summary;
-  private String profile;
-  private Timestamp createAt;
-  private Timestamp modifiedAt;
-  private Timestamp lastLoginAt;
+  private String summary = DEFAULT_SUMMARY;
+  private String profile = DEFAULT_PROFILE;
+  private Timestamp createAt = new Timestamp(System.currentTimeMillis());
+  private Timestamp modifiedAt = new Timestamp(System.currentTimeMillis());
+  private Timestamp lastLoginAt = new Timestamp(System.currentTimeMillis());
 
   private User(
       Integer index, Long id, String email, String nickName,
