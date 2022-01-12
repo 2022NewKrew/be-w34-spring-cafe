@@ -17,7 +17,6 @@ public class CafePostDaoImpl implements CafePostDao {
 
     @Override
     public void writePost(Post newPost) {
-        newPost.setPostId(postList.size() + "");
         postList.add(newPost);
     }
 

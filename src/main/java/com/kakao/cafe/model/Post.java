@@ -1,16 +1,16 @@
 package com.kakao.cafe.model;
 
 public class Post {
-    String postId;
+    int postId;
     String userId; // 작성자 이름
     String title;
     String content;
     String createdAt;
 
-    public String getPostId() {
+    public int getPostId() {
         return postId;
     }
-    public void setPostId(String postId) {
+    public void setPostId(int postId) {
         this.postId = postId;
     }
 
