@@ -2,7 +2,6 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.dto.article.ArticleRequest;
-import com.kakao.cafe.exception.ArticleNotFoundException;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,13 +26,8 @@ public class ArticleController {
 
     @GetMapping("/{index}")
     public String getArticle(@PathVariable Long index, Model model) {
-        try {
-            ArticleDto article = articleService.findById(index);
-            model.addAttribute("article", article);
-        } catch (ArticleNotFoundException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "error";
-        }
+        ArticleDto article = articleService.findById(index);
+        model.addAttribute("article", article);
 
         return "article/show";
     }
