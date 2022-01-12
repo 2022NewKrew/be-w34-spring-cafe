@@ -2,6 +2,8 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.CreateUserDto;
+import com.kakao.cafe.dto.FindUserDto;
+import com.kakao.cafe.dto.UserDto;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,14 +17,20 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public User save(CreateUserDto createUserDto) {
-        User user = new User(createUserDto);
+        UserDto userDto = new UserDto(
+            createUserDto.getEmail(),
+            createUserDto.getNickname(),
+            createUserDto.getPassword()
+        );
+
+        User user = new User(userDto);
         store.put(user.getUserId(), user);
         return user;
     }
 
     @Override
-    public Optional<User> findById(UUID userId) {
-        return Optional.ofNullable(store.get(userId));
+    public Optional<User> findById(FindUserDto findUserDto) {
+        return Optional.ofNullable(store.get(findUserDto.getUserId()));
     }
 
     @Override

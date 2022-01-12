@@ -3,6 +3,8 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.CafeApplication;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.CreateUserDto;
+import com.kakao.cafe.dto.CreateUserRequestDto;
+import com.kakao.cafe.dto.FindUserDto;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import java.util.UUID;
@@ -38,15 +40,22 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String createUser(@ModelAttribute CreateUserDto createUserDto) {
+    public String createUser(@ModelAttribute CreateUserRequestDto createUserRequestDto) {
+        CreateUserDto createUserDto = new CreateUserDto(
+            createUserRequestDto.getEmail(),
+            createUserRequestDto.getNickname(),
+            createUserRequestDto.getPassword()
+        );
+
         UUID createdUserId = userService.join(createUserDto);
         logger.info("[Log] 유저가 생성되었습니다. {}", createdUserId);
         return "redirect:/users";
     }
 
     @GetMapping("/users/{userId}")
-    public String showUser(@PathVariable UUID userId, Model model) {
-        userService.findById(userId).ifPresent(user -> model.addAttribute("user", user));
+    public String showUser(@PathVariable String userId, Model model) {
+        FindUserDto findUserDto = new FindUserDto(userId);
+        userService.findById(findUserDto).ifPresent(user -> model.addAttribute("user", user));
         return "user/profile";
     }
 }

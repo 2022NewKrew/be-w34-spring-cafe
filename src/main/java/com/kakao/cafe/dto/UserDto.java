@@ -1,26 +1,26 @@
 package com.kakao.cafe.dto;
 
-public class CreateUserDto {
+public class UserDto {
 
     private final String email;
-    private final String nickname;
     private final String password;
+    private final String nickname;
 
-    public CreateUserDto(String email, String nickname, String password) {
+    public UserDto(String email, String password, String nickname) {
         this.email = email;
-        this.nickname = nickname;
         this.password = password;
+        this.nickname = nickname;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
     public String getPassword() {
         return password;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }
