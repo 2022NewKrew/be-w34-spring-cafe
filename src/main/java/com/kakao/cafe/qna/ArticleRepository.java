@@ -10,6 +10,6 @@ import java.util.List;
 public interface ArticleRepository {
 
     Article save(Article article);
-    Article findArticleById(int id);
+    Article findArticleById(Integer id);
     List<Article> findAll();
 }

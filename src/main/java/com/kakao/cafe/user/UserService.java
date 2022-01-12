@@ -20,15 +20,26 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void addUser(User user) {
-        userRepository.save(user);
+    public void addUser(UserDto userDto) {
+        User user = new User(
+                null,
+                userDto.getName(),
+                userDto.getPassword(),
+                userDto.getName(),
+                userDto.getEmail());
+        userRepository.insert(user);
     }
 
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public User findUserByUserId(String userId) {
-        return userRepository.findUserByUserId(userId);
+    public User findUserById(Integer id) {
+        return userRepository.findUserById(id);
+    }
+
+    public User updateUser(UserDto userDto, int id) {
+        User user = new User(id, null, null, userDto.getName(), userDto.getEmail());
+        return userRepository.update(user);
     }
 }

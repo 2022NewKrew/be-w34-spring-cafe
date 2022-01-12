@@ -9,8 +9,8 @@ import java.util.List;
  */
 public interface UserRepository {
 
-    User save(User user);
+    User insert(User user);
+    User update(User user);
     List<User> findAll();
-    User findUserByUserId(String userId);
-
+    User findUserById(Integer id);
 }

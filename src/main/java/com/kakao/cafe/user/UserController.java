@@ -3,6 +3,8 @@ package com.kakao.cafe.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,20 +34,34 @@ public class UserController {
 
     @PostMapping("")
     public String addUser(UserDto userDto) {
-        User newUser = new User(userDto.getName(),
-                userDto.getPassword(),
-                userDto.getName(),
-                userDto.getEmail());
-        userService.addUser(newUser);
-
+        userService.addUser(userDto);
         return "redirect:/user";
     }
 
-    @GetMapping("/{userId}")
-    public String userProfile(Model model, @PathVariable("userId") String userId) {
-        User user = userService.findUserByUserId(userId);
+    @GetMapping("/{id}")
+    public String userProfile(Model model, @PathVariable("id") Integer id) {
+        User user = userService.findUserById(id);
         model.addAttribute("user", new UserDto(user));
         return "user/profile";
+    }
+
+    @GetMapping("/{id}/form")
+    public String updateUserView(Model model, @PathVariable("id") int id) {
+        User user = userService.findUserById(id);
+        model.addAttribute("user", new UserDto(user));
+        return "user/updateForm";
+    }
+
+    @PutMapping("/{id}")
+    public String updateUser(Model model, UserDto userDto, @PathVariable("id") int id, BindingResult bindingResult) {
+        User user = userService.findUserById(id);
+        if (!user.getPassword().equals(userDto.getPassword())) {
+            model.addAttribute("user", userDto);
+            bindingResult.addError(new FieldError("user", "password", "match.password"));
+            return "user/updateForm";
+        }
+        userService.updateUser(userDto, id);
+        return "redirect:/user";
     }
 
 }
