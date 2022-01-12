@@ -1,6 +1,6 @@
 package com.kakao.cafe.Repository;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.User.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
