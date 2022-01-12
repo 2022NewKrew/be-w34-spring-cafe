@@ -6,12 +6,12 @@ import java.util.UUID;
 
 public class Article {
 
-    UUID articleId;
-    Title title;
-    Content content;
-    User writer;
-    LocalDateTime createdAt;
-    ViewCount viewCount;
+    private UUID articleId;
+    private final Title title;
+    private final Content content;
+    private final User writer;
+    private final LocalDateTime createdAt;
+    private final ViewCount viewCount;
 
     public Article(UUID articleId, Title title, Content content, User writer, LocalDateTime createdAt, ViewCount viewCount) {
         this.articleId = articleId;
