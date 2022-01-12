@@ -14,7 +14,7 @@ public class UserController {
     UserService userService = new UserService();
 
     //회원가입 목록 확인
-    @RequestMapping(value = {"/user/list.html", "templates/user/list.html"})
+    @GetMapping(value = "/user/list")
     public String userPrintAll(Model model){
         model.addAttribute("users", userService.getAllUser());
         return "/user/list";
@@ -24,13 +24,13 @@ public class UserController {
     @PostMapping(value = "/user/create")
     public String userCreate(User user, Model model){
         userService.userCreate(user);
-        return "redirect:/user/list.html";
+        return "redirect:/user/list";
     }
 
 
 
     //회원개인프로필 확인
-    @GetMapping(value = {"/users/{userId}", "/user/profile.html"})
+    @GetMapping(value = "/users/{userId}")
     public String userProfile(@PathVariable("userId") String userId, Model model){
         User user = userService.getUserByUserId(userId);
         model.addAttribute("name", user.getName());

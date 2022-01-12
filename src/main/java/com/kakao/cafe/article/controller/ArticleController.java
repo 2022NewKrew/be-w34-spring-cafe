@@ -18,7 +18,7 @@ public class ArticleController {
     }
 
     //index.html에 노출되는 질문리스트
-    @GetMapping(value = {"/", "/index.html"})
+    @GetMapping(value = {"/", "/index"})
     public String showArticleList(Model model) {
         model.addAttribute("articles", articleService.getAllArticles());
 
