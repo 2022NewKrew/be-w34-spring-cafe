@@ -8,5 +8,5 @@ import java.util.List;
 public interface ArticleRepository {
     Article save(ArticleDTO articleDTO);
     List<Article> getArticleList();
-    Article getArticleById(int id);
+    Article getArticleById(long id);
 }

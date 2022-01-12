@@ -23,7 +23,7 @@ public class ArticleService {
         return memoryArticleRepository.getArticleList();
     }
 
-    public Article getArticleById(int id) {
+    public Article getArticleById(long id) {
         return memoryArticleRepository.getArticleById(id);
     }
 }

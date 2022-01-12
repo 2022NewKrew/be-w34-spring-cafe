@@ -43,7 +43,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{index}")
-    public String getArticle(Model model, @PathVariable int index) {
+    public String getArticle(Model model, @PathVariable long index) {
         Article article = articleService.getArticleById(index);
         model.addAttribute("writer", article.getWriter());
         model.addAttribute("contents", article.getContents());

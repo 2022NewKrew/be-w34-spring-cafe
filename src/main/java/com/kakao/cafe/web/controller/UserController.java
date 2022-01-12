@@ -47,7 +47,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String getUserProfile(Model model, @PathVariable String userId) {
-        User user = userService.getUserById(userId);
+        User user = userService.getUserByUserId(userId);
         System.out.println(user);
         model.addAttribute("name", user.getName());
         model.addAttribute("email", user.getEmail());

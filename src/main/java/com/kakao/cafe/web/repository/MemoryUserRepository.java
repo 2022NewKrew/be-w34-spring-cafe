@@ -28,7 +28,7 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User getUserById(String userId) {
+    public User getUserByUserId(String userId) {
         Optional<User> foundUser = userMap.values().stream()
                 .filter(user -> user.getUserId().equals(userId))
                 .findFirst();

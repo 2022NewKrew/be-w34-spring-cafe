@@ -22,7 +22,7 @@ public class UserService {
         return memoryUserRepository.getUserList();
     }
 
-    public User getUserById(String userId) {
-        return memoryUserRepository.getUserById(userId);
+    public User getUserByUserId(String userId) {
+        return memoryUserRepository.getUserByUserId(userId);
     }
 }
