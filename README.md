@@ -14,3 +14,15 @@
 - id,email 에서의 Exception 처리.
 - mustache를 이용하여 java List를 templates 페이지에서 동적으로 출력.
 - User , UserList 객체에 Test 실행.
+
+# step2
+## 요구사항
+- 글쓰기 및 글 목록 기능 구현.
+- 글 목록을 index 페이지에서 볼 수 있도록 구현.
+- 게시글 상세보기 페이지 구현.
+- ![img_3.png](img_3.png)
+- ![img_5.png](img_5.png)
+
+## 구현내용
+- getUserList를 getCopiedUserList로 변경
+- 
