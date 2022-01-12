@@ -5,18 +5,19 @@
     {{> layout/navbar}}
     <div class="container mw-50">
         <div class="jumbotron bg-none">
-            <div class="display-large text-center">회원가입</div>
+            <div class="display-large text-center">회원정보 수정</div>
         </div>
-        <form action="/users" method="post">
+        <form action="/users/{{user.id}}" method="post">
+            <input type="hidden" name="_method" value="PUT" />
             <div class="input-kakao-group">
                 <label class="input-kakao-group-addon" for="email">이메일</label>
                 <input class="input-kakao" type="email"
-                       id="email" name="email" placeholder="이메일을 입력해주세요" />
+                       id="email" name="email" placeholder={{user.email}} />
             </div>
             <div class="input-kakao-group">
                 <label class="input-kakao-group-addon" for="name">닉네임</label>
                 <input class="input-kakao" type="text"
-                       id="name" name="name" placeholder="닉네임을 입력해주세요" />
+                       id="name" name="name" placeholder={{user.name}} />
             </div>
             <div class="input-kakao-group">
                 <label class="input-kakao-group-addon" for="password">패스워드</label>

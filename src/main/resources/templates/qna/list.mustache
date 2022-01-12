@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="kr">
+{{> layout/header}}
+<body>
+    {{> layout/navbar}}
+    <div class="container">
+        <div class="jumbotron bg-kakao">
+            <h4>안녕하세요,</h4>
+            <h2>카카오 교육 페이지입니다.</h2>
+        </div>
+        <div>전체 글 {{articles.size}}명</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>제목</th>
+                    <th class="text-center">작성자</th>
+                    <th class="text-center">작성일자</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#articles}}
+                <tr>
+                    <td>
+                        <a href="/articles/{{id}}">{{title}}</a>
+                    </td>
+                    <td class="text-center">{{writer}}</td>
+                    <td class="text-center">{{creationTime}}</td>
+                </tr>
+                {{/articles}}
+            </tbody>
+        </table>
+    </div>
+    {{> layout/scripts}}
+</body>

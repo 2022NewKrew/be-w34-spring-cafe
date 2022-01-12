@@ -16,13 +16,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/signup")
-    public String signupPage() {
+    @GetMapping("/users/create")
+    public String createUserPage() {
         return "user/form";
     }
 
     @GetMapping("/users")
-    public String userPage(Model model) {
+    public String userListPage(Model model) {
         model.addAttribute("users", userService.findAll());
         return "user/list";
     }
@@ -34,8 +34,20 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public String profilePage(@PathVariable long id, Model model) {
+    public String userDetailPage(@PathVariable long id, Model model) {
         model.addAttribute("user", userService.findById(id));
         return "user/profile";
+    }
+
+    @GetMapping("/users/{id}/form")
+    public String userUpdatePage(@PathVariable long id, Model model) {
+        model.addAttribute("user", userService.findById(id));
+        return "user/updateForm";
+    }
+
+    @PutMapping("/users/{id}")
+    public String updateUser(@ModelAttribute UserSaveDto dto, @PathVariable long id) {
+        userService.update(id, dto);
+        return "redirect:/users";
     }
 }

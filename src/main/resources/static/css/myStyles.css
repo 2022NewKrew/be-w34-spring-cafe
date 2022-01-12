@@ -1,13 +1,3 @@
-.display-title {
-    font-family: Noto Sans KR;
-    font-size: 32px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 46px;
-    letter-spacing: 0em;
-    text-align: center;
-}
-
 body {
     // styleName: TextRegular;
     font-family: Noto Sans KR, sans-serif;
@@ -19,11 +9,26 @@ body {
     text-align: left;
 }
 
+.mw-50 {
+    max-width: 50%;
+}
+
+.mw-80 {
+    max-width: 80%;
+}
+
 .font-small {
     // styleName: TextSmall;
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
+}
+
+.display-large {
+    //styleName: DisplayLarge;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 46px;
 }
 
 .input-kakao-group {
@@ -35,6 +40,7 @@ body {
     position: absolute;
     left: 16px;
     top: 10px;
+    font-weight: 400;
 }
 
 .input-kakao {
@@ -73,4 +79,55 @@ body {
 
 .border-none {
     border: none;
+}
+
+.textarea-kakao-group {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.textarea-kakao-group-addon {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+.textarea-kakao-box {
+    position: absolute;
+    top: 2px;
+    left: 20px;
+    width: calc(100% - 40px);
+    height: 62px;
+    background-color: white;
+}
+
+.textarea-kakao {
+    width: 100%;
+    padding: 62px 20px 20px 20px;
+    border: 1px solid #EEEEEE;
+    resize: none;
+}
+
+.article-info-kakao {
+    border-top: 1px solid #EEEEEE;
+    border-bottom: 1px solid #EEEEEE;
+    padding: 16px 0;
+    color: #666666;
+}
+
+.article-body-kakao {
+    padding: 40px 0 80px 0;
+    opacity: 32%;
+}
+
+.jumbotron-kakao {
+    padding: 48px 0;
+}
+
+.mr-32 {
+    margin-right: 32px;
+}
+
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    padding: 16px 8px;
 }

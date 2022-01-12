@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="kr">
+{{> layout/header}}
+<body>
+    {{> layout/navbar}}
+    <div class="container mw-50">
+        <div class="jumbotron-kakao bg-none">
+            <div class="display-large">글쓰기</div>
+        </div>
+        <form action="/articles" method="post">
+            <div class="textarea-kakao-group">
+                <div class="textarea-kakao-box"></div>
+                <label class="textarea-kakao-group-addon" for="writer">작성자</label>
+                <textarea class="textarea-kakao" style="height: 120px;"
+                          id="writer" name="writer" placeholder="작성자를 입력하세요"></textarea>
+            </div>
+            <div class="textarea-kakao-group">
+                <div class="textarea-kakao-box"></div>
+                <label class="textarea-kakao-group-addon" for="title">제목</label>
+                <textarea class="textarea-kakao" style="height: 120px;"
+                          id="title" name="title" placeholder="제목을 입력하세요"></textarea>
+            </div>
+            <div class="textarea-kakao-group">
+                <div class="textarea-kakao-box"></div>
+                <label class="textarea-kakao-group-addon" for="content">내용</label>
+                <textarea class="textarea-kakao" style="height: 200px;"
+                          id="content" name="content" placeholder="내용을 입력하세요"></textarea>
+            </div>
+            <button type="submit" class="btn-kakao pull-right">등록</button>
+        </form>
+    </div>
+    {{> layout/scripts}}
+</body>
+</html>

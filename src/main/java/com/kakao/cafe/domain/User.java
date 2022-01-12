@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class User {
     private long id;
-    private final String email;
-    private final String name;
-    private final String password;
+    private String email;
+    private String name;
+    private String password;
     private Date creationTime;
 
     public User(String email, String name, String password) {
@@ -17,6 +17,24 @@ public class User {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setEmail(String email) {
+        if (!email.isBlank()) {
+            this.email = email;
+        }
+    }
+
+    public void setName(String name) {
+        if (!name.isBlank()) {
+            this.name = name;
+        }
+    }
+
+    public void setPassword(String password) {
+        if (!password.isBlank()) {
+            this.password = password;
+        }
     }
 
     public void setCreationTime(Date creationTime) {

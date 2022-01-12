@@ -3,8 +3,10 @@
 {{> layout/header}}
 <body>
     {{> layout/navbar}}
-    <div class="container">
-        <div class="display-title">프로필 조회</div>
+    <div class="container mw-50">
+        <div class="jumbotron-kakao bg-none">
+            <div class="display-large">프로필 조회</div>
+        </div>
         <div class="media">
             <img class="thumbnail pull-left" src="/images/80-text.png" />
             <div class="media-body">
@@ -12,6 +14,7 @@
                 <div>닉네임: {{user.name}}</div>
             </div>
         </div>
+        <a href="/users/{{user.id}}/form" class="btn-kakao pull-right" role="button">수정</a>
     </div>
     {{> layout/scripts}}
 </body>
