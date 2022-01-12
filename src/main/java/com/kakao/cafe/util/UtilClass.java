@@ -1,6 +1,5 @@
 package com.kakao.cafe.util;
 
-import com.kakao.cafe.domain.article.Page;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,10 +12,10 @@ public class UtilClass {
         return LocalDateTime.now().toString();
     }
 
-    public static List<Page> makePageList(int size){
-        List<Page> pageList = new ArrayList<>();
+    public static List<Integer> makePageList(int size){
+        List<Integer> pageList = new ArrayList<>();
         for(int i = 1; i <= ((size-1) / 10) + 1; i++){
-            pageList.add(new Page(i));
+            pageList.add(i);
         }
         return pageList;
     }

@@ -51,4 +51,16 @@ public class Article {
     public Long getView() {
         return view;
     }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "index=" + index +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", date='" + date + '\'' +
+                ", writer='" + writer + '\'' +
+                ", view=" + view +
+                '}';
+    }
 }

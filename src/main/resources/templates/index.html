@@ -7,7 +7,7 @@
     </section>
     <section class="p-2 m-4">
         <div class="text-secondary mb-1">
-            전체 글 {{articles.size}}개
+            전체 글 {{posts.totalCount}}개
         </div>
 
         <table class="table table-hover align-middle">
@@ -20,35 +20,75 @@
             </tr>
             </thead>
             <tbody>
-            {{#articles}}
+            {{#posts.articleList}}
             <tr>
                 <td class="p-3 col-md-3">{{title}}</td>
                 <td class="p-3 col-md-1 text-center">{{writer}}</td>
                 <td class="p-3 col-md-1 text-center">{{date}}</td>
                 <td class="p-3 col-md-1 text-center">{{view}}</td>
             </tr>
-            {{/articles}}
+            {{/posts.articleList}}
             </tbody>
         </table>
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link border-0 text-dark" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&lt;</span>
-                </a>
-            </li>
-            {{#pageList}}
-            <li class="page-item"><a class="page-link border-0 text-dark" href="#">{{num}}</a></li>
-            {{/pageList}}
-            <li class="page-item">
-                <a class="page-link border-0 text-dark" href="#" aria-label="Next">
-                    <span aria-hidden="true">&gt;</span>
-                </a>
-            </li>
-        </ul>
-        <div>
-            <a href = "/qna/form">
-                글쓰기
-            </a>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <ul class="pagination">
+                        {{#posts.hasPrev}}
+                        <li class="page-item">
+                            <a class="page-link border-0 text-dark" href="list?page={{posts.prev}}"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&lt;</span>
+                            </a>
+                        </li>
+                        {{/posts.hasPrev}}
+                        {{^posts.hasPrev}}
+                        <li class="page-item disabled">
+                            <a class="page-link border-0 text-black-50" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&lt;</span>
+                            </a>
+                        </li>
+                        {{/posts.hasPrev}}
+                        {{#posts.pageList}}
+                        <li class="page-item"><a class="page-link border-0 text-dark" href="list?page={{this}}
+                                ">{{this}}</a>
+                        </li>
+                        {{/posts.pageList}}
+                        {{#posts.hasNext}}
+                        <li class="page-item">
+                            <a class="page-link border-0 text-dark" href="list?page={{posts.next}}"
+                               aria-label="Next">
+                                <span aria-hidden="true">&gt;</span>
+                            </a>
+                        </li>
+                        {{/posts.hasNext}}
+                        {{^posts.hasNext}}
+                        <li class="page-item disabled">
+                            <a class="page-link border-0 text-black-50" href="#" aria-label="Next">
+                                <span aria-hidden="true">&gt;</span>
+                            </a>
+                        </li>
+                        {{/posts.hasNext}}
+                    </ul>
+                </div>
+                <div class="col">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                            </div>
+                            <div class="col">
+                            </div>
+                            <div class="col">
+                                <a class="text-center nav-menu-item border bg-dark text-white nav-link active"
+                                   aria-current="page"
+                                   href="/qna/form">
+                                    글쓰기
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </main>

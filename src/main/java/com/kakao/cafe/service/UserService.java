@@ -23,11 +23,22 @@ public class UserService {
                 });
     }
 
+    public void updateUser(Long userId, User newUser) {
+        User user = findOne(userId);
+        user.setEmail(newUser.getEmail());
+        user.setName(newUser.getName());
+        user.setPassword(newUser.getPassword());
+    }
+
     public List<User> findUsers(){
         return userRepository.findAll();
     }
 
-    public Optional<User> findOne(Long uid){
-        return userRepository.findById(uid);
+    public User findOne(Long userId){
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isPresent()){
+            return user.get();
+        }
+        throw new IllegalStateException("not valid userId");
     }
 }

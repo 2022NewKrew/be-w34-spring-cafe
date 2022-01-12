@@ -6,10 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/users")
@@ -19,7 +16,6 @@ public class UserController {
 
     @PostMapping
     public String signup(User user){
-        logger.info(user.toString());
         userService.join(user);
         return "redirect:/users";
     }
@@ -27,18 +23,31 @@ public class UserController {
     @GetMapping
     public String viewUserList(Model model){
         logger.info("viewUserList");
-        logger.info(String.valueOf(userService.findUsers().size()));
         model.addAttribute("users", userService.findUsers());
         return "/users/list";
     }
 
     @GetMapping("/{userId}")
     public String viewProfile(@PathVariable Long userId, Model model){
-        userService.findOne(userId)
-                .ifPresent(user -> {
-                    model.addAttribute("user", user);
-                });
-
+        model.addAttribute("user", userService.findOne(userId));
         return "/users/profile";
+    }
+
+    @GetMapping("/{userId}/updateForm")
+    public String updateForm(@PathVariable Long userId, Model model){
+        User user = userService.findOne(userId);
+        model.addAttribute("userId", userId);
+        model.addAttribute("name", user.getName());
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("password", user.getPassword());
+
+        return "/users/updateForm";
+    }
+
+    @PostMapping("/{userId}/updateForm")
+    public String updateProfile(@PathVariable Long userId, User user){
+        logger.info("update Profile");
+        userService.updateUser(userId, user);
+        return "redirect:/users";
     }
 }
