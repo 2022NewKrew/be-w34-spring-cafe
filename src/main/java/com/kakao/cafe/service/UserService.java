@@ -1,36 +1,42 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserFormDTO;
-import com.kakao.cafe.mapper.UserMapper;
+import com.kakao.cafe.dto.UserDTO;
+import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
-    private final UserMapper userMapper;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-    public long join(UserFormDTO userFormDTO) {
-        User user = modelMapper.map(userFormDTO, User.class);
-        return userMapper.insert(user);
+    public long join(UserDTO userDTO) {
+        User user = User.fromDTO(userDTO);
+        return userRepository.insert(user);
     }
 
     public List<User> findAll() {
-        return userMapper.selectAll();
+        return userRepository.selectAll();
     }
 
-    public User findByKey(long key) {
-        return userMapper.selectByKey(key);
+    public Optional<User> findByKey(Long key) {
+        return userRepository.selectByKey(key);
     }
 
-    public void updateByKey(long key, UserFormDTO userFormDTO) {
-        userMapper.update(key, userFormDTO);
+    public Optional<UserDTO> findByKeyDTO(Long key) {
+        return userRepository.selectByKey(key).map(User::getDTO);
+    }
+
+    public void updateByKey(Long key, UserDTO userDTO) {
+        User user = User.fromDTO(userDTO);
+        userRepository.update(key, user);
     }
 }

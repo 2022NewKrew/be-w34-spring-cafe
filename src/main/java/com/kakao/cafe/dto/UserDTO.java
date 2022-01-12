@@ -1,13 +1,14 @@
 package com.kakao.cafe.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserFormDTO {
+@Builder
+public class UserDTO {
+    private long key;
     private String id;
     private String name;
     private String pw;
