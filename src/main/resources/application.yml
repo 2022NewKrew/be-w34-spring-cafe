@@ -2,3 +2,9 @@ spring:
   mustache:
     suffix: .html
     cache: false
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+    path: /error

@@ -9,12 +9,14 @@ import com.kakao.cafe.interfaces.user.dto.UserMapper;
 import com.kakao.cafe.interfaces.user.dto.request.JoinUserRequestDto;
 import com.kakao.cafe.interfaces.user.dto.request.UpdateUserRequestDto;
 import com.kakao.cafe.interfaces.user.dto.response.UserResponseDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -44,16 +46,23 @@ public class UserController {
     @PostMapping("")
     public String joinUser(JoinUserRequestDto joinUserRequestDto) {
         UserVo user = UserMapper.convertJoinUserDtoToVo(joinUserRequestDto);
-        signUpUserService.join(user);
+        try {
+            signUpUserService.join(user);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
         return "redirect:/users";
     }
 
     @GetMapping("/{userId}")
     public String getUserByUserId(@PathVariable String userId, Model model) {
-        User user = findUserService.findByUserId(userId);
-        model.addAttribute("name", user.getName());
-        model.addAttribute("email", user.getEmail());
-
+        try {
+            User user = findUserService.findByUserId(userId);
+            model.addAttribute("name", user.getName());
+            model.addAttribute("email", user.getEmail());
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
         return "user/profile";
     }
 
@@ -74,7 +83,11 @@ public class UserController {
 
         if (passwordMatch == true) {
             UserVo updateUserVo = UserMapper.convertUpdateUserDtoToVo(id, updateUserRequestDto);
-            updateUserService.updateInformation(updateUserVo);
+            try {
+                updateUserService.updateInformation(updateUserVo);
+            } catch (IllegalArgumentException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            }
         }
 
         modelAndView.setViewName("redirect:/users");

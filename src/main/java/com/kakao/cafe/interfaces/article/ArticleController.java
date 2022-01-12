@@ -7,10 +7,12 @@ import com.kakao.cafe.domain.article.ArticleVo;
 import com.kakao.cafe.interfaces.article.dto.ArticleMapper;
 import com.kakao.cafe.interfaces.article.dto.response.ArticleListResponseDto;
 import com.kakao.cafe.interfaces.article.dto.response.ArticleResponseDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -39,11 +41,15 @@ public class ArticleController {
 
     @GetMapping("/articles/{index}")
     public ModelAndView readArticleByIndex(@PathVariable int index, ModelAndView modelAndView) {
-        Article article = findArticleService.findById(index);
-        ArticleResponseDto articleResponseDto = ArticleMapper.convertEntityToResponseDto(article);
+        try {
+            Article article = findArticleService.findById(index);
+            ArticleResponseDto articleResponseDto = ArticleMapper.convertEntityToResponseDto(article);
 
-        modelAndView.addObject("article", articleResponseDto);
-        modelAndView.setViewName("qna/show");
+            modelAndView.addObject("article", articleResponseDto);
+            modelAndView.setViewName("qna/show");
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
 
         return modelAndView;
     }
