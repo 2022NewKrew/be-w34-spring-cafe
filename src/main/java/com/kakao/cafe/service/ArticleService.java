@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleService {
 
-    private int id = 1;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private final ArticleDao articleDao;
 
@@ -22,19 +21,18 @@ public class ArticleService {
     }
 
     public void addArticle(ArticleDto articleDto) {
-        articleDto.setId(id++);
         articleDto.setDate(LocalDateTime.now().format(formatter));
         ArticleVo articleVo = dtoToVo(articleDto);
-        articleDao.addArticle(articleVo);
+        articleDao.save(articleVo);
     }
 
     public ArticleDto getArticle(int id) {
-        ArticleVo articleVo = articleDao.getArticle(id);
+        ArticleVo articleVo = articleDao.findById(id);
         return voToDto(articleVo);
     }
 
     public List<ArticleDto> getArticles() {
-        return articleDao.getArticles().stream()
+        return articleDao.findAll().stream()
                 .map(this::voToDto)
                 .collect(Collectors.toList());
     }

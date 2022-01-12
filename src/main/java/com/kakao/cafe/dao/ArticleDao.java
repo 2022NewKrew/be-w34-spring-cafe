@@ -1,28 +1,37 @@
 package com.kakao.cafe.dao;
 
+import com.kakao.cafe.dao.mapper.ArticleRowMapper;
 import com.kakao.cafe.vo.ArticleVo;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class ArticleDao {
 
-    private final List<ArticleVo> articles = new ArrayList<>();
+    private final JdbcTemplate jdbcTemplate;
 
-    public void addArticle(ArticleVo articleVo) {
-        articles.add(articleVo);
+    public ArticleDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    public ArticleVo getArticle(int id) {
-        return articles.stream()
-                .filter(articleVo -> articleVo.getId() == id)
+    public void save(ArticleVo articleVo) {
+        String writer = articleVo.getWriter();
+        String title = articleVo.getTitle();
+        String contents = articleVo.getContents();
+        String date = articleVo.getDate();
+        jdbcTemplate.update("INSERT INTO ARTICLE (writer, title, contents, date) VALUES (?, ?, ?, ?)",writer,title,contents,date);
+    }
+
+    public ArticleVo findById(int id) {
+        List<ArticleVo> resultList = jdbcTemplate.query("SELECT id, writer, title, contents, date FROM ARTICLE WHERE id = ?", new ArticleRowMapper(), id);
+        return resultList.stream()
                 .findFirst()
                 .orElse(null);
     }
 
-    public List<ArticleVo> getArticles() {
-        return articles;
+    public List<ArticleVo> findAll() {
+        return jdbcTemplate.query("SELECT id, writer, title, contents, date FROM article", new ArticleRowMapper());
     }
 }

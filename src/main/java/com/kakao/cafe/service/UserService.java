@@ -19,25 +19,25 @@ public class UserService {
 
     public void addUser(UserDto userDto) {
         UserVo userVo = dtoToVo(userDto);
-        userDao.addUser(userVo);
+        userDao.save(userVo);
     }
 
     public UserDto gerUser(String userId) {
-        UserVo userVo = userDao.getUser(userId);
+        UserVo userVo = userDao.findByUserId(userId);
         return voToDto(userVo);
     }
 
     public List<UserDto> getUsers() {
-        return userDao.getUsers().stream()
+        return userDao.findAll().stream()
                 .map(this::voToDto)
                 .collect(Collectors.toList());
     }
 
     public boolean updateUser(UserDto userDto, String curPassword) {
-        UserVo matchedUser = userDao.getUser(userDto.getUserId());
+        UserVo matchedUser = userDao.findByUserId(userDto.getUserId());
         if (matchedUser.getPassword().equals(curPassword)) {
             UserVo userVo = dtoToVo(userDto);
-            userDao.updateUser(userVo);
+            userDao.update(userVo);
             return true;
         }
         return false;
