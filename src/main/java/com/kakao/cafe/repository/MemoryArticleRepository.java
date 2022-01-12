@@ -15,9 +15,8 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article create(Article article) {
+    public void create(Article article) {
         articleMap.put(article.getId(), article);
-        return article;
     }
 
     @Override

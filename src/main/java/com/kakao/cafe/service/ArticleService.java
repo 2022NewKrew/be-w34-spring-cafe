@@ -22,8 +22,8 @@ public class ArticleService {
 
     public void create(ArticleCreateRequestDto requestDto) {
         Long id = articleRepository.generateId();
-        Article article = articleRepository.create(new Article(id, requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents()));
-        logger.info("{} 글 생성", article.getTitle());
+        articleRepository.create(new Article(id, requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents()));
+        logger.info("{} 글 생성", requestDto.getTitle());
     }
 
     public List<ArticleListResponseDto> findAll() {

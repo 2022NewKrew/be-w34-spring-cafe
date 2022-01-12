@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ArticleRepository {
     Long generateId();
-    Article create(Article article);
+    void create(Article article);
     List<Article> findAll();
     Optional<Article> findById(Long id);
 }
