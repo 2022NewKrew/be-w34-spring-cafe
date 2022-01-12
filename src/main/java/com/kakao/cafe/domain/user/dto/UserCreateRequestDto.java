@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain.user.dto;
 
+import com.kakao.cafe.domain.user.Profile;
 import com.kakao.cafe.domain.user.User;
 
 public class UserCreateRequestDto {
@@ -10,7 +11,7 @@ public class UserCreateRequestDto {
     private String email;
 
     public User toUser() {
-        return new User(userId, password, name, email);
+        return new User(userId, password, new Profile(name, email));
     }
 
     public String getName() {

@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS USERS (
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_id VARCHAR NOT NULL,
+    password VARCHAR NOT NULL,
+    name VARCHAR,
+    email VARCHAR,
+    created_at DATETIME,
+    updated_at DATETIME
+);
+
+CREATE TABLE IF NOT EXISTS ARTICLE (
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    author VARCHAR NOT NULL,
+    title VARCHAR NOT NULL,
+    content CLOB,
+    created_at DATETIME,
+    updated_at DATETIME
+);
