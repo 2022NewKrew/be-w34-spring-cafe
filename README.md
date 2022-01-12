@@ -10,3 +10,11 @@
 - [x] 회원 조회
   - [x] users/id(get) 로 접근시 profil 렌더링 반환
 - [x] html 중복 제거하기
+
+# 2단계
+- [x] 글쓰기(post)
+  - [x] 완료 후 index 페이지로 redirect
+- [x] 글목록 조회(get)
+  - [x] 작성한 글 목록 반환
+- [x] 상세보기(get)
+  - [x] questions/{id} 로 조회
