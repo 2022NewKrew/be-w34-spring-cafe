@@ -19,7 +19,7 @@ public class HomeController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
     private final HomeService homeService;
 
-    @GetMapping("")
+    @GetMapping
     public String articleList(Model model) {
         List<ArticleListDto> articleList = homeService.articleList();
         model.addAttribute("articleList", articleList);
