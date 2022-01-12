@@ -14,6 +14,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ArticleRepository {
     private static final Map<Integer, Article> articles = new HashMap<>();
+    private static int sequential = 0;
 
     public void postNewArticle(Article article) {
         articles.put(article.getArticleId(), article);
@@ -31,6 +32,6 @@ public class ArticleRepository {
     }
 
     public int getNextArticleId() {
-        return articles.size() + 1;
+        return ++sequential;
     }
 }
