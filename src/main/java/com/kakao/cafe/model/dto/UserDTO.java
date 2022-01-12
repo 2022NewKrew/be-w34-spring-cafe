@@ -1,12 +1,15 @@
 package com.kakao.cafe.model.dto;
 
-import com.kakao.cafe.model.domain.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class UserDTO {
+@NoArgsConstructor
+public class UserDto {
     private String userId;
     private String password;
     private String name;

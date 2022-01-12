@@ -1,0 +1,42 @@
+{{>template/header}}
+<div class="card" style="border: 0;">
+    <article class="card-body mx-auto" style="width: 1000px;">
+        <h2 class="card-title m-3 text-center">글쓰기</h2>
+        <form method="post" action="/board/modify/{{articleId}}">
+            <input type="hidden" name="_method" value="put"/>
+            {{#article}}
+            <table class="table align-middle">
+                <tr>
+                    <th class="text-end">
+                        작성자: &nbsp;
+                    </th>
+                    <td>
+                        {{writerId}}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-end">
+                        제목: &nbsp;
+                    </th>
+                    <td>
+                        <input type="text" name="title" class="form-control" placeholder="제목을 입력해주세요." value="{{title}}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-end">
+                        내용: &nbsp;
+                    </th>
+                    <td>
+                        <textarea class="form-control" name="content" style="height: 500px;" placeholder="내용을 입력해주세요.">{{content}}</textarea>
+                    </td>
+                </tr>
+            </table>
+            <div class="mt-1 float-end">
+                <button type="submit" class="btn btn-dark">수정</button>
+                <button type="button" class="btn btn-dark" onclick="location.href='/board/view/{{articleId}}'">취소</button>
+            </div>
+            {{/article}}
+        </form>
+    </article>
+</div>
+{{>template/footer}}

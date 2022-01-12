@@ -14,6 +14,7 @@ repositories {
 }
 
 dependencies {
+	// Spring Boot
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
@@ -27,6 +28,12 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	testCompileOnly 'org.projectlombok:lombok:1.18.22'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+	// Google Core Libraries For Java
+	implementation 'com.google.guava:guava:31.0.1-jre'
+
+	// Model Mapper
+	implementation 'org.modelmapper:modelmapper:2.4.5'
 }
 
 test {
