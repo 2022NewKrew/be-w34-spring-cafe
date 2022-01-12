@@ -1,37 +1,45 @@
 package com.kakao.cafe.user.application;
 
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserRepository;
 import com.kakao.cafe.user.dto.UserListResponse;
 import com.kakao.cafe.user.dto.UserProfileResponse;
 import com.kakao.cafe.user.dto.UserSaveRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserService {
-    private final List<UserListResponse> currentUsers = new ArrayList<>();
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public void save(UserSaveRequest request) {
-        User newUser = request.toUser();
-        UserListResponse userResponse = new UserListResponse(currentUsers.size() + 1, newUser);
-        currentUsers.add(userResponse);
+        log.info(this.getClass() + ": 회원 가입");
+        // TODO: validation
+        userRepository.save(request.toUser());
     }
 
     public void findAll(Map<String, Object> model) {
-        model.put("users", currentUsers);
+        log.info(this.getClass() + ": 회원 목록");
+        List<User> users = userRepository.findAll();
+        List<UserListResponse> userListResponses = users.stream()
+                .map(user -> UserListResponse.valueOf(0, user))
+                .collect(Collectors.toList());
+        model.put("users", userListResponses);
     }
 
-    public void findById(String userId, Map<String, Object> model) throws NoSuchElementException {
-        UserProfileResponse target = currentUsers.stream()
-                .map(UserProfileResponse::valueOf)
-                .filter(user -> user.isSameUser(userId))
-                .findFirst()
-                .orElseThrow(NoSuchElementException::new);
-
-        model.put("user", target);
+    public void findById(String userId, Map<String, Object> model) {
+        log.info(this.getClass() + ": 회원 프로필");
+        User user = userRepository.findByIdOrNull(userId);
+        UserProfileResponse userProfileResponse = UserProfileResponse.valueOf(user);
+        model.put("user", userProfileResponse);
     }
 }

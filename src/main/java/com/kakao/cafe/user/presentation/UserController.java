@@ -1,16 +1,12 @@
 package com.kakao.cafe.user.presentation;
 
 import com.kakao.cafe.user.application.UserService;
-import com.kakao.cafe.user.dto.UserListResponse;
-import com.kakao.cafe.user.dto.UserProfileResponse;
 import com.kakao.cafe.user.dto.UserSaveRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static com.kakao.cafe.user.presentation.UserController.USER_URI;
@@ -21,8 +17,6 @@ import static com.kakao.cafe.user.presentation.UserController.USER_URI;
 public class UserController {
 
     private final UserService userService;
-
-    private final List<UserListResponse> currentUsers = new ArrayList<>();
 
     public static final String USER_URI = "/users";
 
@@ -46,7 +40,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ModelAndView findById(@PathVariable String userId, Map<String, Object> model) {
-        log.info(this.getClass() + "회원 프로필");
+        log.info(this.getClass() + ": 회원 프로필");
         userService.findById(userId, model);
         return new ModelAndView("user/profile", model);
     }

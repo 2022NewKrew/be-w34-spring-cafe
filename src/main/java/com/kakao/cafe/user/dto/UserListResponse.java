@@ -15,4 +15,8 @@ public class UserListResponse {
         name = user.getName();
         email = user.getEmail();
     }
+
+    public static UserListResponse valueOf(int index, User user) {
+        return new UserListResponse(index, user);
+    }
 }

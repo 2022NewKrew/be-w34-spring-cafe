@@ -1,6 +1,6 @@
 package com.kakao.cafe.user.dto;
 
-import java.util.Objects;
+import com.kakao.cafe.user.domain.User;
 
 public class UserProfileResponse {
 
@@ -14,14 +14,10 @@ public class UserProfileResponse {
         this.email = email;
     }
 
-    public static UserProfileResponse valueOf(UserListResponse userListResponse) {
-        String userId = userListResponse.userId;
-        String name = userListResponse.name;
-        String email = userListResponse.email;
+    public static UserProfileResponse valueOf(User user) {
+        String userId = user.getUserId();
+        String name = user.getName();
+        String email = user.getEmail();
         return new UserProfileResponse(userId, name, email);
-    }
-
-    public boolean isSameUser(String targetUserId) {
-        return Objects.equals(this.userId, targetUserId);
     }
 }

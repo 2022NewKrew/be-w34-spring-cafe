@@ -1,5 +1,7 @@
 package com.kakao.cafe.user.domain;
 
+import java.util.Objects;
+
 public class User {
     private String userId;
     private String password;
@@ -13,12 +15,12 @@ public class User {
         this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
+    public boolean isSameUser(String targetUserId) {
+        return Objects.equals(this.userId, targetUserId);
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserId() {
+        return userId;
     }
 
     public String getName() {
