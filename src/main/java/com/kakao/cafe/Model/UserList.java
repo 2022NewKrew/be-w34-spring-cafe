@@ -1,4 +1,4 @@
-package com.kakao.cafe.DTO;
+package com.kakao.cafe.Model;
 
 import lombok.Data;
 
@@ -15,7 +15,7 @@ public class UserList {
         this.totalCount = 0;
     }
 
-    public void add(UserDTO userDTO){
+    public void add(UserDTO userDTO) {
         userDTO.setUserIdx(++this.totalCount);
         this.userList.add(userDTO);
     }
