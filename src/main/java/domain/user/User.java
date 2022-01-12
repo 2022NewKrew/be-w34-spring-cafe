@@ -14,6 +14,21 @@ public class User {
         this.email = email;
         this.registerDate = LocalDate.now().toString();
     }
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getRegisterDate() {
+        return registerDate;
+    }
 
     @Override
     public String toString() {
@@ -23,9 +38,5 @@ public class User {
                 ", email='" + email + '\'' +
                 ", registerDate='" + registerDate + '\'' +
                 '}';
-    }
-
-    public String getUserId() {
-        return userId;
     }
 }
