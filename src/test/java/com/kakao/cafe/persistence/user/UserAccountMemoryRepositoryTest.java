@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -22,14 +23,14 @@ class UserAccountMemoryRepositoryTest {
             .email("edward@kakao.com")
             .password("1234")
             .username("edward")
-            .createdAt(LocalDate.now())
+            .createdAt(LocalDateTime.now())
             .build();
 
     UserAccount testUser2 = UserAccount.builder()
             .email("peach@kakao.com")
             .password("4321")
             .username("peach")
-            .createdAt(LocalDate.now())
+            .createdAt(LocalDateTime.now())
             .build();
 
     @AfterEach

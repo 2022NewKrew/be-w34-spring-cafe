@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -22,14 +22,14 @@ public class UserAccount {
 
     private final String email;
 
-    private final LocalDate createdAt;
+    private final LocalDateTime createdAt;
 
     static {
         idGenerator = new AtomicLong();
     }
 
     @Builder
-    public UserAccount(Long userAccountId, String username, String password, String email, LocalDate createdAt) {
+    public UserAccount(Long userAccountId, String username, String password, String email, LocalDateTime createdAt) {
         this.userAccountId = Objects.requireNonNullElseGet(userAccountId, idGenerator::getAndIncrement);
         this.username = username;
         this.password = password;

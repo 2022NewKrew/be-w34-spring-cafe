@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.user.UserAccount;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Getter
@@ -19,7 +19,7 @@ public class UserAccountEnrollCommand {
                 .email(email)
                 .username(username)
                 .password(password)
-                .createdAt(LocalDate.now())
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 }
