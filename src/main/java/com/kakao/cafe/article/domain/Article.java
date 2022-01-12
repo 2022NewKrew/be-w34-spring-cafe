@@ -32,8 +32,8 @@ public class Article {
         return contents;
     }
 
-    public String getDate(){
-        return date.toString();
+    public Date getDate(){
+        return date;
     }
 
     public Long getSequence() {
