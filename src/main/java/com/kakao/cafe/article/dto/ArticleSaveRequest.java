@@ -14,10 +14,6 @@ public class ArticleSaveRequest {
     public final String contents;
 
     public Article toArticle(User user) {
-        return Article.builder()
-                .author(user)
-                .title(title)
-                .content(contents)
-                .build();
+        return Article.valueOf(user, title, contents);
     }
 }
