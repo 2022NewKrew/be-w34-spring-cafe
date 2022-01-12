@@ -23,8 +23,12 @@ public class ArticleService {
         return new ArrayList<>(articleRepository.findAll().subList((page - 1) * 10, Math.min(numOfArticles(),page * 10)));
     }
 
-    public Optional<Article> findOne(Long index){
-        return articleRepository.findById(index);
+    public Article findOne(Long index){
+        Optional<Article> article = articleRepository.findById(index);
+        if(article.isPresent()){
+            return article.get();
+        }
+        throw new IllegalStateException("not valid index");
     }
 
     public int numOfArticles() {

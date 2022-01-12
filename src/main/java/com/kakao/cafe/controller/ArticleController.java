@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -43,5 +44,15 @@ public class ArticleController {
 
         model.addAttribute("posts", articles);
         return "index";
+    }
+
+    @GetMapping("/articles/{index}")
+    public String show(@PathVariable Long index, Model model){
+        Article article = articleService.findOne(index);
+        model.addAttribute("title", article.getTitle());
+        model.addAttribute("writer", article.getWriter());
+        model.addAttribute("content", article.getContent());
+
+        return "/qna/show";
     }
 }

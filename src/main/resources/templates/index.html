@@ -22,7 +22,9 @@
             <tbody>
             {{#posts.articleList}}
             <tr>
-                <td class="p-3 col-md-3">{{title}}</td>
+                <td class="p-3 col-md-3">
+                    <a href="/articles/{{index}}">{{title}}</a>
+                </td>
                 <td class="p-3 col-md-1 text-center">{{writer}}</td>
                 <td class="p-3 col-md-1 text-center">{{date}}</td>
                 <td class="p-3 col-md-1 text-center">{{view}}</td>
