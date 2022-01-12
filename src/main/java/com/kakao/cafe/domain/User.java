@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain;
 
+<<<<<<< HEAD
 import com.kakao.cafe.service.user.dto.UserUpdateForm;
 import lombok.Getter;
 import lombok.ToString;
