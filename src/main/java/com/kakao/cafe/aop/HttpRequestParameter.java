@@ -4,27 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public class HttpRequestParameter {
-    private Map<String, String[]> paramMap;
+    private final Map<String, String[]> paramMap;
 
     public HttpRequestParameter(HttpServletRequest request) {
         paramMap = request.getParameterMap();
-        removePasswordInMap();
-    }
-
-    private void removePasswordInMap() {
-        for(String paramKey: paramMap.keySet()) {
-            removeEntryIfKeyEqualToPassword(paramKey);
-        }
-    }
-
-    private void removeEntryIfKeyEqualToPassword(String paramKey) {
-        if(isEqualToPassword(paramKey)) {
-            paramMap.remove(paramKey);
-        }
-    }
-
-    private boolean isEqualToPassword(String paramKey) {
-        return paramKey.equalsIgnoreCase("password") || paramKey.equalsIgnoreCase("pw");
     }
 
     public String getStringOfParameters() {
@@ -36,11 +19,19 @@ public class HttpRequestParameter {
 
     private String paramMapToString() {
         StringBuilder sb = new StringBuilder();
-        paramMap.entrySet()
-                .stream()
+        paramMap.entrySet().stream()
+                .filter(entry -> isNotEqualToPassword(entry.getKey()))
                 .forEach(entry -> writeKeyAndValueOfEntryTo(sb, entry));
         String stringOfParameters = sb.toString();
         return stringOfParameters.substring(0, stringOfParameters.length() - 2);
+    }
+
+    private boolean isNotEqualToPassword(String paramKey) {
+        return !isEqualToPassword(paramKey);
+    }
+
+    private boolean isEqualToPassword(String paramKey) {
+        return paramKey.equalsIgnoreCase("password") || paramKey.equalsIgnoreCase("pw");
     }
 
     private void writeKeyAndValueOfEntryTo(StringBuilder sb, Map.Entry<String, String[]> entry) {
