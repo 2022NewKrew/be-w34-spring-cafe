@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface ArticleRepository {
@@ -12,5 +13,5 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
-    Article findById(Long id);
+    Optional<Article> findById(Long id);
 }

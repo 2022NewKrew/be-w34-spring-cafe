@@ -1,4 +1,6 @@
-{{> header}}
+{{> layout/header}}
+<body>
+{{> layout/navbar}}
 <div class="container" id="main">
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default content-main">
@@ -9,7 +11,7 @@
                 </div>
                 <div class="form-group">
                     <label for="password">비밀번호</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 다시 입력해 주세요."">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 다시 입력해 주세요.">
                 </div>
                 <div class="form-group">
                     <label for="name">이름</label>
@@ -25,4 +27,6 @@
         </div>
     </div>
 </div>
-{{> footer}}
+{{> layout/footer}}
+</body>
+</html>

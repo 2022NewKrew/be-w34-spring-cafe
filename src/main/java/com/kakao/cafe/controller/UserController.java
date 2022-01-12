@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserForm;
+import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,19 +22,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/form")
-    public String createForm(UserForm form) {
-        return "user/form";
-    }
-
     @PostMapping("/users")
-    public String create(UserForm form) {
-        User user = new User();
-        user.setUserId(form.getUserId());
-        user.setEmail(form.getEmail());
-        user.setName(form.getName());
-        user.setPassword(form.getPassword());
-        userService.save(user);
+    public String create(UserDto userDto) {
+        userService.save(userDto);
         return "redirect:/users";
     }
 
@@ -47,26 +37,21 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String findUser(@PathVariable("userId") String userId, Model model) {
-        User user = userService.findUser(userId).get();
+        User user = userService.findUser(userId);
         model.addAttribute("user" , user);
         return "user/profile";
     }
 
     @GetMapping("/users/{id}/form")
     public String createUserUpdateForm(@PathVariable("id") Long id, Model model) {
-        User user = userService.findUser(id).get();
+        User user = userService.findUser(id);
         model.addAttribute("user" , user);
         return "user/updateForm";
     }
     @PostMapping("/users/{id}/update")
-    public String update(@PathVariable("id") Long id, UserForm form, Model model) {
-        User updateUser = new User();
-        updateUser.setId(id);
-        updateUser.setUserId(form.getUserId());
-        updateUser.setEmail(form.getEmail());
-        updateUser.setName(form.getName());
-        updateUser.setPassword(form.getPassword());
-        userService.updateUserInfo(id,updateUser);
+    public String update(@PathVariable("id") Long id, UserDto userDto) {
+
+        userService.updateUserInfo(id,userDto);
 
         return "redirect:/users";
     }

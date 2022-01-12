@@ -1,9 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.ArticleForm;
-import com.kakao.cafe.dto.UserForm;
+import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,29 +26,18 @@ public class ArticleController {
     public String findArticleList(Model model) {
         List<Article> articles = articleService.findArticleList();
         model.addAttribute("articles" , articles);
-        return "index";
-    }
-
-
-    @GetMapping("/qna/form")
-    public String createForm(UserForm form) {
-        return "qna/form";
+        return "qna/list";
     }
 
     @PostMapping("/questions")
-    public String create(ArticleForm form) {
-        Article article = new Article();
-        article.setWriter(form.getWriter());
-        article.setTitle(form.getTitle());
-        article.setContents(form.getContents());
-        articleService.save(article);
+    public String create(ArticleDto articleDto) {
+        articleService.save(articleDto);
         return "redirect:/";
     }
     @GetMapping("/articles/{id}")
     public String findUser(@PathVariable("id") Long articleId, Model model) {
         Article article = articleService.findArticle(articleId);
         model.addAttribute("article" , article);
-        System.out.println(article.toString());
         return "qna/show";
     }
 
