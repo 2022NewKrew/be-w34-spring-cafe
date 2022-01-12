@@ -11,7 +11,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.sound.midi.Soundbank;
 import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
 
@@ -21,12 +20,12 @@ public class MvcConfiguration implements WebMvcConfigurer {
 //    private final DataSource dataSource;
 //
 //    public MvcConfiguration(DataSource dataSource) {
-//        System.out.println("시작@@@@@@@@@@@@@");
 //        this.dataSource = dataSource;
 //    }
 
     @Bean
     public DataSource dataSource() {
+        System.out.println("dataSource call!!!!!!");
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("kakaodb")
