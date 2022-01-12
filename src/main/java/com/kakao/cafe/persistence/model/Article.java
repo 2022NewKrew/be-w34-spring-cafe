@@ -53,7 +53,7 @@ public class Article {
         return author.getName();
     }
 
-    public String getAuthorUserId() {
+    public String getAuthorUid() {
         return author.getUid();
     }
 }

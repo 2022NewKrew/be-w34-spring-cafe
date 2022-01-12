@@ -32,7 +32,7 @@ public interface ArticleDTO {
         String createdAt;
 
         public static Result from(Article article) {
-            return new Result(article.getId(), article.getAuthorcommon(),
+            return new Result(article.getId(), article.getAuthorUid(),
                 article.getAuthorName(), article.getTitle(), article.getBody(),
                 article.getCreatedAt().format(DateTimeFormatter.ofPattern(dateTimePattern)));
         }
