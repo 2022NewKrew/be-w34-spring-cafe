@@ -48,4 +48,15 @@ public class UserController {
         model.addAttribute("user", new UserProfileResponse(userService.findById(userId)));
         return "/user/profile";
     }
+
+    @GetMapping("/users/{userId}/form")
+    public String updateForm(@PathVariable String userId, Model model) {
+        model.addAttribute("userId", userId);
+        UserProfileResponse userProfileResponse = new UserProfileResponse(userService.findById(userId));
+        model.addAttribute("name", userProfileResponse.getName());
+        model.addAttribute("email", userProfileResponse.getEmail());
+
+        return "/user/updateForm";
+    }
+
 }
