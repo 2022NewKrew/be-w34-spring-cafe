@@ -33,10 +33,16 @@ public class UserController {
             @RequestParam("password") @NonNull final String password
     )
     {
-        userService.add(userDto, password);
+        try {
+            userService.add(userDto, password);
+        } catch (IllegalStateException e) {
+            return "redirect:/dupUserFound";
+        }
         logger.info("New User added: " + userDto.getId());
         return "redirect:/users";
     }
+
+    // Get /dupUserFound -> "users/dupUserFound"
 
     @GetMapping("/users")
     public String getUserList(final Model model) {
