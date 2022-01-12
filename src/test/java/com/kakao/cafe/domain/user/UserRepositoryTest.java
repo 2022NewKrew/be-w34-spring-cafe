@@ -15,7 +15,7 @@ public class UserRepositoryTest {
 
     private final UserRepository userRepository = new InMemoryUserRepository();
 
-    @DisplayName("저장소 회원정보 저장 및 탐색 테스트")
+    @DisplayName("저장소 회원정보 저장 테스트")
     @MethodSource("provideUsers")
     @ParameterizedTest
     public void testSave(String userId, String password, String name, String email) {
@@ -35,5 +35,29 @@ public class UserRepositoryTest {
         return Stream.of(
                 Arguments.of("clo.d", "testPassword", "dongwoon", "clo.d@kakaocorp.com")
         );
+    }
+
+    @DisplayName("저장소 회원정보 수정 테스트")
+    @MethodSource("provideUsers")
+    @ParameterizedTest
+    public void testUpdate(String userId, String password, String name, String email) {
+        //given
+        UserCreateRequest dto = new UserCreateRequest(userId, password, name, email);
+        User user = dto.toEntity();
+        userRepository.save(user);
+
+        String modifiedPassword = "modifiedPassword";
+        String modifiedName = "modifiedName";
+        String modifiedEmail = "modifiedEmail";
+
+        //when
+        userRepository.update(modifiedPassword, modifiedName, modifiedEmail);
+
+        //then
+        User savedUser = userRepository.findById(userId);
+
+        assertThat(savedUser.getPassword()).isEqualTo(modifiedPassword);
+        assertThat(savedUser.getName()).isEqualTo(modifiedName);
+        assertThat(savedUser.getEmail()).isEqualTo(modifiedEmail);
     }
 }
