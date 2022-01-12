@@ -11,13 +11,13 @@ public class UserController {
         return "/user/form";
     }
 
-    @GetMapping("user/list")
-    public String userList() {
-        return "/user/list";
+    @PostMapping("/users")
+    public String userCreate() {
+        return "redirect:/users";
     }
 
-    @PostMapping("/user/create")
-    public String userCreate(){
-        return "redirect:/user/list";
+    @GetMapping("/users")
+    public String userList(){
+        return "/user/list";
     }
 }
