@@ -2,9 +2,12 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.ArticleDTO.Create;
 import com.kakao.cafe.dto.ArticleDTO.Result;
+import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.service.ArticleService;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +29,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("/articles")
-    public String create(@ModelAttribute @Validated Create createDTO,
+    public String create(@ModelAttribute @Validated Create createDTO, HttpServletRequest request,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             bindingResult.getFieldErrors()
@@ -35,7 +38,14 @@ public class ArticleController {
                     fieldError.getDefaultMessage()));
             return "redirect:/qna/form-failed";
         }
-        articleService.create(createDTO);
+
+        HttpSession session = request.getSession();
+        AuthInfo authInfo = (AuthInfo) session.getAttribute("auth");
+        if (authInfo == null) {
+            return "redirect:/qna/form-failed";
+        }
+
+        articleService.create(createDTO, authInfo);
 
         return "redirect:/";
     }

@@ -6,6 +6,7 @@ import com.kakao.cafe.error.ErrorCode;
 import com.kakao.cafe.error.exception.ArticleNotFoundException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.persistence.model.Article;
+import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.persistence.model.User;
 import com.kakao.cafe.persistence.repository.ArticleRepository;
 import com.kakao.cafe.persistence.repository.UserRepository;
@@ -26,10 +27,10 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
 
-    public void create(Create createDTO) {
-        Optional<User> foundUser = userRepository.findUserByName(createDTO.getAuthor());
+    public void create(Create createDTO, AuthInfo authInfo) {
+        Optional<User> foundUser = userRepository.findUserByUid(authInfo.getUid());
         if (foundUser.isEmpty()) {
-            throw new UserNotFoundException(ErrorCode.NOT_FOUND, createDTO.getAuthor());
+            throw new UserNotFoundException(ErrorCode.NOT_FOUND, authInfo.getUid());
         }
 
         Article article = Article.of(foundUser.get(), createDTO.getTitle(), createDTO.getBody());

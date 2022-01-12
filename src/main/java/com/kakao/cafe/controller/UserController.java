@@ -49,11 +49,10 @@ public class UserController {
         return new ModelAndView("/user/list", model);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{uid}")
     public ModelAndView read(Map<String, Object> model,
-        @PathVariable String userId) {
-        Result resultDTO = userService.readByUserId(userId);
-
+        @PathVariable String uid) {
+        Result resultDTO = userService.readByUid(uid);
         model.put("user", resultDTO);
 
         return new ModelAndView("/user/profile", model);

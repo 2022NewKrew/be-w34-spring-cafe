@@ -25,11 +25,11 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void create(Create createDto) {
-        if (userRepository.findUserByUserId(createDto.getUserId()).isPresent()) {
-            throw new UserAlreadyExistsException(ErrorCode.ALREADY_EXISTS, createDto.getUserId());
+        if (userRepository.findUserByUid(createDto.getUid()).isPresent()) {
+            throw new UserAlreadyExistsException(ErrorCode.ALREADY_EXISTS, createDto.getUid());
         }
 
-        User user = User.of(createDto.getUserId(), createDto.getPassword(),
+        User user = User.of(createDto.getUid(), createDto.getPassword(),
             createDto.getName(), createDto.getEmail());
 
         userRepository.add(user);
@@ -42,10 +42,10 @@ public class UserService {
             .collect(Collectors.toUnmodifiableList());
     }
 
-    public UserDTO.Result readByUserId(String userId) {
-        Optional<User> foundUser = userRepository.findUserByUserId(userId);
+    public UserDTO.Result readByUid(String uid) {
+        Optional<User> foundUser = userRepository.findUserByUid(uid);
         if (foundUser.isEmpty()) {
-            throw new UserNotFoundException(ErrorCode.NOT_FOUND, userId);
+            throw new UserNotFoundException(ErrorCode.NOT_FOUND, uid);
         }
 
         return Result.from(foundUser.get());

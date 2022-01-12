@@ -14,7 +14,7 @@ public interface UserDTO {
     class Create {
 
         @NotBlank
-        String userId;
+        String uid;
         @NotBlank
         String password;
         @NotBlank
@@ -27,12 +27,12 @@ public interface UserDTO {
     class Result {
 
         Long id;
-        String userId;
+        String uid;
         String name;
         String email;
 
         public static Result from(User user) {
-            return new Result(user.getId(), user.getUserId(), user.getName(), user.getEmail());
+            return new Result(user.getId(), user.getUid(), user.getName(), user.getEmail());
         }
     }
 }

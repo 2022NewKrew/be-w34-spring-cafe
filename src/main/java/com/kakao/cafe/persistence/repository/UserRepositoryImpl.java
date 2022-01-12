@@ -12,17 +12,14 @@ import org.springframework.stereotype.Repository;
 public class UserRepositoryImpl implements UserRepository {
 
     private final Map<String, User> users;
-    private final Map<String, String> nameToUserId;
 
     public UserRepositoryImpl() {
         this.users = new HashMap<>();
-        this.nameToUserId = new HashMap<>();
     }
 
     @Override
     public void add(User user) {
-        users.put(user.getUserId(), user);
-        nameToUserId.put(user.getName(), user.getUserId());
+        users.put(user.getUid(), user);
     }
 
     @Override
@@ -32,16 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findUserByUserId(String userId) {
-        return Optional.ofNullable(users.get(userId));
-    }
-
-    @Override
-    public Optional<User> findUserByName(String name) {
-        Optional<String> userId = Optional.ofNullable(nameToUserId.get(name));
-        if (userId.isEmpty()) {
-            return Optional.empty();
-        }
-        return findUserByUserId(userId.get());
+    public Optional<User> findUserByUid(String uid) {
+        return Optional.ofNullable(users.get(uid));
     }
 }

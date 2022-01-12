@@ -12,7 +12,6 @@ public class Article {
     private final Long id;
 
     private final User author;
-
     private final String title;
     private final String body;
 
@@ -55,6 +54,6 @@ public class Article {
     }
 
     public String getAuthorUserId() {
-        return author.getUserId();
+        return author.getUid();
     }
 }

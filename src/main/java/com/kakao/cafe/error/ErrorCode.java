@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
     NOT_FOUND("Cannot Find"),
-    ALREADY_EXISTS("Already Exists");
+    ALREADY_EXISTS("Already Exists"),
+    INVALID_VALUE("Invalid");
 
     private final String errorMessage;
 

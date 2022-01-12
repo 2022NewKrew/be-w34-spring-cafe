@@ -11,7 +11,7 @@ public class User {
 
     private final Long id;
 
-    private final String userId;
+    private final String uid;
     private final String password;
     private final String name;
     private final String email;
@@ -22,14 +22,14 @@ public class User {
         idGenerator = new AtomicLong(1L);
     }
 
-    public static User of(String userId, String password, String name, String email) {
-        return new User(userId, password, name, email, LocalDateTime.now());
+    public static User of(String uid, String password, String name, String email) {
+        return new User(uid, password, name, email, LocalDateTime.now());
     }
 
-    private User(String userId, String password, String name, String email,
+    private User(String uid, String password, String name, String email,
         LocalDateTime createdAt) {
         this.id = idGenerator.getAndIncrement();
-        this.userId = userId;
+        this.uid = uid;
         this.password = password;
         this.name = name;
         this.email = email;
@@ -40,8 +40,8 @@ public class User {
         return id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUid() {
+        return uid;
     }
 
     public String getName() {
@@ -50,5 +50,9 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean validPassword(String password) {
+        return this.password.equals(password);
     }
 }
