@@ -2,7 +2,7 @@ package com.kakao.cafe.domain.user;
 
 public class User {
 
-    private Long id;
+    private final Long id;
     private final String userId;
     private final String password;
     private final String name;
@@ -18,10 +18,6 @@ public class User {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUserId() {
