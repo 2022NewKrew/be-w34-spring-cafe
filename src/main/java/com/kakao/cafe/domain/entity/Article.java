@@ -7,6 +7,7 @@ import com.kakao.cafe.service.dto.ArticleDto;
 import com.kakao.cafe.service.dto.UserDto;
 
 import java.util.Date;
+import java.util.Map;
 
 public class Article {
 

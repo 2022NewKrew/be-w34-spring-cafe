@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class User {
 
-    private final long id;
+    private long id;
     private final String userId;
     private final String name;
     private final String password;
@@ -26,10 +26,6 @@ public class User {
 
     public String getUserId() {
         return userId;
-    }
-
-    public boolean checkPassword(String password) {
-        return this.password.equals(password);
     }
 
     public UserDto toDto() {
@@ -53,6 +49,7 @@ public class User {
     public int hashCode() {
         return Objects.hash(userId, name, password, email);
     }
+
 
     public static class Builder {
 
