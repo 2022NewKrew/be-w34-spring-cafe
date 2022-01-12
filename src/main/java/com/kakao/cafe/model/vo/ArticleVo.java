@@ -1,13 +1,20 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.model.vo;
 
-public class Article {
+public class ArticleVo {
 
     private int id;
     private final String writer;
     private final String title;
     private final String contents;
 
-    public Article(String writer, String title, String contents) {
+    public ArticleVo(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+    }
+
+    public ArticleVo(int id, String writer, String title, String contents) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -29,7 +36,4 @@ public class Article {
         return contents;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 }
