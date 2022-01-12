@@ -11,10 +11,17 @@
         </header>
         <div class="media">
             <div class="info-container">
-                <h2>{{user.userId}}</h2>
-                <h3>{{user.email}}</h3>
+                <p>닉네임: {{user.userId}}</p>
+                <br>
+                <p>이름: {{user.name}}</p>
+                <br>
+                <p>이메일: {{user.email}}</p>
             </div>
         </div>
+    </div>
+
+    <div class="post-btn-container">
+        <a class="post-write-btn" href="/users/{{user.userId}}/form" class="btn btn-primary" role="button">정보 수정</a>
     </div>
 </div>
 </body>

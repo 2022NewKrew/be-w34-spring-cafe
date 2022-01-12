@@ -17,6 +17,10 @@
   - POST /users
 - 프로필 보기
   - GET /users/{userId} 
+- 회원정보 수정 페이지
+  - GET /users/{userId}/form
+- 회원정보 수정
+  - POST /users/{userId}/update
 
 ### 게시글(Article)
 

@@ -1,0 +1,49 @@
+{{>layout/header}}
+<link href="/css/user/updateForm.css" rel="stylesheet">
+
+<body>
+<div class="background">
+    {{>layout/navigation}}
+
+    <div class="container" id="main">
+        <header class="post-header">
+            <p class="title">정보 수정</p>
+        </header>
+        <form name="question" class="info-container" method="post" action="/users/{{user.userId}}/update">
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" placeholder="이메일을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{user.name}}" placeholder="이름을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="password">비밀번호 확인</label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="비밀번호를 재입력하세요">
+            </div>
+            <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
+        </form>
+    </div>
+</div>
+<script>
+    const password = document.getElementById("password")
+        , confirm_password = document.getElementById("confirm_password");
+
+    function validatePassword(){
+        if(password.value !== confirm_password.value) {
+            confirm_password.setCustomValidity("비밀번호가 일치하지 않습니다.");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+</script>
+</body>
+{{>layout/footer}}
