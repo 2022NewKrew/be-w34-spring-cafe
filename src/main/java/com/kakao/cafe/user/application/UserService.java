@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public void validateUserIdDuplication(String userId) throws IllegalArgumentException {
-        if (this.findById(userId) != null) {
+        if (userRepository.existsById(userId)) {
             throw new IllegalArgumentException(USER_ID_DUPLICATION_EXCEPTION);
         }
     }

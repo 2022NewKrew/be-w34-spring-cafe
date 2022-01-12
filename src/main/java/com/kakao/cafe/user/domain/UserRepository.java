@@ -12,4 +12,8 @@ public interface UserRepository {
     List<User> findAll();
 
     User findByIdOrNull(String userId);
+
+    boolean existsById(String userId);
+
+    User findByUserNameOrNull(String userName);
 }

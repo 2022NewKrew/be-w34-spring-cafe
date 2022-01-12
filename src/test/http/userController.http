@@ -1,2 +1,5 @@
-###
-POST /users?userId=wef&password=asd&name=awef&email=wevwe
+### 정적 페이지 가져오기
+GET localhost:8080/
+
+### 회원 가입
+POST localhost:8080/users?userId=wef&password=asd&name=awef&email=wevwe

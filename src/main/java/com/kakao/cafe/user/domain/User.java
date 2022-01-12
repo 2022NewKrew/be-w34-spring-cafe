@@ -8,13 +8,11 @@ import java.util.regex.Pattern;
 
 import static com.kakao.cafe.common.ErrorMessage.INVALID_EMAIL_FORM_EXCEPTION;
 
+@Getter
 public class User {
-    @Getter
     private final String userId;
     private final String password;
-    @Getter
     private final String name;
-    @Getter
     private final String email;
 
     private User(String userId, String password, String name, String email) {
@@ -38,7 +36,11 @@ public class User {
         }
     }
 
-    public boolean isSameUserWith(String targetUserId) {
+    public boolean isSameUserById(String targetUserId) {
         return Objects.equals(this.userId, targetUserId);
+    }
+
+    public boolean isSameUserByName(String targetUserName) {
+        return Objects.equals(this.name, targetUserName);
     }
 }
