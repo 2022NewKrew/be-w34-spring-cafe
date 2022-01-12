@@ -43,7 +43,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @PostMapping("/users/create")
+    @PostMapping("/users")
     public String createUser(UserCreateRequestDto requestDto) {
         userService.createUser(requestDto);
         return "redirect:/users";

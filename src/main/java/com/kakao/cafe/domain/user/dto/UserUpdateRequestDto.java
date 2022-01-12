@@ -2,7 +2,8 @@ package com.kakao.cafe.domain.user.dto;
 
 public class UserUpdateRequestDto {
     private String name;
-    private String password;
+    private String confirmPassword;
+    private String newPassword;
     private String email;
 
     public String getName() {
@@ -13,12 +14,20 @@ public class UserUpdateRequestDto {
         return email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getConfirmPassword() {
+        return confirmPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
     public void setName(String name) {

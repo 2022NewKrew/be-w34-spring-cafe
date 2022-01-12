@@ -9,7 +9,7 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
-    #url: jdbc:h2:mem:kakaodb
+    url: jdbc:h2:mem:kakaodb
   h2:
     console:
       enabled: true

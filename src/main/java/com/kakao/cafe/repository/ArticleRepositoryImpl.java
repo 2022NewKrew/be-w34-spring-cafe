@@ -3,17 +3,14 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleRepository;
 import com.kakao.cafe.repository.mapper.ArticleMapper;
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +27,10 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(Long id) {
-        Article article = jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE ID = ?", rowMapper, id);
+        Article article = null;
+        try {
+            article = jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE ID = ?", rowMapper, id);
+        } catch (EmptyResultDataAccessException ignored) {}
         return Optional.ofNullable(article);
     }
 
@@ -44,8 +44,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(conn -> {
             PreparedStatement statement = conn.prepareStatement(
-                            "INSERT INTO ARTICLE(author, title, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
-                            Statement.RETURN_GENERATED_KEYS);
+                    "INSERT INTO ARTICLE(author, title, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, article.getAuthor());
             statement.setString(2, article.getTitle());
             statement.setString(3, article.getContent());
@@ -54,5 +54,11 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             return statement;
         }, generatedKeyHolder);
         return generatedKeyHolder.getKey().longValue();
+    }
+
+    @Override
+    public Long deleteAll() {
+        int affectedRows = jdbcTemplate.update("DELETE FROM ARTICLE");
+        return (long) affectedRows;
     }
 }
