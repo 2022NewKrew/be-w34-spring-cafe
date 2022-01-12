@@ -53,14 +53,15 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public String updateUser(UserDto userDto, @PathVariable("id") int id, BindingResult bindingResult) {
+    public String updateUser(Model model, UserDto userDto, @PathVariable("id") int id, BindingResult bindingResult) {
         User user = userService.findUserById(id);
-        if (user.getPassword() != userDto.getPassword()) {
+        if (!user.getPassword().equals(userDto.getPassword())) {
+            model.addAttribute("user", userDto);
             bindingResult.addError(new FieldError("user", "password", "match.password"));
             return "user/updateForm";
         }
         userService.updateUser(userDto, id);
-        return "redirect:/";
+        return "redirect:/user";
     }
 
 }
