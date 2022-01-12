@@ -20,6 +20,7 @@
         </header>
         {{#user}}
         <form name="question" class="info-container" method="post" action="/users/{{id}}/update">
+            <input type="hidden" name="_method" value="PUT" />
             <div class="form-group">
                 <label for="email">아이디</label>
                 <input class="form-control" id="username" name="username" value="{{this.username}}" readonly>
