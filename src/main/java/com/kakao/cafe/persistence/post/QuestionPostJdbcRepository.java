@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.post.QuestionPost;
 import com.kakao.cafe.domain.post.QuestionPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -50,19 +51,22 @@ public class QuestionPostJdbcRepository implements QuestionPostRepository {
     public Optional<QuestionPost> findById(Long id) {
         String sql = "select question_post_id, title, content, created_at, view_count, user_account_id from question_post where question_post_id = ?";
 
-        QuestionPost questionPost = jdbcTemplate.queryForObject(
-                sql,
-                (result, row) -> QuestionPost.builder()
-                        .questionPostId(result.getLong("question_post_id"))
-                        .title(result.getString("title"))
-                        .content(result.getString("content"))
-                        .createdAt(result.getTimestamp("created_at").toLocalDateTime())
-                        .viewCount(result.getInt("view_count"))
-                        .userAccountId(result.getLong("user_account_id"))
-                        .build(),
-                id);
-
-        return Optional.of(questionPost);
+        try {
+            QuestionPost questionPost = jdbcTemplate.queryForObject(
+                    sql,
+                    (result, row) -> QuestionPost.builder()
+                            .questionPostId(result.getLong("question_post_id"))
+                            .title(result.getString("title"))
+                            .content(result.getString("content"))
+                            .createdAt(result.getTimestamp("created_at").toLocalDateTime())
+                            .viewCount(result.getInt("view_count"))
+                            .userAccountId(result.getLong("user_account_id"))
+                            .build(),
+                    id);
+            return Optional.of(questionPost);
+        } catch (EmptyResultDataAccessException exception) {
+            return Optional.empty();
+        }
     }
 
     @Override

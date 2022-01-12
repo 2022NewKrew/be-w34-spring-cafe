@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.user.UserAccount;
 import com.kakao.cafe.domain.user.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -48,36 +51,44 @@ public class UserAccountJdbcRepository implements UserAccountRepository {
     public Optional<UserAccount> findById(Long id) {
         String sql = "select user_account_id, username, password, email, created_at from user_account where user_account_id = ?";
 
-        UserAccount userAccount = jdbcTemplate.queryForObject(
-                sql,
-                (result, row) -> UserAccount.builder()
-                        .userAccountId(result.getLong("user_account_id"))
-                        .username(result.getString("username"))
-                        .password(result.getString("password"))
-                        .email(result.getString("email"))
-                        .createdAt(result.getTimestamp("created_at").toLocalDateTime())
-                        .build(),
-                id);
+        try {
+            UserAccount userAccount = jdbcTemplate.queryForObject(
+                    sql,
+                    (result, row) -> UserAccount.builder()
+                            .userAccountId(result.getLong("user_account_id"))
+                            .username(result.getString("username"))
+                            .password(result.getString("password"))
+                            .email(result.getString("email"))
+                            .createdAt(result.getTimestamp("created_at").toLocalDateTime())
+                            .build(),
+                    id);
 
-        return Optional.of(userAccount);
+            return Optional.of(userAccount);
+        } catch (EmptyResultDataAccessException exception) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public Optional<UserAccount> findByEmail(String email) {
         String sql = "select user_account_id, username, password, email, created_at from user_account where email = ?";
 
-        UserAccount userAccount = jdbcTemplate.queryForObject(
-                sql,
-                (result, row) -> UserAccount.builder()
-                        .userAccountId(result.getLong("user_account_id"))
-                        .username(result.getString("username"))
-                        .password(result.getString("password"))
-                        .email(result.getString("email"))
-                        .createdAt(result.getTimestamp("created_at").toLocalDateTime())
-                        .build(),
-                email);
+        try {
+            UserAccount userAccount = jdbcTemplate.queryForObject(
+                    sql,
+                    (result, row) -> UserAccount.builder()
+                                .userAccountId(result.getLong("user_account_id"))
+                                .username(result.getString("username"))
+                                .password(result.getString("password"))
+                                .email(result.getString("email"))
+                                .createdAt(result.getTimestamp("created_at").toLocalDateTime())
+                                .build(),
+                    email);
 
-        return Optional.of(userAccount);
+            return Optional.of(userAccount);
+        } catch (EmptyResultDataAccessException exception) {
+            return Optional.empty();
+        }
     }
 
     @Override
