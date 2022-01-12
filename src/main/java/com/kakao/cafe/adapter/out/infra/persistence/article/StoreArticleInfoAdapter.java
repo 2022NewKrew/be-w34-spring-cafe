@@ -30,10 +30,10 @@ public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleI
         List<ArticleListEntry> articleInfoList = articleInfoRepository.getAllArticleList()
                                                                       .stream()
                                                                       .map(a -> new ArticleListEntry(
-                                                                          a.getIndex(),
+                                                                          a.getId(),
                                                                           a.getWriter(),
                                                                           a.getTitle(),
-                                                                          a.getPostedDate()
+                                                                          a.getCreatedAt()
                                                                            .format(DateTimeFormatter.ofPattern(
                                                                                "yyyy-MM-dd HH:mm"))
                                                                       ))
@@ -47,11 +47,11 @@ public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleI
                                                                    .orElseThrow(RuntimeException::new);        // TODO : 새로운 Exception 정의 필요
 
         return new ArticleDetail(
-            articleInfoEntity.getIndex(),
+            articleInfoEntity.getId(),
             articleInfoEntity.getWriter(),
             articleInfoEntity.getTitle(),
             articleInfoEntity.getContents(),
-            articleInfoEntity.getPostedDate()
+            articleInfoEntity.getCreatedAt()
                              .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
         );
     }

@@ -5,32 +5,32 @@ import java.time.LocalDateTime;
 
 public class ArticleInfoEntity {
 
-    private final int index;
+    private final int id;
     private final String writer;
     private final String title;
     private final String contents;
-    private final LocalDateTime postedDate;
+    private final LocalDateTime createdAt;
 
-    public ArticleInfoEntity(int index, String writer, String title, String contents, LocalDateTime postedDate) {
-        this.index = index;
+    public ArticleInfoEntity(int id, String writer, String title, String contents, LocalDateTime createdAt) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.postedDate = postedDate;
+        this.createdAt = createdAt;
     }
 
     static ArticleInfoEntity from(Article article) {
         return new ArticleInfoEntity(
-            article.getIndex(),
+            article.getId(),
             article.getWriter(),
             article.getTitle(),
             article.getContents(),
-            article.getPostedDate()
+            article.getCreatedAt()
         );
     }
 
-    public int getIndex() {
-        return index;
+    public int getId() {
+        return id;
     }
 
     public String getWriter() {
@@ -45,7 +45,7 @@ public class ArticleInfoEntity {
         return contents;
     }
 
-    public LocalDateTime getPostedDate() {
-        return postedDate;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

@@ -4,22 +4,22 @@ import java.time.LocalDateTime;
 
 public class Article {
 
-    private final int index;
+    private final int id;
     private final String writer;
     private final String title;
     private final String contents;
-    private final LocalDateTime postedDate;
+    private final LocalDateTime createdAt;
 
-    public Article(int index, String writer, String title, String contents, LocalDateTime postedDate) {
-        this.index = index;
+    public Article(int id, String writer, String title, String contents, LocalDateTime createdAt) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.postedDate = postedDate;
+        this.createdAt = createdAt;
     }
 
-    public int getIndex() {
-        return index;
+    public int getId() {
+        return id;
     }
 
     public String getWriter() {
@@ -34,7 +34,7 @@ public class Article {
         return contents;
     }
 
-    public LocalDateTime getPostedDate() {
-        return postedDate;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

@@ -35,7 +35,7 @@ public class ArticleInfoController {
     @GetMapping("/articles/{index}")
     public String displayArticleDetail(@PathVariable int index, Model model) {
         ArticleDetail articleDetail = getArticleInfoUseCase.getArticleDetail(index);
-        if (articleDetail.getIndex() == index) {
+        if (articleDetail.getId() == index) {
             log.info("{} is opened", articleDetail.getTitle());
             model.addAttribute("article", articleDetail);
             return VIEWS_ARTICLE_DETAIL;

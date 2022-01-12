@@ -2,18 +2,18 @@ package com.kakao.cafe.application.article.dto;
 
 public class ArticleDetail {
 
-    private final int index;
+    private final int id;
     private final String writer;
     private final String title;
     private final String contents;
-    private final String postedDate;
+    private final String createdAt;
 
-    public ArticleDetail(int index, String writer, String title, String contents, String postedDate) {
-        this.index = index;
+    public ArticleDetail(int id, String writer, String title, String contents, String createdAt) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.postedDate = postedDate;
+        this.createdAt = createdAt;
     }
 
     public String getWriter() {
@@ -28,11 +28,11 @@ public class ArticleDetail {
         return contents;
     }
 
-    public String getPostedDate() {
-        return postedDate;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public int getIndex() {
-        return index;
+    public int getId() {
+        return id;
     }
 }

@@ -17,7 +17,7 @@ public class ArticleInfoRepository {
     }
 
     public void save(ArticleInfoEntity articleInfoEntity) {
-        repository.put(articleInfoEntity.getIndex(), articleInfoEntity);
+        repository.put(articleInfoEntity.getId(), articleInfoEntity);
     }
 
     public List<ArticleInfoEntity> getAllArticleList() {
