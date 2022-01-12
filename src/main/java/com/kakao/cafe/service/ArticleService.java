@@ -21,7 +21,8 @@ public class ArticleService {
     private final ArticleRepository articleRepository = new MemoryArticleRepository();
 
     public void create(ArticleCreateRequestDto requestDto) {
-        Article article = articleRepository.create(new Article(requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents()));
+        Long id = articleRepository.generateId();
+        Article article = articleRepository.create(new Article(id, requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents()));
         logger.info("{} 글 생성", article.getTitle());
     }
 

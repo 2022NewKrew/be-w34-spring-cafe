@@ -2,29 +2,31 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.article.Article;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class MemoryArticleRepository implements ArticleRepository {
 
-    private static final List<Article> articleList = new ArrayList<>();
+    private static final Map<Long, Article> articleMap = new HashMap<>();
     private static Long idNumber = 0L;
 
     @Override
+    public Long generateId() {
+        return ++idNumber;
+    }
+
+    @Override
     public Article create(Article article) {
-        article.setId(++idNumber);
-        articleList.add(article);
+        articleMap.put(article.getId(), article);
         return article;
     }
 
     @Override
     public List<Article> findAll() {
-        return List.copyOf(articleList);
+        return List.copyOf(articleMap.values());
     }
 
     @Override
     public Optional<Article> findById(Long id) {
-        return articleList.stream().filter(article -> article.getId().equals(id)).findFirst();
+        return Optional.ofNullable(articleMap.get(id));
     }
 }
