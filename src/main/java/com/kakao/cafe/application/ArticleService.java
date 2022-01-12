@@ -12,5 +12,6 @@ public class ArticleService {
     }
 
     public void write(ArticleVo articleVo) {
+        articlePort.save(articleVo);
     }
 }

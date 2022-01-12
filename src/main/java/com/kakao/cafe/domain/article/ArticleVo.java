@@ -10,4 +10,16 @@ public class ArticleVo {
         this.title = title;
         this.contents = contents;
     }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContents() {
+        return contents;
+    }
 }
