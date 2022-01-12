@@ -1,4 +1,4 @@
-package com.kakao.cafe.infra.user;
+package com.kakao.cafe.persistence.user;
 
 import com.kakao.cafe.domain.user.UserAccount;
 import com.kakao.cafe.domain.user.UserAccountRepository;

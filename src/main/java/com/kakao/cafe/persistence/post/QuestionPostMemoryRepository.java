@@ -1,4 +1,4 @@
-package com.kakao.cafe.infra.post;
+package com.kakao.cafe.persistence.post;
 
 import com.kakao.cafe.domain.post.QuestionPost;
 import com.kakao.cafe.domain.post.QuestionPostRepository;
