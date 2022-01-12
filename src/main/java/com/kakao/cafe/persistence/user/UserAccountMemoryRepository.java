@@ -2,12 +2,17 @@ package com.kakao.cafe.persistence.user;
 
 import com.kakao.cafe.domain.user.UserAccount;
 import com.kakao.cafe.domain.user.UserAccountRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
+@Qualifier("simple-account-db")
 public class UserAccountMemoryRepository implements UserAccountRepository {
 
     private final Map<Long, UserAccount> userAccountMap;
@@ -28,6 +33,7 @@ public class UserAccountMemoryRepository implements UserAccountRepository {
         UserAccount userAccount = userAccountMap.get(id);
         return Optional.of(userAccount);
     }
+
     @Override
     public Optional<UserAccount> findByEmail(String email) {
         return userAccountMap.values().stream()

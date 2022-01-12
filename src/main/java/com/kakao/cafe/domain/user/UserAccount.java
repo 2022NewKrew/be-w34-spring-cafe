@@ -2,35 +2,25 @@ package com.kakao.cafe.domain.user;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 
 @ToString(exclude = {"password"})
 @EqualsAndHashCode
+@Getter
 public class UserAccount {
 
-    private static final AtomicLong idGenerator;
-
     private final Long userAccountId;
-
     private final String username;
-
     private final String password;
-
     private final String email;
-
     private final LocalDateTime createdAt;
-
-    static {
-        idGenerator = new AtomicLong();
-    }
 
     @Builder
     public UserAccount(Long userAccountId, String username, String password, String email, LocalDateTime createdAt) {
-        this.userAccountId = Objects.requireNonNullElseGet(userAccountId, idGenerator::getAndIncrement);
+        this.userAccountId = userAccountId;
         this.username = username;
         this.password = password;
         this.email = email;
