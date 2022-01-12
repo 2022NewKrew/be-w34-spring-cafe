@@ -17,10 +17,10 @@ import java.util.List;
 @RequestMapping(UserRedirect.USER_BASE_URL)
 public class CafeUserController {
 
-    CafeUserService cafeUserService;
+    final CafeUserService cafeUserService;
 
-    public CafeUserController () {
-        cafeUserService = new CafeUserServiceImpl();
+    public CafeUserController (CafeUserService cafeUserService) {
+        this.cafeUserService = cafeUserService;
     }
 
     @GetMapping("/sign-in")
@@ -32,7 +32,7 @@ public class CafeUserController {
         return UserView.USER_VIEW_SIGN_UP;
     }
 
-    @PostMapping("/sign-in")
+    @PostMapping("/sign-up")
     String signIn(User newUser){ // 회원가입
         cafeUserService.signIn(newUser);
         return UserRedirect.USER_REDIRECT_LIST;

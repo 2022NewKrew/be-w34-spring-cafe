@@ -35,7 +35,7 @@
   - [x] Enum 으로 URL 주소를 상수화
   - [x] 내부에 담은 변수들을 하나의 Domain 으로 분류하여, 재사용 가능하도록 수정
   - [ ] 일부 Default URL 의 경우 동시관리가 힘들어서, 분리가 필요할 것 같음 ( 현재는 매직리터럴로 작성 )
-    - [ ] 화면을 전부 template 쪽으로 이동
+    - [x] 화면을 전부 template 쪽으로 이동
     - [ ] 접근용도의 URL Enum 작성하기
     - [ ] 접근용도의 GET Mapping 을 모아둔 클래스 작성하기
 - [-] 게시글 관련 기능
@@ -55,6 +55,8 @@
 - 추가로 MvcConfiguration 에서 "addResourceHandlers" 는 외부에서 templates 에 접근할 수 있도록 작성된 코드이므로, 삭제
   - 대신 mustache 적용이 되도록 "MustacheViewResolver" 적용이 반드시 필요 
   - application.prop 로도 해당 기능을 적용 가능 ( 이 경우,. @Configuration 클래스는 불필요 )
+- Configuration 파일의 "addViewController" 의 경우, get/post 접근을 구분하지 못함
+  - Controller 에 Get 맵핑을 추가하는 형태로 재작성
 
 # 참고 사이트
 - Collection 관련

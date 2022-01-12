@@ -6,7 +6,6 @@ public class PostRedirect {
     public static final String POST_BASE_URL = "/posts";
 
     // 뒤쪽 path
-    public static final String POST_PATH_WRITE = "/write";
     public static final String POST_PATH_LIST = "/list";
 //    public static final String POST_PATH_ = "/";
 

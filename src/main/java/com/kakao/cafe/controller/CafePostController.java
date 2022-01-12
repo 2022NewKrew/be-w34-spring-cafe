@@ -18,10 +18,10 @@ import java.util.List;
 @RequestMapping(PostRedirect.POST_BASE_URL)
 public class CafePostController {
 
-    CafePostService cafePostService;
+    final CafePostService cafePostService;
 
-    public CafePostController() {
-        cafePostService = new CafePostServiceImpl();
+    public CafePostController(CafePostService cafePostService) {
+        this.cafePostService = cafePostService;
     }
 
     @GetMapping("/write")

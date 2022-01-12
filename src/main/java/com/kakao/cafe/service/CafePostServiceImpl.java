@@ -11,11 +11,10 @@ import java.util.List;
 @Service
 public class CafePostServiceImpl implements CafePostService {
 
-    @Autowired
-    private CafePostDao cafePostDao;
+    private final CafePostDao cafePostDao;
 
-    public CafePostServiceImpl() {
-        cafePostDao = new CafePostDaoImpl();
+    public CafePostServiceImpl(CafePostDao cafePostDao) {
+        this.cafePostDao = cafePostDao;
     }
 
     @Override
