@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/articles")
+@RequestMapping("/articles")
 public class ArticleController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -32,11 +32,12 @@ public class ArticleController {
     }
 
 
-    @PostMapping("articles")
+    @PostMapping
     public String createQuestion(Article article) {
         articleService.write(article);
-        return "redirect:/";
+        return "redirect:/articles";
     }
 
+//    @GetMapping("/")
 
 }

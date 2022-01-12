@@ -12,6 +12,7 @@ public class ArticleServiceImpl implements ArticleService{
 
     @Override
     public void write(Article article) {
+        article.setArticleId(articles.size() + 1);
         articles.add(article);
     }
 
