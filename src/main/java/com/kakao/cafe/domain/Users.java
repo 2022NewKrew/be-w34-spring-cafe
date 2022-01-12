@@ -23,8 +23,12 @@ public class Users {
         return false;
     }
 
-    public User find(final String id) {
+    public User findById(final String id) {
         Objects.requireNonNull(id);
+        if (User.NONE.getId().equals(id)) {
+            return User.NONE;
+        }
+
         for (User u : list) {
             if (id.equals(u.getId())) {
                 return u;

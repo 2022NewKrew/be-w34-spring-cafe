@@ -16,7 +16,8 @@ public class ArticleManager implements ArticleService {
     @Override
     public void add(@NonNull final ArticleDto articleDto) {
         articles.add(new Article(
-                articleDto.getAuthor(),
+                articleDto.getUserId(),
+                articleDto.getUserName(),
                 articleDto.getTitle(),
                 articleDto.getBody()
         ));

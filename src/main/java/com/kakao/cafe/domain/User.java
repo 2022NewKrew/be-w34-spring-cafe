@@ -47,7 +47,7 @@ public class User {
         this.idx = 0;
         this.id = "none";
         this.password = "";
-        this.name = "";
+        this.name = "비회원";
         this.email = "";
     }
 

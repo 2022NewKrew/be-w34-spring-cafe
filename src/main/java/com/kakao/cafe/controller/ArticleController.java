@@ -1,7 +1,9 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.ArticleDto;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -11,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -21,9 +21,11 @@ public class ArticleController {
     private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     private final ArticleService articleService;
+    private final UserService userService;
 
-    ArticleController(ArticleService articleService) {
+    ArticleController(ArticleService articleService, UserService userService) {
         this.articleService = Objects.requireNonNull(articleService);
+        this.userService = Objects.requireNonNull(userService);
     }
 
     @GetMapping("/")
@@ -37,10 +39,17 @@ public class ArticleController {
         return getArticles(model);
     }
 
-    // Get /articles/new -> "articles/new"
+    @GetMapping("/articles/new")
+    public String newArticle(final Model model) {
+        // (when login impl) getCurrentUser(); -> write userName attribute
+        model.addAttribute("userName", User.NONE.getName());
+        return "articles/new";
+    }
 
     @PostMapping("/articles")
     public String writeArticle(@NonNull final ArticleDto articleDto) {
+        // (when login impl) getCurrentUser(); -> add userId in articleDto
+        articleDto.setUserId(User.NONE.getId());
         articleService.add(articleDto);
         logger.info("New Article added: " + articleDto.getTitle());
         return "redirect:/";
