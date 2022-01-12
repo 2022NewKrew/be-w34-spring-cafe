@@ -1,0 +1,23 @@
+DROP TABLE IF EXISTS `post`;
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE IF NOT EXISTS `user`
+(
+    `id`       BIGINT      NOT NULL AUTO_INCREMENT,
+    `created`  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `email`    VARCHAR(30) NOT NULL,
+    `password` VARCHAR(30) NOT NULL,
+    `name`     VARCHAR(10) NOT NULL,
+    CONSTRAINT `USER_PK` PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `post`
+(
+    `id`       BIGINT      NOT NULL AUTO_INCREMENT,
+    `created`  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `title`    VARCHAR(50) NOT NULL,
+    `contents` TEXT        NOT NULL,
+    `user_id`  BIGINT      NOT NULL,
+    CONSTRAINT `POST_PK` PRIMARY KEY (`id`),
+    CONSTRAINT `USER_FK` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
