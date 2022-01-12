@@ -33,28 +33,32 @@ public class UserController {
     @PostMapping("/create")
     String createUser(User user) {
         userService.insertUser(user);
-        logger.info("create User -> Email : {}, Name : {}", user.getEmail(), user.getName());
+        logger.info("create User -> UserId : {}, Email : {}", user.getUserId(), user.getEmail());
 
         return "redirect:/users";
     }
 
-    @GetMapping("/{userId}/form")
-    String getUserForm(@PathVariable String userId, Model model) {
-        User user = userService.getUserByUserId(userId);
+    @GetMapping("/{id}/form")
+    String getUserForm(@PathVariable long id, Model model) {
+        User user = userService.getUserById(id);
         model.addAttribute("user", user);
+        logger.info("get User(Form) -> ID : {}, UserId : {}", user.getId(), user.getUserId());
+
         return "user/updateForm";
     }
 
     @PostMapping("/{userId}/update")
     String updateUser(User user) {
         userService.updateUser(user);
+        logger.info("update User -> UserId : {}, Email : {}", user.getUserId(), user.getEmail());
         return "redirect:/users";
     }
 
-    @GetMapping("/{userId}")
-    String getUserProfile(@PathVariable String userId, Model model) {
-        User user = userService.getUserByUserId(userId);
+    @GetMapping("/{id}")
+    String getUserProfile(@PathVariable long id, Model model) {
+        User user = userService.getUserById(id);
         model.addAttribute("user", user);
+        logger.info("get User(Profile) -> ID : {}, UserId : {}", user.getId(), user.getUserId());
 
         return "user/profile";
     }

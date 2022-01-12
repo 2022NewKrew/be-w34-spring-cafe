@@ -2,6 +2,7 @@
 <html lang="kr">
 <head>
     {{>partial/header}}
+    <link href="/css/index.css" rel="stylesheet">
 </head>
 <body>
 
@@ -15,10 +16,10 @@
                 <div class="well well-sm">
                     <div class="media">
                         <a class="thumbnail pull-left" href="#">
-                            <img class="media-object" src="../images/80-text.png">
+                            <img class="media-object" src="/images/80-text.png">
                         </a>
                         <div class="media-body">
-                            <h4 class="media-heading">{{user.name}}</h4>
+                            <h4 class="media-heading">{{user.userId}}</h4>
                             <p>
                                 <a class="btn btn-xs btn-default" href="#"><span
                                         class="glyphicon glyphicon-envelope"></span>&nbsp;{{user.email}}</a>
