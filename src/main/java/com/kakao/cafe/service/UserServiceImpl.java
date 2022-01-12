@@ -5,6 +5,7 @@ import com.kakao.cafe.dto.UserCreateDto;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(@Qualifier("userRepositoryJDBC") UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

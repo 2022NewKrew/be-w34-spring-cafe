@@ -8,6 +8,7 @@ import com.kakao.cafe.dto.PostListItemDto;
 import com.kakao.cafe.repository.PostRepository;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository,
-                           UserRepository userRepository) {
+    public PostServiceImpl(@Qualifier("postRepositoryJDBC") PostRepository postRepository,
+                           @Qualifier("userRepositoryJDBC") UserRepository userRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
     }
