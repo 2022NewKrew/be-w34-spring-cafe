@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dao.UserDao;
+import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.vo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,42 +13,42 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    private UserDao userDao;
+    private UserService userService;
 
-    public UserController(UserDao userDao) {
-        this.userDao = userDao;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/users")
     public String getUsers(Model model) {
-        List<User> users = userDao.getUsers();
+        List<User> users = userService.getUsers();
         model.addAttribute("users", users);
         return "/user/list";
     }
 
     @PostMapping("/user/create")
     public String signUp(User user) {
-        userDao.addUser(user);
+        userService.addUser(user);
         return "redirect:/users";
     }
 
     @GetMapping("/users/{userId}")
     public String getProfile(@PathVariable String userId, Model model) {
-        User user = userDao.getUser(userId);
+        User user = userService.getUser(userId);
         model.addAttribute("user", user);
         return "/user/profile";
     }
 
     @GetMapping("/users/{userId}/form")
     public String updateForm(@PathVariable String userId, Model model) {
-        User user = userDao.getUser(userId);
+        User user = userService.getUser(userId);
         model.addAttribute("userId", userId);
         return "/user/updateForm";
     }
 
     @PostMapping("/user/edit")
     public String editUser(User user) {
-        userDao.updateUser(user);
+        userService.updateUser(user);
         return "redirect:/users";
     }
 
