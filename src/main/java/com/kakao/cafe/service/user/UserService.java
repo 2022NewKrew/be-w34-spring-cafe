@@ -24,8 +24,15 @@ public class UserService {
     }
 
     @Transactional
-    public void update(String userId, User user) {
-        userRepository.update(userId, user);
+    public void update(String userId, String password, User user) {
+        validCorrectPassword(userRepository.findById(userId), password);
+        userRepository.update(userId, password, user);
+    }
+
+    private void validCorrectPassword(User user, String password) {
+        if(!user.getPassword().equals(password)) {
+            throw new IllegalArgumentException("Password Incorrect : " + user.getUserId());
+        }
     }
 
     @Transactional(readOnly = true)

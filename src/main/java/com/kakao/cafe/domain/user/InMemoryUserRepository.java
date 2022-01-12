@@ -18,7 +18,7 @@ public class InMemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public void update(String id, User user) {
+    public void update(String id, String password, User user) {
         users.put(id, user);
     }
 

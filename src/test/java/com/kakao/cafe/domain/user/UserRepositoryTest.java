@@ -40,7 +40,7 @@ public class UserRepositoryTest {
     @DisplayName("저장소 회원정보 수정 테스트")
     @MethodSource("provideUsers")
     @ParameterizedTest
-    public void testUpdate(String userId, String password, String name, String email) {
+    public void userUpdate(String userId, String password, String name, String email) {
         //given
         UserCreateRequest dto = new UserCreateRequest(userId, password, name, email);
         User user = dto.toEntity();
@@ -53,7 +53,7 @@ public class UserRepositoryTest {
         user.setEmail(modifiedEmail);
 
         //when
-        userRepository.update(userId, user);
+        userRepository.update(userId, password, user);
 
         //then
         User savedUser = userRepository.findById(userId);
