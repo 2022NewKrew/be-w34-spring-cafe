@@ -1,4 +1,4 @@
-package com.kakao.cafe.adapter.in.view.user;
+package com.kakao.cafe.adapter.in.presentation.user;
 
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.application.user.port.in.GetUserInfoUseCase;

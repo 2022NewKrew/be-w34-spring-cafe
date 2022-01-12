@@ -1,4 +1,4 @@
-package com.kakao.cafe.adapter.in.view.article;
+package com.kakao.cafe.adapter.in.presentation.article;
 
 import com.kakao.cafe.application.article.dto.WriteRequest;
 import com.kakao.cafe.application.article.port.in.WriteArticleUseCase;

@@ -1,4 +1,4 @@
-package com.kakao.cafe.adapter.in.view.article;
+package com.kakao.cafe.adapter.in.presentation.article;
 
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
 import com.kakao.cafe.domain.article.Article;
