@@ -11,12 +11,12 @@ public class PostDetailDto {
     private LocalDate createdAt;
     private int viewCount;
 
-    private UserDto writer;
+    private MemberDto writer;
 
     public PostDetailDto() {
     }
 
-    public PostDetailDto(int id, String title, String contents, LocalDate createdAt, int viewCount, UserDto writer) {
+    public PostDetailDto(int id, String title, String contents, LocalDate createdAt, int viewCount, MemberDto writer) {
         this.id = id;
         this.title = title;
         this.contents = contents;
@@ -31,7 +31,7 @@ public class PostDetailDto {
                 post.getContent(),
                 post.getCreatedAt(),
                 post.getViewCount(),
-                UserDto.of(post.getWriter()));
+                MemberDto.of(post.getWriter()));
     }
 
     public int getId() {
@@ -74,11 +74,11 @@ public class PostDetailDto {
         this.viewCount = viewCount;
     }
 
-    public UserDto getWriter() {
+    public MemberDto getWriter() {
         return writer;
     }
 
-    public void setWriter(UserDto writer) {
+    public void setWriter(MemberDto writer) {
         this.writer = writer;
     }
 }

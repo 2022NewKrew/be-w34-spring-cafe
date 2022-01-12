@@ -1,7 +1,7 @@
 package com.kakao.cafe.DB;
 
 import com.kakao.cafe.domain.Post;
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.Member;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,15 +9,15 @@ import java.util.List;
 
 @Component
 public class RogerDB {
-    List<User> user = new ArrayList<>();
+    List<Member> member = new ArrayList<>();
     List<Post> post = new ArrayList<>();
 
-    public List<User> getUser() {
-        return user;
+    public List<Member> getUser() {
+        return member;
     }
 
-    public void setUser(List<User> user) {
-        this.user = user;
+    public void setUser(List<Member> member) {
+        this.member = member;
     }
 
     public List<Post> getPost() {

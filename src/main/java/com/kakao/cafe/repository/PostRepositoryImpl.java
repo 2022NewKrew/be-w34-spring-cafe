@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
@@ -19,8 +18,9 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public void save(Post post) {
+    public int save(Post post) {
         rogerDB.getPost().add(post);
+        return 0;
     }
 
     @Override
@@ -33,5 +33,10 @@ public class PostRepositoryImpl implements PostRepository {
         return rogerDB.getPost().stream()
                 .filter(post -> post.getId() == questionId)
                 .findFirst();
+    }
+
+    @Override
+    public void update(Post post) {
+
     }
 }

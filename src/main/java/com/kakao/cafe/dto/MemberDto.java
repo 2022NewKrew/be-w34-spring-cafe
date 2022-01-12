@@ -1,42 +1,29 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.dto;
 
-import com.kakao.cafe.dto.UserCreateDto;
+import com.kakao.cafe.domain.Member;
 
 import java.time.LocalDate;
 
-public class User {
-    // 다음 생성하는 row 의 id 값을 저장하고 있는 변수
-    private static int idSeq = 1;
+public class MemberDto {
     private int id;
     private String userId;
-    private String password;
     private String email;
     private String name;
     private LocalDate createdAt;
 
-    public User() {
+    public MemberDto() {
     }
 
-    public User(int id, String userId, String password, String email, String name, LocalDate createdAt) {
+    public MemberDto(int id, String userId, String email, String name, LocalDate createdAt) {
         this.id = id;
         this.userId = userId;
-        this.password = password;
         this.email = email;
         this.name = name;
         this.createdAt = createdAt;
     }
 
-    public static User of(UserCreateDto userCreateDto) {
-        return new User(idSeq++,
-                userCreateDto.getUserId(),
-                userCreateDto.getPassword(),
-                userCreateDto.getEmail(),
-                userCreateDto.getName(),
-                LocalDate.now());
-    }
-
-    public int getId() {
-        return id;
+    public static MemberDto of(Member member) {
+        return new MemberDto(member.getId(), member.getUserId(), member.getEmail(), member.getName(), member.getCreatedAt());
     }
 
     public String getUserId() {
@@ -45,14 +32,6 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
