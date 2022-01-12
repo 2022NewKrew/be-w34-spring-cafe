@@ -14,26 +14,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/board")
+@RequestMapping("/posts")
 @Log4j2
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
 
-    @GetMapping("/post")
+    @GetMapping("/new")
     public String postBoardForm() {
         return "/board/post";
     }
 
-    @PostMapping("/post")
+    @PostMapping
     public String postBoard(PostDto postDto, HttpSession session) {
         postService.register(postDto);
-        return "redirect:/board/list";
+        return "redirect:/posts";
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public String getBoardList(PageRequestDto pageRequestDto, Model model) {
         model.addAttribute("posts", postService.getList(pageRequestDto));
-        return "/board/list";
+        return "board/list";
     }
 }

@@ -1,6 +1,5 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.entity.Post;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.util.Page;
 import com.kakao.cafe.util.Pageable;

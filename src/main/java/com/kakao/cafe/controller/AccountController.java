@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/account")
+@RequestMapping("/accounts")
 @Log4j2
 @RequiredArgsConstructor
 public class AccountController {
@@ -27,7 +27,7 @@ public class AccountController {
     public String login(UserDto userDto, HttpSession session) {
         AuthDto authDto = userService.login(userDto);
         if (authDto == null) {
-            return "redirect:/account/login";
+            return "redirect:/accounts/login";
         }
         session.setAttribute("auth", authDto);
         return "redirect:/";
