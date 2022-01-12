@@ -35,7 +35,7 @@ public class MainController {
 
   @GetMapping("/users")
   public String users(Model model) {
-    Users users = userService.getAllUsers();
+    Users users = userService.findAllUsers();
     model.addAttribute("users", users.stream()
         .map(UserDTO::new)
         .collect(Collectors.toList()));
@@ -45,7 +45,7 @@ public class MainController {
 
   @GetMapping("/users/{email}")
   public String users(Model model, @PathVariable("email") String email) {
-    User user = userService.getUserByEmail(email);
+    User user = userService.findUserByEmail(email);
     model.addAttribute("user", new UserDTO(user));
     return "profile";
   }
@@ -53,6 +53,11 @@ public class MainController {
   @GetMapping("/signup")
   public String signUp() {
     return "form";
+  }
+
+  @GetMapping("/login")
+  public String login() {
+    return "login";
   }
 
 }

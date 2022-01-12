@@ -1,11 +1,15 @@
 package com.kakao.cafe.web.service;
 
+import com.kakao.cafe.config.SessionConfig;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.Users;
+import com.kakao.cafe.exception.InvalidAuthenticationException;
 import com.kakao.cafe.exception.NoEmailFoundException;
 import com.kakao.cafe.web.repository.UserRepository;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,14 +29,31 @@ public class UserService {
     return userRepository.save(user);
   }
 
-  public Users getAllUsers() {
+  public Users findAllUsers() {
     return userRepository.findAll();
   }
 
-  public User getUserByEmail(String email) {
+  public User findUserByEmail(String email) {
     String decodedEmail = URLDecoder.decode(email, StandardCharsets.UTF_8);
     return userRepository.findByEmail(decodedEmail)
         .orElseThrow(NoEmailFoundException::new);
+  }
+
+  public User login(User user, HttpServletRequest request) {
+    user.setPasswordEncrypted();
+    User loginUser = userRepository.findByEmail(user.getEmail())
+        .stream()
+        .filter(findUser -> findUser.getPassword().equals(user.getPassword()))
+        .findAny()
+        .orElseThrow(InvalidAuthenticationException::new);
+
+    loginUser.updateLastLoginAt();
+    userRepository.update(loginUser);
+
+    HttpSession session = request.getSession();
+    session.setAttribute(SessionConfig.LOGIN, loginUser);
+
+    return loginUser;
   }
 
 }

@@ -2,6 +2,7 @@ package com.kakao.cafe.web.repository;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.Users;
+import com.kakao.cafe.exception.NoMatchingForUpdateException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class UserRepository {
@@ -26,9 +28,29 @@ public class UserRepository {
   }
 
   public User save(User user) {
-    String query = "INSERT INTO USERS (email, nick_name, summary, profile, password) VALUES (?,?,?,?,?);";
+    String query = "INSERT INTO USERS ("
+        + "email, "
+        + "nick_name, "
+        + "summary, "
+        + "profile, "
+        + "password, "
+        + "create_at, "
+        + "modified_at, "
+        + "last_login_at"
+        + ") VALUES (?,?,?,?,?,?,?,?);";
     jdbcTemplate.update(query, user.getEmail(), user.getNickName(),
-        user.getSummary(), user.getProfile(), user.getPassword());
+        user.getSummary(), user.getProfile(), user.getPassword(), user.getCreateAt(),
+        user.getModifiedAt(), user.getLastLoginAt());
+    return user;
+  }
+
+  @Transactional
+  public User update(User user) {
+    // 기존에 존재하는 데이터 없을 경우 예외 처리
+    if (delete(user) == 0) {
+      throw new NoMatchingForUpdateException();
+    }
+    save(user);
     return user;
   }
 
@@ -44,7 +66,13 @@ public class UserRepository {
     return Optional.ofNullable(user);
   }
 
+  public int delete(User user) {
+    String query = "DELETE FROM USERS WHERE EMAIL = ?";
+    return jdbcTemplate.update(query, user.getEmail());
+  }
+
   public static class UserMapper implements RowMapper<User> {
+
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
       String email = rs.getString("EMAIL");
@@ -55,7 +83,8 @@ public class UserRepository {
       Timestamp createAt = rs.getTimestamp("CREATE_AT");
       Timestamp modifiedAt = rs.getTimestamp("MODIFIED_AT");
       Timestamp lastLoginAt = rs.getTimestamp("LAST_LOGIN_AT");
-      return User.of(rowNum + 1, email, nickName, summary, profile, password, createAt, modifiedAt, lastLoginAt);
+      return User.of(rowNum + 1, email, nickName, summary, profile, password, createAt, modifiedAt,
+          lastLoginAt);
     }
   }
 

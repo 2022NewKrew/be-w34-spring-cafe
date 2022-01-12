@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.web.dto.LoginDTO;
 import com.kakao.cafe.web.dto.SignUpDTO;
 import java.sql.Timestamp;
 
@@ -9,23 +10,23 @@ public class User {
   public static String DEFAULT_PROFILE = "https://t1.daumcdn.net/cfile/tistory/994F3E4D5FC9FCFF03";
 
   private int index;
-  private String email;
+  private final String email;
   private String nickName;
   private String password;
-  private String summary;
-  private String profile;
-  private Timestamp createAt;
-  private Timestamp modifiedAt;
-  private Timestamp lastLoginAt;
+  private String summary = DEFAULT_SUMMARY;
+  private String profile = DEFAULT_PROFILE;
+  private Timestamp createAt = new Timestamp(System.currentTimeMillis());
+  private Timestamp modifiedAt = new Timestamp(System.currentTimeMillis());
+  private Timestamp lastLoginAt = new Timestamp(System.currentTimeMillis());
 
-  private User() {
-  }
-
-  private User(String email, String nickName, String summary, String profile, String password) {
+  private User(String email, String nickName, String password) {
     this.email = email;
     this.nickName = nickName;
-    this.summary = summary;
-    this.profile = profile;
+    this.password = password;
+  }
+
+  private User(String email, String password) {
+    this.email = email;
     this.password = password;
   }
 
@@ -46,10 +47,12 @@ public class User {
     return new User(
         signUpDTO.getEmail(),
         signUpDTO.getNickName(),
-        DEFAULT_SUMMARY,
-        DEFAULT_PROFILE,
         signUpDTO.getPassword()
     );
+  }
+
+  public static User of(LoginDTO loginDTO) {
+    return new User(loginDTO.getEmail(), loginDTO.getPassword());
   }
 
   public static User of(int index, String email, String nickName, String summary, String profile,
@@ -59,7 +62,11 @@ public class User {
   }
 
   public void setPasswordEncrypted() {
+    //TODO
+  }
 
+  public void updateLastLoginAt() {
+    this.lastLoginAt = new Timestamp(System.currentTimeMillis());
   }
 
   public String getEmail() {
