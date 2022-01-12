@@ -85,18 +85,23 @@
               <tbody>
               {{#users}}
                 <tr>
-                    <th scope="row">1</th> <td>{{userId}}</td> <td><a href="/users/{{userId}}">{{name}}</a></td> <td>{{email}}</td><td><a class="btn btn-success" href="#" role="button">수정</a></td>
+                    <th scope="row">1</th>
+                    <td>{{userId}}</td>
+                    <td><a href="/users/{{userId}}">{{name}}</a></td>
+                    <td>{{email}}</td>
+                    <td>
+                        <a class="btn btn-success" href="/users/{{userId}}/form" role="button">수정</a></td>
                 </tr>
               {{/users}}
               </tbody>
           </table>
-        </div>
-    </div>
+      </div>
+   </div>
 </div>
 
 <!-- script references -->
-<script src="/static/js/jquery-2.2.0.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/scripts.js"></script>
-	</body>
+<script src="../js/jquery-2.2.0.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/scripts.js"></script>
+</body>
 </html>
