@@ -3,6 +3,8 @@ package com.kakao.cafe.application;
 import com.kakao.cafe.domain.article.ArticlePort;
 import com.kakao.cafe.domain.article.ArticleVo;
 
+import java.util.List;
+
 public class ArticleService {
 
     private final ArticlePort articlePort;

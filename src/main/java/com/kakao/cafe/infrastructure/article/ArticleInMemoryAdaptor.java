@@ -25,4 +25,9 @@ public class ArticleInMemoryAdaptor implements ArticlePort {
                         article.getTitle(),
                         article.getContents()));
     }
+
+    @Override
+    public List<Article> findAll() {
+        return null;
+    }
 }
