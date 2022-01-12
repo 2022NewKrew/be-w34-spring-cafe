@@ -51,4 +51,10 @@ public class UserController {
         model.addAttribute("user", user);
         return "/user/profile";
     }
+
+    @GetMapping("user/login")
+    public String userLogin() {
+        return "/user/login";
+    }
+
 }
