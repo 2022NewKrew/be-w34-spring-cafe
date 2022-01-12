@@ -20,41 +20,56 @@ public class ArticleController {
     private final ArticleService articleService;
     private final Logger logger;
 
-    private ArticleController(ArticleService articleService) {
+    protected ArticleController(ArticleService articleService) {
         this.articleService = articleService;
         this.logger = LoggerFactory.getLogger(ArticleController.class);
     }
 
+    /**
+     * 메인 페이지 접속 [GET]
+     */
     @GetMapping("/")
     public String getIndexPage(Model model){
         this.logger.info("[GET] / - 메인 페이지 접속(글 리스트)");
-        List<ArticleDetailResponse> articleList = articleService.getArticleList();
+        List<ArticleDetailResponse> articleList = this.articleService.getArticleList();
         model.addAttribute("articles", articleList);
 
         return "../static/index";
     }
 
+    /**
+     * 게시글 작성 페이지 접속 [GET]
+     */
     @GetMapping("/articles/write")
     public String getArticleCreatePage() {
         this.logger.info("[GET] /article/write - 게시글 작성 페이지 접속");
         return "article/write";
     }
 
+    /**
+     * 게시글 상세 페이지 접속 [GET]
+     * @param id: 보고자 하는 게시글의 ID(PK)
+     * @throws ArticleNotFoundException: 해당 ID 의 Article 이 존재하지 않을 경우 발생
+     */
     @GetMapping("/articles/{id}")
-    public String getArticleDetailPage(Model model, @PathVariable("id") Integer id) {
+    public String getArticleDetailPage(Model model, @PathVariable("id") Long id) {
         this.logger.info("[GET] /article/{} - (id: {}) 게시글 상세 페이지 접속", id, id);
         try {
-            ArticleDetailResponse articleDetail = articleService.getArticleDetail(id);
+            ArticleDetailResponse articleDetail = this.articleService.getArticleDetail(id);
             model.addAttribute("article", articleDetail);
 
             return "article/show";
         } catch(ArticleNotFoundException e) {
-            logger.error("[ERROR] - {}", e.getMessage());
+            this.logger.error("[ERROR] - {}", e.getMessage());
 
             return "redirect:/";
         }
     }
 
+    /**
+     * 게시글 작성 요청 [POST]
+     * @param req: 게시글 작성 정보
+     */
     @PostMapping("/articles")
     public String createArticle(ArticleCreateRequest req) {
         this.logger.info("[POST] /article - 게시글 작성 요청");

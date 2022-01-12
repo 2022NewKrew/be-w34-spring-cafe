@@ -19,7 +19,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private UserService(UserRepository userRepository) {
+    protected UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -27,9 +27,8 @@ public class UserService {
      * 유저 회원가입 로직
      * @param req: 컨트롤러에 들어온 User 가입 정보
      * @throws DuplicateUserIdException: User 가입 정보 안의 UserId가 이미 존재하는 경우 발생
-     * @return Integer: 가입 성공시, PK를 반환해 줌. (사용하든 안하든 맘대로)
      */
-    public int createUser(UserCreateRequest req) {
+    public void createUser(UserCreateRequest req) {
         Optional<User> user = this.userRepository.findByUserId(req.getUserId());
 
         if(user.isPresent()) {
@@ -37,11 +36,12 @@ public class UserService {
         }
 
         User newUser = new User(req);
-        return this.userRepository.save(newUser);
+        this.userRepository.save(newUser);
     }
 
     /**
      * 유저 리스트 반환 로직
+     * @return List<UserInfoResponse>: 유저 정보 DTO 로 이루어진 리스트
      */
     public List<UserInfoResponse> getUserList() {
         List<User> userList = this.userRepository.findAll();
@@ -53,8 +53,10 @@ public class UserService {
     /**
      * 입력 인자로 들어온 id에 해당하는 User 정보 반환
      * @param id: 원하는 User 의 id
+     * @throws UserNotFoundException: 해당 ID 의 사용자가 없을 경우 발생
+     * @return UserInfoResponse: 유저 정보 DTO
      */
-    public UserInfoResponse getUserProfile(Integer id) {
+    public UserInfoResponse getUserProfile(Long id) {
         Optional<User> user = this.userRepository.findById(id);
 
         return new UserInfoResponse(
@@ -62,14 +64,19 @@ public class UserService {
         );
     }
 
-    public void updateUser(Integer id, UserUpdateRequest req) {
-        User user = userRepository.findById(id)
-                                  .orElseThrow(UserNotFoundException::new);
+    /**
+     * 입력 인자로 들어온 id에 해당하는 User의 정보를 수정하는 로직
+     * @param id: 수정할 사용자의 ID(PK)
+     * @param req: 회원 프로필 수정 정보
+     */
+    public void updateUser(Long id, UserUpdateRequest req) {
+        User user = this.userRepository.findById(id)
+                                       .orElseThrow(UserNotFoundException::new);
 
         if(!user.getPassword().equals(req.getPasswordCheck())) {
             throw new PasswordNotMatchedException();
         }
 
-        user.update(req);
+        this.userRepository.update(user, req);
     }
 }
