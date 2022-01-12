@@ -43,12 +43,6 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/form")
-    String form() {
-        logger.info("[GET] /form");
-        return "user/form";
-    }
-
     @GetMapping("/{userId}")
     public String userProfile(@PathVariable String userId, Model model) {
         logger.info("[GET] /{userId} 프로필 조회");
