@@ -3,6 +3,7 @@ package com.kakao.cafe.article.controller;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.dto.ArticleCreateDTO;
 import com.kakao.cafe.article.dto.ArticleListDTO;
+import com.kakao.cafe.article.dto.ArticleViewDTO;
 import com.kakao.cafe.article.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,10 +37,12 @@ public class ArticleController {
     @GetMapping(value = "/qnas/{sequence}")
     public String showArticle(@PathVariable("sequence") Long sequence, Model model){
         Article article = articleService.getArticle(sequence - 1);
-        model.addAttribute("name", article.getName());
-        model.addAttribute("title", article.getTitle());
-        model.addAttribute("date", article.getDate());
-        model.addAttribute("contents", article.getContents());
+        ArticleViewDTO articleViewDTO = new ArticleViewDTO(article);
+
+        model.addAttribute("name", articleViewDTO.getName());
+        model.addAttribute("title", articleViewDTO.getTitle());
+        model.addAttribute("date", articleViewDTO.getDate());
+        model.addAttribute("contents", articleViewDTO.getContents());
         return "/qna/show";
     }
 }
