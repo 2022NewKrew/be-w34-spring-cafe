@@ -27,10 +27,10 @@
           <tbody>
           {{#articles}}
           <tr>
-            <td><a href="/article/{{id}}">{{title}}</a></td>
-            <td>Anonymous</td>
-            <td>2021-12-14</td>
-            <td>0</td>
+            <td><a href="/article/{{articleId}}">{{title}}</a></td>
+            <td><a href="/user/{{authorId}}">{{authorName}}</a></td>
+            <td>{{createdAt}}</td>
+            <td>{{viewCount}}</td>
           </tr>
           {{/articles}}
           </tbody>

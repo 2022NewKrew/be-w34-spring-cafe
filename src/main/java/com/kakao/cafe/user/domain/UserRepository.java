@@ -1,13 +1,14 @@
 package com.kakao.cafe.user.domain;
 
+import com.kakao.cafe.user.dto.Profile;
 import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
 
-    User save(User user);
+    void save(User user);
 
-    Optional<User> findByUsername(String username);
+    Optional<Profile> findById(Long id);
 
-    List<User> findAll();
+    List<Profile> findAll();
 }

@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.domain;
 
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,8 +12,5 @@ public class User {
     private String email;
     private String password;
     private String username;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private LocalDateTime createdAt;
 }

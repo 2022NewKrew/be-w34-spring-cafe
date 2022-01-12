@@ -1,13 +1,15 @@
 package com.kakao.cafe.article.domain;
 
+import com.kakao.cafe.article.dto.MultipleArticle;
+import com.kakao.cafe.article.dto.SingleArticle;
 import java.util.List;
 import java.util.Optional;
 
 public interface ArticleRepository {
 
-    Article save(Article article);
+    void save(Article article);
 
-    Optional<Article> findById(Long id);
+    Optional<SingleArticle> findById(Long id);
 
-    List<Article> findAll();
+    List<MultipleArticle> findAll();
 }

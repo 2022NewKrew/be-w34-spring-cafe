@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.controller;
 
+import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserSignupRequest;
 import com.kakao.cafe.user.service.UserService;
 import javax.validation.Valid;
@@ -21,9 +22,12 @@ public class UserController {
     }
 
     @PostMapping
-    public String signup(@Valid UserSignupRequest request) {
-        userService.signup(request.toEntity());
-        return "redirect:user";
+    public String signup(@Valid UserSignupRequest request, Model model) {
+        User user = request.toEntity();
+        userService.signup(user);
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("username", user.getUsername());
+        return "/user/signup_success";
     }
 
     @GetMapping
@@ -32,9 +36,9 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/{username}")
-    public String getUserByUsername(@PathVariable String username, Model model) {
-        model.addAttribute("user", userService.getUserByUsername(username));
+    @GetMapping("/{userId}")
+    public String getUserByUsername(@PathVariable Long userId, Model model) {
+        model.addAttribute("user", userService.getProfileById(userId));
         return "user/profile";
     }
 }
