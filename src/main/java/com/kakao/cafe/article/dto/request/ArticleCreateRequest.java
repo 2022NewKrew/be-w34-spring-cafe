@@ -1,12 +1,15 @@
 package com.kakao.cafe.article.dto.request;
 
+import org.springframework.lang.NonNull;
+
 public class ArticleCreateRequest {
 
-    private String writer;
-    private String title;
-    private String contents;
-
-    public ArticleCreateRequest() {}
+    @NonNull
+    private final String writer;
+    @NonNull
+    private final String title;
+    @NonNull
+    private final String contents;
 
     public ArticleCreateRequest(String writer, String title, String contents) {
         this.writer = writer;

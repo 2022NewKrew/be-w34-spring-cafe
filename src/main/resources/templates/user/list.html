@@ -63,9 +63,10 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="../index.html">Posts</a></li>
-                <li><a href="http://localhost:8080/user/login" role="button">로그인</a></li>
-                <li><a href="http://localhost:8080/user/join" role="button">회원가입</a></li>
+                <li class="active"><a href="http://localhost:8080/">Posts</a></li>
+                <li><a href="http://localhost:8080/users/login" role="button">로그인</a></li>
+                <li><a href="http://localhost:8080/users/join" role="button">회원가입</a></li>
+                <li><a href="http://localhost:8080/users" role=""button>유저 리스트</a></li>
                 <li><a href="#" role="button">로그아웃</a></li>
                 <li><a href="#" role="button">개인정보수정</a></li>
             </ul>
@@ -85,7 +86,7 @@
               <tbody>
               {{#users}}
               <tr>
-                  <th scope="row">{{id}}</th> <td>{{userId}}</td> <td>{{name}}</td> <td>{{email}}</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                  <th scope="row">{{id}}</th> <td><a href="http://localhost:8080/users/{{id}}">{{userId}}</a></td> <td>{{name}}</td> <td>{{email}}</td><td><a href="http://localhost:8080/users/update/{{id}}" class="btn btn-success" role="button">수정</a></td>
               </tr>
               {{/users}}
               </tbody>

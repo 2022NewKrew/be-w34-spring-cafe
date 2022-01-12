@@ -1,9 +1,11 @@
 package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.user.dto.request.UserUpdateRequest;
 import com.kakao.cafe.user.exception.DuplicateUserIdException;
 import com.kakao.cafe.user.dto.request.UserCreateRequest;
 import com.kakao.cafe.user.dto.response.UserInfoResponse;
 import com.kakao.cafe.user.entity.User;
+import com.kakao.cafe.user.exception.PasswordNotMatchedException;
 import com.kakao.cafe.user.exception.UserNotFoundException;
 import com.kakao.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,7 @@ public class UserService {
      * @throws DuplicateUserIdException: User 가입 정보 안의 UserId가 이미 존재하는 경우 발생
      * @return Integer: 가입 성공시, PK를 반환해 줌. (사용하든 안하든 맘대로)
      */
-    public Integer createUser(UserCreateRequest req) {
+    public int createUser(UserCreateRequest req) {
         Optional<User> user = this.userRepository.findByUserId(req.getUserId());
 
         if(user.isPresent()) {
@@ -58,5 +60,16 @@ public class UserService {
         return new UserInfoResponse(
                 user.orElseThrow(UserNotFoundException::new)
         );
+    }
+
+    public void updateUser(Integer id, UserUpdateRequest req) {
+        User user = userRepository.findById(id)
+                                  .orElseThrow(UserNotFoundException::new);
+
+        if(!user.getPassword().equals(req.getPasswordCheck())) {
+            throw new PasswordNotMatchedException();
+        }
+
+        user.update(req);
     }
 }
