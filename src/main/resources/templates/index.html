@@ -22,36 +22,29 @@
         </div>
     </div>
 
-    <p class="total_num">전체 글 10명</p>
+    <p class="total_num">전체 글 {{ sizeOfPosts }}개</p>
 
     <div class="container" id="main">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
                 <table class="table table-hover">
                     <thead>
-                    <tr>
-                        <th>제목</th> <th>작성자</th> <th>작성일자</th> <th>조회수</th>
-                    </tr>
+                        <tr>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>작성일자</th>
+                            <th>조회수</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
+                    {{#posts}}
+                        <tr>
+                            <td><a href="post/{{ id }}">{{ title }}</a></td>
+                            <td>{{ writer }}</td>
+                            <td>{{ formattedCreatedAt }}</td>
+                            <td>0</td>
+                        </tr>
+                    {{/posts}}
                     </tbody>
                 </table>
             </div>

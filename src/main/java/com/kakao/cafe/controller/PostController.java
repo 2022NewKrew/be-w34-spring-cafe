@@ -1,15 +1,19 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.model.post.PostDto;
 import com.kakao.cafe.model.post.PostWriteRequest;
 import com.kakao.cafe.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,6 +36,14 @@ public class PostController {
         }
         rttr.addFlashAttribute("msg", "게시글을 등록하였습니다.");
         return "redirect:/";
+    }
+
+    @GetMapping("/")
+    public String getAllPosts(Model model) {
+        List<PostDto> posts = postService.getAllPosts();
+        model.addAttribute("sizeOfPosts", posts.size());
+        model.addAttribute("posts", posts);
+        return "index";
     }
 
 }
