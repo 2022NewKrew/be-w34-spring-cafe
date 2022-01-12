@@ -10,7 +10,6 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 @ToString
-@Builder
 public class QuestionPost {
 
     private static final AtomicLong idGenerator;
@@ -26,6 +25,7 @@ public class QuestionPost {
         idGenerator = new AtomicLong();
     }
 
+    @Builder
     public QuestionPost(Long questionPostId, String title, String content, LocalDateTime createdAt, int viewCount, Long userAccountId) {
         this.questionPostId = Objects.requireNonNullElseGet(questionPostId, idGenerator::getAndIncrement);
         this.title = title;

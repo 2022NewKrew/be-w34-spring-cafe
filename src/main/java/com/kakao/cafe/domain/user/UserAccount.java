@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 @ToString(exclude = {"password"})
-@Builder
 public class UserAccount {
 
     private static final AtomicLong idGenerator;
@@ -27,6 +26,7 @@ public class UserAccount {
         idGenerator = new AtomicLong();
     }
 
+    @Builder
     public UserAccount(Long userAccountId, String username, String password, String email, LocalDate createdAt) {
         this.userAccountId = Objects.requireNonNullElseGet(userAccountId, idGenerator::getAndIncrement);
         this.username = username;
