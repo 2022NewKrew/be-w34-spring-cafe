@@ -13,4 +13,8 @@ public class Post {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public PostResponseDto toResponseDto() {
+        return new PostResponseDto(title, content);
+    }
 }
