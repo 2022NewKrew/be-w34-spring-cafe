@@ -5,10 +5,14 @@ import lombok.Setter;
 
 public class UserSaveRequest {
 
-    @Setter public String userId;
-    @Setter public String password;
-    @Setter public String name;
-    @Setter public String email;
+    @Setter
+    public String userId;
+    @Setter
+    public String password;
+    @Setter
+    public String name;
+    @Setter
+    public String email;
 
     public User toUser() {
         return User.valueOf(

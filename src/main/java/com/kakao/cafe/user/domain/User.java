@@ -9,10 +9,13 @@ import java.util.regex.Pattern;
 import static com.kakao.cafe.common.ErrorMessage.INVALID_EMAIL_FORM_EXCEPTION;
 
 public class User {
-    @Getter private final String userId;
+    @Getter
+    private final String userId;
     private final String password;
-    @Getter private final String name;
-    @Getter private final String email;
+    @Getter
+    private final String name;
+    @Getter
+    private final String email;
 
     private User(String userId, String password, String name, String email) {
         this.userId = userId;
@@ -30,7 +33,7 @@ public class User {
         String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
-        if(!matcher.matches()) {
+        if (!matcher.matches()) {
             throw new IllegalArgumentException(INVALID_EMAIL_FORM_EXCEPTION);
         }
     }
