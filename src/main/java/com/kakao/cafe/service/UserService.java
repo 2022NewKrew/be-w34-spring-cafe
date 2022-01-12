@@ -1,9 +1,9 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserDto;
-import com.kakao.cafe.domain.user.UserCreateRequest;
-import com.kakao.cafe.domain.user.UserUpdateRequest;
+import com.kakao.cafe.dto.user.UserDto;
+import com.kakao.cafe.dto.user.UserCreateRequest;
+import com.kakao.cafe.dto.user.UserUpdateRequest;
 import com.kakao.cafe.exception.EntityNotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -21,26 +21,36 @@ public class UserService {
     }
 
     public void signUp(UserCreateRequest userCreateRequest) {
-        User user = new User(userCreateRequest);
+        User user = new User(
+                userCreateRequest.getUsername(),
+                userCreateRequest.getNickname(),
+                userCreateRequest.getEmail(),
+                userCreateRequest.getPassword()
+        );
         userRepository.save(user);
     }
 
     public List<UserDto> getUsers() {
         return userRepository.findAll().stream()
-                .map(User::toDto)
+                .map(UserDto::new)
                 .collect(Collectors.toList());
     }
 
     public UserDto findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 크루입니다."))
-                .toDto();
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 크루입니다."));
+        return new UserDto(user);
     }
 
     public void update(Long id, UserUpdateRequest userUpdateRequest) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 크루입니다."));
-        user.update(userUpdateRequest);
+        user.update(
+                userUpdateRequest.getNickname(),
+                userUpdateRequest.getEmail(),
+                userUpdateRequest.getPassword(),
+                userUpdateRequest.getNewPassword()
+        );
         userRepository.update(user);
     }
 }

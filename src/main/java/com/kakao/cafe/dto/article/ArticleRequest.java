@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.article;
+package com.kakao.cafe.dto.article;
 
 public class ArticleRequest {
 

@@ -6,21 +6,29 @@ public class Article {
     private String title;
     private String description;
 
-    public Article(ArticleRequest articleRequest) {
-        this.title = articleRequest.getTitle();
-        this.description = articleRequest.getDescription();
+    public Article(String title, String description) {
+        this.title = title;
+        this.description = description;
     }
 
-    public ArticleDto toDto() {
-        return new ArticleDto(id, title, description);
+    public boolean isEqualUserId(long id) {
+        return this.id == id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public boolean isEqualUserId(long id) {
-        return this.id == id;
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     @Override

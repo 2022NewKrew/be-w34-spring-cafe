@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.user;
+package com.kakao.cafe.dto.user;
 
 public class UserCreateRequest {
 

@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.user.UserDto;
-import com.kakao.cafe.domain.user.UserCreateRequest;
-import com.kakao.cafe.domain.user.UserUpdateRequest;
+import com.kakao.cafe.dto.user.UserDto;
+import com.kakao.cafe.dto.user.UserCreateRequest;
+import com.kakao.cafe.dto.user.UserUpdateRequest;
 import com.kakao.cafe.exception.EntityNotFoundException;
 import com.kakao.cafe.exception.InvalidPasswordException;
 import com.kakao.cafe.service.UserService;

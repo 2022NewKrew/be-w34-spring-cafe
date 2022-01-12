@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.article.ArticleDto;
-import com.kakao.cafe.domain.article.ArticleRequest;
+import com.kakao.cafe.dto.article.ArticleDto;
+import com.kakao.cafe.dto.article.ArticleRequest;
 import com.kakao.cafe.exception.EntityNotFoundException;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
