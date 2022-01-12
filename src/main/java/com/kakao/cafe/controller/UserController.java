@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -40,8 +41,23 @@ public class UserController {
     }
 
     @GetMapping("/signup")
-    public String singUp(){
+    public String singUpPage() {
         return "user/form";
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "user/login";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute User user, HttpSession session) {
+        //유효한 user인지 받고
+        //session에 등록
+        session.setAttribute("curUser", user);
+        System.out.println("세션 출력");
+        System.out.println(session.getAttribute("curUser"));
+        return "redirect:/";
     }
 
 }
