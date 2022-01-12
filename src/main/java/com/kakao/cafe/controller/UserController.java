@@ -1,7 +1,10 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.dto.user.UserRequestDto;
+import com.kakao.cafe.dto.user.UserResponseDto;
 import com.kakao.cafe.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Optional;
-
 @Controller
+@Slf4j
 public class UserController {
     private final UserService userService;
 
@@ -33,24 +35,16 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public String createUser(@ModelAttribute User user){
-        if(userService.checkDuplicateUserId(user.getUserId())){
-            throw new IllegalArgumentException("이미 등록된 사용자 입니다.");
-        }
-
-        userService.join(user);
-        return "redirect:/user";
+    public String createUser(@ModelAttribute UserRequestDto userRequestDto){
+        User user = userService.join(userRequestDto);
+        log.info("Create User - {}", user);
+        return "redirect:";
     }
 
     @GetMapping("/user/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model){
-        Optional<User> profile = userService.findProfile(userId);
-
-        if(profile.isEmpty()){
-            throw new IllegalArgumentException("등록되지 않은 사용자 입니다.");
-        }
-
-        model.addAttribute("user", profile.get());
+        UserResponseDto profile = userService.findProfile(userId);
+        model.addAttribute("user", profile);
         return "user/profile";
     }
 }

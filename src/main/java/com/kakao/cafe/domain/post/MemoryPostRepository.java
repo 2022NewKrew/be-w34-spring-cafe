@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 
 @Repository
-public class MemoryPostRepository implements PostRepository{
+public class MemoryPostRepository implements PostRepository {
     private final Map<Long, Post> postStore = new HashMap<>();
 
     @Override

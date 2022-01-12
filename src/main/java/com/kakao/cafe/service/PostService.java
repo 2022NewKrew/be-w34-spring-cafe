@@ -2,12 +2,13 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.post.PostRepository;
-import com.kakao.cafe.dto.PostDto;
+import com.kakao.cafe.dto.post.CreatePostDto;
+import com.kakao.cafe.dto.post.ShowPostDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -18,16 +19,25 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Post createPost(Post post){
-        return postRepository.save(post);
+    public Post createPost(CreatePostDto postDto) {
+        return postRepository.save(Post.builder()
+                .writer(postDto.getWriter())
+                .title(postDto.getTitle())
+                .content(postDto.getContent())
+                .build());
     }
 
-    public Optional<Post> findPost(Long id){
-        return postRepository.findById(id);
+    public ShowPostDto findPost(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글 입니다."));
+
+        return new ShowPostDto(post);
     }
 
-    public List<Post> findAllPost(){
-        return postRepository.findAll();
+    public List<ShowPostDto> findAllPost() {
+        return postRepository.findAll().stream()
+                .map(ShowPostDto::new)
+                .collect(Collectors.toList());
     }
 
 
