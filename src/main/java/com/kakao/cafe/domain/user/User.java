@@ -5,7 +5,7 @@ import com.kakao.cafe.exception.InvalidPasswordException;
 public class User {
 
     private Long id;
-    private String username;
+    private final String username;
     private String nickname;
     private String email;
     private String password;
@@ -52,6 +52,10 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override
