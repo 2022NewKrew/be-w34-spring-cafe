@@ -2,7 +2,7 @@ package com.kakao.cafe.web;
 
 import com.kakao.cafe.domain.entity.User;
 
-import com.kakao.cafe.domain.repository.UserRepository;
+import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +14,8 @@ public class UserController {
     private final UserRepository userRepository = new UserRepository();
 
     @GetMapping("/users")
-    public String printUsers(Model model) {
-        model.addAttribute("users", userRepository.toList());
+    public String listUsers(Model model) {
+        model.addAttribute("users", userRepository.getAllUser());
         return "user/list";
     }
 
@@ -45,7 +45,7 @@ public class UserController {
 
     @PostMapping("users/{userId}/update")
     public String updateUser(@PathVariable String userId, User user) {
-        int index = userRepository.indexOf(userId);
+        int index = userRepository.findByName(userId);
         userRepository.modify(index, user);
         return "redirect:/users/";
     }

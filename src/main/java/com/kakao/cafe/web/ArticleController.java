@@ -1,7 +1,8 @@
 package com.kakao.cafe.web;
 
+import com.kakao.cafe.domain.dto.ArticleCreateCommand;
 import com.kakao.cafe.domain.entity.Article;
-import com.kakao.cafe.domain.repository.ArticleRepository;
+import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,21 +14,21 @@ public class ArticleController {
     private final ArticleRepository articleRepository = new ArticleRepository();
 
     @GetMapping("/")
-    public String printArticles(Model model) {
+    public String listArticles(Model model) {
         model.addAttribute("articles", articleRepository.toList());
         return "/index";
     }
 
-    @GetMapping("/articles/{index}")
-    public String getArticle(@PathVariable int index, Model model) {
-        Article target = articleRepository.retrieve(index - 1);
+    @GetMapping("/articles/{id}")
+    public String getArticle(@PathVariable int id, Model model) {
+        Article target = articleRepository.retrieve(id - 1);
         model.addAttribute("article", target);
         return "/qna/show";
     }
 
     @PostMapping("/questions")
     public String addArticle(String writer, String title, String contents) {
-        articleRepository.store(new Article(articleRepository.nextId() + 1, writer, title, contents));
+        articleRepository.store(new ArticleCreateCommand(writer, title, contents));
         return "redirect:/";
     }
 }

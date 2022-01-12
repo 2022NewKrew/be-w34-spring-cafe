@@ -2,7 +2,7 @@ package com.kakao.cafe.domain.entity;
 
 public class User {
     private final String userId;
-    private final  String password;
+    private final String password;
     private final String name;
     private final String email;
 
