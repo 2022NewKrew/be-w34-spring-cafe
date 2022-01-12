@@ -72,4 +72,30 @@ class UserControllerTest {
                 List.of(test1, test2)
         );
     }
+
+    @DisplayName("개인정보 수정화면 연결 확인")
+    @MethodSource("provideUser")
+    @ParameterizedTest
+    public void getModifyUserForm(User user) throws Exception {
+        //given
+        String url = "/users/" + user.getUserId() + "/form";
+
+        given(this.userService.findById(user.getUserId())).willReturn(user);
+
+        //when
+        MvcResult result = this.mvc.perform(get(url).param("userId", user.getUserId()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    private static Stream<User> provideUser() {
+        User test1 = new User();
+        test1.setUserId("test1");
+        test1.setPassword("1234");
+        test1.setName("test1Name");
+        test1.setEmail("test1@kakaocorp.com");
+        return Stream.of( test1 );
+    }
 }
