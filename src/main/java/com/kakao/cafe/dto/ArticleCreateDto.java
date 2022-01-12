@@ -1,20 +1,14 @@
 package com.kakao.cafe.dto;
 
-import java.time.LocalDateTime;
-
-public class ArticleDto {
-    private final int id;
+public class ArticleCreateDto {
     private final String title;
     private final String writer;
     private final String contents;
-    private final LocalDateTime createDate;
 
-    public ArticleDto(int id, String title, String writer, String contents, LocalDateTime localDateTime) {
-        this.id = id;
+    public ArticleCreateDto(String title, String writer, String contents) {
         this.title = title;
         this.writer = writer;
         this.contents = contents;
-        this.createDate = localDateTime;
     }
 
     public String getTitle() {

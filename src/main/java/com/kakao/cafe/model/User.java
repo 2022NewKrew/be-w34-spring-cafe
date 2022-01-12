@@ -1,12 +1,19 @@
 package com.kakao.cafe.model;
 
+import com.kakao.cafe.utility.NullChecker;
+
 public class User {
-    private String userId;
-    private String password;
+    private final String userId;
+    private final String password;
     private String name;
     private String email;
 
     public User(String userId, String password, String name, String email) {
+        NullChecker.checkNotNull(userId);
+        NullChecker.checkNotNull(password);
+        NullChecker.checkNotNull(name);
+        NullChecker.checkNotNull(email);
+
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -27,10 +34,6 @@ public class User {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void setName(String name) {
