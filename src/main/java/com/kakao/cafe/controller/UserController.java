@@ -30,7 +30,7 @@ public class UserController {
     @GetMapping(value = "/user/list.html")
     public String getUserList(Model model) {
         model.addAttribute("userListSize", userService.getUserRepository().getUserList().size());
-        model.addAttribute("userList", userService.getUserRepository().getUserList().getUserList());
+        model.addAttribute("userList", userService.getUserRepository().getUserList().getCopiedUserList());
         return "user/list";
     }
 
@@ -38,7 +38,7 @@ public class UserController {
     public String postSignUp(User user) {
         logger.info("user:{}", user);
         userService.getUserRepository().getUserList().add(user);
-        logger.info("userList:{}", userService.getUserRepository().getUserList().getUserList());
+        logger.info("userList:{}", userService.getUserRepository().getUserList().getCopiedUserList());
         return "redirect:/user/list.html";
     }
 

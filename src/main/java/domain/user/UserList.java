@@ -25,8 +25,8 @@ public class UserList {
         return LazyHolder.USER_LIST;
     }
 
-    public List<User> getUserList(){
-        return userList;
+    public List<User> getCopiedUserList(){
+        return new ArrayList<>(userList);
     }
 
     public void add(User user) {
