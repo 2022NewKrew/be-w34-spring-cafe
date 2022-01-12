@@ -37,32 +37,11 @@ public class LogAspect {
     }
 
     private String getStringOfParameters(HttpServletRequest request) {
-        Map<String, String[]> paramMap = request.getParameterMap();
-        if (paramMap.isEmpty()) {
-            return "";
-        }
-        return "[ " + paramMapToString(paramMap) + "]";
+        return new HttpRequestParameter(request).getStringOfParameters();
     }
 
     private String getRemoteHost(HttpServletRequest request) {
         return request.getRemoteHost();
-    }
-
-    private String paramMapToString(Map<String, String[]> paramMap) {
-        StringBuilder sb = new StringBuilder();
-        paramMap.entrySet().stream().forEach(entry -> appendKeyAndValueOfEntryToStringBuilder(entry, sb));
-        String stringOfParameters = sb.toString();
-        stringOfParameters = stringOfParameters.substring(0, stringOfParameters.length() - 2);
-
-        return stringOfParameters;
-    }
-
-    private void appendKeyAndValueOfEntryToStringBuilder(Entry<String, String[]> entry, StringBuilder sb) {
-        sb.append(entry.getKey() + " : ");
-        for (int i = 0; i < entry.getValue().length; i++) {
-            sb.append(entry.getValue()[i] + " ");
-        }
-        sb.append(", ");
     }
 }
 
