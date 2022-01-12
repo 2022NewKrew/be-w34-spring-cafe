@@ -43,5 +43,17 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("/users/{id}/form")
+    public String editUserPage(@PathVariable int id, Model model) {
+        model.addAttribute("user", userService.findById(id));
+        return "user/updateForm";
+    }
+
+    @PostMapping("/users/{id}/update")
+    public String editUser(@PathVariable int id, @ModelAttribute UserDto userDto){
+        userService.updateUser(id, userDto);
+        return "redirect:/users";
+    }
+
 
 }

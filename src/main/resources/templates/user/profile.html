@@ -25,13 +25,17 @@
             <td>이메일</td>
             <td>{{email}}</td>
         </tr>
-        {{/user}}
+
         <!--                -->
         <!--                <tr>-->
         <!--                    <td>테스터 1</td> <td>test1@gmail.com</td><td>2021-12-14</td>-->
         <!--                </tr>-->
         </tbody>
     </table>
+    <div class="post-btn-container">
+        <a class="black-component" href="/users/{{id}}/form" role="button">수정하기</a>
+    </div>
+    {{/user}}
 </div>
 
 {{> layout/footer}}

@@ -3,6 +3,7 @@ package com.kakao.cafe.domain;
 import com.kakao.cafe.dto.UserDto;
 import lombok.Getter;
 
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.SimpleDateFormat;
@@ -10,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Getter
+@Setter
 public class User {
     private int id;
 

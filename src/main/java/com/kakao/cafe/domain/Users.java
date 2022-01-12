@@ -21,6 +21,12 @@ public class Users {
                 .orElseThrow(() -> new IllegalArgumentException());
     }
 
+    public void updateUser(int id, UserDto userDto) {
+        User user = findById(id);
+        user.setEmail(userDto.getEmail());
+        user.setName(userDto.getName());
+    }
+
     public int size(){
         return users.size();
     }

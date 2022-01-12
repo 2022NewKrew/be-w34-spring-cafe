@@ -24,4 +24,8 @@ public class UserService {
     public int getCountOfUser() {
         return users.size();
     }
+
+    public void updateUser(int id, UserDto userDto){
+        users.updateUser(id, userDto);
+    }
 }

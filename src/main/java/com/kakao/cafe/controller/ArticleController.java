@@ -39,10 +39,5 @@ public class ArticleController {
         return "post/show";
     }
 
-//    @GetMapping("/users/{id}")
-//    public String findById(@PathVariable int id , Model model) {
-//        logger.info("GET /users/{}", id);
-//        model.addAttribute("user",userService.findById(id));
-//        return "user/profile";
-//    }
+
 }
