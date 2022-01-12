@@ -3,31 +3,35 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserSignUpRequest;
 import com.kakao.cafe.dto.UserUpdateRequest;
+import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserService {
 
-    private static final List<User> users = new ArrayList<>();
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public void signUp(UserSignUpRequest request) {
         User user = new User(User.cnt++, request.getUserId(), request.getPassword(), request.getName(), request.getEmail());
-        users.add(user);
+        userRepository.save(user);
     }
 
     public User profile(int id) {
-        return users.get(id - 1);
+        return userRepository.findById(id).get();
     }
 
     public List<User> list() {
-        return users;
+        return userRepository.findAll();
     }
 
     public boolean updateUser(int id, UserUpdateRequest request) {
-        User user = users.get(id - 1);
+        User user = userRepository.findById(id).get();
         if (!user.getPassword().equals(request.getPassword())) {
             return false;
         }
@@ -35,6 +39,7 @@ public class UserService {
         user.setName(request.getName());
         user.setPassword(request.getNewPassword());
         user.setEmail(request.getEmail());
+        userRepository.save(user);
         return true;
     }
 }
