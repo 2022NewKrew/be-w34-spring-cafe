@@ -23,10 +23,15 @@ public class UserService {
         User user = new User(createUserDto);
         userRepository.save(user);
     }
-    public List<ShowUserDto> findAll(){
+
+    public List<ShowUserDto> findAll() {
         return userRepository.findAll()
                 .stream()
-                .map(User::toShowUserDto)
+                .map(ShowUserDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public ShowUserDto findById(String userId) {
+        return new ShowUserDto(userRepository.findById(userId));
     }
 }

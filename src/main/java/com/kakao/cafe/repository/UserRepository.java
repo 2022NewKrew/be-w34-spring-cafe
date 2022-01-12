@@ -23,4 +23,12 @@ public class UserRepository {
     public List<User> findAll() {
         return jakeDB.getUserList();
     }
+
+    public User findById(String userId) {
+        return jakeDB.getUserList()
+                .stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findFirst()
+                .orElse(null);
+    }
 }

@@ -1,5 +1,7 @@
 package com.kakao.cafe.dto;
 
+import com.kakao.cafe.domain.User;
+
 public class ShowUserDto {
     private long id;
     private String userId;
@@ -11,6 +13,13 @@ public class ShowUserDto {
         this.userId = userId;
         this.name = name;
         this.email = email;
+    }
+
+    public ShowUserDto(User user) {
+        this.id = user.getId();
+        this.userId = user.getUserId();
+        this.name = user.getName();
+        this.email = user.getEmail();
     }
 
     public long getId() {
