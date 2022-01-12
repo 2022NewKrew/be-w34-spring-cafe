@@ -32,11 +32,8 @@ public class ArticleController {
     @GetMapping("questions/{id}")
     public String getArticle(@PathVariable Integer id, Model model){
         Article article = articleRepository.getArticleList().get(id);
-        model.addAttribute("title", article.getTitle());
-        model.addAttribute("writer", article.getWriter());
-        model.addAttribute("contents", article.getContents());
+        model.addAttribute("article", article);
         return "qna/show";
     }
-
 
 }

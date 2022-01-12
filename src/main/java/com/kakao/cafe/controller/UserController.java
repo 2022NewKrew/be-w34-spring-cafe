@@ -38,10 +38,21 @@ public class UserController {
     @GetMapping("/users/{id}")
     public String getUser(@PathVariable Integer id, Model model) {
         User user = userRepository.getUserList().get(id);
-        model.addAttribute("name", user.getName());
-        model.addAttribute("email", user.getEmail());
+        model.addAttribute("user", user);
         return "user/profile";
     }
 
+    @GetMapping("/users/{id}/form")
+    public String getUpdateForm(@PathVariable Integer id, Model model) {
+        User user = userRepository.getUserList().get(id);
+        model.addAttribute("user",user);
+        return "user/updateForm";
+    }
 
+    @PostMapping("/users/{id}/update")
+    public String updateUser(@PathVariable Integer id, User user){
+        logger.info("user = {}", user);
+        userRepository.getUserList().set(id,user);
+        return "redirect:/users";
+    }
 }
