@@ -1,4 +1,4 @@
-package com.kakao.cafe.infrastructure.article;
+package com.kakao.cafe.persistence.article;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleVo;
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 
-import static com.kakao.cafe.infrastructure.article.FindArticleInMemoryAdaptor.articles;
-import static com.kakao.cafe.infrastructure.article.FindArticleInMemoryAdaptor.index;
+import static com.kakao.cafe.persistence.article.FindArticleInMemoryAdaptor.articles;
+import static com.kakao.cafe.persistence.article.FindArticleInMemoryAdaptor.index;
 
 @Repository
 public class WriteArticleInMemoryAdaptor implements WriteArticlePort {

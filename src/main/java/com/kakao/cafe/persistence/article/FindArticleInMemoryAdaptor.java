@@ -1,4 +1,4 @@
-package com.kakao.cafe.infrastructure.article;
+package com.kakao.cafe.persistence.article;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.FindArticlePort;
