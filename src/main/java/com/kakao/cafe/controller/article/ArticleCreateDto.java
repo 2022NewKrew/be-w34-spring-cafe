@@ -1,4 +1,4 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.controller.article;
 
 public class ArticleCreateDto {
     private final String title;

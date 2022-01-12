@@ -7,9 +7,9 @@ import java.util.List;
 public interface UserDao {
     List<User> getUsers();
 
-    void add(User user);
+    void addUser(String userId, String password, String name, String email);
 
-    User get(String userId);
+    User findUserById(String userId);
 
     int getSize();
 

@@ -20,6 +20,14 @@ public class User {
         this.email = email;
     }
 
+    public boolean isUserId(String userId) {
+        return this.userId.equals(userId);
+    }
+
+    public boolean isPassword(String password) {
+        return this.password.equals(password);
+    }
+
     public String getUserId() {
         return userId;
     }
