@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 public class User {
@@ -14,7 +12,6 @@ public class User {
     private String password;
     private String name;
     private String email;
-    private LocalDateTime regDate;
 
     @Builder
     public User(String userId, String password, String name, String email) {
@@ -22,7 +19,6 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
-        regDate = LocalDateTime.now();
     }
 
     @Override
@@ -33,7 +29,6 @@ public class User {
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", regDate=" + regDate +
                 '}';
     }
 }

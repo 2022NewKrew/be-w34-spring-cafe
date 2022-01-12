@@ -1,8 +1,9 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.dto.user.UserRequestDto;
-import com.kakao.cafe.dto.user.UserResponseDto;
+import com.kakao.cafe.dto.user.CreateUserDto;
+import com.kakao.cafe.dto.user.ShowUserDto;
+import com.kakao.cafe.dto.user.UpdateUserDto;
 import com.kakao.cafe.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +32,35 @@ public class UserController {
 
     @GetMapping("/user/form")
     public String userForm(){
-        return "user/form";
+        return "user/addForm";
     }
 
     @PostMapping("/user")
-    public String createUser(@ModelAttribute UserRequestDto userRequestDto){
-        User user = userService.join(userRequestDto);
+    public String createUser(@ModelAttribute CreateUserDto createUserDto){
+        User user = userService.join(createUserDto);
         log.info("Create User - {}", user);
-        return "redirect:";
+        return "redirect:/user";
     }
 
     @GetMapping("/user/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model){
-        UserResponseDto profile = userService.findProfile(userId);
+        ShowUserDto profile = userService.findProfile(userId);
         model.addAttribute("user", profile);
         return "user/profile";
+    }
+
+    @GetMapping("/user/{userId}/form")
+    public String userUpdateForm(@PathVariable String userId, Model model){
+        ShowUserDto profile = userService.findProfile(userId);
+        model.addAttribute("user", profile);
+
+        return "user/editForm";
+    }
+
+    @PostMapping("/user/{userId}/update")
+    public String userUpdate(@PathVariable String userId, @ModelAttribute UpdateUserDto updateUserDto){
+        User editUser = userService.editProfile(userId, updateUserDto);
+        log.info("Update User - {}", editUser);
+        return "redirect:/user";
     }
 }

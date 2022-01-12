@@ -17,6 +17,13 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
+    public User edit(String userId, User user) {
+        user.setId(userStore.get(userId).getId());
+        userStore.put(userId, user);
+        return user;
+    }
+
+    @Override
     public Optional<User> findById(String userId) {
         return Optional.ofNullable(userStore.get(userId));
     }
