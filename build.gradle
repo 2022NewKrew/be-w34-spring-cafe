@@ -16,7 +16,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
+	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'}
 
 test {
 	useJUnitPlatform()
