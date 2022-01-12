@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface ArticleService {
 
-    void insertArticle(Article article);
+    long insertArticle(Article article);
 
     List<Article> getArticleList();
 
-    Article getArticleByArticleId(String articleId);
+    Article getArticleById(long articleId);
 }
