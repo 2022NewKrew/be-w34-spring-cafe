@@ -28,14 +28,7 @@
             <p class="mb-5" style="font-family: Hind;">
               Email : {{user.email}}<br>
               Nickname : {{user.nickName}}<br>
-              Last login at :
-              {{#user.lastLoginAt}}
-              {{user.lastLoginAt}}
-              {{/user.lastLoginAt}}
-              {{^user.lastLoginAt}}
-                접속 이력 없음
-              {{/user.lastLoginAt}}
-                <br>
+              Last login at : {{#user.lastLoginAt}}{{this}}{{/user.lastLoginAt}}{{^user.lastLoginAt}}접속 이력 없음{{/user.lastLoginAt}}<br>
               First joined at : {{user.createAt}}<br>
             </p>
 

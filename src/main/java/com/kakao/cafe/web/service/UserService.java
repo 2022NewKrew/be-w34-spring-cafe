@@ -47,7 +47,7 @@ public class UserService {
         .orElseThrow(InvalidAuthenticationException::new);
 
     loginUser.updateLastLoginAt();
-    userRepository.update(loginUser);
+    userRepository.updateLoginTime(loginUser);
 
     SessionUtils.login(loginUser);
 

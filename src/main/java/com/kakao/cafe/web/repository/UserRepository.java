@@ -17,7 +17,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class UserRepository {
@@ -61,8 +60,7 @@ public class UserRepository {
     return User.of(generatedId, user);
   }
 
-  @Transactional
-  public User update(User user) {
+  public User updateInformation(User user) {
     String query = "UPDATE USERS "
         + "SET "
         + "email = ?, "
@@ -71,12 +69,20 @@ public class UserRepository {
         + "profile = ?, "
         + "password = ?, "
         + "create_at = ?, "
-        + "modified_at = ?, "
-        + "last_login_at = ? "
+        + "modified_at = now(), "
         + "WHERE id = ?";
     jdbcTemplate.update(query, user.getEmail(), user.getNickName(),
-        user.getSummary(), user.getProfile(), user.getPassword(), user.getCreateAt(),
-        user.getModifiedAt(), user.getLastLoginAt(), user.getId());
+        user.getSummary(), user.getProfile(), user.getPassword(),
+        user.getCreateAt(), user.getId());
+    return user;
+  }
+
+  public User updateLoginTime(User user) {
+    String query = "UPDATE USERS "
+        + "SET "
+        + "last_login_at = now() "
+        + "WHERE id = ?";
+    jdbcTemplate.update(query, user.getId());
     return user;
   }
 
