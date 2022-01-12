@@ -31,12 +31,6 @@ public class ArticleController {
         return "index";
     }
 
-
-    @GetMapping("/qna/form")
-    public String createForm(UserForm form) {
-        return "qna/form";
-    }
-
     @PostMapping("/questions")
     public String create(ArticleForm form) {
         Article article = new Article();

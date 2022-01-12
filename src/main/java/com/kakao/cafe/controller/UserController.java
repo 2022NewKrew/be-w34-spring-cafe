@@ -22,11 +22,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/form")
-    public String createForm(UserForm form) {
-        return "user/form";
-    }
-
     @PostMapping("/users")
     public String create(UserForm form) {
         User user = new User();
