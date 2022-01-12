@@ -13,7 +13,11 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    private UserDao userDao = new UserDao();
+    private UserDao userDao;
+
+    public UserController(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @GetMapping("/users")
     public String getUsers(Model model) {

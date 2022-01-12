@@ -13,7 +13,11 @@ import java.util.List;
 @Controller
 public class ArticleController {
 
-    private ArticleDao articleDao = new ArticleDao();
+    private ArticleDao articleDao;
+
+    public ArticleController(ArticleDao articleDao) {
+        this.articleDao = articleDao;
+    }
 
     @PostMapping("/article/create")
     public String questionForm(Article article) {
