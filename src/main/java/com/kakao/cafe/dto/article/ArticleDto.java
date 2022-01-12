@@ -11,7 +11,6 @@ public class ArticleDto {
     private String title;
     @NotBlank
     private String contents;
-    @NotBlank
     private String date;
 
     public int getId() {
