@@ -21,11 +21,9 @@ public class ArticleController {
     private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     private final ArticleService articleService;
-    private final UserService userService;
 
-    ArticleController(ArticleService articleService, UserService userService) {
+    ArticleController(ArticleService articleService) {
         this.articleService = Objects.requireNonNull(articleService);
-        this.userService = Objects.requireNonNull(userService);
     }
 
     @GetMapping("/")
