@@ -29,6 +29,7 @@ public class UserController {
 
         List<UserResponseDto> userList = userService.getUserList();
         model.addAttribute("userList", userList);
+        model.addAttribute("userNum", userList.size());
 
         return "user/list";
     }

@@ -26,6 +26,7 @@ public class MainController {
 
         List<PostResponseDto> postList = postService.getPostList();
         model.addAttribute("postList", postList);
+        model.addAttribute("postNum", postList.size());
 
         return "index";
     }
