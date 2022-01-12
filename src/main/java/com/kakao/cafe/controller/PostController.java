@@ -5,6 +5,7 @@ import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.service.PostService;
 import java.util.UUID;
+import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,7 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public String write(PostCreateRequest requestDto) {
+    public String write(@Valid PostCreateRequest requestDto) {
         postService.write(requestDto);
         return "redirect:/";
     }

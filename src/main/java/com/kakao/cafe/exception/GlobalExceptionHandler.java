@@ -36,6 +36,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ModelAndView handleException(HttpServletRequest request, Exception e) {
         logger.error("handleException message: {}", e.getMessage());
+        logger.error("handleException message: {}", e.getClass());
 
         Map<String, Object> model = mv.getModel();
 

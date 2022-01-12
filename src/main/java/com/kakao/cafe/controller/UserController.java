@@ -4,6 +4,7 @@ import com.kakao.cafe.dto.UserRegisterRequest;
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.service.UserService;
+import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String register(UserRegisterRequest requestDto) {
+    public String register(@Valid UserRegisterRequest requestDto) {
         userService.register(requestDto);
         return "redirect:/users";
     }
