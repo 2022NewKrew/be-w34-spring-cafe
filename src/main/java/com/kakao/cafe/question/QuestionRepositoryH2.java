@@ -29,6 +29,7 @@ public class QuestionRepositoryH2 implements QuestionRepository {
 
     @Override
     public Long save(Question question) throws SQLException {
+
         String sql = "INSERT INTO question(writer, title, contents,member_id) values (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 

@@ -99,5 +99,5 @@ public class UserRepositoryH2 implements UserRepository {
 
         return jdbcTemplate.queryForObject(sql, new UserRowMapper(), userId, password);
     }
-
+    
 }
