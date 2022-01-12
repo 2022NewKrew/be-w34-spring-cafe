@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public List<UserDto> getUsersList(){
-        return userRepository.find()
+        return userRepository.findAll()
                 .stream().map(UserDto::of)
                 .collect(Collectors.toList());
     }

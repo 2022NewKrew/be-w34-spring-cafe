@@ -1,32 +1,15 @@
 package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.model.User;
-import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Repository
-public class UserRepository {
+public interface UserRepository {
 
-    List<User> users = new ArrayList<>();
+    void save(User user);
 
-    public void save(User user){
-        users.add(user);
-    }
+    List<User> findAll();
 
-    public List<User> find(){
-        return users;
-    }
+    Long getNumberOfUsers();
 
-    public Long getNumberOfUsers(){
-        return (long) users.size();
-    }
-
-    public User findOneByUserId(String userId){
-        return users.stream()
-                .filter(user -> user.getUserId().equals(userId))
-                .collect(Collectors.toList()).get(0);
-    }
+    User findOneByUserId(String userId);
 }
