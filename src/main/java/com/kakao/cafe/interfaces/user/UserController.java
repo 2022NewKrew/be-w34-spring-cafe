@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -33,20 +33,20 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("{userId}")
+    @PostMapping("")
+    public String joinUser(JoinUserRequestDto joinUserRequestDto) {
+        UserVo user = UserMapper.convertJoinUserDtoToVo(joinUserRequestDto);
+        userService.join(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/{userId}")
     public String getUserByUserId(@PathVariable String userId, Model model) {
         User user = userService.findByUserId(userId);
         model.addAttribute("name", user.getName());
         model.addAttribute("email", user.getEmail());
 
         return "user/profile";
-    }
-
-    @PostMapping("")
-    public String joinUser(JoinUserRequestDto joinUserRequestDto) {
-        UserVo user = UserMapper.convertJoinUserDtoToVo(joinUserRequestDto);
-        userService.join(user);
-        return "redirect:/users";
     }
 
 }
