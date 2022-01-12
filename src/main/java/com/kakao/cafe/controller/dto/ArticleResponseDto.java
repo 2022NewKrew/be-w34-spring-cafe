@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class ArticleResponseDto {
+    private Long articleId;
     private String writer;
     private String title;
     private String content;
@@ -20,6 +21,7 @@ public class ArticleResponseDto {
 
     public static ArticleResponseDto from(Article article) {
         ArticleResponseDto responseDto = new ArticleResponseDto();
+        responseDto.setArticleId(article.getArticleId());
         responseDto.setTitle(article.getTitle());
         responseDto.setWriter(article.getWriter());
         responseDto.setContent(article.getContent());

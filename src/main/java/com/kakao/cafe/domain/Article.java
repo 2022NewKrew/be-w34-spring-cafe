@@ -1,16 +1,20 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.controller.dto.QuestionDto;
-import com.kakao.cafe.util.PostIdGenerator;
+import com.kakao.cafe.controller.dto.ArticleDto;
+import com.kakao.cafe.repository.dto.ArticleResult;
+
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 
 @Getter
 @Setter
 public class Article {
-    private Long postId;
+    private Long articleId;
+
     private String writer;
     private String title;
     private String content;
@@ -19,10 +23,9 @@ public class Article {
 
     private Article() {}
 
-    public static Article from(QuestionDto dto) {
+    public static Article from(ArticleDto dto) {
         Article article = new Article();
 
-        article.setPostId(PostIdGenerator.nextId());
         article.setContent(dto.getContent());
         article.setTitle(dto.getTitle());
         article.setWriter(dto.getWriter());
@@ -32,7 +35,35 @@ public class Article {
         return article;
     }
 
-    private void setPostId(Long postId) {
-        this.postId = postId;
+    public static Article from(ArticleResult dto) {
+        Article article = new Article();
+
+        article.setArticleId(dto.getPostId());
+        article.setContent(dto.getContent());
+        article.setTitle(dto.getTitle());
+        article.setWriter(dto.getWriter());
+        article.setCreatedAt(LocalDateTime.now());
+        article.setNumOfComment(dto.getNumOfComment());
+
+        return article;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(articleId, writer, title, content, createdAt, numOfComment);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof User))
+            return false;
+        Article article = (Article) obj;
+
+        return Objects.equals(writer, article.getWriter()) &&
+                Objects.equals(createdAt, article.getCreatedAt()) &&
+                Objects.equals(content, article.getContent()) &&
+                Objects.equals(numOfComment, article.getNumOfComment());
     }
 }

@@ -1,12 +1,13 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.dto.UserResult;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Repository
+//@Repository
 public class UserMemoryRepository implements UserRepository {
 
     private Map<String, User> userList = new HashMap<>();
@@ -23,7 +24,12 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public User findById(String userId) {
-        return userList.get(userId);
+    public Optional<User> findById(String userId) {
+        return Optional.of(userList.get(userId));
+    }
+
+    @Override
+    public void update(User user) {
+
     }
 }
