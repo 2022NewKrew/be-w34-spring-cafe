@@ -9,13 +9,13 @@ import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.util.Page;
 import com.kakao.cafe.util.Pageable;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
 
 @Service
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 

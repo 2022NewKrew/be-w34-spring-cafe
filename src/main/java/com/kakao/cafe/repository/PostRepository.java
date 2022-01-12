@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Repository
@@ -55,11 +56,10 @@ public class PostRepository {
         return postId++;
     }
 
-    public Post findById(Long postId) throws Exception {
+    public Optional<Post> findById(Long postId) {
         return postList.stream()
                 .filter(post -> post.getPostId().equals(postId))
-                .findFirst()
-                .orElseThrow(() -> new Exception("Read Error"));
+                .findFirst();
     }
 
     public Page<Post> findAll(Pageable pageable) {

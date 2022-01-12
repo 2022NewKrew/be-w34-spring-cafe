@@ -6,7 +6,9 @@ import com.kakao.cafe.dto.PostDto;
 import com.kakao.cafe.entity.Post;
 
 public interface PostService {
-    PostDto register(PostDto dto);
+    Long register(PostDto dto);
+
+    PostDto getPost(Long postId);
 
     PageResultDto<PostDto, Post> getList(PageRequestDto requestDto);
 
