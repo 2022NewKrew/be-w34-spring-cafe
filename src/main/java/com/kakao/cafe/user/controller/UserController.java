@@ -54,7 +54,7 @@ public class UserController {
         this.logger.info("[POST] /user - 유저 회원가입 요청");
         try {
             this.userService.createUser(req);
-            return getUserListPage(model);
+            return "redirect:/users";
         } catch(DuplicateUserIdException e) {
             this.logger.error("[ERROR] - {}", e.getMessage());
             return "redirect:/";
