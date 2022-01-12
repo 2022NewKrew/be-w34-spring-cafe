@@ -9,11 +9,15 @@ import lombok.Getter;
 public class Article {
 
     private Long id;
-    private final User writer;
+    private User writer;
     private final String title;
     private final String contents;
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setWriter(User writer) {
+        this.writer = writer;
     }
 }
