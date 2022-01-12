@@ -20,9 +20,10 @@ import static org.mockito.BDDMockito.verify;
 import static org.mockito.Mockito.never;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceImplTest {
+class UserServiceTest {
 
-    @InjectMocks UserServiceImpl userService;
+    @InjectMocks
+    UserService userService;
 
     @Mock
     UserRepository userRepository;
@@ -59,8 +60,8 @@ class UserServiceImplTest {
         ThrowableAssert.ThrowingCallable runnable = () -> userService.findByUserId(userIdThatDoesNotExist);
 
         //then
-//        verify(userRepository).findByUserId(userIdThatDoesNotExist);
         assertThatThrownBy(runnable).isInstanceOf(IllegalArgumentException.class);
+        verify(userRepository).findByUserId(userIdThatDoesNotExist);
     }
 
     @DisplayName("모든 사용자의 목록을 조회할 수 있다")
