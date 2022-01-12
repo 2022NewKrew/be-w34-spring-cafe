@@ -33,6 +33,7 @@ public class UserController {
     @GetMapping
     public String list(Model model) {
         model.addAllAttributes(Map.of("users", dao.fetchAll()));
+        model.addAttribute("userCount", dao.getUserCount());
         return "user/list";
     }
 

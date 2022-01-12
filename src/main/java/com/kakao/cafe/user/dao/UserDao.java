@@ -41,4 +41,8 @@ public class UserDao implements Dao<User> {
         }
         return null;
     }
+
+    public int getUserCount() {
+        return map.size();
+    }
 }
