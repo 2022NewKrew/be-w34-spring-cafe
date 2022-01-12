@@ -38,9 +38,9 @@
                     <tbody>
                     {{#userList}}
                     <tr>
-                        <td>{{userId}}</td>
-                        <td><a href="/user/{{id}}">{{nickname}}</a></td>
-                        <td>{{email}}</td>
+                        <td><a href="/user/{{this.id}}">{{this.userId}}</a></td>
+                        <td>{{this.nickname}}</td>
+                        <td>{{this.email}}</td>
                         <td><a href="#" class="btn btn-success" role="button">수정</a></td>
                     </tr>
                     {{/userList}}

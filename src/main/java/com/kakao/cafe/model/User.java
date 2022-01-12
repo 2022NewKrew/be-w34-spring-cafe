@@ -1,34 +1,25 @@
 package com.kakao.cafe.model;
 
 public class User {
-    private static long offset = 0;
-    private final long id;
+    private Long id;
     private final String userId;
     private final String password;
     private final String nickname;
     private final String email;
 
-    public User(String userId, String password, String nickname, String email) {
-        offset += 1;
-        this.id = offset;
-        this.userId = userId;
-        this.password = password;
-        this.nickname = nickname;
-        this.email = email;
+    public User(UserCreateRequestDto request) {
+        this.userId = request.getUserId();
+        this.nickname = request.getNickname();
+        this.email = request.getEmail();
+        this.password = request.getPassword();
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+    public UserResponseDto toResponseDto() {
+        return new UserResponseDto(id, userId, nickname, email);
     }
 
-    public String getNickname() {
-        return nickname;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public long getId() {
