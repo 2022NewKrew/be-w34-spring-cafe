@@ -11,7 +11,7 @@ public class UserSaveRequest {
     @Setter public String email;
 
     public User toUser() {
-        return new User(
+        return User.valueOf(
                 this.userId,
                 this.password,
                 this.name,

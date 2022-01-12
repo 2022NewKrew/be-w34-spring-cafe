@@ -24,7 +24,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User findByIdOrNull(String userId) {
         return currentUsers.stream()
-                .filter(user -> user.isSameUser(userId))
+                .filter(user -> user.isSameUserWith(userId))
                 .findFirst().orElse(null);
     }
 }
