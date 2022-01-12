@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,7 +26,7 @@ public class ArticleController {
     }
 
     @GetMapping
-    public String questionList(Model model) {
+    public String articleList(Model model) {
         List<Article> articleList = articleService.getArticles();
         model.addAttribute("articles", articleList);
         return "index";
@@ -33,11 +34,16 @@ public class ArticleController {
 
 
     @PostMapping
-    public String createQuestion(Article article) {
+    public String article(Article article) {
         articleService.write(article);
         return "redirect:/articles";
     }
 
-//    @GetMapping("/")
+    @GetMapping("/{articleId}")
+    public String article(@PathVariable Integer articleId, Model model) {
+        Article article = articleService.findByArticleId(articleId);
+        model.addAttribute("article", article);
+        return "post/show";
+    }
 
 }

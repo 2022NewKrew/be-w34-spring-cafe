@@ -12,6 +12,10 @@ public class Article {
         this.content = content;
     }
 
+    public Integer getArticleId() {
+        return articleId;
+    }
+
     public String getTitle() {
         return title;
     }

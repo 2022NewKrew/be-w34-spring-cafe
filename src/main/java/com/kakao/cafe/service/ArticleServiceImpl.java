@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service("articleService")
 public class ArticleServiceImpl implements ArticleService{
@@ -22,7 +23,12 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public Article findByArticleId(String articleId) {
+    public Article findByArticleId(Integer articleId) {
+        for (Article article : articles) {
+            if (Objects.equals(article.getArticleId(), articleId)) {
+                return article;
+            }
+        }
         return null;
     }
 }

@@ -9,5 +9,5 @@ public interface ArticleService {
 
     List<Article> getArticles();
 
-    Article findByArticleId(String articleId);
+    Article findByArticleId(Integer articleId);
 }
