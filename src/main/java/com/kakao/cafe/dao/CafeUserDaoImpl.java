@@ -19,7 +19,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
     }
 
     @Override
-    public void signIn(User newUser) {
+    public void signUp(User newUser) {
         String userId = newUser.getUserId();
         if( userId == null || userMap.containsKey(userId) ) {
             return;

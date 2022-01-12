@@ -33,8 +33,8 @@ public class CafeUserController {
     }
 
     @PostMapping("/sign-up")
-    String signIn(User newUser){ // 회원가입
-        cafeUserService.signIn(newUser);
+    String signUp(User newUser){ // 회원가입
+        cafeUserService.signUp(newUser);
         return UserRedirect.USER_REDIRECT_LIST;
     }
 

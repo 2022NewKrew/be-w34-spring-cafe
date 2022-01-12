@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dao.CafeUserDao;
 import com.kakao.cafe.dao.CafeUserDaoImpl;
+import com.kakao.cafe.helper.UserHelper;
 import com.kakao.cafe.model.User;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,10 @@ public class CafeUserServiceImpl implements CafeUserService {
     }
 
     @Override
-    public void signIn(User newUser) {
-        cafeUserDao.signIn(newUser);
+    public void signUp(User newUser) {
+        if(UserHelper.checkRegexOfUser(newUser)){
+            cafeUserDao.signUp(newUser);
+        }
     }
 
     @Override

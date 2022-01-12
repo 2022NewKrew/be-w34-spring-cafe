@@ -56,7 +56,7 @@
   - 대신 mustache 적용이 되도록 "MustacheViewResolver" 적용이 반드시 필요 
   - application.prop 로도 해당 기능을 적용 가능 ( 이 경우,. @Configuration 클래스는 불필요 )
 - Configuration 파일의 "addViewController" 의 경우, get/post 접근을 구분하지 못함
-  - Controller 에 Get 맵핑을 추가하는 형태로 재작성
+  - Controller 에 Get 맵핑을 추가하는 형태로 재작
 
 # 참고 사이트
 - Collection 관련
@@ -64,3 +64,6 @@
 - Mustache 관련
   - https://gs.saro.me/dev?tn=486
   - https://velog.io/@swchoi0329/Mustache%EB%A1%9C-%ED%99%94%EB%A9%B4-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0#template-engine
+- regex 정규표현식
+  - https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
+  - 
