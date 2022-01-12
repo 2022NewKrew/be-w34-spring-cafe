@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.repository;
+package com.kakao.cafe.app.data;
 
 import com.kakao.cafe.domain.entity.Article;
 import com.kakao.cafe.domain.entity.Draft;
@@ -10,13 +10,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArticleRepositoryTest {
+class InMemoryArticleRepositoryTest {
 
-    private ArticleRepository subject;
+    private InMemoryArticleRepository subject;
 
     @BeforeEach
     void setUp() {
-        subject = new ArticleRepository();
+        subject = new InMemoryArticleRepository();
         User owner = new User.Builder().build();
         Draft draft = new Draft(owner, "author", "title", "content");
         subject.create(draft);

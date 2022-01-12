@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.repository;
+package com.kakao.cafe.app.data;
 
 import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
@@ -9,13 +9,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserRepositoryTest {
+class InMemoryUserRepositoryTest {
 
-    private UserRepository subject;
+    private InMemoryUserRepository subject;
 
     @BeforeEach
     void setUp() {
-        subject = new UserRepository();
+        subject = new InMemoryUserRepository();
         SignUp signUp = new SignUp("id", "password", "name", "");
         subject.create(signUp);
     }
