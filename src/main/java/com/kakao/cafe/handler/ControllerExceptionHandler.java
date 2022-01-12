@@ -33,7 +33,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    protected ModelAndView handle() {
+    protected ModelAndView handle(Exception e) {
         ModelAndView view = new ModelAndView("error");
         view.addObject("errorMessage", "예상치 못한 에러");
         view.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
