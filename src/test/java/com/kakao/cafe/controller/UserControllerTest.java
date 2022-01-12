@@ -83,7 +83,7 @@ class UserControllerTest {
                 .param("email", email));
 
         mockMvc.perform(get("/users"))
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
                 .andExpect(view().name("user/list"));
     }
 
@@ -105,7 +105,7 @@ class UserControllerTest {
                 .param("email", email));
 
         mockMvc.perform(get("/users/" + userId))
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isOk())
                 .andExpect(view().name("user/profile"));
     }
 
