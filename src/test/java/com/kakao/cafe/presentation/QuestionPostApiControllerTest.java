@@ -31,6 +31,6 @@ public class QuestionPostApiControllerTest {
                 .post("/api/posts")
         .then()
                 .statusCode(201)
-                .body("id", equalTo(0));
+                .body("id", equalTo(1));
     }
 }
