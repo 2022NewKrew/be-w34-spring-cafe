@@ -1,5 +1,7 @@
 package com.kakao.cafe.model;
 
+import com.kakao.cafe.utility.NullChecker;
+
 import java.time.LocalDateTime;
 
 public class Article {
@@ -10,6 +12,10 @@ public class Article {
     private final String contents;
 
     public Article(int id, String title, String writer, String contents) {
+        NullChecker.checkNotNull(title);
+        NullChecker.checkNotNull(writer);
+        NullChecker.checkNotNull(contents);
+
         this.id = id;
         this.title = title;
         this.writer = writer;
@@ -25,7 +31,7 @@ public class Article {
         return title;
     }
 
-    public String getAuthor() {
+    public String getWriter() {
         return writer;
     }
 

@@ -9,7 +9,7 @@ public interface ArticleDao {
 
     void add(Article article);
 
-    Article findArticleById(int id);
+    Article get(int id);
 
     int getSize();
 }

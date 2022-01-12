@@ -9,7 +9,9 @@ public interface UserDao {
 
     void add(User user);
 
-    User findUserByUserId(String userId);
+    User get(String userId);
 
     int getSize();
+
+    void update(String userId, String name, String email);
 }
