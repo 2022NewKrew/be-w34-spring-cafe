@@ -13,7 +13,7 @@ public class SignUpRequest {
         this.password = password;
     }
 
-    public User toUser() {
-        return new User(this.email, this.nickname, this.password);
+    public User toUser(Long id) {
+        return new User(id, this.email, this.nickname, this.password);
     }
 }
