@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String signUp(User user) {
+    public String signUp(@Valid User user) {
         logger.info("[POST] /create 회원가입하기");
         logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getUserName());
 
