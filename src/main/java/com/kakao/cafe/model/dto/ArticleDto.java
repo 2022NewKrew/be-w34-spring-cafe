@@ -3,9 +3,9 @@ package com.kakao.cafe.model.dto;
 public class ArticleDto {
 
     private int id;
-    private final String writer;
-    private final String title;
-    private final String contents;
+    private String writer;
+    private String title;
+    private String contents;
 
     public ArticleDto(String writer, String title, String contents) {
         this.writer = writer;
@@ -31,5 +31,17 @@ public class ArticleDto {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 }

@@ -2,10 +2,16 @@ package com.kakao.cafe.model.vo;
 
 public class ArticleVo {
 
-    private final int id;
+    private int id;
     private final String writer;
     private final String title;
     private final String contents;
+
+    public ArticleVo(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+    }
 
     public ArticleVo(int id, String writer, String title, String contents) {
         this.id = id;
