@@ -1,35 +1,54 @@
 package com.kakao.cafe.dao;
 
+import com.kakao.cafe.vo.Article;
 import com.kakao.cafe.vo.User;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class UserDao {
 
-    private List<User> users = new ArrayList<>();
+    private JdbcTemplate jdbcTemplate;
+
+    public UserDao(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
     public List<User> getUsers() {
-        return users;
+        return jdbcTemplate.query("select * from article",
+                (rs, rowNum) -> new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                )
+        );
     }
 
     public User getUser(String userId) {
-        return users.stream().filter(user -> user.getUserId().equals(userId)).findFirst().orElse(null);
-    }
-
-    public int getIndex(String userId) {
-        return users.stream().filter(user -> user.getUserId().equals(userId)).map(user -> users.indexOf(user)).findFirst().orElse(-1);
+        return jdbcTemplate.queryForObject("select * from user where userId = ?",
+                (rs, rowNum) -> new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                ),
+                userId
+        );
     }
 
     public void addUser(User user) {
-        users.add(user);
+        jdbcTemplate.update("insert into user(userId, password, name, email) values(?,?,?,?)",
+                user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
     public void updateUser(User user) {
-        int index = getIndex(user.getUserId());
-        users.set(index, user);
+        jdbcTemplate.update("update user set name=?,email=? where userId=? and password=?",
+                user.getName(), user.getEmail(), user.getUserId(), user.getPassword());
     }
 
 }

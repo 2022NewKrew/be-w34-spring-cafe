@@ -11,8 +11,6 @@ import java.util.List;
 @Repository
 public class ArticleDao {
 
-    private List<Article> articles = new ArrayList<>();
-
     private JdbcTemplate jdbcTemplate;
 
     public ArticleDao(DataSource dataSource) {
