@@ -5,7 +5,6 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserList {
     private final List<UserInfo> userList = new ArrayList<>();
@@ -24,7 +23,7 @@ public class UserList {
     }
 
     public List<UserInfo> getUserList() {
-        return userList;
+        return List.copyOf(userList);
     }
 
     public void addUser(UserInfo userInfo) {
@@ -35,8 +34,8 @@ public class UserList {
         return userList.size();
     }
 
-    public UserInfo findByName(String name) {
-        UserInfo target = userList.stream().filter(userInfo -> userInfo.hasEqualName(name)).findFirst().orElse(null);
+    public UserInfo findById(String userId) {
+        UserInfo target = userList.stream().filter(userInfo -> userInfo.hasEqualId(userId)).findFirst().orElse(null);
         Assert.notNull(target,"FIND Error: Null Object");
         return target;
     }

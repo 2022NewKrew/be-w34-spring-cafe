@@ -37,9 +37,9 @@ public class UserController {
         return "/user/list";
     }
 
-    @GetMapping("users/{name}")
-    public String viewUserProfile(@PathVariable String name, Model model){
-        logger.info("profile:{}",model.addAttribute("userInfo",UserList.getInstance().findByName(name)));
+    @GetMapping("users/{userId}")
+    public String viewUserProfile(@PathVariable String userId, Model model){
+        logger.info("profile:{}",model.addAttribute("userInfo",UserList.getInstance().findById(userId)));
         return "/user/profile";
     }
 

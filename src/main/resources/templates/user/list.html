@@ -43,13 +43,13 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>닉네임</th> <th>이메일</th> <th>회원가입일</th><th></th>
+                        <th>ID</th> <th>닉네임</th> <th>이메일</th> <th>회원가입일</th><th></th>
                     </tr>
                     </thead>
                     <tbody>
                     {{#users}}
                         <tr>
-                            <td><a href="/users/{{name}}"/>{{name}}</a> </td> <td>{{email}}</td><td>{{signUpDate}}</td>
+                            <td><a href="/users/{{userId}}"/>{{userId}}</a> </td> <td>{{name}}</td> <td>{{email}}</td><td>{{signUpDate}}</td>
                         </tr>
                     {{/users}}
                     </tbody>

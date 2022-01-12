@@ -9,9 +9,9 @@ class UserInfoTest {
 
     @Test
     void hasEqualName() {
-        UserInfo userInfo = new UserInfo("123","justin","justin@kakaocorp.com");
-        Assert.isTrue(userInfo.hasEqualName("justin"),"Error: is Equal Name");
-        Assert.isTrue(!userInfo.hasEqualName("jutsin"),"Error: is Not Equal Name");
+        UserInfo userInfo = new UserInfo("justin1","123","justin","justin@kakaocorp.com");
+        Assert.isTrue(userInfo.hasEqualId("justin1"),"Error: is Equal Name");
+        Assert.isTrue(!userInfo.hasEqualId("jutsin1"),"Error: is Not Equal Name");
     }
 
 }
