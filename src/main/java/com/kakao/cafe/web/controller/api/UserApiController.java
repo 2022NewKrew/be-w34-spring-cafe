@@ -9,6 +9,7 @@ import com.kakao.cafe.web.dto.SignUpDTO;
 import com.kakao.cafe.web.dto.UserDTO;
 import com.kakao.cafe.web.dto.UserModifyDTO;
 import com.kakao.cafe.web.service.UserService;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;

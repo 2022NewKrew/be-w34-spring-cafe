@@ -1,7 +1,6 @@
 package com.kakao.cafe.exception;
 
 import java.util.Arrays;
-import java.util.EnumSet;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
