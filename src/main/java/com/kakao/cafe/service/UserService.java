@@ -27,4 +27,10 @@ public class UserService {
     public Optional<UserResponseDto> read(String userId) {
         return userRepository.findByUserId(userId);
     }
+
+    public void update(UserRequestDto userRequestDto) {
+        UserResponseDto userResponseDto = userRepository.findByUserId(userRequestDto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+        userRepository.update(userResponseDto.getId(), userRequestDto);
+    }
 }

@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,13 +18,6 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
-
-    @PostMapping()
-    public String create(UserRequestDto userRequestDto) {
-        logger.info("create: {}, {}", userRequestDto.getUserId(), userRequestDto.getPassword());
-        userService.create(userRequestDto);
-        return "redirect:";
-    }
 
     @GetMapping()
     public String getUserList(Model model) {
@@ -44,5 +34,25 @@ public class UserController {
         UserResponseDto user = userService.read(userId).get();
         model.addAttribute("user", user);
         return "user/profile";
+    }
+
+    @PostMapping()
+    public String addUser(UserRequestDto userRequestDto) {
+        logger.info("addUser: {}, {}", userRequestDto.getUserId(), userRequestDto.getPassword());
+        userService.create(userRequestDto);
+        return "redirect:";
+    }
+
+    @GetMapping("/{userId}/form")
+    public String updateUser(@PathVariable String userId, Model model) {
+        UserResponseDto user = userService.read(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+        model.addAttribute("user", user);
+        return "user/updateForm";
+    }
+
+    @PutMapping("/{userId}")
+    public String updateUser(@PathVariable String userId, UserRequestDto userRequestDto) {
+        userService.update(userRequestDto);
+        return "redirect:";
     }
 }

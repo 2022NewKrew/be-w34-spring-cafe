@@ -23,12 +23,17 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public UserResponseDto save(UserRequestDto userDto) {
-        User user = User.of(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
+    public void save(UserRequestDto userRequestDto) {
+        User user = User.of(userRequestDto.getUserId(), userRequestDto.getPassword(), userRequestDto.getName(), userRequestDto.getEmail());
         user.setId(++sequence);
         logger.info("save: {}, {}", user.getId(), user.getUserId());
         users.add(user);
-        return UserResponseDto.of(user.getId(), user.getUserId(), user.getName(), user.getEmail());
+    }
+
+    @Override
+    public void update(Long id, UserRequestDto userRequestDto) {
+        User user = User.of(userRequestDto.getUserId(), userRequestDto.getPassword(), userRequestDto.getName(), userRequestDto.getEmail());
+        users.set(id.intValue(), user);
     }
 
     @Override
