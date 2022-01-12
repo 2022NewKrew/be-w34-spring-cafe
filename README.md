@@ -12,9 +12,13 @@
   * 회원목록 기능 구현
     * 회원목록 controller
     * User domain
-    * showUserList service
+    * UserRepository repository
+      * index(DB에 들어온 순서대로 가지는 고유의 번호) 생성은 여기에서
+    * getUserList service
       * userList domain은 List에서 더 추가해야할 기능이 없는 거 같아서 구현 안함
-    * UserListView view
+    * UserView view
+      * UserController에서 UserView로 model 전달
+      * UserDao List 반환시 순서를 책임지는 건 view 로직에서 해결하도록 해야함
   * 회원가입 기능 구현
     * 회원가입 routing 구현
   * 회원 프로필 조회
