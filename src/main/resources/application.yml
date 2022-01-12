@@ -6,3 +6,11 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:

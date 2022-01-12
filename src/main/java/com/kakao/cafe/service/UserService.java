@@ -32,7 +32,7 @@ public class UserService {
         User user = User.of(createDto.getUid(), createDto.getPassword(),
             createDto.getName(), createDto.getEmail());
 
-        userRepository.add(user);
+        userRepository.save(user);
         logger.info("User Created : " + user);
     }
 

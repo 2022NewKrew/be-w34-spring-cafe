@@ -25,15 +25,14 @@ public interface ArticleDTO {
         static final String dateTimePattern = "yyyy-MM-dd HH:mm";
 
         Long id;
-        String authorUid;
-        String authorName;
+        String uid;
         String title;
         String body;
         String createdAt;
 
         public static Result from(Article article) {
-            return new Result(article.getId(), article.getAuthorUid(),
-                article.getAuthorName(), article.getTitle(), article.getBody(),
+            return new Result(article.getId(), article.getUid(),
+                article.getTitle(), article.getBody(),
                 article.getCreatedAt().format(DateTimeFormatter.ofPattern(dateTimePattern)));
         }
     }

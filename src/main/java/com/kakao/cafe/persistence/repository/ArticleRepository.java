@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface ArticleRepository {
 
-    void add(Article article);
+    void save(Article article);
 
     List<Article> findAllArticles();
 

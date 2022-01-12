@@ -1,13 +1,10 @@
 package com.kakao.cafe.persistence.model;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicLong;
 import lombok.ToString;
 
 @ToString(exclude = "password")
 public class User {
-
-    private static final AtomicLong idGenerator;
 
     private final Long id;
 
@@ -18,17 +15,18 @@ public class User {
 
     private final LocalDateTime createdAt;
 
-    static {
-        idGenerator = new AtomicLong(1L);
-    }
-
     public static User of(String uid, String password, String name, String email) {
-        return new User(uid, password, name, email, LocalDateTime.now());
+        return new User(null, uid, password, name, email, LocalDateTime.now());
     }
 
-    private User(String uid, String password, String name, String email,
+    public static User of(Long id, String uid, String password, String name, String email,
         LocalDateTime createdAt) {
-        this.id = idGenerator.getAndIncrement();
+        return new User(id, uid, password, name, email, createdAt);
+    }
+
+    private User(Long id, String uid, String password, String name, String email,
+        LocalDateTime createdAt) {
+        this.id = id;
         this.uid = uid;
         this.password = password;
         this.name = name;
@@ -38,6 +36,10 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getUid() {
@@ -50,6 +52,10 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public boolean validPassword(String password) {

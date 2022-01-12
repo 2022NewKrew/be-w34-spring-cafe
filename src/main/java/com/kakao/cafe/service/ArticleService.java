@@ -33,9 +33,10 @@ public class ArticleService {
             throw new UserNotFoundException(ErrorCode.NOT_FOUND, authInfo.getUid());
         }
 
-        Article article = Article.of(foundUser.get(), createDTO.getTitle(), createDTO.getBody());
+        Article article = Article.of(foundUser.get().getUid(), createDTO.getTitle(),
+            createDTO.getBody());
 
-        articleRepository.add(article);
+        articleRepository.save(article);
         logger.info("Article Created : {}", article);
     }
 
