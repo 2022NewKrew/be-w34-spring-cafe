@@ -1,7 +1,6 @@
 package com.kakao.cafe.application.user;
 
 import com.kakao.cafe.domain.user.FindUserPort;
-import com.kakao.cafe.domain.user.SignUpUserPort;
 import com.kakao.cafe.domain.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,9 +26,6 @@ class FindUserServiceTest {
 
     @Mock
     FindUserPort findUserPort;
-
-    @Mock
-    SignUpUserPort signUpUserPort;
 
     @DisplayName("유저 ID로 사용자를 조회할 수 있다")
     @Test
@@ -91,4 +87,38 @@ class FindUserServiceTest {
                 );
     }
 
+    @DisplayName("사용자의 아이디와 패스워드가 일치하는지 확인할 수 있다")
+    @Test
+    void checkUserIdAndPasswordMatch() {
+        // given
+        String userId = "2wls";
+        String password = "0224";
+        given(findUserPort.findByUserIdAndPassword(userId, password))
+                .willReturn(Optional.of(new User("2wls", "0224", "윤이진", "483759@naver.com")));
+
+        // when
+        boolean passwordMatch = findUserService.checkPassWordMatch(userId, password);
+
+        //then
+        assertThat(passwordMatch)
+                .isTrue();
+        verify(findUserPort).findByUserIdAndPassword(userId, password);
+    }
+
+    @DisplayName("사용자의 아이디와 패스워드가 일치하지 않으면 에러를 반환한다")
+    @Test
+    void checkUserIdAndPasswordUnMatch() {
+        // given
+        String userId = "2wls";
+        String passwordNotMatch = "1234";
+        given(findUserPort.findByUserIdAndPassword(userId, passwordNotMatch))
+                .willReturn(Optional.empty());
+
+        // when
+        boolean passwordMatch = findUserService.checkPassWordMatch(userId, passwordNotMatch);
+
+        assertThat(passwordMatch)
+                .isFalse();
+        verify(findUserPort).findByUserIdAndPassword(userId, passwordNotMatch);
+    }
 }
