@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Member;
@@ -19,8 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Transactional
 @Repository
-public class JdbcTemplateArticleRepository implements ArticleRepository{
+public class JdbcTemplateArticleRepository implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcTemplateArticleRepository(DataSource dataSource) {
@@ -32,7 +34,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository{
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into ARTICLE (WRITER, TITLE, CONTENTS) values (?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = connection.prepareStatement("insert into ARTICLE (WRITER, TITLE, CONTENTS, TIME) values (?,?,?,now())", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, article.getWriter());
             ps.setString(2, article.getTitle());
             ps.setString(3, article.getContents());
@@ -53,13 +55,15 @@ public class JdbcTemplateArticleRepository implements ArticleRepository{
                 stream().findAny();
 
     }
-    private RowMapper<Article> articleRowMapper(){
+
+    private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
             Article article = Article.builder().
                     id(rs.getLong("id")).
                     writer(rs.getString("writer")).
                     title(rs.getString("title")).
                     contents(rs.getString("contents")).
+                    time(rs.getString("time")).
                     build();
             return article;
         };
