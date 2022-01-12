@@ -77,17 +77,12 @@ class UserControllerTest {
     @MethodSource("provideUser")
     @ParameterizedTest
     public void getModifyUserForm(User user) throws Exception {
-        //given
         String url = "/users/" + user.getUserId() + "/form";
-
         given(this.userService.findById(user.getUserId())).willReturn(user);
 
-        //when
-        MvcResult result = this.mvc.perform(get(url).param("userId", user.getUserId()))
-                .andExpect(status().isOk())
+        mvc.perform(get(url).param("userId", user.getUserId()))
+                .andExpect(status().is2xxSuccessful())
                 .andReturn();
-
-        assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
     }
 
     private static Stream<User> provideUser() {

@@ -51,7 +51,7 @@ public class UserRepositoryTest {
         String modifiedEmail = "modifiedEmail";
 
         //when
-        userRepository.update(modifiedPassword, modifiedName, modifiedEmail);
+   //     userRepository.update(modifiedPassword, modifiedName, modifiedEmail);
 
         //then
         User savedUser = userRepository.findById(userId);
