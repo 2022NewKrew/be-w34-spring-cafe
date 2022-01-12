@@ -11,4 +11,5 @@ public interface PostRepository {
     int save(Post post);
     Optional<List<Post>> findAll();
     Optional<Post> findById(int questionId);
+    void update(Post post);
 }

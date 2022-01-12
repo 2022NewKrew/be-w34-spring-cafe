@@ -34,4 +34,9 @@ public class PostRepositoryImpl implements PostRepository {
                 .filter(post -> post.getId() == questionId)
                 .findFirst();
     }
+
+    @Override
+    public void update(Post post) {
+
+    }
 }

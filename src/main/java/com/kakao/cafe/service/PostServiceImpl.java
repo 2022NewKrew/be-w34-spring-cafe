@@ -52,6 +52,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("post not found"));
         post.updateViewCount();
+        postRepository.update(post);
         return PostDetailDto.of(post);
     }
 }
