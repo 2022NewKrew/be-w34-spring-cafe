@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain.entity;
 
+import java.util.Map;
+
 public class SignUp {
 
     private final String userId;
@@ -16,6 +18,15 @@ public class SignUp {
 
     public String getUserId() {
         return userId;
+    }
+
+    public Map<String, ?> toMap() {
+        return Map.of(
+                "user_id", userId,
+                "name", name,
+                "password", password,
+                "email", email
+        );
     }
 
     public User createUser(long id) {

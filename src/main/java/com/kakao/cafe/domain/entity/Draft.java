@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.entity;
 
 import java.util.Date;
+import java.util.Map;
 
 public class Draft {
 
@@ -14,6 +15,15 @@ public class Draft {
         this.author = author;
         this.title = title;
         this.content = content;
+    }
+
+    public Map<String, ?> toMap() {
+        return Map.of(
+                "owner_id", owner.getId(),
+                "author", author,
+                "title", title,
+                "content", content
+        );
     }
 
     public Article createArticle(long id, Date createdAt) {

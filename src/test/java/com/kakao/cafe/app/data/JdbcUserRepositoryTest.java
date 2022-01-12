@@ -1,23 +1,46 @@
-package com.kakao.cafe.domain.repository;
+package com.kakao.cafe.app.data;
 
 import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserRepositoryTest {
+@JdbcTest
+@Sql(scripts = {"classpath:db/sql/schema.sql"})
+class JdbcUserRepositoryTest {
 
-    private UserRepository subject;
+    @Autowired
+    private NamedParameterJdbcTemplate jdbcTemplate;
+
+    private JdbcUserRepository subject;
 
     @BeforeEach
     void setUp() {
-        subject = new UserRepository();
-        SignUp signUp = new SignUp("id", "password", "name", "");
-        subject.create(signUp);
+        subject = new JdbcUserRepository(jdbcTemplate);
+        jdbcTemplate.update(
+                "INSERT INTO users " +
+                        "(user_id, password, name, email) " +
+                        "VALUES ('id', 'password', 'name', '')",
+                Collections.emptyMap()
+        );
+    }
+
+    @AfterEach
+    void tearDown() {
+        jdbcTemplate.update(
+                "DELETE FROM users",
+                Collections.emptyMap()
+        );
     }
 
     @Test
@@ -26,7 +49,7 @@ class UserRepositoryTest {
 
         User result = subject.create(signUp);
 
-        assertEquals(signUp.createUser(1), result);
+        assertEquals(signUp.createUser(result.getId()), result);
     }
 
     @Test
@@ -62,10 +85,12 @@ class UserRepositoryTest {
 
     @Test
     void getById() {
-        User user = subject.getById(1);
+        long id = subject.list().get(0).getId();
+
+        User user = subject.getById(id);
 
         assertNotNull(user);
-        assertEquals(1, user.getId());
+        assertEquals(id, user.getId());
     }
 
     @Test
