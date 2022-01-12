@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.entity.Article;
 import com.kakao.cafe.domain.entity.Draft;
+import com.kakao.cafe.domain.entity.Session;
 import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.domain.repository.ArticleRepository;
 import com.kakao.cafe.domain.repository.UserRepository;
@@ -26,7 +27,13 @@ public class ArticleService {
         this.userRepository = userRepository;
     }
 
-    public ArticleDto create(long ownerId, DraftDto draft) {
+    @Nullable
+    public ArticleDto create(String sessionId, DraftDto draft) {
+        Session session = userRepository.getSession(sessionId);
+        if (session == null) {
+            return null;
+        }
+        long ownerId = session.getUserId();
         User owner = userRepository.getById(ownerId);
         Draft entity = draft.toEntity(owner);
         return repository.create(entity).toDto();

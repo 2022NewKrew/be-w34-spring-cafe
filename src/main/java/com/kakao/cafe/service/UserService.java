@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.entity.Session;
 import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.domain.repository.UserRepository;
@@ -16,33 +17,38 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final UserRepository repository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserService(UserRepository repository) {
+        this.repository = repository;
     }
 
     @Nullable
-    public UserDto create(SignUpDto signUp) {
+    public UserDto create(SignUpDto signUp, String sessionId) {
         SignUp entity = signUp.toEntity();
-        User created = userRepository.create(entity);
+        User created = repository.create(entity);
         if (created == null) {
             return null;
         }
+        repository.saveSession(new Session(sessionId, created.getId()));
         return created.toDto();
     }
 
     public List<UserDto> list() {
-        return userRepository.list()
+        return repository.list()
                 .stream()
                 .map(User::toDto)
                 .collect(Collectors.toList());
     }
 
     @Nullable
-    public UserDto get(long id) {
-        User found = userRepository.getById(id);
+    public UserDto getById(String id, String sessionId) {
+        Long userId = parseId(id, sessionId);
+        if (userId == null) {
+            return null;
+        }
+        User found = repository.getById(userId);
         if (found == null) {
             return null;
         }
@@ -50,14 +56,32 @@ public class UserService {
     }
 
     @Nullable
-    public UserDto login(CredentialsDto credentials) {
-        User found = userRepository.login(
+    public UserDto login(CredentialsDto credentials, String sessionId) {
+        User found = repository.login(
                 credentials.getUserId(),
                 credentials.getPassword()
         );
         if (found == null) {
             return null;
         }
+        repository.saveSession(new Session(sessionId, found.getId()));
         return found.toDto();
+    }
+
+    @Nullable
+    private Long parseId(String id, String sessionId) {
+        if (id.equals("me")) {
+            return getIdFromSession(sessionId);
+        }
+        return Long.parseLong(id);
+    }
+
+    @Nullable
+    private Long getIdFromSession(String sessionId) {
+        Session session = repository.getSession(sessionId);
+        if (session == null) {
+            return null;
+        }
+        return session.getUserId();
     }
 }

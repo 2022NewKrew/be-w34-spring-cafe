@@ -2,6 +2,7 @@ package com.kakao.cafe.app.controller;
 
 import com.kakao.cafe.app.request.LoginRequest;
 import com.kakao.cafe.app.request.SignUpRequest;
+import com.kakao.cafe.service.dto.SessionDto;
 import com.kakao.cafe.service.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,11 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    private final UserService userService;
+    private final UserService service;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserService service) {
+        this.service = service;
     }
 
     @GetMapping("/user/create")
@@ -30,26 +31,23 @@ public class UserController {
             @ModelAttribute SignUpRequest request,
             HttpSession session
     ) {
-        UserDto user = userService.create(request.toSignUpDto());
+        UserDto user = service.create(request.toSignUpDto(), session.getId());
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "user already exists");
         }
-        long id = user.getId();
-        session.setAttribute("id", id);
         return "redirect:/users";
     }
 
     @GetMapping("/users")
     public String list(Model model) {
-        List<UserDto> users = userService.list();
+        List<UserDto> users = service.list();
         model.addAttribute("users", users);
         return "users";
     }
 
     @GetMapping("/users/{id}")
     public String profile(@PathVariable("id") String id, Model model, HttpSession session) {
-        long parsedId = parseId(session, id);
-        UserDto user = userService.get(parsedId);
+        UserDto user = service.getById(id, session.getId());
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
         }
@@ -59,27 +57,11 @@ public class UserController {
 
     @PostMapping("/user/login")
     public String login(@ModelAttribute LoginRequest request, HttpSession session) {
-        UserDto user = userService.login(request.toCredentialsDto());
+        UserDto user = service.login(request.toCredentialsDto(), session.getId());
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "login failed");
         }
         long id = user.getId();
-        session.setAttribute("id", id);
         return "redirect:/users/" + id;
-    }
-
-    private long parseId(HttpSession session, String id) {
-        if (id.equals("me")) {
-            return getId(session);
-        }
-        return Long.parseLong(id);
-    }
-
-    private long getId(HttpSession session) {
-        Object attr = session.getAttribute("id");
-        if (attr == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "login required");
-        }
-        return (long) attr;
     }
 }
