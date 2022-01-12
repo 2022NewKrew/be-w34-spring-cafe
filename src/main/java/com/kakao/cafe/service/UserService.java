@@ -21,19 +21,21 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Optional<User> findUser(String userId) {
-        return userRepository.findByUserId(userId);
+    public User findUser(String userId) {
+        return userRepository.findByUserId(userId).
+                orElseThrow(() -> new IllegalArgumentException("해당 userId에 맞는 user가 존재하지 않습니다."));
     }
-    public Optional<User> findUser(Long id) {
-        return userRepository.findById(id);
+    public User findUser(Long id) {
+        return userRepository.findById(id).
+                orElseThrow(() -> new IllegalArgumentException("해당 id에 맞는 user가 존재하지 않습니다."));
     }
     public List<User> findUserList() {
         return userRepository.findAll();
     }
 
     public void updateUserInfo(Long id, User updateUser) {
-        Optional<User> user = userRepository.findById(id);
-        validatePasswordMember(user.get().getPassword(), updateUser.getPassword());
+        User user = findUser(id);
+        validatePasswordMember(user.getPassword(), updateUser.getPassword());
         userRepository.updateUser(id, updateUser);
     }
 

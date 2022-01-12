@@ -4,10 +4,7 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -32,7 +29,7 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Article findById(Long id) {
-        return store.get(id.intValue()-1);
+    public Optional<Article> findById(Long id) {
+        return Optional.of(store.get(id.intValue() - 1));
     }
 }

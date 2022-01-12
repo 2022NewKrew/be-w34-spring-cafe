@@ -42,14 +42,14 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String findUser(@PathVariable("userId") String userId, Model model) {
-        User user = userService.findUser(userId).get();
+        User user = userService.findUser(userId);
         model.addAttribute("user" , user);
         return "user/profile";
     }
 
     @GetMapping("/users/{id}/form")
     public String createUserUpdateForm(@PathVariable("id") Long id, Model model) {
-        User user = userService.findUser(id).get();
+        User user = userService.findUser(id);
         model.addAttribute("user" , user);
         return "user/updateForm";
     }
