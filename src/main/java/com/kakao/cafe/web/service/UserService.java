@@ -1,6 +1,5 @@
 package com.kakao.cafe.web.service;
 
-import com.kakao.cafe.config.SessionConfig;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.Users;
 import com.kakao.cafe.exception.InvalidAuthenticationException;
@@ -9,8 +8,6 @@ import com.kakao.cafe.utils.SessionUtils;
 import com.kakao.cafe.web.repository.UserRepository;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

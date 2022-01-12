@@ -20,11 +20,11 @@ public class User {
   private String email;
   private String nickName;
   private String password;
-  private String summary = DEFAULT_SUMMARY;
-  private String profile = DEFAULT_PROFILE;
-  private Timestamp createAt = new Timestamp(System.currentTimeMillis());
-  private Timestamp modifiedAt = new Timestamp(System.currentTimeMillis());
-  private Timestamp lastLoginAt = new Timestamp(System.currentTimeMillis());
+  private String summary;
+  private String profile;
+  private Timestamp createAt;
+  private Timestamp modifiedAt;
+  private Timestamp lastLoginAt;
 
   private User(
       Integer index, Long id, String email, String nickName,
@@ -43,6 +43,7 @@ public class User {
     this.lastLoginAt = lastLoginAt;
   }
 
+
   public static User of(SignUpDTO signUpDTO) {
     String email = signUpDTO.getEmail();
     String nickName = signUpDTO.getNickName();
@@ -57,6 +58,7 @@ public class User {
         null, null, email, nickName, null,
         null, password, null, null, null);
   }
+
 
   public static User of(LoginDTO loginDTO) {
     String email = loginDTO.getEmail();
@@ -99,13 +101,41 @@ public class User {
         null, null, null, null, null);
   }
 
+
+  public static User createEmpty() {
+    return new User(0, null, null, null,
+        null, null, null, null, null);
+  }
+
+
   public void setPasswordEncrypted() {
     //TODO
   }
 
+
   public void updateLastLoginAt() {
     this.lastLoginAt = new Timestamp(System.currentTimeMillis());
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    User user = (User) o;
+    return Objects.equals(email, user.email);
+  }
+
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(email);
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
