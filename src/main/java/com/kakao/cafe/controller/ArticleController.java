@@ -16,7 +16,7 @@ import java.util.Objects;
 
 @Controller
 public class ArticleController {
-    Logger logger = LoggerFactory.getLogger(ArticleController.class);
+    private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     private final ArticleService articleService;
 

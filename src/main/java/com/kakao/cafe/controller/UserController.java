@@ -17,7 +17,7 @@ import java.util.Objects;
 
 @Controller
 public class UserController {
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
