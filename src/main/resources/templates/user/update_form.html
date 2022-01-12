@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    {{>layout/loadMetaData}}
+    <link href="/css/user/form.css" rel="stylesheet">
+</head>
+<body>
+<div class="background">
+    {{>layout/header}}
+
+    <div class="container" id="main">
+        <header class="post-header">
+            <p class="title">정보 수정</p>
+        </header>
+        <form name="question" class="info-container" method="post" action="/users/{{userKey}}">
+            <input type="hidden" name="_method" value="PUT"/>
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" class="form-control" id="email" name="email" value={{user.email}} readonly
+                       placeholder="이메일을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="name">닉네임</label>
+                <input class="form-control" id="name" value={{user.name}} name="name" placeholder="닉네입을 입력하세요">
+            </div>
+            <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
