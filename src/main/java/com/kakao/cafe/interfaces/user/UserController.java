@@ -1,6 +1,7 @@
 package com.kakao.cafe.interfaces.user;
 
-import com.kakao.cafe.application.UserService;
+import com.kakao.cafe.application.user.FindUserService;
+import com.kakao.cafe.application.user.SignUpUserService;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserVo;
 import com.kakao.cafe.interfaces.user.dto.UserMapper;
@@ -19,15 +20,17 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
+    private final FindUserService findUserService;
+    private final SignUpUserService signUpUserService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(FindUserService findUserService, SignUpUserService signUpUserService) {
+        this.findUserService = findUserService;
+        this.signUpUserService = signUpUserService;
     }
 
     @GetMapping("")
     public String getAllUser(Model model) {
-        List<User> userList = userService.findAllUser();
+        List<User> userList = findUserService.findAllUser();
         List<UserListResponseDto> joinUserRequestDtoList = UserMapper.convertEntityListToResponseDtoList(userList);
         model.addAttribute("users", joinUserRequestDtoList);
         return "user/list";
@@ -36,13 +39,13 @@ public class UserController {
     @PostMapping("")
     public String joinUser(JoinUserRequestDto joinUserRequestDto) {
         UserVo user = UserMapper.convertJoinUserDtoToVo(joinUserRequestDto);
-        userService.join(user);
+        signUpUserService.join(user);
         return "redirect:/users";
     }
 
     @GetMapping("/{userId}")
     public String getUserByUserId(@PathVariable String userId, Model model) {
-        User user = userService.findByUserId(userId);
+        User user = findUserService.findByUserId(userId);
         model.addAttribute("name", user.getName());
         model.addAttribute("email", user.getEmail());
 
