@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Builder
 public class QuestionPost {
 
-    private static AtomicLong idGenerator;
+    private static final AtomicLong idGenerator;
 
     private final Long questionPostId;
     private final String title;
