@@ -1,5 +1,7 @@
 package com.kakao.cafe.article.domain;
 
+import com.kakao.cafe.article.dto.ArticleCreateDTO;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -10,11 +12,12 @@ public class Article {
     private Date date;
     private Long sequence;
 
-    public Article(String writer, String title, String contents) {
-        this.name = writer;
-        this.title = title;
-        this.contents = contents;
+    public Article(ArticleCreateDTO articleCreateDTO, Long sequence) {
+        this.name = articleCreateDTO.getName();
+        this.title = articleCreateDTO.getTitle();
+        this.contents = articleCreateDTO.getContents();
         this.date = new Date();
+        this.sequence = sequence;
     }
 
     public String getName() {
@@ -35,9 +38,5 @@ public class Article {
 
     public Long getSequence() {
         return sequence;
-    }
-
-    public void setSequence(Long sequence) {
-        this.sequence = sequence;
     }
 }

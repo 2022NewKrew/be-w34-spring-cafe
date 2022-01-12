@@ -1,6 +1,7 @@
 package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.dto.ArticleCreateDTO;
 import com.kakao.cafe.article.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +13,8 @@ public class ArticleController {
 
     //새로운 질문 생성
     @PostMapping(value = "/qna/create")
-    public String createArticle(Article article, Model model){
-        articleService.articleCreate(article);
+    public String createArticle(ArticleCreateDTO articleCreateDTO){
+        articleService.articleCreate(articleCreateDTO);
         return "redirect:/";
     }
 
