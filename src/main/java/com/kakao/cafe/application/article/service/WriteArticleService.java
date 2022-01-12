@@ -16,15 +16,18 @@ public class WriteArticleService implements WriteArticleUseCase {
     private final RegisterArticlePort registerArticlePort;
     private final AtomicInteger atomicInt = new AtomicInteger(FIRST_INDEX);
 
-    public WriteArticleService(
-        RegisterArticlePort registerArticlePort) {
+    public WriteArticleService(RegisterArticlePort registerArticlePort) {
         this.registerArticlePort = registerArticlePort;
     }
 
     @Override
     public void writeArticle(WriteRequest writeRequest) {
-        registerArticlePort.registerArticle(
-            new Article(atomicInt.getAndIncrement(), writeRequest.getWriter(),
-                writeRequest.getTitle(), writeRequest.getContents(), LocalDateTime.now()));
+        registerArticlePort.registerArticle(new Article(
+            atomicInt.getAndIncrement(),
+            writeRequest.getWriter(),
+            writeRequest.getTitle(),
+            writeRequest.getContents(),
+            LocalDateTime.now()
+        ));
     }
 }

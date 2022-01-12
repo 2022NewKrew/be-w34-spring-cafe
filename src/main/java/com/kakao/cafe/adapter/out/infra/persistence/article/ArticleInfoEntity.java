@@ -11,8 +11,7 @@ public class ArticleInfoEntity {
     private final String contents;
     private final LocalDateTime postedDate;
 
-    public ArticleInfoEntity(int index, String writer, String title, String contents,
-        LocalDateTime postedDate) {
+    public ArticleInfoEntity(int index, String writer, String title, String contents, LocalDateTime postedDate) {
         this.index = index;
         this.writer = writer;
         this.title = title;
@@ -21,8 +20,13 @@ public class ArticleInfoEntity {
     }
 
     static ArticleInfoEntity from(Article article) {
-        return new ArticleInfoEntity(article.getIndex(), article.getWriter(), article.getTitle(),
-            article.getContents(), article.getPostedDate());
+        return new ArticleInfoEntity(
+            article.getIndex(),
+            article.getWriter(),
+            article.getTitle(),
+            article.getContents(),
+            article.getPostedDate()
+        );
     }
 
     public int getIndex() {

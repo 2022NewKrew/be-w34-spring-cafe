@@ -14,8 +14,7 @@ public class UserSignUpController {
 
     private final SignUpUserUseCase signUpUserUseCase;
 
-    public UserSignUpController(
-        SignUpUserUseCase signUpUserUseCase) {
+    public UserSignUpController(SignUpUserUseCase signUpUserUseCase) {
         this.signUpUserUseCase = signUpUserUseCase;
     }
 

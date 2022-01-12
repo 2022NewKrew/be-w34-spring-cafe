@@ -14,8 +14,7 @@ public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort {
 
     private final UserInfoRepository userInfoRepository;
 
-    public StoreUserInfoAdapter(
-        UserInfoRepository userInfoRepository) {
+    public StoreUserInfoAdapter(UserInfoRepository userInfoRepository) {
         this.userInfoRepository = userInfoRepository;
     }
 
@@ -27,9 +26,13 @@ public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort {
     @Override
     public UsersInfo getAllUsersInfo() {
         List<UserInfo> userInfoList = userInfoRepository.getAllUserList()
-            .stream()
-            .map(u -> new UserInfo(u.getUserId(), u.getName(), u.getEmail()))
-            .collect(Collectors.toList());
+                                                        .stream()
+                                                        .map(u -> new UserInfo(
+                                                            u.getUserId(),
+                                                            u.getName(),
+                                                            u.getEmail()
+                                                        ))
+                                                        .collect(Collectors.toList());
 
         return UsersInfo.from(userInfoList);
     }
@@ -37,9 +40,12 @@ public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort {
     @Override
     public UserInfo findUserByUserId(String userId) {
         UserInfoEntity userInfoEntity = userInfoRepository.findByUserId(userId)
-            .orElseThrow(RuntimeException::new);        // TODO : 새로운 Exception 정의 필요
+                                                          .orElseThrow(RuntimeException::new);        // TODO : 새로운 Exception 정의 필요
 
-        return new UserInfo(userInfoEntity.getUserId(), userInfoEntity.getName(),
-            userInfoEntity.getEmail());
+        return new UserInfo(
+            userInfoEntity.getUserId(),
+            userInfoEntity.getName(),
+            userInfoEntity.getEmail()
+        );
     }
 }

@@ -11,8 +11,7 @@ public class GetUserInfoService implements GetUserInfoUseCase {
 
     private final GetUserInfoPort getUserInfoPort;
 
-    public GetUserInfoService(
-        GetUserInfoPort getUserInfoPort) {
+    public GetUserInfoService(GetUserInfoPort getUserInfoPort) {
         this.getUserInfoPort = getUserInfoPort;
     }
 

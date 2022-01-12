@@ -6,8 +6,7 @@ public class ArticleList {
 
     private final List<ArticleListEntry> articleList;
 
-    public ArticleList(
-        List<ArticleListEntry> articleList) {
+    public ArticleList(List<ArticleListEntry> articleList) {
         this.articleList = articleList;
     }
 

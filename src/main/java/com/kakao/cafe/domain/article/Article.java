@@ -10,8 +10,7 @@ public class Article {
     private final String contents;
     private final LocalDateTime postedDate;
 
-    public Article(int index, String writer, String title, String contents,
-        LocalDateTime postedDate) {
+    public Article(int index, String writer, String title, String contents, LocalDateTime postedDate) {
         this.index = index;
         this.writer = writer;
         this.title = title;

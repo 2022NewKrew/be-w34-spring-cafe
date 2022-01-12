@@ -8,8 +8,7 @@ public class ArticleDetail {
     private final String contents;
     private final String postedDate;
 
-    public ArticleDetail(int index, String writer, String title, String contents,
-        String postedDate) {
+    public ArticleDetail(int index, String writer, String title, String contents, String postedDate) {
         this.index = index;
         this.writer = writer;
         this.title = title;

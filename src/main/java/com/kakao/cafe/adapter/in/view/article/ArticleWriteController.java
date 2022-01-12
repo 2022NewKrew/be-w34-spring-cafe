@@ -14,8 +14,7 @@ public class ArticleWriteController {
 
     private final WriteArticleUseCase writeArticleUseCase;
 
-    public ArticleWriteController(
-        WriteArticleUseCase writeArticleUseCase) {
+    public ArticleWriteController(WriteArticleUseCase writeArticleUseCase) {
         this.writeArticleUseCase = writeArticleUseCase;
     }
 

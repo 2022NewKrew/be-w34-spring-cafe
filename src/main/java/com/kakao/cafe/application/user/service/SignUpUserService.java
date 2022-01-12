@@ -11,15 +11,17 @@ public class SignUpUserService implements SignUpUserUseCase {
 
     private final RegisterUserPort registerUserPort;
 
-    public SignUpUserService(
-        RegisterUserPort registerUserPort) {
+    public SignUpUserService(RegisterUserPort registerUserPort) {
         this.registerUserPort = registerUserPort;
     }
 
     @Override
     public void signUpUser(SignUpRequest signUpRequest) {
-        registerUserPort.registerUser(
-            new User(signUpRequest.getUserId(), signUpRequest.getPassword(),
-                signUpRequest.getName(), signUpRequest.getEmail()));
+        registerUserPort.registerUser(new User(
+            signUpRequest.getUserId(),
+            signUpRequest.getPassword(),
+            signUpRequest.getName(),
+            signUpRequest.getEmail()
+        ));
     }
 }

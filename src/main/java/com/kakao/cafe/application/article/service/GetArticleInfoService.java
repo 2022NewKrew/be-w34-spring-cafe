@@ -11,8 +11,7 @@ public class GetArticleInfoService implements GetArticleInfoUseCase {
 
     private final GetArticleInfoPort getArticleInfoPort;
 
-    public GetArticleInfoService(
-        GetArticleInfoPort getArticleInfoPort) {
+    public GetArticleInfoService(GetArticleInfoPort getArticleInfoPort) {
         this.getArticleInfoPort = getArticleInfoPort;
     }
 

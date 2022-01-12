@@ -17,8 +17,12 @@ public class UserInfoEntity {
     }
 
     static UserInfoEntity from(User user) {
-        return new UserInfoEntity(user.getUserId(), user.getPassword(), user.getName(),
-            user.getEmail());
+        return new UserInfoEntity(
+            user.getUserId(),
+            user.getPassword(),
+            user.getName(),
+            user.getEmail()
+        );
     }
 
     public String getUserId() {

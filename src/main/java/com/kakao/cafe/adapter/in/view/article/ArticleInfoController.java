@@ -19,15 +19,16 @@ public class ArticleInfoController {
 
     GetArticleInfoUseCase getArticleInfoUseCase;
 
-    public ArticleInfoController(
-        GetArticleInfoUseCase getArticleInfoUseCase) {
+    public ArticleInfoController(GetArticleInfoUseCase getArticleInfoUseCase) {
         this.getArticleInfoUseCase = getArticleInfoUseCase;
     }
 
     @GetMapping("/")
     public String displayArticleList(Model model) {
-        model.addAttribute("articles",
-            getArticleInfoUseCase.getListOfAllArticles().getArticleList());
+        model.addAttribute(
+            "articles",
+            getArticleInfoUseCase.getListOfAllArticles().getArticleList()
+        );
         return VIEWS_ARTICLE_LIST;
     }
 

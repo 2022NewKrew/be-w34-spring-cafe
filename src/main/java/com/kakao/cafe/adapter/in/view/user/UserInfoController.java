@@ -19,8 +19,7 @@ public class UserInfoController {
 
     private final GetUserInfoUseCase getUserInfoUseCase;
 
-    public UserInfoController(
-        GetUserInfoUseCase getUserInfoUseCase) {
+    public UserInfoController(GetUserInfoUseCase getUserInfoUseCase) {
         this.getUserInfoUseCase = getUserInfoUseCase;
     }
 
