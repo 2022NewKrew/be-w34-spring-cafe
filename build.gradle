@@ -19,6 +19,9 @@ dependencies {
 
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
 	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 }
 
 test {

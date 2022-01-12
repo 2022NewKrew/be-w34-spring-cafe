@@ -14,8 +14,7 @@ public class SpringJdbcConfig {
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
-                .setName("kakaodb")
-                .addScript("classpath:schema.sql")
-                .addScript("classpath:data.sql").build();
+                .setName("kakaoDB")
+                .addScript("classpath:schema.sql").build();
     }
 }

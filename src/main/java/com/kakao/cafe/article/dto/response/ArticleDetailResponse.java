@@ -1,12 +1,16 @@
 package com.kakao.cafe.article.dto.response;
 
 import com.kakao.cafe.article.entity.Article;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
+@Getter
 public class ArticleDetailResponse {
 
-    private final Integer id;
+    private final Long id;
     private final String writer;
     private final String title;
     private final String contents;
@@ -19,18 +23,4 @@ public class ArticleDetailResponse {
              article.getContents(),
              article.getCreatedAt());
     }
-
-    public ArticleDetailResponse(Integer id, String writer, String title, String contents, LocalDateTime createdAt) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-        this.createdAt = createdAt;
-    }
-
-    public Integer getId() { return this.id; }
-    public String getWriter() { return this.writer; }
-    public String getTitle() { return this.title; }
-    public String getContents() { return this.contents; }
-    public LocalDateTime getCreatedAt() { return this.createdAt; }
 }

@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
     private final Logger logger;
 
-    private UserController(UserService userService) {
+    protected UserController(UserService userService) {
         this.userService = userService;
         this.logger = LoggerFactory.getLogger(UserController.class);
     }
@@ -50,7 +50,7 @@ public class UserController {
      * @throws DuplicateUserIdException: 회원가입 요청한 UserId가 이미 존재하는 ID일 경우 발생
      */
     @PostMapping("/users")
-    public String createUser(UserCreateRequest req, Model model) {
+    public String createUser(UserCreateRequest req) {
         this.logger.info("[POST] /user - 유저 회원가입 요청");
         try {
             this.userService.createUser(req);
@@ -74,11 +74,11 @@ public class UserController {
 
     /**
      * 사용자 상세 정보 페이지 접속 [GET]
-     * @param id: 요청 사용자 ID(PK)
+     * @param id: 보고자 하는 사용자의 ID(PK)
      * @throws UserNotFoundException: 해당 ID 의 User 가 존재하지 않을 경우 발생
      */
     @GetMapping("/users/{id}")
-    public String getUserProfilePage(Model model, @PathVariable("id") Integer id) {
+    public String getUserProfilePage(Model model, @PathVariable("id") Long id) {
         this.logger.info("[GET] /user/{} - (id: {}) 유저 상세정보(프로필) 페이지 접속", id, id);
         try {
             UserInfoResponse userProfile = this.userService.getUserProfile(id);
@@ -91,8 +91,13 @@ public class UserController {
         }
     }
 
+    /**
+     * 사용자 정보 수정 페이지 접속 [GET]
+     * @param id: 수정하고자 하는 유저의 ID(PK)
+     * @throws UserNotFoundException: 해당 ID 의 User 가 존재하지 않을 경우 발생
+     */
     @GetMapping("/users/update/{id}")
-    public String getUserUpdatePage(Model model, @PathVariable("id") Integer id) {
+    public String getUserUpdatePage(Model model, @PathVariable("id") Long id) {
         this.logger.info("[GET] /user/update/{} - (id: {}) 유저 정보 수정 페이지 접속", id, id);
         try {
             UserInfoResponse userProfile = this.userService.getUserProfile(id);
@@ -105,8 +110,13 @@ public class UserController {
         }
     }
 
+    /**
+     * 회원 프로필 수정 요청 [POST]
+     * @param req: 회원 프로필 수정 정보
+     * @param id: 수정하고자 하는 유저의 ID(PK)
+     */
     @PostMapping("/users/update/{id}")
-    public String updateUser(UserUpdateRequest req,  @PathVariable("id") Integer id) {
+    public String updateUser(UserUpdateRequest req,  @PathVariable("id") Long id) {
         this.logger.info("[POST] /user/update/{} - (id: {}) 유저 정보 수정", id, id);
         try {
             this.userService.updateUser(id, req);
