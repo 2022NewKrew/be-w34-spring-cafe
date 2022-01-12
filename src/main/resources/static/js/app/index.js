@@ -24,7 +24,7 @@ var main = {
         var data = {
             title: $('#title').val(),
             content: $('#question').val(),
-            userAccountId: 0
+            userAccountId: 1
         };
         $.ajax({
             type: 'POST',
