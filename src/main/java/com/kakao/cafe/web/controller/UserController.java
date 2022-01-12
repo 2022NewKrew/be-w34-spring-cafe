@@ -46,4 +46,27 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("/users/{userId}/form")
+    public String updateForm(Model model, @PathVariable String userId) {
+        User user = users.stream().filter(obj -> userId.equals(obj.getUserId())).findAny().orElse(null);
+        logger.info("GET /users/{}/form: response user edit page with {}", userId, user);
+        // user 수정 페이지 응답
+        model.addAttribute("user", user);
+        return "user/updateForm";
+    }
+
+    @PostMapping("/users/{userId}/update")
+    public String updateUser(User newUser, @PathVariable String userId) {
+        logger.info("POST /users/{}/update: request {} and update", userId, newUser);
+        // user 수정
+        User user = users.stream().filter(obj -> userId.equals(obj.getUserId())).findAny().orElse(null);
+        if (user != null) {
+            user.setEmail(newUser.getEmail());
+            user.setName(newUser.getName());
+            user.setPassword(newUser.getPassword());
+        }
+
+        return "redirect:/users/{userId}";
+    }
+
 }
