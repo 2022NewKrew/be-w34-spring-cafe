@@ -41,6 +41,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public void update(User user) {
+        if (ObjectUtils.isEmpty(user)) {
+            throw new IllegalArgumentException("사용자의 정보가 없어서 업데이트할 수 없습니다.");
+        }
+        if (findById(user.getId()).isEmpty()) {
+            throw new IllegalArgumentException("등록되지 않은 사용자 입니다.");
+        }
+        users.put(user.getId(), user);
+    }
+
+    @Override
     public void deleteAll() {
         users.clear();
     }

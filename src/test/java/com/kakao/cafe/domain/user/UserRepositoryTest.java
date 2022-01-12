@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,6 +144,72 @@ class UserRepositoryTest {
         assertThat(user.getEmail()).isEqualTo(expected.getEmail());
         assertThat(user.getPassword()).isEqualTo(expected.getPassword());
         assertThat(user.getCreatedAt()).isEqualTo(user.getCreatedAt());
+    }
+
+    @DisplayName("null인 사용자의 정보를 업데이트 요청하면 에러를 발생시켜야 한다.")
+    @Test
+    void updateNull() {
+        User user = null;
+
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            userRepository.update(user);
+        });
+    }
+
+    @DisplayName("등록되지 않은 사용자의 정보를 업데이트 요청하면 에러를 발생시켜야 한다.")
+    @Test
+    void updateNotSignupUser() {
+        long id = 12345678910L;
+        String email = "abc1234@abc.com";
+        String nickname = "ABC";
+        String password = "abcdef";
+        LocalDateTime createdAt = LocalDateTime.now();
+        User userForUpdate = User.builder()
+                .id(id)
+                .email(email)
+                .nickname(nickname)
+                .password(password)
+                .createdAt(createdAt)
+                .build();
+
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            userRepository.update(userForUpdate);
+        });
+    }
+
+    @DisplayName("등록된 사용자의 정보를 업데이트 요청하면 요청한 정보와 동일해야 한다.")
+    @Test
+    void update() {
+        String email = "abc1234@abc.com";
+        String nickname = "ABC";
+        String password = "abcdef";
+        LocalDateTime createdAt = LocalDateTime.now();
+        User user = User.builder()
+                .email(email)
+                .nickname(nickname)
+                .password(password)
+                .createdAt(createdAt)
+                .build();
+        userRepository.save(user);
+        String updatedEmail = "test@test.com";
+        String updatedNickname = "TEST";
+        String updatedPassword = "test";
+        User userForUpdate = User.builder()
+                .id(user.getId())
+                .email(updatedEmail)
+                .nickname(updatedNickname)
+                .password(updatedPassword)
+                .createdAt(createdAt)
+                .build();
+
+        userRepository.update(userForUpdate);
+
+        User updatedUser = userRepository.findById(user.getId()).orElse(null);
+        assertThat(updatedUser).isNotNull();
+        assertThat(updatedUser.getId()).isEqualTo(user.getId());
+        assertThat(updatedUser.getEmail()).isEqualTo(updatedEmail);
+        assertThat(updatedUser.getNickname()).isEqualTo(updatedNickname);
+        assertThat(updatedUser.getPassword()).isEqualTo(updatedPassword);
     }
 
 }

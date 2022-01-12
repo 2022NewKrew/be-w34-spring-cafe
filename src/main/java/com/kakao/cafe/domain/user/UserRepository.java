@@ -8,5 +8,6 @@ public interface UserRepository {
     List<User> findAll();
     Optional<User> findById(long id);
     Optional<User> findByEmail(String email);
+    void update(User user);
     void deleteAll();
 }
