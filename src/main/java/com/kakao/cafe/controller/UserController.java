@@ -66,7 +66,6 @@ public class UserController {
     @PutMapping("/{id}/update")
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) {
 
-        System.out.println(userUpdateDto.getUserId() +" userId");
         //TODO: model Mapper 매핑에러
         //User user = modelMapper.map(userUpdateDto, User.class);
 
@@ -74,7 +73,6 @@ public class UserController {
         user.setId(id);
         user.setName(userUpdateDto.getName());
         user.setEmail(userUpdateDto.getEmail());
-        user.setUserId(userUpdateDto.getUserId());
 
 
         if (!userService.update(user)) {

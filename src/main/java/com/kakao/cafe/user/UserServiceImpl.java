@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
     public boolean update(User user) {
 
         User origin = userRepository.findOne(user.getId());
-        origin.setUserId(user.getUserId());
         origin.setEmail(user.getEmail());
         origin.setName(user.getName());
 
