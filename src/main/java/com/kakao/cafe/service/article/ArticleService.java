@@ -2,7 +2,9 @@ package com.kakao.cafe.service.article;
 
 import com.kakao.cafe.domain.Entity.Article;
 import com.kakao.cafe.domain.Repository.article.ArticleRepository;
-import com.kakao.cafe.dto.article.ArticleDto;
+import com.kakao.cafe.dto.article.ReferArticleDto;
+import com.kakao.cafe.dto.article.WriteArticleDto;
+import com.kakao.cafe.exceptions.NoSuchArticleException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,22 +16,22 @@ import java.util.List;
 public class ArticleService {
     private ArticleRepository articleRepository;
 
-    public void postNewArticle(ArticleDto articleDto) {
-        this.articleRepository.postNewArticle(articleDto.toEntity());
+    public void postNewArticle(WriteArticleDto articleDto) {
+        this.articleRepository.postNewArticle(articleDto.toEntity(articleRepository.getNextArticleId()));
     }
 
-    public List<ArticleDto> getArticleList() {
-        List<ArticleDto> articleList = new ArrayList<>();
+    public List<ReferArticleDto> getArticleList() {
+        List<ReferArticleDto> articleList = new ArrayList<>();
         for (Article article : this.articleRepository.findAllArticles()) {
-            ArticleDto articleDto = new ArticleDto(article.getWriter(), article.getTitle(), article.getContents());
+            ReferArticleDto articleDto = new ReferArticleDto(article.getArticleId(), article.getWriter(), article.getTitle(), article.getContents());
             articleList.add(articleDto);
         }
         return articleList;
     }
 
-    public ArticleDto getArticleById(int articleId) {
+    public ReferArticleDto getArticleById(int articleId) throws NoSuchArticleException {
         Article article = this.articleRepository.findArticleById(articleId);
-        ArticleDto articleDto = new ArticleDto(article.getWriter(), article.getTitle(), article.getContents());
+        ReferArticleDto articleDto = new ReferArticleDto(article.getArticleId(), article.getWriter(), article.getTitle(), article.getContents());
         return articleDto;
     }
 }
