@@ -30,19 +30,14 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String create(ArticleDto form) {
-        Article article = new Article();
-        article.setWriter(form.getWriter());
-        article.setTitle(form.getTitle());
-        article.setContents(form.getContents());
-        articleService.save(article);
+    public String create(ArticleDto articleDto) {
+        articleService.save(articleDto);
         return "redirect:/";
     }
     @GetMapping("/articles/{id}")
     public String findUser(@PathVariable("id") Long articleId, Model model) {
         Article article = articleService.findArticle(articleId);
         model.addAttribute("article" , article);
-        System.out.println(article.toString());
         return "qna/show";
     }
 

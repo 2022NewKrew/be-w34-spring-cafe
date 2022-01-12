@@ -23,13 +23,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String create(UserDto form) {
-        User user = new User();
-        user.setUserId(form.getUserId());
-        user.setEmail(form.getEmail());
-        user.setName(form.getName());
-        user.setPassword(form.getPassword());
-        userService.save(user);
+    public String create(UserDto userDto) {
+        userService.save(userDto);
         return "redirect:/users";
     }
 
@@ -54,14 +49,9 @@ public class UserController {
         return "user/updateForm";
     }
     @PostMapping("/users/{id}/update")
-    public String update(@PathVariable("id") Long id, UserDto form, Model model) {
-        User updateUser = new User();
-        updateUser.setId(id);
-        updateUser.setUserId(form.getUserId());
-        updateUser.setEmail(form.getEmail());
-        updateUser.setName(form.getName());
-        updateUser.setPassword(form.getPassword());
-        userService.updateUserInfo(id,updateUser);
+    public String update(@PathVariable("id") Long id, UserDto userDto) {
+
+        userService.updateUserInfo(id,userDto);
 
         return "redirect:/users";
     }

@@ -1,24 +1,27 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.mapper.UserMapper;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
-    public void save(User user) {
-        userRepository.save(user);
+    public void save(UserDto userDto) {
+        userRepository.save(userMapper.toEntity(userDto));
     }
 
     public User findUser(String userId) {
@@ -33,7 +36,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void updateUserInfo(Long id, User updateUser) {
+    public void updateUserInfo(Long id, UserDto updateUserDto) {
+        // updateUser 는 기존 user와 동일한 id를 갖기 때문에 채워주는 과정.
+        User updateUser = userMapper.toEntity(updateUserDto);
+        updateUser.setId(id);
+
         User user = findUser(id);
         validatePasswordMember(user.getPassword(), updateUser.getPassword());
         userRepository.updateUser(id, updateUser);
