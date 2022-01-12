@@ -8,7 +8,8 @@ import java.util.Locale;
 
 public class ArticleDto {
     private long idx;
-    private String author;
+    private String userId;
+    private String userName;
     private String title;
     private String body;
     private String[] bodyLines;
@@ -17,7 +18,8 @@ public class ArticleDto {
     static public ArticleDto from(@NonNull final Article article) {
         ArticleDto articleDto = new ArticleDto();
         articleDto.setIdx(article.getIdx());
-        articleDto.setAuthor(article.getAuthor());
+        articleDto.setUserId(article.getUserId());
+        articleDto.setUserName(article.getUserName());
         articleDto.setTitle(article.getTitle());
         articleDto.setBody(article.getBody());
         articleDto.setBodyLines(
@@ -37,12 +39,20 @@ public class ArticleDto {
         this.idx = idx;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getTitle() {

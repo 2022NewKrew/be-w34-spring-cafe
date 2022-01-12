@@ -17,7 +17,7 @@ import java.util.Objects;
 
 @Controller
 public class UserController {
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -25,10 +25,7 @@ public class UserController {
         this.userService = Objects.requireNonNull(userService);
     }
 
-    @GetMapping("/signup")
-    public String getSignUp() {
-        return "signup";
-    }
+    // Get /signup -> "users/signup"
 
     @PostMapping("/users")
     public String processSignUp(
@@ -36,10 +33,16 @@ public class UserController {
             @RequestParam("password") @NonNull final String password
     )
     {
-        userService.add(userDto, password);
+        try {
+            userService.add(userDto, password);
+        } catch (IllegalStateException e) {
+            return "redirect:/dupUserFound";
+        }
         logger.info("New User added: " + userDto.getId());
         return "redirect:/users";
     }
+
+    // Get /dupUserFound -> "users/dupUserFound"
 
     @GetMapping("/users")
     public String getUserList(final Model model) {

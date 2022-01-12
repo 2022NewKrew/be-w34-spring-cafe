@@ -1,7 +1,9 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.ArticleDto;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -16,7 +18,7 @@ import java.util.Objects;
 
 @Controller
 public class ArticleController {
-    Logger logger = LoggerFactory.getLogger(ArticleController.class);
+    private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     private final ArticleService articleService;
 
@@ -27,7 +29,7 @@ public class ArticleController {
     @GetMapping("/")
     public String getArticles(final Model model) {
         model.addAttribute("articles", articleService.getList());
-        return "index";
+        return "articles/index";
     }
 
     @GetMapping("/articles")
@@ -36,18 +38,23 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/new")
-    public String newArticle() {
+    public String newArticle(final Model model) {
+        // (when login impl) getCurrentUser(); -> write userName attribute
+        model.addAttribute("userName", User.NONE.getName());
         return "articles/new";
     }
 
     @PostMapping("/articles")
     public String writeArticle(@NonNull final ArticleDto articleDto) {
+        // (when login impl) getCurrentUser(); -> update userId, userName in articleDto
+        articleDto.setUserId(User.NONE.getId());
+        articleDto.setUserName(User.NONE.getName());
         articleService.add(articleDto);
         logger.info("New Article added: " + articleDto.getTitle());
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{idx}/{title}")
+    @GetMapping("/articles/{idx}")
     public String getArticleDetail(
             @PathVariable("idx") @NonNull final long idx,
             final Model model
