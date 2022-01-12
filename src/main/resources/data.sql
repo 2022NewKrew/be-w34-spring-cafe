@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS Member
 (
-    id integer NOT NULL,
+    id integer NOT NULL auto_increment,
     name varchar(255) NOT NULL,
     userId varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Member
 
 CREATE TABLE IF NOT EXISTS Post
 (
-    id integer NOT NULL,
+    id integer NOT NULL auto_increment,
     title varchar(255) not null,
     content varchar(255) not null,
     createdAt timestamp,

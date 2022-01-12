@@ -11,13 +11,21 @@ public class Post {
     private String title;
     private String content;
     private LocalDate createdAt;
-    private User writer;
+    private Member writer;
     private int viewCount;
 
     public Post() {
     }
 
-    public Post(int id, String title, String content, LocalDate createdAt, User writer, int viewCount) {
+    public Post(String title, String content, LocalDate createdAt, Member writer, int viewCount) {
+        this.title = title;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.writer = writer;
+        this.viewCount = viewCount;
+    }
+
+    public Post(int id, String title, String content, LocalDate createdAt, Member writer, int viewCount) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -26,12 +34,11 @@ public class Post {
         this.viewCount = viewCount;
     }
 
-    public static Post of(PostCreateDto postCreateDto, User user) {
-        return new Post(postSeq++,
-                postCreateDto.getTitle(),
+    public static Post of(PostCreateDto postCreateDto, Member member) {
+        return new Post(postCreateDto.getTitle(),
                 postCreateDto.getContents(),
                 LocalDate.now(),
-                user,
+                member,
                 0);
     }
 
@@ -63,11 +70,11 @@ public class Post {
         this.createdAt = createdAt;
     }
 
-    public User getWriter() {
+    public Member getWriter() {
         return writer;
     }
 
-    public void setWriter(User writer) {
+    public void setWriter(Member writer) {
         this.writer = writer;
     }
 

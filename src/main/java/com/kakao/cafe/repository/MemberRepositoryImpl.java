@@ -1,7 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.DB.RogerDB;
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -9,26 +9,27 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserRepositoryImpl implements UserRepository {
+public class MemberRepositoryImpl implements MemberRepository {
     private final RogerDB rogerDB;
 
     @Autowired
-    public UserRepositoryImpl(RogerDB rogerDB) {
+    public MemberRepositoryImpl(RogerDB rogerDB) {
         this.rogerDB = rogerDB;
     }
 
     @Override
-    public void save(User newUser) {
-        rogerDB.getUser().add(newUser);
+    public int save(Member newMember) {
+        rogerDB.getUser().add(newMember);
+        return 0;
     }
 
     @Override
-    public Optional<List<User>> findAll() {
+    public Optional<List<Member>> findAll() {
         return Optional.ofNullable(rogerDB.getUser());
     }
 
     @Override
-    public User findByUserId(String userId) {
+    public Member findByUserId(String userId) {
         return rogerDB.getUser()
                 .stream()
                 .filter(user -> user.getUserId().equals(userId))
@@ -36,7 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public Member findByEmail(String email) {
         return rogerDB.getUser()
                 .stream()
                 .filter(user -> user.getEmail().equals(email))

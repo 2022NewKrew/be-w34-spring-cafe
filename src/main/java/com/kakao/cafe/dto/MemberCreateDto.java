@@ -1,15 +1,15 @@
 package com.kakao.cafe.dto;
 
-public class UserCreateDto {
+public class MemberCreateDto {
     private String userId;
     private String password;
     private String email;
     private String name;
 
-    public UserCreateDto() {
+    public MemberCreateDto() {
     }
 
-    public UserCreateDto(String userId, String password, String email, String name) {
+    public MemberCreateDto(String userId, String password, String email, String name) {
         this.userId = userId;
         this.password = password;
         this.email = email;
