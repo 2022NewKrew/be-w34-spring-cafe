@@ -21,10 +21,10 @@ public class UserService {
         return userRepository.getUsers();
     }
 
-    public UserProfileDTO getUserByUserId(String userId){
+    public User getUserByUserId(String userId){
         for(User user : userRepository.getUsers()){
             if(user.getUserId().equals(userId)){
-                return new UserProfileDTO(user);
+                return user;
             }
         }
 
