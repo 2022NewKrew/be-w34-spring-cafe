@@ -10,7 +10,7 @@ public class UserJoinForm {
     private UserPw upw;
 
 
-    public void UserJoinForm(String uid, String upw, String umail){
+    public UserJoinForm(String uid, String upw, String umail){
         this.uid = new UserId(uid);
         this.upw = new UserPw(upw);
         this.umail = new UserMail(umail);

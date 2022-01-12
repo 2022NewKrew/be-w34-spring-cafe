@@ -2,6 +2,7 @@ package kakao.bew34springcafe.web;
 
 import kakao.bew34springcafe.db.UserList;
 import kakao.bew34springcafe.domain.User;
+import kakao.bew34springcafe.dto.UserJoinForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +28,10 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String postJoin(String uid, String umail, String upw){ //
-        User user = new User(uid,umail,upw);
-        logger.info("user join log: " + user.toString());
+    //public String postJoin(String uid, String umail, String upw){ //
+    public String postJoin(UserJoinForm userJoinForm){
+        logger.info("[info] user join:"+ userJoinForm);
+        User user = new User(userJoinForm);
         UserList.addUser(user);
         return "redirect:/user";
     }
