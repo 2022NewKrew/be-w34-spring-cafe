@@ -1,9 +1,9 @@
 package com.kakao.cafe.application.article.service;
 
-import com.kakao.cafe.application.article.dto.ArticleDetail;
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
 import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
+import com.kakao.cafe.domain.article.Article;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +21,7 @@ public class GetArticleInfoService implements GetArticleInfoUseCase {
     }
 
     @Override
-    public ArticleDetail getArticleDetail(int index) {
+    public Article getArticleDetail(int index) {
         return getArticleInfoPort.findArticleByIndex(index);
     }
 }

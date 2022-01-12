@@ -1,7 +1,6 @@
 package com.kakao.cafe.adapter.out.infra.persistence.article;
 
 import com.kakao.cafe.domain.article.Article;
-import java.time.LocalDateTime;
 
 public class ArticleInfoEntity {
 
@@ -9,9 +8,9 @@ public class ArticleInfoEntity {
     private final String writer;
     private final String title;
     private final String contents;
-    private final LocalDateTime createdAt;
+    private final String createdAt;
 
-    public ArticleInfoEntity(int id, String writer, String title, String contents, LocalDateTime createdAt) {
+    public ArticleInfoEntity(int id, String writer, String title, String contents, String createdAt) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -45,7 +44,7 @@ public class ArticleInfoEntity {
         return contents;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 }

@@ -5,6 +5,7 @@ import com.kakao.cafe.application.article.port.in.WriteArticleUseCase;
 import com.kakao.cafe.application.article.port.out.RegisterArticlePort;
 import com.kakao.cafe.domain.article.Article;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class WriteArticleService implements WriteArticleUseCase {
             writeRequest.getWriter(),
             writeRequest.getTitle(),
             writeRequest.getContents(),
-            LocalDateTime.now()
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
         ));
     }
 }
