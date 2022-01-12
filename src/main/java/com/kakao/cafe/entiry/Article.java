@@ -72,4 +72,15 @@ public class Article {
     public void setRegisterDateTime(LocalDateTime registerDateTime) {
         this.registerDateTime = registerDateTime;
     }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", writerUserId='" + writerUserId + '\'' +
+                ", title='" + title + '\'' +
+                ", contents='" + contents + '\'' +
+                ", registerDateTime=" + registerDateTime +
+                '}';
+    }
 }

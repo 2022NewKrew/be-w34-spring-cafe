@@ -7,9 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/articles")
@@ -30,5 +29,13 @@ public class ArticleController {
         Article article = Article.of(articleFrom);
         articleService.register(article);
         return "redirect:/";
+    }
+
+    @GetMapping("/{id}")
+    public String showArticle(@PathVariable Long id, Model model){
+        logger.info("GET /{id}");
+        Article article = articleService.getArticle(id);
+        model.addAttribute("article", article);
+        return "article/show";
     }
 }
