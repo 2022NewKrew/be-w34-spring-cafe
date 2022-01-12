@@ -3,7 +3,8 @@ package com.kakao.cafe.interfaces.user.dto;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserVo;
 import com.kakao.cafe.interfaces.user.dto.request.JoinUserRequestDto;
-import com.kakao.cafe.interfaces.user.dto.response.UserListResponseDto;
+import com.kakao.cafe.interfaces.user.dto.request.UpdateUserRequestDto;
+import com.kakao.cafe.interfaces.user.dto.response.UserResponseDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,9 +20,20 @@ public class UserMapper {
                 joinUserRequestDto.getEmail());
     }
 
-    public static List<UserListResponseDto> convertEntityListToResponseDtoList(List<User> userList) {
+    public static UserVo convertUpdateUserDtoToVo(String userId, UpdateUserRequestDto updateUserRequestDto) {
+        return new UserVo(userId,
+                updateUserRequestDto.getChangePassword(),
+                updateUserRequestDto.getName(),
+                updateUserRequestDto.getEmail());
+    }
+
+    public static UserResponseDto convertEntityToDto(User user) {
+        return new UserResponseDto(user.getUserId(), user.getName(), user.getEmail());
+    }
+
+    public static List<UserResponseDto> convertEntityListToResponseDtoList(List<User> userList) {
         return userList.stream()
-                .map(e -> new UserListResponseDto(e.getUserId(), e.getName(), e.getEmail()))
+                .map(UserMapper::convertEntityToDto)
                 .collect(Collectors.toList());
     }
 }

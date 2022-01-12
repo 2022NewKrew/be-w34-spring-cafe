@@ -27,4 +27,8 @@ public class FindUserService {
         return findUserPort.findAll();
     }
 
+    public boolean checkPassWordMatch(String userId, String password) {
+        Optional<User> optionalUser = findUserPort.findByUserIdAndPassword(userId, password);
+        return optionalUser.isPresent();
+    }
 }

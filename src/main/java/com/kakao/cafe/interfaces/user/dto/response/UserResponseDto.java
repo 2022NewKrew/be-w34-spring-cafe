@@ -1,11 +1,11 @@
 package com.kakao.cafe.interfaces.user.dto.response;
 
-public class UserListResponseDto {
+public class UserResponseDto {
     private final String userId;
     private final String name;
     private final String email;
 
-    public UserListResponseDto(String userId, String name, String email) {
+    public UserResponseDto(String userId, String name, String email) {
         this.userId = userId;
         this.name = name;
         this.email = email;
