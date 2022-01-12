@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.controller;
 
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.dto.UserCreateDTO;
 import com.kakao.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +23,8 @@ public class UserController {
 
     //회원가입요청
     @PostMapping(value = "/user/create")
-    public String userCreate(User user, Model model){
-        userService.userCreate(user);
+    public String userCreate(UserCreateDTO userCreateDTO){
+        userService.userCreate(userCreateDTO);
         return "redirect:/user/list";
     }
 

@@ -1,5 +1,7 @@
 package com.kakao.cafe.user.domain;
 
+import com.kakao.cafe.user.dto.UserCreateDTO;
+
 public class User {
     private String userId;
     private String password;
@@ -8,11 +10,12 @@ public class User {
     private Long sequence;
 
     //setter 대신 객체는 항상 생성자로만 생성하도록 구성.
-    public User(String userId, String password, String name, String email) {
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
+    public User(UserCreateDTO userCreateDTO, Long sequence) {
+        this.userId = userCreateDTO.getUserId();
+        this.password = userCreateDTO.getPassword();
+        this.name = userCreateDTO.getName();
+        this.email = userCreateDTO.getEmail();
+        this.sequence = sequence;
     }
 
     public String getUserId() {
@@ -33,9 +36,5 @@ public class User {
 
     public Long getSequence() {
         return sequence;
-    }
-
-    public void setSequence(Long sequence) {
-        this.sequence = sequence;
     }
 }
