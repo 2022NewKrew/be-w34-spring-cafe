@@ -1,11 +1,13 @@
-package com.kakao.cafe.domain.user;
+package com.kakao.cafe.infrastructure.user;
 
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserPort;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
-public class UserInMemoryRepository implements UserRepository {
+public class UserInMemoryAdapter implements UserPort {
     private static final Map<String, User> users = Collections.synchronizedMap(new HashMap<>());
 
     @Override

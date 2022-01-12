@@ -1,7 +1,7 @@
 package com.kakao.cafe.application;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserRepository;
+import com.kakao.cafe.domain.user.UserPort;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ class UserServiceTest {
     UserService userService;
 
     @Mock
-    UserRepository userRepository;
+    UserPort userPort;
 
     @DisplayName("유저 ID로 사용자를 조회할 수 있다")
     @Test
@@ -35,14 +35,14 @@ class UserServiceTest {
         User expectedUser = new User("2wls", "0224", "윤이진", "483759@naver.com");
         Optional<User> expectedOptionalUser = Optional.of(expectedUser);
         String userId = "2wls";
-        given(userRepository.findByUserId(userId))
+        given(userPort.findByUserId(userId))
                 .willReturn(expectedOptionalUser);
 
         // when
         User user = userService.findByUserId(userId);
 
         //then
-        verify(userRepository).findByUserId(userId);
+        verify(userPort).findByUserId(userId);
         assertThat(user)
                 .usingRecursiveComparison()
                 .isEqualTo(expectedUser);
@@ -53,7 +53,7 @@ class UserServiceTest {
     void checkFindNonExistUserByUserIdException() {
         // given
         String userIdThatDoesNotExist = "2wls";
-        given(userRepository.findByUserId(userIdThatDoesNotExist))
+        given(userPort.findByUserId(userIdThatDoesNotExist))
                 .willReturn(Optional.empty());
 
         // when
@@ -61,7 +61,7 @@ class UserServiceTest {
 
         //then
         assertThatThrownBy(runnable).isInstanceOf(IllegalArgumentException.class);
-        verify(userRepository).findByUserId(userIdThatDoesNotExist);
+        verify(userPort).findByUserId(userIdThatDoesNotExist);
     }
 
     @DisplayName("모든 사용자의 목록을 조회할 수 있다")
@@ -72,14 +72,14 @@ class UserServiceTest {
                 new User("2wls", "0224", "윤이진", "483759@naver.com"),
                 new User("1234", "1234", "1234", "1234@naver.com")
         );
-        given(userRepository.findAll())
+        given(userPort.findAll())
                 .willReturn(users);
 
         // when
         List<User> userList = userService.findAllUser();
 
         //then
-        verify(userRepository).findAll();
+        verify(userPort).findAll();
         assertThat(userList)
                 .extracting("userId", "password", "name", "email")
                 .containsExactly(
@@ -93,14 +93,14 @@ class UserServiceTest {
     void checkUserJoin() {
         // given
         User user = new User("2wls", "0224", "윤이진", "483759@naver.com");
-        given(userRepository.findByUserId("2wls"))
+        given(userPort.findByUserId("2wls"))
                 .willReturn(Optional.empty());
 
         // when
         userService.join(user);
 
         //then
-        verify(userRepository).save(any(User.class));
+        verify(userPort).save(any(User.class));
     }
 
     @DisplayName("이미 존재하는 사용자는 회원 가입을 할 수 없다")
@@ -108,14 +108,14 @@ class UserServiceTest {
     void checkDuplicatedUserJoinException() {
         // given
         User user = new User("2wls", "0224", "윤이진", "483759@naver.com");
-        given(userRepository.findByUserId("2wls"))
+        given(userPort.findByUserId("2wls"))
                 .willReturn(Optional.of(user));
 
         // when
         ThrowableAssert.ThrowingCallable runnable = () -> userService.join(user);
 
         //then
-        verify(userRepository, never()).save(any(User.class));
+        verify(userPort, never()).save(any(User.class));
         assertThatThrownBy(runnable).isInstanceOf(IllegalArgumentException.class);
     }
 }

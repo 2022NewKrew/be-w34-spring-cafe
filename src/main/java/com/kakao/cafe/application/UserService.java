@@ -1,21 +1,21 @@
 package com.kakao.cafe.application;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserRepository;
+import com.kakao.cafe.domain.user.UserPort;
 
 import java.util.List;
 import java.util.Optional;
 
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final UserPort userPort;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserService(UserPort userPort) {
+        this.userPort = userPort;
     }
 
     public User findByUserId(String userId) throws IllegalArgumentException {
-        Optional<User> optionalUser = userRepository.findByUserId(userId);
+        Optional<User> optionalUser = userPort.findByUserId(userId);
         if (optionalUser.isEmpty()) {
             throw new IllegalArgumentException();
         }
@@ -24,16 +24,16 @@ public class UserService {
     }
 
     public List<User> findAllUser() {
-        return userRepository.findAll();
+        return userPort.findAll();
     }
 
     public void join(User user) throws IllegalArgumentException {
-        Optional<User> optionalUser = userRepository.findByUserId(user.getUserId());
+        Optional<User> optionalUser = userPort.findByUserId(user.getUserId());
         if (optionalUser.isPresent()) {
             throw new IllegalArgumentException();
         }
 
-        userRepository.save(user);
+        userPort.save(user);
     }
 
 }
