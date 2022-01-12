@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -36,12 +35,8 @@ public class ArticleController {
                     fieldError.getDefaultMessage()));
             return "redirect:/qna/form-failed";
         }
+        articleService.create(createDTO);
 
-        try {
-            articleService.create(createDTO);
-        } catch (ResponseStatusException e) {
-            return "redirect:/qna/form-failed";
-        }
         return "redirect:/";
     }
 
@@ -56,13 +51,7 @@ public class ArticleController {
     @GetMapping("/articles/{articleId}")
     public ModelAndView read(Map<String, Object> model,
         @PathVariable Long articleId) {
-        Result resultDTO;
-        try {
-            resultDTO = articleService.readById(articleId);
-        } catch (ResponseStatusException e) {
-            return new ModelAndView("redirect:/", model);
-        }
-
+        Result resultDTO = articleService.readById(articleId);
         model.put("article", resultDTO);
 
         return new ModelAndView("qna/show", model);

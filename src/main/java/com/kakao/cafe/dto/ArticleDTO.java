@@ -1,6 +1,6 @@
 package com.kakao.cafe.dto;
 
-import com.kakao.cafe.model.Article;
+import com.kakao.cafe.persistence.model.Article;
 import java.time.format.DateTimeFormatter;
 import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;

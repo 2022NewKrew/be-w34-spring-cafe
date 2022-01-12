@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -37,12 +36,7 @@ public class UserController {
                     fieldError.getDefaultMessage()));
             return "redirect:/users/form-failed";
         }
-
-        try {
-            userService.create(createDTO);
-        } catch (ResponseStatusException e) {
-            return "redirect:/users/form-failed";
-        }
+        userService.create(createDTO);
 
         return "redirect:/users";
     }
@@ -52,21 +46,16 @@ public class UserController {
         List<Result> resultDTOs = userService.readAll();
         model.put("users", resultDTOs);
 
-        return new ModelAndView("user/list", model);
+        return new ModelAndView("/user/list", model);
     }
 
     @GetMapping("/{userId}")
     public ModelAndView read(Map<String, Object> model,
         @PathVariable String userId) {
-        Result resultDTO;
-        try {
-            resultDTO = userService.readByUserId(userId);
-        } catch (ResponseStatusException e) {
-            return new ModelAndView("redirect:/user/list", model);
-        }
+        Result resultDTO = userService.readByUserId(userId);
 
         model.put("user", resultDTO);
 
-        return new ModelAndView("user/profile", model);
+        return new ModelAndView("/user/profile", model);
     }
 }

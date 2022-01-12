@@ -3,18 +3,18 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Result;
-import com.kakao.cafe.error.UserError;
-import com.kakao.cafe.model.User;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.error.ErrorCode;
+import com.kakao.cafe.error.exception.UserAlreadyExistsException;
+import com.kakao.cafe.error.exception.UserNotFoundException;
+import com.kakao.cafe.persistence.model.User;
+import com.kakao.cafe.persistence.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +26,7 @@ public class UserService {
 
     public void create(Create createDto) {
         if (userRepository.findUserByUserId(createDto.getUserId()).isPresent()) {
-            logger.error("User ID : {} {}", createDto.getUserId(),
-                UserError.ALREADY_EXISTS.getMessage());
-
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                UserError.ALREADY_EXISTS.getMessage());
+            throw new UserAlreadyExistsException(ErrorCode.ALREADY_EXISTS, createDto.getUserId());
         }
 
         User user = User.of(createDto.getUserId(), createDto.getPassword(),
@@ -49,10 +45,7 @@ public class UserService {
     public UserDTO.Result readByUserId(String userId) {
         Optional<User> foundUser = userRepository.findUserByUserId(userId);
         if (foundUser.isEmpty()) {
-            logger.error("User ID : {} {}", userId, UserError.NOT_FOUND.getMessage());
-
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                UserError.NOT_FOUND.getMessage());
+            throw new UserNotFoundException(ErrorCode.NOT_FOUND, userId);
         }
 
         return Result.from(foundUser.get());

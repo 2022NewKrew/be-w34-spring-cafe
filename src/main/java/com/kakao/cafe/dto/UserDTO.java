@@ -1,6 +1,6 @@
 package com.kakao.cafe.dto;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.persistence.model.User;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.AccessLevel;

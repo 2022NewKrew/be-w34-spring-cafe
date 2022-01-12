@@ -1,6 +1,6 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.persistence.repository;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.persistence.model.User;
 import java.util.List;
 import java.util.Optional;
 

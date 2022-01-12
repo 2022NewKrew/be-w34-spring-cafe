@@ -1,4 +1,4 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.persistence.model;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicLong;

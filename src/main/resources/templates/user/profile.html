@@ -10,20 +10,23 @@
             <div class="panel-heading"><h4>Profiles</h4></div>
             <div class="panel-body">
                 <div class="well well-sm">
+                    {{#user}}
                     <div class="media">
                         <a class="thumbnail pull-left" href="#">
                             <img class="media-object" src="/images/80-text.png">
                         </a>
                         <div class="media-body">
-                            {{#user}}
                             <h4 class="media-heading">{{name}}</h4>
                             <p>
                                 <a href="#" class="btn btn-xs btn-default"><span
                                     class="glyphicon glyphicon-envelope"></span>&nbsp;{{email}}</a>
                             </p>
-                            {{/user}}
                         </div>
                     </div>
+                    {{/user}}
+                    {{^user}}
+                    <h4>해당하는 유저가 존재하지 않습니다.</h4>
+                    {{/user}}
                 </div>
             </div>
         </div>
