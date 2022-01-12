@@ -3,9 +3,10 @@ package com.kakao.cafe.member.service;
 import com.kakao.cafe.member.domain.Member;
 import com.kakao.cafe.member.dto.MemberRequestDTO;
 import com.kakao.cafe.member.dto.MemberResponseDTO;
+import com.kakao.cafe.member.dto.MemberUpdateRequestDTO;
 import com.kakao.cafe.member.repository.MemberRepository;
+import com.kakao.cafe.member.util.PasswordChecker;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,8 +22,8 @@ public class MemberService {
     public Long join(MemberRequestDTO memberRequestDTO) {
         validateDuplicateEmail(memberRequestDTO.getEmail());
         Member member = memberRequestDTO.toMember(LocalDate.now());
-        validateCheckPassword(member, memberRequestDTO.getPasswordCheck());
-        return memberRepository.save(member);
+        validateCheckPassword(memberRequestDTO.getPassword(), memberRequestDTO.getPasswordCheck());
+        return memberRepository.save(member).getId();
     }
 
     private void validateDuplicateEmail(String email) {
@@ -31,9 +32,9 @@ public class MemberService {
         }
     }
 
-    private void validateCheckPassword(Member member, String passwordCheck) {
-        if (!member.checkPassword(passwordCheck)) {
-            throw new IllegalArgumentException("패스워드 확인이 일치하지 않습니다.");
+    private void validateCheckPassword(String password, String passwordCheck) {
+        if (!PasswordChecker.checkPassword(password, passwordCheck)) {
+            throw new IllegalArgumentException("비밀번호 확인이 일치하지 않습니다.");
         }
     }
 
@@ -47,7 +48,10 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
-    public void update(Long id) {
-        // memberRepository.update(id);
+    public void update(Long id, MemberUpdateRequestDTO memberUpdateRequestDTO) {
+        Member member = memberRepository.findOne(id);
+        validateCheckPassword(member.getPassword(), memberUpdateRequestDTO.getCurrentPassword());
+        validateCheckPassword(memberUpdateRequestDTO.getPassword(), memberUpdateRequestDTO.getPasswordCheck());
+        memberRepository.update(id, memberUpdateRequestDTO.toMember(member.getCreateDate()));
     }
 }

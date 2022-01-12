@@ -16,11 +16,11 @@ public class MemoryMemberRepository implements MemberRepository {
     private static final List<Member> memoryRepository = new ArrayList<>();
 
     @Override
-    public Long save(Member member) {
+    public Member save(Member member) {
         sequenceNumber++;
         member.setId(sequenceNumber);
         memoryRepository.add(member);
-        return sequenceNumber;
+        return member;
     }
 
     @Override
@@ -42,7 +42,9 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public void update(Long id) {
-
+    public void update(Long id, Member member) {
+        member.setId(id);
+        System.out.println(member);
+        memoryRepository.set(id.intValue() - 1, member);
     }
 }

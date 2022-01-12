@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MemberRepository {
 
-    Long save(Member member);
+    Member save(Member member);
 
     Member findOne(Long id);
 
@@ -15,6 +15,6 @@ public interface MemberRepository {
 
     List<Member> findAll();
 
-    void update(Long id);
+    void update(Long id, Member member);
 
 }

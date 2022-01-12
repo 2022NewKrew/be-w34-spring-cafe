@@ -2,6 +2,7 @@ package com.kakao.cafe.member.controller;
 
 import com.kakao.cafe.member.dto.MemberRequestDTO;
 import com.kakao.cafe.member.dto.MemberResponseDTO;
+import com.kakao.cafe.member.dto.MemberUpdateRequestDTO;
 import com.kakao.cafe.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -51,9 +52,10 @@ public class MemberController {
         return "members/profile";
     }
 
-    @PatchMapping("/members/{id}")
-    public String patchMember(@PathVariable Long id) {
-        return "redirect:members";
+    @PutMapping("/members/{id}")
+    public String patchMember(@PathVariable Long id, MemberUpdateRequestDTO memberUpdateRequestDTO) {
+        memberService.update(id, memberUpdateRequestDTO);
+        return "redirect:/members";
     }
 
     @GetMapping("/login")
