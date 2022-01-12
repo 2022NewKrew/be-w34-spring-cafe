@@ -1,7 +1,6 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.model.Article;
-import com.kakao.cafe.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,19 +27,19 @@ public class ArticleJdbcRepository implements ArticleRepository{
 
     @Override
     public Long getNumberOfArticles(){
-        String sql = "select count(*) from article";
+        String sql = "SELECT COUNT(*) FROM ARTICLE";
         return jdbcTemplate.queryForObject(sql, Long.class);
     }
 
     @Override
     public List<Article> findAll(){
-        String sql = "select * from article";
+        String sql = "SELECT * FROM ARTICLE";
         return jdbcTemplate.query(sql, articleRowMapper());
     }
 
     @Override
     public Article findOneById(Long id){
-        String sql = "select * from article where id=?";
+        String sql = "SELECT * FROM ARTICLE WHERE id=?";
         return jdbcTemplate.queryForObject(sql, articleRowMapper(), id);
     }
 
