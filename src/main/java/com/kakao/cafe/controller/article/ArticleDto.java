@@ -1,4 +1,6 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.controller.article;
+
+import com.kakao.cafe.model.Article;
 
 import java.time.LocalDateTime;
 
@@ -9,12 +11,12 @@ public class ArticleDto {
     private final String contents;
     private final LocalDateTime createDate;
 
-    public ArticleDto(int id, String title, String writer, String contents, LocalDateTime localDateTime) {
-        this.id = id;
-        this.title = title;
-        this.writer = writer;
-        this.contents = contents;
-        this.createDate = localDateTime;
+    public ArticleDto(Article article) {
+        this.id = article.getId();
+        this.title = article.getTitle();
+        this.writer = article.getWriter();
+        this.contents = article.getContents();
+        this.createDate = article.getCreateDate();
     }
 
     public String getTitle() {

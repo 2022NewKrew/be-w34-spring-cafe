@@ -5,11 +5,11 @@ import com.kakao.cafe.model.Article;
 import java.util.List;
 
 public interface ArticleDao {
-    List<Article> getPartOfArticles(int startIndex, int finishIndex);
+    List<Article> getArticles(int pageNumber, int ArticlesPerPage);
 
-    void add(Article article);
+    void addArticle(String title, String writer, String contents);
 
-    Article get(int id);
+    Article findArticleById(int id);
 
     int getSize();
 }

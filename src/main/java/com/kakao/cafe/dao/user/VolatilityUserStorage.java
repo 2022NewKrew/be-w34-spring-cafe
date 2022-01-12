@@ -24,21 +24,25 @@ public class VolatilityUserStorage implements UserDao {
     }
 
     @Override
-    public void add(User user) {
-        if (findUserByUserId(user.getUserId()) == null) {
-            users.add(user);
-            return;
-        }
-        throw new IllegalArgumentException("중복된 UserId를 갖는 사용자가 존재합니다.");
+    public void addUser(String userId, String password, String name, String email) {
+        users.stream()
+                .filter(tempUser -> tempUser.isUserId(userId))
+                .findAny()
+                .ifPresentOrElse(
+                        User -> {
+                            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+                        },
+                        () -> users.add(new User(userId, password, name, email))
+                );
     }
 
     @Override
-    public User get(String userId) {
-        User user = findUserByUserId(userId);
-        if (user == null) {
-            throw new IllegalArgumentException("찾는 사용자가 존재하지 않습니다.");
-        }
-        return user;
+    public User findUserById(String userId) {
+        return users
+                .stream()
+                .filter(user -> user.isUserId(userId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("찾은 사용자가 없습니다."));
     }
 
     @Override
@@ -52,16 +56,8 @@ public class VolatilityUserStorage implements UserDao {
         NullChecker.checkNotNull(name);
         NullChecker.checkNotNull(email);
 
-        User user = findUserByUserId(userId);
+        User user = findUserById(userId);
         user.setName(name);
         user.setEmail(email);
-    }
-
-    private User findUserByUserId(String userId) {
-        return users
-                .stream()
-                .filter(user -> user.getUserId().equals(userId))
-                .findFirst()
-                .orElse(null);
     }
 }
