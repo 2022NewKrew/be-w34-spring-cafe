@@ -58,7 +58,13 @@ public class UserController {
     @GetMapping("/{userId}")
     public ModelAndView read(Map<String, Object> model,
         @PathVariable String userId) {
-        Result resultDTO = userService.readByUserId(userId);
+        Result resultDTO;
+        try {
+            resultDTO = userService.readByUserId(userId);
+        } catch (ResponseStatusException e) {
+            return new ModelAndView("redirect:/user/list", model);
+        }
+
         model.put("user", resultDTO);
 
         return new ModelAndView("user/profile", model);

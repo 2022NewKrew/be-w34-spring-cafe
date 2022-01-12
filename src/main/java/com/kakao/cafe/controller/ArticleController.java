@@ -56,7 +56,13 @@ public class ArticleController {
     @GetMapping("/articles/{articleId}")
     public ModelAndView read(Map<String, Object> model,
         @PathVariable Long articleId) {
-        Result resultDTO = articleService.readById(articleId);
+        Result resultDTO;
+        try {
+            resultDTO = articleService.readById(articleId);
+        } catch (ResponseStatusException e) {
+            return new ModelAndView("redirect:/", model);
+        }
+
         model.put("article", resultDTO);
 
         return new ModelAndView("qna/show", model);
