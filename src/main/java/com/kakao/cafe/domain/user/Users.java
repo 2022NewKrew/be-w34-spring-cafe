@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.user;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +10,7 @@ public class Users {
     private final List<User> userList;
 
     public Users() {
-        this.userList = new ArrayList<>();
+        this.userList = Collections.synchronizedList(new ArrayList<>());
     }
 
     public List<User> getUserList() {
@@ -21,13 +22,17 @@ public class Users {
     }
 
     public boolean isUserDuplicated(User user) {
-        return userList.stream()
-                .anyMatch((existingUser) -> existingUser.getId().equals(user.getId()));
+        synchronized (userList) {
+            return userList.stream()
+                    .anyMatch((existingUser) -> existingUser.getId().equals(user.getId()));
+        }
     }
 
     public Optional<User> findByUserId(UserId userId) {
-        return userList.stream()
-                .filter((user) -> user.getId().equals(userId))
-                .findAny();
+        synchronized (userList){
+            return userList.stream()
+                    .filter((user) -> user.getId().equals(userId))
+                    .findAny();
+        }
     }
 }

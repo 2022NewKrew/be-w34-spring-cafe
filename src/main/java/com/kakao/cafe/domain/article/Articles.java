@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.article;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +10,7 @@ public class Articles {
     private final List<Article> articleList;
 
     public Articles() {
-        this.articleList = new ArrayList<>();
+        this.articleList = Collections.synchronizedList(new ArrayList<>());
     }
 
     public List<Article> getArticleList() {
@@ -22,8 +23,10 @@ public class Articles {
     }
 
     public Optional<Article> findByArticleId(ArticleId articleId) {
-        return articleList.stream()
-                .filter((article) -> article.getArticleId().equals(articleId))
-                .findAny();
+        synchronized (articleList) {
+            return articleList.stream()
+                    .filter((article) -> article.getArticleId().equals(articleId))
+                    .findAny();
+        }
     }
 }
