@@ -2,6 +2,7 @@ package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.SignUpDTO;
+import com.kakao.cafe.user.dto.UpdateDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -28,5 +29,12 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return List.copyOf(userMap.values());
+    }
+
+    @Override
+    public User update(UpdateDTO updateDTO) {
+        User user = userMap.get(updateDTO.getId());
+        user.updateInfo(updateDTO);
+        return user;
     }
 }
