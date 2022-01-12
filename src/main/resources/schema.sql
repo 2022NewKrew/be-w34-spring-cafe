@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS user, article;
+DROP TABLE IF EXISTS users, articles;
 
-CREATE TABLE user (
+CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id VARCHAR(32),
   password VARCHAR(32),
@@ -8,7 +8,7 @@ CREATE TABLE user (
   email VARCHAR(32)
 );
 
-CREATE TABLE article (
+CREATE TABLE articles (
   id INT AUTO_INCREMENT PRIMARY KEY,
   writer VARCHAR(32),
   title VARCHAR(100),

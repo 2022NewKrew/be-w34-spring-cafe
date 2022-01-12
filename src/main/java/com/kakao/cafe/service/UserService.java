@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dao.UserDAO;
+import com.kakao.cafe.dao.UserDao;
 import com.kakao.cafe.model.User;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +9,9 @@ import java.util.*;
 @Service
 public class UserService {
 
-    private final UserDAO userDAO;
+    private final UserDao userDAO;
 
-    public UserService(UserDAO userDAO) {
+    public UserService(UserDao userDAO) {
         this.userDAO = userDAO;
     }
 
