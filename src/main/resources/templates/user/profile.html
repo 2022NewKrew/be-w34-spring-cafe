@@ -1,0 +1,26 @@
+{{>layout/header}}
+<div class="background">
+    {{>layout/userNavbar}}
+
+    <div class="container" id="main">
+        <div class="profile-container">
+            <img class="profile-image" src="/images/chunsik.jpeg">
+            <div class="profile-nickname display-regular">{{user.nickname}}</div>
+            <div class="profile-body text-regular">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>이메일</td>
+                        <td>{{user.email}}</td>
+                    </tr>
+                    <tr>
+                        <td>가입일자</td>
+                        <td>{{user.createdDate}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{{>layout/footer}}

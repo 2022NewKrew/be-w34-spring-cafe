@@ -78,6 +78,7 @@ li {
 table {
     width: 100%;
     font-size: 16px;
+    background: #FFFFFF;
 }
 
 thead {
@@ -96,6 +97,16 @@ tbody tr {
     vertical-align: middle;
     margin: 20px;
     border-bottom: 1px solid lightgray;
+}
+
+tbody tr:hover{
+    background: #FFCD00;
+    cursor: pointer;
+}
+
+.profile-body table tbody tr:hover{
+    background: #FFFFFF;
+    cursor: default;
 }
 
 td {
@@ -125,4 +136,65 @@ td {
 .post-write-btn:hover {
     background-color: #ffcd00;
     color: black;
+}
+
+.profile-container{
+    margin-top: 5%;
+    margin-left: 30%;
+    padding: 10% 0;
+    width: 40%;
+    text-align: center;
+    background: #ffcd00;
+    border: solid 2px #ffcd00;
+    border-radius: 20%;
+}
+
+.profile-image{
+    width: 10em;
+    border-radius: 100%;
+}
+
+.profile-nickname{
+    text-align: center;
+    margin: 5px;
+}
+
+.profile-body{
+    margin-top: 5%;
+    text-align: left;
+}
+
+/*Typography*/
+.display-large{
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 46px;
+}
+
+.display-regular{
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 35px;
+}
+
+.text-regular{
+    font-size: 16px;
+    line-height: 32px;
+}
+
+.text-small{
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.link-regular{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 23px;
+}
+
+.link-small{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
 }
