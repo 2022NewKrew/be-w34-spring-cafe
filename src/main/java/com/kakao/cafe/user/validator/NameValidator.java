@@ -15,6 +15,5 @@ public class NameValidator implements Validator<String> {
         if (!RANGE.contains(name.length())) {
             throw new InvalidNameException(name);
         }
-
     }
 }
