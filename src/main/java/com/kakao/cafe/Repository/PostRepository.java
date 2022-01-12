@@ -17,4 +17,7 @@ public class PostRepository {
         postList.add(post);
     }
 
+    public List<Post> getPostList() {
+        return postList;
+    }
 }
