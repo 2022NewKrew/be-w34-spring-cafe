@@ -23,16 +23,16 @@
   - [x] Model을 메소드의 인자로 받은 후 Model에 사용자 목록을 users라는 이름으로 전달
   - [x] 사용자 목록을 user/list.html로 전달하기 위해 메소드 반환 값을 "user/list"로 함
   - [x] user/list.html 에서 사용자 목록을 출력
-- [ ] 회원 프로필 조회
-  - [ ] 회원 프로필 보기 페이지는 static/user/profile.html을 사용
-  - [ ] static에 있는 html을 templates로 이동
-  - [ ] 앞 단계의 사용자 목록 html인 user/list.html 파일에 닉네임을 클릭하면 프로필 페이지로 이동하도록 함
+- [x] 회원 프로필 조회
+  - [x] 회원 프로필 보기 페이지는 static/user/profile.html을 사용
+  - [x] static에 있는 html을 templates로 이동
+  - [x] 앞 단계의 사용자 목록 html인 user/list.html 파일에 닉네임을 클릭하면 프로필 페이지로 이동하도록 함
     - `<a href="/users/{{userId}}" />`와 같이 구현
-  - [ ] 회원프로필 요청(GET 요청)을 처리할 메소드를 추가하고, @GetMapping을 이용해 URL 매핑
+  - [x] 회원프로필 요청(GET 요청)을 처리할 메소드를 추가하고, @GetMapping을 이용해 URL 매핑
     - `/users/{userId}`와 같이 매핑
     - 사용자 아이디 값은 @PathVariable 애노테이션을 활용해 전달
-  - [ ] ArrayList에 저장되어 있는 사용자 중 사용자 아이디와 일치하는 User 데이터를 Model에 저장
-  - [ ] user/profile.html 에서는 Controller에서 전달한 User 데이터를 활용해 사용자 정보를 출력
+  - [x] ArrayList에 저장되어 있는 사용자 중 사용자 아이디와 일치하는 User 데이터를 Model에 저장
+  - [x] user/profile.html 에서는 Controller에서 전달한 User 데이터를 활용해 사용자 정보를 출력
 - [ ] HTML 중복 제거
 - [ ] URL과 html 쉽게 연결하기
   - base package 아래에 config와 같은 새로운 패키지 생성
