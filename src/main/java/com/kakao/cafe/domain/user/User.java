@@ -33,6 +33,10 @@ public class User {
         return userName;
     }
 
+    public Password getPassword() {
+        return password;
+    }
+
     public Name getName() {
         return name;
     }

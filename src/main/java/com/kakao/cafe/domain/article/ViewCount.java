@@ -8,6 +8,10 @@ public class ViewCount {
         this.value = 0;
     }
 
+    public ViewCount(int value) {
+        this.value = value;
+    }
+
     public int getValue() {
         return value;
     }
