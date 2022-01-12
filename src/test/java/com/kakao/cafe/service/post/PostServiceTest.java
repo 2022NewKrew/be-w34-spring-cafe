@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.post.PostRepository;
 import com.kakao.cafe.model.post.PostDto;
 import com.kakao.cafe.model.post.PostWriteRequest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 class PostServiceTest {
@@ -22,6 +22,20 @@ class PostServiceTest {
     private PostService postService;
     @Autowired
     private PostRepository postRepository;
+
+    private final int size = 20;
+
+    @BeforeEach
+    void setup() {
+        for (int i = 0; i < size; i++) {
+            Post post = Post.builder()
+                    .writer("작성자")
+                    .title("게시글 제목" + i)
+                    .content("게시글 내용 " + i)
+                    .build();
+            postRepository.save(post);
+        }
+    }
 
     @AfterEach
     void cleanup() {
@@ -48,18 +62,30 @@ class PostServiceTest {
     @DisplayName("등록된 게시글의 수와 조회한 게시글의 총 개수는 같아야 한다.")
     @Test
     void getAllPosts() {
-        int size = 31;
-        for (int i = 0; i < size; i++) {
-            Post post = Post.builder()
-                    .writer("작성자")
-                    .title("게시글 제목" + i)
-                    .content("게시글 내용 " + i + i)
-                    .build();
-            postRepository.save(post);
-        }
-
         List<PostDto> posts = postService.getAllPosts();
 
         assertThat(posts.size()).isEqualTo(size);
     }
+
+    @DisplayName("등록된 게시글의 id를 통해서 게시글의 정보를 조회할 때, 에러가 발생하지 않아야 한다.")
+    @Test
+    void getPostById() {
+        long id = 11;
+
+        assertThatNoException().isThrownBy(() -> {
+            PostDto post = postService.getPostById(id);
+            assertThat(post).isNotNull();
+        });
+    }
+
+    @DisplayName("등록되지 않은 게시글의 id를 통해서 게시글의 정보를 조회할 때, 에러가 발생해야 한다.")
+    @Test
+    void getPostByIdNotContained() {
+        long id = size + 1;
+
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            PostDto post = postService.getPostById(id);
+        });
+    }
+
 }

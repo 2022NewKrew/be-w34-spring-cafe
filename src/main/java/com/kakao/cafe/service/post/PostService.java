@@ -33,4 +33,10 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    public PostDto getPostById(long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 정보를 찾을 수 없습니다."));;
+        return modelMapper.map(post, PostDto.class);
+    }
+
 }
