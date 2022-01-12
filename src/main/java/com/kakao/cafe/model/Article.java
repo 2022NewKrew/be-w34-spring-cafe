@@ -2,7 +2,6 @@ package com.kakao.cafe.model;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicLong;
-import lombok.Getter;
 import lombok.ToString;
 
 @ToString
