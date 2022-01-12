@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.Repository.UserRepository;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.UserRepository;
 
 import java.util.List;
 
@@ -22,5 +22,13 @@ public class UserService {
 
     public User findById(String userId) {
         return userRepository.findById(userId);
+    }
+
+    public User isvalidateLogin(User user) {
+        User findUser = userRepository.findById(user.getUserId());
+        if(!findUser.isValidateLogin(user)){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        return findUser;
     }
 }

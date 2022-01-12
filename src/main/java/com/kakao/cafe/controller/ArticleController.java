@@ -1,7 +1,6 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,5 +39,10 @@ public class ArticleController {
     public String addQuestions(@ModelAttribute Article article) {
         articleService.save(article);
         return "redirect:/";
+    }
+
+    @GetMapping("/articles/write")
+    public String write() {
+        return "qna/form";
     }
 }

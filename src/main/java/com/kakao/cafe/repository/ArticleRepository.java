@@ -1,4 +1,4 @@
-package com.kakao.cafe.Repository;
+package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
 

@@ -1,4 +1,4 @@
-package com.kakao.cafe.Repository;
+package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 
@@ -14,6 +14,8 @@ public class UserLocalRepository implements UserRepository {
 
     @Override
     public void save(User user) {
+        int curSize = userList.size() + 1;
+        user.setId((long) curSize);
         userList.add(user);
     }
 
@@ -27,6 +29,6 @@ public class UserLocalRepository implements UserRepository {
         return userList.stream()
                 .filter(x -> x.getUserId().equals(userId))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> {throw new IllegalArgumentException("존재하지 않는 Id 입니다");});
     }
 }

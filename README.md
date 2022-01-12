@@ -13,3 +13,10 @@
 - [x] 질문하기 완료
 - [x] 질문 목록 조회 완료
 - [x] 질문 상세 조회 완료
+
+# step3
+- [x] h2 database 연결 및 전환
+- [x] stream 사용시 orelse(null)보단 exception
+- [x] template header footer 분리
+- [x] session을 사용하여 로그인 구현
+- [ ] domain 객체를 dto로 세분화
