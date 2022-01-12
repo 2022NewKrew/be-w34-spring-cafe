@@ -5,6 +5,7 @@ import com.kakao.cafe.user.domain.UserRepository;
 import com.kakao.cafe.user.dto.UserListResponse;
 import com.kakao.cafe.user.dto.UserProfileResponse;
 import com.kakao.cafe.user.dto.UserSaveRequest;
+import com.kakao.cafe.user.infra.UserRepositoryImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class UserService {
-    private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository = new UserRepositoryImpl();
 
     public void save(UserSaveRequest request) {
         log.info(this.getClass() + ": 회원 가입");
