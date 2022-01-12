@@ -16,4 +16,24 @@ public class Article {
         this.title = title;
         this.contents = contents;
     }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContents() {
+        return contents;
+    }
 }

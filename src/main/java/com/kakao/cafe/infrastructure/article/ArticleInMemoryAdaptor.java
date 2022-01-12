@@ -28,6 +28,6 @@ public class ArticleInMemoryAdaptor implements ArticlePort {
 
     @Override
     public List<Article> findAll() {
-        return null;
+        return Collections.unmodifiableList(articles);
     }
 }

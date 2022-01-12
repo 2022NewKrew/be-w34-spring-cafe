@@ -3,6 +3,8 @@ package com.kakao.cafe.interfaces.article;
 import com.kakao.cafe.application.ArticleService;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleVo;
+import com.kakao.cafe.interfaces.article.dto.ArticleMapper;
+import com.kakao.cafe.interfaces.article.dto.response.ArticleResponseDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,9 @@ public class ArticleController {
     @GetMapping("/")
     public ModelAndView readAllArticles(ModelAndView modelAndView) {
         List<Article> articles = articleService.readAll();
-        modelAndView.addObject("articles", articles);
+        List<ArticleResponseDto> articleResponseDtoList = ArticleMapper.convertEntityListToResponseDtoList(articles);
+
+        modelAndView.addObject("articles", articleResponseDtoList);
         modelAndView.setViewName("index");
 
         return modelAndView;

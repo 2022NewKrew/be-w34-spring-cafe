@@ -1,5 +1,6 @@
 package com.kakao.cafe.application;
 
+import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticlePort;
 import com.kakao.cafe.domain.article.ArticleVo;
 
@@ -15,5 +16,9 @@ public class ArticleService {
 
     public void write(ArticleVo articleVo) {
         articlePort.save(articleVo);
+    }
+
+    public List<Article> readAll() {
+        return articlePort.findAll();
     }
 }
