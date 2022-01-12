@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.Article;
+import com.kakao.cafe.model.dto.ArticleDto;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,14 +21,14 @@ public class ArticleController {
 
     @GetMapping()
     public String articleListView(Model model) {
-        List<Article> articleList = articleService.getArticleList();
+        List<ArticleDto> articleList = articleService.getArticleList();
         model.addAttribute("articles", articleList);
         return "index";
     }
 
     @GetMapping("/articles/{index}")
     public String articleView(@PathVariable int index, Model model) {
-        Article article = articleService.filterArticleByIndex(index);
+        ArticleDto article = articleService.filterArticleByIndex(index);
         model.addAttribute("article", article);
         return "qna/show";
     }
@@ -39,7 +39,7 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public String writeArticle(Article article) {
+    public String writeArticle(ArticleDto article) {
         articleService.writeArticle(article);
         return "redirect:";
     }
