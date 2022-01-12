@@ -3,6 +3,7 @@ package com.kakao.cafe.domain.post;
 import com.kakao.cafe.application.dto.result.QuestionPostDetailResult;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @ToString
 @EqualsAndHashCode
+@Getter
 public class QuestionPost {
 
     private static final AtomicLong idGenerator;
@@ -37,26 +39,8 @@ public class QuestionPost {
         this.userAccountId = userAccountId;
     }
 
-    public Long getQuestionPostId() {
-        return this.questionPostId;
-    }
-
-    public Long getUserAccountId() {
-        return this.userAccountId;
-    }
-
     public void viewCountIncrease() {
         this.viewCount++;
     }
 
-    public QuestionPostDetailResult toResult(String author) {
-        return new QuestionPostDetailResult(
-                questionPostId,
-                title,
-                content,
-                createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                viewCount,
-                author
-        );
-    }
 }
