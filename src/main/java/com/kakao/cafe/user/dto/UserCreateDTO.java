@@ -1,13 +1,12 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.user.dto;
 
-public class User {
+public class UserCreateDTO {
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    //setter 대신 객체는 항상 생성자로만 생성하도록 구성.
-    public User(String userId, String password, String name, String email) {
+    public UserCreateDTO(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
