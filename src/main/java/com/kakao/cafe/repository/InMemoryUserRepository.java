@@ -2,7 +2,6 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exceptions.DuplicateUserException;
-import com.kakao.cafe.exceptions.UserException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,11 +10,11 @@ import java.util.Objects;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepository {
+public class InMemoryUserRepository {
 
     private final List<User> userList;
 
-    public UserRepository() {
+    public InMemoryUserRepository() {
         this.userList = Collections.synchronizedList(new ArrayList<>());
     }
 
