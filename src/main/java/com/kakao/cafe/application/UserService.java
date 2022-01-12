@@ -2,6 +2,7 @@ package com.kakao.cafe.application;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserPort;
+import com.kakao.cafe.domain.user.UserVo;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,13 +28,13 @@ public class UserService {
         return userPort.findAll();
     }
 
-    public void join(User user) throws IllegalArgumentException {
-        Optional<User> optionalUser = userPort.findByUserId(user.getUserId());
+    public void join(UserVo userVo) throws IllegalArgumentException {
+        Optional<User> optionalUser = userPort.findByUserId(userVo.getUserId());
         if (optionalUser.isPresent()) {
             throw new IllegalArgumentException();
         }
 
-        userPort.save(user);
+        userPort.save(userVo.convertVoToEntity());
     }
 
 }

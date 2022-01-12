@@ -1,6 +1,7 @@
 package com.kakao.cafe.interfaces.user.dto;
 
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserVo;
 import com.kakao.cafe.interfaces.user.dto.request.JoinUserRequestDto;
 import com.kakao.cafe.interfaces.user.dto.response.UserListResponseDto;
 
@@ -11,8 +12,8 @@ public class UserMapper {
     private UserMapper() {
     }
 
-    public static User convertJoinUserDtoToEntity(JoinUserRequestDto joinUserRequestDto) {
-        return new User(joinUserRequestDto.getUserId(),
+    public static UserVo convertJoinUserDtoToVo(JoinUserRequestDto joinUserRequestDto) {
+        return new UserVo(joinUserRequestDto.getUserId(),
                 joinUserRequestDto.getPassword(),
                 joinUserRequestDto.getName(),
                 joinUserRequestDto.getEmail());

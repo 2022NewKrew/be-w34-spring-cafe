@@ -2,6 +2,7 @@ package com.kakao.cafe.application;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserPort;
+import com.kakao.cafe.domain.user.UserVo;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -92,7 +93,7 @@ class UserServiceTest {
     @Test
     void checkUserJoin() {
         // given
-        User user = new User("2wls", "0224", "윤이진", "483759@naver.com");
+        UserVo user = new UserVo("2wls", "0224", "윤이진", "483759@naver.com");
         given(userPort.findByUserId("2wls"))
                 .willReturn(Optional.empty());
 
@@ -107,12 +108,13 @@ class UserServiceTest {
     @Test
     void checkDuplicatedUserJoinException() {
         // given
+        UserVo userVo = new UserVo("2wls", "0224", "윤이진", "483759@naver.com");
         User user = new User("2wls", "0224", "윤이진", "483759@naver.com");
         given(userPort.findByUserId("2wls"))
                 .willReturn(Optional.of(user));
 
         // when
-        ThrowableAssert.ThrowingCallable runnable = () -> userService.join(user);
+        ThrowableAssert.ThrowingCallable runnable = () -> userService.join(userVo);
 
         //then
         verify(userPort, never()).save(any(User.class));

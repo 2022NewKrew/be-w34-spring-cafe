@@ -13,6 +13,10 @@ public class UserVo {
         this.email = email;
     }
 
+    public User convertVoToEntity() {
+        return new User(userId, password, name, email);
+    }
+
     public String getUserId() {
         return userId;
     }
