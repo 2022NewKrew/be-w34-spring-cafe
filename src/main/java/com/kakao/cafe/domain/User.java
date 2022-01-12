@@ -18,7 +18,7 @@ public class User {
     private String password;
 
     private User() {}
-
+    
     public static User from(UserJoinDto dto) {
         User user = new User();
         user.setUserId(dto.getUserId());

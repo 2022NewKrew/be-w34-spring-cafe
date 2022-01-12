@@ -2,16 +2,19 @@ package com.kakao.cafe.domain;
 
 import com.kakao.cafe.controller.dto.ArticleDto;
 import com.kakao.cafe.repository.dto.ArticleResult;
+
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+
 @Getter
 @Setter
 public class Article {
     private Long articleId;
+
     private String writer;
     private String title;
     private String content;
