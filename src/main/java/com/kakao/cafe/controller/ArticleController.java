@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -44,7 +46,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{idx}/{title}")
+    @GetMapping("/articles/{idx}")
     public String getArticleDetail(
             @PathVariable("idx") @NonNull final long idx,
             final Model model
