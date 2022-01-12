@@ -52,7 +52,7 @@ class UserControllerTest {
                         .param("name", name)
                         .param("email", email))
                 .andExpect(status().isBadRequest())
-                .andExpect(view().name("error/error"));
+                .andExpect(view().name("errors/error"));
     }
 
     @Test
@@ -70,7 +70,7 @@ class UserControllerTest {
                         .param("name", name)
                         .param("email", email))
                 .andExpect(status().isConflict())
-                .andExpect(view().name("error/error"));
+                .andExpect(view().name("errors/error"));
     }
 
     @Test
@@ -114,6 +114,6 @@ class UserControllerTest {
     void userProfile_FailedBy_NotExistUserId() throws Exception {
         mockMvc.perform(get("/users/" + notExistUserId))
                 .andExpect(status().isNotFound())
-                .andExpect(view().name("error/error"));
+                .andExpect(view().name("errors/error"));
     }
 }
