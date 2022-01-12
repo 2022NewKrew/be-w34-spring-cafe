@@ -4,6 +4,7 @@
         <div class="panel panel-default">
             <div class="panel-heading"><h4>User Update Form</h4></div>
             <form action="/users/{{user.id}}/update" method="post" class="panel-body" name="user">
+                <input type="hidden" name="_method" value="PUT" />
                 <div class="well well-sm">
                     <div class="media user-update-form-list">
                         <label for="id" class="user-update-form-item">userId</label>

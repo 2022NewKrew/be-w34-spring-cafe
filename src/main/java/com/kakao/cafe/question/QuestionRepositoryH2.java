@@ -14,6 +14,11 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * H2 Database를 이용한 QuestionRepository 구현체입니다.
+ *
+ * @author jm.hong
+ */
 @RequiredArgsConstructor
 @Repository
 @Slf4j
@@ -24,16 +29,15 @@ public class QuestionRepositoryH2 implements QuestionRepository {
 
     @Override
     public Long save(Question question) throws SQLException {
-        String sql = "INSERT INTO question(member_id, writer, title, contents) values (?, ?, ?, ?)";
+        String sql = "INSERT INTO question(writer, title, contents) values (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int rs = jdbcTemplate.update(
                 con -> {
                     PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                    ps.setLong(1, question.getMemberId());
-                    ps.setString(2, question.getWriter());
-                    ps.setString(3, question.getTitle());
-                    ps.setString(4, question.getContents());
+                    ps.setString(1, question.getWriter());
+                    ps.setString(2, question.getTitle());
+                    ps.setString(3, question.getContents());
 
 
                     return ps;
@@ -43,7 +47,7 @@ public class QuestionRepositoryH2 implements QuestionRepository {
             throw new SQLException("QUESTION TABLE SAVE FAIL");
         }
 
-        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+        return (Long) Objects.requireNonNull(keyHolder.getKeys()).get("id");
     }
 
     @Override
