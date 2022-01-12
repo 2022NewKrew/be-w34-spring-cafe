@@ -22,13 +22,13 @@ class CafeApplicationTests {
 	ArticleController articleController;
 
 	@Test
-	@DisplayName("userController가 null인지 확인")
+	@DisplayName("userController가 null이 아닌지 확인")
 	void userControllerNotNull() {
 		assertThat(userController).isNotNull();
 	}
 
 	@Test
-	@DisplayName("articleController가 null인지 확인")
+	@DisplayName("articleController가 null이 아닌지 확인")
 	void articleControllerNotNull() {
 		assertThat(articleController).isNotNull();
 	}

@@ -12,15 +12,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
-public class UserTest {
+public class ArticleTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("GET /user 요청 확인 - 회원 목록 가져오기")
-    void getUserTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/user"))
+    @DisplayName("GET /article 요청 확인 - 글 목록 가져오기")
+    void articleTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
