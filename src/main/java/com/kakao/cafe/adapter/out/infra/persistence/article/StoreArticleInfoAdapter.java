@@ -1,25 +1,30 @@
 package com.kakao.cafe.adapter.out.infra.persistence.article;
 
 import com.kakao.cafe.application.article.dto.ArticleList;
+import com.kakao.cafe.application.article.dto.WriteRequest;
 import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
 import com.kakao.cafe.application.article.port.out.RegisterArticlePort;
 import com.kakao.cafe.domain.article.Article;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleInfoPort {
 
+    private static final int FIRST_ID = 1;
+
     private final ArticleInfoRepository inMemoryArticleInfoRepository;
+    private final AtomicInteger atomicInt = new AtomicInteger(FIRST_ID);
 
     public StoreArticleInfoAdapter(ArticleInfoRepository inMemoryArticleInfoRepository) {
         this.inMemoryArticleInfoRepository = inMemoryArticleInfoRepository;
     }
 
     @Override
-    public void registerArticle(Article article) {
-        inMemoryArticleInfoRepository.save(ArticleInfoEntity.from(article));
+    public void registerArticle(WriteRequest writeRequest) {
+        inMemoryArticleInfoRepository.save(ArticleInfoEntity.from(atomicInt.getAndIncrement(), writeRequest));
     }
 
     @Override

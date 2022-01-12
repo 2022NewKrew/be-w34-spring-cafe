@@ -1,6 +1,8 @@
 package com.kakao.cafe.adapter.out.infra.persistence.article;
 
-import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.application.article.dto.WriteRequest;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ArticleInfoEntity {
 
@@ -18,13 +20,13 @@ public class ArticleInfoEntity {
         this.createdAt = createdAt;
     }
 
-    static ArticleInfoEntity from(Article article) {
+    static ArticleInfoEntity from(int id, WriteRequest writeRequest) {
         return new ArticleInfoEntity(
-            article.getId(),
-            article.getWriter(),
-            article.getTitle(),
-            article.getContents(),
-            article.getCreatedAt()
+            id,
+            writeRequest.getWriter(),
+            writeRequest.getTitle(),
+            writeRequest.getContents(),
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
         );
     }
 
