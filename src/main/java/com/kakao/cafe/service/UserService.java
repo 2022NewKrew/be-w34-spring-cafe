@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.Users;
 import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.dto.UserResponseDto;
@@ -18,7 +19,10 @@ public class UserService {
     }
 
     public void update(int id, UserRequestDto userRequestDto){
-        users.updateUser(id, UserMapper.INSTANCE.toEntity(userRequestDto));
+        User user = users.findById(id);
+        if (userRequestDto.getStringId().equals(user.getStringId()) && userRequestDto.getPrevPassword().equals(user.getPassword())){
+            users.updateUser(id, UserMapper.INSTANCE.toEntity(userRequestDto));
+        }
     }
 
     public List<UserResponseDto> findAll(){
