@@ -1,11 +1,13 @@
 package com.kakao.cafe.presentation.dto.request;
 
 import com.kakao.cafe.application.dto.command.QuestionPostSaveCommand;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
+@RequiredArgsConstructor
 public class QuestionPostWriteRequest {
 
     @NotNull

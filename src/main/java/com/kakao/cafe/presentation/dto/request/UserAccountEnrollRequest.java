@@ -1,12 +1,14 @@
 package com.kakao.cafe.presentation.dto.request;
 
 import com.kakao.cafe.application.dto.command.UserAccountEnrollCommand;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
+@RequiredArgsConstructor
 public class UserAccountEnrollRequest {
 
     @Email

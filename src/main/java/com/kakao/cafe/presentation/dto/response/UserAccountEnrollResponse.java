@@ -1,8 +1,10 @@
 package com.kakao.cafe.presentation.dto.response;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Data
+@Getter
+@RequiredArgsConstructor
 public class UserAccountEnrollResponse {
 
     private final Long id;
