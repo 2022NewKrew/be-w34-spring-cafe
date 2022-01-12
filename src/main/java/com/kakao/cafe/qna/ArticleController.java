@@ -27,6 +27,7 @@ public class ArticleController {
     @PostMapping("/questions")
     public String question(ArticleDto articleDto) {
         Article article = new Article(
+                null,
                 articleDto.getWriter(),
                 articleDto.getTitle(),
                 articleDto.getContents(),
@@ -39,7 +40,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{index}")
-    public String articleView(Model model, @PathVariable("index") int index) {
+    public String articleView(Model model, @PathVariable("index") Integer index) {
         Article article = articleService.findArticleById(index);
         model.addAttribute("article", new ArticleDto(article));
         return "/qna/show";

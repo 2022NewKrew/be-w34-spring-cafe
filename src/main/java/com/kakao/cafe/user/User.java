@@ -12,8 +12,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public class User {
 
+    private Integer id;
+
     private String userId; // 사용자 아이디
     private String password; // 비밀번호
     private String name; // 이름
     private String email; // 이메일
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

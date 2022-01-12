@@ -15,7 +15,8 @@ public class MemoryUserRepository implements UserRepository{
     private static List<User> users = new ArrayList<>();
 
     @Override
-    public User save(User user) {
+    public User insert(User user) {
+        user.setId(users.size() + 1);
         users.add(user);
         return user;
     }
@@ -26,12 +27,17 @@ public class MemoryUserRepository implements UserRepository{
     }
   
     @Override
-    public User findUserByUserId(String userId) {
+    public User findUserById(Integer id) {
         for (User user: users) {
-            if (user.getUserId().equals(userId)) {
+            if (user.getId() == id) {
                 return user;
             }
         }
+        return null;
+    }
+
+    @Override
+    public User update(User user) {
         return null;
     }
 }

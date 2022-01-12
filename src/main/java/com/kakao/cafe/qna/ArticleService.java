@@ -25,7 +25,7 @@ public class ArticleService {
         return article;
     }
 
-    public Article findArticleById(int id) {
+    public Article findArticleById(Integer id) {
         return articleRepository.findArticleById(id);
     }
 

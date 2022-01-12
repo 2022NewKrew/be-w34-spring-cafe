@@ -23,7 +23,7 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Article findArticleById(int id) {
+    public Article findArticleById(Integer id) {
         for (Article article : articles) {
             if (article.getId() == id) {
                 return article;
