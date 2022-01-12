@@ -1,6 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.PostCreateRequest;
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.model.Post;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.repository.PostRepository;
@@ -27,7 +29,7 @@ public class PostService {
 
     public Post write(PostCreateRequest requestDto) {
         User writer = userRepository.findByName(requestDto.getWriter())
-                .orElseThrow(() -> new IllegalArgumentException("닉네임과 일치하는 회원정보가 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NO_MATCH_USER));
         return postRepository.save(requestDto.toEntity(writer));
     }
 

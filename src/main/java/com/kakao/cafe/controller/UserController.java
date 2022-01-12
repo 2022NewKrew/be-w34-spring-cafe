@@ -1,6 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.UserRegisterRequest;
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +35,7 @@ public class UserController {
     public String getUserByUserId(@PathVariable("userId") String userId, Model model) {
         model.addAttribute("user",
                 userService.findByUserId(userId)
-                        .orElseThrow(() -> new IllegalArgumentException("해당 아이디의 유저가 존재하지 않습니다.")));
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND)));
         return "users/profile";
     }
 }

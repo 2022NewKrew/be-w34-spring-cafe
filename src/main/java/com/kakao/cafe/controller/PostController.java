@@ -1,6 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.PostCreateRequest;
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.service.PostService;
 import java.util.UUID;
 import org.springframework.stereotype.Controller;
@@ -34,7 +36,7 @@ public class PostController {
     public String getPostById(@PathVariable("postId") UUID id, Model model) {
         model.addAttribute("post",
                 postService.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다.")));
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND)));
         return "posts/show";
     }
 }

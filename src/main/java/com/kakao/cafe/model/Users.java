@@ -1,5 +1,7 @@
 package com.kakao.cafe.model;
 
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +16,7 @@ public class Users {
 
     public void add(User user) {
         if (isDuplicatedUserId(user)) {
-            throw new IllegalArgumentException("중복된 아이디입니다.");
+            throw new CustomException(ErrorCode.USERID_DUPLICATION);
         }
         users.add(user);
     }
