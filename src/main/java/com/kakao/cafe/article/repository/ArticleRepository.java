@@ -1,32 +1,16 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.model.Article;
-import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Repository
-public class ArticleRepository {
+public interface ArticleRepository {
 
-    List<Article> articles = new ArrayList<>();
+    void save(Article article);
 
-    public void save(Article article){
-        articles.add(article);
-    }
+    Long getNumberOfArticles();
 
-    public Long getNumberOfArticles(){
-        return (long) articles.size();
-    }
+    List<Article> findAll();
 
-    public List<Article> findAll(){
-        return articles;
-    }
-
-    public Article findOneById(Long id){
-        return articles.stream().filter(article -> article.getId().equals(id))
-                .collect(Collectors.toList())
-                .get(0);
-    }
+    Article findOneById(Long id);
 }
