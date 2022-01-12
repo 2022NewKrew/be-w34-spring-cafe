@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.user;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 @ToString(exclude = {"password"})
+@EqualsAndHashCode
 public class UserAccount {
 
     private static final AtomicLong idGenerator;

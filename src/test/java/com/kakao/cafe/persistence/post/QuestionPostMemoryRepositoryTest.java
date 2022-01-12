@@ -59,8 +59,6 @@ public class QuestionPostMemoryRepositoryTest {
         questionPostRepository.save(testPost1);
         questionPostRepository.save(testPost2);
 
-        System.out.println(testPost1);
-        System.out.println(testPost2);
         List<QuestionPost> result = questionPostRepository.findAll();
 
         Assertions.assertThat(result.size()).isEqualTo(2);

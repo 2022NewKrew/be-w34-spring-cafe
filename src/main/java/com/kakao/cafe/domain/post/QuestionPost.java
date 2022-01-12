@@ -2,6 +2,7 @@ package com.kakao.cafe.domain.post;
 
 import com.kakao.cafe.application.dto.result.QuestionPostDetailResult;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 @ToString
+@EqualsAndHashCode
 public class QuestionPost {
 
     private static final AtomicLong idGenerator;
