@@ -10,10 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -26,7 +28,20 @@ public class UserController {
     private final ModelMapper modelMapper;
 
     @PostMapping(value = "/create")
-    public String insertUser(@ModelAttribute("user") @Valid UserCreateDto userCreateDto) {
+    public String insertUser(@ModelAttribute("user") @Valid UserCreateDto userCreateDto, Errors errors, Model model) {
+
+        // 유효성 에러 발생시 회원가입 폼으로 유효성 메세지와 함께 전송
+        if (errors.hasErrors()) {
+            model.addAttribute("valid", userCreateDto);
+
+            Map<String, String> validateResults = UserCreateDto.validateHandling(errors);
+
+            for (String key : validateResults.keySet()) {
+                model.addAttribute(key, validateResults.get(key));
+            }
+
+            return "user/form";
+        }
 
         User user = modelMapper.map(userCreateDto, User.class);
         Long id = userService.save(user);
