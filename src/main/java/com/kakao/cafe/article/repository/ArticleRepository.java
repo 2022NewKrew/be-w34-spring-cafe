@@ -3,12 +3,13 @@ package com.kakao.cafe.article.repository;
 import com.kakao.cafe.article.domain.Article;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository {
 
     Long save(Article article);
 
-    Article findOne(Long id);
+    Optional<Article> findOne(Long id);
 
     List<Article> findAll();
 
