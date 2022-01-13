@@ -1,4 +1,4 @@
-package com.kakao.cafe.web.dto;
+package com.kakao.cafe.web.user.dto;
 
 public class UserUpdateRequest {
     private final String password;

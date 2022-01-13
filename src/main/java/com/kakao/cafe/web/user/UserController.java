@@ -1,13 +1,13 @@
-package com.kakao.cafe.web;
+package com.kakao.cafe.web.user;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.user.UserCreateService;
 import com.kakao.cafe.service.user.UserFindService;
 import com.kakao.cafe.service.user.UserUpdateService;
-import com.kakao.cafe.web.dto.UserCreateRequest;
-import com.kakao.cafe.web.dto.UserListResponse;
-import com.kakao.cafe.web.dto.UserProfileResponse;
-import com.kakao.cafe.web.dto.UserUpdateRequest;
+import com.kakao.cafe.web.user.dto.UserCreateRequest;
+import com.kakao.cafe.web.user.dto.UserListResponse;
+import com.kakao.cafe.web.user.dto.UserProfileResponse;
+import com.kakao.cafe.web.user.dto.UserUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

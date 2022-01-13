@@ -1,6 +1,6 @@
 package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.web.dto.UserCreateRequest;
+import com.kakao.cafe.web.user.dto.UserCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
