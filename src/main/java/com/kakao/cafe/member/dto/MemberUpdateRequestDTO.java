@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class MemberUpdateRequestDTO {
 
     private String email;
-    private String nickName;
+    private String nickname;
     private String currentPassword;
     private String password;
     private String passwordCheck;
@@ -19,7 +19,7 @@ public class MemberUpdateRequestDTO {
     public Member toMember(LocalDate createDate) {
         return Member.builder()
                 .email(email)
-                .nickName(nickName)
+                .nickname(nickname)
                 .password(password)
                 .createDate(createDate)
                 .build();

@@ -8,6 +8,7 @@ import com.kakao.cafe.member.repository.MemberRepository;
 import com.kakao.cafe.member.util.PasswordChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -27,9 +29,9 @@ public class MemberService {
     }
 
     private void validateDuplicateEmail(String email) {
-        if (memberRepository.findByEmail(email) != null) {
+        memberRepository.findByEmail(email).ifPresent(member -> {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
-        }
+        });
     }
 
     private void validateCheckPassword(String password, String passwordCheck) {
@@ -39,7 +41,9 @@ public class MemberService {
     }
 
     public MemberResponseDTO findOne(Long id) {
-        return new MemberResponseDTO(memberRepository.findOne(id));
+        return new MemberResponseDTO(memberRepository.findOne(id).orElseThrow(() -> {
+            throw new IllegalArgumentException("해당 유저가 존재하지 않습니다.");
+        }));
     }
 
     public List<MemberResponseDTO> findAll() {
@@ -49,7 +53,10 @@ public class MemberService {
     }
 
     public void update(Long id, MemberUpdateRequestDTO memberUpdateRequestDTO) {
-        Member member = memberRepository.findOne(id);
+        Member member = memberRepository.findOne(id).orElseThrow(() -> {
+            throw new IllegalArgumentException("해당 유저가 존재하지 않습니다.");
+        });
+
         validateCheckPassword(member.getPassword(), memberUpdateRequestDTO.getCurrentPassword());
         validateCheckPassword(memberUpdateRequestDTO.getPassword(), memberUpdateRequestDTO.getPasswordCheck());
         memberRepository.update(id, memberUpdateRequestDTO.toMember(member.getCreateDate()));

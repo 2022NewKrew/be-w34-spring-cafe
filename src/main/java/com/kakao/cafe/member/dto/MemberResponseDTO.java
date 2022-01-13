@@ -10,13 +10,13 @@ public class MemberResponseDTO {
 
     private Long id;
     private String email;
-    private String nickName;
+    private String nickname;
     private String createDate;
 
     public MemberResponseDTO(Member member) {
         this.id = member.getId();
         this.email = member.getEmail();
-        this.nickName = member.getNickName();
+        this.nickname = member.getNickname();
         this.createDate = member.getCreateDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 }
