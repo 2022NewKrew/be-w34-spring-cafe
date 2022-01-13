@@ -2,6 +2,8 @@ package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.dto.user.UserReqDto;
 import com.kakao.cafe.dto.user.UserResDto;
+import com.kakao.cafe.repository.user.MemoryUserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class UserServiceImplTest {
 
-    private final UserService userService;
+    MemoryUserRepository memoryUserRepository = new MemoryUserRepository();
+    UserServiceImpl userService = new UserServiceImpl(memoryUserRepository);
 
-    @Autowired
-    UserServiceImplTest(UserService userService) {
-        this.userService = userService;
+    @AfterEach
+    void afterEach(){
+        memoryUserRepository.clearUserStore();
     }
-
 
     @DisplayName("사용자 추가 확인")
     @Test
@@ -40,21 +42,24 @@ class UserServiceImplTest {
         UserReqDto userReqDto2 = new UserReqDto("test11", "1335", "testName2", "test2@kakaocorp.com");
 
         userService.addUser(userReqDto1);
-        try{
-            userService.addUser(userReqDto2);
-            fail();
-        } catch (IllegalStateException e){
-            assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
-        }
+        assertThrows(IllegalStateException.class, () -> userService.addUser(userReqDto2));
     }
 
-//    @Test
-//    void findUsers() {
-//    }
-//
-//    @Test
-//    void findUserById() {
-//    }
+    @DisplayName("등록된 유저 수 확인")
+    @Test
+    void findUsers() {
+        UserReqDto userReqDto = new UserReqDto("test123", "1234", "testName", "test@kakaocorp.com");
+        userService.addUser(userReqDto);
+        assertThat(userService.findUsers().size()).isEqualTo(1);
+    }
+
+    @DisplayName("유저를 id로 탐색")
+    @Test
+    void findUserById() {
+        UserReqDto userReqDto = new UserReqDto("test1234", "1234", "testName", "test@kakaocorp.com");
+        userService.addUser(userReqDto);
+        assertThat(userService.findUserById(0L).getUserId()).isEqualTo(userReqDto.getUserId());
+    }
 //
 //    @Test
 //    void updateUser() {
