@@ -1,10 +1,10 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.dto;
 
-public class ArticleRequest {
+public class ArticleRequestDto {
     private final String title;
     private final String content;
 
-    public ArticleRequest(String title, String content) {
+    public ArticleRequestDto(String title, String content) {
         this.title = title;
         this.content = content;
     }
