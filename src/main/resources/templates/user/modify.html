@@ -3,7 +3,7 @@
     <article class="card-body mx-auto" style="max-width: 500px; min-width:300px;">
         <h2 class="card-title m-3 text-center">회원정보 수정</h2>
         {{#user}}
-        <form method="post" action="/user/modify/{{userId}}">
+        <form method="post" action="/user/modify">
             <input type="hidden" name="_method" value="put">
             <table class="table align-middle">
                 <tr>
@@ -19,7 +19,7 @@
                         Old PW: &nbsp;
                     </th>
                     <td>
-                        <input type="password" name="oldPassword" class="form-control" placeholder="기존 비밀번호" required>
+                        <input type="password" name="password" class="form-control" placeholder="기존 비밀번호" required>
                     </td>
                 </tr>
                 <tr>
@@ -35,7 +35,7 @@
                         Name: &nbsp;
                     </th>
                     <td>
-                        <input type="text" name="name" class="form-control" placeholder="이름" required>
+                        <input type="text" name="name" class="form-control" value="{{name}}" placeholder="이름" required>
                     </td>
                 </tr>
                 <tr>
@@ -43,10 +43,13 @@
                         Email: &nbsp;
                     </th>
                     <td>
-                        <input type="email" name="email" class="form-control" placeholder="이메일" required>
+                        <input type="email" name="email" class="form-control" value="{{email}}" placeholder="이메일" required>
                     </td>
                 </tr>
             </table>
+            {{#notMatchedErrorMessage}}
+            <div class="alert alert-light p-0 m-0" role="alert">{{this}}</div>
+            {{/notMatchedErrorMessage}}
             <div class="row mt-3">
                 <button type="submit" class="btn btn-dark">회원정보 수정</button>
             </div>

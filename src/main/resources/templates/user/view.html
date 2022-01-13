@@ -34,7 +34,10 @@
                 <button type="button" class="btn btn-dark" onclick="location.href='/user/list'">회원 목록</button>
             </div>
             <div class="col-lg-6">
-                <button type="button" class="btn btn-dark" onclick="location.href='/user/modify/{{userId}}'">회원정보 수정</button>
+                <form method="post" action="/user/modify">
+                    <input type="hidden" name="userId" value="{{userId}}">
+                    <button type="submit" class="btn btn-dark">회원정보 수정</button>
+                </form>
             </div>
         </div>
         {{/user}}

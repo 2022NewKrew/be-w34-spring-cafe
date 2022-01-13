@@ -9,7 +9,15 @@
                         ID: &nbsp;
                     </th>
                     <td>
+                        {{#user}}
+                        <input type="text" name="userId" class="form-control" value="{{userId}}" placeholder="아이디" required>
+                        {{/user}}
+                        {{^user}}
                         <input type="text" name="userId" class="form-control" placeholder="아이디" required>
+                        {{/user}}
+                        {{#idErrorMessage}}
+                        <div class="alert alert-light p-0 m-0" role="alert">{{this}}</div>
+                        {{/idErrorMessage}}
                     </td>
                 </tr>
                 <tr>
@@ -25,7 +33,12 @@
                         Name: &nbsp;
                     </th>
                     <td>
+                        {{#user}}
+                        <input type="text" name="name" class="form-control" value="{{name}}" placeholder="이름" required>
+                        {{/user}}
+                        {{^user}}
                         <input type="text" name="name" class="form-control" placeholder="이름" required>
+                        {{/user}}
                     </td>
                 </tr>
                 <tr>
@@ -33,7 +46,12 @@
                         Email: &nbsp;
                     </th>
                     <td>
+                        {{#user}}
+                        <input type="email" name="email" class="form-control" value="{{email}}" placeholder="이메일" required>
+                        {{/user}}
+                        {{^user}}
                         <input type="email" name="email" class="form-control" placeholder="이메일" required>
+                        {{/user}}
                     </td>
                 </tr>
             </table>

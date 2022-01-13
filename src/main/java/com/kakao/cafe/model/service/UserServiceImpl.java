@@ -49,11 +49,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findUserByLoginInfo(String userId, String password) {
+    public UserDto findUserByLoginInfo(String userId, String password, String errorMessage) {
         return userRepository.findUserByLoginInfo(userId, password).stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("입력하신 회원 ID 및 비밀번호와 일치하는 회원 정보가 존재하지 않습니다."));
+                .orElseThrow(() -> new UserNotFoundException(errorMessage));
     }
 
     @Override

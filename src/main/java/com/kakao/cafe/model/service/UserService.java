@@ -10,7 +10,7 @@ public interface UserService {
     List<UserDto> findAllUsers();
     UserDto findUserById(Long id);
     UserDto findUserByUserId(String userId);
-    UserDto findUserByLoginInfo(String userId, String password);
+    UserDto findUserByLoginInfo(String userId, String password, String errorMessage);
 
     void modifyUser(UserDto userDto);
 
