@@ -26,7 +26,7 @@ public class ArticleRepositoryLocalImpl implements ArticleRepository {
     @Override
     public Optional<Article> findById(Long id) {
         return articles.stream()
-                .filter(article -> article.getId() == id)
+                .filter(article -> article.getId().equals(id))
                 .findFirst();
     }
 }

@@ -6,6 +6,7 @@ import com.kakao.cafe.domain.dtos.ArticleSaveDto;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     @Autowired
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(@Qualifier("articleRepositoryJdbcImpl") ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
@@ -31,7 +32,7 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public ArticleResponseDto findById(long id) {
+    public ArticleResponseDto findById(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 아이디의 게시물이 없습니다."));
         return new ArticleResponseDto(article);

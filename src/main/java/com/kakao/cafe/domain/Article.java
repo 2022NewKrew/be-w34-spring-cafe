@@ -3,7 +3,7 @@ package com.kakao.cafe.domain;
 import java.util.Date;
 
 public class Article {
-    private long id;
+    private Long id;
     private final String writer;
     private final String title;
     private final String content;
@@ -15,7 +15,7 @@ public class Article {
         this.content = content;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -23,7 +23,7 @@ public class Article {
         this.creationTime = creationTime;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

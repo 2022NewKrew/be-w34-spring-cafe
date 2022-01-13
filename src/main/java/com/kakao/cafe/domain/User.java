@@ -3,7 +3,7 @@ package com.kakao.cafe.domain;
 import java.util.Date;
 
 public class User {
-    private long id;
+    private Long id;
     private String email;
     private String name;
     private String password;
@@ -15,7 +15,7 @@ public class User {
         this.password = password;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -41,7 +41,7 @@ public class User {
         this.creationTime = creationTime;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

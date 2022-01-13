@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 public class UserResponseDto {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private final long id;
+    private final Long id;
     private final String email;
     private final String name;
     private final String creationTime;
@@ -18,7 +18,7 @@ public class UserResponseDto {
         this.creationTime = dateFormat.format(user.getCreationTime());
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

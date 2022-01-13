@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 public class ArticleResponseDto {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private final long id;
+    private final Long id;
     private final String writer;
     private final String title;
     private final String content;
@@ -20,7 +20,7 @@ public class ArticleResponseDto {
         this.creationTime = dateFormat.format(article.getCreationTime());
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
