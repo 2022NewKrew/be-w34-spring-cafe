@@ -8,21 +8,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    private final UserRepository inMemoryUserRepository;
+    private final UserRepository userRepository;
 
-    public UserService(UserRepository inMemoryUserRepository) {
-        this.inMemoryUserRepository = inMemoryUserRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public void register(User user) {
-        inMemoryUserRepository.save(user);
+        userRepository.save(user);
     }
 
     public List<User> getUserList() {
-        return inMemoryUserRepository.findAll();
+        return userRepository.findAll();
     }
 
     public User getUserById(String userId) {
-        return inMemoryUserRepository.findByUserId(userId);
+        return userRepository.findByUserId(userId);
     }
 }
