@@ -5,9 +5,12 @@ import com.kakao.cafe.service.UserService;
 import org.h2.engine.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -44,7 +47,12 @@ public class UserController {
 
     @PostMapping("/signup")
     public String signup(UserDto user) {
-        userService.signupUser(user);
+        try {
+            userService.filterUserById(user.getUserId());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (EmptyResultDataAccessException e) {
+            userService.signupUser(user);
+        }
         return "redirect:";
     }
 
@@ -63,7 +71,8 @@ public class UserController {
             user.setEmail(email);
             user.setName(name);
             userService.updateUser(user);
+            return "redirect:";
         }
-        return "redirect:";
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
