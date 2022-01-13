@@ -9,7 +9,7 @@ import java.util.Optional;
 
 
 public interface ArticleRepository {
-    Article save(Article article);
+    Long save(Article article);
 
     List<Article> findAll();
 

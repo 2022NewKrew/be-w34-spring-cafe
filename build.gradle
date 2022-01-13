@@ -19,7 +19,8 @@ dependencies {
 	implementation 'com.h2database:h2:2.0.206'
 
 	implementation "org.mapstruct:mapstruct:1.4.2.Final", "org.projectlombok:lombok:1.18.20"
-	annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final", "org.projectlombok:lombok:1.18.20", "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+    implementation 'junit:junit:4.13.1'
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final", "org.projectlombok:lombok:1.18.20", "org.projectlombok:lombok-mapstruct-binding:0.2.0"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

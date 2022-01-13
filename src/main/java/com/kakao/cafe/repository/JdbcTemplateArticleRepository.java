@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Transactional
+
 @Repository
 public class JdbcTemplateArticleRepository implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
@@ -30,28 +30,28 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article save(Article article) {
+    public Long save(Article article) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into ARTICLE (WRITER, TITLE, CONTENTS, TIME) values (?,?,?,now())", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = connection.prepareStatement("insert into ARTICLE_TABLE (WRITER, TITLE, CONTENTS, TIME) values (?,?,?,now())", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, article.getWriter());
             ps.setString(2, article.getTitle());
             ps.setString(3, article.getContents());
             return ps;
         }, keyHolder);
-        return article;
+        return (Long)keyHolder.getKey();
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from article", articleRowMapper());
+        return jdbcTemplate.query("select * from ARTICLE_TABLE", articleRowMapper());
     }
 
     @Override
     public Optional<Article> findById(Long id) {
         return jdbcTemplate.
-                query("select * from article where id = ?", articleRowMapper(), id).
+                query("select * from ARTICLE_TABLE where id = ?", articleRowMapper(), id).
                 stream().findAny();
 
     }
