@@ -10,11 +10,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MemoryPostRepository implements PostRepository {
+public class InMemoryPostRepository implements PostRepository {
 
     private final Posts posts;
 
-    public MemoryPostRepository() {
+    public InMemoryPostRepository() {
         this.posts = new Posts(Collections.synchronizedList(new ArrayList<>()));
     }
 

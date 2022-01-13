@@ -10,11 +10,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MemoryUserRepository implements UserRepository {
+public class InMemoryUserRepository implements UserRepository {
 
     private final Users users;
 
-    public MemoryUserRepository() {
+    public InMemoryUserRepository() {
         this.users = new Users(Collections.synchronizedList(new ArrayList<>()));
     }
 
