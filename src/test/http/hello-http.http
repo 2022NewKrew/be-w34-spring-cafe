@@ -1,0 +1,14 @@
+### 정적 페이지 가져오기
+GET {{host}}/
+
+### 간단 API 테스트
+GET {{host}}/api/hello
+
+### 템플릿 동작 테스트
+GET {{host}}/fruit?name=banana&sugar=60
+
+### Post 동작 확인
+POST {{host}}/fruit?name=mango&sugar=90
+
+### MVCConfig으로 폼 동작 확인
+GET {{host}}/form
