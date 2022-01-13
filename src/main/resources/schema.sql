@@ -17,5 +17,5 @@ CREATE TABLE IF NOT EXISTS TB_ARTICLE
     writer    VARCHAR(32),
     title     VARCHAR(128),
     contents  VARCHAR(2048),
-    created_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
 );
