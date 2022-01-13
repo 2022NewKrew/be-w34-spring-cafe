@@ -51,6 +51,7 @@ public class UserController {
     public String userListProfile(Model model, @PathVariable String userId) {
         ShowUserDto user = userService.findById(userId);
         model.addAttribute("user", user);
+        System.out.println("test");
         return "/user/profile";
     }
 
