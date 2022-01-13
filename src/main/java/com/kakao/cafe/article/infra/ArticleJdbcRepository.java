@@ -3,6 +3,7 @@ package com.kakao.cafe.article.infra;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleRepository;
 import com.kakao.cafe.user.domain.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -39,7 +40,12 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
     @Override
     public Article findByIdOrNull(int articleId) {
-        return null;
+        String query = "select * from articles A join users B on A.author_id = B.user_id where id = ?";
+        try {
+            return jdbcTemplate.queryForObject(query, mapArticleRow(), articleId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     private RowMapper<Article> mapArticleRow() {
