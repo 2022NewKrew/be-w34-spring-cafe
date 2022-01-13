@@ -19,7 +19,6 @@ public class ExceptionController {
     @ExceptionHandler({UserNotFoundException.class, UserDuplicateException.class})
     String userError(HttpServletRequest req, RuntimeException e, Model model) {
         model.addAttribute("e", e);
-        model.addAttribute("stacktrace", e.getStackTrace());
         return "error/error";
     }
 
@@ -27,7 +26,6 @@ public class ExceptionController {
     @ExceptionHandler({PostNotFoundException.class})
     String userNotFound(HttpServletRequest req, RuntimeException e, Model model) {
         model.addAttribute("e", e);
-        model.addAttribute("stacktrace", e.getStackTrace());
         return "error/error";
     }
 
