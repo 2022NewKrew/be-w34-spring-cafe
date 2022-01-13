@@ -55,7 +55,7 @@ public class PostService {
 
     public PostDetailDto getPostDetailById(UUID id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
         User writer = userRepository.findById(post.getWriterId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_INPUT));
 

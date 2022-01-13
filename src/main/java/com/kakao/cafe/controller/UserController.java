@@ -40,7 +40,7 @@ public class UserController {
     public String getUserByUserId(@PathVariable("id") String userId, Model model) {
         model.addAttribute("user",
                 userService.findByUserId(userId)
-                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND)));
+                        .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         return "users/profile";
     }
 }
