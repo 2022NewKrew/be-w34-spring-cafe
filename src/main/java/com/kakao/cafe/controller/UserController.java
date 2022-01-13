@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserLoginResponse;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,23 +11,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
 public class UserController {
     private final UserService userService;
 
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/users")
-    public String createUser(User user) {
+    public String createUser(User user, HttpServletResponse response) {
         logger.info("입장 : {}", user.toString());
 
-        userService.createUser(user);
+        final boolean status = userService.createUser(user);
+        if (!status) {
+            logger.info("이미 가입된 유저정보가 포함됨 : {}", user.toString());
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return "user/form";
+        }
 
         return "redirect:/users";
     }
@@ -50,5 +57,19 @@ public class UserController {
 
         model.addAttribute("user", user);
         return "user/profile";
+    }
+
+    // 뷰단 로그인 기능 미구현으로 인해 추후 구현예정
+    @PostMapping("/users/login")
+    public String loginUser(UserLoginResponse userLoginResponse, HttpServletResponse response) {
+        final User user = userService.loginUser(userLoginResponse);
+
+        if (user == null) {
+            logger.info("유저 정보가 존재하지 않음 : {}", userLoginResponse);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return "user/login";
+        }
+
+        return "index";
     }
 }

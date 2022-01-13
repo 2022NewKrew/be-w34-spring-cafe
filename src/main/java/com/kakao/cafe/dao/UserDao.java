@@ -3,9 +3,7 @@ package com.kakao.cafe.dao;
 import com.kakao.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -29,9 +27,8 @@ public class UserDao {
     }
 
     public void createUser(User user) {
-        final User newUser = new User(user);
+        final User newUser = User.from(user);
         newUser.setUserId(userId++);
-        newUser.setCreateDate(getCurrentTime());
 
         users.add(newUser);
     }
@@ -41,26 +38,25 @@ public class UserDao {
     }
 
     public boolean checkDuplicateUser(User newUser) {
-        final int userNicknameCount = (int) users.stream()
-                .filter(user -> user.getNickname().equals(newUser.getNickname()) ||
-                        user.getEmail().equals(newUser.getEmail()))
-                .count();
+        final boolean isDuplicateUser = users.stream()
+                .anyMatch(user -> user.getNickname().equals(newUser.getNickname()) ||
+                        user.getEmail().equals(newUser.getEmail()));
 
-        if (userNicknameCount > 0) {
-            return true;
-        }
-
-        return false;
+        return isDuplicateUser;
     }
     
     public User getUser(long userId) {
         return users.stream()
                 .filter(user -> user.getUserId() == userId)
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElse(null);
     }
 
-    private String getCurrentTime() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return simpleDateFormat.format(new Date());
+    public User loginUser(String email, String password) {
+        return users.stream()
+                .filter(user -> user.getEmail().equals(email) &&
+                        user.getPassword().equals(password))
+                .findFirst()
+                .orElse(null);
     }
 }

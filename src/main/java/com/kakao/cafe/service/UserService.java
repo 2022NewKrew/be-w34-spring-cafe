@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dao.UserDao;
+import com.kakao.cafe.dto.UserLoginResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,15 +12,18 @@ public class UserService {
     private final UserDao userDao;
 
     public UserService() {
-        this.userDao = UserDao.getInstance();
+        userDao = UserDao.getInstance();
     }
 
-    public void createUser(User user) {
-        if (userDao.checkDuplicateUser(user)) {
-            return;
+    public boolean createUser(User user) {
+        final boolean isDuplicateUser = userDao.checkDuplicateUser(user);
+
+        if (isDuplicateUser) {
+            return false;
         }
 
         userDao.createUser(user);
+        return true;
     }
 
     public List<User> getUsers() {
@@ -28,5 +32,9 @@ public class UserService {
     
     public User getUser(long userId) {
         return userDao.getUser(userId);
+    }
+
+    public User loginUser(UserLoginResponse userLoginResponse) {
+        return userDao.loginUser(userLoginResponse.getEmail(), userLoginResponse.getPassword());
     }
 }
