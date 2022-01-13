@@ -5,6 +5,8 @@ import com.kakao.cafe.dto.ArticlePostDto;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,9 @@ public class ArticleController {
         try {
             articleService.postArticle(article);
         } catch (SQLException e) {
+            e.printStackTrace();
+            return "redirect:/";
+        } catch (NoSuchElementException e) {
             e.printStackTrace();
             return "redirect:/";
         }

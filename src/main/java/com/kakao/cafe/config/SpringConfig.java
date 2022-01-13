@@ -17,7 +17,7 @@ public class SpringConfig {
 
     @Bean
     public ArticleService articleService() {
-        return new ArticleService(articleRepository());
+        return new ArticleService(articleRepository(), userRepository());
     }
 
     @Bean

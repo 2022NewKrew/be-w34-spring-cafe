@@ -1,9 +1,11 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticlePostDto;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.UserRepository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,12 +14,18 @@ import java.util.NoSuchElementException;
 
 public class ArticleService {
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository, UserRepository userRepository) {
         this.articleRepository = articleRepository;
+        this.userRepository = userRepository;
     }
 
-    public void postArticle(ArticlePostDto article) throws SQLException {
+    public void postArticle(ArticlePostDto article) throws SQLException, NoSuchElementException {
+        User user = userRepository.findByName(article.getWriter());
+        if (user == null)
+            throw new NoSuchElementException("Article 작성자 id가 존재하지 않음");
+
         articleRepository.save(article);
     }
 
