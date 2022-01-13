@@ -1,8 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.DTO.SignInDTO;
-import com.kakao.cafe.service.UserService;
-import lombok.RequiredArgsConstructor;
+import com.kakao.cafe.domain.UserDB;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
