@@ -30,51 +30,37 @@ public class UserRepository {
     }
 
     public UserDto findById(String userId) {
-/*
-        UserDto result = jdbcTemplate.queryForObject(
-                "select * from MEMBER where userId = ?",
-                (rs, count) -> new UserDto(
-                        rs.getString("userId"),
-                        rs.getString("email"),
-                        rs.getString("name"),
-                        rs.getString("password")
-                ),
-                userId);*/
-        UserDto user = jdbcTemplate.queryForObject(
+        return jdbcTemplate.queryForObject(
                 "select * from MEMBER where userId = ?",
                 new UserMapper(),
                 userId
         );
-        return user;
     }
 
     public UserDto findByName(String name) {
-        UserDto user = jdbcTemplate.queryForObject(
+        return jdbcTemplate.queryForObject(
                 "select * from MEMBER where name = ?",
                 new UserMapper(),
                 name
         );
-        return user;
     }
 
     public List<UserDto> findAll() {
-        List<UserDto> userList = jdbcTemplate.query(
+        return jdbcTemplate.query(
                 "select * from MEMBER",
                 new UserMapper()
         );
-        return userList;
     }
 
     public class UserMapper implements RowMapper<UserDto> {
         @Override
         public UserDto mapRow(ResultSet rs, int count) throws SQLException {
-            UserDto user = new UserDto(
+
+            return new UserDto(
                     rs.getString("userId"),
                     rs.getString("email"),
                     rs.getString("name")
             );
-
-            return user;
         };
     }
 }

@@ -1,7 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.dto.ArticlePostDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -19,7 +19,7 @@ public class ArticleRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void save(ArticleDto article) throws SQLException {
+    public void save(ArticlePostDto article) throws SQLException {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         Map<String, Object> param = new HashMap<>();
 
@@ -34,44 +34,36 @@ public class ArticleRepository {
 
         int key = simpleJdbcInsert.executeAndReturnKey(param).intValue();
 
-        if (key < 1) // ?
+        if (key < 1)
             throw new SQLException("Article insertion fail.");
     }
 
     public List<Article> getAllArticles() {
-        List<Article> articleList = jdbcTemplate.query(
+        return jdbcTemplate.query(
                 "select * from ARTICLE",
                 new ArticleEntityMapper()
         );
-        return articleList;
     }
 
-    public ArticleDto findById(int id) {
-        Article article = jdbcTemplate.queryForObject(
+    public Article findById(int id) {
+
+        return jdbcTemplate.queryForObject(
                 "select * from ARTICLE where id = ?",
                 new ArticleEntityMapper(),
                 id
         );
-
-        ArticleDto articleDto = new ArticleDto(
-                article.getWriter(),
-                article.getTitle(),
-                article.getContents()
-        );
-        return articleDto;
     }
 
     public class ArticleEntityMapper implements RowMapper<Article> {
         @Override
         public Article mapRow(ResultSet rs, int count) throws SQLException {
-            Article article = new Article(
+
+            return new Article(
                     rs.getInt("id"),
                     rs.getString("writer"),
                     rs.getString("title"),
                     rs.getString("contents")
             );
-
-            return article;
         };
     }
 }

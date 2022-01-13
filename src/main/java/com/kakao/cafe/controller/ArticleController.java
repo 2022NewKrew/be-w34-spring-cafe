@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.dto.ArticlePostDto;
 import com.kakao.cafe.dto.UserDto;
-import com.kakao.cafe.dto.UserSignUpDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -27,7 +27,7 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String postQuestion(ArticleDto article) {
+    public String postQuestion(ArticlePostDto article) {
         try {
             articleService.postArticle(article);
         } catch (SQLException e) {
@@ -43,7 +43,7 @@ public class ArticleController {
         UserDto writer;
 
         try {
-            article = articleService.findByIndex(index);
+            article = articleService.findById(index);
             writer = userService.findByName(article.getWriter());
             model.addAttribute("article", article);
             model.addAttribute("writer", writer);
