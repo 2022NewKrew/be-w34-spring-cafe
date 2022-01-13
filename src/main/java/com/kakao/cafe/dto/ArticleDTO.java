@@ -19,6 +19,7 @@ public interface ArticleDTO {
         String body;
     }
 
+    @Getter
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     class Result {
 

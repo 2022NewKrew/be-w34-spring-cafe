@@ -7,7 +7,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.kakao.cafe.dto.ArticleDTO.Create;
-import com.kakao.cafe.dto.ArticleDTO.Result;
 import com.kakao.cafe.error.exception.ArticleNotFoundException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.persistence.model.Article;
@@ -79,7 +78,6 @@ class ArticleServiceTest {
             .thenReturn(Optional.of(article));
 
         // When
-
 
         // Then
         assertDoesNotThrow(() -> articleService.readById(1L));

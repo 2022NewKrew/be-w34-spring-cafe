@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 @RequestMapping("/auth")
@@ -25,6 +27,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.OK)
     public String login(@ModelAttribute @Validated Login loginDTO, HttpServletRequest request,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -43,6 +46,7 @@ public class AuthController {
     }
 
     @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();

@@ -3,7 +3,6 @@ package com.kakao.cafe.persistence.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kakao.cafe.persistence.model.Article;
-import com.kakao.cafe.persistence.model.User;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;

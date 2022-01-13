@@ -33,6 +33,7 @@ public interface UserDTO {
         String email;
     }
 
+    @Getter
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     class Result {
 
