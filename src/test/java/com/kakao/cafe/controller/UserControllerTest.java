@@ -88,7 +88,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("[성공] 회원 목록 조회 - 회원이 없는 경우")
+    @DisplayName("[성공] 회원 목록 조회 - 기존 회원이 없는 경우")
     void userList_By_EmptyList() throws Exception {
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
