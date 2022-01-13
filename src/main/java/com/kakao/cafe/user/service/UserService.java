@@ -15,8 +15,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User signUp(SignUpDTO signUpDTO) {
-        return userRepository.save(signUpDTO);
+    public void signUp(SignUpDTO signUpDTO) {
+        userRepository.save(signUpDTO);
     }
 
     public List<User> getAllUsers() {
@@ -28,7 +28,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("유저가 존재하지 않습니다."));
     }
 
-    public User updateUser(UpdateDTO updateDTO) {
-        return userRepository.update(updateDTO);
+    public void updateUser(UpdateDTO updateDTO) {
+        userRepository.update(updateDTO);
     }
 }

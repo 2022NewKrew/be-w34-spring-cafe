@@ -14,8 +14,8 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public Article question(QuestionDTO questionDTO) {
-        return articleRepository.save(questionDTO);
+    public void question(QuestionDTO questionDTO) {
+        articleRepository.save(questionDTO);
     }
 
     public Article findById(Long id) {

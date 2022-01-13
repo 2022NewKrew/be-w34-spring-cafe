@@ -9,11 +9,11 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    User save(SignUpDTO singUpDto);
+    void save(SignUpDTO singUpDto);
 
     Optional<User> findByUserId(String userId);
 
     List<User> findAll();
 
-    User update(UpdateDTO updateDto);
+    void update(UpdateDTO updateDto);
 }
