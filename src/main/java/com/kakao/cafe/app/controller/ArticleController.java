@@ -7,11 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ArticleController {
@@ -24,7 +28,10 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public String write(@ModelAttribute ArticleRequest request, HttpSession session) {
+    public String write(
+            @ModelAttribute ArticleRequest request,
+            HttpSession session
+    ) {
         Long ownerId = (Long) session.getAttribute("id");
         if (ownerId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
@@ -42,7 +49,10 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String read(@PathVariable Long id, Model model) {
-        ArticleDto article = service.getById(id);
+        Optional<ArticleDto> article = service.getById(id);
+        if (article.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "article not found");
+        }
         model.addAttribute("article", article);
         return "articles/item";
     }

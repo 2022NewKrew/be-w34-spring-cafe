@@ -2,19 +2,15 @@ package com.kakao.cafe.domain.repository;
 
 import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
-import org.springframework.lang.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository {
 
-    @Nullable
     User create(SignUp signUp);
     List<User> list();
-    @Nullable
-    User getById(long id);
-    @Nullable
-    User getByUserId(String userId);
-    @Nullable
+    Optional<User> getById(long id);
+    Optional<User> getByUserId(String userId);
     User login(String userId, String password);
 }

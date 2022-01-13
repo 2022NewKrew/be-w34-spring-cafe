@@ -16,6 +16,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -82,15 +83,15 @@ class JdbcArticleRepositoryTest {
 
     @Test
     public void getById() {
-        Article result = subject.getById(insertedId);
+        Optional<Article> result = subject.getById(insertedId);
 
-        assertNotNull(result);
+        assertTrue(result.isPresent());
     }
 
     @Test
     public void getById_notFound() {
-        Article result = subject.getById(insertedId + 999);
+        Optional<Article> result = subject.getById(insertedId + 999);
 
-        assertNull(result);
+        assertTrue(result.isEmpty());
     }
 }

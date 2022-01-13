@@ -12,6 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,15 +69,6 @@ class JdbcUserRepositoryTest {
     }
 
     @Test
-    void create_duplicate() {
-        SignUp signUp = new SignUp("id", "password", "name", "");
-
-        User result = subject.create(signUp);
-
-        assertNull(result);
-    }
-
-    @Test
     void list() {
         List<User> result = subject.list();
 
@@ -87,32 +79,32 @@ class JdbcUserRepositoryTest {
     void getById() {
         long id = subject.list().get(0).getId();
 
-        User user = subject.getById(id);
+        Optional<User> user = subject.getById(id);
 
-        assertNotNull(user);
-        assertEquals(id, user.getId());
+        assertTrue(user.isPresent());
+        assertEquals(id, user.get().getId());
     }
 
     @Test
     void getById_nonExisting() {
-        User user = subject.getById(999);
+        Optional<User> user = subject.getById(999);
 
-        assertNull(user);
+        assertTrue(user.isEmpty());
     }
 
     @Test
     void getByUserId() {
-        User user = subject.getByUserId("id");
+        Optional<User> user = subject.getByUserId("id");
 
-        assertNotNull(user);
-        assertEquals("id", user.getUserId());
+        assertTrue(user.isPresent());
+        assertEquals("id", user.get().getUserId());
     }
 
     @Test
     void getByUserId_nonExisting() {
-        User user = subject.getByUserId("id1");
+        Optional<User> user = subject.getByUserId("id1");
 
-        assertNull(user);
+        assertTrue(user.isEmpty());
     }
 
     @Test

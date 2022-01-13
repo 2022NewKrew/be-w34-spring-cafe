@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -53,16 +52,15 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    @Nullable
-    public Article getById(long id) {
+    public Optional<Article> getById(long id) {
         String sql = "SELECT * FROM articles " +
                 "INNER JOIN users ON articles.owner_id = users.id " +
                 "WHERE articles.id = :id";
         Map<String, Object> params = Collections.singletonMap("id", id);
         try {
-            return jdbcTemplate.queryForObject(sql, params, rowMapper);
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, params, rowMapper));
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            return Optional.empty();
         }
     }
 }
