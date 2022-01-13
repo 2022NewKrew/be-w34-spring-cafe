@@ -13,6 +13,8 @@ repositories {
 }
 
 dependencies {
+	implementation 'com.h2database:h2:2.0.206'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

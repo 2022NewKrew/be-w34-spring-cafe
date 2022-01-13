@@ -5,7 +5,7 @@ import com.kakao.cafe.exception.InvalidPasswordException;
 public class User {
 
     private Long id;
-    private String username;
+    private final String username;
     private String nickname;
     private String email;
     private String password;
@@ -30,16 +30,12 @@ public class User {
         }
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public boolean isEqualUserId(long id) {
-        return this.id == id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -54,6 +50,10 @@ public class User {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public int hashCode() {
         return id.hashCode();
@@ -62,7 +62,7 @@ public class User {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof User) {
-            return isEqualUserId(((User) obj).id);
+            return this.id.equals(((User) obj).id);
         }
         return false;
     }
