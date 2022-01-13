@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class User {
-    private String id;
-    private String password;
-    private String name;
-    private String email;
+    private final String id;
+    private final String password;
+    private final String name;
+    private final String email;
 
     public User(String id, String password, String name, String email) {
         validate(id, password, name, email);
