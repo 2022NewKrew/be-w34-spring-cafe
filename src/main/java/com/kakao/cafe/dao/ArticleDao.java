@@ -36,6 +36,11 @@ public class ArticleDao {
         jdbcTemplate.update(sql, article.getWriter(), article.getTitle(), article.getContents(), index);
     }
 
+    public void deleteArticle(int index) {
+        String sql = "DELETE FROM articles WHERE id = ?";
+        jdbcTemplate.update(sql, index);
+    }
+
     private RowMapper<ArticleVo> articleRowMapper() {
         return (rs, rowNum) -> new ArticleVo(
                 rs.getInt("id"),
