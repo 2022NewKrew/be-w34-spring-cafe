@@ -12,11 +12,15 @@ import java.util.List;
 
 @Controller
 public class ArticleApiController {
-    private final ArticleService articleService = new ArticleService();
+    private final ArticleService articleService;
+
+    private ArticleApiController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
 
     @GetMapping("/")
     String getArticles(Model model) {
-        List<Article> articleList = articleService.getArticleList();
+        List<Article> articleList = articleService.getArticles();
         model.addAttribute("articles", articleList);
         return "index";
     }

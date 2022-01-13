@@ -1,27 +1,20 @@
 package com.kakao.cafe.domain;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class Article {
-    private final String author;
-    private final LocalDateTime createdAt;
+
     private int id;
+    private String author;
+    private LocalDateTime createdAt;
     private String title;
     private String content;
-
-    public Article(String author, String title, String content) {
-        this.author = author;
-        this.title = title;
-        this.content = content;
-        this.createdAt = LocalDateTime.now();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
 }
