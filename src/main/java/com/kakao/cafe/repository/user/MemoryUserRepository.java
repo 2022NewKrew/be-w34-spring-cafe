@@ -1,7 +1,6 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.user;
 
-import com.kakao.cafe.vo.User;
-import com.kakao.cafe.vo.UserDto;
+import com.kakao.cafe.domain.user.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -12,9 +11,10 @@ public class MemoryUserRepository implements UserRepository{
     private static final Map<Long,User> userStore = new HashMap<>();
     private static long sequence = 0L;
 
+
     @Override
-    public void save(UserDto userDto) {
-        User user = new User(++sequence, userDto);
+    public void save(User user) {
+        user.setId(++sequence);
         userStore.put(user.getId(), user);
     }
 
@@ -24,9 +24,9 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public Optional<User> findByName(String name) {
+    public Optional<User> findByUserId(String userId) {
         return userStore.values().stream()
-                .filter(user -> user.getName().equals(name))
+                .filter(user -> user.getUserId().equals(userId))
                 .findAny();
     }
 
@@ -34,4 +34,9 @@ public class MemoryUserRepository implements UserRepository{
     public List<User> findAll() {
         return new ArrayList<>(userStore.values());
     }
+
+    public void clearUserStore(){
+        userStore.clear();
+    }
+
 }

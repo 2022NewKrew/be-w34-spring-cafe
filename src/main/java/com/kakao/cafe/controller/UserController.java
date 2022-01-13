@@ -1,8 +1,9 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.dto.user.UserUpdateReqDto;
+import com.kakao.cafe.service.user.UserService;
 
-import com.kakao.cafe.vo.UserDto;
+import com.kakao.cafe.dto.user.UserReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +23,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String createUser(@ModelAttribute UserDto userDto){
-        userService.addUser(userDto);
+    public String createUser(@ModelAttribute UserReqDto userReqDto){
+        userService.addUser(userReqDto);
         return "redirect:/users";
     }
 
@@ -36,6 +37,19 @@ public class UserController {
     public String getId(@PathVariable Long id, Model model){
         model.addAttribute("user", userService.findUserById(id));
         return "user/profile";
+    }
+
+    @GetMapping("/{id}/form")
+    public String getUpdateForm(@PathVariable Long id, Model model){
+        model.addAttribute("user", userService.findUserById(id));
+        return "user/updateForm";
+    }
+
+    @PostMapping("/{id}/update")
+    public String updateUser(@PathVariable Long id, @ModelAttribute UserUpdateReqDto userUpdateReqDto){
+        userUpdateReqDto.setId(id);
+        userService.updateUser(userUpdateReqDto);
+        return "redirect:/users";
     }
 
 
