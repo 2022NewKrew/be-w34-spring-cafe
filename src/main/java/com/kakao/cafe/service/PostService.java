@@ -32,7 +32,7 @@ public class PostService {
 
         for (Post post : postList) {
             User writer = userRepository.findById(post.getWriterId())
-                    .orElseThrow(() -> new CustomException(ErrorCode.NO_MATCH_USER));
+                    .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_INPUT));
 
             postDetailDtoList.add(new PostDetailDto(
                     post.getId(),
@@ -49,7 +49,7 @@ public class PostService {
 
     public void write(PostCreateRequest requestDto) {
         User writer = userRepository.findByName(requestDto.getWriter())
-                .orElseThrow(() -> new CustomException(ErrorCode.NO_MATCH_USER));
+                .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_INPUT));
         postRepository.save(requestDto.toEntity(writer.getId()));
     }
 
@@ -57,7 +57,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
         User writer = userRepository.findById(post.getWriterId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NO_MATCH_USER));
+                .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_INPUT));
 
         return new PostDetailDto(
                 post.getId(),
