@@ -1,0 +1,26 @@
+package com.kakao.cafe.dto.post;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@Getter
+@Setter
+public class CreatePostDto {
+    @NotBlank(message = "작성자를 입력해주세요")
+    private String writer;
+    @NotNull
+    private String title;
+    @NotNull
+    private String content;
+
+    @Builder
+    public CreatePostDto(String writer, String title, String content) {
+        this.writer = writer;
+        this.title = title;
+        this.content = content;
+    }
+}

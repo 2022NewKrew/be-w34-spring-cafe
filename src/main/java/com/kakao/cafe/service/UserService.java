@@ -2,11 +2,14 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
+import com.kakao.cafe.dto.user.CreateUserDto;
+import com.kakao.cafe.dto.user.ShowUserDto;
+import com.kakao.cafe.dto.user.UpdateUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -17,21 +20,55 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User join(User user){
+    public User join(CreateUserDto createUserDto) {
+        if (checkDuplicateUserId(createUserDto.getUserId())) {
+            throw new IllegalArgumentException("이미 등록된 사용자 입니다.");
+        }
+
+        User user = User.builder()
+                .userId(createUserDto.getUserId())
+                .password(createUserDto.getPassword())
+                .name(createUserDto.getName())
+                .email(createUserDto.getEmail())
+                .build();
+
         return userRepository.save(user);
     }
 
-    public Optional<User> findProfile(String userId){
-        return userRepository.findById(userId);
+    public ShowUserDto findProfile(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 사용자 입니다."));
+
+        return new ShowUserDto(user);
     }
 
-    public List<User> findAllUser(){
-        return userRepository.findAll();
+    public User editProfile(String userId, UpdateUserDto userDto){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 사용자 입니다."));
+
+        if(!userDto.getPassword().equals(user.getPassword())){
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+
+        String newPassword = (userDto.getNewPassword().equals("")) ? userDto.getPassword() : userDto.getNewPassword();
+
+        User editUser = User.builder()
+                .userId(userId)
+                .password(newPassword)
+                .name(userDto.getName())
+                .email(userDto.getEmail())
+                .build();
+
+        return userRepository.edit(userId, editUser);
     }
 
-    public boolean checkDuplicateUserId(String userId){
-        Optional<User> findUser = userRepository.findById(userId);
+    public List<ShowUserDto> findAllUser() {
+        return userRepository.findAll().stream()
+                .map(ShowUserDto::new)
+                .collect(Collectors.toList());
+    }
 
-        return findUser.isPresent();
+    public boolean checkDuplicateUserId(String userId) {
+        return userRepository.findById(userId).isPresent();
     }
 }

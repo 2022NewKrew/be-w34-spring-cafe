@@ -1,18 +1,20 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.dto.user.CreateUserDto;
+import com.kakao.cafe.dto.user.ShowUserDto;
+import com.kakao.cafe.dto.user.UpdateUserDto;
 import com.kakao.cafe.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.Optional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@Slf4j
 public class UserController {
     private final UserService userService;
 
@@ -29,28 +31,46 @@ public class UserController {
 
     @GetMapping("/user/form")
     public String userForm(){
-        return "user/form";
+        return "user/addForm";
     }
 
     @PostMapping("/user")
-    public String createUser(@ModelAttribute User user){
-        if(userService.checkDuplicateUserId(user.getUserId())){
-            throw new IllegalArgumentException("이미 등록된 사용자 입니다.");
+    public String createUser(@ModelAttribute @Validated CreateUserDto createUserDto, Errors errors, Model model){
+        if(errors.hasErrors()){
+            errors.getFieldErrors().forEach(err -> model.addAttribute(err.getField(), err.getDefaultMessage()));
+            return "user/addForm";
         }
 
-        userService.join(user);
+        User user = userService.join(createUserDto);
+        log.info("Create User - {}", user);
         return "redirect:/user";
     }
 
     @GetMapping("/user/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model){
-        Optional<User> profile = userService.findProfile(userId);
+        ShowUserDto profile = userService.findProfile(userId);
+        model.addAttribute("user", profile);
+        return "user/profile";
+    }
 
-        if(profile.isEmpty()){
-            throw new IllegalArgumentException("등록되지 않은 사용자 입니다.");
+    @GetMapping("/user/{userId}/form")
+    public String userUpdateForm(@PathVariable String userId, Model model){
+        ShowUserDto profile = userService.findProfile(userId);
+        model.addAttribute("user", profile);
+
+        return "user/editForm";
+    }
+
+    @PostMapping("/user/{userId}/update")
+    public String userUpdate(@PathVariable String userId, @ModelAttribute @Validated UpdateUserDto updateUserDto, Errors errors, Model model){
+        if(errors.hasErrors()){
+            errors.getFieldErrors().forEach(err -> model.addAttribute(err.getField(), err.getDefaultMessage()));
+            model.addAttribute("user", updateUserDto);
+            return "user/editForm";
         }
 
-        model.addAttribute("user", profile.get());
-        return "user/profile";
+        User editUser = userService.editProfile(userId, updateUserDto);
+        log.info("Update User - {}", editUser);
+        return "redirect:/user";
     }
 }
