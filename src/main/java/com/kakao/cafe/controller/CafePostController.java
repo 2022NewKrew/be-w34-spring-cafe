@@ -3,7 +3,6 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.Post;
 import com.kakao.cafe.service.CafePostService;
-import com.kakao.cafe.service.CafePostServiceImpl;
 import com.kakao.cafe.url.PostRedirect;
 import com.kakao.cafe.url.PostView;
 import org.springframework.lang.NonNull;

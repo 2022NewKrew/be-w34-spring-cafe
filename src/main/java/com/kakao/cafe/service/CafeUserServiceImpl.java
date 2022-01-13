@@ -1,7 +1,6 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.dao.CafeUserDao;
-import com.kakao.cafe.dao.CafeUserDaoImpl;
 import com.kakao.cafe.helper.UserHelper;
 import com.kakao.cafe.model.User;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,5 @@
 package com.kakao.cafe.dao;
 
-import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.User;
 import org.springframework.stereotype.Repository;
 
@@ -10,9 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class CafeUserDaoImpl implements CafeUserDao {
