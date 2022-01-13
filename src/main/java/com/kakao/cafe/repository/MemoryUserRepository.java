@@ -6,8 +6,8 @@ import java.util.*;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private static final Map<Long, User> userMap = new HashMap<>();
-    private static Long idNumber = 0L;
+    private final Map<Long, User> userMap = new HashMap<>();
+    private Long idNumber = 0L;
 
     @Override
     public Long generateId() {
