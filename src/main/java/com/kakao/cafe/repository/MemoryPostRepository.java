@@ -20,9 +20,8 @@ public class MemoryPostRepository implements PostRepository {
 
 
     @Override
-    public Post save(Post post) {
+    public void save(Post post) {
         posts.add(post);
-        return post;
     }
 
     @Override

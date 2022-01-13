@@ -46,10 +46,10 @@ public class PostService {
         return postDetailDtoList;
     }
 
-    public Post write(PostCreateRequest requestDto) {
+    public void write(PostCreateRequest requestDto) {
         User writer = userRepository.findByName(requestDto.getWriter())
                 .orElseThrow(() -> new CustomException(ErrorCode.NO_MATCH_USER));
-        return postRepository.save(requestDto.toEntity(writer.getId()));
+        postRepository.save(requestDto.toEntity(writer.getId()));
     }
 
     public PostDetailDto getPostDetailById(UUID id) {

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,14 +19,18 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User save(User user) {
+    public void save(User user) {
         users.add(user);
-        return user;
     }
 
     @Override
     public List<User> findAll() {
         return users.getUsers();
+    }
+
+    @Override
+    public Optional<User> findById(UUID id) {
+        return users.findById(id);
     }
 
     @Override
