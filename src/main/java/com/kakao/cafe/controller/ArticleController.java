@@ -11,7 +11,6 @@ import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,9 +34,7 @@ public class ArticleController {
     @GetMapping("/articles")
     public String requestArticleList(Model model) {
         List<Article> articleList = articleService.getArticleList();
-        List<ArticleListResponseDto> dtoList = articleList.stream()
-                .map(articleMapper::articleToArticleListResponseDto)
-                .collect(Collectors.toList());
+        List<ArticleListResponseDto> dtoList = articleMapper.articleListToArticleListResponseDtoList(articleList);
         model.addAttribute("articles", dtoList);
         return "articles/list";
     }

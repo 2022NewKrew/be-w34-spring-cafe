@@ -8,12 +8,20 @@ import com.kakao.cafe.dto.article.ArticleDetailResponseDto;
 import com.kakao.cafe.dto.article.ArticleListResponseDto;
 import com.kakao.cafe.dto.article.ArticleRegisterRequestDto;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ArticleMapper {
 
-    public ArticleListResponseDto articleToArticleListResponseDto(Article article) {
+    public List<ArticleListResponseDto> articleListToArticleListResponseDtoList(List<Article> articleList) {
+        return articleList.stream()
+                .map(this::articleToArticleListResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    private ArticleListResponseDto articleToArticleListResponseDto(Article article) {
         String articleId = article.getArticleId().toString();
         String title = article.getTitle().getValue();
         String writer = article.getWriter().getName().getValue();
