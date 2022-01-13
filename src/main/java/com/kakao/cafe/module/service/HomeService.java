@@ -1,7 +1,6 @@
 package com.kakao.cafe.module.service;
 
 import com.kakao.cafe.module.repository.ArticleRepository;
-import com.kakao.cafe.module.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
