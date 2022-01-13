@@ -22,8 +22,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ModelAndView handleException(Exception exception){
-        log.info("에러 발생");
-        log.info("{}", exception.getMessage());
+        log.info("에러 발생 : {}", exception.getMessage());
+
         ModelAndView modelAndView = new ModelAndView("/error");
         modelAndView.addObject("errorMessage", exception.getMessage());
 
