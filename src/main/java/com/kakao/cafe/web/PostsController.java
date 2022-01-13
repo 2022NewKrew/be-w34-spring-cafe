@@ -23,7 +23,7 @@ public class PostsController {
         return "index";
     }
 
-    @PostMapping("/posts")
+    @PostMapping("/api/posts")
     public String posts(PostsCreateRequestDto requestDto) {
         requestDto.setWriter("tester");
         postsService.save(requestDto);
@@ -33,9 +33,13 @@ public class PostsController {
 
 //    @GetMapping("/posts/{index}")
 //    public String postsDetail(@PathVariable("index") int index, Model model) {
-//        System.out.println(posts.get(index));
 //        model.addAttribute("post", posts.get(index));
 //        return "post/show";
 //    }
+
+    @GetMapping("/post-article")
+    public String post_form() {
+        return "post/form";
+    }
 
 }

@@ -24,10 +24,25 @@ public class UsersController {
         return "user/list";
     }
 
-    @PostMapping("/users")
+    @PostMapping("/api/users")
     public String Signin(UsersCreateRequestDto requestDto) {
         usersService.save(requestDto);
         return "redirect:/users";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "user/login";
+    }
+
+    @GetMapping("/login-success")
+    public String login_success() {
+        return "user/success";
+    }
+
+    @GetMapping("/signin")
+    public String signin() {
+        return "user/form";
     }
 
 }
