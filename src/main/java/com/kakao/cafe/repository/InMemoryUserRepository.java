@@ -1,19 +1,24 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+//@Repository
 public class InMemoryUserRepository implements UserRepository{
     private static Map<Long, User> store = new HashMap<>();
     private static long sequence = 0L;
 
     @Override
-    public User save(User user) {
-        if(!store.containsKey(user.getId()))
-            user.setId(++sequence);
+    public void save(User user) {
+        user.setId(++sequence);
         store.put(user.getId(), user);
-        return user;
+    }
+
+    @Override
+    public void update(User user) {
+        store.put(user.getId(), user);
     }
 
     @Override

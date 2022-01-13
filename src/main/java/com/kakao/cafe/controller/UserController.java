@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.UserCreateRequest;
 import com.kakao.cafe.dto.UserUpdateRequest;
 import com.kakao.cafe.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -11,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
-    private final UserService userService = new UserService();
+    private final UserService userService;
 
     @PostMapping("")
     public String signUp(@ModelAttribute UserCreateRequest user){
@@ -39,7 +41,7 @@ public class UserController {
 
     @GetMapping("/{id}/form")
     public String viewUpdateForm(@PathVariable Long id, Model model){
-        logger.info("GET:/users/{}/form 회원정보수정 {}", id);
+        logger.info("GET:/users/{}/form 회원정보수정", id);
         model.addAttribute("user", userService.findOneUser(id));
         return "user/update-form";
     }

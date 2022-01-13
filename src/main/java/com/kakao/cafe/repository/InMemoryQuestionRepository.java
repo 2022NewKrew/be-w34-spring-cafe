@@ -1,9 +1,11 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Question;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+@Repository
 public class InMemoryQuestionRepository implements QuestionRepository{
 
     private static Map<Long, Question> store = new HashMap<>();
