@@ -20,14 +20,12 @@ public class Article {
     private int index;
     private String writer;
     private String title;
-//    private List<Content> contents;
     private String contents;
     private String time;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
-//        this.contents = createContents(contents);
         this.contents = contents;
 =======
 public class Article {
