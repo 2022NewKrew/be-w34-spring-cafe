@@ -1,7 +1,10 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserResponseDto;
+import com.kakao.cafe.dto.UserRequestDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,33 +14,37 @@ import java.util.stream.Collectors;
 
 @Repository
 public class MemoryUserRepository implements UserRepository{
-    private final List<User> users;
+    private final List<User> users = new ArrayList<>();
     private static long sequence = 0L;
+    private final Logger logger = LoggerFactory.getLogger(MemoryUserRepository.class);
 
-    public MemoryUserRepository() {
-        this.users = new ArrayList<>();
-    }
+    private MemoryUserRepository() {}
 
     @Override
-    public UserDto save(UserDto userDto) {
-        User user = User.of(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
-        user.setId(++sequence);
+    public void save(UserRequestDto userRequestDto) {
+        User user = User.of(++sequence, userRequestDto.getUserId(), userRequestDto.getPassword(), userRequestDto.getName(), userRequestDto.getEmail());
+        logger.info("save: {}, {}", user.getId(), user.getUserId());
         users.add(user);
-        return userDto;
     }
 
     @Override
-    public Optional<UserDto> findByUserId(String userId) {
+    public void update(Long id, UserRequestDto userRequestDto) {
+        User user = User.of(id, userRequestDto.getUserId(), userRequestDto.getPassword(), userRequestDto.getName(), userRequestDto.getEmail());
+        users.set(id.intValue(), user);
+    }
+
+    @Override
+    public Optional<UserResponseDto> findByUserId(String userId) {
         return users.stream()
                 .filter(user -> user.getUserId().equals(userId))
-                .map(user -> user.exportDto())
+                .map(user -> UserResponseDto.of(user.getId(), user.getUserId(), user.getName(), user.getEmail()))
                 .findFirst();
     }
 
     @Override
-    public List<UserDto> findAll() {
+    public List<UserResponseDto> findAll() {
         return users.stream()
-                .map(user -> user.exportDto())
+                .map(user -> UserResponseDto.of(user.getId(), user.getUserId(), user.getName(), user.getEmail()))
                 .collect(Collectors.toUnmodifiableList());
     }
 }
