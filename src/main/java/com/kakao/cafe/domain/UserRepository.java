@@ -3,6 +3,7 @@ package com.kakao.cafe.domain;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -36,6 +37,6 @@ public class UserRepository {
     }
 
     public List<User> getUserLst() {
-        return List.copyOf(userLst);
+        return Collections.unmodifiableList(userLst);
     }
 }
