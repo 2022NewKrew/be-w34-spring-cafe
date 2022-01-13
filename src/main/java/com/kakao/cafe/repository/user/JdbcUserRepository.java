@@ -1,8 +1,8 @@
 package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.kakao.cafe.repository.user.mapper.UserRowMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -13,46 +13,50 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Qualifier("jdbcUserRepository")
+@RequiredArgsConstructor
 public class JdbcUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    public JdbcUserRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private static final String INSERT_USER_QUERY = "INSERT INTO users(user_id,password,user_name,email) VALUES(?,?,?,?)";
+    private static final String UPDATE_USER_QUERY = "UPDATE users SET user_id=?, password=?, user_name=?, email=? WHERE id = ?";
+    private static final String SELECT_USERS_QUERY = "SELECT id, user_id, password, user_name, email FROM users";
+    private static final String SELECT_USER_BY_USER_ID_QUERY = "SELECT id, user_id, password, user_name, email FROM users WHERE user_id = ?";
+    private static final String SELECT_USER_BY_ID_QUERY = "SELECT id, user_id, password, user_name, email FROM users WHERE id = ?";
 
     public Long insertUser(User user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(conn -> {
-            PreparedStatement ps = conn.prepareStatement("insert into users(userId,password,userName,email) VALUES(?,?,?,?)");
+            PreparedStatement ps = conn.prepareStatement(INSERT_USER_QUERY, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getUserId());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getUserName());
             ps.setString(4,user.getEmail());
             return ps;
         }, keyHolder);
-        return keyHolder.getKey().longValue();
-    }
-
-    @Override
-    public List<User> findAll() {
-        return null;
-    }
-
-    @Override
-    public Optional<User> findByUserId(String userId) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<User> findById(Long id) {
-        return Optional.empty();
+        user.updateId(keyHolder.getKey().longValue());
+        return user.getId();
     }
 
     @Override
     public Long updateUser(User user) {
-        return null;
+        jdbcTemplate.update(UPDATE_USER_QUERY, user.getUserId(), user.getPassword(), user.getUserName(), user.getEmail(), user.getId());
+        return user.getId();
     }
+
+    @Override
+    public List<User> findAll() {
+        return jdbcTemplate.query(SELECT_USERS_QUERY, new UserRowMapper());
+    }
+
+    @Override
+    public Optional<User> findByUserId(String userId) {
+        return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_USER_BY_USER_ID_QUERY, new UserRowMapper(), userId));
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_USER_BY_ID_QUERY, new UserRowMapper(), id));
+    }
+
 }

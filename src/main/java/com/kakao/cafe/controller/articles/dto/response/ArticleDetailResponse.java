@@ -1,13 +1,13 @@
-package com.kakao.cafe.controller.articles.dto;
+package com.kakao.cafe.controller.articles.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-@RequiredArgsConstructor
+@Builder
 @Getter
 @ToString
-public class ArticleWriteRequestDto {
+public class ArticleDetailResponse {
     private final String writer;
     private final String title;
     private final String contents;

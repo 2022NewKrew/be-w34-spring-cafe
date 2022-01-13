@@ -1,15 +1,15 @@
-package com.kakao.cafe.controller.users.dto;
+package com.kakao.cafe.service.user.dto;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-@RequiredArgsConstructor
+@Builder
 @Getter
 @ToString
-public class UserItemDto {
-    private final Long id;
+public class UserSignUpForm {
     private final String userId;
+    private final String password;
     private final String userName;
     private final String email;
 }

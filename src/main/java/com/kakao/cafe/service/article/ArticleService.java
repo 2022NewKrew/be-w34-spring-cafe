@@ -1,38 +1,29 @@
 package com.kakao.cafe.service.article;
 
-import com.kakao.cafe.controller.articles.dto.ArticleDetailDto;
-import com.kakao.cafe.controller.articles.dto.ArticleItemDto;
-import com.kakao.cafe.controller.articles.mapper.ArticleItemDtoMapper;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.article.ArticleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.kakao.cafe.service.article.dto.ArticleInfo;
+import com.kakao.cafe.service.article.mapper.ArticleDtoMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ArticleService {
 
-    private ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
+    private final ArticleDtoMapper articleDtoMapper;
 
-    @Autowired
-    public ArticleService(
-            @Qualifier("memoryArticleRepository") ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
-
-    public List<ArticleItemDto> getArticleAll() {
+    public List<ArticleInfo> getArticleAll() {
         List<Article> articles = articleRepository.findAll();
-        return articles.stream()
-                .map(ArticleItemDtoMapper::toArticleItemDto)
-                .collect(Collectors.toList());
+        return articleDtoMapper.toArticleInfoList(articles);
     }
 
-    public ArticleDetailDto getArticleDetail(Long articleId) {
+    public ArticleInfo getArticleInfo(Long articleId) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-        return ArticleItemDtoMapper.toArticleDetailDto(article);
+        return articleDtoMapper.toArticleInfo(article);
     }
 
     public Long writeArticle(String writer, String title, String contents) {
