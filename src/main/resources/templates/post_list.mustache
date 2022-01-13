@@ -6,27 +6,26 @@
     <h1 class="mt-5">글 목록</h1>
     <hr>
 
-    <a class="btn btn-primary" href="/postDtos/new" role="button">글 작성</a>
+    <a class="btn btn-primary" href="/write" role="button">글 작성</a>
+    <hr>
 
     <table class="table caption-top">
-        <caption>글 총 {{postDtos.size}}개</caption>
+        <caption>글 총 {{posts.size}}개</caption>
         <thead class="table-light">
         <tr>
             <th scope="col">id</th>
-            <th scope="col">writer</th>
-            <th scope="col">title</th>
-            <th scope="col">body</th>
+            <th scope="col">작성자</th>
+            <th scope="col">제목</th>
         </tr>
         </thead>
         <tbody>
-        {{#postDtos}}
+        {{#posts}}
             <tr>
                 <th>{{id}}</th>
                 <td>{{writer}}</td>
-                <td>{{title}}</td>
-                <td>{{body}}</td>
+                <td><a href="/posts/{{id}}">{{title}}</a></td>
             </tr>
-        {{/postDtos}}
+        {{/posts}}
         </tbody>
     </table>
 </div>

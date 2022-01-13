@@ -16,7 +16,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("/", "/users");
         registry.addViewController("/signup").setViewName("signup");
-        registry.addViewController("/posts/new").setViewName("post_new");
+        registry.addViewController("/write").setViewName("post_new");
     }
 
     @Bean

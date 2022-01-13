@@ -9,8 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository {
-    PostDto add(PostDto postDto);
-    Optional<PostDto> findById(long id);
-    List<PostDto> findAllByWriter(UserDto user);
-    List<PostDto> findAll();
+    void add(Post post);
+    Optional<Post> findById(long id);
+    List<Post> findAllByWriter(String writer);
+    List<Post> findAll();
 }

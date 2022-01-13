@@ -1,6 +1,7 @@
 package com.kakao.cafe.interfaces.user;
 
 import com.kakao.cafe.application.UserService;
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.interfaces.common.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,29 +24,34 @@ public class UserController {
     }
 
     /**
-     * {@link UserDto} 목록 조회
+     * {@link User} 목록 조회
      *
      * @param model
      */
-    @GetMapping()
+    @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", userService.findAllUser());
         return "user_list";
     }
 
     /**
-     * {@link UserDto} 프로필 조회
+     * {@link User} 프로필 조회
      *
      * @param id    조회할 유저의 ID
      * @param model
      */
     @GetMapping("/{id}")
     public String userProfile(@PathVariable long id, Model model) {
-        UserDto userDto = userService.findById(id).orElseThrow(RuntimeException::new);
-        model.addAttribute("userDto", userDto);
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
         return "user_profile";
     }
 
+    /**
+     * 회원가입
+     *
+     * @param userDto 회원가입시 입력한 정보
+     */
     @PostMapping("/new")
     public String signup(UserDto userDto) {
         userService.signup(userDto);
