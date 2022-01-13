@@ -1,5 +1,7 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.Post;
+import com.kakao.cafe.dto.post.AddPostDto;
 import com.kakao.cafe.dto.post.PostViewDto;
 import com.kakao.cafe.dto.post.SimplePostInfo;
 
@@ -9,6 +11,8 @@ public interface PostService {
     PostViewDto findPostViewDtoById(Long postId);
 
     List<SimplePostInfo> getListOfSimplePostInfo(Integer pageNum, Integer pageSize);
+
+    Post addPost(AddPostDto addPostDto, Long writerId);
 
     int countAll();
 }

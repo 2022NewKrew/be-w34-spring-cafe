@@ -11,10 +11,18 @@ import java.time.LocalDateTime;
 @Builder
 public class Post {
     private Long id;
-    private String title;
-    private String contents;
-    private LocalDateTime dateCreated;
+
+    @Builder.Default
+    private String title = "";
+
+    @Builder.Default
+    private String contents = "";
+
+    @Builder.Default
+    private LocalDateTime dateCreated = LocalDateTime.now();
+
     @Builder.Default
     private Integer viewNum = 0;
+
     private Long userId;
 }

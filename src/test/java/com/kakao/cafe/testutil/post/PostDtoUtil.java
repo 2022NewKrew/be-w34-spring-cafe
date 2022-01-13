@@ -1,10 +1,22 @@
 package com.kakao.cafe.testutil.post;
 
+import com.kakao.cafe.dto.post.AddPostDto;
 import com.kakao.cafe.dto.post.PostViewDto;
 
 public final class PostDtoUtil {
 
     private PostDtoUtil() {
+    }
+
+    public static AddPostDto createAddPostDto() {
+        return createAddPostDto("title", "contents for gallix is good thing");
+    }
+
+    public static AddPostDto createAddPostDto(String title, String contents) {
+        return AddPostDto.builder()
+                .title(title)
+                .contents(contents)
+                .build();
     }
 
     public static PostViewDto createPostViewDto() {
