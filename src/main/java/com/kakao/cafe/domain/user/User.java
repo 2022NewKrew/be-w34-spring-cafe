@@ -1,8 +1,12 @@
 package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.dto.user.UserDto;
+import com.kakao.cafe.dto.user.UserReqDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
+@AllArgsConstructor
+@Builder
 @Getter
 public class User {
 
@@ -11,13 +15,5 @@ public class User {
     private String password;
     private String name;
     private String email;
-
-    public User(Long id, UserDto userDto){
-        this.id = id;
-        this.userId = userDto.getUserId();
-        this.password = userDto.getPassword();
-        this.name = userDto.getName();
-        this.email = userDto.getEmail();
-    }
 
 }

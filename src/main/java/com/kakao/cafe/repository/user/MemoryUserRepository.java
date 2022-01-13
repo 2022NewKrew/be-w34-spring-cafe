@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.dto.user.UserDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -10,11 +9,10 @@ import java.util.*;
 public class MemoryUserRepository implements UserRepository{
 
     private static final Map<Long,User> userStore = new HashMap<>();
-    private static long sequence = 0L;
+
 
     @Override
-    public void save(UserDto userDto) {
-        User user = new User(++sequence, userDto);
+    public void save(User user) {
         userStore.put(user.getId(), user);
     }
 

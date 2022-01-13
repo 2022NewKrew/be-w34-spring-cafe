@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.service.user.UserService;
 
-import com.kakao.cafe.dto.user.UserDto;
+import com.kakao.cafe.dto.user.UserReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +22,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String createUser(@ModelAttribute UserDto userDto){
-        userService.addUser(userDto);
+    public String createUser(@ModelAttribute UserReqDto userReqDto){
+        userService.addUser(userReqDto);
         return "redirect:/users";
     }
 
