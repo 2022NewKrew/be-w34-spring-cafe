@@ -40,7 +40,12 @@ public class UserController {
 
     @PostMapping("form")
     public String form(UserAccountDTO userAccountDTO){
-        userAccountService.join(userAccountDTO);
+        try {
+            userAccountService.join(userAccountDTO);
+        } catch (IllegalStateException e) {
+            logger.info(e.getMessage());
+            return "redirect:/user";
+        }
 
         return "redirect:/user";
     }
@@ -56,8 +61,14 @@ public class UserController {
 
     @GetMapping("{userId}")
     public String profile(@PathVariable("userId") String userId, Model model){
-        UserAccount userAccount = userAccountService.findOne(userId)
-                .orElseThrow(() -> new InvalidKeyException("아이디를 찾을 수 없습니다."));
+        UserAccount userAccount = null;
+        try {
+            userAccount = userAccountService.findOne(userId)
+                    .orElseThrow(() -> new InvalidKeyException("아이디를 찾을 수 없습니다."));
+        } catch (InvalidKeyException e) {
+            logger.info("아이디 찾기 에러");
+            return "/user/list";
+        }
 
         model.addAttribute("user_account", userAccount);
         return "/user/profile";
@@ -70,8 +81,13 @@ public class UserController {
 
     @PostMapping("{userId}/form")
     public String updateForm(@PathVariable("userId") String userId, String curPassword, UserAccountDTO userAccountDTO){
-        userAccountService.updateUserAccount(userAccountDTO, curPassword)
-                .orElseThrow(() -> new IllegalAccessError("비밀 번호가 일치하지 않습니다"));
+        try {
+            userAccountService.updateUserAccount(userAccountDTO, curPassword)
+                    .orElseThrow(() -> new IllegalAccessError("비밀 번호가 일치하지 않습니다"));
+        } catch (IllegalAccessError e) {
+            logger.info("비밀 번호 불일치");
+            return "/user/list";
+        }
         return "redirect:/user";
     }
 }
