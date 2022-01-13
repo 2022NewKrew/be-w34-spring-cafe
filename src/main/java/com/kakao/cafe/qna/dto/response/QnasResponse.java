@@ -14,9 +14,8 @@ public class QnasResponse {
 
     public static QnasResponse qnasToResponse(List<Qna> qnas) {
         List<QnaResponse> qnaResponses = new ArrayList<>();
-        long i = 1L;
         for (Qna qna : qnas) {
-            qnaResponses.add(QnaResponse.qnaToResponse(i++, qna));
+            qnaResponses.add(QnaResponse.qnaToResponse(qna));
         }
         return new QnasResponse(qnaResponses);
     }

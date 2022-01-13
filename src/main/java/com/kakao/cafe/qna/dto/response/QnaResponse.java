@@ -22,8 +22,9 @@ public class QnaResponse {
         this.createTime = createTime;
     }
 
-    public static QnaResponse qnaToResponse(Long id, Qna qna) {
-        return new QnaResponse(id,
+    public static QnaResponse qnaToResponse(Qna qna) {
+        return new QnaResponse(
+            qna.getId(),
             qna.getWriter(),
             qna.getTitle(),
             qna.getContents(),

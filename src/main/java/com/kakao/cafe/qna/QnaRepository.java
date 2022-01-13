@@ -1,7 +1,9 @@
 package com.kakao.cafe.qna;
 
+import com.kakao.cafe.exception.CustomEmptyDataAccessException;
 import com.kakao.cafe.qna.domain.Qna;
 import java.util.List;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -32,7 +34,11 @@ public class QnaRepository {
 
     public Qna findById(long id) {
         String sql = "SELECT * FROM qnas WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, qnaMapper, id);
+        try {
+            return jdbcTemplate.queryForObject(sql, qnaMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new CustomEmptyDataAccessException(e);
+        }
     }
 
     public RowMapper<Qna> getQnaMapper() {

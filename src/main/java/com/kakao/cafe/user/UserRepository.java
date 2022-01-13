@@ -1,7 +1,11 @@
 package com.kakao.cafe.user;
 
+import com.kakao.cafe.exception.CustomEmptyDataAccessException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.Users;
+import com.kakao.cafe.user.exception.CustomDuplicateUserException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -18,13 +22,18 @@ public class UserRepository {
 
     public void save(User user) {
         String sql = "INSERT INTO users (user_id, password, name, email) values (?, ?, ?, ?)";
-        jdbcTemplate.update(
-            sql,
-            user.getUserId(),
-            user.getPassword(),
-            user.getName(),
-            user.getEmail()
-        );
+        try {
+            jdbcTemplate.update(
+                sql,
+                user.getUserId(),
+                user.getPassword(),
+                user.getName(),
+                user.getEmail()
+            );
+        } catch (DuplicateKeyException e) {
+            throw new CustomDuplicateUserException(e);
+        }
+
     }
 
     public Users findAll() {
@@ -34,7 +43,11 @@ public class UserRepository {
 
     public User findById(String userId) {
         String sql = "SELECT * FROM users WHERE user_id = ?";
-        return jdbcTemplate.queryForObject(sql, userRowMapper, userId);
+        try {
+            return jdbcTemplate.queryForObject(sql, userRowMapper, userId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new CustomEmptyDataAccessException(e);
+        }
     }
 
     private RowMapper<User> getUserMapper() {
