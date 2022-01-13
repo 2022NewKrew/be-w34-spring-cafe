@@ -9,10 +9,12 @@ import java.util.*;
 public class MemoryUserRepository implements UserRepository{
 
     private static final Map<Long,User> userStore = new HashMap<>();
+    private static long sequence = 0L;
 
 
     @Override
     public void save(User user) {
+        user.setId(++sequence);
         userStore.put(user.getId(), user);
     }
 
@@ -31,6 +33,10 @@ public class MemoryUserRepository implements UserRepository{
     @Override
     public List<User> findAll() {
         return new ArrayList<>(userStore.values());
+    }
+
+    public void clearUserStore(){
+        userStore.clear();
     }
 
 }

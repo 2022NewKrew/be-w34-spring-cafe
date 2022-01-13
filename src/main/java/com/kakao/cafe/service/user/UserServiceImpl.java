@@ -16,13 +16,12 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-    private static long sequence = 0L;
+
 
     @Override
     public void addUser(UserReqDto userReqDto){
         validateDuplicateUser(userReqDto);
         User user = User.builder()
-                .id(++sequence)
                 .userId(userReqDto.getUserId())
                 .password(userReqDto.getPassword())
                 .email(userReqDto.getEmail())
