@@ -19,6 +19,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void join(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setPassword(encodePassword(user.getPassword()));
         users.add(user);
     }
 
@@ -34,4 +35,8 @@ public class UserServiceImpl implements UserService{
                 .findFirst()
                 .orElse(null);
     }
+
+//    private String encodePassword(String password) {
+//        return passwordEncoder.encode(password);
+//    }
 }
