@@ -13,7 +13,7 @@ import java.util.List;
 @Controller
 public class ArticleController {
 
-    private ArticleService articleService;
+    private final ArticleService articleService;
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;

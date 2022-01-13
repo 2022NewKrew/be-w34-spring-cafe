@@ -1,21 +1,18 @@
 package com.kakao.cafe.dao;
 
-import com.kakao.cafe.vo.Article;
 import com.kakao.cafe.vo.User;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@Component
 public class UserDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    public UserDao(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public UserDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<User> getUsers() {

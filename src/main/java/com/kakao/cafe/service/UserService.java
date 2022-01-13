@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private UserDao userDao;
+    private final UserDao userDao;
 
     public UserService(UserDao userDao) {
         this.userDao = userDao;
@@ -21,10 +21,6 @@ public class UserService {
 
     public User getUser(String userId) {
         return userDao.getUser(userId);
-    }
-
-    public int getIndex(String userId) {
-        return userDao.getIndex(userId);
     }
 
     public void addUser(User user) {

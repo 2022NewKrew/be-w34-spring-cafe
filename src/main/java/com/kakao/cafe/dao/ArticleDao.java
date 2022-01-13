@@ -2,19 +2,17 @@ package com.kakao.cafe.dao;
 
 import com.kakao.cafe.vo.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@Component
 public class ArticleDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    public ArticleDao(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public ArticleDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public void addArticle(Article article) {
