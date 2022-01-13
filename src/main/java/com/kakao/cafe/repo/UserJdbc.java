@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -80,16 +81,18 @@ public class UserJdbc implements UserRepository {
 
     @Override
     public List<User> getList() {
-        return jdbcTemplate.query(
-                con -> con.prepareStatement(
-                        "SELECT * FROM userlist"
-                ),
-                (rs, count) -> new User(
-                        rs.getLong("idx"),
-                        rs.getString("id"),
-                        rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("email")
+        return Collections.unmodifiableList(
+                jdbcTemplate.query(
+                        con -> con.prepareStatement(
+                                "SELECT * FROM userlist"
+                        ),
+                        (rs, count) -> new User(
+                                rs.getLong("idx"),
+                                rs.getString("id"),
+                                rs.getString("password"),
+                                rs.getString("name"),
+                                rs.getString("email")
+                        )
                 )
         );
     }
