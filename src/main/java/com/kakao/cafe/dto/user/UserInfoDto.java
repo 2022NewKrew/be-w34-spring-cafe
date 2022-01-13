@@ -1,12 +1,17 @@
 package com.kakao.cafe.dto.user;
 
-import lombok.AllArgsConstructor;
+import com.kakao.cafe.domain.Entity.User;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class UserInfoDto {
     private String userId;
     private String name;
     private String email;
+
+    public UserInfoDto(User user) {
+        this.userId = user.getUserId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+    }
 }

@@ -8,8 +8,8 @@ import com.kakao.cafe.exceptions.NoSuchArticleException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -21,17 +21,14 @@ public class ArticleService {
     }
 
     public List<ReferArticleDto> getArticleList() {
-        List<ReferArticleDto> articleList = new ArrayList<>();
-        for (Article article : this.articleRepository.findAllArticles()) {
-            ReferArticleDto articleDto = new ReferArticleDto(article.getArticleId(), article.getWriter(), article.getTitle(), article.getContents());
-            articleList.add(articleDto);
-        }
+        List<ReferArticleDto> articleList = this.articleRepository.findAllArticles().stream()
+                .map(ReferArticleDto::new).collect(Collectors.toList());
         return articleList;
     }
 
     public ReferArticleDto getArticleById(int articleId) throws NoSuchArticleException {
         Article article = this.articleRepository.findArticleById(articleId);
-        ReferArticleDto articleDto = new ReferArticleDto(article.getArticleId(), article.getWriter(), article.getTitle(), article.getContents());
+        ReferArticleDto articleDto = new ReferArticleDto(article);
         return articleDto;
     }
 }
