@@ -63,13 +63,7 @@ public class UserJdbc implements UserRepository {
                     pstmt.setString(1, id);
                     return pstmt;
                 },
-                (rs, count) -> new User(
-                        rs.getLong("idx"),
-                        rs.getString("id"),
-                        rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("email")
-                )
+                (rs, count) -> new User(rs)
         );
 
         if (list.size() == 0) {
@@ -86,13 +80,7 @@ public class UserJdbc implements UserRepository {
                         con -> con.prepareStatement(
                                 "SELECT * FROM userlist"
                         ),
-                        (rs, count) -> new User(
-                                rs.getLong("idx"),
-                                rs.getString("id"),
-                                rs.getString("password"),
-                                rs.getString("name"),
-                                rs.getString("email")
-                        )
+                        (rs, count) -> new User(rs)
                 )
         );
     }

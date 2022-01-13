@@ -48,14 +48,7 @@ public class ArticleJdbc implements ArticleRepository {
                     pstmt.setLong(1, idx);
                     return pstmt;
                 },
-                (rs, count) -> new Article(
-                        rs.getLong("idx"),
-                        rs.getString("user_id"),
-                        rs.getString("user_name"),
-                        rs.getString("title"),
-                        rs.getString("body"),
-                        rs.getLong("created_at")
-                )
+                (rs, count) -> new Article(rs)
         );
 
         if (list.size() == 0) {
@@ -72,14 +65,7 @@ public class ArticleJdbc implements ArticleRepository {
                         con -> con.prepareStatement(
                                 "SELECT * FROM article"
                         ),
-                        (rs, count) -> new Article(
-                                rs.getLong("idx"),
-                                rs.getString("user_id"),
-                                rs.getString("user_name"),
-                                rs.getString("title"),
-                                rs.getString("body"),
-                                rs.getLong("created_at")
-                        )
+                        (rs, count) -> new Article(rs)
                 )
         );
     }

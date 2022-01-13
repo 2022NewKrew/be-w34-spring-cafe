@@ -3,6 +3,8 @@ package com.kakao.cafe.domain;
 import com.kakao.cafe.util.Checker;
 import org.springframework.lang.NonNull;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -22,20 +24,15 @@ public class Article {
     private final long createdAt;
 
     public Article(
-            @NonNull final long idxInDB,
-            @NonNull final String userIdInDB,
-            @NonNull final String userNameInDB,
-            @NonNull final String titleInDB,
-            @NonNull final String bodyInDB,
-            @NonNull final long createAtInDB
-    )
+            @NonNull final ResultSet rs
+    ) throws SQLException
     {
-        this.idx = idxInDB;
-        this.userId = userIdInDB;
-        this.userName = userNameInDB;
-        this.title = titleInDB;
-        this.body = bodyInDB;
-        this.createdAt = createAtInDB;
+        this.idx = rs.getLong("idx");
+        this.userId = rs.getString("user_id");
+        this.userName = rs.getString("user_name");
+        this.title = rs.getString("title");
+        this.body = rs.getString("body");
+        this.createdAt = rs.getLong("created_at");
     }
 
     public Article(

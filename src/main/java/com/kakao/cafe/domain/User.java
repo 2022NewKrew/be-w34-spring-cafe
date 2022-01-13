@@ -4,6 +4,8 @@ import com.kakao.cafe.util.Checker;
 import com.kakao.cafe.util.SecurePassword;
 import org.springframework.lang.NonNull;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class User {
@@ -27,23 +29,17 @@ public class User {
     private final String name;
     private final String email;
 
-    // use only for allocation from db
     public User(
-            @NonNull final long idxInDB,
-            @NonNull final String idInDB,
-            @NonNull final String passwordInDB,
-            @NonNull final String nameInDB,
-            @NonNull final String emailInDB
-    )
+            @NonNull final ResultSet rs
+    ) throws SQLException
     {
-        this.idx = idxInDB;
-        this.id = idInDB;
-        this.password = passwordInDB;
-        this.name = nameInDB;
-        this.email = emailInDB;
+        this.idx = rs.getLong("idx");
+        this.id = rs.getString("id");
+        this.password = rs.getString("password");
+        this.name = rs.getString("name");
+        this.email = rs.getString("email");
     }
 
-    // in general use this constructor
     public User(
             @NonNull final String id,
             @NonNull final String password,
