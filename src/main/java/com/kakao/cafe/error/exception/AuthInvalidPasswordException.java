@@ -4,7 +4,7 @@ import com.kakao.cafe.error.ErrorCode;
 
 public class AuthInvalidPasswordException extends RuntimeException {
 
-    private static final String MESSAGE_FORMAT = "Invalid password for User [UID : %s]";
+    private static final String MESSAGE_FORMAT = "Invalid Password for User [UID : %s]";
     private final ErrorCode errorCode;
 
     public AuthInvalidPasswordException(ErrorCode errorCode, String uid) {
