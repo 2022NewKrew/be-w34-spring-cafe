@@ -2,8 +2,8 @@ package com.kakao.cafe.post.domain.entity;
 
 import com.kakao.cafe.util.IdGenerator;
 import com.kakao.cafe.util.ValidationService;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NonNull;
 
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -12,28 +12,30 @@ import java.util.List;
 import java.util.Objects;
 
 @Getter
+@AllArgsConstructor
 public class Post {
     private final Long id;
 
-    @Size(min=1)
+    @Size(min=1, max = 40)
     private String title;
 
     @Size(min=1)
     private String content;
 
-    @Size(min=1)
+    @Size(min=3, max = 5)
     private String writerName;
 
-    private final LocalDateTime localDateTime;
+    private final LocalDateTime timeWritten;
 
-    private final List<Comment> comments = new ArrayList<>();
+    private final List<Comment> comments;
 
     public Post(String title, String content, String writerName) {
         this.id = IdGenerator.createId();
         this.title = Objects.requireNonNull(title);
         this.content = Objects.requireNonNull(content);
         this.writerName = Objects.requireNonNull(writerName);
-        this.localDateTime = LocalDateTime.now();
+        this.timeWritten = LocalDateTime.now();
+        this.comments = new ArrayList<>();
 
         ValidationService.validate(this);
     }

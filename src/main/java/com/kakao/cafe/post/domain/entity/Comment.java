@@ -1,13 +1,18 @@
 package com.kakao.cafe.post.domain.entity;
 
+import com.kakao.cafe.util.IdGenerator;
 import com.kakao.cafe.util.ValidationService;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
+@AllArgsConstructor
 @Getter
 public class Comment {
+    private final Long id;
+
     @Size(min = 3, max = 5)
     private final String writerName;
 
@@ -15,6 +20,7 @@ public class Comment {
     private final String content;
 
     public Comment(String writerName, String content) {
+        this.id = IdGenerator.createId();
         this.writerName = Objects.requireNonNull(writerName);
         this.content = Objects.requireNonNull(content);
 

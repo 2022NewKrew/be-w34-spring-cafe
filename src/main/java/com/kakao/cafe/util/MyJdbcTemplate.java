@@ -5,10 +5,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,9 +33,11 @@ public class MyJdbcTemplate {
 
         List<T> results = new ArrayList<>();
         int rowCount = 1;
-        while(resultSet.next()){
+
+        do{
             results.add(rowMapper.mapRow(resultSet, rowCount++));
-        }
+        }while (resultSet.next());
+
         return results;
     }
 
@@ -57,7 +57,16 @@ public class MyJdbcTemplate {
         }
 
         for(int index=0; index < values.length; index++){
-            statement.setObject(index+1, values[index]);
+            Object value = convertIfNotSupport(values[index]);
+            statement.setObject(index+1, value);
         }
+    }
+
+    private Object convertIfNotSupport(Object object){
+        if(object instanceof LocalDateTime){
+            return Timestamp.valueOf((LocalDateTime) object);
+        }
+
+        return object;
     }
 }
