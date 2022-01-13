@@ -1,13 +1,14 @@
 package com.kakao.cafe.adapter.out.infra.persistence.user;
 
+import com.kakao.cafe.domain.user.User;
 import java.util.List;
 import java.util.Optional;
 
 public interface UserInfoRepository {
 
-    void save(UserInfoEntity userInfoEntity);
+    void save(User user);
 
-    List<UserInfoEntity> getAllUserList();
+    List<User> getAllUserList();
 
-    Optional<UserInfoEntity> findByUserId(String userId);
+    Optional<User> findByUserId(String userId);
 }

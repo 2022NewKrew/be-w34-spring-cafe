@@ -1,8 +1,13 @@
 package com.kakao.cafe.application.article.port.out;
 
 import com.kakao.cafe.application.article.dto.WriteRequest;
+import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
+import com.kakao.cafe.domain.article.exceptions.IllegalIdException;
+import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
+import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
 
 public interface RegisterArticlePort {
 
-    void registerArticle(WriteRequest writeRequest);
+    void registerArticle(WriteRequest writeRequest)
+        throws IllegalIdException, IllegalWriterException, IllegalTitleException, IllegalDateException;
 }

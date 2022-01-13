@@ -1,5 +1,6 @@
 package com.kakao.cafe.adapter.out.infra.persistence.user;
 
+import com.kakao.cafe.domain.user.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,21 +11,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class InMemoryUserInfoRepository implements UserInfoRepository {
 
-    private final Map<String, UserInfoEntity> repository;
+    private final Map<String, User> repository;
 
     public InMemoryUserInfoRepository() {
         repository = new HashMap<>();
     }
 
-    public void save(UserInfoEntity userInfoEntity) {
-        repository.put(userInfoEntity.getUserId(), userInfoEntity);
+    public void save(User user) {
+        repository.put(user.getUserId(), user);
     }
 
-    public List<UserInfoEntity> getAllUserList() {
+    public List<User> getAllUserList() {
         return new ArrayList<>(repository.values());
     }
 
-    public Optional<UserInfoEntity> findByUserId(String userId) {
-        return Optional.of(repository.get(userId));
+    public Optional<User> findByUserId(String userId) {
+        return Optional.ofNullable(repository.get(userId));
     }
 }

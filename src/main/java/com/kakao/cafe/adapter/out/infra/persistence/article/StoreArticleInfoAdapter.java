@@ -1,19 +1,32 @@
 package com.kakao.cafe.adapter.out.infra.persistence.article;
 
+import com.kakao.cafe.application.article.dto.ArticleInfo;
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.dto.WriteRequest;
 import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
 import com.kakao.cafe.application.article.port.out.RegisterArticlePort;
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
+import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
+import com.kakao.cafe.domain.article.exceptions.IllegalIdException;
+import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
+import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleInfoPort {
 
     private static final int FIRST_ID = 1;
+
+    private static final Logger log = LoggerFactory.getLogger(StoreArticleInfoAdapter.class);
+
 
     private final ArticleInfoRepository inMemoryArticleInfoRepository;
     private final AtomicInteger atomicInt = new AtomicInteger(FIRST_ID);
@@ -23,37 +36,39 @@ public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleI
     }
 
     @Override
-    public void registerArticle(WriteRequest writeRequest) {
-        inMemoryArticleInfoRepository.save(ArticleInfoEntity.from(atomicInt.getAndIncrement(), writeRequest));
+    public void registerArticle(WriteRequest writeRequest)
+        throws IllegalIdException, IllegalWriterException, IllegalTitleException, IllegalDateException {
+        inMemoryArticleInfoRepository.save(new Article(
+            atomicInt.getAndIncrement(),
+            writeRequest.getWriter(),
+            writeRequest.getTitle(),
+            writeRequest.getContents(),
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+        ));
     }
 
     @Override
     public ArticleList getListOfAllArticles() {
-        List<Article> articleList = inMemoryArticleInfoRepository.getAllArticleList()
-                                                                 .stream()
-                                                                 .map(a -> new Article(
-                                                                     a.getId(),
-                                                                     a.getWriter(),
-                                                                     a.getTitle(),
-                                                                     a.getContents(),
-                                                                     a.getCreatedAt()
-                                                                 ))
-                                                                 .collect(Collectors.toList());
+        List<ArticleInfo> articleList = inMemoryArticleInfoRepository.getAllArticleList()
+                                                                     .stream()
+                                                                     .map(a -> new ArticleInfo(
+                                                                         a.getId(),
+                                                                         a.getWriter(),
+                                                                         a.getTitle(),
+                                                                         a.getCreatedAt()
+                                                                     ))
+                                                                     .collect(Collectors.toList());
 
         return ArticleList.from(articleList);
     }
 
-    public Article findArticleByIndex(int index) {
-        // TODO : 새로운 Exception 정의 필요
-        ArticleInfoEntity articleInfoEntity = inMemoryArticleInfoRepository.findByIndex(index)
-                                                                           .orElseThrow(RuntimeException::new);
+    public Article findArticleByIndex(int index) throws ArticleNotExistException {
+        Article article = inMemoryArticleInfoRepository.findByIndex(index).orElse(null);
 
-        return new Article(
-            articleInfoEntity.getId(),
-            articleInfoEntity.getWriter(),
-            articleInfoEntity.getTitle(),
-            articleInfoEntity.getContents(),
-            articleInfoEntity.getCreatedAt()
-        );
+        if (article == null) {
+            throw new ArticleNotExistException("존재하지 않는 게시글입니다.");
+        }
+
+        return article;
     }
 }

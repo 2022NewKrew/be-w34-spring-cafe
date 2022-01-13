@@ -1,9 +1,10 @@
 package com.kakao.cafe.application.user.service;
 
 import com.kakao.cafe.application.user.dto.UserInfo;
-import com.kakao.cafe.application.user.dto.UsersInfo;
+import com.kakao.cafe.application.user.dto.UserInfoList;
 import com.kakao.cafe.application.user.port.in.GetUserInfoUseCase;
 import com.kakao.cafe.application.user.port.out.GetUserInfoPort;
+import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,12 +17,12 @@ public class GetUserInfoService implements GetUserInfoUseCase {
     }
 
     @Override
-    public UsersInfo getAllUsersInfo() {
+    public UserInfoList getAllUsersInfo() {
         return getUserInfoPort.getAllUsersInfo();
     }
 
     @Override
-    public UserInfo getUserProfile(String userId) {
+    public UserInfo getUserProfile(String userId) throws UserNotExistException {
         return getUserInfoPort.findUserByUserId(userId);
     }
 }

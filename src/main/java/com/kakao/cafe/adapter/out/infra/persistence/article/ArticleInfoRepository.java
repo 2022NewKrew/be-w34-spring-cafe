@@ -1,13 +1,14 @@
 package com.kakao.cafe.adapter.out.infra.persistence.article;
 
+import com.kakao.cafe.domain.article.Article;
 import java.util.List;
 import java.util.Optional;
 
 public interface ArticleInfoRepository {
 
-    void save(ArticleInfoEntity articleInfoEntity);
+    void save(Article article);
 
-    List<ArticleInfoEntity> getAllArticleList();
+    List<Article> getAllArticleList();
 
-    Optional<ArticleInfoEntity> findByIndex(int index);
+    Optional<Article> findByIndex(int index);
 }

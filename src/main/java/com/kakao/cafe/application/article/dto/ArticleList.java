@@ -1,21 +1,20 @@
 package com.kakao.cafe.application.article.dto;
 
-import com.kakao.cafe.domain.article.Article;
 import java.util.List;
 
 public class ArticleList {
 
-    private final List<Article> articleList;
+    private final List<ArticleInfo> articleList;
 
-    public ArticleList(List<Article> articleList) {
+    public ArticleList(List<ArticleInfo> articleList) {
         this.articleList = articleList;
     }
 
-    public static ArticleList from(List<Article> articleList) {
+    public static ArticleList from(List<ArticleInfo> articleList) {
         return new ArticleList(articleList);
     }
 
-    public List<Article> getArticleList() {
+    public List<ArticleInfo> getArticleList() {
         return articleList;
     }
 }

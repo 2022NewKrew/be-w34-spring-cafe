@@ -1,11 +1,12 @@
 package com.kakao.cafe.application.user.port.out;
 
 import com.kakao.cafe.application.user.dto.UserInfo;
-import com.kakao.cafe.application.user.dto.UsersInfo;
+import com.kakao.cafe.application.user.dto.UserInfoList;
+import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
 
 public interface GetUserInfoPort {
 
-    UsersInfo getAllUsersInfo();
+    UserInfoList getAllUsersInfo();
 
-    UserInfo findUserByUserId(String userId);
+    UserInfo findUserByUserId(String userId) throws UserNotExistException;
 }
