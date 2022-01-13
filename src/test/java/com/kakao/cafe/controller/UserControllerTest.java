@@ -53,24 +53,6 @@ public class UserControllerTest {
     }
 
     @Test
-    void user_update_fail_test() throws Exception {
-        this.mockMvc.perform(post("/user/create")
-                .param("userId", "yunyul")
-                .param("password", "1q2w3e4r")
-                .param("name", "윤렬")
-                .param("email", "eden.yoon@kakaocorp.com"));
-
-        this.mockMvc.perform(post("/users/yunyul")
-                        .param("userId", "yunyul")
-                        .param("oldPassword", "wrong_password")
-                        .param("password", "1q2w3e5t")
-                        .param("name", "new윤렬")
-                        .param("email", "eden.yoon@kakao.com"))
-                .andExpect(status().is4xxClientError());
-    }
-
-
-    @Test
     void user_update_test() throws Exception {
         this.mockMvc.perform(post("/user/create")
                         .param("userId", "yunyul")
