@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller.rest;
 
 import com.kakao.cafe.constant.RedirectedURL;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.UserJoinDto;
 import com.kakao.cafe.service.UserService;
@@ -23,20 +24,19 @@ public class UserRestController {
 
     @PostMapping("/users/join")
     public void join(UserJoinDto userJoinDto, HttpServletResponse response) throws IOException {
-        String redirectedURL = RedirectedURL.AFTER_JOIN;
         userJoinDto.setPassword(encodePassword(userJoinDto.getPassword()));
-        userService.join(userJoinDto);
+        User user = userService.join(userJoinDto);
 
+        String redirectedURL = RedirectedURL.AFTER_JOIN + "/" + user.getId();
         response.sendRedirect(redirectedURL);
     }
 
-    @PutMapping("/users/update")
+    @PutMapping("/auth/users/update")
     public void updateProfile(ProfileDto profileDto, HttpServletResponse response) throws IOException {
-        String redirectedURL = RedirectedURL.AFTER_UPDATE_PROFILE;
         profileDto.setPassword(encodePassword(profileDto.getPassword()));
         userService.updateProfile(profileDto);
 
-        response.sendRedirect(redirectedURL);
+        response.sendRedirect(RedirectedURL.AFTER_UPDATE_PROFILE);
     }
 
     private String encodePassword(String password) {

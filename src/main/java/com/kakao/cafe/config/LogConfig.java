@@ -1,6 +1,6 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.aop.LogAspect;
+import com.kakao.cafe.aop.log.LogAspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;

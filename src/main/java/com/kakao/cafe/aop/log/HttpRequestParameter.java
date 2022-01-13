@@ -1,4 +1,4 @@
-package com.kakao.cafe.aop;
+package com.kakao.cafe.aop.log;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

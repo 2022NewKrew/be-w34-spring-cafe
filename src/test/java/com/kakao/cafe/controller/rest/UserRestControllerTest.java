@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller.rest;
 
 import com.kakao.cafe.constant.RedirectedURL;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.UserJoinDto;
 import com.kakao.cafe.service.UserService;
@@ -16,7 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.GregorianCalendar;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -47,13 +50,25 @@ class UserRestControllerTest {
         UserJoinDto dto = UserDtoUtil.createUserJoinDto();
         String passwordBeforeEncode = dto.getPassword();
 
+        User newUser = createUser();
+        given(userService.join(dto)).willReturn(newUser);
+
         //When
         userRestController.join(dto, response);
 
         //Then
         then(passwordEncoder).should(times(1)).encode(passwordBeforeEncode);
-        then(userService).should(times(1)).join(dto);
-        then(response).should(times(1)).sendRedirect(RedirectedURL.AFTER_JOIN);
+        then(response).should(times(1)).sendRedirect(RedirectedURL.AFTER_JOIN + "/" + newUser.getId());
+    }
+
+    private User createUser() {
+        return User.builder()
+                .id(Long.valueOf(124))
+                .email("gallix@kakao.com")
+                .password("abcd1234!")
+                .joinDate(new GregorianCalendar())
+                .nickName("gallix")
+                .build();
     }
 
     @Test

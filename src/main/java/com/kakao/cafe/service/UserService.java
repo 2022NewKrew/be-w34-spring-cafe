@@ -12,7 +12,9 @@ public interface UserService {
 
     User findByEmail(String email);
 
-    ProfileDto findProfileById(Long id);
+    SimpleUserInfo findSimpleUserInfoById(Long userId);
+
+    ProfileDto findProfileById(Long userId);
 
     List<SimpleUserInfo> getListOfSimpleUserInfo(Integer pageNum, Integer pageSize);
 

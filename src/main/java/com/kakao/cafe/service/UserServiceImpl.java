@@ -34,6 +34,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public SimpleUserInfo findSimpleUserInfoById(Long userId) {
+        Optional<SimpleUserInfo> optionalSimpleUserInfo = userRepository.findSimpleUserInfoById(userId);
+        return optionalSimpleUserInfo.orElseThrow(() -> new UserNotFoundedException(UserErrorMsg.USER_NOT_FOUNDED.getDescription()));
+    }
+
+    @Override
     public ProfileDto findProfileById(Long id) {
         Optional<ProfileDto> optionalProfileDto = userRepository.findProfileById(id);
         return optionalProfileDto.orElseThrow(() -> new UserNotFoundedException(UserErrorMsg.USER_NOT_FOUNDED.getDescription()));
