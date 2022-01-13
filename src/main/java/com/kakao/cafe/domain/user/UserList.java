@@ -1,10 +1,10 @@
-package com.kakao.cafe.domain;
-
+package com.kakao.cafe.domain.user;
 
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class UserList {
     private final List<UserInfo> userList = new ArrayList<>();
@@ -30,13 +30,13 @@ public class UserList {
         userList.add(userInfo);
     }
 
-    public int getSize(){
+    public int getSize() {
         return userList.size();
     }
 
     public UserInfo findById(String userId) {
         UserInfo target = userList.stream().filter(userInfo -> userInfo.hasEqualId(userId)).findFirst().orElse(null);
-        Assert.notNull(target,"FIND Error: Null Object");
+        Assert.notNull(target, "FIND Error: Null Object");
         return target;
     }
 }
