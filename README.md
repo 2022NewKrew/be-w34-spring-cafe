@@ -37,3 +37,43 @@
 - [ ] URL과 html 쉽게 연결하기
   - base package 아래에 config와 같은 새로운 패키지 생성
   - MvcConfig 이름으로 클래스를 생성해 구현
+
+### 피드백
+- [ ] ControllerAdvice를 이용한 예외처리 및 에러 발생 시 보여주는 웹페이지 개발
+- [ ] repository에 들어가는 List와 Long을 동기화가 가능한 타입으로 변경
+  - 참고자료
+    - [volatile](https://jyami.tistory.com/112)
+    - [Atomic Long](https://icthuman.tistory.com/entry/volatile%ED%82%A4%EC%9B%8C%EB%93%9C%EC%99%80-%EB%8F%99%EA%B8%B0%ED%99%94)
+    - [synchronizedList](https://cornswrold.tistory.com/209)
+- [ ] @Valid를 이용해 request와 domain에서 validation 체크하기
+  - [참고자료](https://jyami.tistory.com/55)
+
+## 2단계
+### 요구사항
+- [ ] 글쓰기 기능 구현
+  - [ ] 게시글 페이지는 static/qna/form.html을 수정해서 사용 
+  - [ ] static에 있는 html을 templates로 이동
+  - [ ] 게시글 기능 구현을 담당할 ArticleController를 추가하고 애노테이션 매핑
+  - [ ] 게시글 작성 요청(POST 요청)을 처리할 메소드를 추가하고 매핑
+  - [ ] 사용자가 전달한 값을 Article 클래스를 생성해 저장
+  - [ ] 게시글 목록을 관리하는 ArrayList를 생성한 후 앞에서 생성한 Article 인스턴스를 ArrayList에 저장 
+  - [ ] 게시글 추가를 완료한 후 메인 페이지(“redirect:/”)로 이동
+- [ ] 글 목록 기능 구현
+  - [ ] 메인 페이지(요청 URL이 “/”)를 담당하는 Controller의 method에서 게시글 목록을 조회
+  - [ ] 조회한 게시글 목록을 Model에 저장한 후 View에 전달한다. 게시글 목록은 앞의 게시글 작성 단계에서 생성한 ArrayList를 그대로 전달
+  - [ ] View에서 Model을 통해 전달한 게시글 목록을 출력한다.
+    * 게시글 목록을 구현하는 과정은 사용자 목록을 구현하는 html 코드를 참고
+- [ ] 게시글 상세보기 기능 구현
+  - [ ] 게시글 목록(qna/list.html)의 제목을 클릭했을 때 게시글 상세 페이지에 접속할 수 있도록 함 
+    - [ ] 게시글 상세 페이지 접근 URL은 "/articles/{index}"
+    - [ ] 게시글 객체에 id 인스턴스 변수를 추가하고 ArrayList에 게시글 객체를 추가할 때 ArrayList.size() + 1을 게시글 객체의 id로 사용 
+  - [ ] Controller에 상세 페이지 접근 method를 추가하고 URL은 /articles/{index}로 매핑
+  - [ ] ArrayList에서 index - 1 해당하는 데이터를 조회한 후 Model에 저장해 /qna/show.html에 전달
+  - [ ] /qna/show.html에서는 Controller에서 전달한 데이터를 활용해 html을 생성
+- [ ] 회원정보 수정 기능 구현
+  - [ ] 회원가입한 사용자 정보를 수정할 수 있는 수정 화면과 사용자가 수정한 값을 업데이트할 수 있는 기능을 나누어 개발
+  - [ ] /user/form.html 파일을 /user/updateForm.html로 복사한 후 수정화면을 생성
+  - [ ] URL 매핑을 할 때 "/users/{id}/form"와 같이 URL을 통해 인자를 전달하는 경우 @PathVariable 애노테이션을 활용해 인자 값을 얻음
+    - public String updateForm(@PathVariable String id)와 같이 구현
+  - [ ] Controller에서 전달한 값을 입력 폼에서 출력하려면 value를 사용
+    - `<input type="text" name="name" value="{{name}}" />`
