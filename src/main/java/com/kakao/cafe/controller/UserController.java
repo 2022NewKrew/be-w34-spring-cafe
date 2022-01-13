@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserList;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -42,9 +42,27 @@ public class UserController {
     public String getUserProfile(@PathVariable String userId, Model model) {
         User user = UserList.getUserByUserId(userId);
 
-        logger.info("get user profile : {}", user.getUserId());
-        model.addAttribute("user", UserList.getUserByUserId(userId));
+        logger.info("get user profile : {}", user);
+        model.addAttribute("user", user);
         return "/user/profile";
+    }
+
+    @GetMapping("/user/{userId}/form")
+    public String openUserProfile(@PathVariable String userId, Model model){
+        User user = UserList.getUserByUserId(userId);
+
+        model.addAttribute("user", user);
+        return "/user/updateForm";
+    }
+
+    @PostMapping("/user/{userId}/form")
+    public String updateUserProfile(@PathVariable String userId, User changedUser){
+        User curUser = UserList.getUserByUserId(userId);
+        logger.info("update profile success : {}", changedUser.getName());
+
+        curUser.updateUser(changedUser);
+
+        return "redirect:/user/list";
     }
 
 }
