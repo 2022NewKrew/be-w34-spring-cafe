@@ -2,113 +2,56 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Qna;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 public class JdbcQnaRepositoryImpl implements QnaRepository {
 
-    private final DataSource dataSource;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public JdbcQnaRepositoryImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
     public void save(Qna qna) {
-        PreparedStatement statement = null;
-        String query = "";
-        Connection connection = null;
-
         try {
-            connection = dataSource.getConnection();
-
-            query = "SELECT index FROM QNA WHERE index = " + qna.getIndex();
-            statement = connection.prepareStatement(query);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            query = "INSERT INTO QNA(writer, title, contents) " +
-                    "VALUES ('" + qna.getWriter() + "', '" + qna.getTitle() + "', '" + qna.getContents() + "');";
-
-            if (resultSet.next()) {
-                query = "UPDATE USER_PROFILE " +
-                        "SET writer='" + qna.getWriter() + "', title='" + qna.getTitle() + "', contents='" + qna.getContents()
-                        + "' WHERE index=" + qna.getIndex();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            statement = connection.prepareStatement(query);
-            statement.execute();
-
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            jdbcTemplate.queryForObject("SELECT index FROM QNA WHERE index = ?", Integer.class, qna.getIndex());
+            jdbcTemplate.update("UPDATE QNA " +
+                    "SET writer = ?, titile = ?, contents = ?" +
+                    "WHERE index = ?", qna.getWriter(), qna.getTitle(), qna.getContents(), qna.getIndex());
+        } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
+            jdbcTemplate.update("INSERT INTO QNA(writer, title, contents)" +
+                    "VALUES(?, ? ,?)", qna.getWriter(), qna.getTitle(), qna.getContents());
         }
     }
 
     @Override
     public List<Qna> findAll() {
-        List<Qna> qnaList = new ArrayList<>();
-        try {
-            Connection connection = dataSource.getConnection();
-
-            String query = "SELECT index, writer, title, contents FROM QNA";
-            PreparedStatement statement = connection.prepareStatement(query);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                Qna qna = new Qna(resultSet.getInt("index"), resultSet.getString("writer"),
-                        resultSet.getString("title"), resultSet.getString("contents"));
-                qnaList.add(qna);
-            }
-
-            connection.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return qnaList;
+        return jdbcTemplate.query("SELECT index, writer, title, contents FROM QNA", this::qnaMapRow);
     }
 
     @Override
     public Optional<Qna> findByIndex(Integer index) {
-        Optional<Qna> qna = Optional.empty();
         try {
-            Connection connection = dataSource.getConnection();
-
-            String query = "SELECT index, writer, title, contents FROM QNA WHERE index = " + index;
-            PreparedStatement statement = connection.prepareStatement(query);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                Qna resultQna = new Qna(resultSet.getInt("index"), resultSet.getString("writer"),
-                        resultSet.getString("title"), resultSet.getString("contents"));
-                qna = Optional.of(resultQna);
-            }
-
-            connection.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return Optional.of(jdbcTemplate.queryForObject("SELECT index, writer, title, contents FROM QNA WHERE index = ?", this::qnaMapRow, index));
+        } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
+            return Optional.empty();
         }
+    }
 
-        return qna;
+    private Qna qnaMapRow(ResultSet resultSet, int rowNum) throws SQLException {
+        return new Qna(resultSet.getInt("index"), resultSet.getString("writer"),
+                resultSet.getString("title"), resultSet.getString("contents"));
     }
 }
 
