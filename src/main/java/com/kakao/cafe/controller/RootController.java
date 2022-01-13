@@ -24,13 +24,12 @@ public class RootController {
     public String getLandingPage(Model model) {
         log.info("GET / access, getLandingPage");
         articleService.getAllArticleViewDTO(0L);
-
-        Long id1 = userService.createUser("chunsikV", "chunsik@gmail.com", "춘식이", "12345");
-        Long id2 = userService.createUser("muzi", "email2@gmail.com", "무지", "abcd");
-        Long id3 = userService.createUser("ryans", "email3@gmail.com", "라이언", "1q2w3e4r");
-        articleService.createArticle(id1, "게시물 제목입니다.", "이것은 게시물 입니다.");
-        articleService.createArticle(id2, "새로운 게시물입니다.", "이것도 게시물 입니다.");
-
+        // 테스트용 자동 입력
+        //Long id1 = userService.createUser("chunsikV", "chunsik@gmail.com", "춘식이", "12345");
+        //Long id2 = userService.createUser("muzi", "email2@gmail.com", "무지", "abcd");
+        //Long id3 = userService.createUser("ryans", "email3@gmail.com", "라이언", "1q2w3e4r");
+        //articleService.createArticle(id1, "게시물 제목입니다.", "이것은 게시물 입니다.");
+        //articleService.createArticle(id2, "새로운 게시물입니다.", "이것도 게시물 입니다.");
         model.addAllAttributes(new ArticleListResponse(articleService.getAllArticleViewDTO(0L)));
         return "index";
     }
