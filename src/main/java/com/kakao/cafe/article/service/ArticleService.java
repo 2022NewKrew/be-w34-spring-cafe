@@ -1,14 +1,16 @@
 package com.kakao.cafe.article.service;
 
+import com.kakao.cafe.article.exception.ArticleNotFoundException;
 import com.kakao.cafe.article.model.Article;
-import com.kakao.cafe.article.model.ArticlePostDto;
-import com.kakao.cafe.article.model.ArticlePreviewDto;
-import com.kakao.cafe.article.model.ArticleRequest;
+import com.kakao.cafe.article.dto.ArticlePostDto;
+import com.kakao.cafe.article.dto.ArticlePreviewDto;
+import com.kakao.cafe.article.dto.ArticleRequest;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +31,15 @@ public class ArticleService {
     }
 
     public ArticlePostDto getArticleById(Long id){
+        if(!isExistArticle(id)){
+            throw new ArticleNotFoundException();
+        }
+
         Article article = articleRepository.findOneById(id);
         return ArticlePostDto.of(article);
+    }
+
+    public boolean isExistArticle(Long id){
+        return Optional.ofNullable(articleRepository.findOneById(id)).isPresent();
     }
 }
