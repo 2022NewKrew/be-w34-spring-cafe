@@ -1,6 +1,7 @@
 package com.kakao.cafe.users;
 
 import com.kakao.cafe.article.Article;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
+@Primary
 @Repository
 public class JdbcUserRepository implements UserRepository {
 
