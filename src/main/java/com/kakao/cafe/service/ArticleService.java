@@ -35,15 +35,6 @@ public class ArticleService {
     }
 
     public ArticleDetailResponseDto findById(Long id) {
-        ArticleDetailResponseDto responseDto = new ArticleDetailResponseDto();
-        Optional<Article> foundArticle = articleRepository.findById(id);
-        if (foundArticle.isPresent()) {
-            responseDto.setId(foundArticle.get().getId());
-            responseDto.setWriter(foundArticle.get().getWriter());
-            responseDto.setTitle(foundArticle.get().getTitle());
-            responseDto.setContents(foundArticle.get().getContents());
-            return responseDto;
-        }
-        return null;
+        return ArticleDetailResponseDto.from(articleRepository.findById(id));
     }
 }

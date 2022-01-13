@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -35,13 +34,6 @@ public class UserService {
     }
 
     public UserProfileResponseDto findByUserId(String userId) {
-        UserProfileResponseDto responseDto = new UserProfileResponseDto();
-        Optional<User> foundUser = userRepository.findByUserId(userId);
-        if (foundUser.isPresent()) {
-            responseDto.setUserId(foundUser.get().getUserId());
-            responseDto.setEmail(foundUser.get().getEmail());
-            return responseDto;
-        }
-        return null;
+        return UserProfileResponseDto.from(userRepository.findByUserId(userId));
     }
 }
