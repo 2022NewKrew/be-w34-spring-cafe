@@ -1,8 +1,8 @@
 package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.web.dto.UserResponseDto;
-import com.kakao.cafe.web.dto.UsersListResponseDto;
-import com.kakao.cafe.web.dto.UsersSaveRequestDto;
+import com.kakao.cafe.web.dto.user.UserResponseDto;
+import com.kakao.cafe.web.dto.user.UsersListResponseDto;
+import com.kakao.cafe.web.dto.user.UsersSaveRequestDto;
 import lombok.Getter;
 
 import java.util.ArrayList;

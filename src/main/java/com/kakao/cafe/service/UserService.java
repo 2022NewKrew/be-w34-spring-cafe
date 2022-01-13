@@ -1,13 +1,10 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.Users;
-import com.kakao.cafe.web.dto.UserResponseDto;
-import com.kakao.cafe.web.dto.UsersListResponseDto;
-import com.kakao.cafe.web.dto.UsersSaveRequestDto;
+import com.kakao.cafe.web.dto.user.UserResponseDto;
+import com.kakao.cafe.web.dto.user.UsersListResponseDto;
+import com.kakao.cafe.web.dto.user.UsersSaveRequestDto;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService {
