@@ -2,18 +2,21 @@ package com.kakao.cafe.article.infra;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ArticleRepositoryImpl implements ArticleRepository {
 
     public static final List<Article> currentArticles = new ArrayList<>();
 
     @Override
-    public Article save(Article article) {
+    public int save(Article article) {
+        article.setId(currentArticles.size() + 1);
         currentArticles.add(article);
-        return article;
+        return article.id;
     }
 
     @Override

@@ -5,11 +5,11 @@ import com.kakao.cafe.article.domain.ArticleRepository;
 import com.kakao.cafe.article.dto.ArticleListResponse;
 import com.kakao.cafe.article.dto.ArticleSaveRequest;
 import com.kakao.cafe.article.dto.ArticleShowResponse;
-import com.kakao.cafe.article.infra.ArticleRepositoryImpl;
+import com.kakao.cafe.article.infra.ArticleJdbcRepository;
 import com.kakao.cafe.common.exception.EntityNotFoundException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
-import com.kakao.cafe.user.infra.UserRepositoryImpl;
+import com.kakao.cafe.user.infra.UserJdbcRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +19,20 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ArticleService {
-    private final ArticleRepository articleRepository = new ArticleRepositoryImpl();
-    private final UserRepository userRepository = new UserRepositoryImpl();
+    private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
+
+    public ArticleService(ArticleJdbcRepository articleJdbcRepository, UserJdbcRepository userJdbcRepository) {
+        this.articleRepository = articleJdbcRepository;
+        this.userRepository = userJdbcRepository;
+    }
 
     public void save(ArticleSaveRequest request) {
         log.info(this.getClass() + ": 게시글 작성");
-        String authorName = request.writer;
-        User author = userRepository.findByUserNameOrNull(authorName);
+        String authorId = request.writer;
+        User author = userRepository.findByIdOrNull(authorId);
         if(author == null) {
-            EntityNotFoundException.throwNotExistsByField(User.class, "userName", authorName);
+            EntityNotFoundException.throwNotExistsByField(User.class, "userId", authorId);
         }
         Article article = request.toArticle(author);
         articleRepository.save(article);

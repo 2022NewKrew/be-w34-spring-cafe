@@ -7,7 +7,7 @@ import lombok.Builder;
 @Builder
 public class ArticleListResponse {
 
-    public final String articleId;
+    public final int articleId;
     public final String authorId;
     public final String authorName;
     public final String title;

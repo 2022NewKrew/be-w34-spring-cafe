@@ -7,15 +7,13 @@ import java.util.List;
 @Repository
 public interface UserRepository {
 
-    User save(User user);
+    int save(User user);
 
     List<User> findAll();
 
     User findByIdOrNull(String userId);
 
     boolean existsById(String userId);
-
-    User findByUserNameOrNull(String userName);
 
     void delete(User user);
 }

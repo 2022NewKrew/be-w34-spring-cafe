@@ -6,7 +6,7 @@ import java.util.List;
 
 @Repository
 public interface ArticleRepository {
-    Article save(Article article);
+    int save(Article article);
 
     List<Article> findAll();
 

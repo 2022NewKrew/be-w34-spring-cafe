@@ -1,8 +1,7 @@
 package com.kakao.cafe.article.domain;
 
 import com.kakao.cafe.user.domain.User;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,29 +11,35 @@ import java.util.UUID;
 import static com.kakao.cafe.common.exception.ExceptionMessage.NON_NULL_EXCEPTION;
 
 @Getter
+@Setter
+@NoArgsConstructor
+//@Builder
 public class Article {
 
     @NonNull
-    private final String id;
+    public int id;
 
     @NonNull
-    private final User author;
+    private String authorId;
 
     @NonNull
-    private final String title;
+    private String title;
 
     @NonNull
-    private final String content;
+    private String content;
 
     @NonNull
-    private final String createdAt;
+    private String createdAt;
 
-    private Article(User user, String title, String content, String localDateTime) {
-        this.id = UUID.randomUUID().toString();
-        this.author = user;
+    @NonNull
+    private User author;
+
+    public Article(User user, String title, String content, String localDateTime) {
+        this.authorId = user.getUserId();
         this.title = title;
         this.content = content;
         this.createdAt = localDateTime;
+        this.author = user;
     }
 
     public static Article valueOf(User user, String title, String content) {

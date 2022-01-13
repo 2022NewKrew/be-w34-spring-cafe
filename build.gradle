@@ -16,6 +16,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'com.h2database:h2:2.0.206'
 	annotationProcessor 'org.projectlombok:lombok:1.18.12'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

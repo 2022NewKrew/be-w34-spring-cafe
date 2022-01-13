@@ -57,10 +57,6 @@ public class User {
         return Objects.equals(this.userId, targetUserId);
     }
 
-    public boolean isSameUserByName(String targetUserName) {
-        return Objects.equals(this.name, targetUserName);
-    }
-
     public void update(String password, String name, String email) {
         validateLength(userId, password, name);
         validateEmail(email);

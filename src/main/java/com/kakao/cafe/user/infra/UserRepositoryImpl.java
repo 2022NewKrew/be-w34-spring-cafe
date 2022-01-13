@@ -2,18 +2,21 @@ package com.kakao.cafe.user.infra;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
     public static final List<User> currentUsers = new ArrayList<>();
 
     @Override
-    public User save(User user) {
+    public int save(User user) {
+        int userIndex = currentUsers.size() + 1;
         currentUsers.add(user);
-        return user;
+        return userIndex;
     }
 
     @Override
@@ -31,13 +34,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean existsById(String userId) {
         return currentUsers.stream().anyMatch(user -> user.isSameUserById(userId));
-    }
-
-    @Override
-    public User findByUserNameOrNull(String userName) {
-        return currentUsers.stream()
-                .filter(user -> user.isSameUserByName(userName))
-                .findFirst().orElse(null);
     }
 
     @Override

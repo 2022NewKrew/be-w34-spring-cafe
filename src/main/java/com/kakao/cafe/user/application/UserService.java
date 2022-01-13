@@ -7,7 +7,7 @@ import com.kakao.cafe.user.dto.UserListResponse;
 import com.kakao.cafe.user.dto.UserProfileResponse;
 import com.kakao.cafe.user.dto.UserSaveRequest;
 import com.kakao.cafe.user.dto.UserUpdateRequest;
-import com.kakao.cafe.user.infra.UserRepositoryImpl;
+import com.kakao.cafe.user.infra.UserJdbcRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,11 @@ import static com.kakao.cafe.common.exception.ExceptionMessage.USER_ID_DUPLICATI
 @Service
 @Slf4j
 public class UserService {
-    private final UserRepository userRepository = new UserRepositoryImpl();
+    private final UserRepository userRepository;
+
+    public UserService(UserJdbcRepository userJdbcRepository) {
+        this.userRepository = userJdbcRepository;
+    }
 
     public void save(UserSaveRequest request) {
         log.info(this.getClass() + ": 회원 가입");
