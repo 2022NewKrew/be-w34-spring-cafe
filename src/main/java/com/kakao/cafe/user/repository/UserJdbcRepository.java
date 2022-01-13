@@ -1,13 +1,17 @@
 package com.kakao.cafe.user.repository;
 
+import com.kakao.cafe.user.exception.UserNotExistException;
 import com.kakao.cafe.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Primary
@@ -39,8 +43,12 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public User findOneByUserId(String userId) {
-        String sql = "SELECT * FROM USERS WHERE userId=?";
-        return jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
+        try{
+            String sql = "SELECT * FROM USERS WHERE userId=?";
+            return jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
+        }catch (DataAccessException e){
+            return null;
+        }
     }
 
     public RowMapper<User> userRowMapper() {
