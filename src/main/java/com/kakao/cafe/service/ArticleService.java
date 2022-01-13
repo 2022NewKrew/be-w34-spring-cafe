@@ -12,8 +12,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void save(Article article) {
-        articleRepository.save(article);
+    public Long save(Article article) {
+        return articleRepository.save(article);
     }
 
 
@@ -23,5 +23,9 @@ public class ArticleService {
 
     public Article findById(String id) {
         return articleRepository.findById(id);
+    }
+
+    public void deleteByWriter(String writer) {
+        articleRepository.deleteByWriter(writer);
     }
 }

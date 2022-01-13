@@ -29,6 +29,13 @@ public class UserLocalRepository implements UserRepository {
         return userList.stream()
                 .filter(x -> x.getUserId().equals(userId))
                 .findFirst()
-                .orElseThrow(() -> {throw new IllegalArgumentException("존재하지 않는 Id 입니다");});
+                .orElseThrow(() -> {
+                    throw new IllegalArgumentException("존재하지 않는 Id 입니다");
+                });
+    }
+
+    @Override
+    public void deleteById(String userId) {
+        //TODO
     }
 }

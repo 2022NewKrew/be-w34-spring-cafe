@@ -38,7 +38,15 @@ public class UserH2Repository implements UserRepository {
                 .query(sql, memberRowMapper(), userId)
                 .stream()
                 .findAny()
-                .orElseThrow(() -> {throw new IllegalArgumentException("존재하지 않는 Id 입니다");});
+                .orElseThrow(() -> {
+                    throw new IllegalArgumentException("존재하지 않는 Id 입니다");
+                });
+    }
+
+    @Override
+    public void deleteById(String userId) {
+        String sql = "delete from user where userid = ?";
+        jdbcTemplate.update(sql, userId);
     }
 
     private RowMapper<User> memberRowMapper() {

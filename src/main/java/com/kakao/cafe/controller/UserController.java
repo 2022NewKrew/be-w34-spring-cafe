@@ -22,8 +22,8 @@ public class UserController {
 
     @GetMapping
     public String userList(Model model) {
-//        List<User> userList = userService.getAllUser();
-//        model.addAttribute("userList", userList);
+        List<User> userList = userService.getAllUser();
+        model.addAttribute("userList", userList);
         return "/user/list";
     }
 
@@ -36,7 +36,8 @@ public class UserController {
     @GetMapping("/{userId}")
     public String userInfo(@PathVariable String userId, Model model) {
         User user = userService.findById(userId);
-        model.addAttribute("user", user);
+        model.addAttribute("name", user.getName());
+        model.addAttribute("email", user.getEmail());
         return "user/profile";
     }
 

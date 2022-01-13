@@ -13,10 +13,11 @@ public class ArticleLocalRepository implements ArticleRepository {
     }
 
     @Override
-    public void save(Article article) {
+    public Long save(Article article) {
         int curSize = articleList.size() + 1;
         article.setId((long) curSize);
         articleList.add(article);
+        return (long) curSize;
     }
 
     @Override
@@ -29,6 +30,18 @@ public class ArticleLocalRepository implements ArticleRepository {
         return articleList.stream()
                 .filter(x -> x.getId().toString().equals(id))
                 .findFirst()
-                .orElseThrow(() -> {throw new IllegalArgumentException("존재하지 않는 Id 입니다");});
+                .orElseThrow(() -> {
+                    throw new IllegalArgumentException("존재하지 않는 Id 입니다");
+                });
+    }
+
+    @Override
+    public void deleteById(String id) {
+
+    }
+
+    @Override
+    public void deleteByWriter(String writer) {
+
     }
 }
