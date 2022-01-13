@@ -2,11 +2,17 @@
 package com.kakao.cafe.app.request;
 
 import com.kakao.cafe.service.dto.DraftDto;
+import org.hibernate.validator.constraints.Length;
 
 public class ArticleRequest {
 
+    @Length(min=1, max=16)
     private final String author;
+
+    @Length(min=1, max=64)
     private final String title;
+
+    @Length(min=1, max=1024)
     private final String content;
 
     public ArticleRequest(

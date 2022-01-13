@@ -17,7 +17,7 @@ public class Draft {
         this.content = content;
     }
 
-    public Map<String, ?> toMap() {
+    public Map<String, Object> toMap() {
         return Map.of(
                 "owner_id", owner.getId(),
                 "author", author,
