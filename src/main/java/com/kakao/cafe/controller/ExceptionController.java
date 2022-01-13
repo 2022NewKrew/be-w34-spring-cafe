@@ -18,14 +18,14 @@ public class ExceptionController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({UserNotFoundException.class, UserDuplicateException.class, InvalidPasswordException.class})
-    String userError(HttpServletRequest req, RuntimeException e, Model model) {
+    public String userError(HttpServletRequest req, RuntimeException e, Model model) {
         model.addAttribute("e", e);
         return "error/error";
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({PostNotFoundException.class})
-    String userNotFound(HttpServletRequest req, RuntimeException e, Model model) {
+    public String userNotFound(HttpServletRequest req, RuntimeException e, Model model) {
         model.addAttribute("e", e);
         return "error/error";
     }
