@@ -46,9 +46,18 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String getUserProfile(Model model, @PathVariable String userId) {
         User user = userService.getUserByUserId(userId);
-        System.out.println(user);
+        model.addAttribute("userId", user.getUserId());
         model.addAttribute("name", user.getName());
         model.addAttribute("email", user.getEmail());
         return "/user/profile";
+    }
+
+    @GetMapping("/users/{userId}/form")
+    public String getUserUpdateForm(Model model, @PathVariable String userId) {
+        User user = userService.getUserByUserId(userId);
+        model.addAttribute("userId", user.getUserId());
+        model.addAttribute("name", user.getName());
+        model.addAttribute("email", user.getEmail());
+        return "/user/update-form";
     }
 }
