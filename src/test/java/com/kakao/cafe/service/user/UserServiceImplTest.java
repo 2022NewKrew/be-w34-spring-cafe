@@ -4,6 +4,7 @@ import com.kakao.cafe.dto.user.UserReqDto;
 import com.kakao.cafe.dto.user.UserResDto;
 import com.kakao.cafe.repository.user.MemoryUserRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class UserServiceImplTest {
 
-    MemoryUserRepository memoryUserRepository = new MemoryUserRepository();
-    UserServiceImpl userService = new UserServiceImpl(memoryUserRepository);
+    MemoryUserRepository memoryUserRepository;
+    UserServiceImpl userService;
+
+    @BeforeEach
+    void beforeEach(){
+        memoryUserRepository = new MemoryUserRepository();
+        userService = new UserServiceImpl(memoryUserRepository);
+    }
 
     @AfterEach
     void afterEach(){
