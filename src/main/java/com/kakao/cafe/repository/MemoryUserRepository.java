@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
 public class MemoryUserRepository implements UserRepository{
     private static final List<User> store = Collections.synchronizedList(new ArrayList<User>());
 
@@ -16,10 +15,10 @@ public class MemoryUserRepository implements UserRepository{
 
     private final AtomicLong atomicLong = new AtomicLong(FIRST_INDEX);
     @Override
-    public User save(User user) {
+    public Long save(User user) {
         user.setId(atomicLong.getAndIncrement());
         store.add(user);
-        return user;
+        return user.getId();
     }
 
     @Override

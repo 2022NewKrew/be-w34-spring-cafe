@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Transactional
+
 @Repository
 public class JdbcTemplateArticleRepository implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
@@ -30,7 +30,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article save(Article article) {
+    public Long save(Article article) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
@@ -40,7 +40,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
             ps.setString(3, article.getContents());
             return ps;
         }, keyHolder);
-        return article;
+        return (Long)keyHolder.getKey();
     }
 
     @Override

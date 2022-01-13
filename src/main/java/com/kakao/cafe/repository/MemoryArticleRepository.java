@@ -17,10 +17,10 @@ public class MemoryArticleRepository implements ArticleRepository{
 
     private final AtomicLong atomicLong = new AtomicLong(FIRST_INDEX);
     @Override
-    public Article save(Article article) {
+    public Long save(Article article) {
         article.setId(atomicLong.getAndIncrement());
         store.add(article);
-        return article;
+        return article.getId();
     }
 
     @Override

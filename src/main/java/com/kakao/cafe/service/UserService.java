@@ -6,9 +6,11 @@ import com.kakao.cafe.mapper.UserMapper;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 @Service
 public class UserService {
     private final UserRepository userRepository;
