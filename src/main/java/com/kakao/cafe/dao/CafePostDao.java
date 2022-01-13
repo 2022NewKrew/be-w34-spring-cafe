@@ -7,5 +7,5 @@ import java.util.List;
 public interface CafePostDao {
     void writePost (Post newPost);
     List<Post> getPostList();
-    Post getPostContent(String postId);
+    Post getPostContent(int postId);
 }

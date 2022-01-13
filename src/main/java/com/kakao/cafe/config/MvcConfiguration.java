@@ -28,7 +28,6 @@ public class MvcConfiguration implements WebMvcConfigurer {
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("kakaodb")
                 .addScript("classpath:/sql/schema.sql")
-//                .build();
                 .addScript("classpath:/sql/data.sql").build();
     }
 }

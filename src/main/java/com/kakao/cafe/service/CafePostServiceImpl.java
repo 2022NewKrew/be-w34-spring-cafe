@@ -28,7 +28,7 @@ public class CafePostServiceImpl implements CafePostService {
     }
 
     @Override
-    public Post getPostContent(String postId) {
+    public Post getPostContent(int postId) {
         return cafePostDao.getPostContent(postId);
     }
 }

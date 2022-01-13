@@ -7,6 +7,15 @@ public class Post {
     String content;
     String createdAt;
 
+    public Post() {}
+    public Post(int postId, String userId, String title, String content, String createdAt) {
+        this.postId = postId;
+        this.userId = userId;
+        this.title = title;
+        this.content = content;
+        this.createdAt = createdAt;
+    }
+
     public int getPostId() {
         return postId;
     }

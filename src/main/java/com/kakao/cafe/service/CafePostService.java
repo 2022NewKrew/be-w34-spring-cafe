@@ -7,5 +7,5 @@ import java.util.List;
 public interface CafePostService {
     void writePost (Post newPost);
     List<Post> getPostList();
-    Post getPostContent(String postId);
+    Post getPostContent(int postId);
 }
