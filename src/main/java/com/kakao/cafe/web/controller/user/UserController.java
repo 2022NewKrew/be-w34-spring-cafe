@@ -1,6 +1,6 @@
-package com.kakao.cafe.web.user;
+package com.kakao.cafe.web.controller.user;
 
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.service.user.UserService;
 import com.kakao.cafe.web.dto.user.UsersSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,15 +31,5 @@ public class UserController {
     public String findById(@PathVariable int id, Model model) {
         model.addAttribute("user", userService.findById(id));
         return "user/profile";
-    }
-
-    @GetMapping("/users/form")
-    public String showForm() {
-        return "/user/form";
-    }
-
-    @GetMapping("/users/login")
-    public String showLogin() {
-        return "/user/login";
     }
 }

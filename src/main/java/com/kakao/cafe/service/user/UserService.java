@@ -1,4 +1,4 @@
-package com.kakao.cafe.service;
+package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.user.Users;
 import com.kakao.cafe.web.dto.user.UserResponseDto;
