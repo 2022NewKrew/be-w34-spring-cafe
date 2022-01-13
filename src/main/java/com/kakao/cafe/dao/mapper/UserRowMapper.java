@@ -2,11 +2,14 @@ package com.kakao.cafe.dao.mapper;
 
 import com.kakao.cafe.vo.UserVo;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class UserRowMapper implements RowMapper<UserVo> {
+
     @Override
     public UserVo mapRow(ResultSet rs, int rowNum) throws SQLException {
         String userId = rs.getString("userId");

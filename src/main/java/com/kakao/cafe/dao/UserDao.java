@@ -5,17 +5,19 @@ import com.kakao.cafe.vo.UserVo;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class UserDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private final UserRowMapper userRowMapper;
 
-    public UserDao(JdbcTemplate jdbcTemplate) {
+    public UserDao(JdbcTemplate jdbcTemplate, UserRowMapper userRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userRowMapper = userRowMapper;
     }
+
 
     public void save(UserVo userVo) {
         String userId = userVo.getUserId();
@@ -26,7 +28,7 @@ public class UserDao {
     }
 
     public UserVo findByUserId(String userId) {
-        List<UserVo> resultList = jdbcTemplate.query("SELECT userid, password, name, email FROM QNA_USER WHERE userId = ?",new UserRowMapper(),userId);
+        List<UserVo> resultList = jdbcTemplate.query("SELECT userid, password, name, email FROM QNA_USER WHERE userId = ?",userRowMapper,userId);
         return resultList.stream()
                 .findFirst()
                 .orElse(null);
@@ -41,6 +43,6 @@ public class UserDao {
     }
 
     public List<UserVo> findAll() {
-        return jdbcTemplate.query("SELECT userid, password, name, email FROM QNA_USER",new UserRowMapper());
+        return jdbcTemplate.query("SELECT userid, password, name, email FROM QNA_USER",userRowMapper);
     }
 }

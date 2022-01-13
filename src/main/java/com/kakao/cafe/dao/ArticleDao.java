@@ -11,9 +11,11 @@ import java.util.List;
 public class ArticleDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private final ArticleRowMapper articleRowMapper;
 
-    public ArticleDao(JdbcTemplate jdbcTemplate) {
+    public ArticleDao(JdbcTemplate jdbcTemplate, ArticleRowMapper articleRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.articleRowMapper = articleRowMapper;
     }
 
     public void save(ArticleVo articleVo) {
@@ -25,13 +27,13 @@ public class ArticleDao {
     }
 
     public ArticleVo findById(int id) {
-        List<ArticleVo> resultList = jdbcTemplate.query("SELECT id, writer, title, contents, date FROM ARTICLE WHERE id = ?", new ArticleRowMapper(), id);
+        List<ArticleVo> resultList = jdbcTemplate.query("SELECT id, writer, title, contents, date FROM ARTICLE WHERE id = ?", articleRowMapper, id);
         return resultList.stream()
                 .findFirst()
                 .orElse(null);
     }
 
     public List<ArticleVo> findAll() {
-        return jdbcTemplate.query("SELECT id, writer, title, contents, date FROM article", new ArticleRowMapper());
+        return jdbcTemplate.query("SELECT id, writer, title, contents, date FROM article", articleRowMapper);
     }
 }
