@@ -12,7 +12,7 @@ class WritePostRequestTest {
 
     @Test
     @DisplayName("[성공] UserSignupRequest 객체를 생성한다")
-    void UserSignupRequest() {
+    void WritePostRequest() {
         new WritePostRequest(userId, title, content);
     }
 
