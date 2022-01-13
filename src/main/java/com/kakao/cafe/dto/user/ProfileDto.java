@@ -10,9 +10,4 @@ public class ProfileDto {
     private final Long id;
     private final String nickName;
     private String password;
-
-    public void updateUser(User user) {
-        user.setNickName(nickName);
-        user.setPassword(password);
-    }
 }

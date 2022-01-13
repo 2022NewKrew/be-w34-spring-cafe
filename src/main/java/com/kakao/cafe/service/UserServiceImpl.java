@@ -62,11 +62,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateProfile(ProfileDto profileUpdateDto) {
-        Long targetUserId = profileUpdateDto.getId();
+    public User updateProfile(ProfileDto profileDto) {
+        Long targetUserId = profileDto.getId();
         User targetUser = findById(targetUserId);
-        checkDuplicationForNewNickName(profileUpdateDto.getNickName(), targetUser.getNickName());
-        profileUpdateDto.updateUser(targetUser);
+        checkDuplicationForNewNickName(profileDto.getNickName(), targetUser.getNickName());
+        updateUserByProfileUpdateDto(targetUser, profileDto);
         return userRepository.save(targetUser);
     }
 
@@ -74,6 +74,11 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByNickName(newNickName) && !newNickName.equals(targetUserNickName)) {
             throw new UserNickNameDuplicationException(UserErrorMsg.USER_NICKNAME_DUPLICATED.getDescription());
         }
+    }
+
+    private void updateUserByProfileUpdateDto(User user, ProfileDto profileDto) {
+        user.setNickName(profileDto.getNickName());
+        user.setPassword(profileDto.getPassword());
     }
 
     @Override
