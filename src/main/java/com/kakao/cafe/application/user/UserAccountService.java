@@ -31,6 +31,11 @@ public class UserAccountService {
         }
     }
 
+    public UserAccount getUserInfoByEmail(String email) {
+        return userAccountRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않는 값입니다"));
+    }
+
     public List<UserAccount> getAllUser() {
         return userAccountRepository.findAll();
     }
