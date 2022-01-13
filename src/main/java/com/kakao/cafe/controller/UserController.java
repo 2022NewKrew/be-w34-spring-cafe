@@ -9,10 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Slf4j
@@ -36,7 +35,12 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public String createUser(@ModelAttribute CreateUserDto createUserDto){
+    public String createUser(@ModelAttribute @Validated CreateUserDto createUserDto, Errors errors, Model model){
+        if(errors.hasErrors()){
+            errors.getFieldErrors().forEach(err -> model.addAttribute(err.getField(), err.getDefaultMessage()));
+            return "user/addForm";
+        }
+
         User user = userService.join(createUserDto);
         log.info("Create User - {}", user);
         return "redirect:/user";
@@ -58,7 +62,13 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/update")
-    public String userUpdate(@PathVariable String userId, @ModelAttribute UpdateUserDto updateUserDto){
+    public String userUpdate(@PathVariable String userId, @ModelAttribute @Validated UpdateUserDto updateUserDto, Errors errors, Model model){
+        if(errors.hasErrors()){
+            errors.getFieldErrors().forEach(err -> model.addAttribute(err.getField(), err.getDefaultMessage()));
+            model.addAttribute("user", updateUserDto);
+            return "user/editForm";
+        }
+
         User editUser = userService.editProfile(userId, updateUserDto);
         log.info("Update User - {}", editUser);
         return "redirect:/user";

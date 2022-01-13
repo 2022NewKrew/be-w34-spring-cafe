@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +34,14 @@ public class PostController {
     }
 
     @PostMapping("/post")
-    public String addPost(@ModelAttribute CreatePostDto postDto){
+    public String addPost(@ModelAttribute @Validated CreatePostDto postDto, Errors errors, Model model){
+        if(errors.hasErrors()){
+            errors.getFieldErrors()
+                    .forEach(err -> model.addAttribute(err.getField(), err.getDefaultMessage()));
+
+            return "post/form";
+        }
+
         Post post = postService.createPost(postDto);
         log.info("CreatPost - {}", post);
         return "redirect:/";
