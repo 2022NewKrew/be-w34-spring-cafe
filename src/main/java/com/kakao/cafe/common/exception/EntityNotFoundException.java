@@ -11,7 +11,7 @@ public class EntityNotFoundException extends RuntimeException {
         this.message = message;
     }
 
-    public static <T> void throwNotExistsByField(Class<T> tClass, String property, String value) {
+    public static <T, U> void throwNotExistsByField(Class<T> tClass, String property, U value) {
         throw new EntityNotFoundException(property + "에 해당하는 " + tClass.getName() + "이(가) 존재하지 않습니다. value: " + value);
     }
 }
