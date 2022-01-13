@@ -5,13 +5,13 @@ import com.kakao.cafe.user.domain.User;
 
 public class UserViewDTO {
 
-    private Long id;
+    private final Long id;
 
-    private String userId;
+    private final String userId;
 
-    private String name;
+    private final String name;
 
-    private String email;
+    private final String email;
 
     public UserViewDTO(User user) {
         this.id = user.getId();

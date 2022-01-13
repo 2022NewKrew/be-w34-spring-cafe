@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class QuestionDTO {
 
-    private String writer;
-    private String title;
-    private String contents;
+    private final String writer;
+    private final String title;
+    private final String contents;
 
     public QuestionDTO(String writer, String title, String contents) {
         this.writer = writer;

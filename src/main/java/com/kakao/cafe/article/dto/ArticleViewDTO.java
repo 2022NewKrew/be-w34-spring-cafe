@@ -2,15 +2,13 @@ package com.kakao.cafe.article.dto;
 
 import com.kakao.cafe.article.domain.Article;
 
-
-
 public class ArticleViewDTO {
 
-    private Long id;
-    private String writer;
-    private String title;
-    private String writingTime;
-    private Long countOfComment;
+    private final Long id;
+    private final String writer;
+    private final String title;
+    private final String writingTime;
+    private final Long countOfComment;
 
     public ArticleViewDTO(Article article) {
         this.id = article.getId();

@@ -5,17 +5,17 @@ import lombok.Getter;
 @Getter
 public class UpdateDTO {
 
-    private Long id;
+    private final Long id;
 
-    private String userId;
+    private final String userId;
 
-    private String password;
+    private final String password;
 
-    private String newPassword;
+    private final String newPassword;
 
-    private String name;
+    private final String name;
 
-    private String email;
+    private final String email;
 
     public UpdateDTO(Long id, String userId, String password, String newPassword, String name, String email) {
         this.id = id;
