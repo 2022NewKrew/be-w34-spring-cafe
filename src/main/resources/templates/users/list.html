@@ -19,7 +19,12 @@
               <tbody>
                 {{#users}}
                     <tr>
-                        <th scope="row">{{id}}</th> <td>{{userId}}</td> <td>{{name}}</td> <td>{{email}}</td><td><a href="/users/{{id}}/form" class="btn btn-success" role="button">수정</a></td>
+                        <th scope="row">{{id}}</th>
+                        <td>{{userId}}</td>
+                        <td>{{name}}</td>
+                        <td>{{email}}</td>
+                        <td><a href="/users/{{id}}" class="btn btn-primary" role="button">상세 조회</a></td>
+                        <td><a href="/users/{{id}}/form" class="btn btn-success" role="button">수정</a></td>
                     </tr>
                 {{/users}}
               </tbody>
