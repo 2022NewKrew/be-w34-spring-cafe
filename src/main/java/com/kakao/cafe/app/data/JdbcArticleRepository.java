@@ -13,10 +13,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -35,9 +32,11 @@ public class JdbcArticleRepository implements ArticleRepository {
     public Article create(Draft draft) {
         String sql = "INSERT INTO articles " +
                 "(owner_id, author, title, content, created_at) " +
-                "VALUES (:owner_id, :author, :title, :content, NOW())";
+                "VALUES (:owner_id, :author, :title, :content, :created_at)";
         Date createdAt = new Date();
-        SqlParameterSource params = new MapSqlParameterSource(draft.toMap());
+        Map<String, Object> map = new HashMap<>(draft.toMap());
+        map.put("created_at", createdAt);
+        SqlParameterSource params = new MapSqlParameterSource(map);
         KeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, params, holder);
         long id = holder.getKey().longValue();
