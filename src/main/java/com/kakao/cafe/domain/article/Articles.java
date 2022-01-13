@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain.article;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,7 @@ public class Articles {
 
     public void add(Article article) {
         article.setArticleId(UUID.randomUUID());
+        article.setCreatedAt(LocalDateTime.now());
         articleList.add(article);
     }
 

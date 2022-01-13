@@ -10,7 +10,7 @@ public class Article {
     private final Title title;
     private final Content content;
     private final User writer;
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     private final ViewCount viewCount;
 
     public Article(UUID articleId, Title title, Content content, User writer, LocalDateTime createdAt, ViewCount viewCount) {
@@ -52,6 +52,10 @@ public class Article {
 
     public void setArticleId(UUID id) {
         this.articleId = id;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public void increaseViewCount() {
