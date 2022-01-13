@@ -3,18 +3,21 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Result;
-import com.kakao.cafe.error.UserError;
-import com.kakao.cafe.model.User;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.dto.UserDTO.Update;
+import com.kakao.cafe.error.ErrorCode;
+import com.kakao.cafe.error.exception.UserAlreadyExistsException;
+import com.kakao.cafe.error.exception.UserInvalidAuthInfoException;
+import com.kakao.cafe.error.exception.UserNotFoundException;
+import com.kakao.cafe.persistence.model.AuthInfo;
+import com.kakao.cafe.persistence.model.User;
+import com.kakao.cafe.persistence.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -25,19 +28,23 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void create(Create createDto) {
-        if (userRepository.findUserByUserId(createDto.getUserId()).isPresent()) {
-            logger.error("User ID : {} {}", createDto.getUserId(),
-                UserError.ALREADY_EXISTS.getMessage());
-
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                UserError.ALREADY_EXISTS.getMessage());
+        if (userRepository.findUserByUid(createDto.getUid()).isPresent()) {
+            throw new UserAlreadyExistsException(ErrorCode.ALREADY_EXISTS, createDto.getUid());
         }
 
-        User user = User.of(createDto.getUserId(), createDto.getPassword(),
+        User user = User.of(createDto.getUid(), createDto.getPassword(),
             createDto.getName(), createDto.getEmail());
 
-        userRepository.add(user);
+        userRepository.save(user);
         logger.info("User Created : " + user);
+    }
+
+    public void update(AuthInfo authInfo, String uid, Update updateDTO) {
+        if (!authInfo.matchUid(uid)) {
+            throw new UserInvalidAuthInfoException(ErrorCode.AUTHENTICATION_INVALID, uid);
+        }
+
+        userRepository.update(authInfo.getUid(), updateDTO.getName(), updateDTO.getEmail());
     }
 
     public List<UserDTO.Result> readAll() {
@@ -46,13 +53,10 @@ public class UserService {
             .collect(Collectors.toUnmodifiableList());
     }
 
-    public UserDTO.Result readByUserId(String userId) {
-        Optional<User> foundUser = userRepository.findUserByUserId(userId);
+    public UserDTO.Result readByUid(String uid) {
+        Optional<User> foundUser = userRepository.findUserByUid(uid);
         if (foundUser.isEmpty()) {
-            logger.error("User ID : {} {}", userId, UserError.NOT_FOUND.getMessage());
-
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                UserError.NOT_FOUND.getMessage());
+            throw new UserNotFoundException(ErrorCode.NOT_FOUND, uid);
         }
 
         return Result.from(foundUser.get());

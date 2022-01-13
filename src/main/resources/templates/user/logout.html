@@ -1,0 +1,21 @@
+{{> common/head}}
+
+<body>
+{{> common/navbar}}
+{{> common/sub-navbar}}
+
+<div class="container" id="main">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default content-main">
+            <form name="question" method="post" action="/auth">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <button type="submit" class="btn btn-danger clearfix center-block">로그아웃 하시겠습니까?</button>
+                <div class="clearfix" />
+            </form>
+        </div>
+    </div>
+</div>
+
+{{> common/script}}
+</body>
+</html>

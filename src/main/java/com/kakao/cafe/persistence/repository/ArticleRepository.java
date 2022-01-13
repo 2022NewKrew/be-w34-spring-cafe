@@ -1,12 +1,12 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.persistence.repository;
 
-import com.kakao.cafe.model.Article;
+import com.kakao.cafe.persistence.model.Article;
 import java.util.List;
 import java.util.Optional;
 
 public interface ArticleRepository {
 
-    void add(Article article);
+    void save(Article article);
 
     List<Article> findAllArticles();
 

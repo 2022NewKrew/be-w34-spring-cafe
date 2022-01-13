@@ -1,6 +1,6 @@
 package com.kakao.cafe.dto;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.persistence.model.User;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.AccessLevel;
@@ -14,7 +14,7 @@ public interface UserDTO {
     class Create {
 
         @NotBlank
-        String userId;
+        String uid;
         @NotBlank
         String password;
         @NotBlank
@@ -23,16 +23,27 @@ public interface UserDTO {
         String email;
     }
 
+    @Getter
+    @AllArgsConstructor
+    class Update {
+
+        @NotBlank
+        String name;
+        @NotBlank @Pattern(regexp = "(\\w+\\.)*\\w+@(\\w+\\.)+\\w{2,3}")
+        String email;
+    }
+
+    @Getter
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     class Result {
 
         Long id;
-        String userId;
+        String uid;
         String name;
         String email;
 
         public static Result from(User user) {
-            return new Result(user.getId(), user.getUserId(), user.getName(), user.getEmail());
+            return new Result(user.getId(), user.getUid(), user.getName(), user.getEmail());
         }
     }
 }
