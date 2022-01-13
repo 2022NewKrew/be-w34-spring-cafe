@@ -3,13 +3,12 @@ package com.kakao.cafe.persistence.user;
 import com.kakao.cafe.domain.user.FindUserPort;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserDaoPort;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+//@Repository
 public class FindUserInMemoryAdapter implements FindUserPort {
 
     private final UserDaoPort userDaoPort;

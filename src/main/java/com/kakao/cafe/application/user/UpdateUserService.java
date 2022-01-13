@@ -18,7 +18,6 @@ public class UpdateUserService {
     }
 
     public void updateInformation(UserVo updateUserVo) throws IllegalArgumentException {
-        System.out.println(updateUserVo);
         Optional<User> optionalUser = findUserPort.findByUserId(updateUserVo.getUserId());
         if (optionalUser.isEmpty()) {
             throw new IllegalArgumentException("존재하지 않는 사용자의 정보를 수정할 수 없습니다.");
