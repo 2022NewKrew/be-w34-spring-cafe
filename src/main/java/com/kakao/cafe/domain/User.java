@@ -1,12 +1,15 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
-public class UserDto {
+public class User {
     private String userId;
     private String email;
     private String name;
+    private String password;
 }

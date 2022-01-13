@@ -1,11 +1,12 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
-public class ArticleDto {
+@Getter
+public class Article {
+    private int id;
     private String writer;
     private String title;
     private String contents;

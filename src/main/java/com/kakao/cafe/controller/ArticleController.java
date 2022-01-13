@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserSignUpDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -26,8 +28,12 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String postQuestion(ArticleDto article) {
-        article.setId(articleService.nextArticleId());
-        articleService.postArticle(article);
+        try {
+            articleService.postArticle(article);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
         return "redirect:/";
     }
 

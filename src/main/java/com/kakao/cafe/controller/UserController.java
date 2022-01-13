@@ -1,10 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserSignUpDto;
 import com.kakao.cafe.service.UserService;
-import org.apache.catalina.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    //private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     public UserController(UserService userService){
@@ -26,8 +25,13 @@ public class UserController {
 
     // form으로 작성된 정보를 받아서 user 객체 생성하고 저장
     @PostMapping("/create")
-    public String create(UserDto user) {
-        userService.signup(user);
+    public String create(UserSignUpDto user) {
+        try {
+            userService.signup(user);
+        } catch (SQLException e) {
+            return "redirect:/";
+        }
+
         return "redirect:/users/list";
     }
 
@@ -45,7 +49,6 @@ public class UserController {
             user = userService.findById(userId);
             model.addAttribute("user", user);
         } catch (NoSuchElementException e) {
-            e.printStackTrace();
             return "redirect:/";
         }
 
