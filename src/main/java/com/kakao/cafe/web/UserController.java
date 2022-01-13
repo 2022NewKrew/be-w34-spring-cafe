@@ -9,10 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -22,37 +24,37 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/form")
+    @GetMapping("/form")
     public String userForm() {
         return "/user/form";
     }
 
-    @PostMapping("/users")
+    @PostMapping("")
     public String userCreate(CreateUserDto createUserDto) {
         userService.save(createUserDto);
-        return "redirect:/users";
+        return "redirect:/user";
     }
 
-    @GetMapping("/users")
+    @GetMapping("")
     public String userList(Model model) {
         List<ShowUserDto> userList = userService.findAll();
         model.addAttribute("userList", userList);
         return "/user/list";
     }
 
-    @GetMapping("/user/profile")
+    @GetMapping("/profile")
     public String userProfile() {
         return "/user/profile";
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public String userListProfile(Model model, @PathVariable String userId) {
         ShowUserDto user = userService.findById(userId);
         model.addAttribute("user", user);
         return "/user/profile";
     }
 
-    @GetMapping("user/login")
+    @GetMapping("/login")
     public String userLogin() {
         return "/user/login";
     }
