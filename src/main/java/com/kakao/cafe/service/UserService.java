@@ -1,35 +1,41 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserRepositoryList;
-import com.kakao.cafe.dto.UserRequestDto;
-import com.kakao.cafe.dto.UserResponseDto;
+import com.kakao.cafe.domain.user.UserRepository;
+import com.kakao.cafe.dto.user.UserRequestDto;
+import com.kakao.cafe.dto.user.UserResponseDto;
 import com.kakao.cafe.dto.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserService {
-    //DB생성 전까지 users 변수에 임시 저장
-    private UserRepositoryList userRepositoryList = new UserRepositoryList();
+    @Autowired
+    @Qualifier("UserRepositoryJdbc")
+    private UserRepository userRepository;
 
     public void save(UserRequestDto userRequestDto){
-        userRepositoryList.save(UserMapper.INSTANCE.toEntity(userRequestDto));
+        if (userRepository.findByStringId(userRequestDto.getStringId()) == null){
+            userRepository.save(UserMapper.INSTANCE.toEntity(userRequestDto));
+        }
     }
 
     public void update(int id, UserRequestDto userRequestDto){
-        User user = userRepositoryList.findById(id);
+        User user = userRepository.findById(id);
         if (userRequestDto.getStringId().equals(user.getStringId()) && userRequestDto.getPrevPassword().equals(user.getPassword())){
-            userRepositoryList.update(id, UserMapper.INSTANCE.toEntity(userRequestDto));
+            userRepository.save(user.update(UserMapper.INSTANCE.toEntity(userRequestDto)));
         }
     }
 
     public List<UserResponseDto> findAll(){
-        return UserMapper.INSTANCE.toDtoList(userRepositoryList.findAll());
+        return UserMapper.INSTANCE.toDtoList(userRepository.findAll());
     }
 
     public UserResponseDto findbyId(int id){
-        return UserMapper.INSTANCE.toDto(userRepositoryList.findById(id));
+        return UserMapper.INSTANCE.toDto(userRepository.findById(id));
     }
+
 }

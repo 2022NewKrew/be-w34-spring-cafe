@@ -1,5 +1,7 @@
-package com.kakao.cafe.domain.question;
+package com.kakao.cafe.domain.question.repositoryimpl;
 
+import com.kakao.cafe.domain.question.Question;
+import com.kakao.cafe.domain.question.QuestionRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -13,21 +15,25 @@ public class QuestionRepositoryList implements QuestionRepository {
 
     @Override
     public void save(Question question){
-        questions.add(Question.builder()
-                .id(maxIndex)
-                .title(question.getTitle())
-                .writer(question.getWriter())
-                .contents(question.getContents())
-                .createdAt(LocalDateTime.now())
-                .build());
-        maxIndex++;
+        if(question.isNew()){
+            questions.add(Question.builder()
+                    .id(maxIndex)
+                    .title(question.getTitle())
+                    .writer(question.getWriter())
+                    .contents(question.getContents())
+                    .createdAt(LocalDateTime.now())
+                    .build());
+            maxIndex++;
+            return;
+        }
+        findById(question.getId()).update(question);
     }
 
     @Override
     public Question findById(int id){
         return questions.stream().filter(question -> question.getId()==id)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException());
+                .orElse(null);
     }
 
     @Override

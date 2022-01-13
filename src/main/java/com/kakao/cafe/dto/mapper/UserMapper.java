@@ -1,8 +1,8 @@
 package com.kakao.cafe.dto.mapper;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.dto.UserRequestDto;
-import com.kakao.cafe.dto.UserResponseDto;
+import com.kakao.cafe.dto.user.UserRequestDto;
+import com.kakao.cafe.dto.user.UserResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import java.util.List;

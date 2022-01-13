@@ -1,8 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.question.QuestionRepository;
-import com.kakao.cafe.dto.QuestionRequestDto;
-import com.kakao.cafe.dto.QuestionResponseDto;
+import com.kakao.cafe.dto.question.QuestionRequestDto;
+import com.kakao.cafe.dto.question.QuestionResponseDto;
 import com.kakao.cafe.dto.mapper.QuestionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,10 +12,8 @@ import java.util.List;
 
 @Service
 public class QuestionService {
-    //DB생성 전까지 questions 변수에 임시 저장
-
     @Autowired
-    @Qualifier("QuestionRepositoryList")
+    @Qualifier("QuestionRepositoryJdbc")
     private QuestionRepository questionRepository;
 
     public void save(QuestionRequestDto questionRequestDto){

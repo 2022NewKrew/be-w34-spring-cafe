@@ -1,8 +1,8 @@
 package com.kakao.cafe.dto.mapper;
 
 import com.kakao.cafe.domain.question.Question;
-import com.kakao.cafe.dto.QuestionRequestDto;
-import com.kakao.cafe.dto.QuestionResponseDto;
+import com.kakao.cafe.dto.question.QuestionRequestDto;
+import com.kakao.cafe.dto.question.QuestionResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import java.util.List;

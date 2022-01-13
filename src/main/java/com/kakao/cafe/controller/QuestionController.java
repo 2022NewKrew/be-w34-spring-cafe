@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.QuestionRequestDto;
+import com.kakao.cafe.dto.question.QuestionRequestDto;
 import com.kakao.cafe.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

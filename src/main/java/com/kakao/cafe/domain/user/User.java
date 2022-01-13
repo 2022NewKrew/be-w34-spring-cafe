@@ -1,29 +1,26 @@
 package com.kakao.cafe.domain.user;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class User {
-    private int id;
+    @Builder.Default
+    private int id = -1;
     private String stringId;
     private String password;
     private String name;
     private String email;
 
-    public User(String stringId, String password, String name, String email){
-        this.stringId = stringId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-    }
-
-    public void update(User user){
+    public User update(User user){
         this.password = user.getPassword();
         this.name = user.getName();
         this.email = user.getEmail();
+        return this;
     }
 
-    public void setId(int id){
-        this.id = id;
+    public Boolean isNew(){
+        return id == -1;
     }
 }
