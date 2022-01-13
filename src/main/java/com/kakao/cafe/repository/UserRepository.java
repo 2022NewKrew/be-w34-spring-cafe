@@ -10,6 +10,7 @@ import java.util.*;
 /**
  * todo : DB 연동 전 임시 사용, 메소드 구현하지 않았습니다.
  */
+@org.springframework.stereotype.Repository
 public class UserRepository implements Repository<User, Long> {
     private Map<Long, User> users = new TreeMap<>();
 

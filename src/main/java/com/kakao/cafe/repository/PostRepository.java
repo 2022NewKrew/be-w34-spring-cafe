@@ -12,6 +12,7 @@ import java.util.Optional;
 /**
  * todo : 추후 DB 추가할 때 메소드 구현
  */
+@org.springframework.stereotype.Repository
 public class PostRepository implements Repository<Post, Long>{
     @Override
     public Optional<Post> findById(Long aLong) {
