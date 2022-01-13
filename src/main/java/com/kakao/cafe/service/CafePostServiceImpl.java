@@ -1,9 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.dao.CafePostDao;
-import com.kakao.cafe.dao.CafePostDaoImpl;
+import com.kakao.cafe.helper.PostHelper;
 import com.kakao.cafe.model.Post;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,16 +10,18 @@ import java.util.List;
 @Service
 public class CafePostServiceImpl implements CafePostService {
 
-    @Autowired
-    private CafePostDao cafePostDao;
+    private final CafePostDao cafePostDao;
 
-    public CafePostServiceImpl() {
-        cafePostDao = new CafePostDaoImpl();
+    public CafePostServiceImpl(CafePostDao cafePostDao) {
+        this.cafePostDao = cafePostDao;
     }
 
     @Override
-    public void writePost(Post newPost) {
-        cafePostDao.writePost(newPost);
+    public boolean writePost(Post newPost) {
+        if(PostHelper.checkRegexOfPost(newPost)) {
+            return cafePostDao.writePost(newPost);
+        }
+        return false;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class CafePostServiceImpl implements CafePostService {
     }
 
     @Override
-    public Post getPostContent(String postId) {
+    public Post getPostContent(int postId) {
         return cafePostDao.getPostContent(postId);
     }
 }

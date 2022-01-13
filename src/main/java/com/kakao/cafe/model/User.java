@@ -5,6 +5,11 @@ public class User {
     private String password;
     private String email;
 
+    public User(String userId, String email) {
+        this.userId = userId;
+        this.email = email;
+    }
+
     // getter
     public String getUserId() {
         return userId;

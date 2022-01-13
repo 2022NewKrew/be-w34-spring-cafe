@@ -5,7 +5,8 @@ import com.kakao.cafe.model.User;
 import java.util.List;
 
 public interface CafeUserDao {
-    void signIn(User newUser);
+    boolean signUp(User newUser);
+    boolean SignIn(User signInUser);
     List<User> getUserList();
     User getUserProfile(String userId);
 }

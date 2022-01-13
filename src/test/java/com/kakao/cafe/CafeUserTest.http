@@ -1,0 +1,22 @@
+### 로그인 GET
+GET http://localhost:8080/users/sign-in
+
+### 회원가입 GET
+GET http://localhost:8080/users/sign-up
+
+### 회원가입 POST 실패
+POST http://localhost:8080/users/sign-up
+Content-Type: application/json
+
+### 회원가입 POST 성공
+POST http://localhost:8080/users/sign-up
+Content-Type: application/json
+
+{
+  "email":"123@nate.com",
+  "userId":"123",
+  "password":"123"
+}
+
+### 회원 목록 GET
+GET http://localhost:8080/users/list

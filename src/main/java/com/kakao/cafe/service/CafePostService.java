@@ -5,7 +5,7 @@ import com.kakao.cafe.model.Post;
 import java.util.List;
 
 public interface CafePostService {
-    void writePost (Post newPost);
+    boolean writePost (Post newPost);
     List<Post> getPostList();
-    Post getPostContent(String postId);
+    Post getPostContent(int postId);
 }

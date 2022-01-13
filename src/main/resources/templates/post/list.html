@@ -31,12 +31,12 @@
 
     <div class="description">
         <div class="desc-container">
-            <p class="desc-small">안녕하세요</p>
+            <p class="desc-small">안녕하세요 {{#signInUser}}{{userId}}{{/signInUser}}</p>
             <p class="desc-big">카카오 교육 페이지 입니다.</p>
         </div>
     </div>
 
-    <p class="total_num">전체 글 10명</p>
+    <p class="total_num">전체 글 {{postCnt}}개</p>
 
     <div class="container" id="main">
         <div class="col-md-10 col-md-offset-1">
@@ -50,7 +50,7 @@
                     <tbody>
                     {{#postList}}
                     <tr>
-                        <td><a href="/posts/content/{{postId}}">{{title}}</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
+                        <td><a href="/posts/content/{{postId}}">{{title}}</a></td> <td>{{userId}}</td> <td>{{createdAt}}</td> <td>0</td>
                     </tr>
                     {{/postList}}
                     </tbody>

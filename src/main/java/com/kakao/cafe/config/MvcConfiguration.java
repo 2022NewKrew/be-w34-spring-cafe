@@ -1,44 +1,44 @@
 package com.kakao.cafe.config;
 
-import org.springframework.boot.web.servlet.view.MustacheViewResolver;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.core.Ordered;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
-    // 차후에 사용 예정인 클래스 ( 리뷰에선 무시 )
+    private static final String USER_DIRECTORY = "/user";
+    public static final String USER_VIEW_SIGN_IN_FAIL = USER_DIRECTORY+"/login_fail";
+    public static final String USER_VIEW_SIGN_UP_FAIL = USER_DIRECTORY+"/form_fail";
 
-    private final static String CLASSPATH_PREFIX = "classpath:";
-    private final static String PATH_OF_STATIC = "static/";
-    private final static String PATH_OF_TEMPLATES = "templates/";
+    private static final String POST_DIRECTORY = "/post";
+    public static final String POST_VIEW_WRITE_FAIL = POST_DIRECTORY+"/form_fail";
 
-    private String generateClassPath (String path) {
-        return CLASSPATH_PREFIX + "/" + path;
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+
+        // 단순 화면 출력
+        registry.addViewController("/users/sign-in/fail").setViewName(USER_VIEW_SIGN_IN_FAIL);
+        registry.addViewController("/users/sign-up/fail").setViewName(USER_VIEW_SIGN_UP_FAIL);
+        registry.addViewController("/posts/write/fail").setViewName(POST_VIEW_WRITE_FAIL);
+
+        // 시작페이지 조정
+        registry.addRedirectViewController("/", "/posts/list");
     }
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        // resource 의 기본 접근 폴더는 static 으로 정의되어 있음
-//        // 이를 해결하기 위한 오버라이딩
-//        registry.addResourceHandler("/**")
-//                .addResourceLocations(
-//                        generateClassPath(PATH_OF_STATIC),
-//                        generateClassPath(PATH_OF_TEMPLATES)
-//                    );
-//    }
-
-//    @Override
-//    public void configureViewResolvers(ViewResolverRegistry registry) {
-//        MustacheViewResolver resolver = new MustacheViewResolver();
-//
-//        resolver.setCharset("UTF-8");
-//        resolver.setContentType("text/html;charset=UTF-8");
-//        resolver.setPrefix(generateClassPath(PATH_OF_TEMPLATES));
-//        resolver.setSuffix(".html");
-//
-//        registry.viewResolver(resolver);
-//        WebMvcConfigurer.super.configureViewResolvers(registry);
-//    }
+    @Bean
+    public DataSource myDataSource() {
+        // jdbc:h2:tcp://localhost:3306/kakaodb
+        return new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.H2)
+                .setName("kakaodb")
+                .addScript("classpath:/sql/schema.sql")
+                .addScript("classpath:/sql/data.sql").build();
+    }
 }

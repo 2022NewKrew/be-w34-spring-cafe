@@ -31,24 +31,24 @@
 
         <div class="container" id="main">
             <div class="col-md-12 col-sm-12 col-lg-12">
+                {{#post}}
                 <div class="panel panel-default">
                   <header class="post-header">
-                      <p class="post-title">자바 웹개발 교육 홈페이지 디자인 개발1</p>
+                      <p class="post-title">{{title}}</p>
                   </header>
                   <div class="content-main">
                       <article class="article">
                           <div class="article-header">
                               <div class="article-header-text">
-                                  <p class="article-content">멋진삼</p>
+                                  <p class="article-content">{{userId}}</p>
                                   <p class="article-content">
-                                      작성일자:2015-12-30 01:47
+                                      작성일자:{{createdAt}}
                                   </p>
                                   <p class="article-content">조회 4</p>
                               </div>
                           </div>
                           <div class="article-doc">
-                              <p>호눅스가 요청하신 페이지의 디자인 입니다.<br>
-                                  각각의 글의 상세 페이지는 이런 느낌이네요!</p>
+                              <p>{{content}}</p>
                           </div>
                       </article>
 
@@ -95,6 +95,7 @@
                       </div>
                   </div>
                 </div>
+                {{/post}}
             </div>
         </div>
 	</body>
