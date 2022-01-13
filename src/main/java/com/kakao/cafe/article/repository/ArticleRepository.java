@@ -1,7 +1,7 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.entity.Article;
-import com.kakao.cafe.config.SpringJdbcConfig;
+import com.kakao.cafe.common.config.SpringJdbcConfig;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
