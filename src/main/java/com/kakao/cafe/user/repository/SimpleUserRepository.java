@@ -4,7 +4,7 @@ import com.kakao.cafe.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,7 +16,7 @@ public class SimpleUserRepository implements UserRepository {
     public void save(User user) {
         synchronized (users) {
             if (isDuplicated(user.getUserId())) {
-                throw new NoSuchElementException("존재하지 않는 userId 입니다.");
+                throw new DuplicateKeyException("userId 중복");
             }
             users.add(user);
         }
@@ -34,9 +34,15 @@ public class SimpleUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
+    public User findByUserId(String userId) {
         return users.stream()
             .filter(user -> user.getUserId().equals(userId))
-            .findFirst();
+            .findFirst()
+            .orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public void deleteAll() {
+        users.clear();
     }
 }

@@ -41,10 +41,7 @@ public class UserService {
     }
 
     public UserShowDto findUser(String userId) {
-        return userRepository.findByUserId(userId)
-            .map(this::createUserShowDto)
-            .orElseThrow(() -> new IllegalArgumentException("invalid userId"));
+        return createUserShowDto(userRepository.findByUserId(userId));
     }
-
 
 }

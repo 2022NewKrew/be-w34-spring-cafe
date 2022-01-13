@@ -1,9 +1,11 @@
 package com.kakao.cafe.user.web.dto;
 
 import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
 @Setter
 public class UserSaveDto {

@@ -2,7 +2,7 @@ package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -21,14 +21,22 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
+    public User findByUserId(String userId) {
         List<User> users = jdbcTemplate.query("select * from users where userId=?", mapper, userId);
-        return users.size() == 0 ? Optional.empty() : Optional.of(users.get(0));
+        if (users.size() == 0) {
+            throw new NoSuchElementException();
+        }
+        return users.get(0);
     }
 
     @Override
     public List<User> findAll() {
         return jdbcTemplate.query("select * from users", mapper);
+    }
+
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.update("delete from users where true");
     }
 
     static RowMapper<User> mapper = (rs, rowNum) ->

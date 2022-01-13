@@ -7,7 +7,7 @@ CREATE TABLE users
         primary
         key,
     userId
-             varchar(20) not null,
+             varchar(20) not null unique,
     password varchar(20) not null,
     name     varchar(20) not null,
     email    varchar(50) not null
