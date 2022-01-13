@@ -1,14 +1,18 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.InMemoryUserRepository;
+import com.kakao.cafe.domain.UserRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-    private final InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+    private final UserRepository inMemoryUserRepository;
+
+    public UserService(UserRepository inMemoryUserRepository) {
+        this.inMemoryUserRepository = inMemoryUserRepository;
+    }
 
     public void register(User user) {
         inMemoryUserRepository.save(user);
