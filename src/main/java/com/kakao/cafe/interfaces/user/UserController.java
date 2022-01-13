@@ -24,7 +24,7 @@ public class UserController {
     }
 
     /**
-     * {@link UserDto} 목록 조회
+     * {@link User} 목록 조회
      *
      * @param model
      */
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     /**
-     * {@link UserDto} 프로필 조회
+     * {@link User} 프로필 조회
      *
      * @param id    조회할 유저의 ID
      * @param model
@@ -47,6 +47,11 @@ public class UserController {
         return "user_profile";
     }
 
+    /**
+     * 회원가입
+     *
+     * @param userDto 회원가입시 입력한 정보
+     */
     @PostMapping("/new")
     public String signup(UserDto userDto) {
         userService.signup(userDto);

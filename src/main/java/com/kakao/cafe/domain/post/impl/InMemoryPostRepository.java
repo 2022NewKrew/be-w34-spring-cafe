@@ -3,6 +3,7 @@ package com.kakao.cafe.domain.post.impl;
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.post.PostRepository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -14,6 +15,7 @@ public class InMemoryPostRepository implements PostRepository {
     @Override
     public void add(Post post) {
         post.setId(sequence.getAndIncrement());
+        post.setCreatedAt(LocalDateTime.now());
         store.add(post);
     }
 
