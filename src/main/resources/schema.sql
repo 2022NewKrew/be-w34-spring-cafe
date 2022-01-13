@@ -7,3 +7,12 @@ CREATE TABLE IF NOT EXISTS users (
     createdAt DATETIME,
     updatedAt DATETIME
 );
+
+DROP TABLE IF EXISTS posts;
+CREATE TABLE IF NOT EXISTS posts (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    writer VARCHAR(50) NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    content TEXT NOT NULL,
+    createdAt DATETIME
+);
