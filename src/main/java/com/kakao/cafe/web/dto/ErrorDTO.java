@@ -1,7 +1,11 @@
 package com.kakao.cafe.web.dto;
 
 import com.kakao.cafe.exception.ErrorConst;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class ErrorDTO extends ResponseDTO {
 
   private String code;
@@ -15,11 +19,4 @@ public class ErrorDTO extends ResponseDTO {
     return new ErrorDTO(errorConst);
   }
 
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
 }

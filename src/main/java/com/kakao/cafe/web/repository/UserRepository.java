@@ -11,7 +11,6 @@ import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -24,7 +23,6 @@ public class UserRepository {
   private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
   private final JdbcTemplate jdbcTemplate;
 
-  @Autowired
   public UserRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
@@ -87,13 +85,13 @@ public class UserRepository {
   }
 
   public Users findAll() {
-    String query = "SELECT * FROM USERS ORDER BY CREATE_AT, EMAIL;";
+    String query = UserMapper.SELECT_ALL_COLUMNS + "FROM USERS ORDER BY create_at, email;";
     List<User> users = jdbcTemplate.query(query, new UserMapper());
     return Users.of(users);
   }
 
   public Optional<User> findById(Long id) {
-    String query = "SELECT * FROM USERS WHERE id = ?";
+    String query = UserMapper.SELECT_ALL_COLUMNS + "FROM USERS WHERE id = ?";
     List<User> user = jdbcTemplate.query(query, new UserMapper(), id);
     if (user.isEmpty()) {
       return Optional.empty();
@@ -102,7 +100,7 @@ public class UserRepository {
   }
 
   public Optional<User> findByEmail(String email) {
-    String query = "SELECT * FROM USERS WHERE email = ?";
+    String query = UserMapper.SELECT_ALL_COLUMNS + "FROM USERS WHERE email = ?";
     List<User> user = jdbcTemplate.query(query, new UserMapper(), email);
     if(user.isEmpty()) {
       return Optional.empty();
@@ -116,6 +114,18 @@ public class UserRepository {
   }
 
   public static class UserMapper implements RowMapper<User> {
+
+    public static final String SELECT_ALL_COLUMNS =
+        "SELECT "
+        + "id, "
+        + "email, "
+        + "nick_name, "
+        + "summary, "
+        + "profile, "
+        + "password, "
+        + "create_at, "
+        + "modified_at, "
+        + "last_login_at ";
 
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {

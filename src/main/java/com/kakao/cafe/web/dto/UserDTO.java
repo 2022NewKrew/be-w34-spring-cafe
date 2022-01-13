@@ -2,7 +2,13 @@ package com.kakao.cafe.web.dto;
 
 import com.kakao.cafe.domain.User;
 import java.sql.Timestamp;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@Getter
+@Setter
 public class UserDTO {
 
   private Integer index;
@@ -15,10 +21,6 @@ public class UserDTO {
   private Timestamp modifiedAt;
   private Timestamp lastLoginAt;
 
-  public UserDTO() {
-
-  }
-
   public UserDTO(User user) {
     this.index = user.getIndex();
     this.id = user.getId();
@@ -29,78 +31,6 @@ public class UserDTO {
     this.createAt = user.getCreateAt();
     this.modifiedAt = user.getModifiedAt();
     this.lastLoginAt = user.getLastLoginAt();
-  }
-
-  public Integer getIndex() {
-    return index;
-  }
-
-  public void setIndex(Integer index) {
-    this.index = index;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getNickName() {
-    return nickName;
-  }
-
-  public void setNickName(String nickName) {
-    this.nickName = nickName;
-  }
-
-  public Timestamp getCreateAt() {
-    return createAt;
-  }
-
-  public void setCreateAt(Timestamp createAt) {
-    this.createAt = createAt;
-  }
-
-  public Timestamp getLastLoginAt() {
-    return lastLoginAt;
-  }
-
-  public void setLastLoginAt(Timestamp lastLoginAt) {
-    this.lastLoginAt = lastLoginAt;
-  }
-
-  public Timestamp getModifiedAt() {
-    return modifiedAt;
-  }
-
-  public void setModifiedAt(Timestamp modifiedAt) {
-    this.modifiedAt = modifiedAt;
-  }
-
-  public String getSummary() {
-    return summary;
-  }
-
-  public void setSummary(String summary) {
-    this.summary = summary;
-  }
-
-  public String getProfile() {
-    return profile;
-  }
-
-  public void setProfile(String profile) {
-    this.profile = profile;
   }
 
   @Override

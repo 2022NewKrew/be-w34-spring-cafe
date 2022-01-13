@@ -18,7 +18,7 @@ public class SessionAspectManager {
 
   private static final Logger logger = LoggerFactory.getLogger(SessionAspectManager.class);
 
-  @Pointcut("@within(com.kakao.cafe.web.common.EnableSession)")
+  @Pointcut("within(@com.kakao.cafe.web.common.EnableSession *)")
   public void enableSession() {
   }
 

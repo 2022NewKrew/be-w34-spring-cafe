@@ -5,8 +5,10 @@ import com.kakao.cafe.web.dto.LoginDTO;
 import com.kakao.cafe.web.dto.SignUpDTO;
 import java.sql.Timestamp;
 import java.util.Objects;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
+@Getter
 public class User {
 
   public static String DEFAULT_SUMMARY = "자기소개를 입력해주세요.";
@@ -23,7 +25,6 @@ public class User {
   private Timestamp modifiedAt;
   private Timestamp lastLoginAt;
 
-
   private User(Integer index, Long id, String email, String nickName, String summary,
       String profile,
       String password, Timestamp createAt, Timestamp modifiedAt, Timestamp lastLoginAt) {
@@ -39,7 +40,6 @@ public class User {
     this.lastLoginAt = lastLoginAt;
   }
 
-
   public static User of(SignUpDTO signUpDTO) {
     String email = signUpDTO.getEmail();
     String nickName = signUpDTO.getNickName();
@@ -54,7 +54,6 @@ public class User {
         null, null, email, nickName, null,
         null, password, null, null, null);
   }
-
 
   public static User of(LoginDTO loginDTO) {
     String email = loginDTO.getEmail();
@@ -74,7 +73,6 @@ public class User {
         user.getLastLoginAt());
   }
 
-
   public static User create(Integer index, Long id, String email, String nickName,
       String summary, String profile, String password,
       Timestamp createAt, Timestamp modifiedAt, Timestamp lastLoginAt) {
@@ -83,70 +81,18 @@ public class User {
         password, createAt, modifiedAt, lastLoginAt);
   }
 
-
   public static User createEmpty() {
     return new User(null, null, null, null, null,
         null, null, null, null, null);
   }
 
-
   public void setPasswordEncrypted() {
     //TODO
   }
 
-
   public void updateLastLoginAt() {
     this.lastLoginAt = new Timestamp(System.currentTimeMillis());
   }
-
-  public Long getId() {
-    return id;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-
-  public String getNickName() {
-    return nickName;
-  }
-
-
-  public String getPassword() {
-    return password;
-  }
-
-
-  public Timestamp getCreateAt() {
-    return createAt;
-  }
-
-
-  public Timestamp getLastLoginAt() {
-    return lastLoginAt;
-  }
-
-
-  public int getIndex() {
-    return index;
-  }
-
-
-  public Timestamp getModifiedAt() {
-    return modifiedAt;
-  }
-
-
-  public String getSummary() {
-    return summary;
-  }
-
-
-  public String getProfile() {
-    return profile;
-  }
-
 
   @Override
   public boolean equals(Object o) {

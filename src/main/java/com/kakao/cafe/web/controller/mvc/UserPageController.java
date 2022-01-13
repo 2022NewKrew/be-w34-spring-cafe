@@ -3,17 +3,17 @@ package com.kakao.cafe.web.controller.mvc;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.Users;
 import com.kakao.cafe.web.common.EnableSession;
+import com.kakao.cafe.web.controller.KakaoCafePageController;
 import com.kakao.cafe.web.dto.UserDTO;
 import com.kakao.cafe.web.service.UserService;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@Controller
+@KakaoCafePageController
 @EnableSession
 public class UserPageController {
 

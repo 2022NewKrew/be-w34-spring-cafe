@@ -2,6 +2,7 @@ package com.kakao.cafe.web.controller.api;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.web.common.EnableSession;
+import com.kakao.cafe.web.controller.KakaoCafeApiController;
 import com.kakao.cafe.web.dto.LoginDTO;
 import com.kakao.cafe.web.dto.ResponseDTO;
 import com.kakao.cafe.web.dto.SignUpDTO;
@@ -13,11 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/api")
+@KakaoCafeApiController
 @EnableSession
 public class UserApiController {
 
