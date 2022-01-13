@@ -43,7 +43,6 @@ public class User {
     this.lastLoginAt = lastLoginAt;
   }
 
-
   public static User of(SignUpDTO signUpDTO) {
     String email = signUpDTO.getEmail();
     String nickName = signUpDTO.getNickName();
@@ -58,7 +57,6 @@ public class User {
         null, null, email, nickName, null,
         null, password, null, null, null);
   }
-
 
   public static User of(LoginDTO loginDTO) {
     String email = loginDTO.getEmail();
@@ -107,11 +105,9 @@ public class User {
         null, null, null, null, null);
   }
 
-
   public void setPasswordEncrypted() {
     //TODO
   }
-
 
   public void updateLastLoginAt() {
     this.lastLoginAt = new Timestamp(System.currentTimeMillis());
