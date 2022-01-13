@@ -1,13 +1,12 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.dto.UserDTO;
+import com.kakao.cafe.dto.user.SignUpDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 public class User {
 
-    @Setter
     private Long id;
 
     private String userId;
@@ -18,10 +17,11 @@ public class User {
 
     private String email;
 
-    public User(UserDTO userDTO){
-        this.userId = userDTO.getUserId();
-        this.password = userDTO.getPassword();
-        this.name = userDTO.getName();
-        this.email = userDTO.getEmail();
+    public User(Long id, SignUpDTO signUpDTO){
+        this.id = id;
+        this.userId = signUpDTO.getUserId();
+        this.password = signUpDTO.getPassword();
+        this.name = signUpDTO.getName();
+        this.email = signUpDTO.getEmail();
     }
 }

@@ -1,12 +1,13 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.UserDTO;
+import com.kakao.cafe.dto.user.SignUpDTO;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -17,7 +18,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/create")
-    public String signUp(@ModelAttribute UserDTO userDTO){
+    public String signUp(@ModelAttribute @Validated SignUpDTO userDTO){
         userService.signUp(userDTO);
         return "redirect:/users";
     }
