@@ -3,8 +3,8 @@ package com.kakao.cafe.domain;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * author    : brody.moon
@@ -21,14 +21,16 @@ public class Article {
     private final int id;
     private final int commentSize;
     private final List<Article> comments;
+    private final int parent;
 
     public Article(ArticleDTO articleDTO){
         this.writer = articleDTO.getWriter();
         this.title = articleDTO.getTitle();
         this.contents = articleDTO.getContents();
         this.date = LocalDateTime.now();
-        this.comments = new ArrayList<>();
+        this.comments = articleDTO.getComments().stream().map(Article::new).collect(Collectors.toList());
         this.id = articleDTO.getId();
-        this.commentSize = 0;
+        this.commentSize = articleDTO.getCommentSize();
+        this.parent = articleDTO.getParent();
     }
 }

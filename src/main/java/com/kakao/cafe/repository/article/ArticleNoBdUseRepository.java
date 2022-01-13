@@ -23,6 +23,7 @@ public class ArticleNoBdUseRepository implements Repository<Article, ArticleDTO,
     @Override
     public Article save(ArticleDTO articleDTO) {
         articleDTO.setId(id);
+        articleDTO.setComments(new ArrayList<>());
 
         Article article = new Article(articleDTO);
         DB.put(id++, article);

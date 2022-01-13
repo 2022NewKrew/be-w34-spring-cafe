@@ -21,6 +21,7 @@ public class ArticleDTO {
     private int id;
     private int commentSize;
     private List<ArticleDTO> comments;
+    private int parent;
 
     public ArticleDTO(String writer, String title, String contents) {
         this.writer = writer;
@@ -29,6 +30,7 @@ public class ArticleDTO {
         this.date = LocalDateTime.now();
         this.comments = new ArrayList<>();
         this.commentSize = 0;
+        this.parent = -1;
     }
 
     public ArticleDTO(Article article) {
@@ -39,6 +41,7 @@ public class ArticleDTO {
         this.comments = article.getComments().stream()
                 .map(ArticleDTO::new).collect(Collectors.toList());
         this.commentSize = article.getCommentSize();
+        this.parent = article.getParent();
     }
     public ArticleDTO(){
 
