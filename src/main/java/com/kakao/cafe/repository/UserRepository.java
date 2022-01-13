@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
-    public void save(User user);
-    public Optional<User> findByUserId(String UserId);
-    public List<User> findAll();
+    void save(User user);
+
+    Optional<User> findByUserId(String UserId);
+
+    List<User> findAll();
 }
