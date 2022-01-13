@@ -47,8 +47,9 @@ public class PostController {
     public String postById(@PathVariable int postId, Model model) {
         logger.info("[GET] /posts/{postId} 게시글 보기");
         Post post = postService.getPostById(postId);
+
         model.addAttribute("post", post);
-        return "posts/show";
+        return "post/show";
     }
 
 }

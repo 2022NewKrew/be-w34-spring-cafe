@@ -66,7 +66,7 @@ class PostControllerTest {
 
         mockMvc.perform(get("/posts/" + postId))
                 .andExpect(status().isOk())
-                .andExpect(view().name("posts/show"));
+                .andExpect(view().name("post/show"));
     }
 
     @Test
