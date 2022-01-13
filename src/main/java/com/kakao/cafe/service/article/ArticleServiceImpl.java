@@ -15,12 +15,10 @@ import java.util.stream.Collectors;
 public class ArticleServiceImpl implements ArticleService {
 
     private final MemoryArticleRepository articleRepository;
-    private static long sequence = 0L;
 
     @Override
     public void addPost(ArticleReqDto articleReqDto) {
         Article article = Article.builder()
-                .articleId(++sequence)
                 .writer(articleReqDto.getWriter())
                 .title(articleReqDto.getTitle())
                 .contents(articleReqDto.getContents())

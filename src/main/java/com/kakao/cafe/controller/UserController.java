@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.user.UserUpdateReqDto;
 import com.kakao.cafe.service.user.UserService;
 
 import com.kakao.cafe.dto.user.UserReqDto;
@@ -36,6 +37,19 @@ public class UserController {
     public String getId(@PathVariable Long id, Model model){
         model.addAttribute("user", userService.findUserById(id));
         return "user/profile";
+    }
+
+    @GetMapping("/{id}/form")
+    public String getUpdateForm(@PathVariable Long id, Model model){
+        model.addAttribute("user", userService.findUserById(id));
+        return "user/updateForm";
+    }
+
+    @PostMapping("/{id}/update")
+    public String updateUser(@PathVariable Long id, @ModelAttribute UserUpdateReqDto userUpdateReqDto){
+        userUpdateReqDto.setId(id);
+        userService.updateUser(userUpdateReqDto);
+        return "redirect:/users";
     }
 
 

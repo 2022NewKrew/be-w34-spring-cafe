@@ -9,10 +9,12 @@ import java.util.*;
 public class MemoryArticleRepository implements ArticleRepository {
 
     private static final Map<Long, Article> articleStore = new HashMap<>();
+    private static long sequence = 0L;
 
 
     @Override
     public void save(Article article) {
+        article.setArticleId(++sequence);
         articleStore.put(article.getArticleId(), article);
     }
 

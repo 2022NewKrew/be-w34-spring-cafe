@@ -22,9 +22,9 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public Optional<User> findByName(String name) {
+    public Optional<User> findByUserId(String userId) {
         return userStore.values().stream()
-                .filter(user -> user.getName().equals(name))
+                .filter(user -> user.getUserId().equals(userId))
                 .findAny();
     }
 
@@ -32,4 +32,5 @@ public class MemoryUserRepository implements UserRepository{
     public List<User> findAll() {
         return new ArrayList<>(userStore.values());
     }
+
 }
