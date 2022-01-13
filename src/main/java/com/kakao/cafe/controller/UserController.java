@@ -29,12 +29,12 @@ public class UserController {
 
     @PostMapping("/create")
     public String signUp(@Valid UserSignupRequest userDto, BindingResult errors) {
+        logger.info("[POST] /create 회원가입하기");
         if (errors.hasErrors()) {
             throw new InvalidUserRequestException("회원가입 입력이 잘못되었습니다");
         }
 
         User user = userDto.toEntity();
-        logger.info("[POST] /create 회원가입하기");
         logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getUserName());
 
         userService.register(user);

@@ -30,19 +30,17 @@ public class PostController {
         if (errors.hasErrors()) {
             throw new InvalidWritePostException("게시글 입력이 잘못되었습니다");
         }
-
         Post post = postDto.toEntity();
         postService.writePost(post);
         return "redirect:/";
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String postList(Model model) {
         logger.info("[GET] / 게시글 리스트");
         List<Post> postList = postService.getPostList();
         model.addAttribute("postList", postList);
-
-        return "index";
+        return "/index";
     }
 
     @GetMapping("/posts/{postId}")
@@ -50,7 +48,6 @@ public class PostController {
         logger.info("[GET] /posts/{postId} 게시글 보기");
         Post post = postService.getPostById(postId);
         model.addAttribute("post", post);
-
         return "posts/show";
     }
 
