@@ -23,7 +23,8 @@ public class AuthService {
             throw new AuthInvalidUidException(ErrorCode.NOT_FOUND, loginDTO.getUid());
         }
         if (!foundUser.get().validPassword(loginDTO.getPassword())) {
-            throw new AuthInvalidPasswordException(ErrorCode.INVALID_VALUE, loginDTO.getUid());
+            throw new AuthInvalidPasswordException(ErrorCode.AUTHENTICATION_INVALID,
+                loginDTO.getUid());
         }
 
         return AuthInfo.of(foundUser.get().getUid());

@@ -36,13 +36,13 @@ public class ArticleController {
                 .forEach(fieldError -> logger.error("Caused Field : {}, Message : {}",
                     fieldError.getField(),
                     fieldError.getDefaultMessage()));
-            return "redirect:/qna/form-failed";
+            return "redirect:/articles/form-failed";
         }
 
         HttpSession session = request.getSession();
         AuthInfo authInfo = (AuthInfo) session.getAttribute("auth");
         if (authInfo == null) {
-            return "redirect:/qna/form-failed";
+            return "redirect:/articles/form-failed";
         }
 
         articleService.create(createDTO, authInfo);

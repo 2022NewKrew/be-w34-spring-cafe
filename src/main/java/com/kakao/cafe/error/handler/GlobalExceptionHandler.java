@@ -4,6 +4,7 @@ import com.kakao.cafe.error.exception.ArticleNotFoundException;
 import com.kakao.cafe.error.exception.AuthInvalidPasswordException;
 import com.kakao.cafe.error.exception.AuthInvalidUidException;
 import com.kakao.cafe.error.exception.UserAlreadyExistsException;
+import com.kakao.cafe.error.exception.UserInvalidAuthInfoException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,5 +38,11 @@ public class GlobalExceptionHandler {
     public String handleAuthInvalidException(RuntimeException e) {
         logger.error(e.getMessage());
         return "redirect:/login-failed";
+    }
+
+    @ExceptionHandler(UserInvalidAuthInfoException.class)
+    public String handleUserInvalidAuthInfoException(UserInvalidAuthInfoException e) {
+        logger.error(e.getMessage());
+        return "redirect:/users";
     }
 }

@@ -23,6 +23,16 @@ public interface UserDTO {
         String email;
     }
 
+    @Getter
+    @AllArgsConstructor
+    class Update {
+
+        @NotBlank
+        String name;
+        @NotBlank @Pattern(regexp = "(\\w+\\.)*\\w+@(\\w+\\.)+\\w{2,3}")
+        String email;
+    }
+
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     class Result {
 

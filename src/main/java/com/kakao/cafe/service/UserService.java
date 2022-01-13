@@ -3,9 +3,12 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Result;
+import com.kakao.cafe.dto.UserDTO.Update;
 import com.kakao.cafe.error.ErrorCode;
 import com.kakao.cafe.error.exception.UserAlreadyExistsException;
+import com.kakao.cafe.error.exception.UserInvalidAuthInfoException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
+import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.persistence.model.User;
 import com.kakao.cafe.persistence.repository.UserRepository;
 import java.util.List;
@@ -34,6 +37,14 @@ public class UserService {
 
         userRepository.save(user);
         logger.info("User Created : " + user);
+    }
+
+    public void update(AuthInfo authInfo, String uid, Update updateDTO) {
+        if (!authInfo.matchUid(uid)) {
+            throw new UserInvalidAuthInfoException(ErrorCode.AUTHENTICATION_INVALID, uid);
+        }
+
+        userRepository.update(authInfo.getUid(), updateDTO.getName(), updateDTO.getEmail());
     }
 
     public List<UserDTO.Result> readAll() {

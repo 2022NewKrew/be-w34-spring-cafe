@@ -14,3 +14,9 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: TRACE
