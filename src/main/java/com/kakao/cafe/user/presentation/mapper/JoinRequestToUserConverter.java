@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.presentation.mapper;
 
 import com.kakao.cafe.user.domain.entity.User;
+import com.kakao.cafe.user.domain.entity.UserInfo;
 import com.kakao.cafe.user.presentation.dto.JoinRequest;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
@@ -11,6 +12,7 @@ public class JoinRequestToUserConverter implements Converter<JoinRequest, User> 
     @Override
     public User convert(MappingContext<JoinRequest, User> context) {
         JoinRequest joinRequest = context.getSource();
-        return new User(joinRequest.getUserId(), joinRequest.getPassword(), joinRequest.getName(), joinRequest.getEmail());
+        UserInfo userInfo = new UserInfo(joinRequest.getName(), joinRequest.getEmail());
+        return new User(joinRequest.getUserId(), joinRequest.getPassword(), userInfo);
     }
 }

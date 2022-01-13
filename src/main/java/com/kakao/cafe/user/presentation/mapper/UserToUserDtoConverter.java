@@ -11,6 +11,6 @@ public class UserToUserDtoConverter implements Converter<User, UserDto> {
     @Override
     public UserDto convert(MappingContext<User, UserDto> context) {
         User user = context.getSource();
-        return new UserDto(user.getUserId(), user.getName(), user.getEmail());
+        return new UserDto(user.getUserId(), user.getUserInfo().getName(), user.getUserInfo().getEmail());
     }
 }

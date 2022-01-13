@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
+public class AddCommentService {
     private final PostRepository postRepository;
 
     public void addComment(Long id, Comment comment){

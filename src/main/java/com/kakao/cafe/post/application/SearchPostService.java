@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PostInfoService {
+public class SearchPostService {
     private static final int PAGE_SIZE = 15;
     private final PostRepository postRepository;
 

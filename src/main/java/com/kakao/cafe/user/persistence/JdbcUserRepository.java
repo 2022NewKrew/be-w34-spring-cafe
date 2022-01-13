@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.persistence;
 
 import com.kakao.cafe.user.domain.entity.User;
+import com.kakao.cafe.user.domain.entity.UserInfo;
 import com.kakao.cafe.user.domain.repository.UserRepository;
 import com.kakao.cafe.user.persistence.mapper.UserRowMapper;
 import com.kakao.cafe.util.MyJdbcTemplate;
@@ -34,6 +35,18 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public void save(User user) {
         myJdbcTemplate.update("insert into member(userId, password, name, email) values(?,?,?,?)"
-                , user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+                , user.getUserId(), user.getPassword(), user.getUserInfo().getName(), user.getUserInfo().getEmail());
+    }
+
+    @Override
+    public void update(String userId, UserInfo userInfo) {
+        List<User> users = myJdbcTemplate.query("select * from member where userId='".concat(userId).concat("'"), userRowMapper);
+        if(users.isEmpty()){
+            throw new IllegalStateException("해당하는 유저가 없어 변경하지 못 했습니다.");
+        }
+
+        users.get(0).updateInfo(userInfo);
+        myJdbcTemplate.update("update member set name='".concat(userInfo.getName()).concat("', email='").concat(userInfo.getEmail())
+                .concat("' where userId = '").concat(userId).concat("'"));
     }
 }

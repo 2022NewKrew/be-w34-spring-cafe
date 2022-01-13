@@ -1,7 +1,7 @@
 package com.kakao.cafe.post.presentation;
 
-import com.kakao.cafe.post.application.CommentService;
-import com.kakao.cafe.post.application.PostInfoService;
+import com.kakao.cafe.post.application.AddCommentService;
+import com.kakao.cafe.post.application.SearchPostService;
 import com.kakao.cafe.post.application.WritePostService;
 import com.kakao.cafe.post.domain.entity.Comment;
 import com.kakao.cafe.post.domain.entity.Post;
@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
-    private final PostInfoService postInfoService;
+    private final SearchPostService postInfoService;
     private final WritePostService writePostService;
-    private final CommentService commentService;
+    private final AddCommentService commentService;
     private final ModelMapper modelMapper;
 
     @GetMapping("/form")

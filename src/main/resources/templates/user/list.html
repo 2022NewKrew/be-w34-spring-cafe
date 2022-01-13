@@ -36,7 +36,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="user : ${users}">
+
+                    <tr class="clickable-list-item" th:each="user : ${users}" th:onclick="'location.href=\'' + @{/users/updateForm/{id}(id=${user.userId})} + '\';'">
                         <td th:text="${user.userId}"></td>
                         <td th:text="${user.name}"></td>
                         <td th:text="${user.email}"></td>

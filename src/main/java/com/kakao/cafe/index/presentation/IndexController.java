@@ -1,6 +1,6 @@
 package com.kakao.cafe.index.presentation;
 
-import com.kakao.cafe.post.application.PostInfoService;
+import com.kakao.cafe.post.application.SearchPostService;
 import com.kakao.cafe.post.presentation.dto.PostDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.toList;
 @Controller
 @RequiredArgsConstructor
 public class IndexController {
-    private final PostInfoService postInfoService;
+    private final SearchPostService postInfoService;
     private final ModelMapper modelMapper;
 
     @GetMapping("")

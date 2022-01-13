@@ -1,8 +1,8 @@
 package com.kakao.cafe.user.persistence;
 
 import com.kakao.cafe.user.domain.entity.User;
+import com.kakao.cafe.user.domain.entity.UserInfo;
 import com.kakao.cafe.user.domain.repository.UserRepository;
-import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,5 +29,11 @@ public class InMemoryUserRepository implements UserRepository {
     public void save(User user) {
         idToUser.put(user.getUserId(), user);
         userList.add(user);
+    }
+
+    @Override
+    public void update(String id, UserInfo userInfo) {
+        User user = idToUser.get(id);
+        user.updateInfo(userInfo);
     }
 }
