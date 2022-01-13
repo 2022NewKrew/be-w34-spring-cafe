@@ -47,4 +47,8 @@ public class User {
         this.name = updateDTO.getName();
         this.email = updateDTO.getEmail();
     }
+
+    public boolean equalsPassword(String InputPassword){
+        return this.password.equals(InputPassword);
+    }
 }

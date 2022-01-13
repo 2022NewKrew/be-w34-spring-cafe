@@ -29,6 +29,10 @@ public class UserService {
     }
 
     public void updateUser(UpdateDTO updateDTO) {
+        User user = findByUserId(updateDTO.getUserId());
+        if (!user.equalsPassword(updateDTO.getPassword())) {
+            throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
+        }
         userRepository.update(updateDTO);
     }
 }

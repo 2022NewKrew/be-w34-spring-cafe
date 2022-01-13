@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class UserController {
     public String getAllUsers(Model model) {
         List<UserViewDTO> userList = userService.getAllUsers()
                 .stream()
-                .map(user -> new UserViewDTO(user))
+                .map(UserViewDTO::new)
                 .collect(Collectors.toList());
         model.addAttribute("users", userList);
         return "user/list";
@@ -50,7 +51,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @PostMapping("/user/update")
+    @PutMapping("/user/update")
     public String updateUser(UpdateDTO updateDTO) {
         userService.updateUser(updateDTO);
         return "redirect:/user";
