@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.Articles;
+import com.kakao.cafe.repository.mapper.InMemoryArticleMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -11,9 +12,11 @@ import org.springframework.stereotype.Repository;
 public class InMemoryArticleRepository implements ArticleRepository {
 
     private final Articles articles;
+    private final InMemoryArticleMapper articleMapper;
 
-    public InMemoryArticleRepository() {
+    public InMemoryArticleRepository(InMemoryArticleMapper articleMapper) {
         this.articles = new Articles();
+        this.articleMapper = articleMapper;
     }
 
     @Override
@@ -23,11 +26,12 @@ public class InMemoryArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return articles.getArticleList();
+        return List.copyOf(articles.getArticleList());
     }
 
     @Override
     public Optional<Article> findArticleById(UUID id) {
-        return articles.findByArticleId(id);
+        return articles.findByArticleId(id)
+                .map(articleMapper::mapResult);
     }
 }
