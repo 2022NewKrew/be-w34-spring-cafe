@@ -1,11 +1,11 @@
-package com.kakao.cafe.dto.post;
+package com.kakao.cafe.dto.article;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class PostReqDto {
+public class ArticleReqDto {
     private String writer;
     private String title;
     private String contents;
