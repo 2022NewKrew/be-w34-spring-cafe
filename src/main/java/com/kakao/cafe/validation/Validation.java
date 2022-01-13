@@ -1,7 +1,5 @@
 package com.kakao.cafe.validation;
 
-import java.util.Objects;
-
 /**
  * author    : brody.moon
  * version   : 1.0

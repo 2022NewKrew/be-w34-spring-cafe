@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.Article;
-import com.kakao.cafe.model.ArticleDTO;
-import com.kakao.cafe.model.data_storage.ArticleTable;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.ArticleDTO;
+import com.kakao.cafe.repository.article.ArticleNoBdUseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -38,7 +38,7 @@ public class ArticleController {
         }
 
         if(!Objects.isNull(article)){
-            ArticleTable.saveUserInto(ArticleTable.size(), article);
+            ArticleNoBdUseRepository.saveUserInto(ArticleNoBdUseRepository.size(), article);
         }
 
         return "redirect:/";
@@ -46,7 +46,7 @@ public class ArticleController {
 
     @GetMapping("/detail/{index}")
     public String datail(@PathVariable("index") int index, Model model){
-        Article article = ArticleTable.lookUpUserInfo(index);
+        Article article = ArticleNoBdUseRepository.lookUpUserInfo(index);
 
         logger.info(article.toString());
 

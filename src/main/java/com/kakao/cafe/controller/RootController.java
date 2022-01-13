@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.ArticleDTO;
-import com.kakao.cafe.model.data_storage.ArticleTable;
+import com.kakao.cafe.domain.ArticleDTO;
+import com.kakao.cafe.repository.article.ArticleNoBdUseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ public class RootController {
 
     @GetMapping
     String root(Model model){
-        List<ArticleDTO> articles = ArticleTable.allArticleInfo();
+        List<ArticleDTO> articles = ArticleNoBdUseRepository.allArticleInfo();
         logger.info(articles.toString());
         model.addAttribute("articles", articles);
 

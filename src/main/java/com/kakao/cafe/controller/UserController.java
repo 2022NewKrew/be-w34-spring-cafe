@@ -1,10 +1,11 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.UserAccount;
-import com.kakao.cafe.model.UserAccountDTO;
-import com.kakao.cafe.model.data_storage.AccountTable;
+import com.kakao.cafe.domain.UserAccount;
+import com.kakao.cafe.domain.UserAccountDTO;
+import com.kakao.cafe.service.UserAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.management.openmbean.InvalidKeyException;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * author    : brody.moon
@@ -24,7 +25,13 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final UserAccountService userAccountService;
+
+    @Autowired
+    public UserController(UserAccountService userAccountService){
+        this.userAccountService = userAccountService;
+    }
 
     @GetMapping("form")
     public String form(){
@@ -33,17 +40,14 @@ public class UserController {
 
     @PostMapping("form")
     public String form(UserAccountDTO userAccountDTO){
-        UserAccount userAccount = UserAccount.createUserAccount(false, userAccountDTO);
-
-        if(!Objects.isNull(userAccount))
-            AccountTable.saveUserInto(userAccountDTO.getUserId(), userAccount);
+        userAccountService.join(userAccountDTO);
 
         return "redirect:/user";
     }
 
     @GetMapping
     public String userInfo(Model model){
-        List<UserAccountDTO> userAccounts = AccountTable.allUserAccountInfo();
+        List<UserAccount> userAccounts = userAccountService.findUserAccount();
 
         model.addAttribute("user_accounts", userAccounts);
 
@@ -52,9 +56,10 @@ public class UserController {
 
     @GetMapping("{userId}")
     public String profile(@PathVariable("userId") String userId, Model model){
-        UserAccountDTO userAccountDTO = AccountTable.lookUpUserInfo(userId).toUserAccountDTO();
+        UserAccount userAccount = userAccountService.findOne(userId)
+                .orElseThrow(() -> new InvalidKeyException("아이디를 찾을 수 없습니다."));
 
-        model.addAttribute("user_account", userAccountDTO);
+        model.addAttribute("user_account", userAccount);
         return "/user/profile";
     }
 
@@ -65,10 +70,8 @@ public class UserController {
 
     @PostMapping("{userId}/form")
     public String updateForm(@PathVariable("userId") String userId, String curPassword, UserAccountDTO userAccountDTO){
-        logger.info(curPassword);
-        logger.info(userAccountDTO.toString());
-        if(AccountTable.lookUpUserInfo(userId).isVaildPassword(curPassword))
-            AccountTable.saveUserInto(userId, UserAccount.createUserAccount(true, userAccountDTO));
+        userAccountService.updateUserAccount(userAccountDTO, curPassword)
+                .orElseThrow(() -> new IllegalAccessError("비밀 번호가 일치하지 않습니다"));
         return "redirect:/user";
     }
 }

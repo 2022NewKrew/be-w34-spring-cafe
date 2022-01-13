@@ -1,12 +1,14 @@
-package com.kakao.cafe.model.data_storage;
+package com.kakao.cafe.repository.article;
 
-import com.kakao.cafe.model.Article;
-import com.kakao.cafe.model.ArticleDTO;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.ArticleDTO;
+import com.kakao.cafe.repository.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * author    : brody.moon
@@ -14,8 +16,23 @@ import java.util.Map;
  * DB 대신 임시로 사용하는 저장소입니다.
  *
  */
-public class ArticleTable {
+public class ArticleNoBdUseRepository implements Repository<Article, ArticleDTO, Integer> {
     private static final Map<Integer, Article> DB = new HashMap<>();
+
+    @Override
+    public Article save(ArticleDTO dto) {
+        return null;
+    }
+
+    @Override
+    public Optional<Article> findByUserId(Integer userId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Article> findAll() {
+        return null;
+    }
 
     /**
      * id 를 이용해 article 정보를 받아오는 메서드입니다.
