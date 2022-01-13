@@ -5,22 +5,19 @@ import com.kakao.cafe.web.dto.ArticleDTO;
 import com.kakao.cafe.web.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Collections;
-
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
     private final Logger logger;
 
-    ArticleController(JdbcTemplate jdbcTemplate) {
-        this.articleService = new ArticleService(jdbcTemplate);
+    ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
         this.logger = LoggerFactory.getLogger(this.getClass());
     }
 

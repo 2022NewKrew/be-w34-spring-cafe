@@ -3,16 +3,16 @@ package com.kakao.cafe.web.service;
 import com.kakao.cafe.web.domain.Article;
 import com.kakao.cafe.web.dto.ArticleDTO;
 import com.kakao.cafe.web.repository.ArticleRepository;
-import com.kakao.cafe.web.repository.MemoryArticleRepository;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ArticleService {
     private final ArticleRepository memoryArticleRepository;
 
-    public ArticleService(JdbcTemplate jdbcTemplate) {
-        this.memoryArticleRepository = new MemoryArticleRepository(jdbcTemplate);
+    public ArticleService(ArticleRepository memoryArticleRepository) {
+        this.memoryArticleRepository = memoryArticleRepository;
     }
 
     public Article writeArticle(ArticleDTO articleDTO) {

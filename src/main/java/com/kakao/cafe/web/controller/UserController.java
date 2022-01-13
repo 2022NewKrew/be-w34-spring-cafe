@@ -5,22 +5,20 @@ import com.kakao.cafe.web.dto.UserDTO;
 import com.kakao.cafe.web.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Collections;
-
-
 @Controller
 public class UserController {
     private final UserService userService;
     private final Logger logger;
 
-    UserController() {
-        this.userService = new UserService();
+    UserController(UserService userService) {
+        this.userService = userService;
         this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
@@ -33,7 +31,7 @@ public class UserController {
     public String createUser(String userId, String password, String name, String email) {
         UserDTO userDTO = new UserDTO(userId, password, name, email);
         userService.signUp(userDTO);
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
     @GetMapping("/users")
