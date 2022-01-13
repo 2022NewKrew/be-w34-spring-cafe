@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Repository
-public class UserRepository implements CrRepository<User> {
+public class MapUserRepository implements CrRepository<User> {
     private static final AtomicLong ID_COUNTER = new AtomicLong();
     private final Map<Long, User> map = new HashMap<>();
 

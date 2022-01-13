@@ -9,8 +9,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserRepositoryTest {
-    private final UserRepository repository = new UserRepository();
+class MapUserRepositoryTest {
+    private final MapUserRepository repository = new MapUserRepository();
     private final User user1 = new User("charlie123",
             "test1234",
             "Chanmin Kim",

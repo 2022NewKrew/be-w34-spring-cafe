@@ -3,7 +3,7 @@ package com.kakao.cafe.user.controller;
 import com.kakao.cafe.user.dto.UserRegistrationDto;
 import com.kakao.cafe.user.exception.NotFoundUserIdException;
 import com.kakao.cafe.user.model.User;
-import com.kakao.cafe.user.repo.UserRepository;
+import com.kakao.cafe.user.repo.MapUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +17,10 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/users")
 public class UserController {
-    private final UserRepository repository;
+    private final MapUserRepository repository;
 
     @Autowired
-    public UserController(UserRepository repository) {
+    public UserController(MapUserRepository repository) {
         this.repository = repository;
     }
 
