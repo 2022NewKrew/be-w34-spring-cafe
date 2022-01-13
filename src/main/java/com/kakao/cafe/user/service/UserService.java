@@ -1,28 +1,34 @@
 package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.repository.CreateUserDTO;
+import com.kakao.cafe.user.repository.UserCreateRequestDTO;
 import com.kakao.cafe.user.repository.UserRepository;
+import com.kakao.cafe.user.repository.UserUpdateRequestDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Service
+@RequiredArgsConstructor
 public class UserService {
 
-    UserRepository userRepository = UserRepository.getRepository();
+    private final UserRepository userRepository;
 
-    public void createUser(String email, String nickName, String passWord, LocalDateTime signUpDate) {
-        userRepository.persist(new CreateUserDTO(email, nickName, passWord, signUpDate));
+    public Long createUser(String stringId, String email, String nickName, String passWord) {
+        return userRepository.persist(new UserCreateRequestDTO(stringId, email, nickName, passWord, LocalDateTime.now()));
     }
 
     public GetSignUpResultResponseDTO getSignUpResultViewData(Long userId) {
         User user = userRepository.find(userId);
-        return new GetSignUpResultResponseDTO(user.getEmail(), user.getNickName());
+        return new GetSignUpResultResponseDTO(user.getStringId(), user.getEmail(), user.getNickName());
     }
 
-    public FindAllUserResponseDTO getAllUserViewData(Long startIndex, Long endIndex) {
+    public AllUsersResponseDTO getAllUserViewData(Long startIndex, Long endIndex) {
         ArrayList<User> userCollection = userRepository.findAll();
         if (startIndex < 0) {
             startIndex = 0L;
@@ -31,27 +37,59 @@ public class UserService {
             endIndex = userCollection.size() + 1L;
         }
         if (startIndex > userCollection.size() || startIndex >= endIndex) {
-            return new FindAllUserResponseDTO(new ArrayList<User>());
+            return new AllUsersResponseDTO(new ArrayList<User>());
         }
         Stream<User> stream = userCollection.stream();
         if (startIndex > 0) {
             stream = stream.skip(startIndex);
         }
-        return new FindAllUserResponseDTO(stream.limit(endIndex - startIndex).collect(Collectors.toCollection(ArrayList::new)));
+        ArrayList<User> users = stream.limit(endIndex - startIndex).collect(Collectors.toCollection(ArrayList::new));
+        Collections.reverse(users);
+        return new AllUsersResponseDTO(users);
     }
 
-    public FindAllUserResponseDTO getAllUserViewData(Long startIndex) {
+    public AllUsersResponseDTO getAllUserViewData(Long startIndex) {
         ArrayList<User> users = userRepository.findAll()
                 .stream().skip(startIndex).collect(Collectors.toCollection(ArrayList::new));
-        return new FindAllUserResponseDTO(users);
+        Collections.reverse(users);
+        return new AllUsersResponseDTO(users);
     }
 
-    public GetProfileResponseDTO getUserProfile(Long userId) {
+    public UserProfileResponseDTO getUserProfile(Long userId) {
         User user = userRepository.find(userId);
-        return new GetProfileResponseDTO(user.getNickName(), user.getEmail());
+        return new UserProfileResponseDTO(user.getNickName(), user.getEmail(), user.getStringId());
     }
 
     public String findUserNickNameById(Long userId) {
         return userRepository.find(userId).getNickName();
+    }
+
+    public UserProfileResponseDTO getUserProfile(String stringId) {
+        return getUserProfile(getUserDBId(stringId));
+    }
+
+    private Long getUserDBId(String stringId) {
+        return userRepository.findDBIdById(stringId);
+    }
+
+    public void updateUserInfo(Long userId, String oldPassword, String newPassword, String name, String email) {
+        // 검증
+        if (!validateUserPassWord(userId, oldPassword)) {
+            throw new IllegalArgumentException("비밀번호가 틀립니다.");
+        }
+        // 업데이터
+        userRepository.updateUserInfo(new UserUpdateRequestDTO(userId, newPassword, name, email));
+    }
+
+    public void updateUserInfo(String userStringId, String oldPassword, String newPassword, String name, String email) {
+        updateUserInfo(getUserDBId(userStringId), oldPassword, newPassword, name, email);
+    }
+
+
+    public boolean validateUserPassWord(Long userId, String password) {
+        if (password.equals(userRepository.findPasswordByDBId(userId))) {
+            return true;
+        }
+        return false;
     }
 }

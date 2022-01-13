@@ -1,19 +1,18 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
 class ArticleRepositoryTest {
-    ArticleRepository articleRepository = ArticleRepository.getRepository();
+    @Autowired
+    private ArticleDBRepositoryImpl articleRepository;
 
-    @BeforeEach
-    void init() {
-        articleRepository.clear();
-    }
 
     @Test
     @DisplayName("게시글 저장과 조회 확인")
@@ -22,11 +21,11 @@ class ArticleRepositoryTest {
         String title = "질문이 있습니다.";
         Long id = 20L;
         String contents ="테스트는 어떻게 작성하나요";
-        CreateArticleRequestDTO dto = new CreateArticleRequestDTO(title, id, contents);
+        ArticleCreateRequestDTO dto = new ArticleCreateRequestDTO(title, id, contents);
 
         // when
-        articleRepository.persist(dto);
-        Article article = articleRepository.find(0L);
+        Long id1 = articleRepository.persist(dto);
+        Article article = articleRepository.find(id1);
 
         // then
         assertThat(article.getTitle()).isEqualTo(title);

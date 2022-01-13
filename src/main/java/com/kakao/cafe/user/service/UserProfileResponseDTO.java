@@ -1,10 +1,12 @@
 package com.kakao.cafe.user.service;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
-public class GetSignUpResultResponseDTO {
-    public String stringId;
-    public String email;
+@Getter
+public class UserProfileResponseDTO {
     public String nickName;
+    public String email;
+    public String stringId;
 }

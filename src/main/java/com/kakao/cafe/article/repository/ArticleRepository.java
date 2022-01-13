@@ -2,45 +2,16 @@ package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class ArticleRepository {
-    private static Long idSequence = 0L;
-    private final static HashMap<Long, Article> articleDB = new HashMap<>();
+public interface ArticleRepository {
 
-    private final static ArticleRepository articleRepository = new ArticleRepository();
+    Article find(Long id);
 
-    public static ArticleRepository getRepository() {
-        return articleRepository;
-    }
+    ArrayList<Article> findAll();
 
-    private ArticleRepository() {
-    }
+    Long persist(ArticleCreateRequestDTO dto);
 
-    public void clear() {
-        idSequence = 0L;
-        articleDB.clear();
-    }
+    void increaseHit(Long id);
 
-    public Article find(Long id) {
-        return articleDB.get(id);
-    }
-
-    public ArrayList<Article> findAll() {
-        return new ArrayList<>(articleDB.values());
-    }
-
-    public Long persist(CreateArticleRequestDTO dto) {
-        articleDB.put(idSequence, new Article(idSequence, dto.title, dto.authorId, LocalDateTime.now(), 0, dto.contents));
-        idSequence += 1;
-        return idSequence;
-    }
-
-    public void increaseHit(Long id) {
-        Article article = articleDB.get(id);
-        article.increaseHit();
-        articleDB.put(id, article);
-    }
 }
