@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.article.Article;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -38,11 +39,13 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findById(Long id) {
+    public Article findById(Long id) {
         String sql = "SELECT * FROM articles where id = ?";
-        List<Article> result = jdbcTemplate.query(sql, articleRowMapper(), id);
-        return result.stream().findAny();
-
+        try {
+            return jdbcTemplate.queryForObject(sql, articleRowMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new RuntimeException("해당하는 게시글이 존재하지 않습니다.");
+        }
     }
 
     private RowMapper<Article> articleRowMapper() {

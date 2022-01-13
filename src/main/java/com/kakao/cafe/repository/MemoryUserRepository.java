@@ -15,9 +15,8 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User signUp(User user) {
+    public void create(User user) {
         userMap.put(user.getId(), user);
-        return user;
     }
 
     @Override
@@ -26,7 +25,11 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
-        return userMap.values().stream().filter(user -> user.getUserId().equals(userId)).findFirst();
+    public User findByUserId(String userId) {
+        Optional<User> result = userMap.values().stream().filter(user -> user.getUserId().equals(userId)).findFirst();
+        if (result.isPresent()) {
+            return result.get();
+        }
+        throw new RuntimeException("일치하는 사용자 ID가 없습니다.");
     }
 }

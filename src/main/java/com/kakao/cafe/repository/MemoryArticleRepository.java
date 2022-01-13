@@ -25,7 +25,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findById(Long id) {
-        return Optional.ofNullable(articleMap.get(id));
+    public Article findById(Long id) {
+        Optional<Article> result =  Optional.ofNullable(articleMap.get(id));
+        if (result.isPresent()) {
+            return result.get();
+        }
+        throw new RuntimeException("일치하는 게시글이 존재하지 않습니다.");
     }
 }

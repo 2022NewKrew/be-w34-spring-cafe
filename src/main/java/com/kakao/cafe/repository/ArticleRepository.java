@@ -9,5 +9,5 @@ public interface ArticleRepository {
     Long generateId();
     void create(Article article);
     List<Article> findAll();
-    Optional<Article> findById(Long id);
+    Article findById(Long id);
 }
