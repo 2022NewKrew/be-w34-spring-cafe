@@ -1,7 +1,5 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.url.PostView;
-import com.kakao.cafe.url.UserView;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -14,14 +12,19 @@ import javax.sql.DataSource;
 
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
+    private static final String USER_DIRECTORY = "/user";
+    public static final String USER_VIEW_SIGN_UP_FAIL = USER_DIRECTORY+"/form_fail";
+
+    private static final String POST_DIRECTORY = "/post";
+    public static final String POST_VIEW_WRITE_FAIL = POST_DIRECTORY+"/form_fail";
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         // 단순 화면 출력
-        registry.addViewController("/users/sign-up/fail").setViewName(UserView.USER_VIEW_SIGN_UP_FAIL);
-        registry.addViewController("/posts/write/fail").setViewName(PostView.POST_VIEW_WRITE_FAIL);
+        registry.addViewController("/users/sign-up/fail").setViewName(USER_VIEW_SIGN_UP_FAIL);
+        registry.addViewController("/posts/write/fail").setViewName(POST_VIEW_WRITE_FAIL);
 
         // 시작페이지 조정
         registry.addRedirectViewController("/", "/posts/list");

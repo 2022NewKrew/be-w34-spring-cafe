@@ -4,8 +4,6 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.CafeUserService;
-import com.kakao.cafe.url.UserRedirect;
-import com.kakao.cafe.url.UserView;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,30 +11,39 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping(UserRedirect.USER_BASE_URL)
+@RequestMapping("/users")
 public class CafeUserController {
-
     final CafeUserService cafeUserService;
-
     public CafeUserController (CafeUserService cafeUserService) {
         this.cafeUserService = cafeUserService;
     }
 
+    private static final String USER_DIRECTORY = "/user";
+    public static final String USER_VIEW_SIGN_UP = USER_DIRECTORY+"/form";
+    public static final String USER_VIEW_SIGN_IN = USER_DIRECTORY+"/login";
+
+    public static final String USER_VIEW_LIST = USER_DIRECTORY+"/list";
+    public static final String USER_VIEW_PROFILE = USER_DIRECTORY+"/profile";
+
+    public static final String REDIRECT_PREFIX = "redirect:/users";
+    public static final String USER_REDIRECT_LIST = REDIRECT_PREFIX+"/list";
+    public static final String USER_REDIRECT_SIGN_UP_FAIL = REDIRECT_PREFIX+"/sign-up/fail";
+
     @GetMapping("/sign-in")
     String userViewSignIn() {
-        return UserView.USER_VIEW_SIGN_IN;
+        return USER_VIEW_SIGN_IN;
     }
     @GetMapping("/sign-up")
     String userViewSingUp() {
-        return UserView.USER_VIEW_SIGN_UP;
+        return USER_VIEW_SIGN_UP;
     }
 
     @PostMapping("/sign-up")
     String signUp(User newUser){ // 회원가입
         if(cafeUserService.signUp(newUser)) {
-            return UserRedirect.USER_REDIRECT_LIST;
+            return USER_REDIRECT_LIST;
         }
-        return UserRedirect.USER_REDIRECT_SIGN_UP_FAIL;
+        return USER_REDIRECT_SIGN_UP_FAIL;
     }
 
     @GetMapping("/list")
@@ -44,7 +51,7 @@ public class CafeUserController {
         List<User> userList = cafeUserService.getUserList();
         model.addAttribute("userList", userList);
         model.addAttribute("userCnt", CollectionHelper.getItemNumberOfList(userList));
-        return UserView.USER_VIEW_LIST;
+        return USER_VIEW_LIST;
     }
 
     @GetMapping("/profile/{userId}")
@@ -53,6 +60,6 @@ public class CafeUserController {
         if( user != null) {
             model.addAttribute("user", user);
         }
-        return UserView.USER_VIEW_PROFILE;
+        return USER_VIEW_PROFILE;
     }
 }
