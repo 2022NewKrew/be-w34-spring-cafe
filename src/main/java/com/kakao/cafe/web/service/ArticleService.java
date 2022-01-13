@@ -3,15 +3,16 @@ package com.kakao.cafe.web.service;
 import com.kakao.cafe.web.domain.Article;
 import com.kakao.cafe.web.dto.ArticleDTO;
 import com.kakao.cafe.web.repository.ArticleRepository;
-import com.kakao.cafe.web.repository.MemoryArticleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ArticleService {
     private final ArticleRepository memoryArticleRepository;
 
-    public ArticleService() {
-        this.memoryArticleRepository = new MemoryArticleRepository();
+    public ArticleService(ArticleRepository memoryArticleRepository) {
+        this.memoryArticleRepository = memoryArticleRepository;
     }
 
     public Article writeArticle(ArticleDTO articleDTO) {
@@ -22,7 +23,7 @@ public class ArticleService {
         return memoryArticleRepository.getArticleList();
     }
 
-    public Article getArticleById(int id) {
+    public Article getArticleById(long id) {
         return memoryArticleRepository.getArticleById(id);
     }
 }

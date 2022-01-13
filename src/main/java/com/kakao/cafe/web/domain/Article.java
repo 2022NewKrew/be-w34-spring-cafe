@@ -6,6 +6,8 @@ public class Article {
     private String title;
     private String contents;
 
+    public Article() { }
+
     public Article(int id, String writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
@@ -43,5 +45,15 @@ public class Article {
 
     public void setContents(String contents) {
         this.contents = contents;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", writer='" + writer + '\'' +
+                ", title='" + title + '\'' +
+                ", contents='" + contents + '\'' +
+                '}';
     }
 }

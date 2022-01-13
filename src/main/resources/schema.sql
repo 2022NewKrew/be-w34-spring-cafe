@@ -1,0 +1,16 @@
+DROP TABLE IF EXISTS cafe_user, cafe_article;
+CREATE TABLE IF NOT EXISTS cafe_user
+(
+    user_id VARCHAR(32) NOT NULL PRIMARY KEY,
+    password VARCHAR(32) NOT NULL,
+    name VARCHAR(32) NOT NULL,
+    email VARCHAR(32) NOT NULL
+);
+CREATE TABLE IF NOT EXISTS cafe_article
+(
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    writer VARCHAR(32),
+    FOREIGN KEY (writer) REFERENCES cafe_user(user_id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    title VARCHAR(100) NOT NULL,
+    contents VARCHAR(1000) NOT NULL
+);

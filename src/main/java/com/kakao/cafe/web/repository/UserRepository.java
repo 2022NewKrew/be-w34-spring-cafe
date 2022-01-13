@@ -8,5 +8,6 @@ import java.util.List;
 public interface UserRepository {
     User save(UserDTO userDTO);
     List<User> getUserList();
-    User getUserById(String userId);
+    User getUserByUserId(String userId);
+    User update(UserDTO userUpdateDTO);
 }
