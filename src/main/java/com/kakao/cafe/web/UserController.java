@@ -17,20 +17,20 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String createUser(String userId, String password, String name, String email) {
-        userService.create(new UserCreateRequestDto(userId, password, name, email));
+    public String signUp(String userId, String password, String name, String email) {
+        userService.signUp(new UserCreateRequestDto(userId, password, name, email));
         return "redirect:/user";
     }
 
     @GetMapping
     public String getUserList(Model model) {
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("users", userService.getUserList());
         return "user/list";
     }
 
     @GetMapping("/{userId}")
-    public String getUserByUserId(@PathVariable String userId, Model model) {
-        model.addAttribute("user", userService.findByUserId(userId));
+    public String getUserProfile(@PathVariable String userId, Model model) {
+        model.addAttribute("user", userService.getUserProfile(userId));
         return "user/profile";
     }
 }

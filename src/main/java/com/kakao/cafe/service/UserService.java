@@ -23,17 +23,17 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void create(UserCreateRequestDto requestDto) {
+    public void signUp(UserCreateRequestDto requestDto) {
         Long id = userRepository.generateId();
         userRepository.create(new User(id, requestDto.getUserId(), requestDto.getPassword(), requestDto.getName(), requestDto.getEmail()));
         logger.info("{} 계정 생성", requestDto.getUserId());
     }
 
-    public List<UserResponseDto> findAll() {
+    public List<UserResponseDto> getUserList() {
         return UserResponseDto.from(userRepository.findAll());
     }
 
-    public UserProfileResponseDto findByUserId(String userId) {
+    public UserProfileResponseDto getUserProfile(String userId) {
         return UserProfileResponseDto.from(userRepository.findByUserId(userId));
     }
 }

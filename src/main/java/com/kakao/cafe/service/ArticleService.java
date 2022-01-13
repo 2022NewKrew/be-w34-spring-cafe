@@ -23,17 +23,17 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void create(ArticleCreateRequestDto requestDto) {
+    public void postArticle(ArticleCreateRequestDto requestDto) {
         Long id = articleRepository.generateId();
         articleRepository.create(new Article(id, requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents()));
         logger.info("{} 글 생성", requestDto.getTitle());
     }
 
-    public List<ArticleResponseDto> findAll() {
+    public List<ArticleResponseDto> getArticleList() {
         return ArticleResponseDto.from(articleRepository.findAll());
     }
 
-    public ArticleDetailResponseDto findById(Long id) {
+    public ArticleDetailResponseDto getArticleDetail(Long id) {
         return ArticleDetailResponseDto.from(articleRepository.findById(id));
     }
 }
