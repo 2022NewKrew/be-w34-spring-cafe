@@ -9,11 +9,7 @@ public class UserHelper {
     private static final String regexOfEmail = "^[\\w&&[^_]]+@[a-z]+\\.[a-z]{2,6}$";
 
     public static boolean checkRegexOfUser (User user) {
-        boolean checkResult = true;
-        checkResult &= checkRegexOfId(user.getUserId());
-        checkResult &= checkRegexOfPassword(user.getPassword());
-        checkResult &= checkRegexOfEmail(user.getEmail());
-        return checkResult;
+        return checkRegexOfId(user.getUserId()) && checkRegexOfPassword(user.getPassword()) && checkRegexOfEmail(user.getEmail());
     }
 
     private static boolean checkRegexOfId (String userId) {

@@ -7,10 +7,7 @@ public class PostHelper {
     private static final String regexOfContent = "^.{1,500}$";
 
     public static boolean checkRegexOfPost (Post post) {
-        boolean checkResult = true;
-        checkResult &= checkRegexOfTitle(post.getTitle());
-        checkResult &= checkRegexOfContent(post.getContent());
-        return checkResult;
+        return checkRegexOfTitle(post.getTitle()) && checkRegexOfContent(post.getContent());
     }
 
     private static boolean checkRegexOfTitle(String title) {
