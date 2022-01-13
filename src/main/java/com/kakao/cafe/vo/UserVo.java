@@ -2,10 +2,13 @@ package com.kakao.cafe.vo;
 
 public class UserVo {
 
-    private final String userId;
-    private final String password;
-    private final String name;
-    private final String email;
+    private String userId;
+    private String password;
+    private String name;
+    private String email;
+
+
+    public UserVo(){}
 
     public UserVo(String userId, String password, String name, String email) {
         this.userId = userId;
