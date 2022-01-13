@@ -7,6 +7,7 @@ import com.kakao.cafe.dto.UserProfileResponse;
 import com.kakao.cafe.dto.UserUpdateRequest;
 import com.kakao.cafe.repository.InMemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,15 +16,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
-    private final UserRepository userRepository = new InMemoryUserRepository();
+    private final UserRepository userRepository;
 
-    public Long signUp(UserCreateRequest userDTO) {
+    public void signUp(UserCreateRequest userDTO) {
         User user = userDTO.toEntity();
         validateDuplicateUserId(user);
-        return userRepository.save(user).getId();
+        userRepository.save(user);
     }
 
     public List<UserProfileResponse> findAllUsers() {
@@ -39,7 +40,7 @@ public class UserService {
         return new UserProfileResponse(user);
     }
 
-    public Long updateUser(UserUpdateRequest userDTO) {
+    public void updateUser(UserUpdateRequest userDTO) {
         User user = userRepository.findByNickname(userDTO.getNickname()).orElseThrow(IllegalArgumentException::new);
         validateEqualPassword(user, userDTO);
 
@@ -51,7 +52,7 @@ public class UserService {
                 .email(userDTO.getEmail())
                 .build();
 
-        return userRepository.save(updateUser).getId();
+        userRepository.update(updateUser);
     }
 
     private void validateDuplicateUserId(User user){

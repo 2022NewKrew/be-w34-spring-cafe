@@ -9,6 +9,7 @@ import com.kakao.cafe.repository.InMemoryQuestionRepository;
 import com.kakao.cafe.repository.InMemoryUserRepository;
 import com.kakao.cafe.repository.QuestionRepository;
 import com.kakao.cafe.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,14 +17,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ArticleService {
-    private final QuestionRepository questionRepository = new InMemoryQuestionRepository();
-    private final UserRepository userRepository = new InMemoryUserRepository();
+    private final QuestionRepository questionRepository ;
+    private final UserRepository userRepository ;
 
-    public Long saveQuestion(QuestionCreateRequest questionDTO, LocalDateTime dateTime) {
+    public void saveQuestion(QuestionCreateRequest questionDTO, LocalDateTime dateTime) {
         User writer = userRepository.findByNickname(questionDTO.getWriter()).orElseThrow(IllegalArgumentException::new);
         Question question = questionDTO.toEntity(writer.getId(), dateTime);
-        return questionRepository.save(question).getId();
+        questionRepository.save(question);
     }
 
     public List<QuestionListResponse> findAllQuestions(){
