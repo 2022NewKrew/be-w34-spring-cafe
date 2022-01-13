@@ -1,10 +1,9 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.dto.UserDto;
-import com.kakao.cafe.dto.UserSignUpDto;
 import com.kakao.cafe.repository.UserRepository;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,28 +17,38 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void signup(UserSignUpDto user) throws SQLException {
-        userRepository.save(user);
+    public void signup(UserDto user) throws SQLException {
+        userRepository.save(user.toEntity());
     }
 
-    public UserDto findById(String userId) throws EmptyResultDataAccessException {
+    public UserProfileDto findById(String userId) throws NoSuchElementException {
         User user = userRepository.findById(userId);
 
-        return new UserDto(user.getUserId(), user.getEmail(), user.getName());
+        return new UserProfileDto(user.getUserId(), user.getEmail(), user.getName());
     }
 
-    public UserDto findByName(String name) throws NoSuchElementException {
+    public UserProfileDto findByName(String name) throws NoSuchElementException {
         User user = userRepository.findByName(name);
 
-        return new UserDto(user.getUserId(), user.getEmail(), user.getName());
+        return new UserProfileDto(user.getUserId(), user.getEmail(), user.getName());
     }
 
-    public List<UserDto> getUserList() {
-        List<UserDto> userDtoList = new ArrayList<>();
+    public List<UserProfileDto> getUserList() {
+        List<UserProfileDto> userDtoList = new ArrayList<>();
         for (User user : userRepository.findAll()) {
-            userDtoList.add(new UserDto(user.getUserId(), user.getEmail(), user.getName()));
+            userDtoList.add(new UserProfileDto(user.getUserId(), user.getEmail(), user.getName()));
         }
 
         return userDtoList;
+    }
+
+    public void updateUserProfile(UserProfileDto newProfile) {
+        userRepository.update(newProfile);
+    }
+
+    public boolean checkPassword(String userId, String password) throws NoSuchElementException {
+        User user = userRepository.findById(userId);
+
+        return (password != null && password.equals(user.getPassword()));
     }
 }

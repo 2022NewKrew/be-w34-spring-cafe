@@ -1,13 +1,11 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserSignUpDto;
+import com.kakao.cafe.dto.UserProfileDto;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -20,7 +18,7 @@ public class UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void save(UserSignUpDto user) throws SQLException {
+    public void save(User user) throws SQLException {
         String sql = "insert into MEMBER values(?,?,?,?)"; // sysdate
 
         int result = jdbcTemplate.update(sql,
@@ -71,6 +69,16 @@ public class UserRepository {
         return jdbcTemplate.query(
                 "select * from MEMBER",
                 new UserMapper()
+        );
+    }
+
+    public void update(UserProfileDto newProfile) {
+        String sql = "update MEMBER set email = ?, name = ?  where userId = ?";
+
+        jdbcTemplate.update(sql,
+                newProfile.getEmail(),
+                newProfile.getName(),
+                newProfile.getUserId()
         );
     }
 

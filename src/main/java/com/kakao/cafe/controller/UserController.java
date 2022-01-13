@@ -1,7 +1,8 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.dto.UserDto;
-import com.kakao.cafe.dto.UserSignUpDto;
+import com.kakao.cafe.dto.UserUpdateDto;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ public class UserController {
 
     // form으로 작성된 정보를 받아서 user 객체 생성하고 저장
     @PostMapping("/create")
-    public String create(UserSignUpDto user) {
+    public String create(UserDto user) {
         try {
             userService.signup(user);
         } catch (SQLException e) {
@@ -46,7 +47,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model) {
-        UserDto user;
+        UserProfileDto user;
 
         try {
             user = userService.findById(userId);
@@ -57,5 +58,29 @@ public class UserController {
         }
 
         return "/user/profile";
+    }
+
+    @GetMapping("/{userId}/form")
+    public String updateForm(@PathVariable String userId, Model model){
+        UserProfileDto user;
+
+        try {
+            user = userService.findById(userId);
+            model.addAttribute("user", user);
+        } catch (NoSuchElementException e) {
+            logger.error("", e);
+            return "redirect:/";
+        }
+
+        return "/user/updateForm";
+    }
+
+    @PostMapping("/{userId}/update")
+    public String update(@PathVariable String userId, UserUpdateDto userUpdateDto) {
+        if (userService.checkPassword(userId, userUpdateDto.getPassword())) {
+            UserProfileDto newProfile = new UserProfileDto(userId, userUpdateDto.getEmail(), userUpdateDto.getName());
+            userService.updateUserProfile(newProfile);
+        }
+        return "redirect:/users/list";
     }
 }

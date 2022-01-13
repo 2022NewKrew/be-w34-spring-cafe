@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticlePostDto;
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public class ArticleController {
     @GetMapping("/{index}")
     public String showArticle(@PathVariable int index, Model model) {
         ArticleDto article;
-        UserDto writer;
+        UserProfileDto writer;
 
         try {
             article = articleService.findById(index);
