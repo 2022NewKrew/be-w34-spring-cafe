@@ -13,4 +13,20 @@ public class UserListResponseDto {
         this.name = name;
         this.email = email;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
