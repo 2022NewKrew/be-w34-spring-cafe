@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.Repository.user.UserRepository;
 import com.kakao.cafe.dto.user.SignUpDto;
 import com.kakao.cafe.dto.user.UserInfoDto;
 import com.kakao.cafe.exceptions.NoSuchUserException;
+import com.kakao.cafe.exceptions.PasswordMismatchException;
 import com.kakao.cafe.exceptions.UserIdDuplicationException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,14 @@ public class UserService {
     public UserInfoDto getUserByUserId(String userId) throws NoSuchUserException {
         User user = this.userRepository.findUserByUserId(userId);
         return new UserInfoDto(user.getUserId(), user.getName(), user.getEmail());
+    }
+
+    public void updateUser(SignUpDto signUpDto) throws NoSuchUserException, PasswordMismatchException {
+        User targetUser = this.userRepository.findUserByUserId(signUpDto.getUserId());
+        if (!targetUser.getPassword().equals(signUpDto.getPassword())) {
+            throw new PasswordMismatchException();
+        }
+        this.userRepository.updateUser(signUpDto.toEntity());
     }
 
 }

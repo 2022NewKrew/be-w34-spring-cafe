@@ -19,19 +19,24 @@ public class UserRepository {
         users.put(user.getUserId(), user);
     }
 
+    public boolean isUserIdExist(String userId) {
+        return users.containsKey(userId);
+    }
+
     public List<User> findAllUsers() {
         return new ArrayList<>(users.values());
     }
 
     public User findUserByUserId(String userId) throws NoSuchUserException {
-        if (users.containsKey(userId)) {
+        if (isUserIdExist(userId)) {
             return users.get(userId);
         }
         throw new NoSuchUserException();
     }
 
-    public boolean isUserIdExist(String userId) {
-        return users.containsKey(userId);
+    public void updateUser(User user) {
+        users.replace(user.getUserId(), user);
     }
+
 
 }

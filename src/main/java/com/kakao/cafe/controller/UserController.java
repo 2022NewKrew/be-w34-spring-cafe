@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.user.SignUpDto;
 import com.kakao.cafe.exceptions.NoSuchUserException;
+import com.kakao.cafe.exceptions.PasswordMismatchException;
 import com.kakao.cafe.exceptions.UserIdDuplicationException;
 import com.kakao.cafe.service.user.UserService;
 import lombok.AllArgsConstructor;
@@ -39,13 +40,13 @@ public class UserController {
 
     // 회원가입 페이지
     @GetMapping("/user/signup")
-    public String signUp() {
+    public String signUpForm() {
         return "user/form";
     }
 
-    // 회원 가입 로직
+    // 회원 가입 요청
     @PostMapping("/user/signup")
-    public String addNewUser(SignUpDto signUpDto) {
+    public String signUp(SignUpDto signUpDto) {
         log.info("{}", signUpDto.getUserId());
         log.info("{}", signUpDto.getPassword());
         log.info("{}", signUpDto.getName());
@@ -60,11 +61,22 @@ public class UserController {
 
     // 회원정보 수정 페이지
     @GetMapping("users/{userId}/form")
-    public String updateUserInfo(@PathVariable String userId, Model model) {
+    public String updateForm(@PathVariable String userId, Model model) {
         try {
             model.addAttribute("user", this.userService.getUserByUserId(userId));
             return "user/updateForm";
         } catch (NoSuchUserException e) {
+            return "error";
+        }
+    }
+
+    // 회원정보 수정 요청
+    @PostMapping("users/{userId}/update")
+    public String updateUserInfo(SignUpDto signUpDto, @PathVariable String userId) {
+        try {
+            this.userService.updateUser(signUpDto);
+            return "redirect:/users";
+        } catch (PasswordMismatchException | NoSuchUserException e) {
             return "error";
         }
     }
