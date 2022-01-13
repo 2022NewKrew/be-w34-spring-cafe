@@ -39,7 +39,9 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String showUser(Model model, @PathVariable String userId) {
-        User user = users.stream().filter(obj -> userId.equals(obj.getUserId())).findAny().orElse(null);
+        User user = users.stream()
+                .filter(obj -> userId.equals(obj.getUserId()))
+                .findFirst().orElse(null);
         logger.info("GET /users/{}: response user profile page with {}", userId, user);
         // user 조회
         model.addAttribute("user", user);
@@ -48,7 +50,9 @@ public class UserController {
 
     @GetMapping("/users/{userId}/form")
     public String updateForm(Model model, @PathVariable String userId) {
-        User user = users.stream().filter(obj -> userId.equals(obj.getUserId())).findAny().orElse(null);
+        User user = users.stream()
+                .filter(obj -> userId.equals(obj.getUserId()))
+                .findFirst().orElse(null);
         logger.info("GET /users/{}/form: response user edit page with {}", userId, user);
         // user 수정 페이지 응답
         model.addAttribute("user", user);
@@ -59,7 +63,9 @@ public class UserController {
     public String updateUser(User newUser, @PathVariable String userId) {
         logger.info("POST /users/{}/update: request {} and update", userId, newUser);
         // user 수정
-        User user = users.stream().filter(obj -> userId.equals(obj.getUserId())).findAny().orElse(null);
+        User user = users.stream()
+                .filter(obj -> userId.equals(obj.getUserId()))
+                .findFirst().orElse(null);
         if (user != null) {
             user.setEmail(newUser.getEmail());
             user.setName(newUser.getName());
