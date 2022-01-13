@@ -1,41 +1,54 @@
 package com.kakao.cafe.article;
 
+import lombok.Builder;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.lang.NonNull;
+
+import java.time.LocalDateTime;
 
 public class Article {
 
+    private long seq;
     @NonNull
     private String writer;
     @NonNull
     private String title;
     @NonNull
-    private String contents;
+    private String content;
 
-    private String time;
+    private LocalDateTime time;
 
-    public Article(ArticleRequest articleRequest) {
-        this.writer = articleRequest.getWriter();
-        this.title = articleRequest.getTitle();
-        this.contents = articleRequest.getContents();
+    @Builder
+    private Article(long seq, @NotNull String writer, @NotNull String title, @NotNull String content, LocalDateTime time) {
+        this.seq = seq;
+        this.writer = writer;
+        this.title = title;
+        this.content = content;
+        this.time = time;
     }
 
-    public String getWriter() {
+    public long getSeq() {
+        return seq;
+    }
+
+    public @NotNull String getWriter() {
         return writer;
     }
 
-    public String getTitle() {
+    public @NotNull String getTitle() {
         return title;
     }
 
-    public String getContents() {
-        return contents;
+    public @NotNull String getContent() {
+        return content;
     }
 
-    public String getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
+
 }

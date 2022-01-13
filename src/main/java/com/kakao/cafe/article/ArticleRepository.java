@@ -7,10 +7,10 @@ import java.util.Optional;
 
 public interface ArticleRepository {
 
-    void update(Article article);
+    void save(Article article);
 
     Optional<Article> findByTitle(String title);
 
-    List<Article> getAllArticles();
+    List<Article> findAll();
 
 }

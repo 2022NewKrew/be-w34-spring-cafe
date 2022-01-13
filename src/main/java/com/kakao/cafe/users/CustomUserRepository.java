@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Primary
+
 @Repository
 public class CustomUserRepository implements UserRepository {
 
@@ -16,9 +16,9 @@ public class CustomUserRepository implements UserRepository {
     }
 
     @Override
-    public void update(User user) {
-        if (userMap.containsKey(user.getUserId())) throw new IllegalArgumentException();
-        userMap.put(user.getUserId(), user);
+    public void save(User user) {
+        if (userMap.containsKey(user.getId())) throw new IllegalArgumentException();
+        userMap.put(user.getId(), user);
     }
 
     @Override
@@ -29,11 +29,11 @@ public class CustomUserRepository implements UserRepository {
     @Override
     public Optional<User> findByEmail(String email) {
         System.out.println("TODO");
-        return Optional.of(null);
+        return Optional.empty();
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> findAll() {
         return new ArrayList<>(userMap.values());
     }
 

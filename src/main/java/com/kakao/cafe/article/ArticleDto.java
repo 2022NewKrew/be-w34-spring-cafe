@@ -1,19 +1,21 @@
 package com.kakao.cafe.article;
 
+import java.time.LocalDateTime;
+
 public class ArticleDto {
 
     private final String writer;
 
     private final String title;
 
-    private final String contents;
+    private final String content;
 
-    private final String time;
+    private final LocalDateTime time;
 
     public ArticleDto(Article article) {
         this.writer = article.getWriter();
         this.title = article.getTitle();
-        this.contents = article.getContents();
+        this.content = article.getContent();
         this.time = article.getTime();
     }
 
@@ -26,10 +28,10 @@ public class ArticleDto {
     }
 
     public String getContents() {
-        return contents;
+        return content;
     }
 
-    public String getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 }

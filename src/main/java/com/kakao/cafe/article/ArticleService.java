@@ -20,8 +20,7 @@ public class ArticleService {
     }
 
     public void createArticle(Article article) {
-        article.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")));
-        articleRepository.update(article);
+        articleRepository.save(article);
     }
 
     public Article findByTitle(String title) {
@@ -29,6 +28,6 @@ public class ArticleService {
     }
 
     public List<Article> getAllArticles() {
-        return articleRepository.getAllArticles();
+        return articleRepository.findAll();
     }
 }

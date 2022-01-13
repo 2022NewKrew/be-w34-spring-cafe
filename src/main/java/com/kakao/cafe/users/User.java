@@ -1,13 +1,16 @@
 package com.kakao.cafe.users;
 
+import lombok.Builder;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.lang.NonNull;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 public class User {
 
+    private long seq;
     @NonNull
-    private String userId;
+    private String id;
     @NonNull
     private String password;
     @NonNull
@@ -15,22 +18,32 @@ public class User {
     @NonNull
     private String email;
 
-    public User (@NonNull UserRequest userRequest) {
-        this.userId = userRequest.getUserId();
-        this.password = userRequest.getPassword();
-        this.name = userRequest.getName();
-        this.email = userRequest.getEmail();
+    @Builder
+    private User (long seq, @NotNull String id, @NotNull String password, @NotNull String name, @NotNull String email) {
+        this.seq = seq;
+        this.id = id;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
+    public long getSeq() {
+        return seq;
     }
 
-    public String getName() {
+    public @NotNull String getId() {
+        return id;
+    }
+
+    public @NotNull String getPassword() {
+        return password;
+    }
+
+    public @NotNull String getName() {
         return name;
     }
 
-    public String getEmail() {
+    public @NotNull String getEmail() {
         return email;
     }
 

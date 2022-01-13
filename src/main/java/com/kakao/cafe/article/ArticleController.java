@@ -33,7 +33,11 @@ public class ArticleController {
 
     @PostMapping(path = "/create")
     public String createArticle(ArticleRequest articleRequest) {
-        articleService.createArticle(new Article(articleRequest));
+        articleService.createArticle(Article.builder()
+                .writer(articleRequest.getWriter())
+                .title(articleRequest.getTitle())
+                .content(articleRequest.getContents())
+                .build());
         return "redirect:/";
     }
 
