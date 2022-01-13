@@ -1,7 +1,7 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.ArticleDao;
+import com.kakao.cafe.repository.UserDao;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import org.springframework.context.annotation.Bean;
@@ -17,22 +17,22 @@ public class SpringConfig {
 
     @Bean
     public ArticleService articleService() {
-        return new ArticleService(articleRepository(), userRepository());
+        return new ArticleService(articleDao(), userDao());
     }
 
     @Bean
-    public ArticleRepository articleRepository() {
-        return new ArticleRepository(jdbcTemplate());
+    public ArticleDao articleDao() {
+        return new ArticleDao(jdbcTemplate());
     }
 
     @Bean
     public UserService userService() {
-        return new UserService(userRepository());
+        return new UserService(userDao());
     }
 
     @Bean
-    public UserRepository userRepository() {
-        return new UserRepository(jdbcTemplate());
+    public UserDao userDao() {
+        return new UserDao(jdbcTemplate());
     }
 
     @Bean
