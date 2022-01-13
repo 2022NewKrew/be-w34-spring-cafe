@@ -39,6 +39,9 @@ public class ArticleController {
         } catch (NoSuchElementException e) {
             logger.error("Article : " + article, e);
             return "redirect:/";
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return "redirect:/";
         }
         return "redirect:/";
     }
