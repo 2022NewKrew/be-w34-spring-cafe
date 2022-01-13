@@ -4,26 +4,33 @@ import com.kakao.cafe.util.IdGenerator;
 import com.kakao.cafe.util.ValidationService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 
+import javax.annotation.PostConstruct;
 import javax.validation.constraints.Size;
-import java.util.Objects;
 
 @AllArgsConstructor
 @Getter
 public class Comment {
+    @NonNull
     private final Long id;
 
+    @NonNull
     @Size(min = 3, max = 5)
     private final String writerName;
 
+    @NonNull
     @Size(min = 1)
     private final String content;
 
     public Comment(String writerName, String content) {
         this.id = IdGenerator.createId();
-        this.writerName = Objects.requireNonNull(writerName);
-        this.content = Objects.requireNonNull(content);
+        this.writerName = writerName;
+        this.content = content;
+    }
 
+    @PostConstruct
+    protected void validate(){
         ValidationService.validate(this);
     }
 

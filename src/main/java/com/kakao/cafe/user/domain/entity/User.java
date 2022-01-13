@@ -1,35 +1,36 @@
 package com.kakao.cafe.user.domain.entity;
 
 
-import com.kakao.cafe.util.IdGenerator;
 import com.kakao.cafe.util.ValidationService;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
+import javax.annotation.PostConstruct;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
-import java.util.Objects;
 
+@AllArgsConstructor
 @Getter
 public class User {
+    @NonNull
     @Size(min = 3, max = 10)
     private final String userId;
 
+    @NonNull
     @Size(min = 8, max = 16)
     private String password;
 
+    @NonNull
     @Size(min = 3, max = 5)
     private String name;
 
+    @NonNull
     @Email
     private String email;
 
-    public User(String userId, String password, String name, String email) {
-        this.userId = Objects.requireNonNull(userId);
-        this.password = Objects.requireNonNull(password);
-        this.name = Objects.requireNonNull(name);
-        this.email = Objects.requireNonNull(email);
-
+    @PostConstruct
+    protected void validate(){
         ValidationService.validate(this);
     }
 }

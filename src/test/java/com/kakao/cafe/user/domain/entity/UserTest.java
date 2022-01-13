@@ -14,7 +14,7 @@ class UserTest {
     @DisplayName("잘못된 파라미터가 주어질때 User 생성 실패")
     @MethodSource("wrongConstructParameters")
     void failedCreateWhenWrongParameters(String userId, String password, String name, String email){
-        assertThatThrownBy(() -> new User(userId, password, name, email))
+        assertThatThrownBy(() -> new User(userId, password, name, email).validate())
                 .isInstanceOfAny(IllegalArgumentException.class, NullPointerException.class);
     }
 
