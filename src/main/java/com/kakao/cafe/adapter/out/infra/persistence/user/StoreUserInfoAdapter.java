@@ -1,10 +1,12 @@
 package com.kakao.cafe.adapter.out.infra.persistence.user;
 
 import com.kakao.cafe.application.user.dto.SignUpRequest;
+import com.kakao.cafe.application.user.dto.UpdateRequest;
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.application.user.dto.UserInfoList;
 import com.kakao.cafe.application.user.port.out.GetUserInfoPort;
 import com.kakao.cafe.application.user.port.out.RegisterUserPort;
+import com.kakao.cafe.application.user.port.out.UpdateUserInfoPort;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.exceptions.IllegalEmailException;
 import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort {
+public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort, UpdateUserInfoPort {
 
     private final UserInfoRepository inMemoryUserInfoRepository;
 
@@ -67,5 +69,22 @@ public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort {
         if (inMemoryUserInfoRepository.findByUserId(userId).isPresent()) {
             throw new UserIdDuplicationException("ID는 중복될 수 없습니다.");
         }
+    }
+
+    @Override
+    public void updateUser(String userId, UpdateRequest updateRequest)
+        throws UserNotExistException, IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
+        User user = inMemoryUserInfoRepository.findByUserId(userId).orElse(null);
+
+        if (user == null) {
+            throw new UserNotExistException("존재하지 않는 회원입니다.");
+        }
+
+        inMemoryUserInfoRepository.save(new User(
+            userId,
+            user.getPassword(),
+            updateRequest.getName(),
+            updateRequest.getEmail()
+        ));
     }
 }

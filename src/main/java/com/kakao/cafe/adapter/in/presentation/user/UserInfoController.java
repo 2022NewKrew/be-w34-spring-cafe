@@ -16,6 +16,7 @@ public class UserInfoController {
 
     private static final String VIEWS_USER_LIST = "user/list";
     private static final String VIEWS_USER_PROFILE = "user/profile";
+    private static final String VIEWS_USER_UPDATE_FROM = "user/updateForm";
 
     private static final Logger log = LoggerFactory.getLogger(UserSignUpController.class);
 
@@ -39,6 +40,21 @@ public class UserInfoController {
             model.addAttribute("name", userInfo.getName());
             model.addAttribute("email", userInfo.getEmail());
             return VIEWS_USER_PROFILE;
+        } catch (Exception e) {
+            log.warn("{} is not in User List", userId);
+            String message = ErrorMessage.getErrorMessage(e);
+            redirectAttributes.addAttribute("message", message);
+            return "redirect:/errors";
+        }
+    }
+
+    @GetMapping("/users/{userId}/form")
+    public String displayUserUpdateForm(@PathVariable String userId, RedirectAttributes redirectAttributes, Model model) {
+        try {
+            UserInfo userInfo = getUserInfoUseCase.getUserProfile(userId);
+            log.info("{} update form required", userId);
+            model.addAttribute("user", userInfo);
+            return VIEWS_USER_UPDATE_FROM;
         } catch (Exception e) {
             log.warn("{} is not in User List", userId);
             String message = ErrorMessage.getErrorMessage(e);
