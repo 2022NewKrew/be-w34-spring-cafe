@@ -5,6 +5,7 @@ import com.kakao.cafe.exception.ErrorCode;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class Users {
 
@@ -24,6 +25,12 @@ public class Users {
     private boolean isDuplicatedUserId(User requestedUser) {
         return users.stream()
                 .anyMatch(user -> user.getUserId().equals(requestedUser.getUserId()));
+    }
+
+    public Optional<User> findById(UUID id) {
+        return users.stream()
+                .filter(user -> id.equals(user.getId()))
+                .findFirst();
     }
 
     public Optional<User> findByUserId(String userId) {

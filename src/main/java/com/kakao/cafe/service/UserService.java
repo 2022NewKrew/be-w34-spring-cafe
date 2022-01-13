@@ -20,8 +20,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User register(UserRegisterRequest requestDto) {
-        return userRepository.save(requestDto.toEntity());
+    public void register(UserRegisterRequest requestDto) {
+        userRepository.save(requestDto.toEntity());
+    }
+
+    public Optional<User> findById(UUID id) {
+        return userRepository.findById(id);
     }
 
     public Optional<User> findByUserId(String userId) {

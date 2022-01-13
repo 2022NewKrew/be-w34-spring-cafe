@@ -1,7 +1,7 @@
 package com.kakao.cafe.dto;
 
 import com.kakao.cafe.model.Post;
-import com.kakao.cafe.model.User;
+import java.util.UUID;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -37,7 +37,7 @@ public class PostCreateRequest {
         return content;
     }
 
-    public Post toEntity(User writer) {
-        return new Post.Builder(writer, title, content).build();
+    public Post toEntity(UUID writerId) {
+        return new Post.Builder(writerId, title, content).build();
     }
 }
