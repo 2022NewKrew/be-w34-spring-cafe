@@ -11,4 +11,6 @@ public interface ArticleRepository {
     List<Article> getAllArticle();
 
     Article getArticleById(long id);
+
+    int increaseViews(long articleId);
 }

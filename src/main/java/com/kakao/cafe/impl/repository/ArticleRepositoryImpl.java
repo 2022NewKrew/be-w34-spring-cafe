@@ -37,13 +37,14 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public List<Article> getAllArticle() {
-        return jdbcTemplate.query("select A.id, WRITERID, USERID as writer, title, contents,  to_char(A.time,'yyyy-MM-dd hh:mi') time from USERTABLE U join ARTICLETABLE A on U.ID = A.WRITERID",
+        return jdbcTemplate.query("select A.id, WRITERID, USERID as writer, title, contents, views, to_char(A.time,'yyyy-MM-dd hh:mi') time from USERTABLE U join ARTICLETABLE A on U.ID = A.WRITERID",
                 (rs, rowNum) -> new Article(
                         rs.getLong("id"),
                         rs.getLong("writerId"),
                         rs.getString("writer"),
                         rs.getString("title"),
                         rs.getString("contents"),
+                        rs.getLong("views"),
                         rs.getString("time")
                 )
         );
@@ -53,14 +54,21 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public Article getArticleById(long id) {
         return jdbcTemplate
-                .queryForObject("select A.id, WRITERID, USERID as writer, title, contents,  to_char(A.time,'yyyy-MM-dd hh:mi') time from USERTABLE U join ARTICLETABLE A on U.ID = A.WRITERID where A.ID = ?",
+                .queryForObject("select A.id, WRITERID, USERID as writer, title, contents,views,  to_char(A.time,'yyyy-MM-dd hh:mi') time from USERTABLE U join ARTICLETABLE A on U.ID = A.WRITERID where A.ID = ?",
                         (rs, rowNum) -> new Article(
                                 rs.getLong("id"),
                                 rs.getLong("writerId"),
                                 rs.getString("writer"),
                                 rs.getString("title"),
                                 rs.getString("contents"),
+                                rs.getLong("views"),
                                 rs.getString("time")
                         ), id);
+    }
+
+    @Override
+    public int increaseViews(long articleId) {
+        return jdbcTemplate.update("update ARTICLETABLE set views = views+1 where id = ?",
+                articleId);
     }
 }

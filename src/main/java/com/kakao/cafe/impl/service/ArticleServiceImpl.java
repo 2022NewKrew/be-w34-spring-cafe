@@ -27,4 +27,9 @@ public class ArticleServiceImpl implements ArticleService {
     public Article getArticleById(long articleId) {
         return articleRepository.getArticleById(articleId);
     }
+
+    @Override
+    public int increaseViews(long articleId) {
+        return articleRepository.increaseViews(articleId);
+    }
 }

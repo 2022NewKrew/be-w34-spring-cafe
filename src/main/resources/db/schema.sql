@@ -15,6 +15,7 @@ create table if not exists ArticleTable
     writerID bigint     not null,
     title    char(100)  not null,
     contents char(1000) not null,
+    views    bigint     not null default 0,
     time     DATETIME   not null,
     foreign key (writerID) references UserTable (id)
 )

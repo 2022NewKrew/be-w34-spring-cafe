@@ -25,15 +25,16 @@ public class ArticleController {
         return "index";
     }
 
-    @PostMapping("/question")
-    String question(@Valid Article article) {
+    @PostMapping("/articles")
+    String articles(@Valid Article article) {
         articleService.insertArticle(article);
-        logger.info("create Article -> Writer : {}, Title : {}", article.getWriter(), article.getTitle());
+        logger.info("create Article -> Writer : {}, Title : {}", article.getWriterId(), article.getTitle());
         return "redirect:/";
     }
 
     @GetMapping("/articles/{articleId}")
     String show(@PathVariable long articleId, Model model) {
+        articleService.increaseViews(articleId);
         Article article = articleService.getArticleById(articleId);
         model.addAttribute("article", article);
         model.addAttribute("articleId", articleId);

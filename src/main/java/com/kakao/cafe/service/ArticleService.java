@@ -11,4 +11,6 @@ public interface ArticleService {
     List<Article> getArticleList();
 
     Article getArticleById(long articleId);
+
+    int increaseViews(long articleId);
 }
