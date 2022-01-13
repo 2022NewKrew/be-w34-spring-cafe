@@ -19,7 +19,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public Optional<User> getUser(String userId) {
         List<User> users = myJdbcTemplate.query("select * from member where userId = ".concat(userId), userRowMapper);
-        if(users.size() == 0){
+        if(users.isEmpty()){
             return Optional.empty();
         }
 

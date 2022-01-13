@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class CreateCommentRequest {
+public class CommentRequest {
     private String writerName;
     private String comment;
 }

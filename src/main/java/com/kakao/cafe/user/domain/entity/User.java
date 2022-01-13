@@ -1,8 +1,10 @@
 package com.kakao.cafe.user.domain.entity;
 
 
+import com.kakao.cafe.util.IdGenerator;
 import com.kakao.cafe.util.ValidationService;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
@@ -21,7 +23,6 @@ public class User {
 
     @Email
     private String email;
-
 
     public User(String userId, String password, String name, String email) {
         this.userId = Objects.requireNonNull(userId);

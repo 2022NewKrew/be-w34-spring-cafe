@@ -1,6 +1,8 @@
 package com.kakao.cafe.util;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class MyJdbcTemplate {
+    private static final Logger logger = LoggerFactory.getLogger(MyJdbcTemplate.class);
+
     private final DataSource dataSource;
 
     public <T> List<T> query(String query, RowMapper<T> rowMapper){
@@ -22,7 +26,8 @@ public class MyJdbcTemplate {
             ResultSet resultSet = preparedStatement.executeQuery();
             return convert(resultSet, rowMapper);
         } catch (SQLException exception) {
-            throw new IllegalStateException(exception.getMessage());
+            logger.info(exception.getMessage());
+            return Collections.emptyList();
         }
     }
 
@@ -47,7 +52,7 @@ public class MyJdbcTemplate {
             setObjects(preparedStatement, values);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            throw new IllegalStateException(exception.getMessage());
+            logger.info(exception.getMessage());
         }
     }
 

@@ -3,10 +3,12 @@ package com.kakao.cafe.user.presentation;
 import com.kakao.cafe.user.application.JoinService;
 import com.kakao.cafe.user.application.UserInfoService;
 import com.kakao.cafe.user.domain.entity.User;
-import com.kakao.cafe.user.presentation.mapper.UserDtoMapper;
 import com.kakao.cafe.user.presentation.dto.JoinRequest;
 import com.kakao.cafe.user.presentation.dto.UserDto;
+import com.kakao.cafe.user.presentation.mapper.JoinRequestToUserConverter;
+import com.kakao.cafe.user.presentation.mapper.UserToUserDtoConverter;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -28,7 +30,7 @@ public class UserController {
 
     private final JoinService joinService;
     private final UserInfoService userInfoService;
-    private final UserDtoMapper userMapper;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/join")
     public String joinForm(){
@@ -40,9 +42,11 @@ public class UserController {
     @PostMapping("")
     public String join(JoinRequest joinRequest, Model model){
         logger.info("회원가입 요청이 시도되었습니다.");
-        User user = joinService.save(userMapper.toUser(joinRequest));
 
-        model.addAttribute("user", userMapper.toDto(user));
+        User user = modelMapper.map(joinRequest, User.class);
+        joinService.save(user);
+
+        model.addAttribute("user", modelMapper.map(user, UserDto.class));
         return "user/join_success";
     }
 
@@ -50,7 +54,7 @@ public class UserController {
     public String listUsers(Model model){
         List<UserDto> users = userInfoService.getAllUsers()
                 .stream()
-                .map(userMapper::toDto)
+                .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(toList());
 
         logger.debug(String.valueOf(users.size()));
@@ -62,7 +66,7 @@ public class UserController {
     @GetMapping("/{id}")
     public String  getUserInfo(@PathVariable String id, Model model){
         User user = userInfoService.getUser(id);
-        UserDto userDto = userMapper.toDto(user);
+        UserDto userDto = modelMapper.map(user, UserDto.class);
 
         model.addAttribute("user", userDto);
         return "user/profile";
