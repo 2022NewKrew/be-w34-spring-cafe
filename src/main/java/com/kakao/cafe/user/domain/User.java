@@ -42,10 +42,16 @@ public class User {
         this.email = email;
     }
 
-    public void updateInfo(UpdateDTO updateDTO) {
-        this.password = updateDTO.getPassword();
-        this.name = updateDTO.getName();
-        this.email = updateDTO.getEmail();
+    public User(UpdateDTO updateDTO) {
+        this.id=updateDTO.getId();
+        this.userId=updateDTO.getUserId();
+        this.password= updateDTO.getPassword();
+        this.name= updateDTO.getName();
+        this.email= updateDTO.getEmail();
+    }
+
+    public User updateInfo(UpdateDTO updateDTO) {
+        return new User(updateDTO);
     }
 
     public boolean equalsPassword(String InputPassword){

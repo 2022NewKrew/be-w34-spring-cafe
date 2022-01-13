@@ -37,6 +37,6 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public void update(UpdateDTO updateDTO) {
         User user = userMap.get(updateDTO.getId());
-        user.updateInfo(updateDTO);
+        userMap.put(updateDTO.getId(),user.updateInfo(updateDTO));
     }
 }
