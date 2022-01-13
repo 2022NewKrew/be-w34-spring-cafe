@@ -2,41 +2,49 @@ package com.kakao.cafe.user;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.Users;
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
+import javax.sql.DataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepository {
 
-    private final Map<String, User> users = new ConcurrentHashMap<>();
+    private final RowMapper<User> userRowMapper = getUserMapper();
+    private final JdbcTemplate jdbcTemplate;
 
-    public void save(User user) {
-        User beforeUser = users.putIfAbsent(user.getUserId(), user);
-        saveValidate(beforeUser);
+    public UserRepository(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    private void saveValidate(User user) {
-        if (Objects.nonNull(user)) {
-            throw new IllegalArgumentException("중복된 사용자입니다.");
-        }
+    public void save(User user) {
+        String sql = "INSERT INTO users (user_id, password, name, email) values (?, ?, ?, ?)";
+        jdbcTemplate.update(
+            sql,
+            user.getUserId(),
+            user.getPassword(),
+            user.getName(),
+            user.getEmail()
+        );
     }
 
     public Users findAll() {
-        return new Users(new ArrayList<>(users.values()));
+        String sql = "SELECT * FROM users";
+        return new Users(jdbcTemplate.query(sql, userRowMapper));
     }
 
     public User findById(String userId) {
-        User user = users.get(userId);
-        validateUser(user);
-        return user;
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        return jdbcTemplate.queryForObject(sql, userRowMapper, userId);
     }
 
-    private void validateUser(User user) {
-        if (Objects.isNull(user)) {
-            throw new IllegalArgumentException("존재하지 않는 아이디입니다.");
-        }
+    private RowMapper<User> getUserMapper() {
+        return (resultSet, rowNumber) -> new User(
+            resultSet.getString(1),
+            resultSet.getString(2),
+            resultSet.getString(3),
+            resultSet.getString(4)
+        );
     }
 }

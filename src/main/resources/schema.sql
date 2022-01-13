@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS users (
+    user_id VARCHAR(30) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    email VARCHAR(30) NOT NULL,
+    PRIMARY KEY (user_id)
+);
+
+CREATE TABLE IF NOT EXISTS Qnas (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    writer VARCHAR(30) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    contents TEXT NOT NULL,
+    create_time DATETIME NOT NULL,
+    PRIMARY KEY (id)
+)
