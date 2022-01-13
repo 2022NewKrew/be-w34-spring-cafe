@@ -43,7 +43,7 @@ public class UserController {
         try {
             userAccountService.join(userAccountDTO);
         } catch (IllegalStateException e) {
-            logger.info(e.getMessage());
+            logger.error(e.getMessage());
             return "redirect:/user";
         }
 
@@ -66,7 +66,7 @@ public class UserController {
             userAccount = userAccountService.findOne(userId)
                     .orElseThrow(() -> new InvalidKeyException("아이디를 찾을 수 없습니다."));
         } catch (InvalidKeyException e) {
-            logger.info("아이디 찾기 에러");
+            logger.error("아이디 찾기 에러");
             return "/user/list";
         }
 
@@ -85,7 +85,7 @@ public class UserController {
             userAccountService.updateUserAccount(userAccountDTO, curPassword)
                     .orElseThrow(() -> new IllegalAccessError("비밀 번호가 일치하지 않습니다"));
         } catch (IllegalAccessError e) {
-            logger.info("비밀 번호 불일치");
+            logger.error("비밀 번호 불일치");
             return "/user/list";
         }
         return "redirect:/user";

@@ -44,7 +44,7 @@ public class ArticleController {
             article = articleService.findOne(index)
                     .orElseThrow(() -> new IllegalAccessError("게시글을 찾을 수 없습니다."));
         } catch (IllegalAccessError e) {
-            logger.info("잘못된 게시글로 접근");
+            logger.error("잘못된 게시글로 접근");
             return "redirect:/";
         }
 
