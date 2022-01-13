@@ -1,10 +1,11 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.Article;
-import com.kakao.cafe.model.ArticleDTO;
-import com.kakao.cafe.model.data_storage.ArticleTable;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.ArticleDTO;
+import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,15 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 @Controller
 @RequestMapping("/questions")
 public class ArticleController {
     Logger logger = LoggerFactory.getLogger(ArticleController.class);
+    private final ArticleService articleService;
+
+    @Autowired
+    public ArticleController(ArticleService articleService){
+        this.articleService = articleService;
+    }
 
     @GetMapping("form")
     public String form(){
@@ -29,42 +31,25 @@ public class ArticleController {
 
     @PostMapping("form")
     public String form(ArticleDTO articleDTO){
-        Article article = null;
-
-        try {
-            article = new Article(articleDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if(!Objects.isNull(article)){
-            ArticleTable.saveUserInto(ArticleTable.size(), article);
-        }
+        logger.info(articleDTO.toString());
+        articleService.join(articleDTO);
 
         return "redirect:/";
     }
 
     @GetMapping("/detail/{index}")
     public String datail(@PathVariable("index") int index, Model model){
-        Article article = ArticleTable.lookUpUserInfo(index);
-
-        logger.info(article.toString());
-
-        List<ArticleDTO> comments = null;
+        Article article = null;
         try {
-            comments = article.getComments().stream()
-                    .map(Article::toArticleDTO)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            comments = new ArrayList<>();
+            article = articleService.findOne(index)
+                    .orElseThrow(() -> new IllegalAccessError("게시글을 찾을 수 없습니다."));
+        } catch (IllegalAccessError e) {
+            logger.error("잘못된 게시글로 접근");
+            return "redirect:/";
         }
 
-        logger.info(comments.toString());
+        ArticleDTO articleDTO = new ArticleDTO(article);
 
-        ArticleDTO articleDTO = article.toArticleDTO();
-        articleDTO.setCommentSize(article.commentSize());
-        articleDTO.setComments(comments);
-        logger.info(articleDTO.toString());
         model.addAttribute("article_detail", articleDTO);
         return "/qna/show";
     }
