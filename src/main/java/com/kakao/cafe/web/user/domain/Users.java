@@ -1,4 +1,4 @@
-package com.kakao.cafe.web.domain;
+package com.kakao.cafe.web.user.domain;
 
 import java.util.ArrayList;
 import java.util.List;
