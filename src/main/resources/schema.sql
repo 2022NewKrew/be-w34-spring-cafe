@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS  USERS;
+
+CREATE TABLE USERS(
+    peoplename varchar
+);
