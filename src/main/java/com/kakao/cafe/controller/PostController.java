@@ -1,8 +1,15 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.domain.WritePostRequest;
+import com.kakao.cafe.exceptions.InvalidWritePostException;
+import com.kakao.cafe.service.PostService;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,24 +17,38 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class PostController {
 
-    public PostController() {
+    private final PostService postService;
+    private Logger logger = LoggerFactory.getLogger(PostController.class);
+
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
     @PostMapping("/posts")
-    public String write(WritePostRequest postDto) {
-        // TODO - 게시글 작성
+    public String write(WritePostRequest postDto, BindingResult errors) {
+        logger.info("[POST] /posts 게시글 작성");
+        if (errors.hasErrors()) {
+            throw new InvalidWritePostException("게시글 입력이 잘못되었습니다");
+        }
+
+        Post post = postDto.toEntity();
+        postService.writePost(post);
         return "redirect:/";
     }
 
     @GetMapping("/")
     public String postList(Model model) {
-        // TODO - 게시글 전체 리스트
+        List<Post> postList = postService.getPostList();
+        model.addAttribute("postList", postList);
+
         return "index";
     }
 
     @GetMapping("/posts/{postId}")
-    public String postById(@PathVariable String postId, Model model) {
-        // TODO - 게시글 보기
+    public String postById(@PathVariable int postId, Model model) {
+        Post post = postService.getPostById(postId);
+        model.addAttribute("post", post);
+
         return "posts/show";
     }
 
