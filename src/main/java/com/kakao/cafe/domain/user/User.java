@@ -35,6 +35,14 @@ public class User {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void updatePassword(String newPassword, String confirmPassword) {
+        if(!matchesPassword(confirmPassword)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        this.password = newPassword;
+        this.updatedAt = LocalDateTime.now();
+    }
+
     public boolean matchesPassword(String confirmPassword) {
         return password.equals(confirmPassword);
     }

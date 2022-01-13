@@ -3,6 +3,7 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.repository.mapper.UserMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +33,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        User user = jdbcTemplate.queryForObject("SELECT * FROM USERS WHERE user_id = ?", rowMapper, userId);
+        User user = null;
+        try {
+            user = jdbcTemplate.queryForObject("SELECT * FROM USERS WHERE user_id = ?", rowMapper, userId);
+        } catch (EmptyResultDataAccessException ignored) {}
         return Optional.ofNullable(user);
     }
 
@@ -42,6 +45,12 @@ public class UserRepositoryImpl implements UserRepository {
             return insertUser(user);
         }
         return updateUser(user);
+    }
+
+    @Override
+    public Long deleteAll() {
+        int affectedRows = jdbcTemplate.update("DELETE FROM USERS");
+        return (long)affectedRows;
     }
 
     private Long insertUser(User user) {
