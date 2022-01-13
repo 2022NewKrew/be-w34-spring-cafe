@@ -27,13 +27,9 @@ public class ArticleController {
 
     // 게시글 상세 내용 조회
     @GetMapping("/articles/{articleId}")
-    public String showArticle(@PathVariable int articleId, Model model) {
-        try {
-            model.addAttribute("article", this.articleService.getArticleById(articleId));
-            return "article/show";
-        } catch (NoSuchArticleException e) {
-            return "error";
-        }
+    public String showArticle(@PathVariable int articleId, Model model) throws NoSuchArticleException {
+        model.addAttribute("article", this.articleService.getArticleById(articleId));
+        return "article/show";
     }
 
     // 게시글 작성 양식

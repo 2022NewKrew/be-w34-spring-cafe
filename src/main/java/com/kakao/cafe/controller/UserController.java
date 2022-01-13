@@ -29,13 +29,9 @@ public class UserController {
 
     // 회원 정보 페이지
     @GetMapping("/users/{userId}")
-    public String showUser(@PathVariable String userId, Model model) {
-        try {
-            model.addAttribute("user", this.userService.getUserByUserId(userId));
-            return "user/profile";
-        } catch (NoSuchUserException e) {
-            return "error";
-        }
+    public String showUser(@PathVariable String userId, Model model) throws NoSuchUserException {
+        model.addAttribute("user", this.userService.getUserByUserId(userId));
+        return "user/profile";
     }
 
     // 회원가입 페이지
@@ -46,38 +42,26 @@ public class UserController {
 
     // 회원 가입 요청
     @PostMapping("/user/signup")
-    public String signUp(SignUpDto signUpDto) {
+    public String signUp(SignUpDto signUpDto) throws UserIdDuplicationException {
         log.info("{}", signUpDto.getUserId());
         log.info("{}", signUpDto.getPassword());
         log.info("{}", signUpDto.getName());
         log.info("{}", signUpDto.getEmail());
-        try {
-            this.userService.saveNewUser(signUpDto);
-            return "redirect:/users";
-        } catch (UserIdDuplicationException e) {
-            return "error";
-        }
+        this.userService.saveNewUser(signUpDto);
+        return "redirect:/users";
     }
 
     // 회원정보 수정 페이지
     @GetMapping("users/{userId}/form")
-    public String updateForm(@PathVariable String userId, Model model) {
-        try {
-            model.addAttribute("user", this.userService.getUserByUserId(userId));
-            return "user/updateForm";
-        } catch (NoSuchUserException e) {
-            return "error";
-        }
+    public String updateForm(@PathVariable String userId, Model model) throws NoSuchUserException {
+    model.addAttribute("user", this.userService.getUserByUserId(userId));
+    return "user/updateForm";
     }
 
     // 회원정보 수정 요청
     @PostMapping("users/{userId}/update")
-    public String updateUserInfo(SignUpDto signUpDto, @PathVariable String userId) {
-        try {
-            this.userService.updateUser(signUpDto);
-            return "redirect:/users";
-        } catch (PasswordMismatchException | NoSuchUserException e) {
-            return "error";
-        }
+    public String updateUserInfo(SignUpDto signUpDto, @PathVariable String userId) throws PasswordMismatchException, NoSuchUserException {
+        this.userService.updateUser(signUpDto);
+        return "redirect:/users";
     }
 }
