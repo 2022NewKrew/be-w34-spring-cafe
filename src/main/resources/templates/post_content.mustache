@@ -1,0 +1,27 @@
+{{> layout/header}}
+<body>
+{{> layout/navbar}}
+
+<div class="container">
+    <h1 class="mt-5">글 내용</h1>
+    <hr>
+
+    {{#post}}
+    <div class="card">
+        <div class="card-header">
+            writer: {{writer}}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{title}}</h5>
+            <p class="card-text">{{body}}</p>
+        </div>
+    </div>
+    <hr>
+    {{/post}}
+
+    {{> component/back}}
+</div>
+
+{{> layout/footer}}
+</body>
+</html>

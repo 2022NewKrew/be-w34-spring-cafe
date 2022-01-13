@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class InMemoryUserRepository implements UserRepository {
     private static final List<User> store = Collections.synchronizedList(new ArrayList<>());
-    private static final AtomicLong sequence = new AtomicLong(0L);
+    private static final AtomicLong sequence = new AtomicLong(1L);
 
     @Override
     public void add(User user) {
@@ -18,7 +18,7 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(long id) {
-        return Optional.of(store.get((int)id));
+        return Optional.of(store.get((int)id - 1));
     }
 
     @Override

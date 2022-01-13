@@ -1,6 +1,7 @@
 package com.kakao.cafe.interfaces.user;
 
 import com.kakao.cafe.application.UserService;
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.interfaces.common.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ public class UserController {
      *
      * @param model
      */
-    @GetMapping()
+    @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", userService.findAllUser());
         return "user_list";
@@ -41,8 +42,8 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public String userProfile(@PathVariable long id, Model model) {
-        UserDto userDto = userService.findById(id).orElseThrow(RuntimeException::new);
-        model.addAttribute("userDto", userDto);
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
         return "user_profile";
     }
 

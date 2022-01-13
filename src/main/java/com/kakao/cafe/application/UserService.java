@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,13 +22,12 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public List<UserDto> findAllUser() {
-        return userMapper.toDtoList(userRepository.findAll());
+    public List<User> findAllUser() {
+        return userRepository.findAll();
     }
 
-    public Optional<UserDto> findById(long id) {
-        User user = userRepository.findById(id).orElseThrow(RuntimeException::new);
-        return Optional.of(userMapper.toDto(user));
+    public User findById(long id) {
+        return userRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     public void signup(UserDto userDto) {

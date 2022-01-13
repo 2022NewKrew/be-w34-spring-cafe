@@ -73,10 +73,10 @@ public class User {
 
         public User build() {
             User user = new User();
-            user.id = this.id;
-            user.nickname = this.nickname;
-            user.email = this.email;
-            user.password = this.password;
+            user.setId(id);
+            user.setNickname(nickname);
+            user.setEmail(email);
+            user.setPassword(password);
             return user;
         }
     }

@@ -6,15 +6,20 @@
     <h1 class="mt-5">글 작성</h1>
     <hr>
 
-    <form method="post">
-        <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title">
+    <form action="/posts/new" method="post">
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="title-label">Title</span>
+            <input type="text" class="form-control" id="title" name="title" aria-label="Title" aria-describedby="title-label">
         </div>
-        <div class="mb-3">
-            <label for="body" class="form-label">body</label>
-            <textarea class="form-control" id="body" name="body"></textarea>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="writer-label">Writer</span>
+            <input type="text" class="form-control" id="writer" name="writer" aria-label="Writer" aria-describedby="writer-label">
         </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="body-label">Body</span>
+            <textarea class="form-control" id="body" name="body" aria-label="Body" aria-describedby="body-label"></textarea>
+        </div>
+
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>

@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-01-12T22:51:42+0900",
+    date = "2022-01-13T09:56:33+0900",
     comments = "version: 1.5.0.Beta2, compiler: javac, environment: Java 11.0.13 (Eclipse Adoptium)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
 
     @Override
-    public UserDto toDto(User arg0) {
-        if ( arg0 == null ) {
+    public UserDto toDto(User e) {
+        if ( e == null ) {
             return null;
         }
 
@@ -25,10 +25,10 @@ public class UserMapperImpl implements UserMapper {
         String nickname = null;
         String password = null;
 
-        id = arg0.getId();
-        email = arg0.getEmail();
-        nickname = arg0.getNickname();
-        password = arg0.getPassword();
+        id = e.getId();
+        email = e.getEmail();
+        nickname = e.getNickname();
+        password = e.getPassword();
 
         UserDto userDto = new UserDto( id, email, nickname, password );
 
@@ -36,29 +36,29 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public User toEntity(UserDto arg0) {
-        if ( arg0 == null ) {
+    public User toEntity(UserDto d) {
+        if ( d == null ) {
             return null;
         }
 
         User user = new User();
 
-        user.setId( arg0.getId() );
-        user.setEmail( arg0.getEmail() );
-        user.setNickname( arg0.getNickname() );
-        user.setPassword( arg0.getPassword() );
+        user.setId( d.getId() );
+        user.setEmail( d.getEmail() );
+        user.setNickname( d.getNickname() );
+        user.setPassword( d.getPassword() );
 
         return user;
     }
 
     @Override
-    public List<UserDto> toDtoList(List<User> arg0) {
-        if ( arg0 == null ) {
+    public List<UserDto> toDtoList(List<User> entityList) {
+        if ( entityList == null ) {
             return null;
         }
 
-        List<UserDto> list = new ArrayList<UserDto>( arg0.size() );
-        for ( User user : arg0 ) {
+        List<UserDto> list = new ArrayList<UserDto>( entityList.size() );
+        for ( User user : entityList ) {
             list.add( toDto( user ) );
         }
 
@@ -66,13 +66,13 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public List<User> toEntityList(List<UserDto> arg0) {
-        if ( arg0 == null ) {
+    public List<User> toEntityList(List<UserDto> dtoList) {
+        if ( dtoList == null ) {
             return null;
         }
 
-        List<User> list = new ArrayList<User>( arg0.size() );
-        for ( UserDto userDto : arg0 ) {
+        List<User> list = new ArrayList<User>( dtoList.size() );
+        for ( UserDto userDto : dtoList ) {
             list.add( toEntity( userDto ) );
         }
 
@@ -80,22 +80,22 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public void updateFromDto(UserDto arg0, User arg1) {
-        if ( arg0 == null ) {
+    public void updateFromDto(UserDto dto, User entity) {
+        if ( dto == null ) {
             return;
         }
 
-        if ( arg0.getId() != null ) {
-            arg1.setId( arg0.getId() );
+        if ( dto.getId() != null ) {
+            entity.setId( dto.getId() );
         }
-        if ( arg0.getEmail() != null ) {
-            arg1.setEmail( arg0.getEmail() );
+        if ( dto.getEmail() != null ) {
+            entity.setEmail( dto.getEmail() );
         }
-        if ( arg0.getNickname() != null ) {
-            arg1.setNickname( arg0.getNickname() );
+        if ( dto.getNickname() != null ) {
+            entity.setNickname( dto.getNickname() );
         }
-        if ( arg0.getPassword() != null ) {
-            arg1.setPassword( arg0.getPassword() );
+        if ( dto.getPassword() != null ) {
+            entity.setPassword( dto.getPassword() );
         }
     }
 }

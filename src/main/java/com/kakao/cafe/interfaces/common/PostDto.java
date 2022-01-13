@@ -2,11 +2,11 @@ package com.kakao.cafe.interfaces.common;
 
 public class PostDto {
     private Long id;
-    private UserDto writer;
+    private String writer;
     private String title;
     private String body;
 
-    public PostDto(UserDto writer, String title, String body) {
+    public PostDto(String writer, String title, String body) {
         this.writer = writer;
         this.title = title;
         this.body = body;
@@ -20,11 +20,11 @@ public class PostDto {
         this.id = id;
     }
 
-    public UserDto getWriter() {
+    public String getWriter() {
         return writer;
     }
 
-    public void setWriter(UserDto writer) {
+    public void setWriter(String writer) {
         this.writer = writer;
     }
 
