@@ -126,4 +126,18 @@ public class UserController {
 
         return "users/profile";
     }
+
+    @GetMapping("/users/edit")
+    public String getEditPage(final HttpServletRequest request, Model model) {
+        if (!AuthControl.isLogon(request, userService)) {
+            return "redirect:/";
+        }
+
+        final HttpSession session = request.getSession();
+        final UserDto userDto = userService.getUser((String)session.getAttribute(AuthControl.TAG_ID));
+        model.addAttribute("email", userDto.getEmail());
+        model.addAttribute("idx", userDto.getIdx());
+
+        return "users/edit";
+    }
 }
