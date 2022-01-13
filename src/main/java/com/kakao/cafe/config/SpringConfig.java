@@ -1,7 +1,13 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.ArticleDTO;
+import com.kakao.cafe.domain.UserAccount;
+import com.kakao.cafe.domain.UserAccountDTO;
+import com.kakao.cafe.repository.article.ArticleNoBdUseRepository;
 import com.kakao.cafe.repository.user.UserAccountNoDbUseRepository;
 import com.kakao.cafe.repository.Repository;
+import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserAccountService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,19 +27,25 @@ public class SpringConfig {
     public UserAccountService UserAccountService(){
         return new UserAccountService(UserRepository(), getPasswordEncoder());
     }
-//
-//    @Bean
-//    public UserAccountRepository UserAccountRepository(){
-//        return new UserAccountRepository(dataSource);
-//    }
 
     @Bean
-    public Repository UserRepository(){
+    public ArticleService ArticleService(){
+        return new ArticleService(ArticleRepository());
+    }
+
+    @Bean
+    public Repository<UserAccount, UserAccountDTO, String> UserRepository(){
         return new UserAccountNoDbUseRepository();
+    }
+
+    @Bean
+    public Repository<Article, ArticleDTO, Integer> ArticleRepository(){
+        return new ArticleNoBdUseRepository();
     }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

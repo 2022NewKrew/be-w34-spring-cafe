@@ -23,7 +23,7 @@ public class UserAccountRepository implements Repository<UserAccount, UserAccoun
     }
 
     @Override
-    public Optional<UserAccount> findByUserId(String userId) {
+    public Optional<UserAccount> findById(String userId) {
         return Optional.empty();
     }
 

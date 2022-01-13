@@ -1,19 +1,24 @@
 package com.kakao.cafe.domain;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * author    : brody.moon
  * version   : 1.0
  * Article 클래스에서 로직을 제거하고 데이터 전송을 위해 따로 만든 클래스입니다.
  */
+@Data
 public class ArticleDTO {
-    private final String writer;
-    private final String title;
-    private final String contents;
-    private final LocalDateTime date;
-    private int index;
+    private String writer;
+    private String title;
+    private String contents;
+    private LocalDateTime date;
+    private int id;
     private int commentSize;
     private List<ArticleDTO> comments;
 
@@ -22,58 +27,20 @@ public class ArticleDTO {
         this.title = title;
         this.contents = contents;
         this.date = LocalDateTime.now();
+        this.comments = new ArrayList<>();
+        this.commentSize = 0;
     }
 
-    public String getWriter() {
-        return writer;
+    public ArticleDTO(Article article) {
+        this.writer = article.getWriter();
+        this.title = article.getTitle();
+        this.contents = article.getContents();
+        this.date = article.getDate();
+        this.comments = article.getComments().stream()
+                .map(ArticleDTO::new).collect(Collectors.toList());
+        this.commentSize = article.getCommentSize();
     }
+    public ArticleDTO(){
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public int getCommentSize() {
-        return commentSize;
-    }
-
-    public List<ArticleDTO> getComments() {
-        return comments;
-    }
-
-    public void setCommentSize(int commentSize) {
-        this.commentSize = commentSize;
-    }
-
-    public void setComments(List<ArticleDTO> comments) {
-        this.comments = comments;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
-    @Override
-    public String toString() {
-        return "ArticleDTO{" +
-                "writer='" + writer + '\'' +
-                ", title='" + title + '\'' +
-                ", contents='" + contents + '\'' +
-                ", date=" + date +
-                ", index=" + index +
-                ", commentSize=" + commentSize +
-                ", comments=" + comments +
-                '}';
     }
 }

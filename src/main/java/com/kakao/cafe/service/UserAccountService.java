@@ -10,16 +10,17 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 
-public class UserAccountService {
+public class UserAccountService implements Service<UserAccount, UserAccountDTO, String>{
     private final Repository<UserAccount, UserAccountDTO, String> userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserAccountService(Repository userRepository, PasswordEncoder passwordEncoder){
+    public UserAccountService(Repository<UserAccount, UserAccountDTO, String> userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
     public String join(UserAccountDTO userAccountDTO){
         userAccountDTO.setPassword(passwordEncoder.encode(userAccountDTO.getPassword()));
 
@@ -30,22 +31,24 @@ public class UserAccountService {
     }
 
     private void validateDuplicateUserId(UserAccountDTO userAccountDTO) {
-        userRepository.findByUserId(userAccountDTO.getUserId())
+        userRepository.findById(userAccountDTO.getUserId())
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
     }
 
-    public List<UserAccount> findUserAccount(){
+    @Override
+    public List<UserAccount> findAll(){
         return userRepository.findAll();
     }
 
+    @Override
     public Optional<UserAccount> findOne(String userId){
-        return userRepository.findByUserId(userId);
+        return userRepository.findById(userId);
     }
 
     public Optional<UserAccount> updateUserAccount(UserAccountDTO userAccountDTO, String curPassword){
-        UserAccount savedUserAccount = userRepository.findByUserId(userAccountDTO.getUserId())
+        UserAccount savedUserAccount = userRepository.findById(userAccountDTO.getUserId())
                 .orElseThrow(() -> new InputMismatchException("아이디를 찾을 수 없습니다."));
 
         UserAccount newUserAccount = null;

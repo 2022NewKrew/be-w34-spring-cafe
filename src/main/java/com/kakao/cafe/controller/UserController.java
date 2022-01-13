@@ -47,7 +47,7 @@ public class UserController {
 
     @GetMapping
     public String userInfo(Model model){
-        List<UserAccount> userAccounts = userAccountService.findUserAccount();
+        List<UserAccount> userAccounts = userAccountService.findAll();
 
         model.addAttribute("user_accounts", userAccounts);
 

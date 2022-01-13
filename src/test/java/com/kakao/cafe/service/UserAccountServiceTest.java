@@ -66,7 +66,8 @@ class UserAccountServiceTest {
     }
 
     @Test
-    void findUserAccount() {
+    @DisplayName("전체 조회")
+    void findAll() {
         //givin
         UserAccountDTO userAccountDTO = new UserAccountDTO("aa", "aa", "aa", "aa@com");
         userAccountService.join(userAccountDTO);
@@ -75,7 +76,7 @@ class UserAccountServiceTest {
         userAccountService.join(userAccountDTO2);
 
         //when
-        List<UserAccount> userAccounts = userAccountService.findUserAccount();
+        List<UserAccount> userAccounts = userAccountService.findAll();
 
         //then
         assertThat(userAccounts.size()).isEqualTo(2);
@@ -83,6 +84,7 @@ class UserAccountServiceTest {
     }
 
     @Test
+    @DisplayName("하나 조회")
     void findOne() {
         //givin
         UserAccountDTO userAccountDTO = new UserAccountDTO("aa", "aa", "aa", "aa@com");
@@ -96,6 +98,7 @@ class UserAccountServiceTest {
     }
 
     @Test
+    @DisplayName("회원 정보 업데이트")
     void updateUserAccount() {
         //givin
         UserAccountDTO userAccountDTO = new UserAccountDTO("aa", "aa", "aa", "aa@com");

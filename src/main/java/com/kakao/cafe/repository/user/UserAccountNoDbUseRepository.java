@@ -30,7 +30,7 @@ public class UserAccountNoDbUseRepository implements Repository<UserAccount, Use
     }
 
     @Override
-    public Optional<UserAccount> findByUserId(String userId) {
+    public Optional<UserAccount> findById(String userId) {
         return Optional.ofNullable(DB.get(userId));
     }
 

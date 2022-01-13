@@ -25,18 +25,18 @@ class UserAccountNoDbUseRepositoryTest {
         UserAccountDTO userAccountDTO = new UserAccountDTO("aa", "aa", "aa", "aa@com");
 
         UserAccount savedUserAccount = repository.save(userAccountDTO);
-        UserAccount result = repository.findByUserId(userAccountDTO.getUserId()).get();
+        UserAccount result = repository.findById(userAccountDTO.getUserId()).get();
         assertThat(savedUserAccount).isEqualTo(result);
     }
 
     @Test
     @DisplayName("userId로 데이터 조회")
-    void findByUserId() {
+    void findById() {
         UserAccountDTO userAccountDTO = new UserAccountDTO("aa", "aa", "aa", "aa@com");
 
         UserAccount savedUserAccount = repository.save(userAccountDTO);
 
-        UserAccount result = repository.findByUserId("aa").get();
+        UserAccount result = repository.findById("aa").get();
 
         assertThat(result).isEqualTo(savedUserAccount);
     }
