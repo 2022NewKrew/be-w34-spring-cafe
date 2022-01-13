@@ -34,7 +34,9 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     public User findByUserId(String id) {
-        User findUser = userList.stream().filter(user -> Objects.equals(user.getUserId(), id)).findAny()
+        User findUser = userList.stream()
+                .filter(user -> Objects.equals(user.getUserId(), id))
+                .findAny()
                 .orElseThrow(() -> new UserNotFoundException("사용자 ID가 없습니다"));
 
         return findUser;
