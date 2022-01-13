@@ -16,11 +16,11 @@ public class UserService {
     }
 
     public void createUser(User user) {
-        userRepository.update(user);
+        userRepository.save(user);
     }
 
     public List<User> getAllUsers() {
-        return userRepository.getAllUsers();
+        return userRepository.findAll();
     }
 
     public User getUserById(String id) {

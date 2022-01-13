@@ -5,12 +5,12 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    void update(User user);
+    void save(User user);
 
     Optional<User> findById(String id);
 
     Optional<User> findByEmail(String email);
 
-    List<User> getAllUsers();
+    List<User> findAll();
 
 }

@@ -60,7 +60,12 @@ public class UserController {
 
     @PostMapping(path = "/create")
     public String createUser(UserRequest userRequest, Model model) {
-        userService.createUser(new User(userRequest));
+        userService.createUser(User.builder()
+                .id(userRequest.getUserId())
+                .password(userRequest.getPassword())
+                .name(userRequest.getName())
+                .email(userRequest.getEmail())
+                .build());
         return "redirect:/user/list";
     }
 
