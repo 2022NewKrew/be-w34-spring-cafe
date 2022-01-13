@@ -21,15 +21,9 @@ public class UserController {
     private static final UserView userView = new UserView();
 
     @GetMapping("/users")
-    public String getUsers() {
-        return "redirect:user/list.html";
-    }
-
-    @GetMapping("/user/list.html")
-    public String getUserListHtml(Model model) {
+    public String getUsers(Model model) {
         List<UserListDto> userList = userService.getUserList();
         userView.getUsersView(model, userList);
-
         return "user/list";
     }
 
@@ -46,5 +40,25 @@ public class UserController {
         userView.getUserIdView(model, userProfileDto);
 
         return "user/profile";
+    }
+
+    @GetMapping("/user/form")
+    public String getUserForm() {
+        return "user/form";
+    }
+
+    @GetMapping("/user/login")
+    public String getUserLogin() {
+        return "user/login";
+    }
+
+    @GetMapping("/index")
+    public String getIndex() {
+        return "index";
+    }
+
+    @GetMapping("/")
+    public String getRoot() {
+        return "redirect:/index";
     }
 }
