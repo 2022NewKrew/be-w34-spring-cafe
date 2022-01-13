@@ -3,7 +3,7 @@ package com.kakao.cafe.domain;
 import java.time.LocalDateTime;
 
 public class Post {
-    private long id;
+    private int id;
     private final String userId;
     private final String title;
     private final String content;
@@ -16,11 +16,11 @@ public class Post {
         this.createdAt = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

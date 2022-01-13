@@ -22,6 +22,7 @@ public class InMemoryUserRepository implements UserRepository {
         return userList.stream().anyMatch(user -> user.getUserId().equals(findUser.getUserId()));
     }
 
+    @Override
     public User save(User user) {
         if (isDuplicate(user)) {
             throw new DuplicateUserException("사용자가 이미 존재합니다");
@@ -31,10 +32,12 @@ public class InMemoryUserRepository implements UserRepository {
         return user;
     }
 
+    @Override
     public List<User> findAll() {
         return userList;
     }
 
+    @Override
     public User findByUserId(String id) {
         User findUser = userList.stream()
                 .filter(user -> Objects.equals(user.getUserId(), id))
