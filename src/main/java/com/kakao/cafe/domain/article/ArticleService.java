@@ -28,6 +28,7 @@ public class ArticleService {
         this.userRepository = userRepository;
     }
 
+    // Article (질문하기) 등록
     public Article register(Article article) {
         Long writerId = getWriterLongIdFromUserId(article.getWriterUserId());
         ArticleRowDataDto articleRowDataDto = ArticleRowDataDto.from(article, writerId);
@@ -35,15 +36,20 @@ public class ArticleService {
         return article;
     }
 
+    // ArticleRowDataDto 를 Article로 변환
     private Article articleOf(ArticleRowDataDto articleRowDataDto) {
         String writerUserId = getWriterUserIdFromLongID(articleRowDataDto.getWriterId());
         return Article.of(articleRowDataDto, writerUserId);
     }
 
+    // param: userId(string)
+    // return: user의 pk id(Long)
     private Long getWriterLongIdFromUserId(String userId){
         return userRepository.findByUserId(userId).orElseThrow(() -> {throw new NoSuchElementException("해당 아이디의 유저가 없습니다.");}).getId();
     }
 
+    // param: user의 pk id(Long)
+    // return: userId(string)
     private String getWriterUserIdFromLongID(Long id){
         return userRepository.findById(id).orElseThrow(() -> {throw new NoSuchElementException("해당 아이디의 유저가 없습니다.");}).getUserId();
     }

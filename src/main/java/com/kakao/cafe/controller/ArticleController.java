@@ -25,6 +25,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    // article(질문하기) 등록
     @PostMapping("")
     public String registerArticle(@Valid ArticleForm articleFrom){
         logger.info("POST /articles");
@@ -33,6 +34,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    // article 자세히 보기
     @GetMapping("/{id}")
     public String showArticle(@PathVariable Long id, Model model){
         logger.info("GET /{id}");

@@ -24,6 +24,7 @@ public class UserService {
         return user.getId();
     }
 
+    // 중복회원 검사 (userId:아이디 를 기준으로)
     private void validateDuplicateUser(User user) {
         userRepository.findByUserId(user.getUserId())
                 .ifPresent(u -> {throw new IllegalStateException("이미 존재하는 회원입니다.");});

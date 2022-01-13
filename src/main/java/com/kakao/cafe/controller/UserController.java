@@ -26,6 +26,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    // 회원가입
     @PostMapping("")
     public String create(@Valid UserForm form) {
         logger.info("POST /users");
@@ -34,6 +35,7 @@ public class UserController {
         return "redirect:/users";
     }
 
+    // 유저 목록
     @GetMapping("")
     public String list(Model model) {
         logger.info("GET /users");
@@ -42,6 +44,7 @@ public class UserController {
         return "user/list";
     }
 
+    // 유저 프로필
     @GetMapping("/{userId}")
     public String profile(@PathVariable String userId, Model model){
         logger.info("GET /users/{userId}");

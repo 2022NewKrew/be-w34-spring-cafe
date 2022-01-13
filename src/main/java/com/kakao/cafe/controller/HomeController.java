@@ -17,11 +17,11 @@ public class HomeController {
         this.articleService = articleService;
     }
 
+    // 홈 화면 (질문 리스트 페이지)
     @GetMapping("/")
     public String home(Model model){
         List<Article> articles = articleService.getAllArticle();
         model.addAttribute("articles", articles);
-
         return "index";
     }
 }

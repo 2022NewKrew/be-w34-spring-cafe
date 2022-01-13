@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.article.Article;
 
 import java.time.LocalDateTime;
 
+// DB에 저장된 데이터 (writer - Article(string), ArticleRowDataDto(Long))
 public class ArticleRowDataDto {
 
     private Long id;

@@ -3,6 +3,7 @@ package com.kakao.cafe.domain.user.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+// 회원가입 폼
 public class UserForm {
 
     @NotBlank
