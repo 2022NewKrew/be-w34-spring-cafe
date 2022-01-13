@@ -86,6 +86,6 @@
     <img src="img/step1_2_4_write_article.gif" alt="step1_2_4_write_article">
     <h4>< 댓글 작성 및 삭제 ></h4>
     <img src="img/step1_2_5_write_comment.gif" alt="step1_2_5_write_comment">
-    <h4>< 글 수정 맟 삭제 ></h4>
+    <h4>< 글 수정 및 삭제 ></h4>
     <img src="img/step1_2_6_modify_article.gif" alt="step1_2_6_modify_article">
 </details>
