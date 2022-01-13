@@ -2,25 +2,29 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ArticleCreateRequest;
+import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ArticleService {
 
-    private static final List<Article> articles = new ArrayList<>();
+    private final ArticleRepository articleRepository;
+
+    public ArticleService(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
 
     public void createArticle(ArticleCreateRequest request) {
-        articles.add(new Article(Article.cnt++, request.getWriter(), request.getTitle(), request.getContents()));
+        articleRepository.save(Article.fromNoDbIndex(request));
     }
 
     public List<Article> list() {
-        return articles;
+        return articleRepository.findAll();
     }
 
-    public Article detail(int articleId) {
-        return articles.get(articleId - 1);
+    public Article detail(int id) {
+        return articleRepository.findById(id).get();
     }
 }

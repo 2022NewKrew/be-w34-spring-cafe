@@ -9,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Slf4j
@@ -47,31 +44,29 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String profile(@PathVariable int id, Model model) {
+        log.info("start profile()");
         User user = userService.profile(id);
-        model.addAttribute("userProfile",
-                new UserProfileResponse(user.getId(), user.getUserId(), user.getName(), user.getEmail())
-        );
+        model.addAttribute("userProfile", UserProfileResponse.from(user));
         return "/users/profile";
     }
 
     @GetMapping("/users/{id}/form")
     public String getUpdateForm(@PathVariable int id, Model model) {
+        log.info("start getUpdateForm()");
         User user = userService.profile(id);
-        model.addAttribute("userProfile",
-                new UserProfileResponse(user.getId(), user.getUserId(), user.getName(), user.getEmail())
-        );
+        model.addAttribute("userProfile", UserProfileResponse.from(user));
         return "/users/updateForm";
     }
 
     @PostMapping(value = "/users/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String updateUser(@PathVariable int id, UserUpdateRequest request, Model model) {
+        log.info("start updateUser()");
         if (userService.updateUser(id, request)) {
             return "redirect:/users";
         }
+
         User user = userService.profile(id);
-        model.addAttribute("userProfile",
-                new UserProfileResponse(user.getId(), user.getUserId(), user.getName(), user.getEmail())
-        );
+        model.addAttribute("userProfile", UserProfileResponse.from(user));
         model.addAttribute("isFailed", true);
         return "/users/updateForm";
     }

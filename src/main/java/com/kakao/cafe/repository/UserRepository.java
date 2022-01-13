@@ -21,7 +21,21 @@ public class UserRepository implements CrudRepository<User, Integer> {
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO users(user_id, password, name, email)");
         query.append(" VALUES (?, ?, ?, ?)");
+
         int update = jdbcTemplate.update(query.toString(), entity.getUserId(), entity.getPassword(), entity.getName(), entity.getEmail());
+        if (update > 0) {
+            return entity;
+        }
+
+        return null;
+    }
+
+    @Override
+    public User update(User entity) {
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE users SET user_id = ?, password = ?, name = ?, email = ? WHERE users.id = ?");
+
+        int update = jdbcTemplate.update(query.toString(), entity.getUserId(), entity.getPassword(), entity.getName(), entity.getEmail(), entity.getId());
         if (update > 0) {
             return entity;
         }
@@ -35,10 +49,8 @@ public class UserRepository implements CrudRepository<User, Integer> {
         query.append("SELECT *");
         query.append(" FROM users");
         query.append(" WHERE users.id = ?");
-        User user = jdbcTemplate.query(query.toString(), new Object[]{id}, (rs) -> {
-            User entity = new User(rs.getInt("id"), rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
-            return entity;
-        });
+
+        User user = jdbcTemplate.queryForObject(query.toString(), (rs, rowNum) -> new User(rs.getInt("id"), rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email")), id);
         return Optional.ofNullable(user);
     }
 
@@ -47,9 +59,7 @@ public class UserRepository implements CrudRepository<User, Integer> {
         StringBuilder query = new StringBuilder();
         query.append("SELECT *");
         query.append(" FROM users");
-        return jdbcTemplate.query(query.toString(), (rs, rowNum) -> {
-            User entity = new User(rs.getInt("id"), rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
-            return entity;
-        });
+
+        return jdbcTemplate.query(query.toString(), (rs, rowNum) -> new User(rs.getInt("id"), rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email")));
     }
 }

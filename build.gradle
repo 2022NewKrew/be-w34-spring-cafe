@@ -18,13 +18,15 @@ dependencies {
 	implementation 'com.github.jknack:handlebars:4.3.0'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
 	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
 
 	compileOnly 'org.projectlombok:lombok'
+	compileOnly 'org.modelmapper:modelmapper:2.4.5'
 
 	annotationProcessor 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.assertj:assertj-core:3.21.0'
+	testImplementation 'org.assertj:assertj-core:3.22.0'
 }
 
 test {

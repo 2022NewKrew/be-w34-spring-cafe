@@ -1,25 +1,26 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.dto.UserSignUpRequest;
+import com.kakao.cafe.utils.ModelMapperUtils;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
-    public static int cnt = 1;
-
-    private final int id;
-
+    private Integer id;
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    public User(int id, String userId, String password, String name, String email) {
-        this.id = id;
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
+    public static User fromNoDbIndex(UserSignUpRequest userSignUpRequest) {
+        return ModelMapperUtils.getModelMapper()
+                .map(userSignUpRequest, User.class);
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
