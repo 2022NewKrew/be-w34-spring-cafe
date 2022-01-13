@@ -1,18 +1,16 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.dto;
 
-import com.kakao.cafe.domain.user.User;
+public class UserDto {
+    private String name;
+    private String password;
+    private String userId;
+    private String email;
 
-public class UserModel {
-    String name;
-    String password;
-    String userId;
-    String email;
-
-    public UserModel(){
+    public UserDto() {
 
     }
 
-    public UserModel(String name, String password, String userId, String email){
+    public UserDto(String name, String password, String userId, String email) {
         this.name = name;
         this.password = password;
         this.userId = userId;
@@ -51,11 +49,6 @@ public class UserModel {
     public void setUserId(String userId) {
         this.userId = userId;
     }
-
-    public static UserModel fromUser(User user){
-        return new UserModel(user.getName(), user.getPassword(), user.getId(), user.getEmail());
-    }
-
 
     @Override
     public String toString() {

@@ -37,6 +37,22 @@ public class UserControllerTest {
     }
 
     @Test
+    public void user_dup_error_test() throws Exception {
+        this.mockMvc.perform(post("/user/create")
+                .param("userId", "yunyul")
+                .param("password", "1q2w3e4r")
+                .param("name", "윤렬")
+                .param("email", "eden.yoon@kakaocorp.com"));
+        this.mockMvc.perform(post("/user/create")
+                        .param("userId", "yunyul")
+                        .param("password", "1q2w3e4r")
+                        .param("name", "윤렬")
+                        .param("email", "eden.yoon@kakaocorp.com"))
+                .andExpect(status().is4xxClientError());
+
+    }
+
+    @Test
     void user_update_test() throws Exception {
         this.mockMvc.perform(post("/user/create")
                         .param("userId", "yunyul")

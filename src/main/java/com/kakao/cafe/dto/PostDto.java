@@ -1,25 +1,23 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.dto;
 
-import com.kakao.cafe.domain.post.Post;
-
-public class PostModel {
+public class PostDto {
 
     private long id = -1;
     private String writer;
     private String title;
     private String contents;
 
-    public PostModel() {
+    public PostDto() {
 
     }
 
-    public PostModel(String writer, String title, String contents) {
+    public PostDto(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
     }
 
-    public PostModel(String writer, String title, String contents, long id) {
+    public PostDto(String writer, String title, String contents, long id) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -36,13 +34,6 @@ public class PostModel {
 
     public String getContents() {
         return contents;
-    }
-
-    public static PostModel fromPost(Post post) {
-        return new PostModel(post.getWriter(),
-                post.getTitle(),
-                post.getContents(),
-                post.getId());
     }
 
     public void setWriter(String writer) {

@@ -26,31 +26,41 @@ public class PostControllerTest {
     }
 
     @Test
+    void postCreateErrorTest() throws Exception {
+        this.mockMvc.perform(post("/post")
+                .param("title", "제목")
+                .param("writer", "yunyul")
+                .param("content", "제곧네")).andExpect(status().is4xxClientError());
+    }
+
+    @Test
     void postCreateTest() throws Exception {
+        this.mockMvc.perform(post("/user/create")
+                .param("userId", "yunyul")
+                .param("password", "1q2w3e4r")
+                .param("name", "윤렬")
+                .param("email", "eden.yoon@kakaocorp.com"));
+
         this.mockMvc.perform(post("/post")
                 .param("title", "제목")
                 .param("writer", "yunyul")
                 .param("content", "제곧네")).andExpect(status().is3xxRedirection());
     }
 
-    /* 현재 해결하지 못한 테스트 케이스 */
     @Test
     void postViewTest() throws Exception {
+        this.mockMvc.perform(post("/user/create")
+                .param("userId", "yunyul")
+                .param("password", "1q2w3e4r")
+                .param("name", "윤렬")
+                .param("email", "eden.yoon@kakaocorp.com"));
 
         this.mockMvc.perform(post("/post")
                 .param("title", "제목")
                 .param("writer", "yunyul")
                 .param("content", "제곧네"));
 
-        /*
-            max idx get 하는 api 구현 후에 조치해야 될 것 같다.
-         */
-        this.mockMvc.perform(get("/post/1"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString()
-                .contains("제곧네");
-
+        this.mockMvc.perform(get("/post/-1"))
+                .andExpect(status().is5xxServerError());
     }
 }

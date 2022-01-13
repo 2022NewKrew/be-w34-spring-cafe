@@ -8,24 +8,24 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 public class PasswordTest {
 
     @Test
-    void nullTest(){
-        assertThatThrownBy(()->{
+    void nullTest() {
+        assertThatThrownBy(() -> {
             new Password(null);
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void lengthZeroTest(){
+    void lengthZeroTest() {
         assertThatThrownBy(() -> new Password("")).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void blankTest(){
+    void blankTest() {
         assertThatThrownBy(() -> new Password("  ")).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void passwordEqualTest(){
+    void passwordEqualTest() {
         Password password = new Password("1q2w3e4r");
         assertThat(password.is("1q2w3e4r")).isTrue();
     }
