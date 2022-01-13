@@ -32,7 +32,7 @@ public class ArticleController {
         this.articleMapper = articleMapper;
     }
 
-    @GetMapping("/")
+    @GetMapping("/articles")
     public String requestArticleList(Model model) {
         List<Article> articleList = articleService.getArticleList();
         List<ArticleListResponseDto> dtoList = articleList.stream()
@@ -48,7 +48,7 @@ public class ArticleController {
         User user = userService.findUserByUserName(userName);
         Article article = articleMapper.articleRegisterRequestDtoToArticle(dto, user);
         articleService.registerArticle(article);
-        return "redirect:/";
+        return "redirect:/articles";
     }
 
     @GetMapping("/articles/{articleId}")
