@@ -41,9 +41,6 @@ public class ArticleController {
         } catch (NoSuchElementException e) {
             logger.info("/articles/questions, failed to create article. writer(id = {}) does not exist", article.getWriter(), e);
             return "redirect:/";
-        } catch (NoSuchElementException e) {
-            e.printStackTrace();
-            return "redirect:/";
         }
         return "redirect:/";
     }
