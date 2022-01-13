@@ -28,8 +28,8 @@ public class ArticleService {
         ArticleList.getInstance().addArticle(article);
     }
 
-    public static List<Article> getArticleList() {
-        return ArticleList.getInstance().getArticleList();
+    public static ArticleList getArticleList() {
+        return ArticleList.getInstance();
     }
 
 }

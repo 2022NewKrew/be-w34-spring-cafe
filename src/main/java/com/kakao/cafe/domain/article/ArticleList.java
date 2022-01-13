@@ -21,7 +21,7 @@ public class ArticleList {
         return ArticleList.InnerInstanceClass.instance;
     }
 
-    public List<Article> getArticleList() {
+    public List<Article> getList() {
         return List.copyOf(articleList);
     }
 

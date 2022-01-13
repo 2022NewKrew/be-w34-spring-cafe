@@ -28,11 +28,16 @@ public class ArticleController {
 
     @GetMapping("/")
     public String articleMain(Model model) {
-        List<Article> articleList = ArticleService.getArticleList();
+        List<Article> articleList = ArticleService.getArticleList().getList();
         model.addAttribute("articles", articleList);
         model.addAttribute("size", articleList.size());
         return "index";
     }
 
+    @GetMapping("article/{articleIndex}")
+    public String viewUserProfile(@PathVariable String articleIndex, Model model) {
+        logger.info("artile Detail:{}", model.addAttribute("article", ArticleService.getArticleList().findById(articleIndex)));
+        return "/article/show";
+    }
 
 }
