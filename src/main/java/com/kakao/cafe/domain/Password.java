@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class Password {
-    private static final String format = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z0-9$@$!%*?&]{8,20}";
+    private static final String format = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[#$@$!%*?&])[A-Za-z0-9#$@$!%*?&]{8,20}";
 
     private final String password;
 
