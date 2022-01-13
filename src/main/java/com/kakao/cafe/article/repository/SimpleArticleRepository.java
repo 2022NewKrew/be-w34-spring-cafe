@@ -13,8 +13,10 @@ public class SimpleArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        article.setId((long) (articles.size() + 1));
-        articles.add(article);
+        synchronized (articles) {
+            article.setId((long) (articles.size() + 1));
+            articles.add(article);
+        }
     }
 
     @Override
