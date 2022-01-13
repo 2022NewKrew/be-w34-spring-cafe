@@ -21,13 +21,29 @@ public class User {
     public static final int EMAIL_MIN = 7;
     public static final int EMAIL_MAX = 127;
 
-    private static long auto_increment = 1;
     private final long idx;
     private final String id;
     private final String password;
     private final String name;
     private final String email;
 
+    // use only for allocation from db
+    public User(
+            @NonNull final long idxInDB,
+            @NonNull final String idInDB,
+            @NonNull final String passwordInDB,
+            @NonNull final String nameInDB,
+            @NonNull final String emailInDB
+    )
+    {
+        this.idx = idxInDB;
+        this.id = idInDB;
+        this.password = passwordInDB;
+        this.name = nameInDB;
+        this.email = emailInDB;
+    }
+
+    // in general use this constructor
     public User(
             @NonNull final String id,
             @NonNull final String password,
@@ -36,7 +52,7 @@ public class User {
     ) throws IllegalArgumentException
     {
         validate(id, password, name, email);
-        this.idx = auto_increment++;
+        this.idx = 0;
         this.id = id.trim();
         this.password = SecurePassword.genPassword(password);
         this.name = name.trim();

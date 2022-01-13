@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.UserDto;
-import com.kakao.cafe.domain.Users;
+import com.kakao.cafe.repo.UserRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,11 @@ import java.util.*;
 
 @Service
 public class UserManager implements UserService {
-    private final Users users = new Users();
+    private final UserRepository userRepository;
+
+    UserManager(final UserRepository userRepository) {
+        this.userRepository = Objects.requireNonNull(userRepository);
+    }
 
     @Override
     public void add(
@@ -18,21 +22,21 @@ public class UserManager implements UserService {
             @NonNull final String password
     )
     {
-        if (users.checkIdExist(userDto.getId())) {
+        if (userRepository.checkIdExist(userDto.getId())) {
             throw new IllegalStateException("Duplicate id is exist!");
         }
-        users.add(new User(
-                        userDto.getId(),
-                        password,
-                        userDto.getName(),
-                        userDto.getEmail()
-                ));
+        userRepository.add(new User(
+                userDto.getId(),
+                password,
+                userDto.getName(),
+                userDto.getEmail()
+        ));
     }
 
     @Override
     public List<UserDto> getList() {
         final List<UserDto> dtos = new ArrayList<>();
-        for (User u: users.getList()) {
+        for (User u: userRepository.getList()) {
             dtos.add(UserDto.from(u));
         }
 
@@ -46,7 +50,7 @@ public class UserManager implements UserService {
 
     @Override
     public User getUserEntity(@NonNull final String id) throws NoSuchElementException {
-        final User user = users.findById(id);
+        final User user = userRepository.findById(id);
         if (user.isNone()) {
             throw new NoSuchElementException("Not found user - " + id);
         }
