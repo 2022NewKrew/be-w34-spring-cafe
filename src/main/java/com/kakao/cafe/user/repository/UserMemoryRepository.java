@@ -3,13 +3,17 @@ package com.kakao.cafe.user.repository;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.SignUpDTO;
 import com.kakao.cafe.user.dto.UpdateDTO;
+import com.kakao.cafe.user.factory.UserFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
+@RequiredArgsConstructor
 public class UserMemoryRepository implements UserRepository {
 
+    private final UserFactory userFactory;
     private static Map<Long, User> userMap = new TreeMap<>();
 
     @Override
