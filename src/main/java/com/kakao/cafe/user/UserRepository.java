@@ -2,8 +2,6 @@ package com.kakao.cafe.user;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.Users;
-import java.util.Objects;
-import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -14,8 +12,8 @@ public class UserRepository {
     private final RowMapper<User> userRowMapper = getUserMapper();
     private final JdbcTemplate jdbcTemplate;
 
-    public UserRepository(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public UserRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public void save(User user) {
