@@ -11,8 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
@@ -24,21 +26,21 @@ public class PostController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String getPostList(Model model) {
         model.addAttribute("postList", postService.getAllPostDetail());
-        return "index";
+        return "posts/list";
     }
 
-    @PostMapping("/posts")
+    @PostMapping
     public String write(@Valid PostCreateRequest requestDto) {
         postService.write(requestDto);
         return "redirect:/";
     }
 
-    @GetMapping("/posts/{postId}")
-    public String getPostById(@PathVariable("postId") UUID id, Model model) {
+    @GetMapping("/{id}")
+    public String getPostById(@PathVariable("id") UUID id, Model model) {
         model.addAttribute("post", postService.getPostDetailById(id));
-        return "posts/show";
+        return "posts/detail";
     }
 }
