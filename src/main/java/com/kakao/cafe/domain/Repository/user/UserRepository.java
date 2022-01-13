@@ -30,4 +30,8 @@ public class UserRepository {
         throw new NoSuchUserException();
     }
 
+    public boolean isUserIdExist(String userId) {
+        return users.containsKey(userId);
+    }
+
 }

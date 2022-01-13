@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.user.SignUpDto;
 import com.kakao.cafe.exceptions.NoSuchUserException;
+import com.kakao.cafe.exceptions.UserIdDuplicationException;
 import com.kakao.cafe.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,6 @@ public class UserController {
         } catch (NoSuchUserException e) {
             return "error";
         }
-
     }
 
     // 회원가입 페이지
@@ -50,8 +50,12 @@ public class UserController {
         log.info("{}", signUpDto.getPassword());
         log.info("{}", signUpDto.getName());
         log.info("{}", signUpDto.getEmail());
-        this.userService.saveNewUser(signUpDto);
-        return "redirect:/users";
+        try {
+            this.userService.saveNewUser(signUpDto);
+            return "redirect:/users";
+        } catch (UserIdDuplicationException e) {
+            return "error";
+        }
     }
 
 }
