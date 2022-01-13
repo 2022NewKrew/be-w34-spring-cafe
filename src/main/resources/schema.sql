@@ -4,7 +4,7 @@ drop table QNA if exists;
 create table USER_PROFILE
 (
     id       INT AUTO_INCREMENT,
-    user_id  VARCHAR NOT NULL,
+    user_id  VARCHAR NOT NULL UNIQUE ,
     password VARCHAR NOT NULL,
     name     VARCHAR NOT NULL,
     email    VARCHAR,
