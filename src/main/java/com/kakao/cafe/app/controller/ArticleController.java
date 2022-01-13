@@ -44,6 +44,6 @@ public class ArticleController {
     public String read(@PathVariable Long id, Model model) {
         ArticleDto article = service.getById(id);
         model.addAttribute("article", article);
-        return "article";
+        return "articles/item";
     }
 }

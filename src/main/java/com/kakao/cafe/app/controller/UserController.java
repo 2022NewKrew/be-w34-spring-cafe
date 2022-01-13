@@ -43,7 +43,7 @@ public class UserController {
     public String list(Model model) {
         List<UserDto> users = userService.list();
         model.addAttribute("users", users);
-        return "users";
+        return "users/index";
     }
 
     @GetMapping("/users/{id}")
@@ -54,7 +54,7 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
         }
         model.addAttribute("user", user);
-        return "profile";
+        return "users/item";
     }
 
     @PostMapping("/user/login")
