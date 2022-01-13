@@ -1,6 +1,6 @@
 package com.kakao.cafe.user.repository;
 
-import com.kakao.cafe.config.SpringJdbcConfig;
+import com.kakao.cafe.common.config.SpringJdbcConfig;
 import com.kakao.cafe.user.dto.request.UserUpdateRequest;
 import com.kakao.cafe.user.entity.User;
 import org.springframework.jdbc.core.JdbcTemplate;
