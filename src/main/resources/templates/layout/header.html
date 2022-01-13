@@ -66,9 +66,15 @@
                 {{^loginUser}}
                 <li><a id="loginButton" href="javascript:void(0)" onClick="clickLoginModal()" role="button">로그인</a></li>
                 {{/loginUser}}
+                {{^loginUser}}
                 <li><a href="/users/create" role="button">회원가입</a></li>
+                {{/loginUser}}
+                {{#loginUser}}
                 <li><a href="/logout" role="button">로그아웃</a></li>
+                {{/loginUser}}
+                {{#loginUser}}
                 <li><a href="/users/profile" role="button">개인정보수정</a></li>
+                {{/loginUser}}
             </ul>
         </div>
     </div>
