@@ -1,6 +1,7 @@
-package com.kakao.cafe.user.domain.repository;
+package com.kakao.cafe.user.persistence;
 
 import com.kakao.cafe.user.domain.entity.User;
+import com.kakao.cafe.user.domain.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -10,8 +11,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Component
-public class UserRepositoryImpl implements UserRepository{
+public class InMemoryUserRepository implements UserRepository {
     private final Map<String, User> idToUser = new ConcurrentHashMap<>();
     private final List<User> userList = new CopyOnWriteArrayList<>();
 

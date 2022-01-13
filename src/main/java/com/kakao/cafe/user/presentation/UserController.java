@@ -3,7 +3,7 @@ package com.kakao.cafe.user.presentation;
 import com.kakao.cafe.user.application.JoinService;
 import com.kakao.cafe.user.application.UserInfoService;
 import com.kakao.cafe.user.domain.entity.User;
-import com.kakao.cafe.user.mapper.UserMapper;
+import com.kakao.cafe.user.presentation.mapper.UserDtoMapper;
 import com.kakao.cafe.user.presentation.dto.JoinRequest;
 import com.kakao.cafe.user.presentation.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class UserController {
 
     private final JoinService joinService;
     private final UserInfoService userInfoService;
-    private final UserMapper userMapper;
+    private final UserDtoMapper userMapper;
 
     @GetMapping("/join")
     public String joinForm(){
