@@ -1,10 +1,19 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.domain.user.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
+// 회원가입 폼
 public class UserForm {
 
+    @NotBlank
     private String userId;
+    @NotBlank
     private String password;
+    @NotBlank
     private String name;
+    @NotBlank
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$", message = "이메일 형식에 맞지 않습니다.")
     private String email;
 
     public UserForm() {

@@ -13,13 +13,16 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	runtimeOnly 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	// validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 	// 데이터베이스
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
-	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
+	runtimeOnly group: 'com.h2database', name: 'h2', version: '2.0.206'
 }
 
 test {

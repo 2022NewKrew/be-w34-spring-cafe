@@ -1,36 +1,30 @@
-package com.kakao.cafe.entiry;
+package com.kakao.cafe.domain.article.dto;
 
-import com.kakao.cafe.dto.ArticleForm;
+import com.kakao.cafe.domain.article.Article;
 
 import java.time.LocalDateTime;
 
-public class Article {
+// DB에 저장된 데이터 (writer - Article(string), ArticleRowDataDto(Long))
+public class ArticleRowDataDto {
 
     private Long id;
-    private String writerUserId;
+    private Long writerId;
     private String title;
     private String contents;
     private LocalDateTime registerDateTime;
 
-    public Article() {}
+    public ArticleRowDataDto() {}
 
-    public Article(String writerUserId, String title, String contents) {
-        this.writerUserId = writerUserId;
-        this.title = title;
-        this.contents = contents;
-        this.registerDateTime = LocalDateTime.now();
-    }
-
-    public Article(Long id, String writerUserId, String title, String contents, LocalDateTime registerDateTime) {
+    public ArticleRowDataDto(Long id, Long writerId, String title, String contents, LocalDateTime registerDateTime) {
         this.id = id;
-        this.writerUserId = writerUserId;
+        this.writerId = writerId;
         this.title = title;
         this.contents = contents;
         this.registerDateTime = registerDateTime;
     }
 
-    public static Article of(ArticleForm articleForm){
-        return new Article(articleForm.getWriter(), articleForm.getTitle(), articleForm.getContents());
+    public static ArticleRowDataDto from(Article article, Long writerId) {
+        return new ArticleRowDataDto(article.getId(), writerId, article.getTitle(), article.getContents(), article.getRegisterDateTime());
     }
 
     public Long getId() {
@@ -41,12 +35,12 @@ public class Article {
         this.id = id;
     }
 
-    public String getWriterUserId() {
-        return writerUserId;
+    public Long getWriterId() {
+        return writerId;
     }
 
-    public void setWriterUserId(String writerUserId) {
-        this.writerUserId = writerUserId;
+    public void setWriterId(Long writerId) {
+        this.writerId = writerId;
     }
 
     public String getTitle() {

@@ -1,12 +1,12 @@
-package com.kakao.cafe.service;
+package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.entiry.User;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.domain.user.repository.UserRepository;
+import com.kakao.cafe.global.error.exception.PasswordNotMatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -24,6 +24,7 @@ public class UserService {
         return user.getId();
     }
 
+    // 중복회원 검사 (userId:아이디 를 기준으로)
     private void validateDuplicateUser(User user) {
         userRepository.findByUserId(user.getUserId())
                 .ifPresent(u -> {throw new IllegalStateException("이미 존재하는 회원입니다.");});
@@ -34,9 +35,7 @@ public class UserService {
     }
 
     public User findByUserId(String userId){
-        Optional<User> user = userRepository.findByUserId(userId);
-        if (user.isEmpty()) throw new IllegalArgumentException("일치하는 아이디가 없습니다.");
-        return user.get();
+        return userRepository.findByUserId(userId).orElseThrow(() -> {throw new NoSuchElementException("일치하는 아이디가 없습니다.");});
     }
 
     public User updateUser(User user) {
@@ -48,6 +47,6 @@ public class UserService {
 
     private void checkPassword(User user, User findUser) {
         if (!user.getPassword().equals(findUser.getPassword()))
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new PasswordNotMatchException("비밀번호가 일치하지 않습니다.");
     }
 }

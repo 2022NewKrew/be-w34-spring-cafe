@@ -1,18 +1,16 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.UserForm;
-import com.kakao.cafe.entiry.User;
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.domain.user.dto.UserForm;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -28,14 +26,16 @@ public class UserController {
         this.userService = userService;
     }
 
+    // 회원가입
     @PostMapping("")
-    public String create(UserForm form) {
+    public String create(@Valid UserForm form) {
         logger.info("POST /users");
         User newUser = User.of(form);
         userService.join(newUser);
         return "redirect:/users";
     }
 
+    // 유저 목록
     @GetMapping("")
     public String list(Model model) {
         logger.info("GET /users");
@@ -44,6 +44,7 @@ public class UserController {
         return "user/list";
     }
 
+    // 유저 프로필
     @GetMapping("/{userId}")
     public String profile(@PathVariable String userId, Model model){
         logger.info("GET /users/{userId}");
@@ -59,9 +60,9 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @PostMapping("/{userId}/update")
+    @PutMapping("/{userId}/update")
     public String updateUser(@PathVariable String userId, UserForm userForm){
-        logger.info("POST /{userId}/update");
+        logger.info("PUT /{userId}/update");
         userForm.setUserId(userId);
         userService.updateUser(User.of(userForm));
         return "redirect:/users";

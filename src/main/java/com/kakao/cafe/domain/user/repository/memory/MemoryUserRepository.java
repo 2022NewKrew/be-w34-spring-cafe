@@ -1,12 +1,12 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.domain.user.repository.memory;
 
-import com.kakao.cafe.entiry.User;
-import org.springframework.stereotype.Repository;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.repository.UserRepository;
 
 import java.util.*;
 
 //@Repository
-public class MemoryUserRepository implements UserRepository{
+public class MemoryUserRepository implements UserRepository {
 
     private static Map<Long, User> store = new HashMap<>();
     private static Long sequence = 0L;
