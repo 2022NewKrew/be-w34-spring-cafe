@@ -1,5 +1,7 @@
 package com.kakao.cafe.model.vo;
 
+import java.util.Objects;
+
 public class UserVo {
 
     private final String userId;
@@ -30,4 +32,16 @@ public class UserVo {
         return email;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserVo userVo = (UserVo) o;
+        return Objects.equals(userId, userVo.userId) && Objects.equals(password, userVo.password) && Objects.equals(name, userVo.name) && Objects.equals(email, userVo.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, password, name, email);
+    }
 }

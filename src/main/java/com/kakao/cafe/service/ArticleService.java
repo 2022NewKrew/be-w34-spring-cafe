@@ -11,24 +11,24 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleService {
 
-    private final ArticleDao articleDAO;
+    private final ArticleDao articleDao;
 
-    public ArticleService(ArticleDao articleDAO) {
-        this.articleDAO = articleDAO;
+    public ArticleService(ArticleDao articleDao) {
+        this.articleDao = articleDao;
     }
 
     public List<ArticleDto> getArticleList() {
-        return articleDAO.findAllArticle().stream()
+        return articleDao.findAllArticle().stream()
                 .map(this::voToDtoMapper)
                 .collect(Collectors.toList());
     }
 
     public ArticleDto filterArticleByIndex(int index) {
-        return voToDtoMapper(articleDAO.filterArticleByIndex(index));
+        return voToDtoMapper(articleDao.filterArticleByIndex(index));
     }
 
     public void writeArticle(ArticleDto article) {
-        articleDAO.writeArticle(dtoToVoMapper(article));
+        articleDao.writeArticle(dtoToVoMapper(article));
     }
 
     private ArticleVo dtoToVoMapper(ArticleDto articleDto) {
