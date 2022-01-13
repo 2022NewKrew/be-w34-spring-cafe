@@ -1,32 +1,31 @@
 package com.kakao.cafe.domain.entity;
 
+import com.kakao.cafe.util.TimeStringParser;
+
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Article {
-    private static final DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-    private final int articleId;
+    private final long articleId;
     private final LocalDateTime time;
     private final String writer;
     private final String title;
     private final String contents;
 
-    public Article(int articleId, String writer, String title, String contents) {
+    public Article(long articleId, String writer, String title, String contents, LocalDateTime time) {
         this.articleId = articleId;
-        this.title = title;
         this.writer = writer;
-        this.time = LocalDateTime.now();
+        this.title = title;
         this.contents = contents;
+        this.time = time;
     }
 
-    public int getArticleId() { return articleId; }
+    public long getArticleId() { return articleId; }
 
     public String getTitle() { return title; }
 
     public String getWriter() { return writer; }
 
-    public String getTime() { return time.format(format); }
+    public String getTime() { return TimeStringParser.parseTimeToString(time); }
 
     public String getContents() { return contents; }
 }
