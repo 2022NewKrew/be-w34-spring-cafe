@@ -41,7 +41,6 @@ public class GlobalExceptionHandler {
         return mv;
     }
 
-
     @ExceptionHandler(PostNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView postNotFound(PostNotFoundException exception) {
