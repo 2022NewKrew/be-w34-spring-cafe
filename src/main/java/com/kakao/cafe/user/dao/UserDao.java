@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -33,13 +34,11 @@ public class UserDao implements Dao<User> {
         return id;
     }
 
-    public User fetchByUserId(String userId) {
-        for (Map.Entry<Long, User> entry : map.entrySet()) {
-            if (entry.getValue().getUserId().equals(userId)) {
-                return entry.getValue();
-            }
-        }
-        return null;
+    public Optional<User> fetchByUserId(String userId) {
+        return map.values()
+                .stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findFirst();
     }
 
     public int getUserCount() {

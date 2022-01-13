@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,7 +47,7 @@ class UserDaoTest {
     @DisplayName("사용자 아이디로 User 객체를 가져올 수 있다.")
     void fetchByUserId() {
         dao.save(user1);
-        User fetch = dao.fetchByUserId(user1.getUserId());
-        assertNotNull(fetch);
+        Optional<User> fetch = dao.fetchByUserId(user1.getUserId());
+        assertTrue(fetch.isPresent());
     }
 }
