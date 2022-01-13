@@ -58,4 +58,14 @@ public class UserController {
         }
     }
 
+    // 회원정보 수정 페이지
+    @GetMapping("users/{userId}/form")
+    public String updateUserInfo(@PathVariable String userId, Model model) {
+        try {
+            model.addAttribute("user", this.userService.getUserByUserId(userId));
+            return "user/updateForm";
+        } catch (NoSuchUserException e) {
+            return "error";
+        }
+    }
 }
