@@ -18,7 +18,6 @@ public class UserDao {
         this.userRowMapper = userRowMapper;
     }
 
-
     public void save(UserVo userVo) {
         String userId = userVo.getUserId();
         String password = userVo.getPassword();
