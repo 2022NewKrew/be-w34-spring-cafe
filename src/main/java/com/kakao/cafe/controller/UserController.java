@@ -21,6 +21,9 @@ import java.util.Objects;
 
 @Controller
 public class UserController {
+    public static final String TAG_LOGIN_ERROR = "login_error";
+    public static final String MSG_LOGIN_FAILED = "아이디 또는 비밀번호가 틀렸습니다.";
+    public static final String MSG_REQUIRE_LOGIN = "로그인 후 다시 시도해주세요.";
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
@@ -54,10 +57,10 @@ public class UserController {
             return "redirect:/";
         }
 
-        String msg = (String)session.getAttribute("login_error");
+        String msg = (String)session.getAttribute(TAG_LOGIN_ERROR);
 
         if (msg != null) {
-            session.removeAttribute("login_error");
+            session.removeAttribute(TAG_LOGIN_ERROR);
             model.addAttribute("msg", msg);
         }
 
@@ -91,7 +94,7 @@ public class UserController {
     }
 
     private String redirectLoginFailed(final HttpSession session) {
-        session.setAttribute("login_error", "아이디 또는 비밀번호가 틀렸습니다.");
+        session.setAttribute(TAG_LOGIN_ERROR, MSG_LOGIN_FAILED);
         return "redirect:/login";
     }
 

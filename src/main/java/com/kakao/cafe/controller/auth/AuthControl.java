@@ -8,11 +8,13 @@ import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 
 public class AuthControl {
+    public static final String TAG_ID = "curUserId";
+    public static final String TAG_NAME = "curUserName";
 
     private AuthControl() {}
 
     public static boolean isLogon(@NonNull final HttpSession session, @NonNull final UserService userService) {
-        String userStr = (String)session.getAttribute("curUserId");
+        String userStr = (String)session.getAttribute(TAG_ID);
         if (userStr == null) {
             return false;
         }
@@ -27,12 +29,12 @@ public class AuthControl {
     }
 
     public static void login(@NonNull final HttpSession session, @NonNull final User user) {
-        session.setAttribute("curUserId", user.getId());
-        session.setAttribute("curUserName", user.getName());
+        session.setAttribute(TAG_ID, user.getId());
+        session.setAttribute(TAG_NAME, user.getName());
     }
 
     public static void logout(@NonNull final HttpSession session) {
-        session.removeAttribute("curUserId");
-        session.removeAttribute("curUserName");
+        session.removeAttribute(TAG_ID);
+        session.removeAttribute(TAG_NAME);
     }
 }
