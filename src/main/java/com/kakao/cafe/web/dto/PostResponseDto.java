@@ -1,16 +1,19 @@
 package com.kakao.cafe.web.dto;
 
+import lombok.Getter;
+
 import java.util.Date;
 
-public class Post {
+@Getter
+public class PostResponseDto {
     private String user;
     private String title;
     private String content;
     private Integer views;
-    private Integer id;
+    private Long id;
     private Date date;
 
-    public Post(String user, String title, String content, Integer views, Integer id) {
+    public PostResponseDto(String user, String title, String content, int views, Long id) {
         this.user = user;
         this.title = title;
         this.content = content;
