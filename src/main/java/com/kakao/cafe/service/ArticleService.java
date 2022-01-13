@@ -1,27 +1,49 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.dto.ArticlePostDto;
 import com.kakao.cafe.repository.ArticleRepository;
-import org.springframework.stereotype.Service;
-import java.util.List;
+import com.kakao.cafe.repository.UserRepository;
 
-@Service
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 public class ArticleService {
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
-    ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository, UserRepository userRepository) {
         this.articleRepository = articleRepository;
+        this.userRepository = userRepository;
     }
 
-    public void saveArticle(ArticleDto article) {
-        articleRepository.save(article);
+    public void postArticle(ArticlePostDto article) throws SQLException, NoSuchElementException {
+        userRepository.findByName(article.getWriter());
+
+        articleRepository.save(article.toEntity());
     }
 
     public List<ArticleDto> getArticleList() {
-        return articleRepository.getAllArticles();
+        List<ArticleDto> articleDtoList = new ArrayList<>();
+
+        for (Article article : articleRepository.getAllArticles()) {
+            articleDtoList.add(new ArticleDto(article.getId(), article.getWriter(), article.getTitle(), article.getContents()));
+        }
+
+        return articleDtoList;
     }
 
-    public ArticleDto getArticleBy(int index) {
-        return articleRepository.getByIndex(index);
+    public ArticleDto findById(int id) throws NoSuchElementException {
+        Article article = articleRepository.findById(id);
+
+        return new ArticleDto(
+                article.getId(),
+                article.getWriter(),
+                article.getTitle(),
+                article.getContents()
+        );
     }
 }

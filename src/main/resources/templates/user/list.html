@@ -23,8 +23,8 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="index.html">Posts</a></li>
-                <li><a href="login.html" role="button">로그인</a></li>
-                <li><a href="form.html" role="button">회원가입</a></li>
+                <li><a href="/user/login.html" role="button">로그인</a></li>
+                <li><a href="/user/form.html" role="button">회원가입</a></li>
                 <li><a href="#" role="button">로그아웃</a></li>
                 <li><a href="#" role="button">개인정보수정</a></li>
             </ul>
@@ -38,13 +38,13 @@
           <table class="table table-hover">
               <thead>
                 <tr>
-                    <th>#</th> <th>사용자 아이디</th> <th>이름</th> <th>이메일</th><th></th>
+                    <th>사용자 아이디</th> <th>이름</th> <th>이메일</th><th></th>
                 </tr>
               </thead>
               <tbody>
               {{#users}}
                 <tr>
-                    <th scope="row">1</th> <td onClick="location.href='/users/{{userId}}'">{{userId}}</td> <td>{{name}}</td> <td>{{email}}</td><td><a href="/users/{{userId}}" class="btn btn-success" role="button">수정</a></td>
+                    <td onClick="location.href='/users/{{userId}}'">{{userId}}</td> <td>{{name}}</td> <td>{{email}}</td><td><a href="/users/{{userId}}/form" class="btn btn-success" role="button">수정</a></td>
                 </tr>
               {{/users}}
               </tbody>

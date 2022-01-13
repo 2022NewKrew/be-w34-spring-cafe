@@ -1,18 +1,15 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.domain;
 
-import com.kakao.cafe.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
-public class UserDto {
+public class User {
     private String userId;
     private String email;
     private String name;
     private String password;
-
-    public User toEntity() {
-        return new User(userId, email, name, password);
-    }
 }

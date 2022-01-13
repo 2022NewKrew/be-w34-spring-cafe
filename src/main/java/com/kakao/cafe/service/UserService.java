@@ -1,29 +1,55 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.repository.UserRepository;
-import org.springframework.stereotype.Service;
-import java.util.List;
 
-@Service
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 public class UserService {
     private final UserRepository userRepository;
 
-    UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public void signup(UserDto user) {
-        userRepository.save(user);
+    public void signup(UserDto user) throws SQLException {
+        userRepository.save(user.toEntity());
     }
 
-    public UserDto findUserById(String userId) {
-        return userRepository.findById(userId);
+    public UserProfileDto findById(String userId) throws NoSuchElementException {
+        User user = userRepository.findById(userId);
+
+        return new UserProfileDto(user.getUserId(), user.getEmail(), user.getName());
     }
 
-    public UserDto findUserByName(String name) { return userRepository.findByName(name); }
+    public UserProfileDto findByName(String name) throws NoSuchElementException {
+        User user = userRepository.findByName(name);
 
-    public List<UserDto> getUserList() {
-        return userRepository.getAllUsers();
+        return new UserProfileDto(user.getUserId(), user.getEmail(), user.getName());
+    }
+
+    public List<UserProfileDto> getUserList() {
+        List<UserProfileDto> userDtoList = new ArrayList<>();
+
+        for (User user : userRepository.findAll()) {
+            userDtoList.add(new UserProfileDto(user.getUserId(), user.getEmail(), user.getName()));
+        }
+
+        return userDtoList;
+    }
+
+    public void updateUserProfile(UserProfileDto newProfile, String password) throws NoSuchElementException, IllegalArgumentException {
+        User user = userRepository.findById(newProfile.getUserId());
+
+        if (!(password != null && password.equals(user.getPassword()))) {
+            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
+        }
+
+        userRepository.update(newProfile);
     }
 }
