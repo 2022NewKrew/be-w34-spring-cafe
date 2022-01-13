@@ -6,8 +6,8 @@ import java.util.Optional;
 
 public interface UserRepository {
     Long insertUser(User user);
+    Long updateUser(User user);
     List<User> findAll();
     Optional<User> findByUserId(String userId);
     Optional<User> findById(Long id);
-    Long updateUser(User user);
 }

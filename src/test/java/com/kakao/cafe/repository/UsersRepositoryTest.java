@@ -11,7 +11,7 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.assertj.core.api.Assertions.*;
 
 @JdbcTest
-@Sql(scripts = {"classpath:com/kakao/cafe/repository/schema.sql"})
+@Sql(scripts = {"classpath:/sql/schema.sql"})
 class UsersRepositoryTest {
 
     private JdbcTemplate jdbcTemplate;
@@ -24,11 +24,10 @@ class UsersRepositoryTest {
     @Test
     void signup() {
         // given
-        User user = new User("1", "1", "1", "1@1");
+        User user = User.of("1", "1", "1", "1");
 
         // when
         JdbcUserRepository usersRepository = new JdbcUserRepository(jdbcTemplate);
-
         Long savedUserId = usersRepository.insertUser(user);
 
         // then

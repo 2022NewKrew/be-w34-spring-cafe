@@ -1,13 +1,13 @@
-package com.kakao.cafe.controller.users.dto;
+package com.kakao.cafe.controller.users.dto.request;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-@RequiredArgsConstructor
+@Builder
 @Getter
 @ToString
-public class UpdateRequestDto {
+public class UserSignUpRequest {
     private final String userId;
     private final String password;
     private final String name;

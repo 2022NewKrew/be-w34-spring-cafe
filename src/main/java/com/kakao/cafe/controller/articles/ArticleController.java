@@ -1,12 +1,11 @@
 package com.kakao.cafe.controller.articles;
 
-import com.kakao.cafe.controller.articles.dto.ArticleDetailDto;
-import com.kakao.cafe.controller.articles.dto.ArticleItemDto;
-import com.kakao.cafe.controller.articles.dto.ArticleWriteRequestDto;
+import com.kakao.cafe.controller.articles.dto.request.ArticleWriteRequest;
+import com.kakao.cafe.controller.articles.mapper.ArticleViewMapper;
 import com.kakao.cafe.service.article.ArticleService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kakao.cafe.service.article.dto.ArticleInfo;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,33 +15,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
+@Slf4j
 public class ArticleController {
 
-    private ArticleService articleService;
-
-    private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
-
-    @Autowired
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
+    private final ArticleService articleService;
+    private final ArticleViewMapper articleViewMapper;
 
     @GetMapping("/")
     public String list(Model model) {
-        List<ArticleItemDto> articles = articleService.getArticleAll();
-        model.addAttribute("articles", articles);
+        List<ArticleInfo> articles = articleService.getArticleAll();
+        model.addAttribute("articles", articleViewMapper.toArticleItemResponseList(articles));
         return "qna/list";
     }
 
     @GetMapping("/articles/{articleId}")
     public String details(@PathVariable Long articleId, Model model) {
-        ArticleDetailDto articleDetail = articleService.getArticleDetail(articleId);
-        model.addAttribute("article", articleDetail);
+        ArticleInfo articleInfo = articleService.getArticleInfo(articleId);
+        model.addAttribute("article", articleViewMapper.toArticleDetailResponse(articleInfo));
         return "qna/show";
     }
 
     @PostMapping("/articles")
-    public String questions(ArticleWriteRequestDto articleWriteRequest) {
+    public String questions(ArticleWriteRequest articleWriteRequest) {
         articleService.writeArticle(articleWriteRequest.getWriter(), articleWriteRequest.getTitle(), articleWriteRequest.getContents());
         return "redirect:/";
     }
