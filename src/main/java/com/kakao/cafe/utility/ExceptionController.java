@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionController {
 
     @ExceptionHandler(UserException.class)
-    protected ResponseEntity<ErrorResponse> handleCustomException(UserException e) {
-        log.error("handleDataException throw Exception : {}", e.getErrorCode());
+    protected ResponseEntity<ErrorResponse> handleUserException(UserException e) {
+        log.error("UserException : {}", e.getErrorCode().getErrorMessage());
         return ErrorResponse.createResponseEntity(e.getErrorCode());
     }
 }
