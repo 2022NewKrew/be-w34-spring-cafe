@@ -1,7 +1,7 @@
 package com.kakao.cafe.web.service;
 
 import com.kakao.cafe.web.domain.User;
-import com.kakao.cafe.web.repository.MemoryUserRepository;
+import com.kakao.cafe.web.repository.user.MemoryUserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
