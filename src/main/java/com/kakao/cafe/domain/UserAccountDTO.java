@@ -22,4 +22,8 @@ public class UserAccountDTO {
         this.name = name;
         this.email = email;
     }
+
+    public UserAccountDTO(){
+
+    }
 }
