@@ -17,7 +17,7 @@ class WritePostRequestTest {
     }
 
     @Test
-    @DisplayName("[성공] Entitty로 올바르게 변환한다")
+    @DisplayName("[성공] Entity로 올바르게 변환한다")
     void toEntity() {
         WritePostRequest writePostRequest = new WritePostRequest(userId, title, content);
         Post post_Answer = new Post(userId, title, content);
