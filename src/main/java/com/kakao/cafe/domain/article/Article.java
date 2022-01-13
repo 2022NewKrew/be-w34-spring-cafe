@@ -17,9 +17,7 @@ public class Article {
         return writer;
     }
 
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() { return title; }
 
     public String getContents() {
         return contents;
