@@ -1,1 +1,1 @@
-insert into users (peoplename) values ('testname');
+insert into USERS (userid, password, name, email) values ('admin', 'admin', 'adminname', 'admin@kakaocorp.com');
