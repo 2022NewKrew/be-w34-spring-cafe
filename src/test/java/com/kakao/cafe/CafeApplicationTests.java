@@ -20,6 +20,7 @@ class CafeApplicationTests {
 	@Test
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	@DisplayName("userController가 null인지 확인")
 =======
 =======
@@ -36,6 +37,9 @@ class CafeApplicationTests {
 	@DisplayName("userController가 null이 아닌지 확인")
 >>>>>>> 31bc618 (Test code 수정)
 >>>>>>> 3f9e887 (Test code 수정)
+=======
+	@DisplayName("userController가 null인지 확인")
+>>>>>>> 2816d8a (h2 db 연결)
 	void userControllerNotNull() {
 		assertThat(userController).isNotNull();
 	}
@@ -43,6 +47,7 @@ class CafeApplicationTests {
 	@Test
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	@DisplayName("articleController가 null인지 확인")
 =======
 =======
@@ -59,6 +64,9 @@ class CafeApplicationTests {
 	@DisplayName("articleController가 null이 아닌지 확인")
 >>>>>>> 31bc618 (Test code 수정)
 >>>>>>> 3f9e887 (Test code 수정)
+=======
+	@DisplayName("articleController가 null인지 확인")
+>>>>>>> 2816d8a (h2 db 연결)
 	void articleControllerNotNull() {
 		assertThat(articleController).isNotNull();
 	}

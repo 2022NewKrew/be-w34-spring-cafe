@@ -11,6 +11,7 @@ public class UserTest {
     @Test
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     @DisplayName("GET /users 요청 확인 - 회원 목록 가져오기")
     void getUserTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users"))
@@ -35,6 +36,11 @@ public class UserTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/user"))
 >>>>>>> 31bc618 (Test code 수정)
 >>>>>>> 3f9e887 (Test code 수정)
+=======
+    @DisplayName("GET /users 요청 확인 - 회원 목록 가져오기")
+    void getUserTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/users"))
+>>>>>>> 2816d8a (h2 db 연결)
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
