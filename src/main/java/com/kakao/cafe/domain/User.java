@@ -17,7 +17,7 @@ public class User {
         this.pictureAddress = DUMMY_ADDRESS;
     }
 
-    public String getuserId() {
+    public String getUserId() {
         return userId;
     }
 

@@ -4,17 +4,19 @@ import com.kakao.cafe.DTO.SignInDTO;
 import com.kakao.cafe.DTO.UserInfoDTO;
 import com.kakao.cafe.DTO.UserProfileDTO;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserDB;
+import com.kakao.cafe.domain.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class UserService {
-    private static final UserDB userDB = new UserDB();
+    private static final UserRepository userRepo = new UserRepository();
 
     public static List<UserInfoDTO> getUserInfoLst() {
-        List<User> userLst = userDB.getUserLst();
-        List<UserInfoDTO>  userInfoDTOLst = new ArrayList<>();
+        List<User> userLst = userRepo.getUserLst();
+        List<UserInfoDTO> userInfoDTOLst = new ArrayList<>();
         int idx = 1;
 
         for (User curUser : userLst) {
@@ -25,15 +27,15 @@ public class UserService {
     }
 
     public static UserProfileDTO getUserProfile(String userId) {
-        return makeUserProfileDTOFromUser(userDB.getUser(userId));
+        return makeUserProfileDTOFromUser(userRepo.getUser(userId));
     }
 
     public static boolean SignUp(SignInDTO candidate) {
-        return userDB.SignUp(candidate.getUserId(), candidate.getPassword(), candidate.getName(), candidate.getEmail());
+        return userRepo.SignUp(candidate.getUserId(), candidate.getPassword(), candidate.getName(), candidate.getEmail());
     }
 
     private static UserInfoDTO makeUserInfoDTOFromUser(User userObj, int idx) {
-        return new UserInfoDTO(idx, userObj.getuserId(), userObj.getName(), userObj.getEmail());
+        return new UserInfoDTO(idx, userObj.getUserId(), userObj.getName(), userObj.getEmail());
     }
 
     private static UserProfileDTO makeUserProfileDTOFromUser(User userObj) {
