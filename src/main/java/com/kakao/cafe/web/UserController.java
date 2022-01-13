@@ -1,6 +1,6 @@
 package com.kakao.cafe.web;
 
-import com.kakao.cafe.user.UserAPI;
+import com.kakao.cafe.user.UserService;
 import com.kakao.cafe.user.Users;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +16,13 @@ import java.util.List;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-    private final UserAPI userAPI = new UserAPI();
+    private final UserService userService = new UserService();
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping
     public String getUsers(Model model) {
-        List<Users> userList = userAPI.getUserList();
+        List<Users> userList = userService.getUserList();
         model.addAttribute("userList", userList);
         logger.info("{}", userList);
         return "user/list";
@@ -34,7 +34,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String findById(@PathVariable Long id, Model model) {
-        Users user =  userAPI.getByUserId(id);
+        Users user =  userService.getByUserId(id);
         model.addAttribute("user", user);
         logger.info("{}", user);
         return "user/profile";
@@ -42,7 +42,7 @@ public class UserController {
 
     @PostMapping
     String createUser(Users user) {
-        userAPI.createUser(user);
+        userService.createUser(user);
         return "redirect:/users";
     }
 }
