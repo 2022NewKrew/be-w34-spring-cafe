@@ -29,4 +29,9 @@ public class UserLocalRepositoryImpl implements UserRepository {
 	public User findById(int id) {
 		return userMap.get(id);
 	}
+
+	@Override
+	public void update(int id, User user) {
+
+	}
 }
