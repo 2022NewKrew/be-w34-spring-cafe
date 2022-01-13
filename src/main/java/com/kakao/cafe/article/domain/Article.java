@@ -11,13 +11,12 @@ import java.util.UUID;
 import static com.kakao.cafe.common.exception.ExceptionMessage.NON_NULL_EXCEPTION;
 
 @Getter
-@Setter
-@NoArgsConstructor
-//@Builder
+@AllArgsConstructor
 public class Article {
 
     @NonNull
-    public int id;
+    @Setter
+    private int id;
 
     @NonNull
     private String authorId;
@@ -34,11 +33,11 @@ public class Article {
     @NonNull
     private User author;
 
-    public Article(User user, String title, String content, String localDateTime) {
+    private Article(User user, String title, String content, String createdAt) {
         this.authorId = user.getUserId();
         this.title = title;
         this.content = content;
-        this.createdAt = localDateTime;
+        this.createdAt = createdAt;
         this.author = user;
     }
 
@@ -55,7 +54,14 @@ public class Article {
         }
     }
 
-    public boolean isSameArticleById(String articleId) {
-        return Objects.equals(this.id, articleId);
+    /**
+     * Use for JDBC mapper. This method calls All args constructor annotated above.
+     * */
+    public static Article valueOf(int id, String authorId, String title, String content, String createdAt, User author) {
+        return new Article(id, authorId, title, content, createdAt, author);
+    }
+
+    public boolean isSameArticleById(int targetArticleId) {
+        return this.id == targetArticleId;
     }
 }

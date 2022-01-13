@@ -10,5 +10,5 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
-    Article findByIdOrNull(String articleId);
+    Article findByIdOrNull(int articleId);
 }

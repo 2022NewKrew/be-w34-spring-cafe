@@ -32,7 +32,7 @@ public class UserService {
         userRepository.save(newUser);
     }
 
-    public void validateUserIdDuplication(String userId) throws IllegalArgumentException {
+    private void validateUserIdDuplication(String userId) throws IllegalArgumentException {
         if (userRepository.existsById(userId)) {
             throw new IllegalArgumentException(USER_ID_DUPLICATION_EXCEPTION);
         }

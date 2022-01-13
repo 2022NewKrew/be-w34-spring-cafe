@@ -16,7 +16,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     public int save(Article article) {
         article.setId(currentArticles.size() + 1);
         currentArticles.add(article);
-        return article.id;
+        return article.getId();
     }
 
     @Override
@@ -25,7 +25,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public Article findByIdOrNull(String articleId) {
+    public Article findByIdOrNull(int articleId) {
         return currentArticles.stream()
                 .filter(article -> article.isSameArticleById(articleId))
                 .findFirst().orElse(null);

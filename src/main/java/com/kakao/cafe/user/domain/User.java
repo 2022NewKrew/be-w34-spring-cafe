@@ -38,6 +38,14 @@ public class User {
         return new User(userId, password, name, email);
     }
 
+    public void update(String password, String name, String email) {
+        validateLength(userId, password, name);
+        validateEmail(email);
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
+
     private static void validateLength(String userId, String password, String name) throws IllegalArgumentException {
         if (userId.trim().length() == 0 || password.trim().length() == 0 || name.trim().length() == 0) {
             throw new IllegalArgumentException(NON_NULL_EXCEPTION);
@@ -55,13 +63,5 @@ public class User {
 
     public boolean isSameUserById(String targetUserId) {
         return Objects.equals(this.userId, targetUserId);
-    }
-
-    public void update(String password, String name, String email) {
-        validateLength(userId, password, name);
-        validateEmail(email);
-        this.password = password;
-        this.name = name;
-        this.email = email;
     }
 }

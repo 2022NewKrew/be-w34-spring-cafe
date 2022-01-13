@@ -46,7 +46,7 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public ArticleShowResponse findById(String articleId) {
+    public ArticleShowResponse findById(int articleId) {
         log.info(this.getClass() + ": 게시글 상세보기");
         Article article = articleRepository.findByIdOrNull(articleId);
         if(article == null) {
