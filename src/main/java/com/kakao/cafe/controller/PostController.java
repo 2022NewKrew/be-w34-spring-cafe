@@ -38,6 +38,7 @@ public class PostController {
 
     @GetMapping("/")
     public String postList(Model model) {
+        logger.info("[GET] / 게시글 리스트");
         List<Post> postList = postService.getPostList();
         model.addAttribute("postList", postList);
 
@@ -46,6 +47,7 @@ public class PostController {
 
     @GetMapping("/posts/{postId}")
     public String postById(@PathVariable int postId, Model model) {
+        logger.info("[GET] /posts/{postId} 게시글 보기");
         Post post = postService.getPostById(postId);
         model.addAttribute("post", post);
 
