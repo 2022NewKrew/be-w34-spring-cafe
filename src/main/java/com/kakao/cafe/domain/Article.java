@@ -30,6 +30,10 @@ public class Article {
     );
   }
 
+  public void addReadCount() {
+    readCount++;
+  }
+
   @Override
   public String toString() {
     return "Article{" +

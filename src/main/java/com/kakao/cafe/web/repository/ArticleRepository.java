@@ -58,6 +58,16 @@ public class ArticleRepository {
     return Optional.of(articles.get(0));
   }
 
+  public Article updateReadCount(Article article) {
+    String query = "UPDATE article "
+        + "SET "
+        + "read_count = ? "
+        + "WHERE id = ?";
+
+    jdbcTemplate.update(query, article.getReadCount(), article.getId());
+    return article;
+  }
+
   @Component
   public static class ArticleMapper implements RowMapper<Article> {
 

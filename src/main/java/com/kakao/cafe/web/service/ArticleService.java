@@ -31,9 +31,15 @@ public class ArticleService {
     return articleBoard;
   }
 
-  public Article getArticle(int id) {
-    return articleRepository.findById(id)
+  public Article viewArticle(int id) {
+
+    Article article = articleRepository.findById(id)
         .orElseThrow(NoArticleException::new);
+
+    article.addReadCount();
+    articleRepository.updateReadCount(article);
+
+    return article;
   }
 
 }

@@ -38,7 +38,7 @@ public class ArticlePageController {
   @GetMapping("/article/{id}")
   public String getArticle(Model model, @PathVariable int id) {
 
-    Article article = articleService.getArticle(id);
+    Article article = articleService.viewArticle(id);
     model.addAttribute("article", new ArticleDTO(article));
 
     return "article";
