@@ -5,6 +5,8 @@ import com.kakao.cafe.model.User;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,8 +14,9 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @Autowired
+    public UserService(UserRepository jdbcUserRepository) {
+        this.userRepository = jdbcUserRepository;
     }
 
     public List<User> getUserList() {

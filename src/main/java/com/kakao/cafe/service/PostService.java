@@ -20,9 +20,10 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
+    @Autowired
+    public PostService(PostRepository jdbcPostRepository, UserRepository jdbcUserRepository) {
+        this.postRepository = jdbcPostRepository;
+        this.userRepository = jdbcUserRepository;
     }
 
     public List<PostDetailDto> getAllPostDetail() {
