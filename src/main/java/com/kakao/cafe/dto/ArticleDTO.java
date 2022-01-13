@@ -1,10 +1,9 @@
-package com.kakao.cafe.vo;
+package com.kakao.cafe.dto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Objects;
 
-public class Article {
+public class ArticleDTO {
     private final Long id;
     private final String writer;
 
@@ -20,7 +19,7 @@ public class Article {
     private final String contents;
 
 
-    public Article(Long id, Long writerId, String writer, String title, String contents, Long views, String time) {
+    public ArticleDTO(Long id, Long writerId, String writer, String title, String contents, Long views, String time) {
         this.id = id;
         this.writerId = writerId;
         this.writer = writer;
@@ -61,17 +60,4 @@ public class Article {
         return time;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Article article = (Article) o;
-        return Objects.equals(id, article.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

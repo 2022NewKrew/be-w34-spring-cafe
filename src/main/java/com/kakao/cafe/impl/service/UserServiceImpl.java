@@ -1,8 +1,9 @@
 package com.kakao.cafe.impl.service;
 
+import com.kakao.cafe.dto.LoginDTO;
+import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.vo.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,22 +15,27 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public long insertUser(User user) {
+    public long insertUser(UserDTO user) {
         return userRepository.insertUser(user);
     }
 
     @Override
-    public List<User> getUserList() {
+    public List<UserDTO> getUserList() {
         return userRepository.getAllUser();
     }
 
     @Override
-    public User getUserById(long id) {
+    public UserDTO getUserById(long id) {
         return userRepository.getUserById(id);
     }
 
     @Override
-    public int updateUser(User user) {
+    public int updateUser(UserDTO user) {
         return userRepository.updateUser(user);
+    }
+
+    @Override
+    public UserDTO getUserByLoginData(LoginDTO login) {
+        return userRepository.getUserByLoginData(login);
     }
 }

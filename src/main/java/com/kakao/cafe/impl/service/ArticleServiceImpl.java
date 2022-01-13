@@ -1,8 +1,8 @@
 package com.kakao.cafe.impl.service;
 
+import com.kakao.cafe.dto.ArticleDTO;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.vo.Article;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,17 +14,17 @@ public class ArticleServiceImpl implements ArticleService {
     ArticleRepository articleRepository;
 
     @Override
-    public long insertArticle(Article article) {
+    public long insertArticle(ArticleDTO article) {
         return articleRepository.insertArticle(article);
     }
 
     @Override
-    public List<Article> getArticleList() {
+    public List<ArticleDTO> getArticleList() {
         return articleRepository.getAllArticle();
     }
 
     @Override
-    public Article getArticleById(long articleId) {
+    public ArticleDTO getArticleById(long articleId) {
         return articleRepository.getArticleById(articleId);
     }
 

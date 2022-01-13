@@ -1,7 +1,9 @@
 package com.kakao.cafe.impl.repository;
 
+import com.kakao.cafe.dto.LoginDTO;
+import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.vo.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -23,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public long insertUser(User user) {
+    public long insertUser(UserDTO user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
@@ -38,22 +40,26 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getUserById(long id) {
-        return jdbcTemplate
-                .queryForObject("select id, userid, password, email, to_char(time,'yyyy-MM-dd hh:mi') time from USERTABLE where id = ?",
-                        (rs, rowNum) -> new User(
-                                rs.getLong("id"),
-                                rs.getString("userid"),
-                                rs.getString("password"),
-                                rs.getString("email"),
-                                rs.getString("time")
-                        ), id);
+    public UserDTO getUserById(long id) {
+        try {
+            return jdbcTemplate
+                    .queryForObject("select id, userid, password, email, to_char(time,'yyyy-MM-dd hh:mi') time from USERTABLE where id = ?",
+                            (rs, rowNum) -> new UserDTO(
+                                    rs.getLong("id"),
+                                    rs.getString("userid"),
+                                    rs.getString("password"),
+                                    rs.getString("email"),
+                                    rs.getString("time")
+                            ), id);
+        } catch (EmptyResultDataAccessException exception) {
+            return null;
+        }
     }
 
     @Override
-    public List<User> getAllUser() {
+    public List<UserDTO> getAllUser() {
         return jdbcTemplate.query("select id, userid, password, email, to_char(time,'yyyy-MM-dd hh:mi') time from USERTABLE",
-                (rs, rowNum) -> new User(
+                (rs, rowNum) -> new UserDTO(
                         rs.getLong("id"),
                         rs.getString("userid"),
                         rs.getString("password"),
@@ -64,11 +70,28 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int updateUser(User user) {
+    public int updateUser(UserDTO user) {
         return jdbcTemplate.update("update USERTABLE set email = ?,password = ? where id = ?",
                 user.getEmail(),
                 user.getPassword(),
                 user.getId());
 
+    }
+
+    @Override
+    public UserDTO getUserByLoginData(LoginDTO login) {
+        try {
+            return jdbcTemplate
+                    .queryForObject("select id, userid, password, email, to_char(time,'yyyy-MM-dd hh:mi') time from USERTABLE where email = ? and password = ?",
+                            (rs, rowNum) -> new UserDTO(
+                                    rs.getLong("id"),
+                                    rs.getString("userid"),
+                                    rs.getString("password"),
+                                    rs.getString("email"),
+                                    rs.getString("time")
+                            ), login.getEmail(), login.getPassword());
+        } catch (EmptyResultDataAccessException exception) {
+            return null;
+        }
     }
 }

@@ -1,15 +1,18 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.vo.User;
+import com.kakao.cafe.dto.LoginDTO;
+import com.kakao.cafe.dto.UserDTO;
 
 import java.util.List;
 
 public interface UserService {
-    long insertUser(User user);
+    long insertUser(UserDTO user);
 
-    List<User> getUserList();
+    List<UserDTO> getUserList();
 
-    User getUserById(long id);
+    UserDTO getUserById(long id);
 
-    int updateUser(User user);
+    int updateUser(UserDTO user);
+
+    UserDTO getUserByLoginData(LoginDTO login);
 }

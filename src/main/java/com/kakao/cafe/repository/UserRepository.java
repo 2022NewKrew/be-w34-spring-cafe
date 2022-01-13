@@ -1,15 +1,18 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.vo.User;
+import com.kakao.cafe.dto.LoginDTO;
+import com.kakao.cafe.dto.UserDTO;
 
 import java.util.List;
 
 public interface UserRepository {
-    long insertUser(User user);
+    long insertUser(UserDTO user);
 
-    User getUserById(long id);
+    UserDTO getUserById(long id);
 
-    List<User> getAllUser();
+    List<UserDTO> getAllUser();
 
-    int updateUser(User user);
+    int updateUser(UserDTO user);
+
+    UserDTO getUserByLoginData(LoginDTO login);
 }

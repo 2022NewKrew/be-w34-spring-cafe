@@ -1,7 +1,7 @@
 package com.kakao.cafe.impl.repository;
 
+import com.kakao.cafe.dto.ArticleDTO;
 import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.vo.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -21,7 +21,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public long insertArticle(Article article) {
+    public long insertArticle(ArticleDTO article) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
@@ -36,9 +36,9 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public List<Article> getAllArticle() {
+    public List<ArticleDTO> getAllArticle() {
         return jdbcTemplate.query("select A.id, WRITERID, USERID as writer, title, contents, views, to_char(A.time,'yyyy-MM-dd hh:mi') time from USERTABLE U join ARTICLETABLE A on U.ID = A.WRITERID",
-                (rs, rowNum) -> new Article(
+                (rs, rowNum) -> new ArticleDTO(
                         rs.getLong("id"),
                         rs.getLong("writerId"),
                         rs.getString("writer"),
@@ -52,10 +52,10 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public Article getArticleById(long id) {
+    public ArticleDTO getArticleById(long id) {
         return jdbcTemplate
                 .queryForObject("select A.id, WRITERID, USERID as writer, title, contents,views,  to_char(A.time,'yyyy-MM-dd hh:mi') time from USERTABLE U join ARTICLETABLE A on U.ID = A.WRITERID where A.ID = ?",
-                        (rs, rowNum) -> new Article(
+                        (rs, rowNum) -> new ArticleDTO(
                                 rs.getLong("id"),
                                 rs.getLong("writerId"),
                                 rs.getString("writer"),
