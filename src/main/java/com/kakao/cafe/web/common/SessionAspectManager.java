@@ -2,7 +2,10 @@ package com.kakao.cafe.web.common;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.utils.SessionUtils;
+import com.kakao.cafe.web.dto.UserDTO;
+import java.util.Arrays;
 import java.util.Optional;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -32,18 +35,21 @@ public class SessionAspectManager {
 
     Object controllerResult = joinPoint.proceed();
 
-    for(Object arg : joinPoint.getArgs()) {
-      logger.debug("JoinPoint Arg : {}", arg.toString());
-      if(arg instanceof Model) {
-        Model model = (Model) arg;
-        model.addAttribute("session", loginUser.orElse(User.createEmpty()));
-        model.addAttribute("isLogin", isLogin);
-      }
-    }
+    findModel(joinPoint).ifPresent(model -> {
+      model.addAttribute("session", new UserDTO(loginUser.orElse(User.createEmpty())));
+      model.addAttribute("isLogin", isLogin);
+    });
 
     logger.debug("SessionManager Aspect End-------------------------------------------------");
 
     return controllerResult;
+  }
+
+  private Optional<Model> findModel(JoinPoint joinPoint) {
+    return Arrays.stream(joinPoint.getArgs())
+        .filter(arg -> arg instanceof Model)
+        .map(arg -> (Model) arg)
+        .findAny();
   }
 
 }

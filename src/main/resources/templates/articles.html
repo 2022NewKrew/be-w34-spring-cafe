@@ -1,0 +1,79 @@
+{{> partial/head}}
+
+<body>
+{{> partial/header}}
+
+<div class="main-wrapper ">
+
+  {{#articleBoard}}
+  <section class="section intro">
+    <div class="container">
+      <div class="row ">
+        <h1>게시글</h1>
+      </div>
+
+      <div class="row" style="font-family: Hind; text-align: center">
+        <span style="font-family: Hind">전체 글 {{totalArticleSize}} 개</span>
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col" class="col-6">TITLE</th>
+            <th scope="col">AUTHOR</th>
+            <th scope="col">CREATE_AT</th>
+            <th scope="col">VIEWS</th>
+          </tr>
+          </thead>
+          <tbody>
+          {{#articlePage}}
+          <tr>
+            <th scope="row">{{id}}</th>
+            <td>{{title}}</td>
+            <td><a href="/users/{{author.id}}">{{author.nickName}}</a></td>
+            <td>{{createAt}}</td>
+            <td>{{readCount}}</td>
+          </tr>
+          {{/articlePage}}
+          </tbody>
+        </table>
+
+        <!-- pagination -->
+        <nav aria-label="Page navigation example" style="width:100%">
+          <ul class="pagination justify-content-center">
+            <li class="page-item {{^previousOn}}disabled{{/previousOn}}">
+              <a class="page-link" {{#previousOn}}style="color:#f75757"{{/previousOn}} href="/articles/{{previousIndex}}" {{^previousOn}}tabindex="-1"{{/previousOn}}>Previous</a>
+            </li>
+            {{#pagination}}
+            <li class="page-item">
+              <a class="page-link" {{^isCurrent}}href="/articles/{{index}}"{{/isCurrent}}
+                 style="color:#f75757; {{#isCurrent}}background-color: rgba(0, 0, 0, 0.65); {{/isCurrent}}">
+                {{index}}
+              </a>
+            </li>
+            {{/pagination}}
+            <li class="page-item {{^nextOn}}disabled{{/nextOn}}">
+              <a class="page-link" {{#nextOn}}style="color:#f75757"{{/nextOn}} href="/articles/{{nextIndex}}" {{^nextOn}}tabindex="-1"{{/nextOn}}>Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </section>
+  {{/articleBoard}}
+</div>
+
+<!--
+Essential Scripts
+=====================================-->
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    // Handler when the DOM is fully loaded
+
+  });
+
+</script>
+
+
+{{> partial/script}}
+</body>
+</html>

@@ -15,6 +15,7 @@ public class SessionUtils {
     // thread local 에서 request 추출
     HttpServletRequest request =
         ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
+
     return request.getSession();
   }
 

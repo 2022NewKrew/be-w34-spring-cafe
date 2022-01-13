@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -22,9 +23,11 @@ public class UserRepository {
 
   private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
   private final JdbcTemplate jdbcTemplate;
+  private final UserMapper userMapper;
 
-  public UserRepository(JdbcTemplate jdbcTemplate) {
+  public UserRepository(JdbcTemplate jdbcTemplate, UserMapper userMapper) {
     this.jdbcTemplate = jdbcTemplate;
+    this.userMapper = userMapper;
   }
 
   public User save(User user) {
@@ -42,7 +45,8 @@ public class UserRepository {
         + ") VALUES (?,?,?,?,?,?,?,?);";
 
     jdbcTemplate.update(con -> {
-      PreparedStatement ps = con.prepareStatement(query, new String[]{"id"});   // auto-increment key holder
+      PreparedStatement ps = con.prepareStatement(query,
+          new String[]{"id"});   // auto-increment key holder
       ps.setString(1, user.getEmail());
       ps.setString(2, user.getNickName());
       ps.setString(3, user.getSummary());
@@ -86,26 +90,26 @@ public class UserRepository {
 
   public Users findAll() {
     String query = UserMapper.SELECT_ALL_COLUMNS + "FROM USERS ORDER BY create_at, email;";
-    List<User> users = jdbcTemplate.query(query, new UserMapper());
+    List<User> users = jdbcTemplate.query(query, userMapper);
     return Users.of(users);
   }
 
   public Optional<User> findById(Long id) {
     String query = UserMapper.SELECT_ALL_COLUMNS + "FROM USERS WHERE id = ?";
-    List<User> user = jdbcTemplate.query(query, new UserMapper(), id);
+    List<User> user = jdbcTemplate.query(query, userMapper, id);
     if (user.isEmpty()) {
       return Optional.empty();
     }
-    return Optional.ofNullable(user.get(0));
+    return Optional.of(user.get(0));
   }
 
   public Optional<User> findByEmail(String email) {
     String query = UserMapper.SELECT_ALL_COLUMNS + "FROM USERS WHERE email = ?";
-    List<User> user = jdbcTemplate.query(query, new UserMapper(), email);
-    if(user.isEmpty()) {
+    List<User> user = jdbcTemplate.query(query, userMapper, email);
+    if (user.isEmpty()) {
       return Optional.empty();
     }
-    return Optional.ofNullable(user.get(0));
+    return Optional.of(user.get(0));
   }
 
   public int delete(User user) {
@@ -113,22 +117,24 @@ public class UserRepository {
     return jdbcTemplate.update(query, user.getId());
   }
 
+  @Component
   public static class UserMapper implements RowMapper<User> {
 
     public static final String SELECT_ALL_COLUMNS =
         "SELECT "
-        + "id, "
-        + "email, "
-        + "nick_name, "
-        + "summary, "
-        + "profile, "
-        + "password, "
-        + "create_at, "
-        + "modified_at, "
-        + "last_login_at ";
+            + "id, "
+            + "email, "
+            + "nick_name, "
+            + "summary, "
+            + "profile, "
+            + "password, "
+            + "create_at, "
+            + "modified_at, "
+            + "last_login_at ";
 
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+
       Long id = rs.getLong("ID");
       String email = rs.getString("EMAIL");
       String nickName = rs.getString("NICK_NAME");
@@ -138,10 +144,32 @@ public class UserRepository {
       Timestamp createAt = rs.getTimestamp("CREATE_AT");
       Timestamp modifiedAt = rs.getTimestamp("MODIFIED_AT");
       Timestamp lastLoginAt = rs.getTimestamp("LAST_LOGIN_AT");
-      return User.create(rowNum + 1, id, email, nickName, summary, profile, password, createAt,
-          modifiedAt,
-          lastLoginAt);
+
+      return User.create(
+          rowNum + 1, id, email, nickName,
+          summary, profile, password, createAt,
+          modifiedAt, lastLoginAt
+      );
     }
+
+    public User mapRowExternal(ResultSet rs, int rowNum) throws SQLException {
+
+      Long id = rs.getLong("USER_ID");
+      String email = rs.getString("USER_EMAIL");
+      String nickName = rs.getString("USER_NICK_NAME");
+      String summary = rs.getString("USER_SUMMARY");
+      String profile = rs.getString("USER_PROFILE");
+      Timestamp createAt = rs.getTimestamp("USER_CREATE_AT");
+      Timestamp modifiedAt = rs.getTimestamp("USER_MODIFIED_AT");
+      Timestamp lastLoginAt = rs.getTimestamp("USER_LAST_LOGIN_AT");
+
+      return User.create(
+          rowNum + 1, id, email, nickName,
+          summary, profile, null, createAt,
+          modifiedAt, lastLoginAt
+      );
+    }
+
   }
 
 }
