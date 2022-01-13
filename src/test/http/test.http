@@ -1,0 +1,19 @@
+### 메인 페이지
+GET {{host}}/
+
+### 유저 리스트 페이지
+GET {{host}}/user
+
+### 회원 가입 테스트
+POST {{host}}/user?userID=heejoon&email=ben.ny@kakaocorp.com&nickname=ben&password=1234
+
+### 유저 프로필 페이지
+GET {{host}}/user/1
+
+
+
+### 게시글 작성 테스트
+POST {{host}}/qna?title=오늘날씨&content=맑음
+
+### 게시글 상세 페이지
+GET {{host}}/qna/1
