@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class InMemoryPostRepository implements  PostRepository {
 
     private final List<Post> postList;
