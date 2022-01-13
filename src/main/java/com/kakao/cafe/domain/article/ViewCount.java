@@ -4,12 +4,12 @@ public class ViewCount {
 
     private int value;
 
-    public ViewCount() {
-        this.value = 0;
-    }
-
     public ViewCount(int value) {
         this.value = value;
+    }
+
+    public ViewCount() {
+        this(0);
     }
 
     public int getValue() {

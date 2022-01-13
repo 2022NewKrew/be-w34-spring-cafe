@@ -23,11 +23,7 @@ public class Article {
     }
 
     public Article(Title title, Content content, User writer) {
-        this.title = title;
-        this.content = content;
-        this.writer = writer;
-        this.createdAt = LocalDateTime.now();
-        this.viewCount = new ViewCount();
+        this(null, title, content, writer, null, null);
     }
 
     public UUID getArticleId() {
