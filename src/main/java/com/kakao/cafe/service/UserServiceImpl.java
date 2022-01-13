@@ -75,5 +75,6 @@ public class UserServiceImpl implements UserService {
 			userUpdateRequestDTO.getName(),
 			userUpdateRequestDTO.getEmail()
 		);
+		userRepository.update(id, user);
 	}
 }
