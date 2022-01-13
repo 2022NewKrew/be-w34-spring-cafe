@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RequiredArgsConstructor
@@ -31,5 +32,11 @@ public class ArticleController {
     @GetMapping("/articles/form")
     public String getArticleForm(){
         return "article/form";
+    }
+
+    @GetMapping("/articles/{articleId}")
+    public String getArticleId(@PathVariable Long articleId, Model model){
+        model.addAttribute("article", articleService.findByArticleId(articleId));
+        return "article/show";
     }
 }
