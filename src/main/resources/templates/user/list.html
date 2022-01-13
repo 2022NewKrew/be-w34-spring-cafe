@@ -1,5 +1,22 @@
-{{> layout/header}}
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>kakao Java Web Programming</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="/css/reset.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="/css/user/list.css" rel="stylesheet">
+    <!--    <link href="/css/user/list.css" rel="stylesheet">-->
+</head>
+<body>
+<div class="background">
 
+
+    {{> layout/nav}}
 <div class="description">
     <div class="desc-container">
         <p class="desc-small">멤버리스트</p>
@@ -23,7 +40,7 @@
                 <tr>
                     <td>{{id}}</td>
                     <td>{{email}}</td>
-                    <td>test</td>
+                    <td>{{joinedAt}}</td>
                     <td><a href="/users/{{id}}">보기</a></td>
                 </tr>
                 {{/users}}
@@ -37,4 +54,6 @@
     </div>
 </div>
 
-{{> layout/footer}}
+</div>
+</body>
+</html>

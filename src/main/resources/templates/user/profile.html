@@ -1,37 +1,56 @@
-{{> layout/header}}
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>kakao Java Web Programming</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="/css/reset.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="/css/index.css" rel="stylesheet">
+    <link href="/css/user/form.css" rel="stylesheet">
+    <!--    <link href="/css/user/list.css" rel="stylesheet">-->
+</head>
+<body>
+<div class="background">
 
-<div class="container" id="main">
-    <header class="post-header">
-        <p class="title">회원정보</p>
-    </header>
+    {{> layout/nav}}
 
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th colspan="2">내 정보</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#user}}
-        <tr>
-            <td>아이디</td>
-            <td>{{userId}}</td>
-        </tr>
-        <tr>
-            <td>이름</td>
-            <td>{{name}}</td>
-        </tr>
-        <tr>
-            <td>이메일</td>
-            <td>{{email}}</td>
-        </tr>
+    <div class="container" id="main">
+        <header class="post-header">
+            <p class="title">회원정보</p>
+        </header>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th colspan="2">내 정보</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#user}}
+            <tr>
+                <td>아이디</td>
+                <td>{{userId}}</td>
+            </tr>
+            <tr>
+                <td>이름</td>
+                <td>{{name}}</td>
+            </tr>
+            <tr>
+                <td>이메일</td>
+                <td>{{email}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="post-btn-container">
+            <a class="black-component" href="/users/{{id}}/form" role="button">수정하기</a>
+        </div>
         {{/user}}
-        <!--                -->
-        <!--                <tr>-->
-        <!--                    <td>테스터 1</td> <td>test1@gmail.com</td><td>2021-12-14</td>-->
-        <!--                </tr>-->
-        </tbody>
-    </table>
-</div>
+    </div>
 
-{{> layout/footer}}
+</div>
+</body>
+</html>

@@ -15,12 +15,21 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.modelmapper:modelmapper:2.4.5'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
 }
 
 test {
 	useJUnitPlatform()
 }
+
+apply plugin: 'idea'
