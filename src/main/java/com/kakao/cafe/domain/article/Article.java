@@ -11,16 +11,12 @@ public class Article {
         this.description = description;
     }
 
-    public boolean isEqualUserId(long id) {
-        return this.id == id;
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getTitle() {
@@ -39,7 +35,7 @@ public class Article {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Article) {
-            return isEqualUserId(((Article) obj).id);
+            return this.id.equals(((Article) obj).id);
         }
         return false;
     }
