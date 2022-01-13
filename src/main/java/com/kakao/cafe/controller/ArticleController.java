@@ -2,7 +2,6 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.auth.AuthControl;
 import com.kakao.cafe.domain.ArticleDto;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -43,22 +42,24 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/new")
-    public String getArticles(final HttpSession session) {
-        if (!AuthControl.isLogon(session, userService)) {
-            session.setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
+    public String getArticles(final HttpServletRequest request) {
+        if (!AuthControl.isLogon(request, userService)) {
+            request.getSession()
+                    .setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
             return "redirect:/login";
         }
         return "articles/new";
     }
 
     @PostMapping("/articles")
-    public String writeArticle(final HttpSession session, @NonNull final ArticleDto articleDto) {
-        if (!AuthControl.isLogon(session, userService)) {
-            session.setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
+    public String writeArticle(final HttpServletRequest request, @NonNull final ArticleDto articleDto) {
+        if (!AuthControl.isLogon(request, userService)) {
+            request.getSession()
+                    .setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
             return "redirect:/login";
         }
 
-        final UserDto userDto = userService.getUser((String)session.getAttribute(AuthControl.TAG_ID));
+        final UserDto userDto = userService.getUser((String)request.getSession().getAttribute(AuthControl.TAG_ID));
         articleDto.setUserId(userDto.getId());
         articleDto.setUserName(userDto.getName());
 

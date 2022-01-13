@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import org.springframework.lang.NonNull;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 
@@ -13,8 +14,9 @@ public class AuthControl {
 
     private AuthControl() {}
 
-    public static boolean isLogon(@NonNull final HttpSession session, @NonNull final UserService userService) {
-        String userStr = (String)session.getAttribute(TAG_ID);
+    public static boolean isLogon(@NonNull final HttpServletRequest request, @NonNull final UserService userService) {
+        final HttpSession session = request.getSession();
+        final String userStr = (String)session.getAttribute(TAG_ID);
         if (userStr == null) {
             return false;
         }
@@ -28,13 +30,21 @@ public class AuthControl {
         return true;
     }
 
-    public static void login(@NonNull final HttpSession session, @NonNull final User user) {
-        session.setAttribute(TAG_ID, user.getId());
-        session.setAttribute(TAG_NAME, user.getName());
+    public static void login(@NonNull final HttpServletRequest request, @NonNull final User user) {
+        final HttpSession sessionOld = request.getSession(false);
+        if (sessionOld != null) {
+            sessionOld.invalidate();
+        }
+
+        final HttpSession sessionNew = request.getSession();
+        sessionNew.setAttribute(TAG_ID, user.getId());
+        sessionNew.setAttribute(TAG_NAME, user.getName());
     }
 
-    public static void logout(@NonNull final HttpSession session) {
-        session.removeAttribute(TAG_ID);
-        session.removeAttribute(TAG_NAME);
+    public static void logout(@NonNull final HttpServletRequest request) {
+        final HttpSession sessionOld = request.getSession(false);
+        if (sessionOld != null) {
+            sessionOld.invalidate();
+        }
     }
 }

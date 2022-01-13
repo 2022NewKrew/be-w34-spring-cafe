@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -52,12 +53,13 @@ public class UserController {
     // Get /dupUserFound -> "users/dupUserFound"
 
     @GetMapping("/login")
-    public String getLoginPage(final HttpSession session, Model model) {
-        if (AuthControl.isLogon(session, userService)) {
+    public String getLoginPage(final HttpServletRequest request, Model model) {
+        if (AuthControl.isLogon(request, userService)) {
             return "redirect:/";
         }
 
-        String msg = (String)session.getAttribute(TAG_LOGIN_ERROR);
+        final HttpSession session = request.getSession();
+        final String msg = (String)session.getAttribute(TAG_LOGIN_ERROR);
 
         if (msg != null) {
             session.removeAttribute(TAG_LOGIN_ERROR);
@@ -69,15 +71,16 @@ public class UserController {
 
     @PostMapping("/login")
     public String requestLogin(
-            final HttpSession session,
+            final HttpServletRequest request,
             @RequestParam("id") @NonNull final String id,
             @RequestParam("password") @NonNull final String rawPassword
     )
     {
-        if (AuthControl.isLogon(session, userService)) {
+        if (AuthControl.isLogon(request, userService)) {
             return "redirect:/";
         }
 
+        final HttpSession session = request.getSession();
         User user;
         try {
             user = userService.getUserEntity(id);
@@ -89,7 +92,7 @@ public class UserController {
             return redirectLoginFailed(session);
         }
 
-        AuthControl.login(session, user);
+        AuthControl.login(request, user);
         return "redirect:/";
     }
 
@@ -99,8 +102,8 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String processLogout(final HttpSession session) {
-        AuthControl.logout(session);
+    public String processLogout(final HttpServletRequest request) {
+        AuthControl.logout(request);
         return "redirect:/";
     }
 
