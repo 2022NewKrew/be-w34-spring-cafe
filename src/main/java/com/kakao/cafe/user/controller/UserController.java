@@ -5,6 +5,7 @@ import com.kakao.cafe.user.dto.UserCreateDTO;
 import com.kakao.cafe.user.dto.UserListDTO;
 import com.kakao.cafe.user.dto.UserProfileDTO;
 import com.kakao.cafe.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,12 @@ import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
-    UserService userService = new UserService();
+    UserService userService;
+
+    @Autowired
+    public UserController(UserService userService){
+        this.userService = userService;
+    }
 
     //회원가입 목록 확인
     @GetMapping(value = "/user/list")

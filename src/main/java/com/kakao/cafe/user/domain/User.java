@@ -18,6 +18,14 @@ public class User {
         this.sequence = sequence;
     }
 
+    public User(String userid, String password, String name, String email, long sequence) {
+        this.userId = userid;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.sequence = sequence;
+    }
+
     public String getUserId() {
         return userId;
     }

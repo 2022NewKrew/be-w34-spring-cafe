@@ -1,0 +1,20 @@
+DROP TABLE IF EXISTS USERS;
+DROP TABLE IF EXISTS ARTICLES;
+
+
+CREATE TABLE USERS(
+    sequence long PRIMARY KEY AUTO_INCREMENT,
+    userid VARCHAR,
+    password VARCHAR,
+    name VARCHAR,
+    email VARCHAR
+);
+
+
+CREATE TABLE ARTICLES(
+    sequence long PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR,
+    title VARCHAR,
+    contents VARCHAR,
+    date DATE
+);

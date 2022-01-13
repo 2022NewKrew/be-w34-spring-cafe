@@ -20,6 +20,14 @@ public class Article {
         this.sequence = sequence;
     }
 
+    public Article(String name, String title, String contents, java.sql.Date date, long sequence) {
+        this.name = name;
+        this.title = title;
+        this.contents = contents;
+        this.date = date;
+        this.sequence = sequence;
+    }
+
     public String getName() {
         return name;
     }
