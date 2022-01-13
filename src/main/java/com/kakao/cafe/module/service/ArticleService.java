@@ -6,12 +6,11 @@ import com.kakao.cafe.module.model.domain.User;
 import com.kakao.cafe.module.repository.ArticleRepository;
 import com.kakao.cafe.module.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 import static com.kakao.cafe.module.model.dto.ArticleDtos.*;
-import static com.kakao.cafe.module.model.mapper.ArticleMapper.*;
 
 @Service
 @RequiredArgsConstructor
@@ -19,17 +18,18 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     public void postArticle(ArticlePostDto articlePostDto) {
-        Article article = toArticle(0L, findAuthor(articlePostDto.getAuthor()).getId(), articlePostDto.getTitle(),
-                articlePostDto.getContents(), LocalDateTime.now(), 0, 0);
-        articleRepository.addArticle(article);
+        modelMapper.typeMap(ArticlePostDto.class, Article.class).addMappings(mapper -> {
+            mapper.using((Converter<String, Long>) context -> findAuthor(context.getSource()).getId())
+                    .map(ArticlePostDto::getAuthor, Article::setAuthorId);
+        });
+        articleRepository.addArticle(modelMapper.map(articlePostDto, Article.class));
     }
 
     public ArticleReadDto showArticle(Long id) {
-        Article article = articleRepository.findArticleById(id);
-        User author = userRepository.findUserById(article.getAuthorId());
-        return toArticleReadDto(article, author);
+        return articleRepository.findArticleById(id);
     }
 
     private User findAuthor(String name) {

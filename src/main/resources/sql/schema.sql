@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS ARTICLE (
     author_id BIGINT NOT NULL,
     title VARCHAR NOT NULL,
     contents CLOB,
-    created DATETIME NOT NULL,
-    view_count INT,
-    comment_count INT,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    view_count INT DEFAULT 0,
+    comment_count INT DEFAULT 0,
     FOREIGN KEY(author_id) REFERENCES USERS(id) ON DELETE CASCADE
 );

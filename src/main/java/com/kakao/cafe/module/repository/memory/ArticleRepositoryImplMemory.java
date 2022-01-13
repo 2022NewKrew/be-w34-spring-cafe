@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kakao.cafe.module.model.dto.ArticleDtos.*;
+
 @Repository
 @RequiredArgsConstructor
 public class ArticleRepositoryImplMemory implements ArticleRepository {
@@ -20,15 +22,12 @@ public class ArticleRepositoryImplMemory implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAllArticles() {
-        return articleList;
+    public ArticleReadDto findArticleById(Long id) {
+        return null;
     }
 
     @Override
-    public Article findArticleById(Long id) {
-        return articleList.stream()
-                .filter(article -> article.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+    public List<ArticleListDto> findAllArticles() {
+        return null;
     }
 }
