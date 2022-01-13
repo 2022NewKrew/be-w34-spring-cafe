@@ -1,7 +1,7 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.user;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.vo.UserDto;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.dto.user.UserDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

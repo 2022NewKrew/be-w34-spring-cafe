@@ -1,7 +1,7 @@
-package com.kakao.cafe.service;
+package com.kakao.cafe.service.user;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.vo.UserDto;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.dto.user.UserDto;
 
 import java.util.List;
 
