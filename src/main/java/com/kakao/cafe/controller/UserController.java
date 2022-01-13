@@ -9,9 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -59,7 +57,7 @@ public class UserController {
     }
 
     // 회원정보 수정 요청
-    @PostMapping("users/{userId}/update")
+    @PatchMapping("users/{userId}/update")
     public String updateUserInfo(SignUpDto signUpDto, @PathVariable String userId) throws PasswordMismatchException, NoSuchUserException {
         this.userService.updateUser(signUpDto);
         return "redirect:/users";
