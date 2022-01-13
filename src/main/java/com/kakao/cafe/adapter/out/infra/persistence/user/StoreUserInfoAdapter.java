@@ -21,10 +21,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort, UpdateUserInfoPort {
 
-    private final UserInfoRepository inMemoryUserInfoRepository;
+    private final UserInfoRepository userInfoRepository;
 
-    public StoreUserInfoAdapter(UserInfoRepository inMemoryUserInfoRepository) {
-        this.inMemoryUserInfoRepository = inMemoryUserInfoRepository;
+    public StoreUserInfoAdapter(UserInfoRepository userInfoRepository) {
+        this.userInfoRepository = userInfoRepository;
     }
 
     @Override
@@ -32,31 +32,27 @@ public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort, 
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException, UserIdDuplicationException {
         checkUserIdDuplication(signUpRequest.getUserId());
 
-        inMemoryUserInfoRepository.save(new User.Builder()
-                                            .userId(signUpRequest.getUserId())
-                                            .password(signUpRequest.getPassword())
-                                            .name(signUpRequest.getName())
-                                            .email(signUpRequest.getEmail())
-                                            .build());
+        userInfoRepository.save(new User.Builder()
+                                    .userId(signUpRequest.getUserId())
+                                    .password(signUpRequest.getPassword())
+                                    .name(signUpRequest.getName())
+                                    .email(signUpRequest.getEmail())
+                                    .build());
     }
 
     @Override
     public UserInfoList getAllUsersInfo() {
-        List<UserInfo> userInfoList = inMemoryUserInfoRepository.getAllUserList()
-                                                                .stream()
-                                                                .map(u -> new UserInfo(
-                                                                    u.getUserId(),
-                                                                    u.getName(),
-                                                                    u.getEmail()
-                                                                ))
-                                                                .collect(Collectors.toList());
+        List<UserInfo> userInfoList = userInfoRepository.getAllUserList()
+                                                        .stream()
+                                                        .map(UserInfo::from)
+                                                        .collect(Collectors.toList());
 
         return UserInfoList.from(userInfoList);
     }
 
     @Override
     public UserInfo findUserByUserId(String userId) throws UserNotExistException {
-        User user = inMemoryUserInfoRepository.findByUserId(userId).orElse(null);
+        User user = userInfoRepository.findByUserId(userId).orElse(null);
 
         if (user == null) {
             throw new UserNotExistException("존재하지 않는 회원입니다.");
@@ -66,7 +62,7 @@ public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort, 
     }
 
     private void checkUserIdDuplication(String userId) throws UserIdDuplicationException {
-        if (inMemoryUserInfoRepository.findByUserId(userId).isPresent()) {
+        if (userInfoRepository.findByUserId(userId).isPresent()) {
             throw new UserIdDuplicationException("ID는 중복될 수 없습니다.");
         }
     }
@@ -74,17 +70,17 @@ public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort, 
     @Override
     public void updateUser(String userId, UpdateRequest updateRequest)
         throws UserNotExistException, IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
-        User user = inMemoryUserInfoRepository.findByUserId(userId).orElse(null);
+        User user = userInfoRepository.findByUserId(userId).orElse(null);
 
         if (user == null) {
             throw new UserNotExistException("존재하지 않는 회원입니다.");
         }
 
-        inMemoryUserInfoRepository.save(new User.Builder()
-                                            .userId(userId)
-                                            .password(user.getPassword())
-                                            .name(updateRequest.getName())
-                                            .email(updateRequest.getEmail())
-                                            .build());
+        userInfoRepository.save(new User.Builder()
+                                    .userId(userId)
+                                    .password(user.getPassword())
+                                    .name(updateRequest.getName())
+                                    .email(updateRequest.getEmail())
+                                    .build());
     }
 }

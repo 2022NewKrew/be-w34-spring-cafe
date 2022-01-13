@@ -8,9 +8,7 @@ import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
 import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
-import org.springframework.stereotype.Service;
 
-@Service
 public class UpdateUserInfoService implements UpdateUserInfoUseCase {
 
     private final UpdateUserInfoPort updateUserInfoPort;

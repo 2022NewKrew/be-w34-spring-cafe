@@ -8,9 +8,7 @@ import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
 import com.kakao.cafe.domain.user.exceptions.UserIdDuplicationException;
-import org.springframework.stereotype.Service;
 
-@Service
 public class SignUpUserService implements SignUpUserUseCase {
 
     private final RegisterUserPort registerUserPort;
