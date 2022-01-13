@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.article;
 
 import com.kakao.cafe.web.dto.article.ArticleAddRequestDto;
+import com.kakao.cafe.web.dto.article.ArticleResponseDto;
 import com.kakao.cafe.web.dto.article.ArticlesListResponseDto;
 import lombok.Getter;
 
@@ -29,5 +30,11 @@ public class Articles {
 
     public ArticlesListResponseDto findAll() {
         return new ArticlesListResponseDto(articles);
+    }
+
+    public ArticleResponseDto findByIndex(int index) {
+        return new ArticleResponseDto(articles.stream().filter(article -> article.getIndex()==index)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException()));
     }
 }

@@ -2,6 +2,7 @@ package com.kakao.cafe.service.article;
 
 import com.kakao.cafe.domain.article.Articles;
 import com.kakao.cafe.web.dto.article.ArticleAddRequestDto;
+import com.kakao.cafe.web.dto.article.ArticleResponseDto;
 import com.kakao.cafe.web.dto.article.ArticlesListResponseDto;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +16,9 @@ public class ArticleService {
 
     public ArticlesListResponseDto findAll() {
         return articles.findAll();
+    }
+
+    public ArticleResponseDto findByIndex(int index) {
+        return articles.findByIndex(index);
     }
 }
