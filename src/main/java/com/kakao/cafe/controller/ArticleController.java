@@ -1,9 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.ArticleDto;
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.RequestArticleDto;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -20,22 +18,21 @@ public class ArticleController {
     private final ArticleService articleService = new ArticleService();
 
     @PostMapping("/posts")
-    public String addPost(@ModelAttribute ArticleDto articleDto) {
-        articleDto.setAuthor("Seonghun");
+    public String addArticle(@ModelAttribute RequestArticleDto articleDto) {
         logger.info("POST /posts {}", articleDto);
         articleService.addPost(articleDto);
         return "redirect:/";
     }
 
     @GetMapping("/")
-    public String findAll(Model model) {
-        model.addAttribute("posts", articleService.findAll());
+    public String getAllArticles(Model model) {
+        model.addAttribute("posts", articleService.findArticles());
         return "index";
     }
 
     @GetMapping("/articles/{id}")
-    public String findById(@PathVariable int id, Model model) {
-        model.addAttribute("post", articleService.findById(id));
+    public String getArticleDetail(@PathVariable int id, Model model) {
+        model.addAttribute("post", articleService.findOne(id));
         return "post/show";
     }
 

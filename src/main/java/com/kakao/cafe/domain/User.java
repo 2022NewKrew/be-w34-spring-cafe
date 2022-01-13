@@ -1,6 +1,5 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.dto.UserDto;
 import lombok.Getter;
 
 import lombok.Setter;
@@ -13,7 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class User {
-    private int id;
+    private long id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date joinedAt;
@@ -22,12 +21,8 @@ public class User {
     private String name;
     private String email;
 
-    public User(int id, UserDto userDto) {
+    public User(long id) {
         this.id = id;
-        this.userId = userDto.getUserId();
-        this.password = userDto.getPassword();
-        this.name = userDto.getName();
-        this.email = userDto.getEmail();
         this.joinedAt = new Date();
     }
 
