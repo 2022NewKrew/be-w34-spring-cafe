@@ -1,6 +1,7 @@
 package com.kakao.cafe.web.config;
 
 import com.kakao.cafe.web.repository.article.ArticleRepository;
+import com.kakao.cafe.web.repository.article.JdbcTemplateArticleRepository;
 import com.kakao.cafe.web.repository.article.MemoryArticleRepository;
 import com.kakao.cafe.web.repository.user.JdbcTemplateUserRepository;
 import com.kakao.cafe.web.repository.user.MemoryUserRepository;
@@ -41,6 +42,7 @@ public class SpringConfig {
 
     @Bean
     public ArticleRepository articleRepository() {
-        return new MemoryArticleRepository();
+//        return new MemoryArticleRepository();
+        return new JdbcTemplateArticleRepository(dataSource);
     }
 }

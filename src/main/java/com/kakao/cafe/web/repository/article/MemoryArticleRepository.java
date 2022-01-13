@@ -12,10 +12,9 @@ public class MemoryArticleRepository implements ArticleRepository {
     private static Long sequence = 0L;
 
     @Override
-    public Article save(Article article) {
+    public void save(Article article) {
         article.setId(++sequence);
         articles.add(article);
-        return article;
     }
 
     @Override

@@ -14,9 +14,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Article write(Article article) {
+    public void write(Article article) {
         articleRepository.save(article);
-        return article;
     }
 
     public List<Article> findArticles() {
