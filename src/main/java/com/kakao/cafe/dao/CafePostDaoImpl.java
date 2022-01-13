@@ -21,7 +21,7 @@ public class CafePostDaoImpl implements CafePostDao {
     }
 
     @Override
-    public void writePost(Post newPost) {
+    public boolean writePost(Post newPost) {
         String sql = "INSERT INTO post(userId, title, content)\n";
         sql += "VALUES (?,?,?)";
 
@@ -30,10 +30,14 @@ public class CafePostDaoImpl implements CafePostDao {
             pstmt.setString(1, newPost.getUserId());
             pstmt.setString(2, newPost.getTitle());
             pstmt.setString(3, newPost.getContent());
-            pstmt.executeUpdate();
+            int updateCnt = pstmt.executeUpdate();
+            if( updateCnt > 0 ) {
+                return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override

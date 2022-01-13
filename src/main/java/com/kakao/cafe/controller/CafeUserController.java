@@ -30,10 +30,6 @@ public class CafeUserController {
     String userViewSingUp() {
         return UserView.USER_VIEW_SIGN_UP;
     }
-    @GetMapping("/sign-up/fail")
-    String userViewSignUpFail() {
-        return UserView.USER_VIEW_SIGN_UP_FAIL;
-    }
 
     @PostMapping("/sign-up")
     String signUp(User newUser){ // 회원가입

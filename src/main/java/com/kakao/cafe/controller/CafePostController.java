@@ -32,8 +32,10 @@ public class CafePostController {
 
     @PostMapping("/write")
     String writePost (@NonNull Post newPost) {
-        cafePostService.writePost(newPost);
-        return PostRedirect.POST_REDIRECT_LIST;
+        if(cafePostService.writePost(newPost)) {
+            return PostRedirect.POST_REDIRECT_LIST;
+        }
+        return PostRedirect.POST_REDIRECT_WRITE_FAIL;
     }
 
     @GetMapping("/list")
@@ -50,6 +52,4 @@ public class CafePostController {
         model.addAttribute("post", post);
         return PostView.POST_VIEW_CONTENT;
     }
-
-
 }

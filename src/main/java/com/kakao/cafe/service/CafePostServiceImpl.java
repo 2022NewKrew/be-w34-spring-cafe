@@ -17,10 +17,11 @@ public class CafePostServiceImpl implements CafePostService {
     }
 
     @Override
-    public void writePost(Post newPost) {
+    public boolean writePost(Post newPost) {
         if(PostHelper.checkRegexOfPost(newPost)) {
-            cafePostDao.writePost(newPost);
+            return cafePostDao.writePost(newPost);
         }
+        return false;
     }
 
     @Override

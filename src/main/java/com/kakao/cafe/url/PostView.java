@@ -5,5 +5,6 @@ public class PostView {
 
     public static final String POST_VIEW_LIST = POST_DIRECTORY+"/list";
     public static final String POST_VIEW_WRITE = POST_DIRECTORY+"/form";
+    public static final String POST_VIEW_WRITE_FAIL = POST_DIRECTORY+"/form_fail";
     public static final String POST_VIEW_CONTENT = POST_DIRECTORY+"/show";
 }
