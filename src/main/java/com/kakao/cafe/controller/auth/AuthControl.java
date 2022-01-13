@@ -15,7 +15,11 @@ public class AuthControl {
     private AuthControl() {}
 
     public static boolean isLogon(@NonNull final HttpServletRequest request, @NonNull final UserService userService) {
-        final HttpSession session = request.getSession();
+        final HttpSession session = request.getSession(false);
+        if (session == null) {
+            return false;
+        }
+
         final String userStr = (String)session.getAttribute(TAG_ID);
         if (userStr == null) {
             return false;
