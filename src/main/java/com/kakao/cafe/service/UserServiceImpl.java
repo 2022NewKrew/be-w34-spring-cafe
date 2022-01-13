@@ -35,8 +35,4 @@ public class UserServiceImpl implements UserService{
                 .findFirst()
                 .orElse(null);
     }
-
-//    private String encodePassword(String password) {
-//        return passwordEncoder.encode(password);
-//    }
 }
