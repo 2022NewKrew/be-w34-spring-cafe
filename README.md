@@ -32,3 +32,8 @@
 | `POST` /posts        | Create a new post   |
 | `GET` /posts/form    | Get a post form     |
 | `GET` /posts/:postId | Get a post detail   |
+
+### 📌 사용자 데이터를 DB에 저장
+- ORM은 사용하지 않는다.
+- Spring JDBC를 사용한다.
+- DB 저장 및 검색에 필요한 SQL은 직접 작성한다.
