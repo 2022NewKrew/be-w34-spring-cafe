@@ -29,9 +29,11 @@ public class ArticleService {
 
     public List<ArticleDto> getArticleList() {
         List<ArticleDto> articleDtoList = new ArrayList<>();
+
         for (Article article : articleRepository.getAllArticles()) {
             articleDtoList.add(new ArticleDto(article.getId(), article.getWriter(), article.getTitle(), article.getContents()));
         }
+
         return articleDtoList;
     }
 

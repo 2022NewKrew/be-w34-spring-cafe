@@ -42,6 +42,7 @@ public class UserController {
     @GetMapping("/list")
     public String getUserList(Model model) {
         model.addAttribute("users", userService.getUserList());
+
         return "/user/list";
     }
 
@@ -77,10 +78,14 @@ public class UserController {
 
     @PostMapping("/{userId}/update")
     public String update(@PathVariable String userId, UserUpdateDto userUpdateDto) {
-        if (userService.checkPassword(userId, userUpdateDto.getPassword())) {
-            UserProfileDto newProfile = new UserProfileDto(userId, userUpdateDto.getEmail(), userUpdateDto.getName());
-            userService.updateUserProfile(newProfile);
+        UserProfileDto newProfile = new UserProfileDto(userId, userUpdateDto.getEmail(), userUpdateDto.getName());
+
+        try {
+            userService.updateUserProfile(newProfile, userUpdateDto.getPassword());
+        } catch (Exception e) {
+            logger.error("UserProfileDto : " + newProfile, e);
         }
+
         return "redirect:/users/list";
     }
 }

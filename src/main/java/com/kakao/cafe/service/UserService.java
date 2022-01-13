@@ -35,6 +35,7 @@ public class UserService {
 
     public List<UserProfileDto> getUserList() {
         List<UserProfileDto> userDtoList = new ArrayList<>();
+
         for (User user : userRepository.findAll()) {
             userDtoList.add(new UserProfileDto(user.getUserId(), user.getEmail(), user.getName()));
         }
@@ -42,13 +43,13 @@ public class UserService {
         return userDtoList;
     }
 
-    public void updateUserProfile(UserProfileDto newProfile) {
+    public void updateUserProfile(UserProfileDto newProfile, String password) throws NoSuchElementException, IllegalArgumentException {
+        User user = userRepository.findById(newProfile.getUserId());
+
+        if (!(password != null && password.equals(user.getPassword()))) {
+            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
+        }
+
         userRepository.update(newProfile);
-    }
-
-    public boolean checkPassword(String userId, String password) throws NoSuchElementException {
-        User user = userRepository.findById(userId);
-
-        return (password != null && password.equals(user.getPassword()));
     }
 }

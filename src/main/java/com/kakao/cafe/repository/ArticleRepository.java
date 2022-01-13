@@ -43,7 +43,7 @@ public class ArticleRepository {
     public List<Article> getAllArticles() {
         return jdbcTemplate.query(
                 "select * from ARTICLE",
-                new ArticleEntityMapper()
+                new ArticleMapper()
         );
     }
 
@@ -53,7 +53,7 @@ public class ArticleRepository {
         try {
             article = jdbcTemplate.queryForObject(
                     "select * from ARTICLE where id = ?",
-                    new ArticleEntityMapper(),
+                    new ArticleMapper(),
                     id
             );
         } catch (DataAccessException e) {
@@ -63,7 +63,7 @@ public class ArticleRepository {
         return article;
     }
 
-    public class ArticleEntityMapper implements RowMapper<Article> {
+    public class ArticleMapper implements RowMapper<Article> {
         @Override
         public Article mapRow(ResultSet rs, int count) throws SQLException {
 
