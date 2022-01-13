@@ -11,25 +11,29 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    private final UserDao userDAO;
+    private final UserDao userDao;
 
-    public UserService(UserDao userDAO) {
-        this.userDAO = userDAO;
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     public UserDto filterUserById(String userId) {
-        return voToDtoMapper(userDAO.filterUserById(userId));
+        return voToDtoMapper(userDao.filterUserById(userId));
     }
 
     public List<UserDto> getUserList() {
-        return userDAO.findAllUser().stream()
+        return userDao.findAllUser().stream()
                 .map(this::voToDtoMapper)
                 .collect(Collectors.toList());
     }
 
     public void signupUser(UserDto user) {
         // 비밀번호 암호화 로직 추가 가능
-        userDAO.createUser(dtoToVoMapper(user));
+        userDao.createUser(dtoToVoMapper(user));
+    }
+
+    public void updateUser(UserDto user) {
+        userDao.updateUser(dtoToVoMapper(user));
     }
 
     private UserVo dtoToVoMapper(UserDto userDto) {
