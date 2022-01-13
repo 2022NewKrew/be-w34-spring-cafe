@@ -1,6 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.model.Article;
+import com.kakao.cafe.repository.ArticleJdbcRepository;
+import com.kakao.cafe.repository.ArticleMemoryRepository;
 import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,9 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class ArticleController {
 
-    private final ArticleRepository articleRepository;
+    private final ArticleJdbcRepository articleRepository;
 
-    public ArticleController(ArticleRepository articleRepository) {
+    public ArticleController(ArticleJdbcRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
@@ -25,13 +27,13 @@ public class ArticleController {
 
     @GetMapping("/")
     public String showArticles(Model model){
-        model.addAttribute("articles", articleRepository.getArticleList());
+        model.addAttribute("articles", articleRepository.findAllArticles());
         return "index";
     }
 
     @GetMapping("questions/{id}")
     public String getArticle(@PathVariable Integer id, Model model){
-        Article article = articleRepository.getArticleList().get(id);
+        Article article = articleRepository.findById(id).orElseThrow();
         model.addAttribute("article", article);
         return "qna/show";
     }

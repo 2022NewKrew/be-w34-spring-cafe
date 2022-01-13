@@ -1,25 +1,14 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.model.Article;
-import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+public interface ArticleRepository {
+    void save(Article article);
 
-@Repository
-public class ArticleRepository {
+    List<Article> findAllArticles();
 
-    private final List<Article> articleList = new ArrayList<>();
-    private static Integer articleSequence = 0;
-
-    public void save(Article article){
-        article.setId(articleSequence++);
-        articleList.add(article);
-    }
-
-    public List<Article> getArticleList() {
-        return articleList;
-    }
-
+    Optional<Article> findById(Integer id);
 }
