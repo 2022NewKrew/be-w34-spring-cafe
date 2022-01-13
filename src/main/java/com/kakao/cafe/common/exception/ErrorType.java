@@ -8,7 +8,9 @@ import lombok.Getter;
 public enum ErrorType {
 
     USER_ALREADY_EXIST("U001", "이미 가입한 유저입니다."),
-    USER_NOT_EXIST("U002", "일치하는 유저가 없습니다.");
+    USER_NOT_EXIST("U002", "일치하는 유저가 없습니다."),
+
+    ARTICLE_NOT_FOUND("A001", "해당 글을 찾을 수 없습니다.");
 
     private final String code;
     private final String message;

@@ -3,6 +3,7 @@ package com.kakao.cafe.article.repository;
 import com.kakao.cafe.article.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -39,8 +40,12 @@ public class ArticleJdbcRepository implements ArticleRepository{
 
     @Override
     public Article findOneById(Long id){
-        String sql = "SELECT * FROM ARTICLE WHERE id=?";
-        return jdbcTemplate.queryForObject(sql, articleRowMapper(), id);
+        try{
+            String sql = "SELECT * FROM ARTICLE WHERE id=?";
+            return jdbcTemplate.queryForObject(sql, articleRowMapper(), id);
+        }catch (DataAccessException e){
+            return null;
+        }
     }
 
     public RowMapper<Article> articleRowMapper() {
