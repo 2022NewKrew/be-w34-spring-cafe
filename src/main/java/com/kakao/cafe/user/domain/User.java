@@ -43,18 +43,18 @@ public class User {
     }
 
     public User(UpdateDTO updateDTO) {
-        this.id=updateDTO.getId();
-        this.userId=updateDTO.getUserId();
-        this.password= updateDTO.getPassword();
-        this.name= updateDTO.getName();
-        this.email= updateDTO.getEmail();
+        this.id = updateDTO.getId();
+        this.userId = updateDTO.getUserId();
+        this.password = updateDTO.getPassword();
+        this.name = updateDTO.getName();
+        this.email = updateDTO.getEmail();
     }
 
     public User updateInfo(UpdateDTO updateDTO) {
         return new User(updateDTO);
     }
 
-    public boolean equalsPassword(String InputPassword){
+    public boolean equalsPassword(String InputPassword) {
         return this.password.equals(InputPassword);
     }
 }

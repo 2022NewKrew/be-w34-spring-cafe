@@ -18,7 +18,7 @@ public class ArticleMemoryRepository implements ArticleRepository {
 
     @Override
     public void save(QuestionDTO articleDTO) {
-        Article article = articleFactory.of(articleMap.size() + 1L,articleDTO);
+        Article article = articleFactory.of(articleMap.size() + 1L, articleDTO);
         articleMap.put(articleMap.size() + 1L, article);
     }
 

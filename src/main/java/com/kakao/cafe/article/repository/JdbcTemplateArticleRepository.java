@@ -10,12 +10,14 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
 @Primary
+@Transactional
 @Repository
 @RequiredArgsConstructor
 public class JdbcTemplateArticleRepository implements ArticleRepository {
@@ -42,12 +44,14 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Article> findById(Long id) {
         return jdbcTemplate.query("select * from ARTICLES where ID = ?",
                 articleRowMapper(), id).stream().findAny();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Article> findAll() {
         return jdbcTemplate.query("select * from ARTICLES",
                 articleRowMapper());

@@ -11,12 +11,14 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
 @Primary
+@Transactional
 @Repository
 @RequiredArgsConstructor
 public class JdbcTemplateUserRepository implements UserRepository {
@@ -41,12 +43,14 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<User> findByUserId(String userId) {
         return jdbcTemplate.query("select * from USERS where USER_ID = ?", userRowMapper(), userId)
                 .stream().findAny();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> findAll() {
         return jdbcTemplate.query("select * from USERS", userRowMapper());
     }
@@ -54,7 +58,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
     @Override
     public void update(UpdateDTO updateDto) {
         jdbcTemplate.update("update USERS set PASSWORD=?,NAME=?,EMAIL=? where ID=?"
-                , updateDto.getPassword(), updateDto.getName(), updateDto.getEmail(),
+                , updateDto.getNewPassword(), updateDto.getName(), updateDto.getEmail(),
                 updateDto.getId());
     }
 

@@ -10,6 +10,7 @@ public class ArticleFactory {
     public Article of(Long id, QuestionDTO questionDTO) {
         return new Article(id, questionDTO);
     }
+
     public Article of(QuestionDTO questionDTO) {
         return new Article(questionDTO);
     }
