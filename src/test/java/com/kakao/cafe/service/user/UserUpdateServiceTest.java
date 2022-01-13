@@ -45,9 +45,8 @@ class UserUpdateServiceTest {
         givenUser.setEmail(modifiedEmail);
 
         //then
-        assertThatNoException().isThrownBy( () -> userUpdateService.update(userId, password, givenUser));
-
-        assertThatIllegalArgumentException().isThrownBy(() -> userUpdateService.update(userId, incorrectPassword, givenUser));
+        assertThatNoException().isThrownBy( () -> userUpdateService.update(givenUser, password));
+        assertThatIllegalArgumentException().isThrownBy(() -> userUpdateService.update(givenUser, incorrectPassword));
     }
 
     private static Stream<Arguments> provideUsers() {

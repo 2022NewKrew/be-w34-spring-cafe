@@ -17,12 +17,12 @@ public class UserUpdateService {
     }
 
     @Transactional
-    public void update(String userId, String password, User user) {
-        validCorrectPassword(userRepository.findById(userId), password);
-        userRepository.update(userId, password, user);
+    public void update(User user, String password) {
+        correctPasswordCheck(userRepository.findById(user.getUserId()), password);
+        userRepository.update(user.getUserId(), password, user);
     }
 
-    private void validCorrectPassword(User user, String password) {
+    private void correctPasswordCheck(User user, String password) {
         if(!user.getPassword().equals(password)) {
             throw new IllegalArgumentException("Password Incorrect : " + user.getUserId());
         }

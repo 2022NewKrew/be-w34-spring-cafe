@@ -66,7 +66,7 @@ public class UserController {
         user.setName(requestDto.getName());
         user.setEmail(requestDto.getEmail());
 
-        userUpdateService.update(userId, requestDto.getPassword(), user);
+        userUpdateService.update(user, requestDto.getPassword());
 
         return "redirect:/users";
     }
