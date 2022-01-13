@@ -3,7 +3,7 @@ package com.kakao.cafe.user;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserAPI {
+public class UserService {
     private Long id = 0L;
     private final List<Users> userList = new ArrayList<>();
 
