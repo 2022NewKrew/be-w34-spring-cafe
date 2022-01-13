@@ -1,5 +1,6 @@
 package com.kakao.cafe.dto.user;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 public class SignupRequestDto {
@@ -11,6 +12,7 @@ public class SignupRequestDto {
     @NotBlank
     private final String name;
     @NotBlank
+    @Email
     private final String email;
 
     public SignupRequestDto(String userName, String password, String name, String email) {
