@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
+//@Repository
 public class InMemoryQuestionRepository implements QuestionRepository{
 
     private static Map<Long, Question> store = new HashMap<>();

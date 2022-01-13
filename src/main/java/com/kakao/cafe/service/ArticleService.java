@@ -22,10 +22,10 @@ public class ArticleService {
     private final QuestionRepository questionRepository ;
     private final UserRepository userRepository ;
 
-    public Long saveQuestion(QuestionCreateRequest questionDTO, LocalDateTime dateTime) {
+    public void saveQuestion(QuestionCreateRequest questionDTO, LocalDateTime dateTime) {
         User writer = userRepository.findByNickname(questionDTO.getWriter()).orElseThrow(IllegalArgumentException::new);
         Question question = questionDTO.toEntity(writer.getId(), dateTime);
-        return questionRepository.save(question).getId();
+        questionRepository.save(question);
     }
 
     public List<QuestionListResponse> findAllQuestions(){
