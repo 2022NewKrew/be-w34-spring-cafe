@@ -14,10 +14,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User join(User user) {
+    public void join(User user) {
         validateDuplicateUser(user);
         userRepository.save(user);
-        return user;
     }
 
     private void validateDuplicateUser(User user) {

@@ -32,11 +32,11 @@ class UserServiceTest {
         user.setUserId("test");
 
         //when
-        User joinUser = userService.join(user);
+        userService.join(user);
 
         //then
-        User findUser = userService.findUser(joinUser.getUserId()).get();
-        assertThat(joinUser).isEqualTo(findUser);
+        User findUser = userService.findUser(user.getUserId()).get();
+        assertThat(user).isEqualTo(findUser);
     }
 
     @Test

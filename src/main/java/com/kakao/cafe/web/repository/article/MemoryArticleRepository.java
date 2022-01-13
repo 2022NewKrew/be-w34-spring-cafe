@@ -9,7 +9,7 @@ import java.util.Optional;
 public class MemoryArticleRepository implements ArticleRepository {
 
     private static List<Article> articles = new ArrayList<>();
-    private static int sequence = 0;
+    private static Long sequence = 0L;
 
     @Override
     public Article save(Article article) {
@@ -19,8 +19,8 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findById(int id) {
-        return Optional.ofNullable(articles.get(id - 1));
+    public Optional<Article> findById(Long id) {
+        return Optional.ofNullable(articles.get((int) (id - 1)));
     }
 
     @Override

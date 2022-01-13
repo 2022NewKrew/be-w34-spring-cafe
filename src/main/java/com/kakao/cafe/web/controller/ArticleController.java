@@ -39,7 +39,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{index}")
-    public String showArticle(Model model, @PathVariable int index) {
+    public String showArticle(Model model, @PathVariable Long index) {
         logger.info("GET /articles/{}: response article detail page", index);
 
         // article 조회

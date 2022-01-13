@@ -9,19 +9,18 @@ import java.util.Optional;
 public class MemoryUserRepository implements UserRepository {
 
     private static List<User> users = new ArrayList<>();
-    private static int sequence = 0;
+    private static Long sequence = 0L;
 
     @Override
-    public User save(User user) {
+    public void save(User user) {
         user.setId(++sequence);
         users.add(user);
-        return user;
     }
 
     @Override
-    public Optional<User> findById(int id) {
+    public Optional<User> findById(Long id) {
         return users.stream()
-                .filter(user -> user.getId() == id)
+                .filter(user -> user.getId().equals(id))
                 .findFirst();
     }
 
