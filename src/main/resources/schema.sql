@@ -13,4 +13,8 @@ CREATE TABLE IF NOT EXISTS Qnas (
     contents TEXT NOT NULL,
     create_time DATETIME NOT NULL,
     PRIMARY KEY (id)
-)
+);
+
+INSERT INTO users (user_id, password, name, email) VALUES ('ato', '123', 'ato', 'abc@naver.com');
+INSERT INTO qnas (writer, title, contents, create_time) VALUES ('ato', 'title', 'contents', '2022-01-13 18:38:00.0000');
+INSERT INTO qnas (writer, title, contents, create_time) VALUES ('ato', 'title2', 'contents2', '2022-01-13 18:38:00.0000');
