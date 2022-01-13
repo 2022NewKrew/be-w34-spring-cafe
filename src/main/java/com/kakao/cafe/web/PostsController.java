@@ -31,11 +31,12 @@ public class PostsController {
         return "redirect:/";
     }
 
-//    @GetMapping("/posts/{index}")
-//    public String postsDetail(@PathVariable("index") int index, Model model) {
-//        model.addAttribute("post", posts.get(index));
-//        return "post/show";
-//    }
+    @GetMapping("/posts/{index}")
+    public String postsDetail(@PathVariable("index") Long index, Model model) {
+        PostResponseDto post = postsService.findById(index);
+        model.addAttribute("post", post);
+        return "post/show";
+    }
 
     @GetMapping("/post-article")
     public String post_form() {

@@ -70,4 +70,25 @@ public class PostsRepository {
         return postsList;
     }
 
+    public PostResponseDto findById(Long id) {
+        try {
+            connection = DriverManager.getConnection(DB_URL);
+            Statement statement = connection.createStatement();
+            final String sql = "SELECT * FROM post WHERE id = " + id.toString();
+            System.out.println(sql);
+            final PreparedStatement ps = connection.prepareStatement(sql);
+            final ResultSet result =  ps.executeQuery();
+            result.next();
+            String writer = result.getString("writer");
+            String title = result.getString("title");
+            String content = result.getString("content");
+
+            PostResponseDto resultDto = new PostResponseDto(writer, title, content, 0, id);
+            return resultDto;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

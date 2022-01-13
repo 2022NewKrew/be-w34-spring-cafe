@@ -21,4 +21,7 @@ public class PostsService {
         return postsRepository.findAll();
     }
 
+    @Transactional
+    public PostResponseDto findById(Long id) {return postsRepository.findById(id); }
+
 }
