@@ -22,8 +22,10 @@ public class MyJdbcTemplate {
 
     public <T> List<T> query(String query, RowMapper<T> rowMapper){
         try(Connection connection = dataSource.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             return convert(resultSet, rowMapper);
         } catch (SQLException exception) {
             logger.info(exception.getMessage());
@@ -32,16 +34,15 @@ public class MyJdbcTemplate {
     }
 
     private <T> List<T> convert(ResultSet resultSet, RowMapper<T> rowMapper) throws SQLException {
-        if(!resultSet.next()){
+        if(resultSet.isAfterLast()){
             return Collections.emptyList();
         }
 
         List<T> results = new ArrayList<>();
         int rowCount = 1;
-
-        do{
+        while(resultSet.next()){
             results.add(rowMapper.mapRow(resultSet, rowCount++));
-        }while (resultSet.next());
+        }
 
         return results;
     }

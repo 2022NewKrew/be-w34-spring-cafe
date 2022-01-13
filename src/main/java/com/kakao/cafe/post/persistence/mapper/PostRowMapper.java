@@ -35,13 +35,15 @@ public class PostRowMapper implements RowMapper<Post> {
         while(rs.next() && rs.getLong("id") == postId){
             comments.add(mapComment(rs));
         }
+
+        rs.previous();
         return comments;
     }
 
     private Comment mapComment(ResultSet rs) throws SQLException {
         Long commentId = rs.getLong("comment_id");
-        String comment_writerName = rs.getString("writerName");
-        String content = rs.getString("content");
+        String comment_writerName = rs.getString("comment_writerName");
+        String content = rs.getString("comment_content");
         return new Comment(commentId, comment_writerName, content);
     }
 }
