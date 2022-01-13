@@ -53,7 +53,7 @@ public class Article {
             final String body
     )
     {
-        if (!User.NONE.getId().equals(userId)) {
+        if (userId != null) {
             Checker.checkString("userId", userId, User.ID_REGEX, User.ID_MIN, User.ID_MAX);
         }
         Checker.checkString("userName", userName, User.NAME_REGEX, User.NAME_MIN, User.NAME_MAX);

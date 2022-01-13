@@ -20,7 +20,12 @@
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
                               <span class="time">{{createdAtPretty}}</span>
-                              <a href="/users/{{userId}}" class="author">{{userName}}</a>
+                              {{#userId}}
+                                  <a href="/users/{{userId}}" class="author">{{userName}}</a>
+                              {{/userId}}
+                              {{^userId}}
+                                  <div class="author">{{userName}}</div>
+                              {{/userId}}
                           </div>
                           <div class="reply" title="댓글">
                               <i class="icon-reply"></i>

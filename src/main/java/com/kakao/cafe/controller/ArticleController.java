@@ -3,7 +3,6 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.ArticleDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -37,17 +36,11 @@ public class ArticleController {
         return getArticles(model);
     }
 
-    @GetMapping("/articles/new")
-    public String newArticle(final Model model) {
-        // (when login impl) getCurrentUser(); -> write userName attribute
-        model.addAttribute("userName", User.NONE.getName());
-        return "articles/new";
-    }
+    // Get /articles/new -> "articles/new"
 
     @PostMapping("/articles")
     public String writeArticle(@NonNull final ArticleDto articleDto) {
-        // (when login impl) getCurrentUser(); -> update userId, userName in articleDto
-        articleDto.setUserId(User.NONE.getId());
+        // (when login impl) getCurrentUser(); -> if exist, add userId and update userName in articleDto
         articleDto.setUserName(User.NONE.getName());
         articleService.add(articleDto);
         logger.info("New Article added: " + articleDto.getTitle());
