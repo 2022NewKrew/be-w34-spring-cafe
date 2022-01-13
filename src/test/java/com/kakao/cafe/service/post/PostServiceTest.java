@@ -25,7 +25,7 @@ class PostServiceTest {
     @Autowired
     private PostService postService;
 
-    @Qualifier("postRepositoryImpl")
+    @Qualifier("postJdbcRepositoryImpl")
     @Autowired
     private PostRepository postRepository;
 

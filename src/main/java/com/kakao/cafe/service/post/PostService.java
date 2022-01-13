@@ -19,7 +19,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
 
-    public PostService(@Qualifier("postRepositoryImpl") PostRepository postRepository, ModelMapper modelMapper) {
+    public PostService(@Qualifier("postJdbcRepositoryImpl") PostRepository postRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
     }
