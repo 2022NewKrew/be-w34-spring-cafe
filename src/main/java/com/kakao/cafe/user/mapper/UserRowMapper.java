@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.mapper;
 
 import com.kakao.cafe.user.User;
+import com.kakao.cafe.user.UserStatus;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -17,6 +18,7 @@ public class UserRowMapper implements RowMapper<User> {
         user.setName(rs.getString("name"));
         user.setPassword(rs.getString("password"));
         user.setEmail(rs.getString("email"));
+        user.setRole(UserStatus.valueOf(rs.getString("role")));
 
         return user;
     }

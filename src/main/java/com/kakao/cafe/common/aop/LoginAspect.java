@@ -1,6 +1,7 @@
 package com.kakao.cafe.common.aop;
 
 import com.kakao.cafe.user.User;
+import com.kakao.cafe.user.UserStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -24,7 +25,6 @@ public class LoginAspect {
     }
 
     /**
-     *
      * @param joinPoint
      * @param model
      */
@@ -44,6 +44,11 @@ public class LoginAspect {
 
         if (user != null) {
             model.addAttribute("loginUser", user);
+
+            // TODO: 무스타치 템플릿은 화면단에서 if 렌더링이 안된다.. js를 이용해서 조건문 분기하던가 컨트롤로에서 던져줘야함.
+            if (user.getRole().equals(UserStatus.ADMIN)) {
+                model.addAttribute("admin", true);
+            }
         }
 
     }

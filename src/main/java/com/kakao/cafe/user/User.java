@@ -30,4 +30,8 @@ public class User {
      * 회원의 이메일 주소입니다.
      */
     private String email;
+    /**
+     * 회원의 권한을 의미합니다.
+     */
+    private UserStatus role;
 }

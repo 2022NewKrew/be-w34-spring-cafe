@@ -3,15 +3,7 @@
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
        <div class="panel panel-default qna-list">
            <ul class="list">
-               <li>
-                   <div class="wrap">
-                       <a href="/questions/create" class="main">
-                           <strong class="subject">
-                               질문하기
-                           </strong>
-                       </a>
-                   </div>
-               </li>
+               {{#admin}}
                <li>
                    <a href="/users" class="wrap">
                        <div class="main">
@@ -21,11 +13,13 @@
                        </div>
                    </a>
                </li>
+               {{/admin}}
+
                <li>
                    <a href="questions" class="wrap">
                        <div class="main">
                            <strong class="subject">
-                               게시글(질문글)
+                               게시글(질문글) 보기
                            </strong>
                        </div>
                    </a>

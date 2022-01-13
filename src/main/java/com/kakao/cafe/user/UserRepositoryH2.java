@@ -58,7 +58,7 @@ public class UserRepositoryH2 implements UserRepository {
     @Override
     public User findOne(Long id) {
 
-        String sql = "SELECT id, user_id, password, name, email FROM member WHERE id=?";
+        String sql = "SELECT id, user_id, password, name, email, role FROM member WHERE id=?";
 
         return jdbcTemplate.queryForObject(sql, new UserRowMapper(), id);
 
@@ -67,7 +67,7 @@ public class UserRepositoryH2 implements UserRepository {
     @Override
     public List<User> findAll() {
 
-        String sql = "SELECT id, user_id, password, name, email FROM member";
+        String sql = "SELECT id, user_id, password, name, email, role FROM member";
 
         return jdbcTemplate.query(sql, new UserRowMapper());
     }
@@ -95,7 +95,7 @@ public class UserRepositoryH2 implements UserRepository {
     @Override
     public User findOne(String userId, String password) {
 
-        String sql = "SELECT id, user_id, password, name, email FROM member WHERE user_id=? AND password=?";
+        String sql = "SELECT id, user_id, password, name, email, role FROM member WHERE user_id=? AND password=?";
 
         return jdbcTemplate.queryForObject(sql, new UserRowMapper(), userId, password);
     }

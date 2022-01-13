@@ -19,22 +19,20 @@
             <a href="/home" class="navbar-brand">KAKAO Cafe</a>
 
         </div>
+        {{#loginUser}}
         <div class="collapse navbar-collapse" id="navbar-collapse1">
-            <form class="navbar-form pull-left">
+            <div class="navbar-form pull-left" style="margin: 0; padding: 15px;">
                 <div class="input-group" style="max-width:470px;">
-                    <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default btn-primary" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                    </div>
+                    <span style="color:darkorange;">권한 : </span><span style="font-weight: bold; color: red;">{{loginUser.role}}</span>
                 </div>
-            </form>
+            </div>
         </div>
+        {{/loginUser}}
     </div>
 </nav>
 <div class="navbar navbar-default" id="subnav">
     <div class="col-md-12">
         <div class="navbar-header">
-            <a href="#" style="margin-left:15px;" class="navbar-btn btn btn-default btn-plus dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-home" style="color:#dd1111;"></i> Home <small><i class="glyphicon glyphicon-chevron-down"></i></small></a>
             <ul class="nav dropdown-menu">
                 <li><a href="/users/profile"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a></li>
                 <li class="nav-divider"></li>
@@ -50,6 +48,9 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/home">Posts</a></li>
+                {{#loginUser}}
+                <li><a href="/questions/create" role="button">질문하기</a></li>
+                {{/loginUser}}
                 {{^loginUser}}
                 <li><a id="loginButton" href="javascript:void(0)" onClick="clickLoginModal()" role="button">로그인</a></li>
                 {{/loginUser}}
