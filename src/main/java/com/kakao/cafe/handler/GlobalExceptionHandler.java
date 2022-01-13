@@ -1,10 +1,10 @@
 package com.kakao.cafe.handler;
 
 import com.kakao.cafe.exceptions.DuplicateUserException;
+import com.kakao.cafe.exceptions.InvalidUserRequestException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -32,12 +32,11 @@ public class GlobalExceptionHandler {
         return mv;
     }
 
-    @ExceptionHandler(BindException.class)
+    @ExceptionHandler(InvalidUserRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ModelAndView validationFailed() {
+    public ModelAndView validationFailed(InvalidUserRequestException exception) {
         Map<String, Object> model = mv.getModel();
-        // TODO - Custom Exception 따로 만들어서 던지는게 낫지 않을까?
-        model.put("message", "Invalid input");
+        model.put("message", exception.getMessage());
         return mv;
     }
 }
