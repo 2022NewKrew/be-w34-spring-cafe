@@ -11,6 +11,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ *  사용자 DB 관련 CRUD 처리
+ */
 public class UserRepository {
     private final JdbcTemplate jdbcTemplate;
 

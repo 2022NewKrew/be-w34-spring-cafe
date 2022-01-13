@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.dto.ArticlePostDto;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+/**
+ *  게시글 DB 관련 CRUD 처리
+ */
 public class ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
 
@@ -21,7 +23,7 @@ public class ArticleRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void save(ArticlePostDto article) throws SQLException {
+    public void save(Article article) throws SQLException {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         Map<String, Object> param = new HashMap<>();
 

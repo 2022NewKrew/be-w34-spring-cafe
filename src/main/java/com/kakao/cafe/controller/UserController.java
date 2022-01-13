@@ -39,6 +39,7 @@ public class UserController {
         return "redirect:/users/list";
     }
 
+    // 모든 유저 리스트를 가져와서 표시
     @GetMapping("/list")
     public String getUserList(Model model) {
         model.addAttribute("users", userService.getUserList());
@@ -46,6 +47,7 @@ public class UserController {
         return "/user/list";
     }
 
+    // 해당 id의 유저의 프로필을 찾아서 프로필 화면 표시
     @GetMapping("/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model) {
         UserProfileDto user;
@@ -61,6 +63,7 @@ public class UserController {
         return "/user/profile";
     }
 
+    // 사용자 리스트에서 수정 버튼을 누르면, 해당 사용자의 회원정보 수정 화면으로 이동
     @GetMapping("/{userId}/form")
     public String updateForm(@PathVariable String userId, Model model){
         UserProfileDto user;
@@ -76,6 +79,7 @@ public class UserController {
         return "/user/updateForm";
     }
 
+    // 회원정보 수정하고, 수정 버튼을 눌렀을 때
     @PostMapping("/{userId}/update")
     public String update(@PathVariable String userId, UserUpdateDto userUpdateDto) {
         UserProfileDto newProfile = new UserProfileDto(userId, userUpdateDto.getEmail(), userUpdateDto.getName());

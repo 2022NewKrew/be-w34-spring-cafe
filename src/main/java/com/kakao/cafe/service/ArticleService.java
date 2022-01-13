@@ -1,7 +1,6 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticlePostDto;
 import com.kakao.cafe.repository.ArticleRepository;
@@ -22,9 +21,9 @@ public class ArticleService {
     }
 
     public void postArticle(ArticlePostDto article) throws SQLException, NoSuchElementException {
-        User user = userRepository.findByName(article.getWriter());
+        userRepository.findByName(article.getWriter());
 
-        articleRepository.save(article);
+        articleRepository.save(article.toEntity());
     }
 
     public List<ArticleDto> getArticleList() {
