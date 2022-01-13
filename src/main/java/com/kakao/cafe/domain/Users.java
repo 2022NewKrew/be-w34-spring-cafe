@@ -23,10 +23,6 @@ public class Users {
     }
 
     public User findById(@NonNull final String id) {
-        if (User.NONE.getId().equals(id)) {
-            return User.NONE;
-        }
-
         for (User u : list) {
             if (id.equals(u.getId())) {
                 return u;

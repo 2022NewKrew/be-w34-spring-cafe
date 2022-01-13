@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -59,7 +60,8 @@ public class ArticleController {
             return "redirect:/login";
         }
 
-        final UserDto userDto = userService.getUser((String)request.getSession().getAttribute(AuthControl.TAG_ID));
+        final HttpSession session = request.getSession();
+        final UserDto userDto = userService.getUser((String)session.getAttribute(AuthControl.TAG_ID));
         articleDto.setUserId(userDto.getId());
         articleDto.setUserName(userDto.getName());
 

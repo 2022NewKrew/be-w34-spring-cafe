@@ -28,12 +28,7 @@
                           <img src="https://graph.facebook.com/v2.3/100000059371774/picture" class="article-author-thumb" alt="">
                       </div>
                       <div class="article-header-text">
-                          {{#userId}}
-                              <a href="/users/{{userId}}" class="article-author-name">{{userName}}</a>
-                          {{/userId}}
-                          {{^userId}}
-                              <div class="article-author-name">{{userName}}</div>
-                          {{/userId}}
+                          <a href="/users/{{userId}}" class="article-author-name">{{userName}}</a>
                           {{createdAtPretty}}
                       </div>
                   </div>

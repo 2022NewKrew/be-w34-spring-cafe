@@ -53,9 +53,7 @@ public class Article {
             final String body
     )
     {
-        if (userId != null) {
-            Checker.checkString("userId", userId, User.ID_REGEX, User.ID_MIN, User.ID_MAX);
-        }
+        Checker.checkString("userId", userId, User.ID_REGEX, User.ID_MIN, User.ID_MAX);
         Checker.checkString("userName", userName, User.NAME_REGEX, User.NAME_MIN, User.NAME_MAX);
         Checker.checkString("title", title, TITLE_MIN, TITLE_MAX);
         Checker.checkString("body", body, BODY_MIN, BODY_MAX);
