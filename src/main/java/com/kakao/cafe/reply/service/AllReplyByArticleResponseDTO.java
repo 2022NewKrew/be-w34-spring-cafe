@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class FindAllReplyByArticleResponseDTO {
+public class AllReplyByArticleResponseDTO {
     public ArrayList<OneReplyDataResponseDTO> allReplyByArticleDTO;
 
-    public FindAllReplyByArticleResponseDTO(ArrayList<Reply> list){
+    public AllReplyByArticleResponseDTO(ArrayList<Reply> list){
         this.allReplyByArticleDTO = list.stream().map(reply->new OneReplyDataResponseDTO(reply.getAuthorId(), reply.getWriteTime(), reply.getContents())).collect(Collectors.toCollection(ArrayList::new));
     }
 

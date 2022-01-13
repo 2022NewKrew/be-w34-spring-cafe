@@ -3,18 +3,19 @@ package com.kakao.cafe.user.repository;
 import com.kakao.cafe.user.domain.User;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class UserRepository {
-    private static Long idSequence = 0L;
+    private static AtomicLong idSequence = new AtomicLong();
     private final static HashMap<Long, User> userDB = new HashMap<>();
 
-    private final static UserRepository userRepository = new UserRepository();
-
-    public static UserRepository getRepository() {
-        return userRepository;
+    public UserRepository() {
+        // 기본 유저 생성
+        persist(new UserCreateRequestDTO("aiden.jang", "aiden@kakaocorp.com", "aiden", "1234", LocalDateTime.now()));
     }
 
     public User find(Long id) {
@@ -25,10 +26,26 @@ public class UserRepository {
         return new ArrayList<>(userDB.values());
     }
 
-    public Long persist(CreateUserDTO dto) {
-        userDB.put(idSequence, new User(idSequence, dto.email, dto.nickName, dto.password, dto.signUpDate));
-        idSequence += 1;
-        return idSequence - 1;
+    public Long persist(UserCreateRequestDTO dto) {
+        userDB.put(idSequence.get(), new User(idSequence.get(), dto.stringId, dto.email, dto.nickName, dto.password, dto.signUpDate));
+        return idSequence.getAndIncrement();
     }
 
+    public Long findDBIdById(String stringId) {
+        return userDB.keySet().stream().filter(key->stringId.equals(userDB.get(key).getStringId())).findAny().orElseGet(()->-1L);
+    }
+
+    public String findStringIdByDBId(Long id) {
+        return userDB.get(id).getStringId();
+    }
+
+    public String findPasswordByDBId(Long userId) {
+        return userDB.get(userId).getPassword();
+    }
+
+    public void updateUserInfo(UserUpdateRequestDTO dto) {
+        User oldUserData = userDB.get(dto.getUserId());
+        User user = new User(oldUserData.getId(), oldUserData.getStringId(), dto.getEmail(), dto.getName(), dto.getNewPassword(), oldUserData.getSignUpDate());
+        userDB.put(dto.getUserId(), user);
+    }
 }

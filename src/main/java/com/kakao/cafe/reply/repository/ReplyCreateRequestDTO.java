@@ -1,10 +1,10 @@
-package com.kakao.cafe.article.repository;
+package com.kakao.cafe.reply.repository;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class CreateArticleRequestDTO {
-    public String title;
+public class ReplyCreateRequestDTO {
+    public Long articleId;
     public Long authorId;
     public String contents;
 }

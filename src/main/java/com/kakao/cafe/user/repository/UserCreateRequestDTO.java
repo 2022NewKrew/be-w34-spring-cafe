@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
-public class CreateUserDTO {
+public class UserCreateRequestDTO {
+    public String stringId;
     public String email;
     public String nickName;
     public String password;

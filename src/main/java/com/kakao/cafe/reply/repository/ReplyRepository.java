@@ -6,11 +6,12 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Repository
 public class ReplyRepository {
-    private static Long idSequence = 0L;
+    private static AtomicLong idSequence = new AtomicLong();
     private final static HashMap<Long, Reply> replyDB = new HashMap<>();
 
     public Reply find(Long id) {
@@ -22,10 +23,9 @@ public class ReplyRepository {
         return replyDB.values().stream().filter(reply -> reply.getArticleId().equals(articleId)).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public Long persist(CreateReplyRequestDTO dto) {
-        replyDB.put(idSequence, new Reply(idSequence, dto.articleId, dto.authorId, dto.contents, LocalDateTime.now()));
-        idSequence += 1;
-        return idSequence - 1;
+    public Long persist(ReplyCreateRequestDTO dto) {
+        replyDB.put(idSequence.get(), new Reply(idSequence.get(), dto.articleId, dto.authorId, dto.contents, LocalDateTime.now()));
+        return idSequence.getAndIncrement();
     }
 
 }

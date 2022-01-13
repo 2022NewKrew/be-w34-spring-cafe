@@ -21,7 +21,7 @@ class ReplyRepositoryTest {
     void testReplySaveAndFind() throws Exception {
         // given
 
-        Long id1 = replyRepository.persist(new CreateReplyRequestDTO(20L, 403L, "새로운 댓글"));
+        Long id1 = replyRepository.persist(new ReplyCreateRequestDTO(20L, 403L, "새로운 댓글"));
         // when
         Reply findReply = replyRepository.find(id1);
         // then
@@ -35,10 +35,10 @@ class ReplyRepositoryTest {
     void testReplyFindByArticle() throws Exception {
         // given
         for (int i = 0; i < 10; i++) {
-            replyRepository.persist(new CreateReplyRequestDTO(27L, 403L, "새로운 댓글 " + i));
+            replyRepository.persist(new ReplyCreateRequestDTO(27L, 403L, "새로운 댓글 " + i));
         }
         for (int i = 0; i < 5; i++) {
-            replyRepository.persist(new CreateReplyRequestDTO(55L, 1L, "예전 댓글 " + i));
+            replyRepository.persist(new ReplyCreateRequestDTO(55L, 1L, "예전 댓글 " + i));
         }
 
         // when

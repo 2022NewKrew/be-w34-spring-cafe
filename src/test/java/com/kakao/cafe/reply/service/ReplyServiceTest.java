@@ -24,7 +24,7 @@ class ReplyServiceTest {
         Long id2 = replyService.createReply(22L, 40L, "새로운 댓글2");
         Long id3 = replyService.createReply(24L, 60L, "새로운 댓글3");
         // when
-        FindAllReplyByArticleResponseDTO dto = replyService.getAllReplyByArticleResponse(40L);
+        AllReplyByArticleResponseDTO dto = replyService.getAllReplyByArticleResponse(40L);
         // then
         assertThat(dto.allReplyByArticleDTO.size()).isEqualTo(2);
         assertThat(dto.allReplyByArticleDTO.get(0).contents).contains("새로운 댓글1");
