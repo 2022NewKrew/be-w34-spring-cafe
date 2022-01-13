@@ -1,11 +1,13 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.article.ArticleDto;
+import com.kakao.cafe.exception.InputDataException;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,9 +31,12 @@ public class ArticleController {
     }
 
     @PostMapping("/articles/question")
-    public String question(@Valid ArticleDto articleDto) {
-        logger.info("게시글 정보 : {}", articleDto);
+    public String question(@Valid ArticleDto articleDto, BindingResult bindingResult) throws InputDataException {
+        if (bindingResult.hasErrors()) {
+            throw new InputDataException("입력이 올바르지 않습니다.");
+        }
         articleService.addArticle(articleDto);
+        logger.info("게시글 등록 완료 : {}", articleDto);
         return "redirect:/";
     }
 
