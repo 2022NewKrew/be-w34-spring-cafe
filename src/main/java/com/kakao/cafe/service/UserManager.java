@@ -41,10 +41,15 @@ public class UserManager implements UserService {
 
     @Override
     public UserDto getUser(@NonNull final String id) throws NoSuchElementException {
+        return UserDto.from(getUserEntity(id));
+    }
+
+    @Override
+    public User getUserEntity(@NonNull final String id) throws NoSuchElementException {
         final User user = users.findById(id);
         if (user.isNone()) {
             throw new NoSuchElementException("Not found user - " + id);
         }
-        return UserDto.from(user);
+        return user;
     }
 }
