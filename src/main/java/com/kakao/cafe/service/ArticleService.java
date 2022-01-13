@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.ArticleRegistrationDto;
-import com.kakao.cafe.vo.Article;
+import com.kakao.cafe.entity.Article;
 
 import java.util.List;
 
