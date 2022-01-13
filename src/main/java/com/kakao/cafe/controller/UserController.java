@@ -40,4 +40,14 @@ public class UserController {
 
         return mav;
     }
+
+    @GetMapping("/users/join/success/{userId}")
+    public ModelAndView joinSuccessView(@PathVariable("userId") Long userId, ModelAndView mav) {
+        SimpleUserInfo simpleUserInfo = userService.findSimpleUserInfoById(userId);
+        mav.addObject("simpleUserInfo", simpleUserInfo);
+
+        mav.setViewName("join_success");
+
+        return mav;
+    }
 }

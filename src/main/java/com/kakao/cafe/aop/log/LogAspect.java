@@ -1,4 +1,4 @@
-package com.kakao.cafe.aop;
+package com.kakao.cafe.aop.log;
 
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,8 +10,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-import java.util.Map.Entry;
 
 @Component
 @Aspect
@@ -31,7 +29,7 @@ public class LogAspect {
             return pjp.proceed(pjp.getArgs());
         } finally {
             long timeAfterProceed = System.currentTimeMillis();
-            logger.info("Request: {} {}{} < {} ({}ms)", request.getMethod(), request.getRequestURI(), stringOfParameters,
+            logger.info("Request: {} {} {} < {} ({}ms)", request.getMethod(), request.getRequestURI(), stringOfParameters,
                     remoteHost, timeAfterProceed - timeBeforeProceed);
         }
     }

@@ -34,6 +34,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public SimpleUserInfo findSimpleUserInfoById(Long userId) {
+        Optional<SimpleUserInfo> optionalSimpleUserInfo = userRepository.findSimpleUserInfoById(userId);
+        return optionalSimpleUserInfo.orElseThrow(() -> new UserNotFoundedException(UserErrorMsg.USER_NOT_FOUNDED.getDescription()));
+    }
+
+    @Override
     public ProfileDto findProfileById(Long id) {
         Optional<ProfileDto> optionalProfileDto = userRepository.findProfileById(id);
         return optionalProfileDto.orElseThrow(() -> new UserNotFoundedException(UserErrorMsg.USER_NOT_FOUNDED.getDescription()));
@@ -62,11 +68,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateProfile(ProfileDto profileUpdateDto) {
-        Long targetUserId = profileUpdateDto.getId();
+    public User updateProfile(ProfileDto profileDto) {
+        Long targetUserId = profileDto.getId();
         User targetUser = findById(targetUserId);
-        checkDuplicationForNewNickName(profileUpdateDto.getNickName(), targetUser.getNickName());
-        profileUpdateDto.updateUser(targetUser);
+        checkDuplicationForNewNickName(profileDto.getNickName(), targetUser.getNickName());
+        updateUserByProfileUpdateDto(targetUser, profileDto);
         return userRepository.save(targetUser);
     }
 
@@ -74,6 +80,11 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByNickName(newNickName) && !newNickName.equals(targetUserNickName)) {
             throw new UserNickNameDuplicationException(UserErrorMsg.USER_NICKNAME_DUPLICATED.getDescription());
         }
+    }
+
+    private void updateUserByProfileUpdateDto(User user, ProfileDto profileDto) {
+        user.setNickName(profileDto.getNickName());
+        user.setPassword(profileDto.getPassword());
     }
 
     @Override

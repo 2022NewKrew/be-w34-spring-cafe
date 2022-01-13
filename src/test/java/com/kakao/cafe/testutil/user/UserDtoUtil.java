@@ -1,11 +1,20 @@
 package com.kakao.cafe.testutil.user;
 
 import com.kakao.cafe.dto.user.ProfileDto;
+import com.kakao.cafe.dto.user.SimpleUserInfo;
 import com.kakao.cafe.dto.user.UserJoinDto;
 import org.springframework.context.annotation.Profile;
 
 public final class UserDtoUtil {
     private UserDtoUtil() {
+    }
+
+    public static SimpleUserInfo createSimpleUserInfo() {
+        return SimpleUserInfo.builder()
+                .email("gallix@kakao.com")
+                .nickName("nickName")
+                .joinDate("2022-01-01")
+                .build();
     }
 
     public static UserJoinDto createUserJoinDto() {

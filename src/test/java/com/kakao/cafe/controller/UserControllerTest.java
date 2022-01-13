@@ -73,4 +73,20 @@ class UserControllerTest {
         then(mav).should(times(1)).addObject("profile", profileDto);
         then(mav).should(times(1)).setViewName("userProfile");
     }
+
+    @Test
+    @DisplayName("회원 가입 성공 화면 반환 -> 정상, check mav")
+    void joinSuccessView() {
+        //Given
+        Long userId = Long.valueOf(12);
+        SimpleUserInfo simpleUserInfo = UserDtoUtil.createSimpleUserInfo();
+        given(userService.findSimpleUserInfoById(userId)).willReturn(simpleUserInfo);
+
+        //When
+        userController.joinSuccessView(userId, mav);
+
+        //Then
+        then(mav).should(times(1)).addObject("simpleUserInfo", simpleUserInfo);
+        then(mav).should(times(1)).setViewName("join_success");
+    }
 }

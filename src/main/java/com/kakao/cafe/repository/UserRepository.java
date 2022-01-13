@@ -8,8 +8,9 @@ import javax.swing.text.html.Option;
 import java.util.*;
 
 /**
- * DB 연동 전 임시 사용
+ * todo : DB 연동 전 임시 사용, 메소드 구현하지 않았습니다.
  */
+@org.springframework.stereotype.Repository
 public class UserRepository implements Repository<User, Long> {
     private Map<Long, User> users = new TreeMap<>();
 
@@ -28,6 +29,10 @@ public class UserRepository implements Repository<User, Long> {
                 return Optional.of(user);
             }
         }
+        return Optional.empty();
+    }
+
+    public Optional<SimpleUserInfo> findSimpleUserInfoById(Long userId) {
         return Optional.empty();
     }
 
@@ -74,7 +79,8 @@ public class UserRepository implements Repository<User, Long> {
         if (user.getId() == null) {
             user.setId(getNextId());
         }
-        return users.put(user.getId(), user);
+        users.put(user.getId(), user);
+        return user;
     }
 
     @Override
