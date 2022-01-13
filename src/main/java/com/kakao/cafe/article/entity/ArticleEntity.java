@@ -4,9 +4,7 @@ package com.kakao.cafe.article.entity;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +18,12 @@ public class ArticleEntity {
     private List<Object> comments = new ArrayList<>(); // todo: 미구현
 
     @Builder
-    private ArticleEntity(String writer, String title, String contents) {
+    private ArticleEntity(Long id, String writer, String title, String contents, LocalDateTime createdAt) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = createdAt;
     }
 
     public void setId(Long id) {

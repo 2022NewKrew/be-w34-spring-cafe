@@ -19,6 +19,12 @@ dependencies {
 
 	// lombok
 	implementation 'org.projectlombok:lombok';
+
+	// h2
+	implementation 'com.h2database:h2'
+	
+	// jdbc template
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 }
 
 test {

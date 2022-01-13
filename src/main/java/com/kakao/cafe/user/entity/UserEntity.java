@@ -1,5 +1,8 @@
 package com.kakao.cafe.user.entity;
 
+
+import lombok.Builder;
+
 public class UserEntity {
     private Long id;
     private String userId;
@@ -7,7 +10,9 @@ public class UserEntity {
     private String name;
     private String email;
 
-    public UserEntity(String userId, String password, String name, String email) {
+    @Builder
+    private UserEntity(Long id, String userId, String password, String name, String email) {
+        this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;

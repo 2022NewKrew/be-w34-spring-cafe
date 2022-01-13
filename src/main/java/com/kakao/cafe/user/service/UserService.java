@@ -21,7 +21,13 @@ public class UserService {
     }
 
     public void signup(UserFormReqDto userFormReqDto) {
-        UserEntity userEntity = new UserEntity(userFormReqDto.getUserId(), userFormReqDto.getPassword(), userFormReqDto.getName(), userFormReqDto.getEmail());
+        UserEntity userEntity = UserEntity.builder()
+                .userId(userFormReqDto.getUserId())
+                .password(userFormReqDto.getPassword())
+                .name(userFormReqDto.getName())
+                .email(userFormReqDto.getEmail())
+                .build();
+
         userRepository.save(userEntity);
     }
 
