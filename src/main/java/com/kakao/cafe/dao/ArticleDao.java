@@ -1,26 +1,44 @@
 package com.kakao.cafe.dao;
 
-import com.kakao.cafe.dto.Article;
+import com.kakao.cafe.vo.Article;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ArticleDao {
 
-    private List<Article> articles = new ArrayList<>();
+    private final JdbcTemplate jdbcTemplate;
+
+    public ArticleDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public void addArticle(Article article) {
-        articles.add(article);
+        jdbcTemplate.update("insert into article(writer, title, contents) values(?,?,?)",
+                article.getWriter(), article.getTitle(), article.getContents());
     }
 
     public List<Article> getArticles() {
-        return articles;
+        return jdbcTemplate.query("select * from article",
+                (rs, rowNum) -> new Article(
+                        rs.getString("writer"),
+                        rs.getString("title"),
+                        rs.getString("contents")
+                )
+        );
     }
 
     public Article getArticle(int index) {
-        if(articles.size() >= index)
-            return articles.get(index - 1);
-        return null;
+        return jdbcTemplate.queryForObject("select * from article where id = ?",
+                (rs, rowNum) -> new Article(
+                        rs.getString("writer"),
+                        rs.getString("title"),
+                        rs.getString("contents")
+                ),
+                index
+        );
     }
 
 }

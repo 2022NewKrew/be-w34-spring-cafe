@@ -1,0 +1,16 @@
+DROP TABLE IF EXISTS article, user;
+
+CREATE TABLE article (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    writer VARCHAR(32) NOT NULL,
+    title VARCHAR(64) NOT NULL,
+    contents VARCHAR(1024) NOT NULL
+);
+
+CREATE TABLE user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    userId VARCHAR(16) NOT NULL,
+    password VARCHAR(16) NOT NULL,
+    name VARCHAR(16) NOT NULL,
+    email VARCHAR(32) NOT NULL
+);

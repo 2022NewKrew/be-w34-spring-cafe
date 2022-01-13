@@ -1,40 +1,51 @@
 package com.kakao.cafe.dao;
 
-import com.kakao.cafe.dto.User;
+import com.kakao.cafe.vo.User;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Component
 public class UserDao {
 
-    private List<User> users = new ArrayList<>();
+    private final JdbcTemplate jdbcTemplate;
+
+    public UserDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public List<User> getUsers() {
-        return users;
+        return jdbcTemplate.query("select * from article",
+                (rs, rowNum) -> new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                )
+        );
     }
 
     public User getUser(String userId) {
-        List<User> resultUsers = users.stream().filter(user -> user.getUserId().equals(userId)).collect(Collectors.toList());
-        if(resultUsers.size() == 0)
-            return null;
-        return resultUsers.get(0);
-    }
-
-    public int getIndex(String userId) {
-        List<Integer> resultIndex = users.stream().filter(user -> user.getUserId().equals(userId)).map(user -> users.indexOf(user)).collect(Collectors.toList());
-        if(resultIndex.size() == 0)
-            return -1;
-        return resultIndex.get(0);
+        return jdbcTemplate.queryForObject("select * from user where userId = ?",
+                (rs, rowNum) -> new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                ),
+                userId
+        );
     }
 
     public void addUser(User user) {
-        users.add(user);
+        jdbcTemplate.update("insert into user(userId, password, name, email) values(?,?,?,?)",
+                user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
     public void updateUser(User user) {
-        int index = getIndex(user.getUserId());
-        users.set(index, user);
+        jdbcTemplate.update("update user set name=?,email=? where userId=? and password=?",
+                user.getName(), user.getEmail(), user.getUserId(), user.getPassword());
     }
 
 }
