@@ -12,10 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @Slf4j
 public class WebErrorController implements ErrorController {
-    @ExceptionHandler({Exception.class, IllegalArgumentException.class})
-    public String exceptionHandle(Exception e, Model model){
-        log.error("ExceptionHandle - {}", e.getMessage());
+    @ExceptionHandler({IllegalArgumentException.class})
+    public String argsExceptionHandle(Exception e, Model model){
+        log.error("argsExceptionHandle - {}", e.getMessage());
         model.addAttribute("errorMessage", e.getMessage());
+        return "error";
+    }
+
+    @ExceptionHandler({Exception.class})
+    public String globalExceptionHandle(Exception e, Model model){
+        log.error("globalExceptionHandle - {}", e.getMessage());
+        model.addAttribute("errorMessage", "서버 에러");
         return "error";
     }
 

@@ -13,6 +13,9 @@ public class User {
     private String name;
     private String email;
 
+    public User() {
+    }
+
     @Builder
     public User(String userId, String password, String name, String email) {
         this.userId = userId;

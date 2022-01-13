@@ -29,4 +29,14 @@ public class CreateUserDto {
         this.name = name;
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "CreateUserDto{" +
+                "userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

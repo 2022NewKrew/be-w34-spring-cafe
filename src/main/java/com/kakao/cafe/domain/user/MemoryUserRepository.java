@@ -4,16 +4,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
+
 public class MemoryUserRepository implements UserRepository {
     private static final Map<String, User> userStore = new HashMap<>();
 
     @Override
-    public User save(User user) {
+    public void save(User user) {
         user.setId((long) userStore.size() + 1);
         userStore.put(user.getUserId(), user);
-
-        return userStore.get(user.getUserId());
     }
 
     @Override

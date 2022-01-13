@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository {
-    Post save(Post post);
+    void save(Post post);
 
     List<Post> findAll();
 
