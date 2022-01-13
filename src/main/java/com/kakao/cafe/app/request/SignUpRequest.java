@@ -1,12 +1,22 @@
 package com.kakao.cafe.app.request;
 
 import com.kakao.cafe.service.dto.SignUpDto;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
 
 public class SignUpRequest {
 
+    @Length(min=4, max=20)
     private final String userId;
+
+    @Length(min=6, max=20)
     private final String password;
+
+    @Length(min=2, max=20)
     private final String name;
+
+    @Email
     private final String email;
 
     public SignUpRequest(

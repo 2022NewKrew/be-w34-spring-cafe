@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,7 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String write(
-            @ModelAttribute ArticleRequest request,
+            @Valid @ModelAttribute ArticleRequest request,
             HttpSession session
     ) {
         Long ownerId = (Long) session.getAttribute("id");

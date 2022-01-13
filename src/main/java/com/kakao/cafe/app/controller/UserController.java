@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ public class UserController {
 
     @GetMapping("/user/create")
     public String create(
-            @ModelAttribute SignUpRequest request,
+            @Valid @ModelAttribute SignUpRequest request,
             HttpSession session
     ) {
         UserDto user = userService.create(request.toSignUpDto());
@@ -59,7 +60,7 @@ public class UserController {
 
     @PostMapping("/user/login")
     public String login(
-            @ModelAttribute LoginRequest request,
+            @Valid @ModelAttribute LoginRequest request,
             HttpSession session
     ) {
         UserDto user = userService.login(request.toCredentialsDto());
