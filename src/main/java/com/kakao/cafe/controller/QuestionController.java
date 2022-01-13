@@ -4,12 +4,15 @@ import com.kakao.cafe.question.Question;
 import com.kakao.cafe.question.QuestionService;
 import com.kakao.cafe.question.dto.QuestionCreateDto;
 import com.kakao.cafe.question.dto.QuestionDto;
+import com.kakao.cafe.user.User;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,10 +26,15 @@ public class QuestionController {
     private final ModelMapper modelMapper;
 
     @PostMapping("/create")
-    public String insertQuestion(@ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto) {
+    public String insertQuestion(HttpServletRequest request, @ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto) {
 
+        HttpSession httpSession = request.getSession();
+        User user = (User) httpSession.getAttribute("loginUser");
         Question question = modelMapper.map(questionCreateDto, Question.class);
-        Long id = questionService.save(question);
+
+        question.setMemberId(user.getId());
+
+        questionService.save(question);
 
         return "redirect:/";
     }
@@ -58,7 +66,7 @@ public class QuestionController {
     }
 
     @GetMapping("/create")
-    public String viewQuestionForm() {
+    public String viewQuestionForm(Model model) {
         return "qna/form";
     }
 }

@@ -14,8 +14,6 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class QuestionCreateDto {
     @NotEmpty
-    private String writer;
-    @NotEmpty
     private String title;
     @NotEmpty
     private String contents;

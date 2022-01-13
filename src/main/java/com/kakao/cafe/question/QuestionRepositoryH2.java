@@ -29,19 +29,18 @@ public class QuestionRepositoryH2 implements QuestionRepository {
 
     @Override
     public Long save(Question question) throws SQLException {
-        String sql = "INSERT INTO question(writer, title, contents) values (?, ?, ?)";
+        String sql = "INSERT INTO question(writer, title, contents,member_id) values (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        int rs = jdbcTemplate.update(
-                con -> {
-                    PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                    ps.setString(1, question.getWriter());
-                    ps.setString(2, question.getTitle());
-                    ps.setString(3, question.getContents());
+        int rs = jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, question.getWriter());
+            ps.setString(2, question.getTitle());
+            ps.setString(3, question.getContents());
+            ps.setLong(4, question.getMemberId());
 
-
-                    return ps;
-                }, keyHolder);
+            return ps;
+        }, keyHolder);
 
         if (rs == FAIL) {
             throw new SQLException("QUESTION TABLE SAVE FAIL");
