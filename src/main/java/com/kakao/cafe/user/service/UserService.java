@@ -33,6 +33,7 @@ public class UserService {
         return userRepository.getUsers();
     }
 
+    //하나의 유저를 찾으려고 하더라도 모든 유저의 정보를 긁어와야하는 연산이 매우 오버헤드가 클 것임, repository에서 따로 select하는 구문으로 수정해야할 것.
     public User getUserByUserId(String userId){
         Optional<User> optionalUser = userRepository.getUsers().stream().filter((user) -> {return user.getUserId().equals(userId);}).findAny();
         if(optionalUser.isPresent()){

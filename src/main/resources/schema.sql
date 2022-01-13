@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS USERS;
+DROP TABLE IF EXISTS ARTICLS;
 
 
 CREATE TABLE USERS(
@@ -7,4 +8,13 @@ CREATE TABLE USERS(
     password VARCHAR,
     name VARCHAR,
     email VARCHAR
+);
+
+
+CREATE TABLE ARTICLS(
+    sequence long PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR,
+    title VARCHAR,
+    contents VARCHAR,
+    date DATE
 );
