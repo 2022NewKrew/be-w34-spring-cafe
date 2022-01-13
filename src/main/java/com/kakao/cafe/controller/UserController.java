@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserSignupRequest;
+import com.kakao.cafe.domain.UserSignupRequest;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import javax.validation.Valid;

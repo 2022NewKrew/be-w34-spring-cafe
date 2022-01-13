@@ -1,8 +1,5 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.domain;
 
-import com.kakao.cafe.domain.Post;
-import com.kakao.cafe.domain.User;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

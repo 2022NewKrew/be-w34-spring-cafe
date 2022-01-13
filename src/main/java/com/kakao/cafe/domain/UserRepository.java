@@ -1,6 +1,5 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.domain;
 
-import com.kakao.cafe.domain.User;
 import java.util.List;
 
 public interface UserRepository {

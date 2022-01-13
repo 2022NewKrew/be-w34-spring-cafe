@@ -1,6 +1,5 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.domain;
 
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exceptions.DuplicateUserException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
 import java.util.ArrayList;
