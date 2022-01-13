@@ -4,16 +4,20 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticlePage;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.web.repository.UserRepository.UserMapper;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +31,34 @@ public class ArticleRepository {
   public ArticleRepository(JdbcTemplate jdbcTemplate, ArticleMapper articleMapper) {
     this.jdbcTemplate = jdbcTemplate;
     this.articleMapper = articleMapper;
+  }
+
+  public Article save(Article article) {
+    KeyHolder keyHolder = new GeneratedKeyHolder();
+
+    String query = "INSERT INTO article ( "
+        + "user_id, "
+        + "title, "
+        + "content, "
+        + "read_count, "
+        + "create_at, "
+        + "modified_at "
+        + ") VALUES (?, ?, ?, ?, ?, ?)";
+
+    jdbcTemplate.update(con -> {
+      PreparedStatement ps = con.prepareStatement(query,
+          new String[]{"id"});
+      ps.setLong(1, article.getAuthor().getId());
+      ps.setString(2, article.getTitle());
+      ps.setString(3, article.getContent());
+      ps.setLong(4, article.getReadCount());
+      ps.setTimestamp(5, article.getCreateAt());
+      ps.setTimestamp(6, article.getModifiedAt());
+      return ps;
+    }, keyHolder);
+
+    Long generatedId = Objects.requireNonNull(keyHolder.getKey().longValue());
+    return Article.of(generatedId, article);
   }
 
   public Integer totalSize() {

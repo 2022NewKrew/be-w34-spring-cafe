@@ -33,6 +33,10 @@ public class UserDTO {
     this.lastLoginAt = user.getLastLoginAt();
   }
 
+  public UserDTO(Long id) {
+    this.id = id;
+  }
+
   @Override
   public String toString() {
     return "UserDTO{" +

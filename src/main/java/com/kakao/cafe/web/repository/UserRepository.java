@@ -33,7 +33,7 @@ public class UserRepository {
   public User save(User user) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
-    String query = "INSERT INTO USERS ("
+    String query = "INSERT INTO users ("
         + "email, "
         + "nick_name, "
         + "summary, "

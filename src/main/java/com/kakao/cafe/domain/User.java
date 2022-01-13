@@ -3,6 +3,7 @@ package com.kakao.cafe.domain;
 import com.kakao.cafe.exception.NoRequiredValueException;
 import com.kakao.cafe.web.dto.LoginDTO;
 import com.kakao.cafe.web.dto.SignUpDTO;
+import com.kakao.cafe.web.dto.UserDTO;
 import java.sql.Timestamp;
 import java.util.Objects;
 import lombok.Getter;
@@ -25,9 +26,11 @@ public class User {
   private Timestamp modifiedAt;
   private Timestamp lastLoginAt;
 
-  private User(Integer index, Long id, String email, String nickName, String summary,
-      String profile,
-      String password, Timestamp createAt, Timestamp modifiedAt, Timestamp lastLoginAt) {
+  private User(
+      Integer index, Long id, String email, String nickName,
+      String summary, String profile, String password,
+      Timestamp createAt, Timestamp modifiedAt, Timestamp lastLoginAt
+  ) {
     this.index = index;
     this.id = id;
     this.email = email;
@@ -68,9 +71,19 @@ public class User {
   }
 
   public static User of(Long id, User user) {
-    return new User(null, id, user.getEmail(), user.getNickName(), user.getSummary(),
-        user.getProfile(), user.getPassword(), user.getCreateAt(), user.getModifiedAt(),
-        user.getLastLoginAt());
+    return new User(
+        null, id, user.getEmail(), user.getNickName(),
+        user.getSummary(), user.getProfile(), user.getPassword(),
+        user.getCreateAt(), user.getModifiedAt(), user.getLastLoginAt()
+    );
+  }
+
+  public static User of(UserDTO userDTO) {
+    return new User(
+        null, userDTO.getId(), userDTO.getEmail(), userDTO.getNickName(),
+        userDTO.getSummary(), userDTO.getProfile(), null,
+        userDTO.getCreateAt(), userDTO.getModifiedAt(), userDTO.getLastLoginAt()
+    );
   }
 
   public static User create(Integer index, Long id, String email, String nickName,

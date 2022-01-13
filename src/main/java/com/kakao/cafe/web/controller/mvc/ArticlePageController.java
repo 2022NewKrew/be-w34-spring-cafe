@@ -44,4 +44,9 @@ public class ArticlePageController {
     return "article";
   }
 
+  @GetMapping("/article")
+  public String createArticle(Model model) {
+    return "article_create";
+  }
+
 }

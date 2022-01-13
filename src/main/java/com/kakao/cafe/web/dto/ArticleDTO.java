@@ -3,6 +3,7 @@ package com.kakao.cafe.web.dto;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.Comment;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -30,6 +31,16 @@ public class ArticleDTO {
     this.comments = fromDomain(article.getComments());
     this.createAt = article.getCreateAt();
     this.modifiedAt = article.getModifiedAt();
+  }
+
+  public ArticleDTO(Long userId, String title, String content) {
+    this.title = title;
+    this.content = content;
+    this.author = new UserDTO(userId);
+    this.readCount = 0L;
+    this.comments = new ArrayList<>();
+    this.createAt = new Timestamp(System.currentTimeMillis());
+    this.modifiedAt = new Timestamp(System.currentTimeMillis());
   }
 
   private List<CommentDTO> fromDomain(List<Comment> comments) {
