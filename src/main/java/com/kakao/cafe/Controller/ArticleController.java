@@ -1,57 +1,73 @@
 package com.kakao.cafe.Controller;
 
 
-import com.kakao.cafe.Model.ArticleDTO;
-import com.kakao.cafe.Model.ArticleList;
-import com.kakao.cafe.Model.CommentDTO;
+import com.kakao.cafe.Domain.Article;
+import com.kakao.cafe.Domain.Comment;
+import com.kakao.cafe.Service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+import java.util.Optional;
+
 @Controller
 public class ArticleController {
     Logger logger = LoggerFactory.getLogger(ArticleController.class);
-    private ArticleList articleList = new ArticleList();
 
-    @PostMapping("/article")
-    public String post(ArticleDTO articleDTO) {
-        articleList.add(articleDTO);
-        logger.info("{}(title) was posted by {}(author)", articleDTO.getTitle(), articleDTO.getAuthor());
+    private final ArticleService articleService;
+
+    @Autowired
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
+
+    @PostMapping("/articles")
+    public String post(Article article) {
+        articleService.post(article);
+        logger.info("{}(title) was posted", article.getTitle());
+
         return "redirect:/";
     }
 
     @GetMapping("/")
     public String home(Model model) {
-        logger.info("GET /");
-        logger.info("{}", articleList);
+        logger.info("GET / : Get all articles");
 
-        model.addAttribute("ArticleList", articleList);
-        return "/index";
+        List<Article> findArticles = articleService.findArticles();
+        
+        model.addAttribute("articles", findArticles);
+        model.addAttribute("articlesCount", findArticles.size());
+        return "index";
     }
 
-    @GetMapping("/article/{articleIdx}")
-    public String getArticle(@PathVariable("articleIdx") int articleIdx,
+    @GetMapping("/articles/{articleId}")
+    public String getArticle(@PathVariable("articleId") Long articleId,
                              Model model){
-        logger.info("GET /article/{} : View article({})", articleIdx, articleIdx);
+        logger.info("GET /article/{} : View article({})", articleId, articleId);
 
-        ArticleDTO articleDTO = articleList.getArticleList().get(articleIdx - 1);
-        model.addAttribute("article", articleDTO);
-        return "/post/show";
+        Optional<Article> findArticle = articleService.findOne(articleId);
+        List<Comment> findComments = articleService.findComments(articleId);
+        System.out.println(findArticle);
+
+        model.addAttribute("article", findArticle.get());
+        model.addAttribute("comments", findComments);
+        model.addAttribute("commentsCount", findComments.size());
+        return "post/show";
     }
 
-    @PostMapping("/comment/{articleIdx}")
-    public String postComment(@PathVariable("articleIdx") int articleIdx,
-                             CommentDTO commentDTO,
-                             Model model){
-        logger.info("POST /comment/{} : Create a comment on article({})", articleIdx, articleIdx);
+    @PostMapping("/comments/{articleId}")
+    public String postComment(@PathVariable("articleId") int articleId, Comment comment){
+        logger.info("POST /comment/{} : Create a comment on article({})", articleId, articleId);
 
-        ArticleDTO articleDTO = articleList.getArticleList().get(articleIdx - 1);
-        articleDTO.addComment(commentDTO);
-        model.addAttribute("article", articleDTO);
-        return "redirect:/article/{articleIdx}";
+        articleService.postComment(comment);
+        logger.info("Comment was posted by {}", comment.getAuthor());
+
+        return "redirect:/articles/{articleId}";
     }
 }

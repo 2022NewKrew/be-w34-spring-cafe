@@ -22,9 +22,9 @@
 
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="/user">멤버 리스트</a></li>
-                <li><a class="black-component" href="/users/login.html" role="button">로그인</a></li>
-                <li><a class="black-component" href="/users/form.html" role="button">회원가입</a></li>
+                <li class="active"><a href="/users">멤버 리스트</a></li>
+                <li><a class="black-component" href="/user/login.html" role="button">로그인</a></li>
+                <li><a class="black-component" href="/user/form.html" role="button">회원가입</a></li>
             </ul>
         </div>
     </nav>
@@ -35,8 +35,7 @@
             <p class="desc-big">카카오 교육 페이지 입니다.</p>
         </div>
     </div>
-{{#ArticleList}}
-    <p class="total_num">전체 글 {{totalCount}}개</p>
+    <p class="total_num">전체 글 {{articlesCount}}개</p>
 
     <div class="container" id="main">
         <div class="col-md-10 col-md-offset-1">
@@ -48,17 +47,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {{#articleList}}
+                    {{#articles}}
                     <tr>
-                        <td><a href="/article/{{articleIdx}}">{{title}}</a></td> <td>{{author}}</td> <td>{{createdDate}}</td> <td>{{views}}</td>
+                        <td><a href="/articles/{{id}}">{{title}}</a></td> <td>{{author}}</td> <td>{{created}}</td> <td>{{views}}</td>
                     </tr>
-                    {{/articleList}}
+                    {{/articles}}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    {{/ArticleList}}
     <div class="post-btn-container">
       <a class="post-write-btn" href="/post/form.html" class="btn btn-primary pull-right" role="button">글쓰기</a>
     </div>
