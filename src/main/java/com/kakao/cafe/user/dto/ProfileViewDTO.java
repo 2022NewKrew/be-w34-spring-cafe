@@ -4,9 +4,9 @@ import com.kakao.cafe.user.domain.User;
 
 public class ProfileViewDTO {
 
-    private String name;
+    private final String name;
 
-    private String email;
+    private final String email;
 
     public ProfileViewDTO(User user) {
         this.name = user.getName();

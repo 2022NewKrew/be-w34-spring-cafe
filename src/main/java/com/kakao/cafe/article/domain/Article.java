@@ -26,4 +26,22 @@ public class Article {
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
         this.countOfComment = 0L;
     }
+
+    public Article(QuestionDTO questionDTO) {
+        this.writer = questionDTO.getWriter();
+        this.contents = questionDTO.getContents();
+        this.title = questionDTO.getTitle();
+        this.writingTime = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
+        this.countOfComment = 0L;
+    }
+
+    public Article(Long id, String writer, String title, String contents, String writingTime, Long countOfComment) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.writingTime = writingTime;
+        this.countOfComment = countOfComment;
+    }
 }

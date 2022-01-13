@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ArticleRepository {
 
-    Article save(QuestionDTO article);
+    void save(QuestionDTO article);
 
     Optional<Article> findById(Long id);
 

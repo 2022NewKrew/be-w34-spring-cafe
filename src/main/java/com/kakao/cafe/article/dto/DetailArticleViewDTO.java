@@ -4,12 +4,12 @@ import com.kakao.cafe.article.domain.Article;
 
 public class DetailArticleViewDTO {
 
-    private Long id;
-    private String writer;
-    private String title;
-    private String writingTime;
-    private Long countOfComment;
-    private String contents;
+    private final Long id;
+    private final String writer;
+    private final String title;
+    private final String writingTime;
+    private final Long countOfComment;
+    private final String contents;
 
     public DetailArticleViewDTO(Article article) {
         this.id = article.getId();

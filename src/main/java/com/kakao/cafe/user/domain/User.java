@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.domain;
 
 import com.kakao.cafe.user.dto.SignUpDTO;
+import com.kakao.cafe.user.dto.UpdateDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,5 +25,36 @@ public class User {
         this.password = signUpDTO.getPassword();
         this.name = signUpDTO.getName();
         this.email = signUpDTO.getEmail();
+    }
+
+    public User(SignUpDTO signUpDTO) {
+        this.userId = signUpDTO.getUserId();
+        this.password = signUpDTO.getPassword();
+        this.name = signUpDTO.getName();
+        this.email = signUpDTO.getEmail();
+    }
+
+    public User(Long id, String userId, String password, String name, String email) {
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
+
+    public User(UpdateDTO updateDTO) {
+        this.id = updateDTO.getId();
+        this.userId = updateDTO.getUserId();
+        this.password = updateDTO.getPassword();
+        this.name = updateDTO.getName();
+        this.email = updateDTO.getEmail();
+    }
+
+    public User updateInfo(UpdateDTO updateDTO) {
+        return new User(updateDTO);
+    }
+
+    public boolean equalsPassword(String InputPassword) {
+        return this.password.equals(InputPassword);
     }
 }
