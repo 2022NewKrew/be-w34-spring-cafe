@@ -1,7 +1,9 @@
 package com.kakao.cafe.web.service;
 
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticleBoard;
 import com.kakao.cafe.domain.ArticlePage;
+import com.kakao.cafe.exception.NoArticleException;
 import com.kakao.cafe.web.repository.ArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +21,6 @@ public class ArticleService {
 
   public ArticleBoard getArticleBoard(int pageIndex) {
 
-    //TODO: pageIndex 를 기반으로 ArticleBoard 를 세팅 해서 반환.
     int totalSize = articleRepository.totalSize();
     ArticleBoard articleBoard = ArticleBoard.createEmpty(totalSize, pageIndex);
     ArticlePage articlePage = articleRepository.findByOffset(
@@ -28,6 +29,11 @@ public class ArticleService {
     articleBoard.setArticlePage(articlePage);
 
     return articleBoard;
+  }
+
+  public Article getArticle(int id) {
+    return articleRepository.findById(id)
+        .orElseThrow(NoArticleException::new);
   }
 
 }

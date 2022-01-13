@@ -509,6 +509,10 @@ ul.dropdown-menu li {
   background-size: cover;
 }
 
+.bg-3{
+  background: url("https://tech.kakao.com/wp-content/uploads/2021/10/ifkakao2021-474x474.png") no-repeat center center/cover;
+}
+
 .slider {
   background: url("http://www.polinews.co.kr/data/photos/20200624/art_15918735234817_cfd6be.jpg") no-repeat;
   background-size: cover;

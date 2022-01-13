@@ -1,9 +1,11 @@
 package com.kakao.cafe.web.controller.mvc;
 
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticleBoard;
 import com.kakao.cafe.web.common.EnableSession;
 import com.kakao.cafe.web.controller.KakaoCafePageController;
 import com.kakao.cafe.web.dto.ArticleBoardDTO;
+import com.kakao.cafe.web.dto.ArticleDTO;
 import com.kakao.cafe.web.service.ArticleService;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -24,7 +26,7 @@ public class ArticlePageController {
   }
 
   @GetMapping({"/articles", "/articles/{pageIndex}"})
-  public String getDefaultArticleBoard(Model model, @PathVariable Optional<Integer> pageIndex) {
+  public String getArticleBoard(Model model, @PathVariable Optional<Integer> pageIndex) {
 
     int boardPageIndex = pageIndex.orElse(ArticleBoard.FIRST_PAGE_INDEX);
     ArticleBoard articleBoard = articleService.getArticleBoard(boardPageIndex);
@@ -33,6 +35,13 @@ public class ArticlePageController {
     return "articles";
   }
 
+  @GetMapping("/article/{id}")
+  public String getArticle(Model model, @PathVariable int id) {
 
+    Article article = articleService.getArticle(id);
+    model.addAttribute("article", new ArticleDTO(article));
+
+    return "article";
+  }
 
 }

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,7 +36,32 @@ public class ArticleRepository {
 
   //TODO: 페이징 최적화 방법 더 고민하고 연구해보기
   public ArticlePage findByOffset(int offset, int limit) {
-    String query =
+    String query = ArticleMapper.SELECT_ALL_COLUMNS
+        + "FROM (SELECT * FROM article ORDER BY id DESC LIMIT ?, ?) article "
+        + "INNER JOIN USERS "
+        + "ON article.user_id = users.id";
+
+    List<Article> articles = jdbcTemplate.query(query, articleMapper, offset, limit);
+    return ArticlePage.of(articles);
+  }
+
+  public Optional<Article> findById(int id) {
+    String query = ArticleMapper.SELECT_ALL_COLUMNS
+        + "FROM (SELECT * FROM article WHERE id = ?) article "
+        + "INNER JOIN USERS "
+        + "ON article.user_id = users.id";
+
+    List<Article> articles = jdbcTemplate.query(query, articleMapper, id);
+    if(articles.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(articles.get(0));
+  }
+
+  @Component
+  public static class ArticleMapper implements RowMapper<Article> {
+
+    public static final String SELECT_ALL_COLUMNS =
         "SELECT "
             + "article.id, "
             + "article.title, "
@@ -50,18 +76,7 @@ public class ArticleRepository {
             + "users.profile as user_profile, "
             + "users.create_at as user_create_at, "
             + "users.modified_at as user_modified_at, "
-            + "users.last_login_at as user_last_login_at "
-            + "FROM (SELECT * FROM article ORDER BY id DESC LIMIT ?, ?) article "
-            + "INNER JOIN USERS "
-            + "ON article.user_id = users.id";
-
-    List<Article> articles = jdbcTemplate.query(query, articleMapper, offset, limit);
-    return ArticlePage.of(articles);
-  }
-
-
-  @Component
-  public static class ArticleMapper implements RowMapper<Article> {
+            + "users.last_login_at as user_last_login_at ";
 
     private final UserMapper userMapper;
 

@@ -1,0 +1,91 @@
+{{> partial/head}}
+
+<body>
+{{> partial/header}}
+<div class="main-wrapper ">
+  {{#article}}
+  <section class="page-title bg-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="block text-center">
+            <span class="text-white">{{author.nickName}}</span>
+            <h1 class="text-capitalize mb-4 text-lg">{{title}}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section About Start -->
+  <section class="section about-2 position-relative">
+    <div class="container">
+      <!-- header -->
+      <div class="row">
+        <div class="col" style="text-align: center">
+          <div class="about-item pr-3 mb-5 mb-lg-0">
+            <span class="h6 text-color">{{author.nickName}} 의 글</span>
+            <h2 class="mt-3 mb-4 position-relative content-title">{{title}}</h2>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:100%;border: 1px"></div>
+
+      <!-- content -->
+      <div class="row" style="margin-bottom: 10px;margin-top: 10px;
+      padding-bottom: 30px;padding-top: 30px;
+      border-top: 1px #f75757 solid;border-bottom: 1px #f75757 solid;">
+        <div class="col" style="text-align: center">
+          <div class="about-item pr-3 mb-5 mb-lg-0">
+            <p class="mb-5" style="font-family: Hind;color:rgba(0, 0, 0, 0.65); padding-bottom: 500px;">
+              {{content}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- footer -->
+      <div class="row" style="text-align: center;font-family: Hind">
+        <div class="col">
+          글 번호 : {{id}}
+        </div>
+        <div class="col">
+          조회수 : {{readCount}}
+        </div>
+        <div class="col">
+          생성일 : {{createAt}}
+        </div>
+        <div class="col">
+          변경일 : {{modifiedAt}}
+        </div>
+      </div>
+
+    </div>
+  </section>
+  {{/article}}
+  <!-- Section About End -->
+
+</div>
+
+<!--
+Essential Scripts
+=====================================-->
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    // Handler when the DOM is fully loaded
+
+  });
+
+  function navigateModifyProfile(email) {
+
+    alert('준비중입니다.');
+
+  }
+
+</script>
+
+
+{{> partial/script}}
+</body>
+</html>
