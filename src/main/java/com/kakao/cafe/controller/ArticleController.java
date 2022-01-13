@@ -1,14 +1,16 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.ArticleForm;
-import com.kakao.cafe.entiry.Article;
-import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.domain.article.dto.ArticleForm;
+import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/articles")
@@ -24,7 +26,7 @@ public class ArticleController {
     }
 
     @PostMapping("")
-    public String registerArticle(ArticleForm articleFrom){
+    public String registerArticle(@Valid ArticleForm articleFrom){
         logger.info("POST /articles");
         Article article = Article.of(articleFrom);
         articleService.register(article);

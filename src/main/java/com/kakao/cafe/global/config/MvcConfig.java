@@ -1,4 +1,4 @@
-package com.kakao.cafe.config;
+package com.kakao.cafe.global.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;

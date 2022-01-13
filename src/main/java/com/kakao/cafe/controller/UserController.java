@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.UserForm;
-import com.kakao.cafe.entiry.User;
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.domain.user.dto.UserForm;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("")
-    public String create(UserForm form) {
+    public String create(@Valid UserForm form) {
         logger.info("POST /users");
         User newUser = User.of(form);
         userService.join(newUser);

@@ -1,11 +1,17 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.domain.article.dto;
 
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
 public class ArticleForm {
 
+    @NotBlank
     private String writer;
+    @NotBlank
     private String title;
+    @NotEmpty
     private String contents;
 
     public ArticleForm(String writer, String title, String contents) {

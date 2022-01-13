@@ -1,8 +1,10 @@
-package com.kakao.cafe.entiry;
+package com.kakao.cafe.domain.article;
 
-import com.kakao.cafe.dto.ArticleForm;
+import com.kakao.cafe.domain.article.dto.ArticleForm;
+import com.kakao.cafe.domain.article.dto.ArticleRowDataDto;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Article {
 
@@ -31,6 +33,10 @@ public class Article {
 
     public static Article of(ArticleForm articleForm){
         return new Article(articleForm.getWriter(), articleForm.getTitle(), articleForm.getContents());
+    }
+
+    public static Article of(ArticleRowDataDto articleRowDataDto, String writerUserId) {
+        return new Article(articleRowDataDto.getId(), writerUserId, articleRowDataDto.getTitle(), articleRowDataDto.getContents(), articleRowDataDto.getRegisterDateTime());
     }
 
     public Long getId() {
@@ -71,6 +77,22 @@ public class Article {
 
     public void setRegisterDateTime(LocalDateTime registerDateTime) {
         this.registerDateTime = registerDateTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Article article = (Article) o;
+        return Objects.equals(id, article.id) &&
+                Objects.equals(writerUserId, article.writerUserId) &&
+                Objects.equals(title, article.title) && Objects.equals(contents, article.contents) &&
+                Objects.equals(registerDateTime, article.registerDateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, writerUserId, title, contents, registerDateTime);
     }
 
     @Override

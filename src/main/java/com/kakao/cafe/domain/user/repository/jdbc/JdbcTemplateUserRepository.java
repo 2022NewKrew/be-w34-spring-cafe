@@ -1,6 +1,7 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.domain.user.repository.jdbc;
 
-import com.kakao.cafe.entiry.User;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.repository.UserRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class JdbcTemplateUserRepository implements UserRepository{
+public class JdbcTemplateUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

@@ -1,16 +1,29 @@
-package com.kakao.cafe.entiry;
+package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.dto.UserForm;
+import com.kakao.cafe.domain.user.dto.UserForm;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class User {
 
     private Long id;
+
+    @NotNull
     private String userId;
+
+    @NotNull
     private String password;
+
+    @NotNull
     private String name;
+
+    @NotNull
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$", message = "이메일 형식에 맞지 않습니다.")
     private String email;
+
     private LocalDateTime joinDateTime;
 
     public User() {}
@@ -82,6 +95,24 @@ public class User {
 
     public void setJoinDateTime(LocalDateTime joinDateTime) {
         this.joinDateTime = joinDateTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(userId, user.userId) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(joinDateTime, user.joinDateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, password, name, email, joinDateTime);
     }
 
     @Override
