@@ -15,7 +15,8 @@ public class UserControllerExceptionHandler {
     @ExceptionHandler(InvalidDtoException.class) // @Valid 검증 실패 시
     protected ResponseEntity<String> handleParameterException(InvalidDtoException e) {
         log.error("handleInvalidParameterException", e);
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(e.getMessage(),
+            HttpStatus.resolve(e.getErrorCode().getStatus()));
     }
 
     @ExceptionHandler(CustomException.class) // CustomException 발생시

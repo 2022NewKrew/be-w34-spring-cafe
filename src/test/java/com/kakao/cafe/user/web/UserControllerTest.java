@@ -7,8 +7,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.repository.UserRepository;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +26,27 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
-@AutoConfigureMockMvc
+// 서블릿 컨테이너를 모킹 (테스트 케이스 실행 시 서블릿 컨테이너를 구동하지 않음
+@AutoConfigureMockMvc // 컨트롤러 외의 빈도 등록함
 class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @BeforeEach
+    void setUp() {
+        userRepository.deleteAll();
+    }
+
+    @AfterEach()
+    void tearDown() {
+        userRepository.deleteAll();
+        userRepository.save(User.builder().userId("miya.ong").password("1234").name("박예지")
+            .email("miya.ong@kakaocorp.com").build());
+    }
 
     @Test
     @DisplayName("존재하지 않는 유저 찾기 테스트")
