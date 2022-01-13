@@ -1,7 +1,6 @@
 package com.kakao.cafe.domain;
 
 import java.util.UUID;
-import javax.validation.constraints.NotBlank;
 
 public class User {
 

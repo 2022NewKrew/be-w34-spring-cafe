@@ -1,7 +1,5 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.domain.User;
-import java.util.UUID;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
