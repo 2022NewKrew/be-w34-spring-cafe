@@ -1,6 +1,9 @@
 package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.web.dto.UsersSaveRequestDto;
+import com.kakao.cafe.web.dto.user.UserResponseDto;
+import com.kakao.cafe.web.dto.user.UserUpdateRequestDto;
+import com.kakao.cafe.web.dto.user.UsersListResponseDto;
+import com.kakao.cafe.web.dto.user.UsersSaveRequestDto;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -8,16 +11,31 @@ import java.util.List;
 
 @Getter
 public class Users {
-    private List<User> users = new ArrayList<User>();
+    private List<User> users = new ArrayList<>();
     private int maxId = 0;
 
     public void addUser(UsersSaveRequestDto userDto){
         users.add(new User(maxId++, userDto));
     }
 
-    public User findUserById(int id){
-        return users.stream().filter(user -> user.getId()==id)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException());
+    public UsersListResponseDto findAll() {
+        return new UsersListResponseDto(users);
+    }
+
+    public UserResponseDto findUserById(int id) {
+        return new UserResponseDto(findById(id));
+    }
+
+    private User findById(int id) {
+        return users.stream().filter(user -> user.getId()==id).findFirst().orElseThrow(IllegalArgumentException::new);
+    }
+
+    public void update(int id, UserUpdateRequestDto userDto) {
+        User target = findById(id);
+        if (target.getAccPw().equals(userDto.getPrevAccPw())) {
+            target.setAccPw(userDto.getNewAccPw());
+            target.setName(userDto.getName());
+            target.setEmail(userDto.getEmail());
+        }
     }
 }
