@@ -30,6 +30,34 @@ class UserServiceTest {
     );
 
     @Test
+    void 회원가입() {
+        User given = users.get(0);
+        given(userRepository.findByUserId(any())).willReturn(Optional.empty());
+        given(userRepository.save(any())).willReturn(given);
+
+        SignUpRequest signUpRequest = new SignUpRequest();
+        signUpRequest.setUserId(given.getUserId());
+        signUpRequest.setName(given.getName());
+        signUpRequest.setEmail(given.getEmail());
+        signUpRequest.setPassword(given.getPassword());
+
+        UserDto userDto = userService.signUp(signUpRequest);
+
+        Assertions.assertThat(signUpRequest.getEmail()).isEqualTo(userDto.getEmail());
+        Assertions.assertThat(signUpRequest.getName()).isEqualTo(userDto.getName());
+        Assertions.assertThat(signUpRequest.getUserId()).isEqualTo(userDto.getUserId());
+    }
+
+    @Test
+    void 사용자리스트가져오기() {
+        given(userRepository.findAll()).willReturn(users);
+
+        List<UserDto> userDtoList = userService.getUsers();
+
+        Assertions.assertThat(userDtoList).hasSize(users.size());
+    }
+
+    @Test
     void 중복아이디가아닌지확인() {
         given(userRepository.findByUserId(anyString())).willReturn(Optional.empty());
 

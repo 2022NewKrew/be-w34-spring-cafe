@@ -14,4 +14,16 @@ public class UserDto {
     public static UserDto toDto(User user) {
         return new UserDto(user.getUserId(), user.getName(), user.getEmail());
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
 }
