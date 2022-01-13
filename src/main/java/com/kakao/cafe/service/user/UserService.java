@@ -20,7 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-    public UserService(@Qualifier("userRepositoryImpl") UserRepository userRepository, ModelMapper modelMapper) {
+    public UserService(@Qualifier("userJdbcRepositoryImpl") UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }

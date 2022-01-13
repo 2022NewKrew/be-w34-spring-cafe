@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +26,7 @@ class UserServiceTest {
 
     @Autowired
     private UserService userService;
-    @Qualifier("userRepositoryImpl")
+    @Qualifier("userJdbcRepositoryImpl")
     @Autowired
     private UserRepository userRepository;
 
@@ -37,13 +38,14 @@ class UserServiceTest {
         String nickname = "ABC";
         String password = "abcdef";
         LocalDateTime createdAt = LocalDateTime.now();
-        user = User.builder()
+        User user = User.builder()
                 .email(email)
                 .nickname(nickname)
                 .password(password)
                 .createdAt(createdAt)
                 .build();
         userRepository.save(user);
+        this.user = userRepository.findByEmail(email).orElse(null);
     }
     @AfterEach
     void cleanup() {
@@ -103,7 +105,7 @@ class UserServiceTest {
                 .password("1234")
                 .build();
 
-        assertThatIllegalArgumentException().isThrownBy(() -> {
+        assertThatExceptionOfType(DataAccessException.class).isThrownBy(() -> {
             userService.signupUser(userWithDuplicatedEmail);
         });
     }
@@ -129,12 +131,6 @@ class UserServiceTest {
     @DisplayName("id를 이용하여 조회한 회원 정보는 등록된 회원 정보와 같아야 한다.")
     @Test
     void getUserById() {
-        User user = User.builder()
-                .email("test@test.com")
-                .nickname("테스터")
-                .password("1234")
-                .build();
-        userRepository.save(user);
         long id = user.getId();
 
         UserDto foundUser = userService.getUserById(id);
@@ -148,9 +144,9 @@ class UserServiceTest {
     @DisplayName("등록되지 않은 회원 정보를 조회하면 에러를 발생시켜야 한다.")
     @Test
     void getUserByIdNotSignup() {
-        long id = 100;
+        long id = 11234L;
 
-        assertThatIllegalArgumentException().isThrownBy(() -> {
+        assertThatExceptionOfType(DataAccessException.class).isThrownBy(() -> {
            UserDto user = userService.getUserById(id);
         });
     }
@@ -195,7 +191,7 @@ class UserServiceTest {
                 .build();
         long id = user.getId() + 1;
 
-        assertThatIllegalArgumentException().isThrownBy(() -> {
+        assertThatExceptionOfType(DataAccessException.class).isThrownBy(() -> {
             userService.updateUser(id, updateRequest);
         });
     }
@@ -240,7 +236,7 @@ class UserServiceTest {
                 .build();
         long id = user.getId();
 
-        assertThatIllegalArgumentException().isThrownBy(() -> {
+        assertThatExceptionOfType(DataAccessException.class).isThrownBy(() -> {
             userService.updateUser(id, updateRequest);
         });
     }
