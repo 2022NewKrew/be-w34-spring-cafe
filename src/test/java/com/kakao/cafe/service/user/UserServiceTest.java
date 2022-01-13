@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ class UserServiceTest {
 
     @Autowired
     private UserService userService;
+    @Qualifier("userRepositoryImpl")
     @Autowired
     private UserRepository userRepository;
 

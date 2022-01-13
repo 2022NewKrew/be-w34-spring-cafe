@@ -5,9 +5,9 @@ import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.model.user.UserDto;
 import com.kakao.cafe.model.user.UserSignupRequest;
 import com.kakao.cafe.model.user.UserUpdateRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,11 +15,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+
+    public UserService(@Qualifier("userRepositoryImpl") UserRepository userRepository, ModelMapper modelMapper) {
+        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public void signupUser(UserSignupRequest user) {
         userRepository.save(User.builder()
