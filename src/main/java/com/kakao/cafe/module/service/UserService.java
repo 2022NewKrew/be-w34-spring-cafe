@@ -37,6 +37,9 @@ public class UserService {
     public void updateUser(Long id, UserUpdateDto userUpdateDto) {
         User user = userRepository.findUserById(id);
         validatePassword(user.getPassword(), userUpdateDto.getPassword());
+        if (!user.getName().equals(userUpdateDto.getName())) {
+            validateDuplicateName(userUpdateDto.getName());
+        }
 
         User updateUserInfo = new User(id, user.getUserId(), userUpdateDto.getNewPassword(), userUpdateDto.getName(), userUpdateDto.getEmail());
         userRepository.updateUser(updateUserInfo);
