@@ -24,4 +24,16 @@ public class UserListResponse {
     public String getEmail() {
         return email;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof UserListResponse)) {
+            return false;
+        }
+
+        UserListResponse userListResponse = (UserListResponse) obj;
+        return userId.equals(userListResponse.userId) &&
+                name.equals(userListResponse.name) &&
+                email.equals(userListResponse.email);
+    }
 }

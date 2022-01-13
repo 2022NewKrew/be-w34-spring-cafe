@@ -58,9 +58,7 @@ class UserControllerTest {
         assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
 
         for(int i = 0; i < users.size(); i++) {
-            assertThat(responseUsers.get(i).getUserId()).isEqualTo(provideUsers.get(i).getUserId());
-            assertThat(responseUsers.get(i).getName()).isEqualTo(provideUsers.get(i).getName());
-            assertThat(responseUsers.get(i).getEmail()).isEqualTo(provideUsers.get(i).getEmail());
+            assertThat(responseUsers.get(i).equals(provideUsers.get(i))).isTrue();
         }
     }
 
