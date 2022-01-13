@@ -21,11 +21,3 @@ public class UserSignUpService {
         userSignUpDao.signUp(dto);
     }
 }
-
-//    public List<PostOfTableRow> getAllPostOfTableRow() {
-//        final String sql = "SELECT p.id, p.title, p.contents, FORMATDATETIME(p.created, 'yyyy-MM-dd') as `created`, u.name as writer " +
-//                "FROM `post` as p " +
-//                "JOIN `user` as u on p.user_id=u.id";
-//
-//        return jdbcTemplate.query(sql, postOfTableRowMapper());
-//    }
