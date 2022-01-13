@@ -7,7 +7,6 @@ import com.kakao.cafe.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +18,7 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
     @GetMapping("/memberForm")
     public String getMemberForm() {
@@ -36,6 +36,7 @@ public class MemberController {
 
     @PostMapping("/members")
     public String postMembers(MemberRequestDTO memberRequestDTO) {
+        logger.info(memberRequestDTO.toString());
         Long memberId = memberService.join(memberRequestDTO);
         return "redirect:members/joinSuccess?memberId=" + memberId;
     }

@@ -4,6 +4,8 @@ import com.kakao.cafe.article.dto.ArticleRequestDTO;
 import com.kakao.cafe.article.dto.ArticleResponseDTO;
 import com.kakao.cafe.article.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     @GetMapping("/")
     public String getArticles(Model model) {
@@ -32,6 +35,7 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String postArticles(ArticleRequestDTO articleRequestDTO) {
+        logger.info(articleRequestDTO.toString());
         articleService.posting(articleRequestDTO);
         return "redirect:/";
     }

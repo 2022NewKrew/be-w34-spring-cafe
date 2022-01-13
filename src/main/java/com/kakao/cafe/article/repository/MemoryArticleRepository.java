@@ -1,12 +1,11 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
     private static long sequenceNumber = 0;
@@ -21,8 +20,8 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findOne(Long id) {
-        return memoryRepository.get(id.intValue() - 1);
+    public Optional<Article> findOne(Long id) {
+        return Optional.ofNullable(memoryRepository.get(id.intValue() - 1));
     }
 
     @Override

@@ -4,13 +4,9 @@ import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.dto.ArticleRequestDTO;
 import com.kakao.cafe.article.dto.ArticleResponseDTO;
 import com.kakao.cafe.article.repository.ArticleRepository;
-import com.kakao.cafe.member.domain.Member;
-import com.kakao.cafe.member.dto.MemberRequestDTO;
-import com.kakao.cafe.member.dto.MemberResponseDTO;
-import com.kakao.cafe.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
@@ -28,7 +25,9 @@ public class ArticleService {
     }
 
     public ArticleResponseDTO findOne(Long id) {
-        return new ArticleResponseDTO(articleRepository.findOne(id));
+        return new ArticleResponseDTO(articleRepository.findOne(id).orElseThrow(() -> {
+            throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+        }));
     }
 
     public List<ArticleResponseDTO> findAll() {

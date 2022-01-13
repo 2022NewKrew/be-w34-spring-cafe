@@ -1,15 +1,11 @@
 package com.kakao.cafe.member.repository;
 
 import com.kakao.cafe.member.domain.Member;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
 public class MemoryMemberRepository implements MemberRepository {
 
     private static long sequenceNumber = 0;
@@ -24,16 +20,16 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member findOne(Long id) {
-        return memoryRepository.get(id.intValue() - 1);
+    public Optional<Member> findOne(Long id) {
+        return Optional.ofNullable(memoryRepository.get(id.intValue() - 1));
     }
 
     @Override
-    public Member findByEmail(String email) {
-        return memoryRepository.stream()
+    public Optional<Member> findByEmail(String email) {
+        return Optional.ofNullable(memoryRepository.stream()
                 .filter(member -> member.getEmail().equals(email))
                 .findAny()
-                .orElse(null);
+                .orElse(null));
     }
 
     @Override

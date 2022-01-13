@@ -1,17 +1,17 @@
 package com.kakao.cafe.member.repository;
 
 import com.kakao.cafe.member.domain.Member;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberRepository {
 
     Member save(Member member);
 
-    Member findOne(Long id);
+    Optional<Member> findOne(Long id);
 
-    Member findByEmail(String email);
+    Optional<Member> findByEmail(String email);
 
     List<Member> findAll();
 
