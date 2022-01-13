@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class User {
@@ -24,5 +25,17 @@ public class User {
 
     public String getUserName() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User that = (User) o;
+        return Objects.equals(userId, that.userId);
     }
 }
