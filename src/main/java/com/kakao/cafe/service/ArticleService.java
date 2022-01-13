@@ -4,12 +4,12 @@ import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.web.dto.ArticleCreateRequestDto;
 import com.kakao.cafe.web.dto.ArticleDetailResponseDto;
-import com.kakao.cafe.web.dto.ArticleListResponseDto;
+import com.kakao.cafe.web.dto.ArticleResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -24,23 +24,14 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-
     public void create(ArticleCreateRequestDto requestDto) {
         Long id = articleRepository.generateId();
         articleRepository.create(new Article(id, requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents()));
         logger.info("{} 글 생성", requestDto.getTitle());
     }
 
-    public List<ArticleListResponseDto> findAll() {
-        List<ArticleListResponseDto> responseDtoList = new ArrayList<>();
-        for (Article article : articleRepository.findAll()) {
-            ArticleListResponseDto responseDto = new ArticleListResponseDto();
-            responseDto.setId(article.getId());
-            responseDto.setWriter(article.getWriter());
-            responseDto.setTitle(article.getTitle());
-            responseDtoList.add(responseDto);
-        }
-        return responseDtoList;
+    public List<ArticleResponseDto> findAll() {
+        return ArticleResponseDto.from(articleRepository.findAll());
     }
 
     public ArticleDetailResponseDto findById(Long id) {
