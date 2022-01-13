@@ -9,4 +9,5 @@ public interface UserRepository {
     User save(UserDTO userDTO);
     List<User> getUserList();
     User getUserByUserId(String userId);
+    User update(UserDTO userUpdateDTO);
 }

@@ -52,4 +52,19 @@ public class MemoryUserRepository implements UserRepository {
                 new BeanPropertyRowMapper<>(User.class),
                 userId);
     }
+
+    public User update(UserDTO userUpdateDTO) {
+        GeneratedKeyHolder holder = new GeneratedKeyHolder();
+        System.out.println(userUpdateDTO);
+        jdbcTemplate.update(con -> {
+            String sql = "UPDATE cafe_user SET password = ?, name = ?, email = ? WHERE user_id = ?";
+            PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, userUpdateDTO.getPassword());
+            statement.setString(2, userUpdateDTO.getName());
+            statement.setString(3, userUpdateDTO.getEmail());
+            statement.setString(4, userUpdateDTO.getUserId());
+            return statement;
+        }, holder);
+        return getUserByUserId(userUpdateDTO.getUserId());
+    }
 }

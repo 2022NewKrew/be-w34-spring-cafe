@@ -60,4 +60,13 @@ public class UserController {
         model.addAttribute("email", user.getEmail());
         return "/user/update-form";
     }
+
+    @PostMapping("/users/{userId}/update")
+    public String updateUser(@PathVariable String userId, String password, String passwordConfirm, String name, String email) {
+        if (password.equals(passwordConfirm)) {
+            UserDTO userUpdateDTO = new UserDTO(userId, password, name, email);
+            userService.replace(userUpdateDTO);
+        }
+        return "redirect:/users";
+    }
 }
