@@ -1,10 +1,12 @@
 package com.kakao.cafe.domain.user;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class User {
-    private static int id = 1;
+    private int id = 0;
     private String userId;
     private String password;
     private String name;
@@ -16,5 +18,13 @@ public class User {
         this.name = name;
         this.email = email;
         id++;
+    }
+
+    public void updateUser(User changedUser){
+        this.setId(changedUser.getId());
+        this.setUserId(changedUser.getUserId());
+        this.setEmail(changedUser.getEmail());
+        this.setName(changedUser.getName());
+        this.setPassword(changedUser.getPassword());
     }
 }
