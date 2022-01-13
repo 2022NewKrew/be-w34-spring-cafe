@@ -2,6 +2,7 @@ package com.kakao.cafe.handler;
 
 import com.kakao.cafe.exceptions.DuplicateUserException;
 import com.kakao.cafe.exceptions.InvalidUserRequestException;
+import com.kakao.cafe.exceptions.PostNotFoundException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidUserRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView validationFailed(InvalidUserRequestException exception) {
+        Map<String, Object> model = mv.getModel();
+        model.put("message", exception.getMessage());
+        return mv;
+    }
+
+
+    @ExceptionHandler(PostNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ModelAndView postNotFound(PostNotFoundException exception) {
         Map<String, Object> model = mv.getModel();
         model.put("message", exception.getMessage());
         return mv;
