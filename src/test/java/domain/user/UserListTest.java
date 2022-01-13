@@ -1,4 +1,5 @@
-package domain;
+package domain.user;
+
 
 import org.junit.jupiter.api.Test;
 
@@ -21,14 +22,10 @@ class UserListTest {
     }
 
     @Test
-    void getUserList() {
-    }
-
-    @Test
     void findByUserId() {
         add();
         assertEquals(userList.findByUserId("cih468").getUserId(), "cih468");
-        assertEquals(userList.findByUserId("cih469"), null);
+        assertNull(userList.findByUserId("cih469"));
     }
 
     @Test

@@ -1,7 +1,12 @@
-package domain;
+package domain.user;
+
+import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
+@ToString
+@Getter
 public class User {
     private final String userId;
     private final String password;
@@ -13,19 +18,5 @@ public class User {
         this.password = password;
         this.email = email;
         this.registerDate = LocalDate.now().toString();
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", registerDate='" + registerDate + '\'' +
-                '}';
-    }
-
-    public String getUserId() {
-        return userId;
     }
 }
