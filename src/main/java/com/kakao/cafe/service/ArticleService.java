@@ -31,6 +31,10 @@ public class ArticleService {
         articleDao.writeArticle(dtoToVoMapper(article));
     }
 
+    public void updateArticle(int index, ArticleDto article) {
+        articleDao.updateArticle(index, dtoToVoMapper(article));
+    }
+
     private ArticleVo dtoToVoMapper(ArticleDto articleDto) {
         return new ArticleVo(articleDto.getWriter(), articleDto.getTitle(), articleDto.getContents());
     }
