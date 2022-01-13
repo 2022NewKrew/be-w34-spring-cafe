@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.util.exception.InvalidPasswordException;
 import com.kakao.cafe.util.exception.PostNotFoundException;
 import com.kakao.cafe.util.exception.UserDuplicateException;
 import com.kakao.cafe.util.exception.UserNotFoundException;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ExceptionController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({UserNotFoundException.class, UserDuplicateException.class})
+    @ExceptionHandler({UserNotFoundException.class, UserDuplicateException.class, InvalidPasswordException.class})
     String userError(HttpServletRequest req, RuntimeException e, Model model) {
         model.addAttribute("e", e);
         return "error/error";
