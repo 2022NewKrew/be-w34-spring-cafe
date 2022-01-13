@@ -47,11 +47,16 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="/">Posts</a></li>
+                <li><a href="/">Posts</a></li>
+                {{^curUserId}}
                 <li><a href="/login" role="button">로그인</a></li>
                 <li><a href="/signup" role="button">회원가입</a></li>
-                <li><a href="#" role="button">로그아웃</a></li>
-                <li><a href="#" role="button">개인정보수정</a></li>
+                {{/curUserId}}
+                {{#curUserId}}
+                <li><a href="/users/{{curUserId}}" role="button">{{curUserName}}</a></li>
+                <li><a href="/logout" role="button">로그아웃</a></li>
+                <li><a href="/users/edit" role="button">개인정보수정</a></li>
+                {{/curUserId}}
             </ul>
         </div>
     </div>

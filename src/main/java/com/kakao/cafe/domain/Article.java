@@ -3,6 +3,8 @@ package com.kakao.cafe.domain;
 import com.kakao.cafe.util.Checker;
 import org.springframework.lang.NonNull;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -20,6 +22,18 @@ public class Article {
     private final String title;
     private final String body;
     private final long createdAt;
+
+    public Article(
+            @NonNull final ResultSet rs
+    ) throws SQLException
+    {
+        this.idx = rs.getLong("idx");
+        this.userId = rs.getString("user_id");
+        this.userName = rs.getString("user_name");
+        this.title = rs.getString("title");
+        this.body = rs.getString("body");
+        this.createdAt = rs.getLong("created_at");
+    }
 
     public Article(
             @NonNull final String userId,
@@ -53,9 +67,7 @@ public class Article {
             final String body
     )
     {
-        if (!User.NONE.getId().equals(userId)) {
-            Checker.checkString("userId", userId, User.ID_REGEX, User.ID_MIN, User.ID_MAX);
-        }
+        Checker.checkString("userId", userId, User.ID_REGEX, User.ID_MIN, User.ID_MAX);
         Checker.checkString("userName", userName, User.NAME_REGEX, User.NAME_MIN, User.NAME_MAX);
         Checker.checkString("title", title, TITLE_MIN, TITLE_MAX);
         Checker.checkString("body", body, BODY_MIN, BODY_MAX);

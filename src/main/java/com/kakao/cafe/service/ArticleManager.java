@@ -1,32 +1,39 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.*;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.ArticleDto;
+import com.kakao.cafe.repo.ArticleRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 public class ArticleManager implements ArticleService {
-    private final Articles articles = new Articles();
+    private final ArticleRepository articleRepository;
+
+    ArticleManager(final ArticleRepository articleRepository) {
+        this.articleRepository = Objects.requireNonNull(articleRepository);
+    }
 
     @Override
     public void add(@NonNull final ArticleDto articleDto) {
-        articles.add(new Article(
+        boolean result = articleRepository.add(new Article(
                 articleDto.getUserId(),
                 articleDto.getUserName(),
                 articleDto.getTitle(),
                 articleDto.getBody()
         ));
+
+        if (!result) {
+            throw new RuntimeException("Failed to insert article!");
+        }
     }
 
     @Override
     public List<ArticleDto> getList() {
         final List<ArticleDto> dtos = new ArrayList<>();
-        for (Article a: articles.getList()) {
+        for (Article a: articleRepository.getList()) {
             dtos.add(ArticleDto.from(a));
         }
 
@@ -35,7 +42,7 @@ public class ArticleManager implements ArticleService {
 
     @Override
     public ArticleDto getArticle(final long idx) throws NoSuchElementException {
-        final Article article = articles.find(idx);
+        final Article article = articleRepository.find(idx);
         if (article.isNone()) {
             throw new NoSuchElementException("Not found article - " + idx);
         }

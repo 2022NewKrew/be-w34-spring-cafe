@@ -4,6 +4,8 @@ import com.kakao.cafe.util.Checker;
 import com.kakao.cafe.util.SecurePassword;
 import org.springframework.lang.NonNull;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class User {
@@ -21,12 +23,22 @@ public class User {
     public static final int EMAIL_MIN = 7;
     public static final int EMAIL_MAX = 127;
 
-    private static long auto_increment = 1;
     private final long idx;
     private final String id;
     private final String password;
     private final String name;
     private final String email;
+
+    public User(
+            @NonNull final ResultSet rs
+    ) throws SQLException
+    {
+        this.idx = rs.getLong("idx");
+        this.id = rs.getString("id");
+        this.password = rs.getString("password");
+        this.name = rs.getString("name");
+        this.email = rs.getString("email");
+    }
 
     public User(
             @NonNull final String id,
@@ -36,7 +48,7 @@ public class User {
     ) throws IllegalArgumentException
     {
         validate(id, password, name, email);
-        this.idx = auto_increment++;
+        this.idx = 0;
         this.id = id.trim();
         this.password = SecurePassword.genPassword(password);
         this.name = name.trim();

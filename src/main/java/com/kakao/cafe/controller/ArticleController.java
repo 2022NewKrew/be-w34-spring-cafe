@@ -1,7 +1,8 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.controller.auth.AuthControl;
 import com.kakao.cafe.domain.ArticleDto;
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -21,9 +24,11 @@ public class ArticleController {
     private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     private final ArticleService articleService;
+    private final UserService userService;
 
-    ArticleController(ArticleService articleService) {
+    ArticleController(ArticleService articleService, UserService userService) {
         this.articleService = Objects.requireNonNull(articleService);
+        this.userService = Objects.requireNonNull(userService);
     }
 
     @GetMapping("/")
@@ -38,17 +43,28 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/new")
-    public String newArticle(final Model model) {
-        // (when login impl) getCurrentUser(); -> write userName attribute
-        model.addAttribute("userName", User.NONE.getName());
+    public String getArticles(final HttpServletRequest request) {
+        if (!AuthControl.isLogon(request, userService)) {
+            request.getSession()
+                    .setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
+            return "redirect:/login";
+        }
         return "articles/new";
     }
 
     @PostMapping("/articles")
-    public String writeArticle(@NonNull final ArticleDto articleDto) {
-        // (when login impl) getCurrentUser(); -> update userId, userName in articleDto
-        articleDto.setUserId(User.NONE.getId());
-        articleDto.setUserName(User.NONE.getName());
+    public String writeArticle(final HttpServletRequest request, @NonNull final ArticleDto articleDto) {
+        if (!AuthControl.isLogon(request, userService)) {
+            request.getSession()
+                    .setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
+            return "redirect:/login";
+        }
+
+        final HttpSession session = request.getSession();
+        final UserDto userDto = userService.getUser((String)session.getAttribute(AuthControl.TAG_ID));
+        articleDto.setUserId(userDto.getId());
+        articleDto.setUserName(userDto.getName());
+
         articleService.add(articleDto);
         logger.info("New Article added: " + articleDto.getTitle());
         return "redirect:/";
