@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
 
-import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserRepository;
+import com.kakao.cafe.model.User;
+import com.kakao.cafe.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String showUsers(Model model){
+    public String showUsers(Model model) {
         model.addAttribute("users", userRepository.getUserList());
         return "user/list";
     }
@@ -45,14 +45,14 @@ public class UserController {
     @GetMapping("/users/{id}/form")
     public String getUpdateForm(@PathVariable Integer id, Model model) {
         User user = userRepository.getUserList().get(id);
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         return "user/updateForm";
     }
 
     @PostMapping("/users/{id}/update")
-    public String updateUser(@PathVariable Integer id, User user){
+    public String updateUser(@PathVariable Integer id, User user) {
         logger.info("user = {}", user);
-        userRepository.getUserList().set(id,user);
+        userRepository.getUserList().set(id, user);
         return "redirect:/users";
     }
 }

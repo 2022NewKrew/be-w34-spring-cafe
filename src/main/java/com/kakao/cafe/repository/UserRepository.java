@@ -1,11 +1,10 @@
-package com.kakao.cafe.domain.user;
+package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.model.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 
 @Repository
