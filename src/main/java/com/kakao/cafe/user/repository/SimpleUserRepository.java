@@ -1,25 +1,25 @@
 package com.kakao.cafe.user.repository;
 
+import com.kakao.cafe.exception.UserDuplicatedException;
 import com.kakao.cafe.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public class SimpleUserRepository implements UserRepository {
 
     private final List<User> users = new ArrayList<>();
 
     @Override
-    public Optional<User> save(User user) {
+    public void save(User user) throws UserDuplicatedException {
         synchronized (users) {
             if (isDuplicated(user.getUserId())) {
-                return Optional.empty();
+                throw new UserDuplicatedException();
             }
             users.add(user);
         }
-        return Optional.of(user);
     }
 
     private boolean isDuplicated(String userId) {
@@ -38,5 +38,10 @@ public class SimpleUserRepository implements UserRepository {
         return users.stream()
             .filter(user -> user.getUserId().equals(userId))
             .findFirst();
+    }
+
+    @Override
+    public void deleteAll() {
+        users.clear();
     }
 }

@@ -41,8 +41,6 @@ public class ArticleService {
     }
 
     public ArticleShowDto findArticle(Long id) {
-        return articleRepository.findById(id)
-            .map(this::createArticleShowDto)
-            .orElseThrow(() -> new IllegalArgumentException("invalid article id"));
+        return createArticleShowDto(articleRepository.findById(id));
     }
 }

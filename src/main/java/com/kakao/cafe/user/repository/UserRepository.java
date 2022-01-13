@@ -6,9 +6,11 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    Optional<User> save(User user);
+    void save(User user);
 
     Optional<User> findByUserId(String userId);
 
     List<User> findAll();
+
+    void deleteAll();
 }

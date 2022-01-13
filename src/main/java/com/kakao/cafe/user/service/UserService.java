@@ -1,10 +1,12 @@
 package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.exception.UserDuplicatedException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.repository.UserRepository;
 import com.kakao.cafe.user.web.dto.UserSaveDto;
 import com.kakao.cafe.user.web.dto.UserShowDto;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void addUser(UserSaveDto userSaveDto) {
+    public void addUser(UserSaveDto userSaveDto) throws UserDuplicatedException {
         User user = User.builder()
             .userId(userSaveDto.getUserId())
             .name(userSaveDto.getName())
@@ -40,11 +42,9 @@ public class UserService {
             .build();
     }
 
-    public UserShowDto findUser(String userId) {
+    public Optional<UserShowDto> findUser(String userId) {
         return userRepository.findByUserId(userId)
-            .map(this::createUserShowDto)
-            .orElseThrow(() -> new IllegalArgumentException("invalid userId"));
+            .map(this::createUserShowDto);
     }
-
 
 }

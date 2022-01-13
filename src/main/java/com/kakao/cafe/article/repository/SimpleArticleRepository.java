@@ -3,24 +3,24 @@ package com.kakao.cafe.article.repository;
 import com.kakao.cafe.article.domain.Article;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public class SimpleArticleRepository implements ArticleRepository {
 
     private final List<Article> articles = new ArrayList<>();
 
     @Override
-    public Optional<Article> save(Article article) {
-        article.setId((long) (articles.size() + 1));
-        articles.add(article);
-        return Optional.of(article);
+    public void save(Article article) {
+        synchronized (articles) {
+            article.setId((long) (articles.size() + 1));
+            articles.add(article);
+        }
     }
 
     @Override
-    public Optional<Article> findById(Long id) {
-        return Optional.of(articles.get(Math.toIntExact(id - 1)));
+    public Article findById(Long id) {
+        return articles.get(Math.toIntExact(id - 1));
     }
 
     @Override
