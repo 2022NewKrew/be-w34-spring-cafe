@@ -61,6 +61,13 @@ public class UserJdbcRepository implements UserRepository {
         jdbcTemplate.update(query, userId);
     }
 
+    @Override
+    public void update(User user) {
+        String userId = user.getUserId();
+        String query = "update users set password = ?, username = ?, email = ? where user_id = ?";
+        jdbcTemplate.update(query, user.getPassword(), user.getName(), user.getEmail(), userId);
+    }
+
     private RowMapper<User> mapUserRow() {
         return (rs, rowNum) -> User.valueOf(
                 rs.getString("user_id"),

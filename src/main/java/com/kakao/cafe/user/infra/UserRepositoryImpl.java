@@ -40,4 +40,9 @@ public class UserRepositoryImpl implements UserRepository {
     public void delete(User user) {
         currentUsers.remove(user);
     }
+
+    @Override
+    public void update(User user) {
+
+    }
 }

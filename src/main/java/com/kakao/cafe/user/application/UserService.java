@@ -58,12 +58,11 @@ public class UserService {
     public void updateById(String userId, UserUpdateRequest userUpdateRequest) {
         log.info(this.getClass() + ": 개인정보 수정");
         User user = userRepository.findByIdOrNull(userId);
-        userRepository.delete(user);
         if(user == null) {
             EntityNotFoundException.throwNotExistsByField(User.class, "userId", userId);
         }
 
         user.update(userUpdateRequest.password, userUpdateRequest.name, userUpdateRequest.email);
-        userRepository.save(user);
+        userRepository.update(user);
     }
 }
