@@ -1,10 +1,10 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.UserRegistrationDto;
+import com.kakao.cafe.entity.User;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.vo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,8 +34,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String createUser(User user) {
-        userService.join(user);
+    public String createUser(UserRegistrationDto userDto) {
+        userService.join(userDto);
         return "redirect:/users";
     }
 

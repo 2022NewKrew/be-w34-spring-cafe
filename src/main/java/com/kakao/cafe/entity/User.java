@@ -1,9 +1,9 @@
-package com.kakao.cafe.vo;
+package com.kakao.cafe.entity;
 
-import com.kakao.cafe.model.NamedEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class User extends NamedEntity {
-
+public class User {
     private String userId;
     private String password;
     private String email;
@@ -15,19 +15,18 @@ public class User extends NamedEntity {
         this.email = email;
     }
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public String hash(String password) {
+        return passwordEncoder.encode(password);
+    }
+
     public String getUserId() {
         return userId;
     }
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

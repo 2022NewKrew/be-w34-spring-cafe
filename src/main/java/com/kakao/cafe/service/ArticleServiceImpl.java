@@ -1,32 +1,33 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.vo.Article;
+import com.kakao.cafe.dto.ArticleRegistrationDto;
+import com.kakao.cafe.entity.Article;
+import com.kakao.cafe.repository.ArticleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service("articleService")
 public class ArticleServiceImpl implements ArticleService{
-    private final List<Article> articles = new ArrayList<>();
+
+    @Autowired
+    @Qualifier("articleRepository")
+    ArticleRepository articleRepository;
 
     @Override
-    public void write(Article article) {
-        article.setArticleId(articles.size() + 1);
-        articles.add(article);
+    public void write(ArticleRegistrationDto articleDto) {
+        articleRepository.createArticle(articleDto);
     }
 
     @Override
     public List<Article> getArticles() {
-        return articles;
+        return articleRepository.readArticles();
     }
 
     @Override
     public Article findByArticleId(Integer articleId) {
-        return articles.stream()
-                .filter(article -> Objects.equals(article.getArticleId(), articleId))
-                .findFirst()
-                .orElse(null);
+        return articleRepository.readArticle(articleId);
     }
 }

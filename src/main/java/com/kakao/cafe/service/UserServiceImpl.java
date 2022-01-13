@@ -1,37 +1,34 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.vo.User;
+import com.kakao.cafe.dto.UserRegistrationDto;
+import com.kakao.cafe.entity.User;
+import com.kakao.cafe.repository.UserRepository;
+//import com.kakao.cafe.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service("userService")
-public class UserServiceImpl implements UserService{
-    private final List<User> users = new ArrayList<>();
+public class UserServiceImpl implements UserService {
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    @Qualifier("userRepository")
+    private UserRepository userRepository;
 
     @Override
-    public void join(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        users.add(user);
+    public void join(UserRegistrationDto userDto) {
+        userRepository.createUser(userDto);
     }
 
     @Override
     public List<User> getUsers() {
-        return users;
+        return userRepository.readUsers();
     }
 
     @Override
     public User findById(String userId) {
-        return users.stream()
-                .filter(user -> Objects.equals(user.getUserId(), userId))
-                .findFirst()
-                .orElse(null);
+        return userRepository.readUser(userId);
     }
 }

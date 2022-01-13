@@ -1,11 +1,12 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.vo.Article;
+import com.kakao.cafe.dto.ArticleRegistrationDto;
+import com.kakao.cafe.entity.Article;
 
 import java.util.List;
 
 public interface ArticleService {
-    void write(Article article);
+    void write(ArticleRegistrationDto articleDto);
 
     List<Article> getArticles();
 
