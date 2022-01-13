@@ -1,5 +1,6 @@
-package com.kakao.cafe.user.model;
+package com.kakao.cafe.user.dto;
 
+import com.kakao.cafe.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

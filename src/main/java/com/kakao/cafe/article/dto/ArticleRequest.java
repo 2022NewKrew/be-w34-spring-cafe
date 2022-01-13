@@ -1,6 +1,7 @@
-package com.kakao.cafe.article.model;
+package com.kakao.cafe.article.dto;
 
-import com.kakao.cafe.utils.DateUtils;
+import com.kakao.cafe.article.model.Article;
+import com.kakao.cafe.common.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
