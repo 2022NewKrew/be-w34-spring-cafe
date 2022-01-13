@@ -5,25 +5,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class ArticleRepositoryImpl implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    public ArticleRepositoryImpl(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
     @Override
     public void save(Article article) {
-        String sql = "INSERT INTO ARTICLE (uid, title, body) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, article.getUid(), article.getTitle(), article.getBody());
+        String sql = "INSERT INTO ARTICLE (uid, title, body, created_at) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, article.getUid(), article.getTitle(), article.getBody(),
+            article.getCreatedAt());
     }
 
     @Override
