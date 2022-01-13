@@ -81,18 +81,11 @@ public class UserController {
         }
 
         final HttpSession session = request.getSession();
-        User user;
-        try {
-            user = userService.getUserEntity(id);
-        } catch (NoSuchElementException e) {
+        if (!userService.verifyUserLogin(id, rawPassword)) {
             return redirectLoginFailed(session);
         }
 
-        if (!SecurePassword.verify(user.getPassword(), rawPassword)) {
-            return redirectLoginFailed(session);
-        }
-
-        AuthControl.login(request, user);
+        AuthControl.login(request, userService.getUser(id));
         return "redirect:/";
     }
 

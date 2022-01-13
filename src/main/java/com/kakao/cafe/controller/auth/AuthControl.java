@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller.auth;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.service.UserService;
 import org.springframework.lang.NonNull;
 
@@ -34,15 +34,15 @@ public class AuthControl {
         return true;
     }
 
-    public static void login(@NonNull final HttpServletRequest request, @NonNull final User user) {
+    public static void login(@NonNull final HttpServletRequest request, @NonNull final UserDto userDto) {
         final HttpSession sessionOld = request.getSession(false);
         if (sessionOld != null) {
             sessionOld.invalidate();
         }
 
         final HttpSession sessionNew = request.getSession();
-        sessionNew.setAttribute(TAG_ID, user.getId());
-        sessionNew.setAttribute(TAG_NAME, user.getName());
+        sessionNew.setAttribute(TAG_ID, userDto.getId());
+        sessionNew.setAttribute(TAG_NAME, userDto.getName());
     }
 
     public static void logout(@NonNull final HttpServletRequest request) {

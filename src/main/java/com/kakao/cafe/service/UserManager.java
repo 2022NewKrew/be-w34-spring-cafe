@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.repo.UserRepository;
+import com.kakao.cafe.util.SecurePassword;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +60,17 @@ public class UserManager implements UserService {
             throw new NoSuchElementException("Not found user - " + id);
         }
         return user;
+    }
+
+    @Override
+    public boolean verifyUserLogin(@NonNull final String id, @NonNull final String rawPassword) {
+        User user;
+        try {
+            user = getUserEntity(id);
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+
+        return SecurePassword.verify(user.getPassword(), rawPassword);
     }
 }
