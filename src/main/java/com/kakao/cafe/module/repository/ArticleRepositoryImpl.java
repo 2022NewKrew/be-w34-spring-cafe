@@ -1,7 +1,6 @@
 package com.kakao.cafe.module.repository;
 
 import com.kakao.cafe.module.model.domain.Article;
-import com.kakao.cafe.module.repository.mapper.ArticleDBMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,7 +11,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.Timestamp;
 import java.util.List;
 
 import static com.kakao.cafe.module.model.dto.ArticleDtos.*;
@@ -23,51 +21,59 @@ import static com.kakao.cafe.module.model.dto.ArticleDtos.*;
 public class ArticleRepositoryImpl implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<Article> rowMapper = new ArticleDBMapper();
 
     @Override
     public void addArticle(Article article) {
-        String query = "INSERT INTO ARTICLE (author_id, title, contents, created, view_count, comment_count) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO ARTICLE (author_id, title, contents) VALUES (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         PreparedStatementCreator preparedStatementCreator = (connection) -> {
             PreparedStatement preparedStatement = connection.prepareStatement(query, new String[]{"id"});
             preparedStatement.setLong(1, article.getAuthorId());
             preparedStatement.setString(2, article.getTitle());
             preparedStatement.setString(3, article.getContents());
-            preparedStatement.setTimestamp(4, Timestamp.valueOf(article.getCreated()));
-            preparedStatement.setInt(5, article.getViewCount());
-            preparedStatement.setInt(6, article.getCommentCount());
             return preparedStatement;
         };
         jdbcTemplate.update(preparedStatementCreator, keyHolder);
     }
 
     @Override
-    public List<Article> findAllArticles() {
-        return jdbcTemplate.query("SELECT * FROM ARTICLE", rowMapper);
+    public ArticleReadDto findArticleById(Long id) {
+        String query = "SELECT ARTICLE.id, USERS.name, USERS.id, ARTICLE.title, ARTICLE.created, ARTICLE.contents, ARTICLE.comment_count" +
+                " FROM ARTICLE" +
+                " JOIN USERS" +
+                " ON ARTICLE.author_id = USERS.id" +
+                " WHERE ARTICLE.id = ?";
+        return jdbcTemplate.queryForObject(query, mapRowArticle(), id);
     }
 
     @Override
-    public Article findArticleById(Long id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE id = ?", rowMapper, id);
-    }
-
-    @Override
-    public List<ArticleListDto> findAllArticlesWithAuthor() {
+    public List<ArticleListDto> findAllArticles() {
         String query = "SELECT ARTICLE.id, USERS.name, USERS.id, ARTICLE.title, ARTICLE.created, ARTICLE.comment_count" +
                 " FROM ARTICLE" +
                 " JOIN USERS" +
                 " ON ARTICLE.author_id = USERS.id";
-        return jdbcTemplate.query(query, mapRowArticleUser());
+        return jdbcTemplate.query(query, mapRowArticles());
     }
 
-    public RowMapper<ArticleListDto> mapRowArticleUser() {
+    public RowMapper<ArticleListDto> mapRowArticles() {
         return ((rs, rowNum) -> new ArticleListDto(
                 rs.getLong("ARTICLE.id"),
                 rs.getString("USERS.name"),
                 rs.getLong("USERS.id"),
                 rs.getString("ARTICLE.title"),
                 rs.getTimestamp("ARTICLE.created").toLocalDateTime(),
+                rs.getInt("ARTICLE.comment_count")
+        ));
+    }
+
+    public RowMapper<ArticleReadDto> mapRowArticle() {
+        return ((rs, rowNum) -> new ArticleReadDto(
+                rs.getLong("ARTICLE.id"),
+                rs.getString("USERS.name"),
+                rs.getLong("USERS.id"),
+                rs.getString("ARTICLE.title"),
+                rs.getTimestamp("ARTICLE.created").toLocalDateTime(),
+                rs.getString("ARTICLE.contents"),
                 rs.getInt("ARTICLE.comment_count")
         ));
     }

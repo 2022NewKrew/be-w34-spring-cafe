@@ -4,11 +4,12 @@ import lombok.*;
 
 @Getter
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
 public class User {
 
-    private final Long id;
-    private final String userId;
+    private Long id;
+    private String userId;
     private String password;
     private String name;
     private String email;

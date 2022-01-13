@@ -15,6 +15,6 @@ public class HomeService {
     private final ArticleRepository articleRepository;
 
     public List<ArticleListDto> articleList() {
-        return articleRepository.findAllArticlesWithAuthor();
+        return articleRepository.findAllArticles();
     }
 }

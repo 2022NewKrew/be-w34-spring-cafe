@@ -10,9 +10,7 @@ public interface ArticleRepository {
 
     void addArticle(Article article);
 
-    List<Article> findAllArticles();
+    ArticleReadDto findArticleById(Long id);
 
-    Article findArticleById(Long id);
-
-    List<ArticleListDto> findAllArticlesWithAuthor();
+    List<ArticleListDto> findAllArticles();
 }

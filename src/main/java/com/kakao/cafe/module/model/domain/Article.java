@@ -1,21 +1,23 @@
 package com.kakao.cafe.module.model.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
 public class Article {
 
-    private final Long id;
-    private final Long authorId;
-    private final String title;
-    private final String contents;
-    private final LocalDateTime created;
-    private final Integer viewCount;
-    private final Integer commentCount;
+    private Long id;
+
+    @Setter
+    private Long authorId;
+
+    private String title;
+    private String contents;
+    private LocalDateTime created;
+    private Integer viewCount;
+    private Integer commentCount;
 }
