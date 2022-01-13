@@ -18,10 +18,11 @@ public class CafeUserServiceImpl implements CafeUserService {
     }
 
     @Override
-    public void signUp(User newUser) {
+    public boolean signUp(User newUser) {
         if(UserHelper.checkRegexOfUser(newUser)){
-            cafeUserDao.signUp(newUser);
+            return cafeUserDao.signUp(newUser);
         }
+        return false;
     }
 
     @Override

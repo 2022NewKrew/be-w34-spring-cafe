@@ -33,7 +33,6 @@ public class CafePostController {
 
     @PostMapping("/write")
     String writePost (@NonNull Post newPost) {
-        System.out.println(newPost.getUserId());
         cafePostService.writePost(newPost);
         return PostRedirect.POST_REDIRECT_LIST;
     }

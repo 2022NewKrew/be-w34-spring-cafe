@@ -24,7 +24,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
     }
 
     @Override
-    public void signUp(User newUser) {
+    public boolean signUp(User newUser) {
         String sql = "INSERT INTO member (userId, password, email)\n";
         sql += "VALUES (?,?,?)";
         try (Connection conn = dataSource.getConnection()) {
@@ -32,10 +32,15 @@ public class CafeUserDaoImpl implements CafeUserDao {
             pstmt.setString(1,newUser.getUserId());
             pstmt.setString(2,newUser.getPassword());
             pstmt.setString(3,newUser.getEmail());
-            pstmt.executeUpdate();
+
+            int updateCnt = pstmt.executeUpdate();
+            if( updateCnt == 1 ) {
+                return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override

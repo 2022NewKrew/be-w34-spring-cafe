@@ -13,7 +13,6 @@ public class UserHelper {
         checkResult &= checkRegexOfId(user.getUserId());
         checkResult &= checkRegexOfPassword(user.getPassword());
         checkResult &= checkRegexOfEmail(user.getEmail());
-        System.out.println(checkResult);
         return checkResult;
     }
 

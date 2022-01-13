@@ -4,7 +4,6 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.CafeUserService;
-import com.kakao.cafe.service.CafeUserServiceImpl;
 import com.kakao.cafe.url.UserRedirect;
 import com.kakao.cafe.url.UserView;
 import org.springframework.stereotype.Controller;
@@ -31,11 +30,17 @@ public class CafeUserController {
     String userViewSingUp() {
         return UserView.USER_VIEW_SIGN_UP;
     }
+    @GetMapping("/sign-up/fail")
+    String userViewSignUpFail() {
+        return UserView.USER_VIEW_SIGN_UP_FAIL;
+    }
 
     @PostMapping("/sign-up")
     String signUp(User newUser){ // 회원가입
-        cafeUserService.signUp(newUser);
-        return UserRedirect.USER_REDIRECT_LIST;
+        if(cafeUserService.signUp(newUser)) {
+            return UserRedirect.USER_REDIRECT_LIST;
+        }
+        return UserRedirect.USER_REDIRECT_SIGN_UP_FAIL;
     }
 
     @GetMapping("/list")
