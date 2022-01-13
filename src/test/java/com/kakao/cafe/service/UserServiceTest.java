@@ -1,7 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.util.exception.*;
+import com.kakao.cafe.util.exception.UserDuplicateException;
+import com.kakao.cafe.util.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,7 @@ public class UserServiceTest {
                 .id("yunyul")
                 .name("윤렬2").build();
         String oldPassword = "wrong_password";
-        assertThatThrownBy(() -> userService.update(newInfo, oldPassword)).isInstanceOf(InvalidPasswordException.class);
+        assertThat(userService.update(newInfo, oldPassword)).isFalse();
     }
 
 
@@ -121,42 +122,5 @@ public class UserServiceTest {
         userService.insert(user2);
         assertThat(userService.findAll().size()).isEqualTo(2);
     }
-
-    @Test
-    void notExistsUserLoginFail() {
-        assertThatThrownBy(() -> userService.login("not_exist_id", "not_exist_password"))
-                .isInstanceOf(LoginFailException.class);
-    }
-
-
-    @Test
-    void wrongPasswordLoginFail() {
-        User user = new User.Builder()
-                .email("email@email.com")
-                .password("right_password")
-                .id("yunyul")
-                .name("윤렬").build();
-        userService.insert(user);
-        assertThatThrownBy(() -> userService.login("yunyul", "wrong_password"))
-                .isInstanceOf(LoginFailException.class);
-
-    }
-
-    @Test
-    void loginSuccess() {
-        User user = new User.Builder()
-                .email("email@email.com")
-                .password("right_password")
-                .id("yunyul")
-                .name("윤렬").build();
-        userService.insert(user);
-        assertThat(userService.login("yunyul", "right_password")).isEqualTo("yunyul");
-    }
-
-    @Test
-    void can_update_fail() {
-        assertThatThrownBy(() -> userService.canUpdate("diff1", "diff2")).isInstanceOf(UnauthorizedAction.class);
-    }
-
 
 }
