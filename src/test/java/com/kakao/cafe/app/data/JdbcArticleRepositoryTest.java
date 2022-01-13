@@ -59,8 +59,8 @@ class JdbcArticleRepositoryTest {
 
     @AfterEach
     public void tearDown() {
-        jdbcTemplate.update("DELETE FROM users", Collections.emptyMap());
         jdbcTemplate.update("DELETE FROM articles", Collections.emptyMap());
+        jdbcTemplate.update("DELETE FROM users", Collections.emptyMap());
     }
 
     @Test
