@@ -5,6 +5,7 @@ import com.kakao.cafe.dto.article.ArticleReqDto;
 import com.kakao.cafe.service.article.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,13 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String getArticleList(){
+    public String getArticleList(Model model){
+        model.addAttribute("articles", articleService.findArticles());
         return "index";
+    }
+
+    @GetMapping("/articles/form")
+    public String getArticleForm(){
+        return "article/form";
     }
 }
