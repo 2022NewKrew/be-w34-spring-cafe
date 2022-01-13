@@ -19,7 +19,7 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String createPost(@ModelAttribute ArticleReqDto articleReqDto){
-        articleService.addPost(articleReqDto);
+        articleService.addArticle(articleReqDto);
         return "redirect:/";
     }
 
@@ -36,7 +36,7 @@ public class ArticleController {
 
     @GetMapping("/articles/{articleId}")
     public String getArticleId(@PathVariable Long articleId, Model model){
-        model.addAttribute("article", articleService.findByArticleId(articleId));
+        model.addAttribute("article", articleService.findArticleById(articleId));
         return "article/show";
     }
 }

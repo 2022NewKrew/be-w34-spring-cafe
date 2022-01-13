@@ -17,7 +17,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final MemoryArticleRepository articleRepository;
 
     @Override
-    public void addPost(ArticleReqDto articleReqDto) {
+    public void addArticle(ArticleReqDto articleReqDto) {
         Article article = Article.builder()
                 .writer(articleReqDto.getWriter())
                 .title(articleReqDto.getTitle())
@@ -34,7 +34,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleResDto findByArticleId(Long articleId) {
+    public ArticleResDto findArticleById(Long articleId) {
         return new ArticleResDto(articleRepository.findByArticleId(articleId)
                 .orElseThrow(() -> new NullPointerException("존재하지 않는 게시글입니다.")));
     }

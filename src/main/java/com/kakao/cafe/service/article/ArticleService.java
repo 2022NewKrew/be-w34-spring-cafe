@@ -6,7 +6,7 @@ import com.kakao.cafe.dto.article.ArticleResDto;
 import java.util.List;
 
 public interface ArticleService {
-    void addPost(ArticleReqDto articleReqDto);
+    void addArticle(ArticleReqDto articleReqDto);
     List<ArticleResDto> findArticles();
-    ArticleResDto findByArticleId(Long articleId);
+    ArticleResDto findArticleById(Long articleId);
 }
