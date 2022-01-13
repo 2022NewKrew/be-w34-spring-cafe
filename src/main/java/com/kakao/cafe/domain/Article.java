@@ -28,7 +28,7 @@ public class Article {
             @NonNull final String titleInDB,
             @NonNull final String bodyInDB,
             @NonNull final long createAtInDB
-    ) throws IllegalArgumentException
+    )
     {
         this.idx = idxInDB;
         this.userId = userIdInDB;
