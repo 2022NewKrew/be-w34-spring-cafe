@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     @Qualifier("userRepository")
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Override
     public void join(UserRegistrationDto userDto) {

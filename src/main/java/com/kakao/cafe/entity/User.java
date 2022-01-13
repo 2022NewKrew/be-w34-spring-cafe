@@ -11,7 +11,7 @@ public class User {
 
     public User(String userId, String password, String email) {
         this.userId = userId;
-        this.password = hash(password);
+        this.password = password;
         this.email = email;
     }
 
@@ -20,5 +20,13 @@ public class User {
 
     public String hash(String password) {
         return passwordEncoder.encode(password);
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

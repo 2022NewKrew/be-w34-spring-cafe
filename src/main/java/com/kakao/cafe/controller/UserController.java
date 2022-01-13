@@ -3,7 +3,6 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.UserRegistrationDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.vo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -37,12 +36,14 @@ public class UserController {
     @PostMapping
     public String createUser(UserRegistrationDto userDto) {
         userService.join(userDto);
+        logger.info("{} {} {}", userDto, userDto.getUserId(), userDto.getEmail());
         return "redirect:/users";
     }
 
     @GetMapping("/{userId}")
     public String user(@PathVariable String userId, Model model) {
         User user = userService.findById(userId);
+        logger.info("{} {} {}", user, user.getUserId(), user.getEmail());
         model.addAttribute("user", user);
         return "user/profile";
     }
