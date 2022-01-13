@@ -1,10 +1,16 @@
 package com.kakao.cafe.repository;
 
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,26 +25,59 @@ public class JdbcTemplateUserRepository implements UserRepository{
 
     @Override
     public Long save(User user) {
-        return 0L;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement("insert into USER_TABLE (USERID, PASSWORD, NAME, EMAIL, TIME) values (?,?,?,?,now())", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, user.getUserId());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getName());
+            ps.setString(4, user.getEmail());
+            return ps;
+        }, keyHolder);
+        return (Long)keyHolder.getKey();
     }
 
     @Override
     public List<User> findAll() {
-        return null;
+        return jdbcTemplate.query("select * from USER_TABLE", userRowMapper());
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return Optional.empty();
+        return jdbcTemplate.
+                query("select * from USER_TABLE where userId = ?", userRowMapper(), userId).
+                stream().findAny();
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.empty();
+        return jdbcTemplate.
+                query("select * from USER_TABLE where id = ?", userRowMapper(), id).
+                stream().findAny();
     }
 
     @Override
     public void updateUser(Long id, User updateUser) {
-
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement("UPDATE USER_TABLE SET NAME = ?, EMAIL = ? where id = ?");
+            ps.setString(1, updateUser.getName());
+            ps.setString(2, updateUser.getEmail());
+            ps.setString(3, String.valueOf(id));
+            return ps;
+        });
+    }
+    private RowMapper<User> userRowMapper() {
+        return (rs, rowNum) -> {
+            User user = User.builder().
+                    id(rs.getLong("id")).
+                    userId(rs.getString("userId")).
+                    password(rs.getString("password")).
+                    name(rs.getString("name")).
+                    email(rs.getString("email")).
+                    time(rs.getString("time")).
+                    build();
+            return user;
+        };
     }
 }
