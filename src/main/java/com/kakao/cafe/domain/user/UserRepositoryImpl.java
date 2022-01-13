@@ -12,7 +12,7 @@ public class UserRepositoryImpl implements UserRepository {
     private Long SEQ_NO_OF_USERS = 0L;
 
     @Override
-    public void save(User user) throws IllegalArgumentException {
+    public void save(User user) {
         if (ObjectUtils.isEmpty(user)) {
             throw new IllegalArgumentException("사용자의 정보가 없어서 저장할 수 없습니다.");
         }
@@ -38,6 +38,25 @@ public class UserRepositoryImpl implements UserRepository {
         return users.values().stream()
                 .filter(user -> user.getEmail().equals(email))
                 .findFirst();
+    }
+
+    @Override
+    public void update(User user) {
+        validateUser(user);
+        users.put(user.getId(), user);
+    }
+
+    private void validateUser(User user) {
+        if (ObjectUtils.isEmpty(user)) {
+            throw new IllegalArgumentException("사용자의 정보가 없어서 업데이트할 수 없습니다.");
+        }
+        if (findById(user.getId()).isEmpty()) {
+            throw new IllegalArgumentException("등록되지 않은 사용자 입니다.");
+        }
+        User savedUser = findByEmail(user.getEmail()).orElse(null);
+        if (!ObjectUtils.isEmpty(savedUser) && !savedUser.getId().equals(user.getId())) {
+            throw new IllegalArgumentException("이미 등록된 이메일입니다.");
+        }
     }
 
     @Override

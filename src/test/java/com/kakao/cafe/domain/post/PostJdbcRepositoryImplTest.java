@@ -1,0 +1,151 @@
+package com.kakao.cafe.domain.post;
+
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
+
+@Slf4j
+@SpringBootTest
+class PostJdbcRepositoryImplTest {
+
+    @Qualifier("postJdbcRepositoryImpl")
+    @Autowired
+    private PostRepository postRepository;
+
+    private Post post;
+
+    @BeforeEach
+    void setup() {
+        String writer = "테스터";
+        String title = "게시글 제목";
+        String content = "게시글 내용입니다.";
+        Post post = Post.builder()
+                .writer(writer)
+                .title(title)
+                .content(content)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        postRepository.save(post);
+        this.post = postRepository.findAll().stream().findFirst().orElse(null);
+    }
+
+    @AfterEach
+    void cleanup() {
+        postRepository.deleteAll();
+    }
+
+    @DisplayName("정상적인 게시글이라면 저장할 때 에러가 발생하지 않아야 한다.")
+    @Test
+    void save() {
+        String writer = "테스터";
+        String title = "게시글 제목";
+        String content = "게시글 내용입니다.";
+        Post post = Post.builder()
+                .writer(writer)
+                .title(title)
+                .content(content)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        assertThatNoException().isThrownBy(() -> {
+            postRepository.save(post);
+        });
+    }
+
+    @DisplayName("게시글의 작성자가 null 이라면 에러가 발생해야 한다.")
+    @Test
+    void saveWhenTitleIsNull() {
+        String writer = null;
+        String title = "게시글 제목";
+        String content = "게시글 내용입니다.";
+        Post post = Post.builder()
+                .writer(writer)
+                .title(title)
+                .content(content)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        assertThatExceptionOfType(DataAccessException.class).isThrownBy(() -> {
+            postRepository.save(post);
+        });
+    }
+
+    @DisplayName("게시글의 제목이 null 이라면 에러가 발생해야 한다.")
+    @Test
+    void saveWhenWriterIsNull() {
+        String writer = "테스터";
+        String title = null;
+        String content = "게시글 내용입니다.";
+        Post post = Post.builder()
+                .writer(writer)
+                .title(title)
+                .content(content)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        assertThatExceptionOfType(DataAccessException.class).isThrownBy(() -> {
+            postRepository.save(post);
+        });
+    }
+
+    @DisplayName("게시글의 내용이 null 이라면 에러가 발생해야 한다.")
+    @Test
+    void saveWhenContentIsNull() {
+        String writer = "테스터";
+        String title = "게시글 제목";
+        String content = null;
+        Post post = Post.builder()
+                .writer(writer)
+                .title(title)
+                .content(content)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        assertThatExceptionOfType(DataAccessException.class).isThrownBy(() -> {
+            postRepository.save(post);
+        });
+    }
+
+    @DisplayName("조회된 게시글 목록의 크기는 저장된 게시글의 개수와 같아야 한다.")
+    @Test
+    void findAll() {
+        List<Post> posts = postRepository.findAll();
+
+        assertThat(posts.size()).isEqualTo(1);
+    }
+
+    @DisplayName("조회된 게시글의 정보는 등록된 게시글의 정보와 같아야 한다.")
+    @Test
+    void findById() {
+        long id = post.getId();
+
+        Post foundPost = postRepository.findById(id).orElse(null);
+
+        assertThat(foundPost).isNotNull();
+        assertThat(foundPost.getWriter()).isEqualTo(post.getWriter());
+        assertThat(foundPost.getTitle()).isEqualTo(post.getTitle());
+        assertThat(foundPost.getContent()).isEqualTo(post.getContent());
+        assertThat(foundPost.getCreatedAt()).isEqualTo(post.getCreatedAt());
+    }
+
+    @DisplayName("게시글의 목록을 전체 삭제하면, 게시글의 목록의 크기는 0이 되어야 한다.")
+    @Test
+    void deleteAll() {
+        postRepository.deleteAll();
+        List<Post> posts = postRepository.findAll();
+
+        assertThat(posts.isEmpty()).isTrue();
+    }
+}

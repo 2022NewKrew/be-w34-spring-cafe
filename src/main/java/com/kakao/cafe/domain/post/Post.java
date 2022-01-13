@@ -1,28 +1,26 @@
-package com.kakao.cafe.domain.user;
+package com.kakao.cafe.domain.post;
 
 import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
 @ToString
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class Post {
     private Long id;
-    private String email;       // UNIQUE
-    private String nickname;
-    private String password;
+    private String writer;  // 로그인 기능 없이 작성자 정보를 저장하기 위해 form 에서 전달된 데이터를 매핑한다.
+    private String title;
+    private String content;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     @Builder
-    public User(Long id, String email, String nickname, String password, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Post(Long id, String writer, String title, String content, LocalDateTime createdAt) {
         this.id = id;
-        this.email = email;
-        this.nickname = nickname;
-        this.password = password;
+        this.writer = writer;
+        this.title = title;
+        this.content = content;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     // 데이터베이스를 사용하지 않고, 메모리에 데이터를 저장하는 방식이기 때문에 필요함.

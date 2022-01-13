@@ -37,13 +37,11 @@
                 </thead>
                 <tbody>
                 {{#users}}
-                    {{#user}}
                     <tr onclick="location.href='/users/{{ id }}'">
                         <td>{{ nickname }}</td>
                         <td>{{ email }}</td>
                         <td>{{ formattedCreatedAt }}</td>
                     </tr>
-                    {{/user}}
                 {{/users}}
                 </tbody>
             </table>
