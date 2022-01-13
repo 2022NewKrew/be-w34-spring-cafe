@@ -26,6 +26,7 @@ articles
 - ArticleDto
 - ArticleRepository
     - MemoryArticleRepository
+    - JdbcArticleRepository
 ```
 
 ## URL
