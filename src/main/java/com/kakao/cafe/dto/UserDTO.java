@@ -1,15 +1,28 @@
-package com.kakao.cafe.vo;
+package com.kakao.cafe.dto;
 
-import java.util.Objects;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-public class User {
+public class UserDTO {
     private final Long id;
+
+    @NotNull
+    @Size(min = 1, max = 20)
     private final String userId;
-    private final String time;
+
+    @NotNull
+    @Size(min = 1, max = 20)
     private final String password;
+
+    @Email
+    @NotNull
+    @Size(min = 1, max = 50)
     private final String email;
 
-    public User(Long id, String userId, String password, String email, String time) {
+    private final String time;
+
+    public UserDTO(Long id, String userId, String password, String email, String time) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -40,16 +53,4 @@ public class User {
         return time;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

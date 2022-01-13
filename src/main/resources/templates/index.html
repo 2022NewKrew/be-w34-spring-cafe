@@ -2,7 +2,7 @@
 <html lang="kr">
 <head>
     {{>partial/header}}
-    <link href="css/index.css" rel="stylesheet">
+    <link href="/css/index.css" rel="stylesheet">
 </head>
 
 <body>
@@ -32,10 +32,10 @@
                 <tbody>
                 {{#articles}}
                 <tr>
-                    <td><a href="post/show.html">{{title}}</a></td>
+                    <td><a href="/articles/{{id}}">{{title}}</a></td>
                     <td>{{writer}}</td>
                     <td>{{time}}</td>
-                    <td>0</td>
+                    <td>{{views}}</td>
                 </tr>
                 {{/articles}}
                 </tbody>
@@ -43,9 +43,12 @@
         </div>
     </div>
 </div>
+
+{{#sessionUser}}
 <div class="post-btn-container">
-    <a class="post-write-btn btn btn-primary pull-right" href="questions/form" role="button">글쓰기</a>
+    <a class="post-write-btn btn btn-primary pull-right" href="articles/form" role="button">글쓰기</a>
 </div>
+{{/sessionUser}}
 
 {{>partial/footer }}
 </body>

@@ -14,9 +14,9 @@
     <header class="post-header">
         <p class="title">글쓰기</p>
     </header>
-    <form action="/question" class="submit-write" method="post">
+    <form action="/articles" class="submit-write" method="post">
 
-        <input id="writerId" name="writerId" type="hidden" value="1">
+        <input id="writerId" name="writerId" type="hidden" value="{{sessionUser.id}}">
         <div class="text-box">
             <div class="comment-writer-container">
                 <p class="post-title">제목</p>

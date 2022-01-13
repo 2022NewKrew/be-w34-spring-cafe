@@ -1,14 +1,17 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.vo.Article;
+
+import com.kakao.cafe.dto.ArticleDTO;
 
 import java.util.List;
 
 public interface ArticleService {
 
-    long insertArticle(Article article);
+    long insertArticle(ArticleDTO article);
 
-    List<Article> getArticleList();
+    List<ArticleDTO> getArticleList();
 
-    Article getArticleById(long articleId);
+    ArticleDTO getArticleById(long articleId);
+
+    int increaseViews(long articleId);
 }

@@ -71,6 +71,24 @@
     font-size: 24px;
 }
 
+.btn {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    height: 30px;
+    font-size: 14px;
+    background-color: black;
+    color: white;
+    margin: 20px;
+}
+
+.btn:hover {
+    background-color: #ffcd00;
+    color: black;
+}
+
 li {
     margin: 3px;
 }

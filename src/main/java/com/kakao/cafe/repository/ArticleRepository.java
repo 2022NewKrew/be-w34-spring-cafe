@@ -1,14 +1,17 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.vo.Article;
+
+import com.kakao.cafe.dto.ArticleDTO;
 
 import java.util.List;
 
 public interface ArticleRepository {
 
-    long insertArticle(Article article);
+    long insertArticle(ArticleDTO article);
 
-    List<Article> getAllArticle();
+    List<ArticleDTO> getAllArticle();
 
-    Article getArticleById(long id);
+    ArticleDTO getArticleById(long id);
+
+    int increaseViews(long articleId);
 }
