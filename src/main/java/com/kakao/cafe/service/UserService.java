@@ -16,4 +16,8 @@ public class UserService {
         List<UserDao> userDaoList = userRepository.selectAll();
         return userDaoList.stream().map(s -> userTransformation.toUserListDto(s)).collect(Collectors.toList());
     }
+
+    public void createUser(User user) {
+        userRepository.insert(user);
+    }
 }

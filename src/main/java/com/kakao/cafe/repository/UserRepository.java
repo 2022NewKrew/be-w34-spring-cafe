@@ -19,20 +19,20 @@ public class UserRepository {
     public UserRepository() {
         userMap = new HashMap<>();
         index = 0;
-        this.insert(toDao(new User("kakaopasta", "ppasta", "lasagna", "kakaopasta@daum.net")));
-        this.insert(toDao(new User("chicken123", "tiba2chicken", "Kim chicken", "chicken@gmail.com")));
-        this.insert(toDao(new User("pizza82", "pizzapizza", "Mr.Pizza", "pizza@gmail.com")));
+        this.insert(new User("kakaopasta", "ppasta", "lasagna", "kakaopasta@daum.net"));
+        this.insert(new User("chicken123", "tiba2chicken", "Kim chicken", "chicken@gmail.com"));
+        this.insert(new User("pizza82", "pizzapizza", "Mr.Pizza", "pizza@gmail.com"));
     }
 
     private UserDao toDao(User user) {
         return new UserDao(index++, user.getId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
-    public void insert(UserDao user) {
+    public void insert(User user) {
         log.info("UserRepository insert");
         log.info(user.toString());
         log.info(user.getId());
-        userMap.put(user.getId(), user);
+        userMap.put(user.getId(), toDao(user));
     }
 
     public List<UserDao> selectAll() {
