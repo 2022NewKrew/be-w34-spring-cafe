@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserJoinDto {
+public class UserJoinForm {
     private String userId;
     private String name;
     private String email;

@@ -1,7 +1,8 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.controller.dto.UserJoinDto;
+import com.kakao.cafe.controller.dto.UserJoinForm;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.jdbc.UserJdbcRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -26,7 +25,7 @@ class UserJdbcRepositoryTest {
         //given
         String userId = "idid";
 
-        UserJoinDto dto = new UserJoinDto();
+        UserJoinForm dto = new UserJoinForm();
         dto.setPassword("1234");
         dto.setEmail("kakao@com");
         dto.setUserId(userId);
@@ -47,7 +46,7 @@ class UserJdbcRepositoryTest {
         //given
         String userId = "idid";
 
-        UserJoinDto dto = new UserJoinDto();
+        UserJoinForm dto = new UserJoinForm();
         dto.setPassword("1234");
         dto.setEmail("kakao@com");
         dto.setUserId(userId);
@@ -55,7 +54,7 @@ class UserJdbcRepositoryTest {
 
         String userId2 = "idid2";
 
-        UserJoinDto dto2 = new UserJoinDto();
+        UserJoinForm dto2 = new UserJoinForm();
         dto2.setPassword("1234");
         dto2.setEmail("kakao@com");
         dto2.setUserId(userId2);

@@ -1,9 +1,8 @@
 package com.kakao.cafe.domain;
 
 
-import com.kakao.cafe.controller.dto.UserJoinDto;
+import com.kakao.cafe.controller.dto.UserJoinForm;
 import com.kakao.cafe.repository.dto.UserResult;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,22 +18,20 @@ public class User {
 
     private User() {}
 
-    public static User from(UserJoinDto dto) {
-        User user = new User();
-        user.setUserId(dto.getUserId());
-        user.setEmail(dto.getEmail());
-        user.setName(dto.getName());
-        user.setPassword(dto.getPassword());
-        return user;
+    public static User from(UserJoinForm dto) {
+        return new User()
+                .setUserId(dto.getUserId())
+                .setEmail(dto.getEmail())
+                .setName(dto.getName())
+                .setPassword(dto.getPassword());
     }
 
     public static User from(UserResult dto) {
-        User user = new User();
-        user.setUserId(dto.getUserId());
-        user.setEmail(dto.getEmail());
-        user.setName(dto.getName());
-        user.setPassword(dto.getPassword());
-        return user;
+        return new User()
+                .setUserId(dto.getUserId())
+                .setEmail(dto.getEmail())
+                .setName(dto.getName())
+                .setPassword(dto.getPassword());
     }
 
 
@@ -45,6 +42,26 @@ public class User {
     public void updateEmailAndName(String email, String name) {
         this.email = email;
         this.name = name;
+    }
+
+    public User setUserId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+
+    public User setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public User setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public User setPassword(String password) {
+        this.password = password;
+        return this;
     }
 
     @Override

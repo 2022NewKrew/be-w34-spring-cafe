@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.ArticleResponseDto;
+import com.kakao.cafe.controller.dto.ArticleResponse;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ public class MainController {
 
     @GetMapping("/")
     public String mainPage(Model model) {
-        List<ArticleResponseDto> questionPostList = postService.findAll();
+        List<ArticleResponse> questionPostList = postService.findAll();
         model.addAttribute("questions", questionPostList);
 
         return "index";

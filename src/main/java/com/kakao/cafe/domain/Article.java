@@ -1,6 +1,6 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.controller.dto.ArticleDto;
+import com.kakao.cafe.controller.dto.ArticleSaveForm;
 import com.kakao.cafe.repository.dto.ArticleResult;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,31 +18,55 @@ public class Article {
     private LocalDateTime createdAt;
     private Long numOfComment;
 
-    private Article() {}
+    public Article() {}
 
-    public static Article from(ArticleDto dto) {
-        Article article = new Article();
-
-        article.setContent(dto.getContent());
-        article.setTitle(dto.getTitle());
-        article.setWriter(dto.getWriter());
-        article.setCreatedAt(LocalDateTime.now());
-        article.setNumOfComment(0L);
-
-        return article;
+    public static Article from(ArticleSaveForm dto) {
+        return new Article()
+                .setContent(dto.getContent())
+                .setTitle(dto.getTitle())
+                .setWriter(dto.getWriter())
+                .setCreatedAt(LocalDateTime.now())
+                .setNumOfComment(0L);
     }
 
     public static Article from(ArticleResult dto) {
-        Article article = new Article();
+        return new Article()
+                .setArticleId(dto.getPostId())
+                .setContent(dto.getContent())
+                .setTitle(dto.getTitle())
+                .setWriter(dto.getWriter())
+                .setCreatedAt(LocalDateTime.now())
+                .setNumOfComment(dto.getNumOfComment());
+    }
 
-        article.setArticleId(dto.getPostId());
-        article.setContent(dto.getContent());
-        article.setTitle(dto.getTitle());
-        article.setWriter(dto.getWriter());
-        article.setCreatedAt(LocalDateTime.now());
-        article.setNumOfComment(dto.getNumOfComment());
+    public Article setArticleId(Long articleId) {
+        this.articleId = articleId;
+        return this;
+    }
 
-        return article;
+    public Article setWriter(String writer) {
+        this.writer = writer;
+        return this;
+    }
+
+    public Article setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public Article setContent(String content) {
+        this.content = content;
+        return this;
+    }
+
+    public Article setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public Article setNumOfComment(Long numOfComment) {
+        this.numOfComment = numOfComment;
+        return this;
     }
 
     @Override

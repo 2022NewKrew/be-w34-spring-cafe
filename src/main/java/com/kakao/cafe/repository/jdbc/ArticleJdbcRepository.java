@@ -1,8 +1,9 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.jdbc;
 
+import com.kakao.cafe.controller.dto.ArticleSaveForm;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.exception.NoSuchArticle;
-import com.kakao.cafe.repository.dto.ArticleResult;
+import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,24 +25,22 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
     public ArticleJdbcRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.execute("create table article (id BIGINT NOT NULL, writer varchar(15), title varchar(50), content TEXT, createdAt DATE, numOfComment number)");
     }
 
     @Override
-    public Long save(Article article) {
+    public Long save(ArticleSaveForm article) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("article");
 
         long articleId = id.incrementAndGet();
-        article.setArticleId(articleId);
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("id", articleId);
+        parameters.put("id", id.incrementAndGet());
         parameters.put("content", article.getContent());
         parameters.put("title", article.getTitle());
         parameters.put("writer", article.getWriter());
-        parameters.put("createdAt", article.getCreatedAt());
-        parameters.put("numOfComment", article.getNumOfComment());
+        parameters.put("createdAt", LocalDateTime.now());
+        parameters.put("numOfComment", 0);
 
         jdbcInsert.execute(new MapSqlParameterSource(parameters));
         return articleId;
@@ -59,15 +59,15 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
-            ArticleResult articleResult = new ArticleResult();
-            articleResult.setPostId(rs.getLong("id"));
-            articleResult.setWriter(rs.getString("writer"));
-            articleResult.setTitle(rs.getString("title"));
-            articleResult.setContent(rs.getString("content"));
-            articleResult.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
-            articleResult.setNumOfComment(rs.getLong("numOfComment"));
+            Article article = new Article();
+            article.setArticleId(rs.getLong("id"));
+            article.setWriter(rs.getString("writer"));
+            article.setTitle(rs.getString("title"));
+            article.setContent(rs.getString("content"));
+            article.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
+            article.setNumOfComment(rs.getLong("numOfComment"));
 
-            return Article.from(articleResult);
+            return article;
         };
     }
 }

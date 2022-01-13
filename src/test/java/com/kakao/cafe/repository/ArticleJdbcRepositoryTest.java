@@ -1,15 +1,14 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.controller.dto.ArticleDto;
+import com.kakao.cafe.controller.dto.ArticleSaveForm;
 import com.kakao.cafe.domain.Article;
-import org.junit.jupiter.api.Assertions;
+import com.kakao.cafe.repository.jdbc.ArticleJdbcRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -20,13 +19,13 @@ class ArticleJdbcRepositoryTest {
     @Test
     void save() {
         // given
-        ArticleDto articleDto = new ArticleDto();
-        articleDto.setContent("content");
-        articleDto.setTitle("title");
-        articleDto.setWriter("me");
+        ArticleSaveForm articleSaveForm = new ArticleSaveForm();
+        articleSaveForm.setContent("content");
+        articleSaveForm.setTitle("title");
+        articleSaveForm.setWriter("me");
 
         // when
-        Article article = Article.from(articleDto);
+        Article article = Article.from(articleSaveForm);
         Long savedId = articleJdbcRepository.save(article);
 
         // then

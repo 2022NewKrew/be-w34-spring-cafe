@@ -1,7 +1,7 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.jdbc;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.exception.NoSuchUser;
+import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.repository.dto.UserResult;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -16,14 +16,13 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class UserJdbcRepository implements UserRepository{
+public class UserJdbcRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
     public UserJdbcRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
-
-        jdbcTemplate.execute("create table users (id varchar(15) PRIMARY KEY, email varchar(40), name varchar(20), password varchar(30))");
+//        jdbcTemplate.execute("create table users (id varchar(15) PRIMARY KEY, email varchar(40), name varchar(20), password varchar(30))");
     }
 
     @Override

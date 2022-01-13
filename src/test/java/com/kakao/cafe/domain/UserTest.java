@@ -1,18 +1,16 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.controller.dto.UserJoinDto;
-import org.assertj.core.api.Assertions;
+import com.kakao.cafe.controller.dto.UserJoinForm;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
 
     @Test
     void chcekPassword() {
         //given
-        UserJoinDto dto = new UserJoinDto();
+        UserJoinForm dto = new UserJoinForm();
         dto.setPassword("1234");
         dto.setEmail("kakao@com");
         dto.setUserId("idid");
@@ -30,7 +28,7 @@ class UserTest {
     @Test
     void updateEmailAndName() {
         // given
-        UserJoinDto dto = new UserJoinDto();
+        UserJoinForm dto = new UserJoinForm();
         dto.setPassword("1234");
         dto.setEmail("kakao@com");
         dto.setUserId("idid");

@@ -1,16 +1,11 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.dto.UserFormDto;
-import com.kakao.cafe.controller.dto.UserJoinDto;
+import com.kakao.cafe.controller.dto.UserSaveForm;
+import com.kakao.cafe.controller.dto.UserJoinForm;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.AlreadyExistId;
 import com.kakao.cafe.repository.UserRepository;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,12 +23,12 @@ class UserServiceTest {
     UserRepository userRepository;
 
     private User user;
-    private UserJoinDto joinDto;
+    private UserJoinForm joinDto;
     String userId = "idid";
 
     @BeforeEach
     void setting() {
-        joinDto = new UserJoinDto();
+        joinDto = new UserJoinForm();
         joinDto.setPassword("1234");
         joinDto.setEmail("kakao@com");
         joinDto.setUserId(userId);
@@ -46,7 +41,7 @@ class UserServiceTest {
     @DisplayName("아이디 중복 방지 테스트")
     void join() {
         //given
-        UserJoinDto dto2 = new UserJoinDto();
+        UserJoinForm dto2 = new UserJoinForm();
         dto2.setPassword("1234");
         dto2.setEmail("kakao@com");
         dto2.setUserId(userId);
@@ -65,14 +60,14 @@ class UserServiceTest {
         //given
         String updateName = "newName";
         String updateEmail = "newEmail";
-        UserFormDto userFormDto = new UserFormDto();
-        userFormDto.setPassword(user.getPassword());
-        userFormDto.setEmail(updateEmail);
-        userFormDto.setName(updateName);
+        UserSaveForm userSaveForm = new UserSaveForm();
+        userSaveForm.setPassword(user.getPassword());
+        userSaveForm.setEmail(updateEmail);
+        userSaveForm.setName(updateName);
 
         //when
         userRepository.save(user);
-        userService.updateUser(userId, userFormDto);
+        userService.updateUser(userId, userSaveForm);
 
         user = userRepository.findById(user.getUserId()).get();
 
@@ -87,14 +82,14 @@ class UserServiceTest {
         //given
         String updateName = "newName";
         String updateEmail = "newEmail";
-        UserFormDto userFormDto = new UserFormDto();
-        userFormDto.setPassword(user.getPassword() + "a");
-        userFormDto.setEmail(updateEmail);
-        userFormDto.setName(updateName);
+        UserSaveForm userSaveForm = new UserSaveForm();
+        userSaveForm.setPassword(user.getPassword() + "a");
+        userSaveForm.setEmail(updateEmail);
+        userSaveForm.setName(updateName);
 
         //when
         userRepository.save(user);
         //then
-        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.updateUser(userId, userFormDto));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.updateUser(userId, userSaveForm));
     }
 }

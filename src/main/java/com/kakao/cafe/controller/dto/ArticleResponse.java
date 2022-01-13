@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-public class ArticleResponseDto {
+public class ArticleResponse {
     private Long articleId;
     private String writer;
     private String title;
@@ -17,10 +17,10 @@ public class ArticleResponseDto {
     private Long numOfComment;
 
 
-    private ArticleResponseDto() {}
+    private ArticleResponse() {}
 
-    public static ArticleResponseDto from(Article article) {
-        ArticleResponseDto responseDto = new ArticleResponseDto();
+    public static ArticleResponse from(Article article) {
+        ArticleResponse responseDto = new ArticleResponse();
         responseDto.setArticleId(article.getArticleId());
         responseDto.setTitle(article.getTitle());
         responseDto.setWriter(article.getWriter());

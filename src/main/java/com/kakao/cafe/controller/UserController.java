@@ -1,8 +1,9 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.UserFormDto;
-import com.kakao.cafe.controller.dto.UserFormResponseDto;
-import com.kakao.cafe.controller.dto.UserJoinDto;
+import com.kakao.cafe.controller.dto.UserSaveForm;
+import com.kakao.cafe.controller.dto.UserResponse;
+import com.kakao.cafe.controller.dto.UserJoinForm;
+import com.kakao.cafe.controller.dto.UserListDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.util.Validator;
@@ -17,12 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
+
     private final UserService userService;
     private final Validator validator;
 
     @PostMapping("/create")
-    public String createUser(@ModelAttribute UserJoinDto userDto) {
-
+    public String createUser(@ModelAttribute UserJoinForm userDto) {
         try{
             validator.newUserCheck(userDto);
             userService.join(userDto);
@@ -32,10 +33,9 @@ public class UserController {
         }
     }
 
-
     @GetMapping({"", "/list"})
     public String userList(Model model) {
-        List<User> userList = userService.findAll();
+        List<UserListDto> userList = userService.getUserList();
         model.addAttribute("users", userList);
         return "user/list";
     }
@@ -43,20 +43,21 @@ public class UserController {
     @GetMapping("/{id}")
     public String userProfile(@PathVariable("id") String userId, Model model) {
         User user = userService.findUser(userId);
-        model.addAttribute("user", user);
+        UserResponse dtoUser = UserResponse.from(user);
+        model.addAttribute("user", dtoUser);
         return "user/profile";
     }
 
     @GetMapping("/{id}/update")
     public String showForm(@PathVariable("id") String userId, Model model) {
         User user = userService.findUser(userId);
-        UserFormResponseDto dtoUser = UserFormResponseDto.from(user);
+        UserResponse dtoUser = UserResponse.from(user);
         model.addAttribute("user", dtoUser);
         return "user/updateForm";
     }
 
     @PutMapping("/{id}")
-    public String updateForm(@PathVariable("id") String userId, @ModelAttribute UserFormDto updateUser) {
+    public String updateForm(@PathVariable("id") String userId, @ModelAttribute UserSaveForm updateUser) {
         validator.updateUserCheck(updateUser);
         userService.updateUser(userId, updateUser);
 
