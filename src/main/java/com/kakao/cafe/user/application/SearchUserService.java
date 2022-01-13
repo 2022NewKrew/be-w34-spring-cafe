@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserInfoService {
+public class SearchUserService {
     private final UserRepository userRepository;
 
     public List<User> getAllUsers(){

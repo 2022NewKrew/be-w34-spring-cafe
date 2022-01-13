@@ -1,6 +1,8 @@
-package com.kakao.cafe.post.domain.repository;
+package com.kakao.cafe.post.persistence;
 
+import com.kakao.cafe.post.domain.entity.Comment;
 import com.kakao.cafe.post.domain.entity.Post;
+import com.kakao.cafe.post.domain.repository.PostRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -10,8 +12,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Component
-public class PostRepositoryImpl implements PostRepository{
+public class InMemoryPostRepository implements PostRepository {
     private final Map<Long, Post> idToPost = new ConcurrentHashMap<>();
     private final List<Post> postList = new CopyOnWriteArrayList<>();
 
@@ -33,5 +34,11 @@ public class PostRepositoryImpl implements PostRepository{
     public void savePost(Post post) {
         idToPost.put(post.getId(), post);
         postList.add(post);
+    }
+
+    @Override
+    public void saveComment(Long postId, Comment comment) {
+        Post post = idToPost.get(postId);
+        post.addComment(comment);
     }
 }

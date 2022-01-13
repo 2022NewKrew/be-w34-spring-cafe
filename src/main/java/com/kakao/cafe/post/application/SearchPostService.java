@@ -9,12 +9,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PostInfoService {
+public class SearchPostService {
     private static final int PAGE_SIZE = 15;
     private final PostRepository postRepository;
 
     public List<Post> getPosts(int page) {
-        return postRepository.getPosts((page-1) * PAGE_SIZE, PAGE_SIZE);
+        List<Post> posts = postRepository.getPosts((page-1) * PAGE_SIZE, PAGE_SIZE);
+        System.out.println(posts);
+        return posts;
     }
 
     public Post getPost(Long id) {

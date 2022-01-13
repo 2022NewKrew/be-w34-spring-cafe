@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
+public class AddCommentService {
     private final PostRepository postRepository;
 
     public void addComment(Long id, Comment comment){
@@ -16,5 +16,6 @@ public class CommentService {
                 () -> new IllegalArgumentException("해당 id의 게시글이 없습니다."));
 
         post.addComment(comment);
+        postRepository.saveComment(id, comment);
     }
 }

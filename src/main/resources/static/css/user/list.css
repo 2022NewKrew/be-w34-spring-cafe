@@ -102,3 +102,9 @@ td {
     vertical-align: middle;
     text-align: center;
 }
+
+.clickable-list-item:hover{
+    background-color: #ffcd00;
+    color: black;
+    cursor: pointer;
+}
