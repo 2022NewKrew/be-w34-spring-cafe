@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 @RequiredArgsConstructor
 public class ArticleRepository {
     private static final Map<Integer, Article> articles = new HashMap<>();
-    private static int sequential = 0;
+    private AtomicInteger sequential = new AtomicInteger(0);
 
     public void postNewArticle(Article article) {
         articles.put(article.getArticleId(), article);
@@ -32,6 +33,6 @@ public class ArticleRepository {
     }
 
     public int getNextArticleId() {
-        return ++sequential;
+        return sequential.incrementAndGet();
     }
 }
