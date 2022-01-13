@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dao.UserDao;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserListDto;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.view.UserView;
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String getUsers(Model model) {
-        List<UserDao> userList = userService.getUserList();
+        List<UserListDto> userList = userService.getUserList();
         userView.getUsersView(model, userList);
 
         return "user/list";
