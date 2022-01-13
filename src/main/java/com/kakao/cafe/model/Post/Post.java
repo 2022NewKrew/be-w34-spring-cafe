@@ -1,5 +1,8 @@
 package com.kakao.cafe.model.Post;
 
+import lombok.Getter;
+
+@Getter
 public class Post {
     private Long id;
     private final String title;
@@ -12,10 +15,6 @@ public class Post {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getId() {
-        return this.id;
     }
 
     public PostResponseDto toResponseDto() {
