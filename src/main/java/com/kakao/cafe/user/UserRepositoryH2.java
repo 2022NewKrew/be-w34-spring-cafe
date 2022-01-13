@@ -74,7 +74,7 @@ public class UserRepositoryH2 implements UserRepository {
 
     @Override
     public boolean update(User user) {
-        log.info(user.toString());
+
         String sql = "UPDATE member SET user_id=?, name=?, email=? WHERE id=?";
 
         int rs = jdbcTemplate.update(sql,
@@ -90,6 +90,14 @@ public class UserRepositoryH2 implements UserRepository {
         }
 
         return true;
+    }
+
+    @Override
+    public User findOne(String userId, String password) {
+
+        String sql = "SELECT id, user_id, password, name, email FROM member WHERE user_id=? AND password=?";
+
+        return jdbcTemplate.queryForObject(sql, new UserRowMapper(), userId, password);
     }
 
 }

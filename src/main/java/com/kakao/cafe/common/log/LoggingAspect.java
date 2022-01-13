@@ -1,4 +1,4 @@
-package com.kakao.cafe.log;
+package com.kakao.cafe.common.log;
 
 import lombok.extern.slf4j.Slf4j;
 //import org.aspectj.lang.JoinPoint;

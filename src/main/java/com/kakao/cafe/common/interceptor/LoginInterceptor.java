@@ -1,4 +1,4 @@
-package com.kakao.cafe.common;
+package com.kakao.cafe.common.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;

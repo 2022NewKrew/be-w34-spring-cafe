@@ -35,4 +35,12 @@ public interface UserRepository {
      * @return 업데이트의 성공 여부 [성공시 : true, 실패시 : false]
      */
     boolean update(User user);
+
+    /**
+     *
+     * @param userId 회원의 아이디
+     * @param password 회원의 비밀번호
+     * @return 일치하는 회원정보 도메인을 반환
+     */
+    User findOne(String userId, String password);
 }

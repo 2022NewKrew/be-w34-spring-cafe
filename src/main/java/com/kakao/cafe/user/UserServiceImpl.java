@@ -53,4 +53,10 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.update(origin);
     }
+
+    @Override
+    public User loginCheck(String userId, String password) {
+
+        return userRepository.findOne(userId, password);
+    }
 }

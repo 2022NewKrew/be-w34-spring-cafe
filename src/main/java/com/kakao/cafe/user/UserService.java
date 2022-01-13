@@ -34,4 +34,6 @@ public interface UserService {
      * @return 데이터베이스의 저장 성공 여부 [성공시 : true, 실패시 : false]
      */
     boolean update(User user);
+
+    User loginCheck(String userId, String password);
 }

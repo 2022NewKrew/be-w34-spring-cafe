@@ -81,4 +81,13 @@ public class UserRepositoryHash implements UserRepository {
 
         return true;
     }
+
+    /**
+     *  미구현 함수 null만 반환
+     * @return null
+     */
+    @Override
+    public User findOne(String userId, String password) {
+        return null;
+    }
 }

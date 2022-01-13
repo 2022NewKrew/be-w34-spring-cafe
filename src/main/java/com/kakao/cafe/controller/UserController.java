@@ -4,6 +4,7 @@ import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.UserService;
 import com.kakao.cafe.user.dto.UserCreateDto;
 import com.kakao.cafe.user.dto.UserDto;
+import com.kakao.cafe.user.dto.UserLoginDto;
 import com.kakao.cafe.user.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,7 @@ public class UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
+    // TODO : 저장할 때 단방향 해시 필요
     @PostMapping(value = "/create")
     public String insertUser(@ModelAttribute("user") @Valid UserCreateDto userCreateDto, Errors errors, Model model) {
 
@@ -92,6 +96,19 @@ public class UserController {
 
         if (!userService.update(user)) {
             log.info("회원 정보 수정 실패 에러페이지로 이동");
+        }
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/login")
+    public String login(HttpServletRequest request, @ModelAttribute("user") @Valid UserLoginDto userLoginDto, Model model) {
+
+        User user = userService.loginCheck(userLoginDto.getUserId(), userLoginDto.getPassword());
+
+        if (user != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("loginUser", user);
         }
 
         return "redirect:/";
