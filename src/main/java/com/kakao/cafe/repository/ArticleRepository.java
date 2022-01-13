@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ArticlePostDto;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
@@ -45,13 +47,20 @@ public class ArticleRepository {
         );
     }
 
-    public Article findById(int id) {
+    public Article findById(int id) throws  NoSuchElementException {
+        Article article;
 
-        return jdbcTemplate.queryForObject(
-                "select * from ARTICLE where id = ?",
-                new ArticleEntityMapper(),
-                id
-        );
+        try {
+            article = jdbcTemplate.queryForObject(
+                    "select * from ARTICLE where id = ?",
+                    new ArticleEntityMapper(),
+                    id
+            );
+        } catch (DataAccessException e) {
+            throw new NoSuchElementException("해당 Id를 갖는 article이 없음");
+        }
+
+        return article;
     }
 
     public class ArticleEntityMapper implements RowMapper<Article> {

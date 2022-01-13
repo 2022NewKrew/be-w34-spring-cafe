@@ -3,6 +3,8 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.dto.UserSignUpDto;
 import com.kakao.cafe.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import java.util.NoSuchElementException;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     public UserController(UserService userService){
@@ -28,6 +31,7 @@ public class UserController {
         try {
             userService.signup(user);
         } catch (SQLException e) {
+            logger.error("User : " + user, e);
             return "redirect:/";
         }
 
@@ -48,6 +52,7 @@ public class UserController {
             user = userService.findById(userId);
             model.addAttribute("user", user);
         } catch (NoSuchElementException e) {
+            logger.error("", e);
             return "redirect:/";
         }
 

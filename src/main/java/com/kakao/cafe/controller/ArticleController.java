@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
 @Controller
 @RequestMapping("/articles")
 public class ArticleController {
+    private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
     private final ArticleService articleService;
     private final UserService userService;
 
@@ -33,10 +34,10 @@ public class ArticleController {
         try {
             articleService.postArticle(article);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Article: " + article, e);
             return "redirect:/";
         } catch (NoSuchElementException e) {
-            e.printStackTrace();
+            logger.error("Article : " + article, e);
             return "redirect:/";
         }
         return "redirect:/";
@@ -53,7 +54,7 @@ public class ArticleController {
             model.addAttribute("article", article);
             model.addAttribute("writer", writer);
         } catch (NoSuchElementException e) {
-            e.printStackTrace();
+            logger.error("", e);
             return "redirect:/";
         }
 

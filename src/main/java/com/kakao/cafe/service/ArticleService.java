@@ -23,8 +23,6 @@ public class ArticleService {
 
     public void postArticle(ArticlePostDto article) throws SQLException, NoSuchElementException {
         User user = userRepository.findByName(article.getWriter());
-        if (user == null)
-            throw new NoSuchElementException("Article 작성자 id가 존재하지 않음");
 
         articleRepository.save(article);
     }
@@ -39,8 +37,6 @@ public class ArticleService {
 
     public ArticleDto findById(int id) throws NoSuchElementException {
         Article article = articleRepository.findById(id);
-        if (article == null)
-            throw new NoSuchElementException("해당 id를 가진 article이 존재하지 않음");
 
         return new ArticleDto(
                 article.getId(),

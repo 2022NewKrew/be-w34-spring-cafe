@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.dto.UserSignUpDto;
 import com.kakao.cafe.repository.UserRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,18 +22,14 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserDto findById(String userId) throws NoSuchElementException {
+    public UserDto findById(String userId) throws EmptyResultDataAccessException {
         User user = userRepository.findById(userId);
-        if (user == null)
-            throw new NoSuchElementException("해당 id를 가진 사용자가 없음");
 
         return new UserDto(user.getUserId(), user.getEmail(), user.getName());
     }
 
     public UserDto findByName(String name) throws NoSuchElementException {
         User user = userRepository.findByName(name);
-        if (user == null)
-            throw new NoSuchElementException("해당 name을 가진 사용자가 없음");
 
         return new UserDto(user.getUserId(), user.getEmail(), user.getName());
     }
