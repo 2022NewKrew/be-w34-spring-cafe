@@ -1,7 +1,9 @@
 package com.kakao.cafe.web;
 
-import com.kakao.cafe.web.dto.User;
+import com.kakao.cafe.service.UsersService;
+import com.kakao.cafe.web.dto.UserResponseDto;
 import com.kakao.cafe.web.dto.UsersCreateRequestDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,22 +11,38 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 
+
 @Controller
 public class UsersController {
 
-    private final static ArrayList<User> users = new ArrayList<>();
+    private final UsersService usersService = new UsersService();
 
     @GetMapping("/users")
     public String users(Model model) {
+        ArrayList<UserResponseDto> users = usersService.findAllUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
-    @PostMapping("/users")
+    @PostMapping("/api/users")
     public String Signin(UsersCreateRequestDto requestDto) {
-        System.out.println(requestDto.getUserId());
-        users.add(new User(requestDto.getUserId(), requestDto.getPassword(), requestDto.getPassword(), requestDto.getEmail()));
+        usersService.save(requestDto);
         return "redirect:/users";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "user/login";
+    }
+
+    @GetMapping("/login-success")
+    public String login_success() {
+        return "user/success";
+    }
+
+    @GetMapping("/signin")
+    public String signin() {
+        return "user/form";
     }
 
 }
