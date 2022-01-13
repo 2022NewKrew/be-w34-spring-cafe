@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.UserRequestDto;
+import com.kakao.cafe.dto.user.UserSaveDto;
+import com.kakao.cafe.dto.user.UserUpdateDto;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,14 +14,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/users")
-    public String save(@ModelAttribute() UserRequestDto userRequestDto) {
-        userService.save(userRequestDto);
+    public String save(@ModelAttribute() UserSaveDto userSaveDto) {
+        userService.save(userSaveDto);
         return "redirect:/users";
     }
 
     @PutMapping("/users/{id}")
-    public String update(@PathVariable int id, @ModelAttribute() UserRequestDto userRequestDto) {
-        userService.update(id, userRequestDto);
+    public String update(@PathVariable int id, @ModelAttribute() UserUpdateDto userUpdateDto) {
+        userService.update(id, userUpdateDto);
         return "redirect:/users";
     }
 

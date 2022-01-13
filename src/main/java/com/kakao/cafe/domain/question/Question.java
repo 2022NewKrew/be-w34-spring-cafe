@@ -1,23 +1,28 @@
 package com.kakao.cafe.domain.question;
 
-import com.kakao.cafe.dto.QuestionSaveDto;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
 public class Question {
-    private int id;
+    @Builder.Default
+    private int id = -1;
     private String title;
     private String writer;
     private String contents;
-    private LocalDateTime createdDateTime;
+    private LocalDateTime createdAt;
 
-    public Question(int id, QuestionSaveDto questionSaveDto) {
-        this.id = id;
-        this.title = questionSaveDto.getTitle();
-        this.writer = questionSaveDto.getWriter();
-        this.contents = questionSaveDto.getContents();
-        this.createdDateTime =  LocalDateTime.now();
+    public Question update(Question question) {
+        this.title = question.getTitle();
+        this.writer = question.getWriter();
+        this.contents = question.getContents();
+        return this;
+    }
+
+    public Boolean isNew(){
+        return id == -1;
     }
 }

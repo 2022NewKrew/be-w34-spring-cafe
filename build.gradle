@@ -16,10 +16,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.projectlombok:lombok:1.18.20'
-	runtimeOnly 'com.h2database:h2:1.4.197'
+	//implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 }
 
 test {

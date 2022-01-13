@@ -1,25 +1,30 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.question.Question;
-import com.kakao.cafe.domain.question.Questions;
-import com.kakao.cafe.dto.QuestionSaveDto;
+import com.kakao.cafe.domain.question.QuestionRepository;
+import com.kakao.cafe.dto.question.QuestionRequestDto;
+import com.kakao.cafe.dto.question.QuestionResponseDto;
+import com.kakao.cafe.dto.mapper.QuestionMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class QuestionService {
-    //DB생성 전까지 questions 변수에 임시 저장
-    private Questions questions = new Questions();
+    @Autowired
+    @Qualifier("QuestionRepositoryJdbc")
+    private QuestionRepository questionRepository;
 
-    public void save(QuestionSaveDto questionSaveDto){
-        questions.addQuestion(questionSaveDto);
+    public void save(QuestionRequestDto questionRequestDto){
+        questionRepository.save(QuestionMapper.INSTANCE.toEntity(questionRequestDto));
     }
 
-    public List<Question> findAll(){
-        return questions.getQuestions();
+    public List<QuestionResponseDto> findAll(){
+        return QuestionMapper.INSTANCE.toDtoList(questionRepository.findAll());
     }
 
-    public Question findbyId(int id){
-        return questions.findById(id);
+    public QuestionResponseDto findbyId(int id){
+        return QuestionMapper.INSTANCE.toDto(questionRepository.findById(id));
     }
 }
