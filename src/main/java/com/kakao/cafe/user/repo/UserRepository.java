@@ -1,8 +1,7 @@
-package com.kakao.cafe.user.dao;
+package com.kakao.cafe.user.repo;
 
-import com.kakao.cafe.common.Dao;
+import com.kakao.cafe.common.Repository;
 import com.kakao.cafe.user.model.User;
-import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,8 +10,8 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-@Repository
-public class UserDao implements Dao<User> {
+@org.springframework.stereotype.Repository
+public class UserRepository implements Repository<User> {
     private static final AtomicLong ID_COUNTER = new AtomicLong();
     private final Map<Long, User> map = new HashMap<>();
 
