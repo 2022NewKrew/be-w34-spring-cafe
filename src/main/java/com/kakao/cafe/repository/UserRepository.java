@@ -1,6 +1,8 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.vo.User;
+import com.kakao.cafe.dto.UserRegistrationDto;
+import com.kakao.cafe.entity.User;
+//import com.kakao.cafe.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -16,8 +18,8 @@ public class UserRepository {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void createUser(User user) {
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public void createUser(UserRegistrationDto userDto) {
+        User user = new User(userDto.getUserId(), userDto.getPassword(), userDto.getEmail());
         users.add(user);
     }
 

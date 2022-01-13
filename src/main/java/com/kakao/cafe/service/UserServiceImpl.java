@@ -1,7 +1,9 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.dto.UserRegistrationDto;
+import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.vo.User;
+//import com.kakao.cafe.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,8 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public void join(User user) {
-        userRepository.createUser(user);
+    public void join(UserRegistrationDto userDto) {
+        userRepository.createUser(userDto);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.UserRegistrationDto;
+import com.kakao.cafe.entity.User;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.vo.User;
 import org.slf4j.Logger;
@@ -33,8 +35,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String createUser(User user) {
-        userService.join(user);
+    public String createUser(UserRegistrationDto userDto) {
+        userService.join(userDto);
         return "redirect:/users";
     }
 
