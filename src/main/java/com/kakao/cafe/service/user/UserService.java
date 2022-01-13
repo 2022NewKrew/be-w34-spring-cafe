@@ -2,6 +2,7 @@ package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.user.Users;
 import com.kakao.cafe.web.dto.user.UserResponseDto;
+import com.kakao.cafe.web.dto.user.UserUpdateRequestDto;
 import com.kakao.cafe.web.dto.user.UsersListResponseDto;
 import com.kakao.cafe.web.dto.user.UsersSaveRequestDto;
 import org.springframework.stereotype.Service;
@@ -20,5 +21,9 @@ public class UserService {
 
     public UserResponseDto findById(int id){
         return users.findUserById(id);
+    }
+
+    public void update(int id, UserUpdateRequestDto userDto) {
+        users.update(id, userDto);
     }
 }

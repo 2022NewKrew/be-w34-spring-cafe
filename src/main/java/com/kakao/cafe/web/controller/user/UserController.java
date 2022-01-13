@@ -1,6 +1,7 @@
 package com.kakao.cafe.web.controller.user;
 
 import com.kakao.cafe.service.user.UserService;
+import com.kakao.cafe.web.dto.user.UserUpdateRequestDto;
 import com.kakao.cafe.web.dto.user.UsersSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,5 +32,17 @@ public class UserController {
     public String findById(@PathVariable int id, Model model) {
         model.addAttribute("user", userService.findById(id));
         return "user/profile";
+    }
+
+    @GetMapping("/users/{id}/form")
+    public String updateForm(@PathVariable int id, Model model) {
+        model.addAttribute("user", userService.findById(id));
+        return "user/updateForm";
+    }
+
+    @PostMapping("/users/{id}/update")
+    public String update(@PathVariable int id, @ModelAttribute() UserUpdateRequestDto userDto) {
+        userService.update(id, userDto);
+        return "redirect:/users";
     }
 }

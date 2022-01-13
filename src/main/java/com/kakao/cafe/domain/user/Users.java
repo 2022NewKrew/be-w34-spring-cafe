@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.user;
 
 import com.kakao.cafe.web.dto.user.UserResponseDto;
+import com.kakao.cafe.web.dto.user.UserUpdateRequestDto;
 import com.kakao.cafe.web.dto.user.UsersListResponseDto;
 import com.kakao.cafe.web.dto.user.UsersSaveRequestDto;
 import lombok.Getter;
@@ -22,8 +23,19 @@ public class Users {
     }
 
     public UserResponseDto findUserById(int id) {
-        return new UserResponseDto(users.stream().filter(user -> user.getId()==id)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException()));
+        return new UserResponseDto(findById(id));
+    }
+
+    private User findById(int id) {
+        return users.stream().filter(user -> user.getId()==id).findFirst().orElseThrow(IllegalArgumentException::new);
+    }
+
+    public void update(int id, UserUpdateRequestDto userDto) {
+        User target = findById(id);
+        if (target.getAccPw().equals(userDto.getPrevAccPw())) {
+            target.setAccPw(userDto.getNewAccPw());
+            target.setName(userDto.getName());
+            target.setEmail(userDto.getEmail());
+        }
     }
 }
