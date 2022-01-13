@@ -15,7 +15,9 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.slf4j:slf4j-api:1.7.32'
+	implementation 'com.h2database:h2:2.0.206'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

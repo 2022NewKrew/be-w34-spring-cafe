@@ -3,8 +3,10 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.dtos.UserResponseDto;
 import com.kakao.cafe.domain.dtos.UserSaveDto;
+import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +17,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(@Qualifier("userRepositoryJdbcImpl") UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -30,9 +32,18 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserResponseDto findById(long id) {
+    public UserResponseDto findById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 아이디의 사용자가 없습니다"));
+                .orElseThrow(() -> new NotFoundException("해당 아이디의 사용자가 없습니다"));
         return new UserResponseDto(user);
+    }
+
+    public void update(Long id, UserSaveDto dto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 아이디의 사용자가 없습니다"));
+        user.setEmail(dto.getEmail());
+        user.setName(dto.getName());
+        user.setPassword(dto.getPassword());
+        userRepository.save(user);
     }
 }

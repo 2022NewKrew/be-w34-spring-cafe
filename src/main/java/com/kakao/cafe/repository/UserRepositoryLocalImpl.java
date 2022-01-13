@@ -13,9 +13,11 @@ public class UserRepositoryLocalImpl implements UserRepository {
 
     @Override
     public void save(User user) {
-        user.setId(count.getAndIncrement());
-        user.setCreationTime(new Date());
-        users.add(user);
+        if (user.getId() == null) {
+            user.setId(count.getAndIncrement());
+            user.setCreationTime(new Date());
+            users.add(user);
+        }
     }
 
     @Override
@@ -26,7 +28,7 @@ public class UserRepositoryLocalImpl implements UserRepository {
     @Override
     public Optional<User> findById(Long id) {
         return users.stream()
-                .filter(user -> user.getId() == id)
+                .filter(user -> user.getId().equals(id))
                 .findFirst();
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
@@ -16,26 +17,38 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/signup")
-    public String signupPage() {
+    @GetMapping("/create")
+    public String createUserPage() {
         return "user/form";
     }
 
-    @GetMapping("/users")
-    public String userPage(Model model) {
+    @GetMapping("")
+    public String userListPage(Model model) {
         model.addAttribute("users", userService.findAll());
         return "user/list";
     }
 
-    @PostMapping("/users")
+    @PostMapping("")
     public String createUser(@ModelAttribute UserSaveDto dto) {
         userService.save(dto);
         return "redirect:/users";
     }
 
-    @GetMapping("/users/{id}")
-    public String profilePage(@PathVariable long id, Model model) {
+    @GetMapping("/{id}")
+    public String userDetailPage(@PathVariable Long id, Model model) {
         model.addAttribute("user", userService.findById(id));
         return "user/profile";
+    }
+
+    @GetMapping("/{id}/form")
+    public String userUpdatePage(@PathVariable Long id, Model model) {
+        model.addAttribute("user", userService.findById(id));
+        return "user/updateForm";
+    }
+
+    @PutMapping("/{id}")
+    public String updateUser(@ModelAttribute UserSaveDto dto, @PathVariable Long id) {
+        userService.update(id, dto);
+        return "redirect:/users";
     }
 }

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="kr">
+{{> layout/header}}
+<body>
+    {{> layout/navbar}}
+    <div class="container mw-50">
+        <div class="jumbotron-kakao bg-none">
+            <div class="display-large">{{article.title}}</div>
+        </div>
+        <div class="article-info-kakao">
+            <span class="mr-32">작성자: {{article.writer}}</span>
+            <span class="mr-32">작성일자: {{article.creationTime}}</span>
+        </div>
+        <div class="article-body-kakao">
+            {{article.content}}
+        </div>
+        <a href="/articles" class="btn-kakao pull-right" role="button">목록으로</a>
+    </div>
+    {{> layout/scripts}}
+</body>
+</html>

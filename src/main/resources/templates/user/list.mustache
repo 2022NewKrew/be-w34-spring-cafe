@@ -15,6 +15,7 @@
                     <th class="text-center">닉네임</th>
                     <th class="text-center">이메일</th>
                     <th class="text-center">회원가입일</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,9 @@
                     </td>
                     <td class="text-center">{{email}}</td>
                     <td class="text-center">{{creationTime}}</td>
+                    <td class="text-center">
+                        <a href="/users/{{id}}/form" class="btn-kakao" role="button">수정</a>
+                    </td>
                 </tr>
                 {{/users}}
             </tbody>
