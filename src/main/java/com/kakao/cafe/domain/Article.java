@@ -22,6 +22,23 @@ public class Article {
     private final long createdAt;
 
     public Article(
+            @NonNull final long idxInDB,
+            @NonNull final String userIdInDB,
+            @NonNull final String userNameInDB,
+            @NonNull final String titleInDB,
+            @NonNull final String bodyInDB,
+            @NonNull final long createAtInDB
+    ) throws IllegalArgumentException
+    {
+        this.idx = idxInDB;
+        this.userId = userIdInDB;
+        this.userName = userNameInDB;
+        this.title = titleInDB;
+        this.body = bodyInDB;
+        this.createdAt = createAtInDB;
+    }
+
+    public Article(
             @NonNull final String userId,
             @NonNull final String userName,
             @NonNull final String title,
