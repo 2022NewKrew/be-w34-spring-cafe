@@ -22,6 +22,11 @@ public class UserController {
     private static final UserService userService = new UserService();
     private static final UserView userView = new UserView();
 
+    @GetMapping("/user/list.html")
+    public String getUserListHtml() {
+        return "redirect:../users";
+    }
+
     @GetMapping("/users")
     public String getUsers(Model model) {
         List<UserListDto> userList = userService.getUserList();
