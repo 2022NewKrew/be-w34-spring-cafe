@@ -65,3 +65,34 @@
 * Controller에 상세 페이지 접근 method를 추가하고 URL은 /articles/{index}로 매핑한다.
 * ArrayList에서 index - 1 해당하는 데이터를 조회한 후 Model에 저장해 /qna/show.html에 전달한다.
 * /qna/show.html에서는 Controller에서 전달한 데이터를 활용해 html을 생성한다.
+
+## Step 1-3
+
+### 사용자 데이터를 DB에 저장
+* ORM은 사용하지 않는다.
+* Spring JDBC를 사용한다.
+* DB 저장 및 검색에 필요한 SQL은 직접 작성한다.
+
+### 배포하기
+* 사내 서버(Krane)을 이용해서 배포 실습을 진행한다.
+* [Krane 접속 가이드](https://docs.google.com/document/d/1KautiZ6i57Brd7zG468VamOM5FFMHH28zEwOtzGJx7U/edit#heading=h.6ve4m3bphoxn)
+* [Open JDK 설치 가이드](https://docs.google.com/document/d/1f81XSow0w9vVSpuFX01rCfraO0Cm5NzifId232SMTjQ/edit#)
+
+### 실습 - 게시글 데이터를 DB에 저장 및 조회
+
+#### 게시글 데이터 저장하기
+* Article 클래스를 DB 테이블에 저장할 수 있게 구현한다.
+* Article 테이블이 적절한 PK를 가지도록 구현한다.
+
+#### 게시글 목록 구현하기
+* 전체 게시글 목록 데이터를 DB에서 조회하도록 구현한다.
+
+#### 게세글 상세보기 구현하기
+* 게시글의 세부 내용을 DB에서 가져오도록 구현한다.
+
+### (선택) 회원정보 수정 및 DB에 저장
+
+#### 요구사항
+* 회원 목록에서 회원가입한 사용자의 정보를 수정할 수 있어야 한다.
+* 비밀번호, 이름, 이메일만 수정할 수 있으며, 사용자 아이디는 수정할 수 없다.
+* 비밀번호가 일치하는 경우에만 수정 가능하다.
