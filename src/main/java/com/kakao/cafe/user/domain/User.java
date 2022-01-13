@@ -17,13 +17,13 @@ public class User {
     private final String userId;
 
     @NonNull
-    private final String password;
+    private String password;
 
     @NonNull
-    private final String name;
+    private String name;
 
     @NonNull
-    private final String email;
+    private String email;
 
     private User(String userId, String password, String name, String email) {
         this.userId = userId;
@@ -38,7 +38,7 @@ public class User {
         return new User(userId, password, name, email);
     }
 
-    private static void validateLength(String userId, String password, String name) {
+    private static void validateLength(String userId, String password, String name) throws IllegalArgumentException {
         if (userId.trim().length() == 0 || password.trim().length() == 0 || name.trim().length() == 0) {
             throw new IllegalArgumentException(NON_NULL_EXCEPTION);
         }
@@ -59,5 +59,13 @@ public class User {
 
     public boolean isSameUserByName(String targetUserName) {
         return Objects.equals(this.name, targetUserName);
+    }
+
+    public void update(String password, String name, String email) {
+        validateLength(userId, password, name);
+        validateEmail(email);
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 }

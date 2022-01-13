@@ -39,4 +39,9 @@ public class UserRepositoryImpl implements UserRepository {
                 .filter(user -> user.isSameUserByName(userName))
                 .findFirst().orElse(null);
     }
+
+    @Override
+    public void delete(User user) {
+        currentUsers.remove(user);
+    }
 }

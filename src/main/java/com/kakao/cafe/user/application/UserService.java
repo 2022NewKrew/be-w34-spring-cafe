@@ -6,6 +6,7 @@ import com.kakao.cafe.user.domain.UserRepository;
 import com.kakao.cafe.user.dto.UserListResponse;
 import com.kakao.cafe.user.dto.UserProfileResponse;
 import com.kakao.cafe.user.dto.UserSaveRequest;
+import com.kakao.cafe.user.dto.UserUpdateRequest;
 import com.kakao.cafe.user.infra.UserRepositoryImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -48,5 +49,17 @@ public class UserService {
             EntityNotFoundException.throwNotExistsByField(User.class, "userId", userId);
         }
         return UserProfileResponse.valueOf(user);
+    }
+
+    public void updateById(String userId, UserUpdateRequest userUpdateRequest) {
+        log.info(this.getClass() + ": 개인정보 수정");
+        User user = userRepository.findByIdOrNull(userId);
+        userRepository.delete(user);
+        if(user == null) {
+            EntityNotFoundException.throwNotExistsByField(User.class, "userId", userId);
+        }
+
+        user.update(userUpdateRequest.password, userUpdateRequest.name, userUpdateRequest.email);
+        userRepository.save(user);
     }
 }

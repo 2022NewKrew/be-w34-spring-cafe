@@ -4,6 +4,7 @@ import com.kakao.cafe.user.application.UserService;
 import com.kakao.cafe.user.dto.UserListResponse;
 import com.kakao.cafe.user.dto.UserProfileResponse;
 import com.kakao.cafe.user.dto.UserSaveRequest;
+import com.kakao.cafe.user.dto.UserUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -48,5 +49,21 @@ public class UserController {
         UserProfileResponse userProfileResponse = userService.findById(userId);
         model.put("user", userProfileResponse);
         return new ModelAndView("user/profile", model);
+    }
+
+    @GetMapping("/{userId}/form")
+    public ModelAndView findFormById(@PathVariable String userId, Map<String, Object> model) {
+        log.info(this.getClass() + ": 개인정보 수정 폼");
+        UserProfileResponse userProfileResponse = userService.findById(userId);
+        model.put("user", userProfileResponse);
+        return new ModelAndView("user/updateForm", model);
+    }
+
+    // Use @PutMapping
+    @PostMapping("/{userId}/updates")
+    public String updateById(@PathVariable String userId, UserUpdateRequest userUpdateRequest) {
+        log.info(this.getClass() + " 개인정보 수정");
+        userService.updateById(userId, userUpdateRequest);
+        return "redirect:/users";
     }
 }
