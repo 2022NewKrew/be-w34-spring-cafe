@@ -22,8 +22,8 @@ public class CafeUserDaoImpl implements CafeUserDao {
 
     @Override
     public boolean signUp(User newUser) {
-        String sql = "INSERT INTO member (userId, password, email)\n";
-        sql += "VALUES (?,?,?)";
+        String sql = "INSERT INTO member (userId, password, email)\n"
+                + "VALUES (?,?,?)";
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,newUser.getUserId());
@@ -62,8 +62,8 @@ public class CafeUserDaoImpl implements CafeUserDao {
     @Override
     public User getUserProfile(String userId) {
         User selectedUser = null;
-        String sql = "SELECT email FROM member\n";
-        sql += "WHERE userId=?";
+        String sql = "SELECT email FROM member\n"
+                + "WHERE userId=?";
 
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);

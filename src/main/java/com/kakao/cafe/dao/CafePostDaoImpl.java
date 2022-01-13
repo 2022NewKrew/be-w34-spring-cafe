@@ -22,8 +22,8 @@ public class CafePostDaoImpl implements CafePostDao {
 
     @Override
     public boolean writePost(Post newPost) {
-        String sql = "INSERT INTO post(userId, title, content)\n";
-        sql += "VALUES (?,?,?)";
+        String sql = "INSERT INTO post(userId, title, content)\n"
+                + "VALUES (?,?,?)";
 
         try(Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -68,8 +68,8 @@ public class CafePostDaoImpl implements CafePostDao {
     @Override
     public Post getPostContent(int postId) {
         Post selectedPost = null;
-        String sql = "SELECT userId, title, content, SUBSTR(createdAt,1,19) AS createdAt FROM post\n";
-        sql += "WHERE postId=?";
+        String sql = "SELECT userId, title, content, SUBSTR(createdAt,1,19) AS createdAt FROM post\n"
+                + "WHERE postId=?";
 
         try ( Connection conn = dataSource.getConnection() ) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
