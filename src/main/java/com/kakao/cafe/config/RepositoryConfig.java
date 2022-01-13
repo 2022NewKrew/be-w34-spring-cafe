@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 @Configuration
 public class RepositoryConfig {
+    // 어떤 repository 구현체를 사용할지 결정하는 설정파일
 
     private final JdbcUserRepository jdbcUserRepository;
     private final JdbcArticleRepository jdbcArticleRepository;

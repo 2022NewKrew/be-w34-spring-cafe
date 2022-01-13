@@ -2,12 +2,13 @@ package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository {
 
     void save(User user);
 
-    User findByUserId(String userId);
+    Optional<User> findByUserId(String userId);
 
     List<User> findAll();
 
