@@ -11,13 +11,13 @@
                 </tr>
               </thead>
               <tbody>
-              {{#UsersListResponseDto}}
+              {{#users}}
               {{#users}}
                 <tr>
                     <th scope="row">{{id}}</th> <td>{{accId}}</td> <td><a href="/users/{{id}}">{{name}}</a></td> <td>{{email}}</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
                 </tr>
               {{/users}}
-              {{/UsersListResponseDto}}
+              {{/users}}
               </tbody>
           </table>
         </div>
