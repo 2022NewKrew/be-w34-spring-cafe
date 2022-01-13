@@ -2,7 +2,9 @@ package com.kakao.cafe.domain;
 
 import com.kakao.cafe.utility.ArticleException;
 import com.kakao.cafe.utility.ErrorCode;
+import lombok.Getter;
 
+@Getter
 public class Contents {
     private final String contents;
 
