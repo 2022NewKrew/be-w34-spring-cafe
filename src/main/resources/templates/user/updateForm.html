@@ -19,15 +19,16 @@
         <header class="post-header">
             <p class="title">회원정보 수정</p>
         </header>
-        <form class="info-container" method="post" action="/users">
+        <form class="info-container" method="post" action="/users/{{user.id}}">
+            <input type="hidden" name="_method" value="put" />
             <div class="form-group">
                 <label for="email">이메일</label>
                 <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" placeholder="이메일을 입력하세요">
             </div>
             {{#email}}<span class="text-warning">{{this}}</span>{{/email}}
             <div class="form-group">
-                <label for="userId">닉네임</label>
-                <input class="form-control" id="userId" name="nickname" value="{{user.nickname}}" placeholder="닉네입을 입력하세요">
+                <label for="nickname">닉네임</label>
+                <input class="form-control" id="nickname" name="nickname" value="{{user.nickname}}" placeholder="닉네임을 입력하세요">
             </div>
             {{#nickname}}<span class="text-warning">{{this}}</span>{{/nickname}}
             <div class="form-group">

@@ -50,11 +50,12 @@ public class UserService {
         userRepository.update(User.builder()
                 .id(id)
                 .email(request.getEmail())
-                .nickname(request.getNickName())
+                .nickname(request.getNickname())
                 .password(request.getPassword())
                 .createdAt(savedUser.getCreatedAt())
                 .updatedAt(LocalDateTime.now())
                 .build()
         );
     }
+
 }

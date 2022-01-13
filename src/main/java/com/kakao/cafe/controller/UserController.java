@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.model.user.UserDto;
 import com.kakao.cafe.model.user.UserSignupRequest;
+import com.kakao.cafe.model.user.UserUpdateRequest;
 import com.kakao.cafe.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -69,6 +71,27 @@ public class UserController {
             rttr.addFlashAttribute("msg", e.getMessage());
             return "redirect:/users";
         }
+    }
+
+    @PutMapping("/users/{id}")
+    public String updateUser(
+            @PathVariable long id,
+            @Valid UserUpdateRequest request,
+            Errors errors,
+            RedirectAttributes rttr) {
+        if (errors.hasFieldErrors()) {
+            errors.getFieldErrors().forEach(error -> rttr.addFlashAttribute(error.getField(), error.getDefaultMessage()));
+            return "redirect:/users/" + id + "/update";
+        }
+        try {
+            userService.updateUser(id, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rttr.addFlashAttribute("msg", e.getMessage());
+            return "redirect:/users/" + id + "/update";
+        }
+        rttr.addFlashAttribute("msg", "회원 정보를 수정하였습니다.");
+        return "redirect:/users";
     }
 
 }

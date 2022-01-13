@@ -161,7 +161,7 @@ class UserServiceTest {
         String updatedPassword = "test";
         UserUpdateRequest updateRequest = UserUpdateRequest.builder()
                 .email(updatedEmail)
-                .nickName(updatedNickname)
+                .nickname(updatedNickname)
                 .currentPassword(user.getPassword())
                 .password(updatedPassword)
                 .build();
@@ -187,7 +187,7 @@ class UserServiceTest {
         String updatedPassword = "test";
         UserUpdateRequest updateRequest = UserUpdateRequest.builder()
                 .email(updatedEmail)
-                .nickName(updatedNickname)
+                .nickname(updatedNickname)
                 .currentPassword(user.getPassword())
                 .password(updatedPassword)
                 .build();
@@ -206,7 +206,7 @@ class UserServiceTest {
         String updatedPassword = "test";
         UserUpdateRequest updateRequest = UserUpdateRequest.builder()
                 .email(updatedEmail)
-                .nickName(updatedNickname)
+                .nickname(updatedNickname)
                 .currentPassword(user.getPassword() + 1)
                 .password(updatedPassword)
                 .build();
@@ -232,7 +232,7 @@ class UserServiceTest {
         String updatedPassword = "test";
         UserUpdateRequest updateRequest = UserUpdateRequest.builder()
                 .email(updatedEmail)
-                .nickName(updatedNickname)
+                .nickname(updatedNickname)
                 .currentPassword(user.getPassword())
                 .password(updatedPassword)
                 .build();
@@ -251,7 +251,7 @@ class UserServiceTest {
         String updatedPassword = "test";
         UserUpdateRequest updateRequest = UserUpdateRequest.builder()
                 .email(updatedEmail)
-                .nickName(updatedNickname)
+                .nickname(updatedNickname)
                 .currentPassword(user.getPassword())
                 .password(updatedPassword)
                 .build();
