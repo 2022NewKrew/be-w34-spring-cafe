@@ -47,7 +47,7 @@ public class ArticleController {
         if (article.isEmpty()) {
             return "error/404";
         }
-        model.addAttribute("article", article);
+        model.addAttribute("article", article.get());
         return "article/show";
     }
 }

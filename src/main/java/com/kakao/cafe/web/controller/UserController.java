@@ -62,7 +62,7 @@ public class UserController {
         if (user.isEmpty()) {
             return "error/404";
         }
-        model.addAttribute("user", user);
+        model.addAttribute("user", user.get());
         return "user/profile";
     }
 
