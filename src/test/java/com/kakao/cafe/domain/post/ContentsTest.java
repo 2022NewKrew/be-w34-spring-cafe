@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 public class ContentsTest {
     @Test
-    void nullInitSuccess(){
+    void nullInitSuccess() {
         new Contents(null);
     }
 }

@@ -1,7 +1,5 @@
 package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.model.UserModel;
-
 import java.util.Objects;
 
 public class User {
@@ -17,23 +15,18 @@ public class User {
         this.password = password;
     }
 
-    public User(String email, String id, String name, String password){
+    public User(String email, String id, String name, String password) {
         this.email = new Email(email);
         this.id = new ID(id);
         this.name = new Name(name);
         this.password = new Password(password);
     }
 
-    public User(UserModel userModel){
-        this(userModel.getEmail(), userModel.getUserId(), userModel.getName(), userModel.getPassword());
-    }
-
-    private User(Builder builder){
+    private User(Builder builder) {
         this(builder.email, builder.id, builder.name, builder.password);
     }
 
-
-    public boolean isUserId(String userId){
+    public boolean isUserId(String userId) {
         return id.is(userId);
     }
 
@@ -99,12 +92,12 @@ public class User {
             return this;
         }
 
-        public Builder id(String id){
+        public Builder id(String id) {
             this.id = id;
             return this;
         }
 
-        public Builder name(String name){
+        public Builder name(String name) {
             this.name = name;
             return this;
         }

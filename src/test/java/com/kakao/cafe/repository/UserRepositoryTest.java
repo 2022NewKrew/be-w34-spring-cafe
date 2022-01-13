@@ -2,17 +2,16 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.Users;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-@TestPropertySource("classpath:application.properties")
 public class UserRepositoryTest {
 
     @Autowired
@@ -23,67 +22,107 @@ public class UserRepositoryTest {
         userRepository.deleteAll();
     }
 
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
+    @Test
+    void insertDuplicateFailTest() {
+        User user = new User.Builder()
+                .name("윤렬")
+                .id("yunyul")
+                .password("asdf")
+                .email("yunyul3@gmail.com")
+                .build();
+        userRepository.insert(user);
+        User user2 = new User.Builder()
+                .name("윤렬")
+                .id("yunyul")
+                .password("asdf")
+                .email("yunyul3@gmail.com")
+                .build();
+
+        assertThat(userRepository.insert(user2)).isFalse();
+
     }
 
+    @Test
+    void insertAndFindByIdTest() {
+        User user = new User.Builder()
+                .name("윤렬")
+                .id("yunyul")
+                .password("asdf")
+                .email("yunyul3@gmail.com")
+                .build();
+        userRepository.insert(user);
+
+        Optional<User> userOptional = userRepository.findById(user.getId());
+        assertThat(userOptional.get()).isNotNull();
+        User userById = userOptional.get();
+        assertThat(userById.getId()).isEqualTo(user.getId());
+
+    }
 
     @Test
-    void insertAndFindTest() {
+    void findNullTest() {
         User user = new User.Builder()
-                .email("email@kakao")
+                .name("윤렬")
                 .id("yunyul")
-                .password("1q2w3e4r")
-                .name("윤렬").build();
-
+                .password("asdf")
+                .email("yunyul3@gmail.com")
+                .build();
         userRepository.insert(user);
-        User user2 = userRepository.findById(user.getId());
-        assertThat(
-                (user.getEmail().equals(user2.getEmail())) &&
-                        (user.getPassword().equals(user2.getPassword())) &&
-                        (user.getName().equals(user2.getName()))
-        ).isTrue();
-
+        Optional<User> userOptional = userRepository.findById("nobody");
+        assertThat(userOptional.isEmpty()).isTrue();
     }
 
     @Test
     void findAllTest() {
         User user = new User.Builder()
-                .email("email@kakao")
+                .name("윤렬")
                 .id("yunyul")
-                .password("1q2w3e4r")
-                .name("윤렬").build();
-        User user2 = new User.Builder()
-                .email("email@kakao")
-                .id("yunyul2")
-                .password("1q2w3e4r")
-                .name("윤렬").build();
+                .password("asdf")
+                .email("yunyul3@gmail.com")
+                .build();
         userRepository.insert(user);
-        userRepository.insert(user2);
         Users users = userRepository.findAll();
-        assertThat(users.size()).isEqualTo(2);
+        assertThat(users.size()).isEqualTo(1);
     }
 
     @Test
-    void userUpdateTest() {
-        User user = new User.Builder()
-                .email("email@kakao")
-                .id("yunyul")
-                .password("1q2w3e4r")
-                .name("윤렬").build();
-        User user2 = new User.Builder()
-                .email("email@naver")
-                .id("yunyul")
-                .password("qwert12345")
-                .name("윤렬change").build();
-        userRepository.insert(user);
-        userRepository.update(user2);
+    void findAllEmptyTest() {
+        Users users = userRepository.findAll();
+        assertThat(users.size()).isEqualTo(0);
+    }
 
-        User newInfo = userRepository.findById(user.getId());
-        assertThat(newInfo.getEmail().equals(user2.getEmail())).isTrue();
+    @Test
+    void updateTest() {
+        User user = new User.Builder()
+                .name("윤렬")
+                .id("yunyul")
+                .password("asdf")
+                .email("yunyul3@gmail.com")
+                .build();
+        User userNew = new User.Builder()
+                .name("윤렬new")
+                .id("yunyul")
+                .password("asdf")
+                .email("yunyul3@gmail.com")
+                .build();
+        userRepository.insert(user);
+        boolean res = userRepository.update(userNew);
+        assertThat(res).isTrue();
+        User userRes = userRepository.findById(user.getId()).get();
+        assertThat(userRes.getId()).isEqualTo(userNew.getId());
 
     }
 
+    @Test
+    void updateFailTest() {
+        User user = new User.Builder()
+                .name("윤렬")
+                .id("yunyul")
+                .password("asdf")
+                .email("yunyul3@gmail.com")
+                .build();
+        boolean res = userRepository.update(user);
+        assertThat(res).isFalse();
+    }
 
 }

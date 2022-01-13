@@ -9,16 +9,16 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 public class TitleTest {
 
     @ParameterizedTest
-    @ValueSource(strings={"  ", ""})
-    void initFailTest(String input){
-        assertThatThrownBy(()->{
+    @ValueSource(strings = {"  ", ""})
+    void initFailTest(String input) {
+        assertThatThrownBy(() -> {
             new Title(input);
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void nullFailTest(){
-        assertThatThrownBy(()->{
+    void nullFailTest() {
+        assertThatThrownBy(() -> {
             new Title(null);
         }).isInstanceOf(IllegalArgumentException.class);
     }

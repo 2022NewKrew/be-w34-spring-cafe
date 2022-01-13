@@ -7,7 +7,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class UsersTest {
 
     @Test
-    void isUserIdTest(){
+    void isUserIdTest() {
         Users users = new Users();
         User user1 = new User("email1@kakao.com", "id1", "testman", "testtest");
         User user2 = new User("email1@kakao.com", "id2", "testman", "testtest");

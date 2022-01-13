@@ -4,9 +4,8 @@ public class Contents {
 
     private final String contents;
 
-    public Contents(String contents){
-        if(contents == null)
-            contents = "";
+    public Contents(String contents) {
+        if (contents == null) contents = "";
         this.contents = contents;
     }
 

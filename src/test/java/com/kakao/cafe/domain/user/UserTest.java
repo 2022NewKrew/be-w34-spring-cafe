@@ -7,7 +7,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class UserTest {
 
     @Test
-    void initByBuilderTest(){
+    void initByBuilderTest() {
         new User.Builder()
                 .email("email@kakao")
                 .id("2")

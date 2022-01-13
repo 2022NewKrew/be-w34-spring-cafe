@@ -1,7 +1,5 @@
 package com.kakao.cafe.domain.post;
 
-import com.kakao.cafe.model.PostModel;
-
 public class Post {
 
     private final Title title;
@@ -9,11 +7,12 @@ public class Post {
     private final Contents contents;
     private long id = -1;
 
-    public Post(PostModel postModel) {
-        this.title = new Title(postModel.getTitle());
-        this.writer = new Writer(postModel.getWriter());
-        this.contents = new Contents(postModel.getContents());
+    public Post(String title, String writer, String contents) {
+        this.title = new Title(title);
+        this.writer = new Writer(writer);
+        this.contents = new Contents(contents);
     }
+
 
     public Post(String title, String writer, String contents, long id) {
         this.title = new Title(title);
