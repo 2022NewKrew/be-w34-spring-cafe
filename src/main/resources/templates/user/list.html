@@ -23,8 +23,8 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="/">메인 페이지</a></li>
-            <li><a class="black-component" href="/users/login.html" role="button">로그인</a></li>
-            <li><a class="black-component" href="/users/form.html" role="button">회원가입</a></li>
+            <li><a class="black-component" href="/user/login.html" role="button">로그인</a></li>
+            <li><a class="black-component" href="/user/form.html" role="button">회원가입</a></li>
         </ul>
     </div>
 </nav>
@@ -36,8 +36,7 @@
     </div>
 </div>
 
-{{#UserList}}
-<p class="total_num">전체 멤버 {{totalCount}}</p>
+<p class="total_num">전체 멤버 {{usersCount}}</p>
 
 <div class="container" id="main">
     <div class="col-md-10 col-md-offset-1">
@@ -49,20 +48,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                {{#userList}}
+                {{#users}}
                 <tr>
-                    <td>{{userIdx}}</td> <td>{{nickName}}</td> <td>{{email}}</td><td>{{createdDate}}</td>
+                    <td>{{id}}</td> <td>{{nickName}}</td> <td>{{email}}</td> <td>{{created}}</td>
                     <td>
-                        <a class="btn" href="/user/{{userIdx}}" role="button">보기</a>
+                        <a class="btn" href="/users/{{nickName}}" role="button">보기</a>
                     </td>
                 </tr>
-                {{/userList}}
+                {{/users}}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 </div>
-{{/UserList}}
 </body>
 </html>

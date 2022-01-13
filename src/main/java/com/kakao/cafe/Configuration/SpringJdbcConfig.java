@@ -1,4 +1,4 @@
-package com.kakao.cafe.Config;
+package com.kakao.cafe.Configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +16,7 @@ public class SpringJdbcConfig {
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("kakaodb")
                 .addScript("classpath:schema.sql")
-                .addScript("classpath:data.sql").build();
+                .addScript("classpath:data.sql")
+                .build();
     }
 }
