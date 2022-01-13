@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.AuthDto;
 import com.kakao.cafe.dto.PageRequestDto;
 import com.kakao.cafe.dto.PostDto;
 import com.kakao.cafe.service.PostService;
@@ -22,8 +23,12 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/new")
-    public String writePostForm() {
-        return "board/write_post";
+    public String writePostForm(HttpSession session) {
+        AuthDto authDto = (AuthDto) session.getAttribute("auth");
+        if (authDto == null) {
+            return "redirect:/accounts/login";
+        }
+        return "post_write";
     }
 
     @GetMapping("/{postId}")
@@ -34,6 +39,10 @@ public class PostController {
 
     @PostMapping
     public String writePost(PostDto postDto, HttpSession session) {
+        AuthDto authDto = (AuthDto) session.getAttribute("auth");
+        if (authDto == null) {
+            return "redirect:/accounts/login";
+        }
         return "redirect:/posts/" + postService.register(postDto);
     }
 

@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.AuthDto;
+import com.kakao.cafe.dto.EditUserDto;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -51,24 +52,53 @@ public class AccountController {
         return "redirect:/";
     }
 
+    @GetMapping("/mypage")
+    public String myPage(HttpSession session, Model model) {
+        AuthDto authDto = (AuthDto) session.getAttribute("auth");
+        if (authDto == null) {
+            return "redirect:/accounts/login";
+        }
+        model.addAttribute("user", userService.getUser(authDto));
+        return "user/mypage";
+    }
+
     @GetMapping("/mypage/edit")
-    public String editMyAccountForm() {
-        return "todo"; // TODO
+    public String editMyPageForm(HttpSession session, Model model) {
+        AuthDto authDto = (AuthDto) session.getAttribute("auth");
+        if (authDto == null) {
+            return "redirect:/accounts/login";
+        }
+        model.addAttribute("user", userService.getUser(authDto));
+        return "user/mypage_edit";
     }
 
-    @PutMapping("/mypage/edit")
-    public String editMyAccount() {
-        return "todo"; // TODO
+    @PostMapping("/mypage/edit")
+    public String editMyPage(HttpSession session, EditUserDto editUserDto) {
+        AuthDto authDto = (AuthDto) session.getAttribute("auth");
+        if (authDto == null) {
+            return "redirect:/accounts/login";
+        }
+        log.info("accounts/mypage/edit" + editUserDto);
+        userService.
+        return "redirect:/accounts/mypage";
     }
 
-    @GetMapping("/mypage/delete")
-    public String deleteMyAccountForm() {
-        return "todo"; // TODO
+    @GetMapping("/delete")
+    public String deleteMyAccountForm(HttpSession session) {
+        AuthDto authDto = (AuthDto) session.getAttribute("auth");
+        if (authDto == null) {
+            return "redirect:/accounts/login";
+        }
+        return "user/delete";
     }
 
-    @DeleteMapping("/mypage/edit")
-    public String deleteMyAccount() {
-        return "todo"; // TODO
+    @DeleteMapping("/delete")
+    public String deleteMyAccount(HttpSession session) {
+        AuthDto authDto = (AuthDto) session.getAttribute("auth");
+        if (authDto == null) {
+            return "redirect:/accounts/login";
+        }
+        return "redirect:/";
     }
 
 }

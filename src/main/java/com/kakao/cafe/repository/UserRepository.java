@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Repository
@@ -48,12 +49,17 @@ public class UserRepository {
         userList.add(entity.init());
     }
 
-    public User findbyIdAndPassword(User entity) throws Exception {
+    public Optional<User> findbyEmail(User entity) {
+        return userList.stream()
+                .filter(user -> user.getEmail().equals(entity.getEmail()))
+                .findFirst();
+    }
+
+    public Optional<User> findbyEmailAndPassword(User entity) {
         return userList.stream()
                 .filter(user -> user.getEmail().equals(entity.getEmail()))
                 .filter(user -> user.getPassword().equals(entity.getPassword()))
-                .findFirst()
-                .orElseThrow(() -> new Exception("Login Error"));
+                .findFirst();
     }
 
     public Page<User> findAll(Pageable pageable) {
