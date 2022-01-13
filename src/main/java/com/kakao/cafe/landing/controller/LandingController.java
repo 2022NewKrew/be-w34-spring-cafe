@@ -1,6 +1,6 @@
 package com.kakao.cafe.landing.controller;
 
-import com.kakao.cafe.article.model.ArticlePreviewDto;
+import com.kakao.cafe.article.dto.ArticlePreviewDto;
 import com.kakao.cafe.article.service.ArticleService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;

@@ -1,9 +1,9 @@
 package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.model.Article;
-import com.kakao.cafe.article.model.ArticlePostDto;
-import com.kakao.cafe.article.model.ArticlePreviewDto;
-import com.kakao.cafe.article.model.ArticleRequest;
+import com.kakao.cafe.article.dto.ArticlePostDto;
+import com.kakao.cafe.article.dto.ArticlePreviewDto;
+import com.kakao.cafe.article.dto.ArticleRequest;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
