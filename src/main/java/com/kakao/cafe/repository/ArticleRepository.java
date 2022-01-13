@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository;
 
+import com.kakao.cafe.dto.ArticleRegistrationDto;
 import com.kakao.cafe.vo.Article;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +12,8 @@ import java.util.Objects;
 public class ArticleRepository {
     private final List<Article> articles = new ArrayList<>();
 
-    public void createArticle(Article article) {
-        article.setArticleId(articles.size() + 1);
+    public void createArticle(ArticleRegistrationDto articleDto) {
+        Article article = new Article(articles.size()+1, articleDto.getTitle(), articleDto.getContent());
         articles.add(article);
     }
 

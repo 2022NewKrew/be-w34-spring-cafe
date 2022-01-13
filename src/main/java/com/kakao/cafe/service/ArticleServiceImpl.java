@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.dto.ArticleRegistrationDto;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.vo.Article;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class ArticleServiceImpl implements ArticleService{
     ArticleRepository articleRepository;
 
     @Override
-    public void write(Article article) {
-        articleRepository.createArticle(article);
+    public void write(ArticleRegistrationDto articleDto) {
+        articleRepository.createArticle(articleDto);
     }
 
     @Override

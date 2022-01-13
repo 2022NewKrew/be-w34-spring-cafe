@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.ArticleRegistrationDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.vo.Article;
 import org.slf4j.Logger;
@@ -33,8 +34,8 @@ public class ArticleController {
 
 
     @PostMapping
-    public String article(Article article) {
-        articleService.write(article);
+    public String article(ArticleRegistrationDto articleDto) {
+        articleService.write(articleDto);
         return "redirect:/articles";
     }
 
