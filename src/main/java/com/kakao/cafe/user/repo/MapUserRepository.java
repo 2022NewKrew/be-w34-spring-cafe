@@ -1,6 +1,5 @@
 package com.kakao.cafe.user.repo;
 
-import com.kakao.cafe.common.CrRepository;
 import com.kakao.cafe.user.model.User;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Repository
-public class MapUserRepository implements CrRepository<User> {
+public class MapUserRepository implements UserRepository {
     private static final AtomicLong ID_COUNTER = new AtomicLong();
     private final Map<Long, User> map = new HashMap<>();
 
@@ -34,6 +33,7 @@ public class MapUserRepository implements CrRepository<User> {
         return id;
     }
 
+    @Override
     public Optional<User> fetchByUserId(String userId) {
         return map.values()
                 .stream()
@@ -41,6 +41,7 @@ public class MapUserRepository implements CrRepository<User> {
                 .findFirst();
     }
 
+    @Override
     public int getUserCount() {
         return map.size();
     }
