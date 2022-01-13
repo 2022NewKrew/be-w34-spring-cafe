@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 public class UserAccount {
 
     private final Long userAccountId;
-    private final String username;
+    private String username;
     private final String password;
-    private final String email;
+    private String email;
     private final LocalDateTime createdAt;
 
     @Builder
@@ -27,15 +27,15 @@ public class UserAccount {
         this.createdAt = createdAt;
     }
 
+    public void updateUsername(String username) {
+        this.username = username;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
     public boolean checkEmail(String email) {
         return this.email.equals(email);
-    }
-
-    public Long getUserAccountId() {
-        return userAccountId;
-    }
-
-    public String getUsername() {
-        return username;
     }
 }
