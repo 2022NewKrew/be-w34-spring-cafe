@@ -1,0 +1,87 @@
+{{>template/header}}
+<div class="card" style="border: 0;">
+    <article class="card-body mx-auto" style="width: 1000px;">
+        <h2 class="card-title m-3 text-center">글 조회</h2>
+        {{#article}}
+        <div class="mt-1 mb-1 float-end">
+            <form method="post" action="/board/delete/{{articleId}}">
+                <input type="hidden" name="_method" value="delete"/>
+                <button type="button" class="btn btn-dark" onclick="location.href='/board/modify/{{articleId}}'">수정</button>
+                <button type="submit" class="btn btn-dark">삭제</button>
+            </form>
+        </div>
+        <table class="table table-borderless align-middle">
+            <tr>
+                <th class="text-end" style="width: 100px">
+                    제목: &nbsp;
+                </th>
+                <td>
+                    {{title}}
+                </td>
+            </tr>
+            <tr>
+                <th class="text-end" style="width: 100px">
+                    작성자: &nbsp;
+                </th>
+                <td>
+                    {{writerId}}
+                </td>
+            </tr>
+            <tr>
+                <th class="text-end" style="width: 100px">
+                    작성일자: &nbsp;
+                </th>
+                <td>
+                    {{formattedDate}}
+                </td>
+            </tr>
+            <tr>
+                <th class="text-end" style="width: 100px">
+                    내용: &nbsp;
+                </th>
+                <td>
+                    {{content}}
+                </td>
+            </tr>
+        </table>
+        <div class="mt-1">
+            <form method="post" action="/board/write/comment">
+                <input type="hidden" name="articleId" value="{{articleId}}">
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <input type="text" name="writerId" class="form-control" placeholder="작성자" required>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" name="content" class="form-control" placeholder="댓글을 입력해주세요" required>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-dark">작성</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="table table-borderless align-middle mt-1">
+            {{#comments}}
+            <tr>
+                <th class="text-end" style="width: 130px">
+                    {{writerId}}
+                </th>
+                <td>
+                    {{content}}
+                </td>
+                <td style="width: 250px">
+                    {{formattedDate}}
+                </td>
+                <td style="width: 70px">
+                    <form method="post" action="/board/delete/{{articleId}}/{{commentId}}">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <button type="submit" class="btn btn-dark">삭제</button>
+                    </form>
+                </td>
+            </tr>
+            {{/comments}}
+        </table>
+        {{/article}}
+    </article>
+</div>
+{{>template/footer}}

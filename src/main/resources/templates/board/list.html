@@ -1,0 +1,33 @@
+{{>template/header}}
+<div class="card" style="border: 0;">
+    <article class="card-body mx-auto" style="width: 1000px;">
+        <h2 class="card-title m-3 text-center">글쓰기</h2>
+        <table class="table table-hover text-center">
+            <thead>
+            <tr>
+                <th style="width: 70px">번호</th>
+                <th>제목</th>
+                <th style="width: 130px">작성자</th>
+                <th style="width: 250px">작성일자</th>
+            </tr>
+            </thead>
+            <tbody class="align-middle">
+            {{#articles}}
+            <tr>
+                <td>{{articleId}}</td>
+                <td><a href="/board/view/{{articleId}}">{{title}}</a></td>
+                <td>{{writerId}}</a></td>
+                <td>{{formattedDate}}</td>
+            </tr>
+            {{/articles}}
+            </tbody>
+        </table>
+        {{^articles}}
+        <h3 class="mt-5 text-center">글이 존재하지 않습니다.</h3>
+        {{/articles}}
+        <div class="mt-5 float-end">
+            <button type="button" class="btn btn-dark" onclick="location.href='/board/write'">글쓰기</button>
+        </div>
+    </article>
+</div>
+{{>template/footer}}

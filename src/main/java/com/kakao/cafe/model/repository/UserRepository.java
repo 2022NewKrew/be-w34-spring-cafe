@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
-    boolean insertUser(User user);
-    List<User> selectAllUsers();
-    Optional<User> selectUserByID(String id);
-    Optional<User> selectUserByLoginInfo(String id, String password);
-    boolean updateUser(User user);
-    boolean deleteUser(String id, String password);
+    boolean saveUser(User user);
+
+    List<User> findAllUsers();
+    Optional<User> findUserById(Long id);
+    Optional<User> findUserByUserId(String userId);
+    Optional<User> findUserByLoginInfo(String userId, String password);
+
+    boolean modifyUser(User user);
+
+    boolean deleteUser(String userId, String password);
 }

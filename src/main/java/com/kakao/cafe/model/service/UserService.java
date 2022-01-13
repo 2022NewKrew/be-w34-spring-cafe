@@ -1,15 +1,18 @@
 package com.kakao.cafe.model.service;
 
-import com.kakao.cafe.model.domain.User;
+import com.kakao.cafe.model.dto.UserDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
-    boolean registerUser(User user);
-    List<User> findAllUsers();
-    User findUserByID(String id);
-    User findUserByLoginInfo(String id, String password);
-    boolean modifyUser(User user);
-    boolean withdrawUser(String id, String password);
+    void registerUser(UserDto userDto);
+
+    List<UserDto> findAllUsers();
+    UserDto findUserById(Long id);
+    UserDto findUserByUserId(String userId);
+    UserDto findUserByLoginInfo(String userId, String password, String errorMessage);
+
+    void modifyUser(UserDto userDto);
+
+    void withdrawUser(String userId, String password);
 }

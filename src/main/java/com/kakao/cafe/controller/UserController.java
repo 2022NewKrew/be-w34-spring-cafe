@@ -1,25 +1,19 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.domain.User;
+import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kakao.cafe.util.exception.UserDuplicatedException;
+import com.kakao.cafe.util.exception.UserNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
-
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("/register")
     public String goRegisterView() {
@@ -27,8 +21,14 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String userRegister(User user) {
-        userService.registerUser(user);
+    public String userRegister(UserDto userDto, Model model) {
+        try {
+            userService.registerUser(userDto);
+        } catch (UserDuplicatedException e) {
+            model.addAttribute("user", userDto);
+            model.addAttribute("idErrorMessage", e.getMessage());
+            return "user/register";
+        }
         return "redirect:/user/list";
     }
 
@@ -38,9 +38,33 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/view/{id}")
-    public String userView(@PathVariable("id") String id, Model model) {
-        model.addAttribute("user", userService.findUserByID(id));
+    @GetMapping("/view/{userId}")
+    public String userView(@PathVariable("userId") String userId, Model model) {
+        model.addAttribute("user", userService.findUserByUserId(userId));
         return "user/view";
+    }
+
+    @PostMapping("/modify")
+    public String goUserModifyView(String userId, Model model) {
+        model.addAttribute("user", userService.findUserByUserId(userId));
+        return "user/modify";
+    }
+
+    @PutMapping("/modify")
+    public String userModify(UserDto userDto, String newPassword, Model model) {
+        try {
+            userService.findUserByLoginInfo(userDto.getUserId(), userDto.getPassword(), "비밀번호가 일치하지 않습니다.");
+        } catch (UserNotFoundException e) {
+            model.addAttribute("user", userDto);
+            model.addAttribute("notMatchedErrorMessage", e.getMessage());
+            return "user/modify";
+        }
+
+        userService.modifyUser(UserDto.builder()
+                .userId(userDto.getUserId())
+                .password(newPassword)
+                .name(userDto.getName())
+                .email(userDto.getEmail()).build());
+        return "redirect:/user/list";
     }
 }

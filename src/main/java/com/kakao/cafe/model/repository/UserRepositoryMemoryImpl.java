@@ -1,70 +1,99 @@
 package com.kakao.cafe.model.repository;
 
 import com.kakao.cafe.model.domain.User;
+import com.kakao.cafe.util.exception.UserNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
 public class UserRepositoryMemoryImpl implements UserRepository {
-    private final Map<String, User> userMap = new HashMap<>();
+    private static final Map<Long, User> storedUsers = new HashMap<>();
+    private static long maxID = 0L;
+
+    private User findUserInStoredUsers(long id) {
+        return storedUsers.get(id);
+    }
+
+    private User findUserInStoredUsers(String userId) {
+        return storedUsers.values().stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private User findUserInStoredUsers(String userId, String password) {
+        return storedUsers.values().stream()
+                .filter(user -> user.getUserId().equals(userId) && user.getPassword().equals(password))
+                .findFirst()
+                .orElse(null);
+    }
 
     @Override
-    public boolean insertUser(User user) {
-        if (userMap.containsKey(user.getId())) {
+    public boolean saveUser(User user) {
+        if (findUserInStoredUsers(user.getUserId()) != null) {
             return false;
         }
 
-        userMap.put(user.getId(), user);
-        return false;
-    }
-
-    @Override
-    public List<User> selectAllUsers() {
-        List<User> userList = new ArrayList<>();
-
-        for (Map.Entry<String, User> entry : userMap.entrySet()) {
-            userList.add(entry.getValue());
-        }
-
-        return userList;
-    }
-
-    @Override
-    public Optional<User> selectUserByID(String id) {
-        if (!userMap.containsKey(id)) {
-            return Optional.empty();
-        }
-
-        return Optional.of(userMap.get(id));
-    }
-
-    @Override
-    public Optional<User> selectUserByLoginInfo(String id, String password) {
-        if (!userMap.containsKey(id) || !userMap.get(id).getPassword().equals(password)) {
-            return Optional.empty();
-        }
-
-        return Optional.of(userMap.get(id));
-    }
-
-    @Override
-    public boolean updateUser(User user) {
-        if (!userMap.containsKey(user.getId())) {
-            return false;
-        }
-
-        userMap.put(user.getId(), user);
+        User newUser = User.builder()
+                .id(maxID++)
+                .userId(user.getUserId())
+                .password(user.getPassword())
+                .name(user.getName())
+                .email(user.getEmail())
+                .build();
+        storedUsers.put(newUser.getId(), newUser);
         return true;
     }
 
     @Override
-    public boolean deleteUser(String id, String password) {
-        if (!userMap.containsKey(id) || !userMap.get(id).getPassword().equals(password)) {
+    public List<User> findAllUsers() {
+        return new ArrayList<>(storedUsers.values());
+    }
+
+    @Override
+    public Optional<User> findUserById(Long id) {
+        return Optional.ofNullable(findUserInStoredUsers(id));
+    }
+
+    @Override
+    public Optional<User> findUserByUserId(String userId) {
+        return Optional.ofNullable(findUserInStoredUsers(userId));
+    }
+
+    @Override
+    public Optional<User> findUserByLoginInfo(String userId, String password) {
+        return Optional.ofNullable(findUserInStoredUsers(userId, password));
+    }
+
+    @Override
+    public boolean modifyUser(User user) {
+        User foundUser = findUserInStoredUsers(user.getUserId());
+
+        if (foundUser == null) {
             return false;
         }
 
-        userMap.remove(id);
+        User newUser = User.builder()
+                .id(foundUser.getId())
+                .userId(user.getUserId())
+                .password(user.getPassword())
+                .name(user.getName())
+                .email(user.getEmail())
+                .build();
+        storedUsers.put(newUser.getId(), newUser);
+        return true;
+    }
+
+    @Override
+    public boolean deleteUser(String userId, String password) {
+        User foundUser = findUserInStoredUsers(userId, password);
+
+        if (foundUser == null) {
+            return false;
+        }
+
+        storedUsers.remove(foundUser.getId());
         return true;
     }
 }
