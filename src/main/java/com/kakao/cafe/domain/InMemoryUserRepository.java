@@ -1,12 +1,12 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.domain;
 
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exceptions.DuplicateUserException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -22,20 +22,26 @@ public class InMemoryUserRepository implements UserRepository {
         return userList.stream().anyMatch(user -> user.getUserId().equals(findUser.getUserId()));
     }
 
+    @Override
     public User save(User user) {
         if (isDuplicate(user)) {
             throw new DuplicateUserException("사용자가 이미 존재합니다");
         }
+        user.setId(UUID.randomUUID());
         userList.add(user);
         return user;
     }
 
+    @Override
     public List<User> findAll() {
         return userList;
     }
 
+    @Override
     public User findByUserId(String id) {
-        User findUser = userList.stream().filter(user -> Objects.equals(user.getUserId(), id)).findAny()
+        User findUser = userList.stream()
+                .filter(user -> Objects.equals(user.getUserId(), id))
+                .findAny()
                 .orElseThrow(() -> new UserNotFoundException("사용자 ID가 없습니다"));
 
         return findUser;

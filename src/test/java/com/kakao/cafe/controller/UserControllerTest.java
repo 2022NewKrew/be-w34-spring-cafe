@@ -13,10 +13,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-@AutoConfigureMockMvc
 @SpringBootTest
+@AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class UserControllerTest {
 
     private static final String userId = "testUserId";
@@ -59,10 +61,12 @@ class UserControllerTest {
     @DisplayName("[실패] 유저 회원가입 - 이미 있는 userID인 경우")
     void signUp_FailedBy_DuplicateUserId() throws Exception {
         mockMvc.perform(post("/users/create")
-                .param("userId", userId)
-                .param("password", password)
-                .param("name", name)
-                .param("email", email));
+                        .param("userId", userId)
+                        .param("password", password)
+                        .param("name", name)
+                        .param("email", email))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
 
         mockMvc.perform(post("/users/create")
                         .param("userId", duplicateUserId)
@@ -77,10 +81,12 @@ class UserControllerTest {
     @DisplayName("[성공] 회원 목록 조회")
     void userList() throws Exception {
         mockMvc.perform(post("/users/create")
-                .param("userId", userId)
-                .param("password", password)
-                .param("name", name)
-                .param("email", email));
+                        .param("userId", userId)
+                        .param("password", password)
+                        .param("name", name)
+                        .param("email", email))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
 
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
@@ -88,7 +94,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("[성공] 회원 목록 조회 - 회원이 없는 경우")
+    @DisplayName("[성공] 회원 목록 조회 - 기존 회원이 없는 경우")
     void userList_By_EmptyList() throws Exception {
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
@@ -102,7 +108,9 @@ class UserControllerTest {
                 .param("userId", userId)
                 .param("password", password)
                 .param("name", name)
-                .param("email", email));
+                .param("email", email))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
 
         mockMvc.perform(get("/users/" + userId))
                 .andExpect(status().isOk())

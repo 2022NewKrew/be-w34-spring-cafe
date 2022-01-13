@@ -1,24 +1,28 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.InMemoryUserRepository;
+import com.kakao.cafe.domain.UserRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-    private final InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public void register(User user) {
-        inMemoryUserRepository.save(user);
+        userRepository.save(user);
     }
 
     public List<User> getUserList() {
-        return inMemoryUserRepository.findAll();
+        return userRepository.findAll();
     }
 
     public User getUserById(String userId) {
-        return inMemoryUserRepository.findByUserId(userId);
+        return userRepository.findByUserId(userId);
     }
 }

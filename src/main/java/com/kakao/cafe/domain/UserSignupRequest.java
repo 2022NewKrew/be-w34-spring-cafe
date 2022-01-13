@@ -1,21 +1,15 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.domain;
 
-import com.kakao.cafe.domain.User;
-import java.util.UUID;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 public class UserSignupRequest {
 
     @NotBlank
-    @Size(min = 5, max = 10)
     private final String userId;
     @NotBlank
-    @Size(min = 8, max = 20)
     private final String password;
     @NotBlank
-    @Size(min = 5, max = 10)
     private final String name;
     @NotBlank
     @Email
