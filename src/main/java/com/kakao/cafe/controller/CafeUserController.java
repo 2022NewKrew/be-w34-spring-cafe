@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -21,23 +22,32 @@ public class CafeUserController {
     private static final String USER_DIRECTORY = "/user";
     public static final String USER_VIEW_SIGN_UP = USER_DIRECTORY+"/form";
     public static final String USER_VIEW_SIGN_IN = USER_DIRECTORY+"/login";
-
     public static final String USER_VIEW_LIST = USER_DIRECTORY+"/list";
     public static final String USER_VIEW_PROFILE = USER_DIRECTORY+"/profile";
 
-    public static final String REDIRECT_PREFIX = "redirect:/users";
-    public static final String USER_REDIRECT_LIST = REDIRECT_PREFIX+"/list";
-    public static final String USER_REDIRECT_SIGN_UP_FAIL = REDIRECT_PREFIX+"/sign-up/fail";
+    public static final String REDIRECT_PREFIX = "redirect:";
+    public static final String USER_REDIRECT_SIGN_IN_SUCCESS = REDIRECT_PREFIX+"/";
+    public static final String USER_REDIRECT_SIGN_IN_FAIL = REDIRECT_PREFIX+"/users/sign-in/fail";
+    public static final String USER_REDIRECT_LIST = REDIRECT_PREFIX+"/users/list";
+    public static final String USER_REDIRECT_SIGN_UP_FAIL = REDIRECT_PREFIX+"/users/sign-up/fail";
 
     @GetMapping("/sign-in")
     String userViewSignIn() {
         return USER_VIEW_SIGN_IN;
     }
+    @PostMapping("/sign-in")
+    String signIn(HttpSession httpSession, User signInUser) {
+        if(cafeUserService.SignIn(signInUser)) {
+            httpSession.setAttribute("signInUser", signInUser);
+            return USER_REDIRECT_SIGN_IN_SUCCESS;
+        }
+        return USER_REDIRECT_SIGN_IN_FAIL;
+    }
+
     @GetMapping("/sign-up")
     String userViewSingUp() {
         return USER_VIEW_SIGN_UP;
     }
-
     @PostMapping("/sign-up")
     String signUp(User newUser){ // 회원가입
         if(cafeUserService.signUp(newUser)) {

@@ -67,6 +67,8 @@
   - 생성자로 초기화되지 못한 값은 setter 로 자동 삽입
   - 위의 조건을 만족하는 유일한 생성자가 반드시 필요하고, 다수의 생성자가 필요한 경우 기본 생성자를 사용해야 함
     - No primary or single unique constructor found for class
+- mustache 에서 Session 객체에 접근하려면 추가설정이 필요
+  - application.properties 에 "spring.mustache.expose-session-attributes=true" 설정이 필요
 
 # 참고 사이트
 - Collection 관련

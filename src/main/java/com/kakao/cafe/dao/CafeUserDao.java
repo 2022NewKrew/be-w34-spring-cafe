@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface CafeUserDao {
     boolean signUp(User newUser);
+    boolean SignIn(User signInUser);
     List<User> getUserList();
     User getUserProfile(String userId);
 }

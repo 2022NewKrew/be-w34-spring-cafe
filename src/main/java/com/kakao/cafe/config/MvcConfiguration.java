@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
     private static final String USER_DIRECTORY = "/user";
+    public static final String USER_VIEW_SIGN_IN_FAIL = USER_DIRECTORY+"/login_fail";
     public static final String USER_VIEW_SIGN_UP_FAIL = USER_DIRECTORY+"/form_fail";
 
     private static final String POST_DIRECTORY = "/post";
@@ -23,6 +24,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         // 단순 화면 출력
+        registry.addViewController("/users/sign-in/fail").setViewName(USER_VIEW_SIGN_IN_FAIL);
         registry.addViewController("/users/sign-up/fail").setViewName(USER_VIEW_SIGN_UP_FAIL);
         registry.addViewController("/posts/write/fail").setViewName(POST_VIEW_WRITE_FAIL);
 

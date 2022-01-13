@@ -26,9 +26,9 @@ public class CafePostController {
     public static final String POST_VIEW_WRITE = POST_DIRECTORY+"/form";
     public static final String POST_VIEW_CONTENT = POST_DIRECTORY+"/show";
 
-    private static final String REDIRECT_PREFIX = "redirect:/posts";
-    private static final String POST_REDIRECT_LIST = REDIRECT_PREFIX+"/list";
-    private static final String POST_REDIRECT_WRITE_FAIL = REDIRECT_PREFIX+"/write/fail";
+    private static final String REDIRECT_PREFIX = "redirect:";
+    private static final String POST_REDIRECT_LIST = REDIRECT_PREFIX+"/posts/list";
+    private static final String POST_REDIRECT_WRITE_FAIL = REDIRECT_PREFIX+"/posts/write/fail";
 
     @GetMapping("/write")
     String postViewWrite() {

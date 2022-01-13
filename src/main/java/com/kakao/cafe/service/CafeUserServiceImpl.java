@@ -25,6 +25,15 @@ public class CafeUserServiceImpl implements CafeUserService {
     }
 
     @Override
+    public boolean SignIn(User signInUser) {
+        if(cafeUserDao.SignIn(signInUser)) {
+            signInUser.setPassword(null);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public List<User> getUserList() {
         return cafeUserDao.getUserList();
     }

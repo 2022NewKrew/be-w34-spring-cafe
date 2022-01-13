@@ -41,6 +41,28 @@ public class CafeUserDaoImpl implements CafeUserDao {
     }
 
     @Override
+    public boolean SignIn(User signInUser) {
+        String sql = "SELECT email, password FROM member\n"
+                + "WHERE userId=?";
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,signInUser.getUserId());
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                String password = rs.getString("password");
+
+                if(signInUser.getPassword().equals(password)) {
+                    signInUser.setEmail(rs.getString("email"));
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public List<User> getUserList() {
         List<User> userList = new ArrayList<>();
         String sql = "SELECT userId, email FROM member\n";
