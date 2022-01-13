@@ -1,20 +1,20 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
-@Controller
+@Repository
 public class MemoryArticleRepository implements ArticleRepository{
 
     private List<Article> articles;
 
     MemoryArticleRepository() {
         articles = new ArrayList<>();
-        Article article = new Article("오늘 뭐먹지??", "뭐먹을지 너무 고민된다.", "wldus", new Date(System.currentTimeMillis()));
+        Article article = new Article("오늘 뭐먹지??", "뭐먹을지 너무 고민된다.", "wldus");
         article.generateId(1);
         articles.add(article);
     }
@@ -25,8 +25,8 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Article findById(int id) {
-        return articles.get(id-1);
+    public Optional<Article> findById(int id) {
+        return Optional.of(articles.get(id-1));
     }
 
     @Override

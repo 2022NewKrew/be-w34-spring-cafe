@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -18,12 +20,16 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public List<Article> findAll() {
-        return articleRepository.findAll();
+    public List<ArticleDto> findAll() {
+        return articleRepository
+                .findAll()
+                .stream()
+                .map(ArticleDto::from)
+                .collect(Collectors.toList());
     }
 
-    public Article findById(int id) {
-        return articleRepository.findById(id);
+    public ArticleDto findById(int id) {
+        return ArticleDto.from(articleRepository.findById(id).get());
     }
 
     public int create(ArticleDto articleDto) {

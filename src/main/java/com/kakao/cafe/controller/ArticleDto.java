@@ -1,31 +1,34 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
-@Getter
+@Getter @Setter
 public class ArticleDto {
 
+    private int id;
     private String title;
     private String content;
     private String writer;
-    private Date date;
+    private LocalDateTime date;
 
     public ArticleDto(String title, String content, String writer) {
         this.title = title;
         this.content = content;
         this.writer = writer;
-        this.date = new Date(System.currentTimeMillis());
     }
 
     public Article toEntity() {
-        return new Article(title, content, writer, date);
+        return new Article(title, content, writer);
     }
 
     public static ArticleDto from(Article article) {
-        return new ArticleDto(article.getTitle(), article.getContent(), article.getWriter());
+        ArticleDto articleDto = new ArticleDto(article.getTitle(), article.getContent(), article.getWriter());
+        articleDto.setId(article.getId());
+        articleDto.setDate(article.getDate());
+        return articleDto;
     }
 }

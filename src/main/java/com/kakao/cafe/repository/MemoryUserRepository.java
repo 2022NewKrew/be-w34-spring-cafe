@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
@@ -22,10 +23,10 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User findByUserId(String userId) {
+    public Optional<User> findByUserId(String userId) {
         for (User user : users) {
             if (userId.equals(user.getUserId())) {
-                return user;
+                return Optional.of(user);
             }
         }
         return null;

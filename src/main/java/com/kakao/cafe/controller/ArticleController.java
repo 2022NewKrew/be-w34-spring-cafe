@@ -23,11 +23,12 @@ public class ArticleController {
     @GetMapping
     public String findArticles(Model model) {
         model.addAttribute("articles", articleService.findAll());
+        logger.info(articleService.findAll().get(0).toString());
         return "index";
     }
 
     @GetMapping("{id}")
-    public String findUserOne(@PathVariable int id, Model model) {
+    public String findArticleOne(@PathVariable int id, Model model) {
         logger.info(articleService.findById(id).toString());
         model.addAttribute("article", articleService.findById(id));
         return "/qna/show";
