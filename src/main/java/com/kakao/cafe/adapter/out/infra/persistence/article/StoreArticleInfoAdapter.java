@@ -16,17 +16,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleInfoPort {
 
     private static final int FIRST_ID = 1;
-
-    private static final Logger log = LoggerFactory.getLogger(StoreArticleInfoAdapter.class);
-
 
     private final ArticleInfoRepository inMemoryArticleInfoRepository;
     private final AtomicInteger atomicInt = new AtomicInteger(FIRST_ID);
@@ -38,13 +33,16 @@ public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleI
     @Override
     public void registerArticle(WriteRequest writeRequest)
         throws IllegalIdException, IllegalWriterException, IllegalTitleException, IllegalDateException {
-        inMemoryArticleInfoRepository.save(new Article(
-            atomicInt.getAndIncrement(),
-            writeRequest.getWriter(),
-            writeRequest.getTitle(),
-            writeRequest.getContents(),
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-        ));
+        inMemoryArticleInfoRepository.save(new Article.Builder()
+                                               .id(atomicInt.getAndIncrement())
+                                               .writer(writeRequest.getWriter())
+                                               .title(writeRequest.getTitle())
+                                               .contents(writeRequest.getContents())
+                                               .createdAt(
+                                                   LocalDateTime.now()
+                                                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                                               )
+                                               .build());
     }
 
     @Override

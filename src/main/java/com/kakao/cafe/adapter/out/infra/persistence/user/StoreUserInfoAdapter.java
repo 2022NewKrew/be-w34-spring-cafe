@@ -32,12 +32,12 @@ public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort, 
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException, UserIdDuplicationException {
         checkUserIdDuplication(signUpRequest.getUserId());
 
-        inMemoryUserInfoRepository.save(new User(
-            signUpRequest.getUserId(),
-            signUpRequest.getPassword(),
-            signUpRequest.getName(),
-            signUpRequest.getEmail()
-        ));
+        inMemoryUserInfoRepository.save(new User.Builder()
+                                            .userId(signUpRequest.getUserId())
+                                            .password(signUpRequest.getPassword())
+                                            .name(signUpRequest.getName())
+                                            .email(signUpRequest.getEmail())
+                                            .build());
     }
 
     @Override
@@ -80,11 +80,11 @@ public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort, 
             throw new UserNotExistException("존재하지 않는 회원입니다.");
         }
 
-        inMemoryUserInfoRepository.save(new User(
-            userId,
-            user.getPassword(),
-            updateRequest.getName(),
-            updateRequest.getEmail()
-        ));
+        inMemoryUserInfoRepository.save(new User.Builder()
+                                            .userId(userId)
+                                            .password(user.getPassword())
+                                            .name(updateRequest.getName())
+                                            .email(updateRequest.getEmail())
+                                            .build());
     }
 }

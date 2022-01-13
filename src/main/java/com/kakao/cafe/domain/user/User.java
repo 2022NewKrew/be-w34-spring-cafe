@@ -7,22 +7,16 @@ import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
 
 public class User {
 
-
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    public User(String userId, String password, String name, String email)
-        throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
-        checkUserId(userId);
-        checkPassword(password);
-        checkUserName(name);
-        checkEmail(email);
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
+    public User(Builder builder) {
+        this.userId = builder.userId;
+        this.password = builder.password;
+        this.name = builder.name;
+        this.email = builder.email;
     }
 
     public String getUserId() {
@@ -41,35 +35,72 @@ public class User {
         return email;
     }
 
-    private boolean checkBlankInString(String str) {
-        return str.contains(" ");
-    }
+    public static class Builder {
 
-    private boolean checkLengthOfString(String str) {
-        return str.length() <= 0;
-    }
+        private String userId;
+        private String password;
+        private String name;
+        private String email;
 
-    private void checkUserId(String userId) throws IllegalUserIdException {
-        if (checkLengthOfString(userId) || checkBlankInString(userId)) {
-            throw new IllegalUserIdException("잘못된 ID 입니다.");
+        public Builder userId(String userId) {
+            this.userId = userId;
+            return this;
         }
-    }
 
-    private void checkPassword(String password) throws IllegalPasswordException {
-        if (checkLengthOfString(password) || checkBlankInString(password)) {
-            throw new IllegalPasswordException("잘못된 password 입니다.");
+        public Builder password(String password) {
+            this.password = password;
+            return this;
         }
-    }
 
-    private void checkUserName(String userName) throws IllegalUserNameException {
-        if (checkLengthOfString(userName) || checkBlankInString(userName)) {
-            throw new IllegalUserNameException("잘못된 이름 입니다.");
+        public Builder name(String name) {
+            this.name = name;
+            return this;
         }
-    }
 
-    private void checkEmail(String email) throws IllegalEmailException {
-        if (checkLengthOfString(email) || checkBlankInString(email)) {
-            throw new IllegalEmailException("잘못된 email 주소 입니다.");
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public User build()
+            throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
+            checkUserId(userId);
+            checkPassword(password);
+            checkUserName(name);
+            checkEmail(email);
+            return new User(this);
+        }
+
+        private boolean checkBlankInString(String str) {
+            return str.contains(" ");
+        }
+
+        private boolean checkLengthOfString(String str) {
+            return str.length() <= 0;
+        }
+
+        private void checkUserId(String userId) throws IllegalUserIdException {
+            if (checkLengthOfString(userId) || checkBlankInString(userId)) {
+                throw new IllegalUserIdException("잘못된 ID 입니다.");
+            }
+        }
+
+        private void checkPassword(String password) throws IllegalPasswordException {
+            if (checkLengthOfString(password) || checkBlankInString(password)) {
+                throw new IllegalPasswordException("잘못된 password 입니다.");
+            }
+        }
+
+        private void checkUserName(String userName) throws IllegalUserNameException {
+            if (checkLengthOfString(userName) || checkBlankInString(userName)) {
+                throw new IllegalUserNameException("잘못된 이름 입니다.");
+            }
+        }
+
+        private void checkEmail(String email) throws IllegalEmailException {
+            if (checkLengthOfString(email) || checkBlankInString(email)) {
+                throw new IllegalEmailException("잘못된 email 주소 입니다.");
+            }
         }
     }
 }
