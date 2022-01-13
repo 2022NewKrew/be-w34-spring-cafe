@@ -1,11 +1,16 @@
 package com.kakao.cafe.web.dto;
 
+import com.kakao.cafe.domain.users.UserEntity;
+
 public class UsersCreateRequestDto {
 
-    private String userId;
     private String password;
     private String name;
     private String email;
+
+    public UserEntity toEntity() {
+        return new UserEntity(this.name, this.email, this.password);
+    }
 
     public String getPassword() {
         return password;
@@ -31,11 +36,4 @@ public class UsersCreateRequestDto {
         this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }
