@@ -16,8 +16,8 @@ public class ArticleService {
         this.articleDao = articleDao;
     }
 
-    public List<Article> getPartOfArticles(int pageNumber, int ArticlesPerPage) {
-        return articleDao.getArticles(pageNumber, ArticlesPerPage);
+    public List<Article> getPartOfArticles(int pageNumber, int articlesPerPage) {
+        return articleDao.getArticles(pageNumber, articlesPerPage);
     }
 
     public List<Integer> getPages(int articleLimit) {
@@ -32,6 +32,12 @@ public class ArticleService {
     }
 
     public Article findArticleById(int id) {
-        return articleDao.findArticleById(id);
+        return findArticle(id);
+    }
+
+    private Article findArticle(int id) {
+        return articleDao
+                .findArticleById(id)
+                .orElseThrow(() -> new IllegalArgumentException("찾는 게시물이 없습니다."));
     }
 }

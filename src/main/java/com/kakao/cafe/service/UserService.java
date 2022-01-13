@@ -15,12 +15,9 @@ public class UserService {
     }
 
     public void updateUser(String userId, String password, String name, String email) {
-        User user = userDao.findUserById(userId);
-        if (user.isPassword(password)) {
-            userDao.update(userId, name, email);
-            return;
-        }
-        throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        checkPassword(findUser(userId), password);
+
+        userDao.update(userId, name, email);
     }
 
     public List<User> getUsers() {
@@ -28,10 +25,22 @@ public class UserService {
     }
 
     public User findUserByUserId(String userId) {
-        return userDao.findUserById(userId);
+        return findUser(userId);
     }
 
     public void createUser(String userId, String password, String name, String email) {
         userDao.addUser(userId, password, name, email);
+    }
+
+    private User findUser(String userId) {
+        return userDao
+                .findUserById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("찾는 사용자가 없습니다!"));
+    }
+
+    private void checkPassword(User user, String inputPassword) {
+        if (!user.isPassword(inputPassword)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
     }
 }
