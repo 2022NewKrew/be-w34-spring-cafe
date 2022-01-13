@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.article;
+package com.kakao.cafe.model;
 
 public class Article {
 
