@@ -1,8 +1,5 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.DTO.UserInfoDTO;
-import com.kakao.cafe.DTO.UserProfileDTO;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +12,8 @@ public class UserDB {
     }
 
     public boolean SignUp(String userId, String password, String name, String email) {
-        for (User A : userLst) {
-            if (A.getuserId().equals(userId)) {
+        for (User existUser : userLst) {
+            if (existUser.getuserId().equals(userId)) {
                 return false;
             }
         }
@@ -25,23 +22,17 @@ public class UserDB {
         return true;
     }
 
-    public List<UserInfoDTO> getUserInfoLst() {
-        List<UserInfoDTO> userInfoLst = new ArrayList<>();
-        int idx = 1;
-
+    public User getUser(String userId) {
         for (User user : userLst) {
-            userInfoLst.add(new UserInfoDTO(idx++, user.getuserId(), user.getName(), user.getEmail()));
-        }
-
-        return userInfoLst;
-    }
-
-    public UserProfileDTO getUserProfile(String uID) {
-        for (User user : userLst) {
-            if (user.getuserId().equals(uID)) {
-                return new UserProfileDTO(user.getName(), user.getEmail(), user.getPictureAddress());
+            if (user.getuserId().equals(userId)) {
+                return user;
             }
         }
+
         return null;
+    }
+
+    public List<User> getUserLst() {
+        return List.copyOf(userLst);
     }
 }
