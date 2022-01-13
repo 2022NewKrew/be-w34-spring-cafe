@@ -23,7 +23,10 @@
     * 회원가입 controller
     * createUser service
     * userRepository에 insert를 호출할 때 내부에서 DAO로 바꾸는 작업
-  * 회원 프로필 조회
+  * 회원 프로필 조회 O
+    * 회원목록에 하이퍼링크
+    * profile.mustache로 이동 및 수정
+    * userProfileDto로 최소한의 데이터만 담음
   * static, template 분리
     * mustache 생성
     * html 확장자로도 mustache 사용하는 환경설정

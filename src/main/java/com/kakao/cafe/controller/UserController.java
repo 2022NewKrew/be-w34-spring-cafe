@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dao.UserDao;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserListDto;
+import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.view.UserView;
 import org.slf4j.Logger;
@@ -37,5 +38,13 @@ public class UserController {
         userService.createUser(user);
 
         return "redirect:/users";
+    }
+
+    @GetMapping("/user/{id}")
+    public String getUserId(Model model, @PathVariable("id") String id) {
+        UserProfileDto userProfileDto = userService.readUserProfileDto(id);
+        userView.getUserIdView(model, userProfileDto);
+
+        return "user/profile";
     }
 }

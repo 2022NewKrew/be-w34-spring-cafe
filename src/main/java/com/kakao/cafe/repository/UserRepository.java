@@ -3,6 +3,7 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.controller.UserController;
 import com.kakao.cafe.dao.UserDao;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserProfileDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,5 +38,9 @@ public class UserRepository {
 
     public List<UserDao> selectAll() {
         return new ArrayList<>(userMap.values());
+    }
+
+    public UserDao select(String id) {
+        return userMap.get(id);
     }
 }
