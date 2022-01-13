@@ -13,22 +13,26 @@ public class UserRepositoryImpl implements UserRepository{
     private static final List<User> users = Collections.synchronizedList(new ArrayList<>());
     private static final AtomicLong idx = new AtomicLong(0);
     static {
-        users.add(new User(0L, "aa@aa.com","aaa","aaaa"));
+        users.add(new User(0L, "aa@aa.com","멋진삼","aaaa"));
     }
 
+    @Override
     public Long autoIncrement(){
         return idx.incrementAndGet();
     }
 
+    @Override
     public User save(User user) {
         users.add(user);
         return user;
     }
 
+    @Override
     public List<User> findAll() {
         return users;
     }
 
+    @Override
     public Optional<User> findByEmail(String email) {
         return users.stream()
             .filter(user -> user.getEmail().equals(email))
