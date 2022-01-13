@@ -31,6 +31,9 @@ public class ArticleController {
 
     @GetMapping("/articles/{index}")
     public String showArticle(Model model, @PathVariable int index) {
+        if (index > articles.size()) {
+            return "error/404";
+        }
         Article article = articles.get(index - 1);
         logger.info("GET /articles/{}: response article detail page with {}", index, article);
         // article 조회
