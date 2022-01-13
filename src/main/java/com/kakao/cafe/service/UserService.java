@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.Users;
 import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.util.exception.InvalidPasswordException;
 import com.kakao.cafe.util.exception.UserDuplicateException;
 import com.kakao.cafe.util.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +39,11 @@ public class UserService {
         }
     }
 
-    public boolean update(User newInfo, String oldPassword) {
+    public void update(User newInfo, String oldPassword) throws InvalidPasswordException {
         User oldInfo = findById(newInfo.getId());
         if (!oldInfo.canModify(oldPassword))
-            return false;
+            throw new InvalidPasswordException(oldPassword);
         userRepository.update(newInfo);
-        return true;
     }
 
     public Users findAll() {
