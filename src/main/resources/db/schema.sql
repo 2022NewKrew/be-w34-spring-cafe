@@ -4,7 +4,7 @@ create table if not exists UserTable
     id       bigint      not null primary key auto_increment,
     userId   varchar(20) not null unique,
     password varchar(20) not null,
-    email    varchar(50) not null,
+    email    varchar(50) not null unique,
     time     DATETIME    not null
 );
 

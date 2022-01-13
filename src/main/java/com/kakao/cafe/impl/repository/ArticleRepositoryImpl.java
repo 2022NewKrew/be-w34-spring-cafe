@@ -23,7 +23,6 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public long insertArticle(ArticleDTO article) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement("insert into ARTICLETABLE (WRITERID, TITLE, CONTENTS, time) values (?,?,?,now())", Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, article.getWriterId());

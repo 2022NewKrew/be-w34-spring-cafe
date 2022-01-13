@@ -1,6 +1,5 @@
 package com.kakao.cafe.util;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -13,7 +12,6 @@ import java.util.Map;
 public class ErrorHandler {
     private static final Map<String, String> fieldMap;
     private static final String DEFAULT_ERROR_MESSAGE = "서버에서 에러가 발생했습니다. 잠시후 다시 시도해주세요.";
-    private static final String DB_INTEGRITY_ERROR_MESSAGE = "사용자를 생성후 글을 작성해 주세요.";
     private static final String FIELD_ERROR_MESSAGE_FORMAT = "%s의 내용이 올바르지 않습니다. (%s)";
 
     static {
@@ -34,13 +32,6 @@ public class ErrorHandler {
     public String handleException(Exception exception, Model model) {
         exception.printStackTrace();
         model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, DEFAULT_ERROR_MESSAGE);
-
-        return Constants.ERROR_PAGE_NAME;
-    }
-
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public String handleDataIntegrityViolationException(DataIntegrityViolationException exception, Model model) {
-        model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, DB_INTEGRITY_ERROR_MESSAGE);
 
         return Constants.ERROR_PAGE_NAME;
     }

@@ -35,11 +35,17 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    String createUser(@Valid UserDTO user) {
-        userService.insertUser(user);
-        logger.info("create User -> UserId : {}, Email : {}", user.getUserId(), user.getEmail());
+    String createUser(@Valid UserDTO user, Model model) {
 
-        return "redirect:/users";
+        if (userService.insertUser(user) > 0) {
+            logger.info("create User -> UserId : {}, Email : {}", user.getUserId(), user.getEmail());
+            return "redirect:/users";
+        } else {
+            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, "중복된 이메일 혹은 닉네임입니다.");
+            return Constants.ERROR_PAGE_NAME;
+        }
+
+
     }
 
     @GetMapping("/{id}/form")
@@ -71,9 +77,11 @@ public class UserController {
     String loginProcess(HttpSession session, @Valid LoginDTO login, Model model) {
         UserDTO user = userService.getUserByLoginData(login);
         if (user != null) {
+            logger.info("login success -> ID : {}, UserId : {}", user.getId(), user.getUserId());
             session.setAttribute("sessionUser", user);
             return "redirect:/";
         }
+        logger.info("login fail -> email : {}", login.getEmail());
         model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, FAIL_LOGIN_MESSAGE);
         return Constants.ERROR_PAGE_NAME;
     }

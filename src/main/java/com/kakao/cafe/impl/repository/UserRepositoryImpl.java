@@ -3,6 +3,7 @@ package com.kakao.cafe.impl.repository;
 import com.kakao.cafe.dto.LoginDTO;
 import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.repository.UserRepository;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -28,14 +29,19 @@ public class UserRepositoryImpl implements UserRepository {
     public long insertUser(UserDTO user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into USERTABLE (userid, password, email, time) values (?,?,?,now())", Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, user.getUserId());
-            ps.setString(2, user.getPassword());
-            ps.setString(3, user.getEmail());
-            return ps;
-        }, keyHolder);
 
+        try {
+
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement("insert into USERTABLE (userid, password, email, time) values (?,?,?,now())", Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, user.getUserId());
+                ps.setString(2, user.getPassword());
+                ps.setString(3, user.getEmail());
+                return ps;
+            }, keyHolder);
+        } catch (DuplicateKeyException exception) {
+            return -1;
+        }
         return (long) keyHolder.getKey();
     }
 

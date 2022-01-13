@@ -39,8 +39,7 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    String articles(@Valid ArticleDTO article) {
-        articleService.insertArticle(article);
+    String articles(@Valid ArticleDTO article, Model model) {
         logger.info("create Article -> Writer : {}, Title : {}", article.getWriterId(), article.getTitle());
         return "redirect:/";
     }
