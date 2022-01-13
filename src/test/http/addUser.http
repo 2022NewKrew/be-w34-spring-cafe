@@ -1,1 +1,5 @@
+###
 POST http://localhost:8080/users?userId=spiderman&password=1234&name=peter&email=spider@gmail.com
+
+###
+POST http://localhost:8080/articles?author=spiderman&title=first&content=firstcontent

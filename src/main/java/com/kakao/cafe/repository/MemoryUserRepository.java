@@ -14,25 +14,22 @@ import java.util.stream.Collectors;
 
 @Repository
 public class MemoryUserRepository implements UserRepository{
-    private final List<User> users;
+    private final List<User> users = new ArrayList<>();
     private static long sequence = 0L;
     private final Logger logger = LoggerFactory.getLogger(MemoryUserRepository.class);
 
-    public MemoryUserRepository() {
-        this.users = new ArrayList<>();
-    }
+    private MemoryUserRepository() {}
 
     @Override
     public void save(UserRequestDto userRequestDto) {
-        User user = User.of(userRequestDto.getUserId(), userRequestDto.getPassword(), userRequestDto.getName(), userRequestDto.getEmail());
-        user.setId(++sequence);
+        User user = User.of(++sequence, userRequestDto.getUserId(), userRequestDto.getPassword(), userRequestDto.getName(), userRequestDto.getEmail());
         logger.info("save: {}, {}", user.getId(), user.getUserId());
         users.add(user);
     }
 
     @Override
     public void update(Long id, UserRequestDto userRequestDto) {
-        User user = User.of(userRequestDto.getUserId(), userRequestDto.getPassword(), userRequestDto.getName(), userRequestDto.getEmail());
+        User user = User.of(id, userRequestDto.getUserId(), userRequestDto.getPassword(), userRequestDto.getName(), userRequestDto.getEmail());
         users.set(id.intValue(), user);
     }
 
