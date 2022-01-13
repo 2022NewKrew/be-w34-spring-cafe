@@ -18,16 +18,4 @@ public class ArticleDto {
         this.contents = article.getContents();
         this.createDate = article.getCreateDate();
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public String getContents() {
-        return contents;
-    }
 }

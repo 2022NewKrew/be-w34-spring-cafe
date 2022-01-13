@@ -1,24 +1,24 @@
 package com.kakao.cafe.dao.article;
 
 import com.kakao.cafe.model.Article;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
-@Primary
 public class VolatilityArticleStorage implements ArticleDao {
     private static final AtomicInteger nextArticleId = new AtomicInteger(1);
+    public static final int FRONT_OF_LIST = 0;
     List<Article> articles = new LinkedList<>();
 
     @Override
-    public List<Article> getArticles(int pageNumber, int ArticlesPerPage) {
-        int startIndex = (pageNumber - 1) * ArticlesPerPage;
-        int finishIndex = ArticlesPerPage * (pageNumber);
+    public List<Article> getArticles(int pageNumber, int articlesPerPage) {
+        int startIndex = (pageNumber - 1) * articlesPerPage;
+        int finishIndex = articlesPerPage * (pageNumber);
         if (articles.size() < finishIndex) {
             return new ArrayList<>(articles.subList(startIndex, articles.size()));
         }
@@ -27,16 +27,15 @@ public class VolatilityArticleStorage implements ArticleDao {
 
     @Override
     public void addArticle(String title, String writer, String contents) {
-        articles.add(0, new Article(nextArticleId.getAndIncrement(), title, writer, contents));
+        articles.add(FRONT_OF_LIST, new Article(nextArticleId.getAndIncrement(), title, writer, contents));
     }
 
     @Override
-    public Article findArticleById(int id) {
+    public Optional<Article> findArticleById(int id) {
         return articles
                 .stream()
                 .filter(article -> article.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+                .findFirst();
     }
 
     @Override
