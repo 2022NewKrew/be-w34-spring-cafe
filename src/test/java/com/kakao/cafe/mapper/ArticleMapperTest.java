@@ -63,6 +63,18 @@ public class ArticleMapperTest {
     }
 
     @Test
+    void articleToArticleDetailResponseDto_ContentContainsNewLine_ReturnsCorrectDtoWithBrTag() {
+        Article base = new Article(UUID.randomUUID(), new Title("MappingTest"), new Content("MappingTest\nMappingTestNewLine"), baseUser, LocalDateTime.of(2021,11,29,0,0), new ViewCount());
+        ArticleDetailResponseDto actual = articleMapper.articleToArticleDetailResponseDto(base);
+
+        assertThat(actual.getTitle()).isEqualTo(base.getTitle().getValue());
+        assertThat(actual.getContent()).isEqualTo(base.getContent().getValue().replace("\n", "<br>"));
+        assertThat(actual.getViewCount()).isEqualTo(base.getViewCount().getValue());
+        assertThat(actual.getWriter()).isEqualTo(base.getWriter().getUserName().getValue());
+        assertThat(actual.getCreatedAt()).isEqualTo(base.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+    }
+
+    @Test
     void articleListToArticleListResponseDtoList_Invoked_ReturnsCorrectDtoList() {
         List<Article> base = List.of(
                 new Article(UUID.randomUUID(), new Title("MappingTest1"), new Content("MappingTest1"), baseUser, LocalDateTime.of(2021,11,29,0,0), new ViewCount()),
