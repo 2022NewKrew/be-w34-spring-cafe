@@ -1,11 +1,13 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.user.UserDto;
+import com.kakao.cafe.exception.InputDataException;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,9 +30,12 @@ public class UserController {
     }
 
     @PostMapping()
-    public String signUp(@Valid UserDto userDto) {
-        logger.info("회원 정보 : {}", userDto.toString());
+    public String signUp(@Valid UserDto userDto, BindingResult bindingResult) throws InputDataException {
+        if (bindingResult.hasErrors()) {
+            throw new InputDataException("입력이 올바르지 않습니다.");
+        }
         userService.addUser(userDto);
+        logger.info("회원 등록 완료 : {}", userDto);
         return "redirect:/users";
     }
 
@@ -61,16 +66,15 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/update")
-    public String updateUser(@PathVariable String userId, String curPassword, String newPassword, String name, String email) {
+    public String updateUser(@PathVariable String userId, String curPassword, String newPassword, String name, String email) throws InputDataException {
         UserDto userDto = new UserDto();
         userDto.setUserId(userId);
         userDto.setPassword(newPassword);
         userDto.setName(name);
         userDto.setEmail(email);
-        if (userService.updateUser(userDto, curPassword)) {
-            return "redirect:/users";
-        }
-        return "./user/alert";
+        userService.updateUser(userDto, curPassword);
+        logger.info("회원 수정 완료 : {}",userDto);
+        return "redirect:/users";
     }
 
 }

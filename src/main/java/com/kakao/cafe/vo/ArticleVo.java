@@ -2,11 +2,13 @@ package com.kakao.cafe.vo;
 
 public class ArticleVo {
 
-    private final int id;
-    private final String writer;
-    private final String title;
-    private final String contents;
-    private final String date;
+    private int id;
+    private String writer;
+    private String title;
+    private String contents;
+    private String date;
+
+    public ArticleVo(){}
 
     public ArticleVo(int id, String writer, String title, String contents, String date) {
         this.id = id;

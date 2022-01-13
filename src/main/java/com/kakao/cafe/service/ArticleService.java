@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.dao.ArticleDao;
 import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.vo.ArticleVo;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,39 +16,28 @@ public class ArticleService {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private final ArticleDao articleDao;
+    private final ModelMapper modelMapper;
 
-    public ArticleService(ArticleDao articleDao) {
+    public ArticleService(ArticleDao articleDao, ModelMapper modelMapper) {
         this.articleDao = articleDao;
+        this.modelMapper = modelMapper;
     }
 
     public void addArticle(ArticleDto articleDto) {
         articleDto.setDate(LocalDateTime.now().format(formatter));
-        ArticleVo articleVo = dtoToVo(articleDto);
+        ArticleVo articleVo = modelMapper.map(articleDto,ArticleVo.class);
         articleDao.save(articleVo);
     }
 
     public ArticleDto getArticle(int id) {
         ArticleVo articleVo = articleDao.findById(id);
-        return voToDto(articleVo);
+        return modelMapper.map(articleVo,ArticleDto.class);
     }
 
     public List<ArticleDto> getArticles() {
         return articleDao.findAll().stream()
-                .map(this::voToDto)
+                .map(articleVo -> modelMapper.map(articleVo,ArticleDto.class))
                 .collect(Collectors.toList());
     }
 
-    private ArticleDto voToDto(ArticleVo articleVo) {
-        ArticleDto articleDto = new ArticleDto();
-        articleDto.setId(articleVo.getId());
-        articleDto.setWriter(articleVo.getWriter());
-        articleDto.setTitle(articleVo.getTitle());
-        articleDto.setContents(articleVo.getContents().replace("\r\n","<br>"));
-        articleDto.setDate(articleVo.getDate());
-        return articleDto;
-    }
-
-    private ArticleVo dtoToVo(ArticleDto articleDto) {
-        return new ArticleVo(articleDto.getId(), articleDto.getWriter(), articleDto.getTitle(), articleDto.getContents(), articleDto.getDate());
-    }
 }
