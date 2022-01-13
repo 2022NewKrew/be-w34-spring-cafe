@@ -27,6 +27,6 @@ public class QnaService {
 
     public QnaResponse findById(long id) {
         Qna qna = qnaRepository.findById(id);
-        return QnaResponse.qnaToResponse(id, qna);
+        return QnaResponse.qnaToResponse(qna);
     }
 }

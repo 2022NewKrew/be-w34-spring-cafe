@@ -1,32 +1,52 @@
 package com.kakao.cafe.qna;
 
+import com.kakao.cafe.exception.CustomEmptyDataAccessException;
 import com.kakao.cafe.qna.domain.Qna;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class QnaRepository {
 
-    List<Qna> qnas = Collections.synchronizedList(new ArrayList<>());
+    private final RowMapper<Qna> qnaMapper = getQnaMapper();
+    private final JdbcTemplate jdbcTemplate;
+
+    public QnaRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public void save(Qna qna) {
-        qnas.add(qna);
+        String sql = "INSERT INTO qnas (writer, title, contents, create_time) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+            qna.getWriter(),
+            qna.getTitle(),
+            qna.getContents(),
+            qna.getCreateTime());
     }
 
     public List<Qna> findAll() {
-        return new ArrayList<>(qnas);
+        String sql = "SELECT * FROM qnas";
+        return jdbcTemplate.query(sql, qnaMapper);
     }
 
     public Qna findById(long id) {
-        validateQna(id);
-        return qnas.get((int) (id - 1L));
+        String sql = "SELECT * FROM qnas WHERE id = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, qnaMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new CustomEmptyDataAccessException(e);
+        }
     }
 
-    private void validateQna(long id) {
-        if (id <= 0 || id > qnas.size()) {
-            throw new IllegalArgumentException("존재하지 않는 qna 입니다.");
-        }
+    public RowMapper<Qna> getQnaMapper() {
+        return (resultSet, rowNumber) -> new Qna(
+            resultSet.getLong(1),
+            resultSet.getString(2),
+            resultSet.getString(3),
+            resultSet.getString(4)
+        );
     }
 }
