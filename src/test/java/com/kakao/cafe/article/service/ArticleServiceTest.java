@@ -1,6 +1,6 @@
 package com.kakao.cafe.article.service;
 
-import com.kakao.cafe.article.repository.ArticleRepository;
+import com.kakao.cafe.article.repository.ArticleDBRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class ArticleServiceTest {
 
     @Autowired
-    private ArticleRepository articleRepository;
+    private ArticleDBRepositoryImpl articleRepository;
     @Autowired
     private ArticleService articleService;
 

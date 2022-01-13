@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class ArticleRepositoryTest {
     @Autowired
-    private ArticleRepository articleRepository;
+    private ArticleDBRepositoryImpl articleRepository;
 
 
     @Test

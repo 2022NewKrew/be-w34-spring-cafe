@@ -14,4 +14,6 @@ public class User {
     private String nickName;
     private String password;
     private LocalDateTime signUpDate;
+
+
 }

@@ -1,51 +1,22 @@
 package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
-import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
-public class UserRepository {
-    private static AtomicLong idSequence = new AtomicLong();
-    private final static HashMap<Long, User> userDB = new HashMap<>();
+public interface UserRepository {
 
-    public UserRepository() {
-        // 기본 유저 생성
-        persist(new UserCreateRequestDTO("aiden.jang", "aiden@kakaocorp.com", "aiden", "1234", LocalDateTime.now()));
-    }
+    User find(Long id);
 
-    public User find(Long id) {
-        return userDB.get(id);
-    }
+    ArrayList<User> findAll();
 
-    public ArrayList<User> findAll() {
-        return new ArrayList<>(userDB.values());
-    }
+    Long persist(UserCreateRequestDTO dto);
 
-    public Long persist(UserCreateRequestDTO dto) {
-        userDB.put(idSequence.get(), new User(idSequence.get(), dto.stringId, dto.email, dto.nickName, dto.password, dto.signUpDate));
-        return idSequence.getAndIncrement();
-    }
+    Long findDBIdById(String stringId);
 
-    public Long findDBIdById(String stringId) {
-        return userDB.keySet().stream().filter(key->stringId.equals(userDB.get(key).getStringId())).findAny().orElseGet(()->-1L);
-    }
+    String findStringIdByDBId(Long id);
 
-    public String findStringIdByDBId(Long id) {
-        return userDB.get(id).getStringId();
-    }
+    String findPasswordByDBId(Long userId);
 
-    public String findPasswordByDBId(Long userId) {
-        return userDB.get(userId).getPassword();
-    }
-
-    public void updateUserInfo(UserUpdateRequestDTO dto) {
-        User oldUserData = userDB.get(dto.getUserId());
-        User user = new User(oldUserData.getId(), oldUserData.getStringId(), dto.getEmail(), dto.getName(), dto.getNewPassword(), oldUserData.getSignUpDate());
-        userDB.put(dto.getUserId(), user);
-    }
+    void updateUserInfo(UserUpdateRequestDTO dto);
 }

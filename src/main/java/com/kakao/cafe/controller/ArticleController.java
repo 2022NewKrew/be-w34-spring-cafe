@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final Long fakeSession = 0L;
-
-
+    private final Long fakeSession = 1L; // 글쓰기는 기본 사용자만 가능(로그인 기능이 없기 때문에 유지)
 
     @PostMapping("")
     public String postArticle(@ModelAttribute ArticleCreateRequest req) {

@@ -1,7 +1,7 @@
 package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.repository.UserRepository;
+import com.kakao.cafe.user.repository.UserDBRepositoryImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserServiceTest {
 
     @Autowired
-    UserRepository userRepository;
+    UserDBRepositoryImpl userRepository;
     @Autowired
     UserService userService;
 
