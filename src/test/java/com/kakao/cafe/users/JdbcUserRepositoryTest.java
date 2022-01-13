@@ -44,5 +44,11 @@ class JdbcUserRepositoryTest {
 
     @Test
     void findAll() {
+        jdbcUserRepository.save(users.get(0));
+        jdbcUserRepository.save(users.get(1));
+
+        List<User> actual = jdbcUserRepository.findAll();
+
+        Assertions.assertThat(actual).hasSize(2);
     }
 }
