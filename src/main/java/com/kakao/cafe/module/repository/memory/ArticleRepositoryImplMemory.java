@@ -1,6 +1,7 @@
 package com.kakao.cafe.module.repository.memory;
 
 import com.kakao.cafe.module.model.domain.Article;
+import com.kakao.cafe.module.model.dto.ArticleDtos;
 import com.kakao.cafe.module.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -30,5 +31,10 @@ public class ArticleRepositoryImplMemory implements ArticleRepository {
                 .filter(article -> article.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+    }
+
+    @Override
+    public List<ArticleDtos.ArticleListDto> findAllArticlesWithAuthor() {
+        return null;
     }
 }
