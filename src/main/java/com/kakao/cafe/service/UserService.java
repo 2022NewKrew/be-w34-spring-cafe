@@ -32,6 +32,10 @@ public class UserService {
         userDao.createUser(dtoToVoMapper(user));
     }
 
+    public void updateUser(UserDto user) {
+        userDao.updateUser(dtoToVoMapper(user));
+    }
+
     private UserVo dtoToVoMapper(UserDto userDto) {
         return new UserVo(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
     }

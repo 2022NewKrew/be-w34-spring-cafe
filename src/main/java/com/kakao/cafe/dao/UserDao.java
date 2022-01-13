@@ -36,6 +36,11 @@ public class UserDao {
         jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
+    public void updateUser(UserVo user) {
+        String sql = "UPDATE users SET password = ?, name = ?, email = ? WHERE user_id = ?";
+        jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
+    }
+
     private RowMapper<UserVo> userRowMapper() {
         return (rs, rowNum) -> new UserVo(
                 rs.getString("user_id"),
