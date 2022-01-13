@@ -25,12 +25,16 @@ public class UserManager implements UserService {
         if (userRepository.checkIdExist(userDto.getId())) {
             throw new IllegalStateException("Duplicate id is exist!");
         }
-        userRepository.add(new User(
+        final boolean result = userRepository.add(new User(
                 userDto.getId(),
                 password,
                 userDto.getName(),
                 userDto.getEmail()
         ));
+
+        if (!result) {
+            throw new RuntimeException("Failed to insert user!");
+        }
     }
 
     @Override
