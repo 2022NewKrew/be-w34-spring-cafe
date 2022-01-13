@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 /**
  *  게시글 DB 관련 CRUD 처리
  */
-public class ArticleDao {
+public class ArticleDao implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public ArticleDao(JdbcTemplate jdbcTemplate) {

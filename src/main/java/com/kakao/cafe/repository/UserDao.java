@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 /**
  *  사용자 DB 관련 CRUD 처리
  */
-public class UserDao implements UserRepository<User>{
+public class UserDao implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public UserDao(JdbcTemplate jdbcTemplate) {
