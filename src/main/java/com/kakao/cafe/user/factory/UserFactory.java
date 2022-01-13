@@ -10,4 +10,8 @@ public class UserFactory {
     public User of(Long id, SignUpDTO signUpDTO) {
         return new User(id, signUpDTO);
     }
+
+    public User of(SignUpDTO signUpDTO) {
+        return new User(signUpDTO);
+    }
 }
