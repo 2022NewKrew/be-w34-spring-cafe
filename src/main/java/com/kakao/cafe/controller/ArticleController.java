@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.ArticleQueryDetailResponseDto;
-import com.kakao.cafe.controller.dto.ArticleRegisterRequestDto;
+import com.kakao.cafe.controller.dto.response.ArticleQueryDetailResponseDto;
+import com.kakao.cafe.controller.dto.request.ArticleRegisterRequestDto;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;

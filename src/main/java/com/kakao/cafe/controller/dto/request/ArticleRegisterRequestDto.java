@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller.dto;
+package com.kakao.cafe.controller.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,10 +1,10 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.dto.ArticleRegisterRequestDto;
+import com.kakao.cafe.controller.dto.request.ArticleRegisterRequestDto;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.ArticleNotFoundException;
-import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.article.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

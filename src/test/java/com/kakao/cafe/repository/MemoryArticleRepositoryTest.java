@@ -1,7 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import org.assertj.core.api.Assertions;
+import com.kakao.cafe.repository.article.MemoryArticleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

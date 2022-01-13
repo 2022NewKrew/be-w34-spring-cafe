@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.UserProfileResponseDto;
-import com.kakao.cafe.controller.dto.UserQueryResponseDto;
-import com.kakao.cafe.controller.dto.UserSignUpRequestDto;
+import com.kakao.cafe.controller.dto.response.UserProfileResponseDto;
+import com.kakao.cafe.controller.dto.response.UserQueryResponseDto;
+import com.kakao.cafe.controller.dto.request.UserSignUpRequestDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;

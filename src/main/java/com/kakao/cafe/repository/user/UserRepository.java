@@ -1,4 +1,4 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.User;
 
