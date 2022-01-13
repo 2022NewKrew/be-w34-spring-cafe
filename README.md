@@ -6,7 +6,6 @@
 * domain TEST 코드 작성
 * Refactoring
   * Resources에서 공통 된 부분을 하나로 합치는 작업
-  * Annotation 추가 : Controller, Repository 등등
 ### DONE
 * domain 객체 생성
 * controller 생성
@@ -18,3 +17,5 @@
 * 정적페이지와 로직 연동 추가
 * Refactoring
   * Service Layer 추가 작업
+  * Annotation 추가 : Controller, Repository 등등
+  * Rombok 도입

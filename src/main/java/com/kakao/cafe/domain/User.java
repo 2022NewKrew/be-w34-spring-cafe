@@ -1,10 +1,18 @@
 package com.kakao.cafe.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class User {
+    @Getter
     private final String userId;
+    @Setter
     private String password;
+    @Getter @Setter
     private String name;
+    @Getter @Setter
     private String email;
+    @Getter @Setter
     private String pictureAddress;
 
     private static final String DUMMY_ADDRESS = "/images/80-text.png";
@@ -15,37 +23,5 @@ public class User {
         this.name = name;
         this.email = email;
         this.pictureAddress = DUMMY_ADDRESS;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String eMail) {
-        this.email = eMail;
-    }
-
-    public String getPictureAddress() {
-        return pictureAddress;
-    }
-
-    public void setPictureAddress(String pictureAddress) {
-        this.pictureAddress = pictureAddress;
     }
 }
