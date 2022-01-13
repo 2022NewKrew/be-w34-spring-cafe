@@ -16,13 +16,18 @@ import java.util.Map;
 @Controller
 @RequestMapping("/users")
 public class UsersApiController {
-    private final UserService userService = new UserService();
+    private final UserService userService;
+
+    private UsersApiController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     String getUsers(Model model) {
         List<Map<String, String>> userList = new ArrayList<>();
-        for (int i = 0; i < userService.getUserList().size(); i++) {
-            Users user = userService.getByUserId(i);
+        List<Users> queriedUsers = userService.getUsers();
+        for (int i = 0; i < queriedUsers.size(); i++) {
+            Users user = queriedUsers.get(i);
             userList.add(
                     (Map.of("index", Integer.toString(i + 1),
                             "id", Integer.toString(user.getId()),
