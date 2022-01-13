@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.util.exception.InvalidPasswordException;
 import com.kakao.cafe.util.exception.UserDuplicateException;
 import com.kakao.cafe.util.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,7 +80,7 @@ public class UserServiceTest {
                 .id("yunyul")
                 .name("윤렬2").build();
         String oldPassword = "wrong_password";
-        assertThat(userService.update(newInfo, oldPassword)).isFalse();
+        assertThatThrownBy(() -> userService.update(newInfo, oldPassword)).isInstanceOf(InvalidPasswordException.class);
     }
 
 
