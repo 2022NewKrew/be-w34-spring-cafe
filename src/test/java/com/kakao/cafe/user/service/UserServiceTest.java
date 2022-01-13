@@ -1,9 +1,9 @@
 package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.exception.UserDuplicatedException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.repository.UserRepository;
 import com.kakao.cafe.user.web.dto.UserSaveDto;
-import java.util.NoSuchElementException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DuplicateKeyException;
 
 @SpringBootTest
 class UserServiceTest {
@@ -45,7 +44,7 @@ class UserServiceTest {
         userService.addUser(miya1);
 
         //then
-        Assertions.assertThrows(DuplicateKeyException.class, () -> {
+        Assertions.assertThrows(UserDuplicatedException.class, () -> {
             userService.addUser(miya2);
         });
     }
@@ -53,8 +52,6 @@ class UserServiceTest {
     @Test
     @DisplayName("존재하지 않는 유저 테스트")
     void noUser() {
-        Assertions.assertThrows(NoSuchElementException.class, () -> {
-            userService.findUser("miya");
-        });
+        Assertions.assertFalse(userService.findUser("strange.user").isPresent());
     }
 }
