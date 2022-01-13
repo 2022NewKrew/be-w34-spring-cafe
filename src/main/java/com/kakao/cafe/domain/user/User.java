@@ -19,10 +19,7 @@ public class User {
     }
 
     public User(UserName userName, Password password, Name name, Email email) {
-        this.userName = userName;
-        this.password = password;
-        this.name = name;
-        this.email = email;
+        this(null, userName, password, name, email);
     }
 
     public UUID getId() {

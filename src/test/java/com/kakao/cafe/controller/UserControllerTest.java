@@ -25,9 +25,9 @@ public class UserControllerTest {
     @Test
     void requestSignup_InvokedWithValidParameters_RedirectsCorrectly() throws Exception {
         mockMvc.perform(post("/users")
-                        .param("userName", "creationTestId")
-                        .param("password", "creationTestPW")
-                        .param("name", "creationTestName")
+                        .param("userName", "creationTest")
+                        .param("password", "creationTest")
+                        .param("name", "creationTest")
                         .param("email", "creationTest@email.com"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
@@ -36,30 +36,30 @@ public class UserControllerTest {
     @Test
     void requestSignup_InvokedWithoutSomeParameters_Status400() throws Exception {
         mockMvc.perform(post("/users")
-                        .param("password", "invalidParameterTestPW")
-                        .param("name", "invalidParameterTestName")
+                        .param("password", "invalidParameterTest")
+                        .param("name", "invalidParameterTest")
                         .param("email", "invalidParameterTest@email.com"))
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("error/invalidinput"));
 
         mockMvc.perform(post("/users")
-                        .param("userName", "invalidParameterTestId")
-                        .param("name", "invalidParameterTestName")
+                        .param("userName", "invalidParameterTest")
+                        .param("name", "invalidParameterTest")
                         .param("email", "invalidParameterTest@email.com"))
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("error/invalidinput"));
 
         mockMvc.perform(post("/users")
-                        .param("userName", "invalidParameterTestId")
-                        .param("password", "invalidParameterTestPW")
+                        .param("userName", "invalidParameterTest")
+                        .param("password", "invalidParameterTest")
                         .param("email", "invalidParameterTest@email.com"))
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("error/invalidinput"));
 
         mockMvc.perform(post("/users")
-                        .param("userName", "invalidParameterTestId")
-                        .param("password", "invalidParameterTestPW")
-                        .param("name", "invalidParameterTestName"))
+                        .param("userName", "invalidParameterTest")
+                        .param("password", "invalidParameterTest")
+                        .param("name", "invalidParameterTest"))
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("error/invalidinput"));
     }
@@ -67,15 +67,15 @@ public class UserControllerTest {
     @Test
     void requestSignup_DuplicatedUserId_Status409() throws Exception {
         mockMvc.perform(post("/users")
-                .param("userName", "duplicationTestId")
-                .param("password", "duplicationTestPW")
-                .param("name", "duplicationTestName")
+                .param("userName", "duplicationTest")
+                .param("password", "duplicationTest")
+                .param("name", "duplicationTest")
                 .param("email", "duplicationTest@email.com"));
 
         mockMvc.perform(post("/users")
-                        .param("userName", "duplicationTestId")
-                        .param("password", "duplicationTestPW")
-                        .param("name", "duplicationTestName")
+                        .param("userName", "duplicationTest")
+                        .param("password", "duplicationTest")
+                        .param("name", "duplicationTest")
                         .param("email", "duplicationTest@email.com"))
                 .andExpect(status().isConflict())
                 .andExpect(view().name("error/userduplicated"));
@@ -93,12 +93,12 @@ public class UserControllerTest {
     @Test
     void requestUserProfile_InvokedWithValidParameter_ReturnsCorrectModelAndView() throws Exception {
         mockMvc.perform(post("/users")
-                .param("userName", "profileTestId")
-                .param("password", "profileTestPW")
-                .param("name", "profileTestName")
+                .param("userName", "profileTest")
+                .param("password", "profileTest")
+                .param("name", "profileTest")
                 .param("email", "profileTest@email.com"));
 
-        mockMvc.perform(get("/users/profileTestId"))
+        mockMvc.perform(get("/users/profileTest"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("user"))
                 .andExpect(view().name("users/profile"));
@@ -107,7 +107,7 @@ public class UserControllerTest {
     @Disabled
     @Test
     void requestUserProfile_InvokedWithNotExistingUserId_Status404() throws Exception {
-        mockMvc.perform(get("/users/noSuchUserTestId"))
+        mockMvc.perform(get("/users/noSuchUserTest"))
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("error/nosuchuser"));
     }

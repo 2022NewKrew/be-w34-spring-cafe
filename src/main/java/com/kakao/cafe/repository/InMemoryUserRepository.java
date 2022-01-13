@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserName;
 import com.kakao.cafe.domain.user.Users;
 import com.kakao.cafe.exception.DuplicateUserException;
+import com.kakao.cafe.repository.mapper.InMemoryUserMapper;
 import java.util.List;
 
 import java.util.Optional;
@@ -15,9 +16,11 @@ import org.springframework.stereotype.Repository;
 public class InMemoryUserRepository implements UserRepository {
 
     private final Users users;
+    private final InMemoryUserMapper userMapper;
 
-    public InMemoryUserRepository() {
+    public InMemoryUserRepository(InMemoryUserMapper userMapper) {
         this.users = new Users();
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -30,16 +33,18 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return users.getUserList();
+        return List.copyOf(users.getUserList());
     }
 
     @Override
     public Optional<User> findUserByName(UserName id) {
-        return users.findByUserName(id);
+        return users.findByUserName(id)
+                .map(userMapper::mapResult);
     }
 
     @Override
     public Optional<User> findUserById(UUID id) {
-        return users.findById(id);
+        return users.findById(id)
+                .map(userMapper::mapResult);
     }
 }

@@ -9,7 +9,6 @@ import com.kakao.cafe.mapper.UserMapper;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -39,9 +38,7 @@ public class UserController {
     @GetMapping("/users")
     public String requestUserList(Model model) {
         List<User> userList = userService.getUserList();
-        List<UserListResponseDto> dtoList = userList.stream()
-                .map(userMapper::userToUserListResponseDto)
-                .collect(Collectors.toList());
+        List<UserListResponseDto> dtoList = userMapper.userListToUserListResponseDtoList(userList);
         model.addAttribute("users", dtoList);
         return "users/list";
     }

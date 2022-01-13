@@ -15,4 +15,24 @@ public class ArticleListResponseDto {
         this.createdAt = createdAt;
         this.viewCount = viewCount;
     }
+
+    public String getArticleId() {
+        return articleId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public int getViewCount() {
+        return viewCount;
+    }
 }

@@ -28,15 +28,15 @@ public class ArticleControllerTest {
     @BeforeAll
     void setup() throws Exception {
         mockMvc.perform(post("/users")
-                .param("userName", "articleTestBaseId")
-                .param("password", "articleTestBasePW")
-                .param("name", "articleTestBaseName")
+                .param("userName", "articleTest")
+                .param("password", "articleTest")
+                .param("name", "articleTest")
                 .param("email", "articleTestBase@email.com"));
     }
 
     @Test
     void requestArticleList_Invoked_ReturnsCorrectModelAndView() throws Exception {
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get("/articles"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("articles"))
                 .andExpect(view().name("articles/list"));
@@ -45,30 +45,30 @@ public class ArticleControllerTest {
     @Test
     void requestArticleRegister_InvokedWithValidParameters_RedirectsCorrectly() throws Exception {
         mockMvc.perform(post("/articles")
-                        .param("userName", "articleTestBaseId")
-                        .param("title", "creationTestTitle")
-                        .param("content", "creationTestContent"))
+                        .param("userName", "articleTest")
+                        .param("title", "creationTest")
+                        .param("content", "creationTest"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrl("/articles"));
     }
 
     @Test
     void requestArticleRegister_InvokedWithoutSomeParameters_Status400() throws Exception {
         mockMvc.perform(post("/articles")
-                        .param("userName", "articleTestBaseId")
-                        .param("title", "invalidParameterTestTitle"))
+                        .param("userName", "articleTest")
+                        .param("title", "invalidParameterTest"))
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("error/invalidinput"));
 
         mockMvc.perform(post("/articles")
-                        .param("userName", "articleTestBaseId")
-                        .param("content", "creationTestContent"))
+                        .param("userName", "articleTest")
+                        .param("content", "invalidParameterTest"))
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("error/invalidinput"));
 
         mockMvc.perform(post("/articles")
-                        .param("title", "creationTestTitle")
-                        .param("content", "creationTestContent"))
+                        .param("title", "invalidParameterTest")
+                        .param("content", "invalidParameterTest"))
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("error/invalidinput"));
     }
@@ -76,9 +76,9 @@ public class ArticleControllerTest {
     @Test
     void requestArticleRegister_InvokedWithNotExistingUserId_Status400() throws Exception {
         mockMvc.perform(post("/articles")
-                        .param("userName", "noSuchUserTestId")
-                        .param("title", "noSuchUserTestTitle")
-                        .param("content", "noSuchUserTestContent"))
+                        .param("userName", "noSuchUserTest")
+                        .param("title", "noSuchUserTest")
+                        .param("content", "noSuchUserTest"))
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("error/nosuchuser"));
     }
@@ -87,9 +87,9 @@ public class ArticleControllerTest {
     @Test
     void requestArticleDetail_InvokedWithValidParameter_ReturnsCorrectModelAndView() throws Exception {
         mockMvc.perform(post("/articles")
-                .param("userName", "articleTestBaseId")
-                .param("title", "DetailTestTitle")
-                .param("content", "DetailTestContent"));
+                .param("userName", "articleTest")
+                .param("title", "DetailTest")
+                .param("content", "DetailTest"));
 
         mockMvc.perform(get("/articles/1"))
                 .andExpect(status().isOk())

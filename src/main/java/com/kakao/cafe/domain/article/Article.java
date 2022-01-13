@@ -10,7 +10,7 @@ public class Article {
     private final Title title;
     private final Content content;
     private final User writer;
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     private final ViewCount viewCount;
 
     public Article(UUID articleId, Title title, Content content, User writer, LocalDateTime createdAt, ViewCount viewCount) {
@@ -23,11 +23,7 @@ public class Article {
     }
 
     public Article(Title title, Content content, User writer) {
-        this.title = title;
-        this.content = content;
-        this.writer = writer;
-        this.createdAt = LocalDateTime.now();
-        this.viewCount = new ViewCount();
+        this(null, title, content, writer, null, new ViewCount());
     }
 
     public UUID getArticleId() {
@@ -56,6 +52,10 @@ public class Article {
 
     public void setArticleId(UUID id) {
         this.articleId = id;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public void increaseViewCount() {

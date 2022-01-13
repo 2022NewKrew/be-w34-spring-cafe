@@ -8,6 +8,8 @@ import com.kakao.cafe.domain.user.UserName;
 import com.kakao.cafe.dto.user.ProfileResponseDto;
 import com.kakao.cafe.dto.user.SignupRequestDto;
 import com.kakao.cafe.dto.user.UserListResponseDto;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,7 +23,13 @@ public class UserMapper {
         return new User(userName, password, name, email);
     }
 
-    public UserListResponseDto userToUserListResponseDto(User user) {
+    public List<UserListResponseDto> userListToUserListResponseDtoList(List<User> userList) {
+        return userList.stream()
+                .map(this::userToUserListResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    private UserListResponseDto userToUserListResponseDto(User user) {
         String id = user.getId().toString();
         String userName = user.getUserName().getValue();
         String name = user.getName().getValue();
