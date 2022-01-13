@@ -23,7 +23,7 @@ public class Article {
     }
 
     public Article(Title title, Content content, User writer) {
-        this(null, title, content, writer, null, null);
+        this(null, title, content, writer, null, new ViewCount());
     }
 
     public UUID getArticleId() {
