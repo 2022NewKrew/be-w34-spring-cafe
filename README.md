@@ -18,4 +18,4 @@
 * Refactoring
   * Service Layer 추가 작업
   * Annotation 추가 : Controller, Repository 등등
-  * Rombok 도입
+  * Lombok 도입
