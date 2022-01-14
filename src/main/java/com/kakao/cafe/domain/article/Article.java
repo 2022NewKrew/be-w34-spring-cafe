@@ -2,21 +2,25 @@ package com.kakao.cafe.domain.article;
 
 public class Article {
 
-    private Long id;
+    private final Long id;
     private String title;
     private String description;
 
     public Article(String title, String description) {
+        this(null, title, description);
+    }
+
+    public Article(Long id, String title, String description) {
+        this.id = id;
         this.title = title;
         this.description = description;
     }
 
     public Long getId() {
+        if (id == null) {
+            throw new AssertionError("id 값이 설정되지 않은 엔티티입니다.");
+        }
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {

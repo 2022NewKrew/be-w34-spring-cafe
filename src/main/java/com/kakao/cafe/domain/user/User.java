@@ -4,13 +4,18 @@ import com.kakao.cafe.exception.InvalidPasswordException;
 
 public class User {
 
-    private Long id;
+    private final Long id;
     private final String username;
     private String nickname;
     private String email;
     private String password;
 
     public User(String username, String nickname, String email, String password) {
+        this(null, username, nickname, email, password);
+    }
+
+    public User(Long id, String username, String nickname, String email, String password) {
+        this.id = id;
         this.username = username;
         this.nickname = nickname;
         this.email = email;
@@ -31,11 +36,10 @@ public class User {
     }
 
     public Long getId() {
+        if (id == null) {
+            throw new AssertionError("id 값이 설정되지 않은 엔티티입니다.");
+        }
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {

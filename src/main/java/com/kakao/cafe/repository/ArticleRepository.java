@@ -4,20 +4,21 @@ import com.kakao.cafe.domain.article.Article;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ArticleRepository implements MyRepository<Article, Long> {
 
     private final JdbcTemplate jdbcTemplate;
     private final ArticleMapper mapper;
-    private final AtomicLong sequenceId = new AtomicLong();
 
     public ArticleRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -48,15 +49,15 @@ public class ArticleRepository implements MyRepository<Article, Long> {
 
     @Override
     public void save(Article entity) {
-        String sql = "insert into article values ( ?, ?, ? )";
-        entity.setId(sequenceId.incrementAndGet());
+        String sql = "insert into article (title, description) values ( ?, ? )";
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbcTemplate.update(
-                sql,
-                entity.getId(),
-                entity.getTitle(),
-                entity.getDescription()
-        );
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, entity.getTitle());
+            ps.setString(2, entity.getDescription());
+            return ps;
+        }, keyHolder);
     }
 
     @Override
@@ -76,12 +77,11 @@ public class ArticleRepository implements MyRepository<Article, Long> {
     private static class ArticleMapper implements RowMapper<Article> {
         @Override
         public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Article article = new Article(
+            return new Article(
+                    rs.getLong("id"),
                     rs.getString("title"),
                     rs.getString("description")
             );
-            article.setId(rs.getLong("id"));
-            return article;
         }
     }
 }

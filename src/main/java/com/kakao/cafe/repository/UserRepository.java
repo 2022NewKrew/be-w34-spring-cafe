@@ -4,20 +4,21 @@ import com.kakao.cafe.domain.user.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class UserRepository implements MyRepository<User, Long> {
 
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper mapper;
-    private final AtomicLong sequenceId = new AtomicLong();
 
     public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -48,17 +49,17 @@ public class UserRepository implements MyRepository<User, Long> {
 
     @Override
     public void save(User entity) {
-        String sql = "insert into users values ( ?, ?, ?, ?, ? )";
-        entity.setId(sequenceId.incrementAndGet());
+        String sql = "insert into users (username, nickname, email, password) values ( ?, ?, ?, ? )";
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbcTemplate.update(
-                sql,
-                entity.getId(),
-                entity.getUsername(),
-                entity.getNickname(),
-                entity.getEmail(),
-                entity.getPassword()
-        );
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, entity.getUsername());
+            ps.setString(2, entity.getNickname());
+            ps.setString(3, entity.getEmail());
+            ps.setString(4, entity.getPassword());
+            return ps;
+        }, keyHolder);
     }
 
     @Override
@@ -79,14 +80,13 @@ public class UserRepository implements MyRepository<User, Long> {
     private static class UserMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            User user = new User(
+            return new User(
+                    rs.getLong("id"),
                     rs.getString("username"),
                     rs.getString("nickname"),
                     rs.getString("email"),
                     rs.getString("password")
             );
-            user.setId(rs.getLong("id"));
-            return user;
         }
     }
 }
