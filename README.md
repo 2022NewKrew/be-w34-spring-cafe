@@ -9,19 +9,19 @@
   - [x] static 의 html 파일을 template 으로 이동
     - [x] configuration 설정
     - [x] application.properties 설정
-- [ ] logger 설정하기
-- [-] 사용자 관련 기능
+- [x] logger 설정하기
+- [x] 사용자 관련 기능
   - [x] Service 처리
     - [x] Service 객체 생성 ( 어노테이션 )
     - [x] Service 연결 및 호출
   - [x] Dao 처리
     - [x] 사용자 정보를 저장, 반환
     - [x] 로컬메모리로 구현된 내용을 DB로 수정
-  - [-] 회원가입 기능 구현
+  - [x] 회원가입 기능 구현
     - [x] Controller -> Service -> Dao 순서의 호출
     - [x] Dao 의 사용자 정보에 사용자 존재 여부 확인
     - [x] 신규 사용자인 경우에만 정상적으로 추가
-    - [ ] 추가에 실패하는 경우, 실패정보를 반환
+    - [x] 추가에 실패하는 경우, 실패정보를 반환
   - [x] 회원 목록 기능 구현
     - [x] templates 이식
     - [x] 회원이 없는 경우, 빈 목록을 출력
@@ -37,7 +37,7 @@
   - [x] 일부 Default URL 의 경우 동시관리가 힘들어서, 분리가 필요할 것 같음 ( 현재는 매직리터럴로 작성 )
     - [x] 화면을 전부 template 쪽으로 이동
     - [x] 접근용도의 GET Mapping 을 모아둔 클래스 작성하기
-- [-] 게시글 관련 기능
+- [x] 게시글 관련 기능
   - [x] Service 처리
   - [x] Dao 처리
   - [x] 게시글 작성 기능 구현
@@ -69,6 +69,8 @@
     - No primary or single unique constructor found for class
 - mustache 에서 Session 객체에 접근하려면 추가설정이 필요
   - application.properties 에 "spring.mustache.expose-session-attributes=true" 설정이 필요
+- @Aspect 를 쓰기 위해선, spring-aop 가 아닌 spring-boot-starter-aop 가 필요
+  - Get/Post Mapping 의 경우, annotation 기반으로 적용시켜서 되는데, execute 는 왜 실행이 안되는지 잘 파악을 못하겠음
 
 # 참고 사이트
 - Collection 관련
@@ -84,3 +86,7 @@
   - https://velog.io/@jwkim/spring-boot-datajpatest-error
 - slf4j
   - https://programmer93.tistory.com/64
+- aop
+  - https://vmpo.tistory.com/100
+  - https://velog.io/@shson/%EC%8A%A4%ED%94%84%EB%A7%81Spring-AOP-AspectJ-Pointcut-%ED%91%9C%ED%98%84%EC%8B%9D-1-1-execution
+
