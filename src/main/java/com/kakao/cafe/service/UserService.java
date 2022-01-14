@@ -1,29 +1,38 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserRequestDto;
+import com.kakao.cafe.entity.User;
+import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+    private final UserRepository userRepository;
 
-    private final List<User> userList = new ArrayList<>();
-
-    public List<User> getUserList() {
-        return userList;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public void registerUser(User user) {
-        userList.add(user);
+    public void createUser(UserRequestDto userRequestDto) {
+        User user = new User(userRequestDto);
+        userRepository.save(user);
     }
 
-    public User findById(String userId) {
-        for(User user : userList) {
-            if (user.getUserId().equals(userId)) return user;
-        }
-        return null;
+    public List<UserDto> getUserList() {
+        return userRepository.findAll().
+                map(users -> users
+                        .stream()
+                        .map(UserDto::entityToDto)
+                        .collect(Collectors.toList())
+                ).orElse(null);
+    }
+
+    public UserDto findById(String userId){
+        return UserDto.entityToDto(userRepository.findById(userId));
     }
 
 }
