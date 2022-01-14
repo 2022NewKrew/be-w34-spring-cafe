@@ -11,10 +11,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class UserDto {
+public class EditUserDto {
     private String email;
     private String username;
     private String password;
+    private String newPassword;
+    private String newPasswordConfirm;
     private LocalDateTime regDate, modDate;
 
+    public boolean confirmPassword() {
+        return newPassword.equals(newPasswordConfirm);
+    }
 }

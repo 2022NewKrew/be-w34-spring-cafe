@@ -1,0 +1,42 @@
+{{>layout/header}}
+{{>layout/navbar}}
+<main class="">
+    <section>
+        <form action="/posts" method="post">
+            <div class="container border p-4">
+                <div class="row">
+                    <div class="col mb-3">{{auth.username}}</div>
+                    <input name="writerEmail" type="hidden" readonly="" name="entry" value="{{auth.email}}">
+                    <input name="writerUsername" type="hidden" readonly="" name="entry" value="{{auth.username}}">
+                </div>
+
+                <div class="row mb-5">
+                    <div class="input-group input-group-lg">
+                        <input name="title" type="text" class="form-control" placeholder="제목을 입력하세요."
+                               aria-label="Sizing example input"
+                               aria-describedby="inputGroup-sizing-lg">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group">
+                        <textarea name="content" class="form-control" placeholder="내용을 입력하세요."
+                                  aria-label="With textarea"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col">
+                        <div class="d-flex flex-column w-100 mt-5">
+                            <button type="submit" class="btn btn-dark p-3">등록</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</main>
+{{>layout/footer}}

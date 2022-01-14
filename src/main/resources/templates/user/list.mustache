@@ -31,7 +31,7 @@
         <ul class="pagination">
             {{#users.hasPrev}}
                 <li class="page-item">
-                    <a class="page-link border-0 text-dark" href="list?page={{users.prev}}" aria-label="Previous">
+                    <a class="page-link border-0 text-dark" href="users?page={{users.prev}}" aria-label="Previous">
                     <span aria-hidden="true">&lt;</span>
                     </a>
                 </li>
@@ -44,12 +44,12 @@
                 </li>
             {{/users.hasPrev}}
             {{#users.pageList}}
-                <li class="page-item"><a class="page-link border-0 text-dark" href="list?page={{this}}">{{this}}</a>
+                <li class="page-item"><a class="page-link border-0 text-dark" href="users?page={{this}}">{{this}}</a>
                 </li>
             {{/users.pageList}}
             {{#users.hasNext}}
                 <li class="page-item">
-                    <a class="page-link border-0 text-dark" href="list?page={{users.next}}" aria-label="Next">
+                    <a class="page-link border-0 text-dark" href="users?page={{users.next}}" aria-label="Next">
                     <span aria-hidden="true">&gt;</span>
                     </a>
                 </li>

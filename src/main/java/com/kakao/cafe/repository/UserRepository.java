@@ -1,6 +1,5 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.entity.Post;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.util.Page;
 import com.kakao.cafe.util.Pageable;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Repository
@@ -46,15 +46,38 @@ public class UserRepository {
     }
 
     public void save(User entity) {
-        userList.add(entity.init());
+        userList.stream()
+                .filter(user -> user.getEmail().equals(entity.getEmail()))
+                .findFirst()
+                .ifPresentOrElse(
+                        user -> {
+                            user.changeUsername(entity.getUsername());
+                            user.changePassword(entity.getPassword());
+                        },
+                        () -> userList.add(entity)
+                );
     }
 
-    public User findbyIdAndPassword(User entity) throws Exception {
+    public void update(User entity) {
+        Optional<User> result = userList.stream()
+                .filter(user -> user.getEmail().equals(entity.getEmail()))
+                .filter(user -> user.getPassword().equals(entity.getPassword()))
+                .findFirst();
+        result.ifPresent(user -> {
+        });
+    }
+
+    public Optional<User> findByEmail(User entity) {
+        return userList.stream()
+                .filter(user -> user.getEmail().equals(entity.getEmail()))
+                .findFirst();
+    }
+
+    public Optional<User> findByEmailAndPassword(User entity) {
         return userList.stream()
                 .filter(user -> user.getEmail().equals(entity.getEmail()))
                 .filter(user -> user.getPassword().equals(entity.getPassword()))
-                .findFirst()
-                .orElseThrow(() -> new Exception("Login Error"));
+                .findFirst();
     }
 
     public Page<User> findAll(Pageable pageable) {

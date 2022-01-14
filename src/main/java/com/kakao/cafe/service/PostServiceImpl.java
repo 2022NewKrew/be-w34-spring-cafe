@@ -4,32 +4,36 @@ import com.kakao.cafe.dto.PageRequestDto;
 import com.kakao.cafe.dto.PageResultDto;
 import com.kakao.cafe.dto.PostDto;
 import com.kakao.cafe.entity.Post;
+import com.kakao.cafe.exception.post.PostNotFoundException;
 import com.kakao.cafe.repository.PostRepository;
 import com.kakao.cafe.util.Page;
 import com.kakao.cafe.util.Pageable;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 @Service
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
 
     @Override
-    public PostDto register(PostDto dto) {
+    public Long register(PostDto dto) {
         Post entity = dtoToEntity(dto);
-        log.info(entity);
-        try {
-            return entityToDto(postRepository.findById(postRepository.save(entity)));
-        } catch (Exception e) {
-            log.info(e.getMessage());
-            return null;
-        }
+        return postRepository.save(entity);
+    }
+
+    @Override
+    public PostDto getPost(Long postId) {
+        Optional<Post> result = postRepository.findById(postId);
+        if (result.isEmpty())
+            throw new PostNotFoundException();
+        return entityToDto(result.get());
     }
 
     @Override

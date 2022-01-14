@@ -1,39 +1,54 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.AuthDto;
 import com.kakao.cafe.dto.PageRequestDto;
 import com.kakao.cafe.dto.PostDto;
 import com.kakao.cafe.service.PostService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/board")
-@Log4j2
+@RequestMapping("/posts")
+@Slf4j
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
 
-    @GetMapping("/post")
-    public String postBoardForm() {
-        return "/board/post";
+    @GetMapping("/new")
+    public String writePostForm(HttpSession session) {
+        AuthDto authDto = (AuthDto) session.getAttribute("auth");
+        if (authDto == null) {
+            return "redirect:/accounts/login";
+        }
+        return "board/post_write";
     }
 
-    @PostMapping("/post")
-    public String postBoard(PostDto postDto, HttpSession session) {
-        postService.register(postDto);
-        return "redirect:/board/list";
+    @GetMapping("/{postId}")
+    public String readPost(@PathVariable Long postId, Model model) {
+        model.addAttribute("post", postService.getPost(postId));
+        return "board/post";
     }
 
-    @GetMapping("/list")
-    public String getBoardList(PageRequestDto pageRequestDto, Model model) {
+    @PostMapping
+    public String writePost(PostDto postDto, HttpSession session) {
+        AuthDto authDto = (AuthDto) session.getAttribute("auth");
+        if (authDto == null) {
+            return "redirect:/accounts/login";
+        }
+        return "redirect:/posts/" + postService.register(postDto);
+    }
+
+    @GetMapping
+    public String postList(PageRequestDto pageRequestDto, Model model) {
         model.addAttribute("posts", postService.getList(pageRequestDto));
-        return "/board/list";
+        return "board/list";
     }
 }
