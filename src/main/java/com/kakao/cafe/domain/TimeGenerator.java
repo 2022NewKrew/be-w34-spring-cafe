@@ -4,11 +4,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 
 public class TimeGenerator {
-    private TimeGenerator(){
+    private TimeGenerator() {
 
     }
 
-    static String todayDate(){
+    public static String todayDate() {
         LocalDate seoulToday = LocalDate.now(ZoneId.of("Asia/Seoul"));
         return seoulToday.toString();
     }
