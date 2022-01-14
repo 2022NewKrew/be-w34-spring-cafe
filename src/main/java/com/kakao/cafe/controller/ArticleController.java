@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.model.Article;
+import com.kakao.cafe.model.ArticleSaveDTO;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,8 +31,8 @@ public class ArticleController {
     }
 
     @PostMapping("/post")
-    public String postArticle(@RequestParam String title, @RequestParam String content){
-        articleService.save(title, content);
+    public String postArticle(ArticleSaveDTO articleSaveDTO){
+        articleService.save(articleSaveDTO);
         return "redirect:/";
     }
 }
