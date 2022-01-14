@@ -19,4 +19,14 @@ public class UsersService {
     public ArrayList<UserResponseDto> findAllUsers() {
         return usersRepository.findAll();
     }
+
+    @Transactional
+    public UserResponseDto findById(Long id) {
+        return usersRepository.findById(id);
+    }
+
+    @Transactional
+    public void update(Long id, UsersCreateRequestDto requestDto) {
+        usersRepository.update(id, requestDto.toEntity());
+    }
 }
