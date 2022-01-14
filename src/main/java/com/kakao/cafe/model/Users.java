@@ -39,12 +39,6 @@ public class Users {
                 .findFirst();
     }
 
-    public Optional<User> findByName(String name) {
-        return users.stream()
-                .filter(user -> name.equals(user.getName()))
-                .findFirst();
-    }
-
     public List<User> getUsers() {
         return Collections.unmodifiableList(users);
     }

@@ -7,7 +7,6 @@ import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,9 +40,5 @@ public class UserService {
                 user.getId(),
                 user.getName(),
                 user.getEmail());
-    }
-
-    public Optional<User> findByUserId(String userId) {
-        return userRepository.findByUserId(userId);
     }
 }

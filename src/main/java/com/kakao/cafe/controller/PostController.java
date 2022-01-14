@@ -2,7 +2,6 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.PostCreateRequest;
 import com.kakao.cafe.service.PostService;
-import com.kakao.cafe.service.UserService;
 import java.util.UUID;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PostController {
 
     private final PostService postService;
-    private final UserService userService;
 
     @Autowired
-    public PostController(PostService postService, UserService userService) {
+    public PostController(PostService postService) {
         this.postService = postService;
-        this.userService = userService;
     }
 
     @GetMapping

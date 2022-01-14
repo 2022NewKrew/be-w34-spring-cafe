@@ -18,7 +18,6 @@ public class InMemoryPostRepository implements PostRepository {
         this.posts = new Posts(Collections.synchronizedList(new ArrayList<>()));
     }
 
-
     @Override
     public void save(Post post) {
         posts.add(post);
