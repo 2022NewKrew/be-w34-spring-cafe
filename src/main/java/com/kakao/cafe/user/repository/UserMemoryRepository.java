@@ -18,6 +18,11 @@ public class UserMemoryRepository implements UserRepository{
         return users;
     }
 
+    @Override
+    public User getUserByCondition(String key, String value) {
+        return null;
+    }
+
     //회원가입처리
     public void addUser(UserCreateDTO userCreateDTO){
         User user = new User(userCreateDTO, Long.valueOf(users.size() + 1));

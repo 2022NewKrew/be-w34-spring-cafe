@@ -21,11 +21,21 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public List<User> getUsers() {
+        String sql = "select * from users";
 
-        return jdbcTemplate.query("select * from users",
+        return jdbcTemplate.query(sql,
                 (rs, rn) ->
         {User user = new User(rs.getString("userid"), rs.getString("password"), rs.getString("name"), rs.getString("email"), rs.getLong("sequence"));
             return user;});
+    }
+
+    @Override
+    public User getUserByCondition(String key, String value) {
+        String sql = String.format("select * from users where %s = '%s'", key, value);
+        return jdbcTemplate.query(sql,
+                (rs, rn) ->
+                {User user = new User(rs.getString("userid"), rs.getString("password"), rs.getString("name"), rs.getString("email"), rs.getLong("sequence"));
+                    return user;}).stream().findAny().orElse(null);
     }
 
     @Override
