@@ -12,21 +12,21 @@ public class User {
     public User(String userId, String password, String email) {
         this.userId = userId;
         this.password = password;
+//        this.password = hash(password);
         this.email = email;
     }
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    public String hash(String password) {
-        return passwordEncoder.encode(password);
-    }
+//    public String hash(String password) {
+//        return passwordEncoder.encode(password);
+//    }
 
     public String getUserId() {
         return userId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmail() { return email;}
+
+    public String getPassword() {
+        return password;
     }
 }
