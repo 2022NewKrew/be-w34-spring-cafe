@@ -1,23 +1,20 @@
 package com.kakao.cafe.web.repository.article;
 
 import com.kakao.cafe.web.domain.Article;
-import com.kakao.cafe.web.domain.User;
-import com.kakao.cafe.web.repository.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    public JdbcTemplateArticleRepository(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    public JdbcTemplateArticleRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
