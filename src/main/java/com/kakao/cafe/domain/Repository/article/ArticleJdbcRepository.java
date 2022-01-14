@@ -25,9 +25,6 @@ public class ArticleJdbcRepository {
 
     public Article findById(int id) {
         Article article = this.jdbcTemplate.queryForObject("SELECT * FROM ARTICLES WHERE id = ?", this.articleMapper, id);
-        System.out.println(article.getWriter());
-        System.out.println(article.getTitle());
-        System.out.println(article.getContents());
         return article;
     }
 
