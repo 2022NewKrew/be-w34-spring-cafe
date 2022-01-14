@@ -14,4 +14,10 @@ public class ExceptionController {
         log.error("UserException : {}", e.getErrorCode().getErrorMessage());
         return ErrorResponse.createResponseEntity(e.getErrorCode());
     }
+
+    @ExceptionHandler(ArticleException.class)
+    protected ResponseEntity<ErrorResponse> handleArticleException(ArticleException e) {
+        log.error("ArticleException : {}", e.getErrorCode().getErrorMessage());
+        return ErrorResponse.createResponseEntity(e.getErrorCode());
+    }
 }

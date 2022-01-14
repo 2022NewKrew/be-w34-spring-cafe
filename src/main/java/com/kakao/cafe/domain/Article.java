@@ -9,14 +9,14 @@ import java.util.Date;
 @Getter
 public class Article {
     private final Long articleId;
-    private final User writer;
+    private final UserId writerId;
     private final Date writeTime;
     private final Title title;
     private final Contents contents;
 
-    public Article(User writer, Date writeTime, Title title, Contents contents) {
+    public Article(UserId writerId, Date writeTime, Title title, Contents contents) {
         articleId = 0L;
-        this.writer = writer;
+        this.writerId = writerId;
         this.writeTime = writeTime;
         this.title = title;
         this.contents = contents;
@@ -25,7 +25,7 @@ public class Article {
     public Article(Long articleId, Article article) {
         validateNullArticle(article);
         this.articleId = articleId;
-        writer = article.writer;
+        writerId = article.writerId;
         writeTime = article.writeTime;
         title = article.title;
         contents = article.contents;
@@ -39,6 +39,10 @@ public class Article {
 
     public Long getArticleId() {
         return articleId;
+    }
+
+    public String getWriterId() {
+        return writerId.getUserId();
     }
 
     public String getTitle() {
