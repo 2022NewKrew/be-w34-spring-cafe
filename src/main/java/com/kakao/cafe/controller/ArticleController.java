@@ -5,12 +5,7 @@ import com.kakao.cafe.dto.article.ArticleDTO;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.Url;
 import com.kakao.cafe.util.View;
-<<<<<<< HEAD
 import lombok.extern.slf4j.Slf4j;
-=======
->>>>>>> 8902c5f (스프링 카페 1-2단계 구현 - article 관련 기능, 회원 정보 수정 기능)
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
