@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -34,7 +35,7 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public String postArticles(ArticleRequestDTO articleRequestDTO) {
+    public String postArticles(@Valid ArticleRequestDTO articleRequestDTO) {
         logger.info(articleRequestDTO.toString());
         articleService.posting(articleRequestDTO);
         return "redirect:/";

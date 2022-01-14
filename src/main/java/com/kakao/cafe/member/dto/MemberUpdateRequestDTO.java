@@ -4,16 +4,29 @@ import com.kakao.cafe.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
 public class MemberUpdateRequestDTO {
 
+    @Email
+    @NotBlank
     private String email;
+
+    @NotBlank
     private String nickname;
+
+    @NotEmpty
     private String currentPassword;
+
+    @NotEmpty
     private String password;
+
+    @NotEmpty
     private String passwordCheck;
 
     public Member toMember(LocalDate createDate) {
