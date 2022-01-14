@@ -23,7 +23,8 @@ public class PostsRepository {
                     "id BIGINT NOT NULL, " +
                     "writer VARCHAR(32), " +
                     "title VARCHAR(32), "+
-                    "content VARCHAR(100)" +
+                    "content VARCHAR(100), " +
+                    "created_date VARCHAR(50) " +
                     ")";
             statement.execute(sql);
         } catch (SQLException e) {
@@ -35,12 +36,13 @@ public class PostsRepository {
         try {
             connection = DriverManager.getConnection(DB_URL);
             Statement statement = connection.createStatement();
-            final String sql = "INSERT INTO post VALUES (?, ?, ?, ?)";
+            final String sql = "INSERT INTO post VALUES (?, ?, ?, ?, ?)";
             final PreparedStatement ps = connection.prepareStatement(sql);
             ps.setLong(1, postEntity.getId());
             ps.setString(2, postEntity.getWriter());
             ps.setString(3, postEntity.getTitle());
             ps.setString(4, postEntity.getContent());
+            ps.setString(5, postEntity.getTime().toString());
 
             ps.execute();
         } catch (SQLException e) {
@@ -62,7 +64,9 @@ public class PostsRepository {
                 String writer = result.getString("writer");
                 String title = result.getString("title");
                 String content = result.getString("content");
-                postsList.add(new PostResponseDto(writer, title, content, 0, id));
+                String time = result.getString("created_date");
+                String date = time.split("T")[0];
+                postsList.add(new PostResponseDto(writer, title, content, 0, id, date));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,8 +86,9 @@ public class PostsRepository {
             String writer = result.getString("writer");
             String title = result.getString("title");
             String content = result.getString("content");
-
-            PostResponseDto resultDto = new PostResponseDto(writer, title, content, 0, id);
+            String time = result.getString("created_date");
+            time = time.replace("T", " ");
+            PostResponseDto resultDto = new PostResponseDto(writer, title, content, 0, id, time);
             return resultDto;
         } catch (SQLException e) {
             e.printStackTrace();
