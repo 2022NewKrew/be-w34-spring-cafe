@@ -1,19 +1,21 @@
 package com.kakao.cafe.service.member;
 
 import com.kakao.cafe.domain.member.Member;
+import com.kakao.cafe.domain.member.UserId;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MemberService {
 
-    List<Member> findAllMembers();
+    List<Member> inquireAllMembers();
 
-    void saveMember(Member member);
+    Member inquireMemberByUserId(UserId userId);
 
-    Optional<Member> findOne(Long memberId);
+    Member joinMember(Member member);
 
-    void editMemberInformation(Long memberId, Member member);
+    Member inquireOneMember(Long memberId);
+
+    Member editMemberInformation(Long memberId, Member member);
 
     void deleteMember(Long memberId);
 
