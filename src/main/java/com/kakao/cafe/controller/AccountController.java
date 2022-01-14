@@ -38,7 +38,6 @@ public class AccountController {
 
     @PostMapping("/signup")
     public String signup(UserDto userDto, Model model) {
-        log.info("[signup] user: " + userDto);
         model.addAttribute("user", userService.register(userDto));
         return "user/signup_success";
     }
@@ -75,7 +74,6 @@ public class AccountController {
         if (authDto == null) {
             return "redirect:/accounts/login";
         }
-        log.info("accounts/mypage/edit" + editUserDto);
         userService.modify(editUserDto);
         return "redirect:/accounts/mypage";
     }
