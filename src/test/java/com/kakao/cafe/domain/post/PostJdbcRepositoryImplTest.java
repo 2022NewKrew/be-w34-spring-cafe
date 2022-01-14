@@ -1,7 +1,6 @@
 package com.kakao.cafe.domain.post;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,20 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
+@Transactional
 @Slf4j
 @SpringBootTest
 class PostJdbcRepositoryImplTest {
+    private static final int INIT_SIZE_OF_POSTS = 3; // 데이터베이스에 저장된 초기 게시글의 수
 
     @Qualifier("postJdbcRepositoryImpl")
     @Autowired
     private PostRepository postRepository;
-
     private Post post;
 
     @BeforeEach
@@ -39,11 +40,6 @@ class PostJdbcRepositoryImplTest {
 
         postRepository.save(post);
         this.post = postRepository.findAll().stream().findFirst().orElse(null);
-    }
-
-    @AfterEach
-    void cleanup() {
-        postRepository.deleteAll();
     }
 
     @DisplayName("정상적인 게시글이라면 저장할 때 에러가 발생하지 않아야 한다.")
@@ -123,7 +119,7 @@ class PostJdbcRepositoryImplTest {
     void findAll() {
         List<Post> posts = postRepository.findAll();
 
-        assertThat(posts.size()).isEqualTo(1);
+        assertThat(posts.size()).isEqualTo(INIT_SIZE_OF_POSTS + 1);
     }
 
     @DisplayName("조회된 게시글의 정보는 등록된 게시글의 정보와 같아야 한다.")

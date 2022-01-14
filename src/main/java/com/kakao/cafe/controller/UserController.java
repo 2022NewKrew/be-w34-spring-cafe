@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,18 +24,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/users")
-    public String signup(@Valid UserSignupRequest user, Errors errors, RedirectAttributes rttr) {
-        if (errors.hasFieldErrors()) {
-            errors.getFieldErrors().forEach(error -> rttr.addFlashAttribute(error.getField(), error.getDefaultMessage()));
-            return "redirect:/signup";
-        }
-        try {
-            userService.signupUser(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-            rttr.addFlashAttribute("msg", e.getMessage());
-            return "redirect:/signup";
-        }
+    public String signup(@Valid UserSignupRequest user, RedirectAttributes rttr) {
+        userService.signupUser(user);
         rttr.addFlashAttribute("msg", "회원가입에 성공하였습니다.");
         return "redirect:/users";
     }
@@ -50,46 +39,20 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public String getUser(@PathVariable long id, Model model, RedirectAttributes rttr) {
-        try {
-            model.addAttribute("user", userService.getUserById(id));
-            return "user/profile";
-        } catch (Exception e) {
-            e.printStackTrace();
-            rttr.addFlashAttribute("msg", e.getMessage());
-            return "redirect:/users";
-        }
+    public String getUser(@PathVariable long id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "user/profile";
     }
 
     @GetMapping("/users/{id}/update")
-    public String getUpdateForm(@PathVariable long id, Model model, RedirectAttributes rttr) {
-        try {
-            model.addAttribute("user", userService.getUserById(id));
-            return "/user/updateForm";
-        } catch (Exception e) {
-            e.printStackTrace();
-            rttr.addFlashAttribute("msg", e.getMessage());
-            return "redirect:/users";
-        }
+    public String getUpdateForm(@PathVariable long id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "/user/updateForm";
     }
 
     @PutMapping("/users/{id}")
-    public String updateUser(
-            @PathVariable long id,
-            @Valid UserUpdateRequest request,
-            Errors errors,
-            RedirectAttributes rttr) {
-        if (errors.hasFieldErrors()) {
-            errors.getFieldErrors().forEach(error -> rttr.addFlashAttribute(error.getField(), error.getDefaultMessage()));
-            return "redirect:/users/" + id + "/update";
-        }
-        try {
-            userService.updateUser(id, request);
-        } catch (Exception e) {
-            e.printStackTrace();
-            rttr.addFlashAttribute("msg", e.getMessage());
-            return "redirect:/users/" + id + "/update";
-        }
+    public String updateUser(@PathVariable long id, @Valid UserUpdateRequest request, RedirectAttributes rttr) {
+        userService.updateUser(id, request);
         rttr.addFlashAttribute("msg", "회원 정보를 수정하였습니다.");
         return "redirect:/users";
     }

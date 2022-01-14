@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>멤버 목록</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div class="container flex flex-col mx-auto">
+    {{> fragments/header}}
+
+    <div class="flex flex-col justify-center h-40 bg-yellow-400 px-12 py-8 font-medium space-y-2">
+        <h3 class="text-xl">멤버 목록</h3>
+        <h1 class="text-2xl">참여자를 확인할 수 있습니다.</h1>
+    </div>
+
+    <div class="my-8">
+        <p class="ml-1">전체 멤버 {{ sizeOfUsers }}명</p>
+        <div class="flex flex-col my-2">
+            <div class="flex text-center py-3 border-t border-b bg-gray-100">
+                <span class="flex-none text-center w-80">닉네임</span>
+                <span class="flex-1 text-center ">이메일</span>
+                <span class="flex-none w-40">회원가입일</span>
+            </div>
+            {{#users}}
+            <a href="/users/{{ id }}" class="flex text-center py-3 border-b">
+                <span class="flex-none w-80 px-4 text-left">{{ nickname }}</span>
+                <span class="flex-1 text-left">{{ email }}</span>
+                <span class="flex-none w-40">{{ formattedCreatedAt }}</span>
+            </a>
+            {{/users}}
+        </div>
+    </div>
+</div>
+</body>
+</html>

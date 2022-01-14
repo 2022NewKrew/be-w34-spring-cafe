@@ -5,22 +5,24 @@ import com.kakao.cafe.domain.post.PostRepository;
 import com.kakao.cafe.model.post.PostDto;
 import com.kakao.cafe.model.post.PostWriteRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
+@Transactional
 @Slf4j
 @SpringBootTest
 class PostServiceTest {
+    private static final int INIT_SIZE_OF_POSTS = 3; // 데이터베이스에 저장된 초기 게시글의 수
 
     @Autowired
     private PostService postService;
@@ -28,7 +30,6 @@ class PostServiceTest {
     @Qualifier("postJdbcRepositoryImpl")
     @Autowired
     private PostRepository postRepository;
-
     private final int size = 20;
 
     @BeforeEach
@@ -42,11 +43,6 @@ class PostServiceTest {
                     .build();
             postRepository.save(post);
         }
-    }
-
-    @AfterEach
-    void cleanup() {
-        postRepository.deleteAll();
     }
 
     @DisplayName("정상적으로 게시글을 저장할 때, 에러가 발생하지 않아야 한다.")
@@ -88,13 +84,13 @@ class PostServiceTest {
     void getAllPosts() {
         List<PostDto> posts = postService.getAllPosts();
 
-        assertThat(posts.size()).isEqualTo(size);
+        assertThat(posts.size()).isEqualTo(INIT_SIZE_OF_POSTS + size);
     }
 
     @DisplayName("등록된 게시글의 id를 통해서 게시글의 정보를 조회할 때, 에러가 발생하지 않아야 한다.")
     @Test
     void getPostById() {
-        long id = 11;
+        long id = 1;
 
         assertThatNoException().isThrownBy(() -> {
             PostDto post = postService.getPostById(id);
@@ -105,7 +101,9 @@ class PostServiceTest {
     @DisplayName("등록되지 않은 게시글의 id를 통해서 게시글의 정보를 조회할 때, 에러가 발생해야 한다.")
     @Test
     void getPostByIdNotContained() {
-        long id = size + 1;
+        Post lastPost = postRepository.findAll().stream().max((p1, p2) -> (int) (p1.getId() - p2.getId())).orElse(null);
+        assertThat(lastPost).isNotNull();
+        long id = lastPost.getId() + 1;
 
         assertThatIllegalArgumentException().isThrownBy(() -> {
             PostDto post = postService.getPostById(id);

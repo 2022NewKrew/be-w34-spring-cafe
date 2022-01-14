@@ -1,7 +1,6 @@
 package com.kakao.cafe.domain.user;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,19 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
+@Transactional
 @Slf4j
 @SpringBootTest
 class UserJdbcRepositoryImplTest {
+    private static final int INIT_SIZE_OF_USERS = 3; // 데이터베이스에 저장된 초기 회원의 수
+
     @Qualifier("userJdbcRepositoryImpl")
     @Autowired
     private UserRepository userRepository;
-
     private User user;
 
     @BeforeEach
@@ -37,11 +39,6 @@ class UserJdbcRepositoryImplTest {
                 .build();
         userRepository.save(user);
         this.user = userRepository.findByEmail(email).orElse(null);
-    }
-
-    @AfterEach
-    private void cleanup() {
-        userRepository.deleteAll();
     }
 
     @DisplayName("회원 정보를 등록할 때, 에러가 발생하지 않아야 한다.")
@@ -129,7 +126,7 @@ class UserJdbcRepositoryImplTest {
     @Test
     void findAll() {
         List<User> users = userRepository.findAll();
-        assertThat(users.size()).isEqualTo(1);
+        assertThat(users.size()).isEqualTo(INIT_SIZE_OF_USERS + 1);
     }
 
     @DisplayName("id를 이용하여 등록된 회원의 정보는 조회할 수 있어야 한다.")
