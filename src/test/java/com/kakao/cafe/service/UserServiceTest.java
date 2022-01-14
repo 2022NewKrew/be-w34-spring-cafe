@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.dto.UserSaveForm;
+import com.kakao.cafe.controller.dto.UserUpdateForm;
 import com.kakao.cafe.controller.dto.UserJoinForm;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.AlreadyExistId;
@@ -60,14 +60,14 @@ class UserServiceTest {
         //given
         String updateName = "newName";
         String updateEmail = "newEmail";
-        UserSaveForm userSaveForm = new UserSaveForm();
-        userSaveForm.setPassword(user.getPassword());
-        userSaveForm.setEmail(updateEmail);
-        userSaveForm.setName(updateName);
+        UserUpdateForm userUpdateForm = new UserUpdateForm();
+        userUpdateForm.setPassword(user.getPassword());
+        userUpdateForm.setEmail(updateEmail);
+        userUpdateForm.setName(updateName);
 
         //when
         userRepository.save(user);
-        userService.updateUser(userId, userSaveForm);
+        userService.updateUser(userId, userUpdateForm);
 
         user = userRepository.findById(user.getUserId()).get();
 
@@ -82,14 +82,14 @@ class UserServiceTest {
         //given
         String updateName = "newName";
         String updateEmail = "newEmail";
-        UserSaveForm userSaveForm = new UserSaveForm();
-        userSaveForm.setPassword(user.getPassword() + "a");
-        userSaveForm.setEmail(updateEmail);
-        userSaveForm.setName(updateName);
+        UserUpdateForm userUpdateForm = new UserUpdateForm();
+        userUpdateForm.setPassword(user.getPassword() + "a");
+        userUpdateForm.setEmail(updateEmail);
+        userUpdateForm.setName(updateName);
 
         //when
         userRepository.save(user);
         //then
-        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.updateUser(userId, userSaveForm));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.updateUser(userId, userUpdateForm));
     }
 }

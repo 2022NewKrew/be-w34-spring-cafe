@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.dto.UserSaveForm;
+import com.kakao.cafe.controller.dto.UserUpdateForm;
 import com.kakao.cafe.controller.dto.UserJoinForm;
 import com.kakao.cafe.controller.dto.UserListDto;
 import com.kakao.cafe.domain.User;
@@ -37,7 +37,7 @@ public class UserService {
         return userRepository.findById(userId).orElseThrow(() -> new NoSuchUser("그런 사용자는 없습니다."));
     }
 
-    public void updateUser(String userId, UserSaveForm dto) {
+    public void updateUser(String userId, UserUpdateForm dto) {
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchUser("그런 사용자는 없습니다."));
         if(!user.chcekPassword(dto.getPassword())) {
             throw new IllegalArgumentException("비밀번호 불일치");

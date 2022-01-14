@@ -1,17 +1,17 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.UserSaveForm;
+import com.kakao.cafe.controller.dto.UserUpdateForm;
 import com.kakao.cafe.controller.dto.UserResponse;
 import com.kakao.cafe.controller.dto.UserJoinForm;
 import com.kakao.cafe.controller.dto.UserListDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.util.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -20,12 +20,11 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final Validator validator;
 
     @PostMapping("/create")
-    public String createUser(@ModelAttribute UserJoinForm userDto) {
+    public String createUser(@Valid @ModelAttribute UserJoinForm userDto) {
         try{
-            validator.newUserCheck(userDto);
+//            validator.newUserCheck(userDto);
             userService.join(userDto);
             return "redirect:/users";
         } catch (Exception e) {
@@ -57,8 +56,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public String updateForm(@PathVariable("id") String userId, @ModelAttribute UserSaveForm updateUser) {
-        validator.updateUserCheck(updateUser);
+    public String updateForm(@Valid @PathVariable("id") String userId, @ModelAttribute UserUpdateForm updateUser) {
+//        validator.updateUserCheck(updateUser);
         userService.updateUser(userId, updateUser);
 
         return "redirect:/users";

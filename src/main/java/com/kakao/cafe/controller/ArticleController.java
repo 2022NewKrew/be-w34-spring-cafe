@@ -4,11 +4,12 @@ import com.kakao.cafe.controller.dto.ArticleResponse;
 import com.kakao.cafe.controller.dto.ArticleSaveForm;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.util.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 
 @Controller
@@ -18,11 +19,9 @@ public class ArticleController {
 
     private final ArticleRepository articleRepository;
     private final ArticleService postService;
-    private final Validator validator;
 
     @PostMapping("")
-    public String createQuestion(@ModelAttribute ArticleSaveForm articleSaveForm) {
-        validator.ArticleCheck(articleSaveForm);
+    public String createQuestion(@Valid @ModelAttribute ArticleSaveForm articleSaveForm) {
         articleRepository.save(articleSaveForm);
         return "redirect:/";
     }
