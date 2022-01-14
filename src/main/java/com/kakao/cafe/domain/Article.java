@@ -42,6 +42,7 @@ public class Article {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
+
     public void generateId(int i) {
         this.id = i;
     }

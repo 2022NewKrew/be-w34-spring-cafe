@@ -14,7 +14,7 @@ public class MemoryUserRepository implements UserRepository {
 
     public MemoryUserRepository() {
         users = new ArrayList<>();
-        users.add(new User("wldus", 123, "jiyeon", "dhso@kk.kk"));
+        users.add(new User(1,"wldus", 123, "jiyeon", "dhso@kk.kk"));
     }
     
     @Override
@@ -29,19 +29,24 @@ public class MemoryUserRepository implements UserRepository {
                 return Optional.of(user);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
     public int save(User user) {
+        users.add(user);
+        return user.getId();
+    }
+
+    @Override
+    public int update(User user) {
         for (int i=0; i<users.size(); i++) {
             if (users.get(i).getUserId().equals(user.getUserId())) {
                 users.set(i, user);
                 return users.get(i).getId();
             }
         }
-        users.add(user);
-        return user.getId();
+        return 0;
     }
 
 }

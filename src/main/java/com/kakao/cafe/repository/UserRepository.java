@@ -10,5 +10,6 @@ public interface UserRepository {
     List<User> findAll();
     Optional<User>  findByUserId(String userId);
     int save(User user);
+    int update(User user);
 
 }

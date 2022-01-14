@@ -1,7 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,14 +13,10 @@ import java.util.Optional;
 
 @Primary
 @Repository
+@RequiredArgsConstructor
 public class JdbcArticleRepository implements ArticleRepository{
 
     private final JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    public JdbcArticleRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     @Override
     public List<Article> findAll() {

@@ -22,7 +22,7 @@ public class UserDto {
     }
 
     public User toEntity() {
-        return new User(userId, password, name, email);
+        return new User(0, userId, password, name, email);
     }
 
     public static UserDto from(User user) {
