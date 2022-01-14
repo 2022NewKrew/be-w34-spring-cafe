@@ -6,7 +6,6 @@ import com.kakao.cafe.model.user.UserDto;
 import com.kakao.cafe.model.user.UserSignupRequest;
 import com.kakao.cafe.model.user.UserUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,15 +13,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
+@Transactional
 @Slf4j
 @SpringBootTest
 class UserServiceTest {
+    private static final int INIT_SIZE_OF_USERS = 3; // 데이터베이스에 저장된 초기 회원의 수
 
     @Autowired
     private UserService userService;
@@ -46,10 +48,6 @@ class UserServiceTest {
                 .build();
         userRepository.save(user);
         this.user = userRepository.findByEmail(email).orElse(null);
-    }
-    @AfterEach
-    void cleanup() {
-        userRepository.deleteAll();
     }
 
     @DisplayName("정상적으로 회원가입을 진행하면 에러가 발생하지 않아야 한다.")
@@ -116,7 +114,7 @@ class UserServiceTest {
         int size = 30;
         for (int i = 0; i < size; i++) {
             User user = User.builder()
-                    .email("test" + i + "@test.com")
+                    .email("test-" + i + "@test.com")
                     .nickname("테스터" + i)
                     .password("1234")
                     .build();
@@ -124,8 +122,7 @@ class UserServiceTest {
         }
 
         List<UserDto> users = userService.getAllUsers();
-        log.info("{}", users);
-        assertThat(users.size()).isEqualTo(size + 1);
+        assertThat(users.size()).isEqualTo(size + INIT_SIZE_OF_USERS + 1);
     }
 
     @DisplayName("id를 이용하여 조회한 회원 정보는 등록된 회원 정보와 같아야 한다.")
