@@ -1,19 +1,25 @@
 package com.kakao.cafe.repository.member;
 
 import com.kakao.cafe.domain.member.Member;
+import com.kakao.cafe.domain.member.UserId;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MemberRepository {
 
-    void saveMember(Member member);
+    Member saveMember(Member member);
 
     List<Member> findAllMembers();
 
-    Optional<Member> findOne(Long memberId);
+    Member findOne(Long memberId);
 
-    void deleteMember(Long id);
+    void deleteMember(Long memberId);
 
     void deleteAllMembers();
+
+    Member findByUserId(UserId userId);
+
+    Long isUserIdExist(UserId userId);
+
+    boolean isMemberIdExist(Long memberId);
 }

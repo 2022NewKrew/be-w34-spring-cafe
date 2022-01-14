@@ -13,4 +13,12 @@ public class UserId {
     public String toString() {
         return userId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (getClass() != o.getClass())
+            return false;
+        UserId id = (UserId) o;
+        return id.getUserId() != null && id.getUserId().equals(userId);
+    }
 }

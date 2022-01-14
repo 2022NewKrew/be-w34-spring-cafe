@@ -1,27 +1,33 @@
 package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.exception.ErrorMessages;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class MemoryArticleRepository implements ArticleRepository {
 
     private final Map<Long, Article> store = new HashMap<>();
     private Long sequence = 0L;
 
     @Override
-    public void save(Article article) {
-        article.setArticleId(++sequence);
-        store.put(article.getArticleId(), article);
+    public Article save(Article article) {
+        Article newArticle = new Article(article.getTitle(), article.getText(), article.getAuthor(), article.getTime(), ++sequence);
+        store.put(newArticle.getArticleId(), newArticle);
+        return newArticle;
     }
 
     @Override
-    public Optional<Article> findArticle(Long articleId) {
-        return Optional.ofNullable(store.get(articleId));
+    public Article findArticle(Long articleId) {
+        if (!isArticleExist(articleId))
+            throw new NoSuchElementException(ErrorMessages.NO_SUCH_ARTICLE);
+        return store.get(articleId);
     }
 
     @Override
@@ -30,8 +36,15 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void deleteArticle(Long articleId) {
-        store.remove(articleId);
+    public boolean isArticleExist(Long articleId) {
+        return store.get(articleId) != null;
+    }
+
+    @Override
+    public Article deleteArticle(Long articleId) {
+        if (!isArticleExist(articleId))
+            throw new NoSuchElementException(ErrorMessages.NO_SUCH_ARTICLE);
+        return store.remove(articleId);
     }
 
     @Override
