@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public class ArticleMemoryRepository implements ArticleRepository {
     private final List<Article> articleList = new ArrayList<>();
-    private static Integer articleSequence = 0;
+    private Integer articleSequence = 0;
 
     @Override
     public void save(Article article){
@@ -19,12 +19,12 @@ public class ArticleMemoryRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAllArticles() {
+    public List<Article> findAll() {
         return articleList;
     }
 
     @Override
-    public Optional<Article> findById(Integer id) {
+    public Optional<Article> findOne(Integer id) {
         return Optional.of(articleList.get(id));
     }
 }
