@@ -1,31 +1,60 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.exceptions.DuplicateUserException;
+import com.kakao.cafe.exceptions.UserNotFoundException;
 import java.util.List;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Primary
 @Repository
 public class JdbcUserRepository implements UserRepository {
 
+    private final JdbcTemplate jdbcTemplate;
+
+    public JdbcUserRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     @Override
     public User save(User user) {
-        // TODO - 저장
-        System.out.println("---------저장---------");
+        String sql = "insert into users(user_id, password, name, email) values(?, ?, ?, ?)";
+        try {
+            jdbcTemplate.update(sql,
+                    user.getUserId(), user.getPassword(), user.getUserName(), user.getEmail());
+        } catch (DuplicateKeyException e) {
+            throw new DuplicateUserException("사용자가 이미 존재합니다");
+        }
         return user;
     }
 
     @Override
     public List<User> findAll() {
-        // TODO - 유저 목록
-        System.out.println("---------유저 목록---------");
-        return null;
+        String sql = "select * from users";
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(rs.getString("id"),
+                rs.getString("user_id"),
+                rs.getString("password"),
+                rs.getString("name"),
+                rs.getString("email")));
     }
 
     @Override
     public User findByUserId(String id) {
-        // TODO - 유저 아이디 검색
-        System.out.println("---------유저 아이디 검색---------");
-        return null;
+        String sql = "select * from users where user_id = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getString("id"),
+                            rs.getString("user_id"),
+                            rs.getString("password"),
+                            rs.getString("name"),
+                            rs.getString("email")),
+                            id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new UserNotFoundException("사용자 ID가 없습니다");
+        }
     }
 }
