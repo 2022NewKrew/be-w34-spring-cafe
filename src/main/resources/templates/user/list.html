@@ -1,8 +1,6 @@
-{{> partial/head}}
-
+{{>layout/header}}
 <body>
-{{> partial/navbar}}
-{{> partial/sub-navbar}}
+{{>layout/navbar}}
 
 <div class="container" id="main">
     <div class="col-md-10 col-md-offset-1">
@@ -10,21 +8,13 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>사용자 아이디</th>
-                    <th>이름</th>
-                    <th>이메일</th>
-                    <th></th>
+                    <th>#</th> <th>사용자 아이디</th> <th>이름</th> <th>이메일</th><th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {{#users}}
                 <tr>
-                    <th scope="row">{{id}}</th>
-                    <td><a href="/users/{{userId}}">{{userId}}</a></td>
-                    <td>{{name}}</td>
-                    <td>{{email}}</td>
-                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                    <th scope="row">{{id}}</th> <td>{{userId}}</td> <td>{{name}}</td> <td>{{email}}</td><td><a href="/users/{{userId}}" class="btn btn-success" role="button">수정</a></td>
                 </tr>
                 {{/users}}
                 </tbody>
@@ -33,6 +23,7 @@
     </div>
 </div>
 
-{{> partial/script}}
+
+{{> layout/script}}
 </body>
 </html>
