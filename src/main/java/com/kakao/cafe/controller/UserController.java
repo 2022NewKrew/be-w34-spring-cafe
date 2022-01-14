@@ -16,14 +16,14 @@ public class UserController {
 
     @PostMapping("/create")
     public String SignUp(@ModelAttribute SignInDTO userInfo) {
-        logger.info("Attempt to SignUp; ID={}", userInfo.getUserId());
+        logger.debug("Attempt to SignUp; ID={}", userInfo.getUserId());
 
         if (userDB.SignUp(userInfo.getUserId(), userInfo.getPassword(), userInfo.getName(), userInfo.getEmail())) {
-            logger.info("Successful SignUp; ID={}", userInfo.getUserId());
+            logger.debug("Successful SignUp; ID={}", userInfo.getUserId());
             return "redirect:/user/list";
         }
 
-        logger.info("SignUp Failed. already exist ID={}", userInfo.getUserId());
+        logger.debug("SignUp Failed. already exist ID={}", userInfo.getUserId());
         return "redirect:/user/list";
     }
 
@@ -35,7 +35,7 @@ public class UserController {
 
     @GetMapping("/prof/{userId}")
     public String getUserProfile(Model model, @PathVariable String userId) {
-        logger.info("User profile request; ID={}", userId);
+        logger.debug("User profile request; ID={}", userId);
         model.addAttribute("userProfile", userDB.getUserProfile(userId));
         return "user/profile";
     }
