@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -24,9 +25,9 @@ public class UserMemoryRepository implements UserRepository{
         return (long) users.size();
     }
 
-    public User findOneByUserId(String userId){
-        return users.stream()
+    public Optional<User> findOneByUserId(String userId){
+        return Optional.of(users.stream()
                 .filter(user -> user.getUserId().equals(userId))
-                .collect(Collectors.toList()).get(0);
+                .collect(Collectors.toList()).get(0));
     }
 }

@@ -31,15 +31,7 @@ public class ArticleService {
     }
 
     public ArticlePostDto getArticleById(Long id){
-        if(!isExistArticle(id)){
-            throw new ArticleNotFoundException();
-        }
-
-        Article article = articleRepository.findOneById(id);
+        Article article = articleRepository.findOneById(id).orElseThrow(ArticleNotFoundException::new);
         return ArticlePostDto.of(article);
-    }
-
-    public boolean isExistArticle(Long id){
-        return Optional.ofNullable(articleRepository.findOneById(id)).isPresent();
     }
 }

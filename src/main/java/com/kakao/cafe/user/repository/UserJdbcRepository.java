@@ -42,12 +42,12 @@ public class UserJdbcRepository implements UserRepository {
     }
 
     @Override
-    public User findOneByUserId(String userId) {
+    public Optional<User> findOneByUserId(String userId) {
         try{
             String sql = "SELECT * FROM USERS WHERE userId=?";
-            return jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper(), userId));
         }catch (DataAccessException e){
-            return null;
+            return Optional.empty();
         }
     }
 

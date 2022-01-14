@@ -2,6 +2,7 @@ package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.model.User;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository {
 
@@ -11,5 +12,5 @@ public interface UserRepository {
 
     Long getNumberOfUsers();
 
-    User findOneByUserId(String userId);
+    Optional<User> findOneByUserId(String userId);
 }
