@@ -24,7 +24,7 @@ class InMemoryPostRepositoryTest {
     @DisplayName("[성공] Post 저장")
     void save() {
         InMemoryPostRepository inMemoryPostRepository = new InMemoryPostRepository();
-        Post post = new Post(userId, title, content);
+        Post post = new Post(0, userId, title, content, null);
 
         inMemoryPostRepository.save(post);
     }
@@ -33,8 +33,8 @@ class InMemoryPostRepositoryTest {
     @DisplayName("[성공] Post 저장 - index가 올바르게 증가되어야 한다")
     void save_IndexIncrease() {
         InMemoryPostRepository inMemoryPostRepository = new InMemoryPostRepository();
-        Post post = new Post(userId, title, content);
-        Post post2 = new Post(userId, title, content);
+        Post post = new Post(0, userId, title, content, null);
+        Post post2 = new Post(0, userId, title, content, null);
 
         inMemoryPostRepository.save(post);
         inMemoryPostRepository.save(post2);
@@ -48,8 +48,8 @@ class InMemoryPostRepositoryTest {
     @DisplayName("[성공] Post 목록")
     void findAll() {
         InMemoryPostRepository inMemoryPostRepository = new InMemoryPostRepository();
-        Post post = new Post(userId, title, content);
-        Post post2 = new Post(userId, title, content);
+        Post post = new Post(0, userId, title, content, null);
+        Post post2 = new Post(0, userId, title, content, null);
 
         inMemoryPostRepository.save(post);
         inMemoryPostRepository.save(post2);
@@ -63,7 +63,7 @@ class InMemoryPostRepositoryTest {
     @DisplayName("[성공] 게시글 Id로 게시글 찾기")
     void findByPostId() {
         InMemoryPostRepository inMemoryPostRepository = new InMemoryPostRepository();
-        Post post = new Post(userId, title, content);
+        Post post = new Post(0, userId, title, content, null);
         inMemoryPostRepository.save(post);
 
         Post post_Result = inMemoryPostRepository.findByPostId(1);
@@ -76,7 +76,7 @@ class InMemoryPostRepositoryTest {
     @ValueSource(ints = {-1, 0, 2, 999})
     void findByPostId_FailedBy_InvalidPostId(int invalidId) {
         InMemoryPostRepository inMemoryPostRepository = new InMemoryPostRepository();
-        Post post = new Post(userId, title, content);
+        Post post = new Post(0, userId, title, content, null);
         inMemoryPostRepository.save(post);
 
         Assertions.assertThrows(PostNotFoundException.class,

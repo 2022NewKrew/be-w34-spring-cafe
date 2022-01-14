@@ -21,6 +21,6 @@ public class WritePostRequest {
     }
 
     public Post toEntity() {
-        return new Post(userId, title, content);
+        return new Post(0, userId, title, content, null);
     }
 }
