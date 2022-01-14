@@ -99,7 +99,7 @@ class UserControllerTest {
 
         // Then
         actions
-            .andExpect(status().isNoContent())
+            .andExpect(status().isCreated())
             .andExpect(redirectedUrl("/users/uid"));
     }
 
