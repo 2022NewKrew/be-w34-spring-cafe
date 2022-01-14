@@ -16,11 +16,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void registerUser(UserFormCreationDTO userFormCreationDTO) {
+    public Long registerUser(UserFormCreationDTO userFormCreationDTO) {
         User user = UserMapper.toUser(userFormCreationDTO);
         validateDuplicateUserName(user);
 
-        userRepository.add(user);
+        return userRepository.add(user);
     }
 
     private void validateDuplicateUserName(User user) {

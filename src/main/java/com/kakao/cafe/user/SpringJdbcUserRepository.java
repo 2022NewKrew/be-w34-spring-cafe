@@ -2,8 +2,11 @@ package com.kakao.cafe.user;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,9 +18,18 @@ public class SpringJdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public void add(User user) {
-        jdbcTemplate.update("INSERT INTO user (email, username, password, type, display_name) VALUES (?, ?, ?, ?, ?)",
-                            user.getEmail(), user.getUsername(), user.getPassword(), "type", "display_name");
+    public Long add(User user) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO user (email, username, password, type, display_name) VALUES (?, ?, ?, ?, ?)");
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getUsername());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, "type");
+            ps.setString(5, "display_name");
+            return ps;}, keyHolder);
+
+        return keyHolder.getKeyAs(Long.class);
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
-    void add(User user);
+    Long add(User user);
 
     List<User> getAll();
 

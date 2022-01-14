@@ -20,14 +20,15 @@ public class HashMapUserRepository implements UserRepository {
     }
 
     @Override
-    public void add(User user) {
+    public Long add(User user) {
         if (isUserInDb(user)) {
             throw new RuntimeException("Duplicate primary key: " + user);
         }
 
-        Long id = next_id.getAndIncrement();
+        Long id = next_id.incrementAndGet();
         user.setId(id);
         users.put(id, user);
+        return id;
     }
 
     @Override
