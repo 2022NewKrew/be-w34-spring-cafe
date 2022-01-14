@@ -89,3 +89,47 @@
     <h4>< 글 수정 및 삭제 ></h4>
     <img src="img/step1_2_6_modify_article.gif" alt="step1_2_6_modify_article">
 </details>
+
+## 1-3단계 ([링크](https://lucas.codesquad.kr/2022-kakao/course/%EC%9B%B9%EB%B0%B1%EC%97%94%EB%93%9C/Kakao-Cafe/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%B9%B4%ED%8E%98-3%EB%8B%A8%EA%B3%84-%EA%B5%AC%ED%98%84))
+### 기능 요구사항
+- 데이터를 메모리가 아닌 DB에 저장
+  - ORM 없이 Spring JDBC만을 사용
+  - DB 저장 및 검색에 필요한 SQL은 직접 작성
+- 배포
+  - 사내 서버 (Krane)을 이용하여 배포 실습
+### 상세 구현사항
+- DB Schema 구성
+  - USERS
+    - ID `PK` `Auto Increment`
+    - USER_ID
+    - PASSWORD
+    - NAME
+    - EMAIL
+  - ARTICLES
+    - ARTICLE_ID `PK` `Auto Increment`
+    - TITLE
+    - WRITER_ID
+    - CONTENT
+    - DATE
+  - COMMENTS
+    - ARTICLE_ID `FK`
+    - COMMENT_ID `PK` `Auto Increment`
+    - WRITER_ID
+    - CONTENT
+    - DATE
+- DataSource 설정을 통해 미리 Schema 및 간단한 Data 구성 후 서버 실행
+- 기존에 만들어져있는 `UserRepository`와 `BoardRepository` 인터페이스를 JDBC용으로 새롭게 구현
+  - `JdbcTemplate`을 활용하여 DB와 데이터 연동
+  - 중복된 ID로 회원가입하는 부분에 대한 예외를 미리 처리
+- Krane을 통한 배포
+  - JAR 파일을 옮겨 명령어를 통해 실행
+### 실행 화면
+<details>
+    <summary>펼치기</summary>
+    <h4>< 배포된 서버로 접속 가능 여부 확인 및 데이터 확인 ></h4>
+    <img src="img/step1_3_1_start.gif" alt="step1_3_1_start">
+    <h4>< 중복 회원가입 관련 예외 처리 확인 ></h4>
+    <img src="img/step1_3_2_duplicated_user.gif" alt="step1_3_2_duplicated_user">
+    <h4>< 비밀번호 변경 관련 예외 처리 확인 ></h4>
+    <img src="img/step1_3_3_password_wrong.gif" alt="step1_3_3_password_wrong">
+</details>
