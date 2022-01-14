@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +28,12 @@ public class SpringJdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        User user = jdbcTemplate.queryForObject("select * from USERS where user_id=?", userMapper, userId);
+        User user = null;
+        try {
+            user = jdbcTemplate.queryForObject("select * from USERS where user_id=?", userMapper, userId);
+        } catch (EmptyResultDataAccessException exception) {
+        }
+
         return Optional.ofNullable(user);
     }
 
