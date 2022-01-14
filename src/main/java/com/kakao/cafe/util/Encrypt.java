@@ -19,6 +19,7 @@ public class Encrypt {
         return Arrays.toString(md.digest(password.getBytes(StandardCharsets.UTF_8)));
     }
 
+
     private byte[] generateSalt() {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];

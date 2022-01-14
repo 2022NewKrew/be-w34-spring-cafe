@@ -1,6 +1,6 @@
 {{> layout/header}}
 
-    <link href="css/index.css" rel="stylesheet">
+<link href="css/index.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <p class="total_num">전체 글 10명</p>
+    <p class="total_num">전체 글 {{articleListSize}}명</p>
 
     <div class="container" id="main">
         <div class="col-md-10 col-md-offset-1">
@@ -21,26 +21,28 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>제목</th> <th>작성자</th> <th>작성일자</th> <th>조회수</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일자</th>
+                        <th>조회수</th>
                     </tr>
                     </thead>
                     <tbody>
+                    {{#articleList}}
                     <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
+                        <td><a href="/articles/{{id}}">{{title}}</a></td>
+                        <td>유저닉네임</td>
+                        <td>{{formattedCreatedAt}}</td>
+                        <td>{{views}}</td>
                     </tr>
-                    <tr>
-                        <td><a href="post/show.html">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
+                    {{/articleList}}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     <div class="post-btn-container">
-      <a class="post-write-btn" href="post/form.html" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        <a class="post-write-btn" href="/article/form" class="btn btn-primary pull-right" role="button">글쓰기</a>
     </div>
 </div>
 
@@ -120,5 +122,5 @@
   </div>
 </div>
 -->
-	</body>
+</body>
 </html>
