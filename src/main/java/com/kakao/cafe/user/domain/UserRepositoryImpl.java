@@ -3,22 +3,20 @@ package com.kakao.cafe.user.domain;
 import com.kakao.cafe.user.dto.Profile;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     @Override
     public void save(User user) {
-        final String sql = "insert into users(email, password, username) values(?, ?, ?)";
+        final String sql = "insert into users(email, password, username) value(?, ?, ?)";
         jdbcTemplate.update(sql, user.getEmail(), user.getPassword(), user.getUsername());
     }
 

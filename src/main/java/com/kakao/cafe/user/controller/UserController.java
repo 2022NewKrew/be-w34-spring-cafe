@@ -4,6 +4,7 @@ import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserSignupRequest;
 import com.kakao.cafe.user.service.UserService;
 import javax.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping
     public String signup(@Valid UserSignupRequest request, Model model) {

@@ -3,6 +3,7 @@ package com.kakao.cafe.article.controller;
 import com.kakao.cafe.article.dto.ArticlePostRequest;
 import com.kakao.cafe.article.service.ArticleService;
 import javax.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,13 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class ArticleController {
 
     private final ArticleService articleService;
-
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
 
     @PostMapping("/article")
     public String post(@Valid ArticlePostRequest request) {
