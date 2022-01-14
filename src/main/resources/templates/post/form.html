@@ -9,6 +9,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <link href="/css/index.css" rel="stylesheet">
     <link href="/css/post/form.css" rel="stylesheet">
 </head>
 <body>
@@ -23,8 +24,18 @@
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/users/list">멤버 리스트</a></li>
+                {{^signInUser}}
                 <li><a class="black-component" href="/users/sign-in" role="button">로그인</a></li>
                 <li><a class="black-component" href="/users/sign-up" role="button">회원가입</a></li>
+                {{/signInUser}}
+                {{#signInUser}}
+                <li class="login-active"><a>{{email}} 님</a></li>
+                <li>
+                    <form id="logout" method="post" action="/users/sign-out">
+                        <a class="black-component" href="javascript:;" onclick="document.getElementById('logout').submit()" role="button">로그아웃</a>
+                    </form>
+                </li>
+                {{/signInUser}}
             </ul>
         </div>
     </nav>
@@ -33,14 +44,11 @@
         <header class="post-header">
             <p class="title">글쓰기</p>
         </header>
+        {{^signInUser}}
+        <p class="user-title">게시글 작성을 위해선 로그인이 필요합니다.</p>
+        {{/signInUser}}
+        {{#signInUser}}
         <form class="submit-write" method="post" action="/posts/write">
-            <div class="text-box">
-                <div class="comment-writer-container">
-                    <p class="post-title">작성자</p>
-                </div>
-                <input class="form-control" id="userId" name="userId" placeholder="작성자 ID 를 입력하세요"></input>
-            </div>
-
             <div class="text-box">
                 <div class="comment-writer-container">
                     <p class="post-title">제목</p>
@@ -60,6 +68,7 @@
             </div>
             <input class="post-write-btn" type="submit" value="등록"/>
         </form>
+        {{/signInUser}}
     </div>
 </div>
 </body>

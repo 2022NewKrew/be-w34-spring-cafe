@@ -23,15 +23,25 @@
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/users/list">멤버 리스트</a></li>
+                {{^signInUser}}
                 <li><a class="black-component" href="/users/sign-in" role="button">로그인</a></li>
                 <li><a class="black-component" href="/users/sign-up" role="button">회원가입</a></li>
+                {{/signInUser}}
+                {{#signInUser}}
+                <li class="login-active"><a>{{email}} 님</a></li>
+                <li>
+                    <form id="logout" method="post" action="/users/sign-out">
+                        <a class="black-component" href="javascript:;" onclick="document.getElementById('logout').submit()" role="button">로그아웃</a>
+                    </form>
+                </li>
+                {{/signInUser}}
             </ul>
         </div>
     </nav>
 
     <div class="description">
         <div class="desc-container">
-            <p class="desc-small">안녕하세요 {{#signInUser}}{{userId}}{{/signInUser}}</p>
+            <p class="desc-small">안녕하세요</p>
             <p class="desc-big">카카오 교육 페이지 입니다.</p>
         </div>
     </div>
@@ -59,7 +69,9 @@
         </div>
     </div>
     <div class="post-btn-container">
-      <a class="post-write-btn" href="/posts/write" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{#signInUser}}
+        <a class="post-write-btn" href="/posts/write" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{/signInUser}}
     </div>
 </div>
 

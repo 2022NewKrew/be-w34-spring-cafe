@@ -30,6 +30,7 @@ public class CafeUserController {
     public static final String USER_REDIRECT_SIGN_IN_FAIL = REDIRECT_PREFIX+"/users/sign-in/fail";
     public static final String USER_REDIRECT_LIST = REDIRECT_PREFIX+"/users/list";
     public static final String USER_REDIRECT_SIGN_UP_FAIL = REDIRECT_PREFIX+"/users/sign-up/fail";
+    public static final String USER_REDIRECT_SIGN_OUT = REDIRECT_PREFIX+"/";
 
     @GetMapping("/sign-in")
     String userViewSignIn() {
@@ -37,7 +38,7 @@ public class CafeUserController {
     }
     @PostMapping("/sign-in")
     String signIn(HttpSession httpSession, User signInUser) {
-        if(cafeUserService.SignIn(signInUser)) {
+        if(httpSession.getAttribute("signInUser") == null && cafeUserService.SignIn(signInUser)) {
             httpSession.setAttribute("signInUser", signInUser);
             return USER_REDIRECT_SIGN_IN_SUCCESS;
         }
@@ -49,8 +50,8 @@ public class CafeUserController {
         return USER_VIEW_SIGN_UP;
     }
     @PostMapping("/sign-up")
-    String signUp(User newUser){ // 회원가입
-        if(cafeUserService.signUp(newUser)) {
+    String signUp(HttpSession httpSession, User newUser){ // 회원가입
+        if(httpSession.getAttribute("signInUser") == null && cafeUserService.signUp(newUser)) {
             return USER_REDIRECT_LIST;
         }
         return USER_REDIRECT_SIGN_UP_FAIL;
@@ -71,5 +72,11 @@ public class CafeUserController {
             model.addAttribute("user", user);
         }
         return USER_VIEW_PROFILE;
+    }
+
+    @PostMapping("/sign-out")
+    String signOut(HttpSession httpSession) {
+        httpSession.invalidate();
+        return USER_REDIRECT_SIGN_OUT;
     }
 }
