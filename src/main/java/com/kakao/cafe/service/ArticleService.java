@@ -14,10 +14,14 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleService {
 
+    private final ArticleRepository articleRepository;
+    private final ModelMapper modelMapper;
+
     @Autowired
-    private ArticleRepository articleRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+    public ArticleService(ArticleRepository articleRepository, ModelMapper modelMapper) {
+        this.articleRepository = articleRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public long post(ArticleCreationDTO dto) {
         Article newArticle = new Article(dto);

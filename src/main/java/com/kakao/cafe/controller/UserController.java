@@ -5,8 +5,7 @@ import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.dto.user.UserCreationDTO;
 import com.kakao.cafe.util.Url;
 import com.kakao.cafe.util.View;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,15 +15,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+@Slf4j
 @Controller
 public class UserController {
 
-    private final Logger logger;
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    public UserController() {
-        this.logger = LoggerFactory.getLogger(UserController.class);
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/users")
@@ -113,7 +112,7 @@ public class UserController {
 
     private void validateParams(Errors errors) {
         if (errors.hasErrors()) {
-            errors.getAllErrors().forEach(e -> logger.warn("{}", e.getDefaultMessage()));
+            errors.getAllErrors().forEach(e -> log.warn("{}", e.getDefaultMessage()));
             throw new IllegalArgumentException("입력값이 올바르지 않습니다");
         }
     }

@@ -15,13 +15,16 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
+    private final MemoryUserRepository userRepository;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private MemoryUserRepository userRepository;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserService(MemoryUserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public long join(UserCreationDTO dto) throws IllegalArgumentException {
         User newUser = new User(dto);
