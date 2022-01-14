@@ -1,30 +1,17 @@
 package com.kakao.cafe.domain.post;
 
 import com.kakao.cafe.interfaces.common.PostDto;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-01-14T11:29:56+0900",
+    date = "2022-01-14T18:51:35+0900",
     comments = "version: 1.5.0.Beta2, compiler: javac, environment: Java 11.0.13 (Eclipse Adoptium)"
 )
 @Component
 public class PostMapperImpl implements PostMapper {
-
-    @Override
-    public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-        if ( rs == null ) {
-            return null;
-        }
-
-        Object object = new Object();
-
-        return object;
-    }
 
     @Override
     public Post toEntity(PostDto post) {

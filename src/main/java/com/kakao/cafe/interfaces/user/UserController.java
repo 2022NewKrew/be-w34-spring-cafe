@@ -54,6 +54,7 @@ public class UserController {
      */
     @PostMapping("/new")
     public String signup(UserDto userDto) {
+        logger.info("[유저 가입] {}", userDto);
         userService.signup(userDto);
         return "redirect:/users";
     }

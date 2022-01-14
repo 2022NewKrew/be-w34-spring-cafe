@@ -1,7 +1,9 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.domain.post.PostMapper;
 import com.kakao.cafe.domain.post.impl.InMemoryPostRepository;
 import com.kakao.cafe.domain.post.PostRepository;
+import com.kakao.cafe.domain.post.impl.JdbcTemplatePostRepository;
 import com.kakao.cafe.domain.user.UserMapper;
 import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.domain.user.impl.JdbcTemplateUserRepository;
@@ -23,8 +25,8 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public PostRepository getPostRepositoryBean() {
-        return new InMemoryPostRepository();
+    public PostRepository getPostRepositoryBean(DataSource dataSource, PostMapper postMapper) {
+        return new JdbcTemplatePostRepository(dataSource, postMapper);
     }
 
     @Bean
