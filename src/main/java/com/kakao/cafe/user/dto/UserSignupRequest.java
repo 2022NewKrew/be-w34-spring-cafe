@@ -7,6 +7,7 @@ import javax.validation.constraints.Size;
 
 public class UserSignupRequest {
 
+    @NotBlank
     @Email(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")
     private final String email;
 
