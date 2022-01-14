@@ -11,4 +11,6 @@ public interface UserRepository {
     Optional<User> findByUserId(String UserId);
 
     List<User> findAll();
+
+    void remove(User user);
 }

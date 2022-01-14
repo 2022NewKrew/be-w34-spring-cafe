@@ -27,4 +27,8 @@ public class UserMapper {
     public static UserProfileDto toUserProfileDto(User user) {
         return new UserProfileDto(user.getName(), user.getEmail());
     }
+
+    public static UserDto toUserDto(User user) {
+        return new UserDto(user.getUserId(), user.getName(), user.getEmail());
+    }
 }

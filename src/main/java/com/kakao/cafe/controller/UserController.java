@@ -1,4 +1,4 @@
-package com.kakao.cafe.web;
+package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserDto;
@@ -24,14 +24,29 @@ public class UserController {
     }
 
     @GetMapping("/user/form")
-    public String createUserForm() {
+    public String showUserForm() {
         return "user/form";
+    }
+
+    @GetMapping("/users/{userId}/form")
+    public String showUpdateUserForm(@PathVariable String userId, Model model) {
+        User user = userService.findUserByUserId(userId);
+        UserDto userDto = UserMapper.toUserDto(user);
+        model.addAttribute("user", userDto);
+        return "user/updateForm";
     }
 
     @PostMapping("/user/create")
     public String createUser(UserFormDto userFormDto) {
         User user = UserMapper.toUser(userFormDto);
-        userService.join(user);
+        userService.joinUser(user);
+        return "redirect:/users";
+    }
+
+    @PostMapping("/user/update")
+    public String updateUser(UserFormDto userFormDto) {
+        User user = UserMapper.toUser(userFormDto);
+        userService.updateUser(user);
         return "redirect:/users";
     }
 

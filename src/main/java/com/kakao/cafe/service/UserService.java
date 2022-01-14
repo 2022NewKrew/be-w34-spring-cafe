@@ -19,9 +19,18 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void join(User user) {
+    public void joinUser(User user) {
         validateDuplicateUser(user.getUserId());
         userRepository.save(user);
+    }
+
+    public void updateUser(User updateUser) {
+        User user = findUserByUserId(updateUser.getUserId());
+        if (!user.getPassword().equals(updateUser.getPassword())) {
+            throw new UserException(ErrorCode.WRONG_USER_PASSWORD);
+        }
+        userRepository.remove(user);
+        userRepository.save(updateUser);
     }
 
     private void validateDuplicateUser(String userId) {

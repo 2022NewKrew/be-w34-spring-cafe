@@ -29,4 +29,10 @@ public class UserMemoryRepository implements UserRepository {
     public List<User> findAll() {
         return users;
     }
+
+
+    @Override
+    public void remove(User user) {
+        users.remove(user);
+    }
 }
