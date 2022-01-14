@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 public class CommentDto {
     private long articleId;
-    private int commentId;
+    private long commentId;
     private String writerId;
     private String content;
     private LocalDateTime date;

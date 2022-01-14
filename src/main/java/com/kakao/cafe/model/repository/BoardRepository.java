@@ -12,13 +12,13 @@ public interface BoardRepository {
 
     List<Article> findAllArticle();
     Optional<Article> findArticleByArticleId(long articleId);
-    List<Article> findArticlesByWriterId(String writer);
+    List<Article> findArticlesByWriterId(String writerId);
     List<Comment> findCommentsByArticleId(long articleId);
-    Optional<Comment> findComment(long articleId, int commentId);
+    Optional<Comment> findComment(long articleId, long commentId);
 
     boolean modifyArticle(Article article);
     boolean modifyComment(long articleId, Comment comment);
 
     boolean deleteArticle(long articleId);
-    boolean deleteComment(long articleId, int commentId);
+    boolean deleteComment(long articleId, long commentId);
 }

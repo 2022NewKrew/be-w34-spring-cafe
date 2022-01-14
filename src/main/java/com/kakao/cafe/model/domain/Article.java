@@ -20,8 +20,5 @@ public class Article {
     private LocalDateTime date;
 
     @Setter
-    private Long hits;
-
-    @Setter
-    private int commentsCount;
+    private long commentsCount;
 }

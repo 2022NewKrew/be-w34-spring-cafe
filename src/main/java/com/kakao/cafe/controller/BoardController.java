@@ -83,7 +83,7 @@ public class BoardController {
 
     @DeleteMapping("/delete/{articleId}/{commentId}")
     public String deleteComment(@PathVariable("articleId") long articleId,
-                                @PathVariable("commentId") int commentId) {
+                                @PathVariable("commentId") long commentId) {
         boardService.deleteComment(articleId, commentId);
 
         return "redirect:/board/view/" + articleId;

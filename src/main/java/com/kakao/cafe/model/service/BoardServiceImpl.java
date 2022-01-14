@@ -69,7 +69,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public CommentDto findComment(long articleId, int commentId) {
+    public CommentDto findComment(long articleId, long commentId) {
         return boardRepository.findComment(articleId, commentId).stream()
                 .map(comment -> modelMapper.map(comment, CommentDto.class))
                 .findFirst()
@@ -98,7 +98,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void deleteComment(long articleId, int commentId) {
+    public void deleteComment(long articleId, long commentId) {
         if (!boardRepository.deleteComment(articleId, commentId)) {
             throw new CommentNotFoundException("해당 뎃글이 존재하지 않습니다.");
         }
