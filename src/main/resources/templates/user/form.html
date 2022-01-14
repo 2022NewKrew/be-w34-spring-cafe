@@ -9,6 +9,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <link href="/css/index.css" rel="stylesheet">
     <link href="/css/user/form.css" rel="stylesheet">
 </head>
 <body>
@@ -23,8 +24,18 @@
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/users/list">멤버 리스트</a></li>
+                {{^signInUser}}
                 <li><a class="black-component" href="/users/sign-in" role="button">로그인</a></li>
                 <li><a class="black-component" href="/users/sign-up" role="button">회원가입</a></li>
+                {{/signInUser}}
+                {{#signInUser}}
+                <li class="login-active"><a>{{email}} 님</a></li>
+                <li>
+                    <form id="logout" method="post" action="/users/sign-out">
+                        <a class="black-component" href="javascript:;" onclick="document.getElementById('logout').submit()" role="button">로그아웃</a>
+                    </form>
+                </li>
+                {{/signInUser}}
             </ul>
         </div>
     </nav>
@@ -33,6 +44,10 @@
         <header class="post-header">
             <p class="title">회원가입</p>
         </header>
+        {{#signInUser}}
+        <p class="user-title">이미 로그인한 계정이 존재합니다.</p>
+        {{/signInUser}}
+        {{^signInUser}}
         <form name="question" class="info-container" method="post" action="/users/sign-up">
             <div class="form-group">
                 <label for="email">이메일</label>
@@ -48,6 +63,7 @@
             </div>
             <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
         </form>
+        {{/signInUser}}
     </div>
 </div>
 </body>

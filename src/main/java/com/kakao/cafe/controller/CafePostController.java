@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.Post;
+import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.CafePostService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -21,7 +23,7 @@ public class CafePostController {
         this.cafePostService = cafePostService;
     }
 
-    private static final String POST_DIRECTORY = "/post";
+    private static final String POST_DIRECTORY = "post";
     public static final String POST_VIEW_LIST = POST_DIRECTORY+"/list";
     public static final String POST_VIEW_WRITE = POST_DIRECTORY+"/form";
     public static final String POST_VIEW_CONTENT = POST_DIRECTORY+"/show";
@@ -36,7 +38,12 @@ public class CafePostController {
     }
 
     @PostMapping("/write")
-    String writePost (@NonNull Post newPost) {
+    String writePost (HttpSession httpSession, @NonNull Post newPost) {
+        Object signInUser = httpSession.getAttribute("signInUser");
+        if( signInUser != null ) {
+            String userId = ((User)signInUser).getUserId();
+            newPost.setUserId(userId);
+        }
         if(cafePostService.writePost(newPost)) {
             return POST_REDIRECT_LIST;
         }
