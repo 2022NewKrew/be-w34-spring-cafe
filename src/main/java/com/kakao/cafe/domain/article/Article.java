@@ -2,19 +2,11 @@ package com.kakao.cafe.domain.article;
 
 public class Article {
     private Long index;
-    private final String title;
-    private final String content;
+    private String title;
+    private String content;
     private String date;
-    private final String writer;
+    private String writer;
     private Long view;
-
-    public Article(Long index, String title, String content, String writer) {
-        this.index = index;
-        this.title = title;
-        this.content = content;
-        this.writer = writer;
-        this.view = 0L;
-    }
 
     public void addView() {
         this.view++;
@@ -32,15 +24,23 @@ public class Article {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getContent() {
         return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date){
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -48,8 +48,16 @@ public class Article {
         return writer;
     }
 
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
     public Long getView() {
         return view;
+    }
+
+    public void setView(Long view) {
+        this.view = view;
     }
 
     @Override

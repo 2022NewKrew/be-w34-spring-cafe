@@ -1,17 +1,19 @@
 package com.kakao.cafe.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.NoSuchElementException;
+
+@Slf4j
 @ControllerAdvice
 public class KakaoCafeExceptionHandler {
-    Logger logger = LoggerFactory.getLogger(KakaoCafeExceptionHandler.class);
 
-    @ExceptionHandler(IllegalStateException.class)
-    public Object IllegalState(Exception e){
-        logger.info(e.getMessage());
+    @ExceptionHandler({IllegalStateException.class, NoSuchElementException.class})
+    public Object redirectToIndexException(Exception e){
+        log.info(e.getMessage());
+        e.printStackTrace();
         return "redirect:/";
     }
 }

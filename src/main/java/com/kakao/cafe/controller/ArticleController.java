@@ -4,18 +4,23 @@ import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.Articles;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.UtilClass;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Slf4j
 @Controller
 public class ArticleController {
-    Logger logger = LoggerFactory.getLogger(ArticleController.class);
-    ArticleService articleService = new ArticleService();
+    ArticleService articleService;
+
+    @Autowired
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
 
     @PostMapping("/questions")
     public String createQNA(Article article){
@@ -30,7 +35,7 @@ public class ArticleController {
 
     @GetMapping("/list")
     public String index(int page, Model model){
-        logger.info("{}page list", page);
+        log.info("{}page list", page);
         Articles articles = new Articles();
         int numOfArticles = articleService.numOfArticles();
         articles.setTotalCount(numOfArticles);

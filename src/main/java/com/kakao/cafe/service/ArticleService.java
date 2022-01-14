@@ -1,16 +1,18 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.RepositoryInterface;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ArticleService {
-    private final RepositoryInterface<com.kakao.cafe.domain.article.Article> articleRepository = new ArticleRepository();
+    private final RepositoryInterface<Article> articleRepository;
+
+    public ArticleService(RepositoryInterface<Article> articleRepository) {
+        this.articleRepository = articleRepository;
+    }
 
     public void join(Article article){
         articleRepository.save(article);
@@ -24,7 +26,6 @@ public class ArticleService {
         return new ArrayList<>(articleRepository.findAll().subList((page - 1) * 10, Math.min(numOfArticles(),page * 10)));
     }
 
-    @ExceptionHandler
     public Article findOne(Long index){
         Optional<Article> article = articleRepository.findById(index);
         if(article.isPresent()){

@@ -2,21 +2,22 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.repository.RepositoryInterface;
-import com.kakao.cafe.repository.UserRepository;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
-import java.util.Optional;
 
 public class UserService {
-    private final RepositoryInterface<User> userRepository = new UserRepository();
+    private final RepositoryInterface<User> userRepository;
+
+    public UserService(RepositoryInterface<User> userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public void join(User user){
         validateDuplicateUser(user);
 
         userRepository.save(user);
     }
 
-    @ExceptionHandler
     private void validateDuplicateUser(User user) {
         // 중복 ID 체크
         userRepository.findByName(user.getName())
@@ -25,23 +26,17 @@ public class UserService {
                 });
     }
 
-    public void updateUser(Long userId, User newUser) {
-        User user = findOne(userId);
-        user.setEmail(newUser.getEmail());
-        user.setName(newUser.getName());
-        user.setPassword(newUser.getPassword());
+    public void updateUser(Long userId, User user) {
+        user.setUserId(userId);
+        userRepository.update(user);
     }
 
     public List<User> findUsers(){
         return userRepository.findAll();
     }
 
-    @ExceptionHandler
     public User findOne(Long userId){
-        Optional<User> user = userRepository.findById(userId);
-        if(user.isPresent()){
-            return user.get();
-        }
-        throw new IllegalStateException("not valid userId");
+        return userRepository.findById(userId)
+                .orElseThrow();
     }
 }
