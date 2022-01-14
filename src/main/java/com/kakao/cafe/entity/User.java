@@ -1,8 +1,5 @@
 package com.kakao.cafe.entity;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 public class User {
     private String userId;
     private String password;
@@ -12,13 +9,8 @@ public class User {
     public User(String userId, String password, String email) {
         this.userId = userId;
         this.password = password;
-//        this.password = hash(password);
         this.email = email;
     }
-
-//    public String hash(String password) {
-//        return passwordEncoder.encode(password);
-//    }
 
     public String getUserId() {
         return userId;

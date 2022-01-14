@@ -1,10 +1,8 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.config.SecurityConfig;
 import com.kakao.cafe.dto.UserRegistrationDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
