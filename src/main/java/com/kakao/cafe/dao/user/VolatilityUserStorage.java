@@ -62,6 +62,6 @@ public class VolatilityUserStorage implements UserDao {
     private boolean containUser(String userId) {
         return users
                 .stream()
-                .anyMatch(tempUser -> tempUser.isUserId(userId));
+                .anyMatch(user -> user.isUserId(userId));
     }
 }

@@ -13,12 +13,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class VolatilityArticleStorage implements ArticleDao {
     private static final AtomicInteger nextArticleId = new AtomicInteger(1);
     public static final int FRONT_OF_LIST = 0;
+
     List<Article> articles = new LinkedList<>();
 
     @Override
     public List<Article> getArticles(int pageNumber, int articlesPerPage) {
         int startIndex = (pageNumber - 1) * articlesPerPage;
-        int finishIndex = articlesPerPage * (pageNumber);
+        int finishIndex = articlesPerPage * pageNumber;
         if (articles.size() < finishIndex) {
             return new ArrayList<>(articles.subList(startIndex, articles.size()));
         }

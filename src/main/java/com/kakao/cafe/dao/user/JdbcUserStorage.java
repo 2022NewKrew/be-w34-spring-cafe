@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
-import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,7 @@ import java.util.Optional;
 @Repository
 @Primary
 public class JdbcUserStorage implements UserDao {
-    JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public JdbcUserStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -23,7 +22,7 @@ public class JdbcUserStorage implements UserDao {
     @Override
     public List<User> getUsers() {
         String query = "SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USER_DATA";
-        return jdbcTemplate.query(query, (rs, rowNum) -> toUser(rs).orElseThrow(SQLDataException::new));
+        return jdbcTemplate.query(query, (rs, rowNum) -> toUser(rs));
     }
 
     @Override
@@ -37,7 +36,8 @@ public class JdbcUserStorage implements UserDao {
         String query = String.format("SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USER_DATA WHERE USER_ID = '%s'", userId);
         return jdbcTemplate
                 .query(query, (rs, rowNum) -> toUser(rs))
-                .get(0);
+                .stream()
+                .findFirst();
     }
 
     @Override
@@ -51,14 +51,12 @@ public class JdbcUserStorage implements UserDao {
         jdbcTemplate.update(query, name, email, userId);
     }
 
-    private Optional<User> toUser(ResultSet resultSet) throws SQLException {
-        return Optional.of(
-                new User(
-                        resultSet.getString("USER_ID"),
-                        resultSet.getString("PASSWORD"),
-                        resultSet.getString("NAME"),
-                        resultSet.getString("EMAIL")
-                )
+    private User toUser(ResultSet resultSet) throws SQLException {
+        return new User(
+                resultSet.getString("USER_ID"),
+                resultSet.getString("PASSWORD"),
+                resultSet.getString("NAME"),
+                resultSet.getString("EMAIL")
         );
     }
 }
