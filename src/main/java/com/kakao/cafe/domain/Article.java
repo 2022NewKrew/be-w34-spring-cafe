@@ -16,13 +16,10 @@ public class Article {
     private long views;
     private Date createdAt;
 
-    public Article(long id) {
-        this.id = id;
-        this.createdAt = new Date();
-    }
+//    public Article(long id) {
+//        this.id = id;
+//        this.createdAt = new Date();
+//    }
 
-    public String getCreatedAt(){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(createdAt);
-    }
+
 }

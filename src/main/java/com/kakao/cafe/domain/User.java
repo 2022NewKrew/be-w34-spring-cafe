@@ -21,15 +21,7 @@ public class User {
     private String name;
     private String email;
 
-    public User(long id) {
-        this.id = id;
-        this.joinedAt = new Date();
-    }
 
 
-    public String getJoinedAt(){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(joinedAt);
-    }
 
 }
