@@ -7,9 +7,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
-public class UserDaoInMemoryMap implements UserDao {
-    private static final Map<Long, User> users = new ConcurrentHashMap<>();
-    private static final AtomicLong next_id = new AtomicLong();
+public class HashMapUserRepository implements UserRepository {
+    private final Map<Long, User> users = new ConcurrentHashMap<>();
+    private final AtomicLong next_id = new AtomicLong();
 
     public boolean isUserInDb(User user) {
         return user.getId() != null && isUserInDb(user.getId());
@@ -20,7 +20,7 @@ public class UserDaoInMemoryMap implements UserDao {
     }
 
     @Override
-    public void create(User user) {
+    public void add(User user) {
         if (isUserInDb(user)) {
             throw new RuntimeException("Duplicate primary key: " + user);
         }
@@ -31,18 +31,18 @@ public class UserDaoInMemoryMap implements UserDao {
     }
 
     @Override
-    public List<User> readAll() {
+    public List<User> getAll() {
         return new ArrayList<>(users.values());
     }
 
     @Override
-    public Optional<User> read(String username) {
+    public Optional<User> get(String username) {
         return users.entrySet().stream().filter(user -> user.getValue().getUsername().equals(username)).findAny().map(
                 Map.Entry::getValue);
     }
 
     @Override
-    public Optional<User> read(Long id) {
+    public Optional<User> get(Long id) {
         return Optional.of(users.get(id));
     }
 
@@ -56,7 +56,7 @@ public class UserDaoInMemoryMap implements UserDao {
     }
 
     @Override
-    public void delete(Long id) {
+    public void remove(Long id) {
         if (isUserInDb(id)) {
             throw new NoSuchElementException("Primary key not found: " + id);
         }
