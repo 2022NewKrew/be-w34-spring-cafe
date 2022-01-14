@@ -27,5 +27,4 @@ class SpringJdbcPracticeTest {
         Assertions.assertThat(user.getUserId()).isEqualTo("leaf");
     }
 
-
 }

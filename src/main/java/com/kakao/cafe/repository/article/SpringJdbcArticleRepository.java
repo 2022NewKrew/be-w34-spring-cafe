@@ -1,11 +1,10 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.mapper.ArticleMapper;
-import com.kakao.cafe.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +27,10 @@ public class SpringJdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(Long id) {
-        Article article = jdbcTemplate.queryForObject("select * from ARTICLE a join USERS u on a.writer_id = u.user_id  where a.article_seq_id=?", articleMapper, id);
+        Article article = null;
+        try {
+            article = jdbcTemplate.queryForObject("select * from ARTICLE a join USERS u on a.writer_id = u.user_id  where a.article_seq_id=?", articleMapper, id);
+        } catch (EmptyResultDataAccessException exception){}
         return Optional.ofNullable(article);
     }
 

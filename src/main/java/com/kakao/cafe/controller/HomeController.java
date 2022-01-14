@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.ArticleQueryResponseDto;
+import com.kakao.cafe.controller.dto.response.ArticleQueryResponseDto;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
