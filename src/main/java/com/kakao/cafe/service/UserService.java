@@ -1,6 +1,9 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.dto.UserRegisterRequest;
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
@@ -27,8 +30,13 @@ public class UserService {
         userRepository.save(requestDto.toEntity());
     }
 
-    public Optional<User> findById(UUID id) {
-        return userRepository.findById(id);
+    public UserProfileDto getUserProfileById(UUID id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return new UserProfileDto(
+                user.getId(),
+                user.getName(),
+                user.getEmail());
     }
 
     public Optional<User> findByUserId(String userId) {

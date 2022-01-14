@@ -1,9 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.UserRegisterRequest;
-import com.kakao.cafe.exception.CustomException;
-import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.service.UserService;
+import java.util.UUID;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,10 +36,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String getUserByUserId(@PathVariable("id") String userId, Model model) {
-        model.addAttribute("user",
-                userService.findByUserId(userId)
-                        .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
+    public String getUserByUserId(@PathVariable("id") UUID id, Model model) {
+        model.addAttribute("user", userService.getUserProfileById(id));
         return "users/profile";
     }
 }

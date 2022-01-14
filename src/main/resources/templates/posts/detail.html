@@ -14,8 +14,7 @@
               <img src="https://graph.facebook.com/v2.3/100000059371774/picture" class="article-author-thumb" alt="">
             </div>
             <div class="article-header-text">
-              <!-- TODO: 사용자 프로필을 url userId -> id로 변경 -->
-              <a href="#" class="article-author-name">{{post.writerName}}</a>
+              <a href="/users/{{post.writerId}}" class="article-author-name">{{post.writerName}}</a>
               <p class="article-header-time">
                 {{post.createdAt}}
               </p>
