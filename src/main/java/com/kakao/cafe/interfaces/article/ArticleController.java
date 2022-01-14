@@ -5,6 +5,7 @@ import com.kakao.cafe.application.article.WriteArticleService;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleVo;
 import com.kakao.cafe.interfaces.article.dto.ArticleMapper;
+import com.kakao.cafe.interfaces.article.dto.request.WriteArticleRequestDto;
 import com.kakao.cafe.interfaces.article.dto.response.ArticleListResponseDto;
 import com.kakao.cafe.interfaces.article.dto.response.ArticleResponseDto;
 import org.springframework.http.HttpStatus;
@@ -56,10 +57,12 @@ public class ArticleController {
 
 
     @PostMapping("/questions")
-    public ModelAndView createArticle(ArticleVo articleVo, ModelAndView modelAndView) {
-        writeArticleService.write(articleVo);
-        modelAndView.setViewName("redirect:/");
+    public ModelAndView createArticle(WriteArticleRequestDto writeArticleRequestDto, ModelAndView modelAndView) {
+        ArticleVo articleVo = ArticleMapper.convertWriteArticleDtoToVo(writeArticleRequestDto);
 
+        writeArticleService.write(articleVo);
+
+        modelAndView.setViewName("redirect:/");
         return modelAndView;
     }
 
