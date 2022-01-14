@@ -18,7 +18,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     // TODO: author_id 세션 로그인 구현 후에 수정
     @Override
     public void save(Article article) {
-        final String sql = "insert into articles(title, body, author_id) value(?, ?, ?)";
+        final String sql = "insert into articles(title, body, author_id) values(?, ?, ?)";
         jdbcTemplate.update(sql, article.getTitle(), article.getBody(), 1L);
     }
 
@@ -30,7 +30,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             + "a.created_at, "
             + "a.author_id, "
             + "a.view_count, "
-            + "u.username as author_username "
+            + "u.nickname as author_nickname "
             + "from articles as a inner join users u "
             + "on a.author_id = u.user_id "
             + "where a.article_id = ?";
@@ -45,7 +45,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                     .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
                     .viewCount(rs.getInt("view_count"))
                     .authorId(rs.getLong("author_id"))
-                    .authorName(rs.getString("author_username"))
+                    .authorName(rs.getString("author_nickname"))
                     .build(),
                 id));
         } catch (DataAccessException e) {
@@ -60,7 +60,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             + "a.created_at, "
             + "a.author_id, "
             + "a.view_count, "
-            + "u.username as author_username "
+            + "u.nickname as author_nickname "
             + "from articles as a inner join users u "
             + "on a.author_id = u.user_id";
 
@@ -72,7 +72,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                 .createdAt(rs.getTimestamp("created_at").toLocalDateTime().toLocalDate())
                 .viewCount(rs.getInt("view_count"))
                 .authorId(rs.getLong("author_id"))
-                .authorName(rs.getString("author_username"))
+                .authorName(rs.getString("author_nickname"))
                 .build());
     }
 }

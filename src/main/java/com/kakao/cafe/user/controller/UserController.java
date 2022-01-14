@@ -24,7 +24,7 @@ public class UserController {
         User user = request.toEntity();
         userService.signup(user);
         model.addAttribute("email", user.getEmail());
-        model.addAttribute("username", user.getUsername());
+        model.addAttribute("nickname", user.getNickname());
         return "/user/signup_success";
     }
 
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public String getUserByUsername(@PathVariable Long userId, Model model) {
+    public String getUserById(@PathVariable Long userId, Model model) {
         model.addAttribute("user", userService.getProfileById(userId));
         return "user/profile";
     }

@@ -22,13 +22,13 @@
     - [X] 사용자 목록을 user/list.html로 전달하기 위해 메소드 반환 값을 "user/list"로 한다.
     - [X] user/list.html 에서 사용자 목록을 출력한다.
 - [X] 회원 프로필 조회
-    - [X] 앞 단계의 사용자 목록 html인 user/list.html 파일에 username을 클릭하면 프로필 페이지로 이동하도록 한다.
+    - [X] 앞 단계의 사용자 목록 html인 user/list.html 파일에 nickname 클릭하면 프로필 페이지로 이동하도록 한다.
     - [X] html에서 페이지 이동은 <a /> 태그를 이용해 가능하다.
-    - [X] \<a href="/user/{{username}}" />와 같이 구현한다.
+    - [X] \<a href="/user/{{userId}}" />와 같이 구현한다.
     - [X] Controller 클래스는 앞 단계에서 사용한 UserController를 그대로 사용한다.
     - [X] 회원프로필 요청(GET 요청)을 처리할 메소드를 추가하고 매핑한다.
     - [X] @GetMapping을 추가하고 URL 매핑한다.
-    - [X] URL은 "/user/{username}"와 같이 매핑한다.
+    - [X] URL은 "/user/{userId}"와 같이 매핑한다.
     - [X] URL을 통해 전달한 사용자 아이디 값은 @PathVariable 애노테이션을 활용해 전달 받을 수 있다.
     - [X] HashMap에 저장되어 있는 사용자 중 사용자 아이디와 일치하는 User 데이터를 Model에 저장한다.
     - [X] user/profile.html 에서는 Controller에서 전달한 User 데이터를 활용해 사용자 정보를 출력한다.

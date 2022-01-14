@@ -1,4 +1,4 @@
-INSERT INTO users(email, password, username)
+INSERT INTO users(email, password, nickname)
 values ('test@test.com', 'password', 'tester1');
 
 INSERT INTO articles(title, body, author_id, view_count)

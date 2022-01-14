@@ -8,6 +8,6 @@ public class Profile {
 
     private Long userId;
     private String email;
-    private String username;
+    private String nickname;
     private LocalDate createdAt;
 }

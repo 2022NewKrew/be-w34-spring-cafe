@@ -16,8 +16,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void save(User user) {
-        final String sql = "insert into users(email, password, username) value(?, ?, ?)";
-        jdbcTemplate.update(sql, user.getEmail(), user.getPassword(), user.getUsername());
+        final String sql = "insert into users(email, password, nickname) values(?, ?, ?)";
+        jdbcTemplate.update(sql, user.getEmail(), user.getPassword(), user.getNickname());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
                 (rs, rowNum) -> Profile.builder()
                     .userId(rs.getLong("user_id"))
                     .email(rs.getString("email"))
-                    .username(rs.getString("username"))
+                    .nickname(rs.getString("nickname"))
                     .createdAt(rs.getTimestamp("created_at").toLocalDateTime().toLocalDate())
                     .build(),
                 id));
@@ -44,7 +44,7 @@ public class UserRepositoryImpl implements UserRepository {
         return jdbcTemplate.query(sql, (rs, rowNum) -> Profile.builder()
             .userId(rs.getLong("user_id"))
             .email(rs.getString("email"))
-            .username(rs.getString("username"))
+            .nickname(rs.getString("nickname"))
             .createdAt(rs.getTimestamp("created_at").toLocalDateTime().toLocalDate())
             .build());
     }

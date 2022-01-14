@@ -7,7 +7,7 @@ CREATE TABLE users
     user_id    bigint      NOT NULL AUTO_INCREMENT,
     email      varchar(50) NOT NULL,
     password   varchar(20) NOT NULL,
-    username   varchar(10) NOT NULL UNIQUE,
+    nickname   varchar(10) NOT NULL UNIQUE,
     created_at timestamp   NOT NULL default NOW(),
     PRIMARY KEY (user_id)
 );

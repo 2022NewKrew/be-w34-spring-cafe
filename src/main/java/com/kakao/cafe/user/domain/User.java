@@ -11,6 +11,6 @@ public class User {
     private Long id;
     private String email;
     private String password;
-    private String username;
+    private String nickname;
     private LocalDateTime createdAt;
 }
