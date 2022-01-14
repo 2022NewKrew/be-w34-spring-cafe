@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -48,7 +49,7 @@ public class UserController {
      * @throws DuplicateUserIdException: 회원가입 요청한 UserId가 이미 존재하는 ID일 경우 발생
      */
     @PostMapping("/users")
-    public String createUser(UserCreateRequest req) {
+    public String createUser(@Valid UserCreateRequest req) {
         log.info("[POST] /user - 유저 회원가입 요청");
         this.userService.createUser(req);
 
@@ -105,7 +106,7 @@ public class UserController {
      * @param id: 수정하고자 하는 유저의 ID(PK)
      */
     @PostMapping("/users/update/{id}")
-    public String updateUser(UserUpdateRequest req,  @PathVariable("id") Long id) {
+    public String updateUser(@Valid UserUpdateRequest req,  @PathVariable("id") Long id) {
         log.info("[POST] /user/update/{} - (id: {}) 유저 정보 수정", id, id);
 
         this.userService.updateUser(id, req);

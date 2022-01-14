@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -68,7 +69,7 @@ public class ArticleController {
      * @param req: 게시글 작성 정보
      */
     @PostMapping("/articles")
-    public String createArticle(ArticleCreateRequest req) {
+    public String createArticle(@Valid ArticleCreateRequest req) {
         log.info("[POST] /article - 게시글 작성 요청");
 
         this.articleService.createArticle(req);
