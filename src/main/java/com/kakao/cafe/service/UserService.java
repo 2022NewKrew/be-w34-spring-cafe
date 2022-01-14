@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserService {
-    private static final UserRepository userRepository = new UserRepository();
-    private static final UserTransformation userTransformation = new UserTransformation();
+    private final UserRepository userRepository = new UserRepository();
+    private final UserTransformation userTransformation = new UserTransformation();
     public List<UserListDto> getUserList() {
         List<UserDao> userDaoList = userRepository.selectAll();
         return userDaoList.stream().map(userTransformation::toUserListDto).collect(Collectors.toList());

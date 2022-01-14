@@ -52,13 +52,4 @@ public class UserController {
         return "user/login";
     }
 
-    @GetMapping("/index")
-    public String getIndex() {
-        return "index";
-    }
-
-    @GetMapping("/")
-    public String getRoot() {
-        return "redirect:/index";
-    }
 }
