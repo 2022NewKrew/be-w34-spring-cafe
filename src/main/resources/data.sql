@@ -1,7 +1,11 @@
 INSERT INTO POST
-VALUES (1, '오늘 날씨 어때요?', '집 밖에 안나가서 모르겠네요.')
-     , (2, '코틀린 스터디 일정', '매주 수요일 4시 반 입니다.')
-     , (3, '2022년 대통령 선거', '3월 9일');
+VALUES (0, '오늘 날씨 어때요?', '집 밖에 안나가서 모르겠네요.');
 
-SELECT TITLE, CONTENT
+SELECT ID, TITLE, CONTENT
 FROM POST;
+
+INSERT INTO USERS
+VALUES (0, '제이지', '힙찔이', 'jayz@kakaocorp.com');
+
+SELECT ID, USERID, NICKNAME, EMAIL
+FROM USERS;

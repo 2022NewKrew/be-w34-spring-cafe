@@ -5,7 +5,7 @@ GET {{host}}/
 GET {{host}}/user
 
 ### 회원 가입 테스트
-POST {{host}}/user?userID=heejoon&email=ben.ny@kakaocorp.com&nickname=ben&password=1234
+POST {{host}}/user?userId=heejoon&email=ben.ny@kakaocorp.com&nickname=ben&password=1234
 
 ### 유저 프로필 페이지
 GET {{host}}/user/1
