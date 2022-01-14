@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,7 @@ public class MemberController {
     }
 
     @GetMapping("/users/{memberId}")
-    public String inquireMemberProfile(@PathVariable("memberId") Long memberId, Model model) {
+    public String inquireMemberProfile(@PathVariable("memberId") @NotNull Long memberId, Model model) {
         InquireMemberDto member = convertToDto(memberService.inquireOneMember(memberId));
         log.info("{} information inquire", member.getUserId());
         model.addAttribute("member", member);

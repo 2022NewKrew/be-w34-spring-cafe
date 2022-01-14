@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +32,7 @@ public class ArticleController {
     private final Mapper mapper;
 
     @PostMapping("/questions")
-    public String postArticle(PostArticleDto articleDto) {
+    public String postArticle(@Valid PostArticleDto articleDto) {
         Article article = convertToArticle(articleDto);
         articleService.postArticle(article);
         return "redirect:/";
@@ -46,7 +48,7 @@ public class ArticleController {
     }
 
     @GetMapping("/questions/{articleId}")
-    public String inquireArticle(@PathVariable("articleId") Long articleId, Model model) {
+    public String inquireArticle(@PathVariable("articleId") @NotNull Long articleId, Model model) {
         Article article = articleService.inquireOneArticle(articleId);
         model.addAttribute("article", convertToInquireArticleDto(article));
         return "qna/show";
