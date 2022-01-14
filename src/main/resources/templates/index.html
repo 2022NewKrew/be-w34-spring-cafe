@@ -85,16 +85,16 @@
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default qna-list">
             <ul class="list">
-                {{#articles}}
+                {{#posts}}
                 <li>
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a href="/articles/{{id}}">{{title}}</a>
+                                <a href="/posts/{{id}}">{{title}}</a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
-                                <span class="time">{{created}}</span>
+                                <span class="time">{{created_at}}</span>
                                 <a class="author" href="/users/{{author.username}}">{{author.username}}</a>
                             </div>
                             <div class="reply" title="댓글">
@@ -104,7 +104,7 @@
                         </div>
                     </div>
                 </li>
-                {{/articles}}
+                {{/posts}}
             </ul>
             <div class="row">
                 <div class="col-md-3"></div>
@@ -120,7 +120,7 @@
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">
-                    <a class="btn btn-primary pull-right" href="/article/form.html" role="button">질문하기</a>
+                    <a class="btn btn-primary pull-right" href="/post/form.html" role="button">질문하기</a>
                 </div>
             </div>
         </div>

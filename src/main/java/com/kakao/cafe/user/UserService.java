@@ -37,10 +37,4 @@ public class UserService {
         return UserMapper.toUserViewDTO(userRepository.get(username).orElseThrow(
                 () -> new NoSuchElementException("Username not found: " + username)));
     }
-
-    // To be removed upon refactoring on Article
-    public User findUserByUsername(String username) {
-        return userRepository.get(username).orElseThrow(
-                () -> new NoSuchElementException("Username not found: " + username));
-    }
 }

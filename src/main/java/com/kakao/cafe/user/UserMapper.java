@@ -2,7 +2,7 @@ package com.kakao.cafe.user;
 
 public class UserMapper {
     public static User toUser(UserFormCreationDTO userFormCreationDTO) {
-        return new User(userFormCreationDTO.getUsername(), userFormCreationDTO.getPassword(),
+        return new User(null, userFormCreationDTO.getUsername(), userFormCreationDTO.getPassword(),
                         userFormCreationDTO.getEmail());
     }
 
