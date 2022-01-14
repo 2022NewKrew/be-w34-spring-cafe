@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Post {
     private int id;
@@ -34,5 +35,10 @@ public class Post {
         }
         Post that = (Post) o;
         return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

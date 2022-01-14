@@ -41,4 +41,9 @@ public class User {
         User that = (User) o;
         return Objects.equals(userId, that.userId);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
+    }
 }
