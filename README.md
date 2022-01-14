@@ -38,4 +38,5 @@
 - 테스트는 금방할 줄 알았는데 막상 mvc테스트는 또 새로워서 하루종일 걸렸던 것 같습니다 ㅠㅜ 내일은 예외처리를 하겠습니다.
 
 # step5
-- [ ] 예외처리 진행(advice, handler) (참고 자료https://catsbi.oopy.io/72475b41-f527-4e64-867c-7cbdc5a04d69)
+- [x] 예외처리 진행(advice, handler) (참고 자료https://catsbi.oopy.io/72475b41-f527-4e64-867c-7cbdc5a04d69)
+- [x] 의존성 주입 방법 변경
