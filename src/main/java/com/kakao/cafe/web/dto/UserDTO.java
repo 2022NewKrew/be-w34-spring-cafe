@@ -2,65 +2,53 @@ package com.kakao.cafe.web.dto;
 
 import com.kakao.cafe.domain.User;
 import java.sql.Timestamp;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@Getter
+@Setter
 public class UserDTO {
 
-  private int index;
+  private Integer index;
+  private Long id;
   private String email;
   private String nickName;
+  private String summary;
+  private String profile;
   private Timestamp createAt;
+  private Timestamp modifiedAt;
   private Timestamp lastLoginAt;
-
-  public UserDTO() {
-
-  }
 
   public UserDTO(User user) {
     this.index = user.getIndex();
+    this.id = user.getId();
     this.email = user.getEmail();
     this.nickName = user.getNickName();
+    this.summary = user.getSummary();
+    this.profile = user.getProfile();
     this.createAt = user.getCreateAt();
+    this.modifiedAt = user.getModifiedAt();
     this.lastLoginAt = user.getLastLoginAt();
   }
 
-  public int getIndex() {
-    return index;
+  public UserDTO(Long id) {
+    this.id = id;
   }
 
-  public void setIndex(int index) {
-    this.index = index;
+  @Override
+  public String toString() {
+    return "UserDTO{" +
+        "index=" + index +
+        ", id=" + id +
+        ", email='" + email + '\'' +
+        ", nickName='" + nickName + '\'' +
+        ", summary='" + summary + '\'' +
+        ", profile='" + profile + '\'' +
+        ", createAt=" + createAt +
+        ", modifiedAt=" + modifiedAt +
+        ", lastLoginAt=" + lastLoginAt +
+        '}';
   }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getNickName() {
-    return nickName;
-  }
-
-  public void setNickName(String nickName) {
-    this.nickName = nickName;
-  }
-
-  public Timestamp getCreateAt() {
-    return createAt;
-  }
-
-  public void setCreateAt(Timestamp createAt) {
-    this.createAt = createAt;
-  }
-
-  public Timestamp getLastLoginAt() {
-    return lastLoginAt;
-  }
-
-  public void setLastLoginAt(Timestamp lastLoginAt) {
-    this.lastLoginAt = lastLoginAt;
-  }
-
 }

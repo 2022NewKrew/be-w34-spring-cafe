@@ -1,16 +1,17 @@
 package com.kakao.cafe.web.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
+@AllArgsConstructor
+@Getter
+@Setter
 public class ResponseDTO {
 
   private String message;
   private HttpStatus result;
-
-  private ResponseDTO(String message, HttpStatus result) {
-    this.message = message;
-    this.result = result;
-  }
 
   public static ResponseDTO createSuccess() {
     return new ResponseDTO(
@@ -19,19 +20,4 @@ public class ResponseDTO {
     );
   }
 
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
-
-  public HttpStatus getResult() {
-    return result;
-  }
-
-  public void setResult(HttpStatus result) {
-    this.result = result;
-  }
 }

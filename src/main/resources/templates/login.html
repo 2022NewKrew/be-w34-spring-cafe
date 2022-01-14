@@ -333,15 +333,14 @@
       <!-- Icon -->
       <div class="fadeIn first">
         <img src="http://www.baskinrobbins.co.kr/upload/x-mas/product/1528721149.png" id="icon" alt="User Icon" />
-        <h1>회원 가입</h1>
+        <h1>로그인</h1>
       </div>
 
       <!-- Login Form -->
       <form action="#" >
         <input type="email" id="email" class="fadeIn second" name="login" placeholder="email">
-        <input type="text" id="nickName" class="fadeIn third" name="login" placeholder="nickname">
-        <input type="password" id="password" class="fadeIn fourth" name="login" placeholder="password">
-        <input type="button" id="signup" class="fadeIn fifth" value="SIGN UP!">
+        <input type="password" id="password" class="fadeIn third" name="login" placeholder="password">
+        <input type="button" id="login" class="fadeIn fifth" value="LOGIN!">
       </form>
 
     </div>
@@ -359,32 +358,28 @@ Essential Scripts
   });
 
   function setup() {
-    const signup = document.getElementById('signup');
-    signup.addEventListener('click', submitSignUp);
-
+    const login = document.getElementById('login');
+    login.addEventListener('click', submitLogin);
     document.addEventListener('keyup', e => {
       if(e.key === 'Enter') {
-        submitSignUp();
+        submitLogin();
       }
     })
-
   }
 
-  async function submitSignUp() {
+  async function submitLogin() {
 
     const email = document.getElementById('email').value;
-    const nickName = document.getElementById('nickName').value;
     const password = document.getElementById('password').value;
-    const response = await fetch('/api/user', {
+    const response = await fetch('/api/login', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
-      body: JSON.stringify({email, nickName, password})
+      body: JSON.stringify({email, password})
     });
 
     if(response.redirected) {
-      alert('회원가입 성공! 메인으로 돌아가 다시 로그인 해주세요.');
       location.href = response.url;
       return;
     }

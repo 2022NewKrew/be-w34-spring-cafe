@@ -1,104 +1,143 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.exception.NoRequiredValueException;
+import com.kakao.cafe.web.dto.LoginDTO;
 import com.kakao.cafe.web.dto.SignUpDTO;
+import com.kakao.cafe.web.dto.UserDTO;
 import java.sql.Timestamp;
+import java.util.Objects;
+import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
+@Getter
 public class User {
 
-  private int index;
+  public static String DEFAULT_SUMMARY = "자기소개를 입력해주세요.";
+  public static String DEFAULT_PROFILE = "https://t1.daumcdn.net/cfile/tistory/994F3E4D5FC9FCFF03";
+
+  private Integer index;
+  private final Long id;
   private String email;
   private String nickName;
   private String password;
+  private String summary;
+  private String profile;
   private Timestamp createAt;
+  private Timestamp modifiedAt;
   private Timestamp lastLoginAt;
 
-  private User() {}
-
-  private User(String email, String nickName, String password) {
-    this.email = email;
-    this.nickName = nickName;
-    this.password = password;
-  }
-
-  private User(int index, String email, String nickName, String password, Timestamp createAt,
-      Timestamp lastLoginAt) {
+  private User(
+      Integer index, Long id, String email, String nickName,
+      String summary, String profile, String password,
+      Timestamp createAt, Timestamp modifiedAt, Timestamp lastLoginAt
+  ) {
     this.index = index;
+    this.id = id;
     this.email = email;
     this.nickName = nickName;
+    this.summary = StringUtils.isNotBlank(summary) ? summary : DEFAULT_SUMMARY;
+    this.profile = StringUtils.isNotBlank(profile) ? profile : DEFAULT_PROFILE;
     this.password = password;
-    this.createAt = createAt;
+    this.createAt = createAt != null ? createAt : new Timestamp(System.currentTimeMillis());
+    this.modifiedAt = modifiedAt != null ? modifiedAt : new Timestamp(System.currentTimeMillis());
     this.lastLoginAt = lastLoginAt;
   }
 
   public static User of(SignUpDTO signUpDTO) {
-    return new User(signUpDTO.getEmail(), signUpDTO.getNickName(), signUpDTO.getPassword());
+    String email = signUpDTO.getEmail();
+    String nickName = signUpDTO.getNickName();
+    String password = signUpDTO.getPassword();
+
+    if (StringUtils.isBlank(email) || StringUtils.isBlank(nickName)
+        || StringUtils.isBlank(password)) {
+      throw new NoRequiredValueException();
+    }
+
+    return new User(
+        null, null, email, nickName, null,
+        null, password, null, null, null);
   }
 
-  public static User of(int index, String email, String nickName, String password, Timestamp createAt,
-      Timestamp lastLoginAt) {
-    return new User(index, email, nickName, password, createAt, lastLoginAt);
+  public static User of(LoginDTO loginDTO) {
+    String email = loginDTO.getEmail();
+    String password = loginDTO.getPassword();
+
+    if (StringUtils.isBlank(email) || StringUtils.isBlank(password)) {
+      throw new NoRequiredValueException();
+    }
+
+    return new User(null, null, email, null, null,
+        null, password, null, null, null);
+  }
+
+  public static User of(Long id, User user) {
+    return new User(
+        null, id, user.getEmail(), user.getNickName(),
+        user.getSummary(), user.getProfile(), user.getPassword(),
+        user.getCreateAt(), user.getModifiedAt(), user.getLastLoginAt()
+    );
+  }
+
+  public static User of(UserDTO userDTO) {
+    return new User(
+        null, userDTO.getId(), userDTO.getEmail(), userDTO.getNickName(),
+        userDTO.getSummary(), userDTO.getProfile(), null,
+        userDTO.getCreateAt(), userDTO.getModifiedAt(), userDTO.getLastLoginAt()
+    );
+  }
+
+  public static User create(Integer index, Long id, String email, String nickName,
+      String summary, String profile, String password,
+      Timestamp createAt, Timestamp modifiedAt, Timestamp lastLoginAt) {
+
+    return new User(index, id, email, nickName, summary, profile,
+        password, createAt, modifiedAt, lastLoginAt);
+  }
+
+  public static User createEmpty() {
+    return new User(null, null, null, null, null,
+        null, null, null, null, null);
   }
 
   public void setPasswordEncrypted() {
-
+    //TODO
   }
 
-  public String getEmail() {
-    return email;
+  public void updateLastLoginAt() {
+    this.lastLoginAt = new Timestamp(System.currentTimeMillis());
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    User user = (User) o;
+    return Objects.equals(email, user.email);
   }
 
-  public String getNickName() {
-    return nickName;
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(email);
   }
 
-  public void setNickName(String nickName) {
-    this.nickName = nickName;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public Timestamp getCreateAt() {
-    return createAt;
-  }
-
-  public void setCreateAt(Timestamp createAt) {
-    this.createAt = createAt;
-  }
-
-  public Timestamp getLastLoginAt() {
-    return lastLoginAt;
-  }
-
-  public void setLastLoginAt(Timestamp lastLoginAt) {
-    this.lastLoginAt = lastLoginAt;
-  }
-
-  public int getIndex() {
-    return index;
-  }
-
-  public void setIndex(int index) {
-    this.index = index;
-  }
 
   @Override
   public String toString() {
     return "User{" +
-        "email='" + email + '\'' +
+        "index=" + index +
+        ", email='" + email + '\'' +
         ", nickName='" + nickName + '\'' +
         ", password='" + password + '\'' +
+        ", summary='" + summary + '\'' +
         ", createAt=" + createAt +
+        ", modifiedAt=" + modifiedAt +
         ", lastLoginAt=" + lastLoginAt +
         '}';
   }
+
 }

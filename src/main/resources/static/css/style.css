@@ -90,6 +90,7 @@ input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focu
   text-transform: uppercase;
   border-radius: 0;
   transition: all 0.2s ease;
+  font-family: "Hind", serif;
 }
 
 .btn.btn-icon i {
@@ -499,13 +500,17 @@ ul.dropdown-menu li {
 }
 
 .bg-1 {
-  background: url("../images/bg/home-2.jpg") no-repeat 50% 50%;
+  background: url("https://bloximages.newyork1.vip.townnews.com/manoanow.org/content/tncms/assets/v3/editorial/5/c0/5c02c4c2-90ee-11e9-8c5e-6f788b52b614/5d07721eb63af.image.jpg?resize=1200%2C900") no-repeat 50% 50%;
   background-size: cover;
 }
 
 .bg-2 {
   background: url("../images/bg/home-5.jpg");
   background-size: cover;
+}
+
+.bg-3{
+  background: url("https://tech.kakao.com/wp-content/uploads/2021/10/ifkakao2021-474x474.png") no-repeat center center/cover;
 }
 
 .slider {

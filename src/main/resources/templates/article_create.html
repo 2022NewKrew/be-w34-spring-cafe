@@ -1,0 +1,107 @@
+{{> partial/head}}
+
+<body>
+{{> partial/header}}
+<div class="main-wrapper ">
+
+  <section class="page-title bg-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="block text-center">
+            <span class="text-white">{{session.nickName}}</span>
+            <h1 class="text-capitalize mb-4 text-lg">새 글 작성</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section About Start -->
+  <section class="section about-2 position-relative">
+    <div class="container">
+      <!-- header -->
+      <div class="row">
+        <div class="col" style="text-align: center">
+          <div class="about-item pr-3 mb-5 mb-lg-0">
+            <span class="h6 text-color">{{session.nickName}} 의 글</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="text-align: center">
+          <input id="title" type="text" style="width:600px;font-family: Hind;text-align: center;border: 0px;font-size: xx-large" placeholder="제목을 입력해 주세요."/>
+        </div>
+      </div>
+
+
+      <!-- content -->
+      <div class="row" style="margin-bottom: 10px;margin-top: 10px;
+      padding-bottom: 30px;padding-top: 30px;
+      border-top: 1px #f75757 solid;border-bottom: 1px #f75757 solid;">
+        <div class="col" style="text-align: center">
+          <div class="about-item pr-3 mb-5 mb-lg-0">
+            <div class="form-group">
+              <label for="content"></label>
+              <textarea class="form-control" id="content" style="font-family: Hind" rows="30"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- footer -->
+      <div class="row" style="text-align: center;font-family: Hind">
+        <button onclick="submitArticle()" type="button" class="btn btn-danger btn-lg btn-block" style="font-family: Hind">작성 완료</button>
+        <button onclick="cancel()" type="button" class="btn btn-outline-danger btn-lg btn-block" style="font-family: Hind">취소</button>
+      </div>
+
+    </div>
+  </section>
+  <!-- Section About End -->
+
+</div>
+
+<!--
+Essential Scripts
+=====================================-->
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    // Handler when the DOM is fully loaded
+
+  });
+
+  async function submitArticle() {
+    const userId = '{{session.id}}';
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+    const response = await fetch('/api/article', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      redirect: 'manual',
+      body: JSON.stringify({userId, title, content})
+    })
+
+    if(response.ok) {
+      alert('글 작성 성공! 작성한 글을 확인해 보세요!');
+      const article = await response.json();
+      location.href = "/article/" + article.id;
+      return;
+    }
+
+    const parsedResponse = await response.json();
+    alert(parsedResponse.message + '(' + parsedResponse.code + ')');
+
+  }
+
+  function cancel() {
+    window.history.back();
+  }
+
+</script>
+
+
+{{> partial/script}}
+</body>
+</html>

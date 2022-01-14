@@ -2,6 +2,9 @@ package com.kakao.cafe.web.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.Users;
+import com.kakao.cafe.exception.InvalidAuthenticationException;
+import com.kakao.cafe.exception.NoEmailFoundException;
+import com.kakao.cafe.utils.SessionUtils;
 import com.kakao.cafe.web.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +21,47 @@ public class UserService {
   }
 
   public User createUser(User user) {
+
     user.setPasswordEncrypted();
+
     return userRepository.save(user);
   }
 
-  public Users getAllUsers() {
+  public Users findAllUsers() {
     return userRepository.findAll();
+  }
+
+  public User findUserById(Long id) {
+    return userRepository.findById(id)
+        .orElseThrow(NoEmailFoundException::new);
+  }
+
+  public User login(User user) {
+
+    user.setPasswordEncrypted();
+
+    User loginUser = userRepository.findByEmail(user.getEmail())
+        .stream()
+        .filter(findUser -> findUser.getPassword().equals(user.getPassword()))
+        .findAny()
+        .orElseThrow(InvalidAuthenticationException::new);
+
+    loginUser.updateLastLoginAt();
+    userRepository.updateLoginTime(loginUser);
+
+    SessionUtils.login(loginUser);
+
+    return loginUser;
+  }
+
+  public boolean isLoginUser(User user) {
+    return SessionUtils.getLoginUser()
+        .stream()
+        .anyMatch(loginUser -> loginUser.equals(user));
+  }
+
+  public void logout() {
+    SessionUtils.logout();
   }
 
 }

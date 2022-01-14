@@ -22,7 +22,7 @@ public class Users implements Iterable<User>{
     return new Users(users);
   }
 
-  public static Users ofEmpty() {
+  public static Users createEmpty() {
     return new Users();
   }
 

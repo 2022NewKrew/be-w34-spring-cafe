@@ -1,60 +1,7 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="megakit,business,company,agency,multipurpose,modern,bootstrap4">
-
-  <meta name="author" content="themefisher.com">
-
-  <title>Leo.cafe</title>
-
-  <!-- bootstrap.min css -->
-  <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
-  <!-- Icon Font Css -->
-  <link rel="stylesheet" href="plugins/themify/css/themify-icons.css">
-  <link rel="stylesheet" href="plugins/fontawesome/css/all.css">
-  <link rel="stylesheet" href="plugins/magnific-popup/dist/magnific-popup.css">
-  <!-- Owl Carousel CSS -->
-  <link rel="stylesheet" href="plugins/slick-carousel/slick/slick.css">
-  <link rel="stylesheet" href="plugins/slick-carousel/slick/slick-theme.css">
-
-  <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="css/style.css">
-
-</head>
+{{> partial/head}}
 
 <body>
-
-
-<!-- Header Start -->
-
-<header class="navigation">
-  <nav class="navbar navbar-expand-lg  py-4" id="navbar">
-    <div class="container">
-      <a class="navbar-brand" href="/">
-        KAKAO<span>.LEO.JUNG</span>
-      </a>
-
-      <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="fa fa-bars"></span>
-      </button>
-
-      <div class="collapse navbar-collapse text-center" id="navbarsExample09">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/users">멤버리스트 <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>
-          <li class="nav-item"><a class="nav-link" href="/signup">회원가입</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-</header>
-
-<!-- Header Close -->
+{{> partial/header}}
 
 <div class="main-wrapper ">
 
@@ -70,7 +17,6 @@
             <th scope="col">#</th>
             <th scope="col">EMAIL</th>
             <th scope="col">NICK_NAME</th>
-            <th scope="col">CREATE_AT</th>
             <th scope="col">LAST_LOGIN_AT</th>
           </tr>
           </thead>
@@ -78,10 +24,16 @@
           {{#users}}
           <tr>
             <th scope="row">{{index}}</th>
-            <td>{{email}}</td>
+            <td><a href="/users/{{id}}">{{email}}</a></td>
             <td>{{nickName}}</td>
-            <td>{{createAt}}</td>
-            <td>{{lastLoginAt}}</td>
+            <td style="font-family:Hind">
+              {{#lastLoginAt}}
+                {{lastLoginAt}}
+              {{/lastLoginAt}}
+              {{^lastLoginAt}}
+                접속 이력 없음
+              {{/lastLoginAt}}
+            </td>
           </tr>
           {{/users}}
           </tbody>
@@ -96,27 +48,15 @@
 <!--
 Essential Scripts
 =====================================-->
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    // Handler when the DOM is fully loaded
+
+  });
+
+</script>
 
 
-<!-- Main jQuery -->
-<script src="plugins/jquery/jquery.js"></script>
-<script src="js/contact.js"></script>
-<!-- Bootstrap 4.3.1 -->
-<script src="plugins/bootstrap/js/popper.js"></script>
-<script src="plugins/bootstrap/js/bootstrap.min.js"></script>
-<!--  Magnific Popup-->
-<script src="plugins/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
-<!-- Slick Slider -->
-<script src="plugins/slick-carousel/slick/slick.min.js"></script>
-<!-- Counterup -->
-<!--<script src="plugins/counterup/jquery.waypoints.min.js"></script>-->
-<!--<script src="plugins/counterup/jquery.counterup.min.js"></script>-->
-
-<!-- Google Map -->
-<!--<script src="plugins/google-map/map.js"></script>-->
-<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>-->
-
-<script src="js/script.js"></script>
-
+{{> partial/script}}
 </body>
 </html>
