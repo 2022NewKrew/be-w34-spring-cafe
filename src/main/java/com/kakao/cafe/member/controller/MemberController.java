@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -35,10 +36,10 @@ public class MemberController {
     }
 
     @PostMapping("/members")
-    public String postMembers(MemberRequestDTO memberRequestDTO) {
+    public String postMembers(@Valid MemberRequestDTO memberRequestDTO) {
         logger.info(memberRequestDTO.toString());
         Long memberId = memberService.join(memberRequestDTO);
-        return "redirect:members/joinSuccess?memberId=" + memberId;
+        return "redirect:/members/joinSuccess?memberId=" + memberId;
     }
 
     @GetMapping("/members/joinSuccess")
@@ -54,7 +55,7 @@ public class MemberController {
     }
 
     @PutMapping("/members/{id}")
-    public String patchMember(@PathVariable Long id, MemberUpdateRequestDTO memberUpdateRequestDTO) {
+    public String patchMember(@PathVariable Long id, @Valid MemberUpdateRequestDTO memberUpdateRequestDTO) {
         memberService.update(id, memberUpdateRequestDTO);
         return "redirect:/members";
     }

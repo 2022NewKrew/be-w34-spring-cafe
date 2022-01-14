@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Getter
@@ -12,9 +15,17 @@ import java.time.LocalDate;
 @ToString
 public class MemberRequestDTO {
 
+    @Email
+    @NotBlank
     private String email;
+
+    @NotBlank
     private String nickname;
+
+    @NotEmpty
     private String password;
+
+    @NotEmpty
     private String passwordCheck;
 
     public Member toMember(LocalDate createDate) {
