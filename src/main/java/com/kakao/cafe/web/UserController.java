@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.NoSuchElementException;
-
 @Controller
 public class UserController {
     private final UserRepository userRepository;
@@ -21,37 +19,35 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     public String getUser(Model model) {
-        model.addAttribute("users", userRepository.getUserList());
-        return "user/list";
+        try {
+            model.addAttribute("users", userRepository.getUserList());
+        } catch(Exception e) {
+            logger.info("users 실패: {}", e.getMessage());
+        }
+        return "users/list";
     }
 
-    @GetMapping("/user/form")
-    public String getUserForm() {
-        return "user/form";
-    }
-
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model) {
         try {
             User user = userRepository.findUserWithId(userId);
             model.addAttribute("user", user);
-        } catch(NoSuchElementException e) {
-            logger.info("user/userid 실패: {}", e.getMessage());
-            return "redirect:";
+        } catch(Exception e) {
+            logger.info("users/userid 실패: {}", e.getMessage());
+            return "redirect:/";
         }
-        return "user/profile";
+        return "users/profile";
     }
 
-    @PostMapping("/user/create")
+    @PostMapping("/users")
     public String postUserCreate(User user) {
-        logger.info("postUserCreate {}", user.toString());
         try {
             userRepository.addUser(user);
-        } catch(IllegalArgumentException e) {
-            logger.info("user/create 실패: {}", e.getMessage());
+        } catch(Exception e) {
+            logger.info("POST /users 실패: {}", e.getMessage());
         }
-        return "redirect:/user";
+        return "redirect:/users";
     }
 }
