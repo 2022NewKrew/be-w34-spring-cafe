@@ -1,7 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.dto.UserSignUpDTO;
-import com.kakao.cafe.domain.dto.UserViewDTO;
+import com.kakao.cafe.domain.model.User;
 import com.kakao.cafe.domain.model.Users;
 import org.springframework.stereotype.Repository;
 
@@ -18,12 +18,12 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public List<UserViewDTO> findAllUsers() {
+    public List<User> findAllUsers() {
         return users.getAllUsers();
     }
 
     @Override
-    public UserViewDTO findUserByUserId(String userId) {
+    public User findUserByUserId(String userId) {
         return users.findUserById(userId);
     }
 }
