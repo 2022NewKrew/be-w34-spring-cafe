@@ -5,8 +5,7 @@ import com.kakao.cafe.article.dto.response.ArticleDetailResponse;
 import com.kakao.cafe.article.entity.Article;
 import com.kakao.cafe.article.exception.ArticleNotFoundException;
 import com.kakao.cafe.article.repository.ArticleRepository;
-import com.kakao.cafe.user.exception.DuplicateUserIdException;
-import com.kakao.cafe.user.exception.UserNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,13 +13,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-
-    protected ArticleService(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
 
     /**
      * 게시글 작성 로직

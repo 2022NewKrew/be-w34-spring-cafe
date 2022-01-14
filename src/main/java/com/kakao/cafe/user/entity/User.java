@@ -27,4 +27,8 @@ public class User {
     public User(String userId, String password, String name, String email) {
         this(null, userId, password, name, email, null);
     }
+
+    public boolean checkPassword(String password) {
+        return this.password.equals(password);
+    }
 }

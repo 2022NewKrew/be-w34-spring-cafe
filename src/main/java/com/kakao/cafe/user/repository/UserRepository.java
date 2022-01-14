@@ -1,21 +1,17 @@
 package com.kakao.cafe.user.repository;
 
-import com.kakao.cafe.common.config.SpringJdbcConfig;
-import com.kakao.cafe.user.dto.request.UserUpdateRequest;
 import com.kakao.cafe.user.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
+@RequiredArgsConstructor
 public class UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
-
-    protected UserRepository() {
-        this.jdbcTemplate = new JdbcTemplate(new SpringJdbcConfig().dataSource());
-    }
 
     /**
      * userId가 매개변수로 들어온 userId와 같은 사용자를 찾는 메서드
@@ -71,17 +67,16 @@ public class UserRepository {
      * 패스워드, 이름, 이메일만 변경이 가능하다.
      * 만약 패스워드, 이름, 이메일이 빈 값("")이면 수정하지 않는다.
      * @param user: 수정할 사용자의 정보(Entity)
-     * @param req: 수정 정보
      * @return int: 영향받은 행의 개수(1)
      */
-    public int update(User user, UserUpdateRequest req) {
+    public int update(User user) {
         String sql = "update user_table set password = ?, name = ?, email = ? where id = ?";
 
         return this.writeQuery(
                 sql,
-                req.getNewPassword().isEmpty() ? user.getPassword() : req.getNewPassword(),
-                req.getName().isEmpty() ? user.getName() : req.getName(),
-                req.getEmail().isEmpty() ? user.getEmail() : req.getEmail(),
+                user.getPassword(),
+                user.getName(),
+                user.getEmail(),
                 user.getId());
     }
 
