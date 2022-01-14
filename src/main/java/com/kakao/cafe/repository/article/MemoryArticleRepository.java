@@ -1,7 +1,6 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 
 import java.util.*;
 

@@ -3,15 +3,17 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.RequestUserDto;
 import com.kakao.cafe.dto.ResponseUserDto;
-import com.kakao.cafe.repository.MemoryUserRepository;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.user.MemoryUserRepository;
+import com.kakao.cafe.repository.user.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class UserService {
 
     @Autowired
