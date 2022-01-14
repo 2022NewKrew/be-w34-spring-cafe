@@ -4,67 +4,49 @@ import com.kakao.cafe.web.domain.User;
 import com.kakao.cafe.web.dto.UserDTO;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.*;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final RowMapper<User> userRowMapper = new BeanPropertyRowMapper<>(User.class);
 
-    public MemoryUserRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public MemoryUserRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
     public User save(UserDTO userDTO) {
-        GeneratedKeyHolder holder = new GeneratedKeyHolder();
-
-        jdbcTemplate.update(con -> {
-            String sql = "INSERT INTO cafe_user (user_id, password, name, email) VALUES (?, ?, ?, ?)";
-            PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, userDTO.getUserId());
-            statement.setString(2, userDTO.getPassword());
-            statement.setString(3, userDTO.getName());
-            statement.setString(4, userDTO.getEmail());
-            return statement;
-        }, holder);
+        String sql = "INSERT INTO cafe_user (user_id, password, name, email) VALUES (:userId, :password, :name, :email)";
+        SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(userDTO);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
         return getUserByUserId(userDTO.getUserId());
     }
 
     @Override
     public List<User> getUserList() {
         String sql = "SELECT * FROM cafe_user";
-        return jdbcTemplate.query(
-                sql,
-                new BeanPropertyRowMapper<>(User.class)
-        );
+        return namedParameterJdbcTemplate.query(sql, userRowMapper);
     }
 
     @Override
     public User getUserByUserId(String userId) {
-        String sql = "SELECT * FROM cafe_user WHERE user_id LIKE ?";
-        return jdbcTemplate.queryForObject(
-                sql,
-                new BeanPropertyRowMapper<>(User.class),
-                userId);
+        String sql = "SELECT * FROM cafe_user WHERE user_id LIKE :userId";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("userId", userId);
+        return namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, userRowMapper);
     }
 
     public User update(UserDTO userUpdateDTO) {
-        GeneratedKeyHolder holder = new GeneratedKeyHolder();
-        System.out.println(userUpdateDTO);
-        jdbcTemplate.update(con -> {
-            String sql = "UPDATE cafe_user SET password = ?, name = ?, email = ? WHERE user_id = ?";
-            PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, userUpdateDTO.getPassword());
-            statement.setString(2, userUpdateDTO.getName());
-            statement.setString(3, userUpdateDTO.getEmail());
-            statement.setString(4, userUpdateDTO.getUserId());
-            return statement;
-        }, holder);
+        String sql = "UPDATE cafe_user SET password = :password, name = :name, email = :email WHERE user_id = :userId";
+        SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(userUpdateDTO);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
         return getUserByUserId(userUpdateDTO.getUserId());
     }
 }
