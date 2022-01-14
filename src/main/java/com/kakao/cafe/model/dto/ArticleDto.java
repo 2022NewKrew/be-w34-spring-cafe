@@ -18,7 +18,8 @@ public class ArticleDto {
     private String writerId;
     private String content;
     private LocalDateTime date;
-    private long commentsCount;
+    private Long hits;
+    private int commentsCount;
 
     public String getFormattedDate() {
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
