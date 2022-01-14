@@ -3,7 +3,6 @@ package com.kakao.cafe.web.repository;
 import com.kakao.cafe.web.domain.User;
 import com.kakao.cafe.web.dto.UserDTO;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
