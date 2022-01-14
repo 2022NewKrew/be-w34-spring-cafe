@@ -1,6 +1,6 @@
 package com.kakao.cafe.util.exception;
 
-public abstract class CustomException extends RuntimeException {
+public class CustomException extends RuntimeException {
     private Exception exception;
 
     public CustomException(Exception exception, String message) {
