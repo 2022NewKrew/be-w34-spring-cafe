@@ -14,6 +14,14 @@ public class User extends BaseEntity {
     private String username;
     private String password;
 
+    public void changeUsername(String username) {
+        this.username = username;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public LocalDateTime getRegDate() {
         return super.getRegDate();

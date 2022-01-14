@@ -2,8 +2,9 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.*;
 import com.kakao.cafe.entity.User;
-import com.kakao.cafe.exception.CafeException;
-import com.kakao.cafe.exception.UserException;
+import com.kakao.cafe.exception.user.LoginFailedException;
+import com.kakao.cafe.exception.user.UserException;
+import com.kakao.cafe.exception.user.UserRegisterFailedException;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.util.Page;
 import com.kakao.cafe.util.Pageable;
@@ -25,38 +26,37 @@ public class UserServiceImpl implements UserService {
     public UserDto register(UserDto dto) {
         User entity = dtoToEntity(dto);
         userRepository.save(entity);
-        Optional<User> result = userRepository.findbyEmailAndPassword(entity);
-        if (result.isEmpty())
-            throw new UserException();
-        return entityToDto(result.get());
+        return userRepository.findByEmail(entity)
+                .map(this::entityToDto)
+                .orElseThrow(UserRegisterFailedException::new);
     }
 
     @Override
     public AuthDto login(UserDto dto) {
         User entity = dtoToEntity(dto);
-        Optional<User> result = userRepository.findbyEmailAndPassword(entity);
-        if (result.isEmpty())
-            throw new UserException();
-        return entityToDto(result.get()).getAuthDto();
+        return userRepository.findByEmailAndPassword(entity)
+                .map(this::entityToAuthDto)
+                .orElseThrow(LoginFailedException::new);
     }
 
     @Override
     public UserDto getUser(AuthDto dto) {
-        Optional<User> result = userRepository.findbyEmail(User.builder().email(dto.getEmail()).build());
-        if (result.isEmpty())
-            throw new UserException();
-        return entityToDto(result.get());
+        Optional<User> result = userRepository.findByEmail(User.builder().email(dto.getEmail()).build());
+        return userRepository.findByEmail(User.builder().email(dto.getEmail()).build())
+                .map(this::entityToDto)
+                .orElseThrow(UserException::new);
     }
 
     @Override
-    public UserDto update(EditUserDto dto) {
-        if (!dto.confirmPassword())
-            throw new UserException();
-        User.builder()
-                .email(dto.getEmail())
-                .username(dto.getUsername())
-                .password(dto.)
-        return null;
+    public void modify(EditUserDto dto) {
+        User user = User.builder().email(dto.getEmail()).password(dto.getPassword()).build();
+        Optional<User> result = userRepository.findByEmailAndPassword(user);
+        if (result.isPresent()) {
+            User entity = result.get();
+            entity.changeUsername(dto.getUsername());
+            entity.changePassword(dto.getPassword());
+            userRepository.save(entity);
+        }
     }
 
     @Override

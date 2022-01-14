@@ -27,9 +27,6 @@ public class AccountController {
     @PostMapping("/login")
     public String login(UserDto userDto, HttpSession session) {
         AuthDto authDto = userService.login(userDto);
-        if (authDto == null) {
-            return "redirect:/accounts/login";
-        }
         session.setAttribute("auth", authDto);
         return "redirect:/";
     }
@@ -79,7 +76,7 @@ public class AccountController {
             return "redirect:/accounts/login";
         }
         log.info("accounts/mypage/edit" + editUserDto);
-        userService.
+        userService.modify(editUserDto);
         return "redirect:/accounts/mypage";
     }
 

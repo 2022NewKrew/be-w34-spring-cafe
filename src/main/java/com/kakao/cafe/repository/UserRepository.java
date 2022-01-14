@@ -46,16 +46,34 @@ public class UserRepository {
     }
 
     public void save(User entity) {
-        userList.add(entity.init());
+        userList.stream()
+                .filter(user -> user.getEmail().equals(entity.getEmail()))
+                .findFirst()
+                .ifPresentOrElse(
+                        user -> {
+                            user.changeUsername(entity.getUsername());
+                            user.changePassword(entity.getPassword());
+                        },
+                        () -> userList.add(entity)
+                );
     }
 
-    public Optional<User> findbyEmail(User entity) {
+    public void update(User entity) {
+        Optional<User> result = userList.stream()
+                .filter(user -> user.getEmail().equals(entity.getEmail()))
+                .filter(user -> user.getPassword().equals(entity.getPassword()))
+                .findFirst();
+        result.ifPresent(user -> {
+        });
+    }
+
+    public Optional<User> findByEmail(User entity) {
         return userList.stream()
                 .filter(user -> user.getEmail().equals(entity.getEmail()))
                 .findFirst();
     }
 
-    public Optional<User> findbyEmailAndPassword(User entity) {
+    public Optional<User> findByEmailAndPassword(User entity) {
         return userList.stream()
                 .filter(user -> user.getEmail().equals(entity.getEmail()))
                 .filter(user -> user.getPassword().equals(entity.getPassword()))

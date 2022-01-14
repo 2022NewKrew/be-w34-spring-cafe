@@ -10,7 +10,7 @@ public interface UserService {
 
     UserDto getUser(AuthDto dto);
 
-    UserDto update(EditUserDto dto);
+    void modify(EditUserDto dto);
 
     PageResultDto<UserDto, User> getList(PageRequestDto requestDto);
 
@@ -29,6 +29,13 @@ public interface UserService {
                 .password(entity.getPassword())
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())
+                .build();
+    }
+
+    default AuthDto entityToAuthDto(User entity) {
+        return AuthDto.builder()
+                .email(entity.getEmail())
+                .username(entity.getUsername())
                 .build();
     }
 }
