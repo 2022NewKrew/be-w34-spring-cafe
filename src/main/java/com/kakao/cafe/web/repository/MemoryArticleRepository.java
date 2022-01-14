@@ -29,12 +29,17 @@ public class MemoryArticleRepository implements ArticleRepository{
 
     @Override
     public Article save(ArticleDTO articleDTO) throws NullPointerException {
+        // Save Article
         String sql = "INSERT INTO cafe_article (writer, title, contents) " +
                 "VALUES ((SELECT user_id FROM cafe_user WHERE user_id = :writer), :title, :contents)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(articleDTO);
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
-        return getArticleById(Objects.requireNonNull(keyHolder.getKey()).longValue());
+
+        // Return Created Article
+        sql = "SELECT * FROM cafe_article WHERE id = :id";
+        sqlParameterSource = new MapSqlParameterSource("id", Objects.requireNonNull(keyHolder.getKey()).longValue());
+        return namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, articleRowMapper);
     }
 
     @Override
@@ -44,9 +49,10 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Article getArticleById(long id) {
+    public Optional<Article> getArticleById(long id) {
         String sql = "SELECT * FROM cafe_article WHERE id = :id";
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
-        return namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, articleRowMapper);
+        List<Article> articleByIdList = namedParameterJdbcTemplate.query(sql, sqlParameterSource, articleRowMapper);
+        return articleByIdList.stream().findFirst();
     }
 }

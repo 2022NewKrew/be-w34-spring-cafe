@@ -4,9 +4,10 @@ import com.kakao.cafe.web.domain.Article;
 import com.kakao.cafe.web.dto.ArticleDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository {
     Article save(ArticleDTO articleDTO);
     List<Article> getArticleList();
-    Article getArticleById(long id);
+    Optional<Article> getArticleById(long id);
 }
