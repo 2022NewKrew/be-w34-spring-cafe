@@ -3,7 +3,7 @@
 #1일차
 
 ### TODO
-* domain TEST 코드 작성
+* 메소드 및 클래스 이름 문제 해결
   
 ### DONE
 * domain 객체 생성
@@ -19,3 +19,4 @@
   * Annotation 추가 : Controller, Repository 등등
   * Lombok 도입
   * Resources에서 공통 된 부분을 하나로 합치는 작업
+* domain TEST 코드 작성

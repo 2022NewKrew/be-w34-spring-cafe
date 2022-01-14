@@ -1,0 +1,8 @@
+### List TEST
+GET http://localhost:8080/user/prof/list
+
+### POST TEST
+POST http://localhost:8080/user/create?userId=a&password=b&name=c&email=e
+
+### Profile Test
+GET http://localhost:8080/user/prof/skian
