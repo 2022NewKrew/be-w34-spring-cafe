@@ -118,7 +118,7 @@ public class UserController {
     public String logout(HttpServletRequest request) {
         HttpSession httpSession = request.getSession();
         httpSession.invalidate();
-
+        log.info("success invalidate session");
         return "redirect:/";
     }
 
