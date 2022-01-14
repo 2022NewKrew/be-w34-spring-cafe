@@ -28,7 +28,7 @@ public class PostController {
         if (authDto == null) {
             return "redirect:/accounts/login";
         }
-        return "post_write";
+        return "board/post_write";
     }
 
     @GetMapping("/{postId}")

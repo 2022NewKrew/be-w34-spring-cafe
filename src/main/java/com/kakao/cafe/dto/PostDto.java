@@ -16,6 +16,7 @@ public class PostDto {
     private String title;
     private String content;
     private String writerEmail;
+    private String writerUsername;
     private Long viewCount;
     private LocalDateTime regDate, modDate;
 }

@@ -4,6 +4,7 @@ import com.kakao.cafe.dto.PageRequestDto;
 import com.kakao.cafe.dto.PageResultDto;
 import com.kakao.cafe.dto.PostDto;
 import com.kakao.cafe.entity.Post;
+import com.kakao.cafe.entity.User;
 
 public interface PostService {
     Long register(PostDto dto);
@@ -17,7 +18,7 @@ public interface PostService {
                 .postId(dto.getPostId())
                 .title(dto.getTitle())
                 .content(dto.getContent())
-                .writerEmail(dto.getWriterEmail())
+                .writer(User.builder().email(dto.getWriterEmail()).username(dto.getWriterUsername()).build())
                 .viewCount(dto.getViewCount())
                 .build();
     }
@@ -27,7 +28,8 @@ public interface PostService {
                 .postId(entity.getPostId())
                 .title(entity.getTitle())
                 .content(entity.getContent())
-                .writerEmail(entity.getWriterEmail())
+                .writerEmail(entity.getWriter().getEmail())
+                .writerUsername(entity.getWriter().getUsername())
                 .viewCount(entity.getViewCount())
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())

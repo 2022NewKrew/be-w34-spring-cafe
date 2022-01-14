@@ -13,7 +13,6 @@ public class Post extends BaseEntity {
     private Long postId;
     private String title;
     private String content;
-    private String writerEmail;
     private Long viewCount;
 
     @Override
@@ -32,4 +31,6 @@ public class Post extends BaseEntity {
         this.viewCount = 0L;
         return this;
     }
+    
+    private User writer;
 }
