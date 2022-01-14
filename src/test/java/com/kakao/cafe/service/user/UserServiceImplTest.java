@@ -2,11 +2,13 @@ package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.dto.user.UserReqDto;
 import com.kakao.cafe.dto.user.UserResDto;
+import com.kakao.cafe.dto.user.UserUpdateReqDto;
 import com.kakao.cafe.repository.user.MemoryUserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.Null;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -16,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserServiceImplTest {
 
     MemoryUserRepository memoryUserRepository;
-    UserServiceImpl userService;
+    UserService userService;
 
     @BeforeEach
     void beforeEach(){
@@ -59,15 +61,41 @@ class UserServiceImplTest {
         assertThat(userService.findUsers().size()).isEqualTo(1);
     }
 
-    @DisplayName("유저를 id로 탐색")
+    @DisplayName("잘못된 id로 유저 탐색")
+    @Test
+    void findUserByIdException() {
+        UserReqDto userReqDto = new UserReqDto("test1234", "1234", "testName", "test@kakaocorp.com");
+        userService.addUser(userReqDto);
+        assertThrows(NullPointerException.class, () -> userService.findUserById(3L));
+    }
+
+    @DisplayName("올바른 id로 유저 탐색")
     @Test
     void findUserById() {
         UserReqDto userReqDto = new UserReqDto("test1234", "1234", "testName", "test@kakaocorp.com");
         userService.addUser(userReqDto);
-        assertThat(userService.findUserById(0L).getUserId()).isEqualTo(userReqDto.getUserId());
+        assertThat(userService.findUserById(1L).getUserId()).isEqualTo(userReqDto.getUserId());
     }
-//
-//    @Test
-//    void updateUser() {
-//    }
+
+    @DisplayName("사용자 정보 업데이트 확인")
+    @Test
+    void updateUser() {
+        UserReqDto userReqDto = new UserReqDto("test1234", "1234", "testName", "test@kakaocorp.com");
+        userService.addUser(userReqDto);
+        UserUpdateReqDto userUpdateReqDto = new UserUpdateReqDto(1L, "1234", "12345", "testName2", "test2@kakaocorp.com");
+        userService.updateUser(userUpdateReqDto);
+        assertThat(userService.findUserById(1L).getName()).isEqualTo(userUpdateReqDto.getName());
+        assertThat(userService.findUserById(1L).getEmail()).isEqualTo(userUpdateReqDto.getEmail());
+        assertThat(userService.findUserById(1L).getPassword()).isEqualTo(userUpdateReqDto.getNewPassword());
+    }
+
+    @DisplayName("사용자 정보 업데이트 예외")
+    @Test
+    void updateUserException() {
+        UserReqDto userReqDto = new UserReqDto("test1234", "1234", "testName", "test@kakaocorp.com");
+        userService.addUser(userReqDto);
+        UserUpdateReqDto userUpdateReqDto = new UserUpdateReqDto(3L, "1234", "12345", "testName2", "test2@kakaocorp.com");
+        assertThrows(NullPointerException.class, ()->userService.updateUser(userUpdateReqDto));
+    }
+
 }

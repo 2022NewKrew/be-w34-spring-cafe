@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(userUpdateReqDto.getId())
                 .orElseThrow(() -> new NullPointerException("존재하지 않는 사용자입니다."));
 
-        //예외처리(비밀번호가 다른 경우)
+        //예외처리예정(비밀번호가 다른 경우)
 
         userRepository.save(User.builder()
                 .id(user.getId())
