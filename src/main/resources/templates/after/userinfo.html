@@ -1,0 +1,35 @@
+{{>common/header}}
+{{>common/afterloginbar}}
+<div class="container">
+    <br>
+    <div>
+        <h1>회원정보</h1>
+    </div>
+    <br>
+    <div>
+        {{#userInfo}}
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">이메일</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{email}}">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="staticUsername" class="col-sm-2 col-form-label">닉네임</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticUsername" value="{{username}}">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="staticCreatedAt" class="col-sm-2 col-form-label">생성일</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticCreatedAt" value="{{createdAt}}">
+            </div>
+        </div>
+        {{/userInfo}}
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary" id="go-home">돌아가기</button>
+    </div>
+</div>
+{{>common/footer}}
