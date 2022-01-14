@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping("/form")
     public String userForm() {
-        return "/user/form";
+        return "user/form";
     }
 
     @PostMapping("")
@@ -39,24 +39,24 @@ public class UserController {
     public String userList(Model model) {
         List<ShowUserDto> userList = userService.findAll();
         model.addAttribute("userList", userList);
-        return "/user/list";
+        return "user/list";
     }
 
     @GetMapping("/profile")
     public String userProfile() {
-        return "/user/profile";
+        return "user/profile";
     }
 
     @GetMapping("/{userId}")
     public String userListProfile(Model model, @PathVariable String userId) {
         ShowUserDto user = userService.findById(userId);
         model.addAttribute("user", user);
-        return "/user/profile";
+        return "user/profile";
     }
 
     @GetMapping("/login")
     public String userLogin() {
-        return "/user/login";
+        return "user/login";
     }
 
 }
