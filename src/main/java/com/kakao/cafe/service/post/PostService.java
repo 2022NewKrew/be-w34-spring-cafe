@@ -7,6 +7,7 @@ import com.kakao.cafe.model.post.PostWriteRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,12 +26,16 @@ public class PostService {
     }
 
     public void writePost(PostWriteRequest post) {
-        postRepository.save(Post.builder()
-                .writer(post.getWriter())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .createdAt(LocalDateTime.now())
-                .build());
+        try {
+            postRepository.save(Post.builder()
+                    .writer(post.getWriter())
+                    .title(post.getTitle())
+                    .content(post.getContent())
+                    .createdAt(LocalDateTime.now())
+                    .build());
+        } catch (DataAccessException e) {
+            throw new IllegalArgumentException("게시글 등록에 실패하였습니다.");
+        }
     }
 
     public List<PostDto> getAllPosts() {

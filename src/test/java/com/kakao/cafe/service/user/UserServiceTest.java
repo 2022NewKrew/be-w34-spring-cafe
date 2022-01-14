@@ -103,7 +103,7 @@ class UserServiceTest {
                 .password("1234")
                 .build();
 
-        assertThatExceptionOfType(DataAccessException.class).isThrownBy(() -> {
+        assertThatIllegalArgumentException().isThrownBy(() -> {
             userService.signupUser(userWithDuplicatedEmail);
         });
     }
@@ -233,7 +233,7 @@ class UserServiceTest {
                 .build();
         long id = user.getId();
 
-        assertThatExceptionOfType(DataAccessException.class).isThrownBy(() -> {
+        assertThatIllegalArgumentException().isThrownBy(() -> {
             userService.updateUser(id, updateRequest);
         });
     }

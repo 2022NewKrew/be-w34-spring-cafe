@@ -8,6 +8,8 @@ import com.kakao.cafe.model.user.UserUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,12 +28,18 @@ public class UserService {
     }
 
     public void signupUser(UserSignupRequest user) {
-        userRepository.save(User.builder()
-                .email(user.getEmail())
-                .nickname(user.getNickname())
-                .password(user.getPassword())
-                .createdAt(LocalDateTime.now())
-                .build());
+        try {
+            userRepository.save(User.builder()
+                    .email(user.getEmail())
+                    .nickname(user.getNickname())
+                    .password(user.getPassword())
+                    .createdAt(LocalDateTime.now())
+                    .build());
+        } catch (DuplicateKeyException e) {
+            throw new IllegalArgumentException("이미 등록된 이메일 입니다.");
+        } catch (DataAccessException e2) {
+            throw new IllegalArgumentException("회원가입에 실패하였습니다.");
+        }
     }
 
     public List<UserDto> getAllUsers() {
@@ -51,15 +59,21 @@ public class UserService {
         if (!request.getCurrentPassword().equals(savedUser.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        userRepository.update(User.builder()
-                .id(id)
-                .email(request.getEmail())
-                .nickname(request.getNickname())
-                .password(request.getPassword())
-                .createdAt(savedUser.getCreatedAt())
-                .updatedAt(LocalDateTime.now())
-                .build()
-        );
+        try {
+            userRepository.update(User.builder()
+                    .id(id)
+                    .email(request.getEmail())
+                    .nickname(request.getNickname())
+                    .password(request.getPassword())
+                    .createdAt(savedUser.getCreatedAt())
+                    .updatedAt(LocalDateTime.now())
+                    .build()
+            );
+        } catch (DuplicateKeyException e) {
+            throw new IllegalArgumentException("이미 등록된 이메일 입니다.");
+        } catch (DataAccessException e2) {
+            throw new IllegalArgumentException("회원 정보 수정에 실패하였습니다.");
+        }
     }
 
 }
