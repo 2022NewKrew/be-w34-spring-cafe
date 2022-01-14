@@ -5,6 +5,9 @@ import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
 import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
+import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
+import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
+import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
 
 public class GetArticleInfoService implements GetArticleInfoUseCase {
 
@@ -20,7 +23,8 @@ public class GetArticleInfoService implements GetArticleInfoUseCase {
     }
 
     @Override
-    public Article getArticleDetail(int index) throws ArticleNotExistException {
-        return getArticleInfoPort.findArticleById(index);
+    public Article getArticleDetail(int id)
+        throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException {
+        return getArticleInfoPort.findArticleById(id);
     }
 }

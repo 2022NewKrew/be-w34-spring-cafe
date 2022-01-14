@@ -86,12 +86,16 @@ class StoreArticleInfoAdapterTest {
                                                         "yyyy-MM-dd HH:mm")))
                                                     .build();
         givenArticle.setId(givenId);
-        given(articleInfoRepository.findById(givenId)).willReturn(Optional.of(givenArticle));
+        given(articleInfoRepository.findById(givenId)).willReturn(Optional.of(ArticleVO.from(givenArticle)));
 
         // when
         Article article = storeArticleInfoAdapter.findArticleById(givenId);
 
-        assertThat(givenArticle).isEqualTo(article);
+        assertThat(givenArticle.getId()).isEqualTo(article.getId());
+        assertThat(givenArticle.getWriter()).isEqualTo(article.getWriter());
+        assertThat(givenArticle.getTitle()).isEqualTo(article.getTitle());
+        assertThat(givenArticle.getContents()).isEqualTo(article.getContents());
+        assertThat(givenArticle.getCreatedAt()).isEqualTo(article.getCreatedAt());
     }
 
     @DisplayName("게시글 찾기 실패 테스트")

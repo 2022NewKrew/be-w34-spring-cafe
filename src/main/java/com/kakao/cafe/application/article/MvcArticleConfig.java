@@ -9,11 +9,18 @@ import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
 import com.kakao.cafe.application.article.port.out.RegisterArticlePort;
 import com.kakao.cafe.application.article.service.GetArticleInfoService;
 import com.kakao.cafe.application.article.service.WriteArticleService;
+import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MvcArticleConfig {
+
+    public final DataSource dataSource;
+
+    public MvcArticleConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Bean
     public ArticleInfoRepository articleInfoRepository() {

@@ -11,6 +11,6 @@ public interface GetArticleInfoUseCase {
 
     ArticleList getListOfAllArticles();
 
-    Article getArticleDetail(int index)
+    Article getArticleDetail(int id)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException, ArticleNotExistException;
 }

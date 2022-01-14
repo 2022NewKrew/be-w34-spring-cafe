@@ -1,12 +1,12 @@
 package com.kakao.cafe.adapter.out.infra.persistence.article;
 
 import com.kakao.cafe.domain.article.Article;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class InMemoryArticleInfoRepository implements ArticleInfoRepository {
 
@@ -24,11 +24,11 @@ public class InMemoryArticleInfoRepository implements ArticleInfoRepository {
         repository.put(article.getId(), article);
     }
 
-    public List<Article> getAllArticleList() {
-        return new ArrayList<>(repository.values());
+    public List<ArticleVO> getAllArticleList() {
+        return repository.values().stream().map(ArticleVO::from).collect(Collectors.toList());
     }
 
-    public Optional<Article> findById(int index) {
-        return Optional.ofNullable(repository.get(index));
+    public Optional<ArticleVO> findById(int index) {
+        return Optional.of(ArticleVO.from(repository.get(index)));
     }
 }

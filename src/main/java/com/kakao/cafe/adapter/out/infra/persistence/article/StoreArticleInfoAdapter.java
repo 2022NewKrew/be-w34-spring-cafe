@@ -50,13 +50,14 @@ public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleI
     }
 
     @Override
-    public Article findArticleById(int index) throws ArticleNotExistException {
-        Article article = inMemoryArticleInfoRepository.findById(index).orElse(null);
+    public Article findArticleById(int id)
+        throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException {
+        ArticleVO articleVO = inMemoryArticleInfoRepository.findById(id).orElse(null);
 
-        if (article == null) {
+        if (articleVO == null) {
             throw new ArticleNotExistException("존재하지 않는 게시글입니다.");
         }
 
-        return article;
+        return articleVO.toEntity();
     }
 }

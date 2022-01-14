@@ -10,6 +10,7 @@ import com.kakao.cafe.domain.article.Article;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @WebMvcTest(ArticleInfoController.class)
 class ArticleInfoControllerTest {
 
-    @MockBean
-    GetArticleInfoUseCase getArticleInfoUseCase;
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private GetArticleInfoUseCase getArticleInfoUseCase;
+
+    @MockBean
+    private DataSource dataSource;
 
     @DisplayName("게시글 목록 출력 테스트")
     @Test
