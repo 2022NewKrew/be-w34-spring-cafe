@@ -3,6 +3,7 @@ package com.kakao.cafe.persistence.post;
 import com.kakao.cafe.application.exception.IdNotFoundException;
 import com.kakao.cafe.domain.post.QuestionPost;
 import com.kakao.cafe.domain.post.QuestionPostRepository;
+import com.kakao.cafe.domain.user.UserAccount;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.event.annotation.BeforeTestClass;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -26,27 +29,30 @@ class QuestionPostJdbcRepositoryTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    UserAccount userAccount;
+
     QuestionPost testPost1;
 
     QuestionPost testPost2;
 
-    QuestionPost expected1 = QuestionPost.builder()
-            .questionPostId(1L)
-            .title("안녕하세요")
-            .content("질문1")
-            .createdAt(LocalDateTime.of(2022, 1, 12, 6, 54))
-            .viewCount(0)
-            .userAccountId(0L)
-            .build();
+    QuestionPost expected1;
 
     @BeforeEach
     void setUp() {
+        userAccount = UserAccount.builder()
+                .userAccountId(1L)
+                .email("peach@kakao.com")
+                .username("peach")
+                .password("1234")
+                .createdAt(LocalDateTime.of(2022, 1, 12, 6, 54))
+                .build();
+
         testPost1 = QuestionPost.builder()
                 .title("안녕하세요")
                 .content("질문1")
                 .createdAt(LocalDateTime.of(2022, 1, 12, 6, 54))
                 .viewCount(0)
-                .userAccountId(0L)
+                .userAccount(userAccount)
                 .build();
 
         testPost2 = QuestionPost.builder()
@@ -54,7 +60,16 @@ class QuestionPostJdbcRepositoryTest {
                 .content("질문2")
                 .createdAt(LocalDateTime.of(2022, 1, 12, 6, 54))
                 .viewCount(0)
-                .userAccountId(0L)
+                .userAccount(userAccount)
+                .build();
+
+        expected1 = QuestionPost.builder()
+                .questionPostId(1L)
+                .title("안녕하세요")
+                .content("질문1")
+                .createdAt(LocalDateTime.of(2022, 1, 12, 6, 54))
+                .viewCount(0)
+                .userAccount(userAccount)
                 .build();
     }
 
@@ -78,7 +93,7 @@ class QuestionPostJdbcRepositoryTest {
 
         QuestionPost result = questionPostRepository.findById(saved.getQuestionPostId())
                 .orElseThrow(() -> new IdNotFoundException("유효하지 않는 값입니다"));
-
+        System.out.println(result);
         Assertions.assertThat(result).isEqualTo(saved);
     }
 

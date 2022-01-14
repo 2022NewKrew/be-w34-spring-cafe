@@ -36,7 +36,10 @@ public class QuestionPostServiceTest {
         int viewCount = 0;
         LocalDateTime date = LocalDateTime.now();
         String formatDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        Long accountId = 1L;
+        UserAccount userAccount = UserAccount.builder()
+                .userAccountId(1L)
+                .username("baek")
+                .build();
 
         QuestionPostDetailResult expected = new QuestionPostDetailResult(
                 postId,
@@ -47,11 +50,6 @@ public class QuestionPostServiceTest {
                 author
         );
 
-        given(userAccountService.getUserInfo(accountId)).willReturn(
-                UserAccount.builder()
-                        .username(author)
-                        .build());
-
         given(questionPostRepository.findById(postId)).willReturn(Optional.of(
                 QuestionPost.builder()
                         .questionPostId(postId)
@@ -59,7 +57,7 @@ public class QuestionPostServiceTest {
                         .content(content)
                         .createdAt(date)
                         .viewCount(viewCount)
-                        .userAccountId(accountId)
+                        .userAccount(userAccount)
                         .build()));
 
         //when

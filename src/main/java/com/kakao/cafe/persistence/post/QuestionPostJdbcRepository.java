@@ -2,6 +2,7 @@ package com.kakao.cafe.persistence.post;
 
 import com.kakao.cafe.domain.post.QuestionPost;
 import com.kakao.cafe.domain.post.QuestionPostRepository;
+import com.kakao.cafe.domain.user.UserAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -33,7 +34,7 @@ public class QuestionPostJdbcRepository implements QuestionPostRepository {
             ps.setString(2, questionPost.getContent());
             ps.setTimestamp(3, Timestamp.valueOf(questionPost.getCreatedAt()));
             ps.setInt(4, questionPost.getViewCount());
-            ps.setLong(5, questionPost.getUserAccountId());
+            ps.setLong(5, questionPost.getUserAccount().getUserAccountId());
             return ps;
         }, keyHolder);
 
@@ -43,13 +44,13 @@ public class QuestionPostJdbcRepository implements QuestionPostRepository {
                 .content(questionPost.getContent())
                 .createdAt(questionPost.getCreatedAt())
                 .viewCount(questionPost.getViewCount())
-                .userAccountId(questionPost.getUserAccountId())
+                .userAccount(questionPost.getUserAccount())
                 .build();
     }
 
     @Override
     public Optional<QuestionPost> findById(Long id) {
-        String sql = "select question_post_id, title, content, created_at, view_count, user_account_id from question_post where question_post_id = ?";
+        String sql = "select *  from question_post join user_account on question_post.user_account_id = user_account.user_account_id where question_post_id = ?";
 
         try {
             QuestionPost questionPost = jdbcTemplate.queryForObject(
@@ -60,7 +61,13 @@ public class QuestionPostJdbcRepository implements QuestionPostRepository {
                             .content(result.getString("content"))
                             .createdAt(result.getTimestamp("created_at").toLocalDateTime())
                             .viewCount(result.getInt("view_count"))
-                            .userAccountId(result.getLong("user_account_id"))
+                            .userAccount(UserAccount.builder()
+                                    .userAccountId(result.getLong("user_account_id"))
+                                    .username(result.getString("username"))
+                                    .password(result.getString("password"))
+                                    .email(result.getString("email"))
+                                    .createdAt(result.getTimestamp("created_at").toLocalDateTime())
+                                    .build())
                             .build(),
                     id);
             return Optional.of(questionPost);
@@ -71,7 +78,7 @@ public class QuestionPostJdbcRepository implements QuestionPostRepository {
 
     @Override
     public List<QuestionPost> findAll() {
-        String sql = "select question_post_id, title, content, created_at, view_count, user_account_id from question_post";
+        String sql = "select * from question_post join user_account on question_post.user_account_id = user_account.user_account_id";
 
         List<QuestionPost> questionPost = jdbcTemplate.query(
                 sql,
@@ -81,7 +88,13 @@ public class QuestionPostJdbcRepository implements QuestionPostRepository {
                         .content(result.getString("content"))
                         .createdAt(result.getTimestamp("created_at").toLocalDateTime())
                         .viewCount(result.getInt("view_count"))
-                        .userAccountId(result.getLong("user_account_id"))
+                        .userAccount(UserAccount.builder()
+                                .userAccountId(result.getLong("user_account_id"))
+                                .username(result.getString("username"))
+                                .password(result.getString("password"))
+                                .email(result.getString("email"))
+                                .createdAt(result.getTimestamp("created_at").toLocalDateTime())
+                                .build())
                         .build());
         return questionPost;
     }

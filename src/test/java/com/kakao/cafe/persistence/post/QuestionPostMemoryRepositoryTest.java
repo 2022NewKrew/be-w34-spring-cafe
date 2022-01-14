@@ -2,6 +2,7 @@ package com.kakao.cafe.persistence.post;
 
 import com.kakao.cafe.domain.post.QuestionPost;
 import com.kakao.cafe.domain.post.QuestionPostRepository;
+import com.kakao.cafe.domain.user.UserAccount;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +20,19 @@ public class QuestionPostMemoryRepositoryTest {
     @Qualifier("simple-question-db")
     QuestionPostRepository questionPostRepository;
 
+    UserAccount testUser = UserAccount.builder()
+            .email("edward@kakao.com")
+            .password("1234")
+            .username("edward")
+            .createdAt(LocalDateTime.now())
+            .build();
+
     QuestionPost testPost1 = QuestionPost.builder()
             .title("안녕하세요")
             .content("질문1")
             .createdAt(LocalDateTime.now())
             .viewCount(0)
-            .userAccountId(0L)
+            .userAccount(testUser)
             .build();
 
     QuestionPost testPost2 = QuestionPost.builder()
@@ -32,7 +40,7 @@ public class QuestionPostMemoryRepositoryTest {
             .content("질문2")
             .createdAt(LocalDateTime.now())
             .viewCount(0)
-            .userAccountId(0L)
+            .userAccount(testUser)
             .build();
 
     @AfterEach

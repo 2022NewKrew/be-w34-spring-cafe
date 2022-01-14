@@ -30,7 +30,8 @@ public class QuestionPostService {
     }
 
     public QuestionPost save(QuestionPostSaveCommand command) {
-        return questionPostRepository.save(command.toEntity());
+        UserAccount userAccount = userAccountService.getUserInfo(command.getUserAccountId());
+        return questionPostRepository.save(command.toEntity(userAccount));
     }
 
     public QuestionPostDetailListResult getAllPost() {
@@ -43,7 +44,7 @@ public class QuestionPostService {
                         post.getContent(),
                         post.getCreatedAt().format(ofPattern("yyyy-MM-dd HH:mm:ss")),
                         post.getViewCount(),
-                        userAccountService.getUserInfo(post.getUserAccountId()).getUsername())
+                        post.getUserAccount().getUsername())
                 )
                 .collect(Collectors.toList());
 
@@ -54,15 +55,13 @@ public class QuestionPostService {
         QuestionPost questionPost = questionPostRepository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException("유효하지 않는 값입니다"));
 
-        UserAccount userAccount = userAccountService.getUserInfo(questionPost.getUserAccountId());
-
         return new QuestionPostDetailResult(
                 questionPost.getQuestionPostId(),
                 questionPost.getTitle(),
                 questionPost.getContent(),
                 questionPost.getCreatedAt().format(ofPattern("yyyy-MM-dd HH:mm:ss")),
                 questionPost.getViewCount(),
-                userAccount.getUsername()
+                questionPost.getUserAccount().getUsername()
         );
     }
 

@@ -40,6 +40,8 @@ class UserAccountJdbcRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        jdbcTemplate.update("truncate table user_account");
+
         testUser1 = UserAccount.builder()
                 .email("edward@kakao.com")
                 .password("1234")
