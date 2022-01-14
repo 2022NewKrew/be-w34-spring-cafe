@@ -1,8 +1,7 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.model.User;
-import com.kakao.cafe.model.UserSignUpDTO;
-import com.kakao.cafe.model.UserViewDTO;
+import com.kakao.cafe.domain.dto.UserSignUpDTO;
+import com.kakao.cafe.domain.dto.UserViewDTO;
 
 import java.util.List;
 

@@ -1,16 +1,12 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.model.User;
-import com.kakao.cafe.model.UserSignUpDTO;
-import com.kakao.cafe.model.UserViewDTO;
-import com.kakao.cafe.repository.UserMemoryRepository;
+import com.kakao.cafe.domain.dto.UserSignUpDTO;
+import com.kakao.cafe.domain.dto.UserViewDTO;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

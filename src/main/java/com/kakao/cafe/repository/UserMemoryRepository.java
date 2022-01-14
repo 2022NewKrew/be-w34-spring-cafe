@@ -1,16 +1,11 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.model.User;
-import com.kakao.cafe.model.UserSignUpDTO;
-import com.kakao.cafe.model.UserViewDTO;
-import com.kakao.cafe.model.Users;
+import com.kakao.cafe.domain.dto.UserSignUpDTO;
+import com.kakao.cafe.domain.dto.UserViewDTO;
+import com.kakao.cafe.domain.model.Users;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Repository
 public class UserMemoryRepository implements UserRepository {

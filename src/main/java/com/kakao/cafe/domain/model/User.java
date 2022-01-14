@@ -1,5 +1,6 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.domain.model;
 
+import com.kakao.cafe.domain.dto.UserSignUpDTO;
 import lombok.Getter;
 
 @Getter

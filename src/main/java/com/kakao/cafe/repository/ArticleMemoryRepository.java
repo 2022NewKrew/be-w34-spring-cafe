@@ -1,8 +1,8 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.model.Article;
-import com.kakao.cafe.model.ArticleSaveDTO;
-import com.kakao.cafe.model.Articles;
+import com.kakao.cafe.domain.model.Article;
+import com.kakao.cafe.domain.dto.ArticleSaveDTO;
+import com.kakao.cafe.domain.model.Articles;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

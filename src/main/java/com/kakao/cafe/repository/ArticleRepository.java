@@ -1,7 +1,7 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.model.Article;
-import com.kakao.cafe.model.ArticleSaveDTO;
+import com.kakao.cafe.domain.model.Article;
+import com.kakao.cafe.domain.dto.ArticleSaveDTO;
 
 import java.util.List;
 

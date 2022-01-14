@@ -1,4 +1,6 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.domain.model;
+
+import com.kakao.cafe.domain.dto.ArticleSaveDTO;
 
 import java.util.ArrayList;
 import java.util.Collections;
