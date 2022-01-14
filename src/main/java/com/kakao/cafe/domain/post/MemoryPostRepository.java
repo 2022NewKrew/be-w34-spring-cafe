@@ -11,6 +11,7 @@ public class MemoryPostRepository implements PostRepository {
     public void save(Post post) {
         long insertId = postStore.size() + 1;
         post.setId(insertId);
+        post.setRegDate(new Date());
 
         postStore.put(insertId, post);
     }
@@ -23,5 +24,9 @@ public class MemoryPostRepository implements PostRepository {
     @Override
     public Optional<Post> findById(Long id) {
         return Optional.ofNullable(postStore.get(id));
+    }
+
+    public void clear(){
+        postStore.clear();
     }
 }

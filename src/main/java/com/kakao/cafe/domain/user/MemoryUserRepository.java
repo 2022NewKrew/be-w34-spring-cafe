@@ -30,4 +30,8 @@ public class MemoryUserRepository implements UserRepository {
     public List<User> findAll() {
         return new ArrayList<>(userStore.values());
     }
+
+    public void clear(){
+        userStore.clear();
+    }
 }
