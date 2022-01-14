@@ -5,7 +5,9 @@ import com.kakao.cafe.domain.user.UserAccount;
 import com.kakao.cafe.presentation.dto.request.UserAccountEnrollRequest;
 import com.kakao.cafe.presentation.dto.request.UserAccountLoginRequest;
 import com.kakao.cafe.presentation.dto.response.UserAccountEnrollResponse;
+import com.kakao.cafe.presentation.dto.response.UserAccountLoginResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
@@ -37,8 +40,14 @@ public class UserAccountApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@Valid @RequestBody UserAccountLoginRequest request) {
+    public ResponseEntity<UserAccountLoginResponse> login(@Valid @RequestBody UserAccountLoginRequest request, HttpServletRequest servletRequest) {
+        UserAccount user = userAccountService.getUserInfoByEmail(request.getEmail());
+        if(user.getPassword().equals(request.getPassword())) {
+            servletRequest.getSession().setAttribute("user-id", user.getUserAccountId());
+            return ResponseEntity.ok()
+                    .body(new UserAccountLoginResponse("success"));
+        }
 
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(new UserAccountLoginResponse("unauthorized"), HttpStatus.UNAUTHORIZED);
     }
 }

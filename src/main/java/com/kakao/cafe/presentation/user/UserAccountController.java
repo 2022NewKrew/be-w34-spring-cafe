@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -19,17 +20,31 @@ public class UserAccountController {
     private final UserAccountService userAccountService;
 
     @GetMapping("/list")
-    public String userList(Model model) {
+    public String userList(Model model, HttpServletRequest request) {
         List<UserAccount> users = userAccountService.getAllUser();
         model.addAttribute("users", users);
         model.addAttribute("user-count", users.size());
-        return "users";
+
+        if(request.getSession().getAttribute("user-id") != null) {
+            return "after/users";
+        }
+        return "before/users";
     }
 
     @GetMapping("/{id}/detail")
-    public String userInfo(@PathVariable(name = "id") Long id, Model model) {
+    public String userInfo(@PathVariable(name = "id") Long id, Model model, HttpServletRequest request) {
         UserAccount userInfo = userAccountService.getUserInfo(id);
         model.addAttribute("userInfo", userInfo);
-        return "userInfo";
+
+        if(request.getSession().getAttribute("user-id") != null) {
+            return "after/userinfo";
+        }
+        return "before/userInfo";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().removeAttribute("user-id");
+        return "redirect:/";
     }
 }

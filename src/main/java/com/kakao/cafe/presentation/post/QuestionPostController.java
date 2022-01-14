@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/posts")
 @RequiredArgsConstructor
@@ -17,10 +19,22 @@ public class QuestionPostController {
     private final QuestionPostService questionPostService;
 
     @GetMapping("/{id}/detail")
-    public String postDetail(@PathVariable(name = "id") Long id, Model model) {
+    public String postDetail(@PathVariable(name = "id") Long id, Model model, HttpServletRequest request) {
         QuestionPostDetailResult postDetail = questionPostService.getPostDetail(id);
         questionPostService.clickPost(id);
         model.addAttribute("post", postDetail);
-        return "qnadetail";
+
+        if(request.getSession().getAttribute("user-id") != null) {
+            return "after/qnadetail";
+        }
+        return "before/qnadetail";
+    }
+
+    @GetMapping("/form")
+    public String writePost(Model model, HttpServletRequest request) {
+
+        Long id = (Long) request.getSession().getAttribute("user-id");
+        model.addAttribute("user-id", id);
+        return "after/qnaform";
     }
 }
