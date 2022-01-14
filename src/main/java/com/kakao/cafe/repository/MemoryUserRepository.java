@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class MemoryUserRepository implements UserRepository {
 
     private static final Map<UUID, User> store = new HashMap<>();
@@ -24,13 +26,13 @@ public class MemoryUserRepository implements UserRepository {
         );
 
         User user = new User(userDto);
-        store.put(user.getUserId(), user);
+        store.put(user.getUserId().getUUID(), user);
         return user;
     }
 
     @Override
-    public Optional<User> findById(FindUserDto findUserDto) {
-        return Optional.ofNullable(store.get(findUserDto.getUserId()));
+    public Optional<User> find(FindUserDto findUserDto) {
+        return Optional.ofNullable(store.get(findUserDto.getUserId().getUUID()));
     }
 
     @Override

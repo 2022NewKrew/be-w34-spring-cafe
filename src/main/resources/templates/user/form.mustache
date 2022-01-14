@@ -1,4 +1,4 @@
-<body>
+{{>layout/head}}
 {{>layout/header}}
 <div class="sign-up-container">
   <form class="form-container" action="/users" method="post" name="sign-up">
@@ -21,7 +21,6 @@
     <button class="form-btn" type="submit">완료</button>
   </form>
 </div>
-</body>
 
 <style>
   .sign-up-container {
@@ -78,3 +77,5 @@
     cursor: pointer;
   }
 </style>
+
+{{>layout/footer}}

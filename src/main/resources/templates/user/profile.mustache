@@ -1,13 +1,12 @@
+{{>layout/head}}
 {{>layout/header}}
-<body>
 {{#user}}
   <div class="profile-container">
-    <div>{{userId}}</div>
+    <div>{{userId.uuid}}</div>
     <div>{{nickname}}</div>
     <div>{{email}}</div>
   </div>
 {{/user}}
-</body>
 
 <style>
   .profile-container {
@@ -15,3 +14,5 @@
     margin: 100px auto;
   }
 </style>
+
+{{>layout/footer}}

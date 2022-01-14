@@ -1,4 +1,4 @@
-<body>
+{{>layout/head}}
 {{>layout/header}}
 <div class="users-container">
   <div class="users-title-box">
@@ -13,15 +13,14 @@
   {{#users}}
     <div class="user-row">
       <span class="user-text-box click-box"
-            onclick="location.href='/users/{{userId}}'">{{userId}}</span>
+            onclick="location.href='/users/{{userId.uuid}}'">{{userId.uuid}}</span>
       <span class="user-text-box click-box"
-            onclick="location.href='/users/{{userId}}'">{{email}}</span>
+            onclick="location.href='/users/{{userId.uuid}}'">{{email}}</span>
       <span class="user-text-box click-box"
-            onclick="location.href='/users/{{userId}}'">{{nickname}}</span>
+            onclick="location.href='/users/{{userId.uuid}}'">{{nickname}}</span>
     </div>
   {{/users}}
 </div>
-</body>
 
 <style>
   .users-container {
@@ -61,3 +60,5 @@
     cursor: pointer;
   }
 </style>
+
+{{>layout/footer}}
