@@ -22,6 +22,12 @@ public class UserController {
         this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
+    @GetMapping("/users")
+    public String getUserList(Model model) {
+        model.addAttribute("userList", userService.getUserList());
+        return "/user/list";
+    }
+
     @GetMapping("/users/form")
     public String getCreateUserForm() {
         return "/user/form";
@@ -34,14 +40,6 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("/users")
-    public String getUserList(Model model) {
-        model.addAttribute("userList", userService.getUserList());
-        return "/user/list";
-    }
-
-    @GetMapping("/users/login")
-    public String getLoginForm() { return "/user/login"; }
 
     @GetMapping("/users/{userId}")
     public String getUserProfile(Model model, @PathVariable String userId) {
@@ -69,4 +67,14 @@ public class UserController {
         }
         return "redirect:/users";
     }
+
+
+
+
+    @GetMapping("/users/login")
+    public String getLoginForm() { return "/user/login"; }
+
+
+
+
 }
