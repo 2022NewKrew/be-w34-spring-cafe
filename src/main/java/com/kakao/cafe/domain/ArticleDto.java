@@ -19,7 +19,6 @@ public class ArticleDto {
         ArticleDto articleDto = new ArticleDto();
         articleDto.setIdx(article.getIdx());
         articleDto.setUserId(article.getUserId());
-        articleDto.setUserName(article.getUserName());
         articleDto.setTitle(article.getTitle());
         articleDto.setBody(article.getBody());
         articleDto.setBodyLines(

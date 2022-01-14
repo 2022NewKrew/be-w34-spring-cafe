@@ -2,7 +2,6 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.auth.AuthControl;
 import com.kakao.cafe.domain.ArticleDto;
-import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
@@ -61,9 +60,7 @@ public class ArticleController {
         }
 
         final HttpSession session = request.getSession();
-        final UserDto userDto = userService.getUser((String)session.getAttribute(AuthControl.TAG_ID));
-        articleDto.setUserId(userDto.getId());
-        articleDto.setUserName(userDto.getName());
+        articleDto.setUserId((String)session.getAttribute(AuthControl.TAG_ID));
 
         articleService.add(articleDto);
         logger.info("New Article added: " + articleDto.getTitle());

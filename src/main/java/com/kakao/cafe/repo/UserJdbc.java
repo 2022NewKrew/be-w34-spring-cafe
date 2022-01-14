@@ -86,6 +86,26 @@ public class UserJdbc implements UserRepository {
     }
 
     @Override
+    public String getUserName(@NonNull final String id) {
+        final List<String> list = jdbcTemplate.query(
+                con -> {
+                    final PreparedStatement pstmt = con.prepareStatement(
+                            "SELECT name FROM userlist WHERE id = ? LIMIT 1"
+                    );
+                    pstmt.setString(1, id);
+                    return pstmt;
+                },
+                (rs, count) -> rs.getString("name")
+        );
+
+        if (list.size() == 0) {
+            throw new RuntimeException("Failed to get name from user id!");
+        }
+
+        return list.get(0);
+    }
+
+    @Override
     public boolean update(final long idx, @NonNull final User user) {
         final int result = jdbcTemplate.update(con -> {
             final PreparedStatement pstmt = con.prepareStatement(

@@ -14,5 +14,7 @@ public interface UserRepository {
 
     List<User> getList();
 
+    String getUserName(@NonNull final String id);
+
     boolean update(final long idx, @NonNull final User user);
 }

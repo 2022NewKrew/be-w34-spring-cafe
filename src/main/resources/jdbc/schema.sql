@@ -9,7 +9,6 @@ CREATE TABLE userlist (
 CREATE TABLE article (
     idx BIGINT PRIMARY KEY AUTO_INCREMENT,
     user_id VARCHAR(12) NOT NULL,
-    user_name VARCHAR(32) NOT NULL,
     title VARCHAR(255) NOT NULL,
     body VARCHAR(4095) NOT NULL,
     created_at BIGINT NOT NULL,

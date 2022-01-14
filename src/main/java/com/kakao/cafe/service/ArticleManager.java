@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticleDto;
 import com.kakao.cafe.repo.ArticleRepository;
+import com.kakao.cafe.repo.UserRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +12,17 @@ import java.util.*;
 @Service
 public class ArticleManager implements ArticleService {
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
-    ArticleManager(final ArticleRepository articleRepository) {
+    ArticleManager(final ArticleRepository articleRepository, final UserRepository userRepository) {
         this.articleRepository = Objects.requireNonNull(articleRepository);
+        this.userRepository = Objects.requireNonNull(userRepository);
     }
 
     @Override
     public void add(@NonNull final ArticleDto articleDto) {
         boolean result = articleRepository.add(new Article(
                 articleDto.getUserId(),
-                articleDto.getUserName(),
                 articleDto.getTitle(),
                 articleDto.getBody()
         ));
@@ -34,7 +36,9 @@ public class ArticleManager implements ArticleService {
     public List<ArticleDto> getList() {
         final List<ArticleDto> dtos = new ArrayList<>();
         for (Article a: articleRepository.getList()) {
-            dtos.add(ArticleDto.from(a));
+            final ArticleDto dto = ArticleDto.from(a);
+            dto.setUserName(userRepository.getUserName(dto.getUserId()));
+            dtos.add(dto);
         }
 
         return Collections.unmodifiableList(dtos);
@@ -46,6 +50,8 @@ public class ArticleManager implements ArticleService {
         if (article.isNone()) {
             throw new NoSuchElementException("Not found article - " + idx);
         }
-        return ArticleDto.from(article);
+        final ArticleDto dto = ArticleDto.from(article);
+        dto.setUserName(userRepository.getUserName(dto.getUserId()));
+        return dto;
     }
 }
