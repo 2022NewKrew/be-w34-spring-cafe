@@ -33,13 +33,13 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        final String sql = "SELECT id, userId, password, name, email FROM USERS";
+        final String sql = "SELECT id, userId, password, name, email, createdAt FROM USERS";
         return jdbcTemplate.query(sql, userRowMapper());
     }
 
     @Override
     public Optional<User> findById(UUID id) {
-        final String sql = "SELECT id, userId, password, name, email FROM USERS WHERE id = ?";
+        final String sql = "SELECT id, userId, password, name, email, createdAt FROM USERS WHERE id = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper(), id));
         } catch (DataAccessException e) {
@@ -49,7 +49,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        final String sql = "SELECT id, userId, password, name, email FROM USERS WHERE userId = ?";
+        final String sql = "SELECT id, userId, password, name, email, createdAt FROM USERS WHERE userId = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper(), userId));
         } catch (DataAccessException e) {
@@ -63,7 +63,8 @@ public class JdbcUserRepository implements UserRepository {
                 rs.getString("userId"),
                 rs.getString("password"),
                 rs.getString("name"),
-                rs.getString("email"))
+                rs.getString("email"),
+                rs.getTimestamp("createdAt"))
                 .build();
     }
 }
