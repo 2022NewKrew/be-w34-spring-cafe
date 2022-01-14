@@ -3,7 +3,8 @@ package com.kakao.cafe.model;
 import com.kakao.cafe.utility.NullChecker;
 
 public class User {
-    private static final int ALLOWED_LENGTH_USERID_AND_PASSWORD = 16;
+    private static final int ALLOWED_LENGTH_USERID = 16;
+    private static final int ALLOWED_LENGTH_PASSWORD = 16;
     private static final int ALLOWED_LENGTH_NAME = 8;
     private static final int ALLOWED_LENGTH_EMAIL = 24;
 
@@ -35,16 +36,16 @@ public class User {
     private void checkUserId(String userId) {
         NullChecker.checkNotNull(userId);
 
-        if (userId.length() > ALLOWED_LENGTH_USERID_AND_PASSWORD) {
-            throw new IllegalArgumentException("유저아이디의 길이가 너무 깁니다.");
+        if (userId.length() > ALLOWED_LENGTH_USERID) {
+            throw new IllegalArgumentException(String.format("유저아이디의 길이는 %s 이하여야 합니다.", ALLOWED_LENGTH_USERID));
         }
     }
 
     private void checkPassword(String password) {
         NullChecker.checkNotNull(password);
 
-        if (password.length() > ALLOWED_LENGTH_USERID_AND_PASSWORD) {
-            throw new IllegalArgumentException("패스워드의 길이가 너무 깁니다.");
+        if (password.length() > ALLOWED_LENGTH_PASSWORD) {
+            throw new IllegalArgumentException(String.format("패스워드의 길이는 %s 이하여야 합니다.", ALLOWED_LENGTH_PASSWORD));
         }
     }
 
@@ -52,7 +53,7 @@ public class User {
         NullChecker.checkNotNull(name);
 
         if (name.length() > ALLOWED_LENGTH_NAME) {
-            throw new IllegalArgumentException("이름의 길이가 너무 깁니다.");
+            throw new IllegalArgumentException(String.format("이름의 길이는 %s 이하여야 합니다.", ALLOWED_LENGTH_NAME));
         }
     }
 
@@ -60,7 +61,7 @@ public class User {
         NullChecker.checkNotNull(email);
 
         if (email.length() > ALLOWED_LENGTH_EMAIL) {
-            throw new IllegalArgumentException("이메일의 길이가 너무 깁니다.");
+            throw new IllegalArgumentException(String.format("이메일의 길이는 %s 이하여야 합니다.", ALLOWED_LENGTH_EMAIL));
         }
     }
 
@@ -86,15 +87,5 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 }

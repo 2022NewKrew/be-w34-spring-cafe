@@ -13,7 +13,7 @@ public class Article {
     private final String title;
     private final String writer;
     private final String contents;
-    private LocalDateTime createDate;
+    private final LocalDateTime createDate;
 
     public Article(int id, String title, String writer, String contents) {
         checkTitle(title);
@@ -27,11 +27,23 @@ public class Article {
         this.contents = contents;
     }
 
+    public Article(int id, String title, String writer, String contents, LocalDateTime createDate) {
+        checkTitle(title);
+        checkWriter(writer);
+        checkContents(contents);
+
+        this.id = id;
+        this.title = title;
+        this.writer = writer;
+        this.contents = contents;
+        this.createDate = createDate;
+    }
+
     private void checkTitle(String title) {
         NullChecker.checkNotNull(title);
 
         if (title.length() > ALLOWED_LENGTH_TITLE) {
-            throw new IllegalArgumentException("제목의 길이가 너무 깁니다.");
+            throw new IllegalArgumentException(String.format("제목의 길이는 %s 이하여야 합니다.", ALLOWED_LENGTH_TITLE));
         }
     }
 
@@ -39,7 +51,7 @@ public class Article {
         NullChecker.checkNotNull(writer);
 
         if (writer.length() > ALLOWED_LENGTH_WRITER) {
-            throw new IllegalArgumentException("작성자 이름의 길이가 너무 깁니다.");
+            throw new IllegalArgumentException(String.format("작성자 이름의 길이는 %s 이하여야 합니다.", ALLOWED_LENGTH_WRITER));
         }
     }
 
@@ -47,7 +59,7 @@ public class Article {
         NullChecker.checkNotNull(contents);
 
         if (contents.length() > ALLOWED_LENGTH_CONTENTS) {
-            throw new IllegalArgumentException("본문의 길이가 너무 깁니다.");
+            throw new IllegalArgumentException(String.format("본문의 길이는 %s 이하여야 합니다.", ALLOWED_LENGTH_CONTENTS));
         }
     }
 
@@ -69,9 +81,5 @@ public class Article {
 
     public String getContents() {
         return contents;
-    }
-
-    public void setCreateDate(LocalDateTime localDateTime) {
-        this.createDate = localDateTime;
     }
 }

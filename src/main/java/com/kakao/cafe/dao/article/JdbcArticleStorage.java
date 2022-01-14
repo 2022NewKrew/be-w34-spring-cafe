@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
-import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.Optional;
 @Repository
 @Primary
 public class JdbcArticleStorage implements ArticleDao {
-    JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public JdbcArticleStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -46,7 +45,8 @@ public class JdbcArticleStorage implements ArticleDao {
         String query = String.format("SELECT ID, TITLE, WRITER, CONTENTS, CREATE_DATE FROM ARTICLE WHERE ID = %s", id);
         return jdbcTemplate
                 .query(query, (rs, rowNum) -> toArticle(rs))
-                .get(0);
+                .stream()
+                .findAny();
     }
 
     @Override
@@ -55,17 +55,16 @@ public class JdbcArticleStorage implements ArticleDao {
     }
 
     private List<Article> queryToArticles(String query) {
-        return jdbcTemplate.query(query, (rs, rowNum) -> toArticle(rs).orElseThrow(SQLDataException::new));
+        return jdbcTemplate.query(query, (rs, rowNum) -> toArticle(rs));
     }
 
-    private Optional<Article> toArticle(ResultSet resultSet) throws SQLException {
-        Article entity = new Article(
+    private Article toArticle(ResultSet resultSet) throws SQLException {
+        return new Article(
                 resultSet.getInt("ID"),
                 resultSet.getString("TITLE"),
                 resultSet.getString("WRITER"),
-                resultSet.getString("CONTENTS")
+                resultSet.getString("CONTENTS"),
+                resultSet.getTimestamp("CREATE_DATE").toLocalDateTime()
         );
-        entity.setCreateDate(resultSet.getTimestamp("CREATE_DATE").toLocalDateTime());
-        return Optional.of(entity);
     }
 }

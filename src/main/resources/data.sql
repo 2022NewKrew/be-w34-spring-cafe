@@ -1,3 +1,5 @@
-insert into USER_DATA(user_id, password, name, email) VALUES ('a','a','a','a');
+INSERT INTO USER_DATA(USER_ID, PASSWORD, NAME, EMAIL)
+VALUES ('userId', 'password', 'name', 'email');
 
-insert into ARTICLE (TITLE, WRITER, CONTENTS) VALUES ( 'title', 'writer', 'contents' );
+INSERT INTO ARTICLE(TITLE, WRITER, CONTENTS)
+VALUES ('title', 'writer', 'contents');

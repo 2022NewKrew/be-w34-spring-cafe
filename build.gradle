@@ -19,6 +19,7 @@ dependencies {
 	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
 }
 
 test {
