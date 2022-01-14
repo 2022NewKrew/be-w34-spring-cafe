@@ -18,6 +18,12 @@ import java.util.NoSuchElementException;
  */
 public class ArticleDao implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final String TABLE_NAME = "ARTICLE";
+    private final String COLUMN_ID = "id";
+    private final String COLUMN_WRITER = "writer";
+    private final String COLUMN_TITLE = "title";
+    private final String COLUMN_CONTENTS = "contents";
+
 
     public ArticleDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -28,13 +34,13 @@ public class ArticleDao implements ArticleRepository {
         Map<String, Object> param = new HashMap<>();
 
         simpleJdbcInsert
-                .withTableName("ARTICLE")
-                .usingColumns("writer", "title", "contents")
-                .usingGeneratedKeyColumns("id");
+                .withTableName(TABLE_NAME)
+                .usingColumns(COLUMN_WRITER, COLUMN_TITLE, COLUMN_CONTENTS)
+                .usingGeneratedKeyColumns(COLUMN_ID);
 
-        param.put("writer", article.getWriter());
-        param.put("title", article.getTitle());
-        param.put("contents", article.getContents());
+        param.put(COLUMN_WRITER, article.getWriter());
+        param.put(COLUMN_TITLE, article.getTitle());
+        param.put(COLUMN_CONTENTS, article.getContents());
 
         int key = simpleJdbcInsert.executeAndReturnKey(param).intValue();
 
@@ -70,10 +76,10 @@ public class ArticleDao implements ArticleRepository {
         public Article mapRow(ResultSet rs, int count) throws SQLException {
 
             return new Article(
-                    rs.getInt("id"),
-                    rs.getString("writer"),
-                    rs.getString("title"),
-                    rs.getString("contents")
+                    rs.getInt(COLUMN_ID),
+                    rs.getString(COLUMN_WRITER),
+                    rs.getString(COLUMN_TITLE),
+                    rs.getString(COLUMN_CONTENTS)
             );
         };
     }

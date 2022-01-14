@@ -16,6 +16,10 @@ import java.util.NoSuchElementException;
  */
 public class UserDao implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final String COLUMN_USERID = "userId";
+    private final String COLUMN_EMAIL = "email";
+    private final String COLUMN_NAME = "name";
+    private final String COLUMN_PASSWORD = "password";
 
     public UserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -90,10 +94,10 @@ public class UserDao implements UserRepository {
         public User mapRow(ResultSet rs, int count) throws SQLException {
 
             return new User(
-                    rs.getString("userId"),
-                    rs.getString("email"),
-                    rs.getString("name"),
-                    rs.getString("password")
+                    rs.getString(COLUMN_USERID),
+                    rs.getString(COLUMN_EMAIL),
+                    rs.getString(COLUMN_NAME),
+                    rs.getString(COLUMN_PASSWORD)
             );
         };
     }
