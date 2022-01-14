@@ -2,6 +2,7 @@ package com.kakao.cafe.dao;
 
 import com.kakao.cafe.vo.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,30 +16,25 @@ public class ArticleDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    private RowMapper<Article> articleRowMapper() {
+        return (rs, rowNum) -> new Article(
+                rs.getString("writer"),
+                rs.getString("title"),
+                rs.getString("contents")
+        );
+    }
+
     public void addArticle(Article article) {
-        jdbcTemplate.update("insert into articles(writer, title, contents) values(?,?,?)",
+        jdbcTemplate.update("INSERT INTO articles(writer, title, contents) VALUES(?,?,?)",
                 article.getWriter(), article.getTitle(), article.getContents());
     }
 
     public List<Article> getArticles() {
-        return jdbcTemplate.query("select * from articles",
-                (rs, rowNum) -> new Article(
-                        rs.getString("writer"),
-                        rs.getString("title"),
-                        rs.getString("contents")
-                )
-        );
+        return jdbcTemplate.query("SELECT * FROM articles", articleRowMapper());
     }
 
     public Article getArticle(int index) {
-        return jdbcTemplate.queryForObject("select * from articles where id = ?",
-                (rs, rowNum) -> new Article(
-                        rs.getString("writer"),
-                        rs.getString("title"),
-                        rs.getString("contents")
-                ),
-                index
-        );
+        return jdbcTemplate.queryForObject("SELECT * FROM articles WHERE id = ?", articleRowMapper(), index);
     }
 
 }
