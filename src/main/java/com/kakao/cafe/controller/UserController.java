@@ -8,6 +8,7 @@ import java.util.List;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,12 +32,14 @@ public class UserController {
     public String signUp(@Valid UserSignupRequest userDto, BindingResult errors) {
         logger.info("[POST] /create 회원가입하기");
         if (errors.hasErrors()) {
-            throw new InvalidUserRequestException("회원가입 입력이 잘못되었습니다");
+            String errorMessage = errors.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .reduce("", (total, element) -> total + element + "\n");
+            throw new InvalidUserRequestException(errorMessage);
         }
 
         User user = userDto.toEntity();
         logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getUserName());
-
         userService.register(user);
 
         return "redirect:/users";

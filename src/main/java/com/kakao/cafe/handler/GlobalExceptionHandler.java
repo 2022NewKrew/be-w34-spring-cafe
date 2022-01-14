@@ -2,6 +2,7 @@ package com.kakao.cafe.handler;
 
 import com.kakao.cafe.exceptions.DuplicateUserException;
 import com.kakao.cafe.exceptions.InvalidUserRequestException;
+import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.exceptions.PostNotFoundException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
 import java.util.Map;
@@ -35,7 +36,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidUserRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ModelAndView validationFailed(InvalidUserRequestException exception) {
+    public ModelAndView userValidationFailed(InvalidUserRequestException exception) {
+        Map<String, Object> model = mv.getModel();
+        model.put("message", exception.getMessage());
+        return mv;
+    }
+
+    @ExceptionHandler(InvalidWritePostException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView postValidationFailed(InvalidWritePostException exception) {
         Map<String, Object> model = mv.getModel();
         model.put("message", exception.getMessage());
         return mv;

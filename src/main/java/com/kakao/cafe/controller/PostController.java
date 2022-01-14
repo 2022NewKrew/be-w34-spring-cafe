@@ -5,8 +5,10 @@ import com.kakao.cafe.domain.WritePostRequest;
 import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.service.PostService;
 import java.util.List;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,10 +27,13 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public String write(WritePostRequest postDto, BindingResult errors) {
+    public String write(@Valid WritePostRequest postDto, BindingResult errors) {
         logger.info("[POST] /posts 게시글 작성");
         if (errors.hasErrors()) {
-            throw new InvalidWritePostException("게시글 입력이 잘못되었습니다");
+            String errorMessage = errors.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .reduce("", (total, element) -> total + element + "\n");
+            throw new InvalidWritePostException(errorMessage);
         }
         Post post = postDto.toEntity();
         postService.writePost(post);
@@ -51,5 +56,4 @@ public class PostController {
         model.addAttribute("post", post);
         return "post/show";
     }
-
 }
