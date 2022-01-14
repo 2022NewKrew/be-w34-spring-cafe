@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,30 +17,29 @@ import java.util.List;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-
     private final UserService userService;
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/create")
-    public String userRegist(User user) {
-        userService.registerUser(user);
+    public String createUser(UserRequestDto userRequestDto) {
+        userService.createUser(userRequestDto);
         return "redirect:/users";
     }
 
     @GetMapping
     public String getUserList(Model model) {
-        List<User> userList = userService.getUserList();
+        List<UserDto> userList = userService.getUserList();
         model.addAttribute("userList", userList);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String getUserInfo(@PathVariable("userId") String userId, Model model) {
-        User user = userService.findById(userId);
+        UserDto user = userService.findById(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
