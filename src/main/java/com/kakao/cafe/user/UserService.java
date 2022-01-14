@@ -18,11 +18,15 @@ public class UserService {
 
     public void registerUser(UserFormCreationDTO userFormCreationDTO) {
         User user = UserMapper.toUser(userFormCreationDTO);
+        validateDuplicateUserName(user);
+
+        userRepository.add(user);
+    }
+
+    private void validateDuplicateUserName(User user) {
         if (userRepository.get(user.getUsername()).isPresent()) {
             throw new RuntimeException("Username is already in use: " + user.getUsername());
         }
-
-        userRepository.add(user);
     }
 
     public List<UserViewDTO> getAllUserViewDTOUsers() {
