@@ -3,6 +3,7 @@ package com.kakao.cafe.article.repository;
 import com.kakao.cafe.article.model.Article;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository {
 
@@ -12,5 +13,5 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
-    Article findOneById(Long id);
+    Optional<Article> findOneById(Long id);
 }

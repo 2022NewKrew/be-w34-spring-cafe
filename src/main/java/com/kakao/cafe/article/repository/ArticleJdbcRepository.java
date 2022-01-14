@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Primary
@@ -39,12 +40,12 @@ public class ArticleJdbcRepository implements ArticleRepository{
     }
 
     @Override
-    public Article findOneById(Long id){
+    public Optional<Article> findOneById(Long id){
         try{
             String sql = "SELECT * FROM ARTICLE WHERE id=?";
-            return jdbcTemplate.queryForObject(sql, articleRowMapper(), id);
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, articleRowMapper(), id));
         }catch (DataAccessException e){
-            return null;
+            return Optional.empty();
         }
     }
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -24,9 +25,9 @@ public class ArticleMemoryRepository implements ArticleRepository{
         return articles;
     }
 
-    public Article findOneById(Long id){
-        return articles.stream().filter(article -> article.getId().equals(id))
+    public Optional<Article> findOneById(Long id){
+        return Optional.of(articles.stream().filter(article -> article.getId().equals(id))
                 .collect(Collectors.toList())
-                .get(0);
+                .get(0));
     }
 }
