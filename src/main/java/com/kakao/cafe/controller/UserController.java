@@ -3,7 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.dto.UserUpdateDto;
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.service.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,9 +21,9 @@ import java.util.NoSuchElementException;
 @RequestMapping("/users")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public UserController(UserService userService){
+    public UserController(UserServiceImpl userService){
         this.userService = userService;
     }
 
