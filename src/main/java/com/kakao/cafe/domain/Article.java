@@ -1,12 +1,14 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.dto.ArticleCreateRequest;
-import com.kakao.cafe.utils.ModelMapperUtils;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class Article {
 
     private Integer id;
@@ -14,36 +16,4 @@ public class Article {
     private String title;
     private String contents;
 
-    public static Article fromNoDbIndex(ArticleCreateRequest articleCreateRequest) {
-        return ModelMapperUtils.getModelMapper()
-                .map(articleCreateRequest, Article.class);
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
 }
