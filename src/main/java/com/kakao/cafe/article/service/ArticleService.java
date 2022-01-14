@@ -4,9 +4,9 @@ import com.kakao.cafe.article.dto.request.ArticleCreateRequest;
 import com.kakao.cafe.article.dto.response.ArticleDetailResponse;
 import com.kakao.cafe.article.entity.Article;
 import com.kakao.cafe.article.exception.ArticleNotFoundException;
+import com.kakao.cafe.article.mapper.ArticleMapper;
 import com.kakao.cafe.article.repository.ArticleRepository;
-import com.kakao.cafe.user.exception.DuplicateUserIdException;
-import com.kakao.cafe.user.exception.UserNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,20 +14,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-
-    protected ArticleService(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
+    private final ArticleMapper articleMapper;
 
     /**
      * 게시글 작성 로직
      * @param req: 컨트롤러에 들어온 게시글 작성 정보
      */
     public void createArticle(ArticleCreateRequest req) {
-        Article article = new Article(req);
+        Article article = articleMapper.articleCreateRequestToEntity(req);
 
         this.articleRepository.save(article);
     }
@@ -40,7 +38,7 @@ public class ArticleService {
         List<Article> articleList = this.articleRepository.findAll();
 
         return articleList.stream()
-                          .map(ArticleDetailResponse::new)
+                          .map(articleMapper::articleToArticleDetailResponse)
                           .collect(Collectors.toUnmodifiableList());
     }
 
@@ -53,7 +51,7 @@ public class ArticleService {
     public ArticleDetailResponse getArticleDetail(Long id) {
         Optional<Article> article = this.articleRepository.findById(id);
 
-        return new ArticleDetailResponse(
+        return articleMapper.articleToArticleDetailResponse(
                 article.orElseThrow(ArticleNotFoundException::new)
         );
     }

@@ -15,12 +15,4 @@ public class UserInfoResponse {
     private final String name;
     private final String email;
     private final LocalDateTime createdAt;
-
-    public UserInfoResponse(User user) {
-        this(user.getId(),
-             user.getUserId(),
-             user.getName(),
-             user.getEmail(),
-             user.getCreatedAt());
-    }
 }

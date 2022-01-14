@@ -15,12 +15,4 @@ public class ArticleDetailResponse {
     private final String title;
     private final String contents;
     private final LocalDateTime createdAt;
-
-    public ArticleDetailResponse(Article article) {
-        this(article.getId(),
-             article.getWriter(),
-             article.getTitle(),
-             article.getContents(),
-             article.getCreatedAt());
-    }
 }

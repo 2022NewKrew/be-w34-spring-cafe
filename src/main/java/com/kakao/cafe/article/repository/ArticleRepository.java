@@ -1,7 +1,7 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.entity.Article;
-import com.kakao.cafe.common.config.SpringJdbcConfig;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -9,13 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
-
-    protected ArticleRepository() {
-        this.jdbcTemplate = new JdbcTemplate(new SpringJdbcConfig().dataSource());
-    }
 
     /**
      * 새로운 게시글 만드는(Create) 메서드

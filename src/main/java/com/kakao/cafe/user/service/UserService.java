@@ -7,7 +7,9 @@ import com.kakao.cafe.user.dto.response.UserInfoResponse;
 import com.kakao.cafe.user.entity.User;
 import com.kakao.cafe.user.exception.PasswordNotMatchedException;
 import com.kakao.cafe.user.exception.UserNotFoundException;
+import com.kakao.cafe.user.mapper.UserMapper;
 import com.kakao.cafe.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,13 +17,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-
-    protected UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserMapper userMapper;
 
     /**
      * 유저 회원가입 로직
@@ -35,7 +35,7 @@ public class UserService {
             throw new DuplicateUserIdException();
         }
 
-        User newUser = new User(req);
+        User newUser = userMapper.userCreateRequestToEntity(req);
         this.userRepository.save(newUser);
     }
 
@@ -47,7 +47,8 @@ public class UserService {
         List<User> userList = this.userRepository.findAll();
 
         return userList.stream()
-                .map(UserInfoResponse::new).collect(Collectors.toUnmodifiableList());
+                                .map(userMapper::userToUserInfoResponse)
+                                .collect(Collectors.toUnmodifiableList());
     }
 
     /**
@@ -59,7 +60,7 @@ public class UserService {
     public UserInfoResponse getUserProfile(Long id) {
         Optional<User> user = this.userRepository.findById(id);
 
-        return new UserInfoResponse(
+        return userMapper.userToUserInfoResponse(
                 user.orElseThrow(UserNotFoundException::new)
         );
     }
@@ -73,10 +74,24 @@ public class UserService {
         User user = this.userRepository.findById(id)
                                        .orElseThrow(UserNotFoundException::new);
 
-        if(!user.getPassword().equals(req.getPasswordCheck())) {
+        if(!user.checkPassword(req.getPasswordCheck())) {
             throw new PasswordNotMatchedException();
         }
+        
+        this.changeUserInfo(user, req);
 
-        this.userRepository.update(user, req);
+        this.userRepository.update(user);
+    }
+
+    private void changeUserInfo(User user, UserUpdateRequest req) {
+        if(!req.getNewPassword().isBlank()) {
+            user.setPassword(req.getNewPassword());
+        }
+        if(!req.getName().isBlank()) {
+            user.setName(req.getName());
+        }
+        if(!req.getEmail().isBlank()) {
+            user.setEmail(req.getEmail());
+        }
     }
 }

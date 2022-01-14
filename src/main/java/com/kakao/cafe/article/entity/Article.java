@@ -16,14 +16,4 @@ public class Article {
     private String title;
     private String contents;
     private LocalDateTime createdAt;
-
-    public Article(ArticleCreateRequest req) {
-        this(req.getWriter(),
-             req.getTitle(),
-             req.getContents());
-    }
-
-    public Article(String writer, String title, String contents) {
-        this(null, writer, title, contents, null);
-    }
 }
