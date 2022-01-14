@@ -12,7 +12,7 @@ public class UserRegisterRequest {
     private final String userId;
 
     @NotBlank(message = "비밀번호는 빈 칸일 수 없습니다.")
-    @Size(min = 10, message = "비밀번호는 10자 이상 이어야 합니다.")
+    @Size(min = 10, max = 20, message = "비밀번호는 10-20자 이어야 합니다.")
     private final String password;
 
     @NotBlank(message = "이름은 빈 칸일 수 없습니다.")

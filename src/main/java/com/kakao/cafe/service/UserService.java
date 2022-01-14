@@ -27,6 +27,10 @@ public class UserService {
     }
 
     public void register(UserRegisterRequest requestDto) {
+        userRepository.findByUserId(requestDto.getUserId())
+                .ifPresent(user -> {
+                    throw new CustomException(ErrorCode.USERID_DUPLICATION);
+                });
         userRepository.save(requestDto.toEntity());
     }
 

@@ -57,16 +57,6 @@ public class JdbcUserRepository implements UserRepository {
         }
     }
 
-    @Override
-    public Optional<User> findByName(String name) {
-        final String sql = "SELECT id, userId, password, name, email FROM USERS WHERE name = ?";
-        try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper(), name));
-        } catch (DataAccessException e) {
-            return Optional.empty();
-        }
-    }
-
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> new User.Builder(
                 rs.getObject("id", UUID.class),

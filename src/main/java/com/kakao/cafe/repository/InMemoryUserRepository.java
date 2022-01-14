@@ -37,9 +37,4 @@ public class InMemoryUserRepository implements UserRepository {
     public Optional<User> findByUserId(String userId) {
         return users.findByUserId(userId);
     }
-
-    @Override
-    public Optional<User> findByName(String name) {
-        return users.findByName(name);
-    }
 }

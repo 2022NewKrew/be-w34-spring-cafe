@@ -48,7 +48,7 @@ public class PostService {
     }
 
     public void write(PostCreateRequest requestDto) {
-        User writer = userRepository.findByName(requestDto.getWriter())
+        User writer = userRepository.findByUserId(requestDto.getWriterUserId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_INPUT));
         postRepository.save(requestDto.toEntity(writer.getId()));
     }

@@ -14,6 +14,4 @@ public interface UserRepository {
     Optional<User> findById(UUID id);
 
     Optional<User> findByUserId(String userId);
-
-    Optional<User> findByName(String writerName);
 }
