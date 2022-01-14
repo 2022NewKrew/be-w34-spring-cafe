@@ -1,8 +1,7 @@
-package com.kakao.cafe.infrastructure.article;
+package com.kakao.cafe.persistence.article.memory;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.FindArticlePort;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Repository
+//@Repository
 public class FindArticleInMemoryAdaptor implements FindArticlePort {
     static final List<Article> articles = Collections.synchronizedList(new ArrayList<>());
     static final AtomicInteger index = new AtomicInteger();

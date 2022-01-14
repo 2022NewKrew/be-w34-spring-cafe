@@ -1,6 +1,8 @@
 package com.kakao.cafe.interfaces.article.dto;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.ArticleVo;
+import com.kakao.cafe.interfaces.article.dto.request.WriteArticleRequestDto;
 import com.kakao.cafe.interfaces.article.dto.response.ArticleListResponseDto;
 import com.kakao.cafe.interfaces.article.dto.response.ArticleResponseDto;
 
@@ -15,6 +17,12 @@ public class ArticleMapper {
         return articleList.stream()
                 .map(e -> new ArticleListResponseDto(e.getId(), e.getWriter(), e.getCreatedAt(), e.getTitle()))
                 .collect(Collectors.toList());
+    }
+
+    public static ArticleVo convertWriteArticleDtoToVo(WriteArticleRequestDto writeArticleRequestDto) {
+        return new ArticleVo(writeArticleRequestDto.getWriter(),
+                writeArticleRequestDto.getTitle(),
+                writeArticleRequestDto.getContents());
     }
 
     public static ArticleResponseDto convertEntityToResponseDto(Article article) {
