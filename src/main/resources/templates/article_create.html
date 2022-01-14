@@ -76,12 +76,14 @@ Essential Scripts
       headers: {
         'Content-type': 'application/json'
       },
+      redirect: 'manual',
       body: JSON.stringify({userId, title, content})
     })
 
-    if(response.redirected) {
+    if(response.ok) {
       alert('글 작성 성공! 작성한 글을 확인해 보세요!');
-      location.href = response.url;
+      const article = await response.json();
+      location.href = "/article/" + article.id;
       return;
     }
 

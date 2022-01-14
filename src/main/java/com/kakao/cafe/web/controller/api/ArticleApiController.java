@@ -29,7 +29,7 @@ public class ArticleApiController {
 
     Article createdArticle = articleService.createArticle(Article.of(articleDTO));
 
-    return ResponseEntity.status(HttpStatus.FOUND)
+    return ResponseEntity.status(HttpStatus.OK)
         .header(HttpHeaders.LOCATION, "/article/" + createdArticle.getId())
         .body(new ArticleDTO(createdArticle));
   }
