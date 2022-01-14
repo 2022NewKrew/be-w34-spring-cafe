@@ -27,7 +27,7 @@ public class UserService {
         userDao.save(userVo);
     }
 
-    public UserDto gerUser(String userId) {
+    public UserDto getUser(String userId) {
         UserVo userVo = userDao.findByUserId(userId);
         return modelMapper.map(userVo,UserDto.class);
     }

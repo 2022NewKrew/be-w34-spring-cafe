@@ -48,7 +48,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public String profile(@PathVariable String userId, Model model) {
-        UserDto matchedUser = userService.gerUser(userId);
+        UserDto matchedUser = userService.getUser(userId);
         model.addAttribute("matchedUser", matchedUser);
         return "./user/profile";
     }
@@ -60,7 +60,7 @@ public class UserController {
 
     @GetMapping("/{userId}/update")
     public String getUpdateUserForm(@PathVariable String userId, Model model) {
-        UserDto matchedUser = userService.gerUser(userId);
+        UserDto matchedUser = userService.getUser(userId);
         model.addAttribute("matchedUser", matchedUser);
         return "./user/updateForm";
     }
@@ -73,7 +73,7 @@ public class UserController {
         userDto.setName(name);
         userDto.setEmail(email);
         userService.updateUser(userDto, curPassword);
-        logger.info("회원 수정 완료 : {}",userDto);
+        logger.info("회원 수정 완료 : {}", userDto);
         return "redirect:/users";
     }
 
