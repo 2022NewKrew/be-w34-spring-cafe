@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.dto;
+package com.kakao.cafe.domain.dto.article;
 
 public class ArticleCreateCommand {
     private String writer;

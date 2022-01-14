@@ -1,26 +1,28 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.dto.UserCreateCommand;
-import com.kakao.cafe.domain.dto.UserModifyCommand;
-import com.kakao.cafe.domain.entity.User;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.domain.dto.user.*;
+import com.kakao.cafe.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public User getUser(String name) {
-        return userRepository.search(name);
+    public UserInfo getUser(String userId) {
+        return userRepository.getUserInfo(userId);
     }
 
-    public List<User> getAllUsers() {
+    public UserProfileInfo getUserProfile(String userId) {
+        return userRepository.getUserProfile(userId);
+    }
+
+    public List<UserListShow> getAllUsers() {
         return userRepository.getAllUser();
     }
 

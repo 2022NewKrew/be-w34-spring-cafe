@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.dto;
+package com.kakao.cafe.domain.dto.user;
 
 public class UserModifyCommand {
     private final String password;

@@ -1,7 +1,7 @@
 package com.kakao.cafe.web;
 
-import com.kakao.cafe.domain.dto.ArticleCreateCommand;
-import com.kakao.cafe.domain.entity.Article;
+import com.kakao.cafe.domain.dto.article.ArticleContents;
+import com.kakao.cafe.domain.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +25,8 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String getArticle(@PathVariable Long id, Model model) {
-        Article target = articleService.getArticle(id);
-        model.addAttribute("article", target);
+        ArticleContents articleContents = articleService.getArticle(id);
+        model.addAttribute("article", articleContents);
         return "/qna/show";
     }
 
