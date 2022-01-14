@@ -1,0 +1,2 @@
+INSERT INTO USER_ACCOUNT (username, password, email, created_at) VALUES ('peach', '1234', 'peach@kakao.com', '2022-01-13T10:14');
+INSERT INTO USER_ACCOUNT (username, password, email, created_at) VALUES ('peach12', '1234', 'peach12@kakao.com', '2022-01-13T10:14');
