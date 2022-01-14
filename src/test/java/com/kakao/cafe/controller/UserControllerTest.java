@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,16 +44,43 @@ class UserControllerTest {
                 .andExpect(redirectedUrl("/users"));
     }
 
-    @DisplayName("[실패] 유저 회원가입 - 필수 인자 없음")
+    @DisplayName("[실패] 유저 회원가입 - Null 입력")
     @ParameterizedTest(name = "{0}, {1}, {2}, {3}")
-    @CsvSource(value = {"null, password, name, email", "userId, null, name, email", "userId, password, null, email",
-            "userId, password, name, null"}, nullValues = {"null"})
-    void signUp_FailedBy_EmptyParam(String userId, String password, String name, String email) throws Exception {
+    @CsvSource(value = {"null, password, name, email@test", "userId, null, name, email@test",
+            "userId, password, null, email@test", "userId, password, name, null"}, nullValues = {"null"})
+    void signUp_FailedBy_Null(String userId, String password, String name, String email) throws Exception {
         mockMvc.perform(post("/users/create")
                         .param("userId", userId)
                         .param("password", password)
                         .param("name", name)
                         .param("email", email))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("errors/error"));
+    }
+
+    @DisplayName("[실패] 유저 회원가입 - 빈 문자열")
+    @ParameterizedTest(name = "{0}, {1}, {2}, {3}")
+    @CsvSource(value = {"'', password, name, email@test", "userId, '', name, email@test",
+            "userId, password, '', email@test", "userId, password, name, ''"})
+    void signUp_FailedBy_EmptyString(String userId, String password, String name, String email) throws Exception {
+        mockMvc.perform(post("/users/create")
+                        .param("userId", userId)
+                        .param("password", password)
+                        .param("name", name)
+                        .param("email", email))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("errors/error"));
+    }
+
+    @DisplayName("[실패] 유저 회원가입 -잘못된 형식의 이메일")
+    @ParameterizedTest(name = "email = {0}")
+    @ValueSource(strings = {"test", "test@", "test@@"})
+    void signUp_FailedBy_InvalidEmail(String invalidEmail) throws Exception {
+        mockMvc.perform(post("/users/create")
+                        .param("userId", userId)
+                        .param("password", password)
+                        .param("name", name)
+                        .param("email", invalidEmail))
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("errors/error"));
     }

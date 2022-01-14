@@ -1,13 +1,17 @@
 package com.kakao.cafe.domain;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class WritePostRequest {
-    @NotBlank
+    @NotBlank(message = "아이디가 비어있습니다")
+    @NotNull(message = "아이디가 null입니다")
     private final String userId;
-    @NotBlank
+    @NotBlank(message = "제목이 비어있습니다")
+    @NotNull(message = "제목이 null입니다")
     private final String title;
-    @NotBlank
+    @NotBlank(message = "내용이 비어있습니다")
+    @NotNull(message = "내용이 null입니다")
     private final String content;
 
     public WritePostRequest(String userId, String title, String content) {
@@ -17,6 +21,6 @@ public class WritePostRequest {
     }
 
     public Post toEntity() {
-        return new Post(userId, title, content);
+        return new Post(0, userId, title, content, null);
     }
 }

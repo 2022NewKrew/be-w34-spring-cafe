@@ -36,7 +36,7 @@ public class InMemoryPostRepository implements  PostRepository {
 
     @Override
     public Post findByPostId(int id) {
-        if (id > postList.size())
+        if (id <= 0 || postList.size() < id)
             throw new PostNotFoundException("없는 게시글 입니다");
         return postList.get(id - 1);
     }

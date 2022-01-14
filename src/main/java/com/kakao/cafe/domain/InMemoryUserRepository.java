@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -19,7 +18,8 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     private boolean isDuplicate(User findUser) {
-        return userList.stream().anyMatch(user -> user.getUserId().equals(findUser.getUserId()));
+        return userList.stream()
+                .anyMatch(user -> user.getUserId().equals(findUser.getUserId()));
     }
 
     @Override
@@ -27,7 +27,6 @@ public class InMemoryUserRepository implements UserRepository {
         if (isDuplicate(user)) {
             throw new DuplicateUserException("사용자가 이미 존재합니다");
         }
-        user.setId(UUID.randomUUID());
         userList.add(user);
         return user;
     }

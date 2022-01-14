@@ -1,10 +1,14 @@
 package com.kakao.cafe.handler;
 
+import com.kakao.cafe.controller.PostController;
 import com.kakao.cafe.exceptions.DuplicateUserException;
 import com.kakao.cafe.exceptions.InvalidUserRequestException;
+import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.exceptions.PostNotFoundException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,34 +20,40 @@ public class GlobalExceptionHandler {
 
     private static final String ERROR_VIEW_NAME = "errors/error";
     private final ModelAndView mv = new ModelAndView(ERROR_VIEW_NAME);
+    private Logger logger = LoggerFactory.getLogger(PostController.class);
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView userNotFound(UserNotFoundException exception) {
-        Map<String, Object> model = mv.getModel();
-        model.put("message", exception.getMessage());
-        return mv;
+        return errorModelAndView(exception);
     }
 
     @ExceptionHandler(DuplicateUserException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ModelAndView duplicateUser(DuplicateUserException exception) {
-        Map<String, Object> model = mv.getModel();
-        model.put("message", exception.getMessage());
-        return mv;
+        return errorModelAndView(exception);
     }
 
     @ExceptionHandler(InvalidUserRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ModelAndView validationFailed(InvalidUserRequestException exception) {
-        Map<String, Object> model = mv.getModel();
-        model.put("message", exception.getMessage());
-        return mv;
+    public ModelAndView userValidationFailed(InvalidUserRequestException exception) {
+        return errorModelAndView(exception);
+    }
+
+    @ExceptionHandler(InvalidWritePostException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView postValidationFailed(InvalidWritePostException exception) {
+        return errorModelAndView(exception);
     }
 
     @ExceptionHandler(PostNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView postNotFound(PostNotFoundException exception) {
+        return errorModelAndView(exception);
+    }
+
+    private ModelAndView errorModelAndView(RuntimeException exception) {
+        logger.error("[ERROR] " + exception.getMessage());
         Map<String, Object> model = mv.getModel();
         model.put("message", exception.getMessage());
         return mv;

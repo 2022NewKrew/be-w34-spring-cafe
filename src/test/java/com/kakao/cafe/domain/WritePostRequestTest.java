@@ -1,12 +1,13 @@
 package com.kakao.cafe.domain;
 
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class WritePostRequestTest {
 
-    private final String userId = "userId";
+    private static final String userId = UUID.randomUUID().toString();
     private final String title = "title";
     private final String content = "content";
 
@@ -20,7 +21,7 @@ class WritePostRequestTest {
     @DisplayName("[성공] Entity로 올바르게 변환한다")
     void toEntity() {
         WritePostRequest writePostRequest = new WritePostRequest(userId, title, content);
-        Post post_Answer = new Post(userId, title, content);
+        Post post_Answer = new Post(0, userId, title, content, null);
 
         Post post = writePostRequest.toEntity();
 
