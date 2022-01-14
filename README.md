@@ -11,7 +11,6 @@
 
 
 ## Spring Cafe 1-1
-
 - [ ] Spring Layered Architecture 적용
   
   - [x] Domain
