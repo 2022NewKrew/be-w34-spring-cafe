@@ -16,7 +16,7 @@ public class SignUpRequest {
     @NotNull
     private final String password;
 
-    public SignUpRequest(String email, String nickname, String password) {
+    private SignUpRequest(String email, String nickname, String password) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
