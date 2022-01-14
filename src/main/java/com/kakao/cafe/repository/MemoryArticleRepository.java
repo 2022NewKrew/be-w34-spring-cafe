@@ -6,8 +6,8 @@ import java.util.*;
 
 public class MemoryArticleRepository implements ArticleRepository {
 
-    private static final Map<Long, Article> articleMap = new HashMap<>();
-    private static Long idNumber = 0L;
+    private final Map<Long, Article> articleMap = new HashMap<>();
+    private Long idNumber = 0L;
 
     @Override
     public Long generateId() {
