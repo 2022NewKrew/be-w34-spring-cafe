@@ -34,7 +34,7 @@ create table if not exists article
 (
     50
 ) not null,
-    article_created_at date not null,
+    article_created_at timestamp not null,
     article_title varchar
 (
     100

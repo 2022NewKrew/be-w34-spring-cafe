@@ -1,4 +1,4 @@
-package com.kakao.cafe.persistence.user;
+package com.kakao.cafe.persistence.user.memory;
 
 import com.kakao.cafe.domain.user.FindUserPort;
 import com.kakao.cafe.domain.user.User;

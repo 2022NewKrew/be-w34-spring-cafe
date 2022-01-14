@@ -1,4 +1,4 @@
-package com.kakao.cafe.persistence.user;
+package com.kakao.cafe.persistence.user.memory;
 
 import com.kakao.cafe.domain.user.SignUpUserPort;
 import com.kakao.cafe.domain.user.User;
@@ -9,7 +9,7 @@ public class SignUpUserInMemoryAdapter implements SignUpUserPort {
 
     private final UserDaoPort userDaoPort;
 
-    public SignUpUserInMemoryAdapter(UserDaoInMemoryAdaptor userDaoPort) {
+    public SignUpUserInMemoryAdapter(InMemoryUserDaoAdaptor userDaoPort) {
         this.userDaoPort = userDaoPort;
     }
 

@@ -1,4 +1,4 @@
-package com.kakao.cafe.persistence.user;
+package com.kakao.cafe.persistence.user.memory;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserDaoPort;
@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class UserDaoInMemoryAdaptor implements UserDaoPort {
+public class InMemoryUserDaoAdaptor implements UserDaoPort {
     private final Map<String, User> users;
 
-    public UserDaoInMemoryAdaptor() {
+    public InMemoryUserDaoAdaptor() {
         this.users = Collections.synchronizedMap(new HashMap<>());
     }
 

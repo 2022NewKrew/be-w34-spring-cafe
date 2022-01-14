@@ -1,7 +1,8 @@
-package com.kakao.cafe.persistence.user;
+package com.kakao.cafe.persistence.user.h2;
 
 import com.kakao.cafe.domain.user.FindUserPort;
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.persistence.user.UserRowMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -14,11 +15,13 @@ import java.util.Optional;
 @Repository
 public class FindUserH2Adaptor implements FindUserPort {
     private static final String TABLE_NAME = "USER";
-    private static final List<String> FIELDS = List.of("USER_ID", "USER_PASSWORD", "USER_NAME", "USER_EMAIL");
+    private static final List<String> FIELDS = List.of("user_id", "user_password", "user_name", "user_email");
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final UserRowMapper userRowMapper;
 
-    public FindUserH2Adaptor(NamedParameterJdbcTemplate jdbcTemplate) {
+    public FindUserH2Adaptor(NamedParameterJdbcTemplate jdbcTemplate, UserRowMapper userRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userRowMapper = userRowMapper;
     }
 
     @Override
@@ -30,11 +33,7 @@ public class FindUserH2Adaptor implements FindUserPort {
 
         try {
             return Optional.of(
-                    jdbcTemplate.queryForObject(SELECT_BY_USER_ID, parameters, (result, row) ->
-                            new User(result.getString("USER_ID"),
-                                    result.getString("USER_PASSWORD"),
-                                    result.getString("USER_NAME"),
-                                    result.getString("USER_EMAIL")))
+                    jdbcTemplate.queryForObject(SELECT_BY_USER_ID, parameters, userRowMapper)
             );
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -47,12 +46,7 @@ public class FindUserH2Adaptor implements FindUserPort {
 
         SqlParameterSource parameters = new MapSqlParameterSource();
 
-        List<User> users = jdbcTemplate.query(SELECT_ALL, parameters, (result, row) ->
-                new User(result.getString("user_id"),
-                        result.getString("user_password"),
-                        result.getString("user_name"),
-                        result.getString("user_email"))
-        );
+        List<User> users = jdbcTemplate.query(SELECT_ALL, parameters, userRowMapper);
         return users;
     }
 
@@ -65,13 +59,7 @@ public class FindUserH2Adaptor implements FindUserPort {
                 .addValue("password", password);
 
         try {
-            return Optional.of(
-                    jdbcTemplate.queryForObject(SELECT_BY_USER_ID_AND_PASSWORD, parameters, (result, row) ->
-                            new User(result.getString("USER_ID"),
-                                    result.getString("USER_PASSWORD"),
-                                    result.getString("USER_NAME"),
-                                    result.getString("USER_EMAIL")))
-            );
+            return Optional.of(jdbcTemplate.queryForObject(SELECT_BY_USER_ID_AND_PASSWORD, parameters, userRowMapper));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
