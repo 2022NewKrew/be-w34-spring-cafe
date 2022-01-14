@@ -3,23 +3,19 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.dto.ArticleRegistrationDto;
 import com.kakao.cafe.entity.Article;
 import com.kakao.cafe.repository.ArticleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("articleService")
 public class ArticleServiceImpl implements ArticleService{
 
-    @Autowired
-    @Qualifier("articleRepository")
-    ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
+
+    public ArticleServiceImpl(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
 
     @Override
-    public void write(ArticleRegistrationDto articleDto) {
-        articleRepository.createArticle(articleDto);
-    }
+    public void write(ArticleRegistrationDto articleDto) { articleRepository.createArticle(articleDto);}
 
     @Override
     public List<Article> getArticles() {

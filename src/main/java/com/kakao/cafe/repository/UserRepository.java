@@ -2,11 +2,11 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.dto.UserRegistrationDto;
 import com.kakao.cafe.entity.User;
-import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-@Repository("userRepository")
 public class UserRepository {
     private final List<User> users = new ArrayList<>();
 
