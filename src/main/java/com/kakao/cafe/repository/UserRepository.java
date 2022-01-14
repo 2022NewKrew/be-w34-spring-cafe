@@ -6,8 +6,6 @@ import com.kakao.cafe.domain.user.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 public class UserRepository {
 
@@ -22,12 +20,12 @@ public class UserRepository {
         userDao.deleteAll();
     }
 
-    public boolean insert(User user) {
-        return userDao.insert(user);
+    public void insert(User user) {
+        userDao.insert(user);
     }
 
-    public Optional<User> findById(String id) {
-        return Optional.ofNullable(userDao.findById(id));
+    public User findById(String id) {
+        return userDao.findById(id);
     }
 
 
@@ -35,7 +33,7 @@ public class UserRepository {
         return userDao.findAll();
     }
 
-    public boolean update(User userNew) {
+    public int update(User userNew) {
         return userDao.update(userNew);
     }
 }

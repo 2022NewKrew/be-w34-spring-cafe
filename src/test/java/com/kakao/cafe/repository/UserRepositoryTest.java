@@ -6,10 +6,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Optional;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @SpringBootTest
 public class UserRepositoryTest {
@@ -38,7 +39,8 @@ public class UserRepositoryTest {
                 .email("yunyul3@gmail.com")
                 .build();
 
-        assertThat(userRepository.insert(user2)).isFalse();
+        assertThatThrownBy(() -> userRepository.insert(user2))
+                .isInstanceOf(DuplicateKeyException.class);
 
     }
 
@@ -52,9 +54,7 @@ public class UserRepositoryTest {
                 .build();
         userRepository.insert(user);
 
-        Optional<User> userOptional = userRepository.findById(user.getId());
-        assertThat(userOptional.get()).isNotNull();
-        User userById = userOptional.get();
+        User userById = userRepository.findById(user.getId());
         assertThat(userById.getId()).isEqualTo(user.getId());
 
     }
@@ -68,8 +68,8 @@ public class UserRepositoryTest {
                 .email("yunyul3@gmail.com")
                 .build();
         userRepository.insert(user);
-        Optional<User> userOptional = userRepository.findById("nobody");
-        assertThat(userOptional.isEmpty()).isTrue();
+        assertThatThrownBy(() -> userRepository.findById("nobody"))
+                .isInstanceOf(EmptyResultDataAccessException.class);
     }
 
     @Test
@@ -106,9 +106,9 @@ public class UserRepositoryTest {
                 .email("yunyul3@gmail.com")
                 .build();
         userRepository.insert(user);
-        boolean res = userRepository.update(userNew);
-        assertThat(res).isTrue();
-        User userRes = userRepository.findById(user.getId()).get();
+        int res = userRepository.update(userNew);
+        assertThat(res).isEqualTo(1);
+        User userRes = userRepository.findById(user.getId());
         assertThat(userRes.getId()).isEqualTo(userNew.getId());
 
     }
@@ -121,8 +121,8 @@ public class UserRepositoryTest {
                 .password("asdf")
                 .email("yunyul3@gmail.com")
                 .build();
-        boolean res = userRepository.update(user);
-        assertThat(res).isFalse();
+        int res = userRepository.update(user);
+        assertThat(res).isEqualTo(0);
     }
 
 }

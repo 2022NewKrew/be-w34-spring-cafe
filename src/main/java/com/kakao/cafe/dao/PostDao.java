@@ -5,7 +5,6 @@ import com.kakao.cafe.domain.post.Posts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -28,21 +27,15 @@ public class PostDao {
     }
 
     public int insert(Post post) {
-        String queryString = String.format("insert into Posts (title, writer, contents) " +
-                "values('%s', '%s', '%s');", post.getTitle(), post.getWriter(), post.getContents());
-        jdbcTemplate.execute(queryString);
+        String queryString = "insert into Posts (title, writer, contents) values(?, ?, ?);";
+        jdbcTemplate.update(queryString, post.getTitle(), post.getWriter(), post.getContents());
         return jdbcTemplate.queryForObject("select max(id) from posts;", Integer.class);
     }
 
     public Post findById(long id) {
-        try {
-            String queryString = String.format("select * from posts where id = '%d'", id);
-            Map<String, Object> res = jdbcTemplate.queryForMap(queryString);
-            return mapToPost(res);
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        }
+        String queryString = "select * from posts where id = ?;";
+        Map<String, Object> res = jdbcTemplate.queryForMap(queryString, id);
+        return mapToPost(res);
     }
 
     public Posts findAll() {
@@ -53,7 +46,7 @@ public class PostDao {
 
     public void deleteAll() {
         String queryString = "delete from posts;";
-        jdbcTemplate.execute(queryString);
+        jdbcTemplate.update(queryString);
     }
 
 
