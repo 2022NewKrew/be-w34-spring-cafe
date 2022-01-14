@@ -4,6 +4,7 @@ import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserCreateDTO;
 import com.kakao.cafe.user.dto.UserListDTO;
 import com.kakao.cafe.user.dto.UserProfileDTO;
+import com.kakao.cafe.user.dto.UserUpdateDTO;
 import com.kakao.cafe.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,6 +52,18 @@ public class UserController {
         model.addAttribute("name", userProfileDTO.getName());
         model.addAttribute("email", userProfileDTO.getEmail());
         return "/user/profile";
+    }
+
+
+    //회원개인프로필 확인
+    @GetMapping(value = "/users/{userId}/form")
+    public String userUpdate(@PathVariable("userId") String userId, Model model){
+        User user = userService.getUserByUserId(userId);
+        UserUpdateDTO userUpdateDTO = new UserUpdateDTO(user);
+        model.addAttribute("userid", userUpdateDTO.getUserId());
+        model.addAttribute("name", userUpdateDTO.getName());
+        model.addAttribute("email", userUpdateDTO.getEmail());
+        return "/user/updateform";
     }
 
 }
