@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Post {
+    private static final int INITIAL_ID = 0;
     private int id;
     private final String userId;
     private final String title;
@@ -11,6 +12,7 @@ public class Post {
     private final LocalDateTime createdAt;
 
     public Post( String userId, String title, String content) {
+        id = INITIAL_ID;
         this.userId = userId;
         this.title = title;
         this.content = content;
