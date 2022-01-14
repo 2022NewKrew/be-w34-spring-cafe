@@ -1,30 +1,14 @@
 package com.kakao.cafe.adapter.out.infra.persistence.article;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.kakao.cafe.domain.article.Article;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import org.springframework.stereotype.Component;
 
-@Component
-public class ArticleInfoRepository {
+public interface ArticleInfoRepository {
 
-    private final Map<Integer, ArticleInfoEntity> repository;
+    void save(Article article);
 
-    public ArticleInfoRepository() {
-        repository = new HashMap<>();
-    }
+    List<ArticleVO> getAllArticleList();
 
-    public void save(ArticleInfoEntity articleInfoEntity) {
-        repository.put(articleInfoEntity.getIndex(), articleInfoEntity);
-    }
-
-    public List<ArticleInfoEntity> getAllArticleList() {
-        return new ArrayList<>(repository.values());
-    }
-
-    public Optional<ArticleInfoEntity> findByIndex(int index) {
-        return Optional.of(repository.get(index));
-    }
+    Optional<ArticleVO> findById(int id);
 }

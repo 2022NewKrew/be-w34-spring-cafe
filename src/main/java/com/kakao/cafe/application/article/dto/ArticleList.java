@@ -4,18 +4,17 @@ import java.util.List;
 
 public class ArticleList {
 
-    private final List<ArticleListEntry> articleList;
+    private final List<ArticleInfo> articleList;
 
-    public ArticleList(
-        List<ArticleListEntry> articleList) {
+    public ArticleList(List<ArticleInfo> articleList) {
         this.articleList = articleList;
     }
 
-    public static ArticleList from(List<ArticleListEntry> articleList) {
+    public static ArticleList from(List<ArticleInfo> articleList) {
         return new ArticleList(articleList);
     }
 
-    public List<ArticleListEntry> getArticleList() {
+    public List<ArticleInfo> getArticleList() {
         return articleList;
     }
 }

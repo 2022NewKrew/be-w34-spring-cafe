@@ -1,45 +1,83 @@
 package com.kakao.cafe.adapter.out.infra.persistence.user;
 
+import com.kakao.cafe.application.user.dto.SignUpRequest;
+import com.kakao.cafe.application.user.dto.UpdateRequest;
 import com.kakao.cafe.application.user.dto.UserInfo;
-import com.kakao.cafe.application.user.dto.UsersInfo;
+import com.kakao.cafe.application.user.dto.UserInfoList;
 import com.kakao.cafe.application.user.port.out.GetUserInfoPort;
 import com.kakao.cafe.application.user.port.out.RegisterUserPort;
+import com.kakao.cafe.application.user.port.out.UpdateUserInfoPort;
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.exceptions.IllegalEmailException;
+import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
+import com.kakao.cafe.domain.user.exceptions.UserIdDuplicationException;
+import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort {
+public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort, UpdateUserInfoPort {
 
     private final UserInfoRepository userInfoRepository;
 
-    public StoreUserInfoAdapter(
-        UserInfoRepository userInfoRepository) {
+    public StoreUserInfoAdapter(UserInfoRepository userInfoRepository) {
         this.userInfoRepository = userInfoRepository;
     }
 
     @Override
-    public void registerUser(User user) {
-        userInfoRepository.save(UserInfoEntity.from(user));
+    public void registerUser(SignUpRequest signUpRequest)
+        throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException, UserIdDuplicationException {
+        checkUserIdDuplication(signUpRequest.getUserId());
+
+        userInfoRepository.save(new User.Builder().userId(signUpRequest.getUserId())
+                                                  .password(signUpRequest.getPassword())
+                                                  .name(signUpRequest.getName())
+                                                  .email(signUpRequest.getEmail()).build());
     }
 
     @Override
-    public UsersInfo getAllUsersInfo() {
+    public UserInfoList getAllUsersInfo() {
         List<UserInfo> userInfoList = userInfoRepository.getAllUserList()
-            .stream()
-            .map(u -> new UserInfo(u.getUserId(), u.getName(), u.getEmail()))
-            .collect(Collectors.toList());
+                                                        .stream()
+                                                        .map(UserInfo::from)
+                                                        .collect(Collectors.toList());
 
-        return UsersInfo.from(userInfoList);
+        return UserInfoList.from(userInfoList);
     }
 
     @Override
-    public UserInfo findUserByUserId(String userId) {
-        UserInfoEntity userInfoEntity = userInfoRepository.findByUserId(userId)
-            .orElseThrow(RuntimeException::new);        // TODO : 새로운 Exception 정의 필요
+    public UserInfo findUserByUserId(String userId) throws UserNotExistException {
+        UserVO userVO = userInfoRepository.findByUserId(userId).orElse(null);
 
-        return new UserInfo(userInfoEntity.getUserId(), userInfoEntity.getName(),
-            userInfoEntity.getEmail());
+        if (userVO == null) {
+            throw new UserNotExistException("존재하지 않는 회원입니다.");
+        }
+
+        return UserInfo.from(userVO);
+    }
+
+    private void checkUserIdDuplication(String userId) throws UserIdDuplicationException {
+        if (userInfoRepository.findByUserId(userId).isPresent()) {
+            throw new UserIdDuplicationException("ID는 중복될 수 없습니다.");
+        }
+    }
+
+    @Override
+    public void updateUser(String userId, UpdateRequest updateRequest)
+        throws UserNotExistException, IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
+        UserVO userVO = userInfoRepository.findByUserId(userId).orElse(null);
+
+        if (userVO == null) {
+            throw new UserNotExistException("존재하지 않는 회원입니다.");
+        }
+
+        userInfoRepository.update(new User.Builder().userId(userId)
+                                                    .password(userVO.getPassword())
+                                                    .name(updateRequest.getName())
+                                                    .email(updateRequest.getEmail())
+                                                    .build());
     }
 }

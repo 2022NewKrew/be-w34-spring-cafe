@@ -1,11 +1,16 @@
 package com.kakao.cafe.adapter.out.infra.persistence.article;
 
-import com.kakao.cafe.application.article.dto.ArticleDetail;
+import com.kakao.cafe.application.article.dto.ArticleInfo;
 import com.kakao.cafe.application.article.dto.ArticleList;
-import com.kakao.cafe.application.article.dto.ArticleListEntry;
+import com.kakao.cafe.application.article.dto.WriteRequest;
 import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
 import com.kakao.cafe.application.article.port.out.RegisterArticlePort;
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
+import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
+import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
+import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,36 +19,45 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleInfoPort {
 
-    private final ArticleInfoRepository articleInfoRepository;
+    private final ArticleInfoRepository inMemoryArticleInfoRepository;
 
-    public StoreArticleInfoAdapter(
-        ArticleInfoRepository articleInfoRepository) {
-        this.articleInfoRepository = articleInfoRepository;
+    public StoreArticleInfoAdapter(ArticleInfoRepository inMemoryArticleInfoRepository) {
+        this.inMemoryArticleInfoRepository = inMemoryArticleInfoRepository;
     }
 
     @Override
-    public void registerArticle(Article article) {
-        articleInfoRepository.save(ArticleInfoEntity.from(article));
+    public void registerArticle(WriteRequest writeRequest)
+        throws IllegalWriterException, IllegalTitleException, IllegalDateException {
+        inMemoryArticleInfoRepository.save(new Article.Builder()
+                                               .writer(writeRequest.getWriter())
+                                               .title(writeRequest.getTitle())
+                                               .contents(writeRequest.getContents())
+                                               .createdAt(
+                                                   LocalDateTime.now()
+                                                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                                               )
+                                               .build());
     }
 
     @Override
     public ArticleList getListOfAllArticles() {
-        List<ArticleListEntry> articleInfoList = articleInfoRepository.getAllArticleList()
-            .stream()
-            .map(a -> new ArticleListEntry(a.getIndex(), a.getWriter(), a.getTitle(),
-                a.getPostedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))))
-            .collect(Collectors.toList());
+        List<ArticleInfo> articleList = inMemoryArticleInfoRepository.getAllArticleList()
+                                                                     .stream()
+                                                                     .map(ArticleInfo::from)
+                                                                     .collect(Collectors.toList());
 
-        return ArticleList.from(articleInfoList);
+        return ArticleList.from(articleList);
     }
 
-    public ArticleDetail findArticleByIndex(int index) {
-        ArticleInfoEntity articleInfoEntity = articleInfoRepository.findByIndex(index)
-            .orElseThrow(RuntimeException::new);        // TODO : 새로운 Exception 정의 필요
+    @Override
+    public Article findArticleById(int id)
+        throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException {
+        ArticleVO articleVO = inMemoryArticleInfoRepository.findById(id).orElse(null);
 
-        return new ArticleDetail(articleInfoEntity.getIndex(), articleInfoEntity.getWriter(),
-            articleInfoEntity.getTitle(),
-            articleInfoEntity.getContents(), articleInfoEntity.getPostedDate()
-            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        if (articleVO == null) {
+            throw new ArticleNotExistException("존재하지 않는 게시글입니다.");
+        }
+
+        return articleVO.toEntity();
     }
 }

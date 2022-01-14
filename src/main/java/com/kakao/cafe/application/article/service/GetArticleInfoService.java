@@ -1,18 +1,19 @@
 package com.kakao.cafe.application.article.service;
 
-import com.kakao.cafe.application.article.dto.ArticleDetail;
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
 import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
-import org.springframework.stereotype.Service;
+import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
+import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
+import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
+import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
 
-@Service
 public class GetArticleInfoService implements GetArticleInfoUseCase {
 
     private final GetArticleInfoPort getArticleInfoPort;
 
-    public GetArticleInfoService(
-        GetArticleInfoPort getArticleInfoPort) {
+    public GetArticleInfoService(GetArticleInfoPort getArticleInfoPort) {
         this.getArticleInfoPort = getArticleInfoPort;
     }
 
@@ -22,7 +23,8 @@ public class GetArticleInfoService implements GetArticleInfoUseCase {
     }
 
     @Override
-    public ArticleDetail getArticleDetail(int index) {
-        return getArticleInfoPort.findArticleByIndex(index);
+    public Article getArticleDetail(int id)
+        throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException {
+        return getArticleInfoPort.findArticleById(id);
     }
 }
