@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/articles")
@@ -25,13 +26,21 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    // 홈 화면 (질문 리스트 페이지)
+    @GetMapping("")
+    public String home(Model model){
+        List<Article> articles = articleService.getAllArticle();
+        model.addAttribute("articles", articles);
+        return "index";
+    }
+
     // article(질문하기) 등록
     @PostMapping("")
     public String registerArticle(@Valid ArticleForm articleFrom){
         logger.info("POST /articles");
         Article article = Article.of(articleFrom);
         articleService.register(article);
-        return "redirect:/";
+        return "redirect:/articles";
     }
 
     // article 자세히 보기

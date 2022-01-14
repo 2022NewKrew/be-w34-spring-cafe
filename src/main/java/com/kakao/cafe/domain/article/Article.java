@@ -16,27 +16,22 @@ public class Article {
 
     public Article() {}
 
-    public Article(String writerUserId, String title, String contents) {
-        this.writerUserId = writerUserId;
-        this.title = title;
-        this.contents = contents;
-        this.registerDateTime = LocalDateTime.now();
-    }
-
-    public Article(Long id, String writerUserId, String title, String contents, LocalDateTime registerDateTime) {
-        this.id = id;
-        this.writerUserId = writerUserId;
-        this.title = title;
-        this.contents = contents;
-        this.registerDateTime = registerDateTime;
-    }
-
     public static Article of(ArticleForm articleForm){
-        return new Article(articleForm.getWriter(), articleForm.getTitle(), articleForm.getContents());
+        return new Builder()
+                .writerUserId(articleForm.getWriter())
+                .title(articleForm.getTitle())
+                .contents(articleForm.getContents())
+                .build();
     }
 
     public static Article of(ArticleRowDataDto articleRowDataDto, String writerUserId) {
-        return new Article(articleRowDataDto.getId(), writerUserId, articleRowDataDto.getTitle(), articleRowDataDto.getContents(), articleRowDataDto.getRegisterDateTime());
+        return new Builder()
+                .id(articleRowDataDto.getId())
+                .writerUserId(writerUserId)
+                .title(articleRowDataDto.getTitle())
+                .contents(articleRowDataDto.getContents())
+                .registerDateTime(articleRowDataDto.getRegisterDateTime())
+                .build();
     }
 
     public Long getId() {
@@ -104,5 +99,50 @@ public class Article {
                 ", contents='" + contents + '\'' +
                 ", registerDateTime=" + registerDateTime +
                 '}';
+    }
+
+    private Article(Builder builder) {
+        this.id = builder.id;
+        this.writerUserId = builder.writerUserId;
+        this.title = builder.title;
+        this.contents = builder.contents;
+        this.registerDateTime = builder.registerDateTime;
+    }
+
+    public static class Builder {
+        private Long id;
+        private String writerUserId;
+        private String title;
+        private String contents;
+        private LocalDateTime registerDateTime;
+
+        public Builder id(Long id){
+            this.id = id;
+            return this;
+        }
+
+        public Builder writerUserId(String writerUserId) {
+            this.writerUserId = writerUserId;
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder contents(String contents) {
+            this.contents = contents;
+            return this;
+        }
+
+        public Builder registerDateTime(LocalDateTime registerDateTime) {
+            this.registerDateTime = registerDateTime;
+            return this;
+        }
+
+        public Article build() {
+            return new Article(this);
+        }
     }
 }

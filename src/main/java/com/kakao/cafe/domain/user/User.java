@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.user;
 
 import com.kakao.cafe.domain.user.dto.UserForm;
+import lombok.Builder;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -28,14 +29,7 @@ public class User {
 
     public User() {}
 
-    public User(String userId, String password, String name, String email) {
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.joinDateTime = LocalDateTime.now();
-    }
-
+    @Builder
     public User(Long id, String userId, String password, String name, String email, LocalDateTime joinDateTime) {
         this.id = id;
         this.userId = userId;
@@ -46,7 +40,13 @@ public class User {
     }
 
     public static User of(UserForm userForm){
-        return new User(userForm.getUserId(), userForm.getPassword(), userForm.getName(), userForm.getEmail());
+        return builder()
+                .userId(userForm.getUserId())
+                .password(userForm.getPassword())
+                .name(userForm.getName())
+                .email(userForm.getEmail())
+                .build();
+//        return new User(userForm.getUserId(), userForm.getPassword(), userForm.getName(), userForm.getEmail());
     }
 
     public Long getId() {

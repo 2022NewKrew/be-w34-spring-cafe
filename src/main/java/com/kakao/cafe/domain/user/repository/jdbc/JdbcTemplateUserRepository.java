@@ -2,6 +2,8 @@ package com.kakao.cafe.domain.user.repository.jdbc;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.repository.UserRepository;
+import com.kakao.cafe.global.sql.Query;
+import com.kakao.cafe.global.sql.TableName;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -42,43 +44,44 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-        List<User> result = jdbcTemplate.query("select * from users where id = ?", userRowMapper(), id);
+        List<User> result = jdbcTemplate.query("select * from " + TableName.USER +" where id = ?", userRowMapper(), id);
+//        List<User> result = jdbcTemplate.query(new Query().SELECT_FROM(TableName.USER).WHERE("id", id.toString()).build(), userRowMapper(), id);
         return result.stream().findAny();
     }
 
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
-            User user = new User();
-            user.setId(rs.getLong("id"));
-            user.setUserId(rs.getString("userId"));
-            user.setPassword(rs.getString("password"));
-            user.setName(rs.getString("name"));
-            user.setEmail(rs.getString("email"));
-            user.setJoinDateTime(rs.getTimestamp("joinDateTime").toLocalDateTime());
-            return user;
+            return User.builder()
+                            .id(rs.getLong("id"))
+                            .userId(rs.getString("userId"))
+                            .password(rs.getString("password"))
+                            .name(rs.getString("name"))
+                            .email(rs.getString("email"))
+                            .joinDateTime(rs.getTimestamp("joinDateTime").toLocalDateTime())
+                            .build();
         };
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        List<User> result = jdbcTemplate.query("select * from users where userId = ?", userRowMapper(), userId);
+        List<User> result = jdbcTemplate.query("select * from " + TableName.USER +" where userId = ?", userRowMapper(), userId);
         return result.stream().findAny();
     }
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from users", userRowMapper());
+        return jdbcTemplate.query("select * from " + TableName.USER, userRowMapper());
     }
 
     @Override
     public Optional<User> findByName(String name) {
-        List<User> result = jdbcTemplate.query("select * from users where name = ?", userRowMapper(), name);
+        List<User> result = jdbcTemplate.query("select * from " + TableName.USER +" where name = ?", userRowMapper(), name);
         return result.stream().findAny();
     }
 
     @Override
     public User update(User user) {
-        jdbcTemplate.update("update users set name=?, email=? where id=?", user.getName(), user.getEmail(), user.getId());
+        jdbcTemplate.update("update " + TableName.USER +" set name=?, email=? where id=?", user.getName(), user.getEmail(), user.getId());
         return user;
     }
 }

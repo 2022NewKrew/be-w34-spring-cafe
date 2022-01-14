@@ -60,7 +60,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @PutMapping("/{userId}/update")
+    @PutMapping("/{userId}")
     public String updateUser(@PathVariable String userId, UserForm userForm){
         logger.info("PUT /{userId}/update");
         userForm.setUserId(userId);
