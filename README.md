@@ -71,6 +71,23 @@
   - application.properties 에 "spring.mustache.expose-session-attributes=true" 설정이 필요
 - @Aspect 를 쓰기 위해선, spring-aop 가 아닌 spring-boot-starter-aop 가 필요
   - Get/Post Mapping 의 경우, annotation 기반으로 적용시켜서 되는데, execute 는 왜 실행이 안되는지 잘 파악을 못하겠음
+  
+# 배포 절차
+- 실패한 방법
+  - File -> project structure -> artifacts 추가
+  - Build -> build artifacts
+  - cmd 창에서 "kinit 으로 로그인"
+  - "scp cafe.main.jar deploy@FQDN값:/home/deploy"
+  - "java -jar jar파일.jar" 로 실행
+- 성공한 방법
+  - ./gradlew build
+  - /build/libs 내에 존재하는 스냅샷을 scp 로 전달
+  - "java -jar" 로 실행
+- 서버까지는 뜨지만, 화면이 정상출력되지 않음
+  - "logging.level.root=debug" 를 프로퍼티에 적용 후, 디버그 로그를 직접 확인
+  - 출력하는 .html 파일 경로에 /가 중첩으로 들어간 것을 확인 ( templates//path/~.html )
+  - 아무래도, spring 이 template/ 까지를 기본 경로로 추가해줘서 생긴 문제 같음 (로컬에선 왜 돌아간건지 의문)
+  - 각 View 경로의 앞에 "/" 를 제거해주고, 리빌딩하여 서버에서 작동시키니 정상동작함
 
 # 참고 사이트
 - Collection 관련
@@ -88,5 +105,10 @@
   - https://programmer93.tistory.com/64
 - aop
   - https://vmpo.tistory.com/100
+  - https://nankisu.tistory.com/6
   - https://velog.io/@shson/%EC%8A%A4%ED%94%84%EB%A7%81Spring-AOP-AspectJ-Pointcut-%ED%91%9C%ED%98%84%EC%8B%9D-1-1-execution
+- scp
+  - https://eehoeskrap.tistory.com/543
+- java sdk
+  - https://hoohaha.tistory.com/41
 

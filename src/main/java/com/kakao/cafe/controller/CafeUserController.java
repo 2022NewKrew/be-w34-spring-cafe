@@ -19,7 +19,7 @@ public class CafeUserController {
         this.cafeUserService = cafeUserService;
     }
 
-    private static final String USER_DIRECTORY = "/user";
+    private static final String USER_DIRECTORY = "user";
     public static final String USER_VIEW_SIGN_UP = USER_DIRECTORY+"/form";
     public static final String USER_VIEW_SIGN_IN = USER_DIRECTORY+"/login";
     public static final String USER_VIEW_LIST = USER_DIRECTORY+"/list";
