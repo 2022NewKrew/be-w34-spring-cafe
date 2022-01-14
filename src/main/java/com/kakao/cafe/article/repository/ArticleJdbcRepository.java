@@ -24,21 +24,30 @@ public class ArticleJdbcRepository implements ArticleRepository{
 
     @Override
     public void addArticle(ArticleCreateDTO articleCreateDTO) {
-
-        jdbcTemplate.update("INSERT INTO articles(name,title,contents,date) VALUES (?,?,?,?)",
-                articleCreateDTO.getContents(),
+        String sql = "INSERT INTO articles(name,title,contents,date) VALUES (?,?,?,?)";
+        jdbcTemplate.update(sql,
+                articleCreateDTO.getName(),
                 articleCreateDTO.getTitle(),
                 articleCreateDTO.getContents(),
                 new Date()
         );
-
     }
 
     @Override
     public List<Article> getArticles() {
-        return jdbcTemplate.query("select * from articles",
+        String sql = "SELECT * FROM articles";
+        return jdbcTemplate.query(sql,
                 (rs, rn) ->
                 {Article article = new Article(rs.getString("name"), rs.getString("title"), rs.getString("contents"), rs.getDate("date"), rs.getLong("sequence"));
                     return article;});
+    }
+
+    @Override
+    public Article getArticleByCondition(String key, String value) {
+        String sql = String.format("SELECT * FROM articles WHERE %s = %s", key, value);
+        return jdbcTemplate.query(sql,
+                (rs, rn) ->
+                {Article article = new Article(rs.getString("name"), rs.getString("title"), rs.getString("contents"), rs.getDate("date"), rs.getLong("sequence"));
+                    return article;}).stream().findAny().orElse(null);
     }
 }

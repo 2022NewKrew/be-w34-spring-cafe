@@ -21,4 +21,9 @@ public class ArticleMemoryRepository implements ArticleRepository {
     public List<Article> getArticles(){
         return articles;
     }
+
+    @Override
+    public Article getArticleByCondition(String key, String value) {
+        return null;
+    }
 }
