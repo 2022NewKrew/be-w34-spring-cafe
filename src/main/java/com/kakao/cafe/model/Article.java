@@ -1,29 +1,29 @@
 package com.kakao.cafe.model;
 
+import lombok.Builder;
+import lombok.Getter;
+
+
+import java.time.LocalDateTime;
+
+
+
+@Getter
 public class Article {
 
     private Integer id;
     private String writer;
     private String title;
     private String contents;
+    private LocalDateTime createTime;
 
-    public Article(Integer id, String writer, String title, String contents) {
+    @Builder
+    public Article(Integer id, String writer, String title, String contents, LocalDateTime createTime) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-    }
-
-    public Integer getId() { return id; }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public String getTitle() { return title; }
-
-    public String getContents() {
-        return contents;
+        this.createTime = createTime;
     }
 
     public void setId(Integer id) {
