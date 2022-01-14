@@ -6,7 +6,6 @@ import com.kakao.cafe.domain.article.FindArticlePort;
 import java.util.List;
 
 public class FindArticleService {
-
     private final FindArticlePort findArticlePort;
 
     public FindArticleService(FindArticlePort findArticlePort) {

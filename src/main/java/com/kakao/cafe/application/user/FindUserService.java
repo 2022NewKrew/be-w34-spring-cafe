@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class FindUserService {
-
     private final FindUserPort findUserPort;
 
     public FindUserService(FindUserPort findUserPort) {

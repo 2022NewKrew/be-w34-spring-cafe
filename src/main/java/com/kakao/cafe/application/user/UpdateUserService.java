@@ -5,7 +5,6 @@ import com.kakao.cafe.domain.user.UpdateUserPort;
 import com.kakao.cafe.domain.user.UserVo;
 
 public class UpdateUserService {
-
     private final FindUserPort findUserPort;
     private final UpdateUserPort updateUserPort;
 
@@ -20,5 +19,4 @@ public class UpdateUserService {
 
         updateUserPort.save(updateUserVo.convertVoToEntity());
     }
-
 }

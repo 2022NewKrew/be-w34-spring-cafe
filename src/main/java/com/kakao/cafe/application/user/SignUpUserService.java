@@ -8,7 +8,6 @@ import com.kakao.cafe.domain.user.UserVo;
 import java.util.Optional;
 
 public class SignUpUserService {
-
     private final SignUpUserPort signUpUserPort;
     private final FindUserPort findUserPort;
 

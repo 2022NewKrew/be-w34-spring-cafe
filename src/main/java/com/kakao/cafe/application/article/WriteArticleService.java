@@ -4,7 +4,6 @@ import com.kakao.cafe.domain.article.ArticleVo;
 import com.kakao.cafe.domain.article.WriteArticlePort;
 
 public class WriteArticleService {
-
     private final WriteArticlePort writeArticlePort;
 
     public WriteArticleService(WriteArticlePort writeArticlePort) {
@@ -14,5 +13,4 @@ public class WriteArticleService {
     public void write(ArticleVo articleVo) {
         writeArticlePort.save(articleVo);
     }
-
 }
