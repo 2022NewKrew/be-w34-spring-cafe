@@ -1,0 +1,27 @@
+{{>layout/header}}
+<div class="background">
+    {{>layout/mainNavbar}}
+
+    <div class="container" id="main">
+        <header class="signup-header">
+            <p class="display-large">회원가입</p>
+        </header>
+        <form name="question" class="info-container" method="post" action="/users">
+            <div class="signup-form-group">
+                <label for="email">이메일</label>
+                <input type="email" class="signup-form-control" id="email" name="email" placeholder="이메일을 입력하세요">
+            </div>
+            <div class="signup-form-group">
+                <label for="nickname">닉네임</label>
+                <input type="text" class="signup-form-control" id="nickname" name="nickname" placeholder="닉네입을 입력하세요">
+            </div>
+            <div class="signup-form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" class="signup-form-control" id="password" name="password"
+                       placeholder="비밀번호를 입력하세요">
+            </div>
+            <input class="large-btn" type="submit" value="완료"/>
+        </form>
+    </div>
+</div>
+{{>layout/footer}}
