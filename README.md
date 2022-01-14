@@ -17,6 +17,10 @@ $./gradlew bootRun
 - mustache + bootstrap 템플릿은 따로 가져와 커스텀했습니다..
 - spring jdbc 연결 - h2
 
+### Step2, 3, 구현 사항
+- 로그인(Session + Aspect) 및 로그인에 따른 UI 처리
+- 게시판 목록조회, 글 읽기, 새 글 작성
+
 ### Todo - 더 해야 할 것.
 - [ ] GlobalExceptionHandler - ExceptionHandler 처리 및 UI 대응개발
 - [ ] 로깅 - Aspectj 공통 IN/OUT 처리
