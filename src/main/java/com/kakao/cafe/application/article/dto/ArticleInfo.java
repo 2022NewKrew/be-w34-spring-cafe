@@ -1,5 +1,7 @@
 package com.kakao.cafe.application.article.dto;
 
+import com.kakao.cafe.domain.article.Article;
+
 public class ArticleInfo {
 
     private final int id;
@@ -28,5 +30,9 @@ public class ArticleInfo {
 
     public String getCreatedAt() {
         return createdAt;
+    }
+
+    public static ArticleInfo from(Article article) {
+        return new ArticleInfo(article.getId(), article.getWriter(), article.getTitle(), article.getCreatedAt());
     }
 }

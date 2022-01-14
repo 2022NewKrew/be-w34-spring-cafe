@@ -8,5 +8,5 @@ public interface GetArticleInfoPort {
 
     ArticleList getListOfAllArticles();
 
-    Article findArticleByIndex(int index) throws ArticleNotExistException;
+    Article findArticleById(int index) throws ArticleNotExistException;
 }

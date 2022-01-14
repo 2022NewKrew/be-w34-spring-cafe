@@ -2,7 +2,6 @@ package com.kakao.cafe.view;
 
 import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
-import com.kakao.cafe.domain.article.exceptions.IllegalIdException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
 import com.kakao.cafe.domain.user.exceptions.IllegalEmailException;
@@ -29,9 +28,6 @@ public class ErrorMessage {
         }
         if (e instanceof UserIdDuplicationException) {
             return "이미 존재하는 ID 입니다.";
-        }
-        if (e instanceof IllegalIdException) {
-            return "게시글 작성에 실패하였습니다.";
         }
         if (e instanceof IllegalTitleException) {
             return "제목이 잘못되었습니다.";

@@ -1,20 +1,18 @@
 package com.kakao.cafe.domain.article;
 
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
-import com.kakao.cafe.domain.article.exceptions.IllegalIdException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
 
 public class Article {
 
-    private final int id;
     private final String writer;
     private final String title;
     private final String contents;
     private final String createdAt;
+    private int id;
 
     public Article(Builder builder) {
-        this.id = builder.id;
         this.writer = builder.writer;
         this.title = builder.title;
         this.contents = builder.contents;
@@ -23,6 +21,10 @@ public class Article {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getWriter() {
@@ -43,16 +45,10 @@ public class Article {
 
     public static class Builder {
 
-        private int id;
         private String writer;
         private String title;
         private String contents;
         private String createdAt;
-
-        public Builder id(int id) {
-            this.id = id;
-            return this;
-        }
 
         public Builder writer(String writer) {
             this.writer = writer;
@@ -75,18 +71,11 @@ public class Article {
         }
 
         public Article build()
-            throws IllegalIdException, IllegalWriterException, IllegalTitleException, IllegalDateException {
-            checkId(id);
+            throws IllegalWriterException, IllegalTitleException, IllegalDateException {
             checkWriter(writer);
             checkTitle(title);
             checkDate(createdAt);
             return new Article(this);
-        }
-
-        private void checkId(int id) throws IllegalIdException {
-            if (id <= 0) {
-                throw new IllegalIdException("ID 값이 잘못되었습니다.");
-            }
         }
 
         private boolean checkBlankInString(String str) {
@@ -110,7 +99,7 @@ public class Article {
         }
 
         private void checkDate(String createdAt) throws IllegalDateException {
-            if (checkLengthOfString(createdAt) || checkBlankInString(createdAt)) {
+            if (checkLengthOfString(createdAt)) {
                 throw new IllegalDateException("잘못된 날짜입니다.");
             }
         }

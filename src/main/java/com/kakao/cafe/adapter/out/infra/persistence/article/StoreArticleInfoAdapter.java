@@ -8,23 +8,18 @@ import com.kakao.cafe.application.article.port.out.RegisterArticlePort;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
-import com.kakao.cafe.domain.article.exceptions.IllegalIdException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleInfoPort {
 
-    private static final int FIRST_ID = 1;
-
     private final ArticleInfoRepository inMemoryArticleInfoRepository;
-    private final AtomicInteger atomicInt = new AtomicInteger(FIRST_ID);
 
     public StoreArticleInfoAdapter(ArticleInfoRepository inMemoryArticleInfoRepository) {
         this.inMemoryArticleInfoRepository = inMemoryArticleInfoRepository;
@@ -32,9 +27,8 @@ public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleI
 
     @Override
     public void registerArticle(WriteRequest writeRequest)
-        throws IllegalIdException, IllegalWriterException, IllegalTitleException, IllegalDateException {
+        throws IllegalWriterException, IllegalTitleException, IllegalDateException {
         inMemoryArticleInfoRepository.save(new Article.Builder()
-                                               .id(atomicInt.getAndIncrement())
                                                .writer(writeRequest.getWriter())
                                                .title(writeRequest.getTitle())
                                                .contents(writeRequest.getContents())
@@ -49,19 +43,15 @@ public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleI
     public ArticleList getListOfAllArticles() {
         List<ArticleInfo> articleList = inMemoryArticleInfoRepository.getAllArticleList()
                                                                      .stream()
-                                                                     .map(a -> new ArticleInfo(
-                                                                         a.getId(),
-                                                                         a.getWriter(),
-                                                                         a.getTitle(),
-                                                                         a.getCreatedAt()
-                                                                     ))
+                                                                     .map(ArticleInfo::from)
                                                                      .collect(Collectors.toList());
 
         return ArticleList.from(articleList);
     }
 
-    public Article findArticleByIndex(int index) throws ArticleNotExistException {
-        Article article = inMemoryArticleInfoRepository.findByIndex(index).orElse(null);
+    @Override
+    public Article findArticleById(int index) throws ArticleNotExistException {
+        Article article = inMemoryArticleInfoRepository.findById(index).orElse(null);
 
         if (article == null) {
             throw new ArticleNotExistException("존재하지 않는 게시글입니다.");

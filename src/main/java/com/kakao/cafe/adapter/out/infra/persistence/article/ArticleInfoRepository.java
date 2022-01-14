@@ -10,5 +10,5 @@ public interface ArticleInfoRepository {
 
     List<Article> getAllArticleList();
 
-    Optional<Article> findByIndex(int index);
+    Optional<Article> findById(int index);
 }

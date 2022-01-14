@@ -5,9 +5,7 @@ import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
 import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
-import org.springframework.stereotype.Service;
 
-@Service
 public class GetArticleInfoService implements GetArticleInfoUseCase {
 
     private final GetArticleInfoPort getArticleInfoPort;
@@ -23,6 +21,6 @@ public class GetArticleInfoService implements GetArticleInfoUseCase {
 
     @Override
     public Article getArticleDetail(int index) throws ArticleNotExistException {
-        return getArticleInfoPort.findArticleByIndex(index);
+        return getArticleInfoPort.findArticleById(index);
     }
 }
