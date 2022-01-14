@@ -18,4 +18,15 @@ public class ArticleListResponse {
     public String getTitle() {
         return title;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof ArticleListResponse)) {
+            return false;
+        }
+
+        ArticleListResponse articleListResponse = (ArticleListResponse) obj;
+        return articleId == articleListResponse.getArticleId() &&
+                title.equals(articleListResponse.getTitle());
+    }
 }
