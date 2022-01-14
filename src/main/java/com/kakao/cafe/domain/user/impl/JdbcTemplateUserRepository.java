@@ -21,18 +21,18 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public void add(User user) {
-        jdbcTemplate.update("INSERT INTO `user` (email, nickname, password) VALUES (?, ?, ?)",
-                user.getEmail(), user.getNickname(), user.getPassword());
+        jdbcTemplate.update("INSERT INTO `user` (email, userId, nickname, password) VALUES (?, ?, ?, ?)",
+                user.getUserId(), user.getEmail(), user.getNickname(), user.getPassword());
     }
 
     @Override
     public Optional<User> findById(long id) {
-        return jdbcTemplate.query("SELECT id, email, nickname, password FROM `user` WHERE id=?", userMapper, id)
+        return jdbcTemplate.query("SELECT id, userId, email, nickname, password FROM `user` WHERE id=?", userMapper, id)
                 .stream().findAny();
     }
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("SELECT id, email, nickname, password FROM `user`", userMapper);
+        return jdbcTemplate.query("SELECT id, userId, email, nickname, password FROM `user`", userMapper);
     }
 }

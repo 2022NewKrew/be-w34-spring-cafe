@@ -17,6 +17,7 @@ public interface UserMapper extends RowMapper<User> {
     default User mapRow(ResultSet rs, int rowNum) throws SQLException {
         return User.builder()
                 .id(rs.getLong("id"))
+                .userId(rs.getString("userId"))
                 .email(rs.getString("email"))
                 .nickname(rs.getString("nickname"))
                 .password(rs.getString("password"))

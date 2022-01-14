@@ -10,7 +10,8 @@
         <caption>회원 수 총 {{users.size}}명</caption>
         <thead class="table-light">
         <tr>
-            <th scope="col">id</th>
+            <th scope="col">id(pk)</th>
+            <th scope="col">userId</th>
             <th scope="col">email</th>
             <th scope="col">nickname</th>
             <th scope="col">password</th>
@@ -19,7 +20,8 @@
         <tbody>
         {{#users}}
             <tr>
-                <th><a href="/users/{{id}}">{{id}}</a></th>
+                <th><a href="/users/{{userId}}">{{userId}}</a></th>
+                <th>{{userId}}</th>
                 <td>{{email}}</td>
                 <td>{{nickname}}</td>
                 <td>{{password}}</td>
