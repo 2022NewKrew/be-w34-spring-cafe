@@ -27,15 +27,14 @@ public class PostDao {
     }
 
     public int insert(Post post) {
-        String queryString = String.format("insert into Posts (title, writer, contents) " +
-                "values('%s', '%s', '%s');", post.getTitle(), post.getWriter(), post.getContents());
-        jdbcTemplate.execute(queryString);
+        String queryString = "insert into Posts (title, writer, contents) values(?, ?, ?);";
+        jdbcTemplate.update(queryString, post.getTitle(), post.getWriter(), post.getContents());
         return jdbcTemplate.queryForObject("select max(id) from posts;", Integer.class);
     }
 
     public Post findById(long id) {
-        String queryString = String.format("select * from posts where id = '%d'", id);
-        Map<String, Object> res = jdbcTemplate.queryForMap(queryString);
+        String queryString = "select * from posts where id = ?;";
+        Map<String, Object> res = jdbcTemplate.queryForMap(queryString, id);
         return mapToPost(res);
     }
 
@@ -47,7 +46,7 @@ public class PostDao {
 
     public void deleteAll() {
         String queryString = "delete from posts;";
-        jdbcTemplate.execute(queryString);
+        jdbcTemplate.update(queryString);
     }
 
     public int update(Post post) {
