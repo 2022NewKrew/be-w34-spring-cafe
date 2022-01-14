@@ -6,13 +6,16 @@ public class UserRequest {
 
     private final String password;
 
+    private final String updatePassword;
+
     private final String name;
 
     private final String email;
 
-    public UserRequest(String userId, String password, String name, String email) {
+    public UserRequest(String userId, String password, String updatePassword, String name, String email) {
         this.userId = userId;
         this.password = password;
+        this.updatePassword = updatePassword;
         this.name = name;
         this.email = email;
     }
@@ -23,6 +26,10 @@ public class UserRequest {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getUpdatePassword() {
+        return updatePassword;
     }
 
     public String getName() {

@@ -7,6 +7,10 @@ public interface UserRepository {
 
     void save(User user);
 
+    default void update(User user) {}
+
+    default boolean validate(String id, String password) {return false;}
+
     Optional<User> findById(String id);
 
     Optional<User> findByEmail(String email);

@@ -3,10 +3,7 @@ package com.kakao.cafe.users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +22,12 @@ public class UserController {
     @GetMapping(path = "/form")
     public String createUserForm() {
         return "user/form";
+    }
+
+    @GetMapping(path = "/{id}/form")
+    public String updateUserForm(@PathVariable String id, Model model) {
+        model.addAttribute("user", new UserDto(userService.getUserById(id)));
+        return "user/updateForm";
     }
 
     @GetMapping(path = "/list")
@@ -59,13 +62,27 @@ public class UserController {
     }
 
     @PostMapping(path = "/create")
-    public String createUser(UserRequest userRequest, Model model) {
+    public String createUser(UserRequest userRequest) {
         userService.createUser(User.builder()
                 .id(userRequest.getUserId())
                 .password(userRequest.getPassword())
                 .name(userRequest.getName())
                 .email(userRequest.getEmail())
                 .build());
+        return "redirect:/user/list";
+    }
+
+    @PutMapping(path = "/update")
+    public String updateUser(UserRequest userRequest) {
+        if(userService.validateUser(
+                User.builder().id(userRequest.getUserId()).password(userRequest.getPassword()).build())) {
+            userService.updateUser(User.builder()
+                    .id(userRequest.getUserId())
+                    .password(userRequest.getPassword())
+                    .name(userRequest.getName())
+                    .email(userRequest.getEmail())
+                    .build());
+        }
         return "redirect:/user/list";
     }
 
