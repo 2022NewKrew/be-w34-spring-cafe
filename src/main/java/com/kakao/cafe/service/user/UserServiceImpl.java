@@ -17,7 +17,6 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
 
-
     @Override
     public void addUser(UserReqDto userReqDto){
         validateDuplicateUser(userReqDto);
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService{
 
         //예외처리예정(비밀번호가 다른 경우)
 
-        userRepository.save(User.builder()
+        userRepository.update(User.builder()
                 .id(user.getId())
                 .userId(user.getUserId())
                 .password(userUpdateReqDto.getNewPassword())

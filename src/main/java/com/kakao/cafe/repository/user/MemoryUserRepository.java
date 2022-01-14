@@ -14,9 +14,12 @@ public class MemoryUserRepository implements UserRepository{
 
     @Override
     public void save(User user) {
-        if(user.getId() == null){
-            user.setId(++sequence);
-        }
+        user.setId(++sequence);
+        update(user);
+    }
+
+    @Override
+    public void update(User user) {
         userStore.put(user.getId(), user);
     }
 
@@ -36,6 +39,7 @@ public class MemoryUserRepository implements UserRepository{
     public List<User> findAll() {
         return new ArrayList<>(userStore.values());
     }
+
 
     public void clearUserStore(){
         sequence = 0L;
