@@ -41,7 +41,7 @@ public class UserController {
             validateParams(errors);
             userService.join(userCreationDTO);
         } catch (Exception e) {
-            handleCommonException(e, attr);
+            handleException(e, attr);
             attr.addFlashAttribute("email", userCreationDTO.getEmail());
             attr.addFlashAttribute("nickname", userCreationDTO.getNickname());
             return "redirect:" + Url.REGISTER_FORM;
@@ -57,7 +57,7 @@ public class UserController {
         try {
             model.addAttribute("user", getUser(id));
         } catch (IllegalArgumentException e) {
-            handleSpecificException(e, attr);
+            handleException(e, attr);
             return "redirect:" + Url.USERS;
         }
 
@@ -72,7 +72,7 @@ public class UserController {
         try {
             model.addAttribute("user", getUser(id));
         } catch (IllegalArgumentException e) {
-            handleSpecificException(e, attr);
+            handleException(e, attr);
             return "redirect:" + Url.USERS;
         }
 
@@ -87,11 +87,8 @@ public class UserController {
         try {
             validateParams(errors);
             userService.update(id, dto);
-        } catch (IllegalArgumentException e) {
-            handleSpecificException(e, attr);
-            return "redirect:/users/" + id + "/form";
         } catch (Exception e) {
-            handleCommonException(e, attr);
+            handleException(e, attr);
             return "redirect:/users/" + id + "/form";
         }
 
@@ -121,16 +118,8 @@ public class UserController {
         }
     }
 
-    private void handleSpecificException(Exception e, RedirectAttributes attr) {
-        handleException(e, attr, e.getMessage());
-    }
-
-    private void handleCommonException(Exception e, RedirectAttributes attr) {
-        handleException(e, attr, e.getMessage());
-    }
-
-    private void handleException(Exception e, RedirectAttributes attr, String msg){
+    private void handleException(Exception e, RedirectAttributes attr) {
         e.printStackTrace();
-        attr.addFlashAttribute("errorMsg", msg);
+        attr.addFlashAttribute("errorMsg", e.getMessage());
     }
 }

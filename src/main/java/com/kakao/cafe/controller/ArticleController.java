@@ -43,7 +43,6 @@ public class ArticleController {
     public String getArticlePage(@PathVariable long id, Model model) {
         try {
             model.addAttribute("article", getArticle(id));
-            logger.info("{}", getArticle(id));
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             return "redirect:/" + Url.ARTICLES;
