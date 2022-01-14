@@ -17,7 +17,7 @@ public class JdbcQnaRepositoryImpl implements QnaRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    JdbcQnaRepositoryImpl(JdbcTemplate jdbcTemplate) {
+    public JdbcQnaRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
