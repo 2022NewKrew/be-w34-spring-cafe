@@ -40,3 +40,6 @@
 # step5
 - [x] 예외처리 진행(advice, handler) (참고 자료https://catsbi.oopy.io/72475b41-f527-4e64-867c-7cbdc5a04d69)
 - [x] 의존성 주입 방법 변경
+
+# step6
+- [ ] requestParam validation검증
