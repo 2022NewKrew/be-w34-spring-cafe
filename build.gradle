@@ -19,6 +19,9 @@ dependencies {
 	implementation 'pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.4'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'com.h2database:h2:2.0.206'
+
+	compileOnly 'org.projectlombok:lombok:1.18.22'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 }
 
 test {

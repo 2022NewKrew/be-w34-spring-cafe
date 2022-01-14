@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.util.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 @Controller
 public class CustomErrorController implements ErrorController {
     private static final String DEFAULT_ERROR_MESSAGE = "서버에서 에러가 발생했습니다. 잠시후 다시 시도해주세요.";
@@ -25,6 +27,7 @@ public class CustomErrorController implements ErrorController {
                 message = PAGE_NOT_FOUND_ERROR_MESSAGE;
             }
         }
+        log.info(message);
         model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, message);
         return Constants.ERROR_PAGE_NAME;
     }
