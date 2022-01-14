@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain;
 
 import com.kakao.cafe.exceptions.DuplicateUserException;
+import com.kakao.cafe.exceptions.UserNotFoundException;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -15,9 +16,9 @@ class InMemoryUserRepositoryTest {
     private final String email = "email";
 
     @Test
-    @DisplayName("[성공] User 클래스 생성")
+    @DisplayName("[성공] InMemoryUserRepository 클래스 생성")
     void InMemoryUserRepository() {
-        InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+        new InMemoryUserRepository();
     }
 
     @Test
@@ -68,5 +69,17 @@ class InMemoryUserRepositoryTest {
         User findUser = inMemoryUserRepository.findByUserId(userId);
 
         Assertions.assertEquals(findUser, user1);
+    }
+
+    @Test
+    @DisplayName("[실패] 존재하지 않는 User ID로 검색")
+    void findByUserId_FailedBy_InvalidUserId() {
+        String invalidUserId = "InvalidUserId";
+        InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+        User user1 = new User(userId, password, name, email);
+        inMemoryUserRepository.save(user1);
+
+        Assertions.assertThrows(UserNotFoundException.class,
+                () -> inMemoryUserRepository.findByUserId(invalidUserId));
     }
 }
