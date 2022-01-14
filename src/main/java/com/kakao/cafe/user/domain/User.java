@@ -1,4 +1,4 @@
-package com.kakao.cafe.user;
+package com.kakao.cafe.user.domain;
 
 import java.time.LocalDateTime;
 

@@ -1,5 +1,10 @@
-package com.kakao.cafe.user;
+package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.user.UserMapper;
+import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.dto.UserCreationForm;
+import com.kakao.cafe.user.dto.UserView;
+import com.kakao.cafe.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

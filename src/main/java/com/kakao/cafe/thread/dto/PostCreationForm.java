@@ -1,4 +1,4 @@
-package com.kakao.cafe.thread;
+package com.kakao.cafe.thread.dto;
 
 public class PostCreationForm {
     private final String author_username;

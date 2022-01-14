@@ -1,5 +1,6 @@
-package com.kakao.cafe.user;
+package com.kakao.cafe.user.repository;
 
+import com.kakao.cafe.user.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;

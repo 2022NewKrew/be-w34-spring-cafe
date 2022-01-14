@@ -1,6 +1,6 @@
-package com.kakao.cafe.thread;
+package com.kakao.cafe.thread.dto;
 
-import com.kakao.cafe.user.UserView;
+import com.kakao.cafe.user.dto.UserView;
 
 import java.time.LocalDateTime;
 

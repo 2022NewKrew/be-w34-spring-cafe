@@ -1,5 +1,7 @@
-package com.kakao.cafe.user;
+package com.kakao.cafe.user.controller;
 
+import com.kakao.cafe.user.dto.UserCreationForm;
+import com.kakao.cafe.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

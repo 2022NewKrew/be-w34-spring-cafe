@@ -1,4 +1,4 @@
-package com.kakao.cafe.thread;
+package com.kakao.cafe.thread.domain;
 
 public enum ThreadType {
     BOARD,

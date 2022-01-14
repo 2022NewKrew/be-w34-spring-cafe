@@ -1,6 +1,7 @@
-package com.kakao.cafe.thread;
+package com.kakao.cafe.thread.repository;
 
-import com.kakao.cafe.user.User;
+import com.kakao.cafe.thread.domain.Post;
+import com.kakao.cafe.thread.domain.ThreadType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

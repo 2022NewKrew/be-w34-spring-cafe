@@ -1,4 +1,6 @@
-package com.kakao.cafe.thread;
+package com.kakao.cafe.thread.repository;
+
+import com.kakao.cafe.thread.domain.Post;
 
 import java.util.List;
 import java.util.Optional;

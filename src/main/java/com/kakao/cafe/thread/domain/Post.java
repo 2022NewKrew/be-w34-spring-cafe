@@ -1,4 +1,4 @@
-package com.kakao.cafe.thread;
+package com.kakao.cafe.thread.domain;
 
 import java.time.LocalDateTime;
 

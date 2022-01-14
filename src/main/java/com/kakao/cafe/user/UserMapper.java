@@ -1,5 +1,10 @@
 package com.kakao.cafe.user;
 
+import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserStatus;
+import com.kakao.cafe.user.dto.UserCreationForm;
+import com.kakao.cafe.user.dto.UserView;
+
 public class UserMapper {
     public static User toUser(UserCreationForm userCreationForm) {
         return new User(null, userCreationForm.getEmail(), userCreationForm.getUsername(),

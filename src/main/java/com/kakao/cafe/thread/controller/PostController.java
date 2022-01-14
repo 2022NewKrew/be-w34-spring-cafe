@@ -1,5 +1,7 @@
-package com.kakao.cafe.thread;
+package com.kakao.cafe.thread.controller;
 
+import com.kakao.cafe.thread.service.PostService;
+import com.kakao.cafe.thread.dto.PostCreationForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

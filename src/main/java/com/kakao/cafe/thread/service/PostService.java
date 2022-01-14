@@ -1,8 +1,13 @@
-package com.kakao.cafe.thread;
+package com.kakao.cafe.thread.service;
 
-import com.kakao.cafe.user.User;
+import com.kakao.cafe.thread.domain.Post;
+import com.kakao.cafe.thread.domain.ThreadStatus;
+import com.kakao.cafe.thread.dto.PostCreationForm;
+import com.kakao.cafe.thread.dto.PostView;
+import com.kakao.cafe.thread.repository.PostRepository;
+import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.UserMapper;
-import com.kakao.cafe.user.UserRepository;
+import com.kakao.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,9 +1,9 @@
 package com.kakao.cafe.global;
 
-import com.kakao.cafe.thread.PostRepository;
-import com.kakao.cafe.thread.SpringJdbcPostRepository;
-import com.kakao.cafe.user.SpringJdbcUserRepository;
-import com.kakao.cafe.user.UserRepository;
+import com.kakao.cafe.thread.repository.PostRepository;
+import com.kakao.cafe.thread.repository.SpringJdbcPostRepository;
+import com.kakao.cafe.user.repository.SpringJdbcUserRepository;
+import com.kakao.cafe.user.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
