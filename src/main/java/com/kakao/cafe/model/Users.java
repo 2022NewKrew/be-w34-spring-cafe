@@ -17,12 +17,24 @@ public class Users {
         users.put(user.getUserId(), user);
     }
 
-    public List<User> getAllUsers(){
-        return users.values().stream().collect(Collectors.toUnmodifiableList());
+    public List<UserViewDTO> getAllUsers(){
+        return users.values().stream()
+                .map(user -> UserViewDTO.builder()
+                        .userId(user.getUserId())
+                        .name(user.getName())
+                        .email(user.getEmail())
+                        .build())
+                .collect(Collectors.toUnmodifiableList());
     }
 
-    public User findUserById(String userId){
-        return Optional.ofNullable(users.get(userId)).orElseThrow(IllegalArgumentException::new);
+    public UserViewDTO findUserById(String userId){
+        User user = Optional.ofNullable(users.get(userId)).orElseThrow(IllegalArgumentException::new);
+
+        return UserViewDTO.builder()
+                .userId(user.getUserId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .build();
     }
 
     private void validateDuplicateUserId(String userId){

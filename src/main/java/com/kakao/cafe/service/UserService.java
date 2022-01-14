@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.model.UserSignUpDTO;
+import com.kakao.cafe.model.UserViewDTO;
 import com.kakao.cafe.repository.UserMemoryRepository;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +21,11 @@ public class UserService {
         userRepository.signUp(userSignUpDTO);
     }
 
-    public List<User> findAllUsers() {
+    public List<UserViewDTO> findAllUsers() {
         return userRepository.findAllUsers();
     }
 
-    public User findUserById(String userId) {
+    public UserViewDTO findUserById(String userId) {
         return userRepository.findUserByUserId(userId);
     }
 }
