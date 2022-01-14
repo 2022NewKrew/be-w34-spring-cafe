@@ -15,9 +15,10 @@ public class InMemoryArticleRepository implements ArticleRepository{
     private final AtomicInteger index = new AtomicInteger();
 
     @Override
-    public void save(Article article) {
+    public int save(Article article) {
         article.setId(index.incrementAndGet());
         articles.put(index.get(), article);
+        return index.get();
     }
 
     @Override
