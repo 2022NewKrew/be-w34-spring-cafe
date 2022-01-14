@@ -1,9 +1,18 @@
 package com.kakao.cafe.user.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class UserCreationForm {
+    @Email
     private final String email;
+
+    @NotBlank
     private final String username;
+
+    @NotBlank
     private final String password;
+
     private final String displayName;
 
     public UserCreationForm(String email, String username, String password, String displayName) {

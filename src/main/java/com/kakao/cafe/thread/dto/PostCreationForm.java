@@ -1,8 +1,15 @@
 package com.kakao.cafe.thread.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class PostCreationForm {
+    @NotBlank
     private final String author_username;
+
+    @NotBlank
     private final String title;
+
+    @NotBlank
     private final String content;
 
     public String getAuthor_username() {
