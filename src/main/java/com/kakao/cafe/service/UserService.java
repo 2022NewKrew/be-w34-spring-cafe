@@ -13,4 +13,5 @@ public interface UserService {
     UserDto getUser(@NonNull final String id) throws NoSuchElementException;
     User getUserEntity(@NonNull final String id) throws NoSuchElementException;
     boolean verifyUserLogin(@NonNull final String id, @NonNull final String rawPassword);
+    boolean updateUser(@NonNull final UserDto userDto, @NonNull final String rawPassword, @NonNull final String newRawPassword);
 }

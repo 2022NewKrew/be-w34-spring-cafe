@@ -13,4 +13,6 @@ public interface UserRepository {
     User findById(@NonNull final String id);
 
     List<User> getList();
+
+    boolean update(final long idx, @NonNull final User user);
 }

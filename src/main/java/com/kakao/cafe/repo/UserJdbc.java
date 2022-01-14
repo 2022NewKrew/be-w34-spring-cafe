@@ -84,4 +84,22 @@ public class UserJdbc implements UserRepository {
                 )
         );
     }
+
+    @Override
+    public boolean update(final long idx, @NonNull final User user) {
+        final int result = jdbcTemplate.update(con -> {
+            final PreparedStatement pstmt = con.prepareStatement(
+                    "UPDATE userlist SET password = ?, name = ?, email = ? " +
+                            "WHERE idx = ?"
+            );
+
+            pstmt.setString(1, user.getPassword());
+            pstmt.setString(2, user.getName());
+            pstmt.setString(3, user.getEmail());
+            pstmt.setLong(4, idx);
+            return pstmt;
+        });
+
+        return (result > 0);
+    }
 }

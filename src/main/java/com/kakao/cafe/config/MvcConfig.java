@@ -1,7 +1,9 @@
 package com.kakao.cafe.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -14,5 +16,11 @@ public class MvcConfig implements WebMvcConfigurer {
         // UserController
         registry.addViewController("/signup").setViewName("users/signup");
         registry.addViewController("/dupUserFound").setViewName("users/dupUserFound");
+        registry.addViewController("/editUserFailed").setViewName("users/editUserFailed");
+    }
+
+    @Bean
+    public HiddenHttpMethodFilter httpMethodFilter() {
+        return new HiddenHttpMethodFilter();
     }
 }

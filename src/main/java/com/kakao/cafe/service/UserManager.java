@@ -73,4 +73,29 @@ public class UserManager implements UserService {
 
         return SecurePassword.verify(user.getPassword(), rawPassword);
     }
+
+    @Override
+    public boolean updateUser(
+            @NonNull final UserDto userDto,
+            @NonNull final String rawPassword,
+            @NonNull final String newRawPassword
+    )
+    {
+        final String id = userDto.getId();
+        User user;
+        try {
+            user = getUserEntity(id);
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+
+        if (!SecurePassword.verify(user.getPassword(), rawPassword)) {
+            return false;
+        }
+
+        return userRepository.update(
+                userDto.getIdx(),
+                new User(id, newRawPassword, userDto.getName(), userDto.getEmail())
+        );
+    }
 }
