@@ -11,7 +11,7 @@ CREATE TABLE users (
   last_login_at datetime DEFAULT NULL,          --최종 로그인 일자
   time     datetime NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (seq),
-  CONSTRAINT unq_user_name UNIQUE (name)
+  CONSTRAINT unq_user_name UNIQUE (id)
 );
 
 CREATE TABLE articles (
