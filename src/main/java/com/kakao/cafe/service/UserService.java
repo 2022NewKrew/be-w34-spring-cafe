@@ -3,12 +3,15 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.RequestUserDto;
 import com.kakao.cafe.dto.ResponseUserDto;
+import com.kakao.cafe.repository.user.H2UserRepository;
 import com.kakao.cafe.repository.user.MemoryUserRepository;
 import com.kakao.cafe.repository.user.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,16 +22,20 @@ public class UserService {
     @Autowired
     private ModelMapper modelMapper;
 
-    private final UserRepository userRepository = new MemoryUserRepository();
+    private final UserRepository userRepository;
 
+    public UserService(@Qualifier("h2UserRepository") H2UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
     public void join(RequestUserDto userDto) {
         Optional<User> result = userRepository.findByUserId(userDto.getUserId());
         result.ifPresent(u -> {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         });
-
         User user = modelMapper.map(userDto, User.class);
+
+        user.setJoinedAt(new Date());
         userRepository.save(user);
     }
 

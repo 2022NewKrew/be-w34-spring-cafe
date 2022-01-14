@@ -74,7 +74,7 @@ public class H2ArticleRepository implements ArticleRepository {
         return jdbcTemplate.query(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                return con.prepareStatement("SELECT COUNT(*) FORM ARTICLE");
+                return con.prepareStatement("SELECT COUNT(*) FROM ARTICLE");
             }
         }, new ResultSetExtractor<Long>() {
             @Override
