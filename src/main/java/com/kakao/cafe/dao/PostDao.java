@@ -5,7 +5,6 @@ import com.kakao.cafe.domain.post.Posts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -35,14 +34,9 @@ public class PostDao {
     }
 
     public Post findById(long id) {
-        try {
-            String queryString = String.format("select * from posts where id = '%d'", id);
-            Map<String, Object> res = jdbcTemplate.queryForMap(queryString);
-            return mapToPost(res);
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        }
+        String queryString = String.format("select * from posts where id = '%d'", id);
+        Map<String, Object> res = jdbcTemplate.queryForMap(queryString);
+        return mapToPost(res);
     }
 
     public Posts findAll() {

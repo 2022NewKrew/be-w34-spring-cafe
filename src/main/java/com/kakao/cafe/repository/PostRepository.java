@@ -6,8 +6,6 @@ import com.kakao.cafe.domain.post.Posts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 public class PostRepository {
 
@@ -27,8 +25,8 @@ public class PostRepository {
         postDao.deleteAll();
     }
 
-    public Optional<Post> findById(int id) {
-        return Optional.ofNullable(postDao.findById(id));
+    public Post findById(int id) {
+        return postDao.findById(id);
     }
 
     public Posts findAll() {

@@ -7,9 +7,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @SpringBootTest
 @TestPropertySource("classpath:application.properties")
@@ -43,7 +46,7 @@ public class UserDaoTest {
                 .password("1q2w3e4r")
                 .name("윤렬").build();
 
-        assertThat(userDao.insert(user2)).isFalse();
+        assertThatThrownBy(() -> userDao.insert(user2)).isInstanceOf(DuplicateKeyException.class);
     }
 
 
@@ -67,7 +70,8 @@ public class UserDaoTest {
 
     @Test
     void findNullTest() {
-        assertThat(userDao.findById("notExist")).isNull();
+        assertThatThrownBy(() -> userDao.findById("notExist"))
+                .isInstanceOf(EmptyResultDataAccessException.class);
     }
 
 
@@ -107,8 +111,7 @@ public class UserDaoTest {
                 .password("qwert12345")
                 .name("윤렬change").build();
         userDao.insert(user);
-        boolean isSuccess = userDao.update(user2);
-        assertThat(isSuccess).isTrue();
+        userDao.update(user2);
         User newInfo = userDao.findById(user.getId());
         assertThat(newInfo.getEmail().equals(user2.getEmail())).isTrue();
 
@@ -121,8 +124,7 @@ public class UserDaoTest {
                 .id("yunyul")
                 .password("qwert12345")
                 .name("윤렬change").build();
-        boolean isSucess = userDao.update(user2);
-        assertThat(isSucess).isFalse();
+        assertThat(userDao.update(user2)).isEqualTo(0);
     }
 
 

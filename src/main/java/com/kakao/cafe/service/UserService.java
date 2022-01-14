@@ -9,8 +9,6 @@ import com.kakao.cafe.util.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserService {
 
@@ -26,15 +24,19 @@ public class UserService {
     }
 
     public void insert(User user) {
-        if (!userRepository.insert(user))
-            throw new UserDuplicateException(user.getId());
+        try {
+            userRepository.insert(user);
+        } catch (Exception e) {
+            throw new UserDuplicateException(e, user.getId());
+        }
     }
 
-    public User findById(String id) throws UserNotFoundException {
-        Optional<User> res = userRepository.findById(id);
-        if (res.isEmpty())
-            throw new UserNotFoundException(id);
-        return res.get();
+    public User findById(String id) {
+        try {
+            return userRepository.findById(id);
+        } catch (Exception e) {
+            throw new UserNotFoundException(e, id);
+        }
     }
 
     public void update(User newInfo, String oldPassword) throws InvalidPasswordException {

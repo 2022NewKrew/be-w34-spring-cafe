@@ -7,8 +7,6 @@ import com.kakao.cafe.util.exception.PostNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class PostService {
 
@@ -28,10 +26,11 @@ public class PostService {
     }
 
     public Post findById(int postId) throws PostNotFoundException {
-        Optional<Post> res = postRepository.findById(postId);
-        if (res.isEmpty())
-            throw new PostNotFoundException(postId);
-        return res.get();
+        try {
+            return postRepository.findById(postId);
+        } catch (Exception e) {
+            throw new PostNotFoundException(e, postId);
+        }
     }
 
     public Posts findAll() {

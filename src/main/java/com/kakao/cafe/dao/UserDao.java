@@ -5,8 +5,6 @@ import com.kakao.cafe.domain.user.Users;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -28,27 +26,17 @@ public class UserDao {
         jdbcTemplate = new JdbcTemplate(this.dataSource);
     }
 
-    public boolean insert(User user) {
-        try {
-            String queryString = String.format("insert into Users (ID, PASSWORD, EMAIL, NAME) " +
-                    "values ('%s', '%s', '%s', '%s');", user.getId(), user.getPassword(), user.getEmail(), user.getName());
-            jdbcTemplate.execute(queryString);
-            return true;
-        } catch (DuplicateKeyException e) {
-            LOGGER.error(e.getMessage());
-            return false;
-        }
+    public void insert(User user) {
+        String queryString = String.format("insert into Users (ID, PASSWORD, EMAIL, NAME) " +
+                "values ('%s', '%s', '%s', '%s');", user.getId(), user.getPassword(), user.getEmail(), user.getName());
+        jdbcTemplate.execute(queryString);
+
     }
 
     public User findById(String id) {
-        try {
-            String queryString = String.format("select id, password, email, name from users where ID = '%s'", id);
-            Map<String, Object> res = jdbcTemplate.queryForMap(queryString);
-            return mapToUser(res);
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        }
+        String queryString = String.format("select id, password, email, name from users where ID = '%s'", id);
+        Map<String, Object> res = jdbcTemplate.queryForMap(queryString);
+        return mapToUser(res);
     }
 
     public Users findAll() {
@@ -57,16 +45,13 @@ public class UserDao {
         return new Users(res.stream().map(this::mapToUser).collect(Collectors.toList()));
     }
 
-    public boolean update(User user) {
-        if (findById(user.getId()) == null)
-            return false;
+    public int update(User user) {
         String queryString = String.format("update users " +
                 "set name = '%s', " +
                 "email = '%s', " +
                 "password = '%s' " +
                 "where id = '%s';", user.getName(), user.getEmail(), user.getPassword(), user.getId());
-        jdbcTemplate.execute(queryString);
-        return true;
+        return jdbcTemplate.update(queryString);
     }
 
     public void deleteAll() {

@@ -8,8 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @SpringBootTest
 public class PostRepositoryTest {
@@ -31,7 +33,7 @@ public class PostRepositoryTest {
         PostDto postDto = new PostDto("writer1", "hello", "world");
         Post post = PostMapper.toPost(postDto);
         int id = postRepository.insert(post);
-        Post post2 = postRepository.findById(id).get();
+        Post post2 = postRepository.findById(id);
         assertThat(post.getWriter()).isEqualTo(post2.getWriter());
         assertThat(post.getTitle()).isEqualTo(post2.getTitle());
         assertThat(post.getWriter()).isEqualTo(post2.getWriter());
@@ -39,7 +41,8 @@ public class PostRepositoryTest {
 
     @Test
     void findNullTest() {
-        assertThat(postRepository.findById(-1).isEmpty()).isTrue();
+        assertThatThrownBy(() -> postRepository.findById(-1))
+                .isInstanceOf(EmptyResultDataAccessException.class);
     }
 
     @Test
