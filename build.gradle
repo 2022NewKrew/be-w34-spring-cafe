@@ -17,6 +17,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
 	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
