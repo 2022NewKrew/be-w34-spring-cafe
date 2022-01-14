@@ -32,12 +32,10 @@ public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort, 
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException, UserIdDuplicationException {
         checkUserIdDuplication(signUpRequest.getUserId());
 
-        userInfoRepository.save(new User.Builder()
-                                    .userId(signUpRequest.getUserId())
-                                    .password(signUpRequest.getPassword())
-                                    .name(signUpRequest.getName())
-                                    .email(signUpRequest.getEmail())
-                                    .build());
+        userInfoRepository.save(new User.Builder().userId(signUpRequest.getUserId())
+                                                  .password(signUpRequest.getPassword())
+                                                  .name(signUpRequest.getName())
+                                                  .email(signUpRequest.getEmail()).build());
     }
 
     @Override
@@ -52,13 +50,13 @@ public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort, 
 
     @Override
     public UserInfo findUserByUserId(String userId) throws UserNotExistException {
-        User user = userInfoRepository.findByUserId(userId).orElse(null);
+        UserVO userVO = userInfoRepository.findByUserId(userId).orElse(null);
 
-        if (user == null) {
+        if (userVO == null) {
             throw new UserNotExistException("존재하지 않는 회원입니다.");
         }
 
-        return new UserInfo(user.getUserId(), user.getName(), user.getEmail());
+        return UserInfo.from(userVO);
     }
 
     private void checkUserIdDuplication(String userId) throws UserIdDuplicationException {
@@ -70,17 +68,16 @@ public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort, 
     @Override
     public void updateUser(String userId, UpdateRequest updateRequest)
         throws UserNotExistException, IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
-        User user = userInfoRepository.findByUserId(userId).orElse(null);
+        UserVO userVO = userInfoRepository.findByUserId(userId).orElse(null);
 
-        if (user == null) {
+        if (userVO == null) {
             throw new UserNotExistException("존재하지 않는 회원입니다.");
         }
 
-        userInfoRepository.save(new User.Builder()
-                                    .userId(userId)
-                                    .password(user.getPassword())
-                                    .name(updateRequest.getName())
-                                    .email(updateRequest.getEmail())
-                                    .build());
+        userInfoRepository.update(new User.Builder().userId(userId)
+                                                    .password(userVO.getPassword())
+                                                    .name(updateRequest.getName())
+                                                    .email(updateRequest.getEmail())
+                                                    .build());
     }
 }

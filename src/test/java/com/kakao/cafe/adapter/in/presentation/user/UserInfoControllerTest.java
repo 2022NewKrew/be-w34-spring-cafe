@@ -9,6 +9,7 @@ import com.kakao.cafe.application.user.port.in.GetUserInfoUseCase;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ class UserInfoControllerTest {
 
     @MockBean
     private GetUserInfoUseCase getUserInfoUseCase;
+
+    @MockBean
+    private DataSource dataSource;
 
     @DisplayName("회원 목록 출력 테스트")
     @Test

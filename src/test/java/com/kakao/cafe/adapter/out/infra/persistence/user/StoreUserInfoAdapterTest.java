@@ -152,7 +152,7 @@ class StoreUserInfoAdapterTest {
                                            .name("Champion")
                                            .email("Champion@kakao.com")
                                            .build();
-        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
+        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
 
         // then
         assertThatExceptionOfType(UserIdDuplicationException.class)
@@ -170,7 +170,7 @@ class StoreUserInfoAdapterTest {
                                            .name("HaChanho")
                                            .email("champ@kakao.com")
                                            .build();
-        given(userInfoRepository.findByUserId(userId)).willReturn(Optional.of(givenUser));
+        given(userInfoRepository.findByUserId(userId)).willReturn(Optional.of(UserVO.from(givenUser)));
 
         // when
         UserInfo foundUser = storeUserInfoAdapter.findUserByUserId(userId);
@@ -202,7 +202,7 @@ class StoreUserInfoAdapterTest {
                                            .email("champ@kakao.com")
                                            .build();
         UpdateRequest updateRequest = new UpdateRequest("kakao", "kakao@kakao.com");
-        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
+        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
 
         // then
         assertThatNoException().isThrownBy(() -> storeUserInfoAdapter.updateUser(givenUser.getUserId(), updateRequest));
@@ -219,7 +219,7 @@ class StoreUserInfoAdapterTest {
                                            .email("champ@kakao.com")
                                            .build();
         UpdateRequest updateRequest = new UpdateRequest("", "kakao@kakao.com");
-        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
+        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
 
         // then
         assertThatExceptionOfType(IllegalUserNameException.class).isThrownBy(() -> storeUserInfoAdapter.updateUser(
@@ -239,7 +239,7 @@ class StoreUserInfoAdapterTest {
                                            .email("champ@kakao.com")
                                            .build();
         UpdateRequest updateRequest = new UpdateRequest("kaka o", "kakao@kakao.com");
-        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
+        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
 
         // then
         assertThatExceptionOfType(IllegalUserNameException.class).isThrownBy(() -> storeUserInfoAdapter.updateUser(
@@ -259,7 +259,7 @@ class StoreUserInfoAdapterTest {
                                            .email("champ@kakao.com")
                                            .build();
         UpdateRequest updateRequest = new UpdateRequest("kakao", "");
-        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
+        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
 
         // then
         assertThatExceptionOfType(IllegalEmailException.class).isThrownBy(() -> storeUserInfoAdapter.updateUser(
@@ -279,7 +279,7 @@ class StoreUserInfoAdapterTest {
                                            .email("champ@kakao.com")
                                            .build();
         UpdateRequest updateRequest = new UpdateRequest("kakao", "kaka o@kakao.com");
-        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
+        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
 
         // then
         assertThatExceptionOfType(IllegalEmailException.class)

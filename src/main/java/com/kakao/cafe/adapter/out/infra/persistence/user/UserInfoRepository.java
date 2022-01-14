@@ -8,7 +8,9 @@ public interface UserInfoRepository {
 
     void save(User user);
 
-    List<User> getAllUserList();
+    void update(User user);
 
-    Optional<User> findByUserId(String userId);
+    List<UserVO> getAllUserList();
+
+    Optional<UserVO> findByUserId(String userId);
 }

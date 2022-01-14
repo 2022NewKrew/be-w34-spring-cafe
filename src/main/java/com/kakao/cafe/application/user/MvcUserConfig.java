@@ -1,6 +1,6 @@
 package com.kakao.cafe.application.user;
 
-import com.kakao.cafe.adapter.out.infra.persistence.user.InMemoryUserInfoRepository;
+import com.kakao.cafe.adapter.out.infra.persistence.user.JdbcUserInfoRepository;
 import com.kakao.cafe.adapter.out.infra.persistence.user.StoreUserInfoAdapter;
 import com.kakao.cafe.adapter.out.infra.persistence.user.UserInfoRepository;
 import com.kakao.cafe.application.user.port.in.GetUserInfoUseCase;
@@ -12,6 +12,7 @@ import com.kakao.cafe.application.user.port.out.UpdateUserInfoPort;
 import com.kakao.cafe.application.user.service.GetUserInfoService;
 import com.kakao.cafe.application.user.service.SignUpUserService;
 import com.kakao.cafe.application.user.service.UpdateUserInfoService;
+import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,9 +20,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MvcUserConfig implements WebMvcConfigurer {
 
+    public final DataSource dataSource;
+
+    public MvcUserConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     @Bean
     public UserInfoRepository userInfoRepository() {
-        return new InMemoryUserInfoRepository();
+        return new JdbcUserInfoRepository(dataSource);
     }
 
     @Bean

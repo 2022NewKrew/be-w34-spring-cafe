@@ -1,6 +1,6 @@
 package com.kakao.cafe.application.article.dto;
 
-import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.adapter.out.infra.persistence.article.ArticleVO;
 
 public class ArticleInfo {
 
@@ -32,7 +32,12 @@ public class ArticleInfo {
         return createdAt;
     }
 
-    public static ArticleInfo from(Article article) {
-        return new ArticleInfo(article.getId(), article.getWriter(), article.getTitle(), article.getCreatedAt());
+    public static ArticleInfo from(ArticleVO articleVO) {
+        return new ArticleInfo(
+            articleVO.getId(),
+            articleVO.getWriter(),
+            articleVO.getTitle(),
+            articleVO.getCreatedAt()
+        );
     }
 }
