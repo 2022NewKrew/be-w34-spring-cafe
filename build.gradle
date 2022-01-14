@@ -34,6 +34,10 @@ dependencies {
 
 	// Model Mapper
 	implementation 'org.modelmapper:modelmapper:2.4.5'
+
+	// DB
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'com.h2database:h2:1.4.200'
 }
 
 test {

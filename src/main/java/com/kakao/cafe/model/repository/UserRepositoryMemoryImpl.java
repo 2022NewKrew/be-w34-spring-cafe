@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
+//@Repository
 public class UserRepositoryMemoryImpl implements UserRepository {
     private static final Map<Long, User> storedUsers = new HashMap<>();
     private static long maxID = 0L;
