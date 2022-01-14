@@ -1,38 +1,38 @@
-package com.kakao.cafe;
+package com.kakao.cafe.domain;
 
+import lombok.Getter;
+
+@Getter
 public class User {
 
-    private final int id;
+    private final Long uid;
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    public User(int id, String userId, String password, String name, String email) {
-        this.id = id;
+    public User(String userId, String password, String name, String email) {
+        uid = 0L;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
+    public void validate() {
+        validatePassword();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
+    private void validatePassword() {
+        if (password.length() < 6) {
+            throw new IllegalArgumentException("[ERROR] 비밀번호는 최소 6자 이상이어야 합니다.");
+        }
     }
 
     @Override
     public String toString() {
         return "User{" +
-            "id=" + id + '\'' +
-            ", userId='" + userId + '\'' +
+            "userId='" + userId + '\'' +
             ", password='" + password + '\'' +
             ", name='" + name + '\'' +
             ", email='" + email + '\'' +
