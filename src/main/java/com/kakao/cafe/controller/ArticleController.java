@@ -34,10 +34,10 @@ public class ArticleController {
         try {
             articleService.postArticle(article);
         } catch (SQLException e) {
-            logger.error("Article: " + article, e);
+            logger.error("/articles/questions, failed to create article (article = {})", article, e);
             return "redirect:/";
         } catch (NoSuchElementException e) {
-            logger.error("Article : " + article, e);
+            logger.error("/articles/questions, failed to create article. writer(id = {}) does not exist", article.getWriter(), e);
             return "redirect:/";
         }
         return "redirect:/";
@@ -54,7 +54,7 @@ public class ArticleController {
             model.addAttribute("article", article);
             model.addAttribute("writer", writer);
         } catch (NoSuchElementException e) {
-            logger.error("", e);
+            logger.error("/articles/index, article id = {}", index, e);
             return "redirect:/";
         }
 

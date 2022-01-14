@@ -3,7 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.dto.UserDto;
-import com.kakao.cafe.repository.UserDao;
+import com.kakao.cafe.repository.UserRepository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,24 +11,24 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class UserService {
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
-    public UserService(UserDao userDao) {
-        this.userDao = userDao;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public void signup(UserDto user) throws SQLException {
-        userDao.save(user.toEntity());
+        userRepository.save(user.toEntity());
     }
 
     public UserProfileDto findById(String userId) throws NoSuchElementException {
-        User user = userDao.findByUserId(userId);
+        User user = userRepository.findByUserId(userId);
 
         return new UserProfileDto(user.getUserId(), user.getEmail(), user.getName());
     }
 
     public UserProfileDto findByName(String name) throws NoSuchElementException {
-        User user = userDao.findByName(name);
+        User user = userRepository.findByName(name);
 
         return new UserProfileDto(user.getUserId(), user.getEmail(), user.getName());
     }
@@ -36,7 +36,7 @@ public class UserService {
     public List<UserProfileDto> getUserList() {
         List<UserProfileDto> userDtoList = new ArrayList<>();
 
-        for (User user : userDao.findAll()) {
+        for (User user : userRepository.findAll()) {
             userDtoList.add(new UserProfileDto(user.getUserId(), user.getEmail(), user.getName()));
         }
 
@@ -44,7 +44,7 @@ public class UserService {
     }
 
     public void updateUserProfile(UserProfileDto newProfile, String password) throws NoSuchElementException, IllegalArgumentException {
-        User user = userDao.findByUserId(newProfile.getUserId());
+        User user = userRepository.findByUserId(newProfile.getUserId());
 
         if (!(password != null && password.equals(user.getPassword()))) {
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
@@ -57,6 +57,6 @@ public class UserService {
                 user.getPassword()
                 );
 
-        userDao.update(newUser);
+        userRepository.update(newUser);
     }
 }

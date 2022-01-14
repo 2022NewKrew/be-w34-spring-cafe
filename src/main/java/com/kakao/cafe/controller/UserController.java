@@ -32,9 +32,10 @@ public class UserController {
         try {
             userService.signup(user);
         } catch (SQLException e) {
-            logger.error("User : " + user, e);
+            logger.error("/users/create, user signup failed. UserDto = {}", user, e);
             return "redirect:/";
         }
+        logger.info("/users/create, user created. id = {}", user.getUserId());
 
         return "redirect:/users/list";
     }
@@ -56,9 +57,10 @@ public class UserController {
             user = userService.findById(userId);
             model.addAttribute("user", user);
         } catch (NoSuchElementException e) {
-            logger.error("", e);
+            logger.error("/users/{userId}, userId = {}. User does not exist.", userId, e);
             return "redirect:/";
         }
+        logger.info("/users/{userId}, User(id = {}) founded.", userId);
 
         return "/user/profile";
     }
@@ -72,7 +74,7 @@ public class UserController {
             user = userService.findById(userId);
             model.addAttribute("user", user);
         } catch (NoSuchElementException e) {
-            logger.error("", e);
+            logger.error("/users/{userId}/form, userId = {}. User does not exist.", userId, e);
             return "redirect:/";
         }
 
@@ -86,9 +88,13 @@ public class UserController {
 
         try {
             userService.updateUserProfile(newProfile, userUpdateDto.getPassword());
-        } catch (Exception e) {
-            logger.error("UserProfileDto : " + newProfile, e);
+        } catch (NoSuchElementException e) {
+            logger.error("/users/{userId}/update, User(id = {}) failed to update Profile. User does not exist.", userId, e);
+            return "redirect:/";
+        } catch (IllegalArgumentException e) {
+            logger.error("/users/{userId}/update, User(id = {}) failed to update Profile. Incorrect password.", userId, e);
         }
+        logger.info("/users/{userId}/update, User(id = {}) updated profile.", userId);
 
         return "redirect:/users/list";
     }
