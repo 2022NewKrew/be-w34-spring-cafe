@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div class="container flex flex-col mx-auto">
+    {{> fragments/header}}
+
+    <div class="flex flex-col justify-center h-40 bg-yellow-400 px-12 py-8 font-medium space-y-2">
+        <h3 class="text-xl">안녕하세요</h3>
+        <h1 class="text-2xl">카카오 교육 페이지 입니다.</h1>
+    </div>
+
+    <div class="my-8">
+        <p class="ml-1">전체 글 {{ sizeOfPosts }}명</p>
+        <div class="flex flex-col my-2">
+            <div class="flex text-center py-3 border-t border-b bg-gray-100">
+                <span class="flex-1">제목</span>
+                <span class="flex-none w-40">작성자</span>
+                <span class="flex-none w-40">작성일자</span>
+                <span class="flex-none w-24">조회수</span>
+            </div>
+            {{#posts}}
+            <a href="/posts/{{ id }}" class="flex text-center py-3 border-b">
+                <span class="flex-1 text-left px-4">{{ title }}</span>
+                <span class="flex-none w-40">{{ writer }}</span>
+                <span class="flex-none w-40">{{ formattedCreatedAt }}</span>
+                <span class="flex-none w-24">0</span>
+            </a>
+            {{/posts}}
+        </div>
+        <div class="flex justify-end">
+            <a href="/posts/write" class="text-sm mr-1 px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black">글쓰기</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

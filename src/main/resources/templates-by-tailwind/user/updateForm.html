@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보 수정</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div class="container flex flex-col mx-auto">
+    {{> fragments/header}}
+
+    <div class="flex justify-center my-8">
+        <div>
+            <h1 class="text-4xl text-center font-medium tracking-wider mb-16">회원정보 수정</h1>
+            <form class="flex flex-col space-y-8" action="/users/{{ user.id }}" method="post">
+                <input type="hidden" name="_method" value="put" />
+                <div class="relative">
+                    <div class="px-4 py-2 border">
+                        <label for="email" class="inline-block w-28">이메일</label>
+                        <input type="email" class="w-64 placeholder:text-sm" id="email" name="email" value="{{ user.email }}" placeholder="이메일을 입력하세요" />
+                    </div>
+                    {{#email}}
+                    <p class="absolute -bottom-6 left-32 text-sm text-red-500">{{this}}</p>
+                    {{/email}}
+                </div>
+                <div class="relative">
+                    <div class="px-4 py-2 border">
+                        <label for="nickname" class="inline-block w-28">닉네임</label>
+                        <input class="w-64 placeholder:text-sm" id="nickname" name="nickname" value="{{ user.nickname }}" placeholder="닉네임을 입력하세요" />
+                    </div>
+                    {{#nickname}}
+                    <p class="absolute -bottom-6 left-32 text-sm text-red-500">{{this}}</p>
+                    {{/nickname}}
+                </div>
+                <div class="relative">
+                    <div class="px-4 py-2 border">
+                        <label for="currentPassword" class="inline-block w-28">현재 비밀번호</label>
+                        <input type="password" class="w-64 placeholder:text-sm" id="currentPassword" name="currentPassword" placeholder="현재 비밀번호를 입력하세요" />
+                    </div>
+                    {{#currentPassword}}
+                    <p class="absolute -bottom-6 left-32 text-sm text-red-500">{{this}}</p>
+                    {{/currentPassword}}
+                </div>
+                <div class="relative">
+                    <div class="px-4 py-2 border">
+                        <label for="password" class="inline-block w-28">변경할 비밀번호</label>
+                        <input type="password" class="w-64 placeholder:text-sm" id="password" name="password" placeholder="변경할 비밀번호를 입력하세요" />
+                    </div>
+                    {{#password}}
+                    <p class="absolute -bottom-6 left-32 text-sm text-red-500">{{this}}</p>
+                    {{/password}}
+                </div>
+                <div class="flex justify-center">
+                    <input type="submit" value="완료" class="w-3/5 text-sm px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black cursor-pointer" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
