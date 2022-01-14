@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.UserSignUpDTO;
 import com.kakao.cafe.model.Users;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +17,8 @@ public class UserMemoryRepository implements UserRepository {
     private final Users users = new Users();
 
     @Override
-    public void signUp(User user) {
-        users.addUser(user);
+    public void signUp(UserSignUpDTO userSignUpDTO) {
+        users.addUser(userSignUpDTO);
     }
 
     @Override

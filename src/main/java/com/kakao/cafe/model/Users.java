@@ -9,8 +9,10 @@ import java.util.stream.Collectors;
 public class Users {
     private final Map<String, User> users = new HashMap<>();
 
-    public void addUser(User user){
-        validateDuplicateUserId(user.getUserId());
+    public void addUser(UserSignUpDTO userSignUpDTO){
+        validateDuplicateUserId(userSignUpDTO.getUserId());
+
+        User user = new User(userSignUpDTO);
 
         users.put(user.getUserId(), user);
     }

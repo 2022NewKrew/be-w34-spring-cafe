@@ -1,11 +1,12 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.UserSignUpDTO;
 
 import java.util.List;
 
 public interface UserRepository {
-    void signUp(User user);
+    void signUp(UserSignUpDTO userSignUpDTO);
     List<User> findAllUsers();
     User findUserByUserId(String userId);
 }

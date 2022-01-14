@@ -1,24 +1,21 @@
 package com.kakao.cafe.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
-@AllArgsConstructor
 @Getter
 public class User {
-
-    @NotBlank
     private String userId;
-
-    @NotBlank
     private String password;
-
-    @NotBlank
     private String name;
-
-    @Email
     private String email;
+
+    public User(UserSignUpDTO userSignUpDTO) {
+        this.userId = userSignUpDTO.getUserId();
+        this.password = userSignUpDTO.getPassword();
+        this.name = userSignUpDTO.getName();
+        this.email = userSignUpDTO.getEmail();
+    }
 }
+
+
+

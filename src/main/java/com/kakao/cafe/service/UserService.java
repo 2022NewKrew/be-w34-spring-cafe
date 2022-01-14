@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.UserSignUpDTO;
 import com.kakao.cafe.repository.UserMemoryRepository;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,8 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public void signUp(User user) {
-        userRepository.signUp(user);
+    public void signUp(UserSignUpDTO userSignUpDTO) {
+        userRepository.signUp(userSignUpDTO);
     }
 
     public List<User> findAllUsers() {
