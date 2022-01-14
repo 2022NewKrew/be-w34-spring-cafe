@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/signUp")
-    public String signUpUser(User user){
+    public String signUpUser(@Valid User user){
         userService.signUp(user);
         return "redirect:/user/list";
     }
