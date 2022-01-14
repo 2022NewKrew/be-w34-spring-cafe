@@ -47,7 +47,7 @@ class UserServiceTest {
         verify(jdbcUserRepositoryImpl, times(1)).save(any());
     }
 
-    @DisplayName("createUser 테스트 - CreateUserProfileRequest가 있고 같은 유저아이디가 존재할때 AlreadyEixstUser Exception Throw")
+    @DisplayName("createUser 테스트 - CreateUserProfileRequest가 있고 같은 유저아이디가 존재할때 AlreadyExistUser Exception Throw")
     @Test
     void createUser_CreateUserProfileRequestAndExistSameIdUser_ThrowAlreadyExistUserException() {
         //given

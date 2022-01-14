@@ -20,7 +20,7 @@ class UserTest {
         Assertions.assertTrue(result);
     }
 
-    @DisplayName("isCorrectPassword 테스트 - 일치하는 패스워드인 경우 False를 반환")
+    @DisplayName("isCorrectPassword 테스트 - 일치하지 않는 패스워드인 경우 False를 반환")
     @Test
     void isCorrectPassword_CorrectPassword_False() {
         // given
