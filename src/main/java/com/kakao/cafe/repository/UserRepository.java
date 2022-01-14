@@ -43,6 +43,6 @@ public class UserRepository {
         return users.stream()
                 .filter(user -> Objects.equals(user.getUserId(), userId))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(IllegalArgumentException::new);
     }
 }

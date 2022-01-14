@@ -1,8 +1,12 @@
 package com.kakao.cafe.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class ArticleRegistrationDto {
     private Integer articleId;
+    @NotBlank(message = "게시글 제목이 null 이거나 한개의 띄어쓰기만 있습니다")
     private String title;
+    @NotBlank(message = "게시글 내용이 null 이거나 띄어쓰기만 있습니다")
     private String content;
 
     public Integer getArticleId() {

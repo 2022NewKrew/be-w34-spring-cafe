@@ -23,6 +23,6 @@ public class ArticleRepository {
         return articles.stream()
                 .filter(article -> Objects.equals(article.getArticleId(), articleId))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(IllegalArgumentException::new);
     }
 }
