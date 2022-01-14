@@ -1,7 +1,7 @@
-package com.kakao.cafe.service;
+package com.kakao.cafe.user.service;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.repository.UserRepository;
 import java.util.Collection;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,14 +16,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void signup(User targetUser) throws IllegalArgumentException {
-        targetUser.validate();
-        validateDuplicatedUserId(targetUser.getUserId());
-        userRepository.createUser(targetUser);
+    public void signup(User user) throws IllegalArgumentException {
+        user.validate();
+        validateDuplicatedUserId(user.getUserId());
+        userRepository.createUser(user);
     }
 
-    private void validateDuplicatedUserId(String targetUserId) throws IllegalArgumentException {
-        if (userRepository.isUserIdUsed(targetUserId)) {
+    private void validateDuplicatedUserId(String userId) throws IllegalArgumentException {
+        if (userRepository.isUserIdUsed(userId)) {
             throw new IllegalArgumentException("[ERROR] 이미 사용중인 아이디입니다.");
         }
     }
@@ -32,9 +32,9 @@ public class UserService {
         return userRepository.readUserList();
     }
 
-    public User getUserFromUserId(String targetUserId) throws ResponseStatusException{
-        if (userRepository.isUserIdUsed(targetUserId)) {
-            return userRepository.readByUserId(targetUserId);
+    public User getUserFromUserId(String userId) throws ResponseStatusException{
+        if (userRepository.isUserIdUsed(userId)) {
+            return userRepository.readByUserId(userId);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "[ERROR] 사용자를 찾을 수 없습니다.");
         }

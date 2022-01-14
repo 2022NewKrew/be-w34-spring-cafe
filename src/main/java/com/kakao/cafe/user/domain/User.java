@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.user.domain;
 
 import lombok.Getter;
 
@@ -12,7 +12,7 @@ public class User {
     private final String email;
 
     public User(String userId, String password, String name, String email) {
-        uid = 0L;
+        this.uid = 0L;
         this.userId = userId;
         this.password = password;
         this.name = name;

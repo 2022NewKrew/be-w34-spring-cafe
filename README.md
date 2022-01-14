@@ -2,6 +2,7 @@
 
 
 ## 초기설정
+
 - [x] 프로젝트 생성
     - [x] java 11 gradle 로 생성하기
     - [x] .gitignore 설정하기
@@ -10,6 +11,7 @@
 
 
 ## Spring Cafe 1-1
+
 - [ ] Spring Layered Architecture 적용
   
   - [x] Domain
@@ -52,3 +54,41 @@
       - [ ] 고유한 uid 발급
     - [x] 회원 프로필
       - [x] 없는 프로필 조회 시 404
+
+
+## Spring Cafe 1-2
+
+- [ ] qna 게시글
+
+  - [x] 게시글 쓰기
+    - [x] view 만들기 (form)
+    - [x] ArticleController 와 그 메소드 구현하기
+    - [x] ArrayList 의 inMemoryDB Repository 구현하기
+    - [x] Article Domain 구현하기
+    - [x] Service 로 Controller 와 Repository 연결하기
+
+  - [x] 게시글 목록 조회
+    - [x] view 만들기 (list)
+    - [x] 기능 구현하기
+
+  - [ ] 게시글 상세 조회
+    - [ ] view 만들기 (show)
+    - [ ] articleId 를 ArrayList.size() + 1 로 사용하기
+    - [ ] 기능 구현하기
+
+  - [ ] ArticleDto 사용하기
+
+- [ ] 회원정보 수정
+  - [ ] view 만들기 (updateForm)
+  - [ ] pathVariable 로 controller 메소드 구현하기
+  - [ ] view 에 기존 데이터 출력하기
+  - [ ] 기능 구현하기
+
+
+- [ ] 테스트코드 작성
+
+  - [ ] ArticleService
+    - [ ] 
+
+  - [ ] UserService
+    - [ ] 

@@ -1,15 +1,15 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.user.repository;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.user.domain.User;
 import java.util.Collection;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository {
 
-    void createUser(User targetUser);
+    void createUser(User user);
 
-    boolean isUserIdUsed(String targetUserId);
+    boolean isUserIdUsed(String userId);
 
     Collection<User> readUserList();
 

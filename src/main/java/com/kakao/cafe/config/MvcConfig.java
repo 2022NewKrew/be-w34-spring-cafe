@@ -14,8 +14,9 @@ public class MvcConfig implements WebMvcConfigurer {
         // Ordered.LOWEST_PRECEDENCE 로 하면 매핑 우선순위가 밀려서 "/" 가 "index.html" 로 연결된다.
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
-        registry.addRedirectViewController("/", "users");
-        registry.addViewController("/user/signup").setViewName("user/form");
+        registry.addRedirectViewController("/", "articles");
+        registry.addViewController("/users/signup").setViewName("user/form");
+        registry.addViewController("/articles/form").setViewName("article/form");
     }
 
     @Override

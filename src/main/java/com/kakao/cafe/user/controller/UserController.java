@@ -1,7 +1,7 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.user.controller;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.service.UserService;
 import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ public class UserController {
 
     @PostMapping()
     public String postSignup(String userId, String password, String name, String email) {
-        User user = new User(userId, password, name, email);
+        final User user = new User(userId, password, name, email);
         userService.signup(user);
         logger.info("POST request on Signup -> {}", user);
         return "redirect:users";
@@ -34,15 +34,15 @@ public class UserController {
 
     @GetMapping()
     public String getUserList(Model model) {
-        Collection<User> users = userService.getUsers();
+        final Collection<User> users = userService.getUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{targetUserId}")
-    public String getUserProfile(@PathVariable("targetUserId") String targetUserId, Model model) {
+    public String getUserProfile(@PathVariable("targetUserId") String userId, Model model) {
         try {
-            User user = userService.getUserFromUserId(targetUserId);
+            final User user = userService.getUserFromUserId(userId);
             model.addAttribute("userId", user.getUserId());
             model.addAttribute("usename", user.getName());
             model.addAttribute("email", user.getEmail());

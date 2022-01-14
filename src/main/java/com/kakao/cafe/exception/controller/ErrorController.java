@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.exception.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

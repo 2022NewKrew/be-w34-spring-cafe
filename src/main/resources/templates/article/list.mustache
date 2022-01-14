@@ -1,0 +1,37 @@
+{{> index/header}}
+{{> index/navbar}}
+
+<div class="container" id="main">
+   <div class="col-md-10 col-md-offset-1">
+      <div class="panel panel-default">
+          <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>제목</th>
+                  <th>작성자</th>
+                  <th>내용</th>
+                  <th>작성</th>
+                  <th>수정</th>
+<!--                  <th></th>-->
+                </tr>
+              </thead>
+              <tbody>
+                {{#articles}}
+                <tr>
+                  <th scope="row">{{aid}}</th>
+                  <td><a href="/articles/{{aid}}">{{title}}</a></td>
+                  <td><a href="/users/{{writer.userId}}">{{writer.userId}}</a></td>
+                  <td>{{contents}}</td>
+                  <td>{{createdAt}}</td>
+                  <td>{{updatedAt}}</td>
+<!--                  <td><a href="#" class="btn btn-success" role="button">수정</a></td>-->
+                </tr>
+                {{/articles}}
+              </tbody>
+          </table>
+        </div>
+    </div>
+</div>
+
+{{> index/footer}}
