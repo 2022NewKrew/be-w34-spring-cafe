@@ -1,18 +1,20 @@
 package com.kakao.cafe.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 public class User {
-    @Getter
+    @Setter(AccessLevel.NONE)
     private final String userId;
-    @Setter
+
+    @Getter(AccessLevel.NONE)
     private String password;
-    @Getter @Setter
+
     private String name;
-    @Getter @Setter
     private String email;
-    @Getter @Setter
     private String pictureAddress;
 
     private static final String DUMMY_ADDRESS = "/images/80-text.png";

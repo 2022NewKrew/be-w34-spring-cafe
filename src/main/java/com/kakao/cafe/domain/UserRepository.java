@@ -8,9 +8,10 @@ import java.util.List;
 
 @Repository
 public class UserRepository {
-    private static final List<User> userLst = new ArrayList<>();
+    private final List<User> userLst;
 
     public UserRepository() {
+        userLst = new ArrayList<>();
         SignUp("skian", "1234", "faust", "faust.like@kakaocorp.com");
         SignUp("dbwhdgus", "1234", "yjh", "dbwhdgus12@naver.com");
     }
