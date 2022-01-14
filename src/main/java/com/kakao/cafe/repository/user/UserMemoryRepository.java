@@ -1,15 +1,16 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.user;
 
-import com.kakao.cafe.domain.dto.UserCreateCommand;
-import com.kakao.cafe.domain.dto.UserModifyCommand;
+import com.kakao.cafe.domain.dto.user.UserCreateCommand;
+import com.kakao.cafe.domain.dto.user.UserListShow;
+import com.kakao.cafe.domain.dto.user.UserModifyCommand;
 import com.kakao.cafe.domain.entity.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserMemoryRepository implements UserRepository{
@@ -45,8 +46,10 @@ public class UserMemoryRepository implements UserRepository{
     }
 
     @Override
-    public List<User> getAllUser() {
-        return Collections.unmodifiableList(this.repository);
+    public List<UserListShow> getAllUser() {
+        return this.repository.stream()
+                .map(UserListShow::new)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private int findByName(String name) {

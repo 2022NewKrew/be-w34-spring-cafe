@@ -1,15 +1,16 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.dto.ArticleCreateCommand;
-import com.kakao.cafe.domain.entity.Article;
-import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.domain.dto.article.ArticleContents;
+import com.kakao.cafe.domain.dto.article.ArticleCreateCommand;
+import com.kakao.cafe.domain.dto.article.ArticleListShow;
+import com.kakao.cafe.repository.article.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ArticleService {
-    private ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
 
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
@@ -19,11 +20,11 @@ public class ArticleService {
         articleRepository.store(acc);
     }
 
-    public Article getArticle(Long id) {
+    public ArticleContents getArticle(Long id) {
         return articleRepository.retrieve(id);
     }
 
-    public List<Article> getAllArticles() {
+    public List<ArticleListShow> getAllArticles() {
         return articleRepository.toList();
     }
 }

@@ -1,6 +1,6 @@
 package com.kakao.cafe.domain.entity;
 
-import com.kakao.cafe.util.TimeStringParser;
+import com.kakao.cafe.web.util.TimeStringParser;
 
 import java.time.LocalDateTime;
 

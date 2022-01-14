@@ -1,4 +1,6 @@
-package com.kakao.cafe.domain.dto;
+package com.kakao.cafe.domain.dto.user;
+
+import com.kakao.cafe.domain.entity.User;
 
 public class UserCreateCommand {
     private final String userId;

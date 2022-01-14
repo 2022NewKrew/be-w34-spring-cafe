@@ -1,12 +1,15 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.article;
 
-import com.kakao.cafe.domain.dto.ArticleCreateCommand;
+import com.kakao.cafe.domain.dto.article.ArticleContents;
+import com.kakao.cafe.domain.dto.article.ArticleCreateCommand;
+import com.kakao.cafe.domain.dto.article.ArticleListShow;
 import com.kakao.cafe.domain.entity.Article;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class ArticleMemoryRepository implements ArticleRepository {
@@ -23,9 +26,9 @@ public class ArticleMemoryRepository implements ArticleRepository {
     }
 
     @Override
-    public Article retrieve(Long id) {
-        Long target = Long.sum(id, -1L);
-        return this.repository.get(target.intValue());
+    public ArticleContents retrieve(Long id) {
+        long target = Long.sum(id, -1L);
+        return new ArticleContents(this.repository.get((int) target));
     }
 
     @Override
@@ -39,8 +42,10 @@ public class ArticleMemoryRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> toList() {
-        return this.repository;
+    public List<ArticleListShow> toList() {
+        return this.repository.stream()
+                .map(ArticleListShow::new)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public Long nextId() {
