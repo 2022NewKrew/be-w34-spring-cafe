@@ -41,6 +41,6 @@ public class ArticleController {
     public String qnaShow(Model model, @PathVariable String id) {
         ShowArticleDto article = articleService.findById(id);
         model.addAttribute("article", article);
-        return "/qna/show";
+        return "qna/show";
     }
 }
