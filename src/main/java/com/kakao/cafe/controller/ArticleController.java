@@ -3,8 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.ArticleDTO;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +14,14 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+@Slf4j
 @Controller
 public class ArticleController {
-    Logger logger = LoggerFactory.getLogger(ArticleController.class);
+    private static final String NOT_LOGGED_IN_MESSAGE = "로그인후 이용해 주세요!";
+
     @Resource(name = "articleService")
     private ArticleService articleService;
 
-    private static final String NOT_LOGGED_IN_MESSAGE = "로그인후 이용해 주세요!";
 
     @GetMapping
     String posts(Model model) {
@@ -40,7 +40,7 @@ public class ArticleController {
 
     @PostMapping("/articles")
     String articles(@Valid ArticleDTO article, Model model) {
-        logger.info("create Article -> Writer : {}, Title : {}", article.getWriterId(), article.getTitle());
+        log.info("create Article -> Writer : {}, Title : {}", article.getWriterId(), article.getTitle());
         return "redirect:/";
     }
 
@@ -50,7 +50,7 @@ public class ArticleController {
         ArticleDTO article = articleService.getArticleById(articleId);
         model.addAttribute("article", article);
         model.addAttribute("articleId", articleId);
-        logger.info("get Article -> articleId : {}", articleId);
+        log.info("get Article -> articleId : {}", articleId);
         return "qna/show";
     }
 
