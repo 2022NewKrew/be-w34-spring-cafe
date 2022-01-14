@@ -37,6 +37,6 @@ public class PostController {
         PostResponseDto post = postService.findPostById(id);
         model.addAttribute("post", post);
 
-        return "/qna/show";
+        return "qna/show";
     }
 }
