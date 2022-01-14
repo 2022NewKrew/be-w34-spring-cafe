@@ -13,11 +13,13 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-mustache:2.6.2'
-	implementation 'org.springframework.boot:spring-boot-starter-web:2.6.2'
-	implementation 'junit:junit:4.13.2'
-	testImplementation 'org.assertj:assertj-core:3.21.0'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.2'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+	implementation group: 'com.h2database', name: 'h2'
+	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.assertj:assertj-core'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }
 

@@ -19,19 +19,19 @@ public class ArticleController {
 
     @GetMapping
     public String getArticleList(Model model) {
-        model.addAttribute("articles", articleService.findAll());
+        model.addAttribute("articles", articleService.getArticleList());
         return "index";
     }
 
     @PostMapping("/questions")
-    public String createArticle(String writer, String title, String contents) {
-        articleService.create(new ArticleCreateRequestDto(writer, title, contents));
+    public String postArticle(String writer, String title, String contents) {
+        articleService.postArticle(new ArticleCreateRequestDto(writer, title, contents));
         return "redirect:/";
     }
 
     @GetMapping("/articles/{id}")
     public String getArticleDetail(@PathVariable Long id, Model model) {
-        model.addAttribute("article", articleService.findById(id));
+        model.addAttribute("article", articleService.getArticleDetail(id));
         return "qna/show";
     }
 }

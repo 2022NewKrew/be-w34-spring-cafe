@@ -2,29 +2,34 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.user.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private static final List<User> userList = new ArrayList<>();
-    private static Long idNumber = 0L;
+    private final Map<Long, User> userMap = new HashMap<>();
+    private Long idNumber = 0L;
 
     @Override
-    public User signUp(User user) {
-        user.setId(++idNumber);
-        userList.add(user);
-        return user;
+    public Long generateId() {
+        return ++idNumber;
+    }
+
+    @Override
+    public void create(User user) {
+        userMap.put(user.getId(), user);
     }
 
     @Override
     public List<User> findAll() {
-        return List.copyOf(userList);
+        return List.copyOf(userMap.values());
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
-        return userList.stream().filter(user -> user.getUserId().equals(userId)).findFirst();
+    public User findByUserId(String userId) {
+        Optional<User> result = userMap.values().stream().filter(user -> user.getUserId().equals(userId)).findFirst();
+        if (result.isPresent()) {
+            return result.get();
+        }
+        throw new RuntimeException("일치하는 사용자 ID가 없습니다.");
     }
 }
