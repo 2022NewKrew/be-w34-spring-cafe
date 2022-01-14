@@ -2,12 +2,12 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.CafeApplication;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserId;
 import com.kakao.cafe.dto.CreateUserDto;
 import com.kakao.cafe.dto.CreateUserRequestDto;
 import com.kakao.cafe.dto.FindUserDto;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -47,15 +47,16 @@ public class UserController {
             createUserRequestDto.getPassword()
         );
 
-        UUID createdUserId = userService.join(createUserDto);
-        logger.info("[Log] 유저가 생성되었습니다. {}", createdUserId);
+        UserId createdUserId = userService.join(createUserDto);
+        logger.info("[Log] 유저가 생성되었습니다. {}", createdUserId.getUUID());
         return "redirect:/users";
     }
 
     @GetMapping("/users/{userId}")
     public String showUser(@PathVariable String userId, Model model) {
-        FindUserDto findUserDto = new FindUserDto(userId);
-        userService.findById(findUserDto).ifPresent(user -> model.addAttribute("user", user));
+        FindUserDto findUserDto = new FindUserDto(new UserId(userId));
+        userService.find(findUserDto).ifPresent(user -> model.addAttribute("user", user));
+        logger.info("[Log] 유저의 프로필을 조회합니다. {}", userId);
         return "user/profile";
     }
 }

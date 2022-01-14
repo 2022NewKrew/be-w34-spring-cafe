@@ -10,7 +10,7 @@ public interface UserRepository {
 
     User save(CreateUserDto createUserDto);
 
-    Optional<User> findById(FindUserDto findUserDto);
+    Optional<User> find(FindUserDto findUserDto);
 
     List<User> getAll();
 }

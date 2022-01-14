@@ -1,5 +1,79 @@
 {{>layout/head}}
-
-<body>
 {{>layout/header}}
-</body>
+
+<div class="users-container">
+  <div class="users-title-box">
+    <div class="users-title">안녕하세요</div>
+    <div class="users-title" style="font-size: 24px">카카오 교육 페이지입니다.</div>
+  </div>
+  <div class="user-row">
+    <span class="user-text-box">제목</span>
+    <span class="user-text-box">작성 일자</span>
+  </div>
+  {{#articles}}
+    <div class="user-row">
+      <span class="user-text-box click-box"
+            onclick="location.href='/articles/{{id}}'">{{title}}</span>
+      <span class="user-text-box click-box"
+            onclick="location.href='/articles/{{id}}'">{{created}}</span>
+    </div>
+  {{/articles}}
+
+  <div class="black-btn">
+    <a style="color: white" href="article/form" role="button">글쓰기</a>
+  </div>
+</div>
+
+
+<style>
+  .black-btn {
+    height: 20px;
+    max-width: 100px;
+    padding: 8px 16px;
+    text-align: center;
+    color: white;
+    margin-left: auto;
+    margin-top: 50px;
+    background-color: black;
+    cursor: pointer;
+  }
+
+  .users-container {
+    max-width: 1048px;
+    margin: 0 auto;
+  }
+
+  .users-title-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 40px;
+    background-color: #FFCD00;
+  }
+
+  .users-title {
+    color: #000000;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .user-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 55px;
+  }
+
+  .user-text-box {
+    height: 32px;
+    min-width: 230px;
+    text-align: center;
+  }
+
+  .click-box {
+    cursor: pointer;
+  }
+</style>
+
+{{>layout/footer}}

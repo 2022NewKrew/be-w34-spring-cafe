@@ -1,23 +1,22 @@
 package com.kakao.cafe.domain;
 
 import com.kakao.cafe.dto.UserDto;
-import java.util.UUID;
 
 public class User {
 
-    private final UUID userId;
+    private final UserId userId;
     private final String email;
     private final String nickname;
     private final String password;
 
     public User(UserDto userDto) {
-        this.userId = UUID.randomUUID();
+        this.userId = UserId.create();
         this.email = userDto.getEmail();
         this.nickname = userDto.getNickname();
         this.password = userDto.getPassword();
     }
 
-    public UUID getUserId() {
+    public UserId getUserId() {
         return userId;
     }
 
@@ -28,7 +27,7 @@ public class User {
     public String getPassword() {
         return password;
     }
-    
+
     public String getEmail() {
         return email;
     }
