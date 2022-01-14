@@ -19,9 +19,7 @@ public class UserService {
     }
 
     public void signUp(User user) {
-        if (!userRepository.signUp(user)) {
-            throw new IllegalArgumentException();
-        }
+        userRepository.signUp(user);
     }
 
     public List<User> findAllUsers() {
@@ -29,6 +27,6 @@ public class UserService {
     }
 
     public User findUserById(String userId) {
-        return Optional.ofNullable(userRepository.findUserByUserId(userId)).orElseThrow(IllegalArgumentException::new);
+        return userRepository.findUserByUserId(userId);
     }
 }
