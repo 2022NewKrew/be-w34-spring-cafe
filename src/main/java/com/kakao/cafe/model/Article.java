@@ -1,5 +1,8 @@
 package com.kakao.cafe.model;
 
+import lombok.Getter;
+
+@Getter
 public class Article {
     private final int id;
     private String title;
@@ -9,17 +12,5 @@ public class Article {
         this.id = id;
         this.title = articleSaveDTO.getTitle();
         this.content = articleSaveDTO.getContent();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
     }
 }

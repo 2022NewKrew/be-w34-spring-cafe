@@ -1,7 +1,10 @@
 package com.kakao.cafe.model;
 
+import lombok.Getter;
+
 import java.util.Objects;
 
+@Getter
 public class ArticleSaveDTO {
     private final String title;
     private final String content;
@@ -13,15 +16,6 @@ public class ArticleSaveDTO {
         this.title = title;
         this.content = content;
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
 
     private void validateTitle(String title) {
         if (Objects.isNull(title) || title.length() <= 0) throw new IllegalArgumentException();

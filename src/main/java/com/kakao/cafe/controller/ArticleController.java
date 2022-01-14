@@ -3,20 +3,16 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.model.Article;
 import com.kakao.cafe.model.ArticleSaveDTO;
 import com.kakao.cafe.service.ArticleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/article")
+@RequiredArgsConstructor
 public class ArticleController {
     private final ArticleService articleService;
-
-    @Autowired
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
 
     @GetMapping("/{id}")
     public String findArticleById(@PathVariable String id, Model model){

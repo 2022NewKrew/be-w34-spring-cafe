@@ -3,21 +3,16 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.model.Article;
 import com.kakao.cafe.model.ArticleSaveDTO;
 import com.kakao.cafe.repository.ArticleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository repository;
-
-    @Autowired
-    public ArticleService(ArticleRepository repository) {
-        this.repository = repository;
-    }
-
 
     public void save(ArticleSaveDTO articleSaveDTO){
         repository.save(articleSaveDTO);
