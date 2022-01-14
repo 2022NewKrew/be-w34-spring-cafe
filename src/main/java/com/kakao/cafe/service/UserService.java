@@ -18,7 +18,7 @@ public class UserService {
     }
 
     public void signUp(UserSignUpRequest request) {
-        User user = User.fromNoDbIndex(request);
+        User user = UserSignUpRequest.getUserFromNoDbIndex(request);
         userRepository.save(user);
     }
 
@@ -36,9 +36,7 @@ public class UserService {
             return false;
         }
 
-        user.setName(request.getName());
-        user.setPassword(request.getNewPassword());
-        user.setEmail(request.getEmail());
+        user.update(request.getPassword(), request.getName(), request.getEmail());
         userRepository.update(user);
         return true;
     }

@@ -17,7 +17,7 @@ public class ArticleService {
     }
 
     public void createArticle(ArticleCreateRequest request) {
-        articleRepository.save(Article.fromNoDbIndex(request));
+        articleRepository.save(ArticleCreateRequest.getArticleFromNoDbIndex(request));
     }
 
     public List<Article> list() {
