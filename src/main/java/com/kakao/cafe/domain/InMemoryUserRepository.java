@@ -19,7 +19,8 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     private boolean isDuplicate(User findUser) {
-        return userList.stream().anyMatch(user -> user.getUserId().equals(findUser.getUserId()));
+        return userList.stream()
+                .anyMatch(user -> user.getUserId().equals(findUser.getUserId()));
     }
 
     @Override
