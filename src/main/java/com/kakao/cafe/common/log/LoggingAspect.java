@@ -28,6 +28,14 @@ public class LoggingAspect {
     public void PostMapping() {
     }
 
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.PutMapping)")
+    public void PutMapping() {
+    }
+
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.DeleteMapping)")
+    public void DeleteMapping() {
+    }
+
     @Pointcut("within(@org.springframework.stereotype.Service *)")
     public void Service() {
     }
@@ -37,7 +45,7 @@ public class LoggingAspect {
 
     }
 
-    @Around("GetMapping() || PostMapping()")
+    @Around("GetMapping() || PostMapping() || DeleteMapping() || PutMapping()")
     public Object Mapping(ProceedingJoinPoint joinPoint) throws Throwable {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();

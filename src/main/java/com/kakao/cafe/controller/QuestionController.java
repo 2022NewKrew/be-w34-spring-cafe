@@ -33,6 +33,7 @@ public class QuestionController {
         Question question = modelMapper.map(questionCreateDto, Question.class);
 
         question.setMemberId(user.getId());
+        question.setWriter(user.getUserId());
 
         questionService.save(question);
 

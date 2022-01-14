@@ -48,6 +48,10 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/home">Posts</a></li>
+                {{#admin}}
+                <li><a href="/users" role="button">회원목록</a></li>
+                {{/admin}}
+                <li><a href="/questions" role="button">게시글</a></li>
                 {{#loginUser}}
                 <li><a href="/questions/create" role="button">질문하기</a></li>
                 {{/loginUser}}

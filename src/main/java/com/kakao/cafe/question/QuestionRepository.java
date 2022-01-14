@@ -28,4 +28,20 @@ public interface QuestionRepository {
      * @return 데이터베이스에 저장된 모든 질문글.
      */
     List<Question> findAll();
+
+    /**
+     *
+     * @param id
+     * @return 삭제 성공 여부
+     */
+    boolean deleteOne(Long id);
+
+    /**
+     *
+     * @param id 삭제하고 싶은 table의 키 값
+     * @param memberId 삭제하고 싶은 테이블의 외래키
+     * @return 삭제 성공 여부
+     */
+    boolean deleteOne(Long id, Long memberId);
+
 }

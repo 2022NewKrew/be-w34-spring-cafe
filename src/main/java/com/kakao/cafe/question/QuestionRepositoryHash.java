@@ -65,4 +65,14 @@ public class QuestionRepositoryHash implements QuestionRepository {
 
         return questions;
     }
+
+    @Override
+    public boolean deleteOne(Long id) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteOne(Long id, Long memberId) {
+        return false;
+    }
 }

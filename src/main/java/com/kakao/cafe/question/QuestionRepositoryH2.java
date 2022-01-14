@@ -63,4 +63,14 @@ public class QuestionRepositoryH2 implements QuestionRepository {
 
         return jdbcTemplate.query(sql, new QuestionRowMapper());
     }
+
+    @Override
+    public boolean deleteOne(Long id) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteOne(Long id, Long memberId) {
+        return false;
+    }
 }

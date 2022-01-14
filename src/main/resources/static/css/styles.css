@@ -225,3 +225,28 @@ h3,h4,h5 {
     color: red;
     font-size: 16px;
 }
+
+.background-wrap {
+    position: relative;
+    padding-bottom: 562px ;
+}
+
+.background-kakao {
+    position: absolute;
+    top: 102px;
+    left: 0;
+    right: 0;
+    height: 580px;
+    background-color: #f6c51e;
+
+}
+
+.kakao-cafe-background-img {
+    position: absolute;
+    top: -18px;
+    left: 0;
+    right: 0;
+    height: 580px;
+    background: url("/img/kakao_background.jpg") no-repeat 50% 50%;
+    background-color: #f6c51e;
+}
