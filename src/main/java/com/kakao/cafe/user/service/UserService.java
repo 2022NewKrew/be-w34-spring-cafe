@@ -36,12 +36,11 @@ public class UserService {
     }
 
     public UserProfileDto getUserProfile(String userId){
-        if(!isExistUser(userId)) throw new UserNotExistException();
-        User user = userRepository.findOneByUserId(userId);
+        User user = userRepository.findOneByUserId(userId).orElseThrow(UserNotExistException::new);
         return UserProfileDto.of(user);
     }
 
     public boolean isExistUser(String userId){
-        return Optional.ofNullable(userRepository.findOneByUserId(userId)).isPresent();
+        return userRepository.findOneByUserId(userId).isPresent();
     }
 }
