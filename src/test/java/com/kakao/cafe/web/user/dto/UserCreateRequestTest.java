@@ -1,7 +1,6 @@
-package com.kakao.cafe.web.dto;
+package com.kakao.cafe.web.user.dto;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.web.user.dto.UserCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

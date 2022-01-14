@@ -1,10 +1,9 @@
-package com.kakao.cafe.web;
+package com.kakao.cafe.web.user;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.user.UserCreateService;
 import com.kakao.cafe.service.user.UserFindService;
 import com.kakao.cafe.service.user.UserUpdateService;
-import com.kakao.cafe.web.user.UserController;
 import com.kakao.cafe.web.user.dto.UserListResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
