@@ -50,6 +50,6 @@ public class UserController {
         UserResponseDto findUser = userService.findUserById(id);
         model.addAttribute("user", findUser);
 
-        return "/user/profile";
+        return "user/profile";
     }
 }

@@ -1,35 +1,27 @@
 package com.kakao.cafe.Service;
 
-import com.kakao.cafe.Repository.UserRepository;
-import com.kakao.cafe.model.User.User;
+import com.kakao.cafe.Repository.UserDao;
 import com.kakao.cafe.model.User.UserCreateRequestDto;
 import com.kakao.cafe.model.User.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
+    private final UserDao userDao;
 
     public List<UserResponseDto> getUserList() {
-        return userRepository.getUserList().stream()
-                .map(User::toResponseDto)
-                .collect(Collectors.toList());
+        return userDao.findAll();
     }
 
     public void signUp(UserCreateRequestDto user) {
-        userRepository.add(user.toUser());
+        userDao.save(user);
     }
 
     public UserResponseDto findUserById(Long id) {
-        return userRepository.getUserList().stream()
-                .filter(u -> id.equals(u.getId()))
-                .collect(Collectors.toList())
-                .get(0)
-                .toResponseDto();
+        return userDao.findById(id);
     }
 }

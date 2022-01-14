@@ -1,17 +1,21 @@
 package com.kakao.cafe.model.Post;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 @Getter
-@RequiredArgsConstructor
 @ToString
 public class PostCreateRequestDto {
+    private final Long id;
     private final String title;
     private final String content;
+    private static final AtomicLong sequenceId = new AtomicLong();
 
-    public Post toPost() {
-        return new Post(this);
+    public PostCreateRequestDto(String title, String content) {
+        this.title = title;
+        this.content = content;
+        this.id = sequenceId.incrementAndGet();
     }
 }
