@@ -1,5 +1,6 @@
 package com.kakao.cafe.module.repository;
 
+import com.kakao.cafe.infra.exception.NoSuchDataException;
 import com.kakao.cafe.module.model.domain.User;
 import com.kakao.cafe.module.repository.mapper.UserDBMapper;
 import lombok.RequiredArgsConstructor;
@@ -46,16 +47,13 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findUserById(Long id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM USERS WHERE id = ?", rowMapper, id);
+        return jdbcTemplate.query("SELECT * FROM USERS WHERE id = ?", rowMapper, id).stream().findAny()
+                .orElseThrow(() -> new NoSuchDataException("해당하는 사용자가 없습니다."));
     }
 
     @Override
     public Optional<User> findUserByName(String name) {
-        try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM USERS WHERE name = ?", rowMapper, name));
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
-        }
+        return jdbcTemplate.query("SELECT * FROM USERS WHERE name = ?", rowMapper, name).stream().findAny();
     }
 
     @Override
