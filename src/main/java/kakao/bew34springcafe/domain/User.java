@@ -16,6 +16,13 @@ public class User {
         this.upw = userJoinForm.getUpw();
     }
 
+    public boolean equalsByUid(UserId uid){
+        if (uid.equals(uid)) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return "User{" +

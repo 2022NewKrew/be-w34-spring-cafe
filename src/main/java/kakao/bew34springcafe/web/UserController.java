@@ -2,10 +2,12 @@ package kakao.bew34springcafe.web;
 
 import kakao.bew34springcafe.db.UserList;
 import kakao.bew34springcafe.domain.User;
+import kakao.bew34springcafe.domain.UserValue.UserId;
 import kakao.bew34springcafe.dto.UserJoinForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -27,14 +29,22 @@ public class UserController {
         return "user/list";
     }
 
+    @GetMapping("/profile/{uid}")
+    public String showUserProfile(@PathVariable UserId uid, Model model){
+        User user = UserList.findUserById(uid);
+        model.addAttribute("user",user);
+        return "user/profile";
+    }
+
     @PostMapping("/join")
-    //public String postJoin(String uid, String umail, String upw){ //
     public String postJoin(UserJoinForm userJoinForm){
         logger.info("[info] user join:"+ userJoinForm);
         User user = new User(userJoinForm);
         UserList.addUser(user);
         return "redirect:/user";
     }
+
+
 
 
 }
