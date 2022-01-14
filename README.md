@@ -44,5 +44,5 @@
       * service에서 repository, transformation 호출
       * view에선 추가적인 뷰 로직 구현(sort)
       * index 템플릿 수정
-    * 게시글 상세보기
+    * 게시글 상세보기 O
     * 게시글 쓰기

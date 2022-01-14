@@ -34,4 +34,8 @@ public class ArticleRepository {
         Timestamp timestamp = new Timestamp(datetime);
         return new ArticleDao(lastNumber++, article.getWriter(), article.getTitle(), article.getContents(), timestamp);
     }
+
+    public ArticleDao select(Long id) {
+        return articleMap.get(id);
+    }
 }

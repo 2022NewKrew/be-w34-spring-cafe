@@ -1,5 +1,6 @@
 package com.kakao.cafe.view;
 
+import com.kakao.cafe.dto.ArticleDetailDto;
 import com.kakao.cafe.dto.ArticleListDto;
 import org.springframework.ui.Model;
 
@@ -12,5 +13,9 @@ public class ArticleView {
         List<ArticleListDto> sortedArticleList = new ArrayList<>(articleList);
         Collections.sort(sortedArticleList);
         model.addAttribute("articleList", sortedArticleList);
+    }
+
+    public void getArticleIdView(Model model, ArticleDetailDto articleDetailDto) {
+        model.addAttribute("article", articleDetailDto);
     }
 }
