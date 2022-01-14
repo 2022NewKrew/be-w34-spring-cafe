@@ -34,9 +34,31 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    public void update(User user) {
+        jdbcTemplate.update(
+                "UPDATE users SET password=?,name=?,email=? WHERE id=?",
+                user.getPassword(),
+                user.getName(),
+                user.getEmail(),
+                user.getId()
+        );
+    }
+
+    @Override
+    public boolean validate(String id, String password) {
+        List<User> results = jdbcTemplate.query(
+                "SELECT * FROM users WHERE id=? AND password=?",
+                mapper,
+                id,
+                password
+        );
+        return !results.isEmpty();
+    }
+
+    @Override
     public Optional<User> findById(String id) {
         List<User> results = jdbcTemplate.query(
-                "SELECT * FROM articles WHERE id=?",
+                "SELECT * FROM users WHERE id=?",
                 mapper,
                 id
         );

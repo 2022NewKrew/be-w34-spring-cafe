@@ -19,6 +19,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void updateUser(User user) {
+        userRepository.update(user);
+    }
+
+    public boolean validateUser(User user) {
+        return userRepository.validate(user.getId(), user.getPassword());
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
