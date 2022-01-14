@@ -23,15 +23,14 @@ public class ArticleJdbc implements ArticleRepository {
     public boolean add(@NonNull final Article article) {
         final int result = jdbcTemplate.update(con -> {
             final PreparedStatement pstmt = con.prepareStatement(
-                    "INSERT INTO article (user_id, user_name, title, body, created_at) " +
-                            "values (?,?,?,?,?)"
+                    "INSERT INTO article (user_id, title, body, created_at) " +
+                            "values (?,?,?,?)"
             );
 
             pstmt.setString(1, article.getUserId());
-            pstmt.setString(2, article.getUserName());
-            pstmt.setString(3, article.getTitle());
-            pstmt.setString(4, article.getBody());
-            pstmt.setLong(5, article.getCreatedAt());
+            pstmt.setString(2, article.getTitle());
+            pstmt.setString(3, article.getBody());
+            pstmt.setLong(4, article.getCreatedAt());
             return pstmt;
         });
 

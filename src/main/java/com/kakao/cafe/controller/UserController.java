@@ -1,19 +1,14 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.auth.AuthControl;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.util.SecurePassword;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,6 +20,7 @@ public class UserController {
     public static final String TAG_LOGIN_ERROR = "login_error";
     public static final String MSG_LOGIN_FAILED = "아이디 또는 비밀번호가 틀렸습니다.";
     public static final String MSG_REQUIRE_LOGIN = "로그인 후 다시 시도해주세요.";
+    public static final String MSG_PW_UPDATED = "수정된 비밀번호로 다시 로그인 해주세요.";
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
@@ -53,7 +49,7 @@ public class UserController {
     // Get /dupUserFound -> "users/dupUserFound"
 
     @GetMapping("/login")
-    public String getLoginPage(final HttpServletRequest request, Model model) {
+    public String getLoginPage(final HttpServletRequest request, final Model model) {
         if (AuthControl.isLogon(request, userService)) {
             return "redirect:/";
         }
@@ -121,7 +117,7 @@ public class UserController {
     }
 
     @GetMapping("/users/edit")
-    public String getEditPage(final HttpServletRequest request, Model model) {
+    public String getEditPage(final HttpServletRequest request, final Model model) {
         if (!AuthControl.isLogon(request, userService)) {
             return "redirect:/";
         }
@@ -133,4 +129,27 @@ public class UserController {
 
         return "users/edit";
     }
+
+    @PutMapping("/users/edit")
+    public String editUser(
+            final HttpServletRequest request,
+            @NonNull final UserDto userDto,
+            @RequestParam("password") @NonNull final String rawPassword,
+            @RequestParam("newPassword") @NonNull final String newRawPassword
+    )
+    {
+        if (!AuthControl.isLogon(request, userService)) {
+            return "redirect:/";
+        }
+
+        if (userService.updateUser(userDto, rawPassword, newRawPassword)) {
+            AuthControl.logout(request);
+            request.getSession().setAttribute(TAG_LOGIN_ERROR, MSG_PW_UPDATED);
+            return "redirect:/login";
+        }
+
+        return "redirect:/editUserFailed";
+    }
+
+    // Get /editUserFailed -> "users/editUserFailed"
 }
