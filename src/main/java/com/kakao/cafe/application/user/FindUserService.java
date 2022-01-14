@@ -15,12 +15,8 @@ public class FindUserService {
     }
 
     public User findByUserId(String userId) throws IllegalArgumentException {
-        Optional<User> optionalUser = findUserPort.findByUserId(userId);
-        if (optionalUser.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 ID는 조회할 수 없습니다.");
-        }
-
-        return optionalUser.get();
+        return findUserPort.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID는 조회할 수 없습니다."));
     }
 
     public List<User> findAllUser() {
