@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/article")
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class ArticleController {
     }
 
     @PostMapping("/post")
-    public String postArticle(ArticleSaveDTO articleSaveDTO){
+    public String postArticle(@Valid ArticleSaveDTO articleSaveDTO){
         articleService.save(articleSaveDTO);
         return "redirect:/";
     }
