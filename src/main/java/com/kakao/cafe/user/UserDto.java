@@ -26,4 +26,14 @@ public class UserDto {
     private String password; // 비밀번호
     private String name; // 이름
     private String email; // 이메일
+
+    public User toEntity() {
+        return new User(
+                null,
+                userId,
+                password,
+                name,
+                email
+        );
+    }
 }

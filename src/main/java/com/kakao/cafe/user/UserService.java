@@ -21,12 +21,7 @@ public class UserService {
     }
 
     public void addUser(UserDto userDto) {
-        User user = new User(
-                null,
-                userDto.getName(),
-                userDto.getPassword(),
-                userDto.getName(),
-                userDto.getEmail());
+        User user = userDto.toEntity();
         userRepository.insert(user);
     }
 
@@ -39,7 +34,8 @@ public class UserService {
     }
 
     public User updateUser(UserDto userDto, int id) {
-        User user = new User(id, null, null, userDto.getName(), userDto.getEmail());
+        User user = userDto.toEntity();
+        user.setId(id);
         return userRepository.update(user);
     }
 }
