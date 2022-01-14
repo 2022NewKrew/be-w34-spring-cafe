@@ -47,12 +47,7 @@ public class UserController {
 
     @PostMapping("/signup")
     public String signup(UserDto user) {
-        try {
-            userService.filterUserById(user.getUserId());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (EmptyResultDataAccessException e) {
-            userService.signupUser(user);
-        }
+        userService.signupUser(user);
         return "redirect:";
     }
 
@@ -64,15 +59,8 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/update")
-    public String update(@PathVariable String userId, String password, String newPassword, String email, String name) {
-        UserDto user = userService.filterUserById(userId);
-        if (user.getPassword().equals(password)) {
-            user.setPassword(newPassword);
-            user.setEmail(email);
-            user.setName(name);
-            userService.updateUser(user);
-            return "redirect:";
-        }
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+    public String update(UserDto user, String newPassword) {
+        userService.updateUser(user, newPassword);
+        return "redirect:";
     }
 }
