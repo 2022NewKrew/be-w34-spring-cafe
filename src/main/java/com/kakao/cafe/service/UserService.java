@@ -20,7 +20,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User join(CreateUserDto createUserDto) {
+    public void join(CreateUserDto createUserDto) {
         if (checkDuplicateUserId(createUserDto.getUserId())) {
             throw new IllegalArgumentException("이미 등록된 사용자 입니다.");
         }
@@ -32,7 +32,7 @@ public class UserService {
                 .email(createUserDto.getEmail())
                 .build();
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public ShowUserDto findProfile(String userId) {
@@ -60,6 +60,7 @@ public class UserService {
                 .build();
 
         return userRepository.edit(userId, editUser);
+
     }
 
     public List<ShowUserDto> findAllUser() {

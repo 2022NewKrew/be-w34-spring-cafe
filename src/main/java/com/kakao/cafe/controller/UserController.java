@@ -29,11 +29,6 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/user/form")
-    public String userForm(){
-        return "user/addForm";
-    }
-
     @PostMapping("/user")
     public String createUser(@ModelAttribute @Validated CreateUserDto createUserDto, Errors errors, Model model){
         if(errors.hasErrors()){
@@ -41,8 +36,8 @@ public class UserController {
             return "user/addForm";
         }
 
-        User user = userService.join(createUserDto);
-        log.info("Create User - {}", user);
+        userService.join(createUserDto);
+        log.info("Create User - {}", createUserDto);
         return "redirect:/user";
     }
 

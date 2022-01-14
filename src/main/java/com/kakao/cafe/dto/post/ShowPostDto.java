@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.post.Post;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 
 @Getter
 @Setter
@@ -20,6 +20,6 @@ public class ShowPostDto {
         title = post.getTitle();
         content = post.getContent();
         writer = post.getWriter();
-        regDate = post.getRegDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd / HH:mm:ss"));
+        regDate = new SimpleDateFormat("yyyy-MM-dd").format(post.getRegDate());
     }
 }

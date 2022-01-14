@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -14,14 +14,15 @@ public class Post {
     private String writer;
     private String title;
     private String content;
-    private LocalDateTime regDate;
+    private Date regDate;
+
+    public Post(){}
 
     @Builder
     public Post(String writer, String title, String content) {
         this.writer = writer;
         this.title = title;
         this.content = content;
-        regDate = LocalDateTime.now();
     }
 
     @Override

@@ -4,17 +4,16 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
 public class MemoryPostRepository implements PostRepository {
     private final Map<Long, Post> postStore = new HashMap<>();
 
     @Override
-    public Post save(Post post) {
+    public void save(Post post) {
         long insertId = postStore.size() + 1;
         post.setId(insertId);
+        post.setRegDate(new Date());
 
         postStore.put(insertId, post);
-        return post;
     }
 
     @Override
@@ -25,5 +24,9 @@ public class MemoryPostRepository implements PostRepository {
     @Override
     public Optional<Post> findById(Long id) {
         return Optional.ofNullable(postStore.get(id));
+    }
+
+    public void clear(){
+        postStore.clear();
     }
 }

@@ -42,8 +42,8 @@ public class PostController {
             return "post/form";
         }
 
-        Post post = postService.createPost(postDto);
-        log.info("CreatPost - {}", post);
+        postService.createPost(postDto);
+        log.info("Create Post - {}", postDto);
         return "redirect:/";
     }
 

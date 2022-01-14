@@ -19,8 +19,8 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Post createPost(CreatePostDto postDto) {
-        return postRepository.save(Post.builder()
+    public void createPost(CreatePostDto postDto) {
+        postRepository.save(Post.builder()
                 .writer(postDto.getWriter())
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
