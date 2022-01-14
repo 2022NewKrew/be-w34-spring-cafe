@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.kakao.cafe.module.model.dto.UserDtos.*;
@@ -25,8 +24,7 @@ class UserControllerTest {
         UserSignUpDto input = new UserSignUpDto("newUser", "1212", "new user", "new@new.com");
 
         mockMvc.perform(post("/users")
-                        .flashAttr("userSignUpDto", input)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .flashAttr("userSignUpDto", input))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
     }
@@ -36,9 +34,8 @@ class UserControllerTest {
         UserSignUpDto input = new UserSignUpDto("DuplicatedUser", "1212", "레인", "dup@dup.com");
 
         mockMvc.perform(post("/users")
-                        .flashAttr("userSignUpDto", input)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                        .flashAttr("userSignUpDto", input))
+                .andExpect(status().isBadRequest())
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("msg"))
                 .andExpect(view().name("infra/error"));
@@ -78,8 +75,7 @@ class UserControllerTest {
         UserUpdateDto input = new UserUpdateDto(1L, "1111", "2222", "이름 바꿈", "change@c.com");
 
         mockMvc.perform(put("/users/1")
-                        .flashAttr("userUpdateDto", input)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .flashAttr("userUpdateDto", input))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
     }
@@ -89,9 +85,8 @@ class UserControllerTest {
         UserUpdateDto input = new UserUpdateDto(1L, "2222", "2222", "이름 바꿈", "change@c.com");
 
         mockMvc.perform(put("/users/1")
-                        .flashAttr("userUpdateDto", input)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                        .flashAttr("userUpdateDto", input))
+                .andExpect(status().isBadRequest())
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("msg"))
                 .andExpect(view().name("infra/error"));
@@ -102,9 +97,8 @@ class UserControllerTest {
         UserUpdateDto input = new UserUpdateDto(1L, "1111", "2222", "스노우", "change@c.com");
 
         mockMvc.perform(put("/users/1")
-                        .flashAttr("userUpdateDto", input)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                        .flashAttr("userUpdateDto", input))
+                .andExpect(status().isBadRequest())
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("msg"))
                 .andExpect(view().name("infra/error"));

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.kakao.cafe.module.model.dto.ArticleDtos.*;
@@ -26,8 +25,7 @@ class ArticleControllerTest {
         ArticlePostDto input = new ArticlePostDto("레인", "제목", "내용");
 
         mockMvc.perform(post("/articles")
-                        .flashAttr("articlePostDto", input)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .flashAttr("articlePostDto", input))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
     }
@@ -37,9 +35,8 @@ class ArticleControllerTest {
         ArticlePostDto input = new ArticlePostDto("없는사용자", "제목", "내용");
 
         mockMvc.perform(post("/articles")
-                        .flashAttr("articlePostDto", input)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                        .flashAttr("articlePostDto", input))
+                .andExpect(status().isBadRequest())
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("msg"))
                 .andExpect(view().name("infra/error"));

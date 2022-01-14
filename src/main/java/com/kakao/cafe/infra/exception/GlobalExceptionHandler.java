@@ -7,6 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -16,14 +19,16 @@ public class GlobalExceptionHandler {
             DuplicateNameException.class,
             NoSuchDataException.class
     })
-    public String handleRuntimeExceptions(final CustomRuntimeException e, Model model) {
+    public String handleRuntimeExceptions(final CustomRuntimeException e, Model model, HttpServletResponse response) throws IOException {
+        response.sendError(400, e.getName());
         model.addAttribute("msg", errorMsg(e.getName(), e.getMessage()));
         logger.error(e.getName());
         return "infra/error";
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public String handleIllegalArgumentException(final IllegalArgumentException e, Model model) {
+    public String handleIllegalArgumentException(final IllegalArgumentException e, Model model, HttpServletResponse response) throws IOException {
+        response.sendError(400, "IllegalArgumentException");
         model.addAttribute("msg", errorMsg("IllegalArgumentException", e.getMessage()));
         logger.error("IllegalArgumentException");
         return "infra/error";
