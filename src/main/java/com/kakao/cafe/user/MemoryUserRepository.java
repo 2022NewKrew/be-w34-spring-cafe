@@ -29,7 +29,7 @@ public class MemoryUserRepository implements UserRepository{
     @Override
     public User findUserById(Integer id) {
         for (User user: users) {
-            if (user.getId() == id) {
+            if (user.getId().equals(id)) {
                 return user;
             }
         }
