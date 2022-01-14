@@ -43,11 +43,25 @@ class UserControllerTest {
                 .andExpect(redirectedUrl("/users"));
     }
 
-    @DisplayName("[실패] 유저 회원가입 - 필수 인자 없음")
+    @DisplayName("[실패] 유저 회원가입 - Null 입력")
     @ParameterizedTest(name = "{0}, {1}, {2}, {3}")
     @CsvSource(value = {"null, password, name, email", "userId, null, name, email", "userId, password, null, email",
             "userId, password, name, null"}, nullValues = {"null"})
-    void signUp_FailedBy_EmptyParam(String userId, String password, String name, String email) throws Exception {
+    void signUp_FailedBy_Null(String userId, String password, String name, String email) throws Exception {
+        mockMvc.perform(post("/users/create")
+                        .param("userId", userId)
+                        .param("password", password)
+                        .param("name", name)
+                        .param("email", email))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("errors/error"));
+    }
+
+    @DisplayName("[실패] 유저 회원가입 - 빈 문자열")
+    @ParameterizedTest(name = "{0}, {1}, {2}, {3}")
+    @CsvSource(value = {"'', password, name, email", "userId, '', name, email", "userId, password, '', email",
+            "userId, password, name, ''"})
+    void signUp_FailedBy_EmptyString(String userId, String password, String name, String email) throws Exception {
         mockMvc.perform(post("/users/create")
                         .param("userId", userId)
                         .param("password", password)
