@@ -76,12 +76,11 @@ public class ArticleRepository implements MyRepository<Article, Long> {
     private static class ArticleMapper implements RowMapper<Article> {
         @Override
         public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Article article = new Article(
+            return new Article(
+                    rs.getLong("id"),
                     rs.getString("title"),
                     rs.getString("description")
             );
-            article.setId(rs.getLong("id"));
-            return article;
         }
     }
 }

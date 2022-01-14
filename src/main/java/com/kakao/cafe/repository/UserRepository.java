@@ -79,14 +79,13 @@ public class UserRepository implements MyRepository<User, Long> {
     private static class UserMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            User user = new User(
+            return new User(
+                    rs.getLong("id"),
                     rs.getString("username"),
                     rs.getString("nickname"),
                     rs.getString("email"),
                     rs.getString("password")
             );
-            user.setId(rs.getLong("id"));
-            return user;
         }
     }
 }
