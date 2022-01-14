@@ -2,6 +2,7 @@ package com.kakao.cafe.user;
 
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -26,8 +27,8 @@ public class HashMapUserRepository implements UserRepository {
         }
 
         Long id = next_id.incrementAndGet();
-        user.setId(id);
-        users.put(id, user);
+        users.put(id, new User(id, user.getEmail(), user.getUsername(), user.getPassword(), user.getStatus(),
+                               user.getDisplayName(), LocalDateTime.now(), LocalDateTime.now()));
         return id;
     }
 
@@ -53,7 +54,9 @@ public class HashMapUserRepository implements UserRepository {
             throw new NoSuchElementException("Primary key not found: " + user);
         }
 
-        users.put(user.getId(), user);
+        users.put(user.getId(),
+                  new User(user.getId(), user.getEmail(), user.getUsername(), user.getPassword(), user.getStatus(),
+                           user.getDisplayName(), user.getCreatedAt(), LocalDateTime.now()));
     }
 
     @Override

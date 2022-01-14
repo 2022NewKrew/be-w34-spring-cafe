@@ -22,13 +22,13 @@ public class SpringJdbcUserRepository implements UserRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO user (email, username, password, type, display_name) VALUES (?, ?, ?, ?, ?)",
+                    "INSERT INTO user (email, username, password, status, display_name) VALUES (?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getUsername());
             ps.setString(3, user.getPassword());
-            ps.setString(4, "type");
-            ps.setString(5, "display_name");
+            ps.setString(4, user.getStatus());
+            ps.setString(5, user.getDisplayName());
             return ps;
         }, keyHolder);
 
@@ -52,15 +52,17 @@ public class SpringJdbcUserRepository implements UserRepository {
     }
 
     private RowMapper<User> userRowMapper() {
-        return (rs, rowNum) -> new User(rs.getLong("id"), rs.getString("username"), rs.getString("password"),
-                                        rs.getString("email"));
+        return (rs, rowNum) -> new User(rs.getLong("id"), rs.getString("email"), rs.getString("username"),
+                                        rs.getString("password"), rs.getString("status"), rs.getString("display_name"),
+                                        rs.getTimestamp("created_at").toLocalDateTime(),
+                                        rs.getTimestamp("last_modified_at").toLocalDateTime());
     }
 
     @Override
     public void update(User user) {
         jdbcTemplate.update(
-                "UPDATE user SET email = ?, username = ?, password = ?, type = ?, display_name = ? WHERE id = ?;",
-                user.getEmail(), user.getUsername(), user.getPassword(), "type", "display_name");
+                "UPDATE user SET email = ?, username = ?, password = ?, status = ?, display_name = ? WHERE id = ?;",
+                user.getEmail(), user.getUsername(), user.getPassword(), user.getStatus(), user.getDisplayName());
     }
 
     @Override

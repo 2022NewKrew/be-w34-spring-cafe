@@ -1,12 +1,12 @@
 -- Admin
 -- id = 1
 -- type = 'ADMIN'
-INSERT INTO user (email, username, password, type, display_name)
-VALUES ('admin@example.com', 'admin', 'admin', 'ADMIN', 'admin');
+INSERT INTO user (email, username, password, status)
+VALUES ('admin@example.com', 'admin', 'admin', 'ACTIVE');
 -- An example user
 -- type = 'NORMAL_USER'
-INSERT INTO user (email, username, password, type, display_name)
-VALUES ('frank@kakao.com', 'frank', 'password', 'NORMAL_USER', 'frank');
+INSERT INTO user (email, username, password, status, display_name)
+VALUES ('frank@kakao.com', 'frank', 'password', 'ACTIVE', 'frank');
 
 -- The mother thread or the board
 -- id = 1

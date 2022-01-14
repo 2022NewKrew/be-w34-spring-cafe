@@ -16,8 +16,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Long registerUser(UserFormCreationDTO userFormCreationDTO) {
-        User user = UserMapper.toUser(userFormCreationDTO);
+    public Long registerUser(UserCreationForm userCreationForm) {
+        User user = UserMapper.toUser(userCreationForm);
         validateDuplicateUserName(user);
 
         return userRepository.add(user);
@@ -29,12 +29,12 @@ public class UserService {
         }
     }
 
-    public List<UserViewDTO> getAllUserViewDTOUsers() {
-        return userRepository.getAll().stream().map(UserMapper::toUserViewDTO).collect(Collectors.toList());
+    public List<UserView> getAllUserView() {
+        return userRepository.getAll().stream().map(UserMapper::toUserView).collect(Collectors.toList());
     }
 
-    public UserViewDTO getUserViewDTOByUsername(String username) {
-        return UserMapper.toUserViewDTO(userRepository.get(username).orElseThrow(
+    public UserView getUserViewByUsername(String username) {
+        return UserMapper.toUserView(userRepository.get(username).orElseThrow(
                 () -> new NoSuchElementException("Username not found: " + username)));
     }
 }

@@ -1,7 +1,5 @@
 package com.kakao.cafe.user;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     @Autowired
@@ -22,22 +19,20 @@ public class UserController {
     }
 
     @PostMapping("")
-    public String processCreationForm(UserFormCreationDTO userFormCreationDTO) {
-        logger.info("Users before: {}", userService.getAllUserViewDTOUsers());
-        userService.registerUser(userFormCreationDTO);
-        logger.info("Users after: {}", userService.getAllUserViewDTOUsers());
+    public String processCreationForm(UserCreationForm userCreationForm) {
+        userService.registerUser(userCreationForm);
         return "redirect:/users";
     }
 
     @GetMapping("")
     public String listUsers(Model model) {
-        model.addAttribute("users", userService.getAllUserViewDTOUsers());
+        model.addAttribute("users", userService.getAllUserView());
         return "user/list";
     }
 
     @GetMapping("/{username}")
     public String showUser(@PathVariable String username, Model model) {
-        model.addAttribute("user", userService.getUserViewDTOByUsername(username));
+        model.addAttribute("user", userService.getUserViewByUsername(username));
         return "user/profile";
     }
 }
