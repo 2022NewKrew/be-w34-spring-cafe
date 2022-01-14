@@ -68,12 +68,11 @@ public class ArticleController {
      * @param req: 게시글 작성 정보
      */
     @PostMapping("/articles")
-    @ResponseStatus(HttpStatus.CREATED)
     public String createArticle(ArticleCreateRequest req) {
         log.info("[POST] /article - 게시글 작성 요청");
 
         this.articleService.createArticle(req);
-
+        log.info("test");
         return "redirect:/";
     }
 }

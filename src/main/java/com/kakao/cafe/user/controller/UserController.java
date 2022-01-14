@@ -48,7 +48,6 @@ public class UserController {
      * @throws DuplicateUserIdException: 회원가입 요청한 UserId가 이미 존재하는 ID일 경우 발생
      */
     @PostMapping("/users")
-    @ResponseStatus(HttpStatus.CREATED)
     public String createUser(UserCreateRequest req) {
         log.info("[POST] /user - 유저 회원가입 요청");
         this.userService.createUser(req);
@@ -106,7 +105,6 @@ public class UserController {
      * @param id: 수정하고자 하는 유저의 ID(PK)
      */
     @PostMapping("/users/update/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public String updateUser(UserUpdateRequest req,  @PathVariable("id") Long id) {
         log.info("[POST] /user/update/{} - (id: {}) 유저 정보 수정", id, id);
 

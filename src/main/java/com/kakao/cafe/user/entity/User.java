@@ -17,17 +17,6 @@ public class User {
     private String email;
     private LocalDateTime createdAt;
 
-    public User(UserCreateRequest req) {
-        this(req.getUserId(),
-             req.getPassword(),
-             req.getName(),
-             req.getEmail());
-    }
-
-    public User(String userId, String password, String name, String email) {
-        this(null, userId, password, name, email, null);
-    }
-
     public boolean checkPassword(String password) {
         return this.password.equals(password);
     }
