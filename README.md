@@ -37,4 +37,12 @@
       * controller에 로그인, 회원가입, 회원명단, 메인페이지에 대한 get요청을 명시적으로 표현
         * 직접적인 파일 경로참조 지양
   * step1-2
-    * 
+    * 게시글 목록 O
+      * article 관련 모든 정보
+        * writer, title, contents, number, timestamp
+      * controller에서 service, view를 호출
+      * service에서 repository, transformation 호출
+      * view에선 추가적인 뷰 로직 구현(sort)
+      * index 템플릿 수정
+    * 게시글 상세보기
+    * 게시글 쓰기

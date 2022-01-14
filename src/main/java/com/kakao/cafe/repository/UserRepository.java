@@ -20,6 +20,7 @@ public class UserRepository {
     public UserRepository() {
         userMap = new HashMap<>();
         index = 0;
+        this.insert(new User("kane8282", "mungtange", "아이고난", "kane8282@daum.net"));
         this.insert(new User("kakaopasta", "ppasta", "lasagna", "kakaopasta@daum.net"));
         this.insert(new User("chicken123", "tiba2chicken", "Kim chicken", "chicken@gmail.com"));
         this.insert(new User("pizza82", "pizzapizza", "Mr.Pizza", "pizza@gmail.com"));
