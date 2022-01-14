@@ -2,14 +2,18 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Primary
+@Repository
 public class UserH2Repository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
