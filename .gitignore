@@ -35,11 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-src/main/.DS_Store
-
-src/main/resources/.DS_Store
-
-src/main/resources/templates/.DS_Store
-
-src/main/resources/templates/board/.DS_Store
