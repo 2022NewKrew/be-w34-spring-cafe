@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Transactional
 @SpringBootTest
-class UserControllerTest {
+class UserControllerIntegrationTest {
 
     @Autowired
     private UserController userController;

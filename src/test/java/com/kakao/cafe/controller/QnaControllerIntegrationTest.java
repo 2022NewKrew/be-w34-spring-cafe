@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Transactional
 @SpringBootTest
-class QnaControllerTest {
+class QnaControllerIntegrationTest {
 
     @Autowired
     private QnaController qnaController;
