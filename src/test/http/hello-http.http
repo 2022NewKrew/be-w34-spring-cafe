@@ -1,0 +1,11 @@
+### 정적 페이지 가져오기
+GET {{host}}/
+
+### 간단 API 테스트
+GET {{host}}/api/hello
+
+### 템플릿 테스트
+GET {{host}}/user/jake
+
+### Post 동작 확인
+POST {{host}}/user?userId=jake&password=1234&name=jake&email=jake@kakao.com
