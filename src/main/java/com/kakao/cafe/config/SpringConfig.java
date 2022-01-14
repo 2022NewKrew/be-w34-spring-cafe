@@ -2,8 +2,8 @@ package com.kakao.cafe.config;
 
 import com.kakao.cafe.repository.ArticleDao;
 import com.kakao.cafe.repository.UserDao;
-import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.service.ArticleServiceImpl;
+import com.kakao.cafe.service.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,8 +16,8 @@ import javax.sql.DataSource;
 public class SpringConfig {
 
     @Bean
-    public ArticleService articleService() {
-        return new ArticleService(articleDao(), userDao());
+    public ArticleServiceImpl articleService() {
+        return new ArticleServiceImpl(articleDao(), userDao());
     }
 
     @Bean
@@ -26,8 +26,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public UserService userService() {
-        return new UserService(userDao());
+    public UserServiceImpl userService() {
+        return new UserServiceImpl(userDao());
     }
 
     @Bean
