@@ -36,8 +36,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String getList(Model model) {
-        logger.info("GET /usess: Get all users.");
-
+        logger.info("GET /users: Get all users.");
         List<User> findUsers = userService.findUsers();
 
         model.addAttribute("users", findUsers);
