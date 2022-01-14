@@ -1,6 +1,9 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.*;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Contents;
+import com.kakao.cafe.domain.Title;
+import com.kakao.cafe.domain.UserId;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.utility.ArticleException;
 import com.kakao.cafe.utility.ErrorCode;
@@ -34,40 +37,8 @@ public class ArticleServiceTest {
     @Test
     @BeforeAll
     static void setUp() {
-        User user = new User(new UserId("test123"), new Password("&test12345"), new Name("테스트"), new Email("test123@test.com"));
-        article = new Article(user, new Date(), new Title("123456"), new Contents("테스트용"));
+        article = new Article(new UserId("test123"), new Date(), new Title("123456"), new Contents("테스트용"));
         articleContainsId = new Article(1L, article);
-    }
-
-    @Test
-    @DisplayName("Article이 null인 경우 게시할 수 없다.")
-    void invalidArticleNull() {
-        assertThatThrownBy(() -> articleService.postArticle(null))
-                .isInstanceOf(ArticleException.class)
-                .hasMessageMatching(ErrorCode.INVALID_NULL_VALUE.getErrorMessage());
-    }
-
-    @Test
-    @DisplayName("Article 동일한 ArticleId가 존재하는 경우 추가할 수 없다.")
-    void postSameArticleFailed() {
-        when(articleRepository.findByArticleId(articleContainsId.getArticleId()))
-                .thenReturn(Optional.of(articleContainsId));
-
-        assertThatThrownBy(() -> articleService.postArticle(articleContainsId))
-                .isInstanceOf(ArticleException.class)
-                .hasMessageMatching(ErrorCode.DUPLICATE_ARTICLE_ID.getErrorMessage());
-    }
-
-    @Test
-    @DisplayName("Article을 정상적으로 추가한 경우 Article을 반환한다.")
-    void postArticleSuccess() {
-        when(articleRepository.findByArticleId(article.getArticleId()))
-                .thenReturn(Optional.empty());
-        when(articleRepository.save(article))
-                .thenReturn(articleContainsId);
-
-        assertThat(articleService.postArticle(article))
-                .isEqualTo(articleContainsId);
     }
 
     @Test

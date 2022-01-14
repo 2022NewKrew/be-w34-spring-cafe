@@ -1,6 +1,9 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.*;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Contents;
+import com.kakao.cafe.domain.Title;
+import com.kakao.cafe.domain.UserId;
 import com.kakao.cafe.utility.ArticleException;
 import com.kakao.cafe.utility.ErrorCode;
 import org.junit.jupiter.api.*;
@@ -23,9 +26,8 @@ public class ArticleMemoryRepositoryTest {
     @Test
     @BeforeAll
     void setUp() {
-        User user = new User(new UserId("test123"), new Password("&test12345"), new Name("테스트"), new Email("test123@test.com"));
-        article1 = new Article(user, new Date(), new Title("제목 입니다."), new Contents("내용 입니다."));
-        article2 = new Article(user, new Date(), new Title("제목2"), new Contents("내용2."));
+        article1 = new Article(new UserId("test123"), new Date(), new Title("제목 입니다."), new Contents("내용 입니다."));
+        article2 = new Article(new UserId("test123"), new Date(), new Title("제목2"), new Contents("내용2."));
     }
 
     @Test
@@ -45,10 +47,7 @@ public class ArticleMemoryRepositoryTest {
     @Test
     @DisplayName("저장 하지 않은 ArticleId로 불러올 수 없다.")
     void findArticleById() {
-        User user = new User(new UserId("test123"), new Password("&test12345"), new Name("테스트"), new Email("test123@test.com"));
-        Article article = new Article(user, new Date(), new Title("제목 입니다."), new Contents("내용 입니다."));
-
-        Article saveArticle = articleRepository.save(article);
+        Article saveArticle = articleRepository.save(article1);
         Optional<Article> findArticle = articleRepository.findByArticleId(saveArticle.getArticleId() + 1);
 
         assertThat(findArticle.isPresent()).isEqualTo(false);
