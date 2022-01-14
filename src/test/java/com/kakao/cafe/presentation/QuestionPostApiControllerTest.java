@@ -30,7 +30,7 @@ public class QuestionPostApiControllerTest {
     void writeTest() {
         String title = "spring question";
         String content = "what is this?";
-        Long userId = 0L;
+        Long userId = 1L;
 
         QuestionPostWriteRequest request = new QuestionPostWriteRequest(title, content, userId);
 
