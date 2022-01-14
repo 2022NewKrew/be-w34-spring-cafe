@@ -16,7 +16,7 @@ public class UserDao {
     }
 
     public List<User> getUsers() {
-        return jdbcTemplate.query("select * from article",
+        return jdbcTemplate.query("select * from users",
                 (rs, rowNum) -> new User(
                         rs.getString("userId"),
                         rs.getString("password"),
@@ -27,7 +27,7 @@ public class UserDao {
     }
 
     public User getUser(String userId) {
-        return jdbcTemplate.queryForObject("select * from user where userId = ?",
+        return jdbcTemplate.queryForObject("select * from users where userId = ?",
                 (rs, rowNum) -> new User(
                         rs.getString("userId"),
                         rs.getString("password"),
@@ -39,12 +39,12 @@ public class UserDao {
     }
 
     public void addUser(User user) {
-        jdbcTemplate.update("insert into user(userId, password, name, email) values(?,?,?,?)",
+        jdbcTemplate.update("insert into users(userId, password, name, email) values(?,?,?,?)",
                 user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
     public void updateUser(User user) {
-        jdbcTemplate.update("update user set name=?,email=? where userId=? and password=?",
+        jdbcTemplate.update("update users set name=?,email=? where userId=? and password=?",
                 user.getName(), user.getEmail(), user.getUserId(), user.getPassword());
     }
 

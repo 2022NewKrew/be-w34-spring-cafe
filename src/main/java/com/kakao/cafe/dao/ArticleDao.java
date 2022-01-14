@@ -16,12 +16,12 @@ public class ArticleDao {
     }
 
     public void addArticle(Article article) {
-        jdbcTemplate.update("insert into article(writer, title, contents) values(?,?,?)",
+        jdbcTemplate.update("insert into articles(writer, title, contents) values(?,?,?)",
                 article.getWriter(), article.getTitle(), article.getContents());
     }
 
     public List<Article> getArticles() {
-        return jdbcTemplate.query("select * from article",
+        return jdbcTemplate.query("select * from articles",
                 (rs, rowNum) -> new Article(
                         rs.getString("writer"),
                         rs.getString("title"),
@@ -31,7 +31,7 @@ public class ArticleDao {
     }
 
     public Article getArticle(int index) {
-        return jdbcTemplate.queryForObject("select * from article where id = ?",
+        return jdbcTemplate.queryForObject("select * from articles where id = ?",
                 (rs, rowNum) -> new Article(
                         rs.getString("writer"),
                         rs.getString("title"),
