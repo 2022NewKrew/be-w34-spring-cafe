@@ -6,21 +6,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MemoryUserRepository implements UserRepository {
+public class InMemoryUserRepository implements UserRepository {
 
     private final Users users;
 
-    public MemoryUserRepository() {
+    public InMemoryUserRepository() {
         this.users = new Users(Collections.synchronizedList(new ArrayList<>()));
     }
 
     @Override
-    public User save(User user) {
+    public void save(User user) {
         users.add(user);
-        return user;
     }
 
     @Override
@@ -29,12 +29,12 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
-        return users.findByUserId(userId);
+    public Optional<User> findById(UUID id) {
+        return users.findById(id);
     }
 
     @Override
-    public Optional<User> findByName(String name) {
-        return users.findByName(name);
+    public Optional<User> findByUserId(String userId) {
+        return users.findByUserId(userId);
     }
 }

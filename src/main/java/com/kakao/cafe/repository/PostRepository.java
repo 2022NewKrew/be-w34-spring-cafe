@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface PostRepository {
 
-    Post save(Post post);
+    void save(Post post);
 
     List<Post> findAll();
 
