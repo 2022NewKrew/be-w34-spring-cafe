@@ -1,27 +1,35 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.dto.UserCreationDTO;
-import com.kakao.cafe.util.Encrypt;
-import lombok.Builder;
+import com.kakao.cafe.dto.user.UserCreationDTO;
+import com.kakao.cafe.dto.user.UserDTO;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class User {
-    @Setter
     private long id;
-    private String userEmail;
-    private String userId;
+    private String email;
+    private String nickname;
     private String password;
-    private LocalDate registerDate;
+    private LocalDate createdAt;
 
-    @Builder
-    public User(Encrypt encrypt, UserCreationDTO dto) {
-        this.userEmail = dto.getUserEmail();
-        this.userId = dto.getUserId();
-        this.password = encrypt.encrypt(dto.getPassword());
-        registerDate = LocalDate.now();
+    public User(UserCreationDTO dto) {
+        this.email = dto.getEmail();
+        this.nickname = dto.getNickname();
+        this.password = dto.getPassword();
+        createdAt = LocalDate.now();
+    }
+
+    public User(UserDTO dto) {
+        this.id = dto.getId();
+        this.email = dto.getEmail();
+        this.nickname = dto.getNickname();
+        this.password = dto.getPassword();
+        this.createdAt = dto.getCreatedAt();
     }
 }

@@ -1,5 +1,5 @@
 {{> layout/header}}
-<link href="css/user/list.css" rel="stylesheet">
+<link href="../css/user/list.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -29,9 +29,10 @@
                     <tbody>
                     {{#userList}}
                     <tr>
-                        <td><a href="/users/{{id}}">{{userId}}</a></td>
-                        <td>{{userEmail}}</td>
-                        <td>{{registerDate}}</td>
+                        <td><a href="/users/{{id}}">{{nickname}}</a></td>
+                        <td>{{email}}</td>
+                        <td>{{createdAt}}</td>
+                        <td><a href="/users/{{id}}/form">수정</a></td>
                     </tr>
                     {{/userList}}
                     </tbody>
@@ -41,4 +42,9 @@
     </div>
 </div>
 </body>
+<script>
+    {{#errorMsg}}
+    alert("{{errorMsg}}");
+    {{/errorMsg}}
+</script>
 </html>

@@ -1,6 +1,5 @@
 {{> layout/header}}
-
-    <link href="css/user/form.css" rel="stylesheet">
+    <link href="/css/user/form.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -12,12 +11,20 @@
         </header>
         <form name="question" class="info-container" method="post" action="/users">
             <div class="form-group">
-                <label for="userEmail">이메일</label>
-                <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="이메일을 입력하세요">
+                <label for="email">이메일</label>
+                <input type="email" class="form-control" id="email" name="email"
+                       {{#email}}
+                       value="{{email}}"
+                       {{/email}}
+                       placeholder="이메일을 입력하세요">
             </div>
             <div class="form-group">
-                <label for="userId">닉네임</label>
-                <input class="form-control" id="userId" name="userId" placeholder="닉네입을 입력하세요">
+                <label for="nickname">닉네임</label>
+                <input class="form-control" id="nickname" name="nickname"
+                       {{#nickname}}
+                       value="{{nickname}}"
+                       {{/nickname}}
+                       placeholder="닉네입을 입력하세요">
             </div>
             <div class="form-group">
                 <label for="password">비밀번호</label>
@@ -28,4 +35,9 @@
     </div>
 </div>
 </body>
+<script>
+    {{#errorMsg}}
+    alert("{{errorMsg}}");
+    {{/errorMsg}}
+</script>
 </html>
