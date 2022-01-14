@@ -1,5 +1,6 @@
 package com.kakao.cafe.module.repository;
 
+import com.kakao.cafe.infra.exception.NoSuchDataException;
 import com.kakao.cafe.module.model.domain.Article;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
@@ -43,7 +44,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                 " JOIN USERS" +
                 " ON ARTICLE.author_id = USERS.id" +
                 " WHERE ARTICLE.id = ?";
-        return jdbcTemplate.queryForObject(query, mapRowArticle(), id);
+        return jdbcTemplate.query(query, mapRowArticle(), id).stream().findAny()
+                .orElseThrow(() -> new NoSuchDataException("해당하는 사용자가 없습니다."));
     }
 
     @Override

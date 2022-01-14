@@ -61,6 +61,15 @@ class UserControllerTest {
     }
 
     @Test
+    void 존재하지_않는_사용자() throws Exception {
+        mockMvc.perform(get("/users/10"))
+                .andExpect(status().isBadRequest())
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("msg"))
+                .andExpect(view().name("infra/error"));
+    }
+
+    @Test
     void 사용자_정보_수정폼() throws Exception {
         mockMvc.perform(get("/users/1/form"))
                 .andExpect(status().isOk())

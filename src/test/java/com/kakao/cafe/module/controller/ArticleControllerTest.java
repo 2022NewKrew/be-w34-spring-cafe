@@ -51,4 +51,13 @@ class ArticleControllerTest {
                 .andExpect(model().attribute("article", hasProperty("author", is("레인"))))
                 .andExpect(view().name("article/show"));
     }
+
+    @Test
+    void 존재하지_않는_게시물_열람() throws Exception {
+        mockMvc.perform(get("/articles/100"))
+                .andExpect(status().isBadRequest())
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("msg"))
+                .andExpect(view().name("infra/error"));
+    }
 }
