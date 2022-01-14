@@ -5,11 +5,14 @@ public class User {
     private final String password;
     private final String email;
     private Long id;
-
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getUsername() {
