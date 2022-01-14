@@ -53,7 +53,6 @@ public class ArticleController {
 
         Optional<Article> findArticle = articleService.findOne(articleId);
         List<Comment> findComments = articleService.findComments(articleId);
-        System.out.println(findArticle);
 
         model.addAttribute("article", findArticle.get());
         model.addAttribute("comments", findComments);
