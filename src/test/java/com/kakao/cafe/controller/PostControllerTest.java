@@ -8,6 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,6 +40,30 @@ class PostControllerTest {
                 .andExpect(redirectedUrl("/"));
     }
 
+    @DisplayName("[실패] 게시글 작성 - Null 입력")
+    @ParameterizedTest(name = "{0}, {1}, {2}")
+    @CsvSource(value = {"null, title, content", "userId, null, content", "userId, title, null"}, nullValues = {"null"})
+    void write_FailedBy_Null(String userId, String title, String content) throws Exception {
+        mockMvc.perform(post("/users/create")
+                        .param("userId", userId)
+                        .param("title", title)
+                        .param("content", content))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("errors/error"));
+    }
+
+    @DisplayName("[실패] 게시글 작성 - 빈 문자열")
+    @ParameterizedTest(name = "{0}, {1}, {2}")
+    @CsvSource(value = {"'', title, content", "userId, '', content", "userId, title, ''"}, nullValues = {"null"})
+    void write_FailedBy_EmptyString(String userId, String title, String content) throws Exception {
+        mockMvc.perform(post("/users/create")
+                        .param("userId", userId)
+                        .param("title", title)
+                        .param("content", content))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("errors/error"));
+    }
+
     @Test
     @DisplayName("[성공] 게시글 목록")
     void postList() throws Exception {
@@ -47,6 +74,14 @@ class PostControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
 
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/index"));
+    }
+
+    @Test
+    @DisplayName("[성공] 게시글 목록 - 기존 게시글이 없는 경우")
+    void postList_By_EmptyPost() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/index"));
@@ -69,11 +104,10 @@ class PostControllerTest {
                 .andExpect(view().name("post/show"));
     }
 
-    @Test
     @DisplayName("[실패] 존재하지 않는 게시글 id")
-    void postById_FailedBy_NotExistPostId() throws Exception {
-        int invalidPostId = 999;
-
+    @ParameterizedTest(name = "id = {0}")
+    @ValueSource(ints = {-1, 0, 2, 999})
+    void postById_FailedBy_NotExistPostId(int invalidPostId) throws Exception {
         mockMvc.perform(post("/posts")
                         .param("userId", userId)
                         .param("title", title)
