@@ -60,7 +60,7 @@ public class UserController {
         return "/user/updateForm";
     }
 
-    @PostMapping("/{userId}/update")
+    @PutMapping("/{userId}/update")
     public String update(@PathVariable String userId, @ModelAttribute UserUpdateRequest requestDto) {
         User user = userFindService.findById(userId);
         user.setName(requestDto.getName());
