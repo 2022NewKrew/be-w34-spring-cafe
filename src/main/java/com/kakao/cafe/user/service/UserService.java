@@ -28,6 +28,21 @@ public class UserService {
         userRepository.addUser(userCreateDTO);
     }
 
+    public void userUpdate(UserCreateDTO userCreateDTO){
+        User user = userRepository.getUserByCondition("userid", userCreateDTO.getUserId());
+
+        if(user == null){
+            throw new RuntimeException("유저 아이디에 해당하는 유저가 없습니다.");
+        }
+
+        //비밀번호가 일치하지 않는경우 return
+        if(!user.getPassword().equals(userCreateDTO.getPassword())){
+            return;
+        }
+
+        userRepository.updateUser(userCreateDTO);
+    }
+
     public List<User> getAllUser(){
         return userRepository.getUsers();
     }

@@ -2,6 +2,7 @@ package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserCreateDTO;
+import com.kakao.cafe.user.dto.UserUpdateDTO;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface UserRepository {
 
     //회원가입처리
     public void addUser(UserCreateDTO userCreateDTO);
+
+    void updateUser(UserCreateDTO userCreateDTO);
 }

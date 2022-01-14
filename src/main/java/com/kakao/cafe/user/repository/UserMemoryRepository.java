@@ -2,6 +2,7 @@ package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserCreateDTO;
+import com.kakao.cafe.user.dto.UserUpdateDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,4 +29,10 @@ public class UserMemoryRepository implements UserRepository{
         User user = new User(userCreateDTO, Long.valueOf(users.size() + 1));
         users.add(user);
     }
+
+    @Override
+    public void updateUser(UserCreateDTO userCreateDTO) {
+
+    }
+
 }

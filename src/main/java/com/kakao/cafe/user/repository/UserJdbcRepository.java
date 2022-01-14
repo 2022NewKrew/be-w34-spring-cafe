@@ -2,6 +2,7 @@ package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserCreateDTO;
+import com.kakao.cafe.user.dto.UserUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -49,4 +50,12 @@ public class UserJdbcRepository implements UserRepository {
         );
 
     }
+
+    @Override
+    public void updateUser(UserCreateDTO userCreateDTO) {
+        String sql = String.format("UPDATE users SET name='%s', password='%s', email='%s' WHERE userid='%s'", userCreateDTO.getName(), userCreateDTO.getPassword(), userCreateDTO.getEmail(), userCreateDTO.getUserId());
+        jdbcTemplate.update(sql);
+    }
+
+
 }

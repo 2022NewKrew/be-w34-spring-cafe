@@ -42,6 +42,13 @@ public class UserController {
         return "redirect:/user/list";
     }
 
+    //회원정보수정
+    @PostMapping(value = "/user/update")
+    public String userUpdate(UserCreateDTO userCreateDTO){
+        userService.userUpdate(userCreateDTO);
+
+        return "redirect:/user/list";
+    }
 
 
     //회원개인프로필 확인
