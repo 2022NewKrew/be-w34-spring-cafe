@@ -1,7 +1,7 @@
 package com.kakao.cafe.application.article;
 
 import com.kakao.cafe.adapter.out.infra.persistence.article.ArticleInfoRepository;
-import com.kakao.cafe.adapter.out.infra.persistence.article.InMemoryArticleInfoRepository;
+import com.kakao.cafe.adapter.out.infra.persistence.article.JdbcArticleInfoRepository;
 import com.kakao.cafe.adapter.out.infra.persistence.article.StoreArticleInfoAdapter;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
 import com.kakao.cafe.application.article.port.in.WriteArticleUseCase;
@@ -24,7 +24,7 @@ public class MvcArticleConfig {
 
     @Bean
     public ArticleInfoRepository articleInfoRepository() {
-        return new InMemoryArticleInfoRepository();
+        return new JdbcArticleInfoRepository(dataSource);
     }
 
     @Bean
