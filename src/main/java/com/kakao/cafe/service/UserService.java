@@ -4,16 +4,21 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.UserId;
 import com.kakao.cafe.dto.CreateUserDto;
 import com.kakao.cafe.dto.FindUserDto;
-import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserUseCase {
 
-    private final UserRepository userRepository = new MemoryUserRepository();
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public UserId join(CreateUserDto createUserDto) {
         User user = userRepository.save(createUserDto);

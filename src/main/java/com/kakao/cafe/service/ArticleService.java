@@ -4,15 +4,20 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.CreateArticleDto;
 import com.kakao.cafe.dto.FindArticleDto;
 import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.MemoryArticleRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ArticleService implements ArticleUseCase {
 
-    private static final ArticleRepository articleRepository = new MemoryArticleRepository();
+    private final ArticleRepository articleRepository;
+
+    @Autowired
+    public ArticleService(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
 
     @Override
     public void createArticle(CreateArticleDto createArticleDto) {
