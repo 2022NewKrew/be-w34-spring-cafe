@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Repository
+//@Repository
 public class BoardRepositoryMemoryImpl implements BoardRepository {
     private static final Map<Long, Article> storedArticles = new LinkedHashMap<>();
-    private static final Table<Long, Integer, Comment> storedComments = HashBasedTable.create();
+    private static final Table<Long, Long, Comment> storedComments = HashBasedTable.create();
 
     private static long maxArticleId = 1L;
 
@@ -32,7 +32,7 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
         }
 
         Article currArticle = storedArticles.get(articleId);
-        int commentId = currArticle.getCommentsCount();
+        long commentId = currArticle.getCommentsCount();
 
         comment.setArticleId(articleId);
         comment.setCommentId(commentId);
@@ -66,7 +66,7 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
     }
 
     @Override
-    public Optional<Comment> findComment(long articleId, int commentId) {
+    public Optional<Comment> findComment(long articleId, long commentId) {
         return Optional.ofNullable(storedComments.get(articleId, commentId));
     }
 
@@ -86,7 +86,6 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
                 .writerId(originalArticle.getWriterId())
                 .content(article.getContent())
                 .date(originalArticle.getDate())
-                .hits(originalArticle.getHits())
                 .commentsCount(originalArticle.getCommentsCount())
                 .build());
         return true;
@@ -94,7 +93,7 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
 
     @Override
     public boolean modifyComment(long articleId, Comment comment) {
-        int commentId = comment.getCommentId();
+        long commentId = comment.getCommentId();
 
         if (!storedComments.contains(articleId, commentId)) {
             return false;
@@ -122,7 +121,7 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
     }
 
     @Override
-    public boolean deleteComment(long articleId, int commentId) {
+    public boolean deleteComment(long articleId, long commentId) {
         if (!storedComments.contains(articleId, commentId)) {
             return false;
         }

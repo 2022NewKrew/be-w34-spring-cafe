@@ -13,7 +13,7 @@ public class Comment {
     private long articleId;
 
     @Setter
-    private int commentId;
+    private long commentId;
 
     private String writerId;
     private String content;

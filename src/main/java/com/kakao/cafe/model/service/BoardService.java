@@ -13,11 +13,11 @@ public interface BoardService {
     ArticleDto findArticleByArticleId(long articleId);
     List<ArticleDto> findArticlesByWriterId(String writer);
     List<CommentDto> findCommentsByArticleId(long articleId);
-    CommentDto findComment(long articleId, int commentId);
+    CommentDto findComment(long articleId, long commentId);
 
     void modifyArticle(ArticleDto articleDto);
     void modifyComment(long articleId, CommentDto commentDto);
 
     void deleteArticle(long articleId);
-    void deleteComment(long articleId, int commentId);
+    void deleteComment(long articleId, long commentId);
 }
