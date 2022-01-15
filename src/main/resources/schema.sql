@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `comment`;
 DROP TABLE IF EXISTS `post`;
 DROP TABLE IF EXISTS `user`;
 
@@ -19,5 +20,17 @@ CREATE TABLE IF NOT EXISTS `post`
     `contents` TEXT        NOT NULL,
     `user_id`  BIGINT      NOT NULL,
     CONSTRAINT `POST_PK` PRIMARY KEY (`id`),
-    CONSTRAINT `USER_FK` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+    CONSTRAINT `POST_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `comment`
+(
+    `id`       BIGINT    NOT NULL AUTO_INCREMENT,
+    `created`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `post_id`  BIGINT    NOT NULL,
+    `user_id`  BIGINT    NOT NULL,
+    `contents` TEXT      NOT NULL,
+    CONSTRAINT `COMMENT_PK` PRIMARY KEY (`id`),
+    CONSTRAINT `COMMENT_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+    CONSTRAINT `COMMENT_POST` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`)
 );

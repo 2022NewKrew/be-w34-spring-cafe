@@ -31,7 +31,7 @@ public class PostController {
         final Post post = postDAO.getPostById(id)
                 .orElseThrow();
 
-        return new ModelAndView(ViewPath.SHOW_POST.getPath())
+        return new ModelAndView(ViewPath.SHOW_POST)
                 .addObject("post", post);
     }
 }

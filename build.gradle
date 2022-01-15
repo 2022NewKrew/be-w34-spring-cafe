@@ -19,9 +19,10 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    implementation 'com.h2database:h2:2.0.206'
+    implementation 'org.jsoup:jsoup:1.14.3'
 
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'com.h2database:h2:1.4.200'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

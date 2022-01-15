@@ -26,6 +26,10 @@ li {
     margin: 3px;
 }
 
+.panel-default{
+    width: 100%;
+}
+
 .black-component {
     display: flex;
     flex-direction: column;

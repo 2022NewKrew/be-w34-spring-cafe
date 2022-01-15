@@ -15,7 +15,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(SignUpException.class)
     public ModelAndView signUpExceptionHandle(HttpServletRequest req) {
-        final ModelAndView modelAndView = new ModelAndView(ViewPath.SIGN_UP_FAILED.getPath());
+        final ModelAndView modelAndView = new ModelAndView(ViewPath.SIGN_UP_FAILED);
 
         req.getParameterMap().forEach((key, value) -> modelAndView.addObject(key, value[0]));
 
@@ -24,7 +24,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(LoginException.class)
     public ModelAndView loginExceptionHandle() {
-        return new ModelAndView(ViewPath.LOGIN_FAILED.getPath());
+        return new ModelAndView(ViewPath.LOGIN_FAILED);
     }
 
     @ExceptionHandler(NoSuchElementException.class)

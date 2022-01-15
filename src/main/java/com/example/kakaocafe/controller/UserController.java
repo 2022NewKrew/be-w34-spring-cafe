@@ -25,12 +25,11 @@ public class UserController {
 
     @PostMapping
     public ModelAndView create(@ModelAttribute SignUpForm signUpForm) {
-
         signUpService.signUp(signUpForm);
 
         final UserProfile userProfile = new UserProfile(signUpForm.getEmail(), signUpForm.getName());
 
-        return new ModelAndView(ViewPath.SIGN_UP_SUCCESS.getPath())
+        return new ModelAndView(ViewPath.SIGN_UP_SUCCESS)
                 .addObject("user", userProfile);
     }
 
@@ -46,7 +45,7 @@ public class UserController {
     public ModelAndView getAll() {
         final List<UserProfileOfTableRow> userProfileOfTableRows = userDAO.getAllUserProfileOfTableRow();
 
-        return new ModelAndView(ViewPath.SHOW_USER_LIST.getPath())
+        return new ModelAndView(ViewPath.SHOW_USER_LIST)
                 .addObject("users", userProfileOfTableRows);
     }
 
@@ -56,7 +55,7 @@ public class UserController {
         final UserProfile userProfile = userDAO.getUserProfileById(userKey)
                 .orElseThrow();
 
-        return new ModelAndView(ViewPath.UPDATE_USER_FROM.getPath())
+        return new ModelAndView(ViewPath.UPDATE_USER_FROM)
                 .addObject("user", userProfile);
     }
 }
