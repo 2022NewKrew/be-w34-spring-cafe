@@ -38,4 +38,16 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof User)) {
+            return false;
+        }
+        User user = (User) obj;
+        return userId.equals(user.getUserId()) &&
+                password.equals(user.getPassword()) &&
+                name.equals(user.getName()) &&
+                email.equals(user.getEmail());
+    }
 }
