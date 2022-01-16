@@ -4,34 +4,32 @@ import com.example.kakaocafe.core.meta.SessionData;
 import com.example.kakaocafe.core.meta.URLPath;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
 
-@Component
 public class AuthenticationFilter extends OncePerRequestFilter {
+
+    private final List<String> noAuthUrlPatterns;
+
+    public AuthenticationFilter(List<String> noAuthUrlPatterns) {
+        this.noAuthUrlPatterns = noAuthUrlPatterns;
+    }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         final String path = request.getServletPath();
 
-        final boolean isCss = path.contains("/css/");
-        final boolean isImages = path.contains("/images/");
-        final boolean isFavicon = path.contains("/favicon.ico");
-
-        final boolean isIndex = path.equals(URLPath.INDEX.getPath());
-        final boolean isShowSignUpForm = path.equals(URLPath.SHOW_SIGN_UP_FROM.getPath());
-        final boolean isSignUp = path.equals(URLPath.SIGN_UP.getPath());
-        final boolean isShowLoginForm = path.equals(URLPath.SHOW_LOGIN_FROM.getPath());
-        final boolean isLogin = path.equals(URLPath.LOGIN.getPath());
-
-        return isLogin || isShowLoginForm || isIndex || isCss || isImages || isFavicon || isShowSignUpForm || isSignUp;
+        return noAuthUrlPatterns.stream()
+                .anyMatch(path::matches);
     }
 
     @Override
@@ -39,7 +37,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         final HttpSession httpSession = request.getSession(false);
 
         if (hasNotSession(httpSession) || hasNotUserKey(httpSession)) {
-            response.sendRedirect(URLPath.SHOW_LOGIN_FROM.getPath());
+            response.sendRedirect(URLPath.SHOW_LOGIN_FORM.getPath());
             return;
         }
 

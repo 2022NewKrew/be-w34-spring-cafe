@@ -6,15 +6,10 @@ import com.example.kakaocafe.domain.post.dto.PostAndComment;
 import com.example.kakaocafe.domain.post.dto.WritePostForm;
 import com.example.kakaocafe.domain.post.dto.PostOfTableRow;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,11 +32,21 @@ public class PostDAO {
     }
 
     public List<PostOfTableRow> getAllPostOfTableRow() {
-        final String sql = "SELECT p.id, p.title, p.contents, FORMATDATETIME(p.created, 'yyyy-MM-dd') as `created`, u.name as writer " +
+        final String sql = "SELECT p.id, " +
+                "p.title, " +
+                "p.contents, " +
+                "p.view_count, " +
+                "FORMATDATETIME(p.created, 'yyyy-MM-dd') as `created`, " +
+                "u.name as writer " +
                 "FROM POST as p " +
                 "JOIN USER as u on p.user_id=u.id";
 
         return jdbcTemplate.query(sql, postOfTableRowMapper());
+    }
+
+    public void plusViewCount(long id) {
+        final String sql = "UPDATE POST SET `view_count` = `view_count`+1 WHERE `id`=?";
+        jdbcTemplate.update(sql, id);
     }
 
     public Optional<Post> getPostById(long id) {
@@ -49,6 +54,7 @@ public class PostDAO {
                 "       FORMATDATETIME(p.created, 'yyyy-MM-dd hh:mm') as `p_created`,  " +
                 "       p.title                                 as `p_title`,  " +
                 "       p.contents                              as `p_contents`,  " +
+                "       p.view_count                              as `view_count`,  " +
                 "       u.name                                  as `p_writer`,  " +
                 "       c.id                                    as `c_id`,  " +
                 "       cu.name                                 as `c_writer`,  " +
@@ -57,7 +63,7 @@ public class PostDAO {
                 "FROM POST as p  " +
                 "         INNER JOIN USER as u on u.id = p.user_id  " +
                 "         LEFT OUTER JOIN COMMENT as c on c.post_id = p.id  " +
-                "         INNER JOIN USER as cu on c.user_id = cu.id " +
+                "         LEFT OUTER JOIN USER as cu on c.user_id = cu.id " +
                 "WHERE p.id =?";
 
         final List<PostAndComment> postAndComments = jdbcTemplate.query(sql, postMapper(), id);
@@ -67,12 +73,18 @@ public class PostDAO {
         }
 
         final List<Comment> comments = postAndComments.stream()
-                .map(PostAndComment::toComment)
+                .filter(this::isNotNullComment)
+                .map(Comment::of)
                 .collect(Collectors.toList());
 
-        final Post post = postAndComments.get(0).toPost(comments);
+        final Post post = Post.of(postAndComments.get(0), comments);
 
-        return Optional.ofNullable(post);
+        return Optional.of(post);
+    }
+
+    private boolean isNotNullComment(PostAndComment postAndComment) {
+        //Long 타입은 DB에서 null 일시 0리턴
+        return postAndComment.getCommentId() != 0;
     }
 
     private RowMapper<PostAndComment> postMapper() {
@@ -82,6 +94,7 @@ public class PostDAO {
             final String postTitle = rs.getString("p_title");
             final String postContents = rs.getString("p_contents");
             final String postWriter = rs.getString("p_writer");
+            final long viewCount = rs.getLong("view_count");
 
             final long commentId = rs.getLong("c_id");
             final String commentCreated = rs.getString("c_created");
@@ -94,6 +107,7 @@ public class PostDAO {
                     .postTitle(postTitle)
                     .postContents(postContents)
                     .postWriter(postWriter)
+                    .viewCount(viewCount)
                     .commentId(commentId)
                     .commentCreated(commentCreated)
                     .commentContents(commentContents)
@@ -108,8 +122,9 @@ public class PostDAO {
             final String writer = rs.getString("writer");
             final String title = rs.getString("title");
             final String created = rs.getString("created");
+            final long viewCount = rs.getLong("view_count");
 
-            return new PostOfTableRow(id, writer, title, created);
+            return new PostOfTableRow(id, writer, title, created, viewCount);
         };
     }
 }

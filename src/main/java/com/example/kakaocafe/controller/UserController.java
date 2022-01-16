@@ -12,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -24,13 +26,15 @@ public class UserController {
     private final UserDAO userDAO;
 
     @PostMapping
-    public ModelAndView create(@ModelAttribute SignUpForm signUpForm) {
+    public ModelAndView create(@ModelAttribute SignUpForm signUpForm, RedirectAttributes redirectAttr) {
         signUpService.signUp(signUpForm);
 
         final UserProfile userProfile = new UserProfile(signUpForm.getEmail(), signUpForm.getName());
 
-        return new ModelAndView(ViewPath.SIGN_UP_SUCCESS)
-                .addObject("user", userProfile);
+        redirectAttr.addFlashAttribute("email", userProfile.getEmail());
+        redirectAttr.addFlashAttribute("name", userProfile.getName());
+
+        return new ModelAndView(URLPath.SHOW_SIGN_UP_SUCCESS.getRedirectPath());
     }
 
     @PutMapping(path = "/{id}")
@@ -51,7 +55,6 @@ public class UserController {
 
     @GetMapping(path = "/updateForm")
     public ModelAndView show_updateForm(@SessionAttribute("userKey") long userKey) {
-
         final UserProfile userProfile = userDAO.getUserProfileById(userKey)
                 .orElseThrow();
 

@@ -1,6 +1,5 @@
 package com.example.kakaocafe.controller;
 
-import com.example.kakaocafe.core.meta.URLPath;
 import com.example.kakaocafe.domain.post.comment.CommentDAO;
 import com.example.kakaocafe.domain.post.comment.dto.WriteCommentForm;
 import lombok.RequiredArgsConstructor;

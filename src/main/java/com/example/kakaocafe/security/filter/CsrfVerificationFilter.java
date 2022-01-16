@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 
-@Component
 public class CsrfVerificationFilter extends OncePerRequestFilter {
 
     @Override
@@ -26,24 +25,20 @@ public class CsrfVerificationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            final CsrfTokenContext csrfTokenContext = getCsrfTokenContext(request);
-            validateCsrfToken(request, csrfTokenContext);
+        final CsrfTokenContext csrfTokenContext = getCsrfTokenContext(request);
+        validateCsrfToken(request, csrfTokenContext);
 
-            filterChain.doFilter(request, response);
-        } catch (Exception e) {
-            response.sendRedirect(URLPath.INDEX.getPath());
-        }
+        filterChain.doFilter(request, response);
     }
 
-    private CsrfTokenContext getCsrfTokenContext(HttpServletRequest request) throws Exception {
+    private CsrfTokenContext getCsrfTokenContext(HttpServletRequest request) {
         final HttpSession httpSession = request.getSession(false);
         if (httpSession == null)
-            throw new Exception();
+            throw new RuntimeException();
 
         final CsrfTokenContext csrfTokenContext = (CsrfTokenContext) httpSession.getAttribute(SessionData.CSRF);
         if (csrfTokenContext == null)
-            throw new Exception();
+            throw new RuntimeException();
 
         return csrfTokenContext;
     }

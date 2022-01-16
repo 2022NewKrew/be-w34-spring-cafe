@@ -2,7 +2,7 @@ package com.example.kakaocafe.controller;
 
 import com.example.kakaocafe.core.meta.URLPath;
 import com.example.kakaocafe.core.meta.ViewPath;
-import com.example.kakaocafe.domain.post.PostDAO;
+import com.example.kakaocafe.domain.post.PostService;
 import com.example.kakaocafe.domain.post.dto.Post;
 import com.example.kakaocafe.domain.post.dto.WritePostForm;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +15,12 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final PostDAO postDAO;
+    private final PostService postService;
 
     @PostMapping
     public ModelAndView create(WritePostForm writePostForm) {
 
-        postDAO.create(writePostForm);
+        postService.create(writePostForm);
 
         return new ModelAndView(URLPath.INDEX.getRedirectPath());
     }
@@ -28,8 +28,8 @@ public class PostController {
     @GetMapping(path = "/{postId}")
     public ModelAndView get(@PathVariable("postId") Long id) {
 
-        final Post post = postDAO.getPostById(id)
-                .orElseThrow();
+        final Post post = postService
+                .findByIdAndPlusViewCount(id);
 
         return new ModelAndView(ViewPath.SHOW_POST)
                 .addObject("post", post);
