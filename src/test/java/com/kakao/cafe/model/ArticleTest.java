@@ -20,7 +20,7 @@ class ArticleTest {
 
     @DisplayName("올바른 값들로 Article을 생성했을 때 예외를 던지지 않는다.")
     @Test
-    void LegalTest() {
+    public void LegalTest() {
         //give
         int id = 1;
         String title = "LegalTitle";
@@ -42,7 +42,7 @@ class ArticleTest {
                     "StringLengthOver" + ALLOWED_LENGTH_TITLE + "Also"
             }
     )
-    void illegalTitleTest(String illegalTitle) {
+    public void illegalTitleTest(String illegalTitle) {
         //give
         int id = 1;
         String writer = "writer";
@@ -63,7 +63,7 @@ class ArticleTest {
                     "isString" + ALLOWED_LENGTH_WRITER + "Also"
             }
     )
-    void illegalWriterTest(String illegalWriter) {
+    public void illegalWriterTest(String illegalWriter) {
         //give
         int id = 1;
         String title = "LegalTitle";
@@ -78,7 +78,7 @@ class ArticleTest {
     @DisplayName("올바르지 못한 contents가 주어졌을때 Article을 생성하면 IllegalArgumentException 예외를 던진다.")
     @ParameterizedTest
     @MethodSource("getStringOver100Length")
-    void illegalContentsTest(String illegalContent) {
+    public void illegalContentsTest(String illegalContent) {
         //give
         int id = 1;
         String title = "LegalTitle";
@@ -90,7 +90,7 @@ class ArticleTest {
         assertThatThrownBy(() -> new Article(id, title, writer, illegalContent, localDateTime)).isInstanceOf(IllegalArgumentException.class);
     }
 
-    static List<String> getStringOver100Length() {
+    private static List<String> getStringOver100Length() {
         return List.of(
                 "a".repeat(ALLOWED_LENGTH_CONTENTS + 1),
                 "b".repeat(ALLOWED_LENGTH_CONTENTS + 2),

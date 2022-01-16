@@ -14,10 +14,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class VolatilityUserStorageTest {
     private static final int PRECONDITION_USER_NUMBER = 10;
 
-    UserDao userDao = new VolatilityUserStorage();
+    private UserDao userDao = new VolatilityUserStorage();
 
     @BeforeEach
-    void before() {
+    private void before() {
         userDao = new VolatilityUserStorage();
         for (int i = 0; i < PRECONDITION_USER_NUMBER; i++) {
             userDao.addUser("userId" + i, "password" + i, "name" + i, "email" + i);
@@ -25,13 +25,13 @@ class VolatilityUserStorageTest {
     }
 
     @AfterEach
-    void after() {
+    private void after() {
         userDao = null;
     }
 
     @DisplayName("설정된 초기 값이 존재할 때 getUsers 메서드를 실행하면 저장한 모든 User를 가져온다.")
     @Test
-    void getUsers() {
+    public void getUsers() {
         //give
         //when
         List<User> users = userDao.getUsers();
@@ -43,7 +43,7 @@ class VolatilityUserStorageTest {
 
     @DisplayName("설정된 초기 값이 존재할 때 addUser 메서드를 실행하면 새로운 User를 추가한다.")
     @Test
-    void addUser() {
+    public void addUser() {
         //give
         String userId = "userId";
         String password = "password";
@@ -60,7 +60,7 @@ class VolatilityUserStorageTest {
 
     @DisplayName("설정된 초기 값이 존재할 때 findUserById 메서드를 실행하면 기다하는 값을 가져온다.")
     @Test
-    void findUserById() {
+    public void findUserById() {
         //give
         //when
         User user = userDao.findUserById("userId" + 0).orElseGet(null);
@@ -71,7 +71,7 @@ class VolatilityUserStorageTest {
 
     @DisplayName("설정된 초기 값이 존재할 때 getSize 메서드를 실행하면 User의 개수를 가져온다.")
     @Test
-    void getSize() {
+    public void getSize() {
         //give
         //when
         int size = userDao.getSize();
@@ -82,7 +82,7 @@ class VolatilityUserStorageTest {
 
     @DisplayName("설정된 초기값이 존재할때 입력받은 아이디를 가지고 있는 유저의 이름, 이메일 정보를 수정한다.")
     @Test
-    void update() {
+    public void update() {
         //give
         //when
         userDao.update("userId" + 0, "newName", "newEmail");

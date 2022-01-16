@@ -3,7 +3,7 @@ package com.kakao.cafe.controller.article;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.model.Article;
 import com.kakao.cafe.service.ArticleService;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -22,13 +22,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @DisplayName("ArticleController 테스트")
 class ArticleControllerTest {
-    static ArticleService articleService;
-    static ArticleController articleController;
-    static MockMvc mockMvc;
-    ObjectMapper objectMapper = new ObjectMapper();
+    private ArticleService articleService;
+    private ArticleController articleController;
+    private MockMvc mockMvc;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @BeforeAll
-    static void beforeAll() {
+    @BeforeEach
+    private void before() {
         articleService = mock(ArticleService.class);
         articleController = new ArticleController(articleService);
 
@@ -43,7 +43,7 @@ class ArticleControllerTest {
 
     @DisplayName("GET /index 테스트")
     @Test
-    void getIndex() throws Exception {
+    public void getIndex() throws Exception {
         //give
         mockMvc.perform(get("/index"))
                 .andExpect(status().isOk())
@@ -54,11 +54,12 @@ class ArticleControllerTest {
 
     @DisplayName("GET /index/{page} 테스트")
     @Test
-    void getIndexByPage() throws Exception {
+    public void getIndexByPage() throws Exception {
         int page = 1;
         int articlesPerPage = 5;
         when(articleService.getPartOfArticles(page, articlesPerPage))
                 .thenReturn(getArticles(articlesPerPage));
+        System.out.println(articleService.findArticleById(1));
         mockMvc.perform(get("/index/" + page))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
@@ -68,7 +69,7 @@ class ArticleControllerTest {
 
     @DisplayName("GET /articles 테스트")
     @Test
-    void postArticle() throws Exception {
+    public void postArticle() throws Exception {
         String content = objectMapper.writeValueAsString(new ArticleCreateDto("title", "writer", "contents"));
 
         mockMvc.perform(
@@ -82,7 +83,7 @@ class ArticleControllerTest {
 
     @DisplayName("GET /articles/{id} 테스트")
     @Test
-    void getArticleDetail() throws Exception {
+    public void getArticleDetail() throws Exception {
         int id = 1;
         when(articleService.findArticleById(id))
                 .thenReturn(new Article(1, "title", "writer", "contents"));
