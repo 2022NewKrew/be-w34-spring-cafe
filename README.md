@@ -36,4 +36,4 @@
 - [X] /users로 redirect하여 적용 되었는지 조회
 
 ### H2DB 연동
-- [ ] Spring JDBC사용
+- [X] Spring JDBC사용
