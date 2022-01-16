@@ -1,19 +1,15 @@
 package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.kakao.cafe.repository.user.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
 public class UserFindService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     public UserFindService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
