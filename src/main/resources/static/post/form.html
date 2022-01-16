@@ -33,7 +33,7 @@
         <header class="post-header">
             <p class="title">글쓰기</p>
         </header>
-        <form class="submit-write" method="get" action="../index.html ">
+        <form class="submit-write" method="post" action="/questions">
             <div class="text-box">
                 <div class="comment-writer-container">
                     <p class="post-title">제목</p>
@@ -51,6 +51,7 @@
                     <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
                 </div>
             </div>
+            <input type="hidden" id="writer" name="writer" value="testwriter">
             <input class="post-write-btn" type="submit" value="등록"/>
         </form>
     </div>
