@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.article;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +29,7 @@ public class H2ArticleRepository implements ArticleRepository{
 
     @Override
     public Article findById(int articleId) {
-        return jdbcTemplate.queryForObject(
+        return DataAccessUtils.singleResult(jdbcTemplate.query(
                 "SELECT ID, TITLE, CONTENT FROM ARTICLES WHERE ID = ?",
                 (rs, rowNum) -> {
                     Article article = new Article();
@@ -38,7 +39,7 @@ public class H2ArticleRepository implements ArticleRepository{
                     return article;
                 }
                 , articleId
-        );
+        ));
     }
 
     @Override
