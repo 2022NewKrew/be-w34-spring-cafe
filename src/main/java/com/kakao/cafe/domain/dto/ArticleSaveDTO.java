@@ -1,10 +1,11 @@
 package com.kakao.cafe.domain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Objects;
 
+@AllArgsConstructor
 @Getter
 public class ArticleSaveDTO {
 
@@ -14,8 +15,4 @@ public class ArticleSaveDTO {
     @NotBlank
     private final String content;
 
-    public ArticleSaveDTO(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
 }
