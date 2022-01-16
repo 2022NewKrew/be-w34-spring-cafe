@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public class UserMemoryRepository implements UserRepository {
 
     private final Users users = new Users();
