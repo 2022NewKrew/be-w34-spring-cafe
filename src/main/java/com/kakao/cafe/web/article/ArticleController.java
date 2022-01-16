@@ -35,6 +35,7 @@ public class ArticleController {
 
     @GetMapping("/")
     public String showArticles(Model model) {
+        articleFindService.findByAll();
         model.addAttribute("articles", articleFindService.findByAll().stream()
                 .map(ArticleListResponse::new)
                 .collect(Collectors.toList()));

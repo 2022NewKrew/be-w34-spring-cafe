@@ -4,20 +4,20 @@
 - [X] 뷰 슬랙에 올라온거 바탕으로 변경
 ## 글쓰기 및 글 목록 기능 구현
 - 사용자 정보, 시간, 조회수 일단 표시 x
-- [ ] 글쓰기 요구사항
-  - [ ] 게시글 기능 구현 담당할 ArticleController 생성
-  - [ ] /qna/form에서 /questions로 post요청
-  - [ ] 질문 저장후 "/"로 redirect
-  - [ ] 게시글 관련 Service, Repository 생성
-  - [ ] Controller - Service간 Dto 사용
-  - [ ] 글 목록 요구사항
-  - [ ] 전체 질문 목록 확인
-- [ ] 게시글 상세보기
-  - [ ] 게시글 목록 (/qna/list)의 제목을 클릭하면 게시글 상세 페이지에 접속
-  - [ ] 상세 페이지 접근 url은 "/articles/{index}" (index == 1번부터)
-  - [ ] 게시글 객체에 id PK를 추가하여 사용
-  - [ ] 조회한 게시글 데이터를 /qna/show에 보냄
-  - [ ] /qna/show에서 확인
+- [X] 글쓰기 요구사항
+  - [X] 게시글 기능 구현 담당할 ArticleController 생성
+  - [X] /qna/form에서 /questions로 post요청
+  - [X] 질문 저장후 "/"로 redirect
+  - [X] 게시글 관련 Service, Repository 생성
+  - [X] Controller - Service간 Dto 사용
+  - [X] 글 목록 요구사항
+  - [X] 전체 질문 목록 확인
+- [X] 게시글 상세보기
+  - [X] 게시글 목록 (/qna/list)의 제목을 클릭하면 게시글 상세 페이지에 접속
+  - [X] 상세 페이지 접근 url은 "/articles/{index}" (index == 1번부터)
+  - [X] 게시글 객체에 id PK를 추가하여 사용
+  - [X] 조회한 게시글 데이터를 /qna/show에 보냄
+  - [X] /qna/show에서 확인
 
 ## (선택미션) 회원정보 수정
 - [X] 비밀번호가 일치하는 경우에만 수정
@@ -34,3 +34,6 @@
 ### 회원정보 수정
 - [X] /user/updateFrom에서 /users/{id}/update 로 개인정보 수정
 - [X] /users로 redirect하여 적용 되었는지 조회
+
+### H2DB 연동
+- [ ] Spring JDBC사용
