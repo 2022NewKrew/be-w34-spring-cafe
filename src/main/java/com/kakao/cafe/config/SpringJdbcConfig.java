@@ -1,7 +1,5 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.repository.user.JdbcUserRepository;
-import com.kakao.cafe.repository.user.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,6 +17,7 @@ public class SpringJdbcConfig {
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("kakaodb")
                 .addScript("classpath:schema.sql")
+                .addScript("classpath:data.sql")
                 .build();
     }
 
@@ -27,8 +26,4 @@ public class SpringJdbcConfig {
         return new JdbcTemplate(dataSource());
     }
 
-    @Bean
-    public UserRepository userRepository(){
-        return new JdbcUserRepository(jdbcTemplate());
-    }
 }

@@ -3,6 +3,7 @@ package com.kakao.cafe.repository.article;
 import com.kakao.cafe.domain.article.Article;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,16 +17,29 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public void save(Article article) {
-
+        jdbcTemplate.update("INSERT INTO articles (writer, title, contents) VALUES (?, ?, ?)",
+                article.getWriter(), article.getTitle(), article.getContents());
     }
 
     @Override
     public Optional<Article> findByArticleId(Long id) {
-        return Optional.empty();
+        List<Article> result =  jdbcTemplate.query("SELECT * FROM articles WHERE id = ?", articleRowMapper(), id);
+        return result.stream().findAny();
     }
 
     @Override
     public List<Article> findAll() {
-        return null;
+        return jdbcTemplate.query("SELECT * FROM articles", articleRowMapper());
+    }
+
+    private RowMapper<Article> articleRowMapper(){
+        return (rs, rowNum) -> {
+            return Article.builder()
+                    .articleId(rs.getLong("id"))
+                    .writer(rs.getString("writer"))
+                    .title(rs.getString("title"))
+                    .contents(rs.getString("contents"))
+                    .build();
+        };
     }
 }

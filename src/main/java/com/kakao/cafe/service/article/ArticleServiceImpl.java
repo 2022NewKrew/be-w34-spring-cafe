@@ -3,18 +3,23 @@ package com.kakao.cafe.service.article;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.dto.article.ArticleReqDto;
 import com.kakao.cafe.dto.article.ArticleResDto;
-import com.kakao.cafe.repository.article.MemoryArticleRepository;
-import lombok.RequiredArgsConstructor;
+import com.kakao.cafe.repository.article.ArticleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
-    private final MemoryArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
+
+    @Autowired
+    public ArticleServiceImpl(@Qualifier("jdbcArticleRepository") ArticleRepository articleRepository){
+        this.articleRepository = articleRepository;
+    }
 
     @Override
     public void addArticle(ArticleReqDto articleReqDto) {

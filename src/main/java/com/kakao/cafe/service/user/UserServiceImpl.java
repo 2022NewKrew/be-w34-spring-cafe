@@ -5,17 +5,22 @@ import com.kakao.cafe.dto.user.UserResDto;
 import com.kakao.cafe.dto.user.UserUpdateReqDto;
 import com.kakao.cafe.repository.user.UserRepository;
 import com.kakao.cafe.dto.user.UserReqDto;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+
+    @Autowired
+    public UserServiceImpl(@Qualifier("jdbcUserRepository") UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
     @Override
     public void addUser(UserReqDto userReqDto){
