@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface FindUserQuery {
 
-    FindUserDto find(UserId userId);
+    FoundUserDto find(UserId userId);
 
-    List<FindUserDto> findAll();
+    List<FoundUserDto> findAll();
 
 }

@@ -1,8 +1,5 @@
 package com.kakao.cafe;
 
-import com.kakao.cafe.article.adapter.out.MemoryArticleRepository;
-import com.kakao.cafe.article.application.ArticleService;
-import com.kakao.cafe.article.application.port.out.ArticleRepository;
 import com.kakao.cafe.user.adapter.in.FindUserController;
 import com.kakao.cafe.user.adapter.in.SignUpController;
 import com.kakao.cafe.user.adapter.out.MemoryUserRepository;
@@ -46,13 +43,5 @@ public class SpringConfig {
         return new MemoryUserRepository();
     }
 
-    @Bean
-    public ArticleService articleService() {
-        return new ArticleService(articleRepository());
-    }
 
-    @Bean
-    public ArticleRepository articleRepository() {
-        return new MemoryArticleRepository();
-    }
 }
