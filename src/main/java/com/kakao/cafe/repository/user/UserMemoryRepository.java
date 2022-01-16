@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+
 public class UserMemoryRepository implements UserRepository {
     private final List<UserEntity> userMemoryDatabase = new ArrayList<>();
 
@@ -25,9 +25,9 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public UserEntity findOne(String primaryKey) {
+    public UserEntity findOne(Long primaryKey) {
         return userMemoryDatabase.stream()
-                .filter(u -> u.getId().equals(primaryKey))
+                .filter(u -> u.getId() == primaryKey)
                 .findFirst()
                 .orElseThrow();
     }
@@ -48,9 +48,9 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public boolean exists(String primaryKey) {
+    public boolean exists(Long primaryKey) {
         return userMemoryDatabase.stream()
-                .filter(u -> u.getId().equals(primaryKey))
+                .filter(u -> u.getId() == primaryKey)
                 .findFirst()
                 .isPresent();
     }

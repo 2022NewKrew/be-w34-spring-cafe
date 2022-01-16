@@ -16,7 +16,7 @@
     <nav class="navbar navbar-fixed-top header">
         <div class="col-md-12">
             <div class="navbar-header">
-                <a href="index.html" class="navbar-brand">
+                <a href="/" class="navbar-brand">
                     <img src="images/KakaoCI.png" />
                 </a>
 
@@ -48,24 +48,11 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {{#articles}}
                     <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
+                        <td><a href="/questions/{{id}}">{{title}}</a></td> <td>{{writer}}</td> <td>{{writeDate}}</td> <td>{{views}}</td>
                     </tr>
-                    <tr>
-                        <td><a href="post/show.html">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
-                    </tr>
+                    {{/articles}}
                     </tbody>
                 </table>
             </div>
