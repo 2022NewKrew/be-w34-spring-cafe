@@ -1,7 +1,8 @@
 package com.kakao.cafe.web.repository;
 
 import com.kakao.cafe.web.domain.User;
-import com.kakao.cafe.web.dto.UserDTO;
+import com.kakao.cafe.web.dto.UserCreateDTO;
+import com.kakao.cafe.web.utility.CombinedSqlParameterSource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 @Repository
@@ -22,11 +24,15 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User save(UserDTO userDTO) {
-        String sql = "INSERT INTO cafe_user (user_id, password, name, email) VALUES (:userId, :password, :name, :email)";
-        SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(userDTO);
+    public User save(UserCreateDTO userCreateDTO) {
+        String sql = "INSERT INTO cafe_user (user_id, password, name, email, image_path, created_time, modified_time) " +
+                "VALUES (:userId, :password, :name, :email, :image_path, :created_time, :modified_time)";
+        CombinedSqlParameterSource sqlParameterSource = new CombinedSqlParameterSource(userCreateDTO);
+        sqlParameterSource.addValue("image_path", "/static/images/anonymous-user.png");
+        sqlParameterSource.addValue("created_time", new Timestamp(System.currentTimeMillis()));
+        sqlParameterSource.addValue("modified_time", new Timestamp(System.currentTimeMillis()));
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);
-        return getUserByUserId(userDTO.getUserId());
+        return getUserByUserId(userCreateDTO.getUserId());
     }
 
     @Override
@@ -42,7 +48,7 @@ public class MemoryUserRepository implements UserRepository {
         return namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, userRowMapper);
     }
 
-    public User update(UserDTO userUpdateDTO) {
+    public User update(UserCreateDTO userUpdateDTO) {
         String sql = "UPDATE cafe_user SET password = :password, name = :name, email = :email WHERE user_id = :userId";
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(userUpdateDTO);
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);

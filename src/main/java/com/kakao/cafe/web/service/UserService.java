@@ -1,7 +1,7 @@
 package com.kakao.cafe.web.service;
 
 import com.kakao.cafe.web.domain.User;
-import com.kakao.cafe.web.dto.UserDTO;
+import com.kakao.cafe.web.dto.UserCreateDTO;
 import com.kakao.cafe.web.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +15,8 @@ public class UserService {
         this.memoryUserRepository = memoryUserRepository;
     }
 
-    public User signUp(UserDTO userDTO) {
-       return memoryUserRepository.save(userDTO);
+    public User signUp(UserCreateDTO userCreateDTO) {
+       return memoryUserRepository.save(userCreateDTO);
     }
 
     public List<User> getUserList() {
@@ -27,7 +27,7 @@ public class UserService {
         return memoryUserRepository.getUserByUserId(userId);
     }
 
-    public User replace(UserDTO userUpdateDTO) {
+    public User replace(UserCreateDTO userUpdateDTO) {
         return memoryUserRepository.update(userUpdateDTO);
     }
 }

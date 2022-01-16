@@ -1,11 +1,10 @@
 package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.web.domain.User;
-import com.kakao.cafe.web.dto.UserDTO;
+import com.kakao.cafe.web.dto.UserCreateDTO;
 import com.kakao.cafe.web.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,8 +34,8 @@ public class UserController {
 
     @PostMapping("/users/create")
     public String createUser(String userId, String password, String name, String email) {
-        UserDTO userDTO = new UserDTO(userId, password, name, email);
-        userService.signUp(userDTO);
+        UserCreateDTO userCreateDTO = new UserCreateDTO(userId, password, name, email);
+        userService.signUp(userCreateDTO);
         return "redirect:/users";
     }
 
@@ -62,7 +61,7 @@ public class UserController {
     @PostMapping("/users/{userId}/update")
     public String updateUser(@PathVariable String userId, String password, String passwordConfirm, String name, String email) {
         if (password.equals(passwordConfirm)) {
-            UserDTO userUpdateDTO = new UserDTO(userId, password, name, email);
+            UserCreateDTO userUpdateDTO = new UserCreateDTO(userId, password, name, email);
             userService.replace(userUpdateDTO);
         }
         return "redirect:/users";
