@@ -1,5 +1,6 @@
-package com.kakao.cafe.domain.article;
+package com.kakao.cafe.repository.article;
 
+import com.kakao.cafe.domain.article.Article;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -21,11 +22,11 @@ public class ArticleList {
         return ArticleList.InnerInstanceClass.instance;
     }
 
-    public List<Article> getList() {
+    protected List<Article> getList() {
         return List.copyOf(articleList);
     }
 
-    public void addArticle(Article article) {
+    protected void addArticle(Article article) {
         articleList.add(article);
     }
 
@@ -33,7 +34,7 @@ public class ArticleList {
         return articleList.size();
     }
 
-    public Article findById(String articleId) {
+    protected Article findById(Long articleId) {
         Article target = articleList.stream().filter(article -> article.hasId(articleId)).findFirst().orElse(null);
         Assert.notNull(target, "FIND Error: Null Article Id in List");
         return target;

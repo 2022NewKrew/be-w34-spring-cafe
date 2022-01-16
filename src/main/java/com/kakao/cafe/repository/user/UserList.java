@@ -1,11 +1,11 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.repository.user;
 
-
+import com.kakao.cafe.domain.user.UserInfo;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class UserList {
     private final List<UserInfo> userList = new ArrayList<>();
@@ -23,21 +23,21 @@ public class UserList {
         return InnerInstanceClass.instance;
     }
 
-    public List<UserInfo> getUserList() {
-        return userList;
+    protected List<UserInfo> getUserList() {
+        return List.copyOf(userList);
     }
 
-    public void addUser(UserInfo userInfo) {
+    protected void addUser(UserInfo userInfo) {
         userList.add(userInfo);
     }
 
-    public int getSize(){
+    public int getSize() {
         return userList.size();
     }
 
-    public UserInfo findByName(String name) {
-        UserInfo target = userList.stream().filter(userInfo -> userInfo.hasEqualName(name)).findFirst().orElse(null);
-        Assert.notNull(target,"FIND Error: Null Object");
+    protected UserInfo findById(String userId) {
+        UserInfo target = userList.stream().filter(userInfo -> userInfo.hasEqualId(userId)).findFirst().orElse(null);
+        Assert.notNull(target, "FIND Error: Null Object");
         return target;
     }
 }

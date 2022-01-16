@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.utils;
 
 import java.time.LocalDate;
 import java.time.ZoneId;

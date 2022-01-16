@@ -1,35 +1,43 @@
 package com.kakao.cafe.service.article;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.ArticleList;
+import com.kakao.cafe.repository.article.ArticleRepository;
+import com.kakao.cafe.repository.article.MemoryArticleRepository;
+import com.kakao.cafe.web.dto.article.ArticleResponseDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Service
 public class ArticleService {
-    private static int articleIdCount = 1;
-
-    private ArticleService() {
-
+    public ArticleService() {
     }
 
-    private static class InnerInstanceClass {
-        private static final ArticleService instance = new ArticleService();
+    private final ArticleRepository articleRepository = new MemoryArticleRepository();
+
+    public void postArticle(Article article) {
+        articleRepository.create(article);
     }
 
-    public static ArticleService getInstance() {
-        return ArticleService.InnerInstanceClass.instance;
+    public List<ArticleResponseDto> readAll() {
+        return articleRepository.readAll().stream().map(
+                article -> ArticleResponseDto.builder()
+                        .id(article.getId())
+                        .title(article.getTitle())
+                        .content(article.getContent())
+                        .date(article.getDate())
+                        .build()
+        ).collect(Collectors.toList());
     }
 
-    public String getArticleId() {
-        return String.valueOf(articleIdCount++);
+    public ArticleResponseDto findById(String id){
+        Article foundArticle = articleRepository.read(Long.parseLong(id));
+        return ArticleResponseDto.builder()
+                .title(foundArticle.getTitle())
+                .id(foundArticle.getId())
+                .content(foundArticle.getContent())
+                .date(foundArticle.getDate())
+                .build();
     }
-
-    public static void postArticle(Article article) {
-        ArticleList.getInstance().addArticle(article);
-    }
-
-    public static ArticleList getArticleList() {
-        return ArticleList.getInstance();
-    }
-
 }
