@@ -3,18 +3,28 @@ package com.kakao.cafe.domain;
 public class Article {
     private String title;
     private String content;
+    private static Integer articleCounts = 0;
     private Integer articleIndex;
 
-    public Article(String title, String content, Integer articleIndex) {
+    public Article() {
+        articleCounts++;
+        articleIndex = articleCounts;
+    }
+
+    public Article(String title, String content) {
         this.title = title;
         this.content = content;
-        this.articleIndex = articleIndex;
+
+        articleCounts++;
+        articleIndex = articleCounts;
     }
 
     public Article(Article article) {
         this.title = article.getTitle();
         this.content = article.getContent();
-        this.articleIndex = article.getArticleIndex();
+
+        articleCounts++;
+        articleIndex = articleCounts;
     }
 
     public String getTitle() {
@@ -33,12 +43,10 @@ public class Article {
         return articleIndex;
     }
 
-    public void setArticleIndex(Integer articleIndex) {
-        this.articleIndex = articleIndex;
-    }
-
     public void setContent(String content) {
         this.content = content;
     }
 }
+
+
 

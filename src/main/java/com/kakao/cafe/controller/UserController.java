@@ -1,7 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserList;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,28 +7,34 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kakao.cafe.dto.UserDTO;
+import com.kakao.cafe.service.UserService;
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
-    private UserList userList = new UserList();
+    private final UserService userService;
 
-    public UserController() {}
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/create")
-    public String createUser(User user) {
-        userList.addUser(user);
+    public String createUser(UserDTO userDTO) {
+        userService.save(userDTO);
         return "redirect:/users";
     }
 
-    @GetMapping
+    @GetMapping("")
     public String listUsers(Model model) {
-        model.addAttribute("users", userList.getUserList());
+        model.addAttribute("users", userService.findAll().getUsers());
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String getProfile(@PathVariable String userId, Model model) {
-        model.addAttribute("user", userList.getUser(userId));
+        System.out.println(userId);
+        model.addAttribute("user", userService.findById(userId));
         return "user/profile";
     }
 }
