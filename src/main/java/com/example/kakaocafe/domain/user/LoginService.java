@@ -13,10 +13,12 @@ public class LoginService {
     private final UserDAO userDAO;
 
     public User login(LoginForm loginForm) throws LoginException {
+
         final User user = userDAO.findByEmail(loginForm.getEmail())
                 .orElseThrow(LoginException::new);
 
         user.validatePassword(loginForm.getPassword());
+
         return user;
     }
 }

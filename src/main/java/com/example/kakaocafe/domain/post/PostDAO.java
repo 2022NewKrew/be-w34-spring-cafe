@@ -1,17 +1,20 @@
 package com.example.kakaocafe.domain.post;
 
+
 import com.example.kakaocafe.domain.post.comment.dto.Comment;
 import com.example.kakaocafe.domain.post.dto.Post;
 import com.example.kakaocafe.domain.post.dto.PostAndComment;
 import com.example.kakaocafe.domain.post.dto.WritePostForm;
 import com.example.kakaocafe.domain.post.dto.PostOfTableRow;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+
 import java.util.stream.Collectors;
 
 @Repository
@@ -20,6 +23,7 @@ public class PostDAO {
     private final JdbcTemplate jdbcTemplate;
 
     public void create(WritePostForm writePostForm) {
+
         final String sql = "INSERT INTO POST (USER_ID, TITLE, CONTENTS) VALUES(?,?,?)";
 
         final Object[] params = {
@@ -32,6 +36,7 @@ public class PostDAO {
     }
 
     public List<PostOfTableRow> getAllPostOfTableRow() {
+
         final String sql = "SELECT p.id, " +
                 "p.title, " +
                 "p.contents, " +
@@ -43,6 +48,7 @@ public class PostDAO {
 
         return jdbcTemplate.query(sql, postOfTableRowMapper());
     }
+
 
     public void plusViewCount(long id) {
         final String sql = "UPDATE POST SET `view_count` = `view_count`+1 WHERE `id`=?";

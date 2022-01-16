@@ -1,6 +1,7 @@
 package com.example.kakaocafe.core.aop;
 
 import com.example.kakaocafe.core.exception.SignUpException;
+
 import com.example.kakaocafe.core.meta.URLPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -26,10 +26,13 @@ li {
     margin: 3px;
 }
 
+<<<<<<< HEAD
 .panel-default{
     width: 100%;
 }
 
+=======
+>>>>>>> ef7141a5223b3f32ffb9b5bbca4fde37156b3117
 .black-component {
     display: flex;
     flex-direction: column;

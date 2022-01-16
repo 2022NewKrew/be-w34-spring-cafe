@@ -2,6 +2,7 @@ package com.example.kakaocafe.domain.user;
 
 import com.example.kakaocafe.domain.base.BaseEntity;
 import lombok.Builder;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.security.auth.login.LoginException;
@@ -19,6 +20,7 @@ public class User extends BaseEntity {
         this.name = name;
         this.email = email;
     }
+
 
     public void validatePassword(String plainPassword) throws LoginException {
         if (!BCrypt.checkpw(plainPassword, password)) {

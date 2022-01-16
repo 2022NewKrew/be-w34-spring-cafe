@@ -5,7 +5,6 @@ import com.example.kakaocafe.core.config.resolver.WriteCommentFormResolver;
 import com.example.kakaocafe.core.config.resolver.WritePostFormResolver;
 import com.example.kakaocafe.core.meta.URLPath;
 import com.example.kakaocafe.core.meta.ViewPath;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 @Configuration
-@RequiredArgsConstructor
 public class MvcConfig implements WebMvcConfigurer {
 
     @Override
@@ -28,6 +26,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+
         registry.addViewController(URLPath.SHOW_POST_FORM.getPath())
                 .setViewName(ViewPath.WRITE_POST);
         registry.addViewController(URLPath.SHOW_ERROR_404.getPath())

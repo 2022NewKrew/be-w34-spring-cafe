@@ -19,7 +19,6 @@ public class PostController {
 
     @PostMapping
     public ModelAndView create(WritePostForm writePostForm) {
-
         postService.create(writePostForm);
 
         return new ModelAndView(URLPath.INDEX.getRedirectPath());
@@ -27,6 +26,7 @@ public class PostController {
 
     @GetMapping(path = "/{postId}")
     public ModelAndView get(@PathVariable("postId") Long id) {
+
 
         final Post post = postService
                 .findByIdAndPlusViewCount(id);
