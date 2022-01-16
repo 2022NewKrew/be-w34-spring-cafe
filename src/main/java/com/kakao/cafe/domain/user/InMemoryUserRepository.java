@@ -1,13 +1,10 @@
 package com.kakao.cafe.domain.user;
 
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
 public class InMemoryUserRepository implements UserRepository{
 
     private final Map<String, User> users = new ConcurrentHashMap<>();
