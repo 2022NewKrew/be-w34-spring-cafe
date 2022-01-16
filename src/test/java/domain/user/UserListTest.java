@@ -1,6 +1,8 @@
 package domain.user;
 
 
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserList;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

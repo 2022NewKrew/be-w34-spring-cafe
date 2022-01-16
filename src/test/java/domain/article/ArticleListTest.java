@@ -1,6 +1,7 @@
 package domain.article;
 
-import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.ArticleList;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

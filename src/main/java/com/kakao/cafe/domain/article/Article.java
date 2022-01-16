@@ -1,4 +1,4 @@
-package domain.article;
+package com.kakao.cafe.domain.article;
 
 import lombok.Getter;
 import lombok.ToString;
