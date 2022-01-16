@@ -3,7 +3,7 @@ package com.kakao.cafe.controller.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.UserService;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -22,13 +22,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @DisplayName("UserController 테스트")
 class UserControllerTest {
-    static UserService userService;
-    static UserController userController;
-    static MockMvc mockMvc;
-    ObjectMapper objectMapper = new ObjectMapper();
+    private UserService userService;
+    private UserController userController;
+    private MockMvc mockMvc;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @BeforeAll
-    static void beforeAll() {
+    @BeforeEach
+    private void before() {
         userService = mock(UserService.class);
         userController = new UserController(userService);
 
@@ -43,7 +43,7 @@ class UserControllerTest {
 
     @DisplayName("GET /users 테스트")
     @Test
-    void showUsers() throws Exception {
+    public void showUsers() throws Exception {
         int numberOfUser = 10;
         when(userService.getUsers())
                 .thenReturn(getUsers(numberOfUser));
@@ -55,7 +55,7 @@ class UserControllerTest {
 
     @DisplayName("POST /users 테스트")
     @Test
-    void register() throws Exception {
+    public void register() throws Exception {
         String content = objectMapper.writeValueAsString(new UserRegisterDto("userId", "password", "name", "email"));
 
         mockMvc.perform(
@@ -69,7 +69,7 @@ class UserControllerTest {
 
     @DisplayName("GET/users/{userId} 테스트")
     @Test
-    void showUserProfile() throws Exception {
+    public void showUserProfile() throws Exception {
         String userId = "userID";
         when(userService.findUserByUserId(userId))
                 .thenReturn(new User("userId", "password", "name", "email"));
@@ -82,7 +82,7 @@ class UserControllerTest {
 
     @DisplayName("GET /users/{userId}/update 테스트")
     @Test
-    void showUpdateUserInformation() throws Exception {
+    public void showUpdateUserInformation() throws Exception {
         String userId = "userID";
         when(userService.findUserByUserId(userId))
                 .thenReturn(new User("userId", "password", "name", "email"));
@@ -95,7 +95,7 @@ class UserControllerTest {
 
     @DisplayName("POST /users/{userId}/update 테스트")
     @Test
-    void updateUserInformation() throws Exception {
+    public void updateUserInformation() throws Exception {
         String userId = "userId";
         String password = "password";
         String name = "name";

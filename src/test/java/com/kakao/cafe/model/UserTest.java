@@ -24,7 +24,7 @@ class UserTest {
         class LegalTest {
             @DisplayName("올바른 값들이 주어졌을 때 User를 생성하면 예외를 던지지 않는다.")
             @Test
-            void legalUserTest() {
+            public void legalUserTest() {
                 //give
                 String userId = "isLegalUserId";
                 String password = "isLegalPassword";
@@ -49,7 +49,7 @@ class UserTest {
                             "thisStringLengthOver" + ALLOWED_LENGTH_USERID + "Also"
                     }
             )
-            void illegalUserIdTest(String testUserId) {
+            public void illegalUserIdTest(String testUserId) {
                 //give
                 String password = "isLegalPassword";
                 String name = "isLegal";
@@ -69,7 +69,7 @@ class UserTest {
                             "thisStringLengthOver" + ALLOWED_LENGTH_PASSWORD + "Also"
                     }
             )
-            void illegalPasswordTest(String testPassword) {
+            public void illegalPasswordTest(String testPassword) {
                 //give
                 String userId = "isLegalUserId";
                 String name = "isLegal";
@@ -89,7 +89,7 @@ class UserTest {
                             "thisOver" + ALLOWED_LENGTH_NAME + "Also"
                     }
             )
-            void illegalNameTest(String testName) {
+            public void illegalNameTest(String testName) {
                 //give
                 String userId = "isLegalUserId";
                 String password = "isLegalPassword";
@@ -109,7 +109,7 @@ class UserTest {
                             "thisStringSizeIsOverThe" + ALLOWED_LENGTH_EMAIL + "Also"
                     }
             )
-            void illegalEmailTest(String testEmail) {
+            public void illegalEmailTest(String testEmail) {
                 //give
                 String userId = "isLegalUserId";
                 String password = "isLegalPassword";
@@ -127,7 +127,7 @@ class UserTest {
     class UserMethodTest {
         @DisplayName("User 생성에 사용할 값과 값을 비교할 UserId가 동일 할 때 true를 반환한다.")
         @Test
-        void isUserIdTestWithSameId() {
+        public void isUserIdTestWithSameId() {
             //give
             String userId = "testId";
             String testId = "testId";
@@ -142,7 +142,7 @@ class UserTest {
 
         @DisplayName("User 생성에 사용할 값과 값을 비교할 UserId가 다를 때 false를 반환한다.")
         @Test
-        void isUserIdTestWithDifferentId() {
+        public void isUserIdTestWithDifferentId() {
             //give
             String userId = "testId";
             String testId = "notSameId";
@@ -157,7 +157,7 @@ class UserTest {
 
         @DisplayName("User 생성에 사용할 값과 값을 비교할 password가 같을 때 true를 반환한다.")
         @Test
-        void isPasswordTestWithSamePassword() {
+        public void isPasswordTestWithSamePassword() {
             //give
             String userId = "testId";
             String password = "isLegalPassword";
@@ -172,7 +172,7 @@ class UserTest {
 
         @DisplayName("User 생성에 사용할 값과 값을 비교할 password가 다를 때 false를 반환한다.")
         @Test
-        void isPasswordTestWithDifferentPassword() {
+        public void isPasswordTestWithDifferentPassword() {
             //give
             String userId = "testId";
             String password = "isLegalPassword";

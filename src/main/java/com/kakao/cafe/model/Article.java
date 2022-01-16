@@ -15,18 +15,6 @@ public class Article {
     private final String contents;
     private final LocalDateTime createDate;
 
-    public Article(int id, String title, String writer, String contents) {
-        checkTitle(title);
-        checkWriter(writer);
-        checkContents(contents);
-
-        this.id = id;
-        this.title = title;
-        this.writer = writer;
-        this.createDate = LocalDateTime.now();
-        this.contents = contents;
-    }
-
     public Article(int id, String title, String writer, String contents, LocalDateTime createDate) {
         checkTitle(title);
         checkWriter(writer);
@@ -37,6 +25,10 @@ public class Article {
         this.writer = writer;
         this.contents = contents;
         this.createDate = createDate;
+    }
+
+    public Article(int id, String title, String writer, String contents) {
+        this(id, title, writer, contents, LocalDateTime.now());
     }
 
     private void checkTitle(String title) {

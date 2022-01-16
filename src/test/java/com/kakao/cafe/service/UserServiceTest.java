@@ -3,7 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.dao.user.UserDao;
 import com.kakao.cafe.dao.user.VolatilityUserStorage;
 import com.kakao.cafe.model.User;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,18 +16,18 @@ import static org.mockito.Mockito.when;
 
 @DisplayName("UserService 테스트")
 class UserServiceTest {
-    static UserDao userDao;
-    static UserService userService;
+    private UserDao userDao;
+    private UserService userService;
 
-    @BeforeAll
-    static void before() {
+    @BeforeEach
+    private void before() {
         userDao = mock(VolatilityUserStorage.class);
         userService = new UserService(userDao);
     }
 
     @DisplayName("유저 아이디와 매칭 되는 유저의 비밀번호와 동일한 비밀번호가 입력되었을 때 예외를 던지지 않는다.")
     @Test
-    void legalPassword() {
+    public void legalPassword() {
         //give
         String userId = "userId";
         String password = "password";
@@ -45,7 +45,7 @@ class UserServiceTest {
 
     @DisplayName("유저 아이디와 매칭 되는 유저의 비밀번호와 다른 비밀번호가 입력되었을 때 IllegalArgumentException을 던진다.")
     @Test
-    void illegalPassword() {
+    public void illegalPassword() {
         //give
         String userId = "userId";
         String password = "password";
