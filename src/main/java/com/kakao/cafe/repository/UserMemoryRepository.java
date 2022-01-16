@@ -13,8 +13,8 @@ public class UserMemoryRepository implements UserRepository {
     private final Users users = new Users();
 
     @Override
-    public void signUp(UserSignUpDTO userSignUpDTO) {
-        users.addUser(userSignUpDTO);
+    public void signUp(User user) {
+        users.addUser(user);
     }
 
     @Override

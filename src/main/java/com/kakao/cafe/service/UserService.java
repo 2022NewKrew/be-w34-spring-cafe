@@ -16,7 +16,11 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void signUp(UserSignUpDTO userSignUpDTO) {
-        userRepository.signUp(userSignUpDTO);
+        User user = new User(userSignUpDTO.getUserId(),
+                userSignUpDTO.getPassword(),
+                userSignUpDTO.getName(),
+                userSignUpDTO.getEmail());
+        userRepository.signUp(user);
     }
 
     public List<UserViewDTO> findAllUsers() {

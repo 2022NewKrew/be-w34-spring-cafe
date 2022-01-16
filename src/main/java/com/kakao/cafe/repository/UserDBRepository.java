@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository
+//@Repository
 public class UserDBRepository implements UserRepository{
 
     private final JdbcTemplate jdbcTemplate;
@@ -23,7 +23,7 @@ public class UserDBRepository implements UserRepository{
     }
 
     @Override
-    public void signUp(UserSignUpDTO userSignUpDTO) {
+    public void signUp(User user) {
 
     }
 
