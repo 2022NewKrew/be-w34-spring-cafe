@@ -24,8 +24,8 @@ class UserControllerTest {
 
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserService userService;
+//    @Autowired
+//    private UserService userService;
 
     private List<User> users;
 
