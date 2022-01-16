@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,6 @@ public class ArticleService {
 
     public Article getArticleById(long id) {
         Optional<Article> article = memoryArticleRepository.getArticleById(id);
-        return article.orElseThrow();
+        return article.orElseThrow(NoSuchElementException::new);
     }
 }
