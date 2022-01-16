@@ -1,8 +1,8 @@
 package com.kakao.cafe.persistence.user;
 
-import com.kakao.cafe.application.exception.IdNotFoundException;
-import com.kakao.cafe.domain.user.UserAccount;
-import com.kakao.cafe.domain.user.UserAccountRepository;
+import com.kakao.cafe.exception.IdNotFoundException;
+import com.kakao.cafe.user.domain.UserAccount;
+import com.kakao.cafe.user.domain.UserAccountRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

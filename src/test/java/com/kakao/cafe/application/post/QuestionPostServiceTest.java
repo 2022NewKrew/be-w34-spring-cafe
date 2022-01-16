@@ -1,10 +1,11 @@
 package com.kakao.cafe.application.post;
 
-import com.kakao.cafe.application.dto.result.QuestionPostDetailResult;
-import com.kakao.cafe.application.user.UserAccountService;
-import com.kakao.cafe.domain.post.QuestionPost;
-import com.kakao.cafe.domain.post.QuestionPostRepository;
-import com.kakao.cafe.domain.user.UserAccount;
+import com.kakao.cafe.post.application.dto.QuestionPostDetailResult;
+import com.kakao.cafe.user.application.UserAccountService;
+import com.kakao.cafe.post.application.QuestionPostService;
+import com.kakao.cafe.post.domain.QuestionPost;
+import com.kakao.cafe.post.domain.QuestionPostRepository;
+import com.kakao.cafe.user.domain.UserAccount;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

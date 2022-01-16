@@ -1,9 +1,9 @@
 package com.kakao.cafe.persistence.post;
 
-import com.kakao.cafe.application.exception.IdNotFoundException;
-import com.kakao.cafe.domain.post.QuestionPost;
-import com.kakao.cafe.domain.post.QuestionPostRepository;
-import com.kakao.cafe.domain.user.UserAccount;
+import com.kakao.cafe.exception.IdNotFoundException;
+import com.kakao.cafe.post.domain.QuestionPost;
+import com.kakao.cafe.post.domain.QuestionPostRepository;
+import com.kakao.cafe.user.domain.UserAccount;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;

@@ -1,8 +1,9 @@
 package com.kakao.cafe.application.user;
 
-import com.kakao.cafe.application.dto.command.UserAccountEnrollCommand;
-import com.kakao.cafe.domain.user.UserAccount;
-import com.kakao.cafe.domain.user.UserAccountRepository;
+import com.kakao.cafe.user.application.dto.UserAccountEnrollCommand;
+import com.kakao.cafe.user.application.UserAccountService;
+import com.kakao.cafe.user.domain.UserAccount;
+import com.kakao.cafe.user.domain.UserAccountRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
