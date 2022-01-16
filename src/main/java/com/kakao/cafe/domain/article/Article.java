@@ -28,4 +28,14 @@ public class Article {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Article))
+            return false;
+
+        Article article = (Article) obj;
+        return article.id == id &&
+                article.title.equals(title) &&
+                article.content.equals(content);
+    }
 }
