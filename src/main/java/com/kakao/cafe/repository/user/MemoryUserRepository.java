@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.user.UserInfo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
@@ -15,7 +16,7 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public UserInfo read(String id) {
+    public Optional<UserInfo> read(String id) {
         return userList.findById(id);
     }
 

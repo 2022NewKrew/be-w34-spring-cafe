@@ -8,6 +8,7 @@ import com.kakao.cafe.web.dto.user.UserResponseDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +30,8 @@ public class UserService {
     }
 
     public UserResponseDto findById(String id) {
-        UserInfo userInfo = userRepository.read(id);
+        Optional<UserInfo> userInfoOptional = userRepository.read(id);
+        UserInfo userInfo = userInfoOptional.orElseThrow(() -> new IllegalArgumentException("Illegal Params: User ID"));
         return UserResponseDto.builder()
                 .userId(userInfo.getUserId())
                 .email(userInfo.getEmail())

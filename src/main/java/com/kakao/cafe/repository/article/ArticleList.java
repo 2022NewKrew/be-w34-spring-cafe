@@ -5,6 +5,7 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ArticleList {
     private final List<Article> articleList = new ArrayList<>();
@@ -34,8 +35,8 @@ public class ArticleList {
         return articleList.size();
     }
 
-    protected Article findById(Long articleId) {
-        Article target = articleList.stream().filter(article -> article.hasId(articleId)).findFirst().orElse(null);
+    protected Optional<Article> findById(Long articleId) {
+        Optional<Article> target = articleList.stream().filter(article -> article.hasId(articleId)).findFirst();
         Assert.notNull(target, "FIND Error: Null Article Id in List");
         return target;
     }

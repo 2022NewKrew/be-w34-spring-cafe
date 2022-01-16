@@ -5,6 +5,7 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class UserList {
@@ -35,9 +36,7 @@ public class UserList {
         return userList.size();
     }
 
-    protected UserInfo findById(String userId) {
-        UserInfo target = userList.stream().filter(userInfo -> userInfo.hasEqualId(userId)).findFirst().orElse(null);
-        Assert.notNull(target, "FIND Error: Null Object");
-        return target;
+    protected Optional<UserInfo> findById(String userId) {
+        return userList.stream().filter(userInfo -> userInfo.hasEqualId(userId)).findFirst();
     }
 }

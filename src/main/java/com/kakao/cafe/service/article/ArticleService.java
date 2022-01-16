@@ -7,6 +7,7 @@ import com.kakao.cafe.web.dto.article.ArticleResponseDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,8 +32,10 @@ public class ArticleService {
         ).collect(Collectors.toList());
     }
 
-    public ArticleResponseDto findById(String id){
-        Article foundArticle = articleRepository.read(Long.parseLong(id));
+    public ArticleResponseDto findById(String id) {
+        Optional<Article> foundArticleOptional = articleRepository.read(Long.parseLong(id));
+        Article foundArticle = foundArticleOptional.orElseThrow(() -> new IllegalArgumentException("Illegal ID Params: Article"));
+
         return ArticleResponseDto.builder()
                 .title(foundArticle.getTitle())
                 .id(foundArticle.getId())

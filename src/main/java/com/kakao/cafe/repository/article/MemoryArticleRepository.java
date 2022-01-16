@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.article.Article;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
@@ -22,7 +23,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article read(long id) {
+    public Optional<Article> read(long id) {
         return articleList.findById(id);
     }
 }
