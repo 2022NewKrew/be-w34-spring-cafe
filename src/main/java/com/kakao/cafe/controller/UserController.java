@@ -1,24 +1,19 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.domain.dto.UserSignUpDTO;
 import com.kakao.cafe.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
-import java.util.logging.Logger;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("/signUp")
     public String signUpView(){
@@ -26,8 +21,8 @@ public class UserController {
     }
 
     @PostMapping("/signUp")
-    public String signUpUser(User user){
-        userService.signUp(user);
+    public String signUpUser(@Valid UserSignUpDTO userSignUpDTO){
+        userService.signUp(userSignUpDTO);
         return "redirect:/user/list";
     }
 

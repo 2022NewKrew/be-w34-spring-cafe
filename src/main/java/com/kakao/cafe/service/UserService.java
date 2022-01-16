@@ -1,34 +1,37 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.model.User;
-import com.kakao.cafe.repository.UserMemoryRepository;
+import com.kakao.cafe.domain.dto.UserSignUpDTO;
+import com.kakao.cafe.domain.dto.UserViewDTO;
+import com.kakao.cafe.domain.model.User;
 import com.kakao.cafe.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public void signUp(UserSignUpDTO userSignUpDTO) {
+        User user = new User(userSignUpDTO.getUserId(),
+                userSignUpDTO.getPassword(),
+                userSignUpDTO.getName(),
+                userSignUpDTO.getEmail());
+        userRepository.signUp(user);
     }
 
-    public void signUp(User user) {
-        if (!userRepository.signUp(user)) {
-            throw new IllegalArgumentException();
-        }
+    public List<UserViewDTO> findAllUsers() {
+        return userRepository.findAllUsers().stream()
+                .map(UserViewDTO::new)
+                .collect(Collectors.toUnmodifiableList());
     }
 
-    public List<User> findAllUsers() {
-        return userRepository.findAllUsers();
-    }
+    public UserViewDTO findUserById(String userId) {
+        User user =  userRepository.findUserByUserId(userId);
 
-    public User findUserById(String userId) {
-        return Optional.ofNullable(userRepository.findUserByUserId(userId)).orElseThrow(IllegalArgumentException::new);
+        return new UserViewDTO(user);
     }
 }
