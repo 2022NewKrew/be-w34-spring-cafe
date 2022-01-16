@@ -103,4 +103,17 @@ class UserServiceTest {
         assertThatThrownBy(() -> userService.updateUser(unusedUserId, "123456", "test", "test@test.com"))
             .isExactlyInstanceOf(ResponseStatusException.class);
     }
+
+    @Test
+    @DisplayName("UID는 고유한 값은 갖는다.")
+    void testNoDuplicationOnUid() {
+        // given
+
+        // when
+        User user1 = new User("user1", "123456", "test", "test@test.com");
+        User user2 = new User("user2", "123456", "test", "test@test.com");
+
+        // then
+        assertThat(user1.getUid()).isNotEqualTo(user2.getUid());
+    }
 }

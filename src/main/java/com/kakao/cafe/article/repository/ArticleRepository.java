@@ -12,4 +12,8 @@ public interface ArticleRepository {
     Integer articlesSize();
 
     List<Article> readArticleList();
+
+    boolean isIdUsed(Integer aid);
+
+    Article readArticle(Integer aid);
 }

@@ -1,18 +1,19 @@
 package com.kakao.cafe.user.domain;
 
+import java.util.UUID;
 import lombok.Getter;
 
 @Getter
 public class User {
 
-    private final Long uid;
+    private final String uid;
     private final String userId;
     private String password;
     private String name;
     private String email;
 
     public User(String userId, String password, String name, String email) {
-        this.uid = 0L;
+        this.uid = UUID.randomUUID().toString();
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -58,12 +59,12 @@ public class User {
 
     public static class UserNoPassword {
 
-        private final Long uid;
+        private final String uid;
         private final String userId;
         private final String name;
         private final String email;
 
-        private UserNoPassword(Long uid, String userId, String name, String email) {
+        private UserNoPassword(String uid, String userId, String name, String email) {
             this.uid = uid;
             this.userId = userId;
             this.name = name;

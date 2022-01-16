@@ -24,4 +24,14 @@ public class ArticleRepositoryImplMemoryDB implements ArticleRepository{
     public List<Article> readArticleList() {
         return articleMemoryDB;
     }
+
+    @Override
+    public boolean isIdUsed(Integer aid) {
+        return articlesSize() >= aid;
+    }
+
+    @Override
+    public Article readArticle(Integer aid) {
+        return articleMemoryDB.get(aid - 1);
+    }
 }
