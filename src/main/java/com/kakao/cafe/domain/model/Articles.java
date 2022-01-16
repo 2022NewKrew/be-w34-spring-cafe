@@ -5,12 +5,15 @@ import com.kakao.cafe.domain.dto.ArticleSaveDTO;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Articles {
     private final List<Article> articles = new ArrayList<>();
 
     public void addArticle(ArticleSaveDTO articleSaveDTO){
-        Article article = new Article(articles.size()+1, articleSaveDTO);
+        validateArticleSaveDTO(articleSaveDTO);
+
+        Article article = new Article(articles.size()+1, articleSaveDTO.getTitle(), articleSaveDTO.getContent());
         articles.add(article);
     }
 
@@ -27,5 +30,9 @@ public class Articles {
         if (id < 1 || id > articles.size()) {
             throw new IllegalArgumentException();
         }
+    }
+
+    private void validateArticleSaveDTO(ArticleSaveDTO articleSaveDTO){
+        if(Objects.isNull(articleSaveDTO)) throw new IllegalArgumentException();
     }
 }
