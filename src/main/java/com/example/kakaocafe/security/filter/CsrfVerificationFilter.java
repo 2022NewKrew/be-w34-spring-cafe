@@ -34,11 +34,11 @@ public class CsrfVerificationFilter extends OncePerRequestFilter {
     private CsrfTokenContext getCsrfTokenContext(HttpServletRequest request) {
         final HttpSession httpSession = request.getSession(false);
         if (httpSession == null)
-            throw new RuntimeException();
+            throw new RuntimeException("csrf");
 
         final CsrfTokenContext csrfTokenContext = (CsrfTokenContext) httpSession.getAttribute(SessionData.CSRF);
         if (csrfTokenContext == null)
-            throw new RuntimeException();
+            throw new RuntimeException("csrf");
 
         return csrfTokenContext;
     }

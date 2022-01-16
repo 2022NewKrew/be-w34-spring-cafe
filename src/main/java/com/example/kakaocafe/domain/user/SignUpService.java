@@ -3,6 +3,7 @@ package com.example.kakaocafe.domain.user;
 import com.example.kakaocafe.domain.user.dto.SignUpForm;
 import com.example.kakaocafe.core.exception.SignUpException;
 import lombok.RequiredArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ public class SignUpService {
     @Transactional
     public void signUp(SignUpForm signUpForm) {
         validateIfEmailExistThrowException(signUpForm.getEmail());
+
         userDAO.create(signUpForm);
     }
 

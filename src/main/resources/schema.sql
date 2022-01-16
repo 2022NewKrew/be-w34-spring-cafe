@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `user`
     `id`       BIGINT      NOT NULL AUTO_INCREMENT,
     `created`  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `email`    VARCHAR(30) NOT NULL,
-    `password` VARCHAR(30) NOT NULL,
+    `password` VARCHAR(80) NOT NULL,
     `name`     VARCHAR(10) NOT NULL,
     CONSTRAINT `USER_PK` PRIMARY KEY (`id`)
 );

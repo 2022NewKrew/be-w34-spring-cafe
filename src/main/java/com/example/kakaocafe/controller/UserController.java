@@ -29,10 +29,8 @@ public class UserController {
     public ModelAndView create(@ModelAttribute SignUpForm signUpForm, RedirectAttributes redirectAttr) {
         signUpService.signUp(signUpForm);
 
-        final UserProfile userProfile = new UserProfile(signUpForm.getEmail(), signUpForm.getName());
-
-        redirectAttr.addFlashAttribute("email", userProfile.getEmail());
-        redirectAttr.addFlashAttribute("name", userProfile.getName());
+        redirectAttr.addFlashAttribute("email", signUpForm.getEmail());
+        redirectAttr.addFlashAttribute("name", signUpForm.getName());
 
         return new ModelAndView(URLPath.SHOW_SIGN_UP_SUCCESS.getRedirectPath());
     }

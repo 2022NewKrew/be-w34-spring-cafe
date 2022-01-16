@@ -1,7 +1,6 @@
-package com.example.kakaocafe.security.service;
+package com.example.kakaocafe.domain.user;
 
-import com.example.kakaocafe.domain.user.User;
-import com.example.kakaocafe.domain.user.UserDAO;
+import com.example.kakaocafe.domain.user.dto.LoginForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +12,11 @@ public class LoginService {
 
     private final UserDAO userDAO;
 
-    public User login(String email, String password) throws LoginException {
-        final User user = userDAO.findByEmail(email)
+    public User login(LoginForm loginForm) throws LoginException {
+        final User user = userDAO.findByEmail(loginForm.getEmail())
                 .orElseThrow(LoginException::new);
 
-        user.validatePassword(password);
+        user.validatePassword(loginForm.getPassword());
         return user;
     }
 }
