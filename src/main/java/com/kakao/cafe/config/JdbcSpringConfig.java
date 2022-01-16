@@ -8,7 +8,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import javax.sql.DataSource;
 
 @Configuration
-public class SpringJdbcConfig {
+public class JdbcSpringConfig {
     @Bean
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()

@@ -1,4 +1,6 @@
-package com.kakao.cafe.domain.user;
+package com.kakao.cafe.repository.user;
+
+import com.kakao.cafe.domain.user.User;
 
 import java.util.List;
 
