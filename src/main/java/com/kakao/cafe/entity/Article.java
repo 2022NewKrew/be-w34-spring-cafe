@@ -1,7 +1,5 @@
 package com.kakao.cafe.entity;
 
-import javax.validation.constraints.NotBlank;
-
 public class Article {
     private Integer articleId;
     private String title;
