@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.user.domain;
 
 import java.util.UUID;
 import java.util.regex.Matcher;

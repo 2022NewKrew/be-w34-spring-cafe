@@ -1,4 +1,4 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.user.application.port.in;
 
 public class CreateUserDto {
 

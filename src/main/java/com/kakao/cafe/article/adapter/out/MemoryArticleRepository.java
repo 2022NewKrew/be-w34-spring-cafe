@@ -1,6 +1,7 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.article.adapter.out;
 
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.article.application.port.out.ArticleRepository;
+import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.CreateArticleDto;
 import com.kakao.cafe.dto.FindArticleDto;

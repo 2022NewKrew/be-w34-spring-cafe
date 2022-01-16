@@ -1,11 +1,15 @@
 package com.kakao.cafe;
 
-import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.MemoryArticleRepository;
-import com.kakao.cafe.repository.MemoryUserRepository;
-import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.article.adapter.out.MemoryArticleRepository;
+import com.kakao.cafe.article.application.ArticleService;
+import com.kakao.cafe.article.application.port.out.ArticleRepository;
+import com.kakao.cafe.user.adapter.in.FindUserController;
+import com.kakao.cafe.user.adapter.in.SignUpController;
+import com.kakao.cafe.user.adapter.out.MemoryUserRepository;
+import com.kakao.cafe.user.application.FindUserService;
+import com.kakao.cafe.user.application.SignUpService;
+import com.kakao.cafe.user.application.port.out.LoadUserPort;
+import com.kakao.cafe.user.application.port.out.SaveUserPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,12 +17,32 @@ import org.springframework.context.annotation.Configuration;
 public class SpringConfig {
 
     @Bean
-    public UserService userService() {
-        return new UserService(userRepository());
+    public FindUserController findUserController() {
+        return new FindUserController(findUserService());
     }
 
     @Bean
-    public UserRepository userRepository() {
+    public SignUpController signUpController() {
+        return new SignUpController(signUpService());
+    }
+
+    @Bean
+    public FindUserService findUserService() {
+        return new FindUserService(loadUserPort());
+    }
+
+    @Bean
+    public SignUpService signUpService() {
+        return new SignUpService(saveUserPort());
+    }
+
+    @Bean
+    public SaveUserPort saveUserPort() {
+        return new MemoryUserRepository();
+    }
+
+    @Bean
+    public LoadUserPort loadUserPort() {
         return new MemoryUserRepository();
     }
 
