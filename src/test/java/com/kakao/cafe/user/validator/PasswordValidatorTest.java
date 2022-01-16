@@ -15,7 +15,7 @@ class PasswordValidatorTest {
     @DisplayName("비밀번호는 8~32자여야 한다.")
     @ValueSource(strings = {"test1234", "rea1pa55word!@!"})
     void validPasswordLength(String validPassword) {
-        assertDoesNotThrow(() -> validator.validate(validPassword));
+        assertDoesNotThrow(() -> validator.isValid(validPassword, null));
     }
 
     @ParameterizedTest
@@ -23,6 +23,6 @@ class PasswordValidatorTest {
     @ValueSource(strings = {"", "1234", "123456789012345678901234567890123"})
     void invalidPasswordLength(String invalidPassword) {
         assertThrows(InvalidPasswordException.class,
-                () -> validator.validate(invalidPassword));
+                () -> validator.isValid(invalidPassword, null));
     }
 }

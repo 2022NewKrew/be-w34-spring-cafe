@@ -1,51 +1,30 @@
 package com.kakao.cafe.user.model;
 
-import com.kakao.cafe.user.validator.EmailValidator;
-import com.kakao.cafe.user.validator.NameValidator;
-import com.kakao.cafe.user.validator.PasswordValidator;
-import com.kakao.cafe.user.validator.UserIdValidator;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.kakao.cafe.user.constraint.Email;
+import com.kakao.cafe.user.constraint.Name;
+import com.kakao.cafe.user.constraint.Password;
+import com.kakao.cafe.user.constraint.UserId;
 
 public class User {
+    @UserId
     private final String userId;
+
+    @Password
+    private transient String plainPassword;
+
     private String hashedPassword;
+
+    @Name
     private String name;
+
+    @Email
     private String email;
 
-    public User(String userId, String password, String name, String email) {
-        validateUserId(userId);
-        validatePassword(password);
-        validateName(name);
-        validateEmail(email);
-
+    public User(String userId, String plainPassword, String name, String email) {
         this.userId = userId;
-        this.hashedPassword = hash(password);
+        this.plainPassword = plainPassword;
         this.name = name;
         this.email = email;
-    }
-
-    private void validateUserId(String userId) {
-        new UserIdValidator().validate(userId);
-    }
-
-    private void validatePassword(String password) {
-        new PasswordValidator().validate(password);
-    }
-
-    private void validateName(String name) {
-        new NameValidator().validate(name);
-    }
-
-    private void validateEmail(String email) {
-        new EmailValidator().validate(email);
-    }
-
-    public void changePassword(String newPassword) {
-        this.hashedPassword = hash(newPassword);
-    }
-
-    private String hash(String password) {
-        return new BCryptPasswordEncoder().encode(password);
     }
 
     public String getUserId() {
@@ -57,7 +36,6 @@ public class User {
     }
 
     public void setName(String name) {
-        validateName(name);
         this.name = name;
     }
 
@@ -66,7 +44,22 @@ public class User {
     }
 
     public void setEmail(String email) {
-        validateEmail(email);
         this.email = email;
+    }
+
+    public String getPlainPassword() {
+        return plainPassword;
+    }
+
+    public void setPlainPassword(String plainPassword) {
+        this.plainPassword = plainPassword;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
     }
 }
