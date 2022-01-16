@@ -1,48 +1,33 @@
 package com.kakao.cafe.domain;
 
-import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-
+@Getter
 public class User {
 
-    private static int lastId = 1;
-    private final int id;
-    private final String userId;
+    private int id;
+    private String userId;
     private int password;
     private String name;
     private String email;
 
-    public User(String userId, int password, String name, String email) {
+    public User(int id, String userId, int password, String name, String email) {
+        this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.id = lastId++;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public int getPassword() {
-        return password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void update(int password, String name, String email) {
+    public void setPassword(int password) {
         this.password = password;
+    }
+
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
     }
 
