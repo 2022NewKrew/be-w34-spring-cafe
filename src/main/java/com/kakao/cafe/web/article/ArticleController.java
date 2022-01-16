@@ -49,4 +49,5 @@ public class ArticleController {
         return "/post/show";
     }
 
+    //TODO: article show에서 목록, 수정, 삭제버튼
 }

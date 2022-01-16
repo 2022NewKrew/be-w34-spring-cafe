@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.article.Article;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class H2ArticleRepository implements ArticleRepository{
@@ -24,22 +25,23 @@ public class H2ArticleRepository implements ArticleRepository{
     public int save(Article article) {
         String title = article.getTitle();
         String content = article.getContent();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
         return jdbcTemplate.update(
-                "INSERT INTO ARTICLES(TITLE, CONTENT) VALUES (?, ?)", title, content
+                "INSERT INTO ARTICLES(TITLE, CONTENT, CREATEDAT, MODIFIEDAT) VALUES (?, ?, ?, ?)", title, content, now, now
         );
     }
 
     @Override
     public Article findById(int articleId) {
         return DataAccessUtils.singleResult(jdbcTemplate.query(
-                "SELECT ID, TITLE, CONTENT FROM ARTICLES WHERE ID = ?", rowMapper , articleId
+                "SELECT ID, TITLE, CONTENT, CREATEDAT, MODIFIEDAT FROM ARTICLES WHERE ID = ?", rowMapper , articleId
         ));
     }
 
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query(
-                "SELECT ID, TITLE, CONTENT FROM ARTICLES", rowMapper
+                "SELECT ID, TITLE, CONTENT, CREATEDAT, MODIFIEDAT FROM ARTICLES", rowMapper
         );
     }
 }
