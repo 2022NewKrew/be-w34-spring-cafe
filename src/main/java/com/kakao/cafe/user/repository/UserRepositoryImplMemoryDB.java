@@ -30,4 +30,9 @@ public class UserRepositoryImplMemoryDB implements UserRepository {
     public User readByUserId(String userId) {
         return userMemoryDB.get(userId);
     }
+
+    @Override
+    public User updateUser(User user) {
+        return user;
+    }
 }

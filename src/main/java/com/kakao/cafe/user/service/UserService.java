@@ -32,11 +32,18 @@ public class UserService {
         return userRepository.readUserList();
     }
 
-    public User getUserFromUserId(String userId) throws ResponseStatusException{
-        if (userRepository.isUserIdUsed(userId)) {
-            return userRepository.readByUserId(userId);
-        } else {
+    public User getUserByUserId(String userId) throws ResponseStatusException{
+        if (!userRepository.isUserIdUsed(userId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "[ERROR] 사용자를 찾을 수 없습니다.");
         }
+        return userRepository.readByUserId(userId);
+    }
+
+    public User updateUser(String userId, String password, String name, String email) throws IllegalArgumentException {
+        final User user = getUserByUserId(userId);
+        user.validateAndSetPassword(password);
+        user.setName(name);
+        user.setEmail(email);
+        return userRepository.updateUser(user);
     }
 }

@@ -14,4 +14,6 @@ public interface UserRepository {
     Collection<User> readUserList();
 
     User readByUserId(String userId);
+
+    User updateUser(User user);
 }

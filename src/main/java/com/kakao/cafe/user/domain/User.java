@@ -7,9 +7,9 @@ public class User {
 
     private final Long uid;
     private final String userId;
-    private final String password;
-    private final String name;
-    private final String email;
+    private String password;
+    private String name;
+    private String email;
 
     public User(String userId, String password, String name, String email) {
         this.uid = 0L;
@@ -20,13 +20,30 @@ public class User {
     }
 
     public void validate() {
-        validatePassword();
+        validatePassword(password);
     }
 
-    private void validatePassword() {
+    private void validatePassword(String password) {
         if (password.length() < 6) {
             throw new IllegalArgumentException("[ERROR] 비밀번호는 최소 6자 이상이어야 합니다.");
         }
+    }
+
+    public UserNoPassword userNoPassword() {
+        return new UserNoPassword(uid, userId, name, email);
+    }
+
+    public void validateAndSetPassword(String password) {
+        validatePassword(password);
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -37,5 +54,20 @@ public class User {
             ", name='" + name + '\'' +
             ", email='" + email + '\'' +
             '}';
+    }
+
+    public static class UserNoPassword {
+
+        private final Long uid;
+        private final String userId;
+        private final String name;
+        private final String email;
+
+        private UserNoPassword(Long uid, String userId, String name, String email) {
+            this.uid = uid;
+            this.userId = userId;
+            this.name = name;
+            this.email = email;
+        }
     }
 }
