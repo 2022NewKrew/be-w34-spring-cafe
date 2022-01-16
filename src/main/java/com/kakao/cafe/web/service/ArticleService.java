@@ -1,9 +1,8 @@
 package com.kakao.cafe.web.service;
 
 import com.kakao.cafe.web.domain.Article;
-import com.kakao.cafe.web.dto.ArticleDTO;
+import com.kakao.cafe.web.dto.ArticleCreateDTO;
 import com.kakao.cafe.web.repository.ArticleRepository;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +17,8 @@ public class ArticleService {
         this.memoryArticleRepository = memoryArticleRepository;
     }
 
-    public Article writeArticle(ArticleDTO articleDTO) {
-        return memoryArticleRepository.save(articleDTO);
+    public Article writeArticle(ArticleCreateDTO articleCreateDTO) {
+        return memoryArticleRepository.save(articleCreateDTO);
     }
 
     public List<Article> getArticleList() {

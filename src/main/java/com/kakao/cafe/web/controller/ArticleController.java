@@ -1,7 +1,7 @@
 package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.web.domain.Article;
-import com.kakao.cafe.web.dto.ArticleDTO;
+import com.kakao.cafe.web.dto.ArticleCreateDTO;
 import com.kakao.cafe.web.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +34,8 @@ public class ArticleController {
 
     @PostMapping("/qna/form")
     public String createArticle(String writer, String title, String contents) {
-        ArticleDTO articleDTO = new ArticleDTO(writer, title, contents);
-        articleService.writeArticle(articleDTO);
+        ArticleCreateDTO articleCreateDTO = new ArticleCreateDTO(writer, title, contents);
+        articleService.writeArticle(articleCreateDTO);
         return "redirect:/";
     }
 

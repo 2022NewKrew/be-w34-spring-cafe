@@ -26,11 +26,11 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public User save(UserCreateDTO userCreateDTO) {
         String sql = "INSERT INTO cafe_user (user_id, password, name, email, image_path, created_time, modified_time) " +
-                "VALUES (:userId, :password, :name, :email, :image_path, :created_time, :modified_time)";
+                "VALUES (:userId, :password, :name, :email, :imagePath, :createdTime, :modifiedTime)";
         CombinedSqlParameterSource sqlParameterSource = new CombinedSqlParameterSource(userCreateDTO);
-        sqlParameterSource.addValue("image_path", "/static/images/anonymous-user.png");
-        sqlParameterSource.addValue("created_time", new Timestamp(System.currentTimeMillis()));
-        sqlParameterSource.addValue("modified_time", new Timestamp(System.currentTimeMillis()));
+        sqlParameterSource.addValue("imagePath", "/static/images/anonymous-user.png");
+        sqlParameterSource.addValue("createdTime", new Timestamp(System.currentTimeMillis()));
+        sqlParameterSource.addValue("modifiedTime", new Timestamp(System.currentTimeMillis()));
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);
         return getUserByUserId(userCreateDTO.getUserId());
     }
