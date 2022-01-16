@@ -1,7 +1,7 @@
 package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserRepository;
+import com.kakao.cafe.repository.user.UserRepository;
 import com.kakao.cafe.web.user.dto.UserCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
