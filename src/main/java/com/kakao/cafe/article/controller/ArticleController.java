@@ -36,8 +36,8 @@ public class ArticleController {
     @GetMapping(value = {"/", "/index"})
     public String showArticleList(Model model, HttpSession session) {
         String loggedInUserId = null;
-        if(session.getAttribute("user") != null) {
-            loggedInUserId = ((User) session.getAttribute("user")).getUserId();
+        if(session.getAttribute("sessionedUser") != null) {
+            loggedInUserId = ((User) session.getAttribute("sessionedUser")).getUserId();
         }
         if(loggedInUserId != null){
             model.addAttribute("loggedInUserName", loggedInUserId);

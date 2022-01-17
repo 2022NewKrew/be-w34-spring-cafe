@@ -78,7 +78,7 @@ public class UserController {
     public String userLogin(UserLoginDTO userLoginDTO, HttpSession session){
         if(userService.isValidLogin(userLoginDTO)) {
             User user = userService.getUserByUserId(userLoginDTO.getUserId());
-            session.setAttribute("user", user);
+            session.setAttribute("sessionedUser", user);
         }
 
         return "redirect:/";
