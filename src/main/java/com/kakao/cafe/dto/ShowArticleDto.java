@@ -2,11 +2,6 @@ package com.kakao.cafe.dto;
 
 import com.kakao.cafe.domain.Article;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-
 public class ShowArticleDto {
     private final long id;
     private final String writeTime;
@@ -17,22 +12,11 @@ public class ShowArticleDto {
 
     public ShowArticleDto(Article article) {
         id = article.getId();
-        writeTime = timeToString(article.getWriteTime());
+        writeTime = article.writeTimeToStr();
         writer = article.getWriter();
         title = article.getTitle();
         contents = article.getContents();
-        span = timeSpan(article.getWriteTime());
-    }
-
-    private static String timeToString(LocalDateTime date) {
-        DateTimeFormatter formatType = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
-        return date.format(formatType);
-    }
-
-    private static String timeSpan(LocalDateTime date) {
-        DateTimeFormatter formatType = DateTimeFormatter.ofPattern("dd");
-        Period span = Period.between(LocalDate.now(), LocalDate.from(date));
-        return String.valueOf(span.getDays());
+        span = article.spanTimeToStr();
     }
 
     public long getId() {
