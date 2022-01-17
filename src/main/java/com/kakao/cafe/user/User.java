@@ -1,6 +1,7 @@
 package com.kakao.cafe.user;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -8,8 +9,17 @@ import lombok.Setter;
  *
  * @author jm.hong
  */
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
+
+    public User(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+
     /**
      * 고유 ID 값입니다 [PK]
      */

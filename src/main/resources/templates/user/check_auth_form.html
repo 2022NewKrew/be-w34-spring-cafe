@@ -1,0 +1,18 @@
+{{>layout/header}}
+<div class="container" id="main">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4>비밀번호 확인</h4></div>
+            <form action="/users/update" method="post" class="panel-body" name="">
+                <div class="well well-sm">
+                    <div class="media user-update-form-list">
+                        <label for="userId" class="user-update-form-item" style="margin-right: 15px;">password</label>
+                        <input  type ="password"id="userId" class="user-update-form-item´" name="password" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success clearfix">비밀번호 확인</button>
+            </form>
+        </div>
+    </div>
+</div>
+{{>layout/footer}}

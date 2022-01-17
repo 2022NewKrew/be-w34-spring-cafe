@@ -38,27 +38,31 @@ public class UserController {
 
         // 유효성 에러 발생시 회원가입 폼으로 유효성 메세지와 함께 전송
         if (errors.hasErrors()) {
-            model.addAttribute("valid", userCreateDto);
-
-            Map<String, String> validateResults = UserCreateDto.validateHandling(errors);
-
-            for (String key : validateResults.keySet()) {
-                model.addAttribute(key, validateResults.get(key));
-            }
-
+            updateModelErrorStatus(userCreateDto, errors, model);
             return "user/form";
         }
 
         User user = modelMapper.map(userCreateDto, User.class);
 
         try {
-            Long id = userService.save(user);
+            userService.save(user);
         } catch (SQLException e) {
             log.error("USER TABLE SAVE 실패 SQLState : {}", e.getSQLState());
             return getErrorPageModel(model, "회원가입 실패했습니다.");
         }
 
         return "redirect:/";
+    }
+
+    private void updateModelErrorStatus(UserCreateDto userCreateDto, Errors errors, Model model) {
+
+        model.addAttribute("valid", userCreateDto);
+
+        Map<String, String> validateResults = UserCreateDto.validateHandling(errors);
+
+        for (String key : validateResults.keySet()) {
+            model.addAttribute(key, validateResults.get(key));
+        }
     }
 
     @GetMapping
@@ -79,10 +83,41 @@ public class UserController {
         return "user/form";
     }
 
+    @GetMapping("/checkAuth")
+    public String viewUserPasswordCheckForm() {
+        return "user/check_auth_form";
+    }
+
+    @GetMapping("/{id}/profile")
+    public String viewUserProfile(@PathVariable("id") Long id, Model model) {
+
+        UserDto user = modelMapper.map(userService.findOne(id), UserDto.class);
+        model.addAttribute("user", user);
+        return "user/profile";
+    }
+
     @GetMapping("/{id}/update")
     public String viewUserUpdateForm(@PathVariable("id") Long id, Model model) {
 
         User user = userService.findOne(id);
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+
+        model.addAttribute("user", userDto);
+
+        return "user/update_form";
+    }
+
+    @PostMapping("/update")
+    public String viewUserUpdateForm(HttpServletRequest request, Model model, @RequestParam String password) {
+
+        HttpSession session = request.getSession();
+        UserDto loginUser = (UserDto) session.getAttribute("loginUser");
+        User user = userService.loginCheck(loginUser.getUserId(), password);
+
+        if (user == null) {
+            return getErrorPageModel(model, "비밀번호가 틀렸습니다.");
+        }
+
         UserDto userDto = modelMapper.map(user, UserDto.class);
 
         model.addAttribute("user", userDto);
@@ -96,13 +131,11 @@ public class UserController {
         //TODO: model Mapper 매핑에러
         //User user = modelMapper.map(userUpdateDto, User.class);
 
-        User user = new User();
-        user.setId(id);
-        user.setName(userUpdateDto.getName());
-        user.setEmail(userUpdateDto.getEmail());
+        User user = new User(id, userUpdateDto.getName(), userUpdateDto.getEmail());
 
         if (!userService.update(user)) {
             log.info("회원 정보 수정 실패 에러페이지로 이동");
+            return getErrorPageModel(model, "회원 정보 수정 실패");
         }
 
         return "redirect:/";
@@ -142,12 +175,14 @@ public class UserController {
     }
 
     private void sessionInvalidate(HttpServletRequest request) {
+
         HttpSession httpSession = request.getSession();
         httpSession.invalidate();
         log.info("success invalidate session");
     }
 
     private String getErrorPageModel(Model model, String message) {
+
         model.addAttribute("message", message);
         return "error/base_error";
     }

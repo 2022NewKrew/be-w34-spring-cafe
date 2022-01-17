@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.dto;
 
+import com.kakao.cafe.user.UserStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,4 +16,5 @@ public class UserDto {
     private String userId;
     private String name;
     private String email;
+    private UserStatus role;
 }
