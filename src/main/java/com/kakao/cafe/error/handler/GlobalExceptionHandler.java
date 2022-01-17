@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
         UserInvalidAuthInfoException.class,
         ForbiddenAccessException.class})
     public ModelAndView handleGlobalException(RuntimeException e) {
-        logger.error(e.getMessage());
+        logger.error("{} {}", e.getClass().getName(), e.getMessage());
 
         ModelAndView modelAndView = new ModelAndView("/error");
         ErrorDetail errorDetail = ErrorDetail.from(e.getMessage());
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BindingException.class)
     public ModelAndView handleBindingException(BindingException e) {
-        logger.error(e.getMessage());
+        logger.error("{} {}", e.getClass().getName(), e.getMessage());
 
         ModelAndView modelAndView = new ModelAndView("/error");
         List<ErrorDetail> errorDetails = Arrays.stream(e.getMessage().split(System.lineSeparator()))

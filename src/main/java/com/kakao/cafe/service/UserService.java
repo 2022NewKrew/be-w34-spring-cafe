@@ -33,8 +33,12 @@ public class UserService {
             throw new UserAlreadyExistsException(ErrorCode.ALREADY_EXISTS, createDto.getUid());
         }
 
-        User user = User.of(createDto.getUid(), createDto.getPassword(),
-            createDto.getName(), createDto.getEmail());
+        User user = User.builder()
+            .uid(createDto.getUid())
+            .password(createDto.getPassword())
+            .name(createDto.getName())
+            .email(createDto.getEmail())
+            .build();
 
         userRepository.save(user);
         logger.info("User Created : {}", user);
