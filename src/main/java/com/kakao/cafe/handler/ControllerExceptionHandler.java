@@ -2,6 +2,7 @@ package com.kakao.cafe.handler;
 
 import com.kakao.cafe.exception.ArticleNotFoundException;
 import com.kakao.cafe.exception.InvalidPasswordException;
+import com.kakao.cafe.exception.UnauthorizedAccessException;
 import com.kakao.cafe.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -28,6 +29,15 @@ public class ControllerExceptionHandler {
         ModelAndView view = new ModelAndView("error");
         view.addObject("errorMessage", e.getMessage());
         view.setStatus(HttpStatus.BAD_REQUEST);
+
+        return view;
+    }
+
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    protected  ModelAndView handleUnauthorizedException(UnauthorizedAccessException e) {
+        ModelAndView view = new ModelAndView("error");
+        view.addObject("errorMessage", e.getMessage());
+        view.setStatus(HttpStatus.UNAUTHORIZED);
 
         return view;
     }
