@@ -25,7 +25,7 @@ public class JdbcUserRepository {
     }
 
     public List<User> readUsers() {
-        return null;
+        return jdbcTemplate.query("SELECT * FROM MEMBER", userMapper);
     }
 
     public User readUser(String userId) {
