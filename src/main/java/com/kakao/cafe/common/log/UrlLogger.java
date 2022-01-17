@@ -28,7 +28,7 @@ public class UrlLogger {
     @PostConstruct
     private void init() {
         uuid = UUID.randomUUID().toString();
-        log.info("request 요청에 의한 식별자가 생성되었습니다. uuid = {}", uuid);
+        log.debug("request 요청에 의한 식별자가 생성되었습니다. uuid = {}", uuid);
     }
 
     @PreDestroy

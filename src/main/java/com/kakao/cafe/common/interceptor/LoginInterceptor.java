@@ -1,6 +1,8 @@
 package com.kakao.cafe.common.interceptor;
 
+import com.kakao.cafe.common.auth.Auth;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

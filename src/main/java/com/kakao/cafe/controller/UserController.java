@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.common.auth.Auth;
 import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.UserService;
 import com.kakao.cafe.user.UserStatus;
@@ -22,6 +23,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.kakao.cafe.common.auth.Auth.*;
 
 @Slf4j
 @Controller
@@ -65,6 +68,7 @@ public class UserController {
         }
     }
 
+    @Auth(role = Role.ADMIN)
     @GetMapping
     public String viewUserList(Model model) {
 
@@ -96,6 +100,7 @@ public class UserController {
         return "user/profile";
     }
 
+    @Auth(role = Role.ADMIN)
     @GetMapping("/{id}/update")
     public String viewUserUpdateForm(@PathVariable("id") Long id, Model model) {
 
@@ -107,7 +112,7 @@ public class UserController {
         return "user/update_form";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/updateAuth")
     public String viewUserUpdateForm(HttpServletRequest request, Model model, @RequestParam String password) {
 
         HttpSession session = request.getSession();
@@ -125,6 +130,7 @@ public class UserController {
         return "user/update_form";
     }
 
+    @Auth(role = Role.ADMIN)
     @PutMapping("/{id}/update")
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) {
 
@@ -132,6 +138,22 @@ public class UserController {
         //User user = modelMapper.map(userUpdateDto, User.class);
 
         User user = new User(id, userUpdateDto.getName(), userUpdateDto.getEmail());
+
+        if (!userService.update(user)) {
+            log.info("회원 정보 수정 실패 에러페이지로 이동");
+            return getErrorPageModel(model, "ADMIN : 회원 정보 수정 실패");
+        }
+
+        return "redirect:/";
+    }
+
+    @PutMapping("/update")
+    public String updateUser(HttpServletRequest request, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) {
+
+        HttpSession session = request.getSession();
+        UserDto loginUser = (UserDto) session.getAttribute("loginUser");
+
+        User user = new User(loginUser.getId(), userUpdateDto.getName(), userUpdateDto.getEmail());
 
         if (!userService.update(user)) {
             log.info("회원 정보 수정 실패 에러페이지로 이동");

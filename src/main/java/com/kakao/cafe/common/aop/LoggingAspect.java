@@ -1,5 +1,6 @@
-package com.kakao.cafe.common.log;
+package com.kakao.cafe.common.aop;
 
+import com.kakao.cafe.common.log.UrlLogger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 //import org.aspectj.lang.JoinPoint;
