@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.dto.request.UserLoginRequestDto;
 import com.kakao.cafe.controller.dto.request.UserSignUpRequestDto;
+import com.kakao.cafe.controller.dto.request.UserUpdateRequestDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.repository.user.UserRepository;
@@ -17,8 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -108,5 +108,19 @@ class UserServiceTest {
         );
         Assertions.assertThatThrownBy(() -> userService.login(userLoginRequestDto))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("회원 정보 수정")
+    void testOfUpdate() {
+        UserUpdateRequestDto userUpdateRequestDto = UserUpdateRequestDto.builder()
+                .userId("leaf")
+                .name("김남현")
+                .password("123")
+                .email("leaf,hyeon@kakaocorp.com")
+                .build();
+        BDDMockito.given(userRepository.findByUserId("leaf")).willReturn(Optional.of(User.builder().build()));
+        userService.update(userUpdateRequestDto);
+        BDDMockito.then(userRepository).should().update(BDDMockito.any());
     }
 }

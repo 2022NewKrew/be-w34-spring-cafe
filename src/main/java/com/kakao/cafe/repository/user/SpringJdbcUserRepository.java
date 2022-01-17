@@ -41,4 +41,9 @@ public class SpringJdbcUserRepository implements UserRepository {
     public List<User> findAll() {
         return jdbcTemplate.query("select * from USERS ", userMapper);
     }
+
+    @Override
+    public void update(User user) {
+        jdbcTemplate.update("update USERS set name=? ,password=?, email=?", user.getName(), user.getPassword(), user.getEmail());
+    }
 }

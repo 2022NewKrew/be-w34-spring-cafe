@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.dto.request.UserLoginRequestDto;
 import com.kakao.cafe.controller.dto.request.UserSignUpRequestDto;
+import com.kakao.cafe.controller.dto.request.UserUpdateRequestDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.repository.user.UserRepository;
@@ -46,5 +47,11 @@ public class UserService {
         }
 
         throw new IllegalArgumentException("아이디 또는 비밀번호가 맞지 않습니다.");
+    }
+
+    public void update(UserUpdateRequestDto userUpdateRequestDto) {
+        User updateUser = findUserByUserId(userUpdateRequestDto.getUserId());
+        updateUser.update(userUpdateRequestDto.getName(), userUpdateRequestDto.getPassword(), userUpdateRequestDto.getEmail());
+        userRepository.update(updateUser);
     }
 }
