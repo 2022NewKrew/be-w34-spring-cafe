@@ -1,22 +1,22 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.ArticleDto;
+import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.repo.ArticleRepository;
-import com.kakao.cafe.repo.UserRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class ArticleManager implements ArticleService {
     private final ArticleRepository articleRepository;
-    private final UserRepository userRepository;
 
-    ArticleManager(final ArticleRepository articleRepository, final UserRepository userRepository) {
+    ArticleManager(final ArticleRepository articleRepository) {
         this.articleRepository = Objects.requireNonNull(articleRepository);
-        this.userRepository = Objects.requireNonNull(userRepository);
     }
 
     @Override
@@ -34,24 +34,16 @@ public class ArticleManager implements ArticleService {
 
     @Override
     public List<ArticleDto> getList() {
-        final List<ArticleDto> dtos = new ArrayList<>();
-        for (Article a: articleRepository.getList()) {
-            final ArticleDto dto = ArticleDto.from(a);
-            dto.setUserName(userRepository.getUserName(dto.getUserId()));
-            dtos.add(dto);
-        }
-
-        return Collections.unmodifiableList(dtos);
+        return articleRepository.getDtoList();
     }
 
     @Override
     public ArticleDto getArticle(final long idx) throws NoSuchElementException {
-        final Article article = articleRepository.find(idx);
-        if (article.isNone()) {
+        final Optional<ArticleDto> articleDto = Optional.ofNullable(articleRepository.getDto(idx));
+        if (articleDto.isEmpty()) {
             throw new NoSuchElementException("Not found article - " + idx);
         }
-        final ArticleDto dto = ArticleDto.from(article);
-        dto.setUserName(userRepository.getUserName(dto.getUserId()));
-        return dto;
+
+        return articleDto.get();
     }
 }

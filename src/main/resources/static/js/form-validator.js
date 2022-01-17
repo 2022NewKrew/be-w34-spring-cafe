@@ -54,10 +54,9 @@ const TITLE_MIN = 1;
 const TITLE_MAX = 255;
 
 if (INPUT_TITLE !== null && INPUT_TITLE.readOnly === false) {
-    validTitle = checkBound(INPUT_TITLE, TITLE_MIN, TITLE_MAX);
     SUBMIT.disabled = true;
     INPUT_TITLE.onchange = checkTitle;
-    updateSubmitBtn();
+    checkTitle();
 }
 
 function checkTitle() {
@@ -71,10 +70,9 @@ const BODY_MIN = 1;
 const BODY_MAX = 4095;
 
 if (INPUT_BODY !== null && INPUT_BODY.readOnly === false) {
-    validBody = checkBound(INPUT_BODY, BODY_MIN, BODY_MAX);
     SUBMIT.disabled = true;
     INPUT_BODY.onchange = checkBody;
-    updateSubmitBtn();
+    checkBody();
 }
 
 function checkBody() {
@@ -89,10 +87,9 @@ const ID_MAX = 12;
 const ID_REGEX = /^[0-9a-z]+$/;
 
 if (INPUT_ID !== null && INPUT_ID.readOnly === false) {
-    validId = checkBoundAndRegex(INPUT_ID, ID_MIN, ID_MAX, ID_REGEX);
     SUBMIT.disabled = true;
     INPUT_ID.onchange = checkId;
-    updateSubmitBtn();
+    checkId();
 }
 
 function checkId() {
@@ -107,10 +104,9 @@ const PASSWORD_MAX = 18;
 const PASSWORD_REGEX = /^[0-9a-zA-Z]+$/;
 
 if (INPUT_PASSWORD !== null && INPUT_PASSWORD.readOnly === false) {
-    validPassword = checkBoundAndRegex(INPUT_PASSWORD, PASSWORD_MIN, PASSWORD_MAX, PASSWORD_REGEX);
     SUBMIT.disabled = true;
     INPUT_PASSWORD.onchange = checkPassword;
-    updateSubmitBtn();
+    checkPassword();
 }
 
 function checkPassword() {
@@ -122,10 +118,9 @@ let validNewPassword = true;
 const INPUT_NEW_PASSWORD = document.getElementById('newPassword');
 
 if (INPUT_NEW_PASSWORD !== null && INPUT_NEW_PASSWORD.readOnly === false) {
-    validNewPassword = checkBoundAndRegex(INPUT_NEW_PASSWORD, PASSWORD_MIN, PASSWORD_MAX, PASSWORD_REGEX);
     SUBMIT.disabled = true;
     INPUT_NEW_PASSWORD.onchange = checkNewPassword;
-    updateSubmitBtn();
+    checkNewPassword();
 }
 
 function checkNewPassword() {
@@ -139,10 +134,9 @@ const NAME_MIN = 1;
 const NAME_MAX = 32;
 
 if (INPUT_NAME !== null && INPUT_NAME.readOnly === false) {
-    validName = checkBound(INPUT_NAME, NAME_MIN, NAME_MAX);
     SUBMIT.disabled = true;
     INPUT_NAME.onchange = checkName;
-    updateSubmitBtn();
+    checkName();
 }
 
 function checkName() {
@@ -157,10 +151,9 @@ const EMAIL_MAX = 32;
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 if (INPUT_EMAIL !== null && INPUT_EMAIL.readOnly === false) {
-    validEmail = checkBoundAndRegex(INPUT_EMAIL, EMAIL_MIN, EMAIL_MAX, EMAIL_REGEX);
     SUBMIT.disabled = true;
     INPUT_EMAIL.onchange = checkEmail;
-    updateSubmitBtn();
+    checkEmail();
 }
 
 function checkEmail() {

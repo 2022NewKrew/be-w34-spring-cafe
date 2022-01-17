@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.dto;
 
 import com.kakao.cafe.util.Pretty;
 import org.springframework.lang.NonNull;
@@ -15,17 +15,26 @@ public class ArticleDto {
     private String[] bodyLines;
     private String createdAtPretty;
 
-    static public ArticleDto from(@NonNull final Article article) {
+    static public ArticleDto from(
+            @NonNull final long idx,
+            @NonNull final String userId,
+            @NonNull final String userName,
+            @NonNull final String title,
+            @NonNull final String body,
+            @NonNull final long createdAt
+    )
+    {
         ArticleDto articleDto = new ArticleDto();
-        articleDto.setIdx(article.getIdx());
-        articleDto.setUserId(article.getUserId());
-        articleDto.setTitle(article.getTitle());
-        articleDto.setBody(article.getBody());
+        articleDto.setIdx(idx);
+        articleDto.setUserId(userId);
+        articleDto.setUserName(userName);
+        articleDto.setTitle(title);
+        articleDto.setBody(body);
         articleDto.setBodyLines(
-                Pretty.splitByNewLine(article.getBody())
+                Pretty.splitByNewLine(body)
         );
         articleDto.setCreatedAtPretty(
-                Pretty.epochSecond(article.getCreatedAt(), Locale.KOREA, ZoneId.of("Asia/Seoul"))
+                Pretty.epochSecond(createdAt, Locale.KOREA, ZoneId.of("Asia/Seoul"))
         );
         return articleDto;
     }

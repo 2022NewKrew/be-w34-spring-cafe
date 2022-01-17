@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.auth.AuthControl;
-import com.kakao.cafe.domain.ArticleDto;
+import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
@@ -58,9 +58,6 @@ public class ArticleController {
                     .setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
             return "redirect:/login";
         }
-
-        final HttpSession session = request.getSession();
-        articleDto.setUserId((String)session.getAttribute(AuthControl.TAG_ID));
 
         articleService.add(articleDto);
         logger.info("New Article added: " + articleDto.getTitle());

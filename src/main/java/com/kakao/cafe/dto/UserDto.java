@@ -1,5 +1,6 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.dto;
 
+import com.kakao.cafe.domain.User;
 import org.springframework.lang.NonNull;
 
 public class UserDto {
