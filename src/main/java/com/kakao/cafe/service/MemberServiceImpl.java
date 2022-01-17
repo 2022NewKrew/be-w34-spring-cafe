@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,6 +40,18 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberDto getMember(String userId) {
         return MemberDto.of(memberRepository.findByUserId(userId));
+    }
+
+    @Override
+    public void login(String userId, String password, HttpSession session) {
+        Member member = memberRepository.findByUserId(userId);
+        if (member == null)
+            throw new IllegalArgumentException("member not found");
+
+        if (!password.equals(member.getPassword()))
+            throw new IllegalArgumentException("member not found, password");
+
+        session.setAttribute("sessionedUser", member);
     }
 
     @Override
