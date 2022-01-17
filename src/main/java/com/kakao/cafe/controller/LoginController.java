@@ -18,7 +18,7 @@ public class LoginController {
     @GetMapping("/login")
     public ModelAndView loginView(HttpServletRequest request, ModelAndView mav) {
         String referer = request.getHeader("Referer");
-        if(isRefererNeedToBeRegisteredForSession(referer)) {
+        if (isRefererNeedToBeRegisteredForSession(referer)) {
             SessionUtil.setAfterLoginRedirectedUrl(session, referer);
         }
 
