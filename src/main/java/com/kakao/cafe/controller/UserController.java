@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
@@ -54,32 +56,37 @@ public class UserController {
         } catch (UserNotFoundException e) {
             model.addAttribute("userId", userId);
             model.addAttribute("UserNotFoundErrorMessage", e.getMessage());
-            return "user/login";
+            return "/user/login";
         }
 
         session.setAttribute("USER_ID", userId);
+
+        if ("admin".equals(userId)) {
+            session.setAttribute("IS_ADMIN", true);
+        }
+
         return "redirect:/";
     }
 
-    @LoginCheck
+    @LoginCheck(type = LoginCheck.UserType.ADMIN)
     @GetMapping("/list")
     public String userList(Model model) {
         model.addAttribute("users", userService.findAllUsers());
-        return "user/list";
+        return "/user/list";
     }
 
-    @LoginCheck
+    @LoginCheck(type = LoginCheck.UserType.ADMIN)
     @GetMapping("/view/{userId}")
     public String userView(@PathVariable("userId") String userId, Model model) {
         model.addAttribute("user", userService.findUserByUserId(userId));
-        return "user/view";
+        return "/user/view";
     }
 
     @LoginCheck
     @PostMapping("/modify")
     public String goUserModifyView(String userId, Model model) {
         model.addAttribute("user", userService.findUserByUserId(userId));
-        return "user/modify";
+        return "/user/modify";
     }
 
     @LoginCheck
@@ -90,7 +97,7 @@ public class UserController {
         } catch (UserNotFoundException e) {
             model.addAttribute("user", userDto);
             model.addAttribute("notMatchedErrorMessage", e.getMessage());
-            return "user/modify";
+            return "/user/modify";
         }
 
         userService.modifyUser(UserDto.builder()

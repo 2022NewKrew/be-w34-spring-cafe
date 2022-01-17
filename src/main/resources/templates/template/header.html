@@ -23,23 +23,31 @@
             <img class="navLogo" src="/assets/img/kakao_logo.png" alt="kakao_logo"/>
         </a>
         <ul class="navbar-nav">
+            {{#USER_ID}}
+            <li class="nav-item">
+                <button type="button" class="btn btn-dark" onclick="location.href='/user/logout'">로그아웃</button>
+            </li>
+            <form method="post" action="/user/modify">
+                <li class="nav-item">
+                    <input type="hidden" name="userId" value="{{USER_ID}}">
+                    <button type="submit" class="btn btn-dark" style="width: 120px;">회원정보 수정</button>
+                </li>
+            </form>
+            <li class="nav-item">
+                <button type="button" class="btn btn-dark" onclick="location.href='/board/list'">게시판</button>
+            </li>
+            {{/USER_ID}}
+            {{#IS_ADMIN}}
+            <li class="nav-item">
+                <button type="button" class="btn btn-dark" onclick="location.href='/user/list'">회원목록</button>
+            </li>
+            {{/IS_ADMIN}}
             {{^USER_ID}}
             <li class="nav-item">
                 <button type="button" class="btn btn-dark" onclick="location.href='/user/login'">로그인</button>
             </li>
             <li class="nav-item">
                 <button type="button" class="btn btn-dark" onclick="location.href='/user/register'">회원가입</button>
-            </li>
-            {{/USER_ID}}
-            {{#USER_ID}}
-            <li class="nav-item">
-                <button type="button" class="btn btn-dark" onclick="location.href='/user/logout'">로그아웃</button>
-            </li>
-            <li class="nav-item">
-                <button type="button" class="btn btn-dark" onclick="location.href='/user/list'">회원목록</button>
-            </li>
-            <li class="nav-item">
-                <button type="button" class="btn btn-dark" onclick="location.href='/board/list'">게시판</button>
             </li>
             {{/USER_ID}}
         </ul>
