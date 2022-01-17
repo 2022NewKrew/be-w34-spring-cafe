@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +24,28 @@ public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
+
+
+    @PostMapping("/login")
+    public String login(String userId, String password, HttpSession session) {
+        // 로그인 로직 구현
+        logger.info("POST /login: request userId={}, password={}", userId, password);
+        // userId, password 검사해서 실제 DB에 저장된 사용자인지 체크
+        try {
+            User sessionUser = userService.authenticate(userId, password);
+            session.setAttribute("sessionUser", sessionUser);
+            return "redirect:/";
+        } catch (IllegalArgumentException e) {
+            return "redirect:/user/loginForm";
+        }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        // 세션 지우기
+        session.invalidate();
+        return "redirect:/";
+    }
 
     @Autowired
     public UserController(UserService userService) {
@@ -67,33 +91,38 @@ public class UserController {
         return "user/profile";
     }
 
-//    @GetMapping("/users/{userId}/form")
-//    public String updateForm(Model model, @PathVariable String userId) {
-//        User user = users.stream()
-//                .filter(obj -> userId.equals(obj.getUserId()))
-//                .findFirst().orElse(null);
-//        logger.info("GET /users/{}/form: response user edit page with {}", userId, user);
-//        if (user == null) {
-//            return "error/404";
-//        }
-//        // user 수정 페이지 응답
-//        model.addAttribute("user", user);
-//        return "user/updateForm";
-//    }
-//
-//    @PostMapping("/users/{userId}/update")
-//    public String updateUser(User newUser, @PathVariable String userId) {
-//        logger.info("POST /users/{}/update: request {} and update", userId, newUser);
-//        // user 수정
-//        users.stream()
-//                .filter(user -> userId.equals(user.getUserId()))
-//                .findFirst()
-//                .ifPresent(user -> {
-//                    user.setEmail(newUser.getEmail());
-//                    user.setName(newUser.getName());
-//                    user.setPassword(newUser.getPassword());
-//                });
-//        return "redirect:/users/{userId}";
-//    }
+    @GetMapping("/users/{userId}/form")
+    public String updateForm(Model model, @PathVariable String userId, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null || !userId.equals(sessionUser.getUserId())) {
+            return "error/401";
+        }
+        // userId 로 user 찾기
+        Optional<User> user = userService.findUser(userId);
+        // user 가 없으면 error 페이지로
+        if (user.isEmpty()) {
+            return "error/404";
+        }
+        // user 가 있으면 수정 페이지 응답
+        logger.info("GET /users/{}/form: response user edit page with {}", userId, user.get());
+        model.addAttribute("user", user.get());
+        return "user/updateForm";
+    }
+
+    @PutMapping("/users/{userId}/update")
+    public String updateUser(User newUser, @PathVariable String userId, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null || !userId.equals(sessionUser.getUserId())) {
+            return "error/401";
+        }
+        logger.info("POST /users/{}/update: request {} and update", userId, newUser);
+        // user 수정
+        try {
+            userService.update(newUser, userId);
+            return "redirect:/users/{userId}";
+        } catch (IllegalArgumentException e) {
+            return "redirect:/user/loginForm";
+        }
+    }
 
 }
