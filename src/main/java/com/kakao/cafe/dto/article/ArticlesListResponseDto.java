@@ -1,4 +1,4 @@
-package com.kakao.cafe.web.dto.article;
+package com.kakao.cafe.dto.article;
 
 import com.kakao.cafe.domain.article.Article;
 import lombok.Getter;

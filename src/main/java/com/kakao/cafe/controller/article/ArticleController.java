@@ -1,7 +1,7 @@
-package com.kakao.cafe.web.controller.article;
+package com.kakao.cafe.controller.article;
 
 import com.kakao.cafe.service.article.ArticleService;
-import com.kakao.cafe.web.dto.article.ArticleAddRequestDto;
+import com.kakao.cafe.dto.article.ArticleAddRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

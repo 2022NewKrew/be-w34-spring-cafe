@@ -1,6 +1,6 @@
 package com.kakao.cafe.domain.article;
 
-import com.kakao.cafe.web.dto.article.ArticleAddRequestDto;
+import com.kakao.cafe.dto.article.ArticleAddRequestDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +14,7 @@ public class Article {
     private final String title;
     private final String contents;
 
-    Article(int index, String createdDate, String createdTime, ArticleAddRequestDto artDto) {
+    public Article(int index, String createdDate, String createdTime, ArticleAddRequestDto artDto) {
         this.index = index;
         this.createdDate = createdDate;
         this.createdTime = createdTime;

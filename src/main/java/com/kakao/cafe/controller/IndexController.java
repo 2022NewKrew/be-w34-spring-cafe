@@ -1,4 +1,4 @@
-package com.kakao.cafe.web.controller;
+package com.kakao.cafe.controller;
 
 import com.kakao.cafe.service.article.ArticleService;
 import lombok.RequiredArgsConstructor;

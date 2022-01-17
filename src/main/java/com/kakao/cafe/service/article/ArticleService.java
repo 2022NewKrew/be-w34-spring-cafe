@@ -1,9 +1,9 @@
 package com.kakao.cafe.service.article;
 
-import com.kakao.cafe.domain.article.Articles;
-import com.kakao.cafe.web.dto.article.ArticleAddRequestDto;
-import com.kakao.cafe.web.dto.article.ArticleResponseDto;
-import com.kakao.cafe.web.dto.article.ArticlesListResponseDto;
+import com.kakao.cafe.repository.Articles;
+import com.kakao.cafe.dto.article.ArticleAddRequestDto;
+import com.kakao.cafe.dto.article.ArticleResponseDto;
+import com.kakao.cafe.dto.article.ArticlesListResponseDto;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,8 +1,9 @@
-package com.kakao.cafe.domain.article;
+package com.kakao.cafe.repository;
 
-import com.kakao.cafe.web.dto.article.ArticleAddRequestDto;
-import com.kakao.cafe.web.dto.article.ArticleResponseDto;
-import com.kakao.cafe.web.dto.article.ArticlesListResponseDto;
+import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.dto.article.ArticleAddRequestDto;
+import com.kakao.cafe.dto.article.ArticleResponseDto;
+import com.kakao.cafe.dto.article.ArticlesListResponseDto;
 import lombok.Getter;
 
 import java.time.LocalDate;

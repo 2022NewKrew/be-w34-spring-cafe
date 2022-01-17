@@ -1,8 +1,8 @@
-package com.kakao.cafe.web.controller.user;
+package com.kakao.cafe.controller.user;
 
 import com.kakao.cafe.service.user.UserService;
-import com.kakao.cafe.web.dto.user.UserUpdateRequestDto;
-import com.kakao.cafe.web.dto.user.UsersSaveRequestDto;
+import com.kakao.cafe.dto.user.UserUpdateRequestDto;
+import com.kakao.cafe.dto.user.UsersSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,9 +1,10 @@
-package com.kakao.cafe.domain.user;
+package com.kakao.cafe.repository;
 
-import com.kakao.cafe.web.dto.user.UserResponseDto;
-import com.kakao.cafe.web.dto.user.UserUpdateRequestDto;
-import com.kakao.cafe.web.dto.user.UsersListResponseDto;
-import com.kakao.cafe.web.dto.user.UsersSaveRequestDto;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.dto.user.UserResponseDto;
+import com.kakao.cafe.dto.user.UserUpdateRequestDto;
+import com.kakao.cafe.dto.user.UsersListResponseDto;
+import com.kakao.cafe.dto.user.UsersSaveRequestDto;
 import lombok.Getter;
 
 import java.util.ArrayList;
