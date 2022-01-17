@@ -32,6 +32,6 @@ public class ExceptionAdvice {
     @ExceptionHandler(NumberFormatException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNumberFormatException() {
-        return "error/notFound";
+        return "error/404";
     }
 }
