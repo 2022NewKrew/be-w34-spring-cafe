@@ -62,13 +62,21 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
-    public void update(Long id, MemberUpdateRequestDTO memberUpdateRequestDTO) {
-        Member member = memberRepository.findOne(id).orElseThrow(() -> {
+    public void update(Long pathId, Long sessionId, MemberUpdateRequestDTO memberUpdateRequestDTO) {
+        validateSameId(pathId, sessionId);
+
+        Member member = memberRepository.findOne(sessionId).orElseThrow(() -> {
             throw new IllegalArgumentException("해당 유저가 존재하지 않습니다.");
         });
 
         validateCheckPassword(member.getPassword(), memberUpdateRequestDTO.getCurrentPassword());
         validateCheckPassword(memberUpdateRequestDTO.getPassword(), memberUpdateRequestDTO.getPasswordCheck());
-        memberRepository.update(id, memberUpdateRequestDTO.toMember(member.getCreateDate()));
+        memberRepository.update(sessionId, memberUpdateRequestDTO.toMember(member.getCreateDate()));
+    }
+
+    private void validateSameId(Long pathId, Long sessionId) {
+        if (!pathId.equals(sessionId)) {
+            throw new IllegalArgumentException("다른 사람의 정보를 수정할 수 없습니다.");
+        }
     }
 }

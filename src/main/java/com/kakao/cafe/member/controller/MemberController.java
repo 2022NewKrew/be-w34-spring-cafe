@@ -57,8 +57,10 @@ public class MemberController {
     }
 
     @PutMapping("/members/{id}")
-    public String patchMember(@PathVariable Long id, @Valid MemberUpdateRequestDTO memberUpdateRequestDTO) {
-        memberService.update(id, memberUpdateRequestDTO);
+    public String patchMember(@PathVariable Long id, @Valid MemberUpdateRequestDTO memberUpdateRequestDTO, HttpSession session) {
+        Long memberId = (Long) session.getAttribute("memberId");
+
+        memberService.update(id, memberId, memberUpdateRequestDTO);
         return "redirect:/members";
     }
 
