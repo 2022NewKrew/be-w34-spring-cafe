@@ -4,7 +4,9 @@ import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticlePostDto;
 import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ArticleServiceImpl;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.service.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -32,12 +34,12 @@ public class ArticleController {
     @PostMapping("/questions")
     public String postQuestion(ArticlePostDto article) {
         try {
-            articleService.postArticle(article);
+            articleService.postOne(article);
         } catch (SQLException e) {
-            logger.error("Article: " + article, e);
+            logger.error("/articles/questions, failed to create article (article = {})", article, e);
             return "redirect:/";
         } catch (NoSuchElementException e) {
-            logger.error("Article : " + article, e);
+            logger.error("/articles/questions, failed to create article. writer(id = {}) does not exist", article.getWriter(), e);
             return "redirect:/";
         }
         return "redirect:/";
@@ -54,7 +56,7 @@ public class ArticleController {
             model.addAttribute("article", article);
             model.addAttribute("writer", writer);
         } catch (NoSuchElementException e) {
-            logger.error("", e);
+            logger.error("/articles/index, article id = {}", index, e);
             return "redirect:/";
         }
 

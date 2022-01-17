@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS MEMBER;
 DROP TABLE IF EXISTS ARTICLE;
 
 CREATE TABLE MEMBER (
+                      id INT AUTO_INCREMENT,
                       userId VARCHAR(64),
                       email VARCHAR(64),
                       name VARCHAR(64),
