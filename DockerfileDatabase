@@ -1,0 +1,3 @@
+FROM mysql:5.7
+ARG SCHEMA_FILE=src/main/resources/mysql-sql/\*.sql
+ADD ${SCHEMA_FILE} /docker-entrypoint-initdb.d

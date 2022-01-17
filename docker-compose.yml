@@ -1,0 +1,35 @@
+# May use extends https://docs.docker.com/compose/extends/
+# However, that complicates Docker compose file.
+
+version: '3.0'
+services:
+  cafe_server:
+    container_name: cafe_server
+    build:
+      context: .
+      dockerfile: DockerfileServer
+    ports:
+      - '80:80'
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./gen:/wonyang/gen
+
+  mysql:
+    container_name: mysql
+    build:
+      context: .
+      dockerfile: DockerfileDatabase
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: "kakao"
+      MYSQL_PASSWORD: "kakao"
+      MYSQL_DATABASE: "database"
+    healthcheck:
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', '$MYSQL_USER', '-p$MYSQL_PASSWORD' ]
+      interval: 3s
+      timeout: 1s
+      retries: 10
