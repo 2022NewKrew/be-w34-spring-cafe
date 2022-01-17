@@ -1,8 +1,10 @@
 package com.example.kakaocafe.domain.post;
 
 
+import com.example.kakaocafe.domain.post.comment.CommentDAO;
 import com.example.kakaocafe.domain.post.comment.dto.Comment;
 import com.example.kakaocafe.domain.post.dto.*;
+import com.example.kakaocafe.domain.user.UserDAO;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.dao.support.DataAccessUtils;
@@ -13,27 +15,39 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
 public class PostDAO {
+
     private final JdbcTemplate jdbcTemplate;
+    private final CommentDAO commentDAO;
 
-    public int getNumOfComments(long postId, long writerId) {
-        final String sql = "SELECT count(distinct (ifnull(c.ID, 0)))  " +
-                "FROM POST as p  " +
-                "         LEFT OUTER JOIN COMMENT c on p.ID = c.POST_ID  " +
-                "WHERE p.ID = ?  " +
-                "  AND p.USER_ID = ?  " +
-                "  AND p.ISDELETED = false  " +
-                "  AND c.ISDELETED = false  ";
+    public int canDelete(long postId, long writerId) {
+        final String sql = "SELECT CASE  " +
+                "           WHEN isExistPost = false THEN 0  " +
+                "           WHEN isExistPost = true AND isExistCommentsOfOtherPeople = true THEN 1  " +
+                "           WHEN isExistPost = true AND isExistCommentsOfOtherPeople = false THEN 2  " +
+                "           END as result  " +
+                "FROM (SELECT (SELECT EXISTS(  " +
+                "                             SELECT p.ID  " +
+                "                             FROM POST as p  " +
+                "                             WHERE p.ID = ?  " +
+                "                               AND p.USER_ID = ?  " +
+                "                               AND p.ISDELETED = false)) as isExistPost,  " +
+                "             (SELECT EXISTS(  " +
+                "                             SELECT c.USER_ID  " +
+                "                             FROM COMMENT as c  " +
+                "                             WHERE c.POST_ID = ?  " +
+                "                               AND c.USER_ID != ?  " +
+                "                               AND c.ISDELETED = false)) as isExistCommentsOfOtherPeople)";
 
-        final Integer numOfComments = jdbcTemplate.queryForObject(sql, Integer.class, postId, writerId);
+        final Integer numOfComments = jdbcTemplate.queryForObject(sql, Integer.class, postId, writerId, postId, writerId);
         Objects.requireNonNull(numOfComments);
 
         return numOfComments;
@@ -97,36 +111,26 @@ public class PostDAO {
     }
 
     public Optional<Post> getPostById(long id) {
-        final String sql = "SELECT p.id                                    as `p_id`,  " +
-                "       FORMATDATETIME(p.created, 'yyyy-MM-dd hh:mm') as `p_created`,  " +
-                "       p.title                                 as `p_title`,  " +
-                "       p.contents                              as `p_contents`,  " +
-                "       p.view_count                              as `view_count`,  " +
-                "       u.name                                  as `p_writer`,  " +
-                "       c.id                                    as `c_id`,  " +
-                "       cu.name                                 as `c_writer`,  " +
-                "       FORMATDATETIME(c.created, 'yyyy-MM-dd hh:mm') as `c_created`,  " +
-                "       c.contents                              as `c_contents`  " +
-                "FROM POST as p  " +
-                "         INNER JOIN USER as u on u.id = p.user_id  " +
-                "         LEFT OUTER JOIN COMMENT as c on c.post_id = p.id  " +
-                "         LEFT OUTER JOIN USER as cu on c.user_id = cu.id " +
-                "WHERE p.id =? " +
-                "AND p.ISDELETED=false " +
-                "AND ifnull(c.ISDELETED, false) = false";
+        final String sql = "SELECT p.ID                                          as p_id, " +
+                "       FORMATDATETIME(p.created, 'yyyy-MM-dd hh:mm') as p_created, " +
+                "       u.NAME                                        as p_writer, " +
+                "       p.TITLE                                       as p_title, " +
+                "       p.CONTENTS                                    as p_contents, " +
+                "       p.VIEW_COUNT                                  as view_count " +
+                "FROM POST p " +
+                "         inner join USER U on U.ID = p.USER_ID " +
+                "WHERE p.ID = ? " +
+                "  AND p.ISDELETED = false ";
 
-        final List<PostAndComment> postAndComments = jdbcTemplate.query(sql, postMapper(), id);
+        final List<Post> posts = jdbcTemplate.query(sql, postMapper(), id);
+        final List<Comment> comments = commentDAO.findAllByPostId(id);
 
-        if (postAndComments.isEmpty()) {
+        if (posts.isEmpty()) {
             return Optional.empty();
         }
 
-        final List<Comment> comments = postAndComments.stream()
-                .filter(this::isNotNullComment)
-                .map(Comment::of)
-                .collect(Collectors.toList());
-
-        final Post post = Post.of(postAndComments.get(0), comments);
+        final Post post = DataAccessUtils.singleResult(posts);
+        Objects.requireNonNull(post).setComments(comments);
 
         return Optional.of(post);
     }
@@ -148,37 +152,16 @@ public class PostDAO {
         jdbcTemplate.update(sql, postId);
     }
 
-    private boolean isNotNullComment(PostAndComment postAndComment) {
-        //Long 타입은 DB에서 null 일시 0리턴
-        return postAndComment.getCommentId() != 0;
-    }
-
-    private RowMapper<PostAndComment> postMapper() {
+    private RowMapper<Post> postMapper() {
         return (rs, rowNum) -> {
-            final long postId = rs.getLong("p_id");
-            final String postCreated = rs.getString("p_created");
-            final String postTitle = rs.getString("p_title");
-            final String postContents = rs.getString("p_contents");
-            final String postWriter = rs.getString("p_writer");
+            final long id = rs.getLong("p_id");
+            final String created = rs.getString("p_created");
+            final String title = rs.getString("p_title");
+            final String contents = rs.getString("p_contents");
+            final String writer = rs.getString("p_writer");
             final long viewCount = rs.getLong("view_count");
 
-            final long commentId = rs.getLong("c_id");
-            final String commentCreated = rs.getString("c_created");
-            final String commentContents = rs.getString("c_contents");
-            final String commenter = rs.getString("c_writer");
-
-            return PostAndComment.builder()
-                    .postId(postId)
-                    .postCreated(postCreated)
-                    .postTitle(postTitle)
-                    .postContents(postContents)
-                    .postWriter(postWriter)
-                    .viewCount(viewCount)
-                    .commentId(commentId)
-                    .commentCreated(commentCreated)
-                    .commentContents(commentContents)
-                    .commenter(commenter)
-                    .build();
+            return new Post(id, writer, title, contents, created, viewCount, new ArrayList<>());
         };
     }
 
