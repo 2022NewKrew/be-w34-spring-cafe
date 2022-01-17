@@ -2,7 +2,9 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.ArticleDTO.Create;
 import com.kakao.cafe.dto.ArticleDTO.Result;
+import com.kakao.cafe.error.ErrorCode;
 import com.kakao.cafe.error.exception.BindingException;
+import com.kakao.cafe.error.exception.ForbiddenAccessException;
 import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.service.ArticleService;
 import java.util.List;
@@ -39,7 +41,7 @@ public class ArticleController {
         HttpSession session = request.getSession();
         AuthInfo authInfo = (AuthInfo) session.getAttribute("auth");
         if (authInfo == null) {
-            return "redirect:/articles/form-failed";
+            throw new ForbiddenAccessException(ErrorCode.FORBIDDEN_ACCESS, "Post New Article");
         }
 
         articleService.create(createDTO, authInfo);

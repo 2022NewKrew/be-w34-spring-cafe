@@ -64,25 +64,8 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("사용자 정보 수정 시 인증 오류 테스트")
-    void update() {
-        // Given
-
-        // When
-        AuthInfo authInfo = AuthInfo.of("uid");
-        String uid = "invalidUid";
-        Update updateDTO = new Update("name", "email@test.com");
-        UserInvalidAuthInfoException exception = assertThrows(UserInvalidAuthInfoException.class,
-            () -> userService.update(authInfo, uid, updateDTO));
-
-        // Then
-        assertThat(exception.getMessage())
-            .contains("Invalid Auth Info");
-    }
-
-    @Test
     @DisplayName("올바른 인증 정보를 통한 사용자 정보 수정 테스트")
-    void update2() {
+    void update() {
         // Given
 
         // When
@@ -91,7 +74,7 @@ class UserServiceTest {
         Update updateDTO = new Update("name", "email@test.com");
 
         // Then
-        assertDoesNotThrow(() -> userService.update(authInfo, uid, updateDTO));
+        assertDoesNotThrow(() -> userService.update(authInfo, updateDTO));
     }
 
     @Test

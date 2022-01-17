@@ -3,7 +3,9 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Result;
 import com.kakao.cafe.dto.UserDTO.Update;
+import com.kakao.cafe.error.ErrorCode;
 import com.kakao.cafe.error.exception.BindingException;
+import com.kakao.cafe.error.exception.ForbiddenAccessException;
 import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
@@ -44,8 +46,8 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @PutMapping("/{uid}")
-    public String update(@ModelAttribute @Validated Update updateDTO, @PathVariable String uid,
+    @PutMapping
+    public String update(@ModelAttribute @Validated Update updateDTO,
         HttpServletRequest request,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -55,10 +57,10 @@ public class UserController {
         HttpSession session = request.getSession();
         AuthInfo authInfo = (AuthInfo) session.getAttribute("auth");
         if (authInfo == null) {
-            return "redirect:/users/" + uid;
+            throw new ForbiddenAccessException(ErrorCode.FORBIDDEN_ACCESS, "Edit User Profile");
         }
 
-        userService.update(authInfo, uid, updateDTO);
+        userService.update(authInfo, updateDTO);
         return "redirect:/users";
     }
 

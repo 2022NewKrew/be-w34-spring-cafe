@@ -39,11 +39,7 @@ public class UserService {
         logger.info("User Created : " + user);
     }
 
-    public void update(AuthInfo authInfo, String uid, Update updateDTO) {
-        if (!authInfo.matchUid(uid)) {
-            throw new UserInvalidAuthInfoException(ErrorCode.AUTHENTICATION_INVALID, uid);
-        }
-
+    public void update(AuthInfo authInfo, Update updateDTO) {
         userRepository.update(authInfo.getUid(), updateDTO.getName(), updateDTO.getEmail());
     }
 

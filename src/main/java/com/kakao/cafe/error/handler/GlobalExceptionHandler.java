@@ -5,6 +5,7 @@ import com.kakao.cafe.error.exception.ArticleNotFoundException;
 import com.kakao.cafe.error.exception.AuthInvalidPasswordException;
 import com.kakao.cafe.error.exception.AuthInvalidUidException;
 import com.kakao.cafe.error.exception.BindingException;
+import com.kakao.cafe.error.exception.ForbiddenAccessException;
 import com.kakao.cafe.error.exception.UserAlreadyExistsException;
 import com.kakao.cafe.error.exception.UserInvalidAuthInfoException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
@@ -81,6 +82,16 @@ public class GlobalExceptionHandler {
             .map(ErrorDetail::from)
             .collect(Collectors.toList());
         modelAndView.getModelMap().addAttribute("detail", errorDetails);
+        return modelAndView;
+    }
+
+    @ExceptionHandler(ForbiddenAccessException.class)
+    public ModelAndView handleForbiddenAccessException(ForbiddenAccessException e) {
+        logger.error(e.getMessage());
+
+        ModelAndView modelAndView = new ModelAndView("/error");
+        ErrorDetail errorDetail = ErrorDetail.from(e.getMessage());
+        modelAndView.getModelMap().addAttribute("detail", errorDetail);
         return modelAndView;
     }
 }
