@@ -37,20 +37,25 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post addPost(AddPostDto addPostDto, Long writerId) {
-        if(!userRepository.existsById(writerId)) {
+        if (!userRepository.existsById(writerId)) {
             throw new UserNotFoundedException(UserErrorMsg.USER_NOT_FOUNDED.getDescription());
         }
-        Post newPost = createPost(addPostDto, writerId);
+        Post newPost = createPostBy(addPostDto, writerId);
         postRepository.save(newPost);
         return newPost;
     }
 
-    private Post createPost(AddPostDto addPostDto, Long writerId) {
+    private Post createPostBy(AddPostDto addPostDto, Long writerId) {
         return Post.builder()
                 .title(addPostDto.getTitle())
                 .contents(addPostDto.getContents())
                 .userId(writerId)
                 .build();
+    }
+
+    @Override
+    public void increaseViewNumById(Long postId) {
+        postRepository.increaseViewNumById(postId);
     }
 
     @Override

@@ -32,16 +32,19 @@ class UserControllerTest {
     private UserController userController;
 
     private ModelAndView mav;
+    private ModelAndPageView mapv;
 
     @BeforeEach
     void setUp() {
         mav = mock(ModelAndView.class);
+        mapv = mock(ModelAndPageView.class);
     }
 
     @Test
     @DisplayName("유저 리스트 화면 반환 -> 정상, check mav")
     void userList_checkMav() {
         //Given
+
         int numOfUser = 214;
         given(userService.countAll()).willReturn(numOfUser);
 
@@ -50,12 +53,13 @@ class UserControllerTest {
         given(userService.getListOfSimpleUserInfo(pageNum, PageSize.USER_LIST_SIZE)).willReturn(userInfos);
 
         //When
-        userController.userList(pageNum, mav);
+        userController.userList(pageNum, mapv);
 
         //Then
-        then(mav).should(times(1)).addObject("numOfUser", numOfUser);
-        then(mav).should(times(1)).addObject("userInfos", userInfos);
-        then(mav).should(times(1)).setViewName("userList");
+        then(mapv).should(times(1)).addObject("numOfUser", numOfUser);
+        then(mapv).should(times(1)).addObject("userInfos", userInfos);
+        then(mapv).should(times(1)).setPageNumbers(pageNum, numOfUser / PageSize.USER_LIST_SIZE + 1);
+        then(mapv).should(times(1)).setViewName("userList");
     }
 
     @Test

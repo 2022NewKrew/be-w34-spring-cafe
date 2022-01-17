@@ -19,7 +19,7 @@ public class Post {
     private String contents = "";
 
     @Builder.Default
-    private LocalDateTime dateCreated = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Builder.Default
     private Integer viewNum = 0;

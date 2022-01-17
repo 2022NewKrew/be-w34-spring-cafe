@@ -8,6 +8,7 @@ import lombok.Data;
 public class PostViewDto {
     private final Long id;
     private final String title;
+    private final String contents;
     private final String writerNickName;
     private final String createdDateTime;
     private final Integer viewNum;

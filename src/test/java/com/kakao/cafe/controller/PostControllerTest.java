@@ -33,10 +33,12 @@ class PostControllerTest {
     private PostController postController;
 
     private ModelAndView mav;
+    private ModelAndPageView mapv;
 
     @BeforeEach
     void setUp() {
         mav = mock(ModelAndView.class);
+        mapv = mock(ModelAndPageView.class);
     }
 
     @Test
@@ -51,16 +53,17 @@ class PostControllerTest {
         given(postService.getListOfSimplePostInfo(pageNum, PageSize.POST_LIST_SIZE)).willReturn(postInfoList);
 
         //When
-        postController.postListView(pageNum, mav);
+        postController.postListView(pageNum, mapv);
 
         //Then
-        then(mav).should(times(1)).addObject("numOfPost", numOfPost);
-        then(mav).should(times(1)).addObject("postInfos", postInfoList);
-        then(mav).should(times(1)).setViewName("postList");
+        then(mapv).should(times(1)).addObject("numOfPost", numOfPost);
+        then(mapv).should(times(1)).addObject("postInfos", postInfoList);
+        then(mapv).should(times(1)).setPageNumbers(pageNum, numOfPost / PageSize.POST_LIST_SIZE + 1);
+        then(mapv).should(times(1)).setViewName("postList");
     }
 
     @Test
-    @DisplayName("게시글 화면 반환 -> 정상, check mav")
+    @DisplayName("게시글 화면 반환 -> 정상, check mav, service")
     void postDetailView_checkMav() {
         //Given
         Long postId = Long.valueOf(24);
@@ -73,5 +76,6 @@ class PostControllerTest {
         //Then
         then(mav).should(times(1)).addObject("postViewDto", postViewDto);
         then(mav).should(times(1)).setViewName("postDetail");
+        then(postService).should(times(1)).increaseViewNumById(postId);
     }
 }
