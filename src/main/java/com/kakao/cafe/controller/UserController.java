@@ -51,11 +51,20 @@ public class UserController {
         return "user/login";
     }
 
+    @GetMapping("/loginFail")
+    public String loginFailPage(){return "user/login_failed";}
+
     @PostMapping("/login")
     public String login(@ModelAttribute User user, HttpSession session) {
-        User curUser = userService.isvalidateLogin(user);
-        session.setAttribute("curUser", curUser);
+        if(!userService.isvalidateLogin(user, session)) {
+            return "redirect:/users/loginFail";
+        }
         return "redirect:/";
     }
 
+    @GetMapping("logout")
+    public String logout(HttpSession session) {
+        userService.logout(session);
+        return "redirect:/users/login";
+    }
 }

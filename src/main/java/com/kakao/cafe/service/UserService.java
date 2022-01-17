@@ -5,7 +5,7 @@ import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import javax.servlet.http.HttpSession;
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -26,11 +26,16 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
-    public User isvalidateLogin(User user) {
+    public boolean isvalidateLogin(User user, HttpSession session) {
         User findUser = userRepository.findById(user.getUserId());
         if(!findUser.isValidateLogin(user)){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            return false;
         }
-        return findUser;
+        session.setAttribute("curUser", findUser);
+        return true;
+    }
+
+    public void logout(HttpSession session) {
+        session.invalidate();
     }
 }
