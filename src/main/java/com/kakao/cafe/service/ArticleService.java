@@ -7,6 +7,7 @@ import com.kakao.cafe.repository.ArticleDAOInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,10 +27,12 @@ public class ArticleService {
     }
 
     public List<ShowArticleDto> findAll() {
-        return articleDAO.findAll()
+        List<ShowArticleDto> articleList = articleDAO.findAll()
                 .stream()
                 .map(ShowArticleDto::new)
                 .collect(Collectors.toList());
+        Collections.reverse(articleList);
+        return articleList;
     }
 
     public ShowArticleDto findById(String id) {
