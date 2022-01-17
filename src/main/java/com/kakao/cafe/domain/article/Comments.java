@@ -1,15 +1,16 @@
 package com.kakao.cafe.domain.article;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Getter
+@RequiredArgsConstructor
 public class Comments {
 
-    private final List<Comment> comments = new ArrayList<>();
+    private final List<Comment> comments;
 
     public void add(Comment comment) {
         comments.add(comment);

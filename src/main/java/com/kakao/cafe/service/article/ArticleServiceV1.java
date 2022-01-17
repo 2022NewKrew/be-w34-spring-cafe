@@ -24,8 +24,11 @@ public class ArticleServiceV1 implements ArticleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Article inquireOneArticle(Long articleId) {
-        return articleRepository.findArticle(articleId);
+        Article article = articleRepository.findArticle(articleId);
+        article.setComments(new Comments(commentRepository.findAllOfArticle(article)));
+        return article;
     }
 
     @Override

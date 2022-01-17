@@ -44,7 +44,8 @@ public class MemoryArticleRepositoryTest {
         Title title = new Title("title");
         Text text = new Text("text");
 
-        Article article = new Article(title, text, member, Time.now());
+        Article article = new Article(title, text, Time.now());
+        article.setAuthor(member);
 
         // when
         Article savedArticle = articleRepository.save(article);
@@ -59,7 +60,8 @@ public class MemoryArticleRepositoryTest {
         // given
         Title title = new Title("title");
         Text text = new Text("text");
-        Article article = new Article(title, text, member, Time.now());
+        Article article = new Article(title, text, Time.now());
+        article.setAuthor(member);
         Article savedArticle = articleRepository.save(article);
 
         // when
@@ -84,11 +86,13 @@ public class MemoryArticleRepositoryTest {
         // given
         Title title = new Title("title");
         Text text = new Text("text");
-        Article article = new Article(title, text, member, Time.now());
+        Article article = new Article(title, text, Time.now());
+        article.setAuthor(member);
 
         Title title1 = new Title("title2");
         Text text1 = new Text("text2");
-        Article article1 = new Article(title1, text1, member, Time.now());
+        Article article1 = new Article(title1, text1, Time.now());
+        article1.setAuthor(member);
 
         articleRepository.save(article);
         articleRepository.save(article1);
@@ -106,7 +110,8 @@ public class MemoryArticleRepositoryTest {
         // given
         Title title = new Title("title");
         Text text = new Text("text");
-        Article article = new Article(title, text, member, Time.now());
+        Article article = new Article(title, text, Time.now());
+        article.setAuthor(member);
         Article savedArticle = articleRepository.save(article);
 
         // when
