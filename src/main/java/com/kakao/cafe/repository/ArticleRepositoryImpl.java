@@ -2,52 +2,45 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.entity.Article;
 import com.kakao.cafe.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @Repository
 @Transactional(readOnly = true)
 public class ArticleRepositoryImpl implements ArticleRepository{
-    private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert jdbcInsert;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @Autowired
-    public ArticleRepositoryImpl(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
-    @PostConstruct
-    public void init() {
-        this.jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("ARTICLE").usingGeneratedKeyColumns("ID");
+    public ArticleRepositoryImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public Article save(Article article) {
-        SqlParameterSource param = new BeanPropertySqlParameterSource(article);
-        Number key = jdbcInsert.executeAndReturnKey(param);
-        article.setId(key.intValue());
-        this.jdbcTemplate.update(
-                "INSERT INTO ARTICLE (TITLE, CONTENT, CREATEDTIME, VIEWS, WRITER) VALUES (?, ?, ?, ?, ?)",
-                article.getTitle(), article.getContent(), article.getCreatedTime(),
-                article.getViews(), article.getWriter().getId()
-        );
+        String sql = "INSERT INTO ARTICLE (TITLE, CONTENT, CREATEDTIME, VIEWS, WRITER)" +
+                    "VALUES (:title, :content, :createdTime, :views, :writer)";
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("title", article.getTitle());
+        params.put("content", article.getContent());
+        params.put("createdTime", article.getCreatedTime());
+        params.put("views", article.getViews());
+        params.put("writer", article.getWriter().getId());
+
+        this.namedParameterJdbcTemplate.update(sql, params);
+
         return article;
     }
 
     @Override
-    public Optional<List<Article>> findAll() {
+    public List<Article> findAll() {
         String sql = "SELECT A.ARTICLE_ID AS ID, " +
                 "A.TITLE AS TITLE, " +
                 "A.CONTENT AS CONTENT, " +
@@ -59,8 +52,7 @@ public class ArticleRepositoryImpl implements ArticleRepository{
                 "U.EMAIL AS EMAIL, " +
                 "U.CREATED_TIME AS USER_CREATED_TIME " +
                 "FROM ARTICLE A JOIN WRITER U ON (U.USER_ID = A.WRITER)";
-        List<Article> result = jdbcTemplate.query(sql, articleRowMapper());
-        return Optional.of(result);
+        return namedParameterJdbcTemplate.query(sql, articleRowMapper());
     }
 
     @Override
@@ -76,13 +68,15 @@ public class ArticleRepositoryImpl implements ArticleRepository{
                 "U.EMAIL AS EMAIL, " +
                 "U.CREATED_TIME AS USER_CREATED_TIME " +
                 "FROM ARTICLE A JOIN WRITER U ON (U.USER_ID = A.WRITER)" +
-                "WHERE U.USER_ID = ?";
-        return jdbcTemplate.queryForObject(sql, articleRowMapper(), articleId);
+                "WHERE A.ARTICLE_ID = :articleId";
+        Map<String, Object> param = new HashMap<>();
+        param.put("articleId", articleId);
+        return namedParameterJdbcTemplate.queryForObject(sql, param, articleRowMapper());
     }
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
-            Article article = new Article(
+            return new Article(
                     rs.getInt("ARTICLE_ID"),
                     rs.getString("TITLE"),
                     rs.getString("CONTENT"),
@@ -96,7 +90,6 @@ public class ArticleRepositoryImpl implements ArticleRepository{
                             rs.getDate("USER_CREATED_TIME").toLocalDate()
                     )
             );
-            return article;
         };
     }
 }

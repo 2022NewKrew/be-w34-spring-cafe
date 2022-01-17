@@ -23,12 +23,10 @@ public class UserService {
     }
 
     public List<UserDto> getUserList() {
-        return userRepository.findAll().
-                map(users -> users
+        return userRepository.findAll()
                         .stream()
                         .map(UserDto::entityToDto)
-                        .collect(Collectors.toList())
-                ).orElse(null);
+                        .collect(Collectors.toList());
     }
 
     public UserDto findById(String userId){
