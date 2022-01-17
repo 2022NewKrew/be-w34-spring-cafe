@@ -3,7 +3,9 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticlePostDto;
 import com.kakao.cafe.dto.UserProfileDto;
+import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.ArticleServiceImpl;
+import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.service.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +23,10 @@ import java.util.NoSuchElementException;
 @RequestMapping("/articles")
 public class ArticleController {
     private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
-    private final ArticleServiceImpl articleService;
-    private final UserServiceImpl userService;
+    private final ArticleService articleService;
+    private final UserService userService;
 
-    public ArticleController(ArticleServiceImpl articleService, UserServiceImpl userService) {
+    public ArticleController(ArticleService articleService, UserService userService) {
         this.articleService = articleService;
         this.userService = userService;
     }
