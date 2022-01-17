@@ -2,12 +2,15 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.service.UserService;
+import com.kakao.cafe.util.annotation.LoginCheck;
 import com.kakao.cafe.util.exception.UserDuplicatedException;
 import com.kakao.cafe.util.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Controller
@@ -20,6 +23,18 @@ public class UserController {
         return "user/register";
     }
 
+    @GetMapping("/login")
+    public String goLoginView() {
+        return "user/login";
+    }
+
+    @LoginCheck
+    @GetMapping("/logout")
+    public String userLogout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
     @PostMapping("/register")
     public String userRegister(UserDto userDto, Model model) {
         try {
@@ -29,27 +44,45 @@ public class UserController {
             model.addAttribute("idErrorMessage", e.getMessage());
             return "user/register";
         }
-        return "redirect:/user/list";
+        return "redirect:/";
     }
 
+    @PostMapping("/login")
+    public String userLogin(String userId, String password, HttpSession session, Model model) {
+        try {
+            userService.findUserByLoginInfo(userId, password, "일치하는 회원 정보가 없습니다.");
+        } catch (UserNotFoundException e) {
+            model.addAttribute("userId", userId);
+            model.addAttribute("UserNotFoundErrorMessage", e.getMessage());
+            return "user/login";
+        }
+
+        session.setAttribute("USER_ID", userId);
+        return "redirect:/";
+    }
+
+    @LoginCheck
     @GetMapping("/list")
     public String userList(Model model) {
         model.addAttribute("users", userService.findAllUsers());
         return "user/list";
     }
 
+    @LoginCheck
     @GetMapping("/view/{userId}")
     public String userView(@PathVariable("userId") String userId, Model model) {
         model.addAttribute("user", userService.findUserByUserId(userId));
         return "user/view";
     }
 
+    @LoginCheck
     @PostMapping("/modify")
     public String goUserModifyView(String userId, Model model) {
         model.addAttribute("user", userService.findUserByUserId(userId));
         return "user/modify";
     }
 
+    @LoginCheck
     @PutMapping("/modify")
     public String userModify(UserDto userDto, String newPassword, Model model) {
         try {
