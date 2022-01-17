@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -39,17 +40,39 @@ public class UserController {
         return "/user/profile";
     }
 
+    @GetMapping("/users/login/profile")
+    public String getLoginProfile(Model model, HttpSession session) {
+        return userService.getLoginProfile(session, model);
+    }
+
     @GetMapping("/users/{userId}/form")
     public String updateForm(@PathVariable String userId, Model model) {
-        User user = userService.getUser(userId);
+        model.addAttribute("userId", userId);
+        return "/user/updateForm";
+    }
+
+    @GetMapping("/users/edit/profile")
+    public String editProfile(Model model, HttpSession session) {
+        User loginUser = userService.getLoginUser(session);
+        String userId = loginUser.getUserId();
         model.addAttribute("userId", userId);
         return "/user/updateForm";
     }
 
     @PostMapping("/user/edit")
-    public String editUser(User user) {
-        userService.updateUser(user);
-        return "redirect:/users";
+    public String editUser(User user, HttpSession session) {
+        return userService.updateUser(user, session);
+    }
+
+    @PostMapping("/login")
+    public String login(String userId, String password, HttpSession session) {
+        return userService.login(userId, password, session);
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 
 }

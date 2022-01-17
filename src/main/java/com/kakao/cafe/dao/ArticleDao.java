@@ -34,7 +34,8 @@ public class ArticleDao {
     }
 
     public Article getArticle(int index) {
-        return jdbcTemplate.queryForObject("SELECT * FROM articles WHERE id = ?", articleRowMapper(), index);
+        return jdbcTemplate.query("SELECT * FROM articles WHERE id = ?", articleRowMapper(), index)
+                .stream().findFirst().orElse(null);
     }
 
 }
