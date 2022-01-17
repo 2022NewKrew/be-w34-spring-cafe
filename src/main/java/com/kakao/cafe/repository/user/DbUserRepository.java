@@ -7,21 +7,27 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class MemoryUserRepository implements UserRepository {
+public class DbUserRepository implements UserRepository {
     private static final UserList userList = UserList.getInstance();
+    private final UserDao userDao;
+
+    public DbUserRepository(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
 
     @Override
     public void create(UserInfo userInfo) {
-        userList.addUser(userInfo);
+        userDao.insert(userInfo);
     }
 
     @Override
     public Optional<UserInfo> read(String id) {
-        return userList.findById(id);
+        return Optional.ofNullable(userDao.selectById(id));
     }
 
     @Override
     public List<UserInfo> readAll() {
-        return userList.getUserList();
+        return userDao.selectAll();
     }
 }

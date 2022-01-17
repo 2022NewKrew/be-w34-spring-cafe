@@ -4,8 +4,12 @@ import com.kakao.cafe.utils.TimeGenerator;
 import com.kakao.cafe.web.dto.user.UserCreateRequestDto;
 import lombok.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 @ToString
+@Getter
 public class UserInfo {
     private final String userId;
     private final String signUpDate;
@@ -21,21 +25,12 @@ public class UserInfo {
         this.email = email;
         this.signUpDate = TimeGenerator.todayDate();
     }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getSignUpDate() {
-        return signUpDate;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
+    public UserInfo(String userId, String password, String name, String email, String signUpDate) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.signUpDate = signUpDate;
     }
 
     public static UserInfoBuilder builder(UserCreateRequestDto userCreateRequestDto) {

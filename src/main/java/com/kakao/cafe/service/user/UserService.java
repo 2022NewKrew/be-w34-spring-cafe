@@ -1,7 +1,9 @@
 package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.user.UserInfo;
+import com.kakao.cafe.repository.user.DbUserRepository;
 import com.kakao.cafe.repository.user.MemoryUserRepository;
+import com.kakao.cafe.repository.user.UserDao;
 import com.kakao.cafe.repository.user.UserRepository;
 import com.kakao.cafe.web.dto.user.UserCreateRequestDto;
 import com.kakao.cafe.web.dto.user.UserResponseDto;
@@ -13,7 +15,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository = new MemoryUserRepository();
+    private final UserRepository userRepository;
+
+    public UserService(UserDao userDao) {
+        userRepository= new DbUserRepository(userDao);
+    }
 
     public void userSingUp(UserCreateRequestDto userCreateRequestDto) {
         userRepository.create(UserInfo.builder(userCreateRequestDto).build());
