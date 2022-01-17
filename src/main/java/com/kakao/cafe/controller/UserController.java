@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.UserSignupRequest;
 import com.kakao.cafe.exceptions.InvalidUserRequestException;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,7 @@ public class UserController {
         if (errors.hasErrors()) {
             String errorMessage = errors.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .reduce("", (total, element) -> total + element + "\n");
+                    .collect(Collectors.joining("\n"));
             throw new InvalidUserRequestException(errorMessage);
         }
 
