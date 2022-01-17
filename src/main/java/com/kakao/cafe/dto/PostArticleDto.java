@@ -3,16 +3,16 @@ package com.kakao.cafe.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @AllArgsConstructor
 public class PostArticleDto {
 
-    @NotNull
+    @NotEmpty
     private String writer;
-    @NotNull
+    @NotEmpty
     private String contents;
-    @NotNull
+    @NotEmpty
     private String title;
 }

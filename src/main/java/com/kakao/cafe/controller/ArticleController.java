@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.aop.annotation.LoginCheckAnnotation;
 import com.kakao.cafe.config.Mapper;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.dto.ArticleListDto;
