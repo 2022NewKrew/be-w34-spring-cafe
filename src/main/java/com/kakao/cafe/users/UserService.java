@@ -1,6 +1,8 @@
 package com.kakao.cafe.users;
 
+import com.kakao.cafe.exceptions.BadCredentialException;
 import com.kakao.cafe.exceptions.DuplicatedException;
+import com.kakao.cafe.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +33,16 @@ public class UserService {
                 .stream()
                 .map(UserDto::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public UserDto login(String userId, String password) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("아이디가 존재하지 않습니다."));
+
+        if (!user.getPassword().equals(password)) {
+            throw new BadCredentialException("비밀번호가 일치하지 않습니다.");
+        }
+
+        return UserDto.toDto(user);
     }
 
     public boolean isDuplicatedUserId(String userId) {
