@@ -3,6 +3,8 @@ package com.kakao.cafe.user;
 import com.kakao.cafe.user.dto.request.UserRequest;
 import com.kakao.cafe.user.dto.response.UserResponse;
 import com.kakao.cafe.user.dto.response.UsersResponse;
+import com.kakao.cafe.user.repository.UserH2Repository;
+import com.kakao.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,7 +12,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserH2Repository userRepository) {
         this.userRepository = userRepository;
     }
 

@@ -1,4 +1,4 @@
-package com.kakao.cafe.user;
+package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.exception.CustomEmptyDataAccessException;
 import com.kakao.cafe.user.domain.User;
@@ -11,12 +11,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepository {
+public class UserH2Repository implements UserRepository {
 
     private final RowMapper<User> userRowMapper = getUserMapper();
     private final JdbcTemplate jdbcTemplate;
 
-    public UserRepository(JdbcTemplate jdbcTemplate) {
+    public UserH2Repository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
