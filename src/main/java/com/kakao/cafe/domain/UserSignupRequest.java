@@ -2,10 +2,10 @@ package com.kakao.cafe.domain;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class UserSignupRequest {
 
+    private static final String INITIAL_ID = "INITIAL_ID";
     @NotBlank(message = "아이디가 비어있습니다")
     private final String userId;
     @NotBlank(message = "비밀번호가 비어있습니다")
@@ -24,6 +24,6 @@ public class UserSignupRequest {
     }
 
     public User toEntity() {
-        return new User(null, userId, password, name, email);
+        return new User(INITIAL_ID, userId, password, name, email);
     }
 }

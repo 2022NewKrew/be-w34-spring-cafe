@@ -4,7 +4,6 @@ import java.util.Objects;
 
 public class User {
 
-    private static final String INITIAL_ID = "INITIAL_ID";
     private String uuid;
     private final String userId;
     private final String password;
@@ -12,7 +11,7 @@ public class User {
     private final String email;
 
     public User(String uuid, String userId, String password, String name, String email) {
-        this.uuid = uuid == null ? INITIAL_ID : uuid;
+        this.uuid = uuid;
         this.userId = userId;
         this.password = password;
         this.name = name;

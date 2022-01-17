@@ -1,8 +1,11 @@
 package com.kakao.cafe.domain;
 
+import java.util.Date;
 import javax.validation.constraints.NotBlank;
 
 public class WritePostRequest {
+
+    private static final int INITIAL_ID = 0;
     @NotBlank(message = "아이디가 비어있습니다")
     private final String userId;
     @NotBlank(message = "제목이 비어있습니다")
@@ -17,6 +20,6 @@ public class WritePostRequest {
     }
 
     public Post toEntity() {
-        return new Post(0, userId, title, content, null);
+        return new Post(INITIAL_ID, userId, title, content, new Date());
     }
 }
