@@ -53,4 +53,13 @@ public class Users {
             }
         }
     }
+
+    public Optional<User> findByUserNameAndPassword(UserName userName, Password password) {
+        synchronized (userList){
+            return userList.stream()
+                    .filter((user) -> user.getUserName().equals(userName))
+                    .filter((user) -> user.getPassword().equals(password))
+                    .findAny();
+        }
+    }
 }

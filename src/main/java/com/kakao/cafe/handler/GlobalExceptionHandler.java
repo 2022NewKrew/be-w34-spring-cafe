@@ -1,6 +1,7 @@
 package com.kakao.cafe.handler;
 
 import com.kakao.cafe.exception.DuplicateUserException;
+import com.kakao.cafe.exception.LoginFailedException;
 import com.kakao.cafe.exception.NoSuchArticleException;
 import com.kakao.cafe.exception.NoSuchUserException;
 import org.slf4j.Logger;
@@ -38,27 +39,34 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String userNotFound(Exception exception) {
         logHandlingException(exception);
-        return "error/nosuchuser";
+        return "error/no-such-user";
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String illegalArgument(Exception exception) {
         logHandlingException(exception);
-        return "error/illegalargument";
+        return "error/illegal-argument";
     }
 
     @ExceptionHandler(NoSuchArticleException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String articleNotFound(Exception exception) {
         logHandlingException(exception);
-        return "error/nosucharticle";
+        return "error/no-such-article";
     }
 
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String validationFailed(Exception exception) {
         logHandlingException(exception);
-        return "error/invalidinput";
+        return "error/invalid-input";
+    }
+
+    @ExceptionHandler(LoginFailedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public String loginFailed(Exception exception) {
+        logHandlingException(exception);
+        return "error/login-failed";
     }
 }

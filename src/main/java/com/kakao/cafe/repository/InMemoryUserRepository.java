@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository;
 
+import com.kakao.cafe.domain.user.Password;
 import com.kakao.cafe.domain.user.User;
 
 import com.kakao.cafe.domain.user.UserName;
@@ -51,5 +52,11 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public void update(User user) {
         users.update(user);
+    }
+
+    @Override
+    public Optional<User> findUserByUserNameAndPassword(UserName userName, Password password) {
+        return users.findByUserNameAndPassword(userName, password)
+                .map(userMapper::mapResult);
     }
 }
