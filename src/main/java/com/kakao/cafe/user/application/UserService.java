@@ -3,10 +3,7 @@ package com.kakao.cafe.user.application;
 import com.kakao.cafe.common.exception.EntityNotFoundException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
-import com.kakao.cafe.user.dto.UserListResponse;
-import com.kakao.cafe.user.dto.UserProfileResponse;
-import com.kakao.cafe.user.dto.UserSaveRequest;
-import com.kakao.cafe.user.dto.UserUpdateRequest;
+import com.kakao.cafe.user.dto.*;
 import com.kakao.cafe.user.infra.UserJdbcRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -49,7 +46,7 @@ public class UserService {
     public UserProfileResponse findById(String userId) {
         log.info(this.getClass() + ": 회원 프로필");
         User user = userRepository.findByIdOrNull(userId);
-        if(user == null) {
+        if (user == null) {
             EntityNotFoundException.throwNotExistsByField(User.class, "userId", userId);
         }
         return UserProfileResponse.valueOf(user);
@@ -58,11 +55,22 @@ public class UserService {
     public void updateById(String userId, UserUpdateRequest userUpdateRequest) {
         log.info(this.getClass() + ": 개인정보 수정");
         User user = userRepository.findByIdOrNull(userId);
-        if(user == null) {
+        if (user == null) {
             EntityNotFoundException.throwNotExistsByField(User.class, "userId", userId);
         }
 
         user.update(userUpdateRequest.password, userUpdateRequest.name, userUpdateRequest.email);
         userRepository.update(user);
+    }
+
+    public UserLoginResponse loginById(UserLoginRequest userLoginRequest) {
+        log.info(this.getClass() + ": 회원 로그인");
+        User user = userRepository.findByIdOrNull(userLoginRequest.userId);
+        if (user == null) {
+            EntityNotFoundException.throwNotExistsByField(User.class, "userId", userLoginRequest.userId);
+        }
+        user.validatePassword(userLoginRequest.password);
+
+        return UserLoginResponse.valueOf(user);
     }
 }
