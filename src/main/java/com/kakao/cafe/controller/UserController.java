@@ -50,7 +50,7 @@ public class UserController {
             return "redirect:/user";
         }
 
-        return "redirect:/user";
+        return "redirect:/user/login";
     }
 
     @GetMapping
