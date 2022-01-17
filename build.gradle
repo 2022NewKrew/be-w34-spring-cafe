@@ -19,7 +19,7 @@ dependencies {
 	implementation 'org.projectlombok:lombok'
 	implementation 'com.h2database:h2:2.0.206'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	implementation 'org.modelmapper:modelmapper:2.4.5'
+	implementation 'org.modelmapper:modelmapper:3.0.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'

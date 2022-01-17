@@ -49,7 +49,7 @@ public class UserControllerTest {
     @ValueSource(strings = {"grimm", "grimm2"})
     @DisplayName("[GET] /user/profile/{userId} 테스트")
     public void getUserProfileTest(String userId) throws Exception{
-        UserProfileDto userProfileDto = new UserProfileDto("name", userId);
+        UserProfileDto userProfileDto = new UserProfileDto(userId, userId + "@email.com");
 
         when(userService.getUserProfile(userId)).thenReturn(userProfileDto);
 
