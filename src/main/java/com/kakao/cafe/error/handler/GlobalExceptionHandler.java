@@ -23,48 +23,14 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ModelAndView handleUserNotFoundException(UserNotFoundException e) {
-        logger.error(e.getMessage());
-
-        ModelAndView modelAndView = new ModelAndView("/error");
-        ErrorDetail errorDetail = ErrorDetail.from(e.getMessage());
-        modelAndView.getModelMap().addAttribute("detail", errorDetail);
-        return modelAndView;
-    }
-
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ModelAndView handleUserAlreadyExistsException(UserAlreadyExistsException e) {
-        logger.error(e.getMessage());
-
-        ModelAndView modelAndView = new ModelAndView("/error");
-        ErrorDetail errorDetail = ErrorDetail.from(e.getMessage());
-        modelAndView.getModelMap().addAttribute("detail", errorDetail);
-        return modelAndView;
-    }
-
-    @ExceptionHandler(ArticleNotFoundException.class)
-    public ModelAndView handleArticleNotFoundException(ArticleNotFoundException e) {
-        logger.error(e.getMessage());
-
-        ModelAndView modelAndView = new ModelAndView("/error");
-        ErrorDetail errorDetail = ErrorDetail.from(e.getMessage());
-        modelAndView.getModelMap().addAttribute("detail", errorDetail);
-        return modelAndView;
-    }
-
-    @ExceptionHandler({AuthInvalidPasswordException.class, AuthInvalidUidException.class})
-    public ModelAndView handleAuthInvalidException(RuntimeException e) {
-        logger.error(e.getMessage());
-
-        ModelAndView modelAndView = new ModelAndView("/error");
-        ErrorDetail errorDetail = ErrorDetail.from(e.getMessage());
-        modelAndView.getModelMap().addAttribute("detail", errorDetail);
-        return modelAndView;
-    }
-
-    @ExceptionHandler(UserInvalidAuthInfoException.class)
-    public ModelAndView handleUserInvalidAuthInfoException(UserInvalidAuthInfoException e) {
+    @ExceptionHandler({UserNotFoundException.class,
+        UserAlreadyExistsException.class,
+        ArticleNotFoundException.class,
+        AuthInvalidUidException.class,
+        AuthInvalidPasswordException.class,
+        UserInvalidAuthInfoException.class,
+        ForbiddenAccessException.class})
+    public ModelAndView handleGlobalException(RuntimeException e) {
         logger.error(e.getMessage());
 
         ModelAndView modelAndView = new ModelAndView("/error");
@@ -82,16 +48,6 @@ public class GlobalExceptionHandler {
             .map(ErrorDetail::from)
             .collect(Collectors.toList());
         modelAndView.getModelMap().addAttribute("detail", errorDetails);
-        return modelAndView;
-    }
-
-    @ExceptionHandler(ForbiddenAccessException.class)
-    public ModelAndView handleForbiddenAccessException(ForbiddenAccessException e) {
-        logger.error(e.getMessage());
-
-        ModelAndView modelAndView = new ModelAndView("/error");
-        ErrorDetail errorDetail = ErrorDetail.from(e.getMessage());
-        modelAndView.getModelMap().addAttribute("detail", errorDetail);
         return modelAndView;
     }
 }

@@ -4,6 +4,7 @@ import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Result;
 import com.kakao.cafe.dto.UserDTO.Update;
 import com.kakao.cafe.error.ErrorCode;
+import com.kakao.cafe.error.exception.AuthInvalidPasswordException;
 import com.kakao.cafe.error.exception.UserAlreadyExistsException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.persistence.model.AuthInfo;
@@ -41,6 +42,15 @@ public class UserService {
 
     @Transactional
     public void update(AuthInfo authInfo, Update updateDTO) {
+        Optional<User> foundUser = userRepository.findUserByUid(authInfo.getUid());
+        if (foundUser.isEmpty()) {
+            throw new UserNotFoundException(ErrorCode.NOT_FOUND, authInfo.getUid());
+        }
+        if (!foundUser.get().matchPassword(updateDTO.getPassword())) {
+            throw new AuthInvalidPasswordException(ErrorCode.AUTHENTICATION_INVALID,
+                authInfo.getUid());
+        }
+
         userRepository.update(authInfo.getUid(), updateDTO.getName(), updateDTO.getEmail());
         logger.info("User Modified [UID : {}] [Name : {}] [Email : {}", authInfo.getUid(),
             updateDTO.getName(), updateDTO.getEmail());
