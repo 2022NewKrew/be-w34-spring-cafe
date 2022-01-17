@@ -8,8 +8,6 @@ public class SessionUser {
     private String name;
     private String email;
 
-    public SessionUser() {}
-
     public SessionUser(UserResponseDto userResponseDto) {
         this.id = userResponseDto.getId();
         this.userId = userResponseDto.getUserId();
