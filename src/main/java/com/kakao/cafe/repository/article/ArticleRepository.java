@@ -1,4 +1,4 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.dto.article.ArticleAddRequestDto;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class Articles {
+public class ArticleRepository {
     private final List<Article> articles = new ArrayList<>();
     private int maxIndex;
 

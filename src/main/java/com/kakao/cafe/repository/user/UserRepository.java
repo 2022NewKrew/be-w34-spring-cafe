@@ -1,4 +1,4 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.user.UserResponseDto;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class Users {
+public class UserRepository {
     private List<User> users = new ArrayList<>();
     private int maxId = 0;
 
@@ -19,8 +19,8 @@ public class Users {
         users.add(new User(maxId++, userDto));
     }
 
-    public UsersListResponseDto findAll() {
-        return new UsersListResponseDto(users);
+    public List<User> findAll() {
+        return users;
     }
 
     public UserResponseDto findUserById(int id) {
