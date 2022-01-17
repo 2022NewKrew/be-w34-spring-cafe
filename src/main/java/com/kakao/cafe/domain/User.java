@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Getter
 public class User {
@@ -103,7 +104,8 @@ public class User {
   }
 
   public void setPasswordHashed() {
-    //TODO
+    String salt = BCrypt.gensalt();
+    password = BCrypt.hashpw(password, salt);
   }
 
   public void updateLastLoginAt() {

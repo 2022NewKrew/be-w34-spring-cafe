@@ -17,6 +17,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'

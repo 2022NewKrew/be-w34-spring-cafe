@@ -10,6 +10,13 @@ INSERT INTO USERS (
      ('leo.jung@kakaocorp.com','leo.jung','안녕하세요? 주니어 개발자 입니다.','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd4XLkfq13iRXA66oVsnV992oxuCGE5K5eUw&usqp=CAU','rmsghk3346!');
 
 
+/*
+ $2a$10$sEaNpGhzusLvjI6GAPpnqO1DtNM23By3mh58dy5YEyXO7xGtnaesG
+$2a$10$X7Sz2ATy9JS9bP0jCIJQleJVj0o5DMzcBu6f4I/o.DGXiv8L.UjUO
+$2a$10$Ojqp02xh7bKD2ps/fIlQpOsl7bx.Z/0XpEL0q3.2HA4ZwzFy6UFFq
+
+ */
+
 INSERT INTO ARTICLE (
     USER_ID,
     TITLE,

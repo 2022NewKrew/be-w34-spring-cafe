@@ -6,6 +6,7 @@ import com.kakao.cafe.exception.InvalidAuthenticationException;
 import com.kakao.cafe.exception.NoEmailFoundException;
 import com.kakao.cafe.utils.SessionUtils;
 import com.kakao.cafe.web.repository.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -38,11 +39,12 @@ public class UserService {
 
   public User login(User user) {
 
-    user.setPasswordHashed();
-
     User loginUser = userRepository.findByEmail(user.getEmail())
         .stream()
-        .filter(findUser -> findUser.getPassword().equals(user.getPassword()))
+        .filter(findUser -> BCrypt.checkpw(
+            user.getPassword(),
+            findUser.getPassword())
+        )
         .findAny()
         .orElseThrow(InvalidAuthenticationException::new);
 
