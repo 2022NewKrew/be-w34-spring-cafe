@@ -1,12 +1,13 @@
 package com.kakao.cafe.post.application;
 
-import com.kakao.cafe.exception.IdNotFoundException;
 import com.kakao.cafe.post.application.dto.command.QuestionPostDetailCommand;
 import com.kakao.cafe.post.application.dto.result.QuestionPostDetailListResult;
 import com.kakao.cafe.post.application.dto.result.QuestionPostDetailResult;
 import com.kakao.cafe.post.application.port.in.GetQuestionPostUseCase;
 import com.kakao.cafe.post.application.port.out.LoadQuestionPostPort;
 import com.kakao.cafe.post.domain.QuestionPost;
+import com.kakao.cafe.post.exception.QuestionPostErrorCode;
+import com.kakao.cafe.post.exception.QuestionPostException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class GetQuestionPostService implements GetQuestionPostUseCase {
     @Override
     public QuestionPostDetailResult getPostDetail(QuestionPostDetailCommand command) {
         QuestionPost questionPost = loadQuestionPostPort.findById(command.getQuestionPostId())
-                .orElseThrow(() -> new IdNotFoundException("유효하지 않는 값입니다"));
+                .orElseThrow(() -> new QuestionPostException(QuestionPostErrorCode.ID_NOT_FOUND));
 
         return new QuestionPostDetailResult(
                 questionPost.getQuestionPostId(),

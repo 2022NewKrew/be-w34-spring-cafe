@@ -7,6 +7,8 @@ import com.kakao.cafe.post.application.port.out.SaveQuestionPostPort;
 import com.kakao.cafe.post.domain.QuestionPost;
 import com.kakao.cafe.user.application.port.out.LoadUserAccountPort;
 import com.kakao.cafe.user.domain.UserAccount;
+import com.kakao.cafe.user.exception.UserAccountErrorCode;
+import com.kakao.cafe.user.exception.UserAccountException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ public class EnrollQuestionPostService implements EnrollQuestionPostUseCase {
     @Override
     public QuestionPostSaveResult enroll(QuestionPostSaveCommand command) {
         UserAccount user = loadUserAccountPort.findById(command.getUserAccountId())
-                .orElseThrow(() -> new IllegalArgumentException(""));
+                .orElseThrow(() -> new UserAccountException(UserAccountErrorCode.ID_NOT_FOUND));
         QuestionPost questionPost = saveQuestionPostPort.save(command.toEntity(user));
         return new QuestionPostSaveResult(questionPost.getQuestionPostId());
     }

@@ -7,6 +7,8 @@ import com.kakao.cafe.user.application.dto.result.UserAccountDetailResult;
 import com.kakao.cafe.user.application.port.in.GetUserAccountUseCase;
 import com.kakao.cafe.user.application.port.out.LoadUserAccountPort;
 import com.kakao.cafe.user.domain.UserAccount;
+import com.kakao.cafe.user.exception.UserAccountErrorCode;
+import com.kakao.cafe.user.exception.UserAccountException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ public class GetUserAccountService implements GetUserAccountUseCase {
     @Override
     public UserAccountDetailResult getUserInfoByEmail(UserAccountDetailEmailCommand command) {
         UserAccount userAccount = loadUserAccountPort.findByEmail(command.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException(""));
+                .orElseThrow(() -> new UserAccountException(UserAccountErrorCode.EMAIL_NOT_FOUND));
 
         return new UserAccountDetailResult(
                 userAccount.getUserAccountId(),
@@ -50,7 +52,7 @@ public class GetUserAccountService implements GetUserAccountUseCase {
     @Override
     public UserAccountDetailResult getUserInfo(UserAccountDetailIdCommand command) {
         UserAccount userAccount = loadUserAccountPort.findById(command.getId())
-                .orElseThrow(() -> new IllegalArgumentException(""));
+                .orElseThrow(() -> new UserAccountException(UserAccountErrorCode.ID_NOT_FOUND));
 
         return new UserAccountDetailResult(
                 userAccount.getUserAccountId(),

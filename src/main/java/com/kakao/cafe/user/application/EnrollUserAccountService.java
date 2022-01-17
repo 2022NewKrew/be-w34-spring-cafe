@@ -6,6 +6,8 @@ import com.kakao.cafe.user.application.port.in.EnrollUserAccountUseCase;
 import com.kakao.cafe.user.application.port.out.LoadUserAccountPort;
 import com.kakao.cafe.user.application.port.out.SaveUserAccountPort;
 import com.kakao.cafe.user.domain.UserAccount;
+import com.kakao.cafe.user.exception.UserAccountErrorCode;
+import com.kakao.cafe.user.exception.UserAccountException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,7 @@ public class EnrollUserAccountService implements EnrollUserAccountUseCase {
 
     private void duplicateCheck(String email) {
         if (loadUserAccountPort.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException("유효하지 않는 값입니다");
+            throw new UserAccountException(UserAccountErrorCode.DUPLICATED_EMAIL);
         }
     }
 }
