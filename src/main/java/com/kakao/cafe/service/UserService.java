@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.dto.user.*;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,14 @@ public class UserService {
 
     public void modifyUser(String userId, UserModifyCommand umc) {
         userRepository.modify(userId, umc);
+    }
+
+    public User tryLogin(String userId, String password) {
+        User target = userRepository.search(userId);
+
+        if (target != null) {
+            return target.getPassword().equals(password) ? target : null;
+        }
+        return null;
     }
 }

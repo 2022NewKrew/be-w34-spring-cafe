@@ -22,4 +22,13 @@ public class UserModifyCommand {
     public String getEmail() {
         return email;
     }
+
+    @Override
+    public String toString() {
+        return "UserModifyCommand{" +
+                "password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

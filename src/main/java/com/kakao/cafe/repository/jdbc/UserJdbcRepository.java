@@ -7,6 +7,7 @@ import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -55,7 +56,11 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public User search(String userId) {
-        return jdbcTemplate.queryForObject(SEARCH_SQL, userRowMapper(), userId);
+        try {
+            return jdbcTemplate.queryForObject(SEARCH_SQL, userRowMapper(), userId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override

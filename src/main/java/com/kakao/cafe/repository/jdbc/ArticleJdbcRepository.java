@@ -6,6 +6,7 @@ import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.util.TimeStringParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -41,7 +42,11 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
     @Override
     public Article retrieve(Long id) {
-        return jdbcTemplate.queryForObject(RETRIEVE_SQL, articleRowMapper(), id);
+        try {
+            return jdbcTemplate.queryForObject(RETRIEVE_SQL, articleRowMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
