@@ -5,10 +5,10 @@ import java.util.Optional;
 
 public interface Repository<T, I> {
 
-    void create(T entity);
+    void createUser(T entity);
 
-    List<T> ReadAll();
+    List<T> readUsers();
 
-    Optional<T> ReadById(I id);
+    Optional<T> readUser(I id);
 
 }

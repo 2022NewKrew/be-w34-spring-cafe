@@ -1,9 +1,7 @@
-DROP TABLE IF EXISTS USER;
+DROP TABLE IF EXISTS MEMBER;
 
-CREATE TABLE USER
-(
-    ID       INT PRIMARY KEY AUTO_INCREMENT,
-    USER_ID  VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    EMAIL    VARCHAR(255) NOT NULL
+CREATE TABLE MEMBER (
+                        userId VARCHAR(64),
+                        password VARCHAR(64),
+                        email VARCHAR(64)
 );

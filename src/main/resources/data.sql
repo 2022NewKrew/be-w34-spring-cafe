@@ -1,2 +1,1 @@
-INSERT INTO FRUIT VALUES ('APPLT',50), ('BANANA', 90)
-SELECT * FROM FRUIT
+Insert into MEMBER(userId, password, email) values ('aid', 'userA', 'a@a.com');
