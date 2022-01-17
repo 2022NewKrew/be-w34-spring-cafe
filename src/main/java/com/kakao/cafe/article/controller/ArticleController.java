@@ -40,6 +40,22 @@ public class ArticleController {
         return "/qna/form";
     }
 
+    @GetMapping("/{id}/form")
+    public String showUpdateForm(@PathVariable Long id, Model model, HttpSession session) {
+        ArticleDetailResDto article = articleService.getArticle(id);
+        if (!session.getAttribute("sessionUserId").equals(article.getWriter())) {
+            throw new IllegalArgumentException("작성자만 글을 수정할 수 있습니다.");
+        }
+        model.addAttribute("article", article);
+        return "/qna/updateForm";
+    }
+
+    @PutMapping
+    public String updateArticle(@ModelAttribute ArticleReqDto articleReqDto, HttpSession session) {
+        articleService.update(articleReqDto);
+        return "redirect:/articles/" + articleReqDto.getId();
+    }
+
     private void checkSessionUser(HttpSession session) {
         if (session.getAttribute("sessionUserId") == null) {
             throw new SessionUserNotFoundException();
