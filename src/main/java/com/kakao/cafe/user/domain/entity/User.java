@@ -3,6 +3,7 @@ package com.kakao.cafe.user.domain.entity;
 
 import com.kakao.cafe.util.ValidationService;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.Size;
 
 @AllArgsConstructor
 @Getter
+@EqualsAndHashCode
 public class User {
     @NonNull
     @Size(min = 3, max = 10)
