@@ -4,6 +4,8 @@ import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.UserException;
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 public class UserId {
     private static final String format = "^[a-z0-9_-]{5,20}";
@@ -30,5 +32,18 @@ public class UserId {
 
     public String getUserId() {
         return userId;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        UserId userId = (UserId) object;
+        return Objects.equals(this.userId, userId.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
     }
 }
