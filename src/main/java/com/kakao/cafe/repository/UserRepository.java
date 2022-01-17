@@ -11,5 +11,7 @@ public interface UserRepository {
 
 	User findById(int id);
 
+	List<User> findByUserIdAndPassword(String userId, String password);
+
 	void update(int id, User user);
 }

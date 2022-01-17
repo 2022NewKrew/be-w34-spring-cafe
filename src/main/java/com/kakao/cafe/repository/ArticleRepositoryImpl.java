@@ -2,7 +2,6 @@ package com.kakao.cafe.repository;
 
 import java.util.List;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -11,10 +10,9 @@ import com.kakao.cafe.mapper.ArticleRowMapper;
 
 import lombok.RequiredArgsConstructor;
 
-@Primary
 @Repository
 @RequiredArgsConstructor
-public class ArticleJdbcRepositoryImpl implements ArticleRepository {
+public class ArticleRepositoryImpl implements ArticleRepository {
 	private final static String SAVE_QUERY = "INSERT INTO article(writer, title, contents) VALUES (?, ?, ?)";
 	private final static String FIND_ALL_QUERY = "SELECT * FROM article";
 	private final static String FIND_BY_ID_QUERY = "SELECT * FROM article WHERE id = ?";

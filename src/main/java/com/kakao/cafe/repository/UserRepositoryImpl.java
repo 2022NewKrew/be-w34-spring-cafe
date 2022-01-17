@@ -2,7 +2,6 @@ package com.kakao.cafe.repository;
 
 import java.util.List;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -11,13 +10,13 @@ import com.kakao.cafe.mapper.UserRowMapper;
 
 import lombok.RequiredArgsConstructor;
 
-@Primary
 @Repository
 @RequiredArgsConstructor
-public class UserJdbcRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl implements UserRepository {
 	private final static String SAVE_QUERY = "INSERT INTO `user`(user_id, password, name, email) VALUES(?, ?, ?, ?)";
 	private final static String FIND_ALL_QUERY = "SELECT * FROM `user`";
 	private final static String FIND_BY_ID_QUERY = "SELECT * FROM `user` WHERE id = ?";
+	private final static String FIND_BY_USER_ID_AND_PASSWORD_QUERY = "SELECT * FROM `user` WHERE user_id = ? AND password = ?";
 	private final static String UPDATE_QUERY = "UPDATE `user` SET password = ?, name = ?, email = ? WHERE id = ?";
 
 	private final JdbcTemplate jdbcTemplate;
@@ -40,6 +39,13 @@ public class UserJdbcRepositoryImpl implements UserRepository {
 		User user = jdbcTemplate.queryForObject(FIND_BY_ID_QUERY, userRowMapper, id);
 
 		return user;
+	}
+
+	@Override
+	public List<User> findByUserIdAndPassword(String userId, String password) {
+		List<User> userList = jdbcTemplate.query(FIND_BY_USER_ID_AND_PASSWORD_QUERY, userRowMapper, userId, password);
+
+		return userList;
 	}
 
 	@Override

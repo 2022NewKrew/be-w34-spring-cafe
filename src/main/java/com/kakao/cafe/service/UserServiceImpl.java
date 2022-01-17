@@ -6,10 +6,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.kakao.cafe.dto.request.UserCreateRequestDTO;
+import com.kakao.cafe.dto.request.UserLoginRequestDTO;
 import com.kakao.cafe.dto.request.UserUpdateRequestDTO;
 import com.kakao.cafe.dto.response.UserFindResponseDTO;
 import com.kakao.cafe.dto.response.UserInfoResponseDTO;
 import com.kakao.cafe.entity.User;
+import com.kakao.cafe.exception.IllegalLoginException;
 import com.kakao.cafe.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -76,5 +78,27 @@ public class UserServiceImpl implements UserService {
 			userUpdateRequestDTO.getEmail()
 		);
 		userRepository.update(id, user);
+	}
+
+	@Override
+	public UserInfoResponseDTO checkLogin(UserLoginRequestDTO userLoginRequestDTO) {
+		List<User> userList = userRepository.findByUserIdAndPassword(
+			userLoginRequestDTO.getUserId(),
+			userLoginRequestDTO.getPassword()
+		);
+
+		if (userList.size() == 0) {
+			throw new IllegalLoginException("잘못된 id와 password 입니다.");
+		}
+
+		User user = userList.get(0);
+
+		return UserInfoResponseDTO.builder()
+			.id(user.getId())
+			.userId(user.getUserId())
+			.password(user.getPassword())
+			.name(user.getName())
+			.email(user.getEmail())
+			.build();
 	}
 }
