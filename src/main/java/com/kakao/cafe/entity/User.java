@@ -9,10 +9,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class User extends BaseEntity {
+public class User {
     private String email;
     private String username;
     private String password;
+    private LocalDateTime regDate;
+    private LocalDateTime modDate;
 
     public void changeUsername(String username) {
         this.username = username;
@@ -20,20 +22,5 @@ public class User extends BaseEntity {
 
     public void changePassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public LocalDateTime getRegDate() {
-        return super.getRegDate();
-    }
-
-    @Override
-    public LocalDateTime getModDate() {
-        return super.getModDate();
-    }
-
-    public User init() {
-        super.register();
-        return this;
     }
 }
