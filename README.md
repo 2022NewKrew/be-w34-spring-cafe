@@ -48,3 +48,11 @@
     * 게시글 쓰기 O
       * 게시글 템플릿 분리
       * service에 createArticle
+  * 구현할 시간이 없는 관계로 step1-3 생략
+  * step2-1
+    * 로그인 기능 O
+      * login 홈페이지(get)
+      * login 서비스(post)
+      * 암호 비교는 service 에서
+      * 로그인 상태에 따라 로그아웃, 개인정보수정 표시 혹은 로그인, 회원가입 표시
+      * logout 기능

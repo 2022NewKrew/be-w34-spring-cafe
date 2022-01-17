@@ -8,10 +8,16 @@ import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.view.UserView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Controller
@@ -50,6 +56,20 @@ public class UserController {
     @GetMapping("/user/login")
     public String getUserLogin() {
         return "user/login";
+    }
+
+    @PostMapping("/user/login")
+    public String postUserLogin(String userId, String password, HttpSession session) {
+        if (!userService.login(userId, password, session)) {
+            return "redirect:/user/login";
+        }
+        return "redirect:/index";
+    }
+
+    @GetMapping("/user/logout")
+    public String getUserLogout(HttpSession session) {
+        userService.logout(session);
+        return "redirect:/index";
     }
 
 }
