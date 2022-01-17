@@ -32,11 +32,13 @@ public class UserStorageAdapter implements RegisterUserPort, GetUserInfoPort, Up
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException, UserIdDuplicationException {
         checkUserIdDuplication(signUpRequest.getUserId());
 
-        userInfoRepository.save(new User.Builder().userId(signUpRequest.getUserId())
-                                                  .password(signUpRequest.getPassword())
-                                                  .name(signUpRequest.getName())
-                                                  .email(signUpRequest.getEmail())
-                                                  .build());
+        userInfoRepository.save(
+            new User.Builder().userId(signUpRequest.getUserId())
+                              .password(signUpRequest.getPassword())
+                              .name(signUpRequest.getName())
+                              .email(signUpRequest.getEmail())
+                              .build()
+        );
     }
 
     @Override
@@ -68,17 +70,15 @@ public class UserStorageAdapter implements RegisterUserPort, GetUserInfoPort, Up
 
     @Override
     public void updateUser(String userId, UpdateRequest updateRequest)
-        throws UserNotExistException, IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
+        throws UserNotExistException, IllegalUserNameException, IllegalEmailException {
         User user = userInfoRepository.findByUserId(userId).orElse(null);
 
         if (user == null) {
             throw new UserNotExistException("존재하지 않는 회원입니다.");
         }
 
-        userInfoRepository.update(new User.Builder().userId(userId)
-                                                    .password(user.getPassword())
-                                                    .name(updateRequest.getName())
-                                                    .email(updateRequest.getEmail())
-                                                    .build());
+        user.setName(updateRequest.getName());
+        user.setEmail(updateRequest.getEmail());
+        userInfoRepository.update(user);
     }
 }

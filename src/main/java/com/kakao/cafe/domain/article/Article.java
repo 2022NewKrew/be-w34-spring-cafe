@@ -77,31 +77,31 @@ public class Article {
             checkDate(createdAt);
             return new Article(this);
         }
+    }
 
-        private boolean checkBlankInString(String str) {
-            return str.contains(" ");
+    private static boolean checkBlankInString(String str) {
+        return str.contains(" ");
+    }
+
+    private static boolean checkLengthOfString(String str) {
+        return str.length() <= 0;
+    }
+
+    private static void checkWriter(String writer) throws IllegalWriterException {
+        if (checkLengthOfString(writer) || checkBlankInString(writer)) {
+            throw new IllegalWriterException("작성자 이름이 잘못되었습니다.");
         }
+    }
 
-        private boolean checkLengthOfString(String str) {
-            return str.length() <= 0;
+    private static void checkTitle(String title) throws IllegalTitleException {
+        if (checkLengthOfString(title)) {
+            throw new IllegalTitleException("제목이 잘못되었습니다.");
         }
+    }
 
-        private void checkWriter(String writer) throws IllegalWriterException {
-            if (checkLengthOfString(writer) || checkBlankInString(writer)) {
-                throw new IllegalWriterException("작성자 이름이 잘못되었습니다.");
-            }
-        }
-
-        private void checkTitle(String title) throws IllegalTitleException {
-            if (checkLengthOfString(title)) {
-                throw new IllegalTitleException("제목이 잘못되었습니다.");
-            }
-        }
-
-        private void checkDate(String createdAt) throws IllegalDateException {
-            if (checkLengthOfString(createdAt)) {
-                throw new IllegalDateException("잘못된 날짜입니다.");
-            }
+    private static void checkDate(String createdAt) throws IllegalDateException {
+        if (checkLengthOfString(createdAt)) {
+            throw new IllegalDateException("잘못된 날짜입니다.");
         }
     }
 }

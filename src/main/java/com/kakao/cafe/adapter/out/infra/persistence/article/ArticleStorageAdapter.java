@@ -28,14 +28,14 @@ public class ArticleStorageAdapter implements RegisterArticlePort, GetArticleInf
     @Override
     public void registerArticle(WriteRequest writeRequest)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException {
-        articleRepository.save(new Article.Builder()
-                                   .writer(writeRequest.getWriter())
-                                   .title(writeRequest.getTitle())
-                                   .contents(writeRequest.getContents())
-                                   .createdAt(
-                                       LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-                                   )
-                                   .build());
+        articleRepository.save(
+            new Article.Builder()
+                .writer(writeRequest.getWriter())
+                .title(writeRequest.getTitle())
+                .contents(writeRequest.getContents())
+                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .build()
+        );
     }
 
     @Override
