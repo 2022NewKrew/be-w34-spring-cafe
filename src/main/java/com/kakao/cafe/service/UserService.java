@@ -43,4 +43,11 @@ public class UserService {
         return UserMapper.INSTANCE.toDto(userRepository.findById(id));
     }
 
+    public User login(String stringId, String password){
+        User user = userRepository.findByStringId(stringId);
+        if(user!=null && user.getPassword().equals(password)){
+            return user;
+        }
+        return null;
+    }
 }

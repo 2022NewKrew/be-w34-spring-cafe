@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.user.UserSaveDto;
 import com.kakao.cafe.dto.user.UserUpdateDto;
 import com.kakao.cafe.service.UserService;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Controller
@@ -41,5 +44,15 @@ public class UserController {
     public String serveUpdateForm(@PathVariable int id, Model model) {
         model.addAttribute("user", userService.findbyId(id));
         return "user/updateForm";
+    }
+
+    @PostMapping("/user/login")
+    public String login(String stringId, String password, HttpSession session) {
+        User user = userService.login(stringId, password);
+        if(user!=null){
+            session.setAttribute("sessionedUser", user);
+            return "redirect:/";
+        }
+        return "/user/login_failed";
     }
 }
