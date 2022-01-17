@@ -11,5 +11,4 @@ public interface ArticleService {
     void postOne(ArticlePostDto a) throws SQLException, NoSuchElementException;
     List<ArticleDto> getArticleList();
     ArticleDto findById(int id) throws NoSuchElementException;
-
 }

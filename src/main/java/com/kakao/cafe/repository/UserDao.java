@@ -73,6 +73,7 @@ public class UserDao implements UserRepository {
 
     public List<User> findAll() {
 
+        System.out.println(count());
         return jdbcTemplate.query(
                 "select * from MEMBER",
                 new UserMapper()
@@ -87,6 +88,10 @@ public class UserDao implements UserRepository {
                 user.getName(),
                 user.getUserId()
         );
+    }
+
+    public int count() {
+        return jdbcTemplate.queryForObject("select count(*) from MEMBER", int.class);
     }
 
     public class UserMapper implements RowMapper<User> {
