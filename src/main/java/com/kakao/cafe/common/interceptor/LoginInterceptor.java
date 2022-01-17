@@ -1,5 +1,6 @@
 package com.kakao.cafe.common.interceptor;
 
+import com.kakao.cafe.common.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -16,8 +17,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
 
         if (session == null || session.getAttribute("loginUser") == null) {
-            response.sendRedirect("/");
-            return false;
+            throw new BaseException("로그인이 필요한 서비스입니다.");
         }
 
         log.debug(session.getAttribute("loginUser").toString());
