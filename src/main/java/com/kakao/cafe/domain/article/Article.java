@@ -38,6 +38,9 @@ public class Article {
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
         if (obj instanceof Article) {
             return this.id.equals(((Article) obj).id);
         }
