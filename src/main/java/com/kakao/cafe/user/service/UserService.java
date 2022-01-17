@@ -1,5 +1,7 @@
 package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.exception.UserNotFoundException;
+import com.kakao.cafe.exception.UsernameDuplicatedException;
 import com.kakao.cafe.user.UserMapper;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserCreationForm;
@@ -9,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +31,7 @@ public class UserService {
 
     private void validateDuplicateUserName(User user) {
         if (userRepository.get(user.getUsername()).isPresent()) {
-            throw new RuntimeException("Username is already in use: " + user.getUsername());
+            throw new UsernameDuplicatedException();
         }
     }
 
@@ -40,6 +41,6 @@ public class UserService {
 
     public UserView getUserViewByUsername(String username) {
         return UserMapper.toUserView(userRepository.get(username).orElseThrow(
-                () -> new NoSuchElementException("Username not found: " + username)));
+                () -> new UserNotFoundException()));
     }
 }

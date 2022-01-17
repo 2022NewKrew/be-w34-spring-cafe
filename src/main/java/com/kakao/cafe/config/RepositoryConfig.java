@@ -1,4 +1,4 @@
-package com.kakao.cafe.global;
+package com.kakao.cafe.config;
 
 import com.kakao.cafe.thread.repository.PostRepository;
 import com.kakao.cafe.thread.repository.SpringJdbcPostRepository;
@@ -12,7 +12,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import javax.sql.DataSource;
 
 @Configuration
-public class SpringConfig {
+public class RepositoryConfig {
     @Bean
     public UserRepository userRepository(DataSource dataSource) {
         return new SpringJdbcUserRepository(dataSource);
