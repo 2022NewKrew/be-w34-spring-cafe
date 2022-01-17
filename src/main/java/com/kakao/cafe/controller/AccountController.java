@@ -75,7 +75,7 @@ public class AccountController {
             return "redirect:/accounts/login";
         }
         userService.modify(editUserDto);
-        return "redirect:/accounts/mypage";
+        return "redirect:/users";
     }
 
     @GetMapping("/delete")

@@ -10,6 +10,8 @@ public interface UserService {
 
     UserDto getUser(AuthDto dto);
 
+    UserDto getUserByEmail(String email);
+
     void modify(EditUserDto dto);
 
     PageResultDto<UserDto, User> getList(PageRequestDto requestDto);
