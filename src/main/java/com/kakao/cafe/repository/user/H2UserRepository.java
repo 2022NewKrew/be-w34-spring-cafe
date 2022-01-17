@@ -39,8 +39,8 @@ public class H2UserRepository implements UserRepository {
                 "VALUES(?,?,?,?,?)";
         jdbcTemplate.update(sql,
                 user.getId(),
-                user.getJoinedAt(), user.getUserId(), user.getPassword(), user.getName(), user.getEmail(),
-                user.getJoinedAt(), user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+                user.getJoinedAt(), user.getUserId(), user.getHashedPw(), user.getName(), user.getEmail(),
+                user.getJoinedAt(), user.getUserId(), user.getHashedPw(), user.getName(), user.getEmail());
 
         return user;
     }
@@ -92,7 +92,7 @@ public class H2UserRepository implements UserRepository {
             user.setId(rs.getLong("id"));
             user.setJoinedAt(rs.getDate("joined_at"));
             user.setUserId(rs.getString("userid"));
-            user.setPassword(rs.getString("password"));
+            user.setHashedPw(rs.getString("password"));
             user.setName(rs.getString("name"));
             user.setEmail(rs.getString("email"));
             return user;

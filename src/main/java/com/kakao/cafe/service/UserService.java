@@ -8,6 +8,7 @@ import com.kakao.cafe.repository.user.H2UserRepository;
 
 import com.kakao.cafe.repository.user.MemoryUserRepository;
 import com.kakao.cafe.repository.user.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,7 +38,8 @@ public class UserService {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         });
         User user = modelMapper.map(userDto, User.class);
-
+        String hashedPw = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
+        user.setHashedPw(hashedPw);
         user.setJoinedAt(new Date());
         userRepository.save(user);
     }
@@ -59,22 +61,27 @@ public class UserService {
     }
 
     public void updateUser(long id, RequestUserDto userDto) {
-        User user = userRepository.findByUserId(userDto.getUserId()).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
 
-        if (!userDto.getPrevPassword().equals(user.getPassword())) {
+        validatePassword(user, userDto.getPassword());
+
+        user.setEmail(userDto.getEmail());
+        user.setName(userDto.getName());
+        String hashedPw = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
+        user.setHashedPw(hashedPw);
+        userRepository.updateById(id, user);
+    }
+
+    public void validatePassword(User user, String password) {
+        if (!BCrypt.checkpw(password, user.getHashedPw())) {
             throw new IllegalStateException("패스워드가 일치하지 않습니다.");
         }
-
-        User newUser = modelMapper.map(userDto, User.class);
-        user.setPassword(userDto.getPassword());
-        userRepository.updateById(id, user);
     }
 
     public boolean login(String userId, String password) {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
-        if (!user.getPassword().trim().equals(password)) {
-            throw new IllegalStateException("패스워드가 일치하지 않습니다.");
-        }
+        validatePassword(user, password);
         return true;
     }
+
 }

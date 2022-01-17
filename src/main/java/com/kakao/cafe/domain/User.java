@@ -17,7 +17,7 @@ public class User {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date joinedAt;
     private String userId;
-    private String password;
+    private String hashedPw;
     private String name;
     private String email;
 
