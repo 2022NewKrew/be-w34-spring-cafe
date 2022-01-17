@@ -6,6 +6,8 @@ import com.kakao.cafe.dto.UserUpdateDto;
 import com.kakao.cafe.service.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -121,6 +123,13 @@ public class UserController {
             logger.error("/users/login, User(id = {}) failed to login. User does not exist.", userId, e);
             return "/user/login_failed";
         }
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
 
         return "redirect:/";
     }
