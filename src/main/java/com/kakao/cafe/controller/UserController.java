@@ -42,8 +42,7 @@ public class UserController {
 
     @GetMapping("/users/login/profile")
     public String getLoginProfile(Model model, HttpSession session) {
-        User loginUser = userService.getLoginUser(session);
-        return userService.getLoginProfile(loginUser, model);
+        return userService.getLoginProfile(session, model);
     }
 
     @GetMapping("/users/{userId}/form")

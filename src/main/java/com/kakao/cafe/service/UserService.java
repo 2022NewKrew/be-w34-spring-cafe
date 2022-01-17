@@ -47,7 +47,8 @@ public class UserService {
         return "redirect:/users";
     }
 
-    public String getLoginProfile(User loginUser, Model model) {
+    public String getLoginProfile(HttpSession session, Model model) {
+        User loginUser = getLoginUser(session);
         if(loginUser == null)
             return NOT_LOGIN_ERROR;
         model.addAttribute("user", loginUser);
