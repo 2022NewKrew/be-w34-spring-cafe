@@ -10,6 +10,7 @@ public interface UserRepository {
     List<User> selectAll();
 
     Optional<User> selectByKey(Long key);
+    Optional<User> selectById(String id);
 
     Long insert(User user);
 

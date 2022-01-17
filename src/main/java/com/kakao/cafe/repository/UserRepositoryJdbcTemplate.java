@@ -34,6 +34,12 @@ public class UserRepositoryJdbcTemplate implements UserRepository {
     }
 
     @Override
+    public Optional<User> selectById(String id) {
+        List<User> result = jdbcTemplate.query("SELECT * FROM user where id = ?", userRowMapper(), id);
+        return result.stream().findAny();
+    }
+
+    @Override
     public Long insert(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("user").usingGeneratedKeyColumns("key");

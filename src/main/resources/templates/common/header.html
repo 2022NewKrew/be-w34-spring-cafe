@@ -50,14 +50,18 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul id="menus" class="nav navbar-nav navbar-right">
                 <li id="/" class="active"><a href="/">Posts</a></li>
+                {{^sessionedUser}}
                 <li id="/user/login"><a href="/user/login" role="button">로그인</a></li>
                 <li id="/user/signup"><a href="/user/signup" role="button">회원가입</a></li>
+                {{/sessionedUser}}
                 <!--
                 <li><a href="#loginModal" role="button" data-toggle="modal">로그인</a></li>
                 <li><a href="#registerModal" role="button" data-toggle="modal">회원가입</a></li>
                 -->
-                <li><a href="#" role="button">로그아웃</a></li>
-                <li><a href="#" role="button">개인정보수정</a></li>
+                {{#sessionedUser}}
+                <li><a href="/user/signout" role="button">로그아웃</a></li>
+                <li><a href="/user/{{key}}/update" role="button">개인정보수정</a></li>
+                {{/sessionedUser}}
             </ul>
         </div>
     </div>
