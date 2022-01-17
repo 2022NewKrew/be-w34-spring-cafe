@@ -5,6 +5,7 @@ import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.SimpleUserInfo;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.h2.mvstore.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,15 +21,18 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users")
-    public ModelAndView userList(@RequestParam(defaultValue = "1") Integer pageNum, ModelAndView mav) {
+    public ModelAndView userList(@RequestParam(defaultValue = "1") Integer pageNum, ModelAndPageView mapv) {
         int numOfUser = userService.countAll();
-        mav.addObject("numOfUser", numOfUser);
+        mapv.addObject("numOfUser", numOfUser);
 
         List<SimpleUserInfo> userInfos = userService.getListOfSimpleUserInfo(pageNum, PageSize.USER_LIST_SIZE);
-        mav.addObject("userInfos", userInfos);
+        mapv.addObject("userInfos", userInfos);
 
-        mav.setViewName("userList");
-        return mav;
+        Integer totalPageNum = numOfUser / PageSize.USER_LIST_SIZE + 1;
+        mapv.setPageNumbers(pageNum, totalPageNum);
+
+        mapv.setViewName("userList");
+        return mapv;
     }
 
     @GetMapping("/users/{userId}")

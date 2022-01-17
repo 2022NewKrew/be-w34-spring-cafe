@@ -20,16 +20,19 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/")
-    public ModelAndView postListView(@RequestParam(defaultValue = "1") Integer pageNum, ModelAndView mav) {
+    public ModelAndView postListView(@RequestParam(defaultValue = "1") Integer pageNum, ModelAndPageView mapv) {
         int numOfPost = postService.countAll();
-        mav.addObject("numOfPost", numOfPost);
+        mapv.addObject("numOfPost", numOfPost);
 
         List<SimplePostInfo> postInfos = postService.getListOfSimplePostInfo(pageNum, PageSize.POST_LIST_SIZE);
-        mav.addObject("postInfos", postInfos);
+        mapv.addObject("postInfos", postInfos);
 
-        mav.setViewName("postList");
+        Integer totalPageNum = numOfPost / PageSize.POST_LIST_SIZE + 1;
+        mapv.setPageNumbers(pageNum, totalPageNum);
 
-        return mav;
+        mapv.setViewName("postList");
+
+        return mapv;
     }
 
     @GetMapping("/posts/{postId}")
