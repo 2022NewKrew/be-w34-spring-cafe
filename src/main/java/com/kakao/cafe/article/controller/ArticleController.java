@@ -3,6 +3,7 @@ package com.kakao.cafe.article.controller;
 import com.kakao.cafe.article.dto.request.ArticleReqDto;
 import com.kakao.cafe.article.dto.response.ArticleDetailResDto;
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.exception.SessionUserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,9 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public String getArticle(@PathVariable Long id, Model model) {
+    public String getArticle(@PathVariable Long id, Model model, HttpSession session) {
+        checkSessionUser(session);
+
         ArticleDetailResDto article = articleService.getArticle(id);
         model.addAttribute("article", article);
 
@@ -32,9 +35,14 @@ public class ArticleController {
 
     @GetMapping("/form")
     public String showArticleForm(HttpSession session) {
-        if (session.getAttribute("sessionUserId") == null) {
-            return "redirect:/users/login";
-        }
+        checkSessionUser(session);
+
         return "/qna/form";
+    }
+
+    private void checkSessionUser(HttpSession session) {
+        if (session.getAttribute("sessionUserId") == null) {
+            throw new SessionUserNotFoundException();
+        }
     }
 }
