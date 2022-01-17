@@ -19,4 +19,9 @@ public class Content {
 
         return content.equals(((Content) obj).getValue());
     }
+
+    @Override
+    public String toString() {
+        return content;
+    }
 }

@@ -19,4 +19,9 @@ public class Email {
 
         return email.equals(((Email) obj).getValue());
     }
+
+    @Override
+    public String toString() {
+        return email;
+    }
 }

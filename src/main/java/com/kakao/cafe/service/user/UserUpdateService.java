@@ -21,7 +21,7 @@ public class UserUpdateService {
 
     private void correctPasswordCheck(User user, Password password) {
         if(!user.getPassword().equals(password)) {
-            throw new IllegalArgumentException("Password Incorrect : " + user.getUserId().getValue());
+            throw new IllegalArgumentException("Password Incorrect : " + user.getUserId());
         }
     }
 }

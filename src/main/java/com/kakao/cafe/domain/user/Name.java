@@ -19,4 +19,9 @@ public class Name {
 
         return name.equals(((Name) obj).getValue());
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

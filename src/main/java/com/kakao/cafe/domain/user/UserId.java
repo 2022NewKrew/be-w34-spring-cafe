@@ -20,4 +20,9 @@ public class UserId {
 
         return userId.equals(((UserId) obj).getValue());
     }
+
+    @Override
+    public String toString() {
+        return userId;
+    }
 }

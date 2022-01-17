@@ -19,4 +19,9 @@ public class Title {
 
         return title.equals(((Title) obj).getValue());
     }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }

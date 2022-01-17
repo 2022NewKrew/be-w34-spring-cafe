@@ -19,4 +19,9 @@ public class Password {
 
         return password.equals(((Password) obj).getValue());
     }
+
+    @Override
+    public String toString() {
+        return password;
+    }
 }
