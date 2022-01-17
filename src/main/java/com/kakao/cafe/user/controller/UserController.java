@@ -61,7 +61,7 @@ public class UserController {
     }
 
 
-    //회원개인프로필 확인
+    //회원개인정보 수정
     @GetMapping(value = "/users/{userId}/form")
     public String userUpdate(@PathVariable("userId") String userId, Model model){
         User user = userService.getUserByUserId(userId);
@@ -73,7 +73,7 @@ public class UserController {
     }
 
 
-    //회원가입요청
+    //로그인요청
     @PostMapping(value = "/user/login/try")
     public String userLogin(UserLoginDTO userLoginDTO, HttpSession session, HttpServletRequest request){
         String userCookieValue = request.getCookies()[0].getValue();
@@ -85,6 +85,16 @@ public class UserController {
             Map<String, String> loginList = (Map<String, String>) session.getAttribute("loginList");
             loginList.put(userCookieValue, userLoginDTO.getUserId()); //해당 유저쿠키번호에 로그인한 사용자의 아이디를 추가
         }
+
+        return "redirect:/";
+    }
+
+    //로그아웃요청
+    @GetMapping(value = "/user/logout")
+    public String userLogout(HttpSession session, HttpServletRequest request){
+        String userCookieValue = request.getCookies()[0].getValue();
+        Map<String, String> loginList = (Map<String, String>) session.getAttribute("loginList");
+        loginList.remove(userCookieValue);
 
         return "redirect:/";
     }

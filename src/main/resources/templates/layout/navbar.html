@@ -56,8 +56,8 @@
                 {{/loggedInUser}}
 
                 {{#loggedInUser}}
-                    <li><a href="#" role="button">({{loggedInUser}})로그아웃</a></li>
-                    <li><a href="#" role="button">개인정보수정</a></li>
+                    <li><a href="/user/logout" role="button">({{loggedInUser}})로그아웃</a></li>
+                    <li><a href="/users/{{loggedInUser}}/form" role="button">개인정보수정</a></li>
                 {{/loggedInUser}}
             </ul>
         </div>
