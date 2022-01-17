@@ -21,6 +21,6 @@ public class MainController {
 		List<ArticleFindResponseDTO> articles = articleService.getAllArticle();
 		model.addAttribute("articles", articles);
 
-		return "/index";
+		return "index";
 	}
 }

@@ -15,27 +15,28 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class ArticleJdbcRepositoryImpl implements ArticleRepository {
+	private final static String SAVE_QUERY = "INSERT INTO article(writer, title, contents) VALUES (?, ?, ?)";
+	private final static String FIND_ALL_QUERY = "SELECT * FROM article";
+	private final static String FIND_BY_ID_QUERY = "SELECT * FROM article WHERE id = ?";
+
 	private final JdbcTemplate jdbcTemplate;
 	private final ArticleRowMapper articleRowMapper;
 
 	@Override
 	public void save(Article article) {
-		String sql = "INSERT INTO article(writer, title, contents) VALUES (?, ?, ?)";
-		jdbcTemplate.update(sql, article.getWriter(), article.getTitle(), article.getContents());
+		jdbcTemplate.update(SAVE_QUERY, article.getWriter(), article.getTitle(), article.getContents());
 	}
 
 	@Override
 	public List<Article> findAll() {
-		String sql = "SELECT * FROM article";
-		List<Article> articleList = jdbcTemplate.query(sql, articleRowMapper);
+		List<Article> articleList = jdbcTemplate.query(FIND_ALL_QUERY, articleRowMapper);
 
 		return articleList;
 	}
 
 	@Override
 	public Article findById(int id) {
-		String sql = "SELECT * FROM article WHERE id = ?";
-		Article article = jdbcTemplate.queryForObject(sql, articleRowMapper, id);
+		Article article = jdbcTemplate.queryForObject(FIND_BY_ID_QUERY, articleRowMapper, id);
 
 		return article;
 	}
