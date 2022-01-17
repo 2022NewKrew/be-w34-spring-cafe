@@ -20,7 +20,7 @@
             </thead>
             <tbody>
             {{#users.dtoList}}
-                <tr>
+                <tr class='clickable-row' data-href="/users/{{email}}">
                     <td class="p-3 col-md-3">{{username}}</td>
                     <td class="p-3 col-md-1 text-center">{{email}}</td>
                     <td class="p-3 col-md-1 text-center">{{regDate}}</td>

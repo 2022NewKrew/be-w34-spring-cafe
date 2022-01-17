@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -20,5 +21,11 @@ public class UserController {
     public String userList(PageRequestDto pageRequestDto, Model model) {
         model.addAttribute("users", userService.getList(pageRequestDto));
         return "user/list";
+    }
+
+    @GetMapping("/{email}")
+    public String getUser(@PathVariable String email, Model model) {
+        model.addAttribute("user", userService.getUserByEmail(email));
+        return "user/info";
     }
 }

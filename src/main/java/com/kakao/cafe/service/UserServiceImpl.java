@@ -46,6 +46,13 @@ public class UserServiceImpl implements UserService {
                 .map(this::entityToDto)
                 .orElseThrow(UserException::new);
     }
+    
+    @Override
+    public UserDto getUserByEmail(String email) {
+        return userRepository.findByEmail(User.builder().email(email).build())
+                .map(this::entityToDto)
+                .orElseThrow(UserException::new);
+    }
 
     @Override
     public void modify(EditUserDto dto) {
