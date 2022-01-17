@@ -13,4 +13,8 @@ public interface UserRepository {
     User update(User user);
     List<User> findAll();
     User findUserById(Integer id);
+
+    default User findUserByUserId(String userId) {
+        return null;
+    }
 }
