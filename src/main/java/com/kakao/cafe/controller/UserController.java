@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("users")
 @RequiredArgsConstructor
@@ -23,16 +25,16 @@ public class UserController {
         return "/user/list";
     }
 
-    @GetMapping("{userId}")
-    public String findUserOne(@PathVariable String userId, Model model) {
-        model.addAttribute("user", userService.findByUserId(userId));
-        return "/user/profile";
-    }
-
     @PostMapping
     public String signup(@ModelAttribute UserDto userDto) {
         int id = userService.create(userDto);
         return "redirect:/users";
+    }
+
+    @GetMapping("{userId}")
+    public String findUserOne(@PathVariable String userId, Model model) {
+        model.addAttribute("user", userService.findByUserId(userId));
+        return "/user/profile";
     }
 
     @GetMapping("{userId}/form")
@@ -46,6 +48,7 @@ public class UserController {
         userService.update(userId, userDto);
         return "redirect:/users";
     }
+
 
 
 

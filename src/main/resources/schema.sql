@@ -15,7 +15,7 @@ CREATE TABLE `user`
 (
     id integer NOT NULL AUTO_INCREMENT,
     userId varchar(255) not null,
-    password int,
+    password varchar(255),
     name varchar(255),
     email varchar(255),
     primary key(userId)
