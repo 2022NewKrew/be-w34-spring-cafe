@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class UserController {
     private final UserService userService;
@@ -59,8 +61,13 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}/update")
-    public String updateUser(@PathVariable String userId, String password, String passwordConfirm, String name, String email) {
-        if (password.equals(passwordConfirm)) {
+    public String updateUser(HttpSession session, @PathVariable String userId, String password, String passwordConfirm, String name, String email) {
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null) {
+            return "redirect:/users";
+        }
+        User user = (User)value;
+        if (user.getPassword().equals(password) && password.equals(passwordConfirm)) {
             UserCreateDTO userUpdateDTO = new UserCreateDTO(userId, password, name, email);
             userService.replace(userUpdateDTO);
         }
@@ -69,11 +76,15 @@ public class UserController {
 
 
 
-
     @GetMapping("/users/login")
     public String getLoginForm() { return "/user/login"; }
 
-
-
-
+    @PostMapping("/users/login")
+    public String login(String userId, String password, HttpSession session) {
+        User user = userService.getUserByUserId(userId);
+        if (user.getPassword().equals(password)) {
+            session.setAttribute("sessionedUser", user);
+        }
+        return "redirect:/";
+    }
 }

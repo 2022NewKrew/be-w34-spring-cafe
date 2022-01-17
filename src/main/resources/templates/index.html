@@ -1,38 +1,7 @@
 {{>layout/header}}
-{{>layout/navbar}}
-<div class="container">
-    <div class="m-md-3">
-        <h1>게시글</h1>
-    </div>
-    <div class="m-md-3">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>제목</th>
-                <th>글쓴이</th>
-                <th>작성시간</th>
-            </tr>
-            </thead>
-            <tbody>
-            {{#articleList}}
-            <tr>
-                <th><a href="/articles/{{id}}">{{id}}</a></th>
-                <th><a href="/articles/{{id}}">{{title}}</a></th>
-                <th><a href="/users/{{writer}}">{{writer}}</a></th>
-                <th>{{createdTime}}</th>
-            </tr>
-            {{/articleList}}
-            </tbody>
-        </table>
-        <ul class="list-group">
-            {{#articleList}}
-            <li class="list-group-item">
-
-            </li>
-            {{/articleList}}
-        </ul>
-    </div>
+{{>layout/navbar-top}}
+{{>layout/navbar-sub}}
+<div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default qna-list">
             <ul class="list">
