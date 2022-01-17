@@ -2,6 +2,8 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dao.UserDao;
 import com.kakao.cafe.dto.user.UserDto;
+import com.kakao.cafe.dto.user.UserInfoDto;
+import com.kakao.cafe.dto.user.UserProfileDto;
 import com.kakao.cafe.exception.InputDataException;
 import com.kakao.cafe.vo.UserVo;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +15,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -44,13 +47,17 @@ class UserServiceTest {
     @Test
     @DisplayName("회원 정보 가져오기")
     void getUser() throws InputDataException {
+        UserInfoDto userInfoDto = new UserInfoDto();
+        userInfoDto.setUserId("david.dh");
+        userInfoDto.setName("김대환");
+        userInfoDto.setEmail("david.dh@kakaocorp.com");
         doNothing().when(userDao).save(any());
         userService.addUser(userDto);
         when(userDao.findByUserId(any())).thenReturn(userVo);
-        when(modelMapper.map(any(),any())).thenReturn(userDto);
-        UserDto user = userService.getUser(userDto.getUserId());
+        when(modelMapper.map(any(),any())).thenReturn(userInfoDto);
+        UserInfoDto user = userService.getUser(userDto.getUserId());
 
-        assertThat(userDto.getUserId()).isEqualTo(user.getUserId());
+        assertThat(userInfoDto.getUserId()).isEqualTo(user.getUserId());
     }
 
     @Test
