@@ -7,7 +7,6 @@ import com.kakao.cafe.web.dto.UserDTO;
 import com.kakao.cafe.web.dto.UserModifyDTO;
 import java.sql.Timestamp;
 import java.util.Objects;
-import java.util.Optional;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.mindrot.jbcrypt.BCrypt;
