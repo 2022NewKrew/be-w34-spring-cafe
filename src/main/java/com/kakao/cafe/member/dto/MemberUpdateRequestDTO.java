@@ -3,6 +3,7 @@ package com.kakao.cafe.member.dto;
 import com.kakao.cafe.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
+@ToString
 public class MemberUpdateRequestDTO {
 
     @Email

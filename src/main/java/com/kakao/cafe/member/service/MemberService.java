@@ -1,6 +1,7 @@
 package com.kakao.cafe.member.service;
 
 import com.kakao.cafe.member.domain.Member;
+import com.kakao.cafe.member.dto.LoginRequestDTO;
 import com.kakao.cafe.member.dto.MemberRequestDTO;
 import com.kakao.cafe.member.dto.MemberResponseDTO;
 import com.kakao.cafe.member.dto.MemberUpdateRequestDTO;
@@ -36,7 +37,7 @@ public class MemberService {
 
     private void validateCheckPassword(String password, String passwordCheck) {
         if (!PasswordChecker.checkPassword(password, passwordCheck)) {
-            throw new IllegalArgumentException("비밀번호 확인이 일치하지 않습니다.");
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
     }
 
@@ -46,19 +47,36 @@ public class MemberService {
         }));
     }
 
+    public Long login(LoginRequestDTO loginRequestDTO) {
+        Member member = memberRepository.findByEmail(loginRequestDTO.getEmail()).orElseThrow(() -> {
+            throw new IllegalArgumentException("해당 유저가 존재하지 않습니다.");
+        });
+
+        validateCheckPassword(member.getPassword(), loginRequestDTO.getPassword());
+        return member.getId();
+    }
+
     public List<MemberResponseDTO> findAll() {
         return memberRepository.findAll().stream()
                 .map(MemberResponseDTO::new)
                 .collect(Collectors.toList());
     }
 
-    public void update(Long id, MemberUpdateRequestDTO memberUpdateRequestDTO) {
-        Member member = memberRepository.findOne(id).orElseThrow(() -> {
+    public void update(Long pathId, Long sessionId, MemberUpdateRequestDTO memberUpdateRequestDTO) {
+        validateSameId(pathId, sessionId);
+
+        Member member = memberRepository.findOne(sessionId).orElseThrow(() -> {
             throw new IllegalArgumentException("해당 유저가 존재하지 않습니다.");
         });
 
         validateCheckPassword(member.getPassword(), memberUpdateRequestDTO.getCurrentPassword());
         validateCheckPassword(memberUpdateRequestDTO.getPassword(), memberUpdateRequestDTO.getPasswordCheck());
-        memberRepository.update(id, memberUpdateRequestDTO.toMember(member.getCreateDate()));
+        memberRepository.update(sessionId, memberUpdateRequestDTO.toMember(member.getCreateDate()));
+    }
+
+    private void validateSameId(Long pathId, Long sessionId) {
+        if (!pathId.equals(sessionId)) {
+            throw new IllegalArgumentException("다른 사람의 정보를 수정할 수 없습니다.");
+        }
     }
 }

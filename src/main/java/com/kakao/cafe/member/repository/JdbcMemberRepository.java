@@ -4,8 +4,11 @@ import com.kakao.cafe.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -18,8 +21,20 @@ public class JdbcMemberRepository implements MemberRepository {
 
     @Override
     public Member save(Member member) {
-        String sql = "INSERT INTO MEMBER (EMAIL, NICKNAME, PASSWORD, CREATE_DATE) VALUES (?, ?, ?, ?)";
-        Long id = (long) jdbcTemplate.update(sql, member.getEmail(), member.getNickname(), member.getPassword(), member.getCreateDate());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String sql = "INSERT INTO MEMBER (EMAIL, NICKNAME, PASSWORD, CREATE_DATE) VALUES(?, ?, ?, ?)";
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, member.getEmail());
+            ps.setString(2, member.getNickname());
+            ps.setString(3, member.getPassword());
+            ps.setObject(4, member.getCreateDate());
+            return ps;
+        }, keyHolder);
+
+        Long id = (Long) keyHolder.getKey();
+
         member.setId(id);
         return member;
     }

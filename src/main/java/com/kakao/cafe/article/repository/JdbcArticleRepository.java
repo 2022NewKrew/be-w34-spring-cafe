@@ -4,8 +4,11 @@ import com.kakao.cafe.article.domain.Article;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -17,11 +20,23 @@ public class JdbcArticleRepository implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Long save(Article article) {
+    public Article save(Article article) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO ARTICLE (TITLE, AUTHOR, CONTENT, CREATE_DATE) VALUES(?, ?, ?, ?)";
-        Long id = (long) jdbcTemplate.update(sql, article.getTitle(), article.getAuthor(), article.getContent(), article.getCreateDate());
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, article.getTitle());
+            ps.setString(2, article.getAuthor());
+            ps.setString(3, article.getContent());
+            ps.setObject(4, article.getCreateDate());
+            return ps;
+        }, keyHolder);
+
+        Long id = (Long) keyHolder.getKey();
+
         article.setId(id);
-        return id;
+        return article;
     }
 
     @Override

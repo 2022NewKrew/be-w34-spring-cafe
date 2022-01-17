@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,6 +71,7 @@ class MemberControllerTest {
                         .flashAttr("memberRequestDTO", memberRequestDTO)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(model().attributeExists("errorMessage"))
+                .andExpect(model().attribute("errorMessage", "이미 존재하는 이메일입니다."))
                 .andExpect(view().name("/error"));
     }
 
@@ -88,11 +90,15 @@ class MemberControllerTest {
         MemberRequestDTO originMember = new MemberRequestDTO("flip@kakao.com", "name", "pass", "pass");
         Member member = memberRepository.save(originMember.toMember(LocalDate.now()));
 
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("memberId", member.getId());
+
         // when
-        MemberUpdateRequestDTO memberUpdateRequestDTO = new MemberUpdateRequestDTO("flip@kakao.com", "name", "pass", "pass123", "pass123");
+        MemberUpdateRequestDTO memberUpdateRequestDTO = new MemberUpdateRequestDTO("flip@kakao.com", "name", "pass", "1", "1");
 
         // then
         mockMvc.perform(put("/members/" + member.getId())
+                        .session(session)
                         .flashAttr("memberUpdateRequestDTO", memberUpdateRequestDTO)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is3xxRedirection())
@@ -105,15 +111,19 @@ class MemberControllerTest {
     void invalidMemberUpdateTest(MemberUpdateRequestDTO memberUpdateRequestDTO) throws Exception {
         // given
         MemberRequestDTO originMember = new MemberRequestDTO("flip@kakao.com", "name", "pass", "pass");
-
         Member member = memberRepository.save(originMember.toMember(LocalDate.now()));
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("memberId", member.getId());
 
         // when
         // then
         mockMvc.perform(put("/members/" + member.getId())
+                        .session(session)
                         .flashAttr("memberUpdateRequestDTO", memberUpdateRequestDTO)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(model().attributeExists("errorMessage"))
+                .andExpect(model().attribute("errorMessage", "비밀번호가 일치하지 않습니다."))
                 .andExpect(view().name("/error"));
     }
 
@@ -121,7 +131,7 @@ class MemberControllerTest {
         return Stream.of(
                 Arguments.of(new MemberUpdateRequestDTO("flip@kakao.com", "name1", "1", "12", "12")),
                 Arguments.of(new MemberUpdateRequestDTO("flip@kakao.com", "name1", "121", "12", "12")),
-                Arguments.of(new MemberUpdateRequestDTO("flip@kakao.com", "name1", "pass", "12", "12"))
+                Arguments.of(new MemberUpdateRequestDTO("flip@kakao.com", "name1", "pass1", "12", "12"))
         );
     }
 }

@@ -10,8 +10,14 @@
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active"><a href="/members">멤버 리스트</a></li>
+                    {{^memberId}}
                     <li><a class="black-component" href="/login" role="button">로그인</a></li>
                     <li><a class="black-component" href="/memberForm" role="button">회원가입</a></li>
+                    {{/memberId}}
+                    {{#memberId}}
+                    <li><a class="black-component" href="/logout" role="button">로그아웃</a></li>
+                    <li><a class="black-component" href="/members/{{memberId}}" role="button">회원정보수정</a></li>
+                    {{/memberId}}
                 </ul>
             </div>
         </nav>
