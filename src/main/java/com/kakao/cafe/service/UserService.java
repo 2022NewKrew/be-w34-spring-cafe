@@ -4,6 +4,7 @@ import com.kakao.cafe.dao.UserDao;
 import com.kakao.cafe.vo.User;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -29,6 +30,11 @@ public class UserService {
 
     public void updateUser(User user) {
         userDao.updateUser(user);
+    }
+
+    public void login(String userId, String password, HttpSession session) {
+        User user = userDao.getUser(userId, password);
+        session.setAttribute("sessionedUser", user);
     }
 
 }

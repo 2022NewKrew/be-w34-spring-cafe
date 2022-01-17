@@ -31,7 +31,13 @@ public class UserDao {
     }
 
     public User getUser(String userId) {
-        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE userId = ?", userRowMapper(), userId);
+        return jdbcTemplate.query("SELECT * FROM users WHERE userId = ?", userRowMapper(), userId)
+                .stream().findFirst().orElse(null);
+    }
+
+    public User getUser(String userId, String password) {
+        return jdbcTemplate.query("SELECT * FROM users WHERE userId = ? AND password = ?",
+                userRowMapper(), userId, password).stream().findFirst().orElse(null);
     }
 
     public void addUser(User user) {
