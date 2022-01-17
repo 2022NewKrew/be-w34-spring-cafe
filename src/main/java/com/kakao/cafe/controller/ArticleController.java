@@ -34,21 +34,21 @@ public class ArticleController {
     @PostMapping(value = "/article/create")
     public String postCreateArticle(Article article) {
         logger.info("article:{}", article);
-        articleService.getArticleRepository().getArticleList().add(article);
+        articleService.createArticle(article);
         return "redirect:/index";
     }
 
     @GetMapping(value = "/index")
     public String getArticleList(Model model) {
-        logger.info("articleList:{}", articleService.getArticleRepository().getArticleList().getCopiedArticleList());
-        model.addAttribute("articleListSize", articleService.getArticleRepository().getArticleList().size());
-        model.addAttribute("articleList", articleService.getArticleRepository().getArticleList().getCopiedArticleList());
+        logger.info("articleList:{}", articleService.getArticleList());
+        model.addAttribute("articleListSize", articleService.getArticleListSize());
+        model.addAttribute("articleList", articleService.getArticleList());
         return "/index";
     }
 
     @GetMapping(value = "/articles/{index}")
     public String getArticleShow(@PathVariable int index, Model model) {
-        Article article = articleService.getArticleRepository().getArticleList().getArticleByIndex(index);
+        Article article = articleService.getArticleByIndex(index);
         model.addAttribute("article", article);
         return "/article/show";
     }

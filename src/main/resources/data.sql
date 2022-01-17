@@ -1,0 +1,1 @@
+INSERT INTO USERS VALUES (0,'cih468','1234','cih468@naver.com','2022-01-17');
