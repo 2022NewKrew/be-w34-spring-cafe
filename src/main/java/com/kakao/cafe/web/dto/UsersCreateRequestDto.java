@@ -36,4 +36,8 @@ public class UsersCreateRequestDto {
         this.email = email;
     }
 
+    public boolean checkUserInfo (String email, String password) {
+        return email.equals(this.email) && password.equals(this.password);
+    }
+
 }

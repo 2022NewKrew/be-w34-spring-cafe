@@ -1,7 +1,6 @@
 package com.kakao.cafe.domain.posts;
 
 import com.kakao.cafe.web.dto.PostResponseDto;
-import com.kakao.cafe.web.dto.UserResponseDto;
 
 import java.sql.*;
 import java.util.ArrayList;

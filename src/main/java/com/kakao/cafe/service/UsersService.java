@@ -26,6 +26,9 @@ public class UsersService {
     }
 
     @Transactional
+    public UserResponseDto findByEmail(String email) { return usersRepository.findByEmail(email); }
+
+    @Transactional
     public void update(Long id, UsersCreateRequestDto requestDto) {
         usersRepository.update(id, requestDto.toEntity());
     }
