@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -17,7 +18,10 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("/questions")
-    public String uploadArticle(ArticleDto articleDto) {
+    public String uploadArticle(ArticleDto articleDto, HttpSession httpSession) {
+        articleDto.setUserId((Long)httpSession.getAttribute("sessionUserId"));
+        articleDto.setWriter((String)httpSession.getAttribute("sessionUserName"));
+
         articleService.uploadArticle(articleDto);
 
         return "redirect:/";

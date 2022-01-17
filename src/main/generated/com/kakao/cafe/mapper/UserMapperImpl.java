@@ -5,12 +5,14 @@ import com.kakao.cafe.dto.UserDto.UserDtoBuilder;
 import com.kakao.cafe.entity.UserEntity;
 import com.kakao.cafe.entity.UserEntity.UserEntityBuilder;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-01-16T22:09:45+0900",
+    date = "2022-01-17T23:50:31+0900",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 11.0.11 (AdoptOpenJDK)"
 )
 @Component
@@ -24,6 +26,7 @@ public class UserMapperImpl implements UserMapper {
 
         UserEntityBuilder userEntity = UserEntity.builder();
 
+        userEntity.id( userDto.getId() );
         userEntity.email( userDto.getEmail() );
         userEntity.nickName( userDto.getNickName() );
         userEntity.password( userDto.getPassword() );
@@ -44,10 +47,25 @@ public class UserMapperImpl implements UserMapper {
         if ( userEntity.getRegisteredDate() != null ) {
             userDto.registeredDate( DateTimeFormatter.ofPattern( "yyyy-MM-dd" ).format( userEntity.getRegisteredDate() ) );
         }
+        userDto.id( userEntity.getId() );
         userDto.email( userEntity.getEmail() );
         userDto.nickName( userEntity.getNickName() );
         userDto.password( userEntity.getPassword() );
 
         return userDto.build();
+    }
+
+    @Override
+    public List<UserDto> toUserDtoList(List<UserEntity> userEntityList) {
+        if ( userEntityList == null ) {
+            return null;
+        }
+
+        List<UserDto> list = new ArrayList<UserDto>( userEntityList.size() );
+        for ( UserEntity userEntity : userEntityList ) {
+            list.add( toUserDto( userEntity ) );
+        }
+
+        return list;
     }
 }

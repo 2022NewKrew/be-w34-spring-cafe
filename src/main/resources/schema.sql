@@ -23,5 +23,7 @@ create table article
     write_date timestamp,
     created_date timestamp,
     updated_date timestamp,
-    primary key(id)
+    user_id bigint,
+    primary key(id),
+    foreign key(user_id) references users(id)
 );
