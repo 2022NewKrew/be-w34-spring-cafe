@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
-public class ArticleMemoryRepositoryImpl implements ArticleRepository{
+public class ArticleMemoryRepositoryImpl implements ArticleRepository {
     private static AtomicLong idSequence = new AtomicLong();
 
     private final static HashMap<Long, Article> articleDB = new HashMap<>();
@@ -23,7 +23,15 @@ public class ArticleMemoryRepositoryImpl implements ArticleRepository{
     }
 
     public Long persist(ArticleCreateRequestDTO dto) {
-        articleDB.put(idSequence.get(), new Article(idSequence.get(), dto.title, dto.authorId, LocalDateTime.now(), 0, dto.contents));
+        Article article = Article.builder()
+                .id(idSequence.get())
+                .title(dto.title)
+                .authorId(dto.authorId)
+                .date(LocalDateTime.now())
+                .contents(dto.contents)
+                .build();
+
+        articleDB.put(idSequence.get(), article);
         return idSequence.getAndIncrement();
     }
 

@@ -58,7 +58,6 @@ public class UserController {
     public String updateUserForm(@PathVariable("id") String userStringId,  Model model) {
         log.info("GET /user/update id: {}", userStringId);
         model.addAllAttributes(new UserUpdateResponse(userService.getUserProfile(userStringId)));
-//        model.addAllAttributes(new UserUpdateResponse(userService.getUserProfile(fakeSession)));
         return "user/update";
     }
     // 아무나 프로필 수정 가능해야 한다.

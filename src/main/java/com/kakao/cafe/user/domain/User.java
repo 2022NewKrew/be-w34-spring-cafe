@@ -1,12 +1,11 @@
 package com.kakao.cafe.user.domain;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@AllArgsConstructor
 public class User {
     private Long id;
     private String stringId;
@@ -16,4 +15,13 @@ public class User {
     private LocalDateTime signUpDate;
 
 
+    @Builder
+    private User(Long id, String stringId, String email, String nickName, String password, LocalDateTime signUpDate) {
+        this.id = id;
+        this.stringId = stringId;
+        this.email = email;
+        this.nickName = nickName;
+        this.password = password;
+        this.signUpDate = signUpDate;
+    }
 }

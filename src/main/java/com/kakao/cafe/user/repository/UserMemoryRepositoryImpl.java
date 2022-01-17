@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
-public class UserMemoryRepositoryImpl implements UserRepository{
+public class UserMemoryRepositoryImpl implements UserRepository {
     private static AtomicLong idSequence = new AtomicLong();
     private final static HashMap<Long, User> userDB = new HashMap<>();
 
@@ -27,16 +27,20 @@ public class UserMemoryRepositoryImpl implements UserRepository{
     }
 
     public Long persist(UserCreateRequestDTO dto) {
-        userDB.put(idSequence.get(), new User(idSequence.get(), dto.stringId, dto.email, dto.nickName, dto.password, dto.signUpDate));
-
-//Article article = jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE ID = ?", rowMapper, id);
-        
-
+        User user = User.builder()
+                .id(idSequence.get())
+                .stringId(dto.stringId)
+                .email(dto.email)
+                .nickName(dto.nickName)
+                .password(dto.password)
+                .signUpDate(dto.signUpDate)
+                .build();
+        userDB.put(idSequence.get(), user);
         return idSequence.getAndIncrement();
     }
 
     public Long findDBIdById(String stringId) {
-        return userDB.keySet().stream().filter(key->stringId.equals(userDB.get(key).getStringId())).findAny().orElseGet(()->-1L);
+        return userDB.keySet().stream().filter(key -> stringId.equals(userDB.get(key).getStringId())).findAny().orElseGet(() -> -1L);
     }
 
     public String findStringIdByDBId(Long id) {
@@ -49,7 +53,14 @@ public class UserMemoryRepositoryImpl implements UserRepository{
 
     public void updateUserInfo(UserUpdateRequestDTO dto) {
         User oldUserData = userDB.get(dto.getUserId());
-        User user = new User(oldUserData.getId(), oldUserData.getStringId(), dto.getEmail(), dto.getName(), dto.getNewPassword(), oldUserData.getSignUpDate());
+        User user = User.builder()
+                .id(oldUserData.getId())
+                .stringId(oldUserData.getStringId())
+                .email(dto.getEmail())
+                .nickName(dto.getName())
+                .password(dto.getNewPassword())
+                .signUpDate(oldUserData.getSignUpDate())
+                .build();
         userDB.put(dto.getUserId(), user);
     }
 }
