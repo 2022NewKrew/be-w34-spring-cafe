@@ -6,4 +6,5 @@ public class ExceptionMessage {
     public static String USER_ID_DUPLICATION_EXCEPTION = "이미 존재하는 아이디입니다.";
     public static String NON_NULL_EXCEPTION = "길이가 0보다 커야합니다.";
     public static String NOT_MATCHING_PASSWORD_EXCEPTION = "비밀번호가 일치하지 않습니다.";
+    public static String NO_SUCH_USER_EXCEPTION = "id에 해당하는 User가 존재하지 않습니다.";
 }

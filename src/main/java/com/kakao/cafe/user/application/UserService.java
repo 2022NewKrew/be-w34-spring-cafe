@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.application;
 
+import com.kakao.cafe.common.exception.AuthenticationException;
 import com.kakao.cafe.common.exception.EntityNotFoundException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.kakao.cafe.common.exception.ExceptionMessage.NO_SUCH_USER_EXCEPTION;
 import static com.kakao.cafe.common.exception.ExceptionMessage.USER_ID_DUPLICATION_EXCEPTION;
 
 @Service
@@ -67,7 +69,7 @@ public class UserService {
         log.info(this.getClass() + ": 회원 로그인");
         User user = userRepository.findByIdOrNull(userLoginRequest.userId);
         if (user == null) {
-            EntityNotFoundException.throwNotExistsByField(User.class, "userId", userLoginRequest.userId);
+            AuthenticationException.throwAuthFailure(NO_SUCH_USER_EXCEPTION, userLoginRequest.userId);
         }
         user.validatePassword(userLoginRequest.password);
 

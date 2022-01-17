@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.domain;
 
+import com.kakao.cafe.common.exception.AuthenticationException;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -62,7 +63,7 @@ public class User {
 
     public void validatePassword(String password) throws IllegalArgumentException {
         if (!this.getPassword().equals(password)) {
-            throw new IllegalArgumentException(NOT_MATCHING_PASSWORD_EXCEPTION);
+            AuthenticationException.throwAuthFailure(NOT_MATCHING_PASSWORD_EXCEPTION, password);
         }
     }
 
