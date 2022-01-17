@@ -8,6 +8,7 @@ import com.kakao.cafe.user.dto.UserProfileDto;
 import com.kakao.cafe.user.dto.UserRequest;
 import com.kakao.cafe.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,28 +20,31 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     public void signUp(UserRequest userRequest){
         if(isExistUser(userRequest.getUserId())){
             throw new UserAlreadyExistException();
         }
 
-        Long id = userRepository.getNumberOfUsers() + 1;
-        userRepository.save(userRequest.toEntity(id));
+        User user = modelMapper.map(userRequest, User.class);
+        user.setId(userRepository.getNumberOfUsers() + 1);
+        userRepository.save(user);
     }
 
     public List<UserDto> getUsersList(){
         return userRepository.findAll()
-                .stream().map(UserDto::of)
+                .stream().map(user -> modelMapper.map(user,UserDto.class))
                 .collect(Collectors.toList());
     }
 
     public UserProfileDto getUserProfile(String userId){
+        if(!isExistUser(userId)) throw new UserNotExistException();
         User user = userRepository.findOneByUserId(userId).orElseThrow(UserNotExistException::new);
-        return UserProfileDto.of(user);
+        return modelMapper.map(user, UserProfileDto.class);
     }
 
     public boolean isExistUser(String userId){
-        return userRepository.findOneByUserId(userId).isPresent();
+        return Optional.ofNullable(userRepository.findOneByUserId(userId)).isPresent();
     }
 }

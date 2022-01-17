@@ -1,16 +1,15 @@
 package com.kakao.cafe.user.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
-@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    private final Long id;
-    private final String userId;
-    private final String name;
-    private final String password;
-    private final String email;
+    @Setter
+    private Long id;
+    private String userId;
+    private String name;
+    private String password;
+    private String email;
 }
