@@ -1,9 +1,10 @@
-package com.kakao.cafe.repository.user;
+package com.kakao.cafe.repository.jdbc;
 
 import com.kakao.cafe.domain.dto.user.UserCreateCommand;
 import com.kakao.cafe.domain.dto.user.UserListShow;
 import com.kakao.cafe.domain.dto.user.UserModifyCommand;
 import com.kakao.cafe.domain.entity.User;
+import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Repository
 @Primary
-public class UserJdbcRepository implements UserRepository{
+public class UserJdbcRepository implements UserRepository {
     private static final String STORE_SQL =
             "INSERT INTO USERS(USER_ID, PASSWORD, NAME, EMAIL) VALUES(?, ?, ?, ?)";
     private static final String MODIFY_SQL =

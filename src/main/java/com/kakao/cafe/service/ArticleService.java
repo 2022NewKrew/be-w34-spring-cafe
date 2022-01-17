@@ -3,7 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.dto.article.ArticleContents;
 import com.kakao.cafe.domain.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.domain.dto.article.ArticleListShow;
-import com.kakao.cafe.repository.article.ArticleRepository;
+import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.kakao.cafe.repository.article;
+package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.dto.article.ArticleContents;
 import com.kakao.cafe.domain.dto.article.ArticleCreateCommand;

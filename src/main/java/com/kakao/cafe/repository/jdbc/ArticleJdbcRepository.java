@@ -1,9 +1,10 @@
-package com.kakao.cafe.repository.article;
+package com.kakao.cafe.repository.jdbc;
 
 import com.kakao.cafe.domain.dto.article.ArticleContents;
 import com.kakao.cafe.domain.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.domain.dto.article.ArticleListShow;
 import com.kakao.cafe.domain.entity.Article;
+import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.web.util.TimeStringParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;

@@ -1,4 +1,4 @@
-package com.kakao.cafe.repository.user;
+package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.dto.user.*;
 import com.kakao.cafe.domain.entity.User;
