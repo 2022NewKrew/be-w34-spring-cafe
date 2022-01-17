@@ -19,10 +19,18 @@ class JdbcUserRepositoryTest {
     private final String password = "testPassword";
     private final String email = "testEmail";
 
+//    @Autowired
+//    JdbcTemplate jdbcTemplate;
+//
+//    @Autowired
+//    UserMapper userMapper;
+
+
     @Test
     @DisplayName("[성공] JdbcUserRepository 클래스 생성")
     void JdbcUserRepository() {
-        new JdbcUserRepository(new JdbcTemplate(), new UserMapper(), new SecurityConfig().passwordEncoder());
+//        new JdbcUserRepository(jdbcTemplate, userMapper, new SecurityConfig().passwordEncoder());
+        new JdbcUserRepository(new JdbcTemplate(new JdbcConfig().dataSource()), new UserMapper(), new SecurityConfig().passwordEncoder());
     }
 
 
@@ -30,6 +38,7 @@ class JdbcUserRepositoryTest {
     @DisplayName("[성공] JdbcUserRepository 유저 생성")
     void createUser() {
         // given
+//        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate, userMapper, new SecurityConfig().passwordEncoder());
         JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(new JdbcTemplate(new JdbcConfig().dataSource()), new UserMapper(), new SecurityConfig().passwordEncoder());
         User user = new User(userId, password, email);
 
