@@ -1,19 +1,24 @@
-
 {{>layout/header}}
 <div class="container" id="main">
+    <div style="padding: 0 15px 15px;">
+        <a href="/questions/create"
+           style="float: right; display: block; background-color: #f6c51e; padding: 5px 6px; border-radius: 8px;color: #000; font-weight: bold;">게시글
+            쓰기</a>
+        <span style="clear: both; display: block;"></span>
+    </div>
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
-          <header class="qna-header">
-              <h2 class="qna-title">Question List</h2>
-          </header>
-          <div class="content-main">
-              <div class="qna-comment">
-                  <em class="qna-comment-count"><strong>{{size}}</strong>개의 질문</em>
+            <header class="qna-header">
+                <h2 class="qna-title">게시글</h2>
+            </header>
+            <div class="content-main">
+                <div class="qna-comment">
+                    <em class="qna-comment-count">total:<strong>{{size}}</strong></em>
                     <div class="qna-comment-slipp">
-                      <ul class="qna-comment-slipp-articles">
-                          {{#questions}}
+                        <ul class="qna-comment-slipp-articles">
+                            {{#questions}}
                             <li class="article" id="answer-1405">
-                                <a href ="/questions/{{id}}">
+                                <a href="/questions/{{id}}">
                                     <div class="article-doc comment-doc qna-doc-content">
                                         <p>{{title}}</p>
                                     </div>
@@ -23,7 +28,8 @@
                                                 <a class="link-modify-article" href="">수정</a>
                                             </li>
                                             <li>
-                                                <form class="delete-answer-form" action="/questions/413/answers/1405" method="POST">
+                                                <form class="delete-answer-form" action="/questions/413/answers/1405"
+                                                      method="POST">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <button type="submit" class="delete-answer-button">삭제</button>
                                                 </form>
@@ -32,43 +38,13 @@
                                     </div>
                                 </a>
                             </li>
-                          {{/questions}}
-                      </ul>
-                  </div>
-              </div>
-          </div>
+                            {{/questions}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<!-- <script type="text/template" id="answerTemplate">
-	<article class="article">
-		<div class="article-header">
-			<div class="article-header-thumb">
-				<img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
-			</div>
-			<div class="article-header-text">
-				<a href="#" class="article-author-name">{0}</a>
-				<div class="article-header-time">{1}</div>
-			</div>
-		</div>
-		<div class="article-doc comment-doc">
-			{2}
-		</div>
-		<div class="article-util">
-		<ul class="article-util-list">
-			<li>
-				<a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
-			</li>
-			<li>
-				<form class="delete-answer-form" action="/api/questions/{3}/answers/{4}" method="POST">
-					<input type="hidden" name="_method" value="DELETE">
-                     <button type="submit" class="delete-answer-button">삭제</button>
-				</form>
-			</li>
-		</ul>
-		</div>
-	</article>
-</script> -->
 
 {{>layout/footer}}
