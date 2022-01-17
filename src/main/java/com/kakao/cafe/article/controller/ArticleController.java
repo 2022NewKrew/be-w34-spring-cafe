@@ -5,6 +5,7 @@ import com.kakao.cafe.article.dto.ArticleCreateDTO;
 import com.kakao.cafe.article.dto.ArticleListDTO;
 import com.kakao.cafe.article.dto.ArticleViewDTO;
 import com.kakao.cafe.article.service.ArticleService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,6 @@ import java.util.stream.Collectors;
 @Controller
 public class ArticleController {
     ArticleService articleService;
-    Map<String, String> loginList;
 
     public ArticleController(ArticleService articleService){
         this.articleService = articleService;
@@ -34,7 +34,10 @@ public class ArticleController {
     //index.html에 노출되는 질문리스트
     @GetMapping(value = {"/", "/index"})
     public String showArticleList(Model model, HttpSession session, HttpServletRequest request) {
-        System.out.println(getLoggedInUserId(session, request));
+        String loggedInUserId = getLoggedInUserId(session, request);
+        if(loggedInUserId != null){
+            model.addAttribute("loggedInUser", loggedInUserId);
+        }
 
         List<Article> articles = articleService.getAllArticles();
         List<ArticleListDTO> articleListDTO = articles.stream().map(ArticleListDTO::new).collect(Collectors.toList());
@@ -58,10 +61,11 @@ public class ArticleController {
 
     //Cookie value에 기반하여 로그인된 아이디를 가져옴
     public String getLoggedInUserId(HttpSession session, HttpServletRequest request){
-        if(loginList == null) {
-            loginList = (Map<String, String>) session.getAttribute("loginList");
+        if(session == null || request == null || request.getCookies() == null){
+            return null;
         }
 
+        Map<String, String> loginList = (Map<String, String>) session.getAttribute("loginList");
         String userCookieValue = request.getCookies()[0].getValue();
 
         if(loginList == null){
