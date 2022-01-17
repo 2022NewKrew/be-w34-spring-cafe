@@ -39,6 +39,25 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByEmail(String email) {
+        final String sql = "select * from users where email = ?";
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(
+                sql,
+                (rs, rowNum) -> User.builder()
+                    .id(rs.getLong("user_id"))
+                    .email(rs.getString("email"))
+                    .password(rs.getString("password"))
+                    .nickname(rs.getString("nickname"))
+                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                    .build(),
+                email));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public boolean existsByEmail(String email) {
         final String sql = "select exists "
             + "(select user_id from users where email=? limit 1)"

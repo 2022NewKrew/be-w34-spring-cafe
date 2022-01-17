@@ -5,7 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class UserSignupRequest {
+public class SignupRequest {
 
     @NotBlank
     @Email(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")
@@ -19,7 +19,7 @@ public class UserSignupRequest {
     @Size(min = 2, max = 10)
     private final String nickname;
 
-    public UserSignupRequest(String email, String password, String nickname) {
+    public SignupRequest(String email, String password, String nickname) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
