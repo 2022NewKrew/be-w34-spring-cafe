@@ -42,7 +42,7 @@ public class UserH2DAO implements UserDAOInterface {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new User(
-                    rs.getInt("ID"),
+                    rs.getLong("ID"),
                     rs.getString("USERID"),
                     rs.getString("PASSWORD"),
                     rs.getString("NAME"),
