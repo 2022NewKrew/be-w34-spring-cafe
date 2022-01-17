@@ -16,7 +16,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserInfo getUser(String userId) {
+    public User getUser(String userId) { return userRepository.search(userId); }
+
+    public UserInfo getUserInfo(String userId) {
         return new UserInfo(userRepository.search(userId));
     }
 
@@ -36,14 +38,5 @@ public class UserService {
 
     public void modifyUser(String userId, UserModifyCommand umc) {
         userRepository.modify(userId, umc);
-    }
-
-    public User tryLogin(String userId, String password) {
-        User target = userRepository.search(userId);
-
-        if (target != null) {
-            return target.getPassword().equals(password) ? target : null;
-        }
-        return null;
     }
 }

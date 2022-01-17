@@ -10,7 +10,6 @@ import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -48,7 +47,7 @@ public class UserController {
             return "/error";
         }
 
-        UserInfo userInfo = userService.getUser(userId);
+        UserInfo userInfo = userService.getUserInfo(userId);
         model.addAttribute("user", userInfo);
         return "user/updateForm";
     }
@@ -69,17 +68,17 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession session) {
-        User user = userService.tryLogin(userId,password);
-        if (user != null) {
-            session.setAttribute("sessionedUser", user);
-            return "redirect:/";
+        User user = userService.getUser(userId);
+        if (user == null || !user.getPassword().equals(password)) {
+            return "user/login_failed";
         }
-        return "user/login_failed";
+        session.setAttribute("sessionedUser", user);
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.removeAttribute("sessionedUser");
+        session.invalidate();
         return "redirect:/";
     }
 }
