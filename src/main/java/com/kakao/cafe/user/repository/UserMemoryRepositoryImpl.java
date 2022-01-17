@@ -1,10 +1,12 @@
 package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
@@ -12,12 +14,20 @@ public class UserMemoryRepositoryImpl implements UserRepository {
     private final static AtomicLong idSequence = new AtomicLong();
     private final static HashMap<Long, User> userDB = new HashMap<>();
 
-    public User find(Long id) {
-        return userDB.get(id);
+    @Override
+    public Optional<User> find(Long id) {
+        return Optional.ofNullable(userDB.get(id));
     }
 
+    @Override
     public ArrayList<User> findAll() {
         return new ArrayList<>(userDB.values());
+    }
+
+    @Override
+    public Optional<User> find(String stringId) {
+        Long dbId = userDB.keySet().stream().filter(key->stringId.equals(userDB.get(key).getStringId())).findAny().orElseGet(()->-1L);
+        return Optional.ofNullable(userDB.get(dbId));
     }
 
     public Long persist(UserCreateRequestDTO dto) {
@@ -33,17 +43,10 @@ public class UserMemoryRepositoryImpl implements UserRepository {
         return idSequence.getAndIncrement();
     }
 
-    public Long findDBIdById(String stringId) {
-        return userDB.keySet().stream().filter(key -> stringId.equals(userDB.get(key).getStringId())).findAny().orElseGet(() -> -1L);
-    }
+//    public String findStringIdByDBId(Long id) {
+//        return userDB.get(id).getStringId();
+//    }
 
-    public String findStringIdByDBId(Long id) {
-        return userDB.get(id).getStringId();
-    }
-
-    public String findPasswordByDBId(Long userId) {
-        return userDB.get(userId).getPassword();
-    }
 
     public void updateUserInfo(UserUpdateRequestDTO dto) {
         User oldUserData = userDB.get(dto.getUserId());

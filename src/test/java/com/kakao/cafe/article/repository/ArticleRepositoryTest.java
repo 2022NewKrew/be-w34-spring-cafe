@@ -25,7 +25,7 @@ class ArticleRepositoryTest {
 
         // when
         Long id1 = articleRepository.persist(dto);
-        Article article = articleRepository.find(id1);
+        Article article = articleRepository.find(id1).get();
 
         // then
         assertThat(article.getTitle()).isEqualTo(title);

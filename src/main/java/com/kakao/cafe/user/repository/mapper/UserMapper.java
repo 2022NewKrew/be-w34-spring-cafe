@@ -12,19 +12,12 @@ public class UserMapper implements RowMapper<User> {
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
         User user = User.builder()
                 .id(rs.getLong("id"))
-                .stringId(rs.getString("user_string_id"))
+                .stringId(rs.getString("string_id"))
                 .email(rs.getString("email"))
                 .nickName(rs.getString("name"))
                 .password(rs.getString("password"))
                 .signUpDate(rs.getTimestamp("sign_up_date").toLocalDateTime())
                 .build();
-
-//        User user = new User(rs.getLong("id"),
-//                rs.getString("user_string_id"),
-//                rs.getString("email"),
-//                rs.getString("name"),
-//                rs.getString("password"),
-//                rs.getTimestamp("sign_up_date").toLocalDateTime());
 
         return user;
     }

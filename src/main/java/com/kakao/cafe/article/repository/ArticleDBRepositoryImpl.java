@@ -1,7 +1,9 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.domain.ArticleRepository;
 import com.kakao.cafe.article.repository.mapper.ArticleMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,20 +16,19 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Primary
+@RequiredArgsConstructor
 public class ArticleDBRepositoryImpl implements ArticleRepository {
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    public ArticleDBRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    public Article find(Long id) {
+    @Override
+    public Optional<Article> find(Long id) {
         String SQL = "SELECT * FROM ARTICLE WHERE ID = ?";
-        List<Article> articles = jdbcTemplate.query(SQL, new ArticleMapper(), id);
-        return articles.get(0);
+        Article article = jdbcTemplate.queryForObject(SQL, new ArticleMapper(), id);
+        return Optional.ofNullable(article);
     }
 
     public ArrayList<Article> findAll() {

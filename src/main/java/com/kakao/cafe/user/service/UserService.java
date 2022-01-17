@@ -2,7 +2,7 @@ package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.repository.UserCreateRequestDTO;
-import com.kakao.cafe.user.repository.UserRepository;
+import com.kakao.cafe.user.domain.UserRepository;
 import com.kakao.cafe.user.repository.UserUpdateRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,12 +30,14 @@ public class UserService {
         createUser("sanjigi", "sanjigi@slipp.net", "산지기", "test");
         log.info("Add test user data: 에이든, 자바지기, 산지기");
     }
+
     public Long createUser(String stringId, String email, String nickName, String passWord) {
         return userRepository.persist(new UserCreateRequestDTO(stringId, email, nickName, passWord, LocalDateTime.now()));
     }
 
     public GetSignUpResultResponseDTO getSignUpResultViewData(Long userId) {
-        User user = userRepository.find(userId);
+        Optional<User> op = userRepository.find(userId);
+        User user = op.orElseThrow(()->new IllegalArgumentException("존재하지 않는 사용자입니다."));
         return new GetSignUpResultResponseDTO(user.getStringId(), user.getEmail(), user.getNickName());
     }
 
@@ -66,12 +69,9 @@ public class UserService {
     }
 
     public UserProfileResponseDTO getUserProfile(Long userId) {
-        User user = userRepository.find(userId);
+        Optional<User> op = userRepository.find(userId);
+        User user = op.orElseThrow(()->new IllegalArgumentException("존재하지 않는 사용자입니다."));
         return new UserProfileResponseDTO(user.getNickName(), user.getEmail(), user.getStringId());
-    }
-
-    public String findUserNickNameById(Long userId) {
-        return userRepository.find(userId).getNickName();
     }
 
     public UserProfileResponseDTO getUserProfile(String stringId) {
@@ -79,7 +79,8 @@ public class UserService {
     }
 
     private Long getUserDBId(String stringId) {
-        return userRepository.findDBIdById(stringId);
+        Optional<User> user = userRepository.find(stringId);
+        return user.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 입니다.")).getId();
     }
 
     public void updateUserInfo(Long userId, String oldPassword, String newPassword, String name, String email) {
@@ -97,7 +98,9 @@ public class UserService {
 
 
     public boolean validateUserPassWord(Long userId, String password) {
-        if (password.equals(userRepository.findPasswordByDBId(userId))) {
+        Optional<User> op = userRepository.find(userId);
+        User user = op.orElseThrow(()->new IllegalArgumentException("존재하지 않는 사용자 입니다."));
+        if (password.equals(user.getPassword())){
             return true;
         }
         return false;

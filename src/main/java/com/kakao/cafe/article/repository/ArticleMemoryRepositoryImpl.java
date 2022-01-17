@@ -1,11 +1,13 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.domain.ArticleRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
@@ -14,8 +16,9 @@ public class ArticleMemoryRepositoryImpl implements ArticleRepository {
 
     private final static HashMap<Long, Article> articleDB = new HashMap<>();
 
-    public Article find(Long id) {
-        return articleDB.get(id);
+    @Override
+    public Optional<Article> find(Long id) {
+        return Optional.ofNullable(articleDB.get(id));
     }
 
     public ArrayList<Article> findAll() {

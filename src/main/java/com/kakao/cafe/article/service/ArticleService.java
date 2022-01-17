@@ -2,8 +2,8 @@ package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.repository.ArticleCreateRequestDTO;
-import com.kakao.cafe.article.repository.ArticleRepository;
-import com.kakao.cafe.user.repository.UserRepository;
+import com.kakao.cafe.article.domain.ArticleRepository;
+import com.kakao.cafe.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +40,7 @@ public class ArticleService {
         }
         articleList = stream.limit(endIndex - startIndex).collect(Collectors.toCollection(ArrayList::new));
         Collections.reverse(articleList);
-        ArrayList<String> authorList = articleList.stream().map(article->userRepository.findStringIdByDBId(article.getAuthorId())).collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<String> authorList = articleList.stream().map(article->userRepository.find(article.getAuthorId()).orElseThrow(()->new IllegalArgumentException("존재하지 않는 사용자 입니다.")).getStringId()).collect(Collectors.toCollection(ArrayList::new));
 
         return new AllArticlesResponseDTO(articleList, authorList);
     }
@@ -48,15 +48,15 @@ public class ArticleService {
 
     public ArticleReadResponseDTO getArticleReadViewDTO(Long id) {
         articleRepository.increaseHit(id);
-        Article article = articleRepository.find(id);
-        String authorStringId = userRepository.findStringIdByDBId(article.getAuthorId());
+        Article article = articleRepository.find(id).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 게시글 입니다."));
+        String authorStringId = userRepository.find(id).orElseThrow(()->new IllegalArgumentException("존재하지 않는 사용자입니다.")).getStringId();
         return new ArticleReadResponseDTO(article.getId(), article.getAuthorId(), article.getDate(), article.getHits(), article.getContents(), article.getTitle(), authorStringId);
     }
 
     public AllArticlesResponseDTO getAllArticleViewDTO(Long startIndex){
         ArrayList<Article> articleList = articleRepository.findAll().stream().skip(startIndex).collect(Collectors.toCollection(ArrayList::new));
         Collections.reverse(articleList);
-        ArrayList<String> authorList = articleList.stream().map(article->userRepository.findStringIdByDBId(article.getAuthorId())).collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<String> authorList = articleList.stream().map(article->userRepository.find(article.getAuthorId()).orElseThrow(()->new IllegalArgumentException("존재하지 않는 사용자입니다.")).getStringId()).collect(Collectors.toCollection(ArrayList::new));
         return new AllArticlesResponseDTO(articleList, authorList);
     }
 }
