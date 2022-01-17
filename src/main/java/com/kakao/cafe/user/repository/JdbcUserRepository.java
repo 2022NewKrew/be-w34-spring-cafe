@@ -8,19 +8,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
-@Repository
 public class JdbcUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private static final String INSERT_QUERY = "insert into users(userId, password, name, email) values(?, ?, ?, ?)";
+    private static final String SELECT_QUERY = "select * from users where userId=?";
+    private static final String SELECT_ALL_QUERY = "select * from users";
+    private static final String DELETE_ALL_QUERY = "delete from users where true";
 
     @Override
     public void save(User user) throws UserDuplicatedException {
         try {
             jdbcTemplate.update(
-                "insert into users(userId, password, name, email) values(?, ?, ?, ?)",
+                INSERT_QUERY,
                 user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
         } catch (DuplicateKeyException e) {
             throw new UserDuplicatedException();
@@ -29,7 +31,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        List<User> users = jdbcTemplate.query("select * from users where userId=?", mapper, userId);
+        List<User> users = jdbcTemplate.query(SELECT_QUERY, mapper, userId);
         if (users.size() == 0) {
             return Optional.empty();
         }
@@ -38,12 +40,12 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from users", mapper);
+        return jdbcTemplate.query(SELECT_ALL_QUERY, mapper);
     }
 
     @Override
     public void deleteAll() {
-        jdbcTemplate.update("delete from users where true");
+        jdbcTemplate.update(DELETE_ALL_QUERY);
     }
 
     static RowMapper<User> mapper = (rs, rowNum) ->

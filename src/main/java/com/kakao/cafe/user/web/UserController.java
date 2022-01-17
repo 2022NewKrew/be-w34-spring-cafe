@@ -3,14 +3,17 @@ package com.kakao.cafe.user.web;
 import com.kakao.cafe.exception.InvalidDtoException;
 import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.user.service.UserService;
+import com.kakao.cafe.user.web.dto.UserLoginDto;
 import com.kakao.cafe.user.web.dto.UserSaveDto;
 import com.kakao.cafe.user.web.dto.UserShowDto;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +48,22 @@ public class UserController {
         }
         userService.addUser(userSaveDto);
         return "redirect:/users";
+    }
+
+    @PostMapping("/login")
+    public String login(@Valid UserLoginDto userLoginDto, HttpSession httpSession) {
+        try {
+            httpSession.setAttribute("sessionedUser", userService.login(userLoginDto));
+        } catch (UserNotFoundException e) {
+            return "user/login_failed";
+        }
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        httpSession.invalidate();
+        return "redirect:/";
     }
 }
 

@@ -12,22 +12,25 @@ import org.springframework.stereotype.Repository;
 public class JdbcArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private static final String INSERT_QUERY = "insert into articles(writer, title, contents) values(?, ?, ?)";
+    private static final String SELECT_QUERY = "select * from articles where id=?";
+    private static final String SELECT_ALL_QUERY = "select * from articles";
 
     @Override
     public void save(Article article) {
-        jdbcTemplate.update("insert into articles(writer, title, contents) values(?, ?, ?)",
+        jdbcTemplate.update(INSERT_QUERY,
             article.getWriter(), article.getTitle(), article.getContents());
     }
 
     @Override
     public Article findById(Long id) {
-        return jdbcTemplate.query("select * from articles where id=?", mapper,
+        return jdbcTemplate.query(SELECT_QUERY, mapper,
             id).get(0);
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from articles", mapper);
+        return jdbcTemplate.query(SELECT_ALL_QUERY, mapper);
     }
 
     static RowMapper<Article> mapper = (rs, rowNum) ->

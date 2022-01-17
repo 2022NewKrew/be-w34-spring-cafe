@@ -1,0 +1,30 @@
+spring:
+  mustache:
+    suffix: .html
+    cache: false
+    expose-session-attributes: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+management:
+  health:
+    diskspace:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
+
