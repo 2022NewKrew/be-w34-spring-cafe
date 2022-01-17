@@ -1,0 +1,49 @@
+{{>layout/header}}
+<div class="background">
+    {{>layout/mainNavbar}}
+
+    <div class="container" id="main">
+        <header class="post-header">
+            <p class="display-large">글쓰기</p>
+        </header>
+        <form class="submit-write" method="post" action="/articles">
+            <div class="text-box">
+                <div class="comment-writer-container">
+                    <p class="post-type">작성자</p>
+                </div>
+                <div class="form-group">
+                    <select class="form-writer-control" id="userId" name="userId" placeholder="작성자를 선택해주세요">
+                        {{#writeUsers.userResponses}}
+                        <option value="{{id}}">{{nickname}}</option>
+                        {{/writeUsers.userResponses}}
+                    </select>
+                </div>
+            </div>
+
+            <div class="text-box">
+                <div class="comment-writer-container">
+                    <p class="post-type">제목</p>
+                </div>
+                <div class="form-group">
+                    <input class="write-form-control" id="title" name="title" type="text" placeholder="제목을 입력하세요"/>
+                </div>
+            </div>
+
+            <div class="text-box">
+                <div class="comment-writer-container">
+                    <p class="post-type">내용</p>
+                </div>
+                <div class="form-group">
+                    <textarea class="write-form-control" style="padding-top: 20px" id="content" name="content"
+                              placeholder="내용을 입력하세요"></textarea>
+                </div>
+            </div>
+            <div class="both-container">
+                <input class="large-btn" type="button" onclick="location.href='/'" value="목록으로"/>
+                <input class="large-btn" type="submit" value="등록"/>
+
+            </div>
+        </form>
+    </div>
+</div>
+{{>layout/footer}}

@@ -8,7 +8,7 @@ public class UserResponse {
     private final String nickname;
     private final String createdDate;
 
-    public UserResponse(Long id, String email, String nickname, String createdDate) {
+    private UserResponse(Long id, String email, String nickname, String createdDate) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;

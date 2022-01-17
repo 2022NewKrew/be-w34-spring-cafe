@@ -4,6 +4,7 @@ import com.kakao.cafe.user.dto.request.SignUpRequest;
 import com.kakao.cafe.user.dto.response.UserResponse;
 import com.kakao.cafe.user.dto.response.UsersResponse;
 import com.kakao.cafe.user.service.UserService;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String signUpAccount(SignUpRequest signUpRequest) {
+    public String signUpAccount(@Valid SignUpRequest signUpRequest) {
         UserResponse userResponse = userService.save(signUpRequest);
         logger.info("회원 가입: {}", userResponse);
         return "redirect:users";

@@ -113,7 +113,7 @@ li {
     margin-left: 3%;
 }
 
-.post-content {
+.post-type {
     margin-top: 20px;
     margin-left: 3%;
     font-weight: bold;
@@ -146,7 +146,7 @@ li {
     margin: 20px;
 }
 
-.post-btn-container {
+.right-container {
     display: flex;
     justify-content: end;
 }
@@ -164,11 +164,11 @@ li {
     width: 40%;
 }
 
-.form-control {
+.write-form-control {
     border:none;
 }
 
-.form-control:focus {
+.write-form-control:focus {
     outline: none;
 }
 

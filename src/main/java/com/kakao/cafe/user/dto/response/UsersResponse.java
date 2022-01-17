@@ -6,20 +6,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UsersResponse {
-    private final List<UserResponse> users;
+    private final List<UserResponse> userResponses;
 
-    // Q. 저번에 알려주신 unmodifiableList를 사용하면 좋을까요?
-    public UsersResponse(List<UserResponse> users) {
-        this.users = new ArrayList<>(users);
+    private UsersResponse(List<UserResponse> userResponses) {
+        this.userResponses = new ArrayList<>(userResponses);
     }
 
     public static UsersResponse of(List<User> users) {
         return new UsersResponse(users.stream()
             .map(UserResponse::of)
             .collect(Collectors.toList()));
-    }
-
-    public List<UserResponse> getUsers() {
-        return users;
     }
 }

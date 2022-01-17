@@ -1,33 +1,33 @@
 package com.kakao.cafe.user.domain;
 
-import com.kakao.cafe.user.repository.UserRepository;
-import com.kakao.cafe.user.repository.UserRepositoryImpl;
 import java.time.LocalDateTime;
-import java.util.regex.Pattern;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class User {
-    private static final String EMAIL_PATTERN = "^(.+)@(\\S+)$";
-    private static final String INVALID_INPUT_EMAIL_MESSAGE = "올바르지 않은 이메일입니다.";
-
+    @NotNull
     private final Long id;
+
+    @NotBlank
+    @Email
     private final String email;
+
+    @NotBlank
     private final String nickname;
+
+    @NotBlank
     private final String password;
+
+    @NotNull
     private final LocalDateTime createdDate;
 
     public User(Long id, String email, String nickname, String password) {
-        validate(email);
         this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.createdDate = LocalDateTime.now();
-    }
-
-    private void validate(String email) {
-        if(!Pattern.matches(EMAIL_PATTERN,email)){
-            throw new IllegalArgumentException(INVALID_INPUT_EMAIL_MESSAGE);
-        }
     }
 
     public Long getId() {
