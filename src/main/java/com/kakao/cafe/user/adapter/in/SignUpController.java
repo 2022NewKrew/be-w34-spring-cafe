@@ -5,10 +5,12 @@ import com.kakao.cafe.user.application.port.in.SignUpUseCase;
 import com.kakao.cafe.user.domain.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Controller
 public class SignUpController {
 
     private final SignUpUseCase signUpUseCase;
@@ -18,7 +20,7 @@ public class SignUpController {
         this.signUpUseCase = signUpUseCase;
     }
 
-    @GetMapping("user/form")
+    @GetMapping("/user/form")
     public String routeSignUpForm() {
         return "user/form";
     }
