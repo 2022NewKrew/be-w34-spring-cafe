@@ -4,6 +4,8 @@ import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.UserException;
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 public class Password {
     private static final String format = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[#$@!%*?&])[A-Za-z0-9#$@!%*?&]{8,20}";
@@ -30,5 +32,18 @@ public class Password {
 
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Password password = (Password) object;
+        return Objects.equals(this.password, password.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(password);
     }
 }
