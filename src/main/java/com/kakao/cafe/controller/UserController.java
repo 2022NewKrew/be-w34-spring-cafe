@@ -1,12 +1,14 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.dto.request.UserLoginRequestDto;
+import com.kakao.cafe.controller.dto.request.UserSignUpRequestDto;
+import com.kakao.cafe.controller.dto.request.UserUpdateRequestDto;
 import com.kakao.cafe.controller.dto.response.UserProfileResponseDto;
 import com.kakao.cafe.controller.dto.response.UserQueryResponseDto;
-import com.kakao.cafe.controller.dto.request.UserSignUpRequestDto;
 import com.kakao.cafe.controller.dto.session.UserLoginSession;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.service.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -74,6 +76,19 @@ public class UserController {
         session.invalidate();
 
         return "redirect:/";
+    }
+
+    @GetMapping("/{userId}/updateForm")
+    public String getUpdateForm(@PathVariable String userId, Model model) {
+        User foundUser = userService.findUserByUserId(userId);
+        model.addAttribute("userId", foundUser.getUserId());
+        return "user/updateForm";
+    }
+
+    @PutMapping("/{userId}")
+    public String update(@PathVariable String userId, UserUpdateRequestDto userUpdateRequestDto) {
+        userService.update(new UserUpdateDto(userId, userUpdateRequestDto));
+        return "redirect:/users";
     }
 }
 

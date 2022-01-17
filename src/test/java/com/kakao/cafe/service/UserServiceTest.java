@@ -6,6 +6,7 @@ import com.kakao.cafe.controller.dto.request.UserUpdateRequestDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.repository.user.UserRepository;
+import com.kakao.cafe.service.dto.UserUpdateDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -114,13 +115,14 @@ class UserServiceTest {
     @DisplayName("회원 정보 수정")
     void testOfUpdate() {
         UserUpdateRequestDto userUpdateRequestDto = UserUpdateRequestDto.builder()
-                .userId("leaf")
                 .name("김남현")
                 .password("123")
                 .email("leaf,hyeon@kakaocorp.com")
                 .build();
+
+        UserUpdateDto userUpdateDto = new UserUpdateDto("leaf", userUpdateRequestDto);
         BDDMockito.given(userRepository.findByUserId("leaf")).willReturn(Optional.of(User.builder().build()));
-        userService.update(userUpdateRequestDto);
+        userService.update(userUpdateDto);
         BDDMockito.then(userRepository).should().update(BDDMockito.any());
     }
 }

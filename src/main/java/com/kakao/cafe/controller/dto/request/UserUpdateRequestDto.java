@@ -7,7 +7,6 @@ import lombok.Getter;
 @Builder
 public class UserUpdateRequestDto {
 
-    private final String userId;
     private final String name;
     private final String password;
     private final String email;
