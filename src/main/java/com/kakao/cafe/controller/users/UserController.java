@@ -4,7 +4,7 @@ import com.kakao.cafe.controller.users.dto.request.UserUpdateRequest;
 import com.kakao.cafe.controller.users.dto.request.UserSignUpRequest;
 import com.kakao.cafe.controller.users.mapper.UserViewMapper;
 import com.kakao.cafe.service.user.UserService;
-import com.kakao.cafe.service.user.dto.UserIdentification;
+import com.kakao.cafe.common.authentification.UserIdentification;
 import com.kakao.cafe.service.user.dto.UserInfo;
 import com.kakao.cafe.service.user.dto.UserSignUpForm;
 import com.kakao.cafe.service.user.dto.UserUpdateForm;
@@ -51,23 +51,27 @@ public class UserController {
     }
 
     @GetMapping("{userId}/form")
-    public String showUpdateForm(@PathVariable String userId, Model model) {
+    public String showUpdateForm(@PathVariable String userId, Model model, HttpSession httpSession) {
+        UserIdentification userIdentification = UserIdentification.getIdFromSession(httpSession);
+        validateUpdateUserId(userIdentification, userId);
         UserInfo userInfo = userService.getUserInfo(userId);
         model.addAttribute("user", userViewMapper.toUserUpdateFormResponse(userInfo));
         return "user/updateForm";
     }
 
     @PostMapping("{userId}/update")
-    public String updateUser(@PathVariable String userId, UserUpdateRequest userUpdateRequest) {
+    public String updateUser(@PathVariable String userId, UserUpdateRequest userUpdateRequest, HttpSession httpSession) {
+        UserIdentification userIdentification = UserIdentification.getIdFromSession(httpSession);
+        validateUpdateUserId(userIdentification, userId);
         UserUpdateForm userUpdateForm = userDtoMapper.toUserUpdateForm(userUpdateRequest);
         userService.updateUser(userUpdateForm);
         return "redirect:/users";
     }
 
-    @PostMapping("login")
-    public String login(String userId, String password, HttpSession session) {
-        UserIdentification userIdentification = userService.login(userId, password);
-        session.setAttribute("sessionedUser", userIdentification);
-        return "redirect:/";
+    private void validateUpdateUserId(UserIdentification userIdentification, String userId) {
+        if(!userIdentification.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("자신의 개인 정보만 수정 가능합니다.");
+        }
     }
+
 }

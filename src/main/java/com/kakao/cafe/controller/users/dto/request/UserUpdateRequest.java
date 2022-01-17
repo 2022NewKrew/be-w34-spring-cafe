@@ -1,10 +1,8 @@
 package com.kakao.cafe.controller.users.dto.request;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-@Builder
 @Getter
 @ToString
 public class UserUpdateRequest {
@@ -12,4 +10,11 @@ public class UserUpdateRequest {
     private final String password;
     private final String name;
     private final String email;
+
+    public UserUpdateRequest(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
 }
