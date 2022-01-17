@@ -1,31 +1,26 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.UserRegistrationDto;
 import com.kakao.cafe.entity.User;
-import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {
 
     private MockMvc mockMvc;
-
-    @Autowired
-    private UserService userService;
 
     private List<User> users;
 

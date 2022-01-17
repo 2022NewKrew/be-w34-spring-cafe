@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -34,7 +35,7 @@ public class ArticleController {
 
 
     @PostMapping
-    public String article(ArticleRegistrationDto articleDto) {
+    public String article(@Valid ArticleRegistrationDto articleDto) {
         articleService.write(articleDto);
         return "redirect:/articles";
     }
