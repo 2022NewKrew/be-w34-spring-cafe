@@ -13,12 +13,13 @@ public class UserRepositoryList implements UserRepository {
     private int maxIndex = 0;
 
     @Override
-    public void save(User user){
+    public User save(User user){
         if(user.isNew()) {
             insert(user);
-            return;
+            return user;
         }
         update(user);
+        return user;
     }
 
     @Override

@@ -18,21 +18,23 @@ public class UserService {
     @Qualifier("UserRepositoryJdbc")
     private UserRepository userRepository;
 
-    public void save(UserSaveDto userSaveDto){
+    public User save(UserSaveDto userSaveDto){
         if (userRepository.findByStringId(userSaveDto.getStringId()) == null){
-            userRepository.save(UserMapper.INSTANCE.toEntityFromSaveDto(userSaveDto));
+            return userRepository.save(UserMapper.INSTANCE.toEntityFromSaveDto(userSaveDto));
         }
+        throw new IllegalArgumentException("입력된 ID가 이미 존재합니다.");
     }
 
-    public void update(int id, UserUpdateDto userUpdateDto){
+    public User update(int id, UserUpdateDto userUpdateDto){
         User user = userRepository.findById(id);
         if (userUpdateDto.getPrevPassword().equals(user.getPassword())){
             User userFromUpdateDto = UserMapper.INSTANCE.toEntityFromUpdateDto(userUpdateDto);
             user.changePassword(userFromUpdateDto.getPassword());
             user.changeName(userFromUpdateDto.getName());
             user.changeEmail(userFromUpdateDto.getEmail());
-            userRepository.save(user);
+            return userRepository.save(user);
         }
+        throw new IllegalArgumentException("기존 비밀번호와 입력된 비밀번호가 불일치 합니다.");
     }
 
     public List<UserResponseDto> findAll(){

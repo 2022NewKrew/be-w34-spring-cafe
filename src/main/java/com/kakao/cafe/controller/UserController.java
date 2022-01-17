@@ -28,7 +28,7 @@ public class UserController {
         if (user.getId() != id){
             throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 사용자 정보가 다릅니다.");
         }
-        userService.update(id, userUpdateDto);
+        session.setAttribute("sessionedUser", userService.update(id, userUpdateDto));
         return "redirect:/users";
     }
 
@@ -58,5 +58,11 @@ public class UserController {
             return "redirect:/";
         }
         return "/user/login_failed";
+    }
+
+    @GetMapping("/users/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 }
