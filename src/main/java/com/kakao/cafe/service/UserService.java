@@ -25,6 +25,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    // NOTE: thread-safe하지 않아 보임 -> @Transactional을 여기 붙이면 되나?
     public UserDto create(SignUpDto signUp) {
         SignUp entity = signUp.toEntity();
         userRepository.getByUserId(entity.getUserId())
