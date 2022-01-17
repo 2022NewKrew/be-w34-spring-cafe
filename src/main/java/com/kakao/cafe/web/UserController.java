@@ -4,7 +4,10 @@ import com.kakao.cafe.dto.CreateUserDto;
 import com.kakao.cafe.dto.LoginUserDto;
 import com.kakao.cafe.dto.ShowUserDto;
 import com.kakao.cafe.service.LoginService;
+import com.kakao.cafe.service.LogoutService;
 import com.kakao.cafe.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,12 +25,15 @@ public class UserController {
 
     private final UserService userService;
     private final LoginService loginService;
+    private final LogoutService logoutService;
+    Logger logger = LoggerFactory.getLogger(UserController.class);
 
 
     @Autowired
-    public UserController(UserService userService, LoginService loginService) {
+    public UserController(UserService userService, LoginService loginService, LogoutService logoutService) {
         this.userService = userService;
         this.loginService = loginService;
+        this.logoutService = logoutService;
     }
 
 
@@ -74,7 +80,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String userLogout(HttpSession httpSession) {
-        httpSession.removeAttribute("sessionedUser");
+        logoutService.logout(httpSession);
         return "redirect:/";
     }
 }
