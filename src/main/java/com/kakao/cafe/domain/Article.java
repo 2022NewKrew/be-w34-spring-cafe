@@ -55,13 +55,13 @@ public class Article {
     }
 
     public String writeTimeToStr() {
-        DateTimeFormatter formatType = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
+        DateTimeFormatter formatType = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm");
         return writeTime.format(formatType);
     }
 
     public String spanTimeToStr() {
         DateTimeFormatter formatType = DateTimeFormatter.ofPattern("dd");
-        Period span = Period.between(LocalDate.now(), LocalDate.from(writeTime));
+        Period span = Period.between(LocalDate.from(writeTime), LocalDate.now());
         return String.valueOf(span.getDays());
     }
 }
