@@ -7,7 +7,7 @@ import com.kakao.cafe.util.Pageable;
 import java.util.Optional;
 
 public interface ArticleRepository {
-    public Long save(Article entity);
+    public void save(Article entity);
 
     public Optional<Article> findById(Long articleId);
 

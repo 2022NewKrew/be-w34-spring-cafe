@@ -24,9 +24,9 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
 
     @Override
-    public Long register(ArticleDto dto) {
+    public void register(ArticleDto dto) {
         Article entity = dtoToEntity(dto);
-        return articleRepository.save(entity);
+        articleRepository.save(entity);
     }
 
     @Override

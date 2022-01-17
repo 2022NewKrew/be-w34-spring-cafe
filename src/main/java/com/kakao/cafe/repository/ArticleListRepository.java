@@ -20,9 +20,8 @@ public class ArticleListRepository implements ArticleRepository {
     }
 
     @Override
-    public Long save(Article entity) {
+    public void save(Article entity) {
         articleList.add(0, entity);
-        return articleId++;
     }
 
     @Override

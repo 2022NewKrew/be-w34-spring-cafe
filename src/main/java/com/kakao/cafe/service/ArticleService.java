@@ -7,7 +7,7 @@ import com.kakao.cafe.entity.Article;
 import com.kakao.cafe.entity.User;
 
 public interface ArticleService {
-    Long register(ArticleDto dto);
+    void register(ArticleDto dto);
 
     ArticleDto read(Long articleId);
 
