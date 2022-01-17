@@ -17,7 +17,6 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }

@@ -18,7 +18,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -51,7 +50,6 @@ public class UserController {
     }
     @PutMapping("/users/{id}/update")
     public String updateUser(@PathVariable("id") Long id, UserDto userDto) {
-        System.out.println("asdsadasdas");
         userService.updateUserInfo(id,userDto);
 
         return "redirect:/users";
