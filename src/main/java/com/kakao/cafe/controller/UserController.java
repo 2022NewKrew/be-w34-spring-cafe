@@ -71,6 +71,11 @@ public class UserController {
     public String updateForm(@PathVariable String userId, Model model, HttpSession session){
         UserProfileDto user;
 
+        if (!userService.checkSessionUser(userId, session)) {
+            logger.error("/users/{userId}/update, Invalid session.");
+            return "redirect:/";
+        }
+
         try {
             user = userService.findById(userId);
             model.addAttribute("user", user);
@@ -79,54 +84,16 @@ public class UserController {
             return "redirect:/";
         }
 
-        return "updateForm";
-    }
-
-    // updateForm.html에서 수정
-    @PostMapping("/update")
-    public String update(UserDto userDto, HttpSession session) {
-        UserProfileDto newProfile = new UserProfileDto(userDto.getUserId(), userDto.getEmail(), userDto.getName());
-        Object value = session.getAttribute("sessionedUser");
-
-        if (value == null) {
-            logger.info("/users/update, not logged in.");
-            return "redirect:/users/list";
-        }
-
-        UserProfileDto loggedInUser = (UserProfileDto) value;
-        if (!loggedInUser.getUserId().equals(userDto.getUserId())) {
-            logger.info("/users/update, User(id = {}) failed to update profile. attempts to update another user's profile.", loggedInUser.getUserId());
-            return "redirect:/users/list";
-        }
-
-        try {
-            userService.updateUserProfile(newProfile, userDto.getPassword());
-        } catch (NoSuchElementException e) {
-            logger.error("/users/update, User(id = {}) failed to update Profile. User does not exist.", userDto.getUserId(), e);
-            return "redirect:/";
-        } catch (IllegalArgumentException e) {
-            logger.error("/users/update, User(id = {}) failed to update Profile. Incorrect password.", userDto.getUserId(), e);
-        }
-        logger.info("/users/update, User(id = {}) updated profile.", userDto.getUserId());
-
-        return "redirect:/users/list";
+        return "/user/updateForm";
     }
 
     // 회원정보 수정하고, 수정 버튼을 눌렀을 때
     @PostMapping("/{userId}/update")
-    public String updateLoggedInUser(@PathVariable String userId, UserUpdateDto userUpdateDto, HttpSession session) {
+    public String update(@PathVariable String userId, UserUpdateDto userUpdateDto, HttpSession session) {
         UserProfileDto newProfile = new UserProfileDto(userId, userUpdateDto.getEmail(), userUpdateDto.getName());
-        Object value = session.getAttribute("sessionedUser");
 
-        if (value == null) {
-            logger.info("/users/update, not logged in.");
-            return "redirect:/users/list";
-        }
-
-        UserProfileDto user = (UserProfileDto) value;
-
-        if (userService.checkSessionUser(userId, session)) { // user.getUserId() : not null
-            logger.info("/users/{userId}/update, User(id = {}) failed to update profile. attempts to update another user's profile.", userId);
+        if (!userService.checkSessionUser(userId, session)) {
+            logger.error("/users/{userId}/update, User(id = {}) failed to update profile. Invalid session.", userId);
             return "redirect:/users/list";
         }
 
@@ -146,6 +113,7 @@ public class UserController {
     public String login(String userId, String password, HttpSession session) {
         try {
             session.setAttribute("sessionedUser", userService.checkPassword(userId, password));
+            logger.info("/users/login, User(id = {}) login.", userId);
         } catch (IllegalArgumentException e) {
             logger.error("/users/login, User(id = {}) failed to login. Incorrect password.", userId, e);
             return "/user/login_failed";
@@ -153,11 +121,6 @@ public class UserController {
             logger.error("/users/login, User(id = {}) failed to login. User does not exist.", userId, e);
             return "/user/login_failed";
         }
-        logger.info("/users/login, User(id = {}) login.", userId);
-
-
-        //session.invalidate();
-        //ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그아웃");
 
         return "redirect:/";
     }

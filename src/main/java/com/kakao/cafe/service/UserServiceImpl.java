@@ -80,6 +80,6 @@ public class UserServiceImpl implements UserService {
 
         UserProfileDto user = (UserProfileDto) value;
 
-        return user.getUserId().equals(userId);
+        return user.getUserId().equals(userId);  // user.getUserId() != null
     }
 }
