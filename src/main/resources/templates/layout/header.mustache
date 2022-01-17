@@ -19,14 +19,14 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse1">
             <div class="nav navbar-nav navbar-right" style="margin-top: 20px!important">
-                <a style="margin-right: 15px; color: black" href="/members">멤버 리스트</a>
+                <a style="text-decoration: none; margin-right: 24px; color: black" href="/members">멤버 리스트</a>
                 {{^sessionedUser}}
-                <a style="margin-right: 15px; color: black" href="/member/login" role="button">로그인</a>
-                <a style="margin-right: 15px; color: black" href="/member/form" role="button">회원가입</a>
+                <a class="post-button alt-color" style="text-decoration: none; padding: 8px 16px 8px 16px; margin-right: 8px; color: black" href="/member/login" role="button">로그인</a>
+                <a class="post-button alt-color" style="text-decoration: none; padding: 8px 16px 8px 16px; margin-right: 8px; color: black" href="/member/form" role="button">회원가입</a>
                 {{/sessionedUser}}
                 {{#sessionedUser}}
-                    <a style="margin-right: 15px; color: black" href="#" role="button">개인정보수정</a>
-                    <a style="margin-right: 15px; color: black" href="/member/logout" role="button">로그아웃</a>
+                    <a class="post-button alt-color" style="text-decoration: none; padding: 8px 16px 8px 16px; margin-right: 15px; color: black" href="#" role="button">개인정보수정</a>
+                    <a class="post-button alt-color" style="text-decoration: none; padding: 8px 16px 8px 16px; margin-right: 15px; color: black" href="/member/logout" role="button">로그아웃</a>
                 {{/sessionedUser}}
             </div>
         </div>
