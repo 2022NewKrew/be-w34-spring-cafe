@@ -6,9 +6,11 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,23 +18,30 @@ import java.util.Optional;
 @Repository
 public class JdbcUserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final SimpleJdbcInsert simpleJdbcInsert;
 
     @Autowired
     public JdbcUserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("USER")
-                .usingGeneratedKeyColumns("ID");
     }
 
     @Override
     public long save(User target) {
-        SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("USER_ID", target.getUserId())
-                .addValue("NAME", target.getName())
-                .addValue("EMAIL", target.getEmail());
-        return (long) simpleJdbcInsert.executeAndReturnKey(parameterSource);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String query = "INSERT INTO `USER`(USER_ID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(connection -> {
+                    PreparedStatement ps = connection.prepareStatement(query);
+                    ps.setString(1, target.getUserId());
+                    ps.setString(2, target.getHashedPassword());
+                    ps.setString(3, target.getName());
+                    ps.setString(4, target.getEmail());
+                    return ps;
+                },
+                keyHolder
+        );
+        if (keyHolder.getKey() == null) {
+            throw new IllegalStateException("Must not approach here.");
+        }
+        return (long) keyHolder.getKey();
     }
 
     @Override
