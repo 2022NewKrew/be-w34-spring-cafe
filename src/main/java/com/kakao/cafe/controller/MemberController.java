@@ -40,7 +40,6 @@ public class MemberController {
 
     @PostMapping("/users/create")
     public String joinMember(@Valid JoinMemberDTO memberDTO) {
-        log.info("{} is joined", memberDTO.getUserId());
         Member member = convertToEntity(memberDTO);
         memberService.joinMember(member);
         return "redirect:/users";
@@ -52,6 +51,14 @@ public class MemberController {
         log.info("{} information inquire", member.getUserId());
         model.addAttribute("member", member);
         return "user/user-profile";
+    }
+
+    @GetMapping("/users/edit/{memberId}")
+    public String editMemberInformation(@PathVariable("memberId") @NotNull Long memberId, Model model) {
+        Member member = memberService.inquireOneMember(memberId);
+        InquireMemberDto memberDto = mapper.map(member);
+        model.addAttribute("member", memberDto);
+        return "user/user-edit";
     }
 
     private Member convertToEntity(JoinMemberDTO memberDTO) {

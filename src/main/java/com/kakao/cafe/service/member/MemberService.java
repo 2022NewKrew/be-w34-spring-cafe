@@ -15,7 +15,7 @@ public interface MemberService {
 
     Member inquireOneMember(Long memberId);
 
-    Member editMemberInformation(Long memberId, Member member);
+    Member editMemberInformation(Member member);
 
     void deleteMember(Long memberId);
 

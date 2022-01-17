@@ -2,14 +2,19 @@ package com.kakao.cafe.service.member;
 
 import com.kakao.cafe.domain.member.Member;
 import com.kakao.cafe.domain.member.UserId;
+import com.kakao.cafe.exception.ErrorMessages;
 import com.kakao.cafe.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class MemberServiceV1 implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -21,18 +26,22 @@ public class MemberServiceV1 implements MemberService {
 
     @Override
     public Member joinMember(Member member) {
+        if (member.getMemberId() != null)
+            return editMemberInformation(member);
         return memberRepository.saveMember(member);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Member inquireOneMember(Long memberId) {
         return memberRepository.findOne(memberId);
     }
 
     @Override
-    public Member editMemberInformation(Long memberId, Member member) {
-        deleteMember(memberId);
-        return joinMember(member);
+    public Member editMemberInformation(Member member) {
+        if (!member.getPassword().equals(memberRepository.findOne(member.getMemberId()).getPassword()))
+            throw new IllegalArgumentException(ErrorMessages.WRONG_PASSWORD);
+        return memberRepository.updateByMemberId(member);
     }
 
     @Override
@@ -41,6 +50,7 @@ public class MemberServiceV1 implements MemberService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Member inquireMemberByUserId(UserId userId) {
         return memberRepository.findByUserId(userId);
     }
