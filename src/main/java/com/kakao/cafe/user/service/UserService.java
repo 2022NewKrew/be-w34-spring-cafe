@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.exception.InvalidPasswordException;
 import com.kakao.cafe.user.dto.response.UserResDto;
 import com.kakao.cafe.user.entity.UserEntity;
 import com.kakao.cafe.user.dto.request.UserFormReqDto;
@@ -50,4 +51,16 @@ public class UserService {
         userEntity.update(userFormReqDto.getPassword(), userFormReqDto.getName(), userFormReqDto.getEmail());
         userRepository.save(userEntity);
     }
+
+    public UserResDto login(String userId, String password) {
+        UserEntity userEntity = userRepository.findByUserId(userId)
+                .orElseThrow();
+
+        if (!userEntity.getPassword().equals(password)) {
+            throw new InvalidPasswordException("잘못된 패스워드를 입력했습니다.");
+        }
+
+        return userMapper.toUserResDto(userEntity);
+    }
+
 }

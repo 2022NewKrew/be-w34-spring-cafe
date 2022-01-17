@@ -1,7 +1,13 @@
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
+
 spring:
   mustache:
     cache: false
     suffix: .html
+    expose-session-attributes: true
   
   datasource:
     driver-class-name: org.h2.Driver
