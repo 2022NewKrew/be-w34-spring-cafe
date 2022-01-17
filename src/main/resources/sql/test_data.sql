@@ -1,8 +1,8 @@
 -- Admin
 -- id = 1
 -- type = 'ADMIN'
-INSERT INTO user (email, username, password, status)
-VALUES ('admin@example.com', 'admin', 'admin', 'ACTIVE');
+INSERT INTO user (email, username, password, status, display_name)
+VALUES ('admin@example.com', 'admin', 'admin', 'ACTIVE', 'admin');
 -- An example user
 -- type = 'NORMAL_USER'
 INSERT INTO user (email, username, password, status, display_name)

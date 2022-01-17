@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS user
     username         VARCHAR(255) NOT NULL UNIQUE,
     password         VARCHAR(255) NOT NULL,
     status           VARCHAR(255) NOT NULL,
-    display_name     VARCHAR(255),
+    display_name     VARCHAR(255) NOT NULL,
     created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 

@@ -4,6 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 public class UserCreationForm {
+
     @Email
     private final String email;
 
@@ -11,9 +12,11 @@ public class UserCreationForm {
     private final String username;
 
     @NotBlank
+    private final String displayName;
+
+    @NotBlank
     private final String password;
 
-    private final String displayName;
 
     public UserCreationForm(String email, String username, String password, String displayName) {
         this.email = email;

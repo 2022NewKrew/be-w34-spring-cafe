@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping("")
-    public String processCreationForm(@Validated @RequestParam UserCreationForm userCreationForm) {
+    public String processCreationForm(@Validated UserCreationForm userCreationForm) {
         userService.registerUser(userCreationForm);
         return "redirect:/users";
     }
