@@ -11,7 +11,6 @@ import java.util.Map;
 @ControllerAdvice
 public class ErrorHandler {
     private static final Map<String, String> fieldMap;
-    private static final String DEFAULT_ERROR_MESSAGE = "서버에서 에러가 발생했습니다. 잠시후 다시 시도해주세요.";
     private static final String FIELD_ERROR_MESSAGE_FORMAT = "%s의 내용이 올바르지 않습니다. (%s)";
 
     static {
@@ -31,7 +30,7 @@ public class ErrorHandler {
     @ExceptionHandler(Exception.class)
     public String handleException(Exception exception, Model model) {
         exception.printStackTrace();
-        model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, DEFAULT_ERROR_MESSAGE);
+        model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, Constants.DEFAULT_ERROR_MESSAGE);
 
         return Constants.ERROR_PAGE_NAME;
     }

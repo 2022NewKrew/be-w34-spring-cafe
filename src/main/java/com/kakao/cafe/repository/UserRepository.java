@@ -12,7 +12,7 @@ public interface UserRepository {
 
     List<UserDTO> getAllUser();
 
-    int updateUser(UserDTO user);
+    int updateUser(long id, UserDTO user);
 
     UserDTO getUserByLoginData(LoginDTO login);
 }

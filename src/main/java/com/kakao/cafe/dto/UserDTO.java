@@ -12,7 +12,6 @@ import javax.validation.constraints.Size;
 public class UserDTO {
     private final Long id;
 
-    @NotNull
     @Size(min = 1, max = 20)
     private final String userId;
 
