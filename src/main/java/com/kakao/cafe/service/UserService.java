@@ -2,12 +2,14 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserLoginRequest;
 import com.kakao.cafe.mapper.UserMapper;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.security.sasl.AuthenticationException;
 import java.util.List;
 
 @Transactional
@@ -41,13 +43,28 @@ public class UserService {
         updateUser.setId(id);
 
         User user = findUser(id);
-        validatePasswordMember(user.getPassword(), updateUser.getPassword());
+        validatePasswordSame(user.getPassword(), updateUser.getPassword());
         userRepository.updateUser(id, updateUser);
     }
 
-    private void validatePasswordMember(String userPassword, String updateUserPassword) {
+    private void validatePasswordSame(String userPassword, String updateUserPassword) {
         if(!userPassword.equals(updateUserPassword)){
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
+    }
+
+    public User validateUserLogin(UserLoginRequest userLoginRequest) throws AuthenticationException {
+        User user;
+        try
+        {
+            user = findUser(userLoginRequest.getUserId());
+        }
+        catch (IllegalArgumentException e)
+        {
+            throw new AuthenticationException();
+        }
+        if(!user.getPassword().equals(userLoginRequest.getPassword()))
+            throw new AuthenticationException();
+        return user;
     }
 }
