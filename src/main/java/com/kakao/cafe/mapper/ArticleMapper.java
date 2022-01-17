@@ -5,6 +5,8 @@ import com.kakao.cafe.entity.ArticleEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ArticleMapper {
     @Mapping(target = "writeDate", expression = "java(java.time.LocalDateTime.now())")
@@ -13,4 +15,7 @@ public interface ArticleMapper {
 
     @Mapping(source = "writeDate", target = "writeDate", dateFormat = "yyyy-MM-dd")
     ArticleDto toArticleDto(ArticleEntity articleEntity);
+
+    @Mapping(source = "writeDate", target = "writeDate", dateFormat = "yyyy-MM-dd")
+    List<ArticleDto> toArticleDtoList(List<ArticleEntity> articleEntityList);
 }

@@ -1,44 +1,41 @@
 package com.kakao.cafe.repository.user;
 
-import com.kakao.cafe.entity.ArticleEntity;
 import com.kakao.cafe.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import static com.kakao.cafe.constant.sql.UserSql.*;
 
 @Repository
 public class UserH2Repository implements UserRepository {
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert simpleJdbcInsert;
+    private final RowMapper<UserEntity> rowMapper;
 
     @Autowired
-    UserH2Repository(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    UserH2Repository(DataSource dataSource, UserEntityRowMapper rowMapper) {
+        jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName("users")
                 .usingGeneratedKeyColumns("id");
+        this.rowMapper = rowMapper;
     }
 
     @Override
     public <S extends UserEntity> S save(S entity) {
         try {
-            entity.putCreatedDate();
-            entity.putUpdatedDate();
-
-            SqlParameterSource params = new MapSqlParameterSource()
-                    .addValue("email", entity.getEmail())
-                    .addValue("nickname", entity.getNickName())
-                    .addValue("password", entity.getPassword())
-                    .addValue("registered_date", Timestamp.valueOf(entity.getRegisteredDate()))
-                    .addValue("created_date", Timestamp.valueOf(entity.getCreatedDate()))
-                    .addValue("updated_date", Timestamp.valueOf(entity.getUpdatedDate()));
+            entity.initDate();
+            SqlParameterSource params = new BeanPropertySqlParameterSource(entity);
 
             Long id = simpleJdbcInsert.executeAndReturnKey(params).longValue();
             entity.putUserId(id);
@@ -51,22 +48,14 @@ public class UserH2Repository implements UserRepository {
 
     @Override
     public UserEntity findOne(Long primaryKey) {
-        String sql = "select * from users where id = " + primaryKey;
+        Map<String, Long> params = Collections.singletonMap("primaryKey", primaryKey);
 
-        return jdbcTemplate.query(sql,
-                (rs, rowNum) -> new UserEntity(rs.getLong("id"), rs.getString("email"),
-                        rs.getString("nickname"), rs.getString("password"),
-                        rs.getTimestamp("registered_date").toLocalDateTime())).get(0);
+        return jdbcTemplate.queryForObject(FIND_BY_ID.getQuery(), params, rowMapper);
     }
 
     @Override
     public List<UserEntity> findAll() {
-        String sql = "select * from users";
-
-        return jdbcTemplate.query(sql,
-                (rs, rowNum) -> new UserEntity(rs.getLong("id"), rs.getString("email"),
-                        rs.getString("nickname"), rs.getString("password"),
-                        rs.getTimestamp("registered_date").toLocalDateTime()));
+        return jdbcTemplate.query(FIND_ALL.getQuery(), rowMapper);
     }
 
     @Override
@@ -86,6 +75,19 @@ public class UserH2Repository implements UserRepository {
 
     @Override
     public UserEntity findByNickName(String nickName) {
-        return null;
+        Map<String, String> params = Collections.singletonMap("nickName", nickName);
+
+        return jdbcTemplate.queryForObject(FIND_BY_NICKNAME.getQuery(), params, rowMapper);
+    }
+
+    @Override
+    public UserEntity findByEmail(String email) {
+        Map<String, String> params = Collections.singletonMap("email", email);
+
+        try {
+            return jdbcTemplate.queryForObject(FIND_BY_EMAIL.getQuery(), params, rowMapper);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }

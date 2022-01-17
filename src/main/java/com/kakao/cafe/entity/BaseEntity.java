@@ -9,11 +9,16 @@ public class BaseEntity {
     protected LocalDateTime createdDate;
     protected LocalDateTime updatedDate;
 
-    public void putCreatedDate() {
+    private void putCreatedDate() {
         this.createdDate = LocalDateTime.now();
     }
 
     public void putUpdatedDate() {
         this.updatedDate = LocalDateTime.now();
+    }
+
+    public void initDate() {
+        putCreatedDate();
+        putUpdatedDate();
     }
 }

@@ -16,6 +16,7 @@ public class ArticleEntity extends BaseEntity{
     private String writer;
     private LocalDateTime writeDate;
     private int views;
+    private Long userId;
 
     public void putArticleId(Long id) {
         this.id = id;

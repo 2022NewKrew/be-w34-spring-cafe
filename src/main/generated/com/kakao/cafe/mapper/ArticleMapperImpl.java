@@ -5,12 +5,14 @@ import com.kakao.cafe.dto.ArticleDto.ArticleDtoBuilder;
 import com.kakao.cafe.entity.ArticleEntity;
 import com.kakao.cafe.entity.ArticleEntity.ArticleEntityBuilder;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-01-16T22:09:45+0900",
+    date = "2022-01-17T18:18:53+0900",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 11.0.11 (AdoptOpenJDK)"
 )
 @Component
@@ -53,5 +55,19 @@ public class ArticleMapperImpl implements ArticleMapper {
         articleDto.views( articleEntity.getViews() );
 
         return articleDto.build();
+    }
+
+    @Override
+    public List<ArticleDto> toArticleDtoList(List<ArticleEntity> articleEntityList) {
+        if ( articleEntityList == null ) {
+            return null;
+        }
+
+        List<ArticleDto> list = new ArrayList<ArticleDto>( articleEntityList.size() );
+        for ( ArticleEntity articleEntity : articleEntityList ) {
+            list.add( toArticleDto( articleEntity ) );
+        }
+
+        return list;
     }
 }

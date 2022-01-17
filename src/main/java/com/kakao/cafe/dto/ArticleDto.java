@@ -17,4 +17,5 @@ public class ArticleDto {
     private String writer;
     private String writeDate;
     private int views;
+    private Long userId;
 }

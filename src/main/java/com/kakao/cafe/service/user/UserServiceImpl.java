@@ -2,13 +2,14 @@ package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.entity.UserEntity;
+import com.kakao.cafe.exception.user.IncorrectPasswordException;
+import com.kakao.cafe.exception.user.LoginFailedException;
 import com.kakao.cafe.mapper.UserMapper;
 import com.kakao.cafe.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,16 +27,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void login(UserDto userDto) {
+    public UserDto login(UserDto userDto) throws Exception {
+        String email = userDto.getEmail();
+        String password = userDto.getPassword();
 
+        try {
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (password.equals(userEntity.getPassword())) {
+                return userMapper.toUserDto(userEntity);
+            }
+
+            throw new IncorrectPasswordException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+        } catch (IncorrectPasswordException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new LoginFailedException("로그인에 실패하였습니다. 다시 시도해주세요.");
+        }
     }
 
     @Override
     public List<UserDto> allUsers() {
         List<UserEntity> userEntities = userRepository.findAll();
 
-        return userEntities.stream()
-                .map(userMapper::toUserDto)
-                .collect(Collectors.toList());
+        return userMapper.toUserDtoList(userEntities);
     }
 }
