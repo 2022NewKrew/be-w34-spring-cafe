@@ -1,4 +1,2 @@
 INSERT INTO USERLIST
-VALUES (1, 'JAKE', '1234', 'JAKE', 'JAKE@KAKAO.COM');
-INSERT INTO USERLIST
-VALUES (2, 'jake', '1234', 'jake', 'jake@naver.com');
+VALUES (1, 'jake0208', '1234', 'jake', 'jake@kakao.com');
