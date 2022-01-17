@@ -23,12 +23,12 @@ public class ArticleJdbcRepository implements ArticleRepository{
     }
 
     @Override
-    public void addArticle(ArticleCreateDTO articleCreateDTO) {
+    public void addArticle(Article article) {
         String sql = "INSERT INTO articles(name,title,contents,date) VALUES (?,?,?,?)";
         jdbcTemplate.update(sql,
-                articleCreateDTO.getName(),
-                articleCreateDTO.getTitle(),
-                articleCreateDTO.getContents(),
+                article.getName(),
+                article.getTitle(),
+                article.getContents(),
                 new Date()
         );
     }

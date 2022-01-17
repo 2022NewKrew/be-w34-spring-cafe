@@ -6,7 +6,7 @@ import com.kakao.cafe.article.dto.ArticleCreateDTO;
 import java.util.List;
 
 public interface ArticleRepository {
-    public void addArticle(ArticleCreateDTO articleCreateDTO);
+    public void addArticle(Article article);
     public List<Article> getArticles();
     public Article getArticleByCondition(String key, String value);
 }

@@ -18,7 +18,8 @@ public class ArticleService {
     }
 
     public void articleCreate(ArticleCreateDTO articleCreateDTO){
-        articleRepository.addArticle(articleCreateDTO);
+        Article article = new Article(articleCreateDTO);
+        articleRepository.addArticle(article);
     }
 
     public Article getArticleBySequence(Long sequence){

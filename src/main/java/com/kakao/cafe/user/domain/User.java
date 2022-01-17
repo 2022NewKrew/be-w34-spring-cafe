@@ -18,6 +18,7 @@ public class User {
         this.sequence = Long.valueOf(0);
     }
 
+    //for RowMapper
     public User(String userid, String password, String name, String email, long sequence) {
         this.userId = userid;
         this.password = password;

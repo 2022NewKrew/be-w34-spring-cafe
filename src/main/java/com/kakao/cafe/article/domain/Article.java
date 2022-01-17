@@ -12,14 +12,15 @@ public class Article {
     private Date date;
     private Long sequence;
 
-    public Article(ArticleCreateDTO articleCreateDTO, Long sequence) {
+    public Article(ArticleCreateDTO articleCreateDTO) {
         this.name = articleCreateDTO.getName();
         this.title = articleCreateDTO.getTitle();
         this.contents = articleCreateDTO.getContents();
         this.date = new Date();
-        this.sequence = sequence;
+        this.sequence = Long.valueOf(0);
     }
 
+    //for row mapper
     public Article(String name, String title, String contents, java.sql.Date date, long sequence) {
         this.name = name;
         this.title = title;
