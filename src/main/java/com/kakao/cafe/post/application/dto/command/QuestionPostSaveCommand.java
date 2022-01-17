@@ -1,4 +1,4 @@
-package com.kakao.cafe.post.application.dto;
+package com.kakao.cafe.post.application.dto.command;
 
 import com.kakao.cafe.post.domain.QuestionPost;
 import com.kakao.cafe.user.domain.UserAccount;

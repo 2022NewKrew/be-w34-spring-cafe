@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.application.dto;
+package com.kakao.cafe.user.application.dto.command;
 
 import com.kakao.cafe.user.domain.UserAccount;
 import lombok.Getter;
