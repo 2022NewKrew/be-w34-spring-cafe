@@ -30,7 +30,7 @@ public class UserRepositoryImpl implements UserRepository {
                     .userId(rs.getLong("user_id"))
                     .email(rs.getString("email"))
                     .nickname(rs.getString("nickname"))
-                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime().toLocalDate())
+                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
                     .build(),
                 id));
         } catch (DataAccessException e) {
@@ -80,7 +80,7 @@ public class UserRepositoryImpl implements UserRepository {
             .userId(rs.getLong("user_id"))
             .email(rs.getString("email"))
             .nickname(rs.getString("nickname"))
-            .createdAt(rs.getTimestamp("created_at").toLocalDateTime().toLocalDate())
+            .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
             .build());
     }
 }

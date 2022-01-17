@@ -69,7 +69,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             (rs, rowNum) -> MultipleArticle.builder()
                 .articleId(rs.getLong("article_id"))
                 .title(rs.getString("title"))
-                .createdAt(rs.getTimestamp("created_at").toLocalDateTime().toLocalDate())
+                .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
                 .viewCount(rs.getInt("view_count"))
                 .authorId(rs.getLong("author_id"))
                 .authorName(rs.getString("author_nickname"))
