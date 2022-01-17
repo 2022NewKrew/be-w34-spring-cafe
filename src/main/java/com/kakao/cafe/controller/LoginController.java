@@ -39,4 +39,11 @@ public class LoginController {
             return "user/login";
         }
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        logger.info("[GET] 로그아웃");
+        session.invalidate();
+        return "redirect:/";
+    }
 }
