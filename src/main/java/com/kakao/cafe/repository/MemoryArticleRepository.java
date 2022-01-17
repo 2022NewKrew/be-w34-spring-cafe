@@ -3,8 +3,10 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ArticleRequestDto;
 import com.kakao.cafe.dto.ArticleResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -13,13 +15,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository{
     private final List<Article> articles = new ArrayList<>();
     private static long sequence = 0L;
     private final Logger logger = LoggerFactory.getLogger(MemoryArticleRepository.class);
-
-    private MemoryArticleRepository() {}
 
     @Override
     public void save(ArticleRequestDto articleRequestDto) {

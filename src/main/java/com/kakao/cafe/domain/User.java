@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class User {
@@ -8,6 +9,8 @@ public class User {
     private String password;
     private String name;
     private String email;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static User of(Long id, String userId, String password, String name, String email) {
         return new User(id, userId, password, name, email);
@@ -47,6 +50,10 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @Override

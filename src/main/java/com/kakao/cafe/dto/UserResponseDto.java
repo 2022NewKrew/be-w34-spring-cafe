@@ -1,20 +1,24 @@
 package com.kakao.cafe.dto;
 
+import java.time.LocalDateTime;
+
 public class UserResponseDto {
     private Long id;
     private String userId;
     private String name;
     private String email;
+    private LocalDateTime createdAt;
 
-    public static UserResponseDto of(Long id, String userId, String name, String email) {
-        return new UserResponseDto(id, userId, name, email);
+    public static UserResponseDto of(Long id, String userId, String name, String email, LocalDateTime createdAt) {
+        return new UserResponseDto(id, userId, name, email, createdAt);
     }
 
-    public UserResponseDto(Long id, String userId, String name, String email) {
+    public UserResponseDto(Long id, String userId, String name, String email, LocalDateTime createdAt) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.email = email;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -47,5 +51,9 @@ public class UserResponseDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

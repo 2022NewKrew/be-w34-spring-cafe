@@ -47,6 +47,7 @@ public class UserController {
     public String updateUser(@PathVariable String userId, Model model) {
         UserResponseDto user = userService.read(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
         model.addAttribute("user", user);
+        logger.info("update {}, {}, {}", user.getUserId(), user.getName(), user.getEmail());
         return "user/updateForm";
     }
 
