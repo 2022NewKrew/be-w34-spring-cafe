@@ -16,6 +16,7 @@ public class ArticleRepository {
     public static final String SELECT_ARTICLE_BY_ID = "SELECT * FROM TB_ARTICLE WHERE ID = ?";
     public static final String INSERT_ARTICLE = "INSERT INTO TB_ARTICLE(WRITER, TITLE, CONTENTS) VALUES (?, ?, ?)";
     public static final String UPDATE_ARTICLE = "UPDATE TB_ARTICLE SET WRITER = ?, TITLE = ?, CONTENTS = ? WHERE ID = ?";
+    public static final String DELETE_ARTICLE_BY_ID = "DELETE FROM TB_ARTICLE WHERE ID = ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -51,5 +52,9 @@ public class ArticleRepository {
                 .contents(rs.getString("contents"))
                 .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
                 .build();
+    }
+
+    public void delete(Long id) {
+        jdbcTemplate.update(DELETE_ARTICLE_BY_ID, id);
     }
 }

@@ -47,4 +47,8 @@ public class ArticleService {
         articleEntity.update(articleReqDto.getTitle(), articleReqDto.getContents());
         articleRepository.save(articleEntity);
     }
+
+    public void delete(Long id) {
+        articleRepository.delete(id);
+    }
 }

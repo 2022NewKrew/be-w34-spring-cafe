@@ -43,9 +43,7 @@ public class ArticleController {
     @GetMapping("/{id}/form")
     public String showUpdateForm(@PathVariable Long id, Model model, HttpSession session) {
         ArticleDetailResDto article = articleService.getArticle(id);
-        if (!session.getAttribute("sessionUserId").equals(article.getWriter())) {
-            throw new IllegalArgumentException("작성자만 글을 수정할 수 있습니다.");
-        }
+        checkWriterSameAsSessionUser(session, article.getWriter());
         model.addAttribute("article", article);
         return "/qna/updateForm";
     }
@@ -54,6 +52,19 @@ public class ArticleController {
     public String updateArticle(@ModelAttribute ArticleReqDto articleReqDto, HttpSession session) {
         articleService.update(articleReqDto);
         return "redirect:/articles/" + articleReqDto.getId();
+    }
+
+    @DeleteMapping
+    public String deleteArticle(@ModelAttribute ArticleReqDto articleReqDto, HttpSession session) {
+        checkWriterSameAsSessionUser(session, articleReqDto.getWriter());
+        articleService.delete(articleReqDto.getId());
+        return "redirect:/";
+    }
+
+    private void checkWriterSameAsSessionUser(HttpSession session, String writer) {
+        if (!session.getAttribute("sessionUserId").equals(writer)) {
+            throw new IllegalArgumentException("작성자만 글을 수정할 수 있습니다.");
+        }
     }
 
     private void checkSessionUser(HttpSession session) {
