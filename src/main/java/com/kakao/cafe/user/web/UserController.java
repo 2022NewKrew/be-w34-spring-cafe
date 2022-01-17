@@ -10,16 +10,15 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Slf4j
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/users")
@@ -53,12 +52,17 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@Valid UserLoginDto userLoginDto, HttpSession httpSession) {
-        log.info("로그인 요청: " + userLoginDto.getUserId() + userLoginDto.getPassword());
         try {
-            httpSession.setAttribute("user", userService.login(userLoginDto));
+            httpSession.setAttribute("sessionedUser", userService.login(userLoginDto));
         } catch (UserNotFoundException e) {
             return "user/login_failed";
         }
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        httpSession.invalidate();
         return "redirect:/";
     }
 }

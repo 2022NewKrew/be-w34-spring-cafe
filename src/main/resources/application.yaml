@@ -2,6 +2,7 @@ spring:
   mustache:
     suffix: .html
     cache: false
+    expose-session-attributes: true
   datasource:
     driver-class-name: org.h2.Driver
     username: sa
@@ -22,3 +23,8 @@ management:
     web:
       exposure:
         include: '*'
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
+
