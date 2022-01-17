@@ -1,0 +1,28 @@
+POST http://localhost:8080/users
+Content-Type: application/x-www-form-urlencoded
+
+stringId=testId&password=testpw&name=testname&email=testemail
+
+###
+POST http://localhost:8080/users/login
+Content-Type: application/x-www-form-urlencoded
+
+stringId=testId&password=testpw
+
+###
+
+PUT http://localhost:8080/users/1
+Content-Type: application/x-www-form-urlencoded
+
+stringId=testId&prevPassword=testpw&password=test2&name=testname2&email=testemail2
+
+###
+
+
+PUT http://localhost:8080/users/2
+Content-Type: application/x-www-form-urlencoded
+
+stringId=testId&prevPassword=testpw&password=test2&name=testname2&email=testemail2
+
+###
+
