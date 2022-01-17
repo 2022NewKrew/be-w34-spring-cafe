@@ -7,6 +7,7 @@ import com.kakao.cafe.user.persistence.mapper.UserRowMapper;
 import com.kakao.cafe.util.MyJdbcTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<User> getUser(String userId) {
-        List<User> users = myJdbcTemplate.query("select * from member where userId = ".concat(userId), userRowMapper);
+        List<User> users = myJdbcTemplate.query(String.format("select * from member where userId = '%s'",userId), userRowMapper);
         if(users.isEmpty()){
             return Optional.empty();
         }
@@ -34,11 +35,16 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
+        if(getUser(user.getUserId()).isPresent()){
+            throw new IllegalStateException("이미 사용자가 있어서 저장하지 못합니다.");
+        }
+
         myJdbcTemplate.update("insert into member(userId, password, name, email) values(?,?,?,?)"
                 , user.getUserId(), user.getPassword(), user.getUserInfo().getName(), user.getUserInfo().getEmail());
     }
 
     @Override
+    @Transactional
     public void update(String userId, UserInfo userInfo) {
         List<User> users = myJdbcTemplate.query("select * from member where userId='".concat(userId).concat("'"), userRowMapper);
         if(users.isEmpty()){

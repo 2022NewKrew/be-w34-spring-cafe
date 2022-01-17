@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -16,20 +17,17 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class MyJdbcTemplate {
-    private static final Logger logger = LoggerFactory.getLogger(MyJdbcTemplate.class);
-
     private final DataSource dataSource;
 
-    public <T> List<T> query(String query, RowMapper<T> rowMapper){
-        try(Connection connection = dataSource.getConnection()){
+    public <T> List<T> query(String query, RowMapper<T> rowMapper) {
+        try {
+            Connection connection = DataSourceUtils.getConnection(dataSource);
             PreparedStatement preparedStatement = connection.prepareStatement(
                     query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet resultSet = preparedStatement.executeQuery();
-
             return convert(resultSet, rowMapper);
-        } catch (SQLException exception) {
-            logger.info(exception.getMessage());
-            return Collections.emptyList();
+        }catch (SQLException exception){
+            throw new IllegalStateException(exception.getMessage());
         }
     }
 
@@ -48,12 +46,13 @@ public class MyJdbcTemplate {
     }
 
     public void update(String query, Object... values){
-        try(Connection connection = dataSource.getConnection()){
+        try{
+            Connection connection = DataSourceUtils.getConnection(dataSource);
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             setObjects(preparedStatement, values);
             preparedStatement.executeUpdate();
-        } catch (SQLException exception) {
-            logger.info(exception.getMessage());
+        }catch (SQLException exception){
+            throw new IllegalStateException(exception.getMessage());
         }
     }
 

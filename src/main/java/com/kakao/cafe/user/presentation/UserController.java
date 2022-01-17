@@ -27,13 +27,13 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final JoinService joinService;
-    private final SearchUserService userInfoService;
+    private final SearchUserService searchUserService;
     private final UpdateUserInfoService updateUserInfoService;
     private final ModelMapper modelMapper;
 
     @GetMapping("")
     public String listUsers(Model model){
-        List<UserDto> users = userInfoService.getAllUsers()
+        List<UserDto> users = searchUserService.getAllUsers()
                 .stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(toList());
@@ -44,11 +44,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String  getUserInfo(@PathVariable String id, Model model){
-        User user = userInfoService.getUser(id);
-        UserDto userDto = modelMapper.map(user, UserDto.class);
-
-        model.addAttribute("user", userDto);
-        return "user/profile";
+        return "구현 미완료";
     }
 
     @GetMapping("/join")
