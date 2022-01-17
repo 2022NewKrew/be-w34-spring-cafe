@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.management.openmbean.InvalidKeyException;
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * author    : brody.moon
@@ -43,7 +44,7 @@ public class UserController {
         try {
             userAccountService.join(userAccountDTO);
         } catch (IllegalStateException e) {
-            logger.error(e.getMessage());
+            logger.error("[UserController > form] " + e.getMessage());
             return "redirect:/user";
         }
 
@@ -61,14 +62,11 @@ public class UserController {
 
     @GetMapping("{userId}")
     public String profile(@PathVariable("userId") String userId, Model model){
-        UserAccount userAccount = null;
-        try {
-            userAccount = userAccountService.findOne(userId)
-                    .orElseThrow(() -> new InvalidKeyException("아이디를 찾을 수 없습니다."));
-        } catch (InvalidKeyException e) {
-            logger.error("아이디 찾기 에러");
+        if(userAccountService.findOne(userId).isEmpty()){
+            logger.error("[UserController > profile] DB 에서 유저 계정에서 " + userId + "로 검색에 실패했습니다.");
             return "/user/list";
         }
+        UserAccount userAccount = userAccountService.findOne(userId).get();
 
         model.addAttribute("user_account", userAccount);
         return "/user/profile";
@@ -82,12 +80,16 @@ public class UserController {
     @PostMapping("{userId}/form")
     public String updateForm(@PathVariable("userId") String userId, String curPassword, UserAccountDTO userAccountDTO){
         try {
-            userAccountService.updateUserAccount(userAccountDTO, curPassword)
-                    .orElseThrow(() -> new IllegalAccessError("비밀 번호가 일치하지 않습니다"));
-        } catch (IllegalAccessError e) {
-            logger.error("비밀 번호 불일치");
-            return "/user/list";
+            Optional<UserAccount> userAccount = userAccountService.updateUserAccount(userAccountDTO, curPassword);
+
+            if(userAccount.isEmpty()){
+                logger.error("[UserController > updateForm] 계정 프로필 업데이트 요청 중 기존 비밀번호와 입력한 비밀번호가 다릅니다.");
+                return "redirect:/user";
+            }
+        } catch (InputMismatchException e) {
+            logger.error("[Controller > updateForm] " + e.getMessage());
         }
+
         return "redirect:/user";
     }
 }

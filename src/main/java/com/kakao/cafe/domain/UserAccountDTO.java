@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * author    : brody.moon
@@ -9,6 +10,7 @@ import lombok.Data;
  */
 
 @Data
+@NoArgsConstructor
 public class UserAccountDTO {
     private int id;
     private String userId;
@@ -21,9 +23,5 @@ public class UserAccountDTO {
         this.password = password;
         this.name = name;
         this.email = email;
-    }
-
-    public UserAccountDTO(){
-
     }
 }

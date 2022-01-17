@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/questions")
 public class ArticleController {
@@ -39,16 +41,14 @@ public class ArticleController {
 
     @GetMapping("/detail/{index}")
     public String datail(@PathVariable("index") int index, Model model){
-        Article article = null;
-        try {
-            article = articleService.findOne(index)
-                    .orElseThrow(() -> new IllegalAccessError("게시글을 찾을 수 없습니다."));
-        } catch (IllegalAccessError e) {
-            logger.error("잘못된 게시글로 접근");
+        Optional<Article> optArticle = articleService.findOne(index);
+
+        if(optArticle.isEmpty()){
+            logger.error("[ArticleController > datail] 등록되지 않은 게시글 Id로 접근했습니다.");
             return "redirect:/";
         }
 
-        ArticleDTO articleDTO = new ArticleDTO(article);
+        ArticleDTO articleDTO = new ArticleDTO(optArticle.get());
 
         model.addAttribute("article_detail", articleDTO);
         return "/qna/show";

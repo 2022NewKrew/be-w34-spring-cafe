@@ -13,24 +13,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import static com.kakao.cafe.repository.user.UserAccountRepositoryQueryAndNameSpace.ColumnName.*;
 
 public class UserAccountRepository implements Repository<UserAccount, UserAccountDTO, String> {
     private final JdbcTemplate jdbcTemplate;
+    private final UserAccountRepositoryQueryAndNameSpace queryAndNameSpace;
 
-    public UserAccountRepository(DataSource dataSource) {
+    public UserAccountRepository(DataSource dataSource, UserAccountRepositoryQueryAndNameSpace queryAndNameSpace) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.queryAndNameSpace = queryAndNameSpace;
     }
 
     @Override
     public UserAccount save(UserAccountDTO userAccountDTO) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("user_account").usingGeneratedKeyColumns("id");
+        jdbcInsert.withTableName(queryAndNameSpace.getTableName()).usingGeneratedKeyColumns(ID.getColumnName());
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("user_id", userAccountDTO.getUserId());
-        parameters.put("password", userAccountDTO.getPassword());
-        parameters.put("user_name", userAccountDTO.getName());
-        parameters.put("email", userAccountDTO.getEmail());
+        parameters.put(USER_ID.getColumnName(), userAccountDTO.getUserId());
+        parameters.put(PASSWORD.getColumnName(), userAccountDTO.getPassword());
+        parameters.put(USER_NAME.getColumnName(), userAccountDTO.getName());
+        parameters.put(EMAIL.getColumnName(), userAccountDTO.getEmail());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         userAccountDTO.setId(key.intValue());
@@ -40,23 +43,23 @@ public class UserAccountRepository implements Repository<UserAccount, UserAccoun
 
     @Override
     public Optional<UserAccount> findById(String userId) {
-        List<UserAccount> result = jdbcTemplate.query("select * from user_account where user_id = ?", userAccountRowMapper(), userId);
+        List<UserAccount> result = jdbcTemplate.query(queryAndNameSpace.getFindByIdSqlQuery(), userAccountRowMapper(), userId);
         return result.stream().findAny();
     }
 
     @Override
     public List<UserAccount> findAll() {
-        return jdbcTemplate.query("select * from user_account", userAccountRowMapper());
+        return jdbcTemplate.query(queryAndNameSpace.getFindAllSqlQuery(), userAccountRowMapper());
     }
 
     private RowMapper<UserAccount> userAccountRowMapper(){
         return (rs, rowNum) -> {
             UserAccountDTO userAccountDTO = new UserAccountDTO();
-            userAccountDTO.setId(rs.getInt("id"));
-            userAccountDTO.setUserId(rs.getString("user_id"));
-            userAccountDTO.setPassword(rs.getString("password"));
-            userAccountDTO.setName(rs.getString("user_name"));
-            userAccountDTO.setEmail(rs.getString("email"));
+            userAccountDTO.setId(rs.getInt(ID.getColumnName()));
+            userAccountDTO.setUserId(rs.getString(USER_ID.getColumnName()));
+            userAccountDTO.setPassword(rs.getString(PASSWORD.getColumnName()));
+            userAccountDTO.setName(rs.getString(USER_NAME.getColumnName()));
+            userAccountDTO.setEmail(rs.getString(EMAIL.getColumnName()));
 
             return new UserAccount(userAccountDTO);
         };

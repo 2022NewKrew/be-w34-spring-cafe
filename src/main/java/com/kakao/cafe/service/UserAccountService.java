@@ -21,7 +21,7 @@ public class UserAccountService implements Service<UserAccount, UserAccountDTO, 
     }
 
     @Override
-    public String join(UserAccountDTO userAccountDTO){
+    public String join(UserAccountDTO userAccountDTO) throws IllegalStateException{
         userAccountDTO.setPassword(passwordEncoder.encode(userAccountDTO.getPassword()));
 
         validateDuplicateUserId(userAccountDTO);
@@ -30,10 +30,10 @@ public class UserAccountService implements Service<UserAccount, UserAccountDTO, 
         return userAccountDTO.getUserId();
     }
 
-    private void validateDuplicateUserId(UserAccountDTO userAccountDTO) {
+    private void validateDuplicateUserId(UserAccountDTO userAccountDTO) throws IllegalStateException{
         userRepository.findById(userAccountDTO.getUserId())
                 .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                    throw new IllegalStateException("중복된 userId로 가입 요청을 하였습니다.");
                 });
     }
 
@@ -47,9 +47,9 @@ public class UserAccountService implements Service<UserAccount, UserAccountDTO, 
         return userRepository.findById(userId);
     }
 
-    public Optional<UserAccount> updateUserAccount(UserAccountDTO userAccountDTO, String curPassword){
+    public Optional<UserAccount> updateUserAccount(UserAccountDTO userAccountDTO, String curPassword) throws InputMismatchException{
         UserAccount savedUserAccount = userRepository.findById(userAccountDTO.getUserId())
-                .orElseThrow(() -> new InputMismatchException("아이디를 찾을 수 없습니다."));
+                .orElseThrow(() -> new InputMismatchException(userAccountDTO.getUserId() + "로 가입된 유저 계정을 찾을 수 없습니다."));
 
         UserAccount newUserAccount = null;
 

@@ -5,8 +5,10 @@ import com.kakao.cafe.domain.ArticleDTO;
 import com.kakao.cafe.domain.UserAccount;
 import com.kakao.cafe.domain.UserAccountDTO;
 import com.kakao.cafe.repository.Repository;
-import com.kakao.cafe.repository.article.ArticleNoBdUseRepository;
+import com.kakao.cafe.repository.article.ArticleRepository;
+import com.kakao.cafe.repository.article.ArticleRepositoryQueryAndNameSpace;
 import com.kakao.cafe.repository.user.UserAccountRepository;
+import com.kakao.cafe.repository.user.UserAccountRepositoryQueryAndNameSpace;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +39,25 @@ public class SpringConfig {
     }
 
     @Bean
+    public UserAccountRepositoryQueryAndNameSpace getUserAccountRepositoryQueryAndNameSpace(){
+        return new UserAccountRepositoryQueryAndNameSpace();
+    }
+
+    @Bean
     public Repository<UserAccount, UserAccountDTO, String> UserRepository(){
 //        return new UserAccountNoDbUseRepository();
-        return new UserAccountRepository(dataSource);
+        return new UserAccountRepository(dataSource, getUserAccountRepositoryQueryAndNameSpace());
+    }
+
+    @Bean
+    public ArticleRepositoryQueryAndNameSpace getArticleRepositoryQueryAndNameSpace(){
+        return new ArticleRepositoryQueryAndNameSpace();
     }
 
     @Bean
     public Repository<Article, ArticleDTO, Integer> ArticleRepository(){
-        return new ArticleNoBdUseRepository();
+        //return new ArticleNoBdUseRepository();
+        return new ArticleRepository(dataSource, getArticleRepositoryQueryAndNameSpace());
     }
 
     @Bean

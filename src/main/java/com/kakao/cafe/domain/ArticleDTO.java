@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
  * Article 클래스에서 로직을 제거하고 데이터 전송을 위해 따로 만든 클래스입니다.
  */
 @Data
+@NoArgsConstructor
 public class ArticleDTO {
     private String writer;
     private String title;
@@ -42,8 +44,5 @@ public class ArticleDTO {
                 .map(ArticleDTO::new).collect(Collectors.toList());
         this.commentSize = article.getCommentSize();
         this.parent = article.getParent();
-    }
-    public ArticleDTO(){
-
     }
 }
