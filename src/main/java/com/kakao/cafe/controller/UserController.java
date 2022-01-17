@@ -2,15 +2,11 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.UserService;
-import org.h2.engine.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -53,10 +49,14 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/update")
-    public String updateView(@PathVariable String userId, Model model) {
+    public String updateView(@PathVariable String userId, HttpSession session, Model model) {
         UserDto user = userService.filterUserById(userId);
-        model.addAttribute("user", user);
-        return "user/updateForm";
+        UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
+        if (loginUser != null && loginUser.getUserId().equals(user.getUserId())) {
+            model.addAttribute("user", user);
+            return "user/updateForm";
+        }
+        return "redirect:/users/login";
     }
 
     @PutMapping("/{userId}/update")
