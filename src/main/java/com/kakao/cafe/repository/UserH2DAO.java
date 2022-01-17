@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,12 @@ public class UserH2DAO implements UserDAOInterface {
     @Override
     public void save(User user) {
         String sql = "INSERT INTO USERLIST VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, user.getId(), user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        jdbcTemplate.update(sql,
+                user.getId(),
+                user.getUserId(),
+                user.getPassword(),
+                user.getName(),
+                user.getEmail());
     }
 
     @Override
@@ -35,7 +41,12 @@ public class UserH2DAO implements UserDAOInterface {
     @Override
     public User findById(String userId) {
         String sql = "SELECT ID, USERID, PASSWORD, NAME, EMAIL FROM USERLIST WHERE USERID = ?";
-        return jdbcTemplate.queryForObject(sql, userMapper, userId);
+        try {
+            return jdbcTemplate.queryForObject(sql, userMapper, userId);
+        } catch (
+                EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     private static class UserMapper implements RowMapper<User> {

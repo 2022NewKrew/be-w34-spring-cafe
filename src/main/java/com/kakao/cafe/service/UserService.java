@@ -32,7 +32,11 @@ public class UserService {
     }
 
     public ShowUserDto findById(String userId) {
-        return new ShowUserDto(userDAO.findById(userId));
+        User user = userDAO.findById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("유저가 존재하지 않습니다.");
+        }
+        return new ShowUserDto(user);
     }
 
 }

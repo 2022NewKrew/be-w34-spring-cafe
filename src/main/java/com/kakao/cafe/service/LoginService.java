@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.LoginUserDto;
 import com.kakao.cafe.repository.UserDAOInterface;
 import com.kakao.cafe.util.SHA256;
@@ -23,19 +24,21 @@ public class LoginService {
     public void loginCheck(LoginUserDto loginUserDto, HttpSession session) {
         String inputId = loginUserDto.getUserId();
         String inputPassword = loginUserDto.getPassword();
-        if (!isPasswordCorrect(inputId, inputPassword)) {
+        User user = userDAO.findById(inputId);
+        if (user == null) {
             logger.info("{} login fail", inputId);
-            return;
+            throw new IllegalArgumentException("아이디 혹은 비밀번호가 일치하지 않습니다.");
+        }
+        if (!isPasswordCorrect(user, inputPassword)) {
+            throw new IllegalArgumentException("아이디 혹은 비밀번호가 일치하지 않습니다.");
         }
         logger.info("{} login success", inputId);
         session.setAttribute("sessionedUser", userDAO.findById(inputId));
+        logger.info("{} session created", inputId);
     }
 
-    private boolean isPasswordCorrect(String inputId, String inputPassword) {
+    private boolean isPasswordCorrect(User savedUser, String inputPassword) {
         String SHAInputId = SHA256.encrypt(inputPassword);
-        String savedPassword = userDAO.findById(inputId).getPassword();
-        logger.info("input pwd: {}", SHAInputId);
-        logger.info("saved pwd: {}", savedPassword);
-        return SHAInputId.equals(savedPassword);
+        return SHAInputId.equals(savedUser.getPassword());
     }
 }
