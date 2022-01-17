@@ -4,7 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import static com.kakao.cafe.module.model.dto.UserDtos.*;
 import static org.hamcrest.Matchers.*;
@@ -17,6 +20,9 @@ class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    WebApplicationContext context;
 
     @Test
     void 회원가입() throws Exception {
@@ -103,6 +109,28 @@ class UserControllerTest {
                         .flashAttr("userSignInDto", input))
                 .andExpect(status().isBadRequest())
                 .andExpect(request().sessionAttribute("sessionUser", is(nullValue())))
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("msg"))
+                .andExpect(view().name("infra/error"));
+    }
+
+    @Test
+    void 로그아웃() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("sessionUser", new UserDto(100L, "test", "테스트", "test@test.com"));
+
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+        mockMvc.perform(get("/users/sign-out")
+                        .session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(request().sessionAttribute("sessionUser", is(nullValue())))
+                .andExpect(redirectedUrl("/"));
+    }
+
+    @Test
+    void 로그인없이_로그아웃_시도() throws Exception {
+        mockMvc.perform(get("/users/sign-out"))
+                .andExpect(status().isUnauthorized())
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("msg"))
                 .andExpect(view().name("infra/error"));
