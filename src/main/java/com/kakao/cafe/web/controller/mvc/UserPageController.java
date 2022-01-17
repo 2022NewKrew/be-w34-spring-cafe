@@ -48,4 +48,15 @@ public class UserPageController {
     return "profile";
   }
 
+  @GetMapping("/users/{id}/modify")
+  public String modifyUser(Model model, @PathVariable("id") Long id) {
+
+    User user = userService.findUserById(id);
+    userService.requireLoginUser(user);
+
+    model.addAttribute("user", new UserDTO(user));
+
+    return "profile_modify";
+  }
+
 }

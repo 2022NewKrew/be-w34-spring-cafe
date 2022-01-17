@@ -25,6 +25,7 @@ public class ArticlePageController {
     this.articleService = articleService;
   }
 
+
   @GetMapping({"/articles", "/articles/{pageIndex}"})
   public String getArticleBoard(Model model, @PathVariable Optional<Integer> pageIndex) {
 
@@ -35,6 +36,7 @@ public class ArticlePageController {
     return "articles";
   }
 
+
   @GetMapping("/article/{id}")
   public String getArticle(Model model, @PathVariable int id) {
 
@@ -43,6 +45,7 @@ public class ArticlePageController {
 
     return "article";
   }
+
 
   @GetMapping("/article")
   public String createArticle(Model model) {

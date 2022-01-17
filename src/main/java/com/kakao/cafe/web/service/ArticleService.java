@@ -19,6 +19,7 @@ public class ArticleService {
     this.articleRepository = articleRepository;
   }
 
+
   public ArticleBoard getArticleBoard(int pageIndex) {
 
     int totalSize = articleRepository.totalSize();
@@ -31,6 +32,7 @@ public class ArticleService {
     return articleBoard;
   }
 
+
   public Article viewArticle(int id) {
 
     Article article = articleRepository.findById(id)
@@ -41,6 +43,7 @@ public class ArticleService {
 
     return article;
   }
+
 
   public Article createArticle(Article article) {
     return articleRepository.save(article);

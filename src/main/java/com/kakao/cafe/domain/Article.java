@@ -25,7 +25,7 @@ public class Article {
 
   public static Article of(ArticleDTO articleDTO) {
     return new Article(
-        articleDTO.getId(), User.of(articleDTO.getAuthor()), articleDTO.getTitle(),
+        articleDTO.getId(), User.create(articleDTO.getAuthor()), articleDTO.getTitle(),
         articleDTO.getContent(), articleDTO.getReadCount(),
         articleDTO.getComments().stream().map(Comment::of).collect(Collectors.toList()),
         articleDTO.getCreateAt(), articleDTO.getModifiedAt()

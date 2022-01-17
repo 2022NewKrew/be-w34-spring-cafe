@@ -51,4 +51,5 @@ public class UserDTO {
         ", lastLoginAt=" + lastLoginAt +
         '}';
   }
+
 }

@@ -31,6 +31,17 @@ public class UserRepository {
   }
 
   public User save(User user) {
+    if(isNew(user)) {
+      return persist(user);
+    }
+    return merge(user);
+  }
+
+  private boolean isNew(User user) {
+    return findById(user.getId()).isEmpty();
+  }
+
+  private User persist(User user) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     String query = "INSERT INTO users ("
@@ -52,17 +63,17 @@ public class UserRepository {
       ps.setString(3, user.getSummary());
       ps.setString(4, user.getProfile());
       ps.setString(5, user.getPassword());
-      ps.setTimestamp(6, user.getCreateAt());
-      ps.setTimestamp(7, user.getModifiedAt());
-      ps.setTimestamp(8, user.getLastLoginAt());
+      ps.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+      ps.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
+      ps.setTimestamp(8, null);
       return ps;
     }, keyHolder);
 
     Long generatedId = Objects.requireNonNull(keyHolder.getKey()).longValue();
-    return User.of(generatedId, user);
+    return User.create(generatedId, user);
   }
 
-  public User updateInformation(User user) {
+  private User merge(User user) {
     String query = "UPDATE USERS "
         + "SET "
         + "email = ?, "
@@ -71,20 +82,18 @@ public class UserRepository {
         + "profile = ?, "
         + "password = ?, "
         + "create_at = ?, "
-        + "modified_at = now(), "
+        + "modified_at = now(),"
+        + "last_login_at = ? "
         + "WHERE id = ?";
-    jdbcTemplate.update(query, user.getEmail(), user.getNickName(),
-        user.getSummary(), user.getProfile(), user.getPassword(),
-        user.getCreateAt(), user.getId());
-    return user;
-  }
-
-  public User updateLoginTime(User user) {
-    String query = "UPDATE USERS "
-        + "SET "
-        + "last_login_at = now() "
-        + "WHERE id = ?";
-    jdbcTemplate.update(query, user.getId());
+    jdbcTemplate.update(query,
+        user.getEmail(),
+        user.getNickName(),
+        user.getSummary(),
+        user.getProfile(),
+        user.getPassword(),
+        user.getCreateAt(),
+        user.getLastLoginAt(),
+        user.getId());
     return user;
   }
 
