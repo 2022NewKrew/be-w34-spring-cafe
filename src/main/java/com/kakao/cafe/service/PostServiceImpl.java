@@ -29,7 +29,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDto getPost(Long postId) {
+    public PostDto read(Long postId) {
         Optional<Post> result = postRepository.findById(postId);
         if (result.isEmpty())
             throw new PostNotFoundException();

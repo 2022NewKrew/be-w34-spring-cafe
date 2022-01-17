@@ -33,7 +33,7 @@ public class PostController {
 
     @GetMapping("/{postId}")
     public String readPost(@PathVariable Long postId, Model model) {
-        model.addAttribute("post", postService.getPost(postId));
+        model.addAttribute("post", postService.read(postId));
         return "board/post";
     }
 
@@ -43,7 +43,8 @@ public class PostController {
         if (authDto == null) {
             return "redirect:/accounts/login";
         }
-        return "redirect:/posts/" + postService.register(postDto);
+        postService.register(postDto);
+        return "redirect:/";
     }
 
     @GetMapping

@@ -9,7 +9,7 @@ import com.kakao.cafe.entity.User;
 public interface PostService {
     Long register(PostDto dto);
 
-    PostDto getPost(Long postId);
+    PostDto read(Long postId);
 
     PageResultDto<PostDto, Post> getList(PageRequestDto requestDto);
 
