@@ -24,19 +24,13 @@ public class UserJdbcRepository implements UserRepository {
     public List<User> getUsers() {
         String sql = "select * from users";
 
-        return jdbcTemplate.query(sql,
-                (rs, rn) ->
-        {User user = new User(rs.getString("userid"), rs.getString("password"), rs.getString("name"), rs.getString("email"), rs.getLong("sequence"));
-            return user;});
+        return jdbcTemplate.query(sql, new UserRowMapper());
     }
 
     @Override
     public User getUserByCondition(String key, String value) {
         String sql = String.format("select * from users where %s = '%s'", key, value);
-        return jdbcTemplate.query(sql,
-                (rs, rn) ->
-                {User user = new User(rs.getString("userid"), rs.getString("password"), rs.getString("name"), rs.getString("email"), rs.getLong("sequence"));
-                    return user;}).stream().findAny().orElse(null);
+        return (User) jdbcTemplate.query(sql, new UserRowMapper()).stream().findAny().orElse(null);
     }
 
     @Override
