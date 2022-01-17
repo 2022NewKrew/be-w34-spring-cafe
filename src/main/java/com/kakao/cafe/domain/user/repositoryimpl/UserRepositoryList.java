@@ -14,18 +14,11 @@ public class UserRepositoryList implements UserRepository {
 
     @Override
     public void save(User user){
-        if(user.isNew()){
-            users.add(User.builder()
-                    .id(maxIndex)
-                    .stringId(user.getStringId())
-                    .name(user.getName())
-                    .password(user.getPassword())
-                    .email(user.getEmail())
-                    .build());
-            maxIndex++;
+        if(user.isNew()) {
+            insert(user);
             return;
         }
-        findById(user.getId()).update(user);
+        update(user);
     }
 
     @Override
@@ -45,5 +38,23 @@ public class UserRepositoryList implements UserRepository {
     @Override
     public List<User> findAll(){
         return users;
+    }
+
+    private void insert(User user){
+        users.add(User.builder()
+                .id(maxIndex)
+                .stringId(user.getStringId())
+                .name(user.getName())
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .build());
+        maxIndex++;
+    }
+
+    private void update(User user){
+        User userToUpdate = findById(user.getId());
+        userToUpdate.changeName(user.getName());
+        userToUpdate.changePassword(user.getPassword());
+        userToUpdate.changeEmail(user.getEmail());
     }
 }

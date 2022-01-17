@@ -17,14 +17,10 @@ public class QuestionRepositoryJdbc implements QuestionRepository {
     @Override
     public void save(Question question) {
         if(question.isNew()){
-            String sql = "INSERT INTO `QUESTION`(TITLE, WRITER, CONTENTS) VALUES (?, ?, ?)";
-            jdbcTemplate.update(sql,
-                    question.getTitle(), question.getWriter(),question.getContents());
+            insert(question);
             return;
         }
-        String sql = "UPDATE `QUESTION` SET TITLE=?, WRITER=?, CONTENTS=? WHERE ID=?";
-        jdbcTemplate.update(sql,
-                question.getTitle(), question.getWriter(),question.getContents(), question.getId());
+        update(question);
     }
 
     @Override
@@ -57,5 +53,17 @@ public class QuestionRepositoryJdbc implements QuestionRepository {
                         .createdAt(rs.getTimestamp("CREATED_AT").toLocalDateTime())
                         .build()
                 );
+    }
+
+    private void insert(Question question){
+        String sql = "INSERT INTO `QUESTION`(TITLE, WRITER, CONTENTS) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql,
+                question.getTitle(), question.getWriter(),question.getContents());
+    }
+
+    private void update(Question question){
+        String sql = "UPDATE `QUESTION` SET TITLE=?, WRITER=?, CONTENTS=? WHERE ID=?";
+        jdbcTemplate.update(sql,
+                question.getTitle(), question.getWriter(),question.getContents(), question.getId());
     }
 }

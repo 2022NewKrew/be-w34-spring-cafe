@@ -27,7 +27,11 @@ public class UserService {
     public void update(int id, UserUpdateDto userUpdateDto){
         User user = userRepository.findById(id);
         if (userUpdateDto.getPrevPassword().equals(user.getPassword())){
-            userRepository.save(user.update(UserMapper.INSTANCE.toEntityFromUpdateDto(userUpdateDto)));
+            User userFromUpdateDto = UserMapper.INSTANCE.toEntityFromUpdateDto(userUpdateDto);
+            user.changePassword(userFromUpdateDto.getPassword());
+            user.changeName(userFromUpdateDto.getName());
+            user.changeEmail(userFromUpdateDto.getEmail());
+            userRepository.save(user);
         }
     }
 

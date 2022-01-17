@@ -15,11 +15,12 @@ public class Question {
     private String contents;
     private LocalDateTime createdAt;
 
-    public Question update(Question question) {
-        this.title = question.getTitle();
-        this.writer = question.getWriter();
-        this.contents = question.getContents();
-        return this;
+    public void changeTitle(String title){
+        this.title = title;
+    }
+
+    public void changeContents(String contents){
+        this.contents = contents;
     }
 
     public Boolean isNew(){
