@@ -52,12 +52,14 @@ public class UserController {
 
     @PostMapping("/users/login")
     public String login(String stringId, String password, HttpSession session) {
-        User user = userService.login(stringId, password);
-        if(user!=null){
-            session.setAttribute("sessionedUser", user);
-            return "redirect:/";
+        User user;
+        try {
+            user = userService.login(stringId, password);
+        } catch(IllegalArgumentException e){
+            return "/user/login_failed";
         }
-        return "/user/login_failed";
+        session.setAttribute("sessionedUser", user);
+        return "redirect:/";
     }
 
     @GetMapping("/users/logout")

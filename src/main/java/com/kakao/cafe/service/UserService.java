@@ -50,6 +50,6 @@ public class UserService {
         if(user!=null && user.getPassword().equals(password)){
             return user;
         }
-        return null;
+        throw new IllegalArgumentException("로그인 비밀번호와 DB비밀번호가 불일치 합니다.");
     }
 }
