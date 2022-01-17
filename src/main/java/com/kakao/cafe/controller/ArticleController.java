@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -26,8 +27,8 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public String getQuestionsInfo(@PathVariable String id, Model model) {
-        Article article = articleService.findById(id);
+    public String getQuestionsInfo(@PathVariable String id, Model model, HttpSession httpSession) {
+        Article article = articleService.findById(id, httpSession);
         model.addAttribute("article", article);
         return "qna/show";
     }

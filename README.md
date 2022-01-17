@@ -43,4 +43,5 @@
 
 # step6
 - [x] local mysql 사용
+- [x] 로그인 하지 않은 사용자는 게시글을 목록만 볼 수 있음(로그인 한 사용자만 게시글의 세부내용을 볼 수 있다.)
 - [ ] requestParam validation검증
