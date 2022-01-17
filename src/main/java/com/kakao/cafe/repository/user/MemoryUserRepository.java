@@ -30,5 +30,10 @@ public class MemoryUserRepository implements UserRepository {
         return List.copyOf(userDataBase);
     }
 
+    @Override
+    public void update(User user) {
+        throw new UnsupportedOperationException();
+    }
+
 }
 

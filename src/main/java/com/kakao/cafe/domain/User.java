@@ -7,12 +7,18 @@ import lombok.Getter;
 @Getter
 public class User {
     private Long id;
-    private final String userId;
-    private final String password;
-    private final String name;
-    private final String email;
+    private String userId;
+    private String password;
+    private String name;
+    private String email;
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void update(String updateName, String updatePassword, String updateEmail) {
+        name = updateName;
+        password = updatePassword;
+        email = updateEmail;
     }
 }

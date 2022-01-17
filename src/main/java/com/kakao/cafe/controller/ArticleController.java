@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.response.ArticleQueryDetailResponseDto;
 import com.kakao.cafe.controller.dto.request.ArticleRegisterRequestDto;
+import com.kakao.cafe.controller.dto.response.ArticleQueryDetailResponseDto;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,6 @@ public class ArticleController {
     @PostMapping
     public String register(@Validated @ModelAttribute ArticleRegisterRequestDto articleRegisterRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            log.info("게시글 등록 실패");
             throw new IllegalArgumentException();
         }
         articleService.register(articleRegisterRequestDto);

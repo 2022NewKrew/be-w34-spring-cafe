@@ -1,9 +1,12 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.dto.request.UserLoginRequestDto;
 import com.kakao.cafe.controller.dto.request.UserSignUpRequestDto;
+import com.kakao.cafe.controller.dto.request.UserUpdateRequestDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.repository.user.UserRepository;
+import com.kakao.cafe.service.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +39,20 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public User login(UserLoginRequestDto userLoginRequestDto) {
+        User loginUser = findUserByUserId(userLoginRequestDto.getUserId());
+        if (loginUser.getPassword().equals(userLoginRequestDto.getPassword())) {
+            return loginUser;
+        }
+
+        throw new IllegalArgumentException("아이디 또는 비밀번호가 맞지 않습니다.");
+    }
+
+    public void update(UserUpdateDto userUpdateDto) {
+        User updateUser = findUserByUserId(userUpdateDto.getUserId());
+        updateUser.update(userUpdateDto.getName(), userUpdateDto.getPassword(), userUpdateDto.getEmail());
+        userRepository.update(updateUser);
     }
 }

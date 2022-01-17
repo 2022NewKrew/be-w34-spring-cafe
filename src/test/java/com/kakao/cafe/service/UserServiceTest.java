@@ -1,9 +1,13 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.dto.request.UserLoginRequestDto;
 import com.kakao.cafe.controller.dto.request.UserSignUpRequestDto;
+import com.kakao.cafe.controller.dto.request.UserUpdateRequestDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.repository.user.UserRepository;
+import com.kakao.cafe.service.dto.UserUpdateDto;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,8 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -75,5 +78,51 @@ class UserServiceTest {
         assertThatThrownBy(() -> userService.findUserByUserId("leaf")).isInstanceOf(UserNotFoundException.class);
     }
 
+    @Test
+    @DisplayName("로그인 테스트")
+    void testOfLogin() {
+        UserLoginRequestDto userLoginRequestDto = UserLoginRequestDto.builder()
+                .userId("leaf")
+                .password("123!@#")
+                .build();
+        BDDMockito.given(userRepository.findByUserId("leaf")).willReturn(Optional.of(User.builder()
+                .userId("leaf")
+                .password("123!@#")
+                .build())
+        );
+        User loginUser = userService.login(userLoginRequestDto);
+        Assertions.assertThat(loginUser.getUserId()).isEqualTo("leaf");
 
+    }
+
+    @Test
+    @DisplayName("로그인 실패 테스트")
+    void testOfLoginFail() {
+        UserLoginRequestDto userLoginRequestDto = UserLoginRequestDto.builder()
+                .userId("leaf")
+                .password("123!@#")
+                .build();
+        BDDMockito.given(userRepository.findByUserId("leaf")).willReturn(Optional.of(User.builder()
+                .userId("leaf")
+                .password("111111!@#")
+                .build())
+        );
+        Assertions.assertThatThrownBy(() -> userService.login(userLoginRequestDto))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("회원 정보 수정")
+    void testOfUpdate() {
+        UserUpdateRequestDto userUpdateRequestDto = UserUpdateRequestDto.builder()
+                .name("김남현")
+                .password("123")
+                .email("leaf,hyeon@kakaocorp.com")
+                .build();
+
+        UserUpdateDto userUpdateDto = new UserUpdateDto("leaf", userUpdateRequestDto);
+        BDDMockito.given(userRepository.findByUserId("leaf")).willReturn(Optional.of(User.builder().build()));
+        userService.update(userUpdateDto);
+        BDDMockito.then(userRepository).should().update(BDDMockito.any());
+    }
 }
