@@ -28,7 +28,7 @@ public class LoginService {
             return;
         }
         logger.info("{} login success", inputId);
-        session.setAttribute("sessionedUser", inputId);
+        session.setAttribute("sessionedUser", userDAO.findById(inputId));
     }
 
     private boolean isPasswordCorrect(String inputId, String inputPassword) {
