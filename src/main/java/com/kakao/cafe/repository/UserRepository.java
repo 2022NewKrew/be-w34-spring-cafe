@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -51,6 +52,21 @@ public class UserRepository implements CrudRepository<User, Integer> {
         query.append(" WHERE users.id = ?");
 
         User user = jdbcTemplate.queryForObject(query.toString(), (rs, rowNum) -> new User(rs.getInt("id"), rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email")), id);
+        return Optional.ofNullable(user);
+    }
+
+    public Optional<User> findByUserId(String userId) {
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT *");
+        query.append(" FROM users");
+        query.append(" WHERE users.user_id = ?");
+
+        User user;
+        try {  // TODO: controller advice로 통합하기
+            user = jdbcTemplate.queryForObject(query.toString(), (rs, rowNum) -> new User(rs.getInt("id"), rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email")), userId);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
         return Optional.ofNullable(user);
     }
 

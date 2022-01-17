@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @Slf4j
 public class UserController {
@@ -43,32 +45,73 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public String profile(@PathVariable int id, Model model) {
+    public String profile(@PathVariable Integer id, Model model) {
         log.info("start profile()");
-        User user = userService.profile(id);
+        User user = userService.findUser(id);
         model.addAttribute("userProfile", UserProfileResponse.from(user));
         return "/users/profile";
     }
 
     @GetMapping("/users/{id}/form")
-    public String getUpdateForm(@PathVariable int id, Model model) {
+    public String getUpdateForm(@PathVariable Integer id, Model model) {
         log.info("start getUpdateForm()");
-        User user = userService.profile(id);
+        User user = userService.findUser(id);
         model.addAttribute("userProfile", UserProfileResponse.from(user));
         return "/users/updateForm";
     }
 
     @PostMapping(value = "/users/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String updateUser(@PathVariable int id, UserUpdateRequest request, Model model) {
+    public String updateUser(@PathVariable Integer id, UserUpdateRequest request, HttpSession session, Model model) {
         log.info("start updateUser()");
+        User sessionedUser = (User) session.getAttribute("sessionedUser");
+        if (sessionedUser == null) {
+            model.addAttribute("isNotLogin", true);
+            return "/users/updateForm";
+        }
+
+        log.info(sessionedUser.getUserId());
+        log.info(request.getUserId());
+        if (sessionedUser.getUserId() != request.getUserId()) {
+            model.addAttribute("wrongUser", UserProfileResponse.from(sessionedUser));
+            return "/users/updateForm";
+        }
+
         if (userService.updateUser(id, request)) {
             return "redirect:/users";
         }
 
-        User user = userService.profile(id);
+        User user = userService.findUser(id);
         model.addAttribute("userProfile", UserProfileResponse.from(user));
         model.addAttribute("isFailed", true);
         return "/users/updateForm";
+    }
+
+    @GetMapping("/users/login")
+    public String loginForm() {
+        log.info("start loginForm()");
+        return "/users/login";
+    }
+
+    @PostMapping("/users/login")
+    public String login(String userId, String password, HttpSession session, Model model) {
+        log.info("start login()");
+        User user = userService.login(userId, password);
+        if (user != null) {
+            session.setAttribute("sessionedUser", user);
+            return "redirect:/";
+        }
+
+        model.addAttribute("isFailed", true);
+        return "/users/login";
+    }
+
+    @GetMapping("/users/logout")
+    public String logout(HttpSession session) {
+        if (session.getAttribute("sessionedUser") != null) {
+            session.invalidate();
+        }
+
+        return "redirect:/";
     }
 
 }
