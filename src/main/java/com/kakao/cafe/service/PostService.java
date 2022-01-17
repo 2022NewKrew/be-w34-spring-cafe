@@ -14,5 +14,7 @@ public interface PostService {
 
     Post addPost(AddPostDto addPostDto, Long writerId);
 
+    void increaseViewNumById(Long postId);
+
     int countAll();
 }

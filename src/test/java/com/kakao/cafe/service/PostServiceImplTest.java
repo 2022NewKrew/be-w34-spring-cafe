@@ -155,6 +155,19 @@ class PostServiceImplTest {
     }
 
     @Test
+    @DisplayName("ID에 해당하는 게시글 조회수 추가 -> 정상")
+    void increaseViewNumById() {
+        //Given
+        Long postId = postInRepo.getId();
+
+        //When
+        postService.increaseViewNumById(postId);
+
+        //Then
+        then(postRepository).should(times(1)).increaseViewNumById(postId);
+    }
+
+    @Test
     @DisplayName("총 게시글 개수 반환 -> 정상")
     void countAll() {
         //Given

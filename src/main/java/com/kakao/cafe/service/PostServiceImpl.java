@@ -54,6 +54,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void increaseViewNumById(Long postId) {
+        postRepository.increaseViewNumById(postId);
+    }
+
+    @Override
     public int countAll() {
         return postRepository.countAll();
     }

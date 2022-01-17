@@ -84,6 +84,11 @@ public class PostRepository {
         return post;
     }
 
+    public void increaseViewNumById(Long postId) {
+        String sql = "UPDATE `POST` SET view_num = view_num + 1 WHERE id =?";
+        jdbcTemplate.update(sql, postId);
+    }
+
     public int countAll() {
         String sql = "SELECT COUNT(id) FROM `POST`";
         return jdbcTemplate.queryForObject(sql, Integer.class);
