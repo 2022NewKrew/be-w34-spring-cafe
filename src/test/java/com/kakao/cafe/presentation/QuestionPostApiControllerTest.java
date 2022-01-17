@@ -1,6 +1,6 @@
 package com.kakao.cafe.presentation;
 
-import com.kakao.cafe.presentation.dto.request.QuestionPostWriteRequest;
+import com.kakao.cafe.post.adapter.in.web.dto.QuestionPostWriteRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class QuestionPostApiControllerTest {
     void writeTest() {
         String title = "spring question";
         String content = "what is this?";
-        Long userId = 0L;
+        Long userId = 1L;
 
         QuestionPostWriteRequest request = new QuestionPostWriteRequest(title, content, userId);
 

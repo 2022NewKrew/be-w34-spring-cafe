@@ -1,8 +1,8 @@
 package com.kakao.cafe.persistence.user;
 
-import com.kakao.cafe.application.exception.IdNotFoundException;
-import com.kakao.cafe.domain.user.UserAccount;
-import com.kakao.cafe.domain.user.UserAccountRepository;
+import com.kakao.cafe.exception.IdNotFoundException;
+import com.kakao.cafe.user.adapter.out.persistence.UserAccountRepository;
+import com.kakao.cafe.user.domain.UserAccount;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +40,8 @@ class UserAccountJdbcRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        jdbcTemplate.update("truncate table user_account");
+
         testUser1 = UserAccount.builder()
                 .email("edward@kakao.com")
                 .password("1234")

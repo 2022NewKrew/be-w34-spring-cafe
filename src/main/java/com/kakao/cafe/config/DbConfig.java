@@ -18,6 +18,7 @@ public class DbConfig {
                 .ignoreFailedDrops(true)
                 .setName("kakaodb")
                 .addScript("classpath:sql/schema.sql")
+                .addScript("classpath:sql/data.sql")
                 .build();
     }
 }

@@ -1,7 +1,8 @@
 package com.kakao.cafe.presentation;
 
-import com.kakao.cafe.presentation.dto.request.UserAccountEnrollRequest;
+import com.kakao.cafe.user.adapter.in.web.dto.request.UserAccountEnrollRequest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,10 +21,19 @@ public class UserAccountApiControllerTest {
     @LocalServerPort
     int port;
 
-    @AfterEach
-    void tearDown() {
+    void clearDb() {
         jdbcTemplate.update("truncate table user_account");
         jdbcTemplate.update("alter table user_account alter column user_account_id restart with 1");
+    }
+
+    @BeforeEach
+    void setUp() {
+        clearDb();
+    }
+
+    @AfterEach
+    void tearDown() {
+        clearDb();
     }
 
     @Test
