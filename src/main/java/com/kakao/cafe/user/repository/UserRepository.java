@@ -81,6 +81,22 @@ public class UserRepository {
     }
 
     /**
+     * 로그인 하려는 정보에 해당하는 User 정보 반환
+     * @param userId: 유저의 userId
+     * @param password: 유저의 비밀번호
+     * @return Optional<User>: Optional 로 감싸진 User 인스턴스
+     */
+    public Optional<User> findByUserIdAndPassword(String userId, String password) {
+        String sql = "select * from user_table where user_id = ? and password = ?";
+
+        return this.readOneQuery(
+                sql,
+                userId,
+                password
+        );
+    }
+
+    /**
      * 단일 행을 반환하는 SELECT 문을 담당하는 메서드
      * @param sql: 실행하고자 하는 SQL
      * @param parameters: SQL 문에 들어갈 매개변수(가변인자)
