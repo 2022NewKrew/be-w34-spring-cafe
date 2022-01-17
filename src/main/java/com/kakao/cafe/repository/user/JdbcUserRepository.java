@@ -17,6 +17,7 @@ import java.util.Optional;
 public class JdbcUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final UserRowMapper userRowMapper;
 
     private static final String INSERT_USER_QUERY = "INSERT INTO users(user_id,password,user_name,email) VALUES(?,?,?,?)";
     private static final String UPDATE_USER_QUERY = "UPDATE users SET user_id=?, password=?, user_name=?, email=? WHERE id = ?";
@@ -46,17 +47,19 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query(SELECT_USERS_QUERY, new UserRowMapper());
+        return jdbcTemplate.query(SELECT_USERS_QUERY, userRowMapper);
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_USER_BY_USER_ID_QUERY, new UserRowMapper(), userId));
+        List<User> users = jdbcTemplate.query(SELECT_USER_BY_USER_ID_QUERY, userRowMapper, userId);
+        return Optional.ofNullable(users.isEmpty() ? null : users.get(0));
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_USER_BY_ID_QUERY, new UserRowMapper(), id));
+        List<User> users = jdbcTemplate.query(SELECT_USER_BY_ID_QUERY, userRowMapper, id);
+        return Optional.ofNullable(users.isEmpty() ? null : users.get(0));
     }
 
 }

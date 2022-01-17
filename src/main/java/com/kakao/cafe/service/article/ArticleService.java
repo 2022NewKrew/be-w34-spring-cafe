@@ -1,9 +1,9 @@
 package com.kakao.cafe.service.article;
 
+import com.kakao.cafe.service.article.mapper.ArticleDtoMapper;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.article.ArticleRepository;
 import com.kakao.cafe.service.article.dto.ArticleInfo;
-import com.kakao.cafe.service.article.mapper.ArticleDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

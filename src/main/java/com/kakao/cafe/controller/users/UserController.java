@@ -1,5 +1,7 @@
 package com.kakao.cafe.controller.users;
 
+import com.kakao.cafe.common.exception.custom.UpdateFailedException;
+import com.kakao.cafe.common.exception.data.ErrorCode;
 import com.kakao.cafe.controller.users.dto.request.UserUpdateRequest;
 import com.kakao.cafe.controller.users.dto.request.UserSignUpRequest;
 import com.kakao.cafe.controller.users.mapper.UserViewMapper;
@@ -70,8 +72,7 @@ public class UserController {
 
     private void validateUpdateUserId(UserIdentification loginInfo, String userId) {
         if(!loginInfo.getUserId().equals(userId)) {
-            throw new IllegalArgumentException("자신의 개인 정보만 수정 가능합니다.");
+            throw new UpdateFailedException(ErrorCode.UPDATE_USER_ID_INCORRECT);
         }
     }
-
 }
