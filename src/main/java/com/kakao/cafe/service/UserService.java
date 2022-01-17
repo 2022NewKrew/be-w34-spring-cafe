@@ -22,7 +22,7 @@ public class UserService {
         int idx = 1;
 
         for (User curUser : userLst) {
-            userInfoDTOLst.add(makeUserInfoDTOFromUser(curUser, idx));
+            userInfoDTOLst.add(makeUserInfoDTOFromUser(curUser, idx++));
         }
 
         return userInfoDTOLst;
