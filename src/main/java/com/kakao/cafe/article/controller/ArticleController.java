@@ -9,12 +9,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
 public class ArticleController {
     ArticleService articleService;
+    Map<String, String> loginList;
 
     public ArticleController(ArticleService articleService){
         this.articleService = articleService;
@@ -29,7 +33,9 @@ public class ArticleController {
 
     //index.html에 노출되는 질문리스트
     @GetMapping(value = {"/", "/index"})
-    public String showArticleList(Model model) {
+    public String showArticleList(Model model, HttpSession session, HttpServletRequest request) {
+        System.out.println(getLoggedInUserId(session, request));
+
         List<Article> articles = articleService.getAllArticles();
         List<ArticleListDTO> articleListDTO = articles.stream().map(ArticleListDTO::new).collect(Collectors.toList());
         model.addAttribute("articles", articleListDTO);
@@ -48,5 +54,24 @@ public class ArticleController {
         model.addAttribute("date", articleViewDTO.getDate());
         model.addAttribute("contents", articleViewDTO.getContents());
         return "/qna/show";
+    }
+
+    //Cookie value에 기반하여 로그인된 아이디를 가져옴
+    public String getLoggedInUserId(HttpSession session, HttpServletRequest request){
+        if(loginList == null) {
+            loginList = (Map<String, String>) session.getAttribute("loginList");
+        }
+
+        String userCookieValue = request.getCookies()[0].getValue();
+
+        if(loginList == null){
+            return null;
+        }
+
+        if(loginList.get(userCookieValue) == null){
+            return null;
+        }
+
+        return loginList.get(userCookieValue);
     }
 }
