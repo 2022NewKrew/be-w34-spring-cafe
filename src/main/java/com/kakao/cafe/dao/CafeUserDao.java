@@ -10,5 +10,6 @@ public interface CafeUserDao {
     List<User> getUserList();
     User getUserProfile(String userId);
 
-    boolean adminProfileEdit (User user, String inputPassword);
+    boolean adminEditProfile (User user, String inputPassword);
+    boolean editProfile (User user, String inputEmail);
 }

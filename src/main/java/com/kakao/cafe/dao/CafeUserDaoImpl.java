@@ -102,7 +102,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
     }
 
     @Override
-    public boolean adminProfileEdit(User user, String inputPassword) {
+    public boolean adminEditProfile(User user, String inputPassword) {
         String sql = "SELECT password FROM member\n"
                 + "WHERE userId=?";
 
@@ -113,6 +113,25 @@ public class CafeUserDaoImpl implements CafeUserDao {
             if(rs.next()) {
                 String password = rs.getString("password");
                 return password.equals(inputPassword);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean editProfile(User user, String inputEmail) {
+        String sql = "UPDATE member\n"
+                + "SET email=?\n"
+                + "WHERE userId=?";
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, inputEmail);
+            pstmt.setString(2, user.getUserId());
+            int updateCnt = pstmt.executeUpdate();
+            if( updateCnt > 0 ) {
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();

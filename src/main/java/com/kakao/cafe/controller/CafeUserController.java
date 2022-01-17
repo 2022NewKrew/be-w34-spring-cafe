@@ -34,7 +34,7 @@ public class CafeUserController {
     private static final String USER_REDIRECT_SIGN_UP_FAIL = REDIRECT_PREFIX+"/users/sign-up/fail";
     private static final String USER_REDIRECT_SIGN_OUT = REDIRECT_PREFIX+"/";
     private static final String USER_REDIRECT_PROFILE_EDIT_ADMIN_FAIL = REDIRECT_PREFIX+"/users/profile/edit/fail";
-    private static final String USER_REDIRECT_PROFILE_EDIT = REDIRECT_PREFIX+"/";
+    private static final String USER_REDIRECT_PROFILE_EDIT = REDIRECT_PREFIX+"/users/list";
 
     @GetMapping("/sign-in")
     String userViewSignIn() {
@@ -72,7 +72,7 @@ public class CafeUserController {
     @GetMapping("/profile/{userId}")
     String getUserProfile (Model model, @PathVariable("userId") String userId) { // 유저 프로필
         User user = cafeUserService.getUserProfile(userId);
-        if( user != null) {
+        if(user != null) {
             model.addAttribute("user", user);
         }
         return USER_VIEW_PROFILE;
@@ -83,16 +83,22 @@ public class CafeUserController {
         return USER_VIEW_PROFILE_EDIT_ADMIN;
     }
     @PostMapping("/profile/edit")
-    String adminEditProfile (Model model, HttpSession httpSession, String password) {
+    String adminEditProfile (HttpSession httpSession, String password) {
         User user = (User) httpSession.getAttribute("signInUser");
-        if(cafeUserService.adminProfileEdit(user, password)) {
+        if(cafeUserService.adminEditProfile(user, password)) {
             return USER_VIEW_PROFILE_EDIT_FORM;
         }
         return USER_REDIRECT_PROFILE_EDIT_ADMIN_FAIL;
     }
     @PutMapping("/profile/edit")
-    String editProfile (Model model, HttpSession httpSession) {
-        return USER_REDIRECT_PROFILE_EDIT;
+    String editProfile (HttpSession httpSession, String email) {
+        User user = (User) httpSession.getAttribute("signInUser");
+        if(cafeUserService.editProfile(user, email)) {
+            user.setEmail(email);
+            httpSession.setAttribute("signInUser", user);
+            return USER_REDIRECT_PROFILE_EDIT;
+        }
+        return USER_REDIRECT_PROFILE_EDIT_ADMIN_FAIL;
     }
 
     @PostMapping("/sign-out")

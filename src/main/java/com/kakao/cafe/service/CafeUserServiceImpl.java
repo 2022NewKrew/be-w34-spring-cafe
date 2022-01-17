@@ -44,9 +44,17 @@ public class CafeUserServiceImpl implements CafeUserService {
     }
 
     @Override
-    public boolean adminProfileEdit(User user, String inputPassword) {
-        if (user != null || UserHelper.checkRegexOfPassword(inputPassword)) {
-            return cafeUserDao.adminProfileEdit(user,inputPassword);
+    public boolean adminEditProfile(User user, String inputPassword) {
+        if (user != null && UserHelper.checkRegexOfPassword(inputPassword)) {
+            return cafeUserDao.adminEditProfile(user,inputPassword);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean editProfile(User user, String inputEmail) {
+        if(user != null && UserHelper.checkRegexOfEmail(inputEmail)) {
+            return cafeUserDao.editProfile(user, inputEmail);
         }
         return false;
     }
