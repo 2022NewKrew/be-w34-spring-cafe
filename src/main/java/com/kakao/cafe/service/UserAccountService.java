@@ -60,4 +60,19 @@ public class UserAccountService implements Service<UserAccount, UserAccountDTO, 
 
         return Optional.ofNullable(newUserAccount);
     }
+
+    public boolean isPasswordEqual(UserAccount userAccount, String userInputPassword){
+        return passwordEncoder.matches(userInputPassword, userAccount.getPassword());
+    }
+
+    public boolean isVaildUserAccess(String userId, Object value){
+        if(value != null){
+            UserAccount userAccount = (UserAccount) value;
+
+            if(userAccount.getUserId().equals(userId))
+                return true;
+        }
+
+        return false;
+    }
 }

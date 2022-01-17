@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +65,7 @@ public class UserController {
     public String profile(@PathVariable("userId") String userId, Model model){
         if(userAccountService.findOne(userId).isEmpty()){
             logger.error("[UserController > profile] DB 에서 유저 계정에서 " + userId + "로 검색에 실패했습니다.");
-            return "/user/list";
+            return "redirect:/user";
         }
         UserAccount userAccount = userAccountService.findOne(userId).get();
 
@@ -73,12 +74,26 @@ public class UserController {
     }
 
     @GetMapping("{userId}/form")
-    public String updateForm(@PathVariable("userId") String userId){
-        return "/user/update_form";
+    public String updateForm(@PathVariable("userId") String userId, HttpSession session){
+        Object value = session.getAttribute("sessionedUser");
+
+        if(userAccountService.isVaildUserAccess(userId, value)){
+            return "/user/update_form";
+        }
+
+        logger.error("[UserController > updateForm] 현재 로그인 중인 사용자의 정보가 아닌 다른 사용자의 정보에 접근하려 합니다.");
+        return "redirect:/user";
     }
 
     @PostMapping("{userId}/form")
-    public String updateForm(@PathVariable("userId") String userId, String curPassword, UserAccountDTO userAccountDTO){
+    public String updateForm(@PathVariable("userId") String userId, String curPassword, UserAccountDTO userAccountDTO, HttpSession session){
+        Object value = session.getAttribute("sessionedUser");
+
+        if(!userAccountService.isVaildUserAccess(userId, value)){
+            logger.error("[UserController > updateForm] 현재 로그인 중인 사용자의 정보가 아닌 다른 사용자의 정보에 접근하려 합니다.");
+            return "redirect:/user";
+        }
+
         try {
             Optional<UserAccount> userAccount = userAccountService.updateUserAccount(userAccountDTO, curPassword);
 
@@ -91,5 +106,35 @@ public class UserController {
         }
 
         return "redirect:/user";
+    }
+
+    @GetMapping("login")
+    public String login(){
+        return "/user/login";
+    }
+
+    @PostMapping("login")
+    public String login(String userId, String password, HttpSession session){
+        Optional<UserAccount> findUserAccount = userAccountService.findOne(userId);
+
+        if(findUserAccount.isEmpty()){
+            logger.error("[UserController > login] DB 에서 유저 계정에서 " + userId + "로 검색에 실패했습니다.");
+            return "redirect:/user/login/failed";
+        }
+
+        UserAccount userAccount = findUserAccount.get();
+
+        if(!userAccountService.isPasswordEqual(userAccount, password)){
+            logger.error("[UserController > login] 로그인 시 입력한 비밀번호가 DB와 일치하지 않습니다.");
+            return "redirect:/user/login/failed";
+        }
+
+        session.setAttribute("sessionedUser", userAccount);
+        return "redirect:/";
+    }
+
+    @GetMapping("login/failed")
+    public String loginFailed(){
+        return "/user/login_failed";
     }
 }
