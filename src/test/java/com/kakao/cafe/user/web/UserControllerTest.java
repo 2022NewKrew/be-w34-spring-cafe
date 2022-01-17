@@ -34,7 +34,9 @@ class UserControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    private static final String URL = "user";
 
     @BeforeEach
     void setUp() {
@@ -51,7 +53,7 @@ class UserControllerTest {
     @Test
     @DisplayName("존재하지 않는 유저 찾기 테스트")
     void userDetail() throws Exception {
-        String url = "/users/unknown_user";
+        String url = URL + "/unknown_user";
 
         mockMvc.perform(get(url).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().is(ErrorCode.USER_NOT_FOUND.getStatus()))
@@ -62,7 +64,6 @@ class UserControllerTest {
     @Test
     @DisplayName("userId가 중복된 유저 추가 테스트")
     void duplicatedUserAdd() throws Exception {
-        String url = "/users";
         Map<String, String> params = new HashMap<>();
         params.put("userId", "miya.ong");
         params.put("password", "1234");
@@ -71,7 +72,7 @@ class UserControllerTest {
         MultiValueMap<String, String> multiValueparams = new LinkedMultiValueMap<>();
         multiValueparams.setAll(params);
 
-        mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(URL).contentType(MediaType.APPLICATION_JSON)
                 .params(multiValueparams))
             .andExpect(status().is(ErrorCode.USER_DUPLICATED.getStatus()))
             .andExpect(content().string(ErrorCode.USER_DUPLICATED.getMessage()))
@@ -81,7 +82,6 @@ class UserControllerTest {
     @Test
     @DisplayName("name이 빈 문자열인 유저 추가 테스트")
     void blankNameUserAdd() throws Exception {
-        String url = "/users";
         Map<String, String> params = new HashMap<>();
         params.put("userId", "new.user");
         params.put("password", "1234");
@@ -90,7 +90,7 @@ class UserControllerTest {
         MultiValueMap<String, String> multiValueparams = new LinkedMultiValueMap<>();
         multiValueparams.setAll(params);
 
-        mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(URL).contentType(MediaType.APPLICATION_JSON)
                 .params(multiValueparams))
             .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
             .andExpect(content().string("Name is mandatory"))

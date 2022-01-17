@@ -7,22 +7,20 @@ import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @RequiredArgsConstructor
 @Configuration
 public class RepositoryConfig {
     // 어떤 repository 구현체를 사용할지 결정하는 설정파일
 
-    private final JdbcUserRepository jdbcUserRepository;
-    private final JdbcArticleRepository jdbcArticleRepository;
-
     @Bean
-    public UserRepository userRepository() {
-        return jdbcUserRepository;
+    public UserRepository userRepository(JdbcTemplate jdbcTemplate) {
+        return new JdbcUserRepository(jdbcTemplate);
     }
 
     @Bean
-    public ArticleRepository articleRepository() {
-        return jdbcArticleRepository;
+    public ArticleRepository articleRepository(JdbcTemplate jdbcTemplate) {
+        return new JdbcArticleRepository(jdbcTemplate);
     }
 }
