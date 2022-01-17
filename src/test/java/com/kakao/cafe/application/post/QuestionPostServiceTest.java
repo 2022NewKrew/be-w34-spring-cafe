@@ -1,6 +1,6 @@
 package com.kakao.cafe.application.post;
 
-import com.kakao.cafe.post.application.dto.QuestionPostDetailResult;
+import com.kakao.cafe.post.application.dto.result.QuestionPostDetailResult;
 import com.kakao.cafe.user.application.UserAccountService;
 import com.kakao.cafe.post.application.QuestionPostService;
 import com.kakao.cafe.post.domain.QuestionPost;

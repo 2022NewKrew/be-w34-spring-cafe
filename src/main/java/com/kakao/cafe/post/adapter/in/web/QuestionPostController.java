@@ -1,6 +1,6 @@
 package com.kakao.cafe.post.adapter.in.web;
 
-import com.kakao.cafe.post.application.dto.QuestionPostDetailResult;
+import com.kakao.cafe.post.application.dto.result.QuestionPostDetailResult;
 import com.kakao.cafe.post.application.QuestionPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

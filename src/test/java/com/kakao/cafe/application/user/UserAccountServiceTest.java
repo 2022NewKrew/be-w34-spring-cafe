@@ -1,6 +1,6 @@
 package com.kakao.cafe.application.user;
 
-import com.kakao.cafe.user.application.dto.UserAccountEnrollCommand;
+import com.kakao.cafe.user.application.dto.command.UserAccountEnrollCommand;
 import com.kakao.cafe.user.application.UserAccountService;
 import com.kakao.cafe.user.domain.UserAccount;
 import com.kakao.cafe.user.domain.UserAccountRepository;

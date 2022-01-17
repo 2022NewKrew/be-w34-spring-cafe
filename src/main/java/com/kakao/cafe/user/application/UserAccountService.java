@@ -1,6 +1,6 @@
 package com.kakao.cafe.user.application;
 
-import com.kakao.cafe.user.application.dto.UserAccountEnrollCommand;
+import com.kakao.cafe.user.application.dto.command.UserAccountEnrollCommand;
 import com.kakao.cafe.exception.IdNotFoundException;
 import com.kakao.cafe.user.domain.UserAccount;
 import com.kakao.cafe.user.domain.UserAccountRepository;

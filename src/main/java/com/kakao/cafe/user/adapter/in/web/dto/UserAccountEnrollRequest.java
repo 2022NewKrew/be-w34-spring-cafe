@@ -1,6 +1,6 @@
 package com.kakao.cafe.user.adapter.in.web.dto;
 
-import com.kakao.cafe.user.application.dto.UserAccountEnrollCommand;
+import com.kakao.cafe.user.application.dto.command.UserAccountEnrollCommand;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

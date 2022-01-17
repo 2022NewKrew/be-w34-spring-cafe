@@ -1,8 +1,8 @@
 package com.kakao.cafe.post.application;
 
-import com.kakao.cafe.post.application.dto.QuestionPostSaveCommand;
-import com.kakao.cafe.post.application.dto.QuestionPostDetailListResult;
-import com.kakao.cafe.post.application.dto.QuestionPostDetailResult;
+import com.kakao.cafe.post.application.dto.command.QuestionPostSaveCommand;
+import com.kakao.cafe.post.application.dto.result.QuestionPostDetailListResult;
+import com.kakao.cafe.post.application.dto.result.QuestionPostDetailResult;
 import com.kakao.cafe.exception.IdNotFoundException;
 import com.kakao.cafe.user.application.UserAccountService;
 import com.kakao.cafe.post.domain.QuestionPost;
