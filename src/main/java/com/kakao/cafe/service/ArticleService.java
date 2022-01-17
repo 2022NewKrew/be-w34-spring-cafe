@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public void create(Create createDTO, AuthInfo authInfo) {
         Optional<User> foundUser = userRepository.findUserByUid(authInfo.getUid());
         if (foundUser.isEmpty()) {
@@ -40,12 +42,14 @@ public class ArticleService {
         logger.info("Article Created : {}", article);
     }
 
+    @Transactional(readOnly = true)
     public List<Result> readAll() {
         return articleRepository.findAllArticles().stream()
             .map(Result::from)
             .collect(Collectors.toUnmodifiableList());
     }
 
+    @Transactional(readOnly = true)
     public Result readById(Long id) {
         Optional<Article> foundArticle = articleRepository.findArticleById(id);
         if (foundArticle.isEmpty()) {

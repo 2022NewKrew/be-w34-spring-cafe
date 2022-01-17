@@ -58,7 +58,7 @@ public class User {
         return createdAt;
     }
 
-    public boolean validPassword(String password) {
+    public boolean matchPassword(String password) {
         return this.password.equals(password);
     }
 }

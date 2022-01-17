@@ -10,6 +10,7 @@ import com.kakao.cafe.persistence.repository.UserRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,12 +18,13 @@ public class AuthService {
 
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public AuthInfo login(Login loginDTO) {
         Optional<User> foundUser = userRepository.findUserByUid(loginDTO.getUid());
         if (foundUser.isEmpty()) {
             throw new AuthInvalidUidException(ErrorCode.NOT_FOUND, loginDTO.getUid());
         }
-        if (!foundUser.get().validPassword(loginDTO.getPassword())) {
+        if (!foundUser.get().matchPassword(loginDTO.getPassword())) {
             throw new AuthInvalidPasswordException(ErrorCode.AUTHENTICATION_INVALID,
                 loginDTO.getUid());
         }

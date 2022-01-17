@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @Transactional
     public void create(Create createDto) {
         if (userRepository.findUserByUid(createDto.getUid()).isPresent()) {
             throw new UserAlreadyExistsException(ErrorCode.ALREADY_EXISTS, createDto.getUid());
@@ -39,16 +41,19 @@ public class UserService {
         logger.info("User Created : " + user);
     }
 
+    @Transactional
     public void update(AuthInfo authInfo, Update updateDTO) {
         userRepository.update(authInfo.getUid(), updateDTO.getName(), updateDTO.getEmail());
     }
 
+    @Transactional(readOnly = true)
     public List<UserDTO.Result> readAll() {
         return userRepository.findAllUsers().stream()
             .map(Result::from)
             .collect(Collectors.toUnmodifiableList());
     }
 
+    @Transactional(readOnly = true)
     public UserDTO.Result readByUid(String uid) {
         Optional<User> foundUser = userRepository.findUserByUid(uid);
         if (foundUser.isEmpty()) {
