@@ -2,6 +2,7 @@ package com.example.kakaocafe.domain.post;
 
 import com.example.kakaocafe.core.exception.PostBusinessException;
 import com.example.kakaocafe.core.exception.HasNotPermissionException;
+import com.example.kakaocafe.domain.post.comment.CommentDAO;
 import com.example.kakaocafe.domain.post.dto.Post;
 import com.example.kakaocafe.domain.post.dto.PostInfo;
 import com.example.kakaocafe.domain.post.dto.UpdatePostForm;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
     private final PostDAO postDAO;
+    private final CommentDAO commentDAO;
 
     @Transactional
     public long create(WritePostForm writePostForm) {
@@ -50,6 +52,8 @@ public class PostService {
     @Transactional
     public void delete(long postId, long writerId) {
         checkIfCanNotDeleteThrowException(postId, writerId);
+
+        commentDAO.deleteAllByPostId(postId);
         postDAO.delete(postId);
     }
 

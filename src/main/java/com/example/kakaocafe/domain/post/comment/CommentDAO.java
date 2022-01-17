@@ -31,11 +31,6 @@ public class CommentDAO {
         jdbcTemplate.update(sql, commentId);
     }
 
-    /*TODO 게시글 삭제시 코멘트도 같이 삭제 되어야 할까?
-     게시글 복구시 남은 코멘트를 살리고 싶다면?
-     게시글 복구를 할필요가 없다면?
-     요구사항 분석에 따라 아래 함수 필요성이 달라질듯
-     */
     public void deleteAllByPostId(long postId) {
         final String sql = "UPDATE COMMENT " +
                 "SET ISDELETED = true " +
