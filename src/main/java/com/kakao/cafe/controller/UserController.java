@@ -47,10 +47,18 @@ public class UserController {
         return "/user/updateForm";
     }
 
+    @GetMapping("/users/edit/profile")
+    public String editProfile(Model model, HttpSession session) {
+        User loginUser = userService.getLoginUser(session);
+        String userId = loginUser.getUserId();
+        model.addAttribute("userId", userId);
+        return "/user/updateForm";
+    }
+
     @PostMapping("/user/edit")
-    public String editUser(User user) {
-        userService.updateUser(user);
-        return "redirect:/users";
+    public String editUser(User user, HttpSession session) {
+        User loginUser = userService.getLoginUser(session);
+        return userService.updateUser(user, loginUser);
     }
 
     @PostMapping("/login")

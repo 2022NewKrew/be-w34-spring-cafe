@@ -10,6 +10,8 @@ import java.util.List;
 @Service
 public class UserService {
 
+    public static final String SESSIONED_USER = "sessionedUser";
+
     private final UserDao userDao;
 
     public UserService(UserDao userDao) {
@@ -28,13 +30,32 @@ public class UserService {
         userDao.addUser(user);
     }
 
-    public void updateUser(User user) {
+    public String updateUser(User user, User loginUser) {
+        if(loginUser == null)
+            return "/error/not_login_error";
+        if(!isSameUser(user, loginUser))
+            return "/error/incorrect_user_error";
         userDao.updateUser(user);
+        return "redirect:/users";
     }
 
     public void login(String userId, String password, HttpSession session) {
         User user = userDao.getUser(userId, password);
-        session.setAttribute("sessionedUser", user);
+        session.setAttribute(SESSIONED_USER, user);
+    }
+
+    public boolean isSameUser(User user, User loginUser) {
+        if(user.getUserId().equals(loginUser.getUserId()))
+            return true;
+        return false;
+    }
+
+    public User getLoginUser(HttpSession session) {
+        Object loginUserObject = session.getAttribute(SESSIONED_USER);
+        if(loginUserObject == null) {
+            return null;
+        }
+        return (User)loginUserObject;
     }
 
 }
