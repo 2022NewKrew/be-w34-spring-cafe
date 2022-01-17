@@ -1,0 +1,3 @@
+INSERT INTO USERS (USERID, EMAIL, PASSWORD) VALUES ('hoho','hoho@hoho.com', 'haha');
+
+SELECT * FROM USERS;
