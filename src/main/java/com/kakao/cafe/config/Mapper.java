@@ -9,11 +9,14 @@ import java.util.stream.Collectors;
 public class Mapper {
 
     public Member map(JoinMemberDTO memberDto) {
+        Long memberId = memberDto.getMemberId();
         UserId userId = new UserId(memberDto.getUserId());
         Name name = new Name(memberDto.getName());
         Password password = new Password(memberDto.getPassword());
         Email email = new Email(memberDto.getEmail());
-        return new Member(userId, name, password, email);
+        Member member = new Member(userId, name, password, email);
+        member.setMemberId(memberId);
+        return member;
     }
 
     public InquireMemberDto map(Member member) {
@@ -23,10 +26,9 @@ public class Mapper {
                 member.getEmail().getEmail());
     }
 
-    public Article map(PostArticleDto articleDto, Member member) {
+    public Article map(PostArticleDto articleDto) {
         return new Article(new Title(articleDto.getTitle()),
                 new Text(articleDto.getContents()),
-                member,
                 Time.now());
     }
 

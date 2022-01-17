@@ -6,11 +6,10 @@ import com.kakao.cafe.exception.ErrorMessages;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
+//@Repository
 @RequiredArgsConstructor
 @Slf4j
 public class MemoryMemberRepository implements MemberRepository {
@@ -67,8 +66,14 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
+    public Member updateByMemberId(Member member) {
+        Member updateMember = store.get(member.getMemberId());
+        store.put(updateMember.getMemberId(), new Member(updateMember.getUserId(), member.getName(), updateMember.getPassword(), member.getEmail(), updateMember.getMemberId()));
+        return store.get(updateMember.getMemberId());
+    }
+
+    @Override
     public Long isUserIdExist(UserId userId) {
-        boolean flag = false;
         for (Long id : store.keySet()) {
             if (store.get(id).getUserId().equals(userId))
                 return id;

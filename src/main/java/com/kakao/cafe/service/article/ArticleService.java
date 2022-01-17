@@ -8,7 +8,7 @@ public interface ArticleService {
 
     List<Article> inquireAllArticles();
 
-    void postArticle(Article member);
+    void postArticle(Article member, String userId);
 
     Article inquireOneArticle(Long articleId);
 

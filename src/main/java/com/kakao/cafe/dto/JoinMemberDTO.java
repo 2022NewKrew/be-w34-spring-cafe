@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class JoinMemberDTO {
 
+    private Long memberId;
     @NotNull
     private String userId;
     @NotNull

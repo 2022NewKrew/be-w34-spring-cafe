@@ -8,7 +8,7 @@ public class Time {
 
     private final String time;
 
-    protected Time(String time) {
+    public Time(String time) {
         this.time = time;
     }
 

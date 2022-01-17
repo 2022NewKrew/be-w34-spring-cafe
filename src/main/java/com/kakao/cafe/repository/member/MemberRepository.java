@@ -22,4 +22,6 @@ public interface MemberRepository {
     Long isUserIdExist(UserId userId);
 
     boolean isMemberIdExist(Long memberId);
+
+    Member updateByMemberId(Member member);
 }

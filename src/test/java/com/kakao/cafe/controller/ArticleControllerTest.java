@@ -9,7 +9,6 @@ import com.kakao.cafe.domain.member.*;
 import com.kakao.cafe.dto.ArticleListDto;
 import com.kakao.cafe.dto.CommentDto;
 import com.kakao.cafe.dto.InquireArticleDto;
-import com.kakao.cafe.repository.member.MemberRepository;
 import com.kakao.cafe.service.article.ArticleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -39,8 +39,6 @@ public class ArticleControllerTest {
     private Mapper mapper;
     @MockBean
     private ArticleService articleService;
-    @MockBean
-    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("전체 게시글 조회")
@@ -49,8 +47,8 @@ public class ArticleControllerTest {
         Time time = Time.now();
         Article article = new Article(new Title("title"),
                 new Text("text"),
-                new Member(new UserId("rubam"), new Name("david"), new Password("Ab12345!"), new Email("wooky9633@naver.com"), 1L),
                 time);
+        article.setAuthor(new Member(new UserId("rubam"), new Name("david"), new Password("Ab12345!"), new Email("wooky9633@naver.com"), 1L));
         ArticleListDto articleListDto = new ArticleListDto(1L, 1L, "title", "rubam", time.toString());
 
         List<ArticleListDto> result = new ArrayList<>();
@@ -75,8 +73,8 @@ public class ArticleControllerTest {
         Time time = Time.now();
         Article article = new Article(new Title("title"),
                 new Text("text"),
-                new Member(new UserId("rubam"), new Name("david"), new Password("Ab12345!"), new Email("wooky9633@naver.com"), 1L),
                 time);
+        article.setAuthor(new Member(new UserId("rubam"), new Name("david"), new Password("Ab12345!"), new Email("wooky9633@naver.com"), 1L));
         List<CommentDto> comments = new ArrayList<>();
         InquireArticleDto articleDto = new InquireArticleDto(1L, 1L, "title", "text", "rubam", time.toString(), comments);
 
@@ -94,7 +92,9 @@ public class ArticleControllerTest {
     @DisplayName("게시글 작성 시 게시글 목록으로 리다이렉션 테스트")
     void postArticleTest() throws Exception {
         // then
-        mockMvc.perform(post("/questions"))
+        mockMvc.perform(post("/questions")
+                        .content("title=title&contents=text&writer=rubam")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
     }

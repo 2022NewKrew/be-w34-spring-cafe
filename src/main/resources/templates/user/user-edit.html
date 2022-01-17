@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="kr">
+{{>settings/header}}
+{{>settings/navigation-bar}}
+<body>
+<div class="container" id="main">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default content-main">
+            <form action="/users/create" method="post" name="question">
+                <div class="form-group">
+                    <label for="memberId">회원번호</label>
+                    <input class="form-control" id="memberId" name="memberId" readonly value={{member.memberId}}>
+                </div>
+                <div class="form-group">
+                    <label for="userId">사용자 아이디</label>
+                    <input class="form-control" id="userId" name="userId" readonly value={{member.userId}}>
+                </div>
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input class="form-control" id="password" name="password" placeholder="input your password"
+                           type="password">
+                </div>
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input class="form-control" id="name" name="name" value={{member.name}}>
+                </div>
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input class="form-control" id="email" name="email" type="email" value={{member.email}}>
+                </div>
+                <button class="btn btn-success clearfix pull-right" type="submit">수정</button>
+                <div class="clearfix"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{>settings/footer}}
+</body>
+</html>

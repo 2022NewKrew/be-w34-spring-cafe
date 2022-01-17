@@ -93,4 +93,10 @@ public class MemberControllerTest {
                 .andExpect(model().attribute("member", memberDto))
                 .andExpect(view().name("user/user-profile"));
     }
+
+    @Test
+    @DisplayName("회원 정보 수정 테스트")
+    void editMemberProfile() {
+
+    }
 }

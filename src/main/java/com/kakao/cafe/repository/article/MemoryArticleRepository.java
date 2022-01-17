@@ -1,14 +1,14 @@
 package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.Comments;
 import com.kakao.cafe.exception.ErrorMessages;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
+//@Repository
 @RequiredArgsConstructor
 @Slf4j
 public class MemoryArticleRepository implements ArticleRepository {
@@ -18,7 +18,7 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        Article newArticle = new Article(article.getTitle(), article.getText(), article.getAuthor(), article.getTime(), ++sequence);
+        Article newArticle = new Article(article.getTitle(), article.getText(), article.getAuthor(), article.getTime(), new Comments(new ArrayList<>()), ++sequence);
         store.put(newArticle.getArticleId(), newArticle);
         return newArticle;
     }

@@ -7,13 +7,17 @@ public class Text {
     private final String text;
 
     public Text(String text) {
-        String replacedText = text.replaceAll("[<>/]", "");
-        this.text = replacedText.replace("\r\n", "<br>");
+        this.text = text.replaceAll("[<>/]", "");
+    }
+
+
+    public String getText() {
+        return text;
     }
 
     @Override
     public String toString() {
-        return text;
+        return text.replace("\r\n", "<br>");
     }
 
     @Override
