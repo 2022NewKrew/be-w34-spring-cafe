@@ -2,28 +2,27 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserLoginRequest;
 import com.kakao.cafe.mapper.UserMapper;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.security.sasl.AuthenticationException;
 import java.util.List;
 
 @Transactional
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
-    @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
     }
 
     public void save(UserDto userDto) {
-        userRepository.save(userMapper.toEntity(userDto));
+        userRepository.save(UserMapper.INSTANCE.toEntity(userDto));
     }
 
     public User findUser(String userId) {
@@ -40,17 +39,37 @@ public class UserService {
 
     public void updateUserInfo(Long id, UserDto updateUserDto) {
         // updateUser 는 기존 user와 동일한 id를 갖기 때문에 채워주는 과정.
-        User updateUser = userMapper.toEntity(updateUserDto);
+        User updateUser = UserMapper.INSTANCE.toEntity(updateUserDto);
         updateUser.setId(id);
 
         User user = findUser(id);
-        validatePasswordMember(user.getPassword(), updateUser.getPassword());
+        validatePasswordSame(user.getPassword(), updateUser.getPassword());
         userRepository.updateUser(id, updateUser);
     }
 
-    private void validatePasswordMember(String userPassword, String updateUserPassword) {
+    private void validatePasswordSame(String userPassword, String updateUserPassword) {
         if(!userPassword.equals(updateUserPassword)){
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
+    }
+
+    public User validateUserLogin(UserLoginRequest userLoginRequest) throws AuthenticationException {
+        User user;
+        try
+        {
+            user = findUser(userLoginRequest.getUserId());
+        }
+        catch (IllegalArgumentException e)
+        {
+            throw new AuthenticationException();
+        }
+        if(!user.getPassword().equals(userLoginRequest.getPassword()))
+            throw new AuthenticationException();
+        return user;
+    }
+    public void validateUserUpdate(User sessionUser, Long userId) throws AuthenticationException {
+
+        if(!sessionUser.getUserId().equals(userId))
+            throw new AuthenticationException();
     }
 }

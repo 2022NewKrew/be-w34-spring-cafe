@@ -1,0 +1,2 @@
+INSERT INTO USER_TABLE (id, userId, password, name, email, time) VALUES (1, 'javajigi', 'test', '자바지기', 'javajigi@slipp.net', now());
+INSERT INTO USER_TABLE (id, userId, password, name, email, time) VALUES (2, 'sanjigi', 'test', '산지기', 'sanjigi@slipp.net' , now());

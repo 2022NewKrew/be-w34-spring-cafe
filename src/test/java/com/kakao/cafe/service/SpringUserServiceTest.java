@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @SpringBootTest
 public class SpringUserServiceTest {
+    /*
     @Autowired private UserService userService;
     @Autowired private UserRepository userRepository;
     @Autowired private UserMapper userMapper;
@@ -35,4 +36,6 @@ public class SpringUserServiceTest {
         Assertions.assertThat(findUser.getEmail()).isEqualTo(userDto.getEmail());
         Assertions.assertThat(findUser.getPassword()).isEqualTo(userDto.getPassword());
     }
+    */
+
 }

@@ -4,7 +4,6 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.mapper.ArticleMapper;
 import com.kakao.cafe.repository.ArticleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,17 +13,14 @@ import java.util.List;
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
-    private final ArticleMapper articleMapper;
 
-    @Autowired
-    public ArticleService(ArticleRepository articleRepository, ArticleMapper articleMapper) {
+    public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
-        this.articleMapper = articleMapper;
     }
 
 
     public void save(ArticleDto articleDto) {
-        articleRepository.save(articleMapper.toEntity(articleDto));
+        articleRepository.save(ArticleMapper.INSTANCE.toEntity(articleDto));
     }
 
     public Article findArticle(Long id) {
