@@ -4,6 +4,7 @@
 version: '3.0'
 services:
   cafe_server:
+    image: jindomin/cafe-server:1.0.0
     build:
       context: .
       dockerfile: DockerfileServer
@@ -15,6 +16,7 @@ services:
       - mysql
 
   mysql:
+    image: jindomin/mysql:1.0.0
     build:
       context: .
       dockerfile: DockerfileDatabase
