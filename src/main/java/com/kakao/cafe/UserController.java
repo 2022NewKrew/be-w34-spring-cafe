@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
@@ -102,7 +103,7 @@ public class UserController { Logger logger = LoggerFactory.getLogger(UserContro
 
     @GetMapping("/user/{id}/form")
     public String updateForm(@PathVariable String id, Model model) {
-        logger.info("[updateForm] id = {}", id);
+        logger.info("GET /user/{id}/form: id = {}", id);
         User selectedUser = findUserById(id);
         if(selectedUser == null) {
             return "user/updateForm";
@@ -129,10 +130,50 @@ public class UserController { Logger logger = LoggerFactory.getLogger(UserContro
         }
     }
 
-    @PostMapping("/user/{userId}/update")
-    public String updateUserInfo(@PathVariable String userId, String password, String name, String email) {
-        logger.info("[updateUserInfo] UserId = {}, password = {}, name = {}, email = {}", userId, password, name, email);
-        updateUserById(userId, password, name, email);
-        return "redirect:/users";
+    @PostMapping("/user/{pathUserId}/update")
+    public String updateUserInfo(String userId, String password, String name, String email, HttpSession session) {
+        logger.info("POST /user/{}/update UserId = {}, password = {}, name = {}, email = {}", userId, userId, password, name, email);
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null) {
+            logger.info("Session is null");
+            session.setAttribute("errormsg", "세션이 만료되었습니다.");
+            return "redirect:/user/error";
+        }
+        User user = (User)value;
+        if(user.getUserId().equals(userId) && user.getPassword().equals(password)) {
+            logger.info("Update name and email: name = {}, email = {}", name, email);
+            updateUserById(userId, password, name, email);
+            return "redirect:/users";
+        }
+        logger.info("Wrong userId or password");
+        session.setAttribute("errormsg", "사용자 아이디 혹은 비밀번호가 일치하지 않습니다.");
+        return "redirect:/user/error";
+    }
+
+    @PostMapping("/user/login")
+    public String login(String userId, String password, HttpSession session) {
+        logger.info("POST /user/login: userId = {}, password = {}", userId, password);
+        User user = findUserById(userId);
+        if(user == null) {
+            logger.info("Cannot find userId = {}", userId);
+            return "redirect:/user/login";
+        }
+        if(!user.getPassword().equals(password)) {
+            logger.info("Wrong password for userId = {}", userId);
+            return "redirect:/user/login";
+        }
+        session.setAttribute("sessionedUser", user);
+        return "redirect:/";
+    }
+
+    @GetMapping("/user/login")
+    public String login() {
+        return "/user/login";
+    }
+
+    @GetMapping("/user/error")
+    public String error(HttpSession session) {
+        logger.info("GET /user/error");
+        return "user/error";
     }
 }
