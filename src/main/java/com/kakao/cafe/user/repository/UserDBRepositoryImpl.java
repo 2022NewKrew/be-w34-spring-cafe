@@ -2,6 +2,7 @@ package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.repository.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -11,20 +12,14 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 @Primary
+@RequiredArgsConstructor
 public class UserDBRepositoryImpl  implements UserRepository{
-    private JdbcTemplate jdbcTemplate;
-
-    public UserDBRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        // 기본 유저 생성
-        this.jdbcTemplate = jdbcTemplate;
-        persist(new UserCreateRequestDTO("aiden.jang", "aiden@kakaocorp.com", "aiden", "1234", LocalDateTime.now()));
-    }
+    private final JdbcTemplate jdbcTemplate;
 
     public User find(Long id) {
         String SQL = "SELECT * FROM USERS WHERE ID = ?";

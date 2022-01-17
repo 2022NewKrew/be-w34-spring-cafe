@@ -3,20 +3,14 @@ package com.kakao.cafe.user.repository;
 import com.kakao.cafe.user.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class UserMemoryRepositoryImpl implements UserRepository {
-    private static AtomicLong idSequence = new AtomicLong();
+    private final static AtomicLong idSequence = new AtomicLong();
     private final static HashMap<Long, User> userDB = new HashMap<>();
-
-    public UserMemoryRepositoryImpl() {
-        // 기본 유저 생성
-        persist(new UserCreateRequestDTO("aiden.jang", "aiden@kakaocorp.com", "aiden", "1234", LocalDateTime.now()));
-    }
 
     public User find(Long id) {
         return userDB.get(id);

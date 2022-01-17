@@ -5,8 +5,10 @@ import com.kakao.cafe.user.repository.UserCreateRequestDTO;
 import com.kakao.cafe.user.repository.UserRepository;
 import com.kakao.cafe.user.repository.UserUpdateRequestDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,11 +16,19 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
+    @PostConstruct
+    private void init() {
+        createUser("aiden.jang", "aiden@kakaocorp.com", "에이든", "1234");
+        createUser("javajigi", "javajigi@slipp.net", "자바지기", "test");
+        createUser("sanjigi", "sanjigi@slipp.net", "산지기", "test");
+        log.info("Add test user data: 에이든, 자바지기, 산지기");
+    }
     public Long createUser(String stringId, String email, String nickName, String passWord) {
         return userRepository.persist(new UserCreateRequestDTO(stringId, email, nickName, passWord, LocalDateTime.now()));
     }
