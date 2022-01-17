@@ -19,7 +19,7 @@ public class WriteArticleService implements WriteArticleUseCase {
     public ArticleId write(WriteArticleDto writeArticleDto) {
         CreateArticleDto createArticleDto = new CreateArticleDto(
             writeArticleDto.getTitle(),
-            writeArticleDto.getTitle());
+            writeArticleDto.getContent());
 
         return saveArticlePort.save(createArticleDto);
     }
