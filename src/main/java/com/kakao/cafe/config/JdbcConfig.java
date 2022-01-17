@@ -1,6 +1,8 @@
 package com.kakao.cafe.config;
 
 import javax.sql.DataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -11,11 +13,12 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 @Configuration
 public class JdbcConfig {
 
+    private Logger logger = LoggerFactory.getLogger(JdbcConfig.class);
+
     @Bean
     @Profile("local")
     public DataSource dataSource() {
-        System.out.println("------local------");
-        System.out.println();
+        logger.info("---------local----------");
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("kakaodb")
@@ -27,10 +30,10 @@ public class JdbcConfig {
     @Bean
     @Profile("dev")
     public DataSource mysqlDataSource() {
-        System.out.println("------dev------");
-        System.out.println();
+        logger.info("---------dev----------");
+
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/kakaodb");
         dataSource.setUsername("kakao");
         dataSource.setPassword("kakao");
