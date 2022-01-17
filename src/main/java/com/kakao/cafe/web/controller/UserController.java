@@ -6,12 +6,16 @@ import com.kakao.cafe.web.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +26,28 @@ public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
+
+
+    @PostMapping("/login")
+    public String login(String userId, String password, HttpSession session) {
+        // 로그인 로직 구현
+        logger.info("POST /login: request userId={}, password={}", userId, password);
+        // userId, password 검사해서 실제 DB에 저장된 사용자인지 체크
+        try {
+            User sessionUser = userService.authenticate(userId, password);
+            session.setAttribute("sessionUser", sessionUser);
+            return "redirect:/";
+        } catch (IllegalArgumentException e) {
+            return "redirect:/user/loginForm";
+        }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        // 세션 지우기
+        session.invalidate();
+        return "redirect:/";
+    }
 
     @Autowired
     public UserController(UserService userService) {
