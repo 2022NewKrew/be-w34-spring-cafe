@@ -3,7 +3,7 @@ package com.kakao.cafe.repository.jdbc;
 import com.kakao.cafe.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.domain.entity.Article;
 import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.web.util.TimeStringParser;
+import com.kakao.cafe.util.TimeStringParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
