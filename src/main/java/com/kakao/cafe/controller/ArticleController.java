@@ -12,8 +12,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -26,8 +24,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequiredArgsConstructor
 public class ArticleController {
-
-    private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     private final ArticleService articleService;
 

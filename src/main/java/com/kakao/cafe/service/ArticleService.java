@@ -44,7 +44,9 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public List<Result> readAll() {
-        return articleRepository.findAllArticles().stream()
+        List<Article> articles = articleRepository.findAllArticles();
+        logger.info("Read All Articles {}", articles);
+        return articles.stream()
             .map(Result::from)
             .collect(Collectors.toUnmodifiableList());
     }
@@ -56,6 +58,7 @@ public class ArticleService {
             throw new ArticleNotFoundException(ErrorCode.NOT_FOUND, id);
         }
 
+        logger.info("Read Article by [ID : {}] :: {}", id, foundArticle.get());
         return Result.from(foundArticle.get());
     }
 }

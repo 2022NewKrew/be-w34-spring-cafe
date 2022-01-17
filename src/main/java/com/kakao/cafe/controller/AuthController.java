@@ -7,8 +7,6 @@ import com.kakao.cafe.service.AuthService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService;
 
     @PostMapping

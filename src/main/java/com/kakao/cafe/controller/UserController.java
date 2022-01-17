@@ -13,8 +13,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 public class UserController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     @PostMapping

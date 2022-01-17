@@ -1,12 +1,10 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Result;
 import com.kakao.cafe.dto.UserDTO.Update;
 import com.kakao.cafe.error.ErrorCode;
 import com.kakao.cafe.error.exception.UserAlreadyExistsException;
-import com.kakao.cafe.error.exception.UserInvalidAuthInfoException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.persistence.model.User;
@@ -38,28 +36,33 @@ public class UserService {
             createDto.getName(), createDto.getEmail());
 
         userRepository.save(user);
-        logger.info("User Created : " + user);
+        logger.info("User Created : {}", user);
     }
 
     @Transactional
     public void update(AuthInfo authInfo, Update updateDTO) {
         userRepository.update(authInfo.getUid(), updateDTO.getName(), updateDTO.getEmail());
+        logger.info("User Modified [UID : {}] [Name : {}] [Email : {}", authInfo.getUid(),
+            updateDTO.getName(), updateDTO.getEmail());
     }
 
     @Transactional(readOnly = true)
-    public List<UserDTO.Result> readAll() {
-        return userRepository.findAllUsers().stream()
+    public List<Result> readAll() {
+        List<User> users = userRepository.findAllUsers();
+        logger.info("Read All Users {}", users);
+        return users.stream()
             .map(Result::from)
             .collect(Collectors.toUnmodifiableList());
     }
 
     @Transactional(readOnly = true)
-    public UserDTO.Result readByUid(String uid) {
+    public Result readByUid(String uid) {
         Optional<User> foundUser = userRepository.findUserByUid(uid);
         if (foundUser.isEmpty()) {
             throw new UserNotFoundException(ErrorCode.NOT_FOUND, uid);
         }
 
+        logger.info("Read User by [UID : {}] :: {}", uid, foundUser.get());
         return Result.from(foundUser.get());
     }
 }
