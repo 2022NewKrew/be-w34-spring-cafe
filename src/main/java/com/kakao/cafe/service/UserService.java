@@ -22,8 +22,16 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User profile(int id) {
+    public User findUser(Integer id) {
         return userRepository.findById(id).get();
+    }
+
+    public User login(String userId, String password) {
+        User user = userRepository.findByUserId(userId).orElse(null);
+        if (user != null && user.getPassword().equals(password)) {  // TODO: 여기도 exception으로 처리하기
+            return user;
+        }
+        return null;
     }
 
     public List<User> list() {
@@ -40,4 +48,5 @@ public class UserService {
         userRepository.update(user);
         return true;
     }
+
 }
