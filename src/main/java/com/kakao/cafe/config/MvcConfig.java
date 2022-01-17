@@ -13,8 +13,8 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        registry.addViewController("/signup").setViewName("/user/form");
-        registry.addViewController("/posts/write").setViewName("/post/form");
+        registry.addViewController("/signup").setViewName("user/form");
+        registry.addViewController("/posts/write").setViewName("post/form");
     }
 
     @Bean

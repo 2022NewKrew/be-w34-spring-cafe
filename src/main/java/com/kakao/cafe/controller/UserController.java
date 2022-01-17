@@ -47,7 +47,7 @@ public class UserController {
     @GetMapping("/users/{id}/update")
     public String getUpdateForm(@PathVariable long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
-        return "/user/updateForm";
+        return "user/updateForm";
     }
 
     @PutMapping("/users/{id}")
