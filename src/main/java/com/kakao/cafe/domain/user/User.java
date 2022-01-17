@@ -39,14 +39,22 @@ public class User {
         this.joinDateTime = joinDateTime;
     }
 
+    public User(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.joinDateTime = LocalDateTime.now();
+    }
+
     public static User of(UserForm userForm){
-        return builder()
-                .userId(userForm.getUserId())
-                .password(userForm.getPassword())
-                .name(userForm.getName())
-                .email(userForm.getEmail())
-                .build();
-//        return new User(userForm.getUserId(), userForm.getPassword(), userForm.getName(), userForm.getEmail());
+//        return User.builder()
+//                .userId(userForm.getUserId())
+//                .password(userForm.getPassword())
+//                .name(userForm.getName())
+//                .email(userForm.getEmail())
+//                .build();
+        return new User(userForm.getUserId(), userForm.getPassword(), userForm.getName(), userForm.getEmail());
     }
 
     public Long getId() {

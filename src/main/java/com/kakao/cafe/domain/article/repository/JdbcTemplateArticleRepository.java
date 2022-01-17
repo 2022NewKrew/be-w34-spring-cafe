@@ -30,18 +30,23 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public ArticleRowDataDto save(ArticleRowDataDto articleRowDataDto) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("articles").usingGeneratedKeyColumns("id");
+//        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+//        jdbcInsert.withTableName("articles").usingGeneratedKeyColumns("id");
+//
+//        Map<String, Object> parameters = new HashMap<>();
+//
+//        parameters.put("writer", articleRowDataDto.getWriterId());
+//        parameters.put("title", articleRowDataDto.getTitle());
+//        parameters.put("contents", articleRowDataDto.getContents());
+//        parameters.put("registerDateTime", articleRowDataDto.getRegisterDateTime());
+//
+//        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+//        articleRowDataDto.setId(key.longValue());
 
-        Map<String, Object> parameters = new HashMap<>();
+        final String sql = "insert into " + TableName.ARTICLE + " (`writer`, `title`, `contents`, `registerDateTime`) values (?,?,?)";
 
-        parameters.put("writer", articleRowDataDto.getWriterId());
-        parameters.put("title", articleRowDataDto.getTitle());
-        parameters.put("contents", articleRowDataDto.getContents());
-        parameters.put("registerDateTime", articleRowDataDto.getRegisterDateTime());
+        jdbcTemplate.update(sql, articleRowDataDto.getWriterId(), articleRowDataDto.getTitle(), articleRowDataDto.getContents(), articleRowDataDto.getRegisterDateTime());
 
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-        articleRowDataDto.setId(key.longValue());
         return articleRowDataDto;
     }
 
