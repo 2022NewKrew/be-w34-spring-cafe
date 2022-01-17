@@ -46,7 +46,8 @@ public class MemberController {
     }
 
     @GetMapping("/users/{memberId}")
-    public String inquireMemberProfile(@PathVariable("memberId") @NotNull Long memberId, Model model) {
+    @LoginCheckAnnotation
+    public String inquireMemberProfile(@PathVariable("memberId") Long memberId, Model model) {
         InquireMemberDto member = convertToDto(memberService.inquireOneMember(memberId));
         log.info("{} information inquire", member.getUserId());
         model.addAttribute("member", member);
@@ -54,7 +55,8 @@ public class MemberController {
     }
 
     @GetMapping("/users/edit/{memberId}")
-    public String editMemberInformation(@PathVariable("memberId") @NotNull Long memberId, Model model) {
+    @LoginCheckAnnotation
+    public String editMemberInformationForm(@PathVariable("memberId") Long memberId, Model model) {
         Member member = memberService.inquireOneMember(memberId);
         InquireMemberDto memberDto = mapper.map(member);
         model.addAttribute("member", memberDto);

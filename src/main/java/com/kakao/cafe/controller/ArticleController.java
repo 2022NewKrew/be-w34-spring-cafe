@@ -28,10 +28,17 @@ public class ArticleController {
     private final Mapper mapper;
 
     @PostMapping("/questions")
+    @LoginCheckAnnotation
     public String postArticle(@Valid PostArticleDto articleDto) {
         Article article = convertToArticle(articleDto);
         articleService.postArticle(article, articleDto.getWriter());
         return "redirect:/";
+    }
+
+    @GetMapping("/questions-form")
+    @LoginCheckAnnotation
+    public String getPostArticleForm() {
+        return "qna/questions-form";
     }
 
     @GetMapping("/")
@@ -44,6 +51,7 @@ public class ArticleController {
     }
 
     @GetMapping("/questions/{articleId}")
+    @LoginCheckAnnotation
     public String inquireArticle(@PathVariable("articleId") @NotNull Long articleId, Model model) {
         Article article = articleService.inquireOneArticle(articleId);
         model.addAttribute("article", convertToInquireArticleDto(article));
