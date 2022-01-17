@@ -13,9 +13,9 @@
                 </div>
                 <div class="form-group">
                     <select class="form-writer-control" id="userId" name="userId" placeholder="작성자를 선택해주세요">
-                        {{#writeUsers.users}}
+                        {{#writeUsers.userResponses}}
                         <option value="{{id}}">{{nickname}}</option>
-                        {{/writeUsers.users}}
+                        {{/writeUsers.userResponses}}
                     </select>
                 </div>
             </div>
@@ -39,8 +39,9 @@
                 </div>
             </div>
             <div class="both-container">
-                <input class="large-btn" type="submit" value="등록"/>
                 <input class="large-btn" type="button" onclick="location.href='/'" value="목록으로"/>
+                <input class="large-btn" type="submit" value="등록"/>
+
             </div>
         </form>
     </div>
