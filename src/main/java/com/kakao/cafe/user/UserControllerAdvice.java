@@ -3,6 +3,7 @@ package com.kakao.cafe.user;
 import com.kakao.cafe.user.exception.CustomDuplicateUserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,6 @@ public class UserControllerAdvice {
     public ResponseEntity<String> handleCustomDuplicateUserException(
         CustomDuplicateUserException e) {
         logger.info("[ERROR] 중복된 유저 아이디", e.getCause());
-        return ResponseEntity.status(CustomDuplicateUserException.CODE).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 }

@@ -33,7 +33,6 @@ public class UserRepository {
         } catch (DuplicateKeyException e) {
             throw new CustomDuplicateUserException(e);
         }
-
     }
 
     public Users findAll() {
