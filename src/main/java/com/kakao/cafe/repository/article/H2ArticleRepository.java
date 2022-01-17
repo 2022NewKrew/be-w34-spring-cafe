@@ -28,7 +28,6 @@ import java.util.Optional;
 @Repository
 public class H2ArticleRepository implements ArticleRepository {
 
-//    @Autowired
     private final JdbcTemplate jdbcTemplate;
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
