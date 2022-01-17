@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,13 @@ public class UserService {
         }
         user.setPassword(newPassword);
         userDao.updateUser(dtoToVoMapper(user));
+    }
+
+    public void loginUser(UserDto user, String password, HttpSession session) {
+        if (!user.getPassword().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        session.setAttribute("sessionedUser", user);
     }
 
     private UserVo dtoToVoMapper(UserDto userDto) {

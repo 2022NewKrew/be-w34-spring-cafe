@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Controller
@@ -61,6 +62,18 @@ public class UserController {
     @PutMapping("/{userId}/update")
     public String update(UserDto user, String newPassword) {
         userService.updateUser(user, newPassword);
+        return "redirect:";
+    }
+
+    @GetMapping("/login")
+    public String loginView() {
+        return "user/login";
+    }
+
+    @PostMapping("/login")
+    public String login(String userId, String password, HttpSession session) {
+        UserDto user = userService.filterUserById(userId);
+        userService.loginUser(user, password, session);
         return "redirect:";
     }
 }
