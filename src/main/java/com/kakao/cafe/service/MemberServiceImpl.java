@@ -55,6 +55,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public void logout(HttpSession session) {
+        session.invalidate();
+    }
+
+    @Override
     public List<MemberDto> getMemberList() {
         Optional<List<Member>> userList = memberRepository.findAll();
 

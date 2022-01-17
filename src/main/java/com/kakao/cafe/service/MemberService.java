@@ -11,4 +11,5 @@ public interface MemberService {
     List<MemberDto> getMemberList();
     MemberDto getMember(String userId);
     void login(String userId, String password, HttpSession session);
+    void logout(HttpSession session);
 }
