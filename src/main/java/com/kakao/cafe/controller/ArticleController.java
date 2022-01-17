@@ -59,9 +59,6 @@ public class ArticleController {
             return "redirect:/login";
         }
 
-        final HttpSession session = request.getSession();
-        articleDto.setUserId((String)session.getAttribute(AuthControl.TAG_ID));
-
         articleService.add(articleDto);
         logger.info("New Article added: " + articleDto.getTitle());
         return "redirect:/";
