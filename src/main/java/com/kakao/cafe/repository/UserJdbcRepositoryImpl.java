@@ -15,34 +15,35 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class UserJdbcRepositoryImpl implements UserRepository {
+	private final static String SAVE_QUERY = "INSERT INTO `user`(user_id, password, name, email) VALUES(?, ?, ?, ?)";
+	private final static String FIND_ALL_QUERY = "SELECT * FROM `user`";
+	private final static String FIND_BY_ID_QUERY = "SELECT * FROM `user` WHERE id = ?";
+	private final static String UPDATE_QUERY = "UPDATE `user` SET password = ?, name = ?, email = ? WHERE id = ?";
+
 	private final JdbcTemplate jdbcTemplate;
 	private final UserRowMapper userRowMapper;
 
 	@Override
 	public void save(User user) {
-		String sql = "INSERT INTO `user`(user_id, password, name, email) VALUES(?, ?, ?, ?)";
-		jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+		jdbcTemplate.update(SAVE_QUERY, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
 	}
 
 	@Override
 	public List<User> findAll() {
-		String sql = "SELECT * FROM `user`";
-		List<User> userList = jdbcTemplate.query(sql, userRowMapper);
+		List<User> userList = jdbcTemplate.query(FIND_ALL_QUERY, userRowMapper);
 
 		return userList;
 	}
 
 	@Override
 	public User findById(int id) {
-		String sql = "SELECT * FROM `user` WHERE id = ?";
-		User user = jdbcTemplate.queryForObject(sql, userRowMapper, id);
+		User user = jdbcTemplate.queryForObject(FIND_BY_ID_QUERY, userRowMapper, id);
 
 		return user;
 	}
 
 	@Override
 	public void update(int id, User user) {
-		String sql = "UPDATE `user` SET password = ?, name = ?, email = ? WHERE id = ?";
-		jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getEmail(), id);
+		jdbcTemplate.update(UPDATE_QUERY, user.getPassword(), user.getName(), user.getEmail(), id);
 	}
 }
