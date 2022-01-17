@@ -1,14 +1,13 @@
 package com.kakao.cafe.controller.viewdto.response;
 
-import com.kakao.cafe.user.service.UserProfileResponseDTO;
-
 import java.util.HashMap;
 
 public class UserProfileResponse extends HashMap<String, Object> {
-    public UserProfileResponse(UserProfileResponseDTO dto) {
-        this.put("stringId", dto.getStringId());
 
-        this.put("name", dto.getNickName());
-        this.put("email", dto.getEmail());
+    public UserProfileResponse(String stringId, String name, String email){
+        this.put("stringId", stringId);
+        this.put("name", name);
+        this.put("email", email);
     }
+
 }

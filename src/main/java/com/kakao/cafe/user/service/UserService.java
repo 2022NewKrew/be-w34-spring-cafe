@@ -1,15 +1,14 @@
 package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.repository.UserCreateRequestDTO;
 import com.kakao.cafe.user.domain.UserRepository;
-import com.kakao.cafe.user.repository.UserUpdateRequestDTO;
+import com.kakao.cafe.user.service.dto.AllUserProfileServiceResponse;
+import com.kakao.cafe.user.service.dto.UserProfileServiceResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
@@ -22,6 +21,7 @@ import java.util.stream.Stream;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserServiceDTOMapper userServiceResponseMapper;
 
     @PostConstruct
     private void init() {
@@ -31,17 +31,22 @@ public class UserService {
         log.info("Add test user data: 에이든, 자바지기, 산지기");
     }
 
-    public Long createUser(String stringId, String email, String nickName, String passWord) {
-        return userRepository.persist(new UserCreateRequestDTO(stringId, email, nickName, passWord, LocalDateTime.now()));
+    public Long createUser(String stringId, String email, String name, String password) {
+        User user = User.builder()
+                .stringId(stringId)
+                .email(email)
+                .name(name)
+                .password(password).build();
+        return userRepository.persist(user);
     }
 
-    public GetSignUpResultResponseDTO getSignUpResultViewData(Long userId) {
+    public UserProfileServiceResponse getSignUpResultViewData(Long userId) {
         Optional<User> op = userRepository.find(userId);
-        User user = op.orElseThrow(()->new IllegalArgumentException("존재하지 않는 사용자입니다."));
-        return new GetSignUpResultResponseDTO(user.getStringId(), user.getEmail(), user.getNickName());
+        User user = op.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        return userServiceResponseMapper.convertToUserProfileServiceResponse(user);
     }
 
-    public AllUsersResponseDTO getAllUserViewData(Long startIndex, Long endIndex) {
+    public AllUserProfileServiceResponse getAllUserViewData(Long startIndex, Long endIndex) {
         ArrayList<User> userCollection = userRepository.findAll();
         if (startIndex < 0) {
             startIndex = 0L;
@@ -50,7 +55,7 @@ public class UserService {
             endIndex = userCollection.size() + 1L;
         }
         if (startIndex > userCollection.size() || startIndex >= endIndex) {
-            return new AllUsersResponseDTO(new ArrayList<User>());
+            return new AllUserProfileServiceResponse(new ArrayList<User>());
         }
         Stream<User> stream = userCollection.stream();
         if (startIndex > 0) {
@@ -58,24 +63,20 @@ public class UserService {
         }
         ArrayList<User> users = stream.limit(endIndex - startIndex).collect(Collectors.toCollection(ArrayList::new));
         Collections.reverse(users);
-        return new AllUsersResponseDTO(users);
+        return new AllUserProfileServiceResponse(users);
     }
 
-    public AllUsersResponseDTO getAllUserViewData(Long startIndex) {
+    public AllUserProfileServiceResponse getAllUserViewData(Long startIndex) {
         ArrayList<User> users = userRepository.findAll()
                 .stream().skip(startIndex).collect(Collectors.toCollection(ArrayList::new));
         Collections.reverse(users);
-        return new AllUsersResponseDTO(users);
+        return new AllUserProfileServiceResponse(users);
     }
 
-    public UserProfileResponseDTO getUserProfile(Long userId) {
-        Optional<User> op = userRepository.find(userId);
-        User user = op.orElseThrow(()->new IllegalArgumentException("존재하지 않는 사용자입니다."));
-        return new UserProfileResponseDTO(user.getNickName(), user.getEmail(), user.getStringId());
-    }
-
-    public UserProfileResponseDTO getUserProfile(String stringId) {
-        return getUserProfile(getUserDBId(stringId));
+    public UserProfileServiceResponse getUserProfile(String stringId) {
+        Optional<User> op = userRepository.find(stringId);
+        User user = op.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        return userServiceResponseMapper.convertToUserProfileServiceResponse(user);
     }
 
     private Long getUserDBId(String stringId) {
@@ -83,26 +84,32 @@ public class UserService {
         return user.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 입니다.")).getId();
     }
 
-    public void updateUserInfo(Long userId, String oldPassword, String newPassword, String name, String email) {
+
+    public void updateUserInfo(String stringId, String oldPassword, String newPassword, String name, String email) {
         // 검증
-        if (!validateUserPassWord(userId, oldPassword)) {
+        if (!validateUserPassWord(stringId, oldPassword)) {
             throw new IllegalArgumentException("비밀번호가 틀립니다.");
         }
         // 업데이터
-        userRepository.updateUserInfo(new UserUpdateRequestDTO(userId, newPassword, name, email));
+        User user = User.builder()
+                .stringId(stringId)
+                .password(newPassword)
+                .name(name)
+                .email(email)
+                .build();
+
+        userRepository.updateUserInfo(user);
     }
 
-    public void updateUserInfo(String userStringId, String oldPassword, String newPassword, String name, String email) {
-        updateUserInfo(getUserDBId(userStringId), oldPassword, newPassword, name, email);
-    }
 
-
-    public boolean validateUserPassWord(Long userId, String password) {
-        Optional<User> op = userRepository.find(userId);
-        User user = op.orElseThrow(()->new IllegalArgumentException("존재하지 않는 사용자 입니다."));
-        if (password.equals(user.getPassword())){
+    public boolean validateUserPassWord(String stringId, String password) {
+        Optional<User> op = userRepository.find(stringId);
+        User user = op.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
+        if (password.equals(user.getPassword())) {
             return true;
         }
         return false;
     }
+
+
 }

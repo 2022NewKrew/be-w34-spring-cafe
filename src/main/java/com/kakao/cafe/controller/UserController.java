@@ -4,8 +4,8 @@ import com.kakao.cafe.controller.viewdto.request.UserCreateRequest;
 import com.kakao.cafe.controller.viewdto.request.UserUpdateRequest;
 import com.kakao.cafe.controller.viewdto.response.UserListResponse;
 import com.kakao.cafe.controller.viewdto.response.UserProfileResponse;
-import com.kakao.cafe.controller.viewdto.response.UserUpdateResponse;
 import com.kakao.cafe.user.service.UserService;
+import com.kakao.cafe.user.service.dto.UserProfileServiceResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -38,7 +38,8 @@ public class UserController {
     @GetMapping("/profile/{id}")
     public String userProfile(@PathVariable("id") String stringId, Model model) {
         log.info("GET /user/profile/{}", stringId);
-        model.addAllAttributes(new UserProfileResponse(userService.getUserProfile(stringId)));
+        UserProfileServiceResponse res = userService.getUserProfile(stringId);
+        model.addAllAttributes(new UserProfileResponse(res.getStringId(), res.getName(), res.getEmail()));
         return "user/profile";
     }
 
@@ -54,10 +55,11 @@ public class UserController {
         return "user/form";
     }
 
-    @GetMapping("/update/{id}")
-    public String updateUserForm(@PathVariable("id") String userStringId,  Model model) {
-        log.info("GET /user/update id: {}", userStringId);
-        model.addAllAttributes(new UserUpdateResponse(userService.getUserProfile(userStringId)));
+    @GetMapping("/update/{stringId}")
+    public String updateUserForm(@PathVariable String stringId,  Model model) {
+        log.info("GET /user/update id: {}", stringId);
+        UserProfileServiceResponse res = userService.getUserProfile(stringId);
+        model.addAllAttributes(new UserProfileResponse(res.getStringId(), res.getName(), res.getEmail()));
         return "user/update";
     }
     // 아무나 프로필 수정 가능해야 한다.

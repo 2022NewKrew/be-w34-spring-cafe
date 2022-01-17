@@ -43,24 +43,24 @@ public class UserDBRepositoryImpl  implements UserRepository {
         return new ArrayList<User>(users);
     }
 
-    public Long persist(UserCreateRequestDTO dto) {
+    @Override
+    public Long persist(User user) {
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(conn -> {
             PreparedStatement statement = conn.prepareStatement("INSERT INTO USERS (string_id, password, name, email, sign_up_date) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, dto.getStringId());
-            statement.setString(2, dto.getPassword());
-            statement.setString(3, dto.getNickName());
-            statement.setString(4, dto.getEmail());
-            statement.setTimestamp(5, Timestamp.valueOf(dto.getSignUpDate()));
+            statement.setString(1, user.getStringId());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getName());
+            statement.setString(4, user.getEmail());
+            statement.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
             return statement;
         }, generatedKeyHolder);
 
         return generatedKeyHolder.getKey().longValue();
     }
 
-    public void updateUserInfo(UserUpdateRequestDTO dto) {
-        String SQL = "UPDATE USERS SET password = ?, name = ?, email = ? WHERE id = ?";
-        jdbcTemplate.update(SQL, dto.getNewPassword(), dto.getName(), dto.getEmail(), dto.getUserId());
-//        jdbcTemplate.update(SQL, new Object[]{dto.getNewPassword(), dto.getName(), dto.getEmail(), dto.getUserId()});
+    public void updateUserInfo(User user) {
+        String SQL = "UPDATE USERS SET password = ?, name = ?, email = ? WHERE string_id = ?";
+        jdbcTemplate.update(SQL, user.getPassword(), user.getName(), user.getEmail(), user.getStringId());
     }
 }

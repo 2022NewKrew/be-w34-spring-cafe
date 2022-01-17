@@ -14,7 +14,7 @@ public class UserMapper implements RowMapper<User> {
                 .id(rs.getLong("id"))
                 .stringId(rs.getString("string_id"))
                 .email(rs.getString("email"))
-                .nickName(rs.getString("name"))
+                .name(rs.getString("name"))
                 .password(rs.getString("password"))
                 .signUpDate(rs.getTimestamp("sign_up_date").toLocalDateTime())
                 .build();

@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 public class ArticleListResponse extends HashMap<String, Object> {
 
-
     public ArticleListResponse(AllArticlesResponseDTO dto) {
         ArrayList<HashMap<String, Object>> articles = new ArrayList<>();
         int index = dto.getArticles().size();

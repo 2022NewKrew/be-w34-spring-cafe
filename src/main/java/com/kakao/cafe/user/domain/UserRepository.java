@@ -1,14 +1,11 @@
 package com.kakao.cafe.user.domain;
 
-import com.kakao.cafe.user.repository.UserCreateRequestDTO;
-import com.kakao.cafe.user.repository.UserUpdateRequestDTO;
-
 import java.util.ArrayList;
 import java.util.Optional;
 
 public interface UserRepository {
 
-    Long persist(UserCreateRequestDTO dto);
+    Long persist(User user);
 
     Optional<User> find(Long id);
 
@@ -16,5 +13,5 @@ public interface UserRepository {
 
     ArrayList<User> findAll();
 
-    void updateUserInfo(UserUpdateRequestDTO dto);
+    void updateUserInfo(User user);
 }

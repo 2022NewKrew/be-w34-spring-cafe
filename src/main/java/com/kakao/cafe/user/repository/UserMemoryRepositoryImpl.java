@@ -4,6 +4,7 @@ import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
@@ -30,34 +31,29 @@ public class UserMemoryRepositoryImpl implements UserRepository {
         return Optional.ofNullable(userDB.get(dbId));
     }
 
-    public Long persist(UserCreateRequestDTO dto) {
-        User user = User.builder()
+    public Long persist(User user) {
+        User newUser = User.builder()
                 .id(idSequence.get())
-                .stringId(dto.stringId)
-                .email(dto.email)
-                .nickName(dto.nickName)
-                .password(dto.password)
-                .signUpDate(dto.signUpDate)
+                .stringId(user.getStringId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .password(user.getPassword())
+                .signUpDate(LocalDateTime.now())
                 .build();
-        userDB.put(idSequence.get(), user);
+        userDB.put(idSequence.get(), newUser);
         return idSequence.getAndIncrement();
     }
 
-//    public String findStringIdByDBId(Long id) {
-//        return userDB.get(id).getStringId();
-//    }
-
-
-    public void updateUserInfo(UserUpdateRequestDTO dto) {
-        User oldUserData = userDB.get(dto.getUserId());
-        User user = User.builder()
-                .id(oldUserData.getId())
-                .stringId(oldUserData.getStringId())
-                .email(dto.getEmail())
-                .nickName(dto.getName())
-                .password(dto.getNewPassword())
-                .signUpDate(oldUserData.getSignUpDate())
+    public void updateUserInfo(User user) {
+        Long id = userDB.keySet().stream().filter(key -> userDB.get(key).getStringId().equals(user.getStringId())).findAny().orElseThrow(()-> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
+        User newUser = User.builder()
+                .id(id)
+                .stringId(user.getStringId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .password(user.getPassword())
+                .signUpDate(userDB.get(id).getSignUpDate())
                 .build();
-        userDB.put(dto.getUserId(), user);
+        userDB.put(id, newUser);
     }
 }
