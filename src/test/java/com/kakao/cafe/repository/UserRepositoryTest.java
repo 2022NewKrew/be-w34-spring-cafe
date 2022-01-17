@@ -4,7 +4,6 @@ import com.kakao.cafe.config.SecurityConfig;
 import com.kakao.cafe.dto.UserRegistrationDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 
 class UserRepositoryTest {
     private final String userId = "testUserId";

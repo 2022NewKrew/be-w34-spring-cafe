@@ -15,26 +15,6 @@ public class UserServiceImpl implements UserService {
         this.jdbcUserRepository = jdbcUserRepository;
     }
 
-//    private final UserRepository userRepository;
-//
-//    public UserServiceImpl(UserRepository userRepository) {
-//        this.userRepository = userRepository;
-//    }
-//    @Override
-//    public void join(UserRegistrationDto userDto) {
-//        userRepository.createUser(userDto);
-//    }
-//
-//    @Override
-//    public List<User> getUsers() {
-//        return userRepository.readUsers();
-//    }
-//
-//    @Override
-//    public User findById(String userId) {
-//        return userRepository.readUser(userId);
-//    }
-
     @Override
     public void join(UserRegistrationDto userDto) {
         jdbcUserRepository.createUser(userDto.toEntity());
