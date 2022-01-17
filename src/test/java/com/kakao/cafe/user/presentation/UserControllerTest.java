@@ -1,6 +1,5 @@
 package com.kakao.cafe.user.presentation;
 
-import com.kakao.cafe.config.TestConfig;
 import com.kakao.cafe.matcher.LambdaMatcher;
 import com.kakao.cafe.user.application.JoinService;
 import com.kakao.cafe.user.application.SearchUserService;
@@ -11,15 +10,20 @@ import com.kakao.cafe.user.domain.entity.UserInfo;
 import com.kakao.cafe.user.presentation.dto.JoinRequest;
 import com.kakao.cafe.user.presentation.dto.UpdateUserInfoRequest;
 import com.kakao.cafe.user.presentation.dto.UserDto;
+import com.kakao.cafe.user.presentation.mapper.JoinRequestToUserConverter;
+import com.kakao.cafe.user.presentation.mapper.UpdateUserInfoRequestToUserInfoConverter;
+import com.kakao.cafe.user.presentation.mapper.UserToUserDtoConverter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -37,7 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(UserController.class)
-@Import(TestConfig.class)
 class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -116,5 +119,18 @@ class UserControllerTest {
 
         verify(updateUserInfoService, times(1))
                 .updateUserInfo(eq(userId), any(UserInfo.class));
+    }
+
+
+    @TestConfiguration
+    static class PresentationConfig {
+        @Bean
+        List<Converter<?,?>> converters(){
+            return List.of(
+                    new UserToUserDtoConverter(),
+                    new JoinRequestToUserConverter(),
+                    new UpdateUserInfoRequestToUserInfoConverter()
+            );
+        }
     }
 }
