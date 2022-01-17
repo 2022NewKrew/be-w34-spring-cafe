@@ -10,19 +10,20 @@ import java.util.List;
 public class QnaService {
     private final QnaDao qnaDao;
 
-    public QnaService() {
-        qnaDao = new QnaDao();
+    public QnaService(QnaDao qnaDao) {
+        this.qnaDao =qnaDao;
     }
 
-    public void createQna(Qna qna) {
-        qnaDao.createQna(qna);
+    public void save(Qna qna) {
+        qnaDao.save(qna);
     }
 
-    public List<Qna> getQnas() {
-        return qnaDao.getQnas();
+    public List<Qna> findAll() {
+        return qnaDao.findAll();
     }
 
-    public Qna getQna(long qnaId) {
-        return qnaDao.getQna(qnaId);
+    public Qna findByQnaId(long qnaId) {
+        qnaDao.updateViews(qnaId);
+        return qnaDao.findByQnaId(qnaId);
     }
 }

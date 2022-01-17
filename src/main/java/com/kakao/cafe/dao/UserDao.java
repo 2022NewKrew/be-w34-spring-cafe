@@ -13,7 +13,7 @@ public class UserDao {
     private long userId;
     private List<User> users;
 
-    private UserDao() {
+    public UserDao() {
         userId = 0l;
         users = new ArrayList<>();
     }

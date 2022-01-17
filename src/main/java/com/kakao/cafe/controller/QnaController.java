@@ -17,30 +17,29 @@ public class QnaController {
     private final QnaService qnaService;
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    public QnaController() {
-        qnaService = new QnaService();
+    public QnaController(QnaService qnaService) {
+        this.qnaService = qnaService;
     }
 
     @PostMapping("/questions")
     public String createQna(Qna qna) {
-        qnaService.createQna(qna);
+        qnaService.save(qna);
         return "redirect:/";
     }
 
     @GetMapping("/")
     public String getQnas(Model model) {
-        final List<Qna> qnas = qnaService.getQnas();
+        final List<Qna> qnas = qnaService.findAll();
 
         logger.info("조회할 Qnas : {}", qnas);
 
         model.addAttribute("qnas", qnas);
-        model.addAttribute("qnasSize", qnas.size());
         return "index";
     }
 
     @GetMapping("/articles/{qnaId}")
     public String getQna(@PathVariable("qnaId") long qnaId, Model model) {
-        final Qna qna = qnaService.getQna(qnaId);
+        final Qna qna = qnaService.findByQnaId(qnaId);
 
         logger.info("조회할 Qna : {}", qna);
 

@@ -1,23 +1,13 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.utils.DateUtils;
+import java.time.LocalDateTime;
 
 public class Qna {
     private int views;
     private long qnaId;
     private String title;
     private String content;
-    private String createDate;
-
-    private Qna() { }
-
-    private Qna(Qna qna) {
-        this.views = qna.views;
-        this.qnaId = qna.qnaId;
-        this.title = qna.title;
-        this.content = qna.content;
-        this.createDate = DateUtils.getCurrentTime();
-    }
+    private LocalDateTime createDate;
 
     public int getViews() {
         return views;
@@ -25,10 +15,6 @@ public class Qna {
 
     public void setViews(int views) {
         this.views = views;
-    }
-
-    public static Qna from(Qna qna) {
-        return new Qna(qna);
     }
 
     public long getQnaId() {
@@ -55,8 +41,12 @@ public class Qna {
         this.content = content;
     }
 
-    public String getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
     }
 
     @Override
@@ -66,7 +56,7 @@ public class Qna {
                 ", qnaId=" + qnaId +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", createDate='" + createDate + '\'' +
+                ", createDate=" + createDate +
                 '}';
     }
 }

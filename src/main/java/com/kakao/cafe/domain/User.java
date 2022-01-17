@@ -7,6 +7,7 @@ public class User {
     private String email;
     private String password;
     private String nickname;
+    // LocalDate
     private String createDate;
 
     private User() { }

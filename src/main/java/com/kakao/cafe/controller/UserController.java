@@ -59,7 +59,7 @@ public class UserController {
         return "user/profile";
     }
 
-    // 뷰단 로그인 기능 미구현으로 인해 추후 구현예정
+    // 뷰에서 로그인 기능 미구현으로 인해 추후 구현예정
     @PostMapping("/users/login")
     public String loginUser(UserLoginResponse userLoginResponse, HttpServletResponse response) {
         final User user = userService.loginUser(userLoginResponse);
