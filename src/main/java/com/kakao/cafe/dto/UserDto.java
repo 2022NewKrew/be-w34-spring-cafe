@@ -114,4 +114,47 @@ public class UserDto {
             this.name = name;
         }
     }
+
+    public static class LoginDto {
+        private String userId;
+        private String password;
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+    }
+
+    public static class UserSessionDto {
+        private String userId;
+        private String name;
+
+        public UserSessionDto(String userId, String name) {
+            this.userId = userId;
+            this.name = name;
+        }
+
+        public static UserSessionDto of(User user) {
+            return new UserSessionDto(user.getUserId(), user.getName());
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
 }

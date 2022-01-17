@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.QnaDto;
+import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.service.QnaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -28,7 +30,9 @@ public class QnaController {
     }
 
     @PostMapping("/questions")
-    public String makeQna(@ModelAttribute QnaDto.CreateQnaRequest createQnaRequest) {
+    public String makeQna(@ModelAttribute QnaDto.CreateQnaRequest createQnaRequest, HttpSession session) {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+        createQnaRequest.setWriter(sessionedUser.getUserId());
         qnaService.createQna(createQnaRequest);
         return "redirect:/";
     }

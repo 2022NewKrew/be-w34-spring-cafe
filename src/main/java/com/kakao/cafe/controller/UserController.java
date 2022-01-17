@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Controller
@@ -34,27 +36,21 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/form")
-    public String makeUserHtml() {
-        return "user/form";
-    }
-
-    @PostMapping
-    public String makeUser(@ModelAttribute("user") UserDto.CreateUserProfileRequest createUserProfileRequest) {
-        userService.createUser(createUserProfileRequest);
-        return "redirect:/users";
-    }
-
     @GetMapping("/{userId}/form")
-    public String updateUserHtml(@PathVariable("userId") String userId, Model model) {
+    public String updateUserHtml(@PathVariable("userId") String userId, HttpSession session, Model model) throws AccessDeniedException {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+        userService.validateAuthForUpdateUser(sessionedUser.getUserId(), userId);
+
         UserDto.UserProfileResponse userProfileResponse = userService.readUser(userId);
         model.addAttribute("user", userProfileResponse);
         return "user/updateForm";
     }
 
     @PostMapping("/{userId}")
-    public String updateUser(@PathVariable("userId") String userId, @ModelAttribute("user") UserDto.UpdateUserProfileRequest updateUserProfileRequest) {
-        userService.updateUser(userId, updateUserProfileRequest);
+    public String updateUser(@PathVariable("userId") String userId, @ModelAttribute("user") UserDto.UpdateUserProfileRequest updateUserProfileRequest,
+                             HttpSession session) throws AccessDeniedException {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+        userService.updateUser(userId, updateUserProfileRequest, sessionedUser.getUserId());
         return "redirect:/users";
     }
 }
