@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS MEMBER;
 
 CREATE TABLE MEMBER (
-                        userId VARCHAR(64),
-                        password VARCHAR(64),
-                        email VARCHAR(64)
+                        USERID VARCHAR(64),
+                        PASSWORD VARCHAR(64),
+                        EMAIL VARCHAR(64)
 );

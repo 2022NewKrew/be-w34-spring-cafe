@@ -20,8 +20,7 @@ public class JdbcUserRepository {
     }
 
     public void createUser(User user) {
-        String sqlQuery = "insert into USER (USER_ID, password, EMAIL) values (?, ?, ?)";
-
+        String sqlQuery = "insert into MEMBER (userId, PASSWORD, EMAIL) values (?, ?, ?)";
         jdbcTemplate.update(sqlQuery, user.getUserId(), user.getPassword(), user.getEmail());
 
     }

@@ -1,1 +1,1 @@
-Insert into MEMBER(userId, password, email) values ('aid', 'userA', 'a@a.com');
+INSERT INTO MEMBER(USERID, password, email) values ('chen', '1234', 'chen.kim@kakaocorp.com');

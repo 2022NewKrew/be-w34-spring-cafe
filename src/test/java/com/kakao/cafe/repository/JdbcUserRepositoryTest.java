@@ -16,35 +16,28 @@ class JdbcUserRepositoryTest {
     private final String password = "testPassword";
     private final String email = "testEmail";
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    UserMapper userMapper;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Test
-    @DisplayName("[성공] JdbcUserRepository 클래스 생성")
-    void JdbcUserRepository() {
-        new JdbcUserRepository(jdbcTemplate, userMapper, passwordEncoder);
-    }
 
 
-    @Test
-    @DisplayName("[성공] JdbcUserRepository Create")
-    void createUser() {
+//    @Test
+//    @DisplayName("[성공] JdbcUserRepository 클래스 생성")
+//    void JdbcUserRepository() {
+//        new JdbcUserRepository(jdbcTemplate, userMapper, passwordEncoder);
+//    }
+//
+//
+//    @Test
+//    @DisplayName("[성공] JdbcUserRepository Create")
+//    void createUser() {
         // given
-        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate, userMapper, passwordEncoder);
-        User user = new User(userId, password, email);
+//        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate, userMapper, passwordEncoder);
+//        User user = new User(userId, password, email);
 
         // when
 //        jdbcUserRepository.createUser(user);
 
         // then
 
-    }
+//    }
 
     @Test
     void readUsers() {

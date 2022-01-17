@@ -1,9 +1,9 @@
 package com.kakao.cafe.entity;
 
 public class User {
-    private String userId;
-    private String password;
-    private String email;
+    private final String userId;
+    private final String password;
+    private final String email;
     private String profileImage;
 
     public User(String userId, String password, String email) {

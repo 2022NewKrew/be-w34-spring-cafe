@@ -24,35 +24,35 @@ public class AppConfig {
         return new ArticleRepository();
     }
 
+    @Bean
+        public UserService userService() {
+        return new UserServiceImpl(jdbcUserRepository());
+    }
+
 //    @Bean
-//        public UserService userService() {
-//        return new UserServiceImpl(jdbcUserRepository());
+//    public UserService userService() {
+//        return new UserServiceImpl(userRepository());
+//    }
+//
+//    @Bean
+//    public UserRepository userRepository() {
+//        return new UserRepository(new SecurityConfig().passwordEncoder());
 //    }
 
+
     @Bean
-    public UserService userService() {
-        return new UserServiceImpl(userRepository());
+    public JdbcUserRepository jdbcUserRepository() {
+        return new JdbcUserRepository(jdbcTemplate(), userMapper(), new SecurityConfig().passwordEncoder());
     }
 
     @Bean
-    public UserRepository userRepository() {
-        return new UserRepository(new SecurityConfig().passwordEncoder());
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(new JdbcConfig().dataSource());
     }
 
-//
-//    @Bean
-//    public JdbcUserRepository jdbcUserRepository() {
-//        return new JdbcUserRepository(jdbcTemplate(), userMapper(), new SecurityConfig().passwordEncoder());
-//    }
-//
-//    @Bean
-//    public JdbcTemplate jdbcTemplate() {
-//        return new JdbcTemplate();
-//    }
-//
-//    @Bean
-//    public UserMapper userMapper() {
-//        return new UserMapper();
-//    }
+    @Bean
+    public UserMapper userMapper() {
+        return new UserMapper();
+    }
 
 }
