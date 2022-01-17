@@ -27,7 +27,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_USER: "kakao"
       MYSQL_PASSWORD: "kakao"
-      MYSQL_DATABASE: "database"
+      MYSQL_DATABASE: "kakaodb"
     healthcheck:
       test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', '$MYSQL_USER', '-p$MYSQL_PASSWORD' ]
       interval: 3s
