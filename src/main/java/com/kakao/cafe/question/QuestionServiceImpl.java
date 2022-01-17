@@ -26,15 +26,9 @@ public class QuestionServiceImpl implements QuestionService {
      * @return key 값에 해당하는 질문글을 반환
      */
     @Override
-    public Long save(Question question) {
+    public Long save(Question question) throws SQLException {
 
-        Long id = null;
-
-        try {
-            id = questionRepository.save(question);
-        } catch (SQLException e) {
-            log.error("QUESTION TABLE SAVE 실패 SQLState : {}", e.getSQLState());
-        }
+        Long id = questionRepository.save(question);;
 
         return id;
     }

@@ -5,6 +5,7 @@ import com.kakao.cafe.question.QuestionService;
 import com.kakao.cafe.question.dto.QuestionCreateDto;
 import com.kakao.cafe.question.dto.QuestionDto;
 import com.kakao.cafe.user.User;
+import com.kakao.cafe.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,24 +37,42 @@ public class QuestionController {
         question.setMemberId(user.getId());
         question.setWriter(user.getUserId());
 
-        questionService.save(question);
+        try {
+            questionService.save(question);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //TODO 저장 실패 에러페이지 추가
+
+        }
 
         return "redirect:/";
     }
 
     @GetMapping
-    public String viewQuestionList(Model model) {
+    public String viewQuestionList(HttpSession session, Model model) {
 
-        List<QuestionDto> questions = questionService.findAll()
-                .stream()
-                .map(q -> modelMapper.map(q, QuestionDto.class))
-                .collect(Collectors.toList());
+        UserDto loginUser = (UserDto) session.getAttribute("loginUser");
+
+        Long id = loginUser == null ? -1L : loginUser.getId();
+
+        List<QuestionDto> questions = getQuestionDtos(id);
 
         model.addAttribute("questions", questions);
         model.addAttribute("size", questions.size());
 
         return "qna/list";
 
+    }
+
+    private List<QuestionDto> getQuestionDtos(Long id) {
+        return questionService.findAll()
+                .stream()
+                .map(q -> {
+                    QuestionDto question = modelMapper.map(q, QuestionDto.class);
+                    question.setThisIsMine(id.equals(q.getMemberId()));
+                    return question;
+                })
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")

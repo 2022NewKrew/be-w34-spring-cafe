@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
@@ -33,15 +32,11 @@ public class AuthAspect {
     public Object beforeAdminAuth(ProceedingJoinPoint joinPoint) {
 
         try {
-            MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-            Method method = signature.getMethod();
-            Auth auth = method.getAnnotation(Auth.class);
+            Auth auth = getAuth(joinPoint);
             Object result = joinPoint.proceed();
 
             if (auth.role() == Auth.Role.ADMIN) {
-                HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-                HttpSession session = request.getSession();
-                UserDto user = (UserDto) session.getAttribute("loginUser");
+                UserDto user = getLoginUser();
 
                 if (user == null || user.getRole() != UserStatus.ADMIN) {
                     throw new Exception("권한 없는 사용자가 접근했습니다.");
@@ -53,5 +48,21 @@ public class AuthAspect {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private UserDto getLoginUser() {
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+
+        return (UserDto) session.getAttribute("loginUser");
+    }
+
+    private Auth getAuth(ProceedingJoinPoint joinPoint) {
+
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
+        
+        return method.getAnnotation(Auth.class);
     }
 }

@@ -18,4 +18,5 @@ public class QuestionDto {
     private String title;
     private String contents;
     private LocalDateTime createTime;
+    private boolean thisIsMine;
 }
