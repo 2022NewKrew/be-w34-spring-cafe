@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+{{>layout/header}}
+
+<div class="container" id="main">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="content-main" style="display: flex; flex-direction: column; align-items: center">
+            <span style="margin-bottom: 50px; font-size: 32px; font-weight: bold;">로그인</span>
+            <form style="display: flex; flex-direction: column; align-items: center" name="question" method="post" action="/login">
+                <div class="input-control">
+                    <span for="userId" style="align-self: center; color: #666; width:80px">아이디</span>
+                    <input id="userId" name="userId" style="border:none; outline:none" placeholder="User ID">
+                </div>
+                <div class="input-control">
+                    <span for="password" style="align-self: center; color: #666; width:80px">비밀번호</span>
+                    <input type="password" id="password" style="border:none; outline:none" name="password" placeholder="Password">
+                </div>
+                <button type="submit" class="post-button alt-color" style="align-self: center!important; margin-top: 20px; width: 230px!important; height: 43px!important">
+                    로그인
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<body>
+
+{{>layout/footer}}
