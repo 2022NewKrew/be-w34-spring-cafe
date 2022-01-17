@@ -31,13 +31,13 @@ public class UserJdbcRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> findById(long id) {
         String sql = "SELECT * FROM users WHERE id = ?";
-        return Optional.ofNullable(template.queryForObject(sql, userRowMapper(), id));
+        return template.query(sql, userRowMapper(), id).stream().findFirst();
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
         String sql = "SELECT * FROM users WHERE email = ?";
-        return Optional.ofNullable(template.queryForObject(sql, userRowMapper(), email));
+        return template.query(sql, userRowMapper(), email).stream().findFirst();
     }
 
     @Override
