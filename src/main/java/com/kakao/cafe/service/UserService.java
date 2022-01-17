@@ -28,7 +28,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(@Qualifier("h2UserRepository") H2UserRepository userRepository){
+    public UserService(@Qualifier("h2UserRepository") H2UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -62,12 +62,20 @@ public class UserService {
     public void updateUser(long id, RequestUserDto userDto) {
         User user = userRepository.findByUserId(userDto.getUserId()).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
 
-        if(!userDto.getPrevPassword().equals(user.getPassword())){
+        if (!userDto.getPrevPassword().equals(user.getPassword())) {
             throw new IllegalStateException("패스워드가 일치하지 않습니다.");
         }
 
         User newUser = modelMapper.map(userDto, User.class);
         user.setPassword(userDto.getPassword());
         userRepository.updateById(id, user);
+    }
+
+    public boolean login(String userId, String password) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
+        if (!user.getPassword().trim().equals(password)) {
+            throw new IllegalStateException("패스워드가 일치하지 않습니다.");
+        }
+        return true;
     }
 }
