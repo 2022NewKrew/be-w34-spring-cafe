@@ -13,7 +13,7 @@ public class UserCreateRequestDto {
     private final String nickname;
     private final String email;
     private final String password;
-    private static final AtomicLong sequenceId = new AtomicLong();
+    private static final AtomicLong sequenceId = new AtomicLong(1);
 
     public UserCreateRequestDto(String userId, String nickname, String email, String password) {
         this.userId = userId;
