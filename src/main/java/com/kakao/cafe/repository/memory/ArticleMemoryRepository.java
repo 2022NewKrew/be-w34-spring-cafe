@@ -7,6 +7,7 @@ import com.kakao.cafe.repository.ArticleRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 public class ArticleMemoryRepository implements ArticleRepository {
 
     private AtomicLong id = new AtomicLong(0L);
-    private Map<Long, ArticleSaveForm> postList = new HashMap<>();
+    private Map<Long, ArticleSaveForm> postList = new ConcurrentHashMap<>();
 
     @Override
     public Long save(ArticleSaveForm article) {

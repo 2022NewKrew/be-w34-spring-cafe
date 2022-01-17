@@ -4,17 +4,14 @@ import com.kakao.cafe.controller.dto.ArticleSaveForm;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.exception.NoSuchArticle;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.DBConfig;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
@@ -29,20 +26,15 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
     @Override
     public Long save(ArticleSaveForm article) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("article");
-
         long articleId = id.incrementAndGet();
 
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("id", id.incrementAndGet());
-        parameters.put("content", article.getContent());
-        parameters.put("title", article.getTitle());
-        parameters.put("writer", article.getWriter());
-        parameters.put("createdAt", LocalDateTime.now());
-        parameters.put("numOfComment", 0);
-
-        jdbcInsert.execute(new MapSqlParameterSource(parameters));
+        jdbcTemplate.update("insert into " + DBConfig.ARTICLE_DB + " values(?,?,?,?,?,?)"
+                , articleId
+                , article.getWriter()
+                , article.getTitle()
+                , article.getContent()
+                , LocalDateTime.now()
+                , 0);
         return articleId;
     }
 

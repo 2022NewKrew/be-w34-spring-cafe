@@ -6,12 +6,13 @@ import com.kakao.cafe.repository.dto.UserResult;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 //@Repository
 public class UserMemoryRepository implements UserRepository {
 
-    private Map<String, User> userList = new HashMap<>();
+    private Map<String, User> userList = new ConcurrentHashMap<>();
 
     @Override
     public void save(User user) {

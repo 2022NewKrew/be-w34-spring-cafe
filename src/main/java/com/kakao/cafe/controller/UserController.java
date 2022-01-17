@@ -9,10 +9,12 @@ import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,12 +23,18 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/create")
-    public String createUser(@Valid @ModelAttribute UserJoinForm userDto) {
+    @PostMapping("")
+    public String createUser(@Valid @ModelAttribute UserJoinForm userDto, BindingResult bindingResult, Model model) {
+        System.out.println("error exists? : "+bindingResult.hasErrors());
+        if(bindingResult.hasErrors()) {
+            List<String> errorMessages = bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.toList());
+            model.addAttribute("messages", errorMessages);
+            return "user/form";
+        }
+
         try{
-//            validator.newUserCheck(userDto);
             userService.join(userDto);
-            return "redirect:/users";
+            return "redirect:/";
         } catch (Exception e) {
             return "user/form";
         }

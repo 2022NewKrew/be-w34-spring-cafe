@@ -25,8 +25,7 @@ class ArticleJdbcRepositoryTest {
         articleSaveForm.setWriter("me");
 
         // when
-        Article article = Article.from(articleSaveForm);
-        Long savedId = articleJdbcRepository.save(article);
+        Long savedId = articleJdbcRepository.save(articleSaveForm);
 
         // then
         Article byId = articleJdbcRepository.findById(savedId);

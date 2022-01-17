@@ -27,16 +27,7 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("users");
-
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("id", user.getUserId());
-        parameters.put("name", user.getName());
-        parameters.put("password", user.getPassword());
-        parameters.put("email", user.getEmail());
-
-        jdbcInsert.execute(new MapSqlParameterSource(parameters));
+        jdbcTemplate.update("insert into users values(?,?,?,?)", user.getUserId(), user.getEmail(), user.getName(), user.getPassword());
     }
 
     @Override
