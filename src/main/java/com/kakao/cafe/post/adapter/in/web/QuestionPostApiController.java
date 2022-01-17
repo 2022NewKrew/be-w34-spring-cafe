@@ -1,7 +1,7 @@
 package com.kakao.cafe.post.adapter.in.web;
 
-import com.kakao.cafe.post.application.QuestionPostService;
-import com.kakao.cafe.post.domain.QuestionPost;
+import com.kakao.cafe.post.application.dto.result.QuestionPostSaveResult;
+import com.kakao.cafe.post.application.port.in.EnrollQuestionPostUseCase;
 import com.kakao.cafe.post.adapter.in.web.dto.QuestionPostWriteRequest;
 import com.kakao.cafe.post.adapter.in.web.dto.QuestionPostWriteResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,18 +22,18 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 @RequiredArgsConstructor
 public class QuestionPostApiController {
 
-    private final QuestionPostService questionPostService;
+    private final EnrollQuestionPostUseCase enrollQuestionPostUseCase;
 
     @PostMapping("")
     public ResponseEntity<QuestionPostWriteResponse> write(@Valid @RequestBody QuestionPostWriteRequest request) {
 
-        QuestionPost saved = questionPostService.save(request.toCommand());
+        QuestionPostSaveResult result = enrollQuestionPostUseCase.enroll(request.toCommand());
 
         UriComponents uriComponents = MvcUriComponentsBuilder
                 .fromMethodCall(on(QuestionPostApiController.class).write(request))
                 .build();
         return ResponseEntity
                 .created(uriComponents.toUri())
-                .body(new QuestionPostWriteResponse(saved.getQuestionPostId()));
+                .body(result.toResponse());
     }
 }

@@ -1,7 +1,7 @@
 package com.kakao.cafe.post.adapter.in.web;
 
 import com.kakao.cafe.post.application.dto.result.QuestionPostDetailListResult;
-import com.kakao.cafe.post.application.QuestionPostService;
+import com.kakao.cafe.post.application.port.in.GetQuestionPostUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/")
 public class IndexController {
 
-    private final QuestionPostService questionPostService;
+    private final GetQuestionPostUseCase getQuestionPostUseCase;
 
     @GetMapping("")
     public String allPost(Model model, HttpServletRequest request) {
-        QuestionPostDetailListResult allPost = questionPostService.getAllPost();
+        QuestionPostDetailListResult allPost = getQuestionPostUseCase.getAllPost();
         model.addAttribute("count", allPost.getDetailResults().size());
         model.addAttribute("posts", allPost.getDetailResults());
 

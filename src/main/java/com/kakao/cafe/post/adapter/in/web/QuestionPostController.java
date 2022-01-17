@@ -1,7 +1,10 @@
 package com.kakao.cafe.post.adapter.in.web;
 
+import com.kakao.cafe.post.application.dto.command.QuestionPostClickCommand;
+import com.kakao.cafe.post.application.dto.command.QuestionPostDetailCommand;
 import com.kakao.cafe.post.application.dto.result.QuestionPostDetailResult;
-import com.kakao.cafe.post.application.QuestionPostService;
+import com.kakao.cafe.post.application.port.in.GetQuestionPostUseCase;
+import com.kakao.cafe.post.application.port.in.UpdateQuestionPostUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,14 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class QuestionPostController {
 
-    private final QuestionPostService questionPostService;
+    private final GetQuestionPostUseCase getQuestionPostUseCase;
+    private final UpdateQuestionPostUseCase updateQuestionPostUseCase;
 
     @GetMapping("/{id}/detail")
     public String postDetail(@PathVariable(name = "id") Long id, Model model, HttpServletRequest request) {
-        QuestionPostDetailResult postDetail = questionPostService.getPostDetail(id);
-        questionPostService.clickPost(id);
+        QuestionPostDetailResult postDetail = getQuestionPostUseCase.getPostDetail(new QuestionPostDetailCommand(id));
+        updateQuestionPostUseCase.clickPost(new QuestionPostClickCommand(id));
         model.addAttribute("post", postDetail);
-
         if(request.getSession().getAttribute("user-id") != null) {
             return "after/qnadetail";
         }

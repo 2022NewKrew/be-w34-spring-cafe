@@ -1,7 +1,6 @@
 package com.kakao.cafe.post.adapter.out.persistence;
 
 import com.kakao.cafe.post.domain.QuestionPost;
-import com.kakao.cafe.post.domain.QuestionPostRepository;
 import com.kakao.cafe.user.domain.UserAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
