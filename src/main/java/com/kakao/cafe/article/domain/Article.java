@@ -7,13 +7,13 @@ public class Article {
     private final ArticleId id;
     private final String title;
     private final String content;
-    private final long createdAt;
-
-    public Article(ArticleId id, String title, String content) {
+    private final Instant createdAt;
+    
+    public Article(ArticleId id, String title, String content, Instant createdAt) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.createdAt = Instant.now().getEpochSecond();
+        this.createdAt = createdAt;
     }
 
     public ArticleId getId() {
@@ -28,7 +28,7 @@ public class Article {
         return content;
     }
 
-    public long getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 }

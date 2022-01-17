@@ -5,6 +5,7 @@ import com.kakao.cafe.article.application.port.out.LoadArticlePort;
 import com.kakao.cafe.article.application.port.out.SaveArticlePort;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleId;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,15 +19,15 @@ public class MemoryArticleRepository implements SaveArticlePort, LoadArticlePort
     private static int sequence = 0;
 
     @Override
-    public ArticleId save(CreateArticleDto createArticleDto) {
+    public void save(CreateArticleDto createArticleDto) {
         sequence += 1;
-        ArticleId articleId = new ArticleId(sequence);
-        Article article = new Article(articleId,
+        Article article = new Article(
+            new ArticleId(sequence),
             createArticleDto.getTitle(),
-            createArticleDto.getContent());
+            createArticleDto.getContent(),
+            Instant.now());
 
         store.add(article);
-        return articleId;
     }
 
     @Override

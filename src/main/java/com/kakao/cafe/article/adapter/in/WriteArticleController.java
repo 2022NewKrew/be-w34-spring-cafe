@@ -2,7 +2,6 @@ package com.kakao.cafe.article.adapter.in;
 
 import com.kakao.cafe.article.application.port.in.WriteArticleDto;
 import com.kakao.cafe.article.application.port.in.WriteArticleUseCase;
-import com.kakao.cafe.article.domain.ArticleId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -33,8 +32,7 @@ public class WriteArticleController {
             createArticleRequestDto.getTitle(),
             createArticleRequestDto.getContent());
 
-        ArticleId articleId = writeArticleUseCase.write(writeArticleDto);
-        logger.info("[Log] article is created {}", articleId.getValue());
+        writeArticleUseCase.write(writeArticleDto);
 
         return "redirect:/";
     }
