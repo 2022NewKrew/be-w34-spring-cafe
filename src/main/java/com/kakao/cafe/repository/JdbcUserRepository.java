@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository;
 
+import com.kakao.cafe.domain.user.Password;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserName;
 import java.util.List;
@@ -65,5 +66,16 @@ public class JdbcUserRepository implements UserRepository {
                 user.getName().getValue(),
                 user.getEmail().getValue(),
                 user.getId().toString());
+    }
+
+    @Override
+    public Optional<User> findUserByUserNameAndPassword(UserName userName, Password password) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * "
+                    + "FROM users "
+                    + "WHERE username = ? AND password = ?", rowMapper, userName.getValue(), password.getValue()));
+        } catch (EmptyResultDataAccessException exception) {
+            return Optional.empty();
+        }
     }
 }
