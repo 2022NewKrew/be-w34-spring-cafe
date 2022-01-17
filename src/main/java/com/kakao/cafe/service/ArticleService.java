@@ -18,12 +18,8 @@ import java.util.stream.Collectors;
 public class ArticleService {
     @Autowired
     private ModelMapper modelMapper;
-
-    //    private final ArticleRepository articleRepository = new MemoryArticleRepository();
-//    @Autowired
-//    @Qualifier("ArticleRepositoryJdbc")
-//    @Autowired
-    private final ArticleRepository articleRepository;// = new H2ArticleRepository();
+    
+    private final ArticleRepository articleRepository;
 
     public ArticleService(@Qualifier("h2ArticleRepository") H2ArticleRepository articleRepository){
         this.articleRepository = articleRepository;

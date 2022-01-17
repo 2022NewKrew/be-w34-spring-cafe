@@ -4,6 +4,7 @@ import com.kakao.cafe.config.SpringJdbcConfig;
 import com.kakao.cafe.controller.UserController;
 import com.kakao.cafe.domain.Article;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,12 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class H2ArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
-
-    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Override
     public Article save(Article article) {
@@ -64,7 +64,6 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        logger.info(">>>>> {}", jdbcTemplate==null);
         return jdbcTemplate.query("SELECT * FROM ARTICLE", articleRowMapper());
     }
 

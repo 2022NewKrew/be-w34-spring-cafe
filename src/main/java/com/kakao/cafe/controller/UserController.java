@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.RequestUserDto;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -13,11 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class UserController {
-
-    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -27,7 +27,7 @@ public class UserController {
     @PostMapping("/users")
     public String join(@ModelAttribute RequestUserDto userDto) {
 
-        logger.info("POST /users {}", userDto);
+        log.info("POST /users {}", userDto);
 
         userService.join(userDto);
         return "redirect:/users";
@@ -38,7 +38,7 @@ public class UserController {
     */
     @GetMapping("/users")
     public String getAllUsers(Model model) {
-        logger.info("GET /users");
+        log.info("GET /users");
         model.addAttribute("users", userService.findUsers());
         model.addAttribute("countOfUser", userService.getCountOfUser());
         return "user/list";
@@ -49,7 +49,7 @@ public class UserController {
     */
     @GetMapping("/users/{id}")
     public String getUserProfile(@PathVariable int id, Model model) {
-        logger.info("GET /users/{}", id);
+        log.info("GET /users/{}", id);
         model.addAttribute("user", userService.findOne(id));
         return "user/profile";
     }

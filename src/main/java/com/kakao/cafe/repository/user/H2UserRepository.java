@@ -2,20 +2,21 @@ package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-
+@Slf4j
 @RequiredArgsConstructor
-@Controller
+@Repository
 public class H2UserRepository implements UserRepository{
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public User save(User user) {
