@@ -25,9 +25,7 @@ public class UserService {
 
     public void updateUser(User updateUser) {
         User user = findUserByUserId(updateUser.getUserId().getUserId());
-        if (!user.getUserId().equals(updateUser.getUserId())) {
-            throw new UserException(ErrorCode.CANNOT_CHANGE_USER_ID);
-        }
+        // TODO: UserId 변경된 경우 예외처리
         if (!user.getPassword().equals(updateUser.getPassword())) {
             throw new UserException(ErrorCode.WRONG_USER_PASSWORD);
         }
