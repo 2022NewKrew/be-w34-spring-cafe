@@ -39,7 +39,10 @@ public class MemberController {
     }
 
     @PostMapping("/users/create")
-    public String joinMember(@Valid JoinMemberDTO memberDTO) {
+    public String joinMember(@Valid JoinMemberDto memberDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new NotEnoughFieldException(ErrorMessages.NOT_ENOUGH_FIELD);
+        }
         Member member = convertToEntity(memberDTO);
         memberService.joinMember(member);
         return "redirect:/users";
