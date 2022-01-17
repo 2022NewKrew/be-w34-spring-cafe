@@ -1,6 +1,9 @@
 package com.kakao.cafe.dao.article;
 
-import com.kakao.cafe.model.Article;
+import com.kakao.cafe.model.article.Article;
+import com.kakao.cafe.model.article.Contents;
+import com.kakao.cafe.model.article.Title;
+import com.kakao.cafe.model.article.Writer;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,9 +14,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class VolatilityArticleStorage implements ArticleDao {
-    private static final AtomicInteger nextArticleId = new AtomicInteger(1);
     public static final int FRONT_OF_LIST = 0;
 
+    private final AtomicInteger nextArticleId = new AtomicInteger(1);
     List<Article> articles = new LinkedList<>();
 
     @Override
@@ -27,7 +30,7 @@ public class VolatilityArticleStorage implements ArticleDao {
     }
 
     @Override
-    public void addArticle(String title, String writer, String contents) {
+    public void addArticle(Title title, Writer writer, Contents contents) {
         articles.add(FRONT_OF_LIST, new Article(nextArticleId.getAndIncrement(), title, writer, contents));
     }
 

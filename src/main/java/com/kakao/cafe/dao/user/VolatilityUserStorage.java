@@ -1,7 +1,6 @@
 package com.kakao.cafe.dao.user;
 
-import com.kakao.cafe.model.User;
-import com.kakao.cafe.utility.NullChecker;
+import com.kakao.cafe.model.user.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -23,14 +22,14 @@ public class VolatilityUserStorage implements UserDao {
     }
 
     @Override
-    public void addUser(String userId, String password, String name, String email) {
+    public void addUser(UserId userId, Password password, Name name, Email email) {
         checkExist(userId);
 
         users.add(new User(userId, password, name, email));
     }
 
     @Override
-    public Optional<User> findUserById(String userId) {
+    public Optional<User> findUserById(UserId userId) {
         return users
                 .stream()
                 .filter(user -> user.isUserId(userId))
@@ -43,23 +42,19 @@ public class VolatilityUserStorage implements UserDao {
     }
 
     @Override
-    public void update(String userId, String name, String email) {
-        NullChecker.checkNotNull(userId);
-        NullChecker.checkNotNull(name);
-        NullChecker.checkNotNull(email);
-
+    public void update(UserId userId, Name name, Email email) {
         User user = findUserById(userId).orElseThrow(() -> new IllegalArgumentException("찾는 사용자가 없습니다."));
         user.setName(name);
         user.setEmail(email);
     }
 
-    private void checkExist(String userId) {
+    private void checkExist(UserId userId) {
         if (containUser(userId)) {
             throw new IllegalArgumentException("이미 사용중인 아이디 입니다.");
         }
     }
 
-    private boolean containUser(String userId) {
+    private boolean containUser(UserId userId) {
         return users
                 .stream()
                 .anyMatch(user -> user.isUserId(userId));
