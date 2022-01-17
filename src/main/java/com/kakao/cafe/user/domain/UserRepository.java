@@ -10,5 +10,9 @@ public interface UserRepository {
 
     Optional<Profile> findById(Long id);
 
+    boolean existsByEmail(String email);
+
+    boolean existsByNickname(String nickname);
+
     List<Profile> findAll();
 }

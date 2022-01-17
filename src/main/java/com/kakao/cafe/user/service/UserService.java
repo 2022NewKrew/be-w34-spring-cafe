@@ -2,6 +2,7 @@ package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
+import com.kakao.cafe.user.domain.UserValidator;
 import com.kakao.cafe.user.dto.Profile;
 import com.kakao.cafe.user.exception.UserNotFoundException;
 import java.util.List;
@@ -14,9 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserValidator userValidator;
 
     @Transactional
     public void signup(User user) {
+        user.signup(userValidator);
         userRepository.save(user);
     }
 

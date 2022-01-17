@@ -39,6 +39,22 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        final String sql = "select exists "
+            + "(select user_id from users where email=? limit 1)"
+            + " as success";
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, email));
+    }
+
+    @Override
+    public boolean existsByNickname(String nickname) {
+        final String sql = "select exists "
+            + "(select user_id from users where nickname=? limit 1)"
+            + " as success";
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, nickname));
+    }
+
+    @Override
     public List<Profile> findAll() {
         final String sql = "select * from users";
         return jdbcTemplate.query(sql, (rs, rowNum) -> Profile.builder()

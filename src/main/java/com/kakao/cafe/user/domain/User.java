@@ -13,4 +13,8 @@ public class User {
     private String password;
     private String nickname;
     private LocalDateTime createdAt;
+
+    public void signup(UserValidator userValidator) {
+        userValidator.validate(this);
+    }
 }
