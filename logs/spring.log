@@ -1,0 +1,295 @@
+2022-01-17 10:23:59.703  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Starting CafeApplication using Java 11.0.11 on kakaoui-MacBookPro-4.local with PID 1543 (/Users/kakao/Desktop/Github/be-w34-spring-cafe/out/production/classes started by kakao in /Users/kakao/Desktop/Github/be-w34-spring-cafe)
+2022-01-17 10:23:59.710  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : No active profile set, falling back to default profiles: default
+2022-01-17 10:23:59.814  INFO 1543 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-01-17 10:24:01.926  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-01-17 10:24:01.948  INFO 1543 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-17 10:24:01.949  INFO 1543 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-01-17 10:24:02.037  INFO 1543 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-01-17 10:24:02.037  INFO 1543 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2219 ms
+2022-01-17 10:24:02.080  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-01-17 10:24:02.255  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-01-17 10:24:02.273  INFO 1543 --- [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:kakaodb'
+2022-01-17 10:24:03.124  INFO 1543 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2022-01-17 10:24:03.392  INFO 1543 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-01-17 10:24:03.451  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-01-17 10:24:03.471  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Started CafeApplication in 4.659 seconds (JVM running for 5.913)
+2022-01-17 10:24:14.433  INFO 1543 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-01-17 10:24:14.434  INFO 1543 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-01-17 10:24:14.437  INFO 1543 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2022-01-17 10:24:14.498  INFO 1543 --- [http-nio-8080-exec-1] c.k.c.interfaces.common.LoggingAspect    : 호출 패키지: [class com.kakao.cafe.application.article.FindArticleService], 호출 메서드 : [findAll], 전달 파라미터 : []
+2022-01-17 10:24:33.489  INFO 1543 --- [http-nio-8080-exec-8] c.k.c.interfaces.common.LoggingAspect    : 호출 패키지: [class com.kakao.cafe.application.article.FindArticleService], 호출 메서드 : [findById], 전달 파라미터 : [1]
+2022-01-17 11:08:58.056  WARN 1543 --- [Thread-6] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
+2022-01-17 11:08:58.057  INFO 1543 --- [Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-01-17 11:08:58.060  INFO 1543 --- [Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-01-17 11:08:58.368  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Starting CafeApplication using Java 11.0.11 on kakaoui-MacBookPro-4.local with PID 1543 (/Users/kakao/Desktop/Github/be-w34-spring-cafe/out/production/classes started by kakao in /Users/kakao/Desktop/Github/be-w34-spring-cafe)
+2022-01-17 11:08:58.368  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : No active profile set, falling back to default profiles: default
+2022-01-17 11:08:58.527 ERROR 1543 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+java.lang.IllegalStateException: Error processing condition on org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration.propertySourcesPlaceholderConfigurer
+	at org.springframework.boot.autoconfigure.condition.SpringBootCondition.matches(SpringBootCondition.java:60) ~[spring-boot-autoconfigure-2.6.2.jar:2.6.2]
+	at org.springframework.context.annotation.ConditionEvaluator.shouldSkip(ConditionEvaluator.java:108) ~[spring-context-5.3.14.jar:5.3.14]
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitionsForBeanMethod(ConfigurationClassBeanDefinitionReader.java:193) ~[spring-context-5.3.14.jar:5.3.14]
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitionsForConfigurationClass(ConfigurationClassBeanDefinitionReader.java:153) ~[spring-context-5.3.14.jar:5.3.14]
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitions(ConfigurationClassBeanDefinitionReader.java:129) ~[spring-context-5.3.14.jar:5.3.14]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:343) ~[spring-context-5.3.14.jar:5.3.14]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:247) ~[spring-context-5.3.14.jar:5.3.14]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:311) ~[spring-context-5.3.14.jar:5.3.14]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:112) ~[spring-context-5.3.14.jar:5.3.14]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:746) ~[spring-context-5.3.14.jar:5.3.14]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:564) ~[spring-context-5.3.14.jar:5.3.14]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145) ~[spring-boot-2.6.2.jar:2.6.2]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:730) ~[spring-boot-2.6.2.jar:2.6.2]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:412) ~[spring-boot-2.6.2.jar:2.6.2]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:302) ~[spring-boot-2.6.2.jar:2.6.2]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1301) ~[spring-boot-2.6.2.jar:2.6.2]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1290) ~[spring-boot-2.6.2.jar:2.6.2]
+	at com.kakao.cafe.CafeApplication.main(CafeApplication.java:12) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49) ~[spring-boot-devtools-2.6.2.jar:2.6.2]
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.kakao.cafe.interfaces.config.AdaptorBeanConfig] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@17af2350]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:481) ~[spring-core-5.3.14.jar:5.3.14]
+	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:358) ~[spring-core-5.3.14.jar:5.3.14]
+	at org.springframework.util.ReflectionUtils.getUniqueDeclaredMethods(ReflectionUtils.java:414) ~[spring-core-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.lambda$getTypeForFactoryMethod$2(AbstractAutowireCapableBeanFactory.java:765) ~[spring-beans-5.3.14.jar:5.3.14]
+	at java.base/java.util.concurrent.ConcurrentHashMap.computeIfAbsent(ConcurrentHashMap.java:1705) ~[na:na]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.getTypeForFactoryMethod(AbstractAutowireCapableBeanFactory.java:764) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineTargetType(AbstractAutowireCapableBeanFactory.java:703) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.predictBeanType(AbstractAutowireCapableBeanFactory.java:674) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.isFactoryBean(AbstractBeanFactory.java:1670) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doGetBeanNamesForType(DefaultListableBeanFactory.java:570) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanNamesForType(DefaultListableBeanFactory.java:542) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.boot.autoconfigure.condition.OnBeanCondition.collectBeanNamesForType(OnBeanCondition.java:238) ~[spring-boot-autoconfigure-2.6.2.jar:2.6.2]
+	at org.springframework.boot.autoconfigure.condition.OnBeanCondition.getBeanNamesForType(OnBeanCondition.java:231) ~[spring-boot-autoconfigure-2.6.2.jar:2.6.2]
+	at org.springframework.boot.autoconfigure.condition.OnBeanCondition.getBeanNamesForType(OnBeanCondition.java:221) ~[spring-boot-autoconfigure-2.6.2.jar:2.6.2]
+	at org.springframework.boot.autoconfigure.condition.OnBeanCondition.getMatchingBeans(OnBeanCondition.java:169) ~[spring-boot-autoconfigure-2.6.2.jar:2.6.2]
+	at org.springframework.boot.autoconfigure.condition.OnBeanCondition.getMatchOutcome(OnBeanCondition.java:144) ~[spring-boot-autoconfigure-2.6.2.jar:2.6.2]
+	at org.springframework.boot.autoconfigure.condition.SpringBootCondition.matches(SpringBootCondition.java:47) ~[spring-boot-autoconfigure-2.6.2.jar:2.6.2]
+	... 22 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: com/kakao/cafe/persistence/user/UserRowMapper
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3166) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2309) ~[na:na]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:463) ~[spring-core-5.3.14.jar:5.3.14]
+	... 38 common frames omitted
+Caused by: java.lang.ClassNotFoundException: com.kakao.cafe.persistence.user.UserRowMapper
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581) ~[na:na]
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:522) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:398) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:145) ~[spring-boot-devtools-2.6.2.jar:2.6.2]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:522) ~[na:na]
+	... 42 common frames omitted
+
+2022-01-17 11:08:58.529  WARN 1543 --- [restartedMain] o.s.boot.SpringApplication               : Unable to close ApplicationContext
+
+java.lang.IllegalStateException: Failed to introspect Class [com.kakao.cafe.interfaces.config.AdaptorBeanConfig] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@17af2350]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:481) ~[spring-core-5.3.14.jar:5.3.14]
+	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:358) ~[spring-core-5.3.14.jar:5.3.14]
+	at org.springframework.util.ReflectionUtils.getUniqueDeclaredMethods(ReflectionUtils.java:414) ~[spring-core-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.lambda$getTypeForFactoryMethod$2(AbstractAutowireCapableBeanFactory.java:765) ~[spring-beans-5.3.14.jar:5.3.14]
+	at java.base/java.util.concurrent.ConcurrentHashMap.computeIfAbsent(ConcurrentHashMap.java:1705) ~[na:na]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.getTypeForFactoryMethod(AbstractAutowireCapableBeanFactory.java:764) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineTargetType(AbstractAutowireCapableBeanFactory.java:703) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.predictBeanType(AbstractAutowireCapableBeanFactory.java:674) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.isFactoryBean(AbstractBeanFactory.java:1670) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doGetBeanNamesForType(DefaultListableBeanFactory.java:570) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanNamesForType(DefaultListableBeanFactory.java:542) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:667) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:659) ~[spring-beans-5.3.14.jar:5.3.14]
+	at org.springframework.context.support.AbstractApplicationContext.getBeansOfType(AbstractApplicationContext.java:1300) ~[spring-context-5.3.14.jar:5.3.14]
+	at org.springframework.boot.SpringApplication.getExitCodeFromMappedException(SpringApplication.java:862) ~[spring-boot-2.6.2.jar:2.6.2]
+	at org.springframework.boot.SpringApplication.getExitCodeFromException(SpringApplication.java:850) ~[spring-boot-2.6.2.jar:2.6.2]
+	at org.springframework.boot.SpringApplication.handleExitCode(SpringApplication.java:837) ~[spring-boot-2.6.2.jar:2.6.2]
+	at org.springframework.boot.SpringApplication.handleRunFailure(SpringApplication.java:778) ~[spring-boot-2.6.2.jar:2.6.2]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312) ~[spring-boot-2.6.2.jar:2.6.2]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1301) ~[spring-boot-2.6.2.jar:2.6.2]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1290) ~[spring-boot-2.6.2.jar:2.6.2]
+	at com.kakao.cafe.CafeApplication.main(CafeApplication.java:12) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49) ~[spring-boot-devtools-2.6.2.jar:2.6.2]
+Caused by: java.lang.NoClassDefFoundError: com/kakao/cafe/persistence/user/UserRowMapper
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3166) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2309) ~[na:na]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:463) ~[spring-core-5.3.14.jar:5.3.14]
+	... 26 common frames omitted
+Caused by: java.lang.ClassNotFoundException: com.kakao.cafe.persistence.user.UserRowMapper
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581) ~[na:na]
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:522) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:398) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:145) ~[spring-boot-devtools-2.6.2.jar:2.6.2]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:522) ~[na:na]
+	... 30 common frames omitted
+
+2022-01-17 11:44:33.506  INFO 1543 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-01-17 11:44:33.808  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Starting CafeApplication using Java 11.0.11 on kakaoui-MacBookPro-4.local with PID 1543 (/Users/kakao/Desktop/Github/be-w34-spring-cafe/out/production/classes started by kakao in /Users/kakao/Desktop/Github/be-w34-spring-cafe)
+2022-01-17 11:44:33.809  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : No active profile set, falling back to default profiles: default
+2022-01-17 11:44:33.972  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-01-17 11:44:33.973  INFO 1543 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-17 11:44:33.973  INFO 1543 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-01-17 11:44:33.984  INFO 1543 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-01-17 11:44:33.984  INFO 1543 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 173 ms
+2022-01-17 11:44:33.996  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2022-01-17 11:44:33.998  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2022-01-17 11:44:33.999  INFO 1543 --- [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:kakaodb'
+2022-01-17 11:44:34.050  WARN 1543 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userController' defined in file [/Users/kakao/Desktop/Github/be-w34-spring-cafe/out/production/classes/com/kakao/cafe/interfaces/user/UserController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'getFindUserServiceBean' defined in class path resource [com/kakao/cafe/interfaces/config/ServiceBeanConfig.class]: Unsatisfied dependency expressed through method 'getFindUserServiceBean' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'getFindUserAdaptor' defined in class path resource [com/kakao/cafe/interfaces/config/AdaptorBeanConfig.class]: Unsatisfied dependency expressed through method 'getFindUserAdaptor' parameter 1; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.kakao.cafe.persistence.user.UserRowMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2022-01-17 11:44:34.051  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2022-01-17 11:44:34.052  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2022-01-17 11:44:34.052  INFO 1543 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2022-01-17 11:44:34.057  INFO 1543 --- [restartedMain] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-01-17 11:44:34.060 ERROR 1543 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of method getFindUserAdaptor in com.kakao.cafe.interfaces.config.AdaptorBeanConfig required a bean of type 'com.kakao.cafe.persistence.user.UserRowMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.kakao.cafe.persistence.user.UserRowMapper' in your configuration.
+
+2022-01-17 12:33:30.726  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Starting CafeApplication using Java 11.0.11 on kakaoui-MacBookPro-4.local with PID 1543 (/Users/kakao/Desktop/Github/be-w34-spring-cafe/out/production/classes started by kakao in /Users/kakao/Desktop/Github/be-w34-spring-cafe)
+2022-01-17 12:33:30.727  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : No active profile set, falling back to default profiles: default
+2022-01-17 12:33:30.961  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-01-17 12:33:30.962  INFO 1543 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-17 12:33:30.962  INFO 1543 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-01-17 12:33:30.971  INFO 1543 --- [restartedMain] o.a.c.c.C.[Tomcat-2].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
+2022-01-17 12:33:30.972  INFO 1543 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 242 ms
+2022-01-17 12:33:30.993  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Starting...
+2022-01-17 12:33:30.995  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Start completed.
+2022-01-17 12:33:30.995  INFO 1543 --- [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:kakaodb'
+2022-01-17 12:33:31.206  INFO 1543 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2022-01-17 12:33:31.307  INFO 1543 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-01-17 12:33:31.315  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-01-17 12:33:31.320  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Started CafeApplication in 0.615 seconds (JVM running for 7773.669)
+2022-01-17 12:33:31.321  INFO 1543 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-01-17 12:33:32.944  WARN 1543 --- [Thread-29] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
+2022-01-17 12:33:32.947  INFO 1543 --- [Thread-29] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Shutdown initiated...
+2022-01-17 12:33:32.949  INFO 1543 --- [Thread-29] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Shutdown completed.
+2022-01-17 12:33:33.027  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Starting CafeApplication using Java 11.0.11 on kakaoui-MacBookPro-4.local with PID 1543 (/Users/kakao/Desktop/Github/be-w34-spring-cafe/out/production/classes started by kakao in /Users/kakao/Desktop/Github/be-w34-spring-cafe)
+2022-01-17 12:33:33.027  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : No active profile set, falling back to default profiles: default
+2022-01-17 12:33:33.167  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-01-17 12:33:33.167  INFO 1543 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-17 12:33:33.167  INFO 1543 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-01-17 12:33:33.172  INFO 1543 --- [restartedMain] o.a.c.c.C.[Tomcat-2].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
+2022-01-17 12:33:33.172  INFO 1543 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 143 ms
+2022-01-17 12:33:33.182  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Starting...
+2022-01-17 12:33:33.183  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Start completed.
+2022-01-17 12:33:33.183  INFO 1543 --- [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:kakaodb'
+2022-01-17 12:33:33.301  INFO 1543 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2022-01-17 12:33:33.347  INFO 1543 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-01-17 12:33:33.352  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-01-17 12:33:33.355  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Started CafeApplication in 0.346 seconds (JVM running for 7775.704)
+2022-01-17 12:33:33.355  INFO 1543 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-01-17 12:39:40.160  WARN 1543 --- [Thread-36] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
+2022-01-17 12:39:40.162  INFO 1543 --- [Thread-36] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Shutdown initiated...
+2022-01-17 12:39:40.163  INFO 1543 --- [Thread-36] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Shutdown completed.
+2022-01-17 12:39:40.442  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Starting CafeApplication using Java 11.0.11 on kakaoui-MacBookPro-4.local with PID 1543 (/Users/kakao/Desktop/Github/be-w34-spring-cafe/out/production/classes started by kakao in /Users/kakao/Desktop/Github/be-w34-spring-cafe)
+2022-01-17 12:39:40.442  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : No active profile set, falling back to default profiles: default
+2022-01-17 12:39:40.593  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-01-17 12:39:40.593  INFO 1543 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-17 12:39:40.593  INFO 1543 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-01-17 12:39:40.599  INFO 1543 --- [restartedMain] o.a.c.c.C.[Tomcat-2].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
+2022-01-17 12:39:40.599  INFO 1543 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 156 ms
+2022-01-17 12:39:40.610  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Starting...
+2022-01-17 12:39:40.611  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Start completed.
+2022-01-17 12:39:40.612  INFO 1543 --- [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:kakaodb'
+2022-01-17 12:39:40.744  INFO 1543 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2022-01-17 12:39:40.800  INFO 1543 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-01-17 12:39:40.807  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-01-17 12:39:40.810  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Started CafeApplication in 0.588 seconds (JVM running for 8143.154)
+2022-01-17 12:39:40.810  INFO 1543 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-01-17 12:43:14.940  WARN 1543 --- [Thread-40] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
+2022-01-17 12:43:14.941  INFO 1543 --- [Thread-40] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Shutdown initiated...
+2022-01-17 12:43:14.942  INFO 1543 --- [Thread-40] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Shutdown completed.
+2022-01-17 12:43:15.215  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Starting CafeApplication using Java 11.0.11 on kakaoui-MacBookPro-4.local with PID 1543 (/Users/kakao/Desktop/Github/be-w34-spring-cafe/out/production/classes started by kakao in /Users/kakao/Desktop/Github/be-w34-spring-cafe)
+2022-01-17 12:43:15.215  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : No active profile set, falling back to default profiles: default
+2022-01-17 12:43:15.409  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-01-17 12:43:15.410  INFO 1543 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-17 12:43:15.410  INFO 1543 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-01-17 12:43:15.417  INFO 1543 --- [restartedMain] o.a.c.c.C.[Tomcat-2].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
+2022-01-17 12:43:15.417  INFO 1543 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 200 ms
+2022-01-17 12:43:15.430  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Starting...
+2022-01-17 12:43:15.432  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Start completed.
+2022-01-17 12:43:15.432  INFO 1543 --- [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:kakaodb'
+2022-01-17 12:43:15.574  INFO 1543 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2022-01-17 12:43:15.643  INFO 1543 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-01-17 12:43:15.650  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-01-17 12:43:15.653  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Started CafeApplication in 0.653 seconds (JVM running for 8357.994)
+2022-01-17 12:43:15.654  INFO 1543 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-01-17 12:43:17.276  WARN 1543 --- [Thread-44] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
+2022-01-17 12:43:17.279  INFO 1543 --- [Thread-44] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Shutdown initiated...
+2022-01-17 12:43:17.282  INFO 1543 --- [Thread-44] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Shutdown completed.
+2022-01-17 12:43:17.360  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Starting CafeApplication using Java 11.0.11 on kakaoui-MacBookPro-4.local with PID 1543 (/Users/kakao/Desktop/Github/be-w34-spring-cafe/out/production/classes started by kakao in /Users/kakao/Desktop/Github/be-w34-spring-cafe)
+2022-01-17 12:43:17.360  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : No active profile set, falling back to default profiles: default
+2022-01-17 12:43:17.515  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-01-17 12:43:17.515  INFO 1543 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-17 12:43:17.516  INFO 1543 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-01-17 12:43:17.521  INFO 1543 --- [restartedMain] o.a.c.c.C.[Tomcat-2].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
+2022-01-17 12:43:17.521  INFO 1543 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 159 ms
+2022-01-17 12:43:17.532  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-11 - Starting...
+2022-01-17 12:43:17.534  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-11 - Start completed.
+2022-01-17 12:43:17.534  INFO 1543 --- [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:kakaodb'
+2022-01-17 12:43:17.658  INFO 1543 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2022-01-17 12:43:17.711  INFO 1543 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-01-17 12:43:17.717  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-01-17 12:43:17.720  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Started CafeApplication in 0.378 seconds (JVM running for 8360.06)
+2022-01-17 12:43:17.720  INFO 1543 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-01-17 12:45:27.936  WARN 1543 --- [Thread-48] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
+2022-01-17 12:45:27.938  INFO 1543 --- [Thread-48] com.zaxxer.hikari.HikariDataSource       : HikariPool-11 - Shutdown initiated...
+2022-01-17 12:45:27.943  INFO 1543 --- [Thread-48] com.zaxxer.hikari.HikariDataSource       : HikariPool-11 - Shutdown completed.
+2022-01-17 12:45:28.407  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Starting CafeApplication using Java 11.0.11 on kakaoui-MacBookPro-4.local with PID 1543 (/Users/kakao/Desktop/Github/be-w34-spring-cafe/out/production/classes started by kakao in /Users/kakao/Desktop/Github/be-w34-spring-cafe)
+2022-01-17 12:45:28.408  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : No active profile set, falling back to default profiles: default
+2022-01-17 12:45:28.901  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-01-17 12:45:28.902  INFO 1543 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-17 12:45:28.902  INFO 1543 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-01-17 12:45:28.911  INFO 1543 --- [restartedMain] o.a.c.c.C.[Tomcat-2].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
+2022-01-17 12:45:28.911  INFO 1543 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 497 ms
+2022-01-17 12:45:28.925  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-12 - Starting...
+2022-01-17 12:45:28.927  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-12 - Start completed.
+2022-01-17 12:45:28.927  INFO 1543 --- [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:kakaodb'
+2022-01-17 12:45:29.102  INFO 1543 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2022-01-17 12:45:29.178  INFO 1543 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-01-17 12:45:29.184  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-01-17 12:45:29.188  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Started CafeApplication in 1.097 seconds (JVM running for 8491.526)
+2022-01-17 12:45:29.189  INFO 1543 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-01-17 12:46:38.061  WARN 1543 --- [Thread-52] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
+2022-01-17 12:46:38.063  INFO 1543 --- [Thread-52] com.zaxxer.hikari.HikariDataSource       : HikariPool-12 - Shutdown initiated...
+2022-01-17 12:46:38.065  INFO 1543 --- [Thread-52] com.zaxxer.hikari.HikariDataSource       : HikariPool-12 - Shutdown completed.
+2022-01-17 12:46:38.171  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Starting CafeApplication using Java 11.0.11 on kakaoui-MacBookPro-4.local with PID 1543 (/Users/kakao/Desktop/Github/be-w34-spring-cafe/out/production/classes started by kakao in /Users/kakao/Desktop/Github/be-w34-spring-cafe)
+2022-01-17 12:46:38.172  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : No active profile set, falling back to default profiles: default
+2022-01-17 12:46:38.385  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-01-17 12:46:38.386  INFO 1543 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-17 12:46:38.386  INFO 1543 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-01-17 12:46:38.395  INFO 1543 --- [restartedMain] o.a.c.c.C.[Tomcat-2].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
+2022-01-17 12:46:38.395  INFO 1543 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 222 ms
+2022-01-17 12:46:38.415  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-13 - Starting...
+2022-01-17 12:46:38.417  INFO 1543 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-13 - Start completed.
+2022-01-17 12:46:38.417  INFO 1543 --- [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:kakaodb'
+2022-01-17 12:46:38.663  INFO 1543 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2022-01-17 12:46:38.748  INFO 1543 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-01-17 12:46:38.757  INFO 1543 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-01-17 12:46:38.763  INFO 1543 --- [restartedMain] com.kakao.cafe.CafeApplication           : Started CafeApplication in 0.613 seconds (JVM running for 8561.101)
+2022-01-17 12:46:38.765  INFO 1543 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2022-01-17 12:46:41.187  INFO 2590 --- [main] c.k.c.i.user.UserControllerTest          : Starting UserControllerTest using Java 11.0.11 on kakaoui-MacBookPro-4.local with PID 2590 (started by kakao in /Users/kakao/Desktop/Github/be-w34-spring-cafe)
+2022-01-17 12:46:41.188  INFO 2590 --- [main] c.k.c.i.user.UserControllerTest          : No active profile set, falling back to default profiles: default
+2022-01-17 12:46:42.225  INFO 2590 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2022-01-17 12:46:42.430  INFO 2590 --- [main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2022-01-17 12:46:42.431  INFO 2590 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2022-01-17 12:46:42.432  INFO 2590 --- [main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2022-01-17 12:46:42.464  INFO 2590 --- [main] c.k.c.i.user.UserControllerTest          : Started UserControllerTest in 1.794 seconds (JVM running for 4.619)

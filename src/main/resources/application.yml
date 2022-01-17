@@ -22,3 +22,9 @@ server:
     whitelabel:
       enabled: false
     path: /error
+
+logging:
+  level:
+    com.kakao.cafe.application: info
+  file:
+    path: logs
