@@ -2,14 +2,15 @@ package com.kakao.cafe.adapter.in.presentation.user;
 
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.application.user.port.in.GetUserInfoUseCase;
+import com.kakao.cafe.domain.user.exceptions.UnauthenticatedUserException;
 import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserInfoController {
@@ -33,7 +34,7 @@ public class UserInfoController {
     }
 
     @GetMapping("/users/{userId}")
-    public String displayUserProfile(@PathVariable String userId, RedirectAttributes redirectAttributes, Model model)
+    public String displayUserProfile(@PathVariable String userId, Model model)
         throws UserNotExistException {
         UserInfo userInfo = getUserInfoUseCase.getUserProfile(userId);
         log.info("{} information required", userId);
@@ -43,8 +44,13 @@ public class UserInfoController {
     }
 
     @GetMapping("/users/{userId}/form")
-    public String displayUserUpdateForm(@PathVariable String userId, Model model)
-        throws UserNotExistException {
+    public String displayUserUpdateForm(@PathVariable String userId, Model model, HttpSession session)
+        throws UserNotExistException, UnauthenticatedUserException {
+        String sessionedUserId = (String) session.getAttribute("sessionedUser");
+        if (!sessionedUserId.equals(userId)) {
+            log.info("{} is do not have permission.", sessionedUserId);
+            throw new UnauthenticatedUserException("인증 오류");
+        }
         UserInfo userInfo = getUserInfoUseCase.getUserProfile(userId);
         log.info("{} update form required", userId);
         model.addAttribute("user", userInfo);
