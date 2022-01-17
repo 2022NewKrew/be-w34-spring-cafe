@@ -1,22 +1,27 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.dao.UserDao;
+import com.kakao.cafe.utils.DateUtils;
 
 public class User {
     private long userId;
     private String email;
     private String password;
     private String nickname;
+    // LocalDate
     private String createDate;
 
-    public User() { }
+    private User() { }
 
-    public User(User user) {
+    private User(User user) {
         this.userId = user.getUserId();
         this.password = user.getPassword();
         this.nickname = user.getNickname();
         this.email = user.getEmail();
-        this.createDate = user.getCreateDate();
+        this.createDate = DateUtils.getCurrentTime();
+    }
+
+    public static User from(User user) {
+        return new User(user);
     }
 
     public long getUserId() {
@@ -53,10 +58,6 @@ public class User {
 
     public String getCreateDate() {
         return createDate;
-    }
-
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
     }
 
     @Override
