@@ -1,0 +1,22 @@
+DROP TABLE IF EXISTS `POST`;
+DROP TABLE IF EXISTS `USER`;
+
+CREATE TABLE `USER`
+(
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    nick_name VARCHAR(255) NOT NULL UNIQUE,
+    created_at DATETIME
+);
+
+CREATE TABLE `POST`
+(
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    contents TEXT NOT NULL,
+    created_at DATETIME,
+    view_num INT,
+    user_id BIGINT,
+    FOREIGN KEY (user_id) REFERENCES `USER` (id)
+);

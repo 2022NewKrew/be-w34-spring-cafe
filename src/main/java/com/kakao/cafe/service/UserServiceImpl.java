@@ -12,6 +12,7 @@ import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,8 +64,17 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByNickName(userJoinDTO.getNickName())) {
             throw new UserNickNameDuplicationException(UserErrorMsg.USER_NICKNAME_DUPLICATED.getDescription());
         }
-        User newUser = userJoinDTO.toUserWithCurrentDate();
+        User newUser = createUserBy(userJoinDTO);
         return userRepository.save(newUser);
+    }
+
+    private User createUserBy(UserJoinDto userJoinDto) {
+        return User.builder()
+                .email(userJoinDto.getEmail())
+                .password(userJoinDto.getPassword())
+                .nickName(userJoinDto.getNickName())
+                .createdAt(LocalDateTime.now())
+                .build();
     }
 
     @Override

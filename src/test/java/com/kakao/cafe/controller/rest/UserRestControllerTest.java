@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.GregorianCalendar;
 
 import static org.mockito.BDDMockito.given;
@@ -66,7 +67,7 @@ class UserRestControllerTest {
                 .id(Long.valueOf(124))
                 .email("gallix@kakao.com")
                 .password("abcd1234!")
-                .joinDate(new GregorianCalendar())
+                .createdAt(LocalDateTime.now())
                 .nickName("gallix")
                 .build();
     }
