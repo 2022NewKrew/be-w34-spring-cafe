@@ -15,4 +15,20 @@ public class UserResponseDto {
         this.name = user.getName();
         this.email = user.getEmail();
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
 }

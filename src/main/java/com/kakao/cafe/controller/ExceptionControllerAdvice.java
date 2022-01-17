@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.user.exception.UserLoginFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,14 @@ public class ExceptionControllerAdvice {
         logger.info("Error : {} ", e.getMessage());
         model.addAttribute("message", e.getMessage());
         return "error";
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(UserLoginFailedException.class)
+    public String loginError(UserLoginFailedException e, Model model) {
+        logger.info("Login Error : {} ", e.getMessage());
+        model.addAttribute("message", e.getMessage());
+        return "/user/login_failed";
     }
 
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
