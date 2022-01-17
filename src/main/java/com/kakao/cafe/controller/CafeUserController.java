@@ -33,7 +33,7 @@ public class CafeUserController {
     private static final String USER_REDIRECT_LIST = REDIRECT_PREFIX+"/users/list";
     private static final String USER_REDIRECT_SIGN_UP_FAIL = REDIRECT_PREFIX+"/users/sign-up/fail";
     private static final String USER_REDIRECT_SIGN_OUT = REDIRECT_PREFIX+"/";
-    private static final String USER_REDIRECT_PROFILE_EDIT_ADMIN_FAIL = REDIRECT_PREFIX+"/";
+    private static final String USER_REDIRECT_PROFILE_EDIT_ADMIN_FAIL = REDIRECT_PREFIX+"/users/profile/edit/fail";
     private static final String USER_REDIRECT_PROFILE_EDIT = REDIRECT_PREFIX+"/";
 
     @GetMapping("/sign-in")
