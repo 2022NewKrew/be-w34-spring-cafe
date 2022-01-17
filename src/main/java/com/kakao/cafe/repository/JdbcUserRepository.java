@@ -53,7 +53,7 @@ public class JdbcUserRepository implements UserRepository {
             User user = new User(
                     rs.getInt("id"),
                     rs.getString("userId"),
-                    rs.getInt("password"),
+                    rs.getString("password"),
                     rs.getString("name"),
                     rs.getString("email"));
             return user;

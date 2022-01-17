@@ -7,11 +7,11 @@ public class User {
 
     private int id;
     private String userId;
-    private int password;
+    private String password;
     private String name;
     private String email;
 
-    public User(int id, String userId, int password, String name, String email) {
+    public User(int id, String userId, String password, String name, String email) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -19,7 +19,7 @@ public class User {
         this.email = email;
     }
 
-    public void setPassword(int password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -29,6 +29,10 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean matchPassword(String password) {
+        return this.password.equals(password);
     }
 
     @Override

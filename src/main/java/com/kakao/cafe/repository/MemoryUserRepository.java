@@ -14,7 +14,7 @@ public class MemoryUserRepository implements UserRepository {
 
     public MemoryUserRepository() {
         users = new ArrayList<>();
-        users.add(new User(1,"wldus", 123, "jiyeon", "dhso@kk.kk"));
+        users.add(new User(1,"wldus", "123", "jiyeon", "dhso@kk.kk"));
     }
     
     @Override

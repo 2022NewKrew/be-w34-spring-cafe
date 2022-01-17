@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.UserAuthDto;
 import com.kakao.cafe.controller.UserDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
@@ -28,7 +29,7 @@ public class UserService {
 
     public int update(String userId, UserDto userDto) {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디"));
-        validPassword(userDto, user);
+        validPassword(user, userDto.getPassword());
         user.setPassword(userDto.getPassword());
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
@@ -41,8 +42,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private void validPassword(UserDto userDto, User user) {
-        if (userDto.getPassword() != user.getPassword()) {
+    public UserDto login(UserAuthDto userAuthDto) {
+        User user = userRepository.findByUserId(userAuthDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디"));
+        validPassword(user, userAuthDto.getPassword());
+        return UserDto.from(user);
+    }
+
+    private void validPassword(User user, String password) {
+        if (!user.matchPassword(password)) {
             throw new IllegalStateException("패스워드 불일치");
         }
     }

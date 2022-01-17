@@ -13,7 +13,6 @@ public class ExceptionController {
 
     @ExceptionHandler
     public ResponseEntity<Object> BadRequestException(final RuntimeException ex) {
-        logger.warn("error", ex);
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }
