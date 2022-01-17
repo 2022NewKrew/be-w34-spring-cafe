@@ -1,17 +1,19 @@
 package com.kakao.cafe.user.controller;
 
 import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.dto.UserCreateDTO;
-import com.kakao.cafe.user.dto.UserListDTO;
-import com.kakao.cafe.user.dto.UserProfileDTO;
-import com.kakao.cafe.user.dto.UserUpdateDTO;
+import com.kakao.cafe.user.dto.*;
 import com.kakao.cafe.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.server.Cookie;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -69,5 +71,23 @@ public class UserController {
         model.addAttribute("email", userUpdateDTO.getEmail());
         return "/user/updateform";
     }
+
+
+    //회원가입요청
+    @PostMapping(value = "/user/login/try")
+    public String userLogin(UserLoginDTO userLoginDTO, HttpSession session, HttpServletRequest request){
+        String userCookieValue = request.getCookies()[0].getValue();
+        if(session.getAttribute("loginList") == null){
+            session.setAttribute("loginList", new HashMap<String, String>());
+        }
+
+        if(userService.isValidLogin(userLoginDTO)){
+            Map<String, String> loginList = (Map<String, String>) session.getAttribute("loginList");
+            loginList.put(userCookieValue, userLoginDTO.getUserId()); //해당 유저쿠키번호에 로그인한 사용자의 아이디를 추가
+        }
+
+        return "redirect:/";
+    }
+
 
 }

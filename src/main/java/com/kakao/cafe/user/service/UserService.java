@@ -3,6 +3,7 @@ package com.kakao.cafe.user.service;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserCreateDTO;
 import com.kakao.cafe.user.dto.UserListDTO;
+import com.kakao.cafe.user.dto.UserLoginDTO;
 import com.kakao.cafe.user.dto.UserProfileDTO;
 import com.kakao.cafe.user.repository.UserJdbcRepository;
 import com.kakao.cafe.user.repository.UserMemoryRepository;
@@ -41,6 +42,21 @@ public class UserService {
         }
 
         userRepository.updateUser(userCreateDTO);
+    }
+
+    public Boolean isValidLogin(UserLoginDTO userLoginDTO){
+        User user = userRepository.getUserByCondition("userid", userLoginDTO.getUserId());
+
+        if(user == null){
+            throw new RuntimeException("존재하는 사용자 아이디가 없습니다.");
+        }
+
+        //비밀번호가 일치하지 않는경우
+        if(!user.getPassword().equals(userLoginDTO.getPassword())){
+            return false;
+        }
+
+        return true; //로그인 가능한경우 true
     }
 
     public List<User> getAllUser(){
