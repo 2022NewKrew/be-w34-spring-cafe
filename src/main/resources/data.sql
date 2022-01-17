@@ -1,0 +1,2 @@
+INSERT INTO users (userId, password, name, email) VALUES ('admin', '1234', 'admin', 'admin@kakaocorp.com');
+INSERT INTO articles (writer, title, contents) VALUES ('Admin', 'adminTest', 'We are testing Now');

@@ -5,18 +5,22 @@ import com.kakao.cafe.dto.user.UserResDto;
 import com.kakao.cafe.dto.user.UserUpdateReqDto;
 import com.kakao.cafe.repository.user.UserRepository;
 import com.kakao.cafe.dto.user.UserReqDto;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
 
+    @Autowired
+    public UserServiceImpl(@Qualifier("jdbcUserRepository") UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
     @Override
     public void addUser(UserReqDto userReqDto){
@@ -55,15 +59,30 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(userUpdateReqDto.getId())
                 .orElseThrow(() -> new NullPointerException("존재하지 않는 사용자입니다."));
 
-        //예외처리(비밀번호가 다른 경우)
+        validatePassword(userUpdateReqDto.getPassword(), user.getPassword());
 
-        userRepository.save(User.builder()
+        userRepository.update(User.builder()
                 .id(user.getId())
                 .userId(user.getUserId())
                 .password(userUpdateReqDto.getNewPassword())
                 .name(userUpdateReqDto.getName())
                 .email(userUpdateReqDto.getEmail())
                 .build());
+    }
+
+    @Override
+    public UserResDto login(UserReqDto userReqDto) {
+        User user = userRepository.findByUserId(userReqDto.getUserId())
+                .orElseThrow(() -> new NullPointerException("존재하지 않는 사용자입니다."));
+        validatePassword(userReqDto.getPassword(), user.getPassword());
+
+        return new UserResDto(user);
+    }
+
+    private void validatePassword(String inputPassword, String dataPassword){
+        if(!inputPassword.equals(dataPassword)){
+            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
+        }
     }
 
 }

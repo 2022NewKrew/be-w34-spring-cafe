@@ -1,0 +1,27 @@
+</head>
+<body>
+<div class="background">
+  <nav class="navbar navbar-fixed-top header">
+    <div class="col-md-12">
+      <div class="navbar-header">
+        <a href="/" class="navbar-brand">
+          <img src="/images/KakaoCI.png" />
+        </a>
+
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        {{^sessionedUser}}
+        <li class="active">로그인이 필요합니다.</li>
+        <li class="active"><a href="/users">멤버 리스트</a></li>
+        <li><a class="black-component" href="/users/login" role="button">로그인</a></li>
+        <li><a class="black-component" href="/users/form" role="button">회원가입</a></li>
+        {{/sessionedUser}}
+        {{#sessionedUser}}
+        <li class="active"><a href="/users/{{id}}">안녕하세요 {{name}}님!</a></li>
+        <li class="active"><a href="/users">멤버 리스트</a></li>
+        <li><a class="black-component" href="#" role="button">로그아웃</a></li>
+        <li><a class="black-component" href="/users/{{id}}/form" role="button">개인정보수정</a></li>
+        {{/sessionedUser}}
+      </ul>
+    </div>
+  </nav>

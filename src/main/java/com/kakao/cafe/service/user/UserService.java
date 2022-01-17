@@ -11,4 +11,5 @@ public interface UserService {
     List<UserResDto> findUsers();
     UserResDto findUserById(Long id);
     void updateUser(UserUpdateReqDto userUpdateReqDto);
+    UserResDto login(UserReqDto userReqDto);
 }

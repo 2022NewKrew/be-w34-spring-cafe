@@ -15,6 +15,11 @@ public class MemoryUserRepository implements UserRepository{
     @Override
     public void save(User user) {
         user.setId(++sequence);
+        update(user);
+    }
+
+    @Override
+    public void update(User user) {
         userStore.put(user.getId(), user);
     }
 
@@ -35,7 +40,9 @@ public class MemoryUserRepository implements UserRepository{
         return new ArrayList<>(userStore.values());
     }
 
+
     public void clearUserStore(){
+        sequence = 0L;
         userStore.clear();
     }
 
