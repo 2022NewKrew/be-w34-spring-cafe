@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.article;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -10,17 +11,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 public class Article {
-    private static int index;
+    private int index;
     private String writer;
     private String title;
-    private List<Content> contents;
+//    private List<Content> contents;
+    private String contents;
     private String time;
 
-    Article(String writer, String title, String contents) {
+    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
-        this.contents = createContents(contents);
+//        this.contents = createContents(contents);
+        this.contents = contents;
         index = ArticleList.getArticleList().size() + 1;
         time = getCreatedTime();
     }
@@ -38,7 +42,7 @@ public class Article {
         return nowDate.format(dateFormatter) + " " + nowTime.format(timeFormatter);
     }
 
-    public List<Content> getContents(){
+    public String getContents(){
         return contents;
     }
 }
