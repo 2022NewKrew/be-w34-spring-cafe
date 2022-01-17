@@ -34,7 +34,7 @@ public class JdbcConfig {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/kakaodb");
+        dataSource.setUrl("jdbc:mysql://mysql:3306/kakaodb");
         dataSource.setUsername("kakao");
         dataSource.setPassword("kakao");
 
