@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("articles")
 @RequiredArgsConstructor
@@ -19,22 +21,24 @@ public class ArticleController {
 
     @GetMapping
     public String findArticles(Model model) {
-        model.addAttribute("articles", articleService.findAll());
-        logger.info(articleService.findAll().get(0).toString());
+        List<ArticleDto> articles = articleService.findAll();
+        model.addAttribute("articles", articles);
+        logger.info("GET /articles: {}", articles);
         return "index";
     }
 
     @GetMapping("{id}")
     public String findArticleOne(@PathVariable int id, Model model) {
-        logger.info(articleService.findById(id).toString());
-        model.addAttribute("article", articleService.findById(id));
+        ArticleDto articles = articleService.findById(id);
+        model.addAttribute("article", articles);
+        logger.info("GET /articles/{}: {}", articles.getId(), articles);
         return "/qna/show";
     }
 
     @PostMapping
     public String createArticle(@ModelAttribute ArticleDto articleDto) {
         int id = articleService.create(articleDto);
-        logger.info(id + " success");
+        logger.info("POST /articles: {}", id);
         return "redirect:/";
     }
 

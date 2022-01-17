@@ -25,12 +25,14 @@ public class UserAuthController {
     public String login(@ModelAttribute UserAuthDto userAuthDto, HttpSession httpSession) {
         UserDto user = userService.login(userAuthDto);
         httpSession.setAttribute("user", user);
+        logger.info("POST /users/login: {}", user);
         return "redirect:/users";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession httpSession) {
         httpSession.invalidate();
+        logger.info("GET /users/logout");
         return "redirect:/";
     }
 }
