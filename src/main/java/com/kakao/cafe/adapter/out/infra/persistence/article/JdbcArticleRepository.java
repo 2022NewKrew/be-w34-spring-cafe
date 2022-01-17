@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.sql.DataSource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -47,8 +48,16 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public Optional<Article> findById(int id) {
         String sql = SELECT_ALL + " where id = ?";
-        Article article = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum), id);
-        return Optional.ofNullable(article);
+        try {
+            Article article = jdbcTemplate.queryForObject(
+                sql,
+                (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum),
+                id
+            );
+            return Optional.ofNullable(article);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     private static final class ArticleMapper implements RowMapper<Article> {

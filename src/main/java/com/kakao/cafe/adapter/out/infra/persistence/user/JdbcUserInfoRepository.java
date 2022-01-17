@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.sql.DataSource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -54,8 +55,12 @@ public class JdbcUserInfoRepository implements UserInfoRepository {
     @Override
     public Optional<User> findByUserId(String userId) {
         String sql = SELECT_ALL + " where id = ?";
-        User user = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum), userId);
-        return Optional.ofNullable(user);
+        try {
+            User user = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum), userId);
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     private static final class UserMapper implements RowMapper<User> {
