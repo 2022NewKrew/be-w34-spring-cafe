@@ -14,12 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @Controller
 public class CustomErrorController implements ErrorController {
-    private static final String DEFAULT_ERROR_MESSAGE = "서버에서 에러가 발생했습니다. 잠시후 다시 시도해주세요.";
     private static final String PAGE_NOT_FOUND_ERROR_MESSAGE = "없는 페이지 입니다.";
 
     @RequestMapping(value = "/error")
     public String handleError(HttpServletRequest request, Model model) {
-        String message = DEFAULT_ERROR_MESSAGE;
+        String message = Constants.DEFAULT_ERROR_MESSAGE;
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         if (status != null) {
             int statusCode = Integer.parseInt(status.toString());

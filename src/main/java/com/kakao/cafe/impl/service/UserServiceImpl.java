@@ -30,8 +30,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateUser(UserDTO user) {
-        return userRepository.updateUser(user);
+    public int updateUser(long id, UserDTO user) {
+        return userRepository.updateUser(id, user);
     }
 
     @Override

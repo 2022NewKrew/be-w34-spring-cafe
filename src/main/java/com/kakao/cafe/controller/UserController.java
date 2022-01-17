@@ -16,13 +16,15 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Controller
 @RequestMapping("/users")
 public class UserController {
     private static final String FAIL_LOGIN_MESSAGE = "이메일 혹은 비밀번호가 틀렸습니다.";
-
+    private static final String INVALID_LOGGED_IN_MESSAGE = "올바르지 않은 접근입니다.";
+    private static final String WRONG_PASSWORD_MESSAGE = "잘못된 비밀번호입니다.";
     @Resource(name = "userService")
     private UserService userService;
 
@@ -49,17 +51,33 @@ public class UserController {
     }
 
     @GetMapping("/{id}/form")
-    String getUserForm(@PathVariable long id, Model model) {
-        UserDTO user = userService.getUserById(id);
+    String getUserForm(@PathVariable long id, Model model, HttpSession session) {
+        UserDTO user = (UserDTO) session.getAttribute("sessionUser");
+        if (user == null || id != user.getId()) {
+            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, INVALID_LOGGED_IN_MESSAGE);
+            return Constants.ERROR_PAGE_NAME;
+        }
         model.addAttribute("user", user);
         log.info("get User(Form) -> ID : {}, UserId : {}", user.getId(), user.getUserId());
 
         return "user/updateForm";
     }
 
-    @PostMapping("/{userId}/update")
-    String updateUser(@Valid UserDTO user) {
-        userService.updateUser(user);
+    @PostMapping("/{id}/update")
+    String updateUser(@PathVariable long id, @Valid UserDTO user, Model model, HttpSession session) {
+        UserDTO sessionUser = (UserDTO) session.getAttribute("sessionUser");
+        if (sessionUser == null || id != sessionUser.getId()) {
+            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, INVALID_LOGGED_IN_MESSAGE);
+            return Constants.ERROR_PAGE_NAME;
+        }
+        if (!Objects.equals(sessionUser.getPassword(), user.getPassword())) {
+            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, WRONG_PASSWORD_MESSAGE);
+            return Constants.ERROR_PAGE_NAME;
+        }
+        if (userService.updateUser(id, user) <= 0) {
+            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, WRONG_PASSWORD_MESSAGE);
+            return Constants.ERROR_PAGE_NAME;
+        }
         log.info("update User -> UserId : {}, Email : {}", user.getUserId(), user.getEmail());
         return "redirect:/users";
     }
