@@ -4,6 +4,7 @@ import com.kakao.cafe.controller.users.dto.request.UserUpdateRequest;
 import com.kakao.cafe.controller.users.dto.request.UserSignUpRequest;
 import com.kakao.cafe.controller.users.mapper.UserViewMapper;
 import com.kakao.cafe.service.user.UserService;
+import com.kakao.cafe.service.user.dto.UserIdentification;
 import com.kakao.cafe.service.user.dto.UserInfo;
 import com.kakao.cafe.service.user.dto.UserSignUpForm;
 import com.kakao.cafe.service.user.dto.UserUpdateForm;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Slf4j
@@ -48,17 +50,24 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("{id}/form")
-    public String showUpdateForm(@PathVariable Long id, Model model) {
-        UserInfo userInfo = userService.getUserInfo(id);
+    @GetMapping("{userId}/form")
+    public String showUpdateForm(@PathVariable String userId, Model model) {
+        UserInfo userInfo = userService.getUserInfo(userId);
         model.addAttribute("user", userViewMapper.toUserUpdateFormResponse(userInfo));
         return "user/updateForm";
     }
 
-    @PostMapping("{id}/update")
-    public String updateUser(@PathVariable Long id, UserUpdateRequest userUpdateRequest) {
-        UserUpdateForm userUpdateForm = userDtoMapper.toUserUpdateForm(id, userUpdateRequest);
+    @PostMapping("{userId}/update")
+    public String updateUser(@PathVariable String userId, UserUpdateRequest userUpdateRequest) {
+        UserUpdateForm userUpdateForm = userDtoMapper.toUserUpdateForm(userUpdateRequest);
         userService.updateUser(userUpdateForm);
         return "redirect:/users";
+    }
+
+    @PostMapping("login")
+    public String login(String userId, String password, HttpSession session) {
+        UserIdentification userIdentification = userService.login(userId, password);
+        session.setAttribute("sessionedUser", userIdentification);
+        return "redirect:/";
     }
 }

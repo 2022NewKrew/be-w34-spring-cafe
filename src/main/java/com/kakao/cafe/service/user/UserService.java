@@ -2,6 +2,7 @@ package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.user.UserRepository;
+import com.kakao.cafe.service.user.dto.UserIdentification;
 import com.kakao.cafe.service.user.dto.UserInfo;
 import com.kakao.cafe.service.user.dto.UserSignUpForm;
 import com.kakao.cafe.service.user.dto.UserUpdateForm;
@@ -39,9 +40,17 @@ public class UserService {
     }
 
     public Long updateUser(UserUpdateForm updateForm) {
-        User updateUser = userRepository.findById(updateForm.getId()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+        User updateUser = userRepository.findByUserId(updateForm.getUserId()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
         updateUser.update(updateForm);
         return userRepository.updateUser(updateUser);
+    }
+
+    public UserIdentification login(String userId, String password) {
+        User loginUser = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+        if(!loginUser.getPassword().equals(password)) {
+            throw new IllegalArgumentException("패스워드가 틀렸습니다.");
+        }
+        return userDtoMapper.toUserIdentification(loginUser);
     }
 
 }
