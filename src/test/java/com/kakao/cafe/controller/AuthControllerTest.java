@@ -61,6 +61,7 @@ class AuthControllerTest {
     }
 
     @Test
+    @DisplayName("로그아웃 테스트")
     void logout() throws Exception {
         // Given
 

@@ -1,0 +1,20 @@
+{{> common/head}}
+
+<body>
+{{> common/navbar}}
+{{> common/sub-navbar}}
+
+<div class="container" id="main">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default content-main">
+            {{#detail}}
+            <div class="alert alert-danger" role="alert">{{message}}</div>
+            {{/detail}}
+            <button class="btn btn-warning clearfix" onclick="history.back()">뒤로 가기</button>
+        </div>
+    </div>
+</div>
+
+{{> common/script}}
+</body>
+</html>

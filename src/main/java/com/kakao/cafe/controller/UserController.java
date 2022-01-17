@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Result;
 import com.kakao.cafe.dto.UserDTO.Update;
+import com.kakao.cafe.error.exception.BindingException;
 import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -34,32 +33,23 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public String create(@ModelAttribute @Validated Create createDTO,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            bindingResult.getFieldErrors()
-                .forEach(fieldError -> logger.error("Caused Field : {}, Message : {}",
-                    fieldError.getField(),
-                    fieldError.getDefaultMessage()));
-            return "redirect:/users/form-failed";
+            throw new BindingException(bindingResult);
         }
+
         userService.create(createDTO);
 
         return "redirect:/users";
     }
 
     @PutMapping("/{uid}")
-    @ResponseStatus(HttpStatus.CREATED)
     public String update(@ModelAttribute @Validated Update updateDTO, @PathVariable String uid,
         HttpServletRequest request,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            bindingResult.getFieldErrors()
-                .forEach(fieldError -> logger.error("Caused Field : {}, Message : {}",
-                    fieldError.getField(),
-                    fieldError.getDefaultMessage()));
-            return "redirect:/users/" + uid;
+            throw new BindingException(bindingResult);
         }
 
         HttpSession session = request.getSession();

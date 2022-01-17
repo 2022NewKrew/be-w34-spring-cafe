@@ -61,7 +61,7 @@ class ArticleControllerTest {
 
         // Then
         actions
-            .andExpect(status().isCreated())
+            .andExpect(status().isFound())
             .andExpect(redirectedUrl("/"));
     }
 
@@ -82,7 +82,7 @@ class ArticleControllerTest {
 
         // Then
         actions
-            .andExpect(status().isCreated())
+            .andExpect(status().isFound())
             .andExpect(redirectedUrl("/articles/form-failed"));
     }
 
@@ -110,6 +110,7 @@ class ArticleControllerTest {
             .isEqualTo(3);
 
         actions
+            .andExpect(redirectedUrl("/"))
             .andExpect(status().isOk());
         assertThat(actions.andReturn().getModelAndView().getViewName())
             .isNotNull()

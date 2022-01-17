@@ -23,7 +23,7 @@ public interface ArticleDTO {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     class Result {
 
-        static final String dateTimePattern = "yyyy-MM-dd HH:mm";
+        static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm";
 
         Long id;
         String uid;
@@ -34,7 +34,7 @@ public interface ArticleDTO {
         public static Result from(Article article) {
             return new Result(article.getId(), article.getUid(),
                 article.getTitle(), article.getBody(),
-                article.getCreatedAt().format(DateTimeFormatter.ofPattern(dateTimePattern)));
+                article.getCreatedAt().format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)));
         }
     }
 }
