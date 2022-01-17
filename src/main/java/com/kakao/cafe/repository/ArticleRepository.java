@@ -20,7 +20,7 @@ public class ArticleRepository {
         this.insert(new Article("Mr.Pizza", "도미노 피자 할인 무슨요일이죠?", "도미노 피자 빨리 먹고 싶다"));
     }
 
-    private void insert(Article article) {
+    public void insert(Article article) {
         ArticleDao articleDao = toArticleDao(article);
         articleMap.put(articleDao.getNumber(), articleDao);
     }
