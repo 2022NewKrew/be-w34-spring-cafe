@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
+
     List<User> getUsers();
 
     void addUser(UserId userId, Password password, Name name, Email email);

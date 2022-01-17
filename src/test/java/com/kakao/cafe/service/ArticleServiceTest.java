@@ -1,19 +1,19 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dao.article.ArticleDao;
-import com.kakao.cafe.dao.article.VolatilityArticleStorage;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.kakao.cafe.dao.article.ArticleDao;
+import com.kakao.cafe.dao.article.VolatilityArticleStorage;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 @DisplayName("ArticleService 테스트")
 class ArticleServiceTest {
+
     private ArticleDao articleDao;
     private ArticleService articleService;
 

@@ -1,20 +1,20 @@
 package com.kakao.cafe.dao.article;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.kakao.cafe.model.article.Article;
 import com.kakao.cafe.model.article.Contents;
 import com.kakao.cafe.model.article.Title;
 import com.kakao.cafe.model.article.Writer;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @DisplayName("VolatilityArticleStorage 테스트")
 class VolatilityArticleStorageTest {
+
     private static final int PRECONDITION_NUMBER_OF_ARTICLE_EXIST = 10;
     private ArticleDao articleDao;
 
@@ -78,7 +78,8 @@ class VolatilityArticleStorageTest {
         Article article = articleDao.findArticleById(id).orElseGet(null);
 
         //then
-        assertThat(article.getTitle()).isEqualTo(new Title("title" + PRECONDITION_NUMBER_OF_ARTICLE_EXIST));
+        assertThat(article.getTitle()).isEqualTo(
+                new Title("title" + PRECONDITION_NUMBER_OF_ARTICLE_EXIST));
     }
 
     @DisplayName("설정된 초기 값이 있을때 저장한 총 Article의 수를 반환한다.")

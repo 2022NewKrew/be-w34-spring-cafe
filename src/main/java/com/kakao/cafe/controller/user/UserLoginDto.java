@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller.user;
 
 public class UserLoginDto {
+
     private final String userId;
     private final String password;
 

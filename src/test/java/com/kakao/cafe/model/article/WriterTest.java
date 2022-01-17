@@ -1,13 +1,14 @@
 package com.kakao.cafe.model.article;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 class WriterTest {
+
     private static final int ALLOWED_LENGTH_WRITER = 8;
 
     @DisplayName("조건을 만족하지 못한 writter가 주어졌을때 IllegalArgumentException 예외를 던진다.")
@@ -23,7 +24,8 @@ class WriterTest {
         //give
         //when
         //then
-        assertThatThrownBy(() -> new Writer(illegalWriter)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new Writer(illegalWriter)).isInstanceOf(
+                IllegalArgumentException.class);
     }
 
     @DisplayName("조건을 만족하는 writter가 주어졌을때 예외를 던지지 않는다.")

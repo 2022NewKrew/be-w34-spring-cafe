@@ -13,6 +13,7 @@ import java.util.Optional;
 @Repository
 @Primary
 public class JdbcUserStorage implements UserDao {
+
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcUserStorage(JdbcTemplate jdbcTemplate) {
@@ -39,7 +40,10 @@ public class JdbcUserStorage implements UserDao {
 
     @Override
     public Optional<User> findUserById(UserId userId) {
-        String query = String.format("SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USER_DATA WHERE USER_ID = '%s'", userId.getValue());
+        String query = String.format(
+                "SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USER_DATA WHERE USER_ID = '%s'",
+                userId.getValue()
+        );
         return jdbcTemplate
                 .query(query, (rs, rowNum) -> toUser(rs))
                 .stream()

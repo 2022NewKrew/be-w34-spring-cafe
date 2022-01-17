@@ -13,6 +13,7 @@ import java.util.stream.IntStream;
 
 @Service
 public class ArticleService {
+
     private final ArticleDao articleDao;
 
     public ArticleService(ArticleDao articleDao) {

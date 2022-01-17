@@ -18,6 +18,7 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -49,7 +50,8 @@ public class UserController {
 
     @GetMapping("/update")
     public String showUpdateUserInformation(Model model, HttpSession session) {
-        model.addAttribute("user", new UserInformationDto(userService.findUserByUserId((String) session.getAttribute("userId"))));
+        model.addAttribute("user", new UserInformationDto(
+                userService.findUserByUserId((String) session.getAttribute("userId"))));
         return "user/updateForm";
     }
 

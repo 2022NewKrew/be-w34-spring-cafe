@@ -17,6 +17,7 @@ import java.util.Optional;
 @Repository
 @Primary
 public class JdbcArticleStorage implements ArticleDao {
+
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcArticleStorage(JdbcTemplate jdbcTemplate) {
@@ -45,7 +46,8 @@ public class JdbcArticleStorage implements ArticleDao {
 
     @Override
     public Optional<Article> findArticleById(int id) {
-        String query = String.format("SELECT ID, TITLE, WRITER, CONTENTS, CREATE_DATE FROM ARTICLE WHERE ID = %s", id);
+        String query = String.format(
+                "SELECT ID, TITLE, WRITER, CONTENTS, CREATE_DATE FROM ARTICLE WHERE ID = %s", id);
         return jdbcTemplate
                 .query(query, (rs, rowNum) -> toArticle(rs))
                 .stream()

@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public class VolatilityUserStorage implements UserDao {
+
     private final List<User> users;
 
     public VolatilityUserStorage() {
@@ -43,7 +44,8 @@ public class VolatilityUserStorage implements UserDao {
 
     @Override
     public void update(UserId userId, Name name, Email email) {
-        User user = findUserById(userId).orElseThrow(() -> new IllegalArgumentException("찾는 사용자가 없습니다."));
+        User user = findUserById(userId).orElseThrow(
+                () -> new IllegalArgumentException("찾는 사용자가 없습니다."));
         user.setName(name);
         user.setEmail(email);
     }

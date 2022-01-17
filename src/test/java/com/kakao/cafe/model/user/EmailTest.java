@@ -1,13 +1,14 @@
 package com.kakao.cafe.model.user;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 class EmailTest {
+
     private static final int ALLOWED_LENGTH_EMAIL = 24;
 
     @DisplayName("조건을 만족하지 못한 email이 주어졌을 때 IllegalArgumentException을 던진다.")

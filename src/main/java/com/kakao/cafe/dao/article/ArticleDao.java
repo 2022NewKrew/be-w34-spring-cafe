@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ArticleDao {
+
     List<Article> getArticles(int pageNumber, int articlesPerPage);
 
     void addArticle(Title title, Writer writer, Contents contents);

@@ -1,11 +1,22 @@
 package com.kakao.cafe.controller.article;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.model.article.Article;
 import com.kakao.cafe.model.article.Contents;
 import com.kakao.cafe.model.article.Title;
 import com.kakao.cafe.model.article.Writer;
 import com.kakao.cafe.service.ArticleService;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,17 +25,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 @DisplayName("ArticleController 테스트")
 class ArticleControllerTest {
+
     private ArticleService articleService;
     private ArticleController articleController;
     private MockMvc mockMvc;
@@ -73,7 +76,8 @@ class ArticleControllerTest {
     @DisplayName("GET /articles 테스트")
     @Test
     public void postArticle() throws Exception {
-        String content = objectMapper.writeValueAsString(new ArticleCreateDto("title", "writer", "contents"));
+        String content = objectMapper.writeValueAsString(
+                new ArticleCreateDto("title", "writer", "contents"));
 
         mockMvc.perform(
                         post("/articles")

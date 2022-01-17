@@ -5,6 +5,7 @@ import com.kakao.cafe.utility.NullChecker;
 import java.util.Objects;
 
 public class Password {
+
     private static final int ALLOWED_LENGTH_PASSWORD = 16;
 
     private final String value;
@@ -19,14 +20,19 @@ public class Password {
         NullChecker.checkNotNull(password);
 
         if (password.length() > ALLOWED_LENGTH_PASSWORD) {
-            throw new IllegalArgumentException(String.format("패스워드의 길이는 %s 이하여야 합니다.", ALLOWED_LENGTH_PASSWORD));
+            throw new IllegalArgumentException(
+                    String.format("패스워드의 길이는 %s 이하여야 합니다.", ALLOWED_LENGTH_PASSWORD));
         }
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Password password = (Password) o;
         return Objects.equals(value, password.value);
     }

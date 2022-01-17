@@ -1,17 +1,21 @@
 package com.kakao.cafe.dao.user;
 
-import com.kakao.cafe.model.user.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.kakao.cafe.model.user.Email;
+import com.kakao.cafe.model.user.Name;
+import com.kakao.cafe.model.user.Password;
+import com.kakao.cafe.model.user.User;
+import com.kakao.cafe.model.user.UserId;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @DisplayName("VolatilityUserStorage 테스트")
 class VolatilityUserStorageTest {
+
     private static final int PRECONDITION_USER_NUMBER = 10;
 
     private UserDao userDao = new VolatilityUserStorage();

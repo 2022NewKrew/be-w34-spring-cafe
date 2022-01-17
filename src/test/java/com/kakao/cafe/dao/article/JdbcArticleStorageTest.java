@@ -1,9 +1,12 @@
 package com.kakao.cafe.dao.article;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.kakao.cafe.model.article.Article;
 import com.kakao.cafe.model.article.Contents;
 import com.kakao.cafe.model.article.Title;
 import com.kakao.cafe.model.article.Writer;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,13 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @DisplayName("JdbcArticleStorage 테스트")
 @JdbcTest
 class JdbcArticleStorageTest {
+
     private static final int PRECONDITION_ARTICLE_LENGTH = 10;
 
     private final ArticleDao articleDao;

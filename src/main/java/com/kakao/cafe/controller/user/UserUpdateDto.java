@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller.user;
 
 public class UserUpdateDto {
+
     private final String password;
     private final String name;
     private final String email;

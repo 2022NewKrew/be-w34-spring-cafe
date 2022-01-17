@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Controller
 public class ArticleController {
+
     private static final int MAX_ARTICLES = 1;
     private static final int INDEX_OF_FIRST_ARTICLE = 1;
 
@@ -24,7 +25,8 @@ public class ArticleController {
 
     @GetMapping("/index")
     public String getIndex(Model model) {
-        List<ArticleDto> articleDtos = articleToArticleDto(articleService.getPartOfArticles(INDEX_OF_FIRST_ARTICLE, MAX_ARTICLES));
+        List<ArticleDto> articleDtos = articleToArticleDto(
+                articleService.getPartOfArticles(INDEX_OF_FIRST_ARTICLE, MAX_ARTICLES));
         model.addAttribute("articles", articleDtos);
         model.addAttribute("pages", articleService.getPages(MAX_ARTICLES));
         return "index";
@@ -32,7 +34,8 @@ public class ArticleController {
 
     @GetMapping("/index/{page}")
     public String getIndexByPage(@PathVariable int page, Model model) {
-        List<ArticleDto> articleDtos = articleToArticleDto(articleService.getPartOfArticles(page, MAX_ARTICLES));
+        List<ArticleDto> articleDtos = articleToArticleDto(
+                articleService.getPartOfArticles(page, MAX_ARTICLES));
         model.addAttribute("articles", articleDtos);
         model.addAttribute("pages", articleService.getPages(MAX_ARTICLES));
         return "index";
@@ -40,7 +43,8 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String postArticle(ArticleCreateDto articleCreateDto) {
-        articleService.createArticle(articleCreateDto.getTitle(), articleCreateDto.getWriter(), articleCreateDto.getContents());
+        articleService.createArticle(articleCreateDto.getTitle(), articleCreateDto.getWriter(),
+                articleCreateDto.getContents());
         return "redirect:/";
     }
 

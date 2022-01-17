@@ -1,8 +1,26 @@
 package com.kakao.cafe.controller.user;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kakao.cafe.model.user.*;
+import com.kakao.cafe.model.user.Email;
+import com.kakao.cafe.model.user.Name;
+import com.kakao.cafe.model.user.Password;
+import com.kakao.cafe.model.user.User;
+import com.kakao.cafe.model.user.UserId;
 import com.kakao.cafe.service.UserService;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,18 +31,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 @DisplayName("UserController 테스트")
 class UserControllerTest {
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private UserService userService;
@@ -62,7 +71,8 @@ class UserControllerTest {
     @DisplayName("POST /users 테스트")
     @Test
     public void register() throws Exception {
-        String content = objectMapper.writeValueAsString(new UserRegisterDto("userId", "password", "name", "email"));
+        String content = objectMapper.writeValueAsString(
+                new UserRegisterDto("userId", "password", "name", "email"));
 
         mockMvc.perform(
                         post("/users")

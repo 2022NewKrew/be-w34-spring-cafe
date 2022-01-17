@@ -1,22 +1,26 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dao.user.UserDao;
-import com.kakao.cafe.dao.user.VolatilityUserStorage;
-import com.kakao.cafe.model.user.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.kakao.cafe.dao.user.UserDao;
+import com.kakao.cafe.dao.user.VolatilityUserStorage;
+import com.kakao.cafe.model.user.Email;
+import com.kakao.cafe.model.user.Name;
+import com.kakao.cafe.model.user.Password;
+import com.kakao.cafe.model.user.User;
+import com.kakao.cafe.model.user.UserId;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 @DisplayName("UserService 테스트")
 class UserServiceTest {
+
     private UserDao userDao;
     private UserService userService;
 
@@ -36,7 +40,9 @@ class UserServiceTest {
         String email = "email";
 
         when(userDao.findUserById(new UserId(userId)))
-                .thenReturn(Optional.of(new User(new UserId(userId), new Password(password), new Name(name), new Email(email))));
+                .thenReturn(Optional.of(
+                        new User(new UserId(userId), new Password(password), new Name(name),
+                                new Email(email))));
 
         //when
         //then
@@ -55,7 +61,9 @@ class UserServiceTest {
         String illegalPassword = "isIllegal";
 
         when(userDao.findUserById(new UserId(userId)))
-                .thenReturn(Optional.of(new User(new UserId(userId), new Password(password), new Name(name), new Email(email))));
+                .thenReturn(Optional.of(
+                        new User(new UserId(userId), new Password(password), new Name(name),
+                                new Email(email))));
 
         //when
         //then
@@ -75,7 +83,9 @@ class UserServiceTest {
         String targetPassword = "password";
 
         when(userDao.findUserById(new UserId(userId)))
-                .thenReturn(Optional.of(new User(new UserId(userId), new Password(password), new Name(name), new Email(email))));
+                .thenReturn(Optional.of(
+                        new User(new UserId(userId), new Password(password), new Name(name),
+                                new Email(email))));
         //when
         boolean isSame = userService.hasUser(targetUserId, targetPassword);
 
@@ -95,7 +105,9 @@ class UserServiceTest {
         String targetPassword = "notSame";
 
         when(userDao.findUserById(new UserId(userId)))
-                .thenReturn(Optional.of(new User(new UserId(userId), new Password(password), new Name(name), new Email(email))));
+                .thenReturn(Optional.of(
+                        new User(new UserId(userId), new Password(password), new Name(name),
+                                new Email(email))));
         //when
 
         boolean isSame = userService.hasUser(targetUserId, targetPassword);
