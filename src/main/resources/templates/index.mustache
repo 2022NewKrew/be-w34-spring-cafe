@@ -13,9 +13,9 @@
   {{#articles}}
     <div class="user-row">
       <span class="user-text-box click-box"
-            onclick="location.href='/articles/{{id}}'">{{title}}</span>
+            onclick="location.href='/articles/{{id.value}}'">{{title}}</span>
       <span class="user-text-box click-box"
-            onclick="location.href='/articles/{{id}}'">{{created}}</span>
+            onclick="location.href='/articles/{{id.value}}'">{{createdAt}}</span>
     </div>
   {{/articles}}
 
