@@ -1,22 +1,31 @@
 package com.kakao.cafe;
 
-import com.kakao.cafe.article.adapter.out.MemoryArticleRepository;
+import com.kakao.cafe.article.adapter.out.JdbcTemplateArticleRepository;
 import com.kakao.cafe.article.application.FindArticleService;
 import com.kakao.cafe.article.application.WriteArticleService;
 import com.kakao.cafe.article.application.port.in.FindArticleQuery;
 import com.kakao.cafe.article.application.port.in.WriteArticleUseCase;
 import com.kakao.cafe.article.application.port.out.LoadArticlePort;
 import com.kakao.cafe.article.application.port.out.SaveArticlePort;
-import com.kakao.cafe.user.adapter.out.MemoryUserRepository;
+import com.kakao.cafe.user.adapter.out.JdbcTemplateUserRepository;
 import com.kakao.cafe.user.application.FindUserService;
 import com.kakao.cafe.user.application.SignUpService;
 import com.kakao.cafe.user.application.port.out.LoadUserPort;
 import com.kakao.cafe.user.application.port.out.SaveUserPort;
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SpringConfig {
+
+    private final DataSource dataSource;
+
+    @Autowired
+    public SpringConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Bean
     public FindUserService findUserService() {
@@ -30,12 +39,12 @@ public class SpringConfig {
 
     @Bean
     public SaveUserPort saveUserPort() {
-        return new MemoryUserRepository();
+        return new JdbcTemplateUserRepository(dataSource);
     }
 
     @Bean
     public LoadUserPort loadUserPort() {
-        return new MemoryUserRepository();
+        return new JdbcTemplateUserRepository(dataSource);
     }
 
     @Bean
@@ -50,11 +59,11 @@ public class SpringConfig {
 
     @Bean
     public LoadArticlePort loadArticlePort() {
-        return new MemoryArticleRepository();
+        return new JdbcTemplateArticleRepository(dataSource);
     }
 
     @Bean
     public SaveArticlePort saveArticlePort() {
-        return new MemoryArticleRepository();
+        return new JdbcTemplateArticleRepository(dataSource);
     }
 }
