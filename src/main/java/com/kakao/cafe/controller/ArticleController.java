@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.exception.NotSessionInfo;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,12 +36,16 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String addQuestions(@ModelAttribute Article article) {
+        System.out.println(article);
         articleService.save(article);
         return "redirect:/";
     }
 
     @GetMapping("/articles/write")
-    public String write() {
+    public String write(HttpSession httpSession) {
+        if (httpSession.getAttribute("curUser") == null) {
+            throw new NotSessionInfo("글을 작성하려면 로그인을 하십시오");
+        }
         return "qna/form";
     }
 
