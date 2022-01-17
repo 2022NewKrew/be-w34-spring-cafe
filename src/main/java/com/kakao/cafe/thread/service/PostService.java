@@ -24,8 +24,8 @@ public class PostService {
     }
 
     private PostView toPostView(Post post) {
-        User user = userRepository.get(post.getAuthor_id()).get();
-        return new PostView(post.getId(), UserMapper.toUserView(user), post.getTitle(), post.getContent(), post.getCreated_at(), post.getLast_modified_at());
+        User user = userRepository.get(post.getAuthorId()).get();
+        return new PostView(post.getId(), UserMapper.toUserView(user), post.getTitle(), post.getContent(), post.getCreatedAt(), post.getLastModifiedAt());
     }
 
     public PostService(PostRepository postRepository, UserRepository userRepository) {

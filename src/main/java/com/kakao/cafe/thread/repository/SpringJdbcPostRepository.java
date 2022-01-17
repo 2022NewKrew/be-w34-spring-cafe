@@ -26,8 +26,8 @@ public class SpringJdbcPostRepository implements PostRepository {
             PreparedStatement ps = connection.prepareStatement(
                     "INSERT INTO thread (parent_id, author_id, title, content, status, type) VALUES (?, ?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setLong(1, post.getParent_id());
-            ps.setLong(2, post.getAuthor_id());
+            ps.setLong(1, post.getParentId());
+            ps.setLong(2, post.getAuthorId());
             ps.setString(3, post.getTitle());
             ps.setString(4, post.getContent());
             ps.setString(5, post.getStatus());
@@ -60,7 +60,7 @@ public class SpringJdbcPostRepository implements PostRepository {
     public void update(Post post) {
         jdbcTemplate.update(
                 "UPDATE thread SET parent_id = ?, author_id = ?, title = ?, content = ?, status = ? WHERE id = ? AND type = ?;",
-                post.getParent_id(), post.getAuthor_id(), post.getTitle(), post.getContent(), post.getStatus(),
+                post.getParentId(), post.getAuthorId(), post.getTitle(), post.getContent(), post.getStatus(),
                 post.getId(), ThreadType.POST.name());
     }
 

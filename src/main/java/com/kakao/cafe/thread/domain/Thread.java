@@ -4,38 +4,38 @@ import java.time.LocalDateTime;
 
 public class Thread {
     private final Long id;
-    private final Long parent_id;
-    private final Long author_id;
+    private final Long parentId;
+    private final Long authorId;
     private final String title;
     private final String content;
     private final String status;
     private final String type;
-    private final LocalDateTime created_at;
-    private final LocalDateTime last_modified_at;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime lastModifiedAt;
 
-    public Thread(Long id, Long parent_id, Long author_id, String title, String content, String status, String type,
-                  LocalDateTime created_at, LocalDateTime last_modified_at) {
+    public Thread(Long id, Long parentId, Long authorId, String title, String content, String status, String type,
+                  LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
         this.id = id;
-        this.parent_id = parent_id;
-        this.author_id = author_id;
+        this.parentId = parentId;
+        this.authorId = authorId;
         this.title = title;
         this.content = content;
         this.status = status;
         this.type = type;
-        this.created_at = created_at;
-        this.last_modified_at = last_modified_at;
+        this.createdAt = createdAt;
+        this.lastModifiedAt = lastModifiedAt;
     }
 
     public Long getId() {
         return id;
     }
 
-    public Long getParent_id() {
-        return parent_id;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public Long getAuthor_id() {
-        return author_id;
+    public Long getAuthorId() {
+        return authorId;
     }
 
     public String getTitle() {
@@ -54,16 +54,16 @@ public class Thread {
         return type;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public LocalDateTime getLast_modified_at() {
-        return last_modified_at;
+    public LocalDateTime getLastModifiedAt() {
+        return lastModifiedAt;
     }
 
     @Override
     public String toString() {
-        return "Thread{" + "id=" + id + ", parent_id=" + parent_id + ", author_id=" + author_id + ", title='" + title + '\'' + ", content='" + content + '\'' + ", status='" + status + '\'' + ", type='" + type + '\'' + ", created_at=" + created_at + ", last_modified_at=" + last_modified_at + '}';
+        return "Thread{" + "id=" + id + ", parentId=" + parentId + ", authorId=" + authorId + ", title='" + title + '\'' + ", content='" + content + '\'' + ", status='" + status + '\'' + ", type='" + type + '\'' + ", createdAt=" + createdAt + ", lastModifiedAt=" + lastModifiedAt + '}';
     }
 }
