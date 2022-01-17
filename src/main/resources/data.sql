@@ -1,7 +1,7 @@
 INSERT INTO "USER"(userid, password, name, email, joined_at)
 VALUES
-       ('id_001', '123', 'james', 'james1212@gmail.com', '2021-12-13'),
-       ('id_002', '123', 'sam', 'samsam@gmail.com', '2022-01-02');
+       ('s000015', '123', 'james', 'james1212@gmail.com', '2021-12-13'),
+       ('sung2687', '123', 'sam', 'samsam@gmail.com', '2022-01-02');
 
 
 
