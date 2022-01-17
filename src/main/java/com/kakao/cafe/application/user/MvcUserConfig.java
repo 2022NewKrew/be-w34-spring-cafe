@@ -15,10 +15,9 @@ import com.kakao.cafe.application.user.service.UpdateUserInfoService;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class MvcUserConfig implements WebMvcConfigurer {
+public class MvcUserConfig {
 
     public final DataSource dataSource;
 
