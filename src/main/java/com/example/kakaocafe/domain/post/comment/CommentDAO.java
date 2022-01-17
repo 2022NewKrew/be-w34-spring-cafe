@@ -31,34 +31,25 @@ public class CommentDAO {
         jdbcTemplate.update(sql, commentId);
     }
 
+    /*TODO 게시글 삭제시 코멘트도 같이 삭제 되어야 할까?
+     게시글 복구시 남은 코멘트를 살리고 싶다면?
+     게시글 복구를 할필요가 없다면?
+     요구사항 분석에 따라 아래 함수 필요성이 달라질듯
+     */
     public void deleteAllByPostId(long postId) {
         final String sql = "UPDATE COMMENT " +
-                "SET ISDELETED= true " +
+                "SET ISDELETED = true " +
                 "WHERE ID in (SELECT id FROM COMMENT WHERE POST_ID = ? AND ISDELETED = false)";
 
         jdbcTemplate.update(sql, postId);
     }
 
-    public boolean canDelete(long postId, long commentWriterId) {
-        final String sql = "SELECT EXISTS( " +
-                "               SELECT ID " +
-                "               FROM COMMENT " +
-                "               WHERE POST_ID = ? " +
-                "                 AND NOT USER_ID = ?" +
-                "                 AND ISDELETED=false) ";
+    public boolean isNotWriter(long postId, long commentId, long writerId) {
+        final String sql = "SELECT NOT EXISTS(SELECT ID FROM COMMENT WHERE ID=? AND POST_ID=? AND USER_ID=?)";
 
-        final Boolean isNotExist = jdbcTemplate.queryForObject(sql, Boolean.class, postId, commentWriterId);
+        final Boolean isNotExist = jdbcTemplate.queryForObject(sql, Boolean.class, commentId, postId, writerId);
         Objects.requireNonNull(isNotExist);
 
         return isNotExist;
-    }
-
-    public boolean isNotWriter(long postId, long commentId, long writerId) {
-        final String sql = "SELECT EXISTS(SELECT ID FROM COMMENT WHERE ID=? AND POST_ID=? AND USER_ID=?)";
-
-        final Boolean isExist = jdbcTemplate.queryForObject(sql, Boolean.class, commentId, postId, writerId);
-        Objects.requireNonNull(isExist);
-
-        return !isExist;
     }
 }

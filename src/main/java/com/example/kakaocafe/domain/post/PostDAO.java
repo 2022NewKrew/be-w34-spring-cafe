@@ -24,13 +24,28 @@ import java.util.stream.Collectors;
 public class PostDAO {
     private final JdbcTemplate jdbcTemplate;
 
+    public int getNumOfComments(long postId, long writerId) {
+        final String sql = "SELECT count(distinct (ifnull(c.ID, 0)))  " +
+                "FROM POST as p  " +
+                "         LEFT OUTER JOIN COMMENT c on p.ID = c.POST_ID  " +
+                "WHERE p.ID = ?  " +
+                "  AND p.USER_ID = ?  " +
+                "  AND p.ISDELETED = false  " +
+                "  AND c.ISDELETED = false  ";
+
+        final Integer numOfComments = jdbcTemplate.queryForObject(sql, Integer.class, postId, writerId);
+        Objects.requireNonNull(numOfComments);
+
+        return numOfComments;
+    }
+
     public boolean isNotWriter(long postId, long writerId) {
-        final String sql = "SELECT EXISTS(SELECT p.id FROM POST as p WHERE p.id=? and p.USER_ID=?)";
+        final String sql = "SELECT NOT EXISTS(SELECT p.id FROM POST as p WHERE p.id=? and p.USER_ID=?)";
 
-        final Boolean isExist = jdbcTemplate.queryForObject(sql, Boolean.class, postId, writerId);
-        Objects.requireNonNull(isExist);
+        final Boolean isNotExist = jdbcTemplate.queryForObject(sql, Boolean.class, postId, writerId);
+        Objects.requireNonNull(isNotExist);
 
-        return !isExist;
+        return isNotExist;
     }
 
     public long create(WritePostForm writePostForm) {
@@ -75,7 +90,6 @@ public class PostDAO {
 
         return jdbcTemplate.query(sql, postOfTableRowMapper());
     }
-
 
     public void plusViewCount(long id) {
         final String sql = "UPDATE POST SET VIEW_COUNT = VIEW_COUNT+1 WHERE ID=?";
