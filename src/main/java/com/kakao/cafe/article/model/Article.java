@@ -1,16 +1,19 @@
 package com.kakao.cafe.article.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class Article {
-    private final Long id;
-    private final String author;
-    private final String title;
-    private final String contents;
-    private final String uploadTime;
+    @Setter
+    private Long id;
+    private String author;
+    private String title;
+    private String contents;
+    @Setter
+    private String uploadTime;
 }

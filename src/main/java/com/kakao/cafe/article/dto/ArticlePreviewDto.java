@@ -4,22 +4,14 @@ import com.kakao.cafe.article.model.Article;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class ArticlePreviewDto {
-    private final Long id;
-    private final String author;
-    private final String title;
-    private final String uploadTime;
-
-    public static ArticlePreviewDto of(Article article){
-        return ArticlePreviewDto.builder()
-                .id(article.getId())
-                .author(article.getAuthor())
-                .title(article.getTitle())
-                .uploadTime(article.getUploadTime())
-                .build();
-    }
+    private Long id;
+    private String author;
+    private String title;
+    private String uploadTime;
 }

@@ -4,21 +4,13 @@ import com.kakao.cafe.article.model.Article;
 import com.kakao.cafe.common.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class ArticleRequest {
-    private final String author;
-    private final String title;
-    private final String contents;
-
-    public Article toEntity(Long id){
-        return Article.builder()
-                .id(id)
-                .author(author)
-                .title(title)
-                .contents(contents)
-                .uploadTime(DateUtils.getCurrentDate())
-                .build();
-    }
+    private String author;
+    private String title;
+    private String contents;
 }
