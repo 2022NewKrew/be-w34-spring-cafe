@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static com.kakao.cafe.module.model.dto.UserDtos.*;
@@ -41,6 +42,14 @@ public class UserController {
         model.addAttribute("user", user);
         logger.info("Get User Profile : {}", id);
         return "user/profile";
+    }
+
+    @PostMapping("/sign-in")
+    public String signIn(UserSignInDto userSignInDto, HttpSession session) {
+        UserDto userDto = userService.signIn(userSignInDto);
+        session.setAttribute("sessionUser", userDto);
+        logger.info("Sign in User : {}", userDto.getName());
+        return "redirect:/";
     }
 
     @GetMapping("/{id}/form")

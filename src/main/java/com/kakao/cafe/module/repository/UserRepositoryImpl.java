@@ -57,6 +57,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<User> findUserByUserId(String userId) {
+        return jdbcTemplate.query("SELECT * FROM USERS WHERE user_id = ?", rowMapper, userId).stream().findAny();
+    }
+
+    @Override
     public void updateUser(User user) {
         jdbcTemplate.update("UPDATE USERS SET password = ?, name = ?, email = ? WHERE id = ?",
                 user.getPassword(),

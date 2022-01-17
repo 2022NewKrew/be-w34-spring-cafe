@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @ExceptionHandler({
-            DuplicateNameException.class,
+            DuplicateUserException.class,
             NoSuchDataException.class
     })
     public String handleRuntimeExceptions(final CustomRuntimeException e, Model model, HttpServletResponse response) {

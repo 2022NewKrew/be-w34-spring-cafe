@@ -7,8 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.kakao.cafe.module.model.dto.UserDtos.*;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -30,8 +29,20 @@ class UserControllerTest {
     }
 
     @Test
-    void 중복_사용자_회원가입() throws Exception {
+    void 중복_사용자_이름_회원가입() throws Exception {
         UserSignUpDto input = new UserSignUpDto("DuplicatedUser", "1212", "레인", "dup@dup.com");
+
+        mockMvc.perform(post("/users")
+                        .flashAttr("userSignUpDto", input))
+                .andExpect(status().isBadRequest())
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("msg"))
+                .andExpect(view().name("infra/error"));
+    }
+
+    @Test
+    void 중복_사용자_유저_아이디_회원가입() throws Exception {
+        UserSignUpDto input = new UserSignUpDto("rain", "1212", "중복", "dup@dup.com");
 
         mockMvc.perform(post("/users")
                         .flashAttr("userSignUpDto", input))
@@ -58,6 +69,43 @@ class UserControllerTest {
                 .andExpect(model().attributeExists("user"))
                 .andExpect(model().attribute("user", hasProperty("name", is("레인"))))
                 .andExpect(view().name("user/profile"));
+    }
+
+    @Test
+    void 로그인() throws Exception {
+        UserSignInDto input = new UserSignInDto("rain", "1111");
+
+        mockMvc.perform(post("/users/sign-in")
+                        .flashAttr("userSignInDto", input))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(request().sessionAttribute("sessionUser", is(notNullValue())))
+                .andExpect(redirectedUrl("/"));
+    }
+
+    @Test
+    void 로그인_실패_존재하지_않는_유저_아이디() throws Exception {
+        UserSignInDto input = new UserSignInDto("notExist", "1111");
+
+        mockMvc.perform(post("/users/sign-in")
+                        .flashAttr("userSignInDto", input))
+                .andExpect(status().isBadRequest())
+                .andExpect(request().sessionAttribute("sessionUser", is(nullValue())))
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("msg"))
+                .andExpect(view().name("infra/error"));
+    }
+
+    @Test
+    void 로그인_실패_비밀번호_불일치() throws Exception {
+        UserSignInDto input = new UserSignInDto("rain", "1234");
+
+        mockMvc.perform(post("/users/sign-in")
+                        .flashAttr("userSignInDto", input))
+                .andExpect(status().isBadRequest())
+                .andExpect(request().sessionAttribute("sessionUser", is(nullValue())))
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("msg"))
+                .andExpect(view().name("infra/error"));
     }
 
     @Test
