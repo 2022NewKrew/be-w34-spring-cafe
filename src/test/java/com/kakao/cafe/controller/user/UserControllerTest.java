@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.user.*;
 import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -76,9 +76,17 @@ class UserControllerTest {
     @DisplayName("GET/users/{userId} 테스트")
     @Test
     public void showUserProfile() throws Exception {
-        String userId = "userID";
+        //give
+        String userId = "userId";
         when(userService.findUserByUserId(userId))
-                .thenReturn(new User("userId", "password", "name", "email"));
+                .thenReturn(
+                        new User(
+                                new UserId("userId"),
+                                new Password("password"),
+                                new Name("name"),
+                                new Email("email")
+                        )
+                );
 
         mockMvc.perform(get("/users/" + userId))
                 .andExpect(status().isOk())
@@ -92,7 +100,14 @@ class UserControllerTest {
         String userId = "userId";
         session.setAttribute("userId", userId);
         when(userService.findUserByUserId(userId))
-                .thenReturn(new User("userId", "password", "name", "email"));
+                .thenReturn(
+                        new User(
+                                new UserId("userId"),
+                                new Password("password"),
+                                new Name("name"),
+                                new Email("email")
+                        )
+                );
 
         mockMvc.perform(get("/users/update")
                         .session(session))
@@ -130,7 +145,14 @@ class UserControllerTest {
         String content = objectMapper.writeValueAsString(new UserLoginDto(userId, password));
 
         when(userService.findUserByUserId(userId))
-                .thenReturn(new User(userId, password, name, email));
+                .thenReturn(
+                        new User(
+                                new UserId(userId),
+                                new Password(password),
+                                new Name(name),
+                                new Email(email)
+                        )
+                );
         when(userService.hasUser(userId, password))
                 .thenReturn(true);
 
@@ -171,10 +193,10 @@ class UserControllerTest {
         for (int i = 0; i < number; i++) {
             users.add(
                     new User(
-                            "userId" + i,
-                            "password" + i,
-                            "name" + i,
-                            "email + i"
+                            new UserId("userId" + i),
+                            new Password("password" + i),
+                            new Name("name" + i),
+                            new Email("email + i")
                     )
             );
         }

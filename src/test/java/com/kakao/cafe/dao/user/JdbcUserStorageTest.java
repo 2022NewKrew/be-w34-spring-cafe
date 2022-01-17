@@ -1,6 +1,6 @@
 package com.kakao.cafe.dao.user;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.user.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -45,21 +45,22 @@ class JdbcUserStorageTest {
     @Test
     public void getUsers() {
         //give
+        UserId userId = new UserId("userId1");
         //when
         List<User> users = userDao.getUsers();
         //then
         assertThat(users.size()).isEqualTo(PRECONDITION_USER_LENGTH);
-        assertThat(users.get(0).getUserId()).isEqualTo("userId1");
+        assertThat(users.get(0).getUserId()).isEqualTo(userId);
     }
 
     @DisplayName("설정된 초기 값이 존재할 때 addUser 메서드를 실행하면 새로운 User를 추가한다.")
     @Test
     public void addUser() {
         //give
-        String userId = "userId";
-        String password = "password";
-        String name = "name";
-        String email = "email";
+        UserId userId = new UserId("userId");
+        Password password = new Password("password");
+        Name name = new Name("name");
+        Email email = new Email("email");
 
         //when
         userDao.addUser(userId, password, name, email);
@@ -69,11 +70,11 @@ class JdbcUserStorageTest {
         assertThat(user.getUserId()).isEqualTo(userId);
     }
 
-    @DisplayName("설정된 초기 값이 존재할 때 findUserById 메서드를 실행하면 기다하는 값을 가져온다.")
+    @DisplayName("설정된 초기 값이 존재할 때 findUserById 메서드를 실행하면 기대하는 값을 가져온다.")
     @Test
     public void findUserById() {
         //give
-        String userId = "userId1";
+        UserId userId = new UserId("userId1");
 
         //when
         User user = userDao.findUserById(userId).orElseGet(null);
@@ -97,9 +98,9 @@ class JdbcUserStorageTest {
     @Test
     public void update() {
         //give
-        String userId = "userId1";
-        String name = "newName";
-        String email = "newEmail";
+        UserId userId = new UserId("userId1");
+        Name name = new Name("newName");
+        Email email = new Email("newEmail");
 
         //when
         userDao.update(userId, name, email);

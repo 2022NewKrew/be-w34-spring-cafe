@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller.user;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.user.User;
 
 public class UserElementDto {
     private final String userId;
@@ -10,10 +10,10 @@ public class UserElementDto {
     private final int index;
 
     public UserElementDto(User user, int index) {
-        this.userId = user.getUserId();
-        this.password = user.getPassword();
-        this.name = user.getName();
-        this.email = user.getEmail();
+        this.userId = user.getUserId().getValue();
+        this.password = user.getPassword().getValue();
+        this.name = user.getName().getValue();
+        this.email = user.getEmail().getValue();
         this.index = index;
     }
 }

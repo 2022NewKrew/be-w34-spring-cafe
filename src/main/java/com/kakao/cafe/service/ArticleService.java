@@ -1,7 +1,10 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.dao.article.ArticleDao;
-import com.kakao.cafe.model.Article;
+import com.kakao.cafe.model.article.Article;
+import com.kakao.cafe.model.article.Contents;
+import com.kakao.cafe.model.article.Title;
+import com.kakao.cafe.model.article.Writer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +31,7 @@ public class ArticleService {
     }
 
     public void createArticle(String title, String writer, String contents) {
-        articleDao.addArticle(title, writer, contents);
+        articleDao.addArticle(new Title(title), new Writer(writer), new Contents(contents));
     }
 
     public Article findArticleById(int id) {

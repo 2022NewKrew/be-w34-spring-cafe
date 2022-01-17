@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller.user;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.user.User;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,9 +69,9 @@ public class UserController {
         if (userService.hasUser(userLoginDto.getUserId(), userLoginDto.getPassword())) {
             User user = userService.findUserByUserId(userLoginDto.getUserId());
             session.setAttribute("isLogin", true);
-            session.setAttribute("userId", user.getUserId());
-            session.setAttribute("name", user.getName());
-            session.setAttribute("email", user.getEmail());
+            session.setAttribute("userId", user.getUserId().getValue());
+            session.setAttribute("name", user.getName().getValue());
+            session.setAttribute("email", user.getEmail().getValue());
         }
         return "redirect:/";
     }

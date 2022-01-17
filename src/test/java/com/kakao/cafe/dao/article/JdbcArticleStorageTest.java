@@ -1,6 +1,9 @@
 package com.kakao.cafe.dao.article;
 
-import com.kakao.cafe.model.Article;
+import com.kakao.cafe.model.article.Article;
+import com.kakao.cafe.model.article.Contents;
+import com.kakao.cafe.model.article.Title;
+import com.kakao.cafe.model.article.Writer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -61,9 +64,9 @@ class JdbcArticleStorageTest {
     @Test
     public void addArticle() {
         //give
-        String title = "newTitle";
-        String writer = "writer";
-        String contents = "contents";
+        Title title = new Title("newTitle");
+        Writer writer = new Writer("writer");
+        Contents contents = new Contents("contents");
         //when
         articleDao.addArticle(title, writer, contents);
         Article article = articleDao

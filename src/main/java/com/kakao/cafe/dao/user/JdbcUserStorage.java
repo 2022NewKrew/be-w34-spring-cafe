@@ -1,6 +1,6 @@
 package com.kakao.cafe.dao.user;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.user.*;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -26,14 +26,20 @@ public class JdbcUserStorage implements UserDao {
     }
 
     @Override
-    public void addUser(String userId, String password, String name, String email) {
+    public void addUser(UserId userId, Password password, Name name, Email email) {
         String query = "INSERT INTO USER_DATA(USER_ID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(query, userId, password, name, email);
+        jdbcTemplate.update(
+                query,
+                userId.getValue(),
+                password.getValue(),
+                name.getValue(),
+                email.getValue()
+        );
     }
 
     @Override
-    public Optional<User> findUserById(String userId) {
-        String query = String.format("SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USER_DATA WHERE USER_ID = '%s'", userId);
+    public Optional<User> findUserById(UserId userId) {
+        String query = String.format("SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USER_DATA WHERE USER_ID = '%s'", userId.getValue());
         return jdbcTemplate
                 .query(query, (rs, rowNum) -> toUser(rs))
                 .stream()
@@ -46,17 +52,22 @@ public class JdbcUserStorage implements UserDao {
     }
 
     @Override
-    public void update(String userId, String name, String email) {
+    public void update(UserId userId, Name name, Email email) {
         String query = "UPDATE USER_DATA SET NAME = ?, EMAIL = ? WHERE USER_ID = ?";
-        jdbcTemplate.update(query, name, email, userId);
+        jdbcTemplate.update(
+                query,
+                name.getValue(),
+                email.getValue(),
+                userId.getValue()
+        );
     }
 
     private User toUser(ResultSet resultSet) throws SQLException {
         return new User(
-                resultSet.getString("USER_ID"),
-                resultSet.getString("PASSWORD"),
-                resultSet.getString("NAME"),
-                resultSet.getString("EMAIL")
+                new UserId(resultSet.getString("USER_ID")),
+                new Password(resultSet.getString("PASSWORD")),
+                new Name(resultSet.getString("NAME")),
+                new Email(resultSet.getString("EMAIL"))
         );
     }
 }

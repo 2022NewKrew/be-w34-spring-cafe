@@ -1,6 +1,6 @@
 package com.kakao.cafe.dao.user;
 
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.user.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +20,12 @@ class VolatilityUserStorageTest {
     private void before() {
         userDao = new VolatilityUserStorage();
         for (int i = 0; i < PRECONDITION_USER_NUMBER; i++) {
-            userDao.addUser("userId" + i, "password" + i, "name" + i, "email" + i);
+            userDao.addUser(
+                    new UserId("userId" + i),
+                    new Password("password" + i),
+                    new Name("name" + i),
+                    new Email("email" + i)
+            );
         }
     }
 
@@ -33,22 +38,25 @@ class VolatilityUserStorageTest {
     @Test
     public void getUsers() {
         //give
+        int index = 0;
+        UserId expectedUserId = new UserId("userId" + index);
+
         //when
         List<User> users = userDao.getUsers();
 
         //then
         assertThat(users.size()).isEqualTo(PRECONDITION_USER_NUMBER);
-        assertThat(users.get(0).getUserId()).isEqualTo("userId" + 0);
+        assertThat(users.get(index).getUserId()).isEqualTo(expectedUserId);
     }
 
     @DisplayName("설정된 초기 값이 존재할 때 addUser 메서드를 실행하면 새로운 User를 추가한다.")
     @Test
     public void addUser() {
         //give
-        String userId = "userId";
-        String password = "password";
-        String name = "name";
-        String email = "email";
+        UserId userId = new UserId("userId");
+        Password password = new Password("password");
+        Name name = new Name("name");
+        Email email = new Email("email");
 
         //when
         userDao.addUser(userId, password, name, email);
@@ -62,11 +70,13 @@ class VolatilityUserStorageTest {
     @Test
     public void findUserById() {
         //give
+        UserId userId = new UserId("userId" + 0);
+
         //when
-        User user = userDao.findUserById("userId" + 0).orElseGet(null);
+        User user = userDao.findUserById(userId).orElseGet(null);
 
         //then
-        assertThat(user.getUserId()).isEqualTo("userId" + 0);
+        assertThat(user.getUserId()).isEqualTo(userId);
     }
 
     @DisplayName("설정된 초기 값이 존재할 때 getSize 메서드를 실행하면 User의 개수를 가져온다.")
@@ -84,12 +94,15 @@ class VolatilityUserStorageTest {
     @Test
     public void update() {
         //give
+        UserId userId = new UserId("userId" + 0);
+        Name name = new Name("newName");
+        Email email = new Email("newEmail");
         //when
-        userDao.update("userId" + 0, "newName", "newEmail");
-        User user = userDao.findUserById("userId" + 0).orElseGet(null);
+        userDao.update(userId, name, email);
+        User user = userDao.findUserById(userId).orElseGet(null);
 
         //then
-        assertThat(user.getName()).isEqualTo("newName");
-        assertThat(user.getEmail()).isEqualTo("newEmail");
+        assertThat(user.getName()).isEqualTo(name);
+        assertThat(user.getEmail()).isEqualTo(email);
     }
 }

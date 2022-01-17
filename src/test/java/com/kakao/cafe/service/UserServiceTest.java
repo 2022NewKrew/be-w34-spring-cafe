@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dao.user.UserDao;
 import com.kakao.cafe.dao.user.VolatilityUserStorage;
-import com.kakao.cafe.model.User;
+import com.kakao.cafe.model.user.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,8 +35,8 @@ class UserServiceTest {
         String name = "name";
         String email = "email";
 
-        when(userDao.findUserById(userId))
-                .thenReturn(Optional.of(new User(userId, password, name, email)));
+        when(userDao.findUserById(new UserId(userId)))
+                .thenReturn(Optional.of(new User(new UserId(userId), new Password(password), new Name(name), new Email(email))));
 
         //when
         //then
@@ -54,8 +54,8 @@ class UserServiceTest {
         String email = "email";
         String illegalPassword = "isIllegal";
 
-        when(userDao.findUserById(userId))
-                .thenReturn(Optional.of(new User(userId, password, name, email)));
+        when(userDao.findUserById(new UserId(userId)))
+                .thenReturn(Optional.of(new User(new UserId(userId), new Password(password), new Name(name), new Email(email))));
 
         //when
         //then
@@ -74,11 +74,10 @@ class UserServiceTest {
         String targetUserId = "userId";
         String targetPassword = "password";
 
-        when(userDao.findUserById(targetUserId))
-                .thenReturn(Optional.of(new User(userId, password, name, email)));
+        when(userDao.findUserById(new UserId(userId)))
+                .thenReturn(Optional.of(new User(new UserId(userId), new Password(password), new Name(name), new Email(email))));
         //when
-        User user = userDao.findUserById(targetUserId).orElseGet(null);
-        boolean isSame = user.isPassword(targetPassword);
+        boolean isSame = userService.hasUser(targetUserId, targetPassword);
 
         //then
         assertThat(isSame).isTrue();
@@ -95,11 +94,11 @@ class UserServiceTest {
         String targetUserId = "userId";
         String targetPassword = "notSame";
 
-        when(userDao.findUserById(targetUserId))
-                .thenReturn(Optional.of(new User(userId, password, name, email)));
+        when(userDao.findUserById(new UserId(userId)))
+                .thenReturn(Optional.of(new User(new UserId(userId), new Password(password), new Name(name), new Email(email))));
         //when
-        User user = userDao.findUserById(targetUserId).orElseGet(null);
-        boolean isSame = user.isPassword(targetPassword);
+
+        boolean isSame = userService.hasUser(targetUserId, targetPassword);
 
         //then
         assertThat(isSame).isFalse();

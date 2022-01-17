@@ -1,7 +1,10 @@
 package com.kakao.cafe.controller.article;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kakao.cafe.model.Article;
+import com.kakao.cafe.model.article.Article;
+import com.kakao.cafe.model.article.Contents;
+import com.kakao.cafe.model.article.Title;
+import com.kakao.cafe.model.article.Writer;
 import com.kakao.cafe.service.ArticleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -86,7 +89,14 @@ class ArticleControllerTest {
     public void getArticleDetail() throws Exception {
         int id = 1;
         when(articleService.findArticleById(id))
-                .thenReturn(new Article(1, "title", "writer", "contents"));
+                .thenReturn(
+                        new Article(
+                                1,
+                                new Title("title"),
+                                new Writer("writer"),
+                                new Contents("contents")
+                        )
+                );
 
         mockMvc.perform(get("/articles/" + id))
                 .andExpect(status().isOk())
@@ -97,7 +107,14 @@ class ArticleControllerTest {
     private List<Article> getArticles(int number) {
         List<Article> articles = new ArrayList<>();
         for (int i = 1; i <= number; i++) {
-            articles.add(new Article(i, "title" + i, "writer" + i, "contents" + i));
+            articles.add(
+                    new Article(
+                            i,
+                            new Title("title" + i),
+                            new Writer("writer" + i),
+                            new Contents("contents" + i)
+                    )
+            );
         }
         return articles;
     }

@@ -1,6 +1,9 @@
 package com.kakao.cafe.dao.article;
 
-import com.kakao.cafe.model.Article;
+import com.kakao.cafe.model.article.Article;
+import com.kakao.cafe.model.article.Contents;
+import com.kakao.cafe.model.article.Title;
+import com.kakao.cafe.model.article.Writer;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -35,9 +38,9 @@ public class JdbcArticleStorage implements ArticleDao {
     }
 
     @Override
-    public void addArticle(String title, String writer, String contents) {
+    public void addArticle(Title title, Writer writer, Contents contents) {
         String query = "INSERT INTO ARTICLE(TITLE, WRITER, CONTENTS) VALUES (?, ?, ?)";
-        jdbcTemplate.update(query, title, writer, contents);
+        jdbcTemplate.update(query, title.getValue(), writer.getValue(), contents.getValue());
     }
 
     @Override
@@ -61,9 +64,9 @@ public class JdbcArticleStorage implements ArticleDao {
     private Article toArticle(ResultSet resultSet) throws SQLException {
         return new Article(
                 resultSet.getInt("ID"),
-                resultSet.getString("TITLE"),
-                resultSet.getString("WRITER"),
-                resultSet.getString("CONTENTS"),
+                new Title(resultSet.getString("TITLE")),
+                new Writer(resultSet.getString("WRITER")),
+                new Contents(resultSet.getString("CONTENTS")),
                 resultSet.getTimestamp("CREATE_DATE").toLocalDateTime()
         );
     }
