@@ -12,5 +12,4 @@ public class ArticleDto {
     private final Date time;
     private final String title;
     private final String contents;
-
 }

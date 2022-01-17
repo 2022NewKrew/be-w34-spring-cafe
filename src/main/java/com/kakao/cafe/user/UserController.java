@@ -8,9 +8,7 @@ import com.kakao.cafe.user.dto.UserProfileDto;
 import com.kakao.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,14 +35,14 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String createUser(UserFormDto userFormDto) {
+    public String createUser(@ModelAttribute UserFormDto userFormDto) {
         User user = UserMapper.toUser(userFormDto);
         userService.joinUser(user);
         return "redirect:/users";
     }
 
-    @PostMapping("/user/update")
-    public String updateUser(UserFormDto userFormDto) {
+    @PutMapping("/user/update")
+    public String updateUser(@ModelAttribute UserFormDto userFormDto) {
         User user = UserMapper.toUser(userFormDto);
         userService.updateUser(user);
         return "redirect:/users";

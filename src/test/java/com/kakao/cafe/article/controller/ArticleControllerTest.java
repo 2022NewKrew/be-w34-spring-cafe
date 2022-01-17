@@ -8,11 +8,11 @@ import com.kakao.cafe.article.dto.ArticleFormDto;
 import com.kakao.cafe.article.dto.ArticleMapper;
 import com.kakao.cafe.article.service.ArticlePostService;
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.exception.ArticleException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.ExceptionController;
 import com.kakao.cafe.exception.UserException;
 import com.kakao.cafe.user.domain.UserId;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,27 +35,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ArticleController.class)
 public class ArticleControllerTest {
 
-    private static Article article;
-    private static Article articleContainId;
     @MockBean
     private ArticleService articleService;
     @MockBean
     private ArticlePostService articlePostService;
+    @MockBean
+    private ArticleMapper articleMapper;
     @Autowired
     private ArticleController articleController;
     @Autowired
     private MockMvc mockMvc;
-
-    @Test
-    @BeforeAll
-    static void setUpParameter() {
-        ArticleFormDto articleFormDto = new ArticleFormDto("terwt", "에러 발생", "존재하지 않는 아이디로 게시물 작성");
-        article = ArticleMapper.toArticle(articleFormDto);
-        articleContainId = new Article(1L, article);
-    }
+    private ArticleFormDto articleFormDto;
+    private Article article;
+    private Article articleContainId;
 
     @BeforeEach
     void setUp() {
+        articleFormDto = new ArticleFormDto("terwt", "에러 발생", "존재하지 않는 아이디로 게시물 작성");
+        article = new Article(
+                new UserId(articleFormDto.getWriter()),
+                new Date(),
+                new Title(articleFormDto.getTitle()),
+                new Contents(articleFormDto.getContents())
+        );
+        articleContainId = new Article(1L, article);
+
         mockMvc = MockMvcBuilders.standaloneSetup(articleController)
                 .setControllerAdvice(ExceptionController.class)
                 .build();
@@ -70,20 +74,30 @@ public class ArticleControllerTest {
     @Test
     @DisplayName("Article Title이 잘못된 경우 에러가 발생한다.")
     void invalidArticleTitle() throws Exception {
+        ArticleFormDto articleFormDto = new ArticleFormDto("test1", "", "빈 타이틀은 에러가 납니다...");
+
+        when(articleMapper.toArticle(articleFormDto))
+                .thenThrow(new ArticleException(ErrorCode.INVALID_ARTICLE_TITLE));
+
         mockMvc.perform(post("/question/create")
-                .param("writer", "test1")
-                .param("title", "")
-                .param("contents", "빈 타이틀은 에러가 납니다...")
+                .param("writer", articleFormDto.getWriter())
+                .param("title", articleFormDto.getTitle())
+                .param("contents", articleFormDto.getContents())
         ).andExpect(status().isBadRequest());
     }
 
     @Test
     @DisplayName("Article Contents가 잘못된 경우 에러가 발생한다.")
     void invalidArticleContents() throws Exception {
+        ArticleFormDto articleFormDto = new ArticleFormDto("test1", "빈 컨텐츠도 에러가 납니다..", "");
+
+        when(articleMapper.toArticle(articleFormDto))
+                .thenThrow(new ArticleException(ErrorCode.INVALID_ARTICLE_CONTENTS));
+
         mockMvc.perform(post("/question/create")
-                .param("writer", "test1")
-                .param("title", "빈 컨텐츠도 에러가 납니다..")
-                .param("contents", "")
+                .param("writer", articleFormDto.getWriter())
+                .param("title", articleFormDto.getTitle())
+                .param("contents", articleFormDto.getContents())
         ).andExpect(status().isBadRequest());
     }
 
@@ -92,13 +106,16 @@ public class ArticleControllerTest {
     void invalidArticleWriterId() throws Exception {
         Article articleExistUser = new Article(new UserId("t1234"), new Date(), new Title("존재하는 아이디"), new Contents("게시물 작성 가능"));
 
+        when(articleMapper.toArticle(articleFormDto))
+                .thenReturn(articleExistUser);
+
         when(articlePostService.postArticle(articleExistUser))
                 .thenThrow(new UserException(ErrorCode.USER_NOT_FOUND));
 
         mockMvc.perform(post("/question/create")
-                .param("writer", articleExistUser.getWriterId())
-                .param("title", articleExistUser.getTitle())
-                .param("contents", articleExistUser.getContents())
+                .param("writer", articleFormDto.getWriter())
+                .param("title", articleFormDto.getTitle())
+                .param("contents", articleFormDto.getContents())
         ).andExpect(status().isNotFound());
     }
 

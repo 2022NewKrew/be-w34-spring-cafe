@@ -4,6 +4,8 @@ import com.kakao.cafe.exception.ArticleException;
 import com.kakao.cafe.exception.ErrorCode;
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 public class Title {
     private final String title;
@@ -31,5 +33,22 @@ public class Title {
         if (title.contains("\\r") || title.contains("\\n")) {
             throw new ArticleException(ErrorCode.INVALID_ARTICLE_TITLE);
         }
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        Title title = (Title) object;
+        return Objects.equals(this.title, title.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title);
     }
 }

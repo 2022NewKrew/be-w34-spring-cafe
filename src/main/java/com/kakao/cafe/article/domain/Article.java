@@ -6,6 +6,7 @@ import com.kakao.cafe.user.domain.UserId;
 import lombok.Getter;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Getter
 public class Article {
@@ -14,6 +15,14 @@ public class Article {
     private final Date writeTime;
     private final Title title;
     private final Contents contents;
+
+    public Article(Long articleId, UserId writerId, Date writeTime, Title title, Contents contents) {
+        this.articleId = articleId;
+        this.writerId = writerId;
+        this.writeTime = writeTime;
+        this.title = title;
+        this.contents = contents;
+    }
 
     public Article(UserId writerId, Date writeTime, Title title, Contents contents) {
         articleId = 0L;
@@ -38,19 +47,24 @@ public class Article {
         }
     }
 
-    public Long getArticleId() {
-        return articleId;
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        Article article = (Article) object;
+        return Objects.equals(articleId, article.articleId) &&
+                Objects.equals(writerId, article.writerId) &&
+                Objects.equals(writeTime, article.writeTime) &&
+                Objects.equals(title, article.title) &&
+                Objects.equals(contents, article.contents);
     }
 
-    public String getWriterId() {
-        return writerId.getUserId();
-    }
-
-    public String getTitle() {
-        return title.getTitle();
-    }
-
-    public String getContents() {
-        return contents.getContents();
+    @Override
+    public int hashCode() {
+        return Objects.hash(articleId, writerId, writeTime, title, contents);
     }
 }

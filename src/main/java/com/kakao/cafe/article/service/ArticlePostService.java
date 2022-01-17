@@ -21,7 +21,7 @@ public class ArticlePostService {
     public Article postArticle(Article article) {
         validateNull(article);
         validateDuplicateArticle(article);
-        validateExistWriterId(article.getWriterId());
+        validateExistWriterId(article.getWriterId().getUserId());
         return articleRepository.save(article);
     }
 
