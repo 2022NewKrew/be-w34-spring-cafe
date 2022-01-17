@@ -13,7 +13,6 @@ public class UserDtos {
 
         private Long id;
         private String userId;
-        private String password;
         private String name;
         private String email;
     }
@@ -26,6 +25,14 @@ public class UserDtos {
         private final String password;
         private final String name;
         private final String email;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class UserSignInDto {
+
+        private final String userId;
+        private final String password;
     }
 
     @Getter

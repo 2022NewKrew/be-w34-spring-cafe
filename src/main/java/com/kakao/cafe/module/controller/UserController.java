@@ -1,13 +1,16 @@
 package com.kakao.cafe.module.controller;
 
+import com.kakao.cafe.module.service.InfraService;
 import com.kakao.cafe.module.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static com.kakao.cafe.module.model.dto.UserDtos.*;
@@ -19,13 +22,7 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
-
-    @PostMapping
-    public String signUp(UserSignUpDto userSignUpDto) {
-        userService.signUp(userSignUpDto);
-        logger.info("Create User : {}", userSignUpDto.getName());
-        return "redirect:/users";
-    }
+    private final InfraService infraService;
 
     @GetMapping
     public String userList(Model model) {
@@ -44,7 +41,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}/form")
-    public String getUpdateForm(@PathVariable Long id, Model model) {
+    public String getUpdateForm(@PathVariable Long id, Model model, HttpSession session) throws HttpSessionRequiredException {
+        infraService.validateSession(session, id);
         UserDto user = userService.findUser(id);
         model.addAttribute("user", user);
         logger.info("Get User Update Form : {}", id);
@@ -52,7 +50,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public String updateUser(@PathVariable Long id, UserUpdateDto userUpdateDto) {
+    public String updateUser(@PathVariable Long id, UserUpdateDto userUpdateDto, HttpSession session) throws HttpSessionRequiredException {
+        infraService.validateSession(session, id);
         userService.updateUser(id, userUpdateDto);
         logger.info("Update User : {}", id);
         return "redirect:/users";

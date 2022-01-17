@@ -11,10 +11,7 @@ import java.time.LocalDateTime;
 public class Article {
 
     private Long id;
-
-    @Setter
     private Long authorId;
-
     private String title;
     private String contents;
     private LocalDateTime created;

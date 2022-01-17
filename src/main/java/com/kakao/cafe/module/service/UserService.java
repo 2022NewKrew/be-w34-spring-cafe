@@ -1,6 +1,7 @@
 package com.kakao.cafe.module.service;
 
-import com.kakao.cafe.infra.exception.DuplicateNameException;
+import com.kakao.cafe.infra.exception.DuplicateUserException;
+import com.kakao.cafe.infra.exception.NoSuchDataException;
 import com.kakao.cafe.module.model.domain.User;
 import com.kakao.cafe.module.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,16 @@ public class UserService {
     private final ModelMapper modelMapper;
 
     public void signUp(UserSignUpDto userSignUpDto) {
+        validateDuplicateUserId(userSignUpDto.getUserId());
         validateDuplicateName(userSignUpDto.getName());
         userRepository.addUser(modelMapper.map(userSignUpDto, User.class));
+    }
+
+    public UserDto signIn(UserSignInDto userSignInDto) {
+        User user = userRepository.findUserByUserId(userSignInDto.getUserId())
+                .orElseThrow(() -> new NoSuchDataException("해당하는 아이디의 유저가 없습니다."));
+        validatePassword(user.getPassword(), userSignInDto.getPassword());
+        return modelMapper.map(user, UserDto.class);
     }
 
     public List<UserDto> userList() {
@@ -46,10 +55,17 @@ public class UserService {
     }
 
     private void validateDuplicateName(String name) {
-        userRepository.findUserByName(name)
-                .ifPresent(e -> {
-                    throw new DuplicateNameException("이미 존재하는 이름입니다.");
-                });
+        duplicateUser(userRepository.findUserByName(name).isPresent(), "이미 존재하는 이름입니다.");
+    }
+
+    private void validateDuplicateUserId(String userId) {
+        duplicateUser(userRepository.findUserByUserId(userId).isPresent(), "이미 존재하는 유저 아이디입니다.");
+    }
+
+    private void duplicateUser(boolean isDuplicated, String msg) {
+        if (isDuplicated) {
+            throw new DuplicateUserException(msg);
+        }
     }
 
     private void validatePassword(String password, String inputPassword) {

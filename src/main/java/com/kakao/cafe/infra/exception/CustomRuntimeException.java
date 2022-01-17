@@ -2,10 +2,11 @@ package com.kakao.cafe.infra.exception;
 
 import lombok.Getter;
 
+@Getter
 public class CustomRuntimeException extends RuntimeException {
 
-    @Getter
     String name;
+    int status;
 
     public CustomRuntimeException(String msg) {
         super(msg);
