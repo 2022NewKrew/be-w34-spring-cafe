@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.LoginUserDto;
 import com.kakao.cafe.repository.UserDAOInterface;
+import com.kakao.cafe.util.SHA256;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,10 @@ public class LoginService {
     }
 
     private boolean isPasswordCorrect(String inputId, String inputPassword) {
+        String SHAInputId = SHA256.encrypt(inputPassword);
         String savedPassword = userDAO.findById(inputId).getPassword();
-        return inputPassword.equals(savedPassword);
+        logger.info("input pwd: {}", SHAInputId);
+        logger.info("saved pwd: {}", savedPassword);
+        return SHAInputId.equals(savedPassword);
     }
 }
