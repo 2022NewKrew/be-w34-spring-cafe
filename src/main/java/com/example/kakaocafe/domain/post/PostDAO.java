@@ -1,10 +1,9 @@
 package com.example.kakaocafe.domain.post;
 
-
 import com.example.kakaocafe.domain.post.comment.CommentDAO;
 import com.example.kakaocafe.domain.post.comment.dto.Comment;
 import com.example.kakaocafe.domain.post.dto.*;
-import com.example.kakaocafe.domain.user.UserDAO;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.dao.support.DataAccessUtils;
@@ -15,11 +14,12 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 
 @Repository
 @RequiredArgsConstructor
@@ -48,6 +48,7 @@ public class PostDAO {
                 "                               AND c.ISDELETED = false)) as isExistCommentsOfOtherPeople)";
 
         final Integer numOfComments = jdbcTemplate.queryForObject(sql, Integer.class, postId, writerId, postId, writerId);
+
         Objects.requireNonNull(numOfComments);
 
         return numOfComments;
@@ -96,7 +97,7 @@ public class PostDAO {
                 "p.title, " +
                 "p.contents, " +
                 "p.view_count, " +
-                "FORMATDATETIME(p.created, 'yyyy-MM-dd') as `created`, " +
+                "FORMATDATETIME(p.created, 'yyyy-MM-dd') as created, " +
                 "u.name as writer " +
                 "FROM POST as p " +
                 "JOIN USER as u on p.user_id=u.id " +
@@ -108,6 +109,7 @@ public class PostDAO {
     public void plusViewCount(long id) {
         final String sql = "UPDATE POST SET VIEW_COUNT = VIEW_COUNT+1 WHERE ID=?";
         jdbcTemplate.update(sql, id);
+
     }
 
     public Optional<Post> getPostById(long id) {
@@ -136,9 +138,9 @@ public class PostDAO {
     }
 
     public Optional<PostInfo> getPostInfo(long id) {
-        final String sql = "SELECT p.id                                    as `p_id`,  " +
-                "       p.title                                 as `p_title`,  " +
-                "       p.contents                              as `p_contents` " +
+        final String sql = "SELECT p.id                                    as p_id,  " +
+                "       p.title                                 as p_title,  " +
+                "       p.contents                              as p_contents " +
                 "FROM POST as p  " +
                 "WHERE p.id =? AND p.ISDELETED=false";
 

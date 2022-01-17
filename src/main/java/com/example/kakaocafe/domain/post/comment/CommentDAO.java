@@ -2,8 +2,6 @@ package com.example.kakaocafe.domain.post.comment;
 
 import com.example.kakaocafe.domain.post.comment.dto.Comment;
 import com.example.kakaocafe.domain.post.comment.dto.WriteCommentForm;
-import com.example.kakaocafe.domain.post.dto.PostAndComment;
-import com.example.kakaocafe.domain.post.dto.PostOfTableRow;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

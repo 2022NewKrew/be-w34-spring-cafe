@@ -58,6 +58,7 @@ public class PostService {
     }
 
     private void checkIfCanNotDeleteThrowException(long postId, long writerId) {
+
         final int canDelete = postDAO.canDelete(postId, writerId);
         // 0이면 내가 작성한 게시물이 아님
         // 1이면 삭제가능
