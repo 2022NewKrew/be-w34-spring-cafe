@@ -40,12 +40,12 @@ public class PostServiceImpl implements PostService {
         if(!userRepository.existsById(writerId)) {
             throw new UserNotFoundedException(UserErrorMsg.USER_NOT_FOUNDED.getDescription());
         }
-        Post newPost = createPost(addPostDto, writerId);
+        Post newPost = createPostBy(addPostDto, writerId);
         postRepository.save(newPost);
         return newPost;
     }
 
-    private Post createPost(AddPostDto addPostDto, Long writerId) {
+    private Post createPostBy(AddPostDto addPostDto, Long writerId) {
         return Post.builder()
                 .title(addPostDto.getTitle())
                 .contents(addPostDto.getContents())

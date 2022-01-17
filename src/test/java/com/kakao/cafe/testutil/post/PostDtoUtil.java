@@ -27,6 +27,7 @@ public final class PostDtoUtil {
         return PostViewDto.builder()
                 .id(postId)
                 .title("title")
+                .contents("contents")
                 .writerNickName("gallix")
                 .createdDateTime("2022-01-01 00:00:00")
                 .viewNum(100)

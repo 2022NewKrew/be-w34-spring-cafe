@@ -73,7 +73,7 @@ public class UserRepository {
     }
 
     public User save(User user) {
-        if(user.getId() == null) {
+        if (user.getId() == null) {
             return add(user);
         }
         return update(user);
@@ -84,13 +84,13 @@ public class UserRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps =
-                    con.prepareStatement(sql, new String[] {"id"});
+                    con.prepareStatement(sql, new String[]{"id"});
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getNickName());
             ps.setTimestamp(4, Timestamp.valueOf(user.getCreatedAt()));
             return ps;
-        },  keyHolder);
+        }, keyHolder);
         user.setId(keyHolder.getKey().longValue());
         return user;
     }
