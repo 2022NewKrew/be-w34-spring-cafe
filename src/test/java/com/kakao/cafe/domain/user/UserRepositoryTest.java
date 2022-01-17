@@ -29,7 +29,7 @@ public class UserRepositoryTest {
     @DisplayName("저장소 회원정보 저장 테스트")
     @MethodSource("provideUsers")
     @ParameterizedTest
-    public void testSave(String userId, String password, String name, String email) {
+    public void testSave(UserId userId, Password password, Name name, Email email) {
         //given
         UserCreateRequest dto = new UserCreateRequest(userId, password, name, email);
         User user = dto.toEntity();
@@ -44,21 +44,21 @@ public class UserRepositoryTest {
 
     private static Stream<Arguments> provideUsers() {
         return Stream.of(
-                Arguments.of("clo.d", "testPassword", "dongwoon", "clo.d@kakaocorp.com")
+                Arguments.of(new UserId("clo.d"), new Password("testPassword"), new Name("dongwoon"), new Email("clo.d@kakaocorp.com"))
         );
     }
 
     @DisplayName("저장소 회원정보 수정 테스트")
     @MethodSource("provideUsers")
     @ParameterizedTest
-    public void userUpdate(String userId, String password, String name, String email) {
+    public void userUpdate(UserId userId, Password password, Name name, Email email) {
         //given
         UserCreateRequest dto = new UserCreateRequest(userId, password, name, email);
         User user = dto.toEntity();
         userRepository.save(user);
 
-        String modifiedName = "modifiedName";
-        String modifiedEmail = "modifiedEmail";
+        Name modifiedName = new Name("modifiedName");
+        Email modifiedEmail = new Email("modifiedEmail");
 
         user.setName(modifiedName);
         user.setEmail(modifiedEmail);

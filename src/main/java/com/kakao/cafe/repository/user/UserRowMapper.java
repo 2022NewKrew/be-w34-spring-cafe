@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository.user;
 
-import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -10,10 +10,10 @@ public class UserRowMapper implements RowMapper<User> {
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
         User user = new User();
-        user.setUserId(rs.getString("USERID"));
-        user.setPassword(rs.getString("PASSWORD"));
-        user.setName(rs.getString("NAME"));
-        user.setEmail(rs.getString("EMAIL"));
+        user.setUserId(new UserId(rs.getString("USERID")));
+        user.setPassword(new Password(rs.getString("PASSWORD")));
+        user.setName(new Name(rs.getString("NAME")));
+        user.setEmail(new Email(rs.getString("EMAIL")));
 
         return user;
     }

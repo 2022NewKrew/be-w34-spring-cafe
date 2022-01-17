@@ -1,6 +1,7 @@
 package com.kakao.cafe.web.user;
 
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserId;
 import com.kakao.cafe.service.user.UserCreateService;
 import com.kakao.cafe.service.user.UserFindService;
 import com.kakao.cafe.service.user.UserUpdateService;
@@ -45,13 +46,13 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public String showUser(@PathVariable String userId, Model model) {
+    public String showUser(@PathVariable UserId userId, Model model) {
         model.addAttribute("user", new UserProfileResponse(userFindService.findById(userId)));
         return "/user/profile";
     }
 
     @GetMapping("/{userId}/form")
-    public String updateForm(@PathVariable String userId, Model model) {
+    public String updateForm(@PathVariable UserId userId, Model model) {
         model.addAttribute("userId", userId);
         UserProfileResponse userProfileResponse = new UserProfileResponse(userFindService.findById(userId));
         model.addAttribute("name", userProfileResponse.getName());
@@ -61,7 +62,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/update")
-    public String update(@PathVariable String userId, @ModelAttribute UserUpdateRequest requestDto) {
+    public String update(@PathVariable UserId userId, @ModelAttribute UserUpdateRequest requestDto) {
         User user = userFindService.findById(userId);
         user.setName(requestDto.getName());
         user.setEmail(requestDto.getEmail());

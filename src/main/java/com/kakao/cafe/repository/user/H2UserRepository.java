@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository.user;
 
-import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.*;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -22,27 +22,27 @@ public class H2UserRepository implements UserRepository{
 
     @Override
     public void save(User user) {
-        String userId = user.getUserId();
-        String password = user.getPassword();
-        String name = user.getName();
-        String email = user.getEmail();
+        UserId userId = user.getUserId();
+        Password password = user.getPassword();
+        Name name = user.getName();
+        Email email = user.getEmail();
 
         jdbcTemplate.update(
-                "INSERT INTO USERS(USERID, PASSWORD, NAME, EMAIL) VALUES(?, ?, ?, ?)", userId, password, name, email
+                "INSERT INTO USERS(USERID, PASSWORD, NAME, EMAIL) VALUES(?, ?, ?, ?)", userId.getValue(), password.getValue(), name.getValue(), email.getValue()
         );
     }
 
     @Override
-    public void update(String id, String password, User user) {
+    public void update(UserId id, Password password, User user) {
         jdbcTemplate.update(
-                "UPDATE USERS SET NAME = ?, EMAIL = ? WHERE USERID = ? AND PASSWORD = ?" , user.getName(), user.getEmail(), id, password
+                "UPDATE USERS SET NAME = ?, EMAIL = ? WHERE USERID = ? AND PASSWORD = ?" , user.getName().getValue(), user.getEmail().getValue(), id.getValue(), password.getValue()
         );
     }
 
     @Override
-    public User findById(String id) {
+    public User findById(UserId id) {
         return DataAccessUtils.singleResult(jdbcTemplate.query(
-                "SELECT USERID, PASSWORD, NAME, EMAIL FROM USERS WHERE USERID = ?", rowMapper , id
+                "SELECT USERID, PASSWORD, NAME, EMAIL FROM USERS WHERE USERID = ?", rowMapper , id.getValue()
         ));
     }
 

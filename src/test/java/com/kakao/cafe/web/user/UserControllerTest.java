@@ -1,6 +1,6 @@
 package com.kakao.cafe.web.user;
 
-import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.*;
 import com.kakao.cafe.service.user.UserCreateService;
 import com.kakao.cafe.service.user.UserFindService;
 import com.kakao.cafe.service.user.UserUpdateService;
@@ -65,15 +65,15 @@ class UserControllerTest {
     private static Stream<List<User>> provideUsers() {
         User test1 = new User();
         User test2 = new User();
-        test1.setUserId("test1");
-        test1.setPassword("1234");
-        test1.setName("test1Name");
-        test1.setEmail("test1@kakaocorp.com");
+        test1.setUserId(new UserId("test1"));
+        test1.setPassword(new Password("1234"));
+        test1.setName(new Name("test1Name"));
+        test1.setEmail(new Email("test1@kakaocorp.com"));
 
-        test2.setUserId("test2");
-        test2.setPassword("5678");
-        test2.setName("test2Name");
-        test2.setEmail("test2@kakaocorp.com");
+        test2.setUserId(new UserId("test2"));
+        test2.setPassword(new Password("5678"));
+        test2.setName(new Name("test2Name"));
+        test2.setEmail(new Email("test2@kakaocorp.com"));
         return Stream.of(
                 List.of(test1, test2)
         );
@@ -83,20 +83,20 @@ class UserControllerTest {
     @MethodSource("provideUser")
     @ParameterizedTest
     public void getModifyUserForm(User user) throws Exception {
-        String url = "/users/" + user.getUserId() + "/form";
+        String url = "/users/" + user.getUserId().getValue() + "/form";
         given(this.userFindService.findById(user.getUserId())).willReturn(user);
 
-        mvc.perform(get(url).param("userId", user.getUserId()))
+        mvc.perform(get(url).param("userId", user.getUserId().getValue()))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
     }
 
     private static Stream<User> provideUser() {
-        User test1 = new User();
-        test1.setUserId("test1");
-        test1.setPassword("1234");
-        test1.setName("test1Name");
-        test1.setEmail("test1@kakaocorp.com");
-        return Stream.of( test1 );
+        User test = new User();
+        test.setUserId(new UserId("test"));
+        test.setPassword(new Password("1234"));
+        test.setName(new Name("testName"));
+        test.setEmail(new Email("test@kakaocorp.com"));
+        return Stream.of( test );
     }
 }

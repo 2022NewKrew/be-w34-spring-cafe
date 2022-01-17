@@ -1,6 +1,6 @@
 package com.kakao.cafe.service.user;
 
-import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.*;
 import com.kakao.cafe.repository.user.UserRepository;
 import com.kakao.cafe.web.user.dto.UserCreateRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -29,7 +29,7 @@ class UserFindServiceTest {
     @DisplayName("ID검색 테스트")
     @MethodSource("provideUsers")
     @ParameterizedTest
-    public void findUserId(String userId, String password, String name, String email) {
+    public void findUserId(UserId userId, Password password, Name name, Email email) {
         //given
         final UserCreateRequest dto = new UserCreateRequest(userId, password, name, email);
         final User givenUser = dto.toEntity();
@@ -45,7 +45,7 @@ class UserFindServiceTest {
 
     private static Stream<Arguments> provideUsers() {
         return Stream.of(
-                Arguments.of("clo.d", "testPassword", "dongwoon", "clo.d@kakaocorp.com")
+                Arguments.of(new UserId("clo.d"), new Password("testPassword"), new Name("dongwoon"), new Email("clo.d@kakaocorp.com"))
         );
     }
 }

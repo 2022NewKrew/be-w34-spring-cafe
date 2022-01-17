@@ -1,6 +1,6 @@
 package com.kakao.cafe.service.user;
 
-import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.*;
 import com.kakao.cafe.repository.user.UserRepository;
 import com.kakao.cafe.web.user.dto.UserCreateRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -30,9 +30,9 @@ public class UserCreateServiceTest {
     @DisplayName("회원정보 생성, 이미 존재하는 id인지 체크")
     @MethodSource("provideUsers")
     @ParameterizedTest
-    public void userCreateValidPasswordCorrect(String userId, String password, String name, String email) {
+    public void userCreateValidPasswordCorrect(UserId userId, Password password, Name name, Email email) {
         //given
-        final String newUserId = "newClo.d";
+        final UserId newUserId = new UserId("newClo.d");
         final UserCreateRequest givenUserDto = new UserCreateRequest(userId, password, name, email);
         final UserCreateRequest newUserDto = new UserCreateRequest(newUserId, password, name, email);
 
@@ -49,7 +49,7 @@ public class UserCreateServiceTest {
 
     private static Stream<Arguments> provideUsers() {
         return Stream.of(
-                Arguments.of("clo.d", "testPassword", "dongwoon", "clo.d@kakaocorp.com")
+                Arguments.of(new UserId("clo.d"), new Password("testPassword"), new Name("dongwoon"), new Email("clo.d@kakaocorp.com"))
         );
     }
 }

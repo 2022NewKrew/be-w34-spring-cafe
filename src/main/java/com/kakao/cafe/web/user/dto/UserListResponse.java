@@ -1,11 +1,14 @@
 package com.kakao.cafe.web.user.dto;
 
+import com.kakao.cafe.domain.user.Email;
+import com.kakao.cafe.domain.user.Name;
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserId;
 
 public class UserListResponse {
-    private final String userId;
-    private final String name;
-    private final String email;
+    private final UserId userId;
+    private final Name name;
+    private final Email email;
 
     public UserListResponse(User user) {
         this.userId = user.getUserId();
@@ -13,15 +16,15 @@ public class UserListResponse {
         this.email = user.getEmail();
     }
 
-    public String getUserId() {
+    public UserId getUserId() {
         return userId;
     }
 
-    public String getName() {
+    public Name getName() {
         return name;
     }
 
-    public String getEmail() {
+    public Email getEmail() {
         return email;
     }
 

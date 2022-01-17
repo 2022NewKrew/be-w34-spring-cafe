@@ -1,25 +1,29 @@
 package com.kakao.cafe.web.user.dto;
 
-public class UserUpdateRequest {
-    private final String password;
-    private final String name;
-    private final String email;
+import com.kakao.cafe.domain.user.Email;
+import com.kakao.cafe.domain.user.Name;
+import com.kakao.cafe.domain.user.Password;
 
-    public UserUpdateRequest(String password, String name, String email) {
+public class UserUpdateRequest {
+    private final Password password;
+    private final Name name;
+    private final Email email;
+
+    public UserUpdateRequest(Password password, Name name, Email email) {
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    public String getPassword() {
+    public Password getPassword() {
         return password;
     }
 
-    public String getName() {
+    public Name getName() {
         return name;
     }
 
-    public String getEmail() {
+    public Email getEmail() {
         return email;
     }
 }

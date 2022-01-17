@@ -1,6 +1,7 @@
 package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserId;
 import com.kakao.cafe.repository.user.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,7 @@ public class UserFindService {
     }
 
     @Transactional(readOnly = true)
-    public User findById(String id) {
+    public User findById(UserId id) {
         return userRepository.findById(id);
     }
 
