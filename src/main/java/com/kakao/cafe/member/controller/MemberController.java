@@ -1,5 +1,6 @@
 package com.kakao.cafe.member.controller;
 
+import com.kakao.cafe.member.dto.LoginRequestDTO;
 import com.kakao.cafe.member.dto.MemberRequestDTO;
 import com.kakao.cafe.member.dto.MemberResponseDTO;
 import com.kakao.cafe.member.dto.MemberUpdateRequestDTO;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -63,5 +65,24 @@ public class MemberController {
     @GetMapping("/login")
     public String getLogin() {
         return "members/login";
+    }
+
+    @PostMapping("/login")
+    public String postLogin(LoginRequestDTO loginRequestDTO, HttpSession session) {
+        logger.info("loginDTO : {}", loginRequestDTO);
+
+        session.setAttribute("memberId", memberService.login(loginRequestDTO));
+        return "redirect:/members";
+    }
+
+    @GetMapping("/logout")
+    public String getLogout(HttpSession session) {
+        Long memberId = (Long) session.getAttribute("memberId");
+
+        if (memberId != null) {
+            session.invalidate();
+        }
+
+        return "redirect:/members";
     }
 }

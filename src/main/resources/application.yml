@@ -2,6 +2,7 @@ spring:
   mustache:
     cache: false
     suffix: .html
+    expose-session-attributes: true
 
   mvc:
     hiddenmethod:
@@ -17,3 +18,8 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
