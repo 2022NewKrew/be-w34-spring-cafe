@@ -26,10 +26,10 @@ public class UserDao implements BaseDao<UserResponseDto, Long, UserCreateRequest
 
     @Override
     public void save(UserCreateRequestDto user) {
-        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(sql,
-                user.getId(), user.getUserId(), user.getNickname(), user.getEmail());
+                user.getId(), user.getUserId(), user.getNickname(), user.getEmail(), user.getPassword());
     }
 
     @Override
