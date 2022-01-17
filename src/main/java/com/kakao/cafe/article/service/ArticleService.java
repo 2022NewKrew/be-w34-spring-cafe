@@ -11,7 +11,6 @@ import java.util.List;
 
 @Service
 public class ArticleService {
-    //private ArticleRepository articleRepository = new ArticleMemoryRepository();
     private ArticleRepository articleRepository;
 
     public ArticleService(ArticleRepository articleRepository){
@@ -22,12 +21,13 @@ public class ArticleService {
         articleRepository.addArticle(articleCreateDTO);
     }
 
-    public Article getArticle(Long sequence){
-        if(sequence < 0 || sequence >= articleRepository.getArticles().size()){
-            throw new RuntimeException("범위에 없는 sequence가 입력되었습니다.");
-        }
+    public Article getArticleBySequence(Long sequence){
+        Article article = articleRepository.getArticleByCondition("sequence", sequence.toString());
 
-        return articleRepository.getArticles().get(Math.toIntExact(sequence));
+        if(article == null){
+            throw new RuntimeException("해당 글이 존재하지 않습니다.");
+        }
+        return article;
     }
 
     public List<Article> getAllArticles(){

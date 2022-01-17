@@ -40,7 +40,7 @@ public class ArticleController {
     //상세 질문글 확인
     @GetMapping(value = "/qnas/{sequence}")
     public String showArticle(@PathVariable("sequence") Long sequence, Model model){
-        Article article = articleService.getArticle(sequence - 1);
+        Article article = articleService.getArticleBySequence(sequence);
         ArticleViewDTO articleViewDTO = new ArticleViewDTO(article);
 
         model.addAttribute("name", articleViewDTO.getName());

@@ -2,6 +2,7 @@ package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserCreateDTO;
+import com.kakao.cafe.user.dto.UserUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -21,11 +22,21 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public List<User> getUsers() {
+        String sql = "select * from users";
 
-        return jdbcTemplate.query("select * from users",
+        return jdbcTemplate.query(sql,
                 (rs, rn) ->
         {User user = new User(rs.getString("userid"), rs.getString("password"), rs.getString("name"), rs.getString("email"), rs.getLong("sequence"));
             return user;});
+    }
+
+    @Override
+    public User getUserByCondition(String key, String value) {
+        String sql = String.format("select * from users where %s = '%s'", key, value);
+        return jdbcTemplate.query(sql,
+                (rs, rn) ->
+                {User user = new User(rs.getString("userid"), rs.getString("password"), rs.getString("name"), rs.getString("email"), rs.getLong("sequence"));
+                    return user;}).stream().findAny().orElse(null);
     }
 
     @Override
@@ -39,4 +50,12 @@ public class UserJdbcRepository implements UserRepository {
         );
 
     }
+
+    @Override
+    public void updateUser(UserCreateDTO userCreateDTO) {
+        String sql = String.format("UPDATE users SET name='%s', password='%s', email='%s' WHERE userid='%s'", userCreateDTO.getName(), userCreateDTO.getPassword(), userCreateDTO.getEmail(), userCreateDTO.getUserId());
+        jdbcTemplate.update(sql);
+    }
+
+
 }

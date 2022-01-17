@@ -4,14 +4,12 @@ import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserCreateDTO;
 import com.kakao.cafe.user.dto.UserListDTO;
 import com.kakao.cafe.user.dto.UserProfileDTO;
+import com.kakao.cafe.user.dto.UserUpdateDTO;
 import com.kakao.cafe.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +39,13 @@ public class UserController {
         return "redirect:/user/list";
     }
 
+    //회원정보수정
+    @PutMapping(value = "/user/update")
+    public String userUpdate(UserCreateDTO userCreateDTO){
+        userService.userUpdate(userCreateDTO);
+
+        return "redirect:/user/list";
+    }
 
 
     //회원개인프로필 확인
@@ -51,6 +56,18 @@ public class UserController {
         model.addAttribute("name", userProfileDTO.getName());
         model.addAttribute("email", userProfileDTO.getEmail());
         return "/user/profile";
+    }
+
+
+    //회원개인프로필 확인
+    @GetMapping(value = "/users/{userId}/form")
+    public String userUpdate(@PathVariable("userId") String userId, Model model){
+        User user = userService.getUserByUserId(userId);
+        UserUpdateDTO userUpdateDTO = new UserUpdateDTO(user);
+        model.addAttribute("userid", userUpdateDTO.getUserId());
+        model.addAttribute("name", userUpdateDTO.getName());
+        model.addAttribute("email", userUpdateDTO.getEmail());
+        return "/user/updateform";
     }
 
 }

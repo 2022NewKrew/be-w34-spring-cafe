@@ -8,4 +8,5 @@ import java.util.List;
 public interface ArticleRepository {
     public void addArticle(ArticleCreateDTO articleCreateDTO);
     public List<Article> getArticles();
+    public Article getArticleByCondition(String key, String value);
 }
