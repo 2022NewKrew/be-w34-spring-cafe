@@ -1,11 +1,13 @@
 {{>layout/header}}
 <div class="container" id="main">
+    {{#loginUser}}
     <div style="padding: 0 15px 15px;">
         <a href="/questions/create"
            style="float: right; display: block; background-color: #f6c51e; padding: 5px 6px; border-radius: 8px;color: #000; font-weight: bold;">게시글
             쓰기</a>
         <span style="clear: both; display: block;"></span>
     </div>
+    {{/loginUser}}
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
             <header class="qna-header">

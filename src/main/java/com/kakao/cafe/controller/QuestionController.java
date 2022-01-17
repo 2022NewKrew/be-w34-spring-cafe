@@ -7,6 +7,7 @@ import com.kakao.cafe.question.dto.QuestionDto;
 import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Controller
 @RequestMapping("/questions")
 @RequiredArgsConstructor
@@ -28,7 +30,7 @@ public class QuestionController {
     private final ModelMapper modelMapper;
 
     @PostMapping("/create")
-    public String insertQuestion(HttpServletRequest request, @ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto) {
+    public String insertQuestion(HttpServletRequest request, @ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto, Model model) {
 
         HttpSession httpSession = request.getSession();
         User user = modelMapper.map(httpSession.getAttribute("loginUser"), User.class);
@@ -40,8 +42,8 @@ public class QuestionController {
         try {
             questionService.save(question);
         } catch (SQLException e) {
-            e.printStackTrace();
-            //TODO 저장 실패 에러페이지 추가
+            log.error("QUESTION TABLE SAVE 실패 SQLState : {}", e.getSQLState());
+            return ErrorPage.getErrorPageModel(model, "게시글 작성 실패");
 
         }
 
@@ -52,9 +54,7 @@ public class QuestionController {
     public String viewQuestionList(HttpSession session, Model model) {
 
         UserDto loginUser = (UserDto) session.getAttribute("loginUser");
-
         Long id = loginUser == null ? -1L : loginUser.getId();
-
         List<QuestionDto> questions = getQuestionDtos(id);
 
         model.addAttribute("questions", questions);
@@ -65,6 +65,7 @@ public class QuestionController {
     }
 
     private List<QuestionDto> getQuestionDtos(Long id) {
+
         return questionService.findAll()
                 .stream()
                 .map(q -> {

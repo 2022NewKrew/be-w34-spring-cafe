@@ -51,7 +51,7 @@ public class UserController {
             userService.save(user);
         } catch (SQLException e) {
             log.error("USER TABLE SAVE 실패 SQLState : {}", e.getSQLState());
-            return getErrorPageModel(model, "회원가입 실패했습니다.");
+            return ErrorPage.getErrorPageModel(model, "회원가입 실패했습니다.");
         }
 
         return "redirect:/";
@@ -120,7 +120,7 @@ public class UserController {
         User user = userService.loginCheck(loginUser.getUserId(), password);
 
         if (user == null) {
-            return getErrorPageModel(model, "비밀번호가 틀렸습니다.");
+            return ErrorPage.getErrorPageModel(model, "비밀번호가 틀렸습니다.");
         }
 
         UserDto userDto = modelMapper.map(user, UserDto.class);
@@ -141,7 +141,7 @@ public class UserController {
 
         if (!userService.update(user)) {
             log.info("회원 정보 수정 실패 에러페이지로 이동");
-            return getErrorPageModel(model, "ADMIN : 회원 정보 수정 실패");
+            return ErrorPage.getErrorPageModel(model, "ADMIN : 회원 정보 수정 실패");
         }
 
         return "redirect:/";
@@ -157,7 +157,7 @@ public class UserController {
 
         if (!userService.update(user)) {
             log.info("회원 정보 수정 실패 에러페이지로 이동");
-            return getErrorPageModel(model, "회원 정보 수정 실패");
+            return ErrorPage.getErrorPageModel(model, "회원 정보 수정 실패");
         }
 
         return "redirect:/";
@@ -169,7 +169,7 @@ public class UserController {
         User user = userService.loginCheck(userLoginDto.getUserId(), userLoginDto.getPassword());
 
         if (user == null) {
-            return getErrorPageModel(model, "login error 페이지 입니다.");
+            return ErrorPage.getErrorPageModel(model, "login error 페이지 입니다.");
         }
 
         setLoginUserSession(request, user);
@@ -203,10 +203,5 @@ public class UserController {
         log.info("success invalidate session");
     }
 
-    private String getErrorPageModel(Model model, String message) {
-
-        model.addAttribute("message", message);
-        return "error/base_error";
-    }
 
 }
