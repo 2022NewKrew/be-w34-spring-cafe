@@ -158,6 +158,7 @@ li {
 
 .form-control {
     border:none;
+    flex:1;
 }
 
 .form-control:focus {

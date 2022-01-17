@@ -39,7 +39,10 @@
                 </ul>
             </div>
         </nav>
-
+        {{^signInUser}}
+        <p class="user-title">게시글 보기 권한이 없습니다.</p>
+        {{/signInUser}}
+        {{#signInUser}}
         <div class="container" id="main">
             <div class="col-md-12 col-sm-12 col-lg-12">
                 {{#post}}
@@ -65,9 +68,12 @@
 
                       <div class="post-comment">
                           <div class="post-comment-slipp">
-                              <p class="post-comment-count">댓글 2개</p>
-                              <div class="post-comment-slipp-articles">
+                              <div class="post-comment-count">
+                                  <p>댓글 2개</p>
+                                  <a class="post-edit-btn" href="/posts/edit/{{postId}}" class="btn btn-primary pull-right" role="button">게시글 수정</a>
+                              </div>
 
+                              <div class="post-comment-slipp-articles">
                                   <article class="comment">
                                       <div class="article-text">
                                           <p class="comment-content comment-author-name">자바지기</p>
@@ -109,5 +115,7 @@
                 {{/post}}
             </div>
         </div>
+        {{/signInUser}}
+    </div>
 	</body>
 </html>

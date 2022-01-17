@@ -27,13 +27,20 @@ public class CafePostController {
     private static final String POST_VIEW_LIST = POST_DIRECTORY+"/list";
     private static final String POST_VIEW_WRITE = POST_DIRECTORY+"/form";
     private static final String POST_VIEW_CONTENT = POST_DIRECTORY+"/show";
+    private static final String POST_VIEW_EDIT = POST_DIRECTORY+"/form_edit";
 
     private static final String REDIRECT_PREFIX = "redirect:";
     private static final String POST_REDIRECT_LIST = REDIRECT_PREFIX+"/posts/list";
     private static final String POST_REDIRECT_WRITE_FAIL = REDIRECT_PREFIX+"/posts/write/fail";
+    private static final String POST_REDIRECT_NON_USER = REDIRECT_PREFIX+"/users/sign-in";
+    private static final String POST_REDIRECT_EDIT_SUCCESS = REDIRECT_PREFIX+"/posts/list";
+    private static final String POST_REDIRECT_EDIT_FAIL = REDIRECT_PREFIX+"/posts/form_fail";
 
     @GetMapping("/write")
-    String postViewWrite() {
+    String postViewWrite(HttpSession httpSession) {
+        if( httpSession.getAttribute("signInUser") == null) {
+            return POST_REDIRECT_NON_USER;
+        }
         return POST_VIEW_WRITE;
     }
 
@@ -43,9 +50,10 @@ public class CafePostController {
         if( signInUser != null ) {
             String userId = ((User)signInUser).getUserId();
             newPost.setUserId(userId);
-        }
-        if(cafePostService.writePost(newPost)) {
-            return POST_REDIRECT_LIST;
+
+            if(cafePostService.writePost(newPost)) {
+                return POST_REDIRECT_LIST;
+            }
         }
         return POST_REDIRECT_WRITE_FAIL;
     }
@@ -63,5 +71,19 @@ public class CafePostController {
         Post post = cafePostService.getPostContent(postId);
         model.addAttribute("post", post);
         return POST_VIEW_CONTENT;
+    }
+
+    @GetMapping("/edit/{postId}")
+    String postViewEdit(Model model, @PathVariable("postId") int postId) {
+        Post post = cafePostService.postViewEdit(postId);
+        model.addAttribute("post", post);
+        return POST_VIEW_EDIT;
+    }
+    @PostMapping("/edit/{postId}")
+    String editPost (@NonNull @PathVariable("postId") int postId, Post post) {
+        if(cafePostService.editPost(postId,post)) {
+            return POST_REDIRECT_EDIT_SUCCESS;
+        }
+        return POST_REDIRECT_EDIT_FAIL;
     }
 }

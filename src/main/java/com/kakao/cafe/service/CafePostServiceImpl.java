@@ -33,4 +33,17 @@ public class CafePostServiceImpl implements CafePostService {
     public Post getPostContent(int postId) {
         return cafePostDao.getPostContent(postId);
     }
+
+    @Override
+    public Post postViewEdit(int postId) {
+        return cafePostDao.postViewEdit(postId);
+    }
+
+    @Override
+    public boolean editPost(int postId, Post post) {
+        if(PostHelper.checkRegexOfPost(post)) {
+            return cafePostDao.editPost(postId, post);
+        }
+        return false;
+    }
 }

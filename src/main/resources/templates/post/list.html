@@ -60,7 +60,11 @@
                     <tbody>
                     {{#postList}}
                     <tr>
-                        <td><a href="/posts/content/{{postId}}">{{title}}</a></td> <td>{{userId}}</td> <td>{{createdAt}}</td> <td>0</td>
+                        <td>
+                            {{#signInUser}}<a href="/posts/content/{{postId}}">{{/signInUser}}
+                                {{title}}
+                            {{#signInUser}}</a>{{/signInUser}}
+                        </td> <td>{{userId}}</td> <td>{{createdAt}}</td> <td>0</td>
                     </tr>
                     {{/postList}}
                     </tbody>

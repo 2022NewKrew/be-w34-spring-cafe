@@ -88,6 +88,9 @@ li {
 
 .post-comment-count {
     margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .comment-author-name {
@@ -117,6 +120,25 @@ li {
     background-color: black;
     color: white;
     margin: 20px;
+}
+
+.post-edit-btn {
+    align-items: center;
+    /*align-self: end;*/
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    min-width: 60px;
+    height: 30px;
+    font-size: 14px;
+    border: 1px solid #ffcd00;
+    border-radius: 3px;
+    padding: 0 20px;
+}
+.post-edit-btn:hover {
+    background-color: #ffcd00;
+    border-color: black;
 }
 
 .post-btn-container {

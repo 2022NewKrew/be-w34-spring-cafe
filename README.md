@@ -71,7 +71,7 @@
   - application.properties 에 "spring.mustache.expose-session-attributes=true" 설정이 필요
 - @Aspect 를 쓰기 위해선, spring-aop 가 아닌 spring-boot-starter-aop 가 필요
   - Get/Post Mapping 의 경우, annotation 기반으로 적용시켜서 되는데, execute 는 왜 실행이 안되는지 잘 파악을 못하겠음
-  
+
 # 배포 절차
 - 실패한 방법
   - File -> project structure -> artifacts 추가

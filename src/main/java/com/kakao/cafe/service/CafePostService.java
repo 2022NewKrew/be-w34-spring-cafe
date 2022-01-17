@@ -8,4 +8,7 @@ public interface CafePostService {
     boolean writePost (Post newPost);
     List<Post> getPostList();
     Post getPostContent(int postId);
+
+    Post postViewEdit(int postId);
+    boolean editPost(int postId, Post post);
 }

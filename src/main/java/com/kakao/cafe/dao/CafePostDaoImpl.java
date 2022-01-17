@@ -88,4 +88,49 @@ public class CafePostDaoImpl implements CafePostDao {
         }
         return selectedPost;
     }
+
+    @Override
+    public Post postViewEdit(int postId) {
+        Post selectedPost = null;
+        String sql = "SELECT userId, title, content AS createdAt FROM post\n"
+                + "WHERE postId=?";
+
+        try (Connection conn = dataSource.getConnection() ) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, postId);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                String userId = rs.getString("userId");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+
+                selectedPost = new Post(postId,userId,title,content);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return selectedPost;
+    }
+
+    @Override
+    public boolean editPost(int postId, Post post) {
+        String sql = "UPDATE post\n"
+                + "SET title=?, content=?"
+                + "WHERE postId=?";
+
+        try (Connection conn = dataSource.getConnection() ) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, post.getTitle());
+            pstmt.setString(2, post.getContent());
+            pstmt.setInt(3, postId);
+
+            int updateCnt = pstmt.executeUpdate();
+            if( updateCnt > 0 ) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

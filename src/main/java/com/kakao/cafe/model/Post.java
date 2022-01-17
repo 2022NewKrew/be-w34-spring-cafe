@@ -8,6 +8,12 @@ public class Post {
     String createdAt;
 
     public Post() {}
+    public Post(int postId, String userId, String title, String content) {
+        this.postId = postId;
+        this.userId = userId;
+        this.title = title;
+        this.content = content;
+    }
     public Post(int postId, String userId, String title, String content, String createdAt) {
         this.postId = postId;
         this.userId = userId;
