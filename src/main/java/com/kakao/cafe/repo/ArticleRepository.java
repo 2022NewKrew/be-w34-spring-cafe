@@ -1,6 +1,7 @@
 package com.kakao.cafe.repo;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.dto.ArticleDto;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public interface ArticleRepository {
     boolean add(@NonNull final Article article);
 
-    Article find(final long idx);
+    ArticleDto getDto(final long idx);
 
-    List<Article> getList();
+    List<ArticleDto> getDtoList();
 }
