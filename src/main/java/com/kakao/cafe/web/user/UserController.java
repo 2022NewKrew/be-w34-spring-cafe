@@ -12,16 +12,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UserController {
+    private final UserDao userDao;
+
     Logger logger = (Logger) LoggerFactory.getLogger(UserController.class);
 
     private Users users = new Users();
 
+    public UserController(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
     // 회원가입 -> Post로 요청을 받아서 user 인스턴스 추가 후 redirect
     @PostMapping("/user/create")
+//    public String singUp(User user) {
+//        logger.info(user.getUserId());
+//        this.users.addUser(user);
+//        logger.info("user signup");
+//        return "redirect:/user/list";
+//    }
     public String singUp(User user) {
-        logger.info(user.getUserId());
-        this.users.addUser(user);
         logger.info("user signup");
+        userDao.createUser(user);
         return "redirect:/user/list";
     }
 
@@ -35,7 +46,8 @@ public class UserController {
     @GetMapping("/user/list")
     public String getList(Model model){
         logger.info("getList");
-        model.addAttribute("users", this.users.getUserList());
+//        model.addAttribute("users", this.users.getUserList());
+        model.addAttribute("users", userDao.readUsers());
         return "/user/list";
     }
 
@@ -43,7 +55,8 @@ public class UserController {
     @GetMapping("/user/{userId}")
     public String getProfile(@PathVariable String userId, Model model) {
         logger.info("getProfile");
-        model.addAttribute("user", this.users.findUserById(userId));
+//        model.addAttribute("user", this.users.findUserById(userId));
+        model.addAttribute("user", userDao.findUserById(Integer.valueOf(userId)));
         return "/user/profile";
     }
 

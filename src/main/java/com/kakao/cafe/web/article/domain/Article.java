@@ -1,10 +1,13 @@
 package com.kakao.cafe.web.article.domain;
 
+import java.sql.Date;
+
 public class Article {
     private String writer;
     private String title;
     private String content;
     private int id;
+    private Date date;
 
     public String getWriter() { return this.writer; }
     public String getTitle() { return this.title; }
@@ -12,6 +15,8 @@ public class Article {
     public int getId() {
         return this.id;
     }
+    public Date getDate() { return this.date; }
+
 
     public void setWriter(String writer) {
         this.writer = writer;
@@ -25,4 +30,6 @@ public class Article {
     public void setId(int id) {
         this.id = id;
     }
+    public void setDate(Date date) { this.date = date; }
+
 }
