@@ -2,40 +2,41 @@ package com.kakao.cafe.exception;
 
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.NoSuchElementException;
 
-@RestControllerAdvice
+@ControllerAdvice
 @Slf4j
 public class ErrorController {
 
     @ExceptionHandler(NoSuchElementException.class)
-    //@ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public String noSuchElementError(NoSuchElementException e) {
+    public String noSuchElementError(NoSuchElementException e, Model model) {
         log.error("{}", e.getMessage());
-        return e.getMessage();
-        //return "redirect:/";
+        model.addAttribute("error", e.getMessage());
+        return "error/error-page";
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public String illegalFormatError(IllegalArgumentException e) {
+    public String illegalFormatError(IllegalArgumentException e, Model model) {
         log.error("{}", e.getMessage());
-        return e.getMessage();
-        //return "redirect:/";
+        model.addAttribute("error", e.getMessage());
+        return "error/error-page";
     }
 
     @ExceptionHandler(DuplicateRequestException.class)
-    public String duplicatedUserIdError(DuplicateRequestException e) {
+    public String duplicatedUserIdError(DuplicateRequestException e, Model model) {
         log.error("{}", e.getMessage());
-        return e.getMessage();
-        //return "redirect:/";
+        model.addAttribute("error", e.getMessage());
+        return "error/error-page";
     }
 
-    @ExceptionHandler(IllegalAccessException.class)
-    public String wrongPasswordError(IllegalArgumentException e) {
+    @ExceptionHandler(UnauthorizedException.class)
+    public String unauthorizedError(UnauthorizedException e, Model model) {
         log.error("{}", e.getMessage());
-        return e.getMessage();
+        model.addAttribute("error", e.getMessage());
+        return "error/error-page";
     }
 }
