@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
+import com.kakao.cafe.domain.exception.CannotAuthenticateException;
 import com.kakao.cafe.domain.exception.DuplicateUserIdException;
 import com.kakao.cafe.domain.repository.UserRepository;
 import com.kakao.cafe.service.dto.CredentialsDto;
@@ -44,9 +45,13 @@ public class UserService {
     }
 
     public UserDto login(CredentialsDto credentials) {
-        return userRepository.login(
+        Optional<User> entity = userRepository.login(
                 credentials.getUserId(),
                 credentials.getPassword()
-        ).toDto();
+        );
+        if (entity.isEmpty()) {
+            throw new CannotAuthenticateException();
+        }
+        return entity.get().toDto();
     }
 }

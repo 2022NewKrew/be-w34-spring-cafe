@@ -71,13 +71,13 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public User login(String userId, String password) {
+    public Optional<User> login(String userId, String password) {
         String sql = "SELECT * FROM users WHERE user_id = :user_id AND password = :password";
         Map<String, ?> params = Map.of("user_id", userId, "password", password);
         try {
-            return jdbcTemplate.queryForObject(sql, params, rowMapper);
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, params, rowMapper));
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            return Optional.empty();
         }
     }
 }
