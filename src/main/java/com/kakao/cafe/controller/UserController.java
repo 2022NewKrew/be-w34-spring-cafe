@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,9 @@ public class UserController {
     }
 
     @GetMapping("/users/form/{userId}")
-    public String updateFrom(@PathVariable String userId, Model model) {
+    public String updateFrom(@PathVariable String userId, Model model, HttpSession httpSession) {
+        String currentUser = (String) httpSession.getAttribute("sessionId");
+        userService.canUpdate(userId, currentUser);
         User user = userService.findById(userId);
         model.addAttribute("user", UserMapper.toDto(user));
         return "user/updateForm";
@@ -54,8 +57,16 @@ public class UserController {
         return "user/userProfile";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
+
     @PostMapping("users/{userId}")
-    public String updateUser(@ModelAttribute UserDto userDto, String oldPassword) {
+    public String updateUser(@ModelAttribute UserDto userDto, String oldPassword, HttpSession httpSession) {
+        userService.canUpdate((String) httpSession.getAttribute("sessionId"), userDto.getUserId());
         User newInfo = UserMapper.toUser(userDto);
         userService.update(newInfo, oldPassword.trim());
         return "redirect:/users";
@@ -78,5 +89,15 @@ public class UserController {
         return "redirect:/posts";
     }
 
+    @GetMapping("/users/login")
+    public String loginPage() {
+        return "user/login";
+    }
+
+    @PostMapping("/users/login")
+    public String login(String id, String password, HttpSession session) {
+        session.setAttribute("sessionId", userService.login(id, password));
+        return "redirect:/";
+    }
 
 }

@@ -50,12 +50,8 @@ public class User {
         return this.id.is(userId) && this.password.is(password);
     }
 
-    public boolean canModify(String password) {
-        return this.password.is(password);
-    }
-
-    public boolean passwordIs(String password) {
-        return this.password.is(password);
+    public boolean isPassword(String password) {
+        return !this.password.is(password);
     }
 
     @Override
