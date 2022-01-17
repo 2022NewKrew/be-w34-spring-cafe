@@ -1,5 +1,8 @@
 package com.kakao.cafe.repository;
 
+import com.kakao.cafe.config.JdbcConfig;
+import com.kakao.cafe.config.SecurityConfig;
+import com.kakao.cafe.dto.UserRegistrationDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.util.UserMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -16,28 +19,23 @@ class JdbcUserRepositoryTest {
     private final String password = "testPassword";
     private final String email = "testEmail";
 
+    @Test
+    @DisplayName("[성공] JdbcUserRepository 클래스 생성")
+    void JdbcUserRepository() {
+        new JdbcUserRepository(new JdbcTemplate(), new UserMapper(), new SecurityConfig().passwordEncoder());
+    }
 
 
-//    @Test
-//    @DisplayName("[성공] JdbcUserRepository 클래스 생성")
-//    void JdbcUserRepository() {
-//        new JdbcUserRepository(jdbcTemplate, userMapper, passwordEncoder);
-//    }
-//
-//
-//    @Test
-//    @DisplayName("[성공] JdbcUserRepository Create")
-//    void createUser() {
+    @Test
+    @DisplayName("[성공] JdbcUserRepository 유저 생성")
+    void createUser() {
         // given
-//        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate, userMapper, passwordEncoder);
-//        User user = new User(userId, password, email);
+        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(new JdbcTemplate(new JdbcConfig().dataSource()), new UserMapper(), new SecurityConfig().passwordEncoder());
+        User user = new User(userId, password, email);
 
-        // when
-//        jdbcUserRepository.createUser(user);
-
-        // then
-
-//    }
+        // when & then
+        jdbcUserRepository.createUser(user);
+    }
 
     @Test
     void readUsers() {
