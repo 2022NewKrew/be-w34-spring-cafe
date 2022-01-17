@@ -1,15 +1,23 @@
 package com.kakao.cafe.adapter.out.infra.persistence.article;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
+import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
+import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 public class JdbcArticleRepository implements ArticleRepository {
+
+    private final static String SELECT_ALL = "select * from article";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -32,33 +40,32 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<ArticleVO> getAllArticleList() {
-        String sql = "select * from article";
-        return jdbcTemplate.query(
-            sql,
-            (rs, count) -> new ArticleVO(
-                rs.getInt("id"),
-                rs.getString("writer"),
-                rs.getString("title"),
-                rs.getString("contents"),
-                rs.getString("createdAt")
-            )
-        );
+    public List<Article> getAllArticleList() {
+        return jdbcTemplate.query(SELECT_ALL, (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum));
     }
 
     @Override
-    public Optional<ArticleVO> findById(int id) {
-        String sql = "select * from article where id = ?";
-        ArticleVO articleVO = jdbcTemplate.queryForObject(
-            sql,
-            (rs, count) -> new ArticleVO(
-                rs.getInt("id"),
-                rs.getString("writer"),
-                rs.getString("title"),
-                rs.getString("contents"),
-                rs.getString("createdAt")
-            ), id
-        );
-        return Optional.ofNullable(articleVO);
+    public Optional<Article> findById(int id) {
+        String sql = SELECT_ALL + " where id = ?";
+        Article article = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum), id);
+        return Optional.ofNullable(article);
+    }
+
+    private static final class ArticleMapper implements RowMapper<Article> {
+
+        @Override
+        public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
+            try {
+                Article article = new Article.Builder().writer(rs.getString("writer"))
+                                                       .title(rs.getString("title"))
+                                                       .contents(rs.getString("contents"))
+                                                       .createdAt(rs.getString("createdAt"))
+                                                       .build();
+                article.setId(rs.getInt("id"));
+                return article;
+            } catch (IllegalWriterException | IllegalTitleException | IllegalDateException e) {
+                throw new SQLException("DB에서 값을 읽어오지 못했습니다.");
+            }
+        }
     }
 }

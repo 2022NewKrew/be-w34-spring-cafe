@@ -86,7 +86,7 @@ class ArticleStorageAdapterTest {
                                                         "yyyy-MM-dd HH:mm")))
                                                     .build();
         givenArticle.setId(givenId);
-        given(articleRepository.findById(givenId)).willReturn(Optional.of(ArticleVO.from(givenArticle)));
+        given(articleRepository.findById(givenId)).willReturn(Optional.of(givenArticle));
 
         // when
         Article article = articleStorageAdapter.findArticleById(givenId);

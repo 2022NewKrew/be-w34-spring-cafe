@@ -33,8 +33,7 @@ public class ArticleStorageAdapter implements RegisterArticlePort, GetArticleInf
                                    .title(writeRequest.getTitle())
                                    .contents(writeRequest.getContents())
                                    .createdAt(
-                                       LocalDateTime.now()
-                                                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                                       LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
                                    )
                                    .build());
     }
@@ -50,14 +49,13 @@ public class ArticleStorageAdapter implements RegisterArticlePort, GetArticleInf
     }
 
     @Override
-    public Article findArticleById(int id)
-        throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException {
-        ArticleVO articleVO = articleRepository.findById(id).orElse(null);
+    public Article findArticleById(int id) throws ArticleNotExistException {
+        Article article = articleRepository.findById(id).orElse(null);
 
-        if (articleVO == null) {
+        if (article == null) {
             throw new ArticleNotExistException("존재하지 않는 게시글입니다.");
         }
 
-        return articleVO.toEntity();
+        return article;
     }
 }

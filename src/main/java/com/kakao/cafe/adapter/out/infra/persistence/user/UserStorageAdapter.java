@@ -35,7 +35,8 @@ public class UserStorageAdapter implements RegisterUserPort, GetUserInfoPort, Up
         userInfoRepository.save(new User.Builder().userId(signUpRequest.getUserId())
                                                   .password(signUpRequest.getPassword())
                                                   .name(signUpRequest.getName())
-                                                  .email(signUpRequest.getEmail()).build());
+                                                  .email(signUpRequest.getEmail())
+                                                  .build());
     }
 
     @Override
@@ -50,13 +51,13 @@ public class UserStorageAdapter implements RegisterUserPort, GetUserInfoPort, Up
 
     @Override
     public UserInfo findUserByUserId(String userId) throws UserNotExistException {
-        UserVO userVO = userInfoRepository.findByUserId(userId).orElse(null);
+        User user = userInfoRepository.findByUserId(userId).orElse(null);
 
-        if (userVO == null) {
+        if (user == null) {
             throw new UserNotExistException("존재하지 않는 회원입니다.");
         }
 
-        return UserInfo.from(userVO);
+        return UserInfo.from(user);
     }
 
     private void checkUserIdDuplication(String userId) throws UserIdDuplicationException {
@@ -68,14 +69,14 @@ public class UserStorageAdapter implements RegisterUserPort, GetUserInfoPort, Up
     @Override
     public void updateUser(String userId, UpdateRequest updateRequest)
         throws UserNotExistException, IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
-        UserVO userVO = userInfoRepository.findByUserId(userId).orElse(null);
+        User user = userInfoRepository.findByUserId(userId).orElse(null);
 
-        if (userVO == null) {
+        if (user == null) {
             throw new UserNotExistException("존재하지 않는 회원입니다.");
         }
 
         userInfoRepository.update(new User.Builder().userId(userId)
-                                                    .password(userVO.getPassword())
+                                                    .password(user.getPassword())
                                                     .name(updateRequest.getName())
                                                     .email(updateRequest.getEmail())
                                                     .build());

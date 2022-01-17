@@ -10,7 +10,7 @@ public interface UserInfoRepository {
 
     void update(User user);
 
-    List<UserVO> getAllUserList();
+    List<User> getAllUserList();
 
-    Optional<UserVO> findByUserId(String userId);
+    Optional<User> findByUserId(String userId);
 }
