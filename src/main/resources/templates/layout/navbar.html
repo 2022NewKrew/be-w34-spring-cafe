@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-xl p-3">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="/" class="navbar-brand align-middle w-75">
+                <img src="/images/Kakao_CI_yellow.svg" alt="Kakao CI yellow"/>
+            </a>
+        </div>
+        <div class="nav-menu">
+            {{#sessionedUser}}
+            {{this.name}}님 환영합니다.
+            <a class="nav-menu-item border-0 bg-transparent text-black" aria-current="page" href="/users">
+                멤버리스트
+            </a>
+            <a class="nav-menu-item border bg-dark text-white" aria-current="page" href="/users/profile/{{& this.userId }}">
+                마이페이지
+            </a>
+            <a class="nav-menu-item border bg-dark text-white nav-link active" aria-current="page"
+               href="/users/logout">
+                로그아웃
+            </a>
+            </ul>
+            {{/sessionedUser}}
+            {{^sessionedUser}}
+            <a class="nav-menu-item border-0 bg-transparent text-black" aria-current="page" href="/users">
+                멤버리스트
+            </a>
+            <a class="nav-menu-item border bg-dark text-white" aria-current="page" href="/users/login">
+                로그인
+            </a>
+            <a class="nav-menu-item border bg-dark text-white nav-link active" aria-current="page"
+               href="/users/form">
+                회원가입
+            </a>
+            </ul>
+            {{/sessionedUser}}
+        </div>
+    </div>
+</nav>
