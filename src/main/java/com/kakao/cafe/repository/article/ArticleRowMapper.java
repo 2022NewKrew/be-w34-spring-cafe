@@ -1,6 +1,8 @@
 package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.Content;
+import com.kakao.cafe.domain.article.Title;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -11,8 +13,8 @@ public class ArticleRowMapper implements RowMapper<Article> {
     public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
         Article article = new Article();
         article.setId(rs.getInt("ID"));
-        article.setTitle(rs.getString("TITLE"));
-        article.setContent(rs.getString("CONTENT"));
+        article.setTitle(new Title(rs.getString("TITLE")));
+        article.setContent(new Content(rs.getString("CONTENT")));
         article.setCreatedAt(rs.getTimestamp("CREATEDAT"));
         article.setModifiedAt(rs.getTimestamp("MODIFIEDAT"));
 

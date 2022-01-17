@@ -1,6 +1,8 @@
 package com.kakao.cafe.web.article.dto;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.Content;
+import com.kakao.cafe.domain.article.Title;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,8 +13,8 @@ class ArticleCreateRequestTest {
     @Test
     public void testArticleCreateRequestDto() {
         //given
-        final String title = "title";
-        final String content = "content";
+        final Title title = new Title("title");
+        final Content content = new Content("content");
         final ArticleCreateRequest dto = new ArticleCreateRequest(title, content);
 
         //when

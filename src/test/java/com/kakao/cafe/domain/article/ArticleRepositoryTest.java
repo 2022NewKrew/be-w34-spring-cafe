@@ -29,7 +29,7 @@ public class ArticleRepositoryTest {
     @DisplayName("저장소 게시글 저장 테스트")
     @MethodSource("provideArticle")
     @ParameterizedTest
-    public void testArticleSave(String title, String content) {
+    public void testArticleSave(Title title, Content content) {
         //given
         final ArticleCreateRequest dto = new ArticleCreateRequest(title, content);
         Article article = dto.toEntity();
@@ -46,7 +46,7 @@ public class ArticleRepositoryTest {
 
     private static Stream<Arguments> provideArticle() {
         return Stream.of(
-                Arguments.of("title", "content")
+                Arguments.of(new Title("title"), new Content("content"))
         );
     }
 }

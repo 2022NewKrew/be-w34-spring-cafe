@@ -1,6 +1,8 @@
 package com.kakao.cafe.service.article;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.Content;
+import com.kakao.cafe.domain.article.Title;
 import com.kakao.cafe.repository.article.ArticleRepository;
 import com.kakao.cafe.web.article.dto.ArticleCreateRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +30,7 @@ class ArticleFindServiceTest {
     @DisplayName("article id 검색 테스트")
     @MethodSource("provideArticle")
     @ParameterizedTest
-    public void findArticleId(String title, String content) {
+    public void findArticleId(Title title, Content content) {
         //given
         final ArticleCreateRequest dto = new ArticleCreateRequest(title, content);
         final Article givenArticle = dto.toEntity();
@@ -45,7 +47,7 @@ class ArticleFindServiceTest {
 
     private static Stream<Arguments> provideArticle() {
         return Stream.of(
-                Arguments.of("title", "content")
+                Arguments.of(new Title("title"), new Content("content"))
         );
     }
 }

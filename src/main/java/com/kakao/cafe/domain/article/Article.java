@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 
 public class Article {
     private int id;
-    private String title;
-    private String content;
+    private Title title;
+    private Content content;
     private Timestamp createdAt;
     private Timestamp modifiedAt;
 
@@ -13,11 +13,11 @@ public class Article {
         return id;
     }
 
-    public String getTitle() {
+    public Title getTitle() {
         return title;
     }
 
-    public String getContent() {
+    public Content getContent() {
         return content;
     }
 
@@ -33,11 +33,11 @@ public class Article {
         this.id = id;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(Title title) {
         this.title = title;
     }
 
-    public void setContent(String content) {
+    public void setContent(Content content) {
         this.content = content;
     }
 

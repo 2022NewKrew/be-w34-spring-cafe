@@ -1,12 +1,14 @@
 package com.kakao.cafe.web.article.dto;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.Content;
+import com.kakao.cafe.domain.article.Title;
 
 public class ArticleCreateRequest {
-    private final String title;
-    private final String content;
+    private final Title title;
+    private final Content content;
 
-    public ArticleCreateRequest(String title, String content) {
+    public ArticleCreateRequest(Title title, Content content) {
         this.title = title;
         this.content = content;
     }

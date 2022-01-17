@@ -1,6 +1,8 @@
 package com.kakao.cafe.web.article;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.Content;
+import com.kakao.cafe.domain.article.Title;
 import com.kakao.cafe.service.article.ArticleCreateService;
 import com.kakao.cafe.service.article.ArticleFindService;
 import com.kakao.cafe.web.article.dto.ArticleCreateRequest;
@@ -60,8 +62,8 @@ class ArticleControllerTest {
     }
 
     private static Stream<List<Article>> provideArticles() {
-        ArticleCreateRequest dto1 = new ArticleCreateRequest("title1", "content1");
-        ArticleCreateRequest dto2 = new ArticleCreateRequest("title2", "content2");
+        ArticleCreateRequest dto1 = new ArticleCreateRequest(new Title("title1"), new Content("content1"));
+        ArticleCreateRequest dto2 = new ArticleCreateRequest(new Title("title2"),new Content("content2"));
         Article article1 = dto1.toEntity();
         Article article2 = dto2.toEntity();
 

@@ -23,8 +23,8 @@ public class H2ArticleRepository implements ArticleRepository{
 
     @Override
     public int save(Article article) {
-        String title = article.getTitle();
-        String content = article.getContent();
+        String title = article.getTitle().getValue();
+        String content = article.getContent().getValue();
         Timestamp now = new Timestamp(System.currentTimeMillis());
         return jdbcTemplate.update(
                 "INSERT INTO ARTICLES(TITLE, CONTENT, CREATEDAT, MODIFIEDAT) VALUES (?, ?, ?, ?)", title, content, now, now

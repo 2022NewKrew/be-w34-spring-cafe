@@ -1,12 +1,13 @@
 package com.kakao.cafe.web.article.dto;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.Title;
 
 import java.sql.Timestamp;
 
 public class ArticleListResponse {
     private final int articleId;
-    private final String title;
+    private final Title title;
     private final Timestamp createdAt;
 
     public ArticleListResponse(Article article) {
@@ -19,7 +20,7 @@ public class ArticleListResponse {
         return articleId;
     }
 
-    public String getTitle() {
+    public Title getTitle() {
         return title;
     }
 
