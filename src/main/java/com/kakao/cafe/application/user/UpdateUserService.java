@@ -1,5 +1,6 @@
 package com.kakao.cafe.application.user;
 
+import com.kakao.cafe.application.user.validation.NonExistsUserIdException;
 import com.kakao.cafe.domain.user.FindUserPort;
 import com.kakao.cafe.domain.user.UpdateUserPort;
 import com.kakao.cafe.domain.user.UserVo;
@@ -13,9 +14,9 @@ public class UpdateUserService {
         this.updateUserPort = updateUserPort;
     }
 
-    public void updateInformation(UserVo updateUserVo) throws IllegalArgumentException {
+    public void updateInformation(UserVo updateUserVo) throws NonExistsUserIdException {
         findUserPort.findByUserId(updateUserVo.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자의 정보를 수정할 수 없습니다."));
+                .orElseThrow(() -> new NonExistsUserIdException());
 
         updateUserPort.save(updateUserVo.convertVoToEntity());
     }

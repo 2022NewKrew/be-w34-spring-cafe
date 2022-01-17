@@ -1,5 +1,7 @@
 package com.kakao.cafe.application.user;
 
+import com.kakao.cafe.application.user.validation.NonExistsUserIdException;
+import com.kakao.cafe.application.user.validation.UserErrorCode;
 import com.kakao.cafe.domain.user.FindUserPort;
 import com.kakao.cafe.domain.user.UpdateUserPort;
 import com.kakao.cafe.domain.user.User;
@@ -56,11 +58,11 @@ class UpdateUserServiceTest {
                 .willReturn(Optional.empty());
 
         // when
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> updateUserService.updateInformation(userVo));
+        NonExistsUserIdException exception = assertThrows(NonExistsUserIdException.class, () -> updateUserService.updateInformation(userVo));
 
         //then
         assertThat(exception.getMessage())
-                .isEqualTo("존재하지 않는 사용자의 정보를 수정할 수 없습니다.");
+                .isEqualTo(UserErrorCode.NON_EXISTS_USER_ID.getMessage());
         verify(updateUserPort, never()).save(any(User.class));
     }
 }

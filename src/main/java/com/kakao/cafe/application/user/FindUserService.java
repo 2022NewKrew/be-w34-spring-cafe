@@ -1,5 +1,6 @@
 package com.kakao.cafe.application.user;
 
+import com.kakao.cafe.application.user.validation.NonExistsUserIdException;
 import com.kakao.cafe.domain.user.FindUserPort;
 import com.kakao.cafe.domain.user.User;
 
@@ -13,9 +14,9 @@ public class FindUserService {
         this.findUserPort = findUserPort;
     }
 
-    public User findByUserId(String userId) throws IllegalArgumentException {
+    public User findByUserId(String userId) throws NonExistsUserIdException {
         return findUserPort.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID는 조회할 수 없습니다."));
+                .orElseThrow(() -> new NonExistsUserIdException());
     }
 
     public List<User> findAllUser() {

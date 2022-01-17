@@ -2,13 +2,13 @@ package com.kakao.cafe.interfaces.article;
 
 import com.kakao.cafe.application.article.FindArticleService;
 import com.kakao.cafe.application.article.WriteArticleService;
+import com.kakao.cafe.application.article.validation.NonExistsArticleIdException;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleVo;
 import com.kakao.cafe.interfaces.article.dto.ArticleMapper;
 import com.kakao.cafe.interfaces.article.dto.request.WriteArticleRequestDto;
 import com.kakao.cafe.interfaces.article.dto.response.ArticleListResponseDto;
 import com.kakao.cafe.interfaces.article.dto.response.ArticleResponseDto;
-import com.kakao.cafe.interfaces.article.validation.NonExistsArticleIndexException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,16 +42,16 @@ public class ArticleController {
 
     @GetMapping("/articles/{index}")
     public ModelAndView readArticleByIndex(@PathVariable int index, ModelAndView modelAndView) {
+        Article article;
         try {
-            Article article = findArticleService.findById(index);
-            ArticleResponseDto articleResponseDto = ArticleMapper.convertEntityToResponseDto(article);
-
-            modelAndView.addObject("article", articleResponseDto);
-            modelAndView.setViewName("qna/show");
-        } catch (IllegalArgumentException e) {
-            throw new NonExistsArticleIndexException();
+            article = findArticleService.findById(index);
+        } catch (NonExistsArticleIdException e) {
+            throw new NonExistsArticleIdException();
         }
+        ArticleResponseDto articleResponseDto = ArticleMapper.convertEntityToResponseDto(article);
 
+        modelAndView.addObject("article", articleResponseDto);
+        modelAndView.setViewName("qna/show");
         return modelAndView;
     }
 

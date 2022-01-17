@@ -1,5 +1,7 @@
 package com.kakao.cafe.application.article;
 
+import com.kakao.cafe.application.article.validation.ArticleErrorCode;
+import com.kakao.cafe.application.article.validation.NonExistsArticleIdException;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.FindArticlePort;
 import org.junit.jupiter.api.DisplayName;
@@ -56,11 +58,11 @@ class FindArticleServiceTest {
                 .willReturn(Optional.empty());
 
         // when
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> findArticleService.findById(articleIdThatDoesNotExist));
+        NonExistsArticleIdException exception = assertThrows(NonExistsArticleIdException.class, () -> findArticleService.findById(articleIdThatDoesNotExist));
 
         //then
         assertThat(exception.getMessage())
-                .isEqualTo("잘못 된 index 입니다");
+                .isEqualTo(ArticleErrorCode.NON_EXISTS_ARTICLE_INDEX.getMessage());
         verify(findArticlePort).findById(articleIdThatDoesNotExist);
     }
 

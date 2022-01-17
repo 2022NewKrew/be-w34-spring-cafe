@@ -1,4 +1,4 @@
-package com.kakao.cafe.interfaces.article.validation;
+package com.kakao.cafe.application.article.validation;
 
 public enum ArticleErrorCode {
     NON_EXISTS_ARTICLE_INDEX("존재하지 않는 글 번호입니다.")

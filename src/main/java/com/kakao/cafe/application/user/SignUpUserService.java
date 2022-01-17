@@ -1,5 +1,6 @@
 package com.kakao.cafe.application.user;
 
+import com.kakao.cafe.application.user.validation.DuplicatedUserIdException;
 import com.kakao.cafe.domain.user.FindUserPort;
 import com.kakao.cafe.domain.user.SignUpUserPort;
 import com.kakao.cafe.domain.user.User;
@@ -16,10 +17,10 @@ public class SignUpUserService {
         this.findUserPort = findUserPort;
     }
 
-    public void join(UserVo userVo) throws IllegalArgumentException {
+    public void join(UserVo userVo) throws DuplicatedUserIdException {
         Optional<User> optionalUser = findUserPort.findByUserId(userVo.getUserId());
         if (optionalUser.isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 ID는 가입할 수 없습니다.");
+            throw new DuplicatedUserIdException();
         }
 
         signUpUserPort.save(userVo.convertVoToEntity());

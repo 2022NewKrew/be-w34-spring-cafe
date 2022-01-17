@@ -1,5 +1,7 @@
 package com.kakao.cafe.application.user;
 
+import com.kakao.cafe.application.user.validation.DuplicatedUserIdException;
+import com.kakao.cafe.application.user.validation.UserErrorCode;
 import com.kakao.cafe.domain.user.FindUserPort;
 import com.kakao.cafe.domain.user.SignUpUserPort;
 import com.kakao.cafe.domain.user.User;
@@ -57,11 +59,11 @@ class SignUpUserServiceTest {
                 .willReturn(Optional.of(user));
 
         // when
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> signUpUserService.join(userVo));
+        DuplicatedUserIdException exception = assertThrows(DuplicatedUserIdException.class, () -> signUpUserService.join(userVo));
 
         //then
         assertThat(exception.getMessage())
-                .isEqualTo("이미 존재하는 ID는 가입할 수 없습니다.");
+                .isEqualTo(UserErrorCode.DUPLICATED_USER_ID.getMessage());
         verify(signUpUserPort, never()).save(any(User.class));
     }
 }

@@ -1,5 +1,7 @@
 package com.kakao.cafe.application.user;
 
+import com.kakao.cafe.application.user.validation.NonExistsUserIdException;
+import com.kakao.cafe.application.user.validation.UserErrorCode;
 import com.kakao.cafe.domain.user.FindUserPort;
 import com.kakao.cafe.domain.user.User;
 import org.junit.jupiter.api.DisplayName;
@@ -56,10 +58,10 @@ class FindUserServiceTest {
                 .willReturn(Optional.empty());
 
         // when
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> findUserService.findByUserId(userIdThatDoesNotExist));
+        NonExistsUserIdException exception = assertThrows(NonExistsUserIdException.class, () -> findUserService.findByUserId(userIdThatDoesNotExist));
 
         assertThat(exception.getMessage())
-                .isEqualTo("존재하지 않는 ID는 조회할 수 없습니다.");
+                .isEqualTo(UserErrorCode.NON_EXISTS_USER_ID.getMessage());
         verify(findUserPort).findByUserId(userIdThatDoesNotExist);
     }
 
