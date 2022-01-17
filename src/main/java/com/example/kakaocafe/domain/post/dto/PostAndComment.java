@@ -12,8 +12,12 @@ public class PostAndComment {
     private final String postContents;
     private final String postCreated;
     private final long commentId;
-    private final String commenter;
+    private final String commentWriter;
     private final String commentContents;
     private final String commentCreated;
     private final long viewCount;
+
+    public boolean isNotEmptyComment() {
+        return commentId != 0;
+    }
 }
