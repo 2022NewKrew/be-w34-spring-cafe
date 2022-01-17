@@ -47,6 +47,13 @@ public class JdbcTemplateUserRepository implements UserRepository {
         return jdbcTemplate.query("select * from users", new BeanPropertyRowMapper<>(User.class));
     }
 
+    @Override
+    public void update(User user) {
+        String sql = "update `users` set `user_id` = :userId, `name` = :name, `email` = :email, `password` = :password where `id` = :id";
+        BeanPropertySqlParameterSource paramSource = new BeanPropertySqlParameterSource(user);
+        jdbcTemplate.update(sql, paramSource);
+    }
+
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
             User user = new User();

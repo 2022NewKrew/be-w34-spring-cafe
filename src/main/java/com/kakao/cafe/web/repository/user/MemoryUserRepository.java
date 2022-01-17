@@ -36,6 +36,18 @@ public class MemoryUserRepository implements UserRepository {
         return new ArrayList<>(users);
     }
 
+    @Override
+    public void update(User updateUser) {
+        users.stream()
+                .filter(user -> updateUser.getUserId().equals(user.getUserId()))
+                .findFirst()
+                .ifPresent(user -> {
+                    user.setEmail(updateUser.getEmail());
+                    user.setName(updateUser.getName());
+                    user.setPassword(updateUser.getPassword());
+                });
+    }
+
     public void clearStore() {
         users.clear();
     }
