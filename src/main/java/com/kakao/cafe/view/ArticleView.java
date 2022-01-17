@@ -18,4 +18,7 @@ public class ArticleView {
     public void getArticleIdView(Model model, ArticleDetailDto articleDetailDto) {
         model.addAttribute("article", articleDetailDto);
     }
+
+    public void getQuestionsView(Model model) {
+    }
 }

@@ -45,4 +45,6 @@
       * view에선 추가적인 뷰 로직 구현(sort)
       * index 템플릿 수정
     * 게시글 상세보기 O
-    * 게시글 쓰기
+    * 게시글 쓰기 O
+      * 게시글 템플릿 분리
+      * service에 createArticle

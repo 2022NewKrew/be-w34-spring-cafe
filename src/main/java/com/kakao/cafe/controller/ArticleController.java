@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ArticleDetailDto;
 import com.kakao.cafe.dto.ArticleListDto;
 import com.kakao.cafe.service.ArticleService;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -40,4 +42,18 @@ public class ArticleController {
         articleView.getArticleIdView(model, articleDetailDto);
         return "qna/show";
     }
+
+    @GetMapping("/questions")
+    public String getQuestions(Model model) {
+        articleView.getQuestionsView(model);
+        return "qna/form";
+    }
+
+    @PostMapping("/questions")
+    public String postQuestions(Model model, Article article) {
+        articleService.createArticle(article);
+
+        return "redirect:/index";
+    }
+
 }

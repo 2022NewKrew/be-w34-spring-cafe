@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.dao.ArticleDao;
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ArticleDetailDto;
 import com.kakao.cafe.dto.ArticleListDto;
 import com.kakao.cafe.repository.ArticleRepository;
@@ -19,5 +20,9 @@ public class ArticleService {
     public ArticleDetailDto getArticleDetailDto(Long id) {
         ArticleDao articleDao = articleRepository.select(id);
         return articleTransformation.toArticleDetailDto(articleDao);
+    }
+
+    public void createArticle(Article article) {
+        articleRepository.insert(article);
     }
 }
