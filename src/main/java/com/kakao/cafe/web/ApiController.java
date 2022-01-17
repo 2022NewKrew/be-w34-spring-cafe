@@ -12,6 +12,7 @@ public class ApiController {
 
     @GetMapping("/api/hello")
     public String hello() {
+        logger.info("server test success");
         return "server test page";
     }
 

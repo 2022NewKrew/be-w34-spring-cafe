@@ -28,7 +28,7 @@ public class LoginService {
             return;
         }
         logger.info("{} login success", inputId);
-        session.setAttribute("Id", inputId);
+        session.setAttribute("sessionedUser", inputId);
     }
 
     private boolean isPasswordCorrect(String inputId, String inputPassword) {

@@ -44,7 +44,6 @@ public class UserController {
 
     @GetMapping("")
     public String userList(Model model, HttpSession httpSession) {
-        System.out.println(httpSession.getAttribute("Id"));
         List<ShowUserDto> userList = userService.findAll();
         model.addAttribute("userList", userList);
         return "user/list";
