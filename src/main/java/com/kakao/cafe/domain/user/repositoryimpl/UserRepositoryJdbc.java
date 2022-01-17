@@ -15,16 +15,13 @@ public class UserRepositoryJdbc implements UserRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         if (user.isNew()) {
-            String sql = "INSERT INTO `USER`(STRING_ID, NAME, PASSWORD, EMAIL) VALUES (?, ?, ?, ?)";
-            jdbcTemplate.update(sql,
-                    user.getStringId(), user.getName(), user.getPassword(), user.getEmail());
-            return;
+            insert(user);
+            return user;
         }
-        String sql = "UPDATE `USER` SET STRING_ID=?, NAME=?, PASSWORD=?, EMAIL=? WHERE ID=?";
-        jdbcTemplate.update(sql,
-                user.getStringId(), user.getName(), user.getPassword(), user.getEmail(), user.getId());
+        update(user);
+        return user;
     }
 
     @Override
@@ -75,5 +72,17 @@ public class UserRepositoryJdbc implements UserRepository {
                         .email(rs.getString("EMAIL"))
                         .build()
         );
+    }
+
+    private void insert(User user){
+        String sql = "INSERT INTO `USER`(STRING_ID, NAME, PASSWORD, EMAIL) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                user.getStringId(), user.getName(), user.getPassword(), user.getEmail());
+    }
+
+    private void update(User user){
+        String sql = "UPDATE `USER` SET STRING_ID=?, NAME=?, PASSWORD=?, EMAIL=? WHERE ID=?";
+        jdbcTemplate.update(sql,
+                user.getStringId(), user.getName(), user.getPassword(), user.getEmail(), user.getId());
     }
 }

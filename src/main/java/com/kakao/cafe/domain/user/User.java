@@ -13,11 +13,16 @@ public class User {
     private String name;
     private String email;
 
-    public User update(User user){
-        this.password = user.getPassword();
-        this.name = user.getName();
-        this.email = user.getEmail();
-        return this;
+    public void changePassword(String password){
+        this.password = password;
+    }
+
+    public void changeName(String name){
+        this.name = name;
+    }
+
+    public void changeEmail(String email){
+        this.email = email;
     }
 
     public Boolean isNew(){

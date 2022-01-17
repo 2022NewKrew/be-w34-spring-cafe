@@ -16,17 +16,10 @@ public class QuestionRepositoryList implements QuestionRepository {
     @Override
     public void save(Question question){
         if(question.isNew()){
-            questions.add(Question.builder()
-                    .id(maxIndex)
-                    .title(question.getTitle())
-                    .writer(question.getWriter())
-                    .contents(question.getContents())
-                    .createdAt(LocalDateTime.now())
-                    .build());
-            maxIndex++;
+            insert(question);
             return;
         }
-        findById(question.getId()).update(question);
+        update(question);
     }
 
     @Override
@@ -39,5 +32,22 @@ public class QuestionRepositoryList implements QuestionRepository {
     @Override
     public List<Question> findAll(){
         return questions;
+    }
+
+    private void insert(Question question){
+        questions.add(Question.builder()
+                .id(maxIndex)
+                .title(question.getTitle())
+                .writer(question.getWriter())
+                .contents(question.getContents())
+                .createdAt(LocalDateTime.now())
+                .build());
+        maxIndex++;
+    }
+
+    private void update(Question question){
+        Question questionToUpdate = findById(question.getId());
+        questionToUpdate.changeTitle(question.getTitle());
+        questionToUpdate.changeContents(question.getContents());
     }
 }

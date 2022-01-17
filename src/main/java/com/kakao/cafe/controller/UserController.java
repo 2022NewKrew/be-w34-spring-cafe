@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.user.UserSaveDto;
 import com.kakao.cafe.dto.user.UserUpdateDto;
 import com.kakao.cafe.service.UserService;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Controller
@@ -20,8 +23,12 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public String update(@PathVariable int id, @ModelAttribute() UserUpdateDto userUpdateDto) {
-        userService.update(id, userUpdateDto);
+    public String update(@PathVariable int id, @ModelAttribute() UserUpdateDto userUpdateDto, HttpSession session) {
+        User user = (User)session.getAttribute("sessionedUser");
+        if (user.getId() != id){
+            throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 사용자 정보가 다릅니다.");
+        }
+        session.setAttribute("sessionedUser", userService.update(id, userUpdateDto));
         return "redirect:/users";
     }
 
@@ -41,5 +48,23 @@ public class UserController {
     public String serveUpdateForm(@PathVariable int id, Model model) {
         model.addAttribute("user", userService.findbyId(id));
         return "user/updateForm";
+    }
+
+    @PostMapping("/users/login")
+    public String login(String stringId, String password, HttpSession session) {
+        User user;
+        try {
+            user = userService.login(stringId, password);
+        } catch(IllegalArgumentException e){
+            return "/user/login_failed";
+        }
+        session.setAttribute("sessionedUser", user);
+        return "redirect:/";
+    }
+
+    @GetMapping("/users/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 }
