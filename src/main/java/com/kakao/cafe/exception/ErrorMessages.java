@@ -8,6 +8,7 @@ public class ErrorMessages {
     public static final String DUPLICATED_USERID;
     public static final String NO_SUCH_MEMBER;
     public static final String NO_SUCH_ARTICLE;
+    public static final String WRONG_PASSWORD;
 
     static {
         WRONG_PASSWORD_FORMAT = "올바르지 않은 형식의 비밀번호 입니다.";
@@ -16,5 +17,6 @@ public class ErrorMessages {
         DUPLICATED_USERID = "중복된 userId 입니다.";
         NO_SUCH_MEMBER = "조건에 해당하는 회원이 없습니다.";
         NO_SUCH_ARTICLE = "조건에 해당하는 게시글이 없습니다.";
+        WRONG_PASSWORD = "비밀번호가 일치하지 않습니다.";
     }
 }
