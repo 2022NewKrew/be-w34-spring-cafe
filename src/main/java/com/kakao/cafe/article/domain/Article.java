@@ -1,26 +1,24 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.article.domain;
 
-import com.kakao.cafe.dto.ArticleDto;
 import java.time.Instant;
 
 public class Article {
 
-    private final int id;
+    private final ArticleId id;
     private final String title;
     private final String content;
     private final long createdAt;
 
-    public Article(ArticleDto articleDto) {
-        this.id = articleDto.getId();
-        this.title = articleDto.getTitle();
-        this.content = articleDto.getContent();
+    public Article(ArticleId id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
         this.createdAt = Instant.now().getEpochSecond();
     }
 
-    public Integer getId() {
+    public ArticleId getId() {
         return id;
     }
-
 
     public String getTitle() {
         return title;

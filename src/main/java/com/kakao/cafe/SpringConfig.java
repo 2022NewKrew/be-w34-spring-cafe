@@ -1,7 +1,12 @@
 package com.kakao.cafe;
 
-import com.kakao.cafe.user.adapter.in.FindUserController;
-import com.kakao.cafe.user.adapter.in.SignUpController;
+import com.kakao.cafe.article.adapter.out.MemoryArticleRepository;
+import com.kakao.cafe.article.application.FindArticleService;
+import com.kakao.cafe.article.application.WriteArticleService;
+import com.kakao.cafe.article.application.port.in.FindArticleQuery;
+import com.kakao.cafe.article.application.port.in.WriteArticleUseCase;
+import com.kakao.cafe.article.application.port.out.LoadArticlePort;
+import com.kakao.cafe.article.application.port.out.SaveArticlePort;
 import com.kakao.cafe.user.adapter.out.MemoryUserRepository;
 import com.kakao.cafe.user.application.FindUserService;
 import com.kakao.cafe.user.application.SignUpService;
@@ -12,16 +17,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SpringConfig {
-
-    @Bean
-    public FindUserController findUserController() {
-        return new FindUserController(findUserService());
-    }
-
-    @Bean
-    public SignUpController signUpController() {
-        return new SignUpController(signUpService());
-    }
 
     @Bean
     public FindUserService findUserService() {
@@ -43,5 +38,23 @@ public class SpringConfig {
         return new MemoryUserRepository();
     }
 
+    @Bean
+    public FindArticleQuery findArticleQuery() {
+        return new FindArticleService(loadArticlePort());
+    }
 
+    @Bean
+    public WriteArticleUseCase writeArticleUseCase() {
+        return new WriteArticleService(saveArticlePort());
+    }
+
+    @Bean
+    public LoadArticlePort loadArticlePort() {
+        return new MemoryArticleRepository();
+    }
+
+    @Bean
+    public SaveArticlePort saveArticlePort() {
+        return new MemoryArticleRepository();
+    }
 }

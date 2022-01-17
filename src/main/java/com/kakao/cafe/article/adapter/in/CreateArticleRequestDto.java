@@ -1,19 +1,13 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.article.adapter.in;
 
-public class ArticleDto {
+public class CreateArticleRequestDto {
 
-    private final int id;
     private final String title;
     private final String content;
 
-    public ArticleDto(int id, String title, String content) {
-        this.id = id;
+    public CreateArticleRequestDto(String title, String content) {
         this.title = title;
         this.content = content;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getTitle() {

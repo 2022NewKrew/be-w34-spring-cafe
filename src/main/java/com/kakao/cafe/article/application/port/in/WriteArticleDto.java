@@ -1,11 +1,11 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.article.application.port.in;
 
-public class CreateArticleDto {
+public class WriteArticleDto {
 
     private final String title;
     private final String content;
 
-    public CreateArticleDto(String title, String content) {
+    public WriteArticleDto(String title, String content) {
         this.title = title;
         this.content = content;
     }
