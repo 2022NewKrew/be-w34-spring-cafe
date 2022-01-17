@@ -4,35 +4,43 @@ import com.kakao.cafe.DTO.SignInDTO;
 import com.kakao.cafe.domain.UserDB;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
     private static final UserDB userDB = new UserDB();
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @PostMapping("/create")
-    public String SignUp(@RequestParam SignInDTO userInfo) {
-        logger.info("Attempt to SignUp; ID={}", userInfo.getUID());
+    String ALREADY_EXISTS_ID_MESSAGE = "This ID is already exists";
 
-        if (userDB.SignUp(userInfo.getUID(), userInfo.getPassword(), userInfo.getName(), userInfo.getEmail())) {
-            logger.info("Successful SignUp; ID={}", userInfo.getUID());
+    @PostMapping("/create")
+    public String SignUp(@ModelAttribute SignInDTO userInfo) {
+        logger.debug("Attempt to SignUp; ID={}", userInfo.getUserId());
+
+        if (userDB.SignUp(userInfo.getUserId(), userInfo.getPassword(), userInfo.getName(), userInfo.getEmail())) {
+            logger.debug("Successful SignUp; ID={}", userInfo.getUserId());
             return "redirect:/user/list";
         }
 
-        logger.info("SignUp Failed. already exist ID={}", userInfo.getUID());
-        return "redirect:/user/list";
+        logger.debug("SignUp Failed. already exist ID={}", userInfo.getUserId());
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ALREADY_EXISTS_ID_MESSAGE);
     }
 
-    @GetMapping()
+    @GetMapping("/list")
     public String getUserList(Model model) {
         model.addAttribute("users", userDB.getUserInfoLst());
         return "user/list";
+    }
+
+    @GetMapping("/prof/{userId}")
+    public String getUserProfile(Model model, @PathVariable String userId) {
+        logger.debug("User profile request; ID={}", userId);
+        model.addAttribute("userProfile", userDB.getUserProfile(userId));
+        return "user/profile";
     }
 }
