@@ -34,20 +34,20 @@ public class UserJdbcRepository implements UserRepository {
     }
 
     @Override
-    public void addUser(UserCreateDTO userCreateDTO) {
+    public void addUser(User user) {
 
         jdbcTemplate.update("INSERT INTO users(userid,password,name,email) VALUES (?,?,?,?)",
-                userCreateDTO.getUserId(),
-                userCreateDTO.getPassword(),
-                userCreateDTO.getName(),
-                userCreateDTO.getEmail()
+                user.getUserId(),
+                user.getPassword(),
+                user.getName(),
+                user.getEmail()
         );
 
     }
 
     @Override
-    public void updateUser(UserCreateDTO userCreateDTO) {
-        String sql = String.format("UPDATE users SET name='%s', password='%s', email='%s' WHERE userid='%s'", userCreateDTO.getName(), userCreateDTO.getPassword(), userCreateDTO.getEmail(), userCreateDTO.getUserId());
+    public void updateUser(User updatedUser) {
+        String sql = String.format("UPDATE users SET name='%s', password='%s', email='%s' WHERE userid='%s'", updatedUser.getName(), updatedUser.getPassword(), updatedUser.getEmail(), updatedUser.getUserId());
         jdbcTemplate.update(sql);
     }
 

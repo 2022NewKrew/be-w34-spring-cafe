@@ -14,7 +14,7 @@ public interface UserRepository {
     public User getUserByCondition(String key, String value);
 
     //회원가입처리
-    public void addUser(UserCreateDTO userCreateDTO);
+    public void addUser(User user);
 
-    void updateUser(UserCreateDTO userCreateDTO);
+    void updateUser(User updateduser);
 }

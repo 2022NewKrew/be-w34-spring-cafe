@@ -25,13 +25,13 @@ public class UserMemoryRepository implements UserRepository{
     }
 
     //회원가입처리
-    public void addUser(UserCreateDTO userCreateDTO){
-        User user = new User(userCreateDTO, Long.valueOf(users.size() + 1));
-        users.add(user);
+    public void addUser(User userCreateDTO){
+        //User user = new User(userCreateDTO, Long.valueOf(users.size() + 1));
+        //users.add(user);
     }
 
     @Override
-    public void updateUser(UserCreateDTO userCreateDTO) {
+    public void updateUser(User updatedUser) {
 
     }
 

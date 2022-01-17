@@ -27,7 +27,8 @@ public class UserService {
 
 
     public void userCreate(UserCreateDTO userCreateDTO){
-        userRepository.addUser(userCreateDTO);
+        User user = new User(userCreateDTO);
+        userRepository.addUser(user);
     }
 
     public void userUpdate(UserCreateDTO userCreateDTO){
@@ -42,7 +43,8 @@ public class UserService {
             return;
         }
 
-        userRepository.updateUser(userCreateDTO);
+        User updatedUser = new User(userCreateDTO);
+        userRepository.updateUser(updatedUser);
     }
 
     public Boolean isValidLogin(UserLoginDTO userLoginDTO){
