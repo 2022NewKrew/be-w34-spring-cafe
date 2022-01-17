@@ -8,5 +8,5 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    User findByUserId(String id);
+    User findByUserId(String userId);
 }

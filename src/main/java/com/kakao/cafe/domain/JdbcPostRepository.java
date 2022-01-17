@@ -15,17 +15,20 @@ import org.springframework.stereotype.Repository;
 public class JdbcPostRepository implements PostRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final UserRepository userRepository;
     private Logger logger = LoggerFactory.getLogger(JdbcPostRepository.class);
 
-    public JdbcPostRepository(JdbcTemplate jdbcTemplate) {
+    public JdbcPostRepository(JdbcTemplate jdbcTemplate, UserRepository userRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userRepository = userRepository;
     }
 
     @Override
     public Post save(Post post) {
         logger.info("[Jdbc] post save");
-        String sql = "insert into post(title, content, user_id) values(?, ?, ?)";
-        jdbcTemplate.update(sql, post.getTitle(), post.getContent(), UUID. fromString(post.getUserId()));
+        User user = userRepository.findByUserId(post.getUserId());
+        String sql = "insert into post(title, content, user_uuid) values(?, ?, ?)";
+        jdbcTemplate.update(sql, post.getTitle(), post.getContent(), user.getUuid());
         return post;
     }
 
@@ -33,9 +36,8 @@ public class JdbcPostRepository implements PostRepository {
     public List<Post> findAll() {
         logger.info("[Jdbc] post findAll");
         String sql = "select * from post";
-
         return jdbcTemplate.query(sql, (rs, rowNum) -> new Post(rs.getInt("id"),
-                rs.getString("user_id"),
+                rs.getString("user_uuid"),
                 rs.getString("title"),
                 rs.getString("content"),
                 rs.getDate("created_at")));
@@ -48,7 +50,7 @@ public class JdbcPostRepository implements PostRepository {
 
         try {
             return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Post(rs.getInt("id"),
-                            rs.getString("user_id"),
+                            rs.getString("user_uuid"),
                             rs.getString("title"),
                             rs.getString("content"),
                             rs.getDate("created_at")),

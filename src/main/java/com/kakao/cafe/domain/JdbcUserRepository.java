@@ -41,7 +41,7 @@ public class JdbcUserRepository implements UserRepository {
         logger.info("[Jdbc] user findAll");
         String sql = "select * from users";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(rs.getString("id"),
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(rs.getString("uuid"),
                 rs.getString("user_id"),
                 rs.getString("password"),
                 rs.getString("name"),
@@ -49,17 +49,17 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public User findByUserId(String id) {
+    public User findByUserId(String userId) {
         logger.info("[Jdbc] user findByUserId");
         String sql = "select * from users where user_id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getString("id"),
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getString("uuid"),
                             rs.getString("user_id"),
                             rs.getString("password"),
                             rs.getString("name"),
                             rs.getString("email")),
-                            id);
+                    userId);
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("사용자 ID가 없습니다");
         }

@@ -1,7 +1,6 @@
 package com.kakao.cafe.domain;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class WritePostRequest {
     @NotBlank(message = "아이디가 비어있습니다")
