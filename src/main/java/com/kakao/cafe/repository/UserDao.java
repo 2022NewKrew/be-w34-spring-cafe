@@ -16,6 +16,7 @@ import java.util.NoSuchElementException;
  */
 public class UserDao implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final String COLUMN_ID = "id";
     private final String COLUMN_USERID = "userId";
     private final String COLUMN_EMAIL = "email";
     private final String COLUMN_NAME = "name";
@@ -73,7 +74,6 @@ public class UserDao implements UserRepository {
 
     public List<User> findAll() {
 
-        System.out.println(count());
         return jdbcTemplate.query(
                 "select * from MEMBER",
                 new UserMapper()
@@ -99,6 +99,7 @@ public class UserDao implements UserRepository {
         public User mapRow(ResultSet rs, int count) throws SQLException {
 
             return new User(
+                    rs.getInt(COLUMN_ID),
                     rs.getString(COLUMN_USERID),
                     rs.getString(COLUMN_EMAIL),
                     rs.getString(COLUMN_NAME),

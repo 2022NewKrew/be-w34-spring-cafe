@@ -68,7 +68,7 @@ public class UserController {
 
     // 사용자 리스트에서 수정 버튼을 누르면, 해당 사용자의 회원정보 수정 화면으로 이동
     @GetMapping("/{userId}/form")
-    public String updateForm(@PathVariable String userId, Model model){
+    public String updateForm(@PathVariable String userId, Model model, HttpSession session){
         UserProfileDto user;
 
         try {
@@ -79,23 +79,65 @@ public class UserController {
             return "redirect:/";
         }
 
-        return "/user/updateForm";
+        return "updateForm";
+    }
+
+    // updateForm.html에서 수정
+    @PostMapping("/update")
+    public String update(UserDto userDto, HttpSession session) {
+        UserProfileDto newProfile = new UserProfileDto(userDto.getUserId(), userDto.getEmail(), userDto.getName());
+        Object value = session.getAttribute("sessionedUser");
+
+        if (value == null) {
+            logger.info("/users/update, not logged in.");
+            return "redirect:/users/list";
+        }
+
+        UserProfileDto loggedInUser = (UserProfileDto) value;
+        if (!loggedInUser.getUserId().equals(userDto.getUserId())) {
+            logger.info("/users/update, User(id = {}) failed to update profile. attempts to update another user's profile.", loggedInUser.getUserId());
+            return "redirect:/users/list";
+        }
+
+        try {
+            userService.updateUserProfile(newProfile, userDto.getPassword());
+        } catch (NoSuchElementException e) {
+            logger.error("/users/update, User(id = {}) failed to update Profile. User does not exist.", userDto.getUserId(), e);
+            return "redirect:/";
+        } catch (IllegalArgumentException e) {
+            logger.error("/users/update, User(id = {}) failed to update Profile. Incorrect password.", userDto.getUserId(), e);
+        }
+        logger.info("/users/update, User(id = {}) updated profile.", userDto.getUserId());
+
+        return "redirect:/users/list";
     }
 
     // 회원정보 수정하고, 수정 버튼을 눌렀을 때
     @PostMapping("/{userId}/update")
-    public String update(@PathVariable String userId, UserUpdateDto userUpdateDto) {
+    public String updateLoggedInUser(@PathVariable String userId, UserUpdateDto userUpdateDto, HttpSession session) {
         UserProfileDto newProfile = new UserProfileDto(userId, userUpdateDto.getEmail(), userUpdateDto.getName());
+        Object value = session.getAttribute("sessionedUser");
+
+        if (value == null) {
+            logger.info("/users/update, not logged in.");
+            return "redirect:/users/list";
+        }
+
+        UserProfileDto user = (UserProfileDto) value;
+
+        if (userService.checkSessionUser(userId, session)) { // user.getUserId() : not null
+            logger.info("/users/{userId}/update, User(id = {}) failed to update profile. attempts to update another user's profile.", userId);
+            return "redirect:/users/list";
+        }
 
         try {
             userService.updateUserProfile(newProfile, userUpdateDto.getPassword());
+            logger.info("/users/{userId}/update, User(id = {}) updated profile.", userId);
         } catch (NoSuchElementException e) {
             logger.error("/users/{userId}/update, User(id = {}) failed to update Profile. User does not exist.", userId, e);
-            return "redirect:/";
         } catch (IllegalArgumentException e) {
             logger.error("/users/{userId}/update, User(id = {}) failed to update Profile. Incorrect password.", userId, e);
         }
-        logger.info("/users/{userId}/update, User(id = {}) updated profile.", userId);
 
         return "redirect:/users/list";
     }
@@ -113,6 +155,10 @@ public class UserController {
         }
         logger.info("/users/login, User(id = {}) login.", userId);
 
-        return "/index";
+
+        //session.invalidate();
+        //ResponseEntity.status(HttpStatus.FORBIDDEN).body("로그아웃");
+
+        return "redirect:/";
     }
 }

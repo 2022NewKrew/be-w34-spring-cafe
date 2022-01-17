@@ -5,6 +5,7 @@ import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.repository.UserRepository;
 
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +50,10 @@ public class UserServiceImpl implements UserService {
         if (!(password != null && password.equals(user.getPassword()))) {
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
+        System.out.println(user.getId());
 
         User newUser = new User(
+                user.getId(),
                 user.getUserId(),
                 newProfile.getEmail(),
                 newProfile.getName(),
@@ -67,5 +70,16 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
 
         return new UserProfileDto(user.getUserId(), user.getEmail(), user.getName());
+    }
+
+    public boolean checkSessionUser(String userId, HttpSession session) {
+        Object value = session.getAttribute("sessionedUser");
+
+        if (value == null)
+            return false;
+
+        UserProfileDto user = (UserProfileDto) value;
+
+        return user.getUserId().equals(userId);
     }
 }
