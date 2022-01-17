@@ -15,6 +15,7 @@ public class WebErrorController implements ErrorController {
     @ExceptionHandler({IllegalArgumentException.class})
     public String argsExceptionHandle(Exception e, Model model){
         log.error("argsExceptionHandle - {}", e.getMessage());
+        e.printStackTrace();
         model.addAttribute("errorMessage", e.getMessage());
         return "error";
     }
@@ -22,6 +23,7 @@ public class WebErrorController implements ErrorController {
     @ExceptionHandler({Exception.class})
     public String globalExceptionHandle(Exception e, Model model){
         log.error("globalExceptionHandle - {}", e.getMessage());
+        e.printStackTrace();
         model.addAttribute("errorMessage", "서버 에러");
         return "error";
     }

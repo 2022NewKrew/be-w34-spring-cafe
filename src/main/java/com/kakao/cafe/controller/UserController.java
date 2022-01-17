@@ -23,13 +23,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     public String getUserList(Model model){
         model.addAttribute("users", userService.findAllUser());
         return "user/list";
     }
 
-    @PostMapping("/user")
+    @PostMapping("/users")
     public String createUser(@ModelAttribute @Validated CreateUserDto createUserDto, Errors errors, Model model){
         if(errors.hasErrors()){
             errors.getFieldErrors().forEach(err -> model.addAttribute(err.getField(), err.getDefaultMessage()));
@@ -38,17 +38,17 @@ public class UserController {
 
         userService.join(createUserDto);
         log.info("Create User - {}", createUserDto);
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model){
         ShowUserDto profile = userService.findProfile(userId);
         model.addAttribute("user", profile);
         return "user/profile";
     }
 
-    @GetMapping("/user/{userId}/form")
+    @GetMapping("/users/{userId}/form")
     public String userUpdateForm(@PathVariable String userId, Model model){
         ShowUserDto profile = userService.findProfile(userId);
         model.addAttribute("user", profile);
@@ -56,7 +56,7 @@ public class UserController {
         return "user/editForm";
     }
 
-    @PostMapping("/user/{userId}/update")
+    @PutMapping("/users/{userId}")
     public String userUpdate(@PathVariable String userId, @ModelAttribute @Validated UpdateUserDto updateUserDto, Errors errors, Model model){
         if(errors.hasErrors()){
             errors.getFieldErrors().forEach(err -> model.addAttribute(err.getField(), err.getDefaultMessage()));
@@ -66,6 +66,6 @@ public class UserController {
 
         User editUser = userService.editProfile(userId, updateUserDto);
         log.info("Update User - {}", editUser);
-        return "redirect:/user";
+        return "redirect:/users";
     }
 }

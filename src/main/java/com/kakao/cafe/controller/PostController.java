@@ -33,7 +33,7 @@ public class PostController {
         return "index";
     }
 
-    @PostMapping("/post")
+    @PostMapping("/posts")
     public String addPost(@ModelAttribute @Validated CreatePostDto postDto, Errors errors, Model model){
         if(errors.hasErrors()){
             errors.getFieldErrors()
@@ -47,7 +47,7 @@ public class PostController {
         return "redirect:/";
     }
 
-    @GetMapping("/post/{postId}")
+    @GetMapping("/posts/{postId}")
     public String detailPost(@PathVariable Long postId, Model model){
         model.addAttribute("post", postService.findPost(postId));
         return "post/show";

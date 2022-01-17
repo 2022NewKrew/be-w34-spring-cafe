@@ -69,7 +69,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public boolean checkDuplicateUserId(String userId) {
+    private boolean checkDuplicateUserId(String userId) {
         return userRepository.findById(userId).isPresent();
     }
 }
