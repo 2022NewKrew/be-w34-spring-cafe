@@ -40,8 +40,11 @@ public class UsersController {
     }
 
     @PutMapping("/api/users/{id}/update")
-    public String update(@PathVariable("id") Long id, UsersCreateRequestDto requestDto) {
-        usersService.update(id, requestDto);
+    public String update(@PathVariable("id") Long id, UsersCreateRequestDto requestDto, HttpSession session) {
+        UserResponseDto userInfo = (UserResponseDto) session.getAttribute("sessionedUser");
+        String email = userInfo.getEmail();
+        String password = userInfo.getPassword();
+        if (requestDto.checkUserInfo(email, password)) { usersService.update(id, requestDto); }
         return "redirect:/users";
     }
 

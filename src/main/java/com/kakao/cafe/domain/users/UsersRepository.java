@@ -25,6 +25,8 @@ public class UsersRepository {
                     "created_date VARCHAR(50) " +
                     ")";
             statement.execute(sql);
+
+            save(new UserEntity("test account", "abc@123", "123"));
         } catch (SQLException e) {
             e.printStackTrace();
         }

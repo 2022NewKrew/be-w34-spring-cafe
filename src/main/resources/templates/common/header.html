@@ -30,8 +30,8 @@
                 <li><a class="black-component" href="/signin" role="button">회원가입</a></li>
                 {{/sessionedUser}}
                 {{#sessionedUser}}
-                <li><a class="black-component" href="/login" role="button">로그아웃</a></li>
-                <li><a class="black-component" href="/signin" role="button">개인정보수정</a></li>
+                <li><a class="black-component" href="/logout" role="button">로그아웃</a></li>
+                <li><a class="black-component" href="/users/{{id}}" role="button">개인정보수정</a></li>
                 {{/sessionedUser}}
             </ul>
         </div>
