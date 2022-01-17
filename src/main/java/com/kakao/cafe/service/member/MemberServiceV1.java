@@ -59,4 +59,17 @@ public class MemberServiceV1 implements MemberService {
     public void deleteAllMembers() {
         memberRepository.deleteAllMembers();
     }
+
+    @Override
+    public Member loginMember(String userId, String password) {
+        Long memberId = memberRepository.isUserIdExist(new UserId(userId));
+        if (memberId == null) {
+            throw new IllegalArgumentException(ErrorMessages.LOGIN_FAILED);
+        }
+        Member member = memberRepository.findOne(memberId);
+        if (!member.getPassword().getPassword().equals(password)) {
+            throw new IllegalArgumentException(ErrorMessages.LOGIN_FAILED);
+        }
+        return member;
+    }
 }

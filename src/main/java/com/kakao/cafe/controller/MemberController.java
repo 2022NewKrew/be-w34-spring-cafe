@@ -61,7 +61,33 @@ public class MemberController {
         return "user/user-edit";
     }
 
-    private Member convertToEntity(JoinMemberDTO memberDTO) {
+    @PostMapping("users/edit")
+    @AuthCheckAnnotation
+    public String editMemberInformation(JoinMemberDto memberDto, HttpSession session) {
+        Member changedMember = mapper.map(memberDto);
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        memberService.editMemberInformation(changedMember, loginMember);
+        return "redirect:/users/" + loginMember.getMemberId();
+    }
+
+    @PostMapping("/users/login")
+    public String login(@Valid LoginMemberDto loginMemberDto, HttpSession session, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new NotEnoughFieldException(ErrorMessages.NOT_ENOUGH_FIELD);
+        }
+        Member member = memberService.loginMember(loginMemberDto.getUserId(), loginMemberDto.getPassword());
+        session.setAttribute("loginMember", member);
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    @LoginCheckAnnotation
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
+    private Member convertToEntity(JoinMemberDto memberDTO) {
         return mapper.map(memberDTO);
     }
 

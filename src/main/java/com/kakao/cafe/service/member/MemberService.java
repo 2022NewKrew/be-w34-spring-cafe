@@ -20,4 +20,6 @@ public interface MemberService {
     void deleteMember(Long memberId);
 
     void deleteAllMembers();
+
+    Member loginMember(String userId, String password);
 }
