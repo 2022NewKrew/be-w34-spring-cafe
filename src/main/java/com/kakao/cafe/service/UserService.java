@@ -16,7 +16,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
 
     public long join(UserDTO userDTO) {
         User user = User.fromDTO(userDTO);
@@ -33,6 +32,13 @@ public class UserService {
 
     public Optional<UserDTO> findByKeyDTO(Long key) {
         return userRepository.selectByKey(key).map(User::getDTO);
+    }
+
+    public Optional<User> login(UserDTO userDTO) {
+        Optional<User> user = userRepository.selectById(userDTO.getId());
+        if (user.isEmpty()) return Optional.empty();
+        if (!user.get().getPw().equals(userDTO.getPw())) return Optional.empty();
+        return user;
     }
 
     public void updateByKey(Long key, UserDTO userDTO) {

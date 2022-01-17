@@ -1,16 +1,15 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Controller
@@ -21,14 +20,34 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    public String userList(Model model) {
+    public String userList(@RequestParam(value="error", required = false, defaultValue = "none") String error,
+                           Model model) {
+        if (!error.equals("none")) {
+            model.addAttribute("error", true);
+            model.addAttribute("errorMessage", error);
+        }
         model.addAttribute("users", userService.findAll());
         return "user/list";
     }
 
     @GetMapping("/login")
-    public String userLogin() {
+    public String userLoginForm(@RequestParam(value="error", required = false, defaultValue = "false") Boolean error,
+                                Model model) {
+        model.addAttribute("user", new UserDTO());
+        if (error) {
+            model.addAttribute("error", error);
+        }
         return "user/login";
+    }
+
+    @PostMapping("/login")
+    public String userLogin(UserDTO userDTO, HttpSession session) {
+        Optional<User> result = userService.login(userDTO);
+        if(result.isEmpty()) {
+            return "redirect:/user/login?error=true";
+        }
+        session.setAttribute("sessionedUser", result.get());
+        return "redirect:/";
     }
 
     @GetMapping("/signup")
@@ -43,6 +62,12 @@ public class UserController {
         return "redirect:/user";
     }
 
+    @GetMapping("/signout")
+    public String userSignOut(HttpSession session) {
+        session.removeAttribute("sessionedUser");
+        return "redirect:/";
+    }
+
     @GetMapping("/{key}")
     public String userProfile(@PathVariable Long key, Model model) {
         Optional<UserDTO> userDTO = userService.findByKeyDTO(key);
@@ -55,7 +80,11 @@ public class UserController {
     }
 
     @GetMapping("/{key}/update")
-    public String userUpdateForm(@PathVariable Long key, Model model) {
+    public String userUpdateForm(@PathVariable Long key, Model model, HttpSession session) {
+        Object sessionData = session.getAttribute("sessionedUser");
+        if (sessionData == null || (sessionData != null && ((User)sessionData).getKey() != key)) {
+            return "redirect:/user?error=NO PERMISSION";
+        }
         Optional<UserDTO> userDTO = userService.findByKeyDTO(key);
         if (userDTO.isEmpty()) {
             log.info("user doesn't exist");
