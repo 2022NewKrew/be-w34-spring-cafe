@@ -36,7 +36,7 @@ public class JdbcUserRepository implements UserRepository{
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        List<User> result =  jdbcTemplate.query("SELECT * FROM users WHERE name = ?", userRowMapper(), userId);
+        List<User> result =  jdbcTemplate.query("SELECT * FROM users WHERE userId = ?", userRowMapper(), userId);
         return result.stream().findAny();
     }
 

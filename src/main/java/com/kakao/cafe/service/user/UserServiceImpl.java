@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new NullPointerException("존재하지 않는 사용자입니다."));
 
         //예외처리예정(비밀번호가 다른 경우)
+        validatePassword(userUpdateReqDto.getPassword(), user.getPassword());
 
         userRepository.update(User.builder()
                 .id(user.getId())
@@ -68,6 +69,21 @@ public class UserServiceImpl implements UserService{
                 .name(userUpdateReqDto.getName())
                 .email(userUpdateReqDto.getEmail())
                 .build());
+    }
+
+    @Override
+    public UserResDto login(UserReqDto userReqDto) {
+        User user = userRepository.findByUserId(userReqDto.getUserId())
+                .orElseThrow(() -> new NullPointerException("존재하지 않는 사용자입니다."));
+        validatePassword(userReqDto.getPassword(), user.getPassword());
+
+        return new UserResDto(user);
+    }
+
+    private void validatePassword(String inputPassword, String dataPassword){
+        if(!inputPassword.equals(dataPassword)){
+            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
+        }
     }
 
 }

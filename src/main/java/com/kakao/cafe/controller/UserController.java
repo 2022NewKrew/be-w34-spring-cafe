@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @RequiredArgsConstructor
 @RequestMapping("/users")
 @Controller
@@ -49,6 +51,21 @@ public class UserController {
     public String updateUser(@PathVariable Long id, @ModelAttribute UserUpdateReqDto userUpdateReqDto){
         userUpdateReqDto.setId(id);
         userService.updateUser(userUpdateReqDto);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/login")
+    public String loginForm(){
+        return "user/login";
+    }
+
+    @PostMapping("/login")
+    public String loginUser(String userId, String password, HttpSession session){
+        UserReqDto userReqDto = UserReqDto.builder()
+                .userId(userId)
+                .password(password)
+                .build();
+        session.setAttribute("sessionedUser", userService.login(userReqDto));
         return "redirect:/users";
     }
 
