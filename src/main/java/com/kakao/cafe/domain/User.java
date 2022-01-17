@@ -1,7 +1,7 @@
 package com.kakao.cafe.domain;
 
 import com.kakao.cafe.dto.CreateUserDto;
-import com.kakao.cafe.dto.ShowUserDto;
+import com.kakao.cafe.util.SHA256;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -13,14 +13,6 @@ public class User {
     private final String name;
     private final String email;
 
-    public User(String userId, String password, String name, String email) {
-        id = userCnt.get();
-        userCnt.set((int) (id + 1));
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-    }
 
     public User(long id, String userId, String password, String name, String email) {
         this.id = id;
@@ -34,13 +26,9 @@ public class User {
         id = userCnt.get();
         userCnt.set((int) (id + 1));
         this.userId = createUserDto.getUserId();
-        this.password = createUserDto.getPassword();
+        this.password = SHA256.encrypt(createUserDto.getPassword());
         this.name = createUserDto.getName();
         this.email = createUserDto.getEmail();
-    }
-
-    public ShowUserDto toShowUserDto() {
-        return new ShowUserDto(id, userId, name, email);
     }
 
     public String getUserId() {

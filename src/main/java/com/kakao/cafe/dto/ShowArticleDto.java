@@ -4,22 +4,19 @@ import com.kakao.cafe.domain.Article;
 
 public class ShowArticleDto {
     private final long id;
+    private final String writeTime;
     private final String writer;
     private final String title;
     private final String contents;
-
-    public ShowArticleDto(long id, String writer, String title, String contents) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-    }
+    private final String span;
 
     public ShowArticleDto(Article article) {
         id = article.getId();
+        writeTime = article.writeTimeToStr();
         writer = article.getWriter();
         title = article.getTitle();
         contents = article.getContents();
+        span = article.spanTimeToStr();
     }
 
     public long getId() {
@@ -36,5 +33,9 @@ public class ShowArticleDto {
 
     public String getContents() {
         return contents;
+    }
+
+    public String getWriteTime() {
+        return writeTime;
     }
 }

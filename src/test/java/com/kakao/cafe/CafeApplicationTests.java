@@ -1,6 +1,6 @@
 package com.kakao.cafe;
 
-import com.kakao.cafe.web.HelloApiController;
+import com.kakao.cafe.web.ApiController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,12 +18,12 @@ class CafeApplicationTests {
     Logger logger = LoggerFactory.getLogger(CafeApplicationTests.class);
 
     @Autowired
-    HelloApiController helloApiController;
+    ApiController apiController;
 
     @Test
     @DisplayName("controllerNotNull???")
     void controllerNotNull() {
-        assertThat(helloApiController).isNotNull();
+        assertThat(apiController).isNotNull();
     }
 
     @ParameterizedTest
