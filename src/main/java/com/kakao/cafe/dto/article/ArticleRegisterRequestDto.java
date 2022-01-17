@@ -4,11 +4,11 @@ import javax.validation.constraints.NotBlank;
 
 public class ArticleRegisterRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "필수 입력 항목이 누락되었습니다: 작성자 아이디")
     private final String userName;
-    @NotBlank
+    @NotBlank(message = "필수 입력 항목이 누락되었습니다: 제목")
     private final String title;
-    @NotBlank
+    @NotBlank(message = "필수 입력 항목이 누락되었습니다: 내용")
     private final String content;
 
     public ArticleRegisterRequestDto(String userName, String title, String content) {
