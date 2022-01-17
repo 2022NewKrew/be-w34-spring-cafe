@@ -2,7 +2,6 @@ package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.article.mapper.ArticleRowMapper;
-import com.kakao.cafe.repository.user.mapper.UserRowMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
