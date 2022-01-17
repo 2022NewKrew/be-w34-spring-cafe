@@ -1,11 +1,12 @@
 package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.user.dto.request.UserLoginRequest;
 import com.kakao.cafe.user.dto.request.UserUpdateRequest;
 import com.kakao.cafe.user.exception.DuplicateUserIdException;
 import com.kakao.cafe.user.dto.request.UserCreateRequest;
 import com.kakao.cafe.user.dto.response.UserInfoResponse;
 import com.kakao.cafe.user.entity.User;
-import com.kakao.cafe.user.exception.PasswordNotMatchedException;
+import com.kakao.cafe.user.exception.UserIdPasswordNotMatchedException;
 import com.kakao.cafe.user.exception.UserNotFoundException;
 import com.kakao.cafe.user.mapper.UserMapper;
 import com.kakao.cafe.user.repository.UserRepository;
@@ -66,6 +67,19 @@ public class UserService {
     }
 
     /**
+     * userId가 입력 인자로 들어온 userId와 같고, passsword가 입력 인자로 들어온 password와 같은 User 정보 반환
+     * @param req: 원하는 User의 userId/password
+     * @return UserInfoResponse: 유저 정보 반환
+     */
+    public UserInfoResponse getLoginUserProfile(UserLoginRequest req) {
+        Optional<User> user = this.userRepository.findByUserIdAndPassword(req.getUserId(), req.getPassword());
+
+        return userMapper.userToUserInfoResponse(
+                user.orElseThrow(UserIdPasswordNotMatchedException::new)
+        );
+    }
+
+    /**
      * 입력 인자로 들어온 id에 해당하는 User의 정보를 수정하는 로직
      * @param id: 수정할 사용자의 ID(PK)
      * @param req: 회원 프로필 수정 정보
@@ -75,7 +89,7 @@ public class UserService {
                                        .orElseThrow(UserNotFoundException::new);
 
         if(!user.checkPassword(req.getPasswordCheck())) {
-            throw new PasswordNotMatchedException();
+            throw new UserIdPasswordNotMatchedException();
         }
         
         this.changeUserInfo(user, req);

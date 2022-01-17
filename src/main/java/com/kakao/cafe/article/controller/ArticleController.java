@@ -43,7 +43,7 @@ public class ArticleController {
     @GetMapping("/articles/write")
     @ResponseStatus(HttpStatus.OK)
     public String getArticleCreatePage() {
-        log.info("[GET] /article/write - 게시글 작성 페이지 접속");
+        log.info("[GET] /articles/write - 게시글 작성 페이지 접속");
         return "article/write";
     }
 
@@ -56,7 +56,7 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     @ResponseStatus(HttpStatus.OK)
     public String getArticleDetailPage(Model model, @PathVariable("id") Long id) {
-        log.info("[GET] /article/{} - (id: {}) 게시글 상세 페이지 접속", id, id);
+        log.info("[GET] /articles/{} - (id: {}) 게시글 상세 페이지 접속", id, id);
 
         ArticleDetailResponse articleDetail = this.articleService.getArticleDetail(id);
         model.addAttribute("article", articleDetail);
@@ -70,7 +70,7 @@ public class ArticleController {
      */
     @PostMapping("/articles")
     public String createArticle(@Valid ArticleCreateRequest req) {
-        log.info("[POST] /article - 게시글 작성 요청");
+        log.info("[POST] /articles - 게시글 작성 요청");
 
         this.articleService.createArticle(req);
         log.info("test");
