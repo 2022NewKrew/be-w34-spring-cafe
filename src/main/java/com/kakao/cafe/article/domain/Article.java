@@ -15,6 +15,14 @@ public class Article {
     private final Title title;
     private final Contents contents;
 
+    public Article(Long articleId, UserId writerId, Date writeTime, Title title, Contents contents) {
+        this.articleId = articleId;
+        this.writerId = writerId;
+        this.writeTime = writeTime;
+        this.title = title;
+        this.contents = contents;
+    }
+
     public Article(UserId writerId, Date writeTime, Title title, Contents contents) {
         articleId = 0L;
         this.writerId = writerId;
