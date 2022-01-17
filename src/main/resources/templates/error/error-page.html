@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="kr">
+{{>settings/header}}
+{{>settings/navigation-bar}}
+<body>
+<div class="container" id="main">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default content-main">
+            <form action="/users/edit" method="post" name="question">
+                <div class="form-group">
+                    <label for="error-message"> 에러메시지 </label>
+                    <h2 id="error-message"> {{error}} </h2>
+                </div>
+                <div class="clearfix"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{>settings/footer}}
+</body>
+</html>
