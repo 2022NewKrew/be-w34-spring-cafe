@@ -7,7 +7,7 @@
     </section>
     <section class="p-2 m-4">
         <div class="text-secondary mb-1">
-            전체 글 {{posts.totalCount}}개
+            전체 글 {{articles.totalCount}}개
         </div>
 
         <table class="table table-hover align-middle">
@@ -20,55 +20,55 @@
             </tr>
             </thead>
             <tbody>
-            {{#posts.dtoList}}
-                <tr class='clickable-row' data-href="/posts/{{postId}}">
+            {{#articles.dtoList}}
+                <tr class='clickable-row' data-href="/articles/{{articleId}}">
                     <td class="p-3 col-md-3">{{title}}</td>
                     <td class="p-3 col-md-1 text-center">{{writerUsername}}</td>
                     <td class="p-3 col-md-1 text-center">{{regDate}}</td>
                     <td class="p-3 col-md-1 text-center">{{viewCount}}</td>
                 </tr>
-            {{/posts.dtoList}}
+            {{/articles.dtoList}}
             </tbody>
         </table>
         <div class="container">
             <div class="row">
                 <div class="col">
                     <ul class="pagination">
-                        {{#posts.hasPrev}}
+                        {{#articles.hasPrev}}
                             <li class="page-item">
-                                <a class="page-link border-0 text-dark" href="posts?page={{posts.prev}}"
+                                <a class="page-link border-0 text-dark" href="articles?page={{articles.prev}}"
                                 aria-label="Previous">
                                 <span aria-hidden="true">&lt;</span>
                                 </a>
                             </li>
-                        {{/posts.hasPrev}}
-                        {{^posts.hasPrev}}
+                        {{/articles.hasPrev}}
+                        {{^articles.hasPrev}}
                             <li class="page-item disabled">
                                 <a class="page-link border-0 text-black-50" href="#" aria-label="Previous">
                                     <span aria-hidden="true">&lt;</span>
                                 </a>
                             </li>
-                        {{/posts.hasPrev}}
-                        {{#posts.pageList}}
-                            <li class="page-item"><a class="page-link border-0 text-dark" href="posts?page={{this}}
+                        {{/articles.hasPrev}}
+                        {{#articles.pageList}}
+                            <li class="page-item"><a class="page-link border-0 text-dark" href="articles?page={{this}}
                                 ">{{this}}</a>
                             </li>
-                        {{/posts.pageList}}
-                        {{#posts.hasNext}}
+                        {{/articles.pageList}}
+                        {{#articles.hasNext}}
                             <li class="page-item">
-                                <a class="page-link border-0 text-dark" href="posts?page={{posts.next}}"
+                                <a class="page-link border-0 text-dark" href="articles?page={{articles.next}}"
                                 aria-label="Next">
                                 <span aria-hidden="true">&gt;</span>
                                 </a>
                             </li>
-                        {{/posts.hasNext}}
-                        {{^posts.hasNext}}
+                        {{/articles.hasNext}}
+                        {{^articles.hasNext}}
                             <li class="page-item disabled">
                                 <a class="page-link border-0 text-black-50" href="#" aria-label="Next">
                                     <span aria-hidden="true">&gt;</span>
                                 </a>
                             </li>
-                        {{/posts.hasNext}}
+                        {{/articles.hasNext}}
                     </ul>
                 </div>
                 <div class="col">
@@ -82,7 +82,7 @@
                                 {{#auth.username}}
                                     <a class="text-center nav-menu-item border bg-dark text-white nav-link active"
                                        aria-current="page"
-                                       href="/posts/new">
+                                       href="/articles/new">
                                         글쓰기
                                     </a>
                                 {{/auth.username}}

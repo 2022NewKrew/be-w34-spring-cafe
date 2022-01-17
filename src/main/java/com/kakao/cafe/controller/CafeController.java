@@ -12,6 +12,6 @@ public class CafeController {
 
     @GetMapping("/")
     public String index() {
-        return "redirect:/posts";
+        return "redirect:/articles";
     }
 }

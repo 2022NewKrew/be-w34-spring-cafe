@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Post extends BaseEntity {
-    private Long postId;
+public class Article extends BaseEntity {
+    private Long articleId;
     private String title;
     private String content;
     private Long viewCount;
@@ -25,12 +25,12 @@ public class Post extends BaseEntity {
         return super.getRegDate();
     }
 
-    public Post init(Long postId) {
+    public Article init(Long articleId) {
         super.register();
-        this.postId = postId;
+        this.articleId = articleId;
         this.viewCount = 0L;
         return this;
     }
-    
+
     private User writer;
 }

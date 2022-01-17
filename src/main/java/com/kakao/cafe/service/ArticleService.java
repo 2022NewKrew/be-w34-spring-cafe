@@ -2,20 +2,20 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.PageRequestDto;
 import com.kakao.cafe.dto.PageResultDto;
-import com.kakao.cafe.dto.PostDto;
-import com.kakao.cafe.entity.Post;
+import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.entity.Article;
 import com.kakao.cafe.entity.User;
 
-public interface PostService {
-    Long register(PostDto dto);
+public interface ArticleService {
+    Long register(ArticleDto dto);
 
-    PostDto read(Long postId);
+    ArticleDto read(Long articleId);
 
-    PageResultDto<PostDto, Post> getList(PageRequestDto requestDto);
+    PageResultDto<ArticleDto, Article> getList(PageRequestDto requestDto);
 
-    default Post dtoToEntity(PostDto dto) {
-        return Post.builder()
-                .postId(dto.getPostId())
+    default Article dtoToEntity(ArticleDto dto) {
+        return Article.builder()
+                .articleId(dto.getArticleId())
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .writer(User.builder().email(dto.getWriterEmail()).username(dto.getWriterUsername()).build())
@@ -23,9 +23,9 @@ public interface PostService {
                 .build();
     }
 
-    default PostDto entityToDto(Post entity) {
-        return PostDto.builder()
-                .postId(entity.getPostId())
+    default ArticleDto entityToDto(Article entity) {
+        return ArticleDto.builder()
+                .articleId(entity.getArticleId())
                 .title(entity.getTitle())
                 .content(entity.getContent())
                 .writerEmail(entity.getWriter().getEmail())

@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class PostDto {
-    private Long postId;
+public class ArticleDto {
+    private Long articleId;
     private String title;
     private String content;
     private String writerEmail;

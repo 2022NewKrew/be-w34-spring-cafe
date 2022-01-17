@@ -2,8 +2,8 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.AuthDto;
 import com.kakao.cafe.dto.PageRequestDto;
-import com.kakao.cafe.dto.PostDto;
-import com.kakao.cafe.service.PostService;
+import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,40 +16,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/posts")
+@RequestMapping("/articles")
 @Slf4j
 @RequiredArgsConstructor
-public class PostController {
-    private final PostService postService;
+public class ArticleController {
+    private final ArticleService articleService;
 
     @GetMapping("/new")
-    public String writePostForm(HttpSession session) {
+    public String writeArticleForm(HttpSession session) {
         AuthDto authDto = (AuthDto) session.getAttribute("auth");
         if (authDto == null) {
             return "redirect:/accounts/login";
         }
-        return "board/post_write";
+        return "article/write";
     }
 
-    @GetMapping("/{postId}")
-    public String readPost(@PathVariable Long postId, Model model) {
-        model.addAttribute("post", postService.read(postId));
-        return "board/post";
+    @GetMapping("/{articleId}")
+    public String readArticle(@PathVariable Long articleId, Model model) {
+        model.addAttribute("article", articleService.read(articleId));
+        return "article/read";
     }
 
     @PostMapping
-    public String writePost(PostDto postDto, HttpSession session) {
+    public String writeArticle(ArticleDto articleDto, HttpSession session) {
         AuthDto authDto = (AuthDto) session.getAttribute("auth");
         if (authDto == null) {
             return "redirect:/accounts/login";
         }
-        postService.register(postDto);
+        articleService.register(articleDto);
         return "redirect:/";
     }
 
     @GetMapping
-    public String postList(PageRequestDto pageRequestDto, Model model) {
-        model.addAttribute("posts", postService.getList(pageRequestDto));
-        return "board/list";
+    public String articleFList(PageRequestDto pageRequestDto, Model model) {
+        model.addAttribute("articles", articleService.getList(pageRequestDto));
+        return "article/list";
     }
 }
