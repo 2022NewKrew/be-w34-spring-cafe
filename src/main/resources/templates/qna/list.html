@@ -13,7 +13,11 @@
               <tbody>
               {{#articleList}}
               <tr>
-                  <th scope="row">{{id}}</th> <td>{{writer}}</a></td> <td>{{title}}</td> <td><a href="/articles/{{id}}">{{contents}}</a></td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                  <th scope="row">{{id}}</th>
+                  <td>{{writer}}</a></td>
+                  <td>{{title}}</td>
+                  <td><a href="/articles/{{id}}">{{contents}}</a></td>
+                  <td><a href="/articles/modify/{{id}}" class="btn btn-success" role="button">수정</a></td>
               </tr>
               {{/articleList}}
               </tbody>
