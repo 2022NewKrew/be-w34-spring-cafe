@@ -28,6 +28,13 @@ public class LoginController {
         }
 
         session.setAttribute("sessionedUser", loginUser);
+        session.setMaxInactiveInterval(60);
+        return "redirect:/";
+    }
+
+    @PostMapping("/logout")
+    public String logout() {
+        session.invalidate();
         return "redirect:/";
     }
 }

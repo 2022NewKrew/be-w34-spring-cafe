@@ -22,7 +22,9 @@
                 <li><a href="/user/form" role="button">회원가입</a></li>
             {{/sessionedUser}}
             {{#sessionedUser}}
-                <li><a href="#" role="button">로그아웃</a></li>
+                <li>
+                    <form name="logout" action="/logout" method="post"></form>
+                    <a href="#" role="button" onclick="javascript:document.logout.submit();">로그아웃</a></li>
                 <li><a href="#" role="button">개인정보수정</a></li>
             {{/sessionedUser}}
             </ul>

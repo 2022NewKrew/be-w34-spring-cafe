@@ -56,3 +56,6 @@
 
 - [x] 테스트 코드 작성 시 `@RequiredArgsConstructor` 이용한 DI 사용 지양
 > 참고 : https://pinokio0702.tistory.com/189?category=414017
+- [x] 로그아웃은 GET인가? POST인가?
+> 참고 : https://stackoverflow.com/questions/3521290/logout-get-or-post
+- [] 패스워드 암호화 (DB, 백엔드)
