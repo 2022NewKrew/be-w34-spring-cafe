@@ -56,8 +56,8 @@ public class UserController {
 
     @PostMapping("/signin")
     public String login(String userId, String password, HttpSession session) {
-        UserResDto userResDto = userService.login(userId, password);
-        session.setAttribute("sessionUser", userResDto);
+        userService.login(userId, password);
+        session.setAttribute("sessionUserId", userId);
         return "redirect:/";
     }
 

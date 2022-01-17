@@ -52,15 +52,13 @@ public class UserService {
         userRepository.save(userEntity);
     }
 
-    public UserResDto login(String userId, String password) {
+    public void login(String userId, String password) {
         UserEntity userEntity = userRepository.findByUserId(userId)
                 .orElseThrow();
 
         if (!userEntity.getPassword().equals(password)) {
             throw new InvalidPasswordException("잘못된 패스워드를 입력했습니다.");
         }
-
-        return userMapper.toUserResDto(userEntity);
     }
 
 }
