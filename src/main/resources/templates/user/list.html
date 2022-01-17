@@ -16,12 +16,12 @@
 
             <table class="table table-hover">
                 <thead>
+                {{#users}}
                 <tr>
                     <th>닉네임</th> <th>이메일</th> <th>회원가입일</th><th></th>
                 </tr>
                 </thead>
                 <tbody>
-                {{#users}}
                 <tr>
                     <td><a href="/user/{{userId}}">{{userId}}</a></td> <td>{{email}}</td><td>2021-12-14</td>
                 </tr>

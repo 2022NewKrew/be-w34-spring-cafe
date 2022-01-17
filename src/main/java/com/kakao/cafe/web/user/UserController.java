@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
     private final UserDao userDao;
+
     Logger logger = (Logger) LoggerFactory.getLogger(UserController.class);
 
     private Users users = new Users();

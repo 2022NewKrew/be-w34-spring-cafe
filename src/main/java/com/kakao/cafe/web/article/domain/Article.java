@@ -17,6 +17,7 @@ public class Article {
     }
     public Date getDate() { return this.date; }
 
+
     public void setWriter(String writer) {
         this.writer = writer;
     }
@@ -30,4 +31,5 @@ public class Article {
         this.id = id;
     }
     public void setDate(Date date) { this.date = date; }
+
 }
