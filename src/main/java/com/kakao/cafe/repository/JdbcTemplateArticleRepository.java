@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.mapper.ArticleMapper;
 import lombok.Builder;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -45,27 +46,16 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from ARTICLE_TABLE", articleRowMapper());
+        return jdbcTemplate.query("select * from ARTICLE_TABLE", ArticleMapper.INSTANCE);
     }
 
     @Override
     public Optional<Article> findById(Long id) {
         return jdbcTemplate.
-                query("select * from ARTICLE_TABLE where id = ?", articleRowMapper(), id).
+                query("select * from ARTICLE_TABLE where id = ?", ArticleMapper.INSTANCE, id).
                 stream().findAny();
 
     }
 
-    private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> {
-            Article article = Article.builder().
-                    id(rs.getLong("id")).
-                    writer(rs.getString("writer")).
-                    title(rs.getString("title")).
-                    contents(rs.getString("contents")).
-                    time(rs.getString("time")).
-                    build();
-            return article;
-        };
-    }
+
 }

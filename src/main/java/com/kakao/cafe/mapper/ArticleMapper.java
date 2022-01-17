@@ -11,10 +11,23 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Mapper(componentModel="spring", uses= ArticleService.class)
-public interface ArticleMapper extends RowMapper {
+@Mapper()
+public interface ArticleMapper extends RowMapper<Article> {
+
+    ArticleMapper INSTANCE = Mappers.getMapper( ArticleMapper.class );
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "time", ignore = true)
     Article toEntity(ArticleDto user);
 
+    @Override
+    default Article mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return Article.builder().
+                id(rs.getLong("id")).
+                writer(rs.getString("writer")).
+                title(rs.getString("title")).
+                contents(rs.getString("contents")).
+                time(rs.getString("time")).
+                build();
+    }
 }

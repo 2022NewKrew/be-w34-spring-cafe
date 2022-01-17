@@ -14,17 +14,15 @@ import java.util.List;
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
-    private final ArticleMapper articleMapper;
 
     @Autowired
-    public ArticleService(ArticleRepository articleRepository, ArticleMapper articleMapper) {
+    public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
-        this.articleMapper = articleMapper;
     }
 
 
     public void save(ArticleDto articleDto) {
-        articleRepository.save(articleMapper.toEntity(articleDto));
+        articleRepository.save(ArticleMapper.INSTANCE.toEntity(articleDto));
     }
 
     public Article findArticle(Long id) {

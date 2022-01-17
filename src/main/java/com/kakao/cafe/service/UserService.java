@@ -14,16 +14,14 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
     }
 
     public void save(UserDto userDto) {
-        userRepository.save(userMapper.toEntity(userDto));
+        userRepository.save(UserMapper.INSTANCE.toEntity(userDto));
     }
 
     public User findUser(String userId) {
@@ -40,7 +38,7 @@ public class UserService {
 
     public void updateUserInfo(Long id, UserDto updateUserDto) {
         // updateUser 는 기존 user와 동일한 id를 갖기 때문에 채워주는 과정.
-        User updateUser = userMapper.toEntity(updateUserDto);
+        User updateUser = UserMapper.INSTANCE.toEntity(updateUserDto);
         updateUser.setId(id);
 
         User user = findUser(id);

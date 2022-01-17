@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.mapper.UserMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -40,20 +41,20 @@ public class JdbcTemplateUserRepository implements UserRepository{
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from USER_TABLE", userRowMapper());
+        return jdbcTemplate.query("select * from USER_TABLE", UserMapper.INSTANCE);
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
         return jdbcTemplate.
-                query("select * from USER_TABLE where userId = ?", userRowMapper(), userId).
+                query("select * from USER_TABLE where userId = ?", UserMapper.INSTANCE, userId).
                 stream().findAny();
     }
 
     @Override
     public Optional<User> findById(Long id) {
         return jdbcTemplate.
-                query("select * from USER_TABLE where id = ?", userRowMapper(), id).
+                query("select * from USER_TABLE where id = ?", UserMapper.INSTANCE, id).
                 stream().findAny();
     }
 
@@ -67,17 +68,5 @@ public class JdbcTemplateUserRepository implements UserRepository{
             return ps;
         });
     }
-    private RowMapper<User> userRowMapper() {
-        return (rs, rowNum) -> {
-            User user = User.builder().
-                    id(rs.getLong("id")).
-                    userId(rs.getString("userId")).
-                    password(rs.getString("password")).
-                    name(rs.getString("name")).
-                    email(rs.getString("email")).
-                    time(rs.getString("time")).
-                    build();
-            return user;
-        };
-    }
+
 }
