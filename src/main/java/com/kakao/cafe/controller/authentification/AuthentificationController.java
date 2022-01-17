@@ -4,6 +4,7 @@ import com.kakao.cafe.common.authentification.UserIdentification;
 import com.kakao.cafe.service.authentification.AuthentificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
@@ -21,8 +22,9 @@ public class AuthentificationController {
         return "redirect:/";
     }
 
-    @PostMapping
-    public String logout() {
-        return "/";
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 }
