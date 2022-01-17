@@ -7,12 +7,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class FindUserH2Adaptor implements FindUserPort {
     private static final String TABLE_NAME = "USER";
     private static final List<String> FIELDS = List.of("user_id", "user_password", "user_name", "user_email");

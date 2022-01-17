@@ -3,12 +3,10 @@ package com.kakao.cafe.persistence.user.h2;
 import com.kakao.cafe.domain.user.SignUpUserPort;
 import com.kakao.cafe.domain.user.User;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
-@Repository
 public class SignUpUserH2Adaptor implements SignUpUserPort {
     private static final String TABLE_NAME = "USER";
     private static final List<String> FIELDS = List.of("user_id", "user_password", "user_name", "user_email");
