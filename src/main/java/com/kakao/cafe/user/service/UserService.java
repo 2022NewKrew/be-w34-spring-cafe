@@ -8,6 +8,7 @@ import com.kakao.cafe.user.dto.UserProfileDTO;
 import com.kakao.cafe.user.repository.UserJdbcRepository;
 import com.kakao.cafe.user.repository.UserMemoryRepository;
 import com.kakao.cafe.user.repository.UserRepository;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,8 @@ public class UserService {
         User user = userRepository.getUserByCondition("userid", userLoginDTO.getUserId());
 
         if(user == null){
-            throw new RuntimeException("존재하는 사용자 아이디가 없습니다.");
+            LoggerFactory.getLogger(UserService.class).error("존재하는 사용자 아이디가 없습니다. (" + (userLoginDTO.getUserId()) + ")");
+            return false;
         }
 
         //비밀번호가 일치하지 않는경우
