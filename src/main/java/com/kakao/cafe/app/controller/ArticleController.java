@@ -49,12 +49,12 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public String read(@PathVariable Long id, Model model) {
+    public String read(@PathVariable long id, Model model) {
         Optional<ArticleDto> article = service.getById(id);
         if (article.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "article not found");
         }
-        model.addAttribute("article", article);
+        model.addAttribute("article", article.get());
         return "articles/item";
     }
 }

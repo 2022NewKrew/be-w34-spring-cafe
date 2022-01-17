@@ -2,6 +2,7 @@ package com.kakao.cafe.app.controller;
 
 import com.kakao.cafe.domain.exception.CannotAuthenticateException;
 import com.kakao.cafe.domain.exception.DuplicateUserIdException;
+import com.kakao.cafe.domain.exception.NoSuchUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,6 +21,12 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleCannotAuthenticateException() {
         return "error/cannotAuthenticate";
+    }
+
+    @ExceptionHandler(NoSuchUserException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public String handleNoSuchUserException() {
+        return "error/noSuchUser";
     }
 
     @ExceptionHandler(NumberFormatException.class)
