@@ -42,6 +42,8 @@ public class UserRepository {
     }
 
     public UserDao select(String id) {
+        log.info("enter select");
+        log.info("select" + id + " : " + userMap.get(id).toString());
         return userMap.get(id);
     }
 }
