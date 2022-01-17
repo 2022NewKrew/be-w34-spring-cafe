@@ -45,7 +45,7 @@ public class CsrfGenerateFilter extends OncePerRequestFilter {
         }
 
         final CsrfTokenContext csrfTokenContext = getCsrfTokenContext(httpSession);
-        final byte[] html = generateCsrfToken(responseBody, csrfTokenContext);
+        final byte[] html = generateHtmlIncludeCsrfToken(responseBody, csrfTokenContext);
         response.getOutputStream().write(html);
     }
 
@@ -55,7 +55,7 @@ public class CsrfGenerateFilter extends OncePerRequestFilter {
         return csrfTokenContext;
     }
 
-    private byte[] generateCsrfToken(String responseBody, CsrfTokenContext csrfTokenContext) throws IOException {
+    private byte[] generateHtmlIncludeCsrfToken(String responseBody, CsrfTokenContext csrfTokenContext) throws IOException {
 
         final Document doc = Jsoup.parse(responseBody);
         final Elements forms = doc.getElementsByTag("form");

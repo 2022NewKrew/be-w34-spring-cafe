@@ -49,7 +49,7 @@ public class ControllerExceptionHandler {
     public ModelAndView UnauthorizedExceptionHandle(HasNotPermissionException ex,
                                                     HttpServletRequest request,
                                                     RedirectAttributes redirectAttr) {
-        logger.error("권한 없음", ex);
+        logger.error(ex.getMessage(), ex);
         redirectAttr.addFlashAttribute("errorMsg", ex.getMessage());
 
         final String redirectUrl = request.getHeader(HttpHeaders.REFERER);
@@ -60,7 +60,7 @@ public class ControllerExceptionHandler {
     public ModelAndView postBusinessExceptionHandle(PostBusinessException ex,
                                                     HttpServletRequest request,
                                                     RedirectAttributes redirectAttr) {
-        logger.error("권한 없음", ex);
+        logger.error(ex.getMessage(), ex);
         redirectAttr.addFlashAttribute("errorMsg", ex.getMessage());
 
         final String redirectUrl = request.getHeader(HttpHeaders.REFERER);
@@ -69,7 +69,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)
     public ModelAndView noSuchElementExceptionHandle(NoSuchElementException ex) {
-        logger.error("존재하지 않는 db 조회 에러", ex);
+        logger.error("존재하지 않는 데이터 조회 에러", ex);
         return new ModelAndView(URLPath.SHOW_ERROR_404.getRedirectPath());
     }
 }
