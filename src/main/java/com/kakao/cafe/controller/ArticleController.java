@@ -2,12 +2,9 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.config.Mapper;
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.member.Member;
-import com.kakao.cafe.domain.member.UserId;
 import com.kakao.cafe.dto.ArticleListDto;
 import com.kakao.cafe.dto.InquireArticleDto;
 import com.kakao.cafe.dto.PostArticleDto;
-import com.kakao.cafe.repository.member.MemberRepository;
 import com.kakao.cafe.service.article.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,13 +25,12 @@ import java.util.stream.Collectors;
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final MemberRepository memberRepository;
     private final Mapper mapper;
 
     @PostMapping("/questions")
     public String postArticle(@Valid PostArticleDto articleDto) {
         Article article = convertToArticle(articleDto);
-        articleService.postArticle(article);
+        articleService.postArticle(article, articleDto.getWriter());
         return "redirect:/";
     }
 
@@ -55,8 +51,7 @@ public class ArticleController {
     }
 
     private Article convertToArticle(PostArticleDto articleDto) {
-        Member member = memberRepository.findByUserId(new UserId(articleDto.getWriter()));
-        return mapper.map(articleDto, member);
+        return mapper.map(articleDto);
     }
 
     private InquireArticleDto convertToInquireArticleDto(Article article) {
