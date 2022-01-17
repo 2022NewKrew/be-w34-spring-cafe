@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
-
 @Controller
 public class ArticleController {
 
@@ -18,13 +16,6 @@ public class ArticleController {
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
-    }
-
-    @GetMapping("/")
-    public String getArticleList(Model model) {
-        List<ArticleResponseDto> articles = articleService.retrieveAllArticles();
-        model.addAttribute("articles", articles);
-        return "index";
     }
 
     @GetMapping("/articles/{id}")

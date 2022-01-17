@@ -1,21 +1,25 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.controller.dto.SessionUser;
 import com.kakao.cafe.domain.user.Profile;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
-import org.junit.jupiter.api.AfterEach;
+import com.kakao.cafe.domain.user.dto.UserResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ActiveProfiles("test")
 @Transactional
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -29,10 +33,14 @@ class UserControllerTest {
 
     String userId = "유저ID";
     String password = "비밀번호";
+    MockHttpSession mockHttpSession;
 
     @BeforeEach
     void fixture() {
-        userRepository.save(new User(userId, password, new Profile("이름", "이메일@email.com")));
+        User user = new User(userId, password, new Profile("이름", "이메일@gmail.com"));
+        mockHttpSession = new MockHttpSession();
+        userRepository.save(user);
+        mockHttpSession.setAttribute("sessionUser", new SessionUser(new UserResponseDto(user)));
     }
 
     @DisplayName("모든 유저들 조회 테스트")
@@ -56,7 +64,8 @@ class UserControllerTest {
     @DisplayName("유저 프로필 수정 폼 조회 테스트")
     @Test
     void updateUserFormTest() throws Exception {
-        mockMvc.perform(get("/users/" + userId + "/update"))
+        mockMvc.perform(get("/users/" + userId + "/update")
+                        .session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/updateForm"));
     }
