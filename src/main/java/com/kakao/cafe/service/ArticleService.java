@@ -28,6 +28,7 @@ public class ArticleService {
         Article article = articleRepository.findArticleById(articleId)
                 .orElseThrow(() -> new NoSuchArticleException("해당 게시글을 찾을 수 없습니다."));
         article.increaseViewCount();
+        articleRepository.update(article);
         return article;
     }
 }

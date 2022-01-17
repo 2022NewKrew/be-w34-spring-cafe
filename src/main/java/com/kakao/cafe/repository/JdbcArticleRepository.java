@@ -46,4 +46,14 @@ public class JdbcArticleRepository implements ArticleRepository {
             return Optional.empty();
         }
     }
+
+    @Override
+    public void update(Article article) {
+        jdbcTemplate.update("UPDATE articles SET title = ?, content = ?, view_count = ?"
+                + "WHERE articles_id = ?",
+                article.getTitle().getValue(),
+                article.getContent().getValue(),
+                article.getViewCount().getValue(),
+                article.getArticleId().toString());
+    }
 }
