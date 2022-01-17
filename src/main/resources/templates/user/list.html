@@ -17,13 +17,13 @@
       <table class="table table-hover">
         <thead>
         <tr>
-          <th></th> <th>아이디</th> <th>닉네임</th> <th>이메일</th> <th></th>
+          <th></th> <th>아이디</th> <th>닉네임</th> <th>이메일</th>
         </tr>
         </thead>
         <tbody>
         {{#users}}
         <tr>
-          <th scope="row">{{id}}</th> <td><a href="/users/{{id}}">{{userId}}</a></td> <td>{{name}}</td> <td>{{email}}</td><td><a href="/users/{{id}}/form" class="btn btn-success" role="button">수정</a></td>
+          <th scope="row">{{id}}</th> <td><a href="/users/{{id}}">{{userId}}</a></td> <td>{{name}}</td> <td>{{email}}</td>
         </tr>
         {{/users}}
         </tbody>
