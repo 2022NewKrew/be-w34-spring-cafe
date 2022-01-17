@@ -24,13 +24,6 @@ public class UserController {
     private final UserService userService;
     private final InfraService infraService;
 
-    @PostMapping
-    public String signUp(UserSignUpDto userSignUpDto) {
-        userService.signUp(userSignUpDto);
-        logger.info("Create User : {}", userSignUpDto.getName());
-        return "redirect:/users";
-    }
-
     @GetMapping
     public String userList(Model model) {
         List<UserDto> userList = userService.userList();
@@ -45,22 +38,6 @@ public class UserController {
         model.addAttribute("user", user);
         logger.info("Get User Profile : {}", id);
         return "user/profile";
-    }
-
-    @PostMapping("/sign-in")
-    public String signIn(UserSignInDto userSignInDto, HttpSession session) {
-        UserDto userDto = userService.signIn(userSignInDto);
-        session.setAttribute("sessionUser", userDto);
-        logger.info("Sign in User : {}", userDto.getName());
-        return "redirect:/";
-    }
-
-    @GetMapping("/sign-out")
-    public String signOut(HttpSession session) throws HttpSessionRequiredException {
-        UserDto userDto = infraService.retrieveUserSession(session);
-        session.invalidate();
-        logger.info("Sign out User : {}", userDto.getName());
-        return "redirect:/";
     }
 
     @GetMapping("/{id}/form")
