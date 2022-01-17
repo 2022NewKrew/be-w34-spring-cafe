@@ -1,10 +1,12 @@
 package com.kakao.cafe.service.article;
 
+import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.repository.article.ArticleRepository;
 import com.kakao.cafe.dto.article.ArticleAddRequestDto;
 import com.kakao.cafe.dto.article.ArticleResponseDto;
-import com.kakao.cafe.dto.article.ArticlesListResponseDto;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ArticleService {
@@ -14,7 +16,7 @@ public class ArticleService {
         articles.add(artDto);
     }
 
-    public ArticlesListResponseDto findAll() {
+    public List<Article> findAll() {
         return articles.findAll();
     }
 

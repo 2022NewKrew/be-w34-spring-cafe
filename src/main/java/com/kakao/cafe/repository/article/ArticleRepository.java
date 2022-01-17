@@ -3,7 +3,6 @@ package com.kakao.cafe.repository.article;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.dto.article.ArticleAddRequestDto;
 import com.kakao.cafe.dto.article.ArticleResponseDto;
-import com.kakao.cafe.dto.article.ArticlesListResponseDto;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -29,8 +28,8 @@ public class ArticleRepository {
         articles.add(new Article(maxIndex++, formattedToday, formattedNow, artDto));
     }
 
-    public ArticlesListResponseDto findAll() {
-        return new ArticlesListResponseDto(articles);
+    public List<Article> findAll() {
+        return articles;
     }
 
     public ArticleResponseDto findByIndex(int index) {
