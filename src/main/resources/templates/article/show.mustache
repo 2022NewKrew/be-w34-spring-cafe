@@ -1,9 +1,43 @@
 {{>layout/head}}
 {{>layout/header}}
 {{#article}}
-  <div>{{title}}</div>
-  <div>{{content}}</div>
-  <div>{{createdAt}}</div>
+  <div class="article-container">
+    <div class="article-box article-header">{{title}}</div>
+    <div class="article-box article-date">{{createdAt}}</div>
+    <div class="article-box article-content">{{content}}</div>
+  </div>
+
 {{/article}}
+
+<style>
+  .article-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .article-box {
+    max-width: 680px;
+    padding: 10px 0;
+    border-bottom: 1px solid lightgrey;
+  }
+
+  .article-header {
+    font-size: 24px;
+    padding: 20px 0;
+    font-weight: bold;
+  }
+
+  .article-content {
+    min-height: 300px;
+    text-align: start;
+    color: #666666;
+  }
+
+  .article-date {
+    text-align: right;
+  }
+</style>
 
 {{>layout/footer}}
