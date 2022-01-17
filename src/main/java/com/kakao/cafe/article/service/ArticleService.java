@@ -21,7 +21,7 @@ public class ArticleService {
 
     public Long posting(ArticleRequestDTO articleRequestDTO) {
         Article article = articleRequestDTO.toArticle(LocalDate.now());
-        return articleRepository.save(article);
+        return articleRepository.save(article).getId();
     }
 
     public ArticleResponseDTO findOne(Long id) {

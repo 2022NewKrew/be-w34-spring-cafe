@@ -12,11 +12,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     private static final List<Article> memoryRepository = new ArrayList<>();
 
     @Override
-    public Long save(Article article) {
+    public Article save(Article article) {
         sequenceNumber++;
         article.setId(sequenceNumber);
         memoryRepository.add(article);
-        return sequenceNumber;
+        return article;
     }
 
     @Override

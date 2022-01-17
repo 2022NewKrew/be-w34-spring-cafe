@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ArticleRepository {
 
-    Long save(Article article);
+    Article save(Article article);
 
     Optional<Article> findOne(Long id);
 
