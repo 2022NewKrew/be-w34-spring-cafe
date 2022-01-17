@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller.auth;
 
-import com.kakao.cafe.domain.UserDto;
+import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import org.springframework.lang.NonNull;
 

@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.ArticleDto;
+import com.kakao.cafe.dto.ArticleDto;
 import org.springframework.lang.NonNull;
 
 import java.util.List;

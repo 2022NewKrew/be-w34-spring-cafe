@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserDto;
+import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.repo.UserRepository;
 import com.kakao.cafe.util.SecurePassword;
 import org.springframework.lang.NonNull;
