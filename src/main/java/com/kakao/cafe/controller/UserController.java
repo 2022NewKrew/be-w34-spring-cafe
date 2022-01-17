@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.user.CreateUserDto;
+import com.kakao.cafe.dto.user.LoginDto;
 import com.kakao.cafe.dto.user.ShowUserDto;
 import com.kakao.cafe.dto.user.UpdateUserDto;
 import com.kakao.cafe.service.UserService;
@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @Slf4j
@@ -64,8 +66,16 @@ public class UserController {
             return "user/editForm";
         }
 
-        User editUser = userService.editProfile(userId, updateUserDto);
+        ShowUserDto editUser = userService.editProfile(userId, updateUserDto);
         log.info("Update User - {}", editUser);
         return "redirect:/users";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute LoginDto loginDto, HttpSession session){
+        ShowUserDto loginUser = userService.login(loginDto);
+        session.setAttribute("sessionUser", loginUser);
+
+        return "redirect:/";
     }
 }

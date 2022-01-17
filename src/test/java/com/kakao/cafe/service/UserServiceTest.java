@@ -87,7 +87,7 @@ class UserServiceTest {
                 .email("test2@test.com")
                 .build();
 
-        User user = userService.editProfile(userDto.getUserId(), updateUserDto);
+        ShowUserDto user = userService.editProfile(userDto.getUserId(), updateUserDto);
         assertThat(user.getName()).isEqualTo(updateUserDto.getName());
         assertThat(user.getEmail()).isEqualTo(updateUserDto.getEmail());
     }

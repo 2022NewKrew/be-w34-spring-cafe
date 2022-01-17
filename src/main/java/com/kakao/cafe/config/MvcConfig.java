@@ -17,9 +17,4 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/user/login").setViewName("user/login");
         registry.addViewController("/post/form").setViewName("post/form");
     }
-
-    @Bean
-    public HiddenHttpMethodFilter hiddenHttpMethodFilter(){
-        return new HiddenHttpMethodFilter();
-    }
 }
