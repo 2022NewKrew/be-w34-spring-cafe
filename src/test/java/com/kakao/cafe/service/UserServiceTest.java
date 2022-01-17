@@ -1,9 +1,11 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.dto.request.UserLoginRequestDto;
 import com.kakao.cafe.controller.dto.request.UserSignUpRequestDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.repository.user.UserRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -75,5 +77,36 @@ class UserServiceTest {
         assertThatThrownBy(() -> userService.findUserByUserId("leaf")).isInstanceOf(UserNotFoundException.class);
     }
 
+    @Test
+    @DisplayName("로그인 테스트")
+    void testOfLogin() {
+        UserLoginRequestDto userLoginRequestDto = UserLoginRequestDto.builder()
+                .userId("leaf")
+                .password("123!@#")
+                .build();
+        BDDMockito.given(userRepository.findByUserId("leaf")).willReturn(Optional.of(User.builder()
+                .userId("leaf")
+                .password("123!@#")
+                .build())
+        );
+        User loginUser = userService.login(userLoginRequestDto);
+        Assertions.assertThat(loginUser.getUserId()).isEqualTo("leaf");
 
+    }
+
+    @Test
+    @DisplayName("로그인 실패 테스트")
+    void testOfLoginFail() {
+        UserLoginRequestDto userLoginRequestDto = UserLoginRequestDto.builder()
+                .userId("leaf")
+                .password("123!@#")
+                .build();
+        BDDMockito.given(userRepository.findByUserId("leaf")).willReturn(Optional.of(User.builder()
+                .userId("leaf")
+                .password("111111!@#")
+                .build())
+        );
+        Assertions.assertThatThrownBy(() -> userService.login(userLoginRequestDto))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
