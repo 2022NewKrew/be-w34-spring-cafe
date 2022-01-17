@@ -33,7 +33,7 @@ public class ArticleController {
             @Valid @ModelAttribute ArticleRequest request,
             HttpSession session
     ) {
-        Long ownerId = (Long) session.getAttribute("id");
+        Long ownerId = (Long) session.getAttribute("currentUserId");
         if (ownerId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
         }

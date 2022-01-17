@@ -58,7 +58,7 @@ class UserControllerTest {
         mvc.perform(request)
                 .andDo(print())
                 .andExpect(status().is3xxRedirection());
-        assertEquals(id, session.getAttribute("id"));
+        assertEquals(id, session.getAttribute("currentUserId"));
     }
 
     @Test
@@ -76,7 +76,7 @@ class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest());
         //noinspection ConstantConditions
-        assertNull(session.getAttribute("id"));
+        assertNull(session.getAttribute("currentUserId"));
     }
 
     @Test

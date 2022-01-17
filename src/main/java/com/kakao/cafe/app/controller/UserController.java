@@ -36,7 +36,7 @@ public class UserController {
     ) {
         UserDto user = userService.create(request.toSignUpDto());
         long id = user.getId();
-        session.setAttribute("id", id);
+        session.setAttribute("currentUserId", id);
         return "redirect:/users";
     }
 
@@ -65,7 +65,7 @@ public class UserController {
     ) {
         UserDto user = userService.login(request.toCredentialsDto());
         long id = user.getId();
-        session.setAttribute("id", id);
+        session.setAttribute("currentUserId", id);
         return "redirect:/users/" + id;
     }
 
@@ -77,7 +77,7 @@ public class UserController {
     }
 
     private long getId(HttpSession session) {
-        Object attr = session.getAttribute("id");
+        Object attr = session.getAttribute("currentUserId");
         if (attr == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "login required");
         }
