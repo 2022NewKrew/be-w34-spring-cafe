@@ -1,13 +1,15 @@
 package com.kakao.cafe.advice;
 
 import com.kakao.cafe.dto.ErrorResponse;
-import com.kakao.cafe.exception.AlreadyExistUserException;
-import com.kakao.cafe.exception.QnaNotFoundException;
-import com.kakao.cafe.exception.UserNotFoundException;
+import com.kakao.cafe.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,5 +30,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleQnaNotFoundException(QnaNotFoundException qnaNotFoundException) {
         ErrorResponse errorResponse = new ErrorResponse(404, qnaNotFoundException.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({LoginUserNotFoundException.class, IncorrectLoginPasswordException.class})
+    public void handleLoginException(Exception exception, HttpServletResponse response) throws IOException {
+        response.sendRedirect("/auth/login/failform");
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException accessDeniedException) {
+        ErrorResponse errorResponse = new ErrorResponse(403, accessDeniedException.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 }
