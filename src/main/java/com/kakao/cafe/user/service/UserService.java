@@ -1,8 +1,10 @@
 package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.exception.UserDuplicatedException;
+import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.repository.UserRepository;
+import com.kakao.cafe.user.web.dto.UserLoginDto;
 import com.kakao.cafe.user.web.dto.UserSaveDto;
 import com.kakao.cafe.user.web.dto.UserShowDto;
 import java.util.List;
@@ -47,4 +49,9 @@ public class UserService {
             .map(this::createUserShowDto);
     }
 
+    public User login(UserLoginDto userLoginDto) throws UserNotFoundException {
+        return userRepository.findByUserId(userLoginDto.getUserId())
+            .filter(user -> user.getPassword().equals(userLoginDto.getPassword()))
+            .orElseThrow(UserNotFoundException::new);
+    }
 }
