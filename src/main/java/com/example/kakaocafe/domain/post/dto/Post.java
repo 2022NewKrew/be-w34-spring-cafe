@@ -4,6 +4,7 @@ package com.example.kakaocafe.domain.post.dto;
 import com.example.kakaocafe.domain.post.comment.dto.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 import java.util.List;
 
 @Getter

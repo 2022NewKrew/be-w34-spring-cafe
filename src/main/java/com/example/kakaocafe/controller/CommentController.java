@@ -1,27 +1,40 @@
 package com.example.kakaocafe.controller;
 
+import com.example.kakaocafe.core.meta.URLPath;
 import com.example.kakaocafe.domain.post.comment.CommentDAO;
+import com.example.kakaocafe.domain.post.comment.CommentService;
 import com.example.kakaocafe.domain.post.comment.dto.WriteCommentForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.print.DocFlavor;
+
 @Controller
-@RequestMapping(path = "/post/{postId}/comment")
+@RequestMapping(path = "/posts/{postId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
 
-    private final CommentDAO commentDAO;
+    private final CommentService commentService;
 
     @PostMapping
-    public ModelAndView create(@RequestHeader("Referer") String redirectURL,
-                               WriteCommentForm writeCommentForm) {
+    public ModelAndView create(WriteCommentForm writeCommentForm) {
 
-        commentDAO.create(writeCommentForm);
+        commentService.create(writeCommentForm);
 
-        return new ModelAndView("redirect:" + redirectURL);
+        final long postId = writeCommentForm.getPostId();
+
+        return new ModelAndView(URLPath.SHOW_POST.getRedirectPath() + postId);
+    }
+
+    @DeleteMapping(path = "/{commentId}")
+    public ModelAndView delete(@PathVariable("postId") long postId,
+                               @PathVariable("commentId") long commentId,
+                               @SessionAttribute("userKey") long writerId) {
+
+        commentService.delete(postId, commentId, writerId);
+
+        return new ModelAndView(URLPath.SHOW_POST.getRedirectPath() + postId);
     }
 }

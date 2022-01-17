@@ -1,5 +1,7 @@
 package com.example.kakaocafe.security.domain;
 
+import com.example.kakaocafe.security.exception.CsrfException;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -11,7 +13,7 @@ public class CsrfTokenContext {
         final UUID sessionToken = csrfTokenContext.get(requestURL);
 
         if (!requestToken.equals(sessionToken)) {
-            throw new RuntimeException();
+            throw new CsrfException();
         }
 
         csrfTokenContext.clear();

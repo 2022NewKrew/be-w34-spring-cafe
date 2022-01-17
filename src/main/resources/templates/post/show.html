@@ -19,10 +19,15 @@
                         <div class="article-header">
                             <div class="article-header-text">
                                 <p class="article-content">{{post.writer}}</p>
-                                <p class="article-content">
-                                    작성일자 : {{post.created}}
-                                </p>
+                                <p class="article-content">작성일자 : {{post.created}}</p>
                                 <p class="article-content">조회 {{post.viewCount}}</p>
+                            </div>
+                            <div class="article-header-btn">
+                                <a class="article-content" href="/posts/{{post.id}}/updateForm">수정</a>
+                                <form action="/posts/{{post.id}}" method="POST">
+                                    <input type="hidden" name="_method" value="DELETE"/>
+                                    <input id="inputBtn" class="article-content" type="submit" value="삭제"/>
+                                </form>
                             </div>
                         </div>
                         <div class="article-doc">
@@ -38,7 +43,7 @@
                                 {{#post.comments}}
                                 {{>post/data/comment_row}}
                                 {{/post.comments}}
-                                <form class="submit-write" method="post" action="/post/{{post.id}}/comment">
+                                <form class="submit-write" method="post" action="/posts/{{post.id}}/comments">
                                     <div class="comment-writer-container">
                                         <div class="comment-writer"> {{userName}}</div>
                                     </div>
@@ -57,4 +62,9 @@
     </div>
 </div>
 </body>
+{{#errorMsg}}
+<script type="text/javascript">
+    alert("{{errorMsg}}");
+</script>
+{{/errorMsg}}
 </html>

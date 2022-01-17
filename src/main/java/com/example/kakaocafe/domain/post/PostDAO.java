@@ -2,17 +2,19 @@ package com.example.kakaocafe.domain.post;
 
 
 import com.example.kakaocafe.domain.post.comment.dto.Comment;
-import com.example.kakaocafe.domain.post.dto.Post;
-import com.example.kakaocafe.domain.post.dto.PostAndComment;
-import com.example.kakaocafe.domain.post.dto.WritePostForm;
-import com.example.kakaocafe.domain.post.dto.PostOfTableRow;
+import com.example.kakaocafe.domain.post.dto.*;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import java.util.stream.Collectors;
@@ -22,21 +24,45 @@ import java.util.stream.Collectors;
 public class PostDAO {
     private final JdbcTemplate jdbcTemplate;
 
-    public void create(WritePostForm writePostForm) {
+    public boolean isNotWriter(long postId, long writerId) {
+        final String sql = "SELECT EXISTS(SELECT p.id FROM POST as p WHERE p.id=? and p.USER_ID=?)";
 
+        final Boolean isExist = jdbcTemplate.queryForObject(sql, Boolean.class, postId, writerId);
+        Objects.requireNonNull(isExist);
+
+        return !isExist;
+    }
+
+    public long create(WritePostForm writePostForm) {
         final String sql = "INSERT INTO POST (USER_ID, TITLE, CONTENTS) VALUES(?,?,?)";
 
-        final Object[] params = {
-                writePostForm.getWriterId(),
-                writePostForm.getTitle(),
-                writePostForm.getContents()
+        final KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            final PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
+
+            ps.setObject(1, writePostForm.getWriterId());
+            ps.setObject(2, writePostForm.getTitle());
+            ps.setObject(3, writePostForm.getContents());
+
+            return ps;
+        }, keyHolder);
+
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    }
+
+    public void update(UpdatePostForm updatePostForm) {
+        final String sql = "UPDATE POST SET TITLE=?, CONTENTS=? WHERE POST.id=?";
+
+        final Object[] params = new Object[]{
+                updatePostForm.getTitle(),
+                updatePostForm.getContents(),
+                updatePostForm.getPostId()
         };
 
         jdbcTemplate.update(sql, params);
     }
 
     public List<PostOfTableRow> getAllPostOfTableRow() {
-
         final String sql = "SELECT p.id, " +
                 "p.title, " +
                 "p.contents, " +
@@ -44,14 +70,15 @@ public class PostDAO {
                 "FORMATDATETIME(p.created, 'yyyy-MM-dd') as `created`, " +
                 "u.name as writer " +
                 "FROM POST as p " +
-                "JOIN USER as u on p.user_id=u.id";
+                "JOIN USER as u on p.user_id=u.id " +
+                "WHERE p.ISDELETED=false";
 
         return jdbcTemplate.query(sql, postOfTableRowMapper());
     }
 
 
     public void plusViewCount(long id) {
-        final String sql = "UPDATE POST SET `view_count` = `view_count`+1 WHERE `id`=?";
+        final String sql = "UPDATE POST SET VIEW_COUNT = VIEW_COUNT+1 WHERE ID=?";
         jdbcTemplate.update(sql, id);
     }
 
@@ -70,7 +97,9 @@ public class PostDAO {
                 "         INNER JOIN USER as u on u.id = p.user_id  " +
                 "         LEFT OUTER JOIN COMMENT as c on c.post_id = p.id  " +
                 "         LEFT OUTER JOIN USER as cu on c.user_id = cu.id " +
-                "WHERE p.id =?";
+                "WHERE p.id =? " +
+                "AND p.ISDELETED=false " +
+                "AND ifnull(c.ISDELETED, false) = false";
 
         final List<PostAndComment> postAndComments = jdbcTemplate.query(sql, postMapper(), id);
 
@@ -86,6 +115,23 @@ public class PostDAO {
         final Post post = Post.of(postAndComments.get(0), comments);
 
         return Optional.of(post);
+    }
+
+    public Optional<PostInfo> getPostInfo(long id) {
+        final String sql = "SELECT p.id                                    as `p_id`,  " +
+                "       p.title                                 as `p_title`,  " +
+                "       p.contents                              as `p_contents` " +
+                "FROM POST as p  " +
+                "WHERE p.id =? AND p.ISDELETED=false";
+
+        final List<PostInfo> postInfos = jdbcTemplate.query(sql, postInfoMapper(), id);
+
+        return Optional.ofNullable(DataAccessUtils.singleResult(postInfos));
+    }
+
+    public void delete(long postId) {
+        final String sql = "UPDATE POST SET ISDELETED=true WHERE ID=?";
+        jdbcTemplate.update(sql, postId);
     }
 
     private boolean isNotNullComment(PostAndComment postAndComment) {
@@ -119,6 +165,16 @@ public class PostDAO {
                     .commentContents(commentContents)
                     .commenter(commenter)
                     .build();
+        };
+    }
+
+    private RowMapper<PostInfo> postInfoMapper() {
+        return (rs, rowNum) -> {
+            final long id = rs.getLong("id");
+            final String title = rs.getString("title");
+            final String contents = rs.getString("contents");
+
+            return new PostInfo(id, title, contents);
         };
     }
 

@@ -1,5 +1,6 @@
 package com.example.kakaocafe.core.config;
 
+import com.example.kakaocafe.core.config.resolver.UpdatePostFormResolver;
 import com.example.kakaocafe.core.config.resolver.UpdateUserFormResolver;
 import com.example.kakaocafe.core.config.resolver.WriteCommentFormResolver;
 import com.example.kakaocafe.core.config.resolver.WritePostFormResolver;
@@ -20,6 +21,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new UpdateUserFormResolver());
         resolvers.add(new WritePostFormResolver());
+        resolvers.add(new UpdatePostFormResolver());
         resolvers.add(new WriteCommentFormResolver());
     }
 

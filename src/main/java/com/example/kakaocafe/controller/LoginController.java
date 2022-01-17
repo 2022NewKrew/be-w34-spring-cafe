@@ -23,7 +23,13 @@ public class LoginController {
     private final LoginService loginService;
 
     @GetMapping(path = "/login")
-    public ModelAndView showLoginForm(Model model) {
+    public ModelAndView showLoginForm(@SessionAttribute(value = "userKey", required = false) Long userKey,
+                                      Model model) {
+
+        if (userKey != null) {
+            return new ModelAndView(URLPath.INDEX.getRedirectPath());
+        }
+
         return new ModelAndView(ViewPath.LOGIN)
                 .addAllObjects(model.asMap());
     }
@@ -32,9 +38,9 @@ public class LoginController {
     public ModelAndView login(@ModelAttribute LoginForm loginForm,
                               HttpSession httpSession) throws LoginException {
 
-        final boolean hasNotUserKey = httpSession.getAttribute(SessionData.USER_KEY) == null;
+        final Long userKey = ((Long) httpSession.getAttribute(SessionData.USER_KEY));
 
-        if (hasNotUserKey) {
+        if (userKey == null) {
             final User user = loginService.login(loginForm);
             httpSession.setAttribute(SessionData.USER_KEY, user.getId());
             httpSession.setAttribute(SessionData.USER_NAME, user.getName());

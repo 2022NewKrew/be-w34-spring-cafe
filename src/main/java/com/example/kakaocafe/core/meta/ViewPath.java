@@ -9,5 +9,6 @@ public class ViewPath {
     public static final String UPDATE_USER_FROM = "user/update_form";
     public static final String WRITE_POST = "post/form";
     public static final String SHOW_POST = "post/show";
+    public static final String UPDATE_POST_FROM = "post/update_form";
     public static final String ERROR_404 = "error/404";
 }

@@ -9,6 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Comment {
     private final long id;
+    private final long postId;
     private final String writer;
     private final String contents;
     private final String created;
@@ -16,6 +17,7 @@ public class Comment {
     public static Comment of(PostAndComment postAndComment) {
         return new Comment(
                 postAndComment.getCommentId(),
+                postAndComment.getPostId(),
                 postAndComment.getCommenter(),
                 postAndComment.getCommentContents(),
                 postAndComment.getCommentCreated()
