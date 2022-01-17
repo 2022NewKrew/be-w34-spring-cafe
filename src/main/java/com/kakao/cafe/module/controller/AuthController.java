@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 
+import static com.kakao.cafe.module.model.dto.UserDtos.*;
+
 @Controller
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -24,15 +26,15 @@ public class AuthController {
     private final InfraService infraService;
 
     @PostMapping
-    public String signUp(UserDtos.UserSignUpDto userSignUpDto) {
+    public String signUp(UserSignUpDto userSignUpDto) {
         userService.signUp(userSignUpDto);
         logger.info("Create User : {}", userSignUpDto.getName());
         return "redirect:/users";
     }
 
     @PostMapping("/sign-in")
-    public String signIn(UserDtos.UserSignInDto userSignInDto, HttpSession session) {
-        UserDtos.UserDto userDto = userService.signIn(userSignInDto);
+    public String signIn(UserSignInDto userSignInDto, HttpSession session) {
+        UserDto userDto = userService.signIn(userSignInDto);
         session.setAttribute("sessionUser", userDto);
         logger.info("Sign in User : {}", userDto.getName());
         return "redirect:/";
@@ -40,7 +42,7 @@ public class AuthController {
 
     @GetMapping("/sign-out")
     public String signOut(HttpSession session) throws HttpSessionRequiredException {
-        UserDtos.UserDto userDto = infraService.retrieveUserSession(session);
+        UserDto userDto = infraService.retrieveUserSession(session);
         session.invalidate();
         logger.info("Sign out User : {}", userDto.getName());
         return "redirect:/";
