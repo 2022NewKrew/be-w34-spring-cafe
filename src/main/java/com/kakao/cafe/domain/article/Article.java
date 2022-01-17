@@ -7,11 +7,11 @@ import java.util.UUID;
 public class Article {
 
     private UUID articleId;
-    private final Title title;
-    private final Content content;
+    private Title title;
+    private Content content;
     private final User writer;
     private LocalDateTime createdAt;
-    private final ViewCount viewCount;
+    private ViewCount viewCount;
 
     public Article(UUID articleId, Title title, Content content, User writer, LocalDateTime createdAt, ViewCount viewCount) {
         this.articleId = articleId;
@@ -60,5 +60,13 @@ public class Article {
 
     public void increaseViewCount() {
         this.viewCount.increase();
+    }
+
+    public void update(Article article) {
+        if (this.articleId.equals(article.getArticleId())) {
+            title = article.getTitle();
+            content = article.getContent();
+            viewCount = article.getViewCount();
+        }
     }
 }

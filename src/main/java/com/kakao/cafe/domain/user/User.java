@@ -7,8 +7,8 @@ public class User {
     private UUID id;
     private final UserName userName;
     private final Password password;
-    private final Name name;
-    private final Email email;
+    private Name name;
+    private Email email;
 
     public User(UUID id, UserName userName, Password password, Name name, Email email) {
         this.id = id;
@@ -44,5 +44,12 @@ public class User {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public void update(User user) {
+        if (this.id.equals(user.getId())) {
+            name = user.getName();
+            email = user.getEmail();
+        }
     }
 }

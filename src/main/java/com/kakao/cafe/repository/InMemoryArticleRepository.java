@@ -34,4 +34,9 @@ public class InMemoryArticleRepository implements ArticleRepository {
         return articles.findByArticleId(id)
                 .map(articleMapper::mapResult);
     }
+
+    @Override
+    public void update(Article article) {
+        articles.update(article);
+    }
 }

@@ -57,4 +57,13 @@ public class JdbcUserRepository implements UserRepository {
             return Optional.empty();
         }
     }
+
+    @Override
+    public void update(User user) {
+        jdbcTemplate.update("UPDATE users SET name = ?, email = ? "
+                        + "WHERE users_id = ?",
+                user.getName().getValue(),
+                user.getEmail().getValue(),
+                user.getId().toString());
+    }
 }

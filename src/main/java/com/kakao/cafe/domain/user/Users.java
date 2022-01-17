@@ -45,4 +45,12 @@ public class Users {
                     .findAny();
         }
     }
+
+    public void update(User user) {
+        synchronized (userList) {
+            for (User existingUser : userList) {
+                existingUser.update(user);
+            }
+        }
+    }
 }

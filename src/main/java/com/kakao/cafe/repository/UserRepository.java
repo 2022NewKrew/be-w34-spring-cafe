@@ -16,4 +16,6 @@ public interface UserRepository {
     Optional<User> findUserByName(UserName id);
 
     Optional<User> findUserById(UUID id);
+
+    void update(User user);
 }

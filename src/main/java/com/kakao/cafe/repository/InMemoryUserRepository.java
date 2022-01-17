@@ -47,4 +47,9 @@ public class InMemoryUserRepository implements UserRepository {
         return users.findById(id)
                 .map(userMapper::mapResult);
     }
+
+    @Override
+    public void update(User user) {
+        users.update(user);
+    }
 }

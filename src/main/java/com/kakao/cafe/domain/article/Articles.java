@@ -32,4 +32,12 @@ public class Articles {
                     .findAny();
         }
     }
+
+    public void update(Article article) {
+        synchronized (articleList) {
+            for (Article existingArticle : articleList) {
+                existingArticle.update(article);
+            }
+        }
+    }
 }
