@@ -3,6 +3,8 @@ package com.kakao.cafe.domain;
 import com.kakao.cafe.exceptions.DuplicateUserException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Repository;
 public class JdbcUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private Logger logger = LoggerFactory.getLogger(JdbcUserRepository.class);
+
 
     public JdbcUserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -21,6 +25,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
+        logger.info("[Jdbc] user save");
         String sql = "insert into users(user_id, password, name, email) values(?, ?, ?, ?)";
         try {
             jdbcTemplate.update(sql,
@@ -33,6 +38,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
+        logger.info("[Jdbc] user findAll");
         String sql = "select * from users";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> new User(
@@ -44,6 +50,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User findByUserId(String id) {
+        logger.info("[Jdbc] user findByUserId");
         String sql = "select * from users where user_id = ?";
 
         try {
