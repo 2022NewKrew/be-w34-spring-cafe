@@ -38,6 +38,4 @@ public class ArticleController {
         model.addAllAttributes(new ArticleReadResponse(articleService.getArticleReadViewDTO(Long.parseLong(articleId))));
         return "article/show";
     }
-
-
 }

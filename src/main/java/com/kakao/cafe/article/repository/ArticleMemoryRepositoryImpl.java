@@ -12,35 +12,40 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ArticleMemoryRepositoryImpl implements ArticleRepository {
-    private static AtomicLong idSequence = new AtomicLong();
-
+    private final static AtomicLong idSequence = new AtomicLong();
     private final static HashMap<Long, Article> articleDB = new HashMap<>();
+
+    @Override
+    public Long persist(Article article) {
+        articleDB.put(idSequence.get(), makeArticle(idSequence.get(), article, LocalDateTime.now()));
+        return idSequence.getAndIncrement();
+    }
 
     @Override
     public Optional<Article> find(Long id) {
         return Optional.ofNullable(articleDB.get(id));
     }
 
+    @Override
     public ArrayList<Article> findAll() {
-        return new ArrayList<>(articleDB.values());
+        return new ArrayList<Article>(articleDB.values());
     }
 
-    public Long persist(ArticleCreateRequestDTO dto) {
-        Article article = Article.builder()
-                .id(idSequence.get())
-                .title(dto.title)
-                .authorId(dto.authorId)
-                .date(LocalDateTime.now())
-                .contents(dto.contents)
-                .build();
-
-        articleDB.put(idSequence.get(), article);
-        return idSequence.getAndIncrement();
-    }
-
+    @Override
     public void increaseHit(Long id) {
         Article article = articleDB.get(id);
         article.increaseHit();
         articleDB.put(id, article);
+    }
+
+    private Article makeArticle(Long id, Article article, LocalDateTime time){
+        return Article.builder()
+                .id(id)
+                .title(article.getTitle())
+                .authorId(article.getAuthorId())
+                .date(time)
+                .hits(0)
+                .contents(article.getContents())
+                .build();
     }
 }
