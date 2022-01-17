@@ -20,7 +20,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @PostMapping("/question")
+    @PostMapping("/questions")
     public String question(QuestionDTO questionDTO) {
         articleService.question(questionDTO);
 
@@ -30,14 +30,14 @@ public class ArticleController {
     @GetMapping("/")
     public String home(Model model) {
         List<ArticleViewDTO> articleList = articleService.getAllArticles().stream()
-                .map(article -> new ArticleViewDTO(article))
+                .map(ArticleViewDTO::new)
                 .collect(Collectors.toList());
         model.addAttribute("questions", articleList);
 
         return "index";
     }
 
-    @GetMapping("/article/{index}")
+    @GetMapping("/articles/{index}")
     public String getArticleById(@PathVariable("index") Long id, Model model) {
         model.addAttribute("article", new DetailArticleViewDTO(articleService.findById(id)));
 

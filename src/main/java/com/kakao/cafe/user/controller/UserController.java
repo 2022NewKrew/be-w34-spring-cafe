@@ -23,13 +23,13 @@ public class UserController {
     private final UserService userService;
 
 
-    @PostMapping("/user/create")
+    @PostMapping("/users/create")
     public String singUp(SignUpDTO signUpDTO) {
         userService.signUp(signUpDTO);
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     public String getAllUsers(Model model) {
         List<UserViewDTO> userList = userService.getAllUsers()
                 .stream()
@@ -39,22 +39,22 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public String getUserByUserId(@PathVariable("userId") String userId, Model model) {
         model.addAttribute("user", new ProfileViewDTO(userService.findByUserId(userId)));
         return "user/profile";
     }
 
-    @GetMapping("/user/{userId}/form")
+    @GetMapping("/users/{userId}/form")
     public String getEditUserForm(@PathVariable("userId") String userId, Model model) {
         model.addAttribute("user", new UserViewDTO(userService.findByUserId(userId)));
         return "user/updateForm";
     }
 
-    @PutMapping("/user/update")
+    @PutMapping("/users/update")
     public String updateUser(UpdateDTO updateDTO) {
         userService.updateUser(updateDTO);
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
 
