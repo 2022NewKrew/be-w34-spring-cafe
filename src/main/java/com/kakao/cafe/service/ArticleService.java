@@ -2,9 +2,11 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dao.ArticleDao;
 import com.kakao.cafe.model.dto.ArticleDto;
+import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.vo.ArticleVo;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,7 +29,8 @@ public class ArticleService {
         return voToDtoMapper(articleDao.filterArticleByIndex(index));
     }
 
-    public void writeArticle(ArticleDto article) {
+    public void writeArticle(ArticleDto article, UserDto user) {
+        article.setWriter(user.getName());
         articleDao.writeArticle(dtoToVoMapper(article));
     }
 
@@ -44,8 +47,9 @@ public class ArticleService {
     }
 
     private ArticleDto voToDtoMapper(ArticleVo articleVo) {
-        ArticleDto articleDto = new ArticleDto(articleVo.getWriter(), articleVo.getTitle(), articleVo.getContents());
+        ArticleDto articleDto = new ArticleDto(articleVo.getTitle(), articleVo.getContents());
         articleDto.setId(articleVo.getId());
+        articleDto.setWriter(articleVo.getWriter());
         return articleDto;
     }
 }

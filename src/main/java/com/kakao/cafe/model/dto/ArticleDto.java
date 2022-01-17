@@ -7,8 +7,7 @@ public class ArticleDto {
     private String title;
     private String contents;
 
-    public ArticleDto(String writer, String title, String contents) {
-        this.writer = writer;
+    public ArticleDto(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }

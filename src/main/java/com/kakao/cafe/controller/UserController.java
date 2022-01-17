@@ -74,6 +74,6 @@ public class UserController {
     public String login(String userId, String password, HttpSession session) {
         UserDto user = userService.filterUserById(userId);
         userService.loginUser(user, password, session);
-        return "redirect:";
+        return "redirect:/";
     }
 }
