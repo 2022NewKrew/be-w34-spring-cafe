@@ -2,7 +2,7 @@ package com.kakao.cafe.adapter.in.presentation.user;
 
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.application.user.port.in.GetUserInfoUseCase;
-import com.kakao.cafe.view.ErrorMessage;
+import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -33,33 +33,21 @@ public class UserInfoController {
     }
 
     @GetMapping("/users/{userId}")
-    public String displayUserProfile(@PathVariable String userId, RedirectAttributes redirectAttributes, Model model) {
-        try {
-            UserInfo userInfo = getUserInfoUseCase.getUserProfile(userId);
-            log.info("{} information required", userId);
-            model.addAttribute("name", userInfo.getName());
-            model.addAttribute("email", userInfo.getEmail());
-            return VIEWS_USER_PROFILE;
-        } catch (Exception e) {
-            log.warn("{} is not in User List", userId);
-            String message = ErrorMessage.getErrorMessage(e);
-            redirectAttributes.addAttribute("message", message);
-            return "redirect:/errors";
-        }
+    public String displayUserProfile(@PathVariable String userId, RedirectAttributes redirectAttributes, Model model)
+        throws UserNotExistException {
+        UserInfo userInfo = getUserInfoUseCase.getUserProfile(userId);
+        log.info("{} information required", userId);
+        model.addAttribute("name", userInfo.getName());
+        model.addAttribute("email", userInfo.getEmail());
+        return VIEWS_USER_PROFILE;
     }
 
     @GetMapping("/users/{userId}/form")
-    public String displayUserUpdateForm(@PathVariable String userId, RedirectAttributes redirectAttributes, Model model) {
-        try {
-            UserInfo userInfo = getUserInfoUseCase.getUserProfile(userId);
-            log.info("{} update form required", userId);
-            model.addAttribute("user", userInfo);
-            return VIEWS_USER_UPDATE_FROM;
-        } catch (Exception e) {
-            log.warn("{} is not in User List", userId);
-            String message = ErrorMessage.getErrorMessage(e);
-            redirectAttributes.addAttribute("message", message);
-            return "redirect:/errors";
-        }
+    public String displayUserUpdateForm(@PathVariable String userId, Model model)
+        throws UserNotExistException {
+        UserInfo userInfo = getUserInfoUseCase.getUserProfile(userId);
+        log.info("{} update form required", userId);
+        model.addAttribute("user", userInfo);
+        return VIEWS_USER_UPDATE_FROM;
     }
 }
