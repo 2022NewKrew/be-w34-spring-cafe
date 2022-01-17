@@ -24,9 +24,9 @@ public class CafePostController {
     }
 
     private static final String POST_DIRECTORY = "post";
-    public static final String POST_VIEW_LIST = POST_DIRECTORY+"/list";
-    public static final String POST_VIEW_WRITE = POST_DIRECTORY+"/form";
-    public static final String POST_VIEW_CONTENT = POST_DIRECTORY+"/show";
+    private static final String POST_VIEW_LIST = POST_DIRECTORY+"/list";
+    private static final String POST_VIEW_WRITE = POST_DIRECTORY+"/form";
+    private static final String POST_VIEW_CONTENT = POST_DIRECTORY+"/show";
 
     private static final String REDIRECT_PREFIX = "redirect:";
     private static final String POST_REDIRECT_LIST = REDIRECT_PREFIX+"/posts/list";

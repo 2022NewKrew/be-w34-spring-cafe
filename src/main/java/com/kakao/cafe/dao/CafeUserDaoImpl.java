@@ -100,4 +100,23 @@ public class CafeUserDaoImpl implements CafeUserDao {
         }
         return selectedUser;
     }
+
+    @Override
+    public boolean adminProfileEdit(User user, String inputPassword) {
+        String sql = "SELECT password FROM member\n"
+                + "WHERE userId=?";
+
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, user.getUserId());
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                String password = rs.getString("password");
+                return password.equals(inputPassword);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

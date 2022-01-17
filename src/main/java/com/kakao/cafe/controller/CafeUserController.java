@@ -20,17 +20,21 @@ public class CafeUserController {
     }
 
     private static final String USER_DIRECTORY = "user";
-    public static final String USER_VIEW_SIGN_UP = USER_DIRECTORY+"/form";
-    public static final String USER_VIEW_SIGN_IN = USER_DIRECTORY+"/login";
-    public static final String USER_VIEW_LIST = USER_DIRECTORY+"/list";
-    public static final String USER_VIEW_PROFILE = USER_DIRECTORY+"/profile";
+    private static final String USER_VIEW_SIGN_UP = USER_DIRECTORY+"/form";
+    private static final String USER_VIEW_SIGN_IN = USER_DIRECTORY+"/login";
+    private static final String USER_VIEW_LIST = USER_DIRECTORY+"/list";
+    private static final String USER_VIEW_PROFILE = USER_DIRECTORY+"/profile";
+    private static final String USER_VIEW_PROFILE_EDIT_ADMIN = USER_DIRECTORY+"/profile_admin";
+    private static final String USER_VIEW_PROFILE_EDIT_FORM = USER_DIRECTORY+"/profile_edit";
 
-    public static final String REDIRECT_PREFIX = "redirect:";
-    public static final String USER_REDIRECT_SIGN_IN_SUCCESS = REDIRECT_PREFIX+"/";
-    public static final String USER_REDIRECT_SIGN_IN_FAIL = REDIRECT_PREFIX+"/users/sign-in/fail";
-    public static final String USER_REDIRECT_LIST = REDIRECT_PREFIX+"/users/list";
-    public static final String USER_REDIRECT_SIGN_UP_FAIL = REDIRECT_PREFIX+"/users/sign-up/fail";
-    public static final String USER_REDIRECT_SIGN_OUT = REDIRECT_PREFIX+"/";
+    private static final String REDIRECT_PREFIX = "redirect:";
+    private static final String USER_REDIRECT_SIGN_IN_SUCCESS = REDIRECT_PREFIX+"/";
+    private static final String USER_REDIRECT_SIGN_IN_FAIL = REDIRECT_PREFIX+"/users/sign-in/fail";
+    private static final String USER_REDIRECT_LIST = REDIRECT_PREFIX+"/users/list";
+    private static final String USER_REDIRECT_SIGN_UP_FAIL = REDIRECT_PREFIX+"/users/sign-up/fail";
+    private static final String USER_REDIRECT_SIGN_OUT = REDIRECT_PREFIX+"/";
+    private static final String USER_REDIRECT_PROFILE_EDIT_ADMIN_FAIL = REDIRECT_PREFIX+"/";
+    private static final String USER_REDIRECT_PROFILE_EDIT = REDIRECT_PREFIX+"/";
 
     @GetMapping("/sign-in")
     String userViewSignIn() {
@@ -72,6 +76,23 @@ public class CafeUserController {
             model.addAttribute("user", user);
         }
         return USER_VIEW_PROFILE;
+    }
+
+    @GetMapping("/profile/edit")
+    String userViewProfile () {
+        return USER_VIEW_PROFILE_EDIT_ADMIN;
+    }
+    @PostMapping("/profile/edit")
+    String adminEditProfile (Model model, HttpSession httpSession, String password) {
+        User user = (User) httpSession.getAttribute("signInUser");
+        if(cafeUserService.adminProfileEdit(user, password)) {
+            return USER_VIEW_PROFILE_EDIT_FORM;
+        }
+        return USER_REDIRECT_PROFILE_EDIT_ADMIN_FAIL;
+    }
+    @PutMapping("/profile/edit")
+    String editProfile (Model model, HttpSession httpSession) {
+        return USER_REDIRECT_PROFILE_EDIT;
     }
 
     @PostMapping("/sign-out")
