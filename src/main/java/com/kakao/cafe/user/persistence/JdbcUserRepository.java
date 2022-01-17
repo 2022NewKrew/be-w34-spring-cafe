@@ -7,6 +7,7 @@ import com.kakao.cafe.user.persistence.mapper.UserRowMapper;
 import com.kakao.cafe.util.MyJdbcTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +44,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    @Transactional
     public void update(String userId, UserInfo userInfo) {
         List<User> users = myJdbcTemplate.query("select * from member where userId='".concat(userId).concat("'"), userRowMapper);
         if(users.isEmpty()){

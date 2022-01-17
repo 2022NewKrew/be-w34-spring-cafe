@@ -40,10 +40,10 @@ public class UsersData {
 
     public static List<User> getUserList(){
         return List.of(
-                new User("asdf", "asdf1234", new UserInfo("asdf", "asdf@naver.com")),
-                new User("hello", "hello1234", new UserInfo("hello", "hello@naver.com")),
-                new User("world", "world1234", new UserInfo("world", "world@naver.com")),
-                new User("good", "good1234", new UserInfo("good", "good@naver.com"))
+                new User("test1", "test11234", new UserInfo("test1", "test1@naver.com")),
+                new User("test2", "test21234", new UserInfo("test2", "test2@naver.com")),
+                new User("test3", "test31234", new UserInfo("test3", "test3@naver.com")),
+                new User("test4", "test41234", new UserInfo("test4", "test4@naver.com"))
         );
     }
 }
