@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
@@ -43,10 +43,13 @@ public class UserAccountApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserAccountLoginResponse> login(@Valid @RequestBody UserAccountLoginRequest request, HttpServletRequest servletRequest) {
+    public ResponseEntity<UserAccountLoginResponse> login(
+            @Valid @RequestBody UserAccountLoginRequest request,
+            HttpSession httpSession) {
+
         UserAccountDetailResult user = getUserAccountUseCase.getUserInfoByEmail(request.toCommand());
         if(user.getPassword().equals(request.getPassword())) {
-            servletRequest.getSession().setAttribute("user-id", user.getUserAccountId());
+            httpSession.setAttribute("user-id", user.getUserAccountId());
             return ResponseEntity.ok()
                     .body(new UserAccountLoginResponse("success"));
         }

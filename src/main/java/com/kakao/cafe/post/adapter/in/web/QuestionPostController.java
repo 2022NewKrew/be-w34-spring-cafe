@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/posts")
@@ -23,20 +23,20 @@ public class QuestionPostController {
     private final UpdateQuestionPostUseCase updateQuestionPostUseCase;
 
     @GetMapping("/{id}/detail")
-    public String postDetail(@PathVariable(name = "id") Long id, Model model, HttpServletRequest request) {
+    public String postDetail(@PathVariable(name = "id") Long id, Model model, HttpSession httpSession) {
         QuestionPostDetailResult postDetail = getQuestionPostUseCase.getPostDetail(new QuestionPostDetailCommand(id));
         updateQuestionPostUseCase.clickPost(new QuestionPostClickCommand(id));
         model.addAttribute("post", postDetail);
-        if(request.getSession().getAttribute("user-id") != null) {
+        if(httpSession.getAttribute("user-id") != null) {
             return "after/qnadetail";
         }
         return "before/qnadetail";
     }
 
     @GetMapping("/form")
-    public String writePost(Model model, HttpServletRequest request) {
+    public String writePost(Model model, HttpSession httpSession) {
 
-        Long id = (Long) request.getSession().getAttribute("user-id");
+        Long id = (Long) httpSession.getAttribute("user-id");
         model.addAttribute("user-id", id);
         return "after/qnaform";
     }

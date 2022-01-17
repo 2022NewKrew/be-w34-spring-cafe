@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,12 +18,12 @@ public class IndexController {
     private final GetQuestionPostUseCase getQuestionPostUseCase;
 
     @GetMapping("")
-    public String allPost(Model model, HttpServletRequest request) {
+    public String allPost(Model model, HttpSession httpSession) {
         QuestionPostDetailListResult allPost = getQuestionPostUseCase.getAllPost();
         model.addAttribute("count", allPost.getDetailResults().size());
         model.addAttribute("posts", allPost.getDetailResults());
 
-        if(request.getSession().getAttribute("user-id") != null) {
+        if(httpSession.getAttribute("user-id") != null) {
             return "after/afterindex";
         }
         return "index";
