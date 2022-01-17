@@ -1,7 +1,7 @@
 package com.kakao.cafe.web;
 
-import com.kakao.cafe.domain.dto.article.ArticleContents;
-import com.kakao.cafe.domain.dto.article.ArticleCreateCommand;
+import com.kakao.cafe.dto.article.ArticleContents;
+import com.kakao.cafe.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,9 +1,9 @@
 package com.kakao.cafe.web;
 
-import com.kakao.cafe.domain.dto.user.UserCreateCommand;
-import com.kakao.cafe.domain.dto.user.UserInfo;
-import com.kakao.cafe.domain.dto.user.UserModifyCommand;
-import com.kakao.cafe.domain.dto.user.UserProfileInfo;
+import com.kakao.cafe.dto.user.UserCreateCommand;
+import com.kakao.cafe.dto.user.UserInfo;
+import com.kakao.cafe.dto.user.UserModifyCommand;
+import com.kakao.cafe.dto.user.UserProfileInfo;
 
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;

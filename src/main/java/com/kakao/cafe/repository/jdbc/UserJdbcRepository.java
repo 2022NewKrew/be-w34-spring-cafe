@@ -1,8 +1,8 @@
 package com.kakao.cafe.repository.jdbc;
 
-import com.kakao.cafe.domain.dto.user.UserCreateCommand;
-import com.kakao.cafe.domain.dto.user.UserListShow;
-import com.kakao.cafe.domain.dto.user.UserModifyCommand;
+import com.kakao.cafe.dto.user.UserCreateCommand;
+import com.kakao.cafe.dto.user.UserListShow;
+import com.kakao.cafe.dto.user.UserModifyCommand;
 import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +59,8 @@ public class UserJdbcRepository implements UserRepository {
     }
 
     @Override
-    public List<UserListShow> getAllUser() {
-        return jdbcTemplate.query(TO_LIST_SQL, userListShowRowMapper());
+    public List<User> getAllUser() {
+        return jdbcTemplate.query(TO_LIST_SQL, userRowMapper());
     }
 
     public RowMapper<User> userRowMapper() {
@@ -68,15 +68,6 @@ public class UserJdbcRepository implements UserRepository {
                 rs.getLong("USER_INDEX"),
                 rs.getString("USER_ID"),
                 rs.getString("PASSWORD"),
-                rs.getString("NAME"),
-                rs.getString("EMAIL")
-        );
-    }
-
-    public RowMapper<UserListShow> userListShowRowMapper() {
-        return (rs, rowNum) -> new UserListShow(
-                rs.getLong("USER_INDEX"),
-                rs.getString("USER_ID"),
                 rs.getString("NAME"),
                 rs.getString("EMAIL")
         );

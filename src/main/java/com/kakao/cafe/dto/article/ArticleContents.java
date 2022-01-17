@@ -1,29 +1,25 @@
-package com.kakao.cafe.domain.dto.article;
+package com.kakao.cafe.dto.article;
 
 import com.kakao.cafe.domain.entity.Article;
 
-public class ArticleListShow {
-    private final long articleId;
+public class ArticleContents {
     private final String time;
     private final String writer;
     private final String title;
+    private final String contents;
 
-    public ArticleListShow(long articleId, String time, String writer, String title) {
-        this.articleId = articleId;
+    public ArticleContents(String time, String writer, String title, String contents) {
         this.time = time;
         this.writer = writer;
         this.title = title;
+        this.contents = contents;
     }
 
-    public ArticleListShow(Article article) {
-        this.articleId = article.getArticleId();
+    public ArticleContents(Article article) {
         this.time = article.getTime();
         this.writer = article.getWriter();
         this.title = article.getTitle();
-    }
-
-    public long getArticleId() {
-        return articleId;
+        this.contents = article.getContent();
     }
 
     public String getTime() {
@@ -36,5 +32,9 @@ public class ArticleListShow {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getContents() {
+        return contents;
     }
 }
