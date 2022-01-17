@@ -12,6 +12,10 @@ import java.util.List;
 public class UserService {
 
     public static final String SESSIONED_USER = "sessionedUser";
+    public static final String INCORRECT_PASSWORD_ERROR = "/error/incorrect_password_error";
+    public static final String NOT_LOGIN_ERROR = "/error/not_login_error";
+    public static final String USER_NOT_EXIST_ERROR = "/error/user_not_exist_error";
+    public static final String INCORRECT_USER_ERROR = "/error/incorrect_user_error";
 
     private final UserDao userDao;
 
@@ -31,29 +35,43 @@ public class UserService {
         userDao.addUser(user);
     }
 
-    public String updateUser(User user, User loginUser) {
+    public String updateUser(User user, HttpSession session) {
+        User loginUser = getLoginUser(session);
         if(loginUser == null)
-            return "/error/not_login_error";
+            return NOT_LOGIN_ERROR;
         if(!isSameUser(user, loginUser))
-            return "/error/incorrect_user_error";
+            return INCORRECT_USER_ERROR;
+        if(!checkPassword(user.getPassword(), loginUser.getPassword()))
+            return INCORRECT_PASSWORD_ERROR;
         userDao.updateUser(user);
         return "redirect:/users";
     }
 
     public String getLoginProfile(User loginUser, Model model) {
         if(loginUser == null)
-            return "/error/not_login_error";
+            return NOT_LOGIN_ERROR;
         model.addAttribute("user", loginUser);
         return "/user/profile";
     }
 
-    public void login(String userId, String password, HttpSession session) {
-        User user = userDao.getUser(userId, password);
+    public String login(String userId, String password, HttpSession session) {
+        User user = userDao.getUser(userId);
+        if(user == null)
+            return USER_NOT_EXIST_ERROR;
+        if(!checkPassword(password, user.getPassword()))
+            return INCORRECT_PASSWORD_ERROR;
         session.setAttribute(SESSIONED_USER, user);
+        return "redirect:/";
     }
 
     public boolean isSameUser(User user, User loginUser) {
         if(user.getUserId().equals(loginUser.getUserId()))
+            return true;
+        return false;
+    }
+
+    public boolean checkPassword(String password, String loginPassword) {
+        if(password.equals(loginPassword))
             return true;
         return false;
     }

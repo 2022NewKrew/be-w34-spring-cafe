@@ -62,14 +62,12 @@ public class UserController {
 
     @PostMapping("/user/edit")
     public String editUser(User user, HttpSession session) {
-        User loginUser = userService.getLoginUser(session);
-        return userService.updateUser(user, loginUser);
+        return userService.updateUser(user, session);
     }
 
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession session) {
-        userService.login(userId, password, session);
-        return "redirect:/";
+        return userService.login(userId, password, session);
     }
 
     @GetMapping("/logout")

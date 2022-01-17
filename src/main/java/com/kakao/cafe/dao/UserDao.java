@@ -46,8 +46,8 @@ public class UserDao {
     }
 
     public void updateUser(User user) {
-        jdbcTemplate.update("UPDATE users SET name=?,email=? WHERE userId=? AND password=?",
-                user.getName(), user.getEmail(), user.getUserId(), user.getPassword());
+        jdbcTemplate.update("UPDATE users SET name=?,email=? WHERE userId=?",
+                user.getName(), user.getEmail(), user.getUserId());
     }
 
 }
