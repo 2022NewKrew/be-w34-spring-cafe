@@ -8,14 +8,14 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public class InMemoryArticleInfoRepository implements ArticleInfoRepository {
+public class InMemoryArticleRepository implements ArticleRepository {
 
     private static final int FIRST_ID = 1;
 
     private final Map<Integer, Article> repository;
     private final AtomicInteger atomicInt = new AtomicInteger(FIRST_ID);
 
-    public InMemoryArticleInfoRepository() {
+    public InMemoryArticleRepository() {
         repository = new HashMap<>();
     }
 

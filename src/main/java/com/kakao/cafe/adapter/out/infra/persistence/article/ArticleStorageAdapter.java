@@ -17,34 +17,34 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleInfoPort {
+public class ArticleStorageAdapter implements RegisterArticlePort, GetArticleInfoPort {
 
-    private final ArticleInfoRepository inMemoryArticleInfoRepository;
+    private final ArticleRepository articleRepository;
 
-    public StoreArticleInfoAdapter(ArticleInfoRepository inMemoryArticleInfoRepository) {
-        this.inMemoryArticleInfoRepository = inMemoryArticleInfoRepository;
+    public ArticleStorageAdapter(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 
     @Override
     public void registerArticle(WriteRequest writeRequest)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException {
-        inMemoryArticleInfoRepository.save(new Article.Builder()
-                                               .writer(writeRequest.getWriter())
-                                               .title(writeRequest.getTitle())
-                                               .contents(writeRequest.getContents())
-                                               .createdAt(
-                                                   LocalDateTime.now()
-                                                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-                                               )
-                                               .build());
+        articleRepository.save(new Article.Builder()
+                                   .writer(writeRequest.getWriter())
+                                   .title(writeRequest.getTitle())
+                                   .contents(writeRequest.getContents())
+                                   .createdAt(
+                                       LocalDateTime.now()
+                                                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                                   )
+                                   .build());
     }
 
     @Override
     public ArticleList getListOfAllArticles() {
-        List<ArticleInfo> articleList = inMemoryArticleInfoRepository.getAllArticleList()
-                                                                     .stream()
-                                                                     .map(ArticleInfo::from)
-                                                                     .collect(Collectors.toList());
+        List<ArticleInfo> articleList = articleRepository.getAllArticleList()
+                                                         .stream()
+                                                         .map(ArticleInfo::from)
+                                                         .collect(Collectors.toList());
 
         return ArticleList.from(articleList);
     }
@@ -52,7 +52,7 @@ public class StoreArticleInfoAdapter implements RegisterArticlePort, GetArticleI
     @Override
     public Article findArticleById(int id)
         throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException {
-        ArticleVO articleVO = inMemoryArticleInfoRepository.findById(id).orElse(null);
+        ArticleVO articleVO = articleRepository.findById(id).orElse(null);
 
         if (articleVO == null) {
             throw new ArticleNotExistException("존재하지 않는 게시글입니다.");

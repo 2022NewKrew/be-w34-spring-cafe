@@ -24,13 +24,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class StoreUserInfoAdapterTest {
+class UserStorageAdapterTest {
 
     @Mock
     UserInfoRepository userInfoRepository;
 
     @InjectMocks
-    StoreUserInfoAdapter storeUserInfoAdapter;
+    UserStorageAdapter userStorageAdapter;
 
     @DisplayName("정상 회원가입 테스트")
     @Test
@@ -39,7 +39,7 @@ class StoreUserInfoAdapterTest {
         SignUpRequest signUpRequest = new SignUpRequest("champ", "test", "HaChanho", "champ@kakao.com");
 
         // then
-        assertThatNoException().isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+        assertThatNoException().isThrownBy(() -> userStorageAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("ID 누락 user 회원가입 테스트")
@@ -50,7 +50,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalUserIdException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userStorageAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("ID 공백 user 회원가입 테스트")
@@ -61,7 +61,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalUserIdException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userStorageAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("Password 누락 user 회원가입 테스트")
@@ -72,7 +72,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalPasswordException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userStorageAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("Password 공백 user 회원가입 테스트")
@@ -83,7 +83,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalPasswordException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userStorageAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("이름 누락 user 회원가입 테스트")
@@ -94,7 +94,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalUserNameException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userStorageAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("이름 공백 user 회원가입 테스트")
@@ -105,7 +105,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalUserNameException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userStorageAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("Email 누락 user 회원가입 테스트")
@@ -116,7 +116,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalEmailException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userStorageAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("Email 공백 user 회원가입 테스트")
@@ -127,7 +127,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalEmailException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userStorageAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("ID 중복없는 회원가입 테스트")
@@ -138,7 +138,7 @@ class StoreUserInfoAdapterTest {
         given(userInfoRepository.findByUserId("champ")).willReturn(Optional.empty());
 
         // then
-        assertThatNoException().isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+        assertThatNoException().isThrownBy(() -> userStorageAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("ID 중복있는 회원가입 테스트")
@@ -156,7 +156,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(UserIdDuplicationException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userStorageAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("ID검색 성공 테스트")
@@ -173,7 +173,7 @@ class StoreUserInfoAdapterTest {
         given(userInfoRepository.findByUserId(userId)).willReturn(Optional.of(UserVO.from(givenUser)));
 
         // when
-        UserInfo foundUser = storeUserInfoAdapter.findUserByUserId(userId);
+        UserInfo foundUser = userStorageAdapter.findUserByUserId(userId);
 
         // then
         assertThat(foundUser).isEqualTo(UserInfo.from(givenUser));
@@ -188,7 +188,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(UserNotExistException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.findUserByUserId(userId));
+            .isThrownBy(() -> userStorageAdapter.findUserByUserId(userId));
     }
 
     @DisplayName("정상 업데이트 테스트")
@@ -205,7 +205,7 @@ class StoreUserInfoAdapterTest {
         given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
 
         // then
-        assertThatNoException().isThrownBy(() -> storeUserInfoAdapter.updateUser(givenUser.getUserId(), updateRequest));
+        assertThatNoException().isThrownBy(() -> userStorageAdapter.updateUser(givenUser.getUserId(), updateRequest));
     }
 
     @DisplayName("이름 누락 user 업데이트 테스트")
@@ -222,7 +222,7 @@ class StoreUserInfoAdapterTest {
         given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
 
         // then
-        assertThatExceptionOfType(IllegalUserNameException.class).isThrownBy(() -> storeUserInfoAdapter.updateUser(
+        assertThatExceptionOfType(IllegalUserNameException.class).isThrownBy(() -> userStorageAdapter.updateUser(
             givenUser.getUserId(),
             updateRequest
         ));
@@ -242,7 +242,7 @@ class StoreUserInfoAdapterTest {
         given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
 
         // then
-        assertThatExceptionOfType(IllegalUserNameException.class).isThrownBy(() -> storeUserInfoAdapter.updateUser(
+        assertThatExceptionOfType(IllegalUserNameException.class).isThrownBy(() -> userStorageAdapter.updateUser(
             givenUser.getUserId(),
             updateRequest
         ));
@@ -262,7 +262,7 @@ class StoreUserInfoAdapterTest {
         given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
 
         // then
-        assertThatExceptionOfType(IllegalEmailException.class).isThrownBy(() -> storeUserInfoAdapter.updateUser(
+        assertThatExceptionOfType(IllegalEmailException.class).isThrownBy(() -> userStorageAdapter.updateUser(
             givenUser.getUserId(),
             updateRequest
         ));
@@ -283,7 +283,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalEmailException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.updateUser(givenUser.getUserId(), updateRequest));
+            .isThrownBy(() -> userStorageAdapter.updateUser(givenUser.getUserId(), updateRequest));
     }
 
     @DisplayName("존재하지 않는 user 업데이트")
@@ -295,7 +295,7 @@ class StoreUserInfoAdapterTest {
         given(userInfoRepository.findByUserId(userId)).willReturn(Optional.empty());
 
         // then
-        assertThatExceptionOfType(UserNotExistException.class).isThrownBy(() -> storeUserInfoAdapter.updateUser(
+        assertThatExceptionOfType(UserNotExistException.class).isThrownBy(() -> userStorageAdapter.updateUser(
             userId,
             updateRequest
         ));

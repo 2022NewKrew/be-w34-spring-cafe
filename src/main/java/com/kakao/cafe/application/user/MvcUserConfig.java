@@ -1,8 +1,8 @@
 package com.kakao.cafe.application.user;
 
 import com.kakao.cafe.adapter.out.infra.persistence.user.JdbcUserInfoRepository;
-import com.kakao.cafe.adapter.out.infra.persistence.user.StoreUserInfoAdapter;
 import com.kakao.cafe.adapter.out.infra.persistence.user.UserInfoRepository;
+import com.kakao.cafe.adapter.out.infra.persistence.user.UserStorageAdapter;
 import com.kakao.cafe.application.user.port.in.GetUserInfoUseCase;
 import com.kakao.cafe.application.user.port.in.SignUpUserUseCase;
 import com.kakao.cafe.application.user.port.in.UpdateUserInfoUseCase;
@@ -33,17 +33,17 @@ public class MvcUserConfig implements WebMvcConfigurer {
 
     @Bean
     public GetUserInfoPort getUserInfoPort() {
-        return new StoreUserInfoAdapter(userInfoRepository());
+        return new UserStorageAdapter(userInfoRepository());
     }
 
     @Bean
     public RegisterUserPort registerUserPort() {
-        return new StoreUserInfoAdapter(userInfoRepository());
+        return new UserStorageAdapter(userInfoRepository());
     }
 
     @Bean
     public UpdateUserInfoPort updateUserInfoPort() {
-        return new StoreUserInfoAdapter(userInfoRepository());
+        return new UserStorageAdapter(userInfoRepository());
     }
 
     @Bean

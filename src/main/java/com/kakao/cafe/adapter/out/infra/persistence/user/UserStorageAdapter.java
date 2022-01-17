@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class StoreUserInfoAdapter implements RegisterUserPort, GetUserInfoPort, UpdateUserInfoPort {
+public class UserStorageAdapter implements RegisterUserPort, GetUserInfoPort, UpdateUserInfoPort {
 
     private final UserInfoRepository userInfoRepository;
 
-    public StoreUserInfoAdapter(UserInfoRepository userInfoRepository) {
+    public UserStorageAdapter(UserInfoRepository userInfoRepository) {
         this.userInfoRepository = userInfoRepository;
     }
 

@@ -9,11 +9,11 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-public class JdbcArticleInfoRepository implements ArticleInfoRepository {
+public class JdbcArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public JdbcArticleInfoRepository(DataSource dataSource) {
+    public JdbcArticleRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
