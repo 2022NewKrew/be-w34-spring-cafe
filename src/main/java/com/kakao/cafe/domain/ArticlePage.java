@@ -2,6 +2,7 @@ package com.kakao.cafe.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 
 @Getter
@@ -11,7 +12,8 @@ public class ArticlePage {
 
   private ArticlePage(List<Article> articles) {
     int size = ArticleBoard.DEFAULT_PAGE_SIZE;
-    this.articles = articles != null ? articles : new ArrayList<>(size);
+    this.articles = Optional.ofNullable(articles)
+        .orElseGet(() -> new ArrayList<>(size));
   }
 
   public static ArticlePage createEmpty() {

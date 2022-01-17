@@ -22,7 +22,7 @@ public class UserService {
 
   public User createUser(User user) {
 
-    user.setPasswordEncrypted();
+    user.setPasswordHashed();
 
     return userRepository.save(user);
   }
@@ -38,7 +38,7 @@ public class UserService {
 
   public User login(User user) {
 
-    user.setPasswordEncrypted();
+    user.setPasswordHashed();
 
     User loginUser = userRepository.findByEmail(user.getEmail())
         .stream()

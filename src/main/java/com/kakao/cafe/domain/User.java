@@ -6,6 +6,7 @@ import com.kakao.cafe.web.dto.SignUpDTO;
 import com.kakao.cafe.web.dto.UserDTO;
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -38,8 +39,10 @@ public class User {
     this.summary = StringUtils.isNotBlank(summary) ? summary : DEFAULT_SUMMARY;
     this.profile = StringUtils.isNotBlank(profile) ? profile : DEFAULT_PROFILE;
     this.password = password;
-    this.createAt = createAt != null ? createAt : new Timestamp(System.currentTimeMillis());
-    this.modifiedAt = modifiedAt != null ? modifiedAt : new Timestamp(System.currentTimeMillis());
+    this.createAt = Optional.ofNullable(createAt)
+        .orElseGet(() -> new Timestamp(System.currentTimeMillis()));
+    this.modifiedAt = Optional.ofNullable(modifiedAt)
+        .orElseGet(() -> new Timestamp(System.currentTimeMillis()));
     this.lastLoginAt = lastLoginAt;
   }
 
@@ -99,13 +102,7 @@ public class User {
         null, null, null, null, null);
   }
 
-
-  public static User createEmpty() {
-    return new User(null, null, null, null, null,
-        null, null, null, null, null);
-  }
-
-  public void setPasswordEncrypted() {
+  public void setPasswordHashed() {
     //TODO
   }
 
@@ -130,27 +127,6 @@ public class User {
   public int hashCode() {
     return Objects.hash(email);
   }
-
-
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    User user = (User) o;
-    return Objects.equals(email, user.email);
-  }
-
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(email);
-  }
-
 
   @Override
   public String toString() {

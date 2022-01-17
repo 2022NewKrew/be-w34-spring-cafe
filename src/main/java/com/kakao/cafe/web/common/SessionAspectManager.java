@@ -36,7 +36,7 @@ public class SessionAspectManager {
     Object controllerResult = joinPoint.proceed();
 
     findModel(joinPoint).ifPresent(model -> {
-      model.addAttribute("session", new UserDTO(loginUser.orElse(User.createEmpty())));
+      model.addAttribute("session", new UserDTO(loginUser.orElseGet(User::createEmpty)));
       model.addAttribute("isLogin", isLogin);
     });
 
