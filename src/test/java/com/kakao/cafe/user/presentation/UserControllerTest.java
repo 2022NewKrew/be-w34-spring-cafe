@@ -1,11 +1,11 @@
 package com.kakao.cafe.user.presentation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.config.TestConfig;
 import com.kakao.cafe.matcher.LambdaMatcher;
 import com.kakao.cafe.user.application.JoinService;
 import com.kakao.cafe.user.application.SearchUserService;
 import com.kakao.cafe.user.application.UpdateUserInfoService;
+import com.kakao.cafe.user.data.UsersData;
 import com.kakao.cafe.user.domain.entity.User;
 import com.kakao.cafe.user.domain.entity.UserInfo;
 import com.kakao.cafe.user.presentation.dto.JoinRequest;
@@ -14,7 +14,6 @@ import com.kakao.cafe.user.presentation.dto.UserDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
 import static org.mockito.BDDMockito.given;
@@ -60,7 +58,7 @@ class UserControllerTest {
     @DisplayName("사용자 목록 보여주기 성공")
     void listUsers() throws Exception {
         //given
-        final List<User> users = getUsers();
+        final List<User> users = UsersData.getUsers();
         given(searchUserService.getAllUsers()).willReturn(users);
 
         //when
@@ -80,7 +78,7 @@ class UserControllerTest {
 
     @ParameterizedTest
     @DisplayName("가입 성공")
-    @MethodSource("getJoinRequests")
+    @MethodSource("com.kakao.cafe.user.data.UsersData#getJoinRequests")
     void join(JoinRequest joinRequest) throws Exception {
         //given
 
@@ -103,7 +101,7 @@ class UserControllerTest {
 
     @ParameterizedTest
     @DisplayName("이름 변경 성공")
-    @MethodSource("getUpdateRequests")
+    @MethodSource("com.kakao.cafe.user.data.UsersData#getUpdateRequests")
     void updateInfo(String userId, UpdateUserInfoRequest updateRequest) throws Exception {
         //given
 
@@ -118,28 +116,5 @@ class UserControllerTest {
 
         verify(updateUserInfoService, times(1))
                 .updateUserInfo(eq(userId), any(UserInfo.class));
-    }
-
-
-    private static Stream<Arguments> getUpdateRequests(){
-        return getUsers().stream()
-                .map(user -> Arguments.of(user.getUserId(),
-                        new UpdateUserInfoRequest(user.getUserInfo().getName(), user.getUserInfo().getEmail()))
-                );
-    }
-
-    private static Stream<Arguments> getJoinRequests(){
-        return getUsers().stream()
-                .map(user -> new JoinRequest(user.getUserId(), user.getPassword(), user.getUserInfo().getName(), user.getUserInfo().getEmail()))
-                .map(Arguments::of);
-    }
-
-    private static List<User> getUsers(){
-        return List.of(
-                new User("asdf", "asdf1234", new UserInfo("asdf", "asdf@naver.com")),
-                new User("hello", "hello1234", new UserInfo("hello", "hello@naver.com")),
-                new User("world", "world1234", new UserInfo("world", "world@naver.com")),
-                new User("good", "good1234", new UserInfo("good", "good@naver.com"))
-        );
     }
 }
