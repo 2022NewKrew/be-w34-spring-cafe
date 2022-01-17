@@ -1,7 +1,6 @@
 package com.kakao.cafe.user.adapter.out.persistence;
 
 import com.kakao.cafe.user.domain.UserAccount;
-import com.kakao.cafe.user.domain.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;

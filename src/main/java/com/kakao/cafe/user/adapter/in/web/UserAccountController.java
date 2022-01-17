@@ -1,7 +1,9 @@
 package com.kakao.cafe.user.adapter.in.web;
 
-import com.kakao.cafe.user.application.UserAccountService;
-import com.kakao.cafe.user.domain.UserAccount;
+import com.kakao.cafe.user.application.dto.command.UserAccountDetailIdCommand;
+import com.kakao.cafe.user.application.dto.result.UserAccountDetailListResult;
+import com.kakao.cafe.user.application.dto.result.UserAccountDetailResult;
+import com.kakao.cafe.user.application.port.in.GetUserAccountUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,20 +12,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserAccountController {
 
-    private final UserAccountService userAccountService;
+    private final GetUserAccountUseCase getUserAccountUseCase;
 
     @GetMapping("/list")
     public String userList(Model model, HttpServletRequest request) {
-        List<UserAccount> users = userAccountService.getAllUser();
-        model.addAttribute("users", users);
-        model.addAttribute("user-count", users.size());
+        UserAccountDetailListResult users = getUserAccountUseCase.getAllUser();
+        model.addAttribute("users", users.getUserAccountDetailResults());
+        model.addAttribute("user-count", users.getUserAccountDetailResults().size());
 
         if(request.getSession().getAttribute("user-id") != null) {
             return "after/users";
@@ -33,7 +34,7 @@ public class UserAccountController {
 
     @GetMapping("/{id}/detail")
     public String userInfo(@PathVariable(name = "id") Long id, Model model, HttpServletRequest request) {
-        UserAccount userInfo = userAccountService.getUserInfo(id);
+        UserAccountDetailResult userInfo = getUserAccountUseCase.getUserInfo(new UserAccountDetailIdCommand(id));
         model.addAttribute("userInfo", userInfo);
 
         if(request.getSession().getAttribute("user-id") != null) {
