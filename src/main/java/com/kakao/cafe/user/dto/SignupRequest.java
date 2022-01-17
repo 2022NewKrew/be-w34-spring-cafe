@@ -5,8 +5,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class UserSignupRequest {
+public class SignupRequest {
 
+    @NotBlank
     @Email(regexp = "\\b[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,4}\\b")
     private final String email;
 
@@ -16,19 +17,19 @@ public class UserSignupRequest {
 
     @NotBlank
     @Size(min = 2, max = 10)
-    private final String username;
+    private final String nickname;
 
-    public UserSignupRequest(String email, String password, String username) {
+    public SignupRequest(String email, String password, String nickname) {
         this.email = email;
         this.password = password;
-        this.username = username;
+        this.nickname = nickname;
     }
 
     public User toEntity() {
         return User.builder()
             .email(email)
             .password(password)
-            .username(username)
+            .nickname(nickname)
             .build();
     }
 }

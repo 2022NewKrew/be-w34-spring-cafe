@@ -1,6 +1,7 @@
 package com.kakao.cafe.infra.advice;
 
 import com.kakao.cafe.common.dto.ErrorResponse;
+import com.kakao.cafe.common.exception.BadRequestException;
 import com.kakao.cafe.common.exception.NotFoundException;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ModelAndView notFoundException(NotFoundException e) {
         log.error("[NotFoundException] - {}", e.getMessage());
+        Map<String, Object> model = mv.getModel();
+        model.put("message", ErrorResponse.of(e.getMessage()));
+        return mv;
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ModelAndView notFoundException(BadRequestException e) {
+        log.error("[BadRequestException] - {}", e.getMessage());
         Map<String, Object> model = mv.getModel();
         model.put("message", ErrorResponse.of(e.getMessage()));
         return mv;
