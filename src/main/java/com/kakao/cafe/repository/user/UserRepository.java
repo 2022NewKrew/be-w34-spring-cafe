@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface UserRepository {
     void create(UserInfo userInfo);
+
     Optional<UserInfo> read(String id);
+
     List<UserInfo> readAll();
 }

@@ -38,7 +38,7 @@ public class UserInfo {
         return email;
     }
 
-    public static UserInfoBuilder builder(UserCreateRequestDto userCreateRequestDto){
+    public static UserInfoBuilder builder(UserCreateRequestDto userCreateRequestDto) {
         return new UserInfoBuilder()
                 .userId(userCreateRequestDto.getUserId())
                 .name(userCreateRequestDto.getName())

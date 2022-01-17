@@ -10,6 +10,7 @@ import java.util.Optional;
 public class MemoryUserRepository implements UserRepository {
 
     private static final UserList userList = UserList.getInstance();
+
     @Override
     public void create(UserInfo userInfo) {
         userList.addUser(userInfo);
