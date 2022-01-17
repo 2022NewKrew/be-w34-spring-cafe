@@ -2,8 +2,8 @@ package com.kakao.cafe.web;
 
 public class Fruit {
 
-    private String name;
-    private int sugar;
+    private final String name;
+    private final int sugar;
 
     public Fruit(String name, int sugar) {
         this.name = name;
@@ -16,6 +16,12 @@ public class Fruit {
 
     public int getSugar() {
         return sugar;
+    }
+
+    public void validate() {
+        if (name == null || name.length() < 2 || sugar < 0) {
+            throw new IllegalArgumentException("Fail to validate Fruit");
+        }
     }
 
     @Override
