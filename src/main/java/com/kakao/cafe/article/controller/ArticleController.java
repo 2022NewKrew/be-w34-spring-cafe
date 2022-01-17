@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/articles")
@@ -26,5 +28,13 @@ public class ArticleController {
         model.addAttribute("article", article);
 
         return "/qna/show";
+    }
+
+    @GetMapping("/form")
+    public String showArticleForm(HttpSession session) {
+        if (session.getAttribute("sessionUserId") == null) {
+            return "redirect:/users/login";
+        }
+        return "/qna/form";
     }
 }
