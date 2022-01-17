@@ -43,7 +43,6 @@ public class PostRepository {
         int limit = pageSize;
         String sql = "SELECT p.id, p.title, p.created_at, p.view_num, u.nick_name AS u_nick_name FROM `POST` AS p " +
                 "INNER JOIN `USER` AS u " +
-                "WHERE p.id = ? " +
                 "LIMIT " + limit +
                 " OFFSET " + offSet;
         return jdbcTemplate.query(sql, postRowMapper.getSimplePostInfoRowMapper());
