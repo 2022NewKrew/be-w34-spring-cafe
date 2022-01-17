@@ -1,6 +1,6 @@
-package com.kakao.cafe.web.dto;
+package com.kakao.cafe.web.user.dto;
 
-import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -12,10 +12,10 @@ class UserCreateRequestTest {
     @Test
     public void testUserCreateRequestDto() {
         //given
-        final String userId = "clo.d";
-        final String password = "1234";
-        final String name = "dongwoon";
-        final String email = "clo.d@kakaocorp.com";
+        final UserId userId = new UserId("clo.d");
+        final Password password = new Password("1234");
+        final Name name = new Name("dongwoon");
+        final Email email = new Email("clo.d@kakaocorp.com");
         final UserCreateRequest dto = new UserCreateRequest(userId, password, name, email);
 
         //when

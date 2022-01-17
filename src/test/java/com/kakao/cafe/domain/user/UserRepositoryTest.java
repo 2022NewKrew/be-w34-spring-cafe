@@ -1,24 +1,35 @@
 package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.web.dto.UserCreateRequest;
+import com.kakao.cafe.repository.user.H2UserRepository;
+import com.kakao.cafe.repository.user.UserRepository;
+import com.kakao.cafe.web.user.dto.UserCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@DataJdbcTest
 public class UserRepositoryTest {
 
-    private final UserRepository userRepository = new InMemoryUserRepository();
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserRepositoryTest(JdbcTemplate jdbcTemplate) {
+        this.userRepository = new H2UserRepository(jdbcTemplate);
+    }
 
     @DisplayName("저장소 회원정보 저장 테스트")
     @MethodSource("provideUsers")
     @ParameterizedTest
-    public void testSave(String userId, String password, String name, String email) {
+    public void testSave(UserId userId, Password password, Name name, Email email) {
         //given
         UserCreateRequest dto = new UserCreateRequest(userId, password, name, email);
         User user = dto.toEntity();
@@ -33,21 +44,21 @@ public class UserRepositoryTest {
 
     private static Stream<Arguments> provideUsers() {
         return Stream.of(
-                Arguments.of("clo.d", "testPassword", "dongwoon", "clo.d@kakaocorp.com")
+                Arguments.of(new UserId("clo.d"), new Password("testPassword"), new Name("dongwoon"), new Email("clo.d@kakaocorp.com"))
         );
     }
 
     @DisplayName("저장소 회원정보 수정 테스트")
     @MethodSource("provideUsers")
     @ParameterizedTest
-    public void userUpdate(String userId, String password, String name, String email) {
+    public void userUpdate(UserId userId, Password password, Name name, Email email) {
         //given
         UserCreateRequest dto = new UserCreateRequest(userId, password, name, email);
         User user = dto.toEntity();
         userRepository.save(user);
 
-        String modifiedName = "modifiedName";
-        String modifiedEmail = "modifiedEmail";
+        Name modifiedName = new Name("modifiedName");
+        Email modifiedEmail = new Email("modifiedEmail");
 
         user.setName(modifiedName);
         user.setEmail(modifiedEmail);
