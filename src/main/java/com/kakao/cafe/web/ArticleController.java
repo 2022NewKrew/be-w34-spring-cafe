@@ -2,6 +2,8 @@ package com.kakao.cafe.web;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.service.article.ArticleService;
+import com.kakao.cafe.web.dto.article.ArticleCreateRequestDto;
+import com.kakao.cafe.web.dto.article.ArticleResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -12,7 +14,13 @@ import java.util.List;
 
 @Controller
 public class ArticleController {
+    private final ArticleService articleService;
     Logger logger = LoggerFactory.getLogger(ArticleController.class);
+
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
+
 
     @GetMapping("article/form.html")
     public String articlePage() {
@@ -20,23 +28,23 @@ public class ArticleController {
     }
 
     @PostMapping("article/create")
-    public String articleWrite(Article article) {
-        logger.info("article: {}", article);
-        ArticleService.postArticle(article);
+    public String articleWrite(ArticleCreateRequestDto articleCreateRequestDto) {
+        logger.info("article: {}", articleCreateRequestDto);
+        articleService.postArticle(new Article(articleCreateRequestDto.getTitle(),articleCreateRequestDto.getContent()));
         return "redirect:/";
     }
 
     @GetMapping("/")
     public String articleMain(Model model) {
-        List<Article> articleList = ArticleService.getArticleList().getList();
+        List<ArticleResponseDto> articleList = articleService.readAll();
         model.addAttribute("articles", articleList);
         model.addAttribute("size", articleList.size());
         return "index";
     }
 
     @GetMapping("article/{articleIndex}")
-    public String viewUserProfile(@PathVariable String articleIndex, Model model) {
-        logger.info("artile Detail:{}", model.addAttribute("article", ArticleService.getArticleList().findById(articleIndex)));
+    public String articleDetail(@PathVariable String articleIndex, Model model) {
+        logger.info("artile Detail:{}", model.addAttribute("article", articleService.findById(articleIndex)));
         return "/article/show";
     }
 

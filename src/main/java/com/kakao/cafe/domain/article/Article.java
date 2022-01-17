@@ -1,6 +1,6 @@
 package com.kakao.cafe.domain.article;
 
-import com.kakao.cafe.domain.TimeGenerator;
+import com.kakao.cafe.utils.TimeGenerator;
 import com.kakao.cafe.service.article.ArticleService;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,20 +8,29 @@ import lombok.ToString;
 @ToString
 @Getter
 public class Article {
-    String id;
-    int number;
-    String title;
-    String content;
-    String date;
+    private Long id;
+    private final String title;
+    private final String content;
+    private final String date;
 
     public Article(String title, String content) {
         this.title = title;
         this.content = content;
         this.date = TimeGenerator.todayDate();
-        this.id = ArticleService.getInstance().getArticleId();
     }
 
-    public boolean hasId(String id) {
+    public Article(Long id, String title, String content, String date) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.date = date;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean hasId(Long id) {
         return this.id.equals(id);
     }
 }
