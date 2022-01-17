@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
+import com.kakao.cafe.domain.exception.CannotAuthenticateException;
 import com.kakao.cafe.domain.exception.DuplicateUserIdException;
 import com.kakao.cafe.domain.repository.UserRepository;
 import com.kakao.cafe.service.dto.CredentialsDto;
@@ -24,6 +25,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    // NOTE: thread-safe하지 않아 보임 -> @Transactional을 여기 붙이면 되나?
     public UserDto create(SignUpDto signUp) {
         SignUp entity = signUp.toEntity();
         userRepository.getByUserId(entity.getUserId())
@@ -44,9 +46,13 @@ public class UserService {
     }
 
     public UserDto login(CredentialsDto credentials) {
-        return userRepository.login(
+        Optional<User> entity = userRepository.login(
                 credentials.getUserId(),
                 credentials.getPassword()
-        ).toDto();
+        );
+        if (entity.isEmpty()) {
+            throw new CannotAuthenticateException();
+        }
+        return entity.get().toDto();
     }
 }

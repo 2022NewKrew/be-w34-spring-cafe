@@ -33,7 +33,7 @@ public class ArticleController {
             @Valid @ModelAttribute ArticleRequest request,
             HttpSession session
     ) {
-        Long ownerId = (Long) session.getAttribute("id");
+        Long ownerId = (Long) session.getAttribute("currentUserId");
         if (ownerId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
         }
@@ -49,12 +49,12 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public String read(@PathVariable Long id, Model model) {
+    public String read(@PathVariable long id, Model model) {
         Optional<ArticleDto> article = service.getById(id);
         if (article.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "article not found");
         }
-        model.addAttribute("article", article);
+        model.addAttribute("article", article.get());
         return "articles/item";
     }
 }

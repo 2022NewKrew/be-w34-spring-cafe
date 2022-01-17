@@ -12,5 +12,5 @@ public interface UserRepository {
     List<User> list();
     Optional<User> getById(long id);
     Optional<User> getByUserId(String userId);
-    User login(String userId, String password);
+    Optional<User> login(String userId, String password);
 }

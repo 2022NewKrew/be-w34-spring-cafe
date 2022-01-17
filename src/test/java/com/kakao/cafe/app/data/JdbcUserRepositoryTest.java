@@ -109,23 +109,23 @@ class JdbcUserRepositoryTest {
 
     @Test
     void login() {
-        User user = subject.login("id", "password");
+        Optional<User> user = subject.login("id", "password");
 
-        assertNotNull(user);
-        assertEquals("id", user.getUserId());
+        assertTrue(user.isPresent());
+        assertEquals("id", user.get().getUserId());
     }
 
     @Test
     void login_wrongId() {
-        User user = subject.login("id1", "password");
+        Optional<User> user = subject.login("id1", "password");
 
-        assertNull(user);
+        assertTrue(user.isEmpty());
     }
 
     @Test
     void login_wrongPassword() {
-        User user = subject.login("id", "password1");
+        Optional<User> user = subject.login("id", "password1");
 
-        assertNull(user);
+        assertTrue(user.isEmpty());
     }
 }
