@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.common.auth.Auth;
+import com.kakao.cafe.common.exception.BaseException;
 import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.UserService;
 import com.kakao.cafe.user.UserStatus;
@@ -37,7 +38,7 @@ public class UserController {
 
     // TODO : 저장할 때 단방향 해시 필요
     @PostMapping(value = "/create")
-    public String insertUser(@ModelAttribute("user") @Valid UserCreateDto userCreateDto, Errors errors, Model model) {
+    public String insertUser(@ModelAttribute("user") @Valid UserCreateDto userCreateDto, Errors errors, Model model) throws BaseException {
 
         // 유효성 에러 발생시 회원가입 폼으로 유효성 메세지와 함께 전송
         if (errors.hasErrors()) {
@@ -51,7 +52,7 @@ public class UserController {
             userService.save(user);
         } catch (SQLException e) {
             log.error("USER TABLE SAVE 실패 SQLState : {}", e.getSQLState());
-            return ErrorPage.getErrorPageModel(model, "회원가입 실패했습니다.");
+            throw new BaseException("회원가입 실패했습니다.");
         }
 
         return "redirect:/";
@@ -113,14 +114,14 @@ public class UserController {
     }
 
     @PostMapping("/updateAuth")
-    public String viewUserUpdateForm(HttpServletRequest request, Model model, @RequestParam String password) {
+    public String viewUserUpdateForm(HttpServletRequest request, Model model, @RequestParam String password) throws BaseException {
 
         HttpSession session = request.getSession();
         UserDto loginUser = (UserDto) session.getAttribute("loginUser");
         User user = userService.loginCheck(loginUser.getUserId(), password);
 
         if (user == null) {
-            return ErrorPage.getErrorPageModel(model, "비밀번호가 틀렸습니다.");
+            throw new BaseException("비밀번호가 틀렸습니다.");
         }
 
         UserDto userDto = modelMapper.map(user, UserDto.class);
@@ -132,7 +133,7 @@ public class UserController {
 
     @Auth(role = Role.ADMIN)
     @PutMapping("/{id}/update")
-    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) {
+    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) throws BaseException {
 
         //TODO: model Mapper 매핑에러
         //User user = modelMapper.map(userUpdateDto, User.class);
@@ -141,14 +142,14 @@ public class UserController {
 
         if (!userService.update(user)) {
             log.info("회원 정보 수정 실패 에러페이지로 이동");
-            return ErrorPage.getErrorPageModel(model, "ADMIN : 회원 정보 수정 실패");
+            throw new BaseException("ADMIN : 회원 정보 수정 실패");
         }
 
         return "redirect:/";
     }
 
     @PutMapping("/update")
-    public String updateUser(HttpServletRequest request, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) {
+    public String updateUser(HttpServletRequest request, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) throws BaseException {
 
         HttpSession session = request.getSession();
         UserDto loginUser = (UserDto) session.getAttribute("loginUser");
@@ -157,19 +158,21 @@ public class UserController {
 
         if (!userService.update(user)) {
             log.info("회원 정보 수정 실패 에러페이지로 이동");
-            return ErrorPage.getErrorPageModel(model, "회원 정보 수정 실패");
+            throw new BaseException("회원 정보 수정 실패");
+
         }
+
 
         return "redirect:/";
     }
 
     @PostMapping("/login")
-    public String login(HttpServletRequest request, @ModelAttribute("user") @Valid UserLoginDto userLoginDto, Model model) {
+    public String login(HttpServletRequest request, @ModelAttribute("user") @Valid UserLoginDto userLoginDto, Model model) throws BaseException {
 
         User user = userService.loginCheck(userLoginDto.getUserId(), userLoginDto.getPassword());
 
         if (user == null) {
-            return ErrorPage.getErrorPageModel(model, "login error 페이지 입니다.");
+            throw new BaseException("login error 페이지 입니다.");
         }
 
         setLoginUserSession(request, user);

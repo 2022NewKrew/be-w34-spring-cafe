@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.common.exception.BaseException;
 import com.kakao.cafe.question.Question;
 import com.kakao.cafe.question.QuestionService;
 import com.kakao.cafe.question.dto.QuestionCreateDto;
@@ -30,7 +31,7 @@ public class QuestionController {
     private final ModelMapper modelMapper;
 
     @PostMapping("/create")
-    public String insertQuestion(HttpServletRequest request, @ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto, Model model) {
+    public String insertQuestion(HttpServletRequest request, @ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto, Model model) throws BaseException {
 
         HttpSession httpSession = request.getSession();
         User user = modelMapper.map(httpSession.getAttribute("loginUser"), User.class);
@@ -43,7 +44,7 @@ public class QuestionController {
             questionService.save(question);
         } catch (SQLException e) {
             log.error("QUESTION TABLE SAVE 실패 SQLState : {}", e.getSQLState());
-            return ErrorPage.getErrorPageModel(model, "게시글 작성 실패");
+            throw new BaseException("게시글 작성 실패");
 
         }
 

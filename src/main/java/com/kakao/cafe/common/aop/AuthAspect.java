@@ -1,6 +1,7 @@
 package com.kakao.cafe.common.aop;
 
 import com.kakao.cafe.common.auth.Auth;
+import com.kakao.cafe.common.exception.BaseException;
 import com.kakao.cafe.user.UserStatus;
 import com.kakao.cafe.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class AuthAspect {
     }
 
     @Around("authAdmin()")
-    public Object beforeAdminAuth(ProceedingJoinPoint joinPoint) {
+    public Object beforeAdminAuth(ProceedingJoinPoint joinPoint) throws BaseException {
 
         try {
             Auth auth = getAuth(joinPoint);
@@ -39,14 +40,17 @@ public class AuthAspect {
                 UserDto user = getLoginUser();
 
                 if (user == null || user.getRole() != UserStatus.ADMIN) {
-                    throw new Exception("권한 없는 사용자가 접근했습니다.");
+                    throw new BaseException("권한 없는 사용자가 접근했습니다.");
                 }
             }
 
             return result;
+        } catch (BaseException e) {
+            throw e;
         } catch (Throwable e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
@@ -62,7 +66,7 @@ public class AuthAspect {
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        
+
         return method.getAnnotation(Auth.class);
     }
 }
