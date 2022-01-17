@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.domain;
 
+import com.kakao.cafe.common.exception.AuthenticationException;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -7,8 +8,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.kakao.cafe.common.exception.ExceptionMessage.INVALID_EMAIL_FORM_EXCEPTION;
-import static com.kakao.cafe.common.exception.ExceptionMessage.NON_NULL_EXCEPTION;
+import static com.kakao.cafe.common.exception.ExceptionMessage.*;
 
 @Getter
 public class User {
@@ -58,6 +58,12 @@ public class User {
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {
             throw new IllegalArgumentException(INVALID_EMAIL_FORM_EXCEPTION);
+        }
+    }
+
+    public void validatePassword(String password) throws IllegalArgumentException {
+        if (!this.getPassword().equals(password)) {
+            AuthenticationException.throwAuthFailure(NOT_MATCHING_PASSWORD_EXCEPTION, password);
         }
     }
 

@@ -1,15 +1,13 @@
 package com.kakao.cafe.user.presentation;
 
 import com.kakao.cafe.user.application.UserService;
-import com.kakao.cafe.user.dto.UserListResponse;
-import com.kakao.cafe.user.dto.UserProfileResponse;
-import com.kakao.cafe.user.dto.UserSaveRequest;
-import com.kakao.cafe.user.dto.UserUpdateRequest;
+import com.kakao.cafe.user.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -61,9 +59,19 @@ public class UserController {
 
     // Use @PutMapping
     @PostMapping("/{userId}/updates")
-    public String updateById(@PathVariable String userId, UserUpdateRequest userUpdateRequest) {
-        log.info(this.getClass() + " 개인정보 수정");
-        userService.updateById(userId, userUpdateRequest);
+    public String updateById(
+            @PathVariable String userId,
+            UserUpdateRequest userUpdateRequest,
+            HttpSession session
+    ) {
+        log.info(this.getClass() + ": 개인정보 수정");
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null) {
+            return "redirect:/auths/login";
+        }
+
+        SessionedUser user = (SessionedUser) value;
+        userService.updateById(userId, userUpdateRequest, user);
         return "redirect:/users";
     }
 }
