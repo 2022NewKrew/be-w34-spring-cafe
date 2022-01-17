@@ -4,6 +4,8 @@ import com.kakao.cafe.qna.domain.Qna;
 import com.kakao.cafe.qna.dto.request.QnaRequest;
 import com.kakao.cafe.qna.dto.response.QnaResponse;
 import com.kakao.cafe.qna.dto.response.QnasResponse;
+import com.kakao.cafe.qna.repository.QnaH2Repository;
+import com.kakao.cafe.qna.repository.QnaRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,7 @@ public class QnaService {
 
     private final QnaRepository qnaRepository;
 
-    public QnaService(QnaRepository qnaRepository) {
+    public QnaService(QnaH2Repository qnaRepository) {
         this.qnaRepository = qnaRepository;
     }
 
