@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class Mapper {
 
-    public Member map(JoinMemberDTO memberDto) {
+    public Member map(JoinMemberDto memberDto) {
         Long memberId = memberDto.getMemberId();
         UserId userId = new UserId(memberDto.getUserId());
         Name name = new Name(memberDto.getName());

@@ -3,19 +3,19 @@ package com.kakao.cafe.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @AllArgsConstructor
-public class JoinMemberDTO {
+public class JoinMemberDto {
 
     private Long memberId;
-    @NotNull
+    @NotEmpty
     private String userId;
-    @NotNull
+    @NotEmpty
     private String name;
-    @NotNull
+    @NotEmpty
     private String password;
-    @NotNull
+    @NotEmpty
     private String email;
 }

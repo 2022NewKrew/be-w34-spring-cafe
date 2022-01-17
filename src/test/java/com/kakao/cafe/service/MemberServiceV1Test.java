@@ -86,6 +86,6 @@ public class MemberServiceV1Test {
         String errorMessage = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             memberService.joinMember(editMember);
         }).getMessage();
-        assertThat(errorMessage).isEqualTo(ErrorMessages.WRONG_PASSWORD);
+        assertThat(errorMessage).isEqualTo(ErrorMessages.LOGIN_FAILED);
     }
 }

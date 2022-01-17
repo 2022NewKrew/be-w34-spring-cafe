@@ -26,8 +26,6 @@ public class MemberServiceV1 implements MemberService {
 
     @Override
     public Member joinMember(Member member) {
-        if (member.getMemberId() != null)
-            return editMemberInformation(member);
         return memberRepository.saveMember(member);
     }
 
@@ -38,10 +36,10 @@ public class MemberServiceV1 implements MemberService {
     }
 
     @Override
-    public Member editMemberInformation(Member member) {
-        if (!member.getPassword().equals(memberRepository.findOne(member.getMemberId()).getPassword()))
-            throw new IllegalArgumentException(ErrorMessages.WRONG_PASSWORD);
-        return memberRepository.updateByMemberId(member);
+    public Member editMemberInformation(Member newMemberInformation, Member LoginMember) {
+        if (!newMemberInformation.getPassword().equals(LoginMember.getPassword()))
+            throw new IllegalArgumentException(ErrorMessages.LOGIN_FAILED);
+        return memberRepository.updateByMemberId(newMemberInformation);
     }
 
     @Override
@@ -58,5 +56,18 @@ public class MemberServiceV1 implements MemberService {
     @Override
     public void deleteAllMembers() {
         memberRepository.deleteAllMembers();
+    }
+
+    @Override
+    public Member loginMember(String userId, String password) {
+        Long memberId = memberRepository.isUserIdExist(new UserId(userId));
+        if (memberId == null) {
+            throw new IllegalArgumentException(ErrorMessages.LOGIN_FAILED);
+        }
+        Member member = memberRepository.findOne(memberId);
+        if (!member.getPassword().getPassword().equals(password)) {
+            throw new IllegalArgumentException(ErrorMessages.LOGIN_FAILED);
+        }
+        return member;
     }
 }

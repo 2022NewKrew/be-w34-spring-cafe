@@ -65,8 +65,9 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
     public Member findByUserId(UserId userId) {
         List<Member> result = jdbcTemplate.query("select * from member where user_id = ?", memberRowMapper(), userId.getUserId());
         Optional<Member> member = result.stream().findAny();
-        if (member.isEmpty())
+        if (member.isEmpty()) {
             throw new NoSuchElementException(ErrorMessages.NO_SUCH_MEMBER);
+        }
         return member.get();
     }
 

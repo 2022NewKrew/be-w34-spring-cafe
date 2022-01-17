@@ -7,12 +7,10 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 @AllArgsConstructor
-public class PostArticleDto {
+public class LoginMemberDto {
 
     @NotEmpty
-    private String writer;
+    private String userId;
     @NotEmpty
-    private String contents;
-    @NotEmpty
-    private String title;
+    private String password;
 }
