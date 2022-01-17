@@ -138,4 +138,11 @@ public class UserController {
     public String loginFailed(){
         return "/user/login_failed";
     }
+
+    @GetMapping("logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+
+        return "redirect:/";
+    }
 }
