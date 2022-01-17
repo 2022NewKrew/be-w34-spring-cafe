@@ -39,6 +39,19 @@ public class UserRepository implements MyRepository<User, Long> {
         }
     }
 
+    public Optional<User> findByUsername(String username) {
+        String sql = "select u.id, u.username, u.nickname, u.email, u.password " +
+                "from users u " +
+                "where u.username = ?";
+
+        try {
+            User user = jdbcTemplate.queryForObject(sql, mapper, username);
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
     @Override
     public List<User> findAll() {
         String sql = "select u.id, u.username, u.nickname, u.email, u.password " +
