@@ -14,8 +14,8 @@ public class JdbcConfig {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("kakaodb")
-                .addScript("classpath:/sql/settings.sql")
-                .addScript("classpath:/sql/tables.sql")
+                .addScript("classpath:/jdbc-sql/settings.sql")
+                .addScript("classpath:/jdbc-sql/tables.sql")
                 .build();
     }
 }
