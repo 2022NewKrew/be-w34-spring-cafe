@@ -9,10 +9,7 @@ import com.kakao.cafe.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +40,7 @@ public class UserController {
     }
 
     //회원정보수정
-    @PostMapping(value = "/user/update")
+    @PutMapping(value = "/user/update")
     public String userUpdate(UserCreateDTO userCreateDTO){
         userService.userUpdate(userCreateDTO);
 
