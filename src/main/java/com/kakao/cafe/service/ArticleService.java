@@ -6,7 +6,7 @@ import com.kakao.cafe.entity.Article;
 import java.util.List;
 
 public interface ArticleService {
-    void write(ArticleRegistrationDto articleDto);
+    void write(ArticleRegistrationDto articleRequestDto);
 
     List<Article> getArticles();
 

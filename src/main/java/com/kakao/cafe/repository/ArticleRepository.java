@@ -10,8 +10,8 @@ import java.util.Objects;
 public class ArticleRepository {
     private final List<Article> articles = new ArrayList<>();
 
-    public void createArticle(ArticleRegistrationDto articleDto) {
-        Article article = new Article(articles.size()+1, articleDto.getTitle(), articleDto.getContent());
+    public void createArticle(ArticleRegistrationDto articleRequestDto) {
+        Article article = new Article(articles.size()+1, articleRequestDto.getTitle(), articleRequestDto.getContent());
         articles.add(article);
     }
 

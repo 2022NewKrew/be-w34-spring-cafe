@@ -15,7 +15,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public void write(ArticleRegistrationDto articleDto) { articleRepository.createArticle(articleDto);}
+    public void write(ArticleRegistrationDto articleRequestDto) { articleRepository.createArticle(articleRequestDto);}
 
     @Override
     public List<Article> getArticles() {
