@@ -29,10 +29,14 @@ public class User {
         this.password = newPassword;
     }
 
-    private void validatePassword(String newPassword) {
-        if (!password.equals(newPassword)) {
+    private void validatePassword(String inputPassword) {
+        if (!isEqualPassword(inputPassword)) {
             throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
         }
+    }
+
+    public boolean isEqualPassword(String inputPassword) {
+        return password.equals(inputPassword);
     }
 
     public Long getId() {
