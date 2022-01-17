@@ -35,7 +35,7 @@ public class JdbcUserRepository implements UserRepository {
     public List<User> findAll() {
         String sql = "select * from users";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(rs.getString("id"),
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(
                 rs.getString("user_id"),
                 rs.getString("password"),
                 rs.getString("name"),
@@ -47,7 +47,7 @@ public class JdbcUserRepository implements UserRepository {
         String sql = "select * from users where user_id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getString("id"),
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(
                             rs.getString("user_id"),
                             rs.getString("password"),
                             rs.getString("name"),

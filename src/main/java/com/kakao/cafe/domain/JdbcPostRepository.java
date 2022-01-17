@@ -22,7 +22,7 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public Post save(Post post) {
         String sql = "insert into post(title, content, user_id) values(?, ?, ?)";
-        jdbcTemplate.update(sql, post.getTitle(), post.getContent(), UUID. fromString(post.getUserId()));
+        jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getUserId());
         return post;
     }
 
