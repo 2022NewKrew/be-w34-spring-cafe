@@ -75,15 +75,10 @@ public class UserController {
 
     //로그인요청
     @PostMapping(value = "/user/login/try")
-    public String userLogin(UserLoginDTO userLoginDTO, HttpSession session, HttpServletRequest request){
-        String userCookieValue = request.getCookies()[0].getValue();
-        if(session.getAttribute("loginList") == null){
-            session.setAttribute("loginList", new HashMap<String, String>());
-        }
-
-        if(userService.isValidLogin(userLoginDTO)){
-            Map<String, String> loginList = (Map<String, String>) session.getAttribute("loginList");
-            loginList.put(userCookieValue, userLoginDTO.getUserId()); //해당 유저쿠키번호에 로그인한 사용자의 아이디를 추가
+    public String userLogin(UserLoginDTO userLoginDTO, HttpSession session){
+        if(userService.isValidLogin(userLoginDTO)) {
+            User user = userService.getUserByUserId(userLoginDTO.getUserId());
+            session.setAttribute("user", user);
         }
 
         return "redirect:/";
@@ -91,10 +86,8 @@ public class UserController {
 
     //로그아웃요청
     @GetMapping(value = "/user/logout")
-    public String userLogout(HttpSession session, HttpServletRequest request){
-        String userCookieValue = request.getCookies()[0].getValue();
-        Map<String, String> loginList = (Map<String, String>) session.getAttribute("loginList");
-        loginList.remove(userCookieValue);
+    public String userLogout(HttpSession session){
+        session.invalidate();
 
         return "redirect:/";
     }
