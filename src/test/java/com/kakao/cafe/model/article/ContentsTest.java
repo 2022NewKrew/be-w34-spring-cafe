@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+@DisplayName("Contents 테스트")
 class ContentsTest {
 
     private static final int ALLOWED_LENGTH_CONTENTS = 100;

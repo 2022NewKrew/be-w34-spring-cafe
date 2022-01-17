@@ -1,12 +1,15 @@
 package com.kakao.cafe.dao.user;
 
-import com.kakao.cafe.model.user.*;
-import org.springframework.stereotype.Repository;
-
+import com.kakao.cafe.model.user.Email;
+import com.kakao.cafe.model.user.Name;
+import com.kakao.cafe.model.user.Password;
+import com.kakao.cafe.model.user.User;
+import com.kakao.cafe.model.user.UserId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class VolatilityUserStorage implements UserDao {

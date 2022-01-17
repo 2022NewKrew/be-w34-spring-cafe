@@ -1,7 +1,6 @@
-package com.kakao.cafe.controller.article;
+package com.kakao.cafe.controller.article.dto;
 
 import com.kakao.cafe.model.article.Article;
-
 import java.time.LocalDateTime;
 
 public class ArticleDto {

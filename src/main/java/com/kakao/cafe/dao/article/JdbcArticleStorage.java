@@ -4,15 +4,14 @@ import com.kakao.cafe.model.article.Article;
 import com.kakao.cafe.model.article.Contents;
 import com.kakao.cafe.model.article.Title;
 import com.kakao.cafe.model.article.Writer;
-import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 @Repository
 @Primary

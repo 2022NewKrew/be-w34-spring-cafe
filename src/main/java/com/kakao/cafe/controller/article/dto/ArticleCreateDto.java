@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller.article;
+package com.kakao.cafe.controller.article.dto;
 
 public class ArticleCreateDto {
 

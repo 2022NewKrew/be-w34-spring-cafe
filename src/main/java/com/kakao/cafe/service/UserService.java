@@ -1,10 +1,13 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.dao.user.UserDao;
-import com.kakao.cafe.model.user.*;
-import org.springframework.stereotype.Service;
-
+import com.kakao.cafe.model.user.Email;
+import com.kakao.cafe.model.user.Name;
+import com.kakao.cafe.model.user.Password;
+import com.kakao.cafe.model.user.User;
+import com.kakao.cafe.model.user.UserId;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
@@ -34,10 +37,13 @@ public class UserService {
                 new Email(email));
     }
 
-    public boolean hasUser(String userId, String password) {
+    public void login(String userId, String password) {
         User user = userDao.findUserById(new UserId(userId))
-                .orElseThrow(() -> new IllegalArgumentException("찾는 유저가 없습니다."));
-        return user.isPassword(new Password(password));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+        if (user.isPassword(new Password(password))) {
+            return;
+        }
+        throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
     }
 
     private User findUser(UserId userId) {

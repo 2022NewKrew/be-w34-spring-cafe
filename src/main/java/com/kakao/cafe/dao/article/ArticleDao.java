@@ -4,7 +4,6 @@ import com.kakao.cafe.model.article.Article;
 import com.kakao.cafe.model.article.Contents;
 import com.kakao.cafe.model.article.Title;
 import com.kakao.cafe.model.article.Writer;
-
 import java.util.List;
 import java.util.Optional;
 

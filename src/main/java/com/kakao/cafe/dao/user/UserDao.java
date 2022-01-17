@@ -1,7 +1,10 @@
 package com.kakao.cafe.dao.user;
 
-import com.kakao.cafe.model.user.*;
-
+import com.kakao.cafe.model.user.Email;
+import com.kakao.cafe.model.user.Name;
+import com.kakao.cafe.model.user.Password;
+import com.kakao.cafe.model.user.User;
+import com.kakao.cafe.model.user.UserId;
 import java.util.List;
 import java.util.Optional;
 

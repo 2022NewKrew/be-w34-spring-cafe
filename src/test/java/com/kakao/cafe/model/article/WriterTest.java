@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+@DisplayName("Writer 테스트")
 class WriterTest {
 
     private static final int ALLOWED_LENGTH_WRITER = 8;

@@ -1,7 +1,6 @@
 package com.kakao.cafe.model.article;
 
 import com.kakao.cafe.utility.NullChecker;
-
 import java.util.Objects;
 
 public class Title {

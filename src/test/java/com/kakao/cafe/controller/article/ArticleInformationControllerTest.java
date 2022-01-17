@@ -3,13 +3,10 @@ package com.kakao.cafe.controller.article;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.model.article.Article;
 import com.kakao.cafe.model.article.Contents;
 import com.kakao.cafe.model.article.Title;
@@ -20,23 +17,21 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-@DisplayName("ArticleController 테스트")
-class ArticleControllerTest {
+@DisplayName("ArticleInformationController 테스트")
+class ArticleInformationControllerTest {
 
     private ArticleService articleService;
-    private ArticleController articleController;
+    private ArticleInformationController articleController;
     private MockMvc mockMvc;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     private void before() {
         articleService = mock(ArticleService.class);
-        articleController = new ArticleController(articleService);
+        articleController = new ArticleInformationController(articleService);
 
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setPrefix("/WEB-INF/jsp/view/");
@@ -71,21 +66,6 @@ class ArticleControllerTest {
                 .andExpect(view().name("index"))
                 .andExpect(model().attributeExists("articles"))
                 .andExpect(model().attributeExists("pages"));
-    }
-
-    @DisplayName("GET /articles 테스트")
-    @Test
-    public void postArticle() throws Exception {
-        String content = objectMapper.writeValueAsString(
-                new ArticleCreateDto("title", "writer", "contents"));
-
-        mockMvc.perform(
-                        post("/articles")
-                                .content(content)
-                                .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
     }
 
     @DisplayName("GET /articles/{id} 테스트")

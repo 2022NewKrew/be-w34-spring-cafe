@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+@DisplayName("Email 테스트")
 class EmailTest {
 
     private static final int ALLOWED_LENGTH_EMAIL = 24;

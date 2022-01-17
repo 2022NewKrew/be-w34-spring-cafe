@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller.user;
+package com.kakao.cafe.controller.user.dto;
 
 import com.kakao.cafe.model.user.User;
 

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+@DisplayName("Password 테스트")
 class PasswordTest {
 
     private static final int ALLOWED_LENGTH_PASSWORD = 16;

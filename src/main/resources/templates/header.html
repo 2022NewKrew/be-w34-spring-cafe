@@ -65,14 +65,14 @@
     <div class="collapse navbar-collapse" id="navbar-collapse2">
       <ul class="nav navbar-nav navbar-right">
         <li class="active"><a href="/">Posts</a></li>
-        {{^isLogin}}
-        <li><a href="/users/login/form" role="button" data-toggle="modal">로그인</a></li>
+        {{^loginUserId}}
+        <li><a href="/login/form" role="button" data-toggle="modal">로그인</a></li>
         <li><a href="/users/form" role="button" data-toggle="modal">회원가입</a></li>
-        {{/isLogin}}
-        {{#isLogin}}
-        <li><a href="/users/logout" role="button">로그아웃</a></li>
+        {{/loginUserId}}
+        {{#loginUserId}}
+        <li><a href="/logout" role="button">로그아웃</a></li>
         <li><a href="/users/update" role="button">회원정보 수정</a></li>
-        {{/isLogin}}
+        {{/loginUserId}}
       </ul>
     </div>
   </div>

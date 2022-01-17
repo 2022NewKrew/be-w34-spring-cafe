@@ -4,13 +4,12 @@ import com.kakao.cafe.model.article.Article;
 import com.kakao.cafe.model.article.Contents;
 import com.kakao.cafe.model.article.Title;
 import com.kakao.cafe.model.article.Writer;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class VolatilityArticleStorage implements ArticleDao {
