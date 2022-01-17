@@ -30,13 +30,18 @@ public class UserService {
         return jdbcTemplate.queryForObject(sql, new UserMapper(), id);
     }
 
+    public Users getByUserName(String userId) {
+        String sql = "SELECT ID, USERID, PASSWORD, NAME, EMAIL FROM USERS WHERE USERID=?";
+        return jdbcTemplate.queryForObject(sql, new UserMapper(), userId);
+    }
+
     public void updateUser(int id, Users updateUser, String newPassword) {
         if (!getByUserId(id).getPassword().equals((updateUser.getPassword())))
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         if (!newPassword.isBlank())
             updateUser.setPassword(newPassword);
         String sql = "UPDATE USERS SET PASSWORD=?, NAME=?, EMAIL=? WHERE ID=?";
-        jdbcTemplate.update(sql, updateUser.getPassword(), updateUser.getName(), updateUser.getEmail(), updateUser.getId());
+        jdbcTemplate.update(sql, updateUser.getPassword(), updateUser.getName(), updateUser.getEmail(), id);
     }
 
 }
