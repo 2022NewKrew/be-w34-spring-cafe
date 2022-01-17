@@ -42,4 +42,5 @@
 - [x] 의존성 주입 방법 변경
 
 # step6
+- [x] local mysql 사용
 - [ ] requestParam validation검증
