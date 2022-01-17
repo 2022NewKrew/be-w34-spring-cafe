@@ -92,9 +92,9 @@ class ArticleTest {
 
     private static List<String> getStringOver100Length() {
         return List.of(
-                "a".repeat(ALLOWED_LENGTH_CONTENTS + 1),
-                "b".repeat(ALLOWED_LENGTH_CONTENTS + 2),
-                "c".repeat(ALLOWED_LENGTH_CONTENTS + 3)
+                "a" .repeat(ALLOWED_LENGTH_CONTENTS + 1),
+                "b" .repeat(ALLOWED_LENGTH_CONTENTS + 2),
+                "c" .repeat(ALLOWED_LENGTH_CONTENTS + 3)
         );
     }
 }

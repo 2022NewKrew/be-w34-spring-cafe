@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.mockito.Mockito.mock;
@@ -60,5 +61,47 @@ class UserServiceTest {
         //then
         assertThatThrownBy(() -> userService.updateUser(userId, illegalPassword, name, email))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("입력받은 유저 아이디, 비밀번호를 갖는 유저가 존재할 때 true를 반환한다..")
+    @Test
+    void legalHasUser() {
+        //give
+        String userId = "userId";
+        String password = "password";
+        String name = "name";
+        String email = "email";
+        String targetUserId = "userId";
+        String targetPassword = "password";
+
+        when(userDao.findUserById(targetUserId))
+                .thenReturn(Optional.of(new User(userId, password, name, email)));
+        //when
+        User user = userDao.findUserById(targetUserId).orElseGet(null);
+        boolean isSame = user.isPassword(targetPassword);
+
+        //then
+        assertThat(isSame).isTrue();
+    }
+
+    @DisplayName("입력받은 유저 아이디는 일치하고 비밀번호는 일치하지 않는 유저가 존재할 때 false를 반환한다..")
+    @Test
+    void illegalHasUser() {
+        //give
+        String userId = "userId";
+        String password = "password";
+        String name = "name";
+        String email = "email";
+        String targetUserId = "userId";
+        String targetPassword = "notSame";
+
+        when(userDao.findUserById(targetUserId))
+                .thenReturn(Optional.of(new User(userId, password, name, email)));
+        //when
+        User user = userDao.findUserById(targetUserId).orElseGet(null);
+        boolean isSame = user.isPassword(targetPassword);
+
+        //then
+        assertThat(isSame).isFalse();
     }
 }

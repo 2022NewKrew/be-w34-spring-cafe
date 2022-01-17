@@ -20,6 +20,7 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+	testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 
 test {

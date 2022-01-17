@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,11 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("JdbcArticleStorage 테스트")
 @JdbcTest
-@Transactional
 class JdbcArticleStorageTest {
     private static final int PRECONDITION_ARTICLE_LENGTH = 10;
-
-    private static int lastArticleId = 0;
 
     private final ArticleDao articleDao;
     private final JdbcTemplate jdbcTemplate;
@@ -37,13 +33,14 @@ class JdbcArticleStorageTest {
         for (int i = 1; i <= 10; i++) {
             jdbcTemplate.update(sql, "title" + i, "writer" + i, "contents" + i);
         }
-        lastArticleId += 10;
     }
 
     @AfterEach
     private void deleteInitData() {
-        String sql = "TRUNCATE TABLE ARTICLE";
-        jdbcTemplate.execute(sql);
+        String truncateSql = "TRUNCATE TABLE ARTICLE";
+        String initAutoIncrement = "ALTER TABLE ARTICLE ALTER COLUMN ID RESTART WITH 1";
+        jdbcTemplate.execute(truncateSql);
+        jdbcTemplate.execute(initAutoIncrement);
     }
 
     @DisplayName("설정된 초기값이 있을때 getArticles 메서드를 사용하면 기대하는 결과값을 반환한다.")
@@ -57,7 +54,7 @@ class JdbcArticleStorageTest {
 
         //then
         assertThat(articles.size()).isEqualTo(articlesPerPage);
-        assertThat(articles.get(0).getId()).isEqualTo(lastArticleId);
+        assertThat(articles.get(0).getId()).isEqualTo(PRECONDITION_ARTICLE_LENGTH);
     }
 
     @DisplayName("설정된 초기 값이 있을때 새로운 addArticle 메서드를 실행하면 새로운 Article을 추가한다.")
@@ -70,7 +67,7 @@ class JdbcArticleStorageTest {
         //when
         articleDao.addArticle(title, writer, contents);
         Article article = articleDao
-                .findArticleById(lastArticleId + 1)
+                .findArticleById(PRECONDITION_ARTICLE_LENGTH + 1)
                 .orElseGet(null);
         //then
         assertThat(article.getTitle())

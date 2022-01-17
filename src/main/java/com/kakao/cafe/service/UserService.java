@@ -32,6 +32,11 @@ public class UserService {
         userDao.addUser(userId, password, name, email);
     }
 
+    public boolean hasUser(String userId, String password) {
+        User user = userDao.findUserById(userId).orElseThrow(() -> new IllegalArgumentException("찾는 유저가 없습니다."));
+        return user.isPassword(password);
+    }
+
     private User findUser(String userId) {
         return userDao
                 .findUserById(userId)

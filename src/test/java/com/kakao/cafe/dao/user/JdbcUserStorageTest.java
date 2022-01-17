@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("JdbcUserStorage 테스트")
 @JdbcTest
-@Transactional
 class JdbcUserStorageTest {
     private static final int PRECONDITION_USER_LENGTH = 10;
 
