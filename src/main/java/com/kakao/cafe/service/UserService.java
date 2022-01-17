@@ -13,4 +13,5 @@ public interface UserService {
     UserProfileDto findByName(String s) throws NoSuchElementException;
     List<UserProfileDto> getUserList();
     void updateUserProfile(UserProfileDto u, String s) throws NoSuchElementException, IllegalArgumentException;
+    UserProfileDto checkPassword(String userId, String password);
 }

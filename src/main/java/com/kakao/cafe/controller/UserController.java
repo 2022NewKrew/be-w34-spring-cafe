@@ -99,4 +99,20 @@ public class UserController {
 
         return "redirect:/users/list";
     }
+
+    @PostMapping("/login")
+    public String login(String userId, String password, HttpSession session) {
+        try {
+            session.setAttribute("sessionedUser", userService.checkPassword(userId, password));
+        } catch (IllegalArgumentException e) {
+            logger.error("/users/login, User(id = {}) failed to login. Incorrect password.", userId, e);
+            return "/user/login_failed";
+        } catch (NoSuchElementException e) {
+            logger.error("/users/login, User(id = {}) failed to login. User does not exist.", userId, e);
+            return "/user/login_failed";
+        }
+        logger.info("/users/login, User(id = {}) login.", userId);
+
+        return "/index";
+    }
 }

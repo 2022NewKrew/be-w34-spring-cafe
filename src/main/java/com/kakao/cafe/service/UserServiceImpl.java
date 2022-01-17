@@ -59,4 +59,13 @@ public class UserServiceImpl implements UserService {
 
         userRepository.update(newUser);
     }
+
+    public UserProfileDto checkPassword(String userId, String password) throws NoSuchElementException, IllegalArgumentException {
+        User user = userRepository.findByUserId(userId);
+
+        if (!(password != null && password.equals(user.getPassword())))
+            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
+
+        return new UserProfileDto(user.getUserId(), user.getEmail(), user.getName());
+    }
 }
