@@ -24,9 +24,9 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/{index}")
-    public String getArticle(@PathVariable Long index, Model model) {
-        ArticleDto article = articleService.findById(index);
+    @GetMapping("/{articleId}")
+    public String getArticle(@PathVariable Long articleId, Model model) {
+        ArticleDto article = articleService.findById(articleId);
         model.addAttribute("article", article);
 
         return "article/show";
