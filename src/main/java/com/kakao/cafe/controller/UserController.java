@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.constants.Constants;
 import com.kakao.cafe.controller.dto.request.UserLoginRequestDto;
 import com.kakao.cafe.controller.dto.request.UserSignUpRequestDto;
 import com.kakao.cafe.controller.dto.request.UserUpdateRequestDto;
@@ -11,11 +12,13 @@ import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.service.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -51,7 +54,7 @@ public class UserController {
     @PostMapping()
     public String signUp(@Validated @ModelAttribute UserSignUpRequestDto userSignUpRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            log.error("회원가입 실패: ", IllegalArgumentException.class);
+            throw new IllegalArgumentException();
         }
 
         userService.signUp(userSignUpRequestDto);
@@ -59,14 +62,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute UserLoginRequestDto userLoginRequestDto, BindingResult bindingResult, HttpServletRequest request) {
+    public String login(@Validated @ModelAttribute UserLoginRequestDto userLoginRequestDto, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
-            log.error("로그인 실패: ", IllegalArgumentException.class);
+            throw new IllegalArgumentException();
         }
 
         User loginUser = userService.login(userLoginRequestDto);
         HttpSession session = request.getSession();
-        session.setAttribute("loginUser", new UserLoginSession(loginUser));
+        session.setAttribute(Constants.loginUser, new UserLoginSession(loginUser));
         return "redirect:/";
     }
 
@@ -79,16 +82,34 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/updateForm")
-    public String getUpdateForm(@PathVariable String userId, Model model) {
+    public String getUpdateForm(@PathVariable String userId, Model model,
+                                @SessionAttribute(name = Constants.loginUser) UserLoginSession userLoginSession) {
+
+        validateUserAuthority(userLoginSession.getUserId(), userId);
+
         User foundUser = userService.findUserByUserId(userId);
         model.addAttribute("userId", foundUser.getUserId());
         return "user/updateForm";
     }
 
     @PutMapping("/{userId}")
-    public String update(@PathVariable String userId, UserUpdateRequestDto userUpdateRequestDto) {
+    public String update(@PathVariable String userId, @Validated UserUpdateRequestDto userUpdateRequestDto, BindingResult bindingResult,
+                         @SessionAttribute(name = Constants.loginUser) UserLoginSession userLoginSession) {
+
+        if (bindingResult.hasErrors()) {
+            throw new IllegalArgumentException();
+        }
+
+        validateUserAuthority(userLoginSession.getUserId(), userId);
+
         userService.update(new UserUpdateDto(userId, userUpdateRequestDto));
         return "redirect:/users";
+    }
+
+    private void validateUserAuthority(String loginUserId, String ownerUserId) {
+        if (!loginUserId.equals(ownerUserId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다", new IllegalArgumentException());
+        }
     }
 }
 

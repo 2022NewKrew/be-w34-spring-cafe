@@ -44,6 +44,7 @@ public class SpringJdbcUserRepository implements UserRepository {
 
     @Override
     public void update(User user) {
-        jdbcTemplate.update("update USERS set name=? ,password=?, email=?", user.getName(), user.getPassword(), user.getEmail());
+        jdbcTemplate.update("update USERS set name=? ,password=?, email=? where user_id = ?",
+                user.getName(), user.getPassword(), user.getEmail(), user.getUserId());
     }
 }
