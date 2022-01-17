@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 public class QuestionDto {
     private Long id;
+    private Long MemberId;
     private String writer;
     private String title;
     private String contents;

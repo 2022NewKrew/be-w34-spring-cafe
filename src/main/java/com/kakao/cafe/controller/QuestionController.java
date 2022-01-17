@@ -76,10 +76,13 @@ public class QuestionController {
     }
 
     @GetMapping("/{id}")
-    public String viewQuestionDetail(@PathVariable("id") Long id, Model model) {
+    public String viewQuestionDetail(HttpSession session, @PathVariable("id") Long id, Model model) {
 
+        UserDto loginUser = (UserDto) session.getAttribute("loginUser");
+        Long memberId = loginUser == null ? -1L : loginUser.getId();
         QuestionDto question = modelMapper.map(questionService.findOne(id), QuestionDto.class);
 
+        question.setThisIsMine(memberId.equals(question.getMemberId()));
         model.addAttribute("question", question);
 
         return "qna/detail";

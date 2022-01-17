@@ -25,6 +25,7 @@
                         <p>{{question.contents}}</p>
                     </div>
                     <div class="article-util">
+                        {{#question.thisIsMine}}
                         <ul class="article-util-list">
                             <li>
                                 <a class="link-modify-article" href="">수정</a>
@@ -36,6 +37,7 @@
                                 </form>
                             </li>
                         </ul>
+                        {{/question.thisIsMine}}
                     </div>
                 </div>
             </div>
