@@ -15,6 +15,7 @@ public class DbConfig {
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("kakaocafe")
                 .addScript("sql/schema.sql")
+                .addScript("sql/insert.sql")
                 .build();
     }
 }
