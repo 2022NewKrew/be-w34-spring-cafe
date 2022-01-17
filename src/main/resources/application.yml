@@ -4,6 +4,8 @@ server:
 handlebars:
   suffix: .hbs
   cache: false
+  expose-session-attributes: true
+
 
 spring:
   datasource:

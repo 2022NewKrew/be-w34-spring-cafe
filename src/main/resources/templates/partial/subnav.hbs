@@ -17,10 +17,16 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/">Posts</a></li>
+            {{^sessionedUser}}
                 <li><a href="/user/login" role="button">로그인</a></li>
                 <li><a href="/user/form" role="button">회원가입</a></li>
-                <li><a href="#" role="button">로그아웃</a></li>
+            {{/sessionedUser}}
+            {{#sessionedUser}}
+                <li>
+                    <form name="logout" action="/logout" method="post"></form>
+                    <a href="#" role="button" onclick="javascript:document.logout.submit();">로그아웃</a></li>
                 <li><a href="#" role="button">개인정보수정</a></li>
+            {{/sessionedUser}}
             </ul>
         </div>
     </div>
