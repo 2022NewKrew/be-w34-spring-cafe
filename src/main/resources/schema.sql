@@ -1,9 +1,9 @@
 DROP TABLE IF EXISTS articles, users;
 
 CREATE TABLE ARTICLES (
-                          id INT AUTO_INCREMENT PRIMARY KEY,
+                          id LONG AUTO_INCREMENT PRIMARY KEY,
                           title VARCHAR(64) NOT NULL,
-                          contents VARCHAR(1024) NOT NULL,
+                          content VARCHAR(1024) NOT NULL,
                           date  DATE NOT NULL
 );
 

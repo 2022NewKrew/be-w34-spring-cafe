@@ -1,8 +1,9 @@
 package com.kakao.cafe.service.article;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.repository.article.ArticleDao;
 import com.kakao.cafe.repository.article.ArticleRepository;
-import com.kakao.cafe.repository.article.MemoryArticleRepository;
+import com.kakao.cafe.repository.article.DbArticleRepository;
 import com.kakao.cafe.web.dto.article.ArticleResponseDto;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +13,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
-    public ArticleService() {
-    }
 
-    private final ArticleRepository articleRepository = new MemoryArticleRepository();
+    private final ArticleRepository articleRepository;
+
+    public ArticleService(ArticleDao articleDao) {
+        this.articleRepository = new DbArticleRepository(articleDao);
+    }
 
     public void postArticle(Article article) {
         articleRepository.create(article);

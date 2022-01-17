@@ -19,6 +19,13 @@ public class Article {
         this.date = TimeGenerator.todayDate();
     }
 
+    public Article(Long id, String title, String content, String date) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.date = date;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

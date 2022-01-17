@@ -8,13 +8,11 @@ import java.util.Optional;
 
 @Repository
 public class DbUserRepository implements UserRepository {
-    private static final UserList userList = UserList.getInstance();
     private final UserDao userDao;
 
     public DbUserRepository(UserDao userDao) {
         this.userDao = userDao;
     }
-
 
     @Override
     public void create(UserInfo userInfo) {
