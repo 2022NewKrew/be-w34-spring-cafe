@@ -30,15 +30,7 @@
             </tr>
         </table>
         <div class="row mt-3">
-            <div class="col-lg-6">
-                <button type="button" class="btn btn-dark" onclick="location.href='/user/list'">회원 목록</button>
-            </div>
-            <div class="col-lg-6">
-                <form method="post" action="/user/modify">
-                    <input type="hidden" name="userId" value="{{userId}}">
-                    <button type="submit" class="btn btn-dark">회원정보 수정</button>
-                </form>
-            </div>
+            <button type="button" class="btn btn-dark" onclick="location.href='/user/list'">회원 목록</button>
         </div>
         {{/user}}
     </article>
