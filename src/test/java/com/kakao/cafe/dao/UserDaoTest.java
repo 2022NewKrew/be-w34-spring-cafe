@@ -36,7 +36,7 @@ class UserDaoTest {
     @DisplayName("회원 저장 및 회원 조회 성공")
     void findByUserId() {
         UserDto userDto = new UserDto();
-        userDto.setUserId("david.dh");
+        userDto.setUserId("test");
         userDto.setPassword("1234");
         userDto.setName("김대환");
         userDto.setEmail("david.dh@kakaocorp.com");
