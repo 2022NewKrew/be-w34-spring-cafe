@@ -1,10 +1,12 @@
 package com.kakao.cafe.adapter.out.infra.persistence.user;
 
+import com.kakao.cafe.application.user.dto.LoginRequest;
 import com.kakao.cafe.application.user.dto.SignUpRequest;
 import com.kakao.cafe.application.user.dto.UpdateRequest;
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.application.user.dto.UserInfoList;
 import com.kakao.cafe.application.user.port.out.GetUserInfoPort;
+import com.kakao.cafe.application.user.port.out.LoginUserPort;
 import com.kakao.cafe.application.user.port.out.RegisterUserPort;
 import com.kakao.cafe.application.user.port.out.UpdateUserInfoPort;
 import com.kakao.cafe.domain.user.User;
@@ -14,16 +16,17 @@ import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
 import com.kakao.cafe.domain.user.exceptions.UserIdDuplicationException;
 import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
+import com.kakao.cafe.domain.user.exceptions.WrongPasswordException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserStorageAdapter implements RegisterUserPort, GetUserInfoPort, UpdateUserInfoPort {
+public class UserAdapter implements RegisterUserPort, GetUserInfoPort, UpdateUserInfoPort, LoginUserPort {
 
     private final UserInfoRepository userInfoRepository;
 
-    public UserStorageAdapter(UserInfoRepository userInfoRepository) {
+    public UserAdapter(UserInfoRepository userInfoRepository) {
         this.userInfoRepository = userInfoRepository;
     }
 
@@ -52,12 +55,27 @@ public class UserStorageAdapter implements RegisterUserPort, GetUserInfoPort, Up
     }
 
     @Override
-    public UserInfo findUserByUserId(String userId) throws UserNotExistException {
+    public void login(LoginRequest loginRequest) throws UserNotExistException, WrongPasswordException {
+        User user = getUserByUserId(loginRequest.getUserId());
+
+        if (!user.equalsPassword(loginRequest.getPassword())) {
+            throw new WrongPasswordException("패스워드가 잘못 되었습니다.");
+        }
+    }
+
+    private User getUserByUserId(String userId) throws UserNotExistException {
         User user = userInfoRepository.findByUserId(userId).orElse(null);
 
         if (user == null) {
             throw new UserNotExistException("존재하지 않는 회원입니다.");
         }
+
+        return user;
+    }
+
+    @Override
+    public UserInfo findUserByUserId(String userId) throws UserNotExistException {
+        User user = getUserByUserId(userId);
 
         return UserInfo.from(user);
     }
@@ -71,11 +89,7 @@ public class UserStorageAdapter implements RegisterUserPort, GetUserInfoPort, Up
     @Override
     public void updateUser(String userId, UpdateRequest updateRequest)
         throws UserNotExistException, IllegalUserNameException, IllegalEmailException {
-        User user = userInfoRepository.findByUserId(userId).orElse(null);
-
-        if (user == null) {
-            throw new UserNotExistException("존재하지 않는 회원입니다.");
-        }
+        User user = getUserByUserId(userId);
 
         user.setName(updateRequest.getName());
         user.setEmail(updateRequest.getEmail());

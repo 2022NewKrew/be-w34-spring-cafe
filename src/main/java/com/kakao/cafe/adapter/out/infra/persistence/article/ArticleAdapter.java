@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ArticleStorageAdapter implements RegisterArticlePort, GetArticleInfoPort {
+public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort {
 
     private final ArticleRepository articleRepository;
 
-    public ArticleStorageAdapter(ArticleRepository articleRepository) {
+    public ArticleAdapter(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 

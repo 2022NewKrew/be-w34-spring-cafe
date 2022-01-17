@@ -1,7 +1,7 @@
 package com.kakao.cafe.application.article;
 
+import com.kakao.cafe.adapter.out.infra.persistence.article.ArticleAdapter;
 import com.kakao.cafe.adapter.out.infra.persistence.article.ArticleRepository;
-import com.kakao.cafe.adapter.out.infra.persistence.article.ArticleStorageAdapter;
 import com.kakao.cafe.adapter.out.infra.persistence.article.JdbcArticleRepository;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
 import com.kakao.cafe.application.article.port.in.WriteArticleUseCase;
@@ -29,12 +29,12 @@ public class MvcArticleConfig {
 
     @Bean
     public RegisterArticlePort registerArticlePort() {
-        return new ArticleStorageAdapter(articleRepository());
+        return new ArticleAdapter(articleRepository());
     }
 
     @Bean
     public GetArticleInfoPort getArticleInfoPort() {
-        return new ArticleStorageAdapter(articleRepository());
+        return new ArticleAdapter(articleRepository());
     }
 
     @Bean

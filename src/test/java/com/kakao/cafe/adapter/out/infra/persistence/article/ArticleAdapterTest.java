@@ -22,13 +22,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ArticleStorageAdapterTest {
+class ArticleAdapterTest {
 
     @Mock
     ArticleRepository articleRepository;
 
     @InjectMocks
-    ArticleStorageAdapter articleStorageAdapter;
+    ArticleAdapter articleAdapter;
 
     @DisplayName("게시글 정상 등록")
     @Test
@@ -37,7 +37,7 @@ class ArticleStorageAdapterTest {
         WriteRequest writeRequest = new WriteRequest("champ", "kakao", "Hello Kakao!");
 
         // then
-        assertThatNoException().isThrownBy(() -> articleStorageAdapter.registerArticle(writeRequest));
+        assertThatNoException().isThrownBy(() -> articleAdapter.registerArticle(writeRequest));
     }
 
     @DisplayName("작성자 이름 누락 article 테스트")
@@ -47,7 +47,7 @@ class ArticleStorageAdapterTest {
         WriteRequest writeRequest = new WriteRequest("", "kakao", "Hello Kakao!");
 
         // then
-        assertThatExceptionOfType(IllegalWriterException.class).isThrownBy(() -> articleStorageAdapter.registerArticle(
+        assertThatExceptionOfType(IllegalWriterException.class).isThrownBy(() -> articleAdapter.registerArticle(
             writeRequest));
     }
 
@@ -58,7 +58,7 @@ class ArticleStorageAdapterTest {
         WriteRequest writeRequest = new WriteRequest("cha mp", "kakao", "Hello Kakao!");
 
         // then
-        assertThatExceptionOfType(IllegalWriterException.class).isThrownBy(() -> articleStorageAdapter.registerArticle(
+        assertThatExceptionOfType(IllegalWriterException.class).isThrownBy(() -> articleAdapter.registerArticle(
             writeRequest));
     }
 
@@ -69,7 +69,7 @@ class ArticleStorageAdapterTest {
         WriteRequest writeRequest = new WriteRequest("champ", "", "Hello Kakao!");
 
         // then
-        assertThatExceptionOfType(IllegalTitleException.class).isThrownBy(() -> articleStorageAdapter.registerArticle(
+        assertThatExceptionOfType(IllegalTitleException.class).isThrownBy(() -> articleAdapter.registerArticle(
             writeRequest));
     }
 
@@ -89,7 +89,7 @@ class ArticleStorageAdapterTest {
         given(articleRepository.findById(givenId)).willReturn(Optional.of(givenArticle));
 
         // when
-        Article article = articleStorageAdapter.findArticleById(givenId);
+        Article article = articleAdapter.findArticleById(givenId);
 
         assertThat(givenArticle.getId()).isEqualTo(article.getId());
         assertThat(givenArticle.getWriter()).isEqualTo(article.getWriter());
@@ -114,7 +114,7 @@ class ArticleStorageAdapterTest {
         given(articleRepository.findById(givenId)).willReturn(Optional.empty());
 
         // then
-        assertThatExceptionOfType(ArticleNotExistException.class).isThrownBy(() -> articleStorageAdapter.findArticleById(
+        assertThatExceptionOfType(ArticleNotExistException.class).isThrownBy(() -> articleAdapter.findArticleById(
             givenId));
     }
 }

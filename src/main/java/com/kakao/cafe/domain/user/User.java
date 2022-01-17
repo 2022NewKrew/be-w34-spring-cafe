@@ -19,24 +19,8 @@ public class User {
         this.email = builder.email;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     private static boolean checkBlankInString(String str) {
         return str.contains(" ");
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     private static boolean checkLengthOfString(String str) {
@@ -67,14 +51,34 @@ public class User {
         }
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) throws IllegalUserNameException {
         checkUserName(name);
         this.name = name;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) throws IllegalEmailException {
         checkEmail(email);
         this.email = email;
+    }
+
+    public boolean equalsPassword(String password) {
+        return this.password.equals(password);
     }
 
     public static class Builder {
