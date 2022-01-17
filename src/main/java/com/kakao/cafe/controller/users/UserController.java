@@ -52,8 +52,8 @@ public class UserController {
 
     @GetMapping("{userId}/form")
     public String showUpdateForm(@PathVariable String userId, Model model, HttpSession httpSession) {
-        UserIdentification userIdentification = UserIdentification.getIdFromSession(httpSession);
-        validateUpdateUserId(userIdentification, userId);
+        UserIdentification loginInfo = UserIdentification.getIdFromSession(httpSession);
+        validateUpdateUserId(loginInfo, userId);
         UserInfo userInfo = userService.getUserInfo(userId);
         model.addAttribute("user", userViewMapper.toUserUpdateFormResponse(userInfo));
         return "user/updateForm";
@@ -61,15 +61,15 @@ public class UserController {
 
     @PostMapping("{userId}/update")
     public String updateUser(@PathVariable String userId, UserUpdateRequest userUpdateRequest, HttpSession httpSession) {
-        UserIdentification userIdentification = UserIdentification.getIdFromSession(httpSession);
-        validateUpdateUserId(userIdentification, userId);
+        UserIdentification loginInfo = UserIdentification.getIdFromSession(httpSession);
+        validateUpdateUserId(loginInfo, userId);
         UserUpdateForm userUpdateForm = userDtoMapper.toUserUpdateForm(userUpdateRequest);
-        userService.updateUser(userUpdateForm);
+        userService.update(userUpdateForm);
         return "redirect:/users";
     }
 
-    private void validateUpdateUserId(UserIdentification userIdentification, String userId) {
-        if(!userIdentification.getUserId().equals(userId)) {
+    private void validateUpdateUserId(UserIdentification loginInfo, String userId) {
+        if(!loginInfo.getUserId().equals(userId)) {
             throw new IllegalArgumentException("자신의 개인 정보만 수정 가능합니다.");
         }
     }

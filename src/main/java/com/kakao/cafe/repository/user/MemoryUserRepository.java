@@ -13,7 +13,7 @@ public class MemoryUserRepository implements UserRepository {
     private AtomicLong key = new AtomicLong(1L);
 
     @Override
-    public Long insertUser(User user) {
+    public Long insert(User user) {
         long currentId = key.getAndIncrement();
         user.updateId(currentId);
         userMap.put(currentId, user);
@@ -39,7 +39,7 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Long updateUser(User updateUser) {
+    public Long update(User updateUser) {
         long id = updateUser.getId();
         userMap.put(id, updateUser);
         return id;

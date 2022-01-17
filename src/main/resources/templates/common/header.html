@@ -54,8 +54,8 @@
                 <li><a href="/signup" role="button">회원가입</a></li>
                 {{/sessionedUser}}
                 {{#sessionedUser}}
-                <li><a href="#" role="button">로그아웃</a></li>
-                <li><a href="#" role="button">개인정보수정</a></li>
+                <li><a href="/logout" role="button">로그아웃</a></li>
+                <li><a href="/users/{{sessionedUser.userId}}/form" role="button">개인정보수정</a></li>
                 {{/sessionedUser}}
             </ul>
         </div>

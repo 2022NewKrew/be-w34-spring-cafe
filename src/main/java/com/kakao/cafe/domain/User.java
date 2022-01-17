@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-@Builder
 @Getter
 @ToString
 public class User {
@@ -14,6 +13,15 @@ public class User {
     private String password;
     private String userName;
     private String email;
+
+    @Builder
+    public User(Long id, String userId, String password, String userName, String email) {
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.userName = userName;
+        this.email = email;
+    }
 
     public static User of(String userId, String password, String userName, String email) {
         return User.builder()
@@ -28,12 +36,11 @@ public class User {
     }
 
     public void update(UserUpdateForm userUpdateForm) {
-        this.userId = userUpdateForm.getUserId();
-        boolean isUpdatePassword = !userUpdateForm.getPassword().equals("");
-        if(isUpdatePassword) {
-            this.password = userUpdateForm.getPassword();
-        }
         this.userName = userUpdateForm.getUserName();
         this.email = userUpdateForm.getEmail();
+    }
+
+    public boolean isCorrectPassword(String password) {
+        return this.password.equals(password);
     }
 }

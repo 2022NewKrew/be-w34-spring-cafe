@@ -24,7 +24,7 @@ public class JdbcUserRepository implements UserRepository {
     private static final String SELECT_USER_BY_USER_ID_QUERY = "SELECT id, user_id, password, user_name, email FROM users WHERE user_id = ?";
     private static final String SELECT_USER_BY_ID_QUERY = "SELECT id, user_id, password, user_name, email FROM users WHERE id = ?";
 
-    public Long insertUser(User user) {
+    public Long insert(User user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(conn -> {
             PreparedStatement ps = conn.prepareStatement(INSERT_USER_QUERY, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -39,7 +39,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Long updateUser(User user) {
+    public Long update(User user) {
         jdbcTemplate.update(UPDATE_USER_QUERY, user.getUserId(), user.getPassword(), user.getUserName(), user.getEmail(), user.getId());
         return user.getId();
     }
