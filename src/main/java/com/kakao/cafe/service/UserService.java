@@ -67,4 +67,9 @@ public class UserService {
             throw new AuthenticationException();
         return user;
     }
+    public void validateUserUpdate(User sessionUser, Long userId) throws AuthenticationException {
+
+        if(!sessionUser.getUserId().equals(userId))
+            throw new AuthenticationException();
+    }
 }
