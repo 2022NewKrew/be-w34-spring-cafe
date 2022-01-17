@@ -26,7 +26,7 @@ class JoinServiceTest {
 
     @ParameterizedTest
     @DisplayName("이미 존재하는 유저일 때 저장 실패")
-    @MethodSource("com.kakao.cafe.user.data.UsersData#getUserStream")
+    @MethodSource("com.kakao.cafe.user.data.UsersData#getUsers")
     public void testFailedWhenExistUser(User user){
         //given
         given(userRepository.getUser(any())).willReturn(Optional.of(user));

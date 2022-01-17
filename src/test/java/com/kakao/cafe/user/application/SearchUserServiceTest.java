@@ -2,9 +2,7 @@ package com.kakao.cafe.user.application;
 
 import com.kakao.cafe.user.data.UsersData;
 import com.kakao.cafe.user.domain.entity.User;
-import com.kakao.cafe.user.domain.entity.UserInfo;
 import com.kakao.cafe.user.domain.repository.UserRepository;
-import org.hibernate.validator.constraints.time.DurationMax;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,9 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static com.kakao.cafe.user.data.UsersData.getUsers;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +31,7 @@ class SearchUserServiceTest {
     @DisplayName("모든 유저 가져오기 성공")
     public void successGetAllUsers(){
         //given
-        List<User> users = UsersData.getUsers();
+        List<User> users = UsersData.getUserList();
         given(userRepository.getAllUsers()).willReturn(users);
 
         //when
@@ -48,7 +44,7 @@ class SearchUserServiceTest {
 
     @ParameterizedTest
     @DisplayName("한 유저 가져오기 성공")
-    @MethodSource("com.kakao.cafe.user.data.UsersData#getUserStream")
+    @MethodSource("com.kakao.cafe.user.data.UsersData#getUsers")
     public void successGetOneUser(User user){
         //given
         given(userRepository.getUser(user.getUserId())).willReturn(Optional.of(user));
@@ -64,7 +60,7 @@ class SearchUserServiceTest {
     @DisplayName("한 유저 가져오기 실패")
     public void failedGetOneUser(){
         //given
-        User user = UsersData.getUsers().get(0);
+        User user = UsersData.getUserList().get(0);
         given(userRepository.getUser(user.getUserId())).willReturn(Optional.empty());
 
         //when

@@ -58,7 +58,7 @@ class UserControllerTest {
     @DisplayName("사용자 목록 보여주기 성공")
     void listUsers() throws Exception {
         //given
-        final List<User> users = UsersData.getUsers();
+        final List<User> users = UsersData.getUserList();
         given(searchUserService.getAllUsers()).willReturn(users);
 
         //when

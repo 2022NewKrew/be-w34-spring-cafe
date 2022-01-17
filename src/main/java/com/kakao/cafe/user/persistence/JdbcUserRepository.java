@@ -19,7 +19,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<User> getUser(String userId) {
-        List<User> users = myJdbcTemplate.query("select * from member where userId = ".concat(userId), userRowMapper);
+        List<User> users = myJdbcTemplate.query(String.format("select * from member where userId = '%s'",userId), userRowMapper);
         if(users.isEmpty()){
             return Optional.empty();
         }
@@ -34,6 +34,10 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
+        if(getUser(user.getUserId()).isPresent()){
+            throw new IllegalStateException("이미 사용자가 있어서 저장하지 못합니다.");
+        }
+
         myJdbcTemplate.update("insert into member(userId, password, name, email) values(?,?,?,?)"
                 , user.getUserId(), user.getPassword(), user.getUserInfo().getName(), user.getUserInfo().getEmail());
     }

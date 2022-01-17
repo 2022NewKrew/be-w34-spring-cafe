@@ -2,17 +2,14 @@ package com.kakao.cafe.user.domain.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 
 class UserTest {
     @ParameterizedTest
     @DisplayName("잘못된 파라미터가 주어질때 User 생성 실패")
-    @MethodSource("wrongConstructParameters")
+    @MethodSource("com.kakao.cafe.user.data.UsersData#getWrongConstructParameters")
     void failedCreateWhenWrongParameters(String userId, String password, String name, String email){
         assertThatThrownBy(() -> {
             UserInfo userInfo = new UserInfo(name, email);
@@ -21,13 +18,17 @@ class UserTest {
         }).isInstanceOfAny(IllegalArgumentException.class, NullPointerException.class);
     }
 
-    private static Stream<Arguments> wrongConstructParameters(){
-        return Stream.of(
-                Arguments.of(null, "asdf1234", "name", "email@daum.net"),
-                Arguments.of("us", "asdf1234", "name", "email@daum.net"),
-                Arguments.of("userId", "asdf123", "name", "email@daum.net"),
-                Arguments.of("userId", "asdf1234", "nameName", "email@daum.net"),
-                Arguments.of("userId", "asdf1234", "name", "emaildaum.net")
-        );
+    @ParameterizedTest
+    @DisplayName("사용자 정보 변경 성공")
+    @MethodSource("com.kakao.cafe.user.data.UsersData#getUsers")
+    void successUpdateUserInfo(User user){
+        //given
+        UserInfo userInfo = new UserInfo(user.getUserInfo().getName().concat("2"), "e".concat(user.getUserInfo().getEmail()));
+
+        //when
+        user.updateInfo(userInfo);
+
+        //then
+        assertThat(user.getUserInfo()).isEqualTo(userInfo);
     }
 }
