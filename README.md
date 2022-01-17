@@ -11,7 +11,7 @@
 ## Static Pages
 ```
 /user/form.html - 회원 가입 페이지
-/article/form.html - 게시글 작성 페이지
+/thread/form.html - 게시글 작성 페이지
 ```
 
 ## Dynamic Pages
