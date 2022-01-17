@@ -7,6 +7,12 @@ public class User {
     private Name name;
     private Email email;
 
+    public void validate() {
+        if(userId == null || userId.getValue().length() < 2) {
+            throw new IllegalArgumentException("Fail to validate User");
+        }
+    }
+
     public UserId getUserId() {
         return userId;
     }
