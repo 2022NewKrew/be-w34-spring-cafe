@@ -1,5 +1,6 @@
 package com.kakao.cafe.module.service;
 
+import com.kakao.cafe.infra.exception.ForbiddenException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.HttpSessionRequiredException;
 
@@ -11,6 +12,13 @@ import static com.kakao.cafe.module.model.dto.UserDtos.*;
 
 @Service
 public class InfraService {
+
+    public void validateSession(HttpSession session, Long id) throws HttpSessionRequiredException {
+        UserDto sessionUser = retrieveUserSession(session);
+        if (!id.equals(sessionUser.getId())) {
+            throw new ForbiddenException("권한 없는 정보입니다.");
+        }
+    }
 
     public UserDto retrieveUserSession(HttpSession session) throws HttpSessionRequiredException {
         return (UserDto) Optional.ofNullable(session.getAttribute("sessionUser"))

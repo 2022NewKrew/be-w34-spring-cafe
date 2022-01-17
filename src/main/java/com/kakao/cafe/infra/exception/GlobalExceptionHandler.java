@@ -17,10 +17,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             DuplicateUserException.class,
-            NoSuchDataException.class
+            NoSuchDataException.class,
+            ForbiddenException.class
     })
     public String handleRuntimeExceptions(final CustomRuntimeException e, Model model, HttpServletResponse response) {
-        response.setStatus(400);
+        response.setStatus(e.getStatus());
         model.addAttribute("msg", errorMsg(e.getName(), e.getMessage()));
         logger.error(e.getName());
         return "infra/error";

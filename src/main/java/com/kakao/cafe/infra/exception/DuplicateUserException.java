@@ -5,5 +5,6 @@ public class DuplicateUserException extends CustomRuntimeException {
     public DuplicateUserException(String msg) {
         super(msg);
         name = "DuplicateUserException";
+        status = 400;
     }
 }

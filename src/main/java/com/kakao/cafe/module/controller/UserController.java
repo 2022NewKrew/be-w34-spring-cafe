@@ -64,7 +64,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}/form")
-    public String getUpdateForm(@PathVariable Long id, Model model) {
+    public String getUpdateForm(@PathVariable Long id, Model model, HttpSession session) throws HttpSessionRequiredException {
+        infraService.validateSession(session, id);
         UserDto user = userService.findUser(id);
         model.addAttribute("user", user);
         logger.info("Get User Update Form : {}", id);
@@ -72,7 +73,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public String updateUser(@PathVariable Long id, UserUpdateDto userUpdateDto) {
+    public String updateUser(@PathVariable Long id, UserUpdateDto userUpdateDto, HttpSession session) throws HttpSessionRequiredException {
+        infraService.validateSession(session, id);
         userService.updateUser(id, userUpdateDto);
         logger.info("Update User : {}", id);
         return "redirect:/users";
