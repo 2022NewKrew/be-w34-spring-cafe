@@ -8,8 +8,18 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="/users">크루 리스트</a></li>
+            {{^auth}}
             <li><a class="black-component" href="/user/login" role="button">로그인</a></li>
             <li><a class="black-component" href="/user/form" role="button">회원가입</a></li>
+            {{/auth}}
+            {{#auth}}
+            <li>
+            <form id="logout" action="/logout" method="post">
+                <input type="hidden" name="_method" value="DELETE" />
+                <a class="black-component" href="javascript:{}" onclick="document.getElementById('logout').submit();">로그아웃</a>
+            </form>
+            </li>
+            {{/auth}}
         </ul>
     </div>
 </nav>
