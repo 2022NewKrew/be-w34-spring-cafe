@@ -34,4 +34,5 @@ public class UserService {
     public ShowUserDto findById(String userId) {
         return new ShowUserDto(userDAO.findById(userId));
     }
+
 }
