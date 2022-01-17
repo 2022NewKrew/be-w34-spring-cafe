@@ -18,15 +18,8 @@ CREATE TABLE IF NOT EXISTS POSTS
     WRITER   VARCHAR(255),
     CONTENTS VARCHAR(255)
 );
--- User Data Create
+
 INSERT INTO USERS (id, password, name, email)
 VALUES ('javajigi', 'test', '자바지기', 'javajigi@slipp.net');
 INSERT INTO USERS (id, password, name, email)
 VALUES ('sanjigi', 'test', '산지기', 'sanjigi@slipp.net');
-
--- Post Data Create
-INSERT INTO POSTS (TITLE, WRITER, CONTENTS)
-VALUES ('JAVAJIGI', 'javajigi', 'hello world');
-
-INSERT INTO POSTS (TITLE, WRITER, CONTENTS)
-VALUES ('SANJIGI', 'sanjigi', 'hello2 world2');

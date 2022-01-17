@@ -96,11 +96,8 @@ public class UserController {
 
     @PostMapping("/users/login")
     public String login(String id, String password, HttpSession session) {
-        LOGGER.info("login() : start");
         session.setAttribute("sessionId", userService.login(id, password));
-        LOGGER.info("login() : end");
         return "redirect:/";
     }
-
 
 }
