@@ -1,12 +1,13 @@
 package com.kakao.cafe.domain;
 
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class PostTest {
 
-    private static final String userId = "testUserId";
+    private static final String userId = UUID.randomUUID().toString();
     private static final String title = "testTitle";
     private static final String content = "testUserId";
 

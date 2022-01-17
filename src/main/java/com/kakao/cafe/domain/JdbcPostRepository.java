@@ -25,7 +25,7 @@ public class JdbcPostRepository implements PostRepository {
     public Post save(Post post) {
         logger.info("[Jdbc] post save");
         String sql = "insert into post(title, content, user_id) values(?, ?, ?)";
-        jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getUserId());
+        jdbcTemplate.update(sql, post.getTitle(), post.getContent(), UUID. fromString(post.getUserId()));
         return post;
     }
 

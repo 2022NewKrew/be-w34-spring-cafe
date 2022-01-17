@@ -24,6 +24,6 @@ public class UserSignupRequest {
     }
 
     public User toEntity() {
-        return new User(userId, password, name, email);
+        return new User(null, userId, password, name, email);
     }
 }

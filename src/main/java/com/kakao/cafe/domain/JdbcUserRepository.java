@@ -41,7 +41,7 @@ public class JdbcUserRepository implements UserRepository {
         logger.info("[Jdbc] user findAll");
         String sql = "select * from users";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(rs.getString("id"),
                 rs.getString("user_id"),
                 rs.getString("password"),
                 rs.getString("name"),
@@ -54,7 +54,7 @@ public class JdbcUserRepository implements UserRepository {
         String sql = "select * from users where user_id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getString("id"),
                             rs.getString("user_id"),
                             rs.getString("password"),
                             rs.getString("name"),
