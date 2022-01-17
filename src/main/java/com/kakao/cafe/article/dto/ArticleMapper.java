@@ -7,6 +7,7 @@ import com.kakao.cafe.user.domain.UserId;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,10 +15,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class ArticleMapper implements RowMapper<Article> {
 
-    public static Article toArticle(ArticleFormDto articleFormDto) {
+    public Article toArticle(ArticleFormDto articleFormDto) {
         return new Article(
                 new UserId(articleFormDto.getWriter()),
                 new Date(),
@@ -26,7 +28,7 @@ public class ArticleMapper implements RowMapper<Article> {
         );
     }
 
-    public static List<ArticleListDto> toListArticleDto(List<Article> articles) {
+    public List<ArticleListDto> toListArticleDto(List<Article> articles) {
         return articles.stream()
                 .map(article -> new ArticleListDto(
                         article.getWriterId().getUserId(),
@@ -35,7 +37,7 @@ public class ArticleMapper implements RowMapper<Article> {
                 ).collect(Collectors.toList());
     }
 
-    public static ArticleDto toArticleDto(Article article) {
+    public ArticleDto toArticleDto(Article article) {
         return new ArticleDto(
                 article.getWriterId().getUserId(),
                 article.getWriteTime(),

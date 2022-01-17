@@ -6,6 +6,7 @@ import com.kakao.cafe.user.domain.UserId;
 import lombok.Getter;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Getter
 public class Article {
@@ -44,5 +45,26 @@ public class Article {
         if (article == null) {
             throw new ArticleException(ErrorCode.INVALID_NULL_VALUE);
         }
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        Article article = (Article) object;
+        return Objects.equals(articleId, article.articleId) &&
+                Objects.equals(writerId, article.writerId) &&
+                Objects.equals(writeTime, article.writeTime) &&
+                Objects.equals(title, article.title) &&
+                Objects.equals(contents, article.contents);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(articleId, writerId, writeTime, title, contents);
     }
 }

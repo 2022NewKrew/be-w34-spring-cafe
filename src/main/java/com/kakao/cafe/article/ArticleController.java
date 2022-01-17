@@ -20,10 +20,12 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final ArticlePostService articlePostService;
+    private final ArticleMapper articleMapper;
 
-    public ArticleController(ArticleService articleService, ArticlePostService articlePostService) {
+    public ArticleController(ArticleService articleService, ArticlePostService articlePostService, ArticleMapper articleMapper) {
         this.articleService = articleService;
         this.articlePostService = articlePostService;
+        this.articleMapper = articleMapper;
     }
 
     @GetMapping("/question/form")
@@ -33,21 +35,21 @@ public class ArticleController {
 
     @PostMapping("/question/create")
     public String createArticle(ArticleFormDto articleFormDto) {
-        Article article = ArticleMapper.toArticle(articleFormDto);
+        Article article = articleMapper.toArticle(articleFormDto);
         articlePostService.postArticle(article);
         return "redirect:/";
     }
 
     @GetMapping("/")
     public String showArticles(Model module) {
-        List<ArticleListDto> articles = ArticleMapper.toListArticleDto(articleService.findArticles());
+        List<ArticleListDto> articles = articleMapper.toListArticleDto(articleService.findArticles());
         module.addAttribute("articles", articles);
         return "index";
     }
 
     @GetMapping("/articles/{index}")
     public String showArticle(@PathVariable Long index, Model module) {
-        ArticleDto articles = ArticleMapper.toArticleDto(articleService.findArticleByArticleId(index));
+        ArticleDto articles = articleMapper.toArticleDto(articleService.findArticleByArticleId(index));
         module.addAttribute("articles", articles);
         return "qna/show";
     }
