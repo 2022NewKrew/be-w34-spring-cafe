@@ -19,12 +19,12 @@ public class UserService {
     }
 
     public void joinUser(User user) {
-        validateDuplicateUser(user.getUserId());
+        validateDuplicateUser(user.getUserId().getUserId());
         userRepository.save(user);
     }
 
     public void updateUser(User updateUser) {
-        User user = findUserByUserId(updateUser.getUserId());
+        User user = findUserByUserId(updateUser.getUserId().getUserId());
         // TODO: UserId 변경된 경우 예외처리
         if (!user.getPassword().equals(updateUser.getPassword())) {
             throw new UserException(ErrorCode.WRONG_USER_PASSWORD);

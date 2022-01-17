@@ -45,20 +45,4 @@ public class Article {
             throw new ArticleException(ErrorCode.INVALID_NULL_VALUE);
         }
     }
-
-    public Long getArticleId() {
-        return articleId;
-    }
-
-    public String getWriterId() {
-        return writerId.getUserId();
-    }
-
-    public String getTitle() {
-        return title.getTitle();
-    }
-
-    public String getContents() {
-        return contents.getContents();
-    }
 }

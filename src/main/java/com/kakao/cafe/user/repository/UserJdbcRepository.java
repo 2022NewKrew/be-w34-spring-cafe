@@ -19,7 +19,7 @@ public class UserJdbcRepository implements UserRepository {
     @Override
     public void save(User user) {
         String sql = "INSERT INTO USERS(USER_ID, PASSWORD, NAME, EMAIL) VALUES(?, ?, ?, ?)";
-        jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        jdbcTemplate.update(sql, user.getUserId().getUserId(), user.getPassword().getPassword(), user.getName().getName(), user.getEmail().getEmail());
     }
 
     @Override
@@ -42,13 +42,13 @@ public class UserJdbcRepository implements UserRepository {
     @Override
     public void remove(User user) {
         String sql = "DELETE FROM USERS WHERE USER_ID = ?";
-        jdbcTemplate.update(sql, user.getUserId());
+        jdbcTemplate.update(sql, user.getUserId().getUserId());
     }
 
     @Override
     public void update(User user) {
         String sql = "UPDATE USERS SET NAME = ?, EMAIL = ? WHERE USER_ID = ?";
-        jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getUserId());
+        jdbcTemplate.update(sql, user.getName().getName(), user.getEmail().getEmail(), user.getUserId().getUserId());
     }
 }
 

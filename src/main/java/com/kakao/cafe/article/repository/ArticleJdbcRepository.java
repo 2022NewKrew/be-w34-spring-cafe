@@ -21,7 +21,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
     @Override
     public Article save(Article article) {
         String sql = "INSERT INTO ARTICLES(WRITER_ID, WRITE_TIME, TITLE, CONTENTS) VALUES(?, ?, ?, ?)";
-        jdbcTemplate.update(sql, article.getWriterId(), article.getWriteTime(), article.getTitle(), article.getContents());
+        jdbcTemplate.update(sql, article.getWriterId().getUserId(), article.getWriteTime(), article.getTitle().getTitle(), article.getContents().getContents());
         return article;
 
     }

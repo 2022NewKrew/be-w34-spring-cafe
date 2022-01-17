@@ -18,20 +18,30 @@ import java.util.stream.Collectors;
 public class ArticleMapper implements RowMapper<Article> {
 
     public static Article toArticle(ArticleFormDto articleFormDto) {
-        UserId writerId = new UserId(articleFormDto.getWriter());
-        Title title = new Title(articleFormDto.getTitle());
-        Contents contents = new Contents(articleFormDto.getContents());
-        return new Article(writerId, new Date(), title, contents);
+        return new Article(
+                new UserId(articleFormDto.getWriter()),
+                new Date(),
+                new Title(articleFormDto.getTitle()),
+                new Contents(articleFormDto.getContents())
+        );
     }
 
     public static List<ArticleListDto> toListArticleDto(List<Article> articles) {
         return articles.stream()
-                .map(article -> new ArticleListDto(article.getWriterId(), article.getWriteTime(), article.getTitle()))
-                .collect(Collectors.toList());
+                .map(article -> new ArticleListDto(
+                        article.getWriterId().getUserId(),
+                        article.getWriteTime(),
+                        article.getTitle().getTitle())
+                ).collect(Collectors.toList());
     }
 
     public static ArticleDto toArticleDto(Article article) {
-        return new ArticleDto(article.getWriterId(), article.getWriteTime(), article.getTitle(), article.getContents());
+        return new ArticleDto(
+                article.getWriterId().getUserId(),
+                article.getWriteTime(),
+                article.getTitle().getTitle(),
+                article.getContents().getContents()
+        );
     }
 
     public Article mapRow(ResultSet resultSet, int rowNumber) throws SQLException {

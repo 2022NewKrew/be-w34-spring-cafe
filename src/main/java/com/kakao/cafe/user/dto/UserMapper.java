@@ -14,25 +14,33 @@ import java.util.stream.Collectors;
 public class UserMapper implements RowMapper<User> {
 
     public static User toUser(UserFormDto userFormDto) {
-        UserId userId = new UserId(userFormDto.getUserId());
-        Password password = new Password(userFormDto.getPassword());
-        Name name = new Name(userFormDto.getName());
-        Email email = new Email(userFormDto.getEmail());
-        return new User(userId, password, name, email);
+        return new User(
+                new UserId(userFormDto.getUserId()),
+                new Password(userFormDto.getPassword()),
+                new Name(userFormDto.getName()),
+                new Email(userFormDto.getEmail())
+        );
     }
 
     public static List<UserDto> toListUserDto(List<User> users) {
         return users.stream()
-                .map(user -> new UserDto(user.getUserId(), user.getName(), user.getEmail()))
-                .collect(Collectors.toList());
+                .map(user -> new UserDto(
+                        user.getUserId().getUserId(),
+                        user.getName().getName(),
+                        user.getEmail().getEmail())
+                ).collect(Collectors.toList());
     }
 
     public static UserProfileDto toUserProfileDto(User user) {
-        return new UserProfileDto(user.getName(), user.getEmail());
+        return new UserProfileDto(user.getName().getName(), user.getEmail().getEmail());
     }
 
     public static UserDto toUserDto(User user) {
-        return new UserDto(user.getUserId(), user.getName(), user.getEmail());
+        return new UserDto(
+                user.getUserId().getUserId(),
+                user.getName().getName(),
+                user.getEmail().getEmail()
+        );
     }
 
     public User mapRow(ResultSet resultSet, int rowNumber) throws SQLException {
@@ -40,6 +48,7 @@ public class UserMapper implements RowMapper<User> {
                 new UserId(resultSet.getString("USER_ID")),
                 new Password(resultSet.getString("PASSWORD")),
                 new Name(resultSet.getString("NAME")),
-                new Email(resultSet.getString("EMAIL")));
+                new Email(resultSet.getString("EMAIL"))
+        );
     }
 }

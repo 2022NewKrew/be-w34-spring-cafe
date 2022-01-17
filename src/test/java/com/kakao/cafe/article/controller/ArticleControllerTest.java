@@ -96,9 +96,9 @@ public class ArticleControllerTest {
                 .thenThrow(new UserException(ErrorCode.USER_NOT_FOUND));
 
         mockMvc.perform(post("/question/create")
-                .param("writer", articleExistUser.getWriterId())
-                .param("title", articleExistUser.getTitle())
-                .param("contents", articleExistUser.getContents())
+                .param("writer", articleExistUser.getWriterId().getUserId())
+                .param("title", articleExistUser.getTitle().getTitle())
+                .param("contents", articleExistUser.getContents().getContents())
         ).andExpect(status().isNotFound());
     }
 
