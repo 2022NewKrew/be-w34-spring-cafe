@@ -6,7 +6,6 @@ import com.kakao.cafe.module.model.domain.User;
 import com.kakao.cafe.module.repository.ArticleRepository;
 import com.kakao.cafe.module.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +20,7 @@ public class ArticleService {
     private final ModelMapper modelMapper;
 
     public void postArticle(ArticlePostDto articlePostDto) {
-        modelMapper.typeMap(ArticlePostDto.class, Article.class).addMappings(mapper -> {
-            mapper.using((Converter<String, Long>) context -> findAuthor(context.getSource()).getId())
-                    .map(ArticlePostDto::getAuthor, Article::setAuthorId);
-        });
+        articlePostDto.setAuthorId(findAuthor(articlePostDto.getAuthor()).getId());
         articleRepository.addArticle(modelMapper.map(articlePostDto, Article.class));
     }
 

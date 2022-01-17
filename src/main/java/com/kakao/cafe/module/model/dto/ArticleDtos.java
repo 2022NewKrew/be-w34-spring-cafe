@@ -2,6 +2,7 @@ package com.kakao.cafe.module.model.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +13,10 @@ public class ArticleDtos {
     public static class ArticlePostDto {
 
         private final String author;
+
+        @Setter
+        private Long authorId;
+
         private final String title;
         private final String contents;
     }
