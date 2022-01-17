@@ -3,7 +3,6 @@ package com.kakao.cafe.web;
 import com.kakao.cafe.service.UsersService;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import com.kakao.cafe.web.dto.UsersCreateRequestDto;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 
@@ -41,9 +41,21 @@ public class UsersController {
 
     @PutMapping("/api/users/{id}/update")
     public String update(@PathVariable("id") Long id, UsersCreateRequestDto requestDto) {
-        System.out.println(requestDto.getName());
         usersService.update(id, requestDto);
         return "redirect:/users";
+    }
+
+    @PostMapping("/api/login")
+    public String login(String email, String password, HttpSession session) {
+        UserResponseDto userInfo = usersService.findByEmail(email);
+        if (userInfo.checkLoginInfo(email, password)) {
+            session.setAttribute("sessionedUser", userInfo);
+            System.out.println("login success");
+            return "redirect:/";
+        } else {
+            System.out.println("login failed");
+            return "redirect:/";
+        }
     }
 
     @GetMapping("/login")

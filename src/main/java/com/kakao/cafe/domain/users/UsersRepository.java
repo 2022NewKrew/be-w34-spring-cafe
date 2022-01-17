@@ -1,7 +1,6 @@
 package com.kakao.cafe.domain.users;
 
 import com.kakao.cafe.web.dto.UserResponseDto;
-import com.kakao.cafe.web.dto.UsersCreateRequestDto;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class UsersRepository {
 
     public UsersRepository() {
         JDBC_DRIVER = "org.h2.driver";
-        DB_URL = "jdbc:h2:mem:test";
+        DB_URL = "jdbc:h2:mem:~/test";
 
         try {
             connection = DriverManager.getConnection(DB_URL);
@@ -92,6 +91,29 @@ public class UsersRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public UserResponseDto findByEmail(String email) {
+        try {
+            connection = DriverManager.getConnection(DB_URL);
+            Statement statement = connection.createStatement();
+            final String sql = "SELECT * FROM user WHERE email = ?";
+            final PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, email);
+            final ResultSet result = ps.executeQuery();
+
+            result.next();
+            Long id = result.getLong("id");
+            String name = result.getString("name");
+            String password = result.getString("password");
+            String dateTime = result.getString("created_date");
+            UserResponseDto responseDto = new UserResponseDto(id, name, email, password, dateTime);
+
+            return responseDto;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void update(Long id, UserEntity userEntity) {

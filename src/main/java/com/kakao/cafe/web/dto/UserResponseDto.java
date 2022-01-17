@@ -19,4 +19,8 @@ public class UserResponseDto {
         this.createdDate = createdDate;
     }
 
+    public boolean checkLoginInfo(String email, String password) {
+        return email.equals(this.email) && password.equals(this.password);
+    }
+
 }

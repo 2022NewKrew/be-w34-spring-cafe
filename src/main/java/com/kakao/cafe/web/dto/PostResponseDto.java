@@ -2,8 +2,6 @@ package com.kakao.cafe.web.dto;
 
 import lombok.Getter;
 
-import java.util.Date;
-
 @Getter
 public class PostResponseDto {
     private String user;
