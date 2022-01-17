@@ -2,7 +2,7 @@ package com.kakao.cafe.user.presentation;
 
 import com.kakao.cafe.user.application.UserService;
 import com.kakao.cafe.user.dto.UserLoginRequest;
-import com.kakao.cafe.user.dto.UserLoginResponse;
+import com.kakao.cafe.user.dto.SessionedUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +28,7 @@ public class AuthController {
     @PostMapping("/login")
     public String loginById(UserLoginRequest userLoginRequest, HttpSession session) {
         log.info(this.getClass() + ": 회원 로그인");
-        UserLoginResponse userLoginResponse = userService.loginById(userLoginRequest);
+        SessionedUser userLoginResponse = userService.loginById(userLoginRequest);
         session.setAttribute("sessionedUser", userLoginResponse);
         return "redirect:/";
     }

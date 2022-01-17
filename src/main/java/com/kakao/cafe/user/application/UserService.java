@@ -10,10 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.kakao.cafe.common.exception.ExceptionMessage.NO_SUCH_USER_EXCEPTION;
-import static com.kakao.cafe.common.exception.ExceptionMessage.USER_ID_DUPLICATION_EXCEPTION;
+import static com.kakao.cafe.common.exception.ExceptionMessage.*;
 
 @Service
 @Slf4j
@@ -54,8 +54,9 @@ public class UserService {
         return UserProfileResponse.valueOf(user);
     }
 
-    public void updateById(String userId, UserUpdateRequest userUpdateRequest) {
+    public void updateById(String userId, UserUpdateRequest userUpdateRequest, SessionedUser sessionedUser) {
         log.info(this.getClass() + ": 개인정보 수정");
+        validateUpdateRequest(userId, userUpdateRequest, sessionedUser);
         User user = userRepository.findByIdOrNull(userId);
         if (user == null) {
             EntityNotFoundException.throwNotExistsByField(User.class, "userId", userId);
@@ -65,7 +66,7 @@ public class UserService {
         userRepository.update(user);
     }
 
-    public UserLoginResponse loginById(UserLoginRequest userLoginRequest) {
+    public SessionedUser loginById(UserLoginRequest userLoginRequest) {
         log.info(this.getClass() + ": 회원 로그인");
         User user = userRepository.findByIdOrNull(userLoginRequest.userId);
         if (user == null) {
@@ -73,6 +74,13 @@ public class UserService {
         }
         user.validatePassword(userLoginRequest.password);
 
-        return UserLoginResponse.valueOf(user);
+        return SessionedUser.valueOf(user);
+    }
+
+    private void validateUpdateRequest(String userId, UserUpdateRequest userUpdateRequest, SessionedUser sessionedUser) {
+        if (!Objects.equals(userId, sessionedUser.userId)
+                || !Objects.equals(userUpdateRequest.password, sessionedUser.password)) {
+            AuthenticationException.throwAuthFailure(REQUIRED_RE_LOGIN_EXCEPTION);
+        }
     }
 }
