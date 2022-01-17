@@ -40,9 +40,14 @@ public class UserController {
         return "/user/profile";
     }
 
+    @GetMapping("/users/login/profile")
+    public String getLoginProfile(Model model, HttpSession session) {
+        User loginUser = userService.getLoginUser(session);
+        return userService.getLoginProfile(loginUser, model);
+    }
+
     @GetMapping("/users/{userId}/form")
     public String updateForm(@PathVariable String userId, Model model) {
-        User user = userService.getUser(userId);
         model.addAttribute("userId", userId);
         return "/user/updateForm";
     }

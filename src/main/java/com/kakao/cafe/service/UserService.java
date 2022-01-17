@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.dao.UserDao;
 import com.kakao.cafe.vo.User;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -37,6 +38,13 @@ public class UserService {
             return "/error/incorrect_user_error";
         userDao.updateUser(user);
         return "redirect:/users";
+    }
+
+    public String getLoginProfile(User loginUser, Model model) {
+        if(loginUser == null)
+            return "/error/not_login_error";
+        model.addAttribute("user", loginUser);
+        return "/user/profile";
     }
 
     public void login(String userId, String password, HttpSession session) {
