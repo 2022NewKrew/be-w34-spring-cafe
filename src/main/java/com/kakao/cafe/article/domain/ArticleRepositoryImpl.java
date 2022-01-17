@@ -75,4 +75,11 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                 .authorName(rs.getString("author_nickname"))
                 .build());
     }
+
+    @Override
+    public void increaseViewCount(Long id) {
+        final String sql = "update articles set view_count = view_count + 1 where article_id = ?";
+
+        jdbcTemplate.update(sql, id);
+    }
 }

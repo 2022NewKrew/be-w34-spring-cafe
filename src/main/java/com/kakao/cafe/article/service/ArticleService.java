@@ -26,6 +26,7 @@ public class ArticleService {
     }
 
     public SingleArticle getArticleById(Long id) {
+        articleRepository.increaseViewCount(id);
         return articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
     }
 }
