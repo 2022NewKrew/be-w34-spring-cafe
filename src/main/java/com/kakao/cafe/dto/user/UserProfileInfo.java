@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.dto.user;
+package com.kakao.cafe.dto.user;
 
 import com.kakao.cafe.domain.entity.User;
 

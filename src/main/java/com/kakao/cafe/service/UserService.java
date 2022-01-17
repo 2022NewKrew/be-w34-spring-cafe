@@ -1,10 +1,12 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.dto.user.*;
-import com.kakao.cafe.repository.user.UserRepository;
+import com.kakao.cafe.domain.entity.User;
+import com.kakao.cafe.dto.user.*;
+import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -14,16 +16,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserInfo getUser(String userId) {
-        return userRepository.getUserInfo(userId);
+    public User getUser(String userId) { return userRepository.search(userId); }
+
+    public UserInfo getUserInfo(String userId) {
+        return new UserInfo(userRepository.search(userId));
     }
 
     public UserProfileInfo getUserProfile(String userId) {
-        return userRepository.getUserProfile(userId);
+        return new UserProfileInfo(userRepository.search(userId));
     }
 
     public List<UserListShow> getAllUsers() {
-        return userRepository.getAllUser();
+        return userRepository.getAllUser().stream()
+                .map(UserListShow::new)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public void createUser(UserCreateCommand ucc) {

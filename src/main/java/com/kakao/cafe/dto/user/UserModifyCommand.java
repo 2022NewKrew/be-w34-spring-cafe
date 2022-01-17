@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.dto.user;
+package com.kakao.cafe.dto.user;
 
 public class UserModifyCommand {
     private final String password;
@@ -21,5 +21,14 @@ public class UserModifyCommand {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public String toString() {
+        return "UserModifyCommand{" +
+                "password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

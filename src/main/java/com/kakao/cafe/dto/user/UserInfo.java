@@ -1,29 +1,22 @@
-package com.kakao.cafe.domain.dto.user;
+package com.kakao.cafe.dto.user;
 
 import com.kakao.cafe.domain.entity.User;
 
-public class UserListShow {
-    private final long userIndex;
+public class UserInfo {
     private final String userId;
     private final String name;
     private final String email;
 
-    public UserListShow(long userIndex, String userId, String name, String email) {
-        this.userIndex = userIndex;
+    public UserInfo(String userId, String name, String email) {
         this.userId = userId;
         this.name = name;
         this.email = email;
     }
 
-    public UserListShow(User user) {
-        this.userIndex = user.getUserIndex();
+    public UserInfo(User user) {
         this.userId = user.getUserId();
         this.name = user.getName();
         this.email = user.getEmail();
-    }
-
-    public long getUserIndex() {
-        return userIndex;
     }
 
     public String getUserId() {

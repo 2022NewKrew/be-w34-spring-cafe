@@ -1,12 +1,12 @@
-package com.kakao.cafe.repository.article;
+package com.kakao.cafe.repository.jdbc;
 
-import com.kakao.cafe.domain.dto.article.ArticleContents;
-import com.kakao.cafe.domain.dto.article.ArticleCreateCommand;
-import com.kakao.cafe.domain.dto.article.ArticleListShow;
+import com.kakao.cafe.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.domain.entity.Article;
-import com.kakao.cafe.web.util.TimeStringParser;
+import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.util.TimeStringParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -41,8 +41,12 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
-    public ArticleContents retrieve(Long id) {
-        return jdbcTemplate.queryForObject(RETRIEVE_SQL, articleContentsRowMapper(), id);
+    public Article retrieve(Long id) {
+        try {
+            return jdbcTemplate.queryForObject(RETRIEVE_SQL, articleRowMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -50,7 +54,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
         jdbcTemplate.update(MODIFY_SQL,
                 article.getWriter(),
                 article.getTitle(),
-                article.getContents(),
+                article.getContent(),
                 id);
     }
 
@@ -60,25 +64,17 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
-    public List<ArticleListShow> toList() {
-        return jdbcTemplate.query(TO_LIST_SQL, articleListShowRowMapper());
+    public List<Article> toList() {
+        return jdbcTemplate.query(TO_LIST_SQL, articleRowMapper());
     }
 
-    public RowMapper<ArticleListShow> articleListShowRowMapper() {
-        return (rs, rowNum) -> new ArticleListShow(
+    public RowMapper<Article> articleRowMapper() {
+        return (rs, rowNum) -> new Article(
                 rs.getLong("ARTICLE_ID"),
-                rs.getString("CREATED_DATE"),
-                rs.getString("WRITER"),
-                rs.getString("TITLE")
-        );
-    }
-
-    public RowMapper<ArticleContents> articleContentsRowMapper() {
-        return (rs, rowNum) -> new ArticleContents(
-                rs.getString("CREATED_DATE"),
                 rs.getString("WRITER"),
                 rs.getString("TITLE"),
-                rs.getString("CONTENT")
+                rs.getString("CONTENT"),
+                TimeStringParser.parseStringToTime(rs.getString("CREATED_DATE"))
         );
     }
 }

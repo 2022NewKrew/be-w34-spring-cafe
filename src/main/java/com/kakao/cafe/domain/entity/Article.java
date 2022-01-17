@@ -1,6 +1,6 @@
 package com.kakao.cafe.domain.entity;
 
-import com.kakao.cafe.web.util.TimeStringParser;
+import com.kakao.cafe.util.TimeStringParser;
 
 import java.time.LocalDateTime;
 
@@ -9,13 +9,13 @@ public class Article {
     private final LocalDateTime time;
     private final String writer;
     private final String title;
-    private final String contents;
+    private final String content;
 
     public Article(long articleId, String writer, String title, String contents, LocalDateTime time) {
         this.articleId = articleId;
         this.writer = writer;
         this.title = title;
-        this.contents = contents;
+        this.content = contents;
         this.time = time;
     }
 
@@ -27,5 +27,5 @@ public class Article {
 
     public String getTime() { return TimeStringParser.parseTimeToString(time); }
 
-    public String getContents() { return contents; }
+    public String getContent() { return content; }
 }

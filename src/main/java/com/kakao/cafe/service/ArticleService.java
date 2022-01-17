@@ -1,12 +1,13 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.dto.article.ArticleContents;
-import com.kakao.cafe.domain.dto.article.ArticleCreateCommand;
-import com.kakao.cafe.domain.dto.article.ArticleListShow;
-import com.kakao.cafe.repository.article.ArticleRepository;
+import com.kakao.cafe.dto.article.ArticleContents;
+import com.kakao.cafe.dto.article.ArticleCreateCommand;
+import com.kakao.cafe.dto.article.ArticleListShow;
+import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -21,10 +22,12 @@ public class ArticleService {
     }
 
     public ArticleContents getArticle(Long id) {
-        return articleRepository.retrieve(id);
+        return new ArticleContents(articleRepository.retrieve(id));
     }
 
     public List<ArticleListShow> getAllArticles() {
-        return articleRepository.toList();
+        return articleRepository.toList().stream()
+                .map(ArticleListShow::new)
+                .collect(Collectors.toUnmodifiableList());
     }
 }
