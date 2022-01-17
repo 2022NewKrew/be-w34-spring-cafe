@@ -20,7 +20,7 @@ public class UserDAO {
     private final JdbcTemplate jdbcTemplate;
 
     public void create(SignUpForm signUpForm) {
-        final String sql = "INSERT INTO `user` (`email`, `password`, `name`) VALUES(?,?,?)";
+        final String sql = "INSERT INTO USER (EMAIL, PASSWORD, NAME) VALUES(?,?,?)";
 
         final Object[] params = {
                 signUpForm.getEmail(),
@@ -32,13 +32,13 @@ public class UserDAO {
     }
 
     public void update(UpdateUserForm updateUserForm) {
-        final String sql = "UPDATE `user` SET `name`=? WHERE `id`=?";
+        final String sql = "UPDATE USER SET NAME=? WHERE ID=?";
 
         jdbcTemplate.update(sql, updateUserForm.getName(), updateUserForm.getId());
     }
 
     public Optional<UserProfile> getUserProfileById(long id) {
-        final String sql = "SELECT `email`, `name`, FORMATDATETIME(`created`, 'yyyy-MM-dd') as `created` FROM `user` WHERE id=?";
+        final String sql = "SELECT EMAIL, NAME, FORMATDATETIME(CREATED, 'yyyy-MM-dd') as `created` FROM USER WHERE ID=?";
 
         final List<UserProfile> result = jdbcTemplate.query(sql, userProfileMapper(), id);
 
@@ -46,7 +46,7 @@ public class UserDAO {
     }
 
     public Optional<User> findByEmail(String email) {
-        final String sql = "SELECT `id`, `created`, `email`, `password`, `name` FROM `user` WHERE `email` = ?";
+        final String sql = "SELECT ID, CREATED, EMAIL, PASSWORD, NAME FROM USER WHERE EMAIL = ?";
 
         final List<User> user = jdbcTemplate.query(sql, userMapper(), email);
 
@@ -54,15 +54,13 @@ public class UserDAO {
     }
 
     public List<UserProfileOfTableRow> getAllUserProfileOfTableRow() {
-        final String sql = "SELECT `email`, `name`, FORMATDATETIME(`created`, 'yyyy-MM-dd') as `created` FROM `user`";
+        final String sql = "SELECT EMAIL, NAME, FORMATDATETIME(CREATED, 'yyyy-MM-dd') as `created` FROM USER";
 
         return jdbcTemplate.query(sql, userProfileOfTableRowRowMapper());
     }
 
     public boolean isExistEmail(String email) {
-        final String sql = "SELECT EXISTS(" +
-                "SELECT * FROM `user` WHERE `email` = ?)" +
-                " as isExist;";
+        final String sql = "SELECT EXISTS(SELECT * FROM USER WHERE EMAIL = ?)";
 
         final Boolean result = jdbcTemplate.queryForObject(sql, Boolean.class, email);
         Objects.requireNonNull(result);

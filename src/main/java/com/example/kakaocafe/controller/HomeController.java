@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping(path = "/")
 @RequiredArgsConstructor
 public class HomeController {
 
@@ -22,7 +22,7 @@ public class HomeController {
     public ModelAndView home() {
         final List<PostOfTableRow> postOfTableRowList = postDAO.getAllPostOfTableRow();
 
-        return new ModelAndView(ViewPath.INDEX.getPath())
+        return new ModelAndView(ViewPath.INDEX)
                 .addObject("posts", postOfTableRowList);
     }
 }

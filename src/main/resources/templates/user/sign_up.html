@@ -15,11 +15,14 @@
         <form name="question" class="info-container" method="post" action="/users">
             <div class="form-group">
                 <label for="email">이메일</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
+                <input type="email" class="form-control" id="email" name="email" value="{{#email}}{{email}}{{/email}}" placeholder="이메일을 입력하세요">
+                {{#isFailed}}
+                <div style="color: red; margin-top: 5px">중복된 이메일입니다.</div>
+                {{/isFailed}}
             </div>
             <div class="form-group">
                 <label for="name">닉네임</label>
-                <input class="form-control" id="name" name="name" placeholder="닉네입을 입력하세요">
+                <input class="form-control" id="name" name="name" value="{{#name}}{{name}}{{/name}}" placeholder="닉네입을 입력하세요">
             </div>
             <div class="form-group">
                 <label for="password">비밀번호</label>

@@ -1,0 +1,17 @@
+<article class="comment">
+    <div class="article-text">
+        <div class="comment-header">
+            <p class="comment-content comment-author-name">{{writer}}</p>
+            <form action="/posts/{{postId}}/comments/{{id}}" method="POST">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <input id="inputBtn" class="comment-content" type="submit" value="삭제"/>
+            </form>
+        </div>
+        <div class="comment-content comment-doc">
+            <p>{{contents}}</p>
+        </div>
+        <p class="comment-content comment-time">
+            {{created}}
+        </p>
+    </div>
+</article>

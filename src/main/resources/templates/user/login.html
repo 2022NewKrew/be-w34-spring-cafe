@@ -13,6 +13,13 @@
             <p class="title">로그인</p>
         </header>
         <form name="question" class="info-container" method="post" action="/users/login">
+            {{#isFailed}}
+            <div style="color: red; margin-bottom: 5px">
+                아이디 또는 비밀번호가 잘못 입력 되었습니다.
+                <br>
+                아이디와 비밀번호를 정확히 입력해 주세요.
+            </div>
+            {{/isFailed}}
             <div class="form-group">
                 <label for="email">이메일</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">

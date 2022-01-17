@@ -1,18 +1,16 @@
 package com.example.kakaocafe.core.config.resolver;
 
-import com.example.kakaocafe.core.meta.SessionAttributes;
+import com.example.kakaocafe.core.meta.SessionData;
 import com.example.kakaocafe.domain.post.dto.WritePostForm;
-import com.example.kakaocafe.domain.user.dto.UpdateUserForm;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Map;
 
 public class WritePostFormResolver implements HandlerMethodArgumentResolver {
     @Override
@@ -27,7 +25,7 @@ public class WritePostFormResolver implements HandlerMethodArgumentResolver {
 
         final HttpSession httpSession = request.getSession();
 
-        final long writerId = ((long) httpSession.getAttribute(SessionAttributes.USER_KEY.getValue()));
+        final long writerId = ((long) httpSession.getAttribute(SessionData.USER_KEY));
         final String title = request.getParameter("title");
         final String contents = request.getParameter("contents");
 

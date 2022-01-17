@@ -10,4 +10,6 @@ public class PostOfTableRow {
     private final String writer;
     private final String title;
     private final String created;
+
+    private final long viewCount;
 }
