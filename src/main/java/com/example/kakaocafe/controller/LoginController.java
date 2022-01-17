@@ -16,13 +16,13 @@ import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping
+@RequestMapping(path = "/")
 @RequiredArgsConstructor
 public class LoginController {
 
     private final LoginService loginService;
 
-    @GetMapping(path = "/login")
+    @GetMapping(path = "login")
     public ModelAndView showLoginForm(@SessionAttribute(value = "userKey", required = false) Long userKey,
                                       Model model) {
 
@@ -34,7 +34,7 @@ public class LoginController {
                 .addAllObjects(model.asMap());
     }
 
-    @PostMapping(path = "/users/login")
+    @PostMapping(path = "users/login")
     public ModelAndView login(@ModelAttribute LoginForm loginForm,
                               HttpSession httpSession) throws LoginException {
 
@@ -49,7 +49,7 @@ public class LoginController {
         return new ModelAndView(URLPath.INDEX.getRedirectPath());
     }
 
-    @GetMapping(path = "/users/logout")
+    @GetMapping(path = "users/logout")
     public ModelAndView logout(HttpSession httpSession) {
         httpSession.invalidate();
         return new ModelAndView(URLPath.INDEX.getRedirectPath());
