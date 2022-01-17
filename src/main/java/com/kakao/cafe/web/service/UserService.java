@@ -27,7 +27,7 @@ public class UserService {
         return memoryUserRepository.getUserByUserId(userId);
     }
 
-    public User replace(UserCreateDTO userUpdateDTO) {
+    public User updateUser(UserCreateDTO userUpdateDTO) {
         return memoryUserRepository.update(userUpdateDTO);
     }
 }

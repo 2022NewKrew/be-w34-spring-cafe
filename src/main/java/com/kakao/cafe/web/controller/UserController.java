@@ -69,7 +69,7 @@ public class UserController {
         User user = (User)value;
         if (user.getPassword().equals(password) && password.equals(passwordConfirm)) {
             UserCreateDTO userUpdateDTO = new UserCreateDTO(userId, password, name, email);
-            userService.replace(userUpdateDTO);
+            userService.updateUser(userUpdateDTO);
         }
         return "redirect:/users";
     }

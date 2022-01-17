@@ -2,6 +2,7 @@ package com.kakao.cafe.web.service;
 
 import com.kakao.cafe.web.domain.Article;
 import com.kakao.cafe.web.dto.ArticleCreateDTO;
+import com.kakao.cafe.web.dto.ArticleUpdateDTO;
 import com.kakao.cafe.web.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,13 @@ public class ArticleService {
     public Article getArticleById(long id) {
         Optional<Article> article = memoryArticleRepository.getArticleById(id);
         return article.orElseThrow(NoSuchElementException::new);
+    }
+
+    public Article updateArticle(ArticleUpdateDTO articleUpdateDTO) {
+        return memoryArticleRepository.update(articleUpdateDTO);
+    }
+
+    public void deleteArticleById(long id) {
+        memoryArticleRepository.deleteArticleById(id);
     }
 }

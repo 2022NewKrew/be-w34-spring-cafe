@@ -2,6 +2,7 @@ package com.kakao.cafe.web.repository;
 
 import com.kakao.cafe.web.domain.Article;
 import com.kakao.cafe.web.dto.ArticleCreateDTO;
+import com.kakao.cafe.web.dto.ArticleUpdateDTO;
 import com.kakao.cafe.web.utility.CombinedSqlParameterSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +33,8 @@ public class MemoryArticleRepository implements ArticleRepository{
     @Override
     public Article save(ArticleCreateDTO articleCreateDTO) throws NullPointerException {
         // Save Article
-        String sql = "INSERT INTO cafe_article (writer, title, contents, createdTime, modifiedTime) " +
-                "VALUES ((SELECT user_id FROM cafe_user WHERE user_id = :writer), :title, :contents, :createdTimem, :modifiedTime)";
+        String sql = "INSERT INTO cafe_article (writer, title, contents, created_time, modified_time) " +
+                "VALUES ((SELECT user_id FROM cafe_user WHERE user_id = :writer), :title, :contents, :createdTime, :modifiedTime)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         CombinedSqlParameterSource sqlParameterSource = new CombinedSqlParameterSource(articleCreateDTO);
         sqlParameterSource.addValue("createdTime", new Timestamp(System.currentTimeMillis()));
@@ -42,9 +43,9 @@ public class MemoryArticleRepository implements ArticleRepository{
 
         // Return Created Article
         sql = "SELECT * FROM cafe_article WHERE id = :id";
-        sqlParameterSource = new CombinedSqlParameterSource(null);
-        sqlParameterSource.addValue("id", Objects.requireNonNull(keyHolder.getKey()).longValue());
-        return namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, articleRowMapper);
+        MapSqlParameterSource returnSqlParameterSource = new MapSqlParameterSource();
+        returnSqlParameterSource.addValue("id", Objects.requireNonNull(keyHolder.getKey()).longValue());
+        return namedParameterJdbcTemplate.queryForObject(sql, returnSqlParameterSource, articleRowMapper);
     }
 
     @Override
@@ -59,5 +60,25 @@ public class MemoryArticleRepository implements ArticleRepository{
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
         List<Article> articleByIdList = namedParameterJdbcTemplate.query(sql, sqlParameterSource, articleRowMapper);
         return articleByIdList.stream().findFirst();
+    }
+
+    @Override
+    public Article update(ArticleUpdateDTO articleUpdateDTO) {
+        String sql = "UPDATE cafe_article SET title = :title, contents = :contents, modified_time = :modifiedTime WHERE id = :id";
+        SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(articleUpdateDTO);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+
+        // Return Updated Article
+        sql = "SELECT * FROM cafe_article WHERE id = :id";
+        MapSqlParameterSource returnSqlParameterSource = new MapSqlParameterSource();
+        returnSqlParameterSource.addValue("id", articleUpdateDTO.getId());
+        return namedParameterJdbcTemplate.queryForObject(sql, returnSqlParameterSource, articleRowMapper);
+    }
+
+    @Override
+    public void deleteArticleById(long id) {
+        String sql = "DELETE FROM cafe_article WHERE id = :id";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }
 }
