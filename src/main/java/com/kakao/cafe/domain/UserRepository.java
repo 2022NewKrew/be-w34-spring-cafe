@@ -14,7 +14,7 @@ public class UserRepository {
         userLst = new ArrayList<>();
     }
 
-    public boolean SignUp(String userId, String password, String name, String email) {
+    public boolean signUp(String userId, String password, String name, String email) {
         for (User existUser : userLst) {
             if (existUser.getUserId().equals(userId)) {
                 return false;

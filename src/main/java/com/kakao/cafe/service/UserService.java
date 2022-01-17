@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.DTO.SignInDTO;
+import com.kakao.cafe.DTO.SignUpDTO;
 import com.kakao.cafe.DTO.UserInfoDTO;
 import com.kakao.cafe.DTO.UserProfileDTO;
 import com.kakao.cafe.domain.User;
@@ -32,8 +32,8 @@ public class UserService {
         return makeUserProfileDTOFromUser(userRepo.getUser(userId));
     }
 
-    public boolean SignUp(SignInDTO candidate) {
-        return userRepo.SignUp(candidate.getUserId(), candidate.getPassword(), candidate.getName(), candidate.getEmail());
+    public boolean signUp(SignUpDTO candidate) {
+        return userRepo.signUp(candidate.getUserId(), candidate.getPassword(), candidate.getName(), candidate.getEmail());
     }
 
     private UserInfoDTO makeUserInfoDTOFromUser(User userObj, int idx) {
