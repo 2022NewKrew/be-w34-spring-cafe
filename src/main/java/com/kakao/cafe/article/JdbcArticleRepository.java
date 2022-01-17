@@ -33,6 +33,16 @@ public class JdbcArticleRepository implements ArticleRepository{
     }
 
     @Override
+    public Optional<Article> findBySeq(long seq) {
+        List<Article> results = jdbcTemplate.query(
+                "SELECT * FROM articles WHERE seq=?",
+                mapper,
+                seq
+        );
+        return ofNullable(results.isEmpty() ? null : results.get(0));
+    }
+
+    @Override
     public Optional<Article> findByTitle(String title) {
         List<Article> results = jdbcTemplate.query(
                 "SELECT * FROM articles WHERE title=?",
