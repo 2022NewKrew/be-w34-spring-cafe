@@ -20,16 +20,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public Long save(User user) {
-        Long id = null;
-
-        try {
-            id = userRepository.save(user);
-        } catch (SQLException e) {
-            log.error("USER TABLE SAVE 실패 SQLState : {}",e.getSQLState());
-        }
-
-        return id;
+    public Long save(User user) throws SQLException {
+        return userRepository.save(user);
     }
 
     @Override

@@ -29,7 +29,7 @@ public class QuestionController {
     public String insertQuestion(HttpServletRequest request, @ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto) {
 
         HttpSession httpSession = request.getSession();
-        User user = (User) httpSession.getAttribute("loginUser");
+        User user = modelMapper.map(httpSession.getAttribute("loginUser"), User.class);
         Question question = modelMapper.map(questionCreateDto, Question.class);
 
         question.setMemberId(user.getId());

@@ -23,7 +23,7 @@
         <div class="collapse navbar-collapse" id="navbar-collapse1">
             <div class="navbar-form pull-left" style="margin: 0; padding: 15px;">
                 <div class="input-group" style="max-width:470px;">
-                    <span style="color:darkorange;">권한 : </span><span style="font-weight: bold; color: red;">{{loginUser.role}}</span>
+                    <span style="color:darkorange;">권한 : </span><span style="font-weight: bold; color: red;">{{#admin}}admin{{/admin}}{{^admin}}USER{{/admin}}</span>
                 </div>
             </div>
         </div>
@@ -52,9 +52,6 @@
                 <li><a href="/users" role="button">회원목록</a></li>
                 {{/admin}}
                 <li><a href="/questions" role="button">게시글</a></li>
-                {{#loginUser}}
-                <li><a href="/questions/create" role="button">질문하기</a></li>
-                {{/loginUser}}
                 {{^loginUser}}
                 <li><a id="loginButton" href="javascript:void(0)" onClick="clickLoginModal()" role="button">로그인</a></li>
                 {{/loginUser}}

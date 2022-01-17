@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.UserService;
+import com.kakao.cafe.user.UserStatus;
 import com.kakao.cafe.user.dto.UserCreateDto;
 import com.kakao.cafe.user.dto.UserDto;
 import com.kakao.cafe.user.dto.UserLoginDto;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,7 +50,13 @@ public class UserController {
         }
 
         User user = modelMapper.map(userCreateDto, User.class);
-        Long id = userService.save(user);
+
+        try {
+            Long id = userService.save(user);
+        } catch (SQLException e) {
+            log.error("USER TABLE SAVE 실패 SQLState : {}", e.getSQLState());
+            return getErrorPageModel(model, "회원가입 실패했습니다.");
+        }
 
         return "redirect:/";
     }
@@ -93,7 +101,6 @@ public class UserController {
         user.setName(userUpdateDto.getName());
         user.setEmail(userUpdateDto.getEmail());
 
-
         if (!userService.update(user)) {
             log.info("회원 정보 수정 실패 에러페이지로 이동");
         }
@@ -106,20 +113,43 @@ public class UserController {
 
         User user = userService.loginCheck(userLoginDto.getUserId(), userLoginDto.getPassword());
 
-        if (user != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("loginUser", user);
+        if (user == null) {
+            return getErrorPageModel(model, "login error 페이지 입니다.");
         }
+
+        setLoginUserSession(request, user);
 
         return "redirect:/";
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
+
+        sessionInvalidate(request);
+        return "redirect:/";
+    }
+
+    private void setLoginUserSession(HttpServletRequest request, User user) {
+
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+        HttpSession session = request.getSession();
+
+        session.setAttribute("loginUser", userDto);
+
+        if (user.getRole() == UserStatus.ADMIN) {
+            session.setAttribute("admin", true);
+        }
+    }
+
+    private void sessionInvalidate(HttpServletRequest request) {
         HttpSession httpSession = request.getSession();
         httpSession.invalidate();
         log.info("success invalidate session");
-        return "redirect:/";
+    }
+
+    private String getErrorPageModel(Model model, String message) {
+        model.addAttribute("message", message);
+        return "error/base_error";
     }
 
 }
