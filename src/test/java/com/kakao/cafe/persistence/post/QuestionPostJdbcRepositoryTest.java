@@ -1,8 +1,8 @@
 package com.kakao.cafe.persistence.post;
 
 import com.kakao.cafe.exception.IdNotFoundException;
+import com.kakao.cafe.post.adapter.out.persistence.QuestionPostRepository;
 import com.kakao.cafe.post.domain.QuestionPost;
-import com.kakao.cafe.post.domain.QuestionPostRepository;
 import com.kakao.cafe.user.domain.UserAccount;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;

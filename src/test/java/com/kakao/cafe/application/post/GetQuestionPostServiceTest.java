@@ -1,14 +1,17 @@
 package com.kakao.cafe.application.post;
 
+import com.kakao.cafe.post.adapter.out.persistence.QuestionPostRepository;
+import com.kakao.cafe.post.application.GetQuestionPostService;
+import com.kakao.cafe.post.application.dto.command.QuestionPostDetailCommand;
 import com.kakao.cafe.post.application.dto.result.QuestionPostDetailResult;
-import com.kakao.cafe.user.application.UserAccountService;
-import com.kakao.cafe.post.application.QuestionPostService;
+import com.kakao.cafe.post.application.port.in.GetQuestionPostUseCase;
+import com.kakao.cafe.post.application.port.out.LoadQuestionPostPort;
 import com.kakao.cafe.post.domain.QuestionPost;
-import com.kakao.cafe.post.domain.QuestionPostRepository;
 import com.kakao.cafe.user.domain.UserAccount;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -19,13 +22,13 @@ import java.util.Optional;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class QuestionPostServiceTest {
+public class GetQuestionPostServiceTest {
 
     @Mock
-    UserAccountService userAccountService;
+    LoadQuestionPostPort loadQuestionPostPort;
 
-    @Mock
-    QuestionPostRepository questionPostRepository;
+    @InjectMocks
+    GetQuestionPostService getQuestionPostService;
 
     @Test
     void getPostDetailTest() {
@@ -39,7 +42,7 @@ public class QuestionPostServiceTest {
         String formatDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         UserAccount userAccount = UserAccount.builder()
                 .userAccountId(1L)
-                .username("baek")
+                .username("peach")
                 .build();
 
         QuestionPostDetailResult expected = new QuestionPostDetailResult(
@@ -48,10 +51,9 @@ public class QuestionPostServiceTest {
                 content,
                 formatDate,
                 viewCount,
-                author
-        );
+                author);
 
-        given(questionPostRepository.findById(postId)).willReturn(Optional.of(
+        given(loadQuestionPostPort.findById(postId)).willReturn(Optional.of(
                 QuestionPost.builder()
                         .questionPostId(postId)
                         .title(title)
@@ -62,8 +64,7 @@ public class QuestionPostServiceTest {
                         .build()));
 
         //when
-        QuestionPostService questionPostService = new QuestionPostService(questionPostRepository, userAccountService);
-        QuestionPostDetailResult postDetail = questionPostService.getPostDetail(postId);
+        QuestionPostDetailResult postDetail = getQuestionPostService.getPostDetail(new QuestionPostDetailCommand(postId));
 
         //then
         Assertions.assertThat(postDetail.getQuestionPostId()).isEqualTo(expected.getQuestionPostId());

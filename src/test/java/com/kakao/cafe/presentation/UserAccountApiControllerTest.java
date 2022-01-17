@@ -1,6 +1,6 @@
 package com.kakao.cafe.presentation;
 
-import com.kakao.cafe.user.adapter.in.web.dto.UserAccountEnrollRequest;
+import com.kakao.cafe.user.adapter.in.web.dto.request.UserAccountEnrollRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

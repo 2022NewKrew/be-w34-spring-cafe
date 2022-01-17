@@ -1,7 +1,7 @@
 package com.kakao.cafe.persistence.user;
 
 import com.kakao.cafe.user.domain.UserAccount;
-import com.kakao.cafe.user.domain.UserAccountRepository;
+import com.kakao.cafe.user.adapter.out.persistence.UserAccountRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
