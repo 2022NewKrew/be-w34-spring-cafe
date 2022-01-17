@@ -62,7 +62,7 @@ public class ArticleJdbc implements ArticleRepository {
         return Collections.unmodifiableList(
                 jdbcTemplate.query(
                         con -> con.prepareStatement(
-                                "SELECT * FROM article"
+                                "SELECT * FROM article ORDER BY created_at DESC"
                         ),
                         (rs, count) -> new Article(rs)
                 )
