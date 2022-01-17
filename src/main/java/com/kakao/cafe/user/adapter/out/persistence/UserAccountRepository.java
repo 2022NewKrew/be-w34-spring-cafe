@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.domain;
+package com.kakao.cafe.user.adapter.out.persistence;
 
 import com.kakao.cafe.user.domain.UserAccount;
 

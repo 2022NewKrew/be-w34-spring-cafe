@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.adapter.in.web.dto;
+package com.kakao.cafe.user.adapter.in.web.dto.request;
 
 import com.kakao.cafe.user.application.dto.command.UserAccountEnrollCommand;
 import lombok.Getter;

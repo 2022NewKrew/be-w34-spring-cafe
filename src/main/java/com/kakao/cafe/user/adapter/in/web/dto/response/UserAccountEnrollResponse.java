@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.adapter.in.web.dto;
+package com.kakao.cafe.user.adapter.in.web.dto.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class UserAccountLoginResponse {
+public class UserAccountEnrollResponse {
 
-    private final String message;
+    private final Long id;
 
 }

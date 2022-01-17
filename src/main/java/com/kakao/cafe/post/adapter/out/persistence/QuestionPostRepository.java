@@ -1,4 +1,4 @@
-package com.kakao.cafe.post.domain;
+package com.kakao.cafe.post.adapter.out.persistence;
 
 import com.kakao.cafe.post.domain.QuestionPost;
 

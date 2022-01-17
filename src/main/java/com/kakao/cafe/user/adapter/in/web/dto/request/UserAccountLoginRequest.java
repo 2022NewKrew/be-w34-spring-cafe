@@ -1,5 +1,6 @@
-package com.kakao.cafe.user.adapter.in.web.dto;
+package com.kakao.cafe.user.adapter.in.web.dto.request;
 
+import com.kakao.cafe.user.application.dto.command.UserAccountDetailEmailCommand;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,4 +18,7 @@ public class UserAccountLoginRequest {
     @NotNull
     private final String password;
 
+    public UserAccountDetailEmailCommand toCommand() {
+        return new UserAccountDetailEmailCommand(email);
+    }
 }
