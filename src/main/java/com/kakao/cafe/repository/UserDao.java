@@ -74,7 +74,6 @@ public class UserDao implements UserRepository {
 
     public List<User> findAll() {
 
-        System.out.println(count());
         return jdbcTemplate.query(
                 "select * from MEMBER",
                 new UserMapper()
