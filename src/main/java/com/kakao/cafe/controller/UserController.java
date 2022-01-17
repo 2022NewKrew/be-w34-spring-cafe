@@ -58,15 +58,20 @@ public class UserController {
     * 유저 상세 정보 수정 페이지
     */
     @GetMapping("/users/{id}/form")
-    public String showEditUserPage(@PathVariable int id, Model model) {
-        model.addAttribute("user", userService.findOne(id));
+    public String showEditUserPage(@PathVariable int id, Model model, HttpSession session) {
+        Object value = session.getAttribute("sessionedUser");
+        if (value != null){
+            String userId = (String)value;
+        }
+//        userService.
+//        model.addAttribute("user", userService.findOne(id));
         return "user/updateForm";
     }
 
     /*
     * 유저 상세 정보 수정
     */
-    @PostMapping("/users/{id}/update")
+    @PutMapping("/users/{id}/update")
     public String editUser(@PathVariable int id, @ModelAttribute RequestUserDto userDto) {
         userService.updateUser(id, userDto);
         return "redirect:/users";
@@ -80,6 +85,15 @@ public class UserController {
         if (userService.login(userId.trim(), password.trim())) {
             session.setAttribute("sessionedUser", userId);
         }
+        return "redirect:/";
+    }
+
+    /*
+    * 로그아웃
+    */
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
         return "redirect:/";
     }
 
