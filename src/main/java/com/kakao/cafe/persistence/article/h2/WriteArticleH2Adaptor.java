@@ -11,8 +11,6 @@ import java.util.Map;
 
 @Repository
 public class WriteArticleH2Adaptor implements WriteArticlePort {
-    private static final String TABLE_NAME = "ARTICLE";
-    private static final List<String> FIELDS = List.of("article_id", "article_writer", "article_created_at", "article_title", "article_contents");
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public WriteArticleH2Adaptor(NamedParameterJdbcTemplate jdbcTemplate) {
@@ -21,14 +19,11 @@ public class WriteArticleH2Adaptor implements WriteArticlePort {
 
     @Override
     public void save(ArticleVo article) {
-        String INSERT_USER = "INSERT INTO " + TABLE_NAME + " ( " + String.join(", ", FIELDS) + " ) "
-                + " VALUES (:writer, :createdAt, :title, :contents)";
+        Map<String, Object> parameters = Map.of("article_writer", article.getWriter(),
+                "article_created_at", LocalDateTime.now(),
+                "article_title", article.getTitle(),
+                "article_contents", article.getContents());
 
-        Map<String, Object> parameters = Map.of("writer", article.getWriter(),
-                "createdAt", LocalDateTime.now(),
-                "title", article.getTitle(),
-                "contents", article.getContents());
-
-        jdbcTemplate.update(INSERT_USER, parameters);
+        jdbcTemplate.update(H2ArticleQueryBuilder.insertOne(List.of("article_writer", "article_created_at", "article_title", "article_contents")), parameters);
     }
 }

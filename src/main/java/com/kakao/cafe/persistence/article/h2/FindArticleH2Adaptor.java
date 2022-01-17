@@ -14,8 +14,6 @@ import java.util.Optional;
 
 @Repository
 public class FindArticleH2Adaptor implements FindArticlePort {
-    private static final String TABLE_NAME = "ARTICLE";
-    private static final List<String> FIELDS = List.of("article_id", "article_writer", "article_created_at", "article_title", "article_contents");
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final ArticleRowMapper articleRowMapper;
 
@@ -26,23 +24,19 @@ public class FindArticleH2Adaptor implements FindArticlePort {
 
     @Override
     public List<Article> findAll() {
-        String SELECT_ALL = "SELECT " + String.join(", ", FIELDS) + " FROM " + TABLE_NAME;
-
         SqlParameterSource parameters = new MapSqlParameterSource();
 
-        List<Article> articles = jdbcTemplate.query(SELECT_ALL, parameters, articleRowMapper);
+        List<Article> articles = jdbcTemplate.query(H2ArticleQueryBuilder.selectAll(), parameters, articleRowMapper);
         return articles;
     }
 
     @Override
     public Optional<Article> findById(int index) {
-        String SELECT_BY_USER_ID = "SELECT " + String.join(", ", FIELDS) + " FROM " + TABLE_NAME + " WHERE article_id = :articleId LIMIT 1";
-
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("articleId", index);
+                .addValue("article_id", index);
 
         try {
-            return Optional.of(jdbcTemplate.queryForObject(SELECT_BY_USER_ID, parameters, articleRowMapper));
+            return Optional.of(jdbcTemplate.queryForObject(H2ArticleQueryBuilder.selectOneByField("article_id"), parameters, articleRowMapper));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }

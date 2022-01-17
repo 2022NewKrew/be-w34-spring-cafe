@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public class SignUpUserH2Adaptor implements SignUpUserPort {
-    private static final String TABLE_NAME = "USER";
-    private static final List<String> FIELDS = List.of("user_id", "user_password", "user_name", "user_email");
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public SignUpUserH2Adaptor(NamedParameterJdbcTemplate jdbcTemplate) {
@@ -18,14 +16,11 @@ public class SignUpUserH2Adaptor implements SignUpUserPort {
 
     @Override
     public void save(User user) {
-        String INSERT_USER = "INSERT INTO " + TABLE_NAME + " ( " + String.join(", ", FIELDS) + " ) "
-                + " VALUES (:userId, :password, :name, :email)";
+        Map<String, Object> parameters = Map.of("user_id", user.getUserId(),
+                "user_password", user.getPassword(),
+                "user_name", user.getName(),
+                "user_email", user.getEmail());
 
-        Map<String, Object> parameters = Map.of("userId", user.getUserId(),
-                "password", user.getPassword(),
-                "name", user.getName(),
-                "email", user.getEmail());
-
-        jdbcTemplate.update(INSERT_USER, parameters);
+        jdbcTemplate.update(H2UserQueryBuilder.insertOne(List.of("user_id", "user_password", "user_name", "user_email")), parameters);
     }
 }

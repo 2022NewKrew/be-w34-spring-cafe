@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class FindUserH2Adaptor implements FindUserPort {
-    private static final String TABLE_NAME = "USER";
-    private static final List<String> FIELDS = List.of("user_id", "user_password", "user_name", "user_email");
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final UserRowMapper userRowMapper;
 
@@ -24,14 +22,12 @@ public class FindUserH2Adaptor implements FindUserPort {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        String SELECT_BY_USER_ID = "SELECT " + String.join(", ", FIELDS) + " FROM " + TABLE_NAME + " WHERE USER_ID = :userId LIMIT 1";
-
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("userId", userId);
+                .addValue("user_id", userId);
 
         try {
             return Optional.of(
-                    jdbcTemplate.queryForObject(SELECT_BY_USER_ID, parameters, userRowMapper)
+                    jdbcTemplate.queryForObject(H2UserQueryBuilder.selectOneByField("user_id"), parameters, userRowMapper)
             );
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -40,24 +36,20 @@ public class FindUserH2Adaptor implements FindUserPort {
 
     @Override
     public List<User> findAll() {
-        String SELECT_ALL = "SELECT " + String.join(", ", FIELDS) + " FROM " + TABLE_NAME;
-
         SqlParameterSource parameters = new MapSqlParameterSource();
 
-        List<User> users = jdbcTemplate.query(SELECT_ALL, parameters, userRowMapper);
+        List<User> users = jdbcTemplate.query(H2UserQueryBuilder.selectAll(), parameters, userRowMapper);
         return users;
     }
 
     @Override
     public Optional<User> findByUserIdAndPassword(String userId, String password) {
-        String SELECT_BY_USER_ID_AND_PASSWORD = "SELECT " + String.join(", ", FIELDS) + " FROM " + TABLE_NAME + " WHERE USER_ID = :userId AND USER_PASSWORD = :password LIMIT 1";
-
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("userId", userId)
-                .addValue("password", password);
+                .addValue("user_id", userId)
+                .addValue("user_password", password);
 
         try {
-            return Optional.of(jdbcTemplate.queryForObject(SELECT_BY_USER_ID_AND_PASSWORD, parameters, userRowMapper));
+            return Optional.of(jdbcTemplate.queryForObject(H2UserQueryBuilder.selectOneByMultipleField(List.of("user_id", "user_password")), parameters, userRowMapper));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }

@@ -4,10 +4,10 @@ import com.kakao.cafe.domain.user.UpdateUserPort;
 import com.kakao.cafe.domain.user.User;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 public class UpdateUserH2Adaptor implements UpdateUserPort {
-    private static final String TABLE_NAME = "USER";
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public UpdateUserH2Adaptor(NamedParameterJdbcTemplate jdbcTemplate) {
@@ -16,14 +16,12 @@ public class UpdateUserH2Adaptor implements UpdateUserPort {
 
     @Override
     public void save(User user) {
-        String UPDATE_USER = "UPDATE  " + TABLE_NAME + " SET USER_PASSWORD = :password, USER_NAME = :name, USER_EMAIL = :email" +
-                " WHERE USER_ID = :userId";
+        Map<String, Object> parameters = Map.of("user_id", user.getUserId(),
+                "user_password", user.getPassword(),
+                "user_name", user.getName(),
+                "user_email", user.getEmail());
 
-        Map<String, Object> parameters = Map.of("userId", user.getUserId(),
-                "password", user.getPassword(),
-                "name", user.getName(),
-                "email", user.getEmail());
-
-        jdbcTemplate.update(UPDATE_USER, parameters);
+        jdbcTemplate.update(H2UserQueryBuilder.updateOne(
+                List.of("user_password", "user_name", "user_email"), List.of("user_id")), parameters);
     }
 }
