@@ -36,18 +36,12 @@ public class ArticleJdbcRepository implements ArticleRepository{
     @Override
     public List<Article> getArticles() {
         String sql = "SELECT * FROM articles";
-        return jdbcTemplate.query(sql,
-                (rs, rn) ->
-                {Article article = new Article(rs.getString("name"), rs.getString("title"), rs.getString("contents"), rs.getDate("date"), rs.getLong("sequence"));
-                    return article;});
+        return jdbcTemplate.query(sql, new ArticleRowMapper());
     }
 
     @Override
     public Article getArticleByCondition(String key, String value) {
         String sql = String.format("SELECT * FROM articles WHERE %s = %s", key, value);
-        return jdbcTemplate.query(sql,
-                (rs, rn) ->
-                {Article article = new Article(rs.getString("name"), rs.getString("title"), rs.getString("contents"), rs.getDate("date"), rs.getLong("sequence"));
-                    return article;}).stream().findAny().orElse(null);
+        return (Article) jdbcTemplate.query(sql, new ArticleRowMapper()).stream().findAny().orElse(null);
     }
 }
