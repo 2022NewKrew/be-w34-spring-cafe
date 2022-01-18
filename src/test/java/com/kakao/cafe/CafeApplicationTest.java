@@ -13,8 +13,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -105,6 +104,13 @@ public class CafeApplicationTest {
                 .andExpect(content().string(containsString("test_title"))));
     }
 
+    @Test
+    public void modifyUser() throws Exception {
+        signUpAndThen(result -> mvc.perform(createModifyUserRequest(userCounter.get()))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection()));
+    }
+
     private void signUpAndThen(ResultHandler handler) throws Exception {
         mvc.perform(createSignUpRequest()).andDo(handler);
     }
@@ -114,7 +120,7 @@ public class CafeApplicationTest {
     }
 
     private MockHttpServletRequestBuilder createSignUpRequest() {
-        return get("/user/create")
+        return post("/users")
                 .queryParam("userId", "test_user" + userCounter.getAndIncrement())
                 .queryParam("password", "test_pass")
                 .queryParam("name", "test_name")
@@ -126,5 +132,13 @@ public class CafeApplicationTest {
                 .param("writer", "test_author")
                 .param("title", "test_title")
                 .param("contents", "test_content");
+    }
+
+    private MockHttpServletRequestBuilder createModifyUserRequest(long id) {
+        return put("/users/" + id)
+                .queryParam("userId", "new_test_user" + id)
+                .queryParam("password", "new_test_pass")
+                .queryParam("name", "new_test_name")
+                .queryParam("email", "email@example.com");
     }
 }

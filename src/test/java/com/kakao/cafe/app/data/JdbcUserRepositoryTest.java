@@ -7,7 +7,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Collections;
@@ -24,16 +27,20 @@ class JdbcUserRepositoryTest {
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     private JdbcUserRepository subject;
+    private long insertedId;
 
     @BeforeEach
     void setUp() {
         subject = new JdbcUserRepository(jdbcTemplate);
+        KeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 "INSERT INTO users " +
                         "(user_id, password, name, email) " +
                         "VALUES ('id', 'password', 'name', '')",
-                Collections.emptyMap()
+                new MapSqlParameterSource(),
+                holder
         );
+        insertedId = holder.getKey().longValue();
     }
 
     @AfterEach
@@ -127,5 +134,53 @@ class JdbcUserRepositoryTest {
         Optional<User> user = subject.login("id", "password1");
 
         assertTrue(user.isEmpty());
+    }
+
+    @Test
+    void updateUserId() {
+        subject.updateUserId(insertedId, "id1");
+
+        String userId = jdbcTemplate.queryForObject(
+                "SELECT user_id FROM users WHERE id = :id",
+                Collections.singletonMap("id", insertedId),
+                String.class
+        );
+        assertEquals("id1", userId);
+    }
+
+    @Test
+    void updatePassword() {
+        subject.updatePassword(insertedId, "password1");
+
+        String password = jdbcTemplate.queryForObject(
+                "SELECT password FROM users WHERE id = :id",
+                Collections.singletonMap("id", insertedId),
+                String.class
+        );
+        assertEquals("password1", password);
+    }
+
+    @Test
+    void updateName() {
+        subject.updateName(insertedId, "name1");
+
+        String name = jdbcTemplate.queryForObject(
+                "SELECT name FROM users WHERE id = :id",
+                Collections.singletonMap("id", insertedId),
+                String.class
+        );
+        assertEquals("name1", name);
+    }
+
+    @Test
+    void updateEmail() {
+        subject.updateEmail(insertedId, "email1");
+
+        String email = jdbcTemplate.queryForObject(
+                "SELECT email FROM users WHERE id = :id",
+                Collections.singletonMap("id", insertedId),
+                String.class
+        );
+        assertEquals("email1", email);
     }
 }

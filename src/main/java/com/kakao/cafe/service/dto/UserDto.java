@@ -1,5 +1,7 @@
 package com.kakao.cafe.service.dto;
 
+import java.util.Objects;
+
 public class UserDto {
 
     private final long id;
@@ -16,6 +18,19 @@ public class UserDto {
 
     public long getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return id == userDto.id && Objects.equals(userId, userDto.userId) && Objects.equals(name, userDto.name) && Objects.equals(email, userDto.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, name, email);
     }
 
     public static class Builder {
