@@ -73,13 +73,13 @@ public class MemberController {
     public String postLogin(LoginRequestDTO loginRequestDTO, HttpSession session) {
         logger.info("loginDTO : {}", loginRequestDTO);
 
-        session.setAttribute("memberId", memberService.login(loginRequestDTO));
+        session.setAttribute("loginId", memberService.login(loginRequestDTO));
         return "redirect:/members";
     }
 
     @GetMapping("/logout")
     public String getLogout(HttpSession session) {
-        Long memberId = (Long) session.getAttribute("memberId");
+        Long memberId = (Long) session.getAttribute("loginId");
 
         if (memberId != null) {
             session.invalidate();
