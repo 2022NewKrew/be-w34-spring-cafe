@@ -4,6 +4,7 @@ import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.vo.UserVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -27,8 +28,12 @@ public class UserDao {
     }
 
     public UserVo filterUserById(String userId) {
-        String sql = "SELECT * FROM users WHERE user_id = ?";
-        return jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
+        try {
+            String sql = "SELECT * FROM users WHERE user_id = ?";
+            return jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public void createUser(UserVo user) {
