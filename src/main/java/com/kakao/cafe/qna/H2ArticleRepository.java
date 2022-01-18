@@ -24,13 +24,14 @@ public class H2ArticleRepository implements ArticleRepository{
 
     @Override
     public Article save(Article article) {
-        String sql = "INSERT INTO ARTICLES (WRITER, TITLE, CONTENTS, REPLY_COUNT, CREATED_DATE, MODIFIED_DATE)" +
-                " VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ARTICLES (WRITER, TITLE, CONTENTS, REPLY_COUNT, IS_DELETED, CREATED_DATE, MODIFIED_DATE)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 article.getWriter(),
                 article.getTitle(),
                 article.getContents(),
                 article.getReplyCount().toString(),
+                article.getIsDeleted() ? "Y" : "N",
                 article.getCreatedDate(),
                 article.getModifiedDate());
         return article;
@@ -38,13 +39,27 @@ public class H2ArticleRepository implements ArticleRepository{
 
     @Override
     public Article findArticleById(Integer id) {
-        String sql = "SELECT * FROM ARTICLES WHERE ID = ?";
+        String sql = "SELECT * FROM ARTICLES WHERE ID = ? AND IS_DELETED = 'N'";
         return jdbcTemplate.queryForObject(sql, new ArticleMapper(), id);
     }
 
     @Override
     public List<Article> findAll() {
-        String sql = "SELECT * FROM ARTICLES";
+        String sql = "SELECT * FROM ARTICLES WHERE IS_DELETED = 'N'";
         return jdbcTemplate.query(sql, new ArticleMapper());
+    }
+
+    @Override
+    public Article update(Article article) {
+        String sql = "UPDATE ARTICLES SET" +
+                " TITLE=?, CONTENTS=?, IS_DELETED=?, MODIFIED_DATE=?" +
+                " WHERE ID = ?";
+        jdbcTemplate.update(sql,
+                article.getTitle(),
+                article.getContents(),
+                article.getIsDeleted() ? "Y" : "N",
+                article.getModifiedDate(),
+                article.getId());
+        return article;
     }
 }

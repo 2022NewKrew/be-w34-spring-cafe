@@ -20,6 +20,7 @@ public class ArticleMapper implements RowMapper<Article> {
                 rs.getString("TITLE"),
                 rs.getString("CONTENTS"),
                 rs.getInt("REPLY_COUNT"),
+                rs.getString("IS_DELETED").equals("Y") ? Boolean.TRUE : Boolean.FALSE,
                 Timestamp.valueOf(rs.getString("CREATED_DATE")).toLocalDateTime(),
                 Timestamp.valueOf(rs.getString("MODIFIED_DATE")).toLocalDateTime());
     }
