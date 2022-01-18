@@ -1,5 +1,6 @@
 package com.kakao.cafe.article.service;
 
+import com.kakao.cafe.article.dto.ArticleRegistrationDto;
 import com.kakao.cafe.article.model.Article;
 import com.kakao.cafe.article.repo.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,13 @@ public class ArticleService {
 
     public void create(@Valid Article article) {
         repository.save(article);
+    }
+
+    public void create(ArticleRegistrationDto dto) {
+        Article article = new Article();
+        article.setTitle(dto.getTitle());
+        article.setContent(dto.getContent());
+        create(article);
     }
 
     public Article fetch(Long id) {

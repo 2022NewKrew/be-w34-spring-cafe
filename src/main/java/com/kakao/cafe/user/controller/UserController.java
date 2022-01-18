@@ -24,8 +24,7 @@ public class UserController {
 
     @PostMapping
     public String register(UserRegistrationDto dto) {
-        User user = new User(dto.getUserId(), dto.getPassword(), dto.getName(), dto.getEmail());
-        service.create(user);
+        service.create(dto);
         return "redirect:/users";
     }
 

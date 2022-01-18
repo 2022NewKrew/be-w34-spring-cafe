@@ -32,10 +32,7 @@ public class ArticleController {
 
     @PostMapping(value = "articles")
     public String register(ArticleRegistrationDto dto) {
-        Article article = new Article();
-        article.setTitle(dto.getTitle());
-        article.setContent(dto.getContent());
-        service.create(article);
+        service.create(dto);
         return "redirect:/";
     }
 

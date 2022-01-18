@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.user.dto.UserRegistrationDto;
 import com.kakao.cafe.user.model.User;
 import com.kakao.cafe.user.repo.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +27,11 @@ public class UserService {
         user.setHashedPassword(hashedPassword);
         user.setPlainPassword(null);
         repository.save(user);
+    }
+
+    public void create(UserRegistrationDto dto) {
+        User user = new User(dto.getUserId(), dto.getPassword(), dto.getName(), dto.getEmail());
+        create(user);
     }
 
     public List<User> fetchAll() {
