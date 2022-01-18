@@ -37,8 +37,8 @@ public class ArticleJdbcRepository implements ArticleRepository{
     }
 
     @Override
-    public List<Article> getArticles() {
-        String sql = "SELECT * FROM articles";
+    public List<Article> getArticlesNotDeleted() {
+        String sql = "SELECT * FROM articles WHERE isDeleted=false";
         return jdbcTemplate.query(sql, new ArticleRowMapper());
     }
 

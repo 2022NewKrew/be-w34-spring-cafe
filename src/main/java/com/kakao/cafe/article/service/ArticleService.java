@@ -38,6 +38,6 @@ public class ArticleService {
     }
 
     public List<Article> getAllArticles(){
-        return articleRepository.getArticles();
+        return articleRepository.getArticlesNotDeleted();
     }
 }

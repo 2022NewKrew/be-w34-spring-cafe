@@ -24,7 +24,7 @@ public class ArticleMemoryRepository implements ArticleRepository {
     }
 
 
-    public List<Article> getArticles(){
+    public List<Article> getArticlesNotDeleted(){
         return articles;
     }
 

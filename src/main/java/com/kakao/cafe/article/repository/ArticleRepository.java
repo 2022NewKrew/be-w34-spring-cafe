@@ -8,6 +8,6 @@ import java.util.List;
 public interface ArticleRepository {
     public void addArticle(Article article);
     public void deleteArticle(Article article);
-    public List<Article> getArticles();
+    public List<Article> getArticlesNotDeleted();
     public Article getArticleByCondition(String key, String value);
 }
