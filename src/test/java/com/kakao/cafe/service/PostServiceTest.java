@@ -115,5 +115,4 @@ public class PostServiceTest {
         String curId = "javajigi";
         postService.delete(curId, 1);
     }
-
 }
