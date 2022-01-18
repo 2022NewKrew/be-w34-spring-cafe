@@ -1,16 +1,29 @@
 package com.kakao.cafe.repository;
 
-import domain.user.UserList;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.repository.dao.UserDAO;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class UserRepository {
-    UserList userList = UserList.getInstance();
-    public UserRepository() {
 
+    private final UserDAO userDAO;
+
+    public UserRepository(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
-    public UserList getUserList() {
-        return userList;
+    public void create(User user) {
+        userDAO.create(user);
+    }
+
+    public List<User> getUserList() {
+        return userDAO.findAll();
+    }
+
+    public User findByUserId(String userId) {
+        return userDAO.findByUserId(userId);
     }
 }

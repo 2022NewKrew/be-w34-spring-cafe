@@ -1,4 +1,4 @@
-package domain.user;
+package com.kakao.cafe.domain.user;
 
 import org.junit.jupiter.api.Test;
 
