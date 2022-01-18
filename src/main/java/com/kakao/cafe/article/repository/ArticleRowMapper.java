@@ -13,7 +13,7 @@ public class ArticleRowMapper implements RowMapper {
         Article article = new Article(rs.getString("name"),
                                         rs.getString("title"),
                                         rs.getString("contents"),
-                                        rs.getDate("createdAt"),
+                                        rs.getTimestamp("createdAt"),
                                         rs.getLong("sequence"));
 
 

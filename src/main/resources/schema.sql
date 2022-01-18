@@ -16,5 +16,5 @@ CREATE TABLE ARTICLES(
     name VARCHAR(10),
     title VARCHAR(100),
     contents VARCHAR(2000),
-    createdAt DATETIME
+    createdAt TIMESTAMP
 );
