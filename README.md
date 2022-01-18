@@ -45,8 +45,16 @@
 - [x] local mysql 사용
 - [x] 로그인 하지 않은 사용자는 게시글을 목록만 볼 수 있음(로그인 한 사용자만 게시글의 세부내용을 볼 수 있다.)
 - [x] 로그인한 사용자만 글을 작성할 수 있다.(글쓴이 따로 입력 하지 않아도 되게 하기)
+- [ ] requestParam validation검증
+- 
+# step7
 - [x] css root디렉토리 변경
 - [x] 로그인한 사용자는 자신의 글을 수정 및 삭제할 수 있다.
 - [x] 게시글 삭제 구현
 - [x] 람다 함수 적용
-- [ ] requestParam validation검증
+- [x] nullpointexception이 나타날 수 있는 곳은 optional 변수 사용
+- [x] repository 클래스의 query문 클래스와 분리
+- [ ] step6, step7에 대한 테스트 코드 작성
+
+### Q&A
+- repository 클래스의 query를 query패키지로 따로 분리하였는데 저렇게 분리하는게 옳은 선택인지 궁금합니다!
