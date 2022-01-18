@@ -28,4 +28,8 @@ public class ArticleService {
     public void updateArticle(Long id, ArticleUpdateDto articleUpdateDto) {
         articleRepository.updateArticle(id, articleUpdateDto.getTitle(), articleUpdateDto.getContents());
     }
+
+    public void deleteArticle(Long id) {
+        articleRepository.deleteArticle(id);
+    }
 }

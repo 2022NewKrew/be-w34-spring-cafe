@@ -52,9 +52,17 @@ public class ArticleController {
 
     @PutMapping("/{id}")
     public String updateArticle(@PathVariable Long id, ArticleUpdateDto articleUpdateDto, HttpSession session) throws HttpSessionRequiredException {
-        infraService.validateSession(session, id);
+        infraService.validateSession(session, articleService.showArticle(id).getAuthorId());
         articleService.updateArticle(id, articleUpdateDto);
         logger.info("Update Article : {}", id);
         return "redirect:/articles/{id}";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteArticle(@PathVariable Long id, HttpSession session) throws HttpSessionRequiredException {
+        infraService.validateSession(session, articleService.showArticle(id).getAuthorId());
+        articleService.deleteArticle(id);
+        logger.info("Delete Article : {}", id);
+        return "redirect:/";
     }
 }

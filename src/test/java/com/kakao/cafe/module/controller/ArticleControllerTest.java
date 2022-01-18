@@ -4,6 +4,8 @@ import com.kakao.cafe.module.model.dto.UserDtos;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -118,14 +120,35 @@ class ArticleControllerTest {
                 .andExpect(view().name("infra/error"));
     }
 
-    @Test
-    void 게시물_수정() throws Exception {
-        ArticleUpdateDto input = new ArticleUpdateDto(1L, 1L, "update title", "update contents");
+    @ParameterizedTest
+    @ValueSource(longs = {1L, 5L})
+    void 게시물_수정(long idx) throws Exception {
+        ArticleUpdateDto input = new ArticleUpdateDto(idx, 1L, "update title", "update contents");
 
-        mockMvc.perform(put("/articles/1")
+        mockMvc.perform(put("/articles/" + idx)
                         .flashAttr("articleUpdateDto", input)
                         .session(session))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/articles/1"));
+                .andExpect(redirectedUrl("/articles/" + idx));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 5})
+    void 게시물_삭제(int idx) throws Exception {
+        mockMvc.perform(delete("/articles/" + idx)
+                        .session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {2, 4})
+    void 자신이_쓰지_않은_게시물_삭제(int idx) throws Exception {
+        mockMvc.perform(delete("/articles/" + idx)
+                        .session(session))
+                .andExpect(status().isForbidden())
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("msg"))
+                .andExpect(view().name("infra/error"));
     }
 }

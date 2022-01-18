@@ -63,6 +63,11 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                 title, contents, id);
     }
 
+    @Override
+    public void deleteArticle(Long id) {
+        jdbcTemplate.update("DELETE FROM ARTICLE WHERE id = ?", id);
+    }
+
     public RowMapper<ArticleListDto> mapRowArticles() {
         return ((rs, rowNum) -> new ArticleListDto(
                 rs.getLong("ARTICLE.id"),
