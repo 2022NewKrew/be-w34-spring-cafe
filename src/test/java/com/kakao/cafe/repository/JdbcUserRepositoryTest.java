@@ -49,7 +49,7 @@ class JdbcUserRepositoryTest {
         User user = new User(userId, password, email);
 
         // when & then
-        jdbcUserRepository.createUser(user);
+        jdbcUserRepository.create(user);
     }
 
     @Test
@@ -60,11 +60,11 @@ class JdbcUserRepositoryTest {
         User user2 = new User(userId2, password2, email2);
 
         // when
-        jdbcUserRepository.createUser(user);
-        jdbcUserRepository.createUser(user2);
+        jdbcUserRepository.create(user);
+        jdbcUserRepository.create(user2);
 
         // then
-        List<User> users = jdbcUserRepository.readUsers();
+        List<User> users = jdbcUserRepository.readAll();
         Assertions.assertEquals(3, users.size());
     }
 
@@ -76,11 +76,11 @@ class JdbcUserRepositoryTest {
         User user2 = new User(userId2, password2, email2);
 
         // when
-        jdbcUserRepository.createUser(user);
-        jdbcUserRepository.createUser(user2);
+        jdbcUserRepository.create(user);
+        jdbcUserRepository.create(user2);
 
         // then
-        Optional<User> answer = jdbcUserRepository.readUser(userId2);
+        Optional<User> answer = jdbcUserRepository.readById(userId2);
         Assertions.assertEquals("testUserId2",
                 answer.orElseThrow(() -> new RuntimeException("userId가 null입니다")).getUserId());
     }

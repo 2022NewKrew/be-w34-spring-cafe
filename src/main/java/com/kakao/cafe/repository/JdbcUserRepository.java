@@ -21,18 +21,18 @@ public class JdbcUserRepository implements Repository<User, String>{
     }
 
     @Override
-    public void createUser(User user) {
+    public void create(User user) {
         String sqlQuery = "insert into MEMBER (userId, PASSWORD, EMAIL) values (?, ?, ?)";
         jdbcTemplate.update(sqlQuery, user.getUserId(), passwordEncoder.encode(user.getPassword()), user.getEmail());
     }
 
     @Override
-    public List<User> readUsers() {
+    public List<User> readAll() {
         return jdbcTemplate.query("SELECT * FROM MEMBER", userMapper);
     }
 
     @Override
-    public Optional<User> readUser(String userId) {
+    public Optional<User> readById(String userId) {
         String sqlQuery = "SELECT * FROM MEMBER WHERE userId = ?";
         User user = jdbcTemplate.queryForObject(sqlQuery, userMapper, userId);
         return Optional.ofNullable(user);

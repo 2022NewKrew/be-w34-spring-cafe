@@ -18,17 +18,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void join(UserRegistrationDto userDto) {
-        jdbcUserRepository.createUser(userDto.toEntity());
+        jdbcUserRepository.create(userDto.toEntity());
     }
 
     @Override
     public List<User> getUsers() {
-        return jdbcUserRepository.readUsers();
+        return jdbcUserRepository.readAll();
     }
 
     @Override
     public User findById(String userId) {
-        Optional<User> user = jdbcUserRepository.readUser(userId);
+        Optional<User> user = jdbcUserRepository.readById(userId);
         return user.orElseThrow(() -> new RuntimeException("user 조회 null 검증"));
 //        return jdbcUserRepository.readUser(userId);
     }
