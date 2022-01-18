@@ -1,10 +1,10 @@
-package com.kakao.cafe.service;
+package com.kakao.cafe.user.service;
 
-import com.kakao.cafe.DTO.SignUpDTO;
-import com.kakao.cafe.DTO.UserInfoDTO;
-import com.kakao.cafe.DTO.UserProfileDTO;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserRepository;
+import com.kakao.cafe.user.DTO.SignUpDTO;
+import com.kakao.cafe.user.DTO.UserInfoDTO;
+import com.kakao.cafe.user.DTO.UserProfileDTO;
+import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
