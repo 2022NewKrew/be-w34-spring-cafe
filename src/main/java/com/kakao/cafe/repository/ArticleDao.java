@@ -20,13 +20,11 @@ import java.util.NoSuchElementException;
 public class ArticleDao implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
 
-
-
     public ArticleDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void save(Article article) throws SQLException {
+    public int save(Article article) throws SQLException {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         Map<String, Object> param = new HashMap<>();
 
@@ -43,6 +41,8 @@ public class ArticleDao implements ArticleRepository {
 
         if (key < 1)
             throw new SQLException("Article insertion fail.");
+
+        return key;
     }
 
     public List<Article> findAll() {

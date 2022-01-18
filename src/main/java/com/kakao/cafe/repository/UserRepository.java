@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public interface UserRepository {
-    void save(User user) throws SQLException;
+    int save(User user) throws SQLException;
     List<User> findAll();
     User findByUserId(String s) throws NoSuchElementException;
     User findByName(String s) throws NoSuchElementException;

@@ -17,9 +17,11 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class UserServiceTest {
 	private UserService userService;
-	private UserRepository mockUserRepository = mock(UserDao.class);
+	private UserRepository mockUserRepository;
+
 	@BeforeEach
 	private void setUp() {
+		mockUserRepository = mock(UserDao.class);
 		userService = new UserServiceImpl(mockUserRepository);
 	}
 

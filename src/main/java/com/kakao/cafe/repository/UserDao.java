@@ -24,7 +24,7 @@ public class UserDao implements UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void save(User user) throws SQLException {
+    public int save(User user) throws SQLException {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         Map<String, Object> param = new HashMap<>();
 
@@ -42,6 +42,8 @@ public class UserDao implements UserRepository {
 
         if (key < 1)
             throw new SQLException("MEMBER insertion fail.");
+
+        return key;
     }
 
     public User findByUserId(String userId) throws NoSuchElementException {
