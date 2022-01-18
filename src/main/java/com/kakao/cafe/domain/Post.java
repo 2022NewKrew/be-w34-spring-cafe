@@ -16,7 +16,7 @@ public class Post {
         this.userId = userId;
         this.title = title;
         this.content = content;
-        this.createdAt = createdAt == null ? new Date() : createdAt;
+        this.createdAt = createdAt;
     }
 
     public void setId(int id) {

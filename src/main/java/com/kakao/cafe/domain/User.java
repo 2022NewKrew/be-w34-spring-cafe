@@ -4,26 +4,21 @@ import java.util.Objects;
 
 public class User {
 
-    private static final String INITIAL_ID = "INITIAL_ID";
-    private String id;
+    private final int id;
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    public User(String id, String userId, String password, String name, String email) {
-        this.id = id == null ? INITIAL_ID : id;
+    public User(int id, String userId, String password, String name, String email) {
+        this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 

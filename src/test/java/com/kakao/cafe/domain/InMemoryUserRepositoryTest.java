@@ -2,6 +2,7 @@ package com.kakao.cafe.domain;
 
 import com.kakao.cafe.exceptions.DuplicateUserException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
+import com.kakao.cafe.repository.InMemoryUserRepository;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -9,12 +10,12 @@ import org.junit.jupiter.api.Test;
 
 class InMemoryUserRepositoryTest {
 
-    private final String id = "id";
-    private final String userId = "userId";
-    private final String userId2 = "userId2";
-    private final String password = "password";
-    private final String name = "name";
-    private final String email = "email";
+    private static final int id = 0;
+    private static final String userId = "testUserId";
+    private static final String userId2 = "testUserId2";
+    private static final String password = "testPassword";
+    private static final String name = "testName";
+    private static final String email = "testEmail@kakaocorp.com";
 
     @Test
     @DisplayName("[성공] InMemoryUserRepository 클래스 생성")

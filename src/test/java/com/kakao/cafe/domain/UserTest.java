@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class UserTest {
 
-    private final String id = "id";
+    private final int id = 0;
     private final String userId = "userId";
     private final String password = "password";
     private final String name = "name";

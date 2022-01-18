@@ -2,21 +2,17 @@ package com.kakao.cafe.domain;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class UserSignupRequest {
 
+    private static final int INITIAL_ID = 0;
     @NotBlank(message = "아이디가 비어있습니다")
-    @NotNull(message = "아이디가 null입니다")
     private final String userId;
     @NotBlank(message = "비밀번호가 비어있습니다")
-    @NotNull(message = "비밀번호가 null입니다")
     private final String password;
     @NotBlank(message = "이름이 비어있습니다")
-    @NotNull(message = "이름이 null입니다")
     private final String name;
     @NotBlank(message = "이메일이 비어있습니다")
-    @NotNull(message = "이메일이 null입니다")
     @Email
     private final String email;
 
@@ -28,6 +24,6 @@ public class UserSignupRequest {
     }
 
     public User toEntity() {
-        return new User(null, userId, password, name, email);
+        return new User(INITIAL_ID, userId, password, name, email);
     }
 }

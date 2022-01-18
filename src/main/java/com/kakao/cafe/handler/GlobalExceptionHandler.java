@@ -6,6 +6,7 @@ import com.kakao.cafe.exceptions.InvalidUserRequestException;
 import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.exceptions.PostNotFoundException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
+import com.kakao.cafe.exceptions.WrongPasswordException;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ public class GlobalExceptionHandler {
 
     private static final String ERROR_VIEW_NAME = "errors/error";
     private final ModelAndView mv = new ModelAndView(ERROR_VIEW_NAME);
-    private Logger logger = LoggerFactory.getLogger(PostController.class);
+    private final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -49,6 +50,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PostNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView postNotFound(PostNotFoundException exception) {
+        return errorModelAndView(exception);
+    }
+
+    @ExceptionHandler(WrongPasswordException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView postNotFound(WrongPasswordException exception) {
         return errorModelAndView(exception);
     }
 

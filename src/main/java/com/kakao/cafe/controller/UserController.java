@@ -1,10 +1,13 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.LoginRequest;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.UserSignupRequest;
 import com.kakao.cafe.exceptions.InvalidUserRequestException;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/users")
 public class UserController {
 
+    private static final String SESSION = "sessionUser";
     private final UserService userService;
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -34,7 +38,7 @@ public class UserController {
         if (errors.hasErrors()) {
             String errorMessage = errors.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .reduce("", (total, element) -> total + element + "\n");
+                    .collect(Collectors.joining("\n"));
             throw new InvalidUserRequestException(errorMessage);
         }
 
@@ -64,5 +68,19 @@ public class UserController {
         model.addAttribute("user", user);
 
         return "user/profile";
+    }
+
+    @PostMapping("/login")
+    public String login(LoginRequest request, HttpSession session) {
+        logger.info("[POST] /login 로그인");
+        session.setAttribute(SESSION, userService.login(request));
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        logger.info("[GET] /logout 로그아웃");
+        session.invalidate();
+        return "redirect:/";
     }
 }

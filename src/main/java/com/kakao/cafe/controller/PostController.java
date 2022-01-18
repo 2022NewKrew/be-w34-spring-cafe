@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class PostController {
 
     private final PostService postService;
-    private Logger logger = LoggerFactory.getLogger(PostController.class);
+    private final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     public PostController(PostService postService) {
         this.postService = postService;
@@ -45,7 +45,7 @@ public class PostController {
         logger.info("[GET] / 게시글 리스트");
         List<Post> postList = postService.getPostList();
         model.addAttribute("postList", postList);
-        return "/index";
+        return "post/list";
     }
 
     @GetMapping("/posts/{postId}")
