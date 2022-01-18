@@ -2,6 +2,7 @@ package com.kakao.cafe.web;
 
 import com.kakao.cafe.service.article.ArticleFindService;
 import com.kakao.cafe.web.article.dto.ArticleListResponse;
+import com.kakao.cafe.web.article.dto.ArticleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +23,14 @@ public class IndexController {
     @GetMapping("/")
     public String showArticles(Model model) {
         articleFindService.findByAll();
-        model.addAttribute("articles", articleFindService.findByAll().stream()
-                .map(ArticleListResponse::new)
-                .collect(Collectors.toList()));
+        ArticleListResponse articleListResponse = new ArticleListResponse(
+                articleFindService.findByAll()
+                        .stream()
+                        .map(ArticleResponse::new)
+                        .collect(Collectors.toUnmodifiableList())
+        );
+
+        model.addAttribute("articles", articleListResponse);
         return "/index";
     }
 }

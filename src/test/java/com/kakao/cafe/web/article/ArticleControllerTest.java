@@ -8,6 +8,7 @@ import com.kakao.cafe.service.article.ArticleFindService;
 import com.kakao.cafe.web.IndexController;
 import com.kakao.cafe.web.article.dto.ArticleCreateRequest;
 import com.kakao.cafe.web.article.dto.ArticleListResponse;
+import com.kakao.cafe.web.article.dto.ArticleResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,28 +47,33 @@ class ArticleControllerTest {
         //given
         String url = "/";
         given(articleFindService.findByAll()).willReturn(articles);
-        List<ArticleListResponse> provideArticles = articles.stream().map(ArticleListResponse::new).collect(Collectors.toList());
+        ArticleListResponse provideArticles = new ArticleListResponse(
+                articles.stream()
+                        .map(ArticleResponse::new)
+                        .collect(Collectors.toList())
+        );
 
         //when
         MvcResult result = mvc.perform(get(url))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
 
-        List<ArticleListResponse> responseArticles = (List<ArticleListResponse>) result.getModelAndView().getModelMap().get("articles");
+        ArticleListResponse responseArticles = ((ArticleListResponse) result.getModelAndView().getModelMap().get("articles"));
 
         //then
         assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
-
-        for(int i = 0; i < articles.size(); i++) {
-            assertThat(responseArticles.get(i).equals(provideArticles.get(i))).isTrue();
-        }
+        assertThat(responseArticles.equals(provideArticles)).isTrue();
     }
 
     private static Stream<List<Article>> provideArticles() {
         ArticleCreateRequest dto1 = new ArticleCreateRequest(new Title("title1"), new Content("content1"));
-        ArticleCreateRequest dto2 = new ArticleCreateRequest(new Title("title2"),new Content("content2"));
+        ArticleCreateRequest dto2 = new ArticleCreateRequest(new Title("title2"), new Content("content2"));
+        LocalDateTime createdAt = LocalDateTime.now();
         Article article1 = dto1.toEntity();
         Article article2 = dto2.toEntity();
+
+        article1.setCreatedAt(createdAt);
+        article2.setCreatedAt(createdAt);
 
         return Stream.of(
                 List.of(article1, article2)
