@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class UserSignupRequestTest {
 
-    private final String uuid = "uuid";
+    private final int INITIAL_ID = 0;
     private final String userId = "userId";
     private final String password = "password";
     private final String name = "name";
@@ -22,7 +22,7 @@ class UserSignupRequestTest {
     @DisplayName("[성공] Entitty로 올바르게 변환한다")
     void toEntity() {
         UserSignupRequest userSignupRequest = new UserSignupRequest(userId, password, name, email);
-        User user_Answer = new User(uuid, userId, password, name, email);
+        User user_Answer = new User(INITIAL_ID, userId, password, name, email);
 
         User user = userSignupRequest.toEntity();
 

@@ -3,12 +3,12 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users
 (
-    uuid          UUID DEFAULT UUID() NOT NULL,
+    id          int     NOT NULL AUTO_INCREMENT,
     user_id     VARCHAR     NOT NULL UNIQUE,
     password    VARCHAR     NOT NULL,
     name        VARCHAR,
     email       VARCHAR,
-    PRIMARY KEY(uuid)
+    PRIMARY KEY(id)
 );
 
 CREATE TABLE post
@@ -17,7 +17,7 @@ CREATE TABLE post
     title       VARCHAR,
     content     CLOB,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_uuid    UUID,
+    user_id    int,
     PRIMARY KEY(id),
-    FOREIGN KEY(user_uuid) REFERENCES users (uuid)
+    FOREIGN KEY(user_id) REFERENCES users (id)
 );

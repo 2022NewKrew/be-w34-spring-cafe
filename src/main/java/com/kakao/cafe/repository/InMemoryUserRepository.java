@@ -55,12 +55,12 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User findByUuid(String uuid) {
+    public User findById(int id) {
         logger.info("[InMemory] user findByUuid");
         User findUser = userList.stream()
-                .filter(user -> Objects.equals(user.getUuid(), uuid))
+                .filter(user -> Objects.equals(user.getId(), id))
                 .findAny()
-                .orElseThrow(() -> new UserNotFoundException("사용자 uuid가 없습니다"));
+                .orElseThrow(() -> new UserNotFoundException("사용자 id가 없습니다"));
 
         return findUser;
     }

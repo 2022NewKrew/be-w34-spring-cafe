@@ -42,7 +42,7 @@ public class JdbcUserRepository implements UserRepository {
         logger.info("[Jdbc] user findAll");
         String sql = "select * from users";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(rs.getString("uuid"),
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(rs.getInt("id"),
                 rs.getString("user_id"),
                 rs.getString("password"),
                 rs.getString("name"),
@@ -55,7 +55,7 @@ public class JdbcUserRepository implements UserRepository {
         String sql = "select * from users where user_id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getString("uuid"),
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getInt("id"),
                             rs.getString("user_id"),
                             rs.getString("password"),
                             rs.getString("name"),
@@ -67,17 +67,17 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public User findByUuid(String uuid) {
+    public User findById(int id) {
         logger.info("[Jdbc] user findByUuid");
-        String sql = "select * from users where uuid = ?";
+        String sql = "select * from users where id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getString("uuid"),
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getInt("id"),
                             rs.getString("user_id"),
                             rs.getString("password"),
                             rs.getString("name"),
                             rs.getString("email")),
-                    uuid);
+                    id);
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("사용자 ID가 없습니다");
         }

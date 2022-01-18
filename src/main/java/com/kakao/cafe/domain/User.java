@@ -4,22 +4,22 @@ import java.util.Objects;
 
 public class User {
 
-    private String uuid;
+    private final int id;
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    public User(String uuid, String userId, String password, String name, String email) {
-        this.uuid = uuid;
+    public User(int id, String userId, String password, String name, String email) {
+        this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    public String getUuid() {
-        return uuid;
+    public int getId() {
+        return id;
     }
 
     public String getUserId() {

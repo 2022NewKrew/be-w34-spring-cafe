@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 
 public class UserSignupRequest {
 
-    private static final String INITIAL_ID = "INITIAL_ID";
+    private static final int INITIAL_ID = 0;
     @NotBlank(message = "아이디가 비어있습니다")
     private final String userId;
     @NotBlank(message = "비밀번호가 비어있습니다")

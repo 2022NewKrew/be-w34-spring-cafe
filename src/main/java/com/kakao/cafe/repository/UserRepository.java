@@ -11,5 +11,5 @@ public interface UserRepository {
 
     User findByUserId(String userId);
 
-    User findByUuid(String uuid);
+    User findById(int id);
 }
