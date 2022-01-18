@@ -12,11 +12,9 @@ public class UserRepository {
 
     public UserRepository() {
         userLst = new ArrayList<>();
-        SignUp("skian", "1234", "faust", "faust.like@kakaocorp.com");
-        SignUp("dbwhdgus", "1234", "yjh", "dbwhdgus12@naver.com");
     }
 
-    public boolean SignUp(String userId, String password, String name, String email) {
+    public boolean signUp(String userId, String password, String name, String email) {
         for (User existUser : userLst) {
             if (existUser.getUserId().equals(userId)) {
                 return false;
