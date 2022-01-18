@@ -18,6 +18,10 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(long id) {
+        if (id > store.size()) {
+            return Optional.empty();
+        }
+
         return Optional.of(store.get((int)id - 1));
     }
 
