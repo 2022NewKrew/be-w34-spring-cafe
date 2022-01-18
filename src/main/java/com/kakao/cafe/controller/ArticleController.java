@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,7 +60,31 @@ public class ArticleController {
 
         ArticleDTO articleDTO = new ArticleDTO(optArticle.get());
 
+
         model.addAttribute("article_detail", articleDTO);
         return "/qna/show";
+    }
+
+    @LogInCheck
+    @DeleteMapping("/detail/{index}")
+    public String delete(@PathVariable("index") int index, HttpSession session){
+        Optional<Article> find = articleService.findOne(index);
+
+        if(find.isEmpty()){
+            logger.error("[ArticleController > delete] Id가 " + index + "인 레코드를 찾을 수 없습니다");
+            return "redirect:/";
+        }
+
+        Article article = find.get();
+        UserAccount userAccount = (UserAccount) session.getAttribute("sessionedUser");
+
+        if(article.getWriter().equals(userAccount.getUserId())){
+            articleService.delete(index);
+
+            return "redirect:/";
+        }
+
+        logger.error("[ArticleController > delete] Id가 " + index + "인 레코드의 작성자와 현재 로그인 사용자 " + userAccount.getUserId() + "가 불일치합니다.");
+        return "redirect:/";
     }
 }

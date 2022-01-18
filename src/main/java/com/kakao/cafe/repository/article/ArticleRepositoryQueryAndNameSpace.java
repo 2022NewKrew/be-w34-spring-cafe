@@ -18,6 +18,10 @@ public class ArticleRepositoryQueryAndNameSpace {
         return String.format("select * from %s where flag = 1 or flag is null", tableName);
     }
 
+    public String getDeleteSqlQuery(){
+        return String.format("update %s set flag=0 where id = ?", tableName);
+    }
+
     public enum ColumnName{
         ID("id"),
         WRITER("writer"),

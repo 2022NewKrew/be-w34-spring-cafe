@@ -47,6 +47,11 @@ public class UserAccountService implements Service<UserAccount, UserAccountDTO, 
         return userRepository.findById(userId);
     }
 
+    @Override
+    public void delete(String id) {
+
+    }
+
     public Optional<UserAccount> updateUserAccount(UserAccountDTO userAccountDTO, String curPassword) throws InputMismatchException{
         UserAccount savedUserAccount = userRepository.findById(userAccountDTO.getUserId())
                 .orElseThrow(() -> new InputMismatchException(userAccountDTO.getUserId() + "로 가입된 유저 계정을 찾을 수 없습니다."));

@@ -31,4 +31,9 @@ public class ArticleService implements Service<Article, ArticleDTO, Integer>{
     public Optional<Article> findOne(Integer id) {
         return articleRepository.findById(id);
     }
+
+    @Override
+    public void delete(Integer id) {
+        articleRepository.delete(id);
+    }
 }

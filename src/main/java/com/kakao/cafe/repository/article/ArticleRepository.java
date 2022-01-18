@@ -64,6 +64,11 @@ public class ArticleRepository implements Repository<Article, ArticleDTO, Intege
         return jdbcTemplate.query(queryAndNameSpace.getFindAllSqlQuery(), articleRowMapper());
     }
 
+    @Override
+    public void delete(Integer id) {
+        jdbcTemplate.update(queryAndNameSpace.getDeleteSqlQuery(), id);
+    }
+
     private RowMapper<Article> articleRowMapper(){
         return (rs, rowNum) -> {
             ArticleDTO articleDTO = new ArticleDTO();

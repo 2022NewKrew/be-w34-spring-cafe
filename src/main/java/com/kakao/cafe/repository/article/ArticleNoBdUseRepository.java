@@ -40,6 +40,11 @@ public class ArticleNoBdUseRepository implements Repository<Article, ArticleDTO,
         return new ArrayList<>(DB.values());
     }
 
+    @Override
+    public void delete(Integer id) {
+
+    }
+
     public void clearStore() {
         DB.clear();
     }

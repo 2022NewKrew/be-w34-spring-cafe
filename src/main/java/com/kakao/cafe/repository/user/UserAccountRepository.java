@@ -52,6 +52,11 @@ public class UserAccountRepository implements Repository<UserAccount, UserAccoun
         return jdbcTemplate.query(queryAndNameSpace.getFindAllSqlQuery(), userAccountRowMapper());
     }
 
+    @Override
+    public void delete(String id) {
+
+    }
+
     private RowMapper<UserAccount> userAccountRowMapper(){
         return (rs, rowNum) -> {
             UserAccountDTO userAccountDTO = new UserAccountDTO();

@@ -36,6 +36,7 @@ public class ArticleDTO {
     }
 
     public ArticleDTO(Article article) {
+        this.id = article.getId();
         this.writer = article.getWriter();
         this.title = article.getTitle();
         this.contents = article.getContents();
