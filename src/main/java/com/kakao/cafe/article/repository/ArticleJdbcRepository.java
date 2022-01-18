@@ -20,8 +20,9 @@ public class ArticleJdbcRepository implements ArticleRepository{
 
     @Override
     public void addArticle(Article article) {
-        String sql = "INSERT INTO articles(name,title,contents,createdAt) VALUES (?,?,?,CURRENT_TIMESTAMP())";
+        String sql = "INSERT INTO articles(userId,name,title,contents,createdAt) VALUES (?,?,?,?,CURRENT_TIMESTAMP())";
         jdbcTemplate.update(sql,
+                article.getUserId(),
                 article.getName(),
                 article.getTitle(),
                 article.getContents()

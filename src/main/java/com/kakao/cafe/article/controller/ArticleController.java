@@ -39,6 +39,20 @@ public class ArticleController {
         return "redirect:/";
     }
 
+
+    //글작성폼
+    @GetMapping(value = "/qna/form.html") //form으로 수정해야함
+    public String writeArticle(Model model, HttpSession session){
+        User user;
+        //로그인 상태가 아닌경우
+        if((user = (User) session.getAttribute("sessionedUser")) == null){
+            throw new ArticleNotLoggedInException("로그인 상태에서만 게시글을 작성할 수 있습니다.");
+        }
+
+        model.addAttribute("userId", user.getUserId());
+        return "/qna/form";
+    }
+
     //index.html에 노출되는 질문리스트
     @GetMapping(value = {"/", "/index"})
     public String showArticleList(Model model, HttpSession session) {

@@ -6,16 +6,22 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 public class ArticleViewDTO {
+    private String userId;
     private String name; //User의 name과 동일
     private String title;
     private String contents;
     private Timestamp createdAt;
 
     public ArticleViewDTO(Article article) {
+        this.userId = article.getUserId();
         this.name = article.getName();
         this.title = article.getTitle();
         this.contents = article.getContents();
         this.createdAt = article.getCreatedAt();
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getName() {

@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Article {
+    private String userId;
     private String name; //User의 name과 동일
     private String title;
     private String contents;
@@ -14,6 +15,7 @@ public class Article {
     private Long sequence;
 
     public Article(ArticleCreateDTO articleCreateDTO) {
+        this.userId = articleCreateDTO.getUserId();
         this.name = articleCreateDTO.getName();
         this.title = articleCreateDTO.getTitle();
         this.contents = articleCreateDTO.getContents();
@@ -21,12 +23,17 @@ public class Article {
     }
 
     //for row mapper
-    public Article(String name, String title, String contents, Timestamp createdAt, long sequence) {
+    public Article(String userId, String name, String title, String contents, Timestamp createdAt, long sequence) {
+        this.userId = userId;
         this.name = name;
         this.title = title;
         this.contents = contents;
         this.createdAt = createdAt;
         this.sequence = sequence;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getName() {
