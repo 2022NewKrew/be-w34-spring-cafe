@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private static final String SESSION_NAME = "sessionedUser";
 
     @GetMapping("/")
     public String articleList(Model model) {
@@ -40,7 +42,7 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String articleAdd(@Valid ArticleSaveDto articleSaveDto, HttpSession httpSession) {
-        User user = (User) httpSession.getAttribute("sessionedUser");
+        User user = (User) httpSession.getAttribute(SESSION_NAME);
         articleSaveDto.setWriter(user.getUserId());
         articleService.addArticle(articleSaveDto);
         return "redirect:/";
@@ -49,12 +51,11 @@ public class ArticleController {
     @GetMapping("/questions/{index}")
     public String questionDetail(@PathVariable("index") Long index, Model model,
         HttpSession httpSession) {
-        ArticleShowDto articleShowDto = articleService.findArticle(index);
         // 자신의 글이 맞는지 validate
-        User user = (User) httpSession.getAttribute("sessionedUser");
-        if (!user.getUserId().equals(articleShowDto.getWriter())) {
+        if (!validate(httpSession, index)) {
             return "redirect:/";
         }
+        ArticleShowDto articleShowDto = articleService.findArticle(index);
         model.addAttribute("article", articleShowDto);
         return "qna/editform";
     }
@@ -64,5 +65,19 @@ public class ArticleController {
         @PathVariable("index") Long index) {
         articleService.modifyArticle(index, articleModifyDto);
         return "redirect:/articles/" + index;
+    }
+
+    @DeleteMapping("/questions/{index}")
+    public String questionRemove(@PathVariable("index") Long index, HttpSession httpSession) {
+        if (!validate(httpSession, index)) {
+            return "redirect:/";
+        }
+        articleService.removeArticle(index);
+        return "redirect:/";
+    }
+
+    private boolean validate(HttpSession httpSession, Long index) {
+        return ((User) httpSession.getAttribute(SESSION_NAME)).getUserId()
+            .equals(articleService.findArticleWriter(index));
     }
 }

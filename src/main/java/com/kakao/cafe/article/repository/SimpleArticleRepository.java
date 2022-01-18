@@ -31,4 +31,8 @@ public class SimpleArticleRepository implements ArticleRepository {
     @Override
     public void update(Long id, Article article) {
     }
+
+    @Override
+    public void delete(Long id) {
+    }
 }

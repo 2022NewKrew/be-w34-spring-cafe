@@ -13,9 +13,10 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private static final String INSERT_QUERY = "insert into articles(writer, title, contents) values(?, ?, ?)";
-    private static final String SELECT_QUERY = "select * from articles where id=?";
-    private static final String SELECT_ALL_QUERY = "select * from articles";
+    private static final String SELECT_QUERY = "select * from articles where id=? and deleted=false";
+    private static final String SELECT_ALL_QUERY = "select * from articles where deleted=false";
     private static final String UPDATE_QUERY = "update articles set title=?, contents=? where id=?";
+    private static final String DELETE_QUERY = "update articles set deleted=1 where id=?";
 
     @Override
     public void save(Article article) {
@@ -38,6 +39,11 @@ public class JdbcArticleRepository implements ArticleRepository {
     public void update(Long id, Article article) {
         jdbcTemplate.update(UPDATE_QUERY,
             article.getTitle(), article.getContents(), id.toString());
+    }
+
+    @Override
+    public void delete(Long id) {
+        jdbcTemplate.update(DELETE_QUERY, id);
     }
 
     static RowMapper<Article> mapper = (rs, rowNum) ->

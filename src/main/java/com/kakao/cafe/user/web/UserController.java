@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
     private final UserService userService;
+    private static final String SESSION_NAME = "sessionedUser";
 
     @GetMapping
     public String userList(Model model) {
@@ -53,7 +54,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(@Valid UserLoginDto userLoginDto, HttpSession httpSession) {
         try {
-            httpSession.setAttribute("sessionedUser", userService.login(userLoginDto));
+            httpSession.setAttribute(SESSION_NAME, userService.login(userLoginDto));
         } catch (UserNotFoundException e) {
             return "user/login_failed";
         }

@@ -54,4 +54,12 @@ public class ArticleService {
             .build();
         articleRepository.update(id, article);
     }
+
+    public String findArticleWriter(Long id) {
+        return findArticle(id).getWriter();
+    }
+
+    public void removeArticle(Long id) {
+        articleRepository.delete(id);
+    }
 }
