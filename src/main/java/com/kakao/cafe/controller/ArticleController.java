@@ -61,6 +61,15 @@ public class ArticleController {
         return "article/updateForm";
     }
 
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id, @SessionAttribute(name = Constants.loginUser) UserLoginSession userLoginSession) {
+
+        Article foundArticle = articleService.findById(id);
+        validateArticleAuthority(userLoginSession.getUserId(), foundArticle.getWriter().getUserId());
+        articleService.deleteById(id);
+        return "redirect:/";
+    }
+
     private void validateArticleAuthority(String loginUserId, String ownerUserId) {
         if (!loginUserId.equals(ownerUserId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다", new IllegalArgumentException());
