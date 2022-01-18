@@ -8,16 +8,28 @@ import com.kakao.cafe.post.domain.entity.Post;
 import com.kakao.cafe.post.presentation.dto.CommentRequest;
 import com.kakao.cafe.post.presentation.dto.PostRequest;
 import com.kakao.cafe.post.presentation.dto.PostDetailDto;
+import com.kakao.cafe.user.application.SearchUserService;
+import com.kakao.cafe.user.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
+import java.util.Objects;
+
 
 @Controller
 @RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
+    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
+
+    private final SearchUserService searchUserService;
+
     private final SearchPostService postInfoService;
     private final WritePostService writePostService;
     private final AddCommentService commentService;
@@ -29,24 +41,39 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public String getPostDetail(@PathVariable Long id, Model model){
+    public String getPostDetail(@PathVariable Long id, Model model, HttpSession session){
         PostDetailDto postDto = modelMapper.map(postInfoService.getPost(id), PostDetailDto.class);
+        String userId = getSessionUserId(session);
+        logger.info("사용자 {}가 id가 {}인 게시글을 조회하였습니다.", userId, id);
 
         model.addAttribute("post", postDto);
         return "post/info";
     }
 
     @PostMapping("")
-    public String createPost(PostRequest createPostRequest){
-        writePostService.save(modelMapper.map(createPostRequest, Post.class));
+    public String createPost(PostRequest postRequest, HttpSession session){
+        User user = searchUserService.getUser(getSessionUserId(session));
+        postRequest.setWriterName(user.getUserInfo().getName());
+
+        writePostService.save(modelMapper.map(postRequest, Post.class));
+        logger.info("사용자 {}가 제목이 {}인 게시글을 작성하였습니다.", user.getUserInfo().getName(), postRequest.getTitle());
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/{id}/comment")
+    public String addComment(@PathVariable Long id, CommentRequest commentRequest, HttpSession session){
+        User user = searchUserService.getUser(getSessionUserId(session));
+        commentRequest.setWriterName(user.getUserInfo().getName());
+
+        commentService.addComment(id, modelMapper.map(commentRequest, Comment.class));
+        logger.info("사용자 {}가 id가 {}인 게시글에 댓글을 달았습니다.", user.getUserId(), id);
 
         return "redirect:";
     }
 
-    @PostMapping("/{id}/comment")
-    public String addComment(@PathVariable Long id, CommentRequest commentRequest){
-        commentService.addComment(id, modelMapper.map(commentRequest, Comment.class));
-
-        return "redirect:";
+    private String getSessionUserId(HttpSession session){
+        return Objects.requireNonNull(
+                (String)session.getAttribute("userId"), "로그인을 먼저 하세요");
     }
 }
