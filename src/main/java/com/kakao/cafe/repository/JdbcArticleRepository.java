@@ -25,11 +25,13 @@ public class JdbcArticleRepository implements Repository<Article, Integer> {
 
     @Override
     public List<Article> readAll() {
-        return null;
+        return jdbcTemplate.query("SELECT * FROM ARTICLE", articleMapper);
     }
 
     @Override
     public Optional<Article> readById(Integer id) {
-        return Optional.empty();
+        String sqlQuery = "SELECT * FROM ARTICLE WHERE id = ?";
+        Article article = jdbcTemplate.queryForObject(sqlQuery, articleMapper, id);
+        return Optional.ofNullable(article);
     }
 }

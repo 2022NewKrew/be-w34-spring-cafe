@@ -1,18 +1,18 @@
 package com.kakao.cafe.entity;
 
 public class Article {
-    private final Integer articleId;
+    private final Integer id;
     private final String title;
     private final String content;
 
-    public Article(Integer articleId, String title, String content) {
-        this.articleId = articleId;
+    public Article(Integer id, String title, String content) {
+        this.id = id;
         this.title = title;
         this.content = content;
     }
 
-    public Integer getArticleId() {
-        return articleId;
+    public Integer getId() {
+        return id;
     }
 
     public String getTitle() {

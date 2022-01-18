@@ -11,7 +11,7 @@ public class ArticleMapper implements RowMapper<Article> {
     @Override
     public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new Article(
-                rs.getInt("articleId"),
+                rs.getInt("id"),
                 rs.getString("title"),
                 rs.getString("content")
         );

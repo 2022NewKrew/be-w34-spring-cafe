@@ -22,7 +22,7 @@ public class ArticleRepository {
 
     public Article readArticle(Integer articleId) {
         return articles.stream()
-                .filter(article -> Objects.equals(article.getArticleId(), articleId))
+                .filter(article -> Objects.equals(article.getId(), articleId))
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }
