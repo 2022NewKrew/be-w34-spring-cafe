@@ -44,11 +44,9 @@ public class ArticleJdbc implements ArticleRepository {
                 con -> {
                     final PreparedStatement pstmt = con.prepareStatement(
                             "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at " +
-                                    "FROM article AS a " +
-                                    "JOIN userlist AS u " +
-                                    "ON a.user_id = u.id " +
-                                    "WHERE a.idx = ? " +
-                                    "LIMIT 1"
+                                    "FROM userlist AS u " +
+                                    "JOIN (SELECT * FROM article WHERE idx = ? LIMIT 1) AS a " +
+                                    "ON u.id = a.user_id"
                     );
                     pstmt.setLong(1, idx);
                     return pstmt;
@@ -78,7 +76,7 @@ public class ArticleJdbc implements ArticleRepository {
                                 "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at " +
                                         "FROM article AS a " +
                                         "JOIN userlist AS u " +
-                                        "ON a.user_id = u.id " +
+                                        "ON u.id = a.user_id " +
                                         "ORDER BY created_at DESC"
                         ),
                         (rs, count) -> ArticleDto.from(
