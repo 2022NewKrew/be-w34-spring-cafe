@@ -1,7 +1,6 @@
 package com.kakao.cafe;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.repository.UserDao;
 import com.kakao.cafe.repository.UserRepository;
@@ -11,8 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
@@ -28,7 +25,7 @@ class UserServiceTest {
 
 	@DisplayName("프로필 업데이트 테스트")
 	@Test
-	void updateUserProfileTest() {
+	public void updateUserProfileTest() {
 		// given
 		User user = new User(1,"testId", "email", "name", "password");
 		UserProfileDto newProfile = new UserProfileDto("testId", "email2", "name");
@@ -45,7 +42,7 @@ class UserServiceTest {
 
 	@DisplayName("비밀번호 확인 테스트 - 비밀번호 일치 case")
 	@Test
-	void checkPasswordTest() {
+	public void checkPasswordTest() {
 		// given
 		User user = new User(1,"testId", "email", "name", "password");
 		String userId = "testId";
@@ -61,7 +58,7 @@ class UserServiceTest {
 
 	@DisplayName("비밀번호 확인 테스트 - 비밀번호 불일치 case")
 	@Test
-	void checkPasswordIncorrectTest() {
+	public void checkPasswordIncorrectTest() {
 		// given
 		User user = new User(1,"testId", "email", "name", "password");
 		String userId = "testId";
