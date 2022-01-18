@@ -10,7 +10,7 @@ import lombok.*;
 
 public class ArticleDTO {
     private long key;
-    private String author;
+    private UserDTO author;
     private String title;
     private String content;
     private String postTime;

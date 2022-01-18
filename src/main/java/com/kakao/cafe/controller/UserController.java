@@ -35,7 +35,7 @@ public class UserController {
                                 Model model) {
         model.addAttribute("user", new UserDTO());
         if (error) {
-            model.addAttribute("error", error);
+            model.addAttribute("loginError", error);
         }
         return "user/login";
     }

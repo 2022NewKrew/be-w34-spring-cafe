@@ -15,25 +15,27 @@
 {{>common/header}}
 
 <div class="container" id="main">
-   <div class="col-md-6 col-md-offset-3">
+   <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
       <div class="panel panel-default content-main">
-          <form name="question" method="post" action="/user/login">
-              {{#user}}
+          {{#article}}
+          <form name="question" method="POST" action="/article/{{key}}">
+              <input type="hidden" name="_method" value="PUT"/>
               <div class="form-group">
-                  <label for="userId">사용자 아이디</label>
-                  <input class="form-control" id="userId" name="id" placeholder="User ID">
+                  <label for="writer">글쓴이</label>
+                  <input disabled class="form-control" id="writer" name="author" placeholder="{{author.name}}"/>
               </div>
               <div class="form-group">
-                  <label for="password">비밀번호</label>
-                  <input type="password" class="form-control" id="password" name="pw" placeholder="Password">
+                  <label for="title">제목</label>
+                  <input type="text" class="form-control" id="title" name="title" value="{{title}}"/>
               </div>
-              {{/user}}
-              {{#loginError}}
-              <div class="alert alert-danger">아이디 또는 패스워드가 일치하지 않습니다.</div>
-              {{/loginError}}
-              <button type="submit" class="btn btn-success clearfix pull-right">로그인</button>
+              <div class="form-group">
+                  <label for="content">내용</label>
+                  <textarea name="content" id="content" rows="5" class="form-control">{{content}}</textarea>
+              </div>
+              <button type="submit" class="btn btn-success clearfix pull-right">수정하기</button>
               <div class="clearfix" />
           </form>
+          {{/article}}
         </div>
     </div>
 </div>

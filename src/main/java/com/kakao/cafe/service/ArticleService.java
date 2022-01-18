@@ -33,7 +33,6 @@ public class ArticleService {
 
     public Optional<ArticleDTO> findByKeyDTO(Long key) {
         Optional<Article> article = findByKey(key);
-        log.info("asdf" + article.get().getTitle());
         return article.map(Article::getDTO);
     }
 
@@ -41,5 +40,13 @@ public class ArticleService {
         Article article = Article.fromDTOWithoutPostTime(articleDTO);
         article.setPostTime(LocalDateTime.now());
         return articleRepository.insert(article);
+    }
+
+    public void update(Long key, ArticleDTO articleDTO) {
+        articleRepository.update(key, Article.fromDTOWithoutUser(articleDTO));
+    }
+
+    public void delete(Long key) {
+        articleRepository.delete(key);
     }
 }

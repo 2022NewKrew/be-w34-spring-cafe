@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 @Builder
 public class Article {
     private long key;
-    private String author;
+    private User author;
     private String title;
     private String content;
     private LocalDateTime postTime;
@@ -21,7 +21,16 @@ public class Article {
     public static Article fromDTOWithoutPostTime(ArticleDTO articleDTO) {
         Article article = Article.builder()
                 .key(articleDTO.getKey())
-                .author(articleDTO.getAuthor())
+                .author(User.fromDTO(articleDTO.getAuthor()))
+                .title(articleDTO.getTitle())
+                .content(articleDTO.getContent())
+                .build();
+        return article;
+    }
+
+    public static Article fromDTOWithoutUser(ArticleDTO articleDTO) {
+        Article article = Article.builder()
+                .key(articleDTO.getKey())
                 .title(articleDTO.getTitle())
                 .content(articleDTO.getContent())
                 .build();
@@ -31,7 +40,7 @@ public class Article {
     public ArticleDTO getDTO() {
         ArticleDTO articleDTO = ArticleDTO.builder()
                 .key(key)
-                .author(author)
+                .author(author.getDTO())
                 .title(title)
                 .content(content)
                 .postTime(postTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
