@@ -58,7 +58,7 @@ public class ArticleController {
 
         model.addAttribute("name", articleViewDTO.getName());
         model.addAttribute("title", articleViewDTO.getTitle());
-        model.addAttribute("date", articleViewDTO.getDate());
+        model.addAttribute("createdAt", articleViewDTO.getCreatedAt());
         model.addAttribute("contents", articleViewDTO.getContents());
         return "/qna/show";
     }

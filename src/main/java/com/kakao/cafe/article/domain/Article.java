@@ -9,23 +9,23 @@ public class Article {
     private String name; //User의 name과 동일
     private String title;
     private String contents;
-    private Date date;
+    private Date createdAt;
     private Long sequence;
 
     public Article(ArticleCreateDTO articleCreateDTO) {
         this.name = articleCreateDTO.getName();
         this.title = articleCreateDTO.getTitle();
         this.contents = articleCreateDTO.getContents();
-        this.date = new Date();
+        this.createdAt = new Date();
         this.sequence = Long.valueOf(0);
     }
 
     //for row mapper
-    public Article(String name, String title, String contents, java.sql.Date date, long sequence) {
+    public Article(String name, String title, String contents, java.sql.Date createdAt, long sequence) {
         this.name = name;
         this.title = title;
         this.contents = contents;
-        this.date = date;
+        this.createdAt = createdAt;
         this.sequence = sequence;
     }
 
@@ -41,8 +41,8 @@ public class Article {
         return contents;
     }
 
-    public Date getDate(){
-        return date;
+    public Date getCreatedAt(){
+        return createdAt;
     }
 
     public Long getSequence() {

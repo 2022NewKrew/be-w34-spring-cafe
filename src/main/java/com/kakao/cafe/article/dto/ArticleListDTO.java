@@ -7,13 +7,13 @@ import java.util.Date;
 public class ArticleListDTO {
     private String name; //User의 name과 동일
     private String title;
-    private Date date;
+    private Date createdAt;
     private Long sequence;
 
     public ArticleListDTO(Article article) {
         this.name = article.getName();
         this.title = article.getTitle();
-        this.date = article.getDate();
+        this.createdAt = article.getCreatedAt();
         this.sequence = article.getSequence();
     }
 
@@ -25,8 +25,8 @@ public class ArticleListDTO {
         return title;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     public Long getSequence() {

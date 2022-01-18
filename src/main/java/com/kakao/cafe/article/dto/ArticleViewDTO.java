@@ -8,13 +8,13 @@ public class ArticleViewDTO {
     private String name; //User의 name과 동일
     private String title;
     private String contents;
-    private Date date;
+    private Date createdAt;
 
     public ArticleViewDTO(Article article) {
         this.name = article.getName();
         this.title = article.getTitle();
         this.contents = article.getContents();
-        this.date = article.getDate();
+        this.createdAt = article.getCreatedAt();
     }
 
     public String getName() {
@@ -29,7 +29,7 @@ public class ArticleViewDTO {
         return contents;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 }

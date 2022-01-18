@@ -24,12 +24,11 @@ public class ArticleJdbcRepository implements ArticleRepository{
 
     @Override
     public void addArticle(Article article) {
-        String sql = "INSERT INTO articles(name,title,contents,date) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO articles(name,title,contents,createdAt) VALUES (?,?,?,CURRENT_TIMESTAMP())";
         jdbcTemplate.update(sql,
                 article.getName(),
                 article.getTitle(),
-                article.getContents(),
-                new Date()
+                article.getContents()
         );
     }
 
