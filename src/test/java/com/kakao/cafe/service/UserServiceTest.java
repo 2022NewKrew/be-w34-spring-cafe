@@ -1,22 +1,25 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dao.user.UserDao;
-import com.kakao.cafe.dao.user.VolatilityUserStorage;
-import com.kakao.cafe.model.user.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.kakao.cafe.dao.user.UserDao;
+import com.kakao.cafe.dao.user.VolatilityUserStorage;
+import com.kakao.cafe.model.user.Email;
+import com.kakao.cafe.model.user.Name;
+import com.kakao.cafe.model.user.Password;
+import com.kakao.cafe.model.user.User;
+import com.kakao.cafe.model.user.UserId;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 @DisplayName("UserService 테스트")
 class UserServiceTest {
+
     private UserDao userDao;
     private UserService userService;
 
@@ -36,7 +39,9 @@ class UserServiceTest {
         String email = "email";
 
         when(userDao.findUserById(new UserId(userId)))
-                .thenReturn(Optional.of(new User(new UserId(userId), new Password(password), new Name(name), new Email(email))));
+                .thenReturn(Optional.of(
+                        new User(new UserId(userId), new Password(password), new Name(name),
+                                new Email(email))));
 
         //when
         //then
@@ -55,7 +60,9 @@ class UserServiceTest {
         String illegalPassword = "isIllegal";
 
         when(userDao.findUserById(new UserId(userId)))
-                .thenReturn(Optional.of(new User(new UserId(userId), new Password(password), new Name(name), new Email(email))));
+                .thenReturn(Optional.of(
+                        new User(new UserId(userId), new Password(password), new Name(name),
+                                new Email(email))));
 
         //when
         //then
@@ -63,44 +70,64 @@ class UserServiceTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @DisplayName("입력받은 유저 아이디, 비밀번호를 갖는 유저가 존재할 때 true를 반환한다..")
+    @DisplayName("입력받은 UserId와 일치하는 user가 존재하고 입력받은 비밀번호도 일치할 때 예외를 던지지 않는다.")
     @Test
-    void legalHasUser() {
+    void legalLogin() {
         //give
         String userId = "userId";
         String password = "password";
-        String name = "name";
-        String email = "email";
-        String targetUserId = "userId";
-        String targetPassword = "password";
 
         when(userDao.findUserById(new UserId(userId)))
-                .thenReturn(Optional.of(new User(new UserId(userId), new Password(password), new Name(name), new Email(email))));
+                .thenReturn(
+                        Optional.of(
+                                new User(
+                                        new UserId(userId),
+                                        new Password(password),
+                                        new Name("name"),
+                                        new Email("email")
+                                )
+                        )
+                );
         //when
-        boolean isSame = userService.hasUser(targetUserId, targetPassword);
-
         //then
-        assertThat(isSame).isTrue();
+        assertThatCode(() -> userService.login(userId, password)).doesNotThrowAnyException();
     }
 
-    @DisplayName("입력받은 유저 아이디는 일치하고 비밀번호는 일치하지 않는 유저가 존재할 때 false를 반환한다..")
+    @DisplayName("입력받은 userId와 일치하는 user가 없을 때 illegalArgumentException을 던진다.")
     @Test
-    void illegalHasUser() {
+    void illegalLoginWithIllegalUserId() {
         //give
         String userId = "userId";
         String password = "password";
-        String name = "name";
-        String email = "email";
-        String targetUserId = "userId";
-        String targetPassword = "notSame";
+
+        when(userDao.findUserById(new UserId(userId))).thenReturn(Optional.empty());
+        //when
+        //then
+        assertThatThrownBy(() -> userService.login(userId, password))
+                .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("존재하지 않는");
+    }
+
+    @DisplayName("입력받은 비밀번호가 일치하지 않을 때 illegalArgumentException을 던진다.")
+    @Test
+    void illegalLoginWithIllegalPassword() {
+        //give
+        String userId = "userId";
+        String password = "notSame";
 
         when(userDao.findUserById(new UserId(userId)))
-                .thenReturn(Optional.of(new User(new UserId(userId), new Password(password), new Name(name), new Email(email))));
+                .thenReturn(
+                        Optional.of(
+                                new User(
+                                        new UserId(userId),
+                                        new Password("password"),
+                                        new Name("name"),
+                                        new Email("email")
+                                )
+                        )
+                );
         //when
-
-        boolean isSame = userService.hasUser(targetUserId, targetPassword);
-
         //then
-        assertThat(isSame).isFalse();
+        assertThatThrownBy(() -> userService.login(userId, password)).isInstanceOf(
+                IllegalArgumentException.class).hasMessageContaining("비밀번호가");
     }
 }

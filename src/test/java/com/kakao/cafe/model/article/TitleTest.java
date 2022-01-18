@@ -1,13 +1,15 @@
 package com.kakao.cafe.model.article;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
+@DisplayName("Title 테스트")
 class TitleTest {
+
     private static final int ALLOWED_LENGTH_TITLE = 16;
 
     @DisplayName("조건을 만족하지 못한 title이 주어졌을때 IllegalArgumentException 예외를 던진다.")
@@ -23,7 +25,8 @@ class TitleTest {
         //give
         //when
         //then
-        assertThatThrownBy(() -> new Title(illegalTitle)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new Title(illegalTitle)).isInstanceOf(
+                IllegalArgumentException.class);
     }
 
     @DisplayName("조건을 만족하는 title이 주어졌을때 예외를 던지지 않는다.")

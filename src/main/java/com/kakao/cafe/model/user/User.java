@@ -1,6 +1,7 @@
 package com.kakao.cafe.model.user;
 
 public class User {
+
     private final UserId userId;
     private final Password password;
     private Name name;

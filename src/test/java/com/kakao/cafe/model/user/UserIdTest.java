@@ -1,13 +1,15 @@
 package com.kakao.cafe.model.user;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
+@DisplayName("UserId 테스트")
 class UserIdTest {
+
     private static final int ALLOWED_LENGTH_USERID = 16;
 
     @DisplayName("조건을 만족하 못한 userId가 주어졌을 때 IllegalArgumentException을 던진다.")

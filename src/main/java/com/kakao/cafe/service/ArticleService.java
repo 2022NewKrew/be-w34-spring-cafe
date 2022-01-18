@@ -5,14 +5,14 @@ import com.kakao.cafe.model.article.Article;
 import com.kakao.cafe.model.article.Contents;
 import com.kakao.cafe.model.article.Title;
 import com.kakao.cafe.model.article.Writer;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ArticleService {
+
     private final ArticleDao articleDao;
 
     public ArticleService(ArticleDao articleDao) {

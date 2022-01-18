@@ -4,16 +4,16 @@ import com.kakao.cafe.model.article.Article;
 import com.kakao.cafe.model.article.Contents;
 import com.kakao.cafe.model.article.Title;
 import com.kakao.cafe.model.article.Writer;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class VolatilityArticleStorage implements ArticleDao {
+
     public static final int FRONT_OF_LIST = 0;
 
     private final AtomicInteger nextArticleId = new AtomicInteger(1);
@@ -31,7 +31,8 @@ public class VolatilityArticleStorage implements ArticleDao {
 
     @Override
     public void addArticle(Title title, Writer writer, Contents contents) {
-        articles.add(FRONT_OF_LIST, new Article(nextArticleId.getAndIncrement(), title, writer, contents));
+        articles.add(FRONT_OF_LIST,
+                new Article(nextArticleId.getAndIncrement(), title, writer, contents));
     }
 
     @Override

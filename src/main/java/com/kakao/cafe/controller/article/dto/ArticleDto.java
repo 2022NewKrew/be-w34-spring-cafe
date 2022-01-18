@@ -1,10 +1,10 @@
-package com.kakao.cafe.controller.article;
+package com.kakao.cafe.controller.article.dto;
 
 import com.kakao.cafe.model.article.Article;
-
 import java.time.LocalDateTime;
 
 public class ArticleDto {
+
     private final int id;
     private final String title;
     private final String writer;

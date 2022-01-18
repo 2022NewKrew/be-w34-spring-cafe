@@ -1,8 +1,9 @@
-package com.kakao.cafe.controller.user;
+package com.kakao.cafe.controller.user.dto;
 
 import com.kakao.cafe.model.user.User;
 
 public class UserElementDto {
+
     private final String userId;
     private final String password;
     private final String name;

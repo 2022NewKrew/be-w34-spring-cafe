@@ -1,6 +1,13 @@
 package com.kakao.cafe.dao.user;
 
-import com.kakao.cafe.model.user.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.kakao.cafe.model.user.Email;
+import com.kakao.cafe.model.user.Name;
+import com.kakao.cafe.model.user.Password;
+import com.kakao.cafe.model.user.User;
+import com.kakao.cafe.model.user.UserId;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,13 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @DisplayName("JdbcUserStorage 테스트")
 @JdbcTest
 class JdbcUserStorageTest {
+
     private static final int PRECONDITION_USER_LENGTH = 10;
 
     private final UserDao userDao;

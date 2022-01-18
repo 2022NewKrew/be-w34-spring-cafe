@@ -1,18 +1,13 @@
-package com.kakao.cafe.controller.user;
+package com.kakao.cafe.controller.user.dto;
 
 public class UserUpdateDto {
-    private final String password;
+
     private final String name;
     private final String email;
 
-    public UserUpdateDto(String password, String name, String email) {
-        this.password = password;
+    public UserUpdateDto(String name, String email) {
         this.name = name;
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getName() {

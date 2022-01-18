@@ -1,6 +1,7 @@
-package com.kakao.cafe.controller.article;
+package com.kakao.cafe.controller.article.dto;
 
 public class ArticleCreateDto {
+
     private final String title;
     private final String writer;
     private final String contents;

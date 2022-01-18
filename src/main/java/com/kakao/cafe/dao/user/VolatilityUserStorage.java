@@ -1,15 +1,19 @@
 package com.kakao.cafe.dao.user;
 
-import com.kakao.cafe.model.user.*;
-import org.springframework.stereotype.Repository;
-
+import com.kakao.cafe.model.user.Email;
+import com.kakao.cafe.model.user.Name;
+import com.kakao.cafe.model.user.Password;
+import com.kakao.cafe.model.user.User;
+import com.kakao.cafe.model.user.UserId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class VolatilityUserStorage implements UserDao {
+
     private final List<User> users;
 
     public VolatilityUserStorage() {
@@ -43,7 +47,8 @@ public class VolatilityUserStorage implements UserDao {
 
     @Override
     public void update(UserId userId, Name name, Email email) {
-        User user = findUserById(userId).orElseThrow(() -> new IllegalArgumentException("찾는 사용자가 없습니다."));
+        User user = findUserById(userId).orElseThrow(
+                () -> new IllegalArgumentException("찾는 사용자가 없습니다."));
         user.setName(name);
         user.setEmail(email);
     }
