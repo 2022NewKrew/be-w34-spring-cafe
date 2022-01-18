@@ -1,6 +1,6 @@
-package com.kakao.cafe.post.adapter.in.web;
+package com.kakao.cafe.user.exception;
 
-import com.kakao.cafe.post.exception.QuestionPostException;
+import com.kakao.cafe.user.exception.UserAccountException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice
-public class QuestionPostAdvice {
+public class UserAccountAdvice {
 
-    @ExceptionHandler(QuestionPostException.class)
-    public ResponseEntity<Void> handler(QuestionPostException exception) {
+    @ExceptionHandler(UserAccountException.class)
+    public ResponseEntity<Void> handler(UserAccountException exception) {
         log.error(exception.getErrorMessage());
         return ResponseEntity
                 .status(exception.getErrorCode())
                 .build();
     }
+
 }
