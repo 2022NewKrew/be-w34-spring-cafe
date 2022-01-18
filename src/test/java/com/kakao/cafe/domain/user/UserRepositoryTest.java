@@ -29,7 +29,7 @@ public class UserRepositoryTest {
     @DisplayName("저장소 회원정보 저장 테스트")
     @MethodSource("provideUsers")
     @ParameterizedTest
-    public void testSave(UserId userId, Password password, Name name, Email email) {
+    public void userSave(UserId userId, Password password, Name name, Email email) {
         //given
         UserCreateRequest dto = new UserCreateRequest(userId, password, name, email);
         User user = dto.toEntity();
@@ -38,7 +38,8 @@ public class UserRepositoryTest {
         userRepository.save(user);
 
         //then
-        assertThat(userRepository.findById(userId)).isEqualTo(user);
+        User saved = userRepository.findById(userId);
+        assertThat(saved).isEqualTo(user);
         assertThat(userRepository.findAll()).isEqualTo(List.of(user));
     }
 

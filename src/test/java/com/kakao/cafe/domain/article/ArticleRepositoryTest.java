@@ -29,7 +29,7 @@ public class ArticleRepositoryTest {
     @DisplayName("저장소 게시글 저장 테스트")
     @MethodSource("provideArticle")
     @ParameterizedTest
-    public void testArticleSave(Title title, Content content) {
+    public void articleSave(Title title, Content content) {
         //given
         final ArticleCreateRequest dto = new ArticleCreateRequest(title, content);
         Article article = dto.toEntity();
@@ -40,7 +40,7 @@ public class ArticleRepositoryTest {
 
         //then
         Article saved = articleRepository.findById(articleId);
-        assertThat(articleRepository.findById(articleId)).isEqualTo(article);
+        assertThat(saved).isEqualTo(article);
         assertThat(articleRepository.findAll()).isEqualTo(List.of(article));
     }
 
