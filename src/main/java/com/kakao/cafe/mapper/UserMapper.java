@@ -1,9 +1,7 @@
 package com.kakao.cafe.mapper;
 
-import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserDto;
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.dto.UserCreateRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -18,7 +16,7 @@ public interface UserMapper extends RowMapper<User>{
     UserMapper INSTANCE = Mappers.getMapper( UserMapper.class );
 
     @Mapping(target = "id", ignore = true)
-    User toEntity(UserDto user);
+    User toEntity(UserCreateRequest user);
 
     @Override
     default User mapRow(ResultSet rs, int rowNum) throws SQLException {

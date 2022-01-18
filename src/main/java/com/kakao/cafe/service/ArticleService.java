@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.dto.ArticleFormRequest;
 import com.kakao.cafe.mapper.ArticleMapper;
 import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,10 @@ public class ArticleService {
     }
 
 
-    public void save(ArticleDto articleDto) {
-        articleRepository.save(ArticleMapper.INSTANCE.toEntity(articleDto));
+    public void save(ArticleFormRequest articleFormRequest, String writer) {
+        Article article = ArticleMapper.INSTANCE.toEntity(articleFormRequest);
+        article.setWriter(writer);
+        articleRepository.save(article);
     }
 
     public Article findArticle(Long id) {

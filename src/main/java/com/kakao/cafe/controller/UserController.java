@@ -1,11 +1,9 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserCreateRequest;
 import com.kakao.cafe.dto.UserLoginRequest;
 import com.kakao.cafe.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +22,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String create(UserDto userDto) {
-        userService.save(userDto);
+    public String create(UserCreateRequest userCreateRequest) {
+        userService.save(userCreateRequest);
         return "redirect:/users";
     }
 
@@ -81,12 +79,12 @@ public class UserController {
         } catch (AuthenticationException e) {
             return "/user/update_failed";
         }
-        return "user/updateForm";
+        return "user/update";
     }
 
     @PutMapping("/users/{id}/update")
-    public String updateUser(@PathVariable("id") Long id, UserDto userDto) {
-        userService.updateUserInfo(id, userDto);
+    public String updateUser(@PathVariable("id") Long id, UserCreateRequest userUpdateRequest) {
+        userService.updateUserInfo(id, userUpdateRequest);
 
         return "redirect:/users";
     }
