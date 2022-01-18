@@ -1,17 +1,22 @@
 package com.kakao.cafe.module.controller;
 
 import com.kakao.cafe.module.service.ArticleService;
+import com.kakao.cafe.module.service.InfraService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+
 import static com.kakao.cafe.module.model.dto.ArticleDtos.*;
+import static com.kakao.cafe.module.model.dto.UserDtos.*;
 
 @Controller
 @RequestMapping("/articles")
@@ -20,10 +25,12 @@ public class ArticleController {
 
     private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
     private final ArticleService articleService;
+    private final InfraService infraService;
 
     @PostMapping
-    public String postArticle(ArticlePostDto articlePostDto) {
-        articleService.postArticle(articlePostDto);
+    public String postArticle(ArticlePostDto articlePostDto, HttpSession session) throws HttpSessionRequiredException {
+        UserDto userDto = infraService.retrieveUserSession(session);
+        articleService.postArticle(articlePostDto, userDto);
         logger.info("Post Article : {}", articlePostDto.getTitle());
         return "redirect:/";
     }

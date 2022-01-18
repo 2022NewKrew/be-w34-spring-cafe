@@ -40,9 +40,16 @@
                         <li><a href="#">»</a></li>
                     </ul>
                 </div>
+                {{^sessionUser}}
+                <div class="col-md-3 qna-write">
+                    <a href="/auth/sign-in/form" class="btn btn-primary pull-right" role="button">게시물 쓰기</a>
+                </div>
+                {{/sessionUser}}
+                {{#sessionUser}}
                 <div class="col-md-3 qna-write">
                     <a href="/articles/form" class="btn btn-primary pull-right" role="button">게시물 쓰기</a>
                 </div>
+                {{/sessionUser}}
             </div>
         </div>
     </div>

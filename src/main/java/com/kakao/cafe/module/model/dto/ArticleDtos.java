@@ -12,11 +12,10 @@ public class ArticleDtos {
     @RequiredArgsConstructor
     public static class ArticlePostDto {
 
-        private final String author;
-
+        @Setter
+        private String author;
         @Setter
         private Long authorId;
-
         private final String title;
         private final String contents;
     }
