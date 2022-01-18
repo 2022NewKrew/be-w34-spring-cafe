@@ -18,15 +18,18 @@ public class MainPageController {
 
   }
 
+
   @GetMapping("/")
   public String index(Model model) {
     return "index";
   }
 
+
   @GetMapping("/signup")
   public String signUp(Model model) {
     return "form";
   }
+
 
   @GetMapping("/login")
   public String login(Model model) {

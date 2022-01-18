@@ -3,6 +3,7 @@ package com.kakao.cafe.web.controller.mvc;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticleBoard;
 import com.kakao.cafe.web.common.EnableSession;
+import com.kakao.cafe.web.common.RequireLogin;
 import com.kakao.cafe.web.controller.KakaoCafePageController;
 import com.kakao.cafe.web.dto.ArticleBoardDTO;
 import com.kakao.cafe.web.dto.ArticleDTO;
@@ -37,6 +38,7 @@ public class ArticlePageController {
   }
 
 
+  @RequireLogin
   @GetMapping("/article/{id}")
   public String getArticle(Model model, @PathVariable int id) {
 
@@ -47,6 +49,7 @@ public class ArticlePageController {
   }
 
 
+  @RequireLogin
   @GetMapping("/article")
   public String createArticle(Model model) {
     return "article_create";

@@ -2,6 +2,7 @@ package com.kakao.cafe.web.controller.api;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.web.common.EnableSession;
+import com.kakao.cafe.web.common.RequireLogin;
 import com.kakao.cafe.web.controller.KakaoCafeApiController;
 import com.kakao.cafe.web.dto.ArticleDTO;
 import com.kakao.cafe.web.service.ArticleService;
@@ -23,6 +24,7 @@ public class ArticleApiController {
   public ArticleApiController(ArticleService articleService) {
     this.articleService = articleService;
   }
+
 
   @PostMapping("/article")
   public ResponseEntity<ArticleDTO> createArticle(@RequestBody ArticleDTO articleDTO) {

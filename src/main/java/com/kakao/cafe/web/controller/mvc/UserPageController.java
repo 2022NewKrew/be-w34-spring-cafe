@@ -3,6 +3,7 @@ package com.kakao.cafe.web.controller.mvc;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.Users;
 import com.kakao.cafe.web.common.EnableSession;
+import com.kakao.cafe.web.common.RequireLogin;
 import com.kakao.cafe.web.controller.KakaoCafePageController;
 import com.kakao.cafe.web.dto.UserDTO;
 import com.kakao.cafe.web.service.UserService;
@@ -24,6 +25,7 @@ public class UserPageController {
     this.userService = userService;
   }
 
+
   @GetMapping("/users")
   public String users(Model model) {
 
@@ -35,6 +37,7 @@ public class UserPageController {
 
     return "list";
   }
+
 
   @GetMapping("/users/{id}")
   public String users(Model model, @PathVariable("id") Long id) {
@@ -48,6 +51,8 @@ public class UserPageController {
     return "profile";
   }
 
+
+  @RequireLogin
   @GetMapping("/users/{id}/modify")
   public String modifyUser(Model model, @PathVariable("id") Long id) {
 

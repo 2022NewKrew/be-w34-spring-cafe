@@ -9,9 +9,13 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
@@ -25,22 +29,25 @@ public class SessionAspectManager {
   public void enableSession() {
   }
 
+  @Pointcut("@annotation(com.kakao.cafe.web.common.RequireLogin)")
+  public void requireLogin() {
+  }
+
   @Around("enableSession()")
   public Object setSessionAttribute(ProceedingJoinPoint joinPoint) throws Throwable {
 
-    logger.debug("SessionManager Aspect Start-----------------------------------------------");
-
-    boolean isLogin = SessionUtils.isLogin();
-    Optional<User> loginUser = SessionUtils.getLoginUser();
+    logger.debug("enableSession Aspect Start-----------------------------------------------");
 
     Object controllerResult = joinPoint.proceed();
 
     findModel(joinPoint).ifPresent(model -> {
-      model.addAttribute("session", new UserDTO(loginUser.orElseGet(() -> User.createEmpty())));
+      boolean isLogin = SessionUtils.isLogin();
+      Optional<User> loginUser = SessionUtils.getLoginUser();
+      model.addAttribute("session", new UserDTO(loginUser.orElseGet(User::createEmpty)));
       model.addAttribute("isLogin", isLogin);
     });
 
-    logger.debug("SessionManager Aspect End-------------------------------------------------");
+    logger.debug("enableSession Aspect End-------------------------------------------------");
 
     return controllerResult;
   }
@@ -50,6 +57,23 @@ public class SessionAspectManager {
         .filter(arg -> arg instanceof Model)
         .map(arg -> (Model) arg)
         .findAny();
+  }
+
+  @Around("requireLogin()")
+  public Object checkLogin(ProceedingJoinPoint joinPoint) throws Throwable {
+
+    logger.debug("requireLogin Aspect Start-----------------------------------------------");
+
+//    Object controllerResult = ResponseEntity.status(HttpStatus.FOUND)
+//        .header(HttpHeaders.LOCATION, "/login");
+    Object controllerResult = "/login";
+    if(SessionUtils.isLogin()) {
+      controllerResult = joinPoint.proceed();
+    }
+
+    logger.debug("requireLogin Aspect End-------------------------------------------------");
+
+    return controllerResult;
   }
 
 }
