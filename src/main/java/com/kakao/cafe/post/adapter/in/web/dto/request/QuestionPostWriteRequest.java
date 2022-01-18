@@ -1,4 +1,4 @@
-package com.kakao.cafe.post.adapter.in.web.dto;
+package com.kakao.cafe.post.adapter.in.web.dto.request;
 
 import com.kakao.cafe.post.application.dto.command.QuestionPostSaveCommand;
 import lombok.Getter;
