@@ -37,8 +37,6 @@ public class PostController {
 
     @GetMapping("/posts/{postId}")
     public ModelAndView postDetailView(@PathVariable("postId") Long postId, ModelAndView mav) {
-        postService.increaseViewNumById(postId);
-
         PostViewDto postViewDto = postService.findPostViewDtoById(postId);
         mav.addObject("postViewDto", postViewDto);
 

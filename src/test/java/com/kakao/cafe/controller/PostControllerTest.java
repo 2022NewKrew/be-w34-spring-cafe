@@ -76,6 +76,5 @@ class PostControllerTest {
         //Then
         then(mav).should(times(1)).addObject("postViewDto", postViewDto);
         then(mav).should(times(1)).setViewName("postDetail");
-        then(postService).should(times(1)).increaseViewNumById(postId);
     }
 }
