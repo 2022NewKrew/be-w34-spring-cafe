@@ -2,18 +2,19 @@ package com.kakao.cafe;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class ArticleController {
@@ -79,7 +80,12 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{index}")
-    public String getArticle(@PathVariable String index, Model model) {
+    public String getArticle(@PathVariable String index, Model model, HttpSession session) {
+        List<User> users = UserController.selectAllUsers(dataSource);
+        Optional<String> validate = SessionController.checkSession(session, users);
+        if(validate.isPresent()) {
+            return validate.get();
+        }
         int id = Integer.parseInt(index);
         Article selectedArticle = select1Article(id);
         if(selectedArticle == null) {

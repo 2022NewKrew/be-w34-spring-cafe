@@ -44,7 +44,7 @@ public class UserController { Logger logger = LoggerFactory.getLogger(UserContro
         return "redirect:/users";
     }
 
-    private static List<User> selectAllUsers(DataSource dataSource) {
+    public static List<User> selectAllUsers(DataSource dataSource) {
         List<User> users = new ArrayList<>();
         try(Connection conn = dataSource.getConnection();
             Statement stmt = conn.createStatement()) {
