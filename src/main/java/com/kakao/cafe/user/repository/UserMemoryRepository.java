@@ -13,12 +13,11 @@ import java.util.*;
 @RequiredArgsConstructor
 public class UserMemoryRepository implements UserRepository {
 
-    private final UserFactory userFactory;
     private final static Map<Long, User> userMap = new TreeMap<>();
 
     @Override
     public void save(SignUpDTO signUpDTO) {
-        User user = userFactory.of(userMap.size() + 1L, signUpDTO);
+        User user = UserFactory.toUser(userMap.size() + 1L, signUpDTO);
         userMap.put(userMap.size() + 1L, user);
     }
 

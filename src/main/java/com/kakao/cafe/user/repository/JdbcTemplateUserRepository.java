@@ -23,12 +23,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JdbcTemplateUserRepository implements UserRepository {
 
-    private final UserFactory userFactory;
     private final JdbcTemplate jdbcTemplate;
 
     @Override
     public void save(SignUpDTO singUpDto) {
-        User user = userFactory.of(singUpDto);
+        User user = UserFactory.toUser(singUpDto);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement pstmt = con.prepareStatement("insert into USERS (USER_ID,PASSWORD,NAME,EMAIL)" +

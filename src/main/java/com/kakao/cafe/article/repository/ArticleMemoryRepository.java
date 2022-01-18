@@ -14,11 +14,10 @@ import java.util.*;
 public class ArticleMemoryRepository implements ArticleRepository {
 
     private final static Map<Long, Article> articleMap = new TreeMap<>();
-    private final ArticleFactory articleFactory;
 
     @Override
     public void save(QuestionDTO articleDTO) {
-        Article article = articleFactory.of(articleMap.size() + 1L, articleDTO);
+        Article article = ArticleFactory.toArticle(articleMap.size() + 1L, articleDTO);
         articleMap.put(articleMap.size() + 1L, article);
     }
 

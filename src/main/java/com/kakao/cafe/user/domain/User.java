@@ -1,7 +1,8 @@
 package com.kakao.cafe.user.domain;
 
-import com.kakao.cafe.user.dto.SignUpDTO;
+
 import com.kakao.cafe.user.dto.UpdateDTO;
+import com.kakao.cafe.user.factory.UserFactory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,21 +20,6 @@ public class User {
 
     private String email;
 
-    public User(Long id, SignUpDTO signUpDTO) {
-        this.id = id;
-        this.userId = signUpDTO.getUserId();
-        this.password = signUpDTO.getPassword();
-        this.name = signUpDTO.getName();
-        this.email = signUpDTO.getEmail();
-    }
-
-    public User(SignUpDTO signUpDTO) {
-        this.userId = signUpDTO.getUserId();
-        this.password = signUpDTO.getPassword();
-        this.name = signUpDTO.getName();
-        this.email = signUpDTO.getEmail();
-    }
-
     public User(Long id, String userId, String password, String name, String email) {
         this.id = id;
         this.userId = userId;
@@ -42,16 +28,16 @@ public class User {
         this.email = email;
     }
 
-    public User(UpdateDTO updateDTO) {
-        this.id = updateDTO.getId();
-        this.userId = updateDTO.getUserId();
-        this.password = updateDTO.getPassword();
-        this.name = updateDTO.getName();
-        this.email = updateDTO.getEmail();
+    public User(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
+
     public User updateInfo(UpdateDTO updateDTO) {
-        return new User(updateDTO);
+        return UserFactory.toUser(updateDTO);
     }
 
     public boolean equalsPassword(String InputPassword) {

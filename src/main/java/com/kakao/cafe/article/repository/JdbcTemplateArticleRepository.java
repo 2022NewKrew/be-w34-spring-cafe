@@ -22,13 +22,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JdbcTemplateArticleRepository implements ArticleRepository {
 
-    private final ArticleFactory articleFactory;
+
     private final JdbcTemplate jdbcTemplate;
 
     @Override
     public void save(QuestionDTO articleDTO) {
 
-        Article article = articleFactory.of(articleDTO);
+        Article article = ArticleFactory.toArticle(articleDTO);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement pstmt = con.prepareStatement("insert into ARTICLES (WRITER,TITLE,CONTENTS,WRITING_TIME,COUNT_COMMENT)" +
