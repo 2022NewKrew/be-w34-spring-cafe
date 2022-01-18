@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.dto.request;
 
 import com.kakao.cafe.user.domain.User;
+import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -22,7 +23,7 @@ public class SignUpRequest {
         this.password = password;
     }
 
-    public User toUser(Long id) {
-        return new User(id, this.email, this.nickname, this.password);
+    public User toUser() {
+        return new User(null, this.email, this.nickname, this.password, LocalDateTime.now());
     }
 }

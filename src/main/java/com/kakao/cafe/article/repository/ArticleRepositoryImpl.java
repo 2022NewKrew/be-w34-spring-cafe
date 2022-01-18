@@ -2,45 +2,66 @@ package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.user.domain.User;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ArticleRepositoryImpl implements ArticleRepository {
 
-    private static final List<Article> articles = Collections.synchronizedList(new ArrayList<>());
-    private static final AtomicLong idx = new AtomicLong(0);
+    private final JdbcTemplate jdbcTemplate;
+    private final RowMapper<Article> articleRowMapper = getArticleRowMapper();
 
-    static {
-        articles.add(new Article(0L, "국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?",
-            "호눅스가 요청하신 페이지의 디자인 입니다.\n각각의 글의 상세 페이지는 이런 느낌이네요!",
-            new User(0L, "aa@aa.com", "멋진삼", "aaaa")));
-    }
-
-    @Override
-    public Long autoIncrement() {
-        return idx.incrementAndGet();
+    public ArticleRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public Article save(Article article) {
-        articles.add(article);
+        String sql = "INSERT INTO articles (user_id, title, content, view_num, created_date) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, article.getUser().getId(), article.getTitle(), article.getContent(),
+            article.getViewNum(), article.getCreatedDate());
         return article;
     }
 
     @Override
     public List<Article> findAll() {
-        return articles;
+        String sql = "SELECT * FROM articles a JOIN users u ON a.user_id = u.id";
+        return jdbcTemplate.query(sql, articleRowMapper);
     }
 
     @Override
     public Optional<Article> findById(Long id) {
-        return articles.stream()
-            .filter(article -> article.getId().equals(id))
-            .findFirst();
+        String sql = "SELECT * FROM articles a JOIN users u ON a.user_id = u.id WHERE a.id = ?";
+        return jdbcTemplate.query(sql, articleRowMapper, id).stream().findFirst();
+    }
+
+    @Override
+    public void updateViewNum(Long id) {
+        String sql = "UPDATE articles SET view_num = view_num+1 where id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    public RowMapper<Article> getArticleRowMapper() {
+        return (rs, rowNum) -> new Article(
+            rs.getLong("id"),
+            rs.getString("title"),
+            rs.getString("content"),
+            getUser(rs),
+            rs.getLong("view_num"),
+            rs.getTimestamp("created_date").toLocalDateTime());
+    }
+
+    private User getUser(ResultSet rs) throws SQLException {
+        return new User(rs.getLong("user_id"),
+            rs.getString("email"),
+            rs.getString("nickname"),
+            rs.getString("nickname"),
+            rs.getTimestamp("created_date").toLocalDateTime());
     }
 }

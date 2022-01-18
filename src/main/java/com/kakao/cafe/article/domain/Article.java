@@ -24,13 +24,13 @@ public class Article {
     @NotNull
     private final LocalDateTime createdDate;
 
-    public Article(Long id, String title, String content, User user) {
+    public Article(Long id, String title, String content, User user, Long viewNum, LocalDateTime createdDate) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.user = user;
-        this.createdDate = LocalDateTime.now();
-        this.viewNum = 0L;
+        this.viewNum = viewNum;
+        this.createdDate = createdDate;
     }
 
     public void incrementViewNum(){

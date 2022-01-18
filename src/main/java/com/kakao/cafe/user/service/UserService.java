@@ -24,7 +24,7 @@ public class UserService {
     }
 
     public UserResponse save(SignUpRequest signUpRequest) {
-        User user = signUpRequest.toUser(userRepository.autoIncrement());
+        User user = signUpRequest.toUser();
         validateDuplicateEmail(user);
         return UserResponse.of(userRepository.save(user));
     }
