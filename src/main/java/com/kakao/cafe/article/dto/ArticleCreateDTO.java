@@ -8,8 +8,9 @@ public class ArticleCreateDTO {
     private String title;
     private String contents;
 
-    public ArticleCreateDTO(String userId, String title, String contents) {
+    public ArticleCreateDTO(String userId, String name, String title, String contents) {
         this.userId = userId;
+        this.name = name;
         this.title = title;
         this.contents = contents;
     }
@@ -28,9 +29,5 @@ public class ArticleCreateDTO {
 
     public String getContents() {
         return contents;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

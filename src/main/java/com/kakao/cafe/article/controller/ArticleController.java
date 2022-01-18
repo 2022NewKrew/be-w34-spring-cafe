@@ -39,9 +39,6 @@ public class ArticleController {
             throw new ArticleNotMatchedUser("로그인된 사용자와 글쓴이가 다릅니다.");
         }
 
-        //로그인된 사용자의 이름을 지정
-        articleCreateDTO.setName(user.getName());
-
         articleService.articleCreate(articleCreateDTO);
         return "redirect:/";
     }
@@ -56,7 +53,6 @@ public class ArticleController {
             throw new ArticleNotLoggedInException("로그인 상태에서만 게시글을 작성할 수 있습니다.");
         }
 
-        model.addAttribute("userId", user.getUserId());
         return "/qna/form";
     }
 

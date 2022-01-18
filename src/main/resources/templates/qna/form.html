@@ -13,7 +13,10 @@
           <form name="question" method="post" action="/qna/create">
               <div class="form-group">
                   <label for="title">글쓴이</label>
-                  <input type="text" class="form-control" id="userId" name="userId" placeholder="제목" value="{{userId}}" readonly>
+                  <input type="text" class="form-control" id="userId" name="userId" placeholder="제목" value="{{sessionedUser.getUserId}}" readonly>
+              </div>
+              <div class="form-group">
+                  <input type="hidden" class="form-control" id="name" name="name" placeholder="제목" value="{{sessionedUser.getName}}" readonly>
               </div>
               <div class="form-group">
                   <label for="title">제목</label>
