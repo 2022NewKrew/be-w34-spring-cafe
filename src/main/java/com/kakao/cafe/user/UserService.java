@@ -1,5 +1,7 @@
 package com.kakao.cafe.user;
 
+import com.kakao.cafe.common.exception.BaseException;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -36,5 +38,5 @@ public interface UserService {
      */
     boolean update(User user);
 
-    User loginCheck(String userId, String password);
+    User loginCheck(String userId, String password) throws BaseException;
 }

@@ -1,5 +1,6 @@
 package com.kakao.cafe.user;
 
+import com.kakao.cafe.common.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -47,8 +48,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User loginCheck(String userId, String password) {
+    public User loginCheck(String userId, String password) throws BaseException{
+        User user = userRepository.findOne(userId, password);
 
-        return userRepository.findOne(userId, password);
+        if (user == null) {
+            throw new BaseException("비밀번호가 틀렸습니다.");
+        }
+
+        return user;
     }
 }

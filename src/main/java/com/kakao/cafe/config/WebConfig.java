@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(new LoginInterceptor())
                 .order(1)
-                .addPathPatterns("/questions/**","/users/**")
+                .addPathPatterns("/questions/**","/users/**/**")
                 .excludePathPatterns("/questions","/users/login");
     }
 }

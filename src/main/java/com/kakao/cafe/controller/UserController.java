@@ -114,10 +114,6 @@ public class UserController {
         UserDto loginUser = (UserDto) sessionLoginUser.getLoginUser();
         User user = userService.loginCheck(loginUser.getUserId(), password);
 
-        if (user == null) {
-            throw new BaseException("비밀번호가 틀렸습니다.");
-        }
-
         UserDto userDto = modelMapper.map(user, UserDto.class);
 
         model.addAttribute("user", userDto);
@@ -158,11 +154,7 @@ public class UserController {
     public String login(@ModelAttribute("user") @Valid UserLoginDto userLoginDto, Model model) throws BaseException {
 
         User user = userService.loginCheck(userLoginDto.getUserId(), userLoginDto.getPassword());
-
-        if (user == null) {
-            throw new BaseException("login error 페이지 입니다.");
-        }
-
+        
         setLoginUserSession(user);
 
         return "redirect:/";

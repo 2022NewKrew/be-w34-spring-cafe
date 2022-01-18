@@ -90,7 +90,7 @@ public class QuestionController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteQuestion(HttpSession session, @PathVariable("id") Long id, Model model) throws BaseException {
+    public String deleteQuestion(@PathVariable("id") Long id, Model model) throws BaseException {
 
         Long memberId = getMemberId();
 
