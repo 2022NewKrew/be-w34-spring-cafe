@@ -4,14 +4,14 @@ import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.Content;
 import com.kakao.cafe.domain.article.Title;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class ArticleDetailResponse {
     private final int articleId;
     private final Title title;
     private final Content content;
-    private final Timestamp createdAt;
-    private final Timestamp modifiedAt;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime modifiedAt;
 
     public ArticleDetailResponse(Article article) {
         this.articleId = article.getId();
@@ -33,11 +33,11 @@ public class ArticleDetailResponse {
         return content;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public Timestamp getModifiedAt() {
+    public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }
 }

@@ -3,12 +3,12 @@ package com.kakao.cafe.web.article.dto;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.Title;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class ArticleListResponse {
     private final int articleId;
     private final Title title;
-    private final Timestamp createdAt;
+    private final LocalDateTime createdAt;
 
     public ArticleListResponse(Article article) {
         this.articleId = article.getId();
@@ -24,7 +24,7 @@ public class ArticleListResponse {
         return title;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 

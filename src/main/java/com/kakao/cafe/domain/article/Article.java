@@ -1,13 +1,13 @@
 package com.kakao.cafe.domain.article;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Article {
     private int id;
     private Title title;
     private Content content;
-    private Timestamp createdAt;
-    private Timestamp modifiedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
     public int getId() {
         return id;
@@ -21,11 +21,11 @@ public class Article {
         return content;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public Timestamp getModifiedAt() {
+    public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }
 
@@ -41,18 +41,17 @@ public class Article {
         this.content = content;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public void setModifiedAt(Timestamp modifiedAt) {
+    public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 31 * result + Integer.hashCode(id);
+        int result = Integer.hashCode(id);
         result = 31 * result + content.hashCode();
         result = 31 * result + createdAt.hashCode();
         result = 31 * result + modifiedAt.hashCode();
@@ -64,8 +63,9 @@ public class Article {
         if(obj == this) {
             return true;
         }
-        if(!(obj instanceof Article))
+        if(!(obj instanceof Article)) {
             return false;
+        }
 
         Article other = (Article) obj;
         return other.id == id &&

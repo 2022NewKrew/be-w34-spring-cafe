@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.article.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class H2ArticleRepository implements ArticleRepository{
@@ -24,9 +25,9 @@ public class H2ArticleRepository implements ArticleRepository{
     public int save(Article article) {
         String title = article.getTitle().getValue();
         String content = article.getContent().getValue();
-        Timestamp now = new Timestamp(System.currentTimeMillis());
+        LocalDateTime now = LocalDateTime.now();
         return jdbcTemplate.update(
-                "INSERT INTO ARTICLES(TITLE, CONTENT, CREATEDAT, MODIFIEDAT) VALUES (?, ?, ?, ?)", title, content, now, now
+                "INSERT INTO ARTICLES(TITLE, CONTENT, CREATEDAT, MODIFIEDAT) VALUES (?, ?, ?, ?)", title, content, Timestamp.valueOf(now), Timestamp.valueOf(now)
         );
     }
 
