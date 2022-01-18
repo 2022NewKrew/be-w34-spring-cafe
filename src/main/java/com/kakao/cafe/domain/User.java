@@ -1,13 +1,14 @@
 package com.kakao.cafe.domain;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class User {
     private Long id;
     private String email;
     private String name;
     private String password;
-    private Date creationTime;
+    private LocalDateTime creationTime;
 
     public User(String email, String name, String password) {
         this.email = email;
@@ -20,24 +21,22 @@ public class User {
     }
 
     public void setEmail(String email) {
-        if (!email.isBlank()) {
-            this.email = email;
-        }
+        this.email = email;
     }
 
     public void setName(String name) {
-        if (!name.isBlank()) {
-            this.name = name;
-        }
+        this.name = name;
     }
 
     public void setPassword(String password) {
-        if (!password.isBlank()) {
-            this.password = password;
-        }
+        this.password = password;
     }
 
-    public void setCreationTime(Date creationTime) {
+    public void setCreationTime(Timestamp timestamp) {
+        creationTime = timestamp.toLocalDateTime();
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
 
@@ -57,7 +56,11 @@ public class User {
         return password;
     }
 
-    public Date getCreationTime() {
+    public LocalDateTime getCreationTime() {
         return creationTime;
+    }
+
+    public Boolean authenticate(String password) {
+        return this.password.equals(password);
     }
 }
