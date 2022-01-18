@@ -6,10 +6,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 public class JdbcTemplateArticleRepository implements ArticleRepository {
+
+    DateTimeFormatter articleTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter commentTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -21,7 +25,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     public void saveArticle(Article article) {
         jdbcTemplate.update(
                 "insert into articles(title, author, content) values(?,?,?)",
-                article.getTitle(), "익명", article.getContent());
+                article.getTitle(), article.getAuthor(), article.getContent());
     }
 
     @Override
@@ -45,7 +49,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     public void saveComment(Comment comment) {
         jdbcTemplate.update(
                 "insert into comments(author, content, articleId) values(?,?,?)",
-                "익명", comment.getContent(), comment.getArticleId());
+                comment.getAuthor(), comment.getContent(), comment.getArticleId());
     }
 
     @Override
@@ -60,7 +64,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                     rs.getString("content"));
             article.setId(rs.getLong("id"));
             article.setAuthor(rs.getString("author"));
-            article.setCreated(rs.getTimestamp("created"));
+            article.setCreated(rs.getTimestamp("created").toLocalDateTime().format(articleTimeFormatter));
             article.setViews(rs.getInt("views"));
             return article;
         };
@@ -73,7 +77,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                     rs.getLong("articleId"));
             comment.setId(rs.getLong("id"));
             comment.setAuthor(rs.getString("author"));
-            comment.setCreated(rs.getTimestamp("created"));
+            comment.setCreated(rs.getTimestamp("created").toLocalDateTime().format(commentTimeFormatter));
             return comment;
         };
     }

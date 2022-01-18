@@ -3,20 +3,16 @@ package com.kakao.cafe.Domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class Comment {
     private Long id;
-    private Timestamp created;
+    private String created;
 
-    @NotBlank
     private String author;
-    @NotBlank
     private String content;
-    @NotBlank
     private Long articleId;
 
     public Comment(String content, Long articleId) {

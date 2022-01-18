@@ -23,8 +23,14 @@
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active"><a href="/users">멤버 리스트</a></li>
-                    <li><a class="black-component" href="/user/login.html" role="button">로그인</a></li>
-                    <li><a class="black-component" href="/user/form.html" role="button">회원가입</a></li>
+                    {{#sessionedUser}}
+                    <li><a class="black-component" href="/logout" role="button">로그아웃</a></li>
+                    <li><a class="black-component" href="/edit-user" role="button">개인정보 수정</a></li>
+                    {{/sessionedUser}}
+                    {{^sessionedUser}}
+                    <li><a class="black-component" href="/login-form" role="button">로그인</a></li>
+                    <li><a class="black-component" href="/join-form" role="button">회원가입</a></li>
+                    {{/sessionedUser}}
                 </ul>
             </div>
         </nav>
@@ -71,7 +77,12 @@
                               </div>
                               <form class="submit-write" method="post" action="/comments/{{articleId}} ">
                                   <div class="comment-writer-container">
-                                      <input class="comment-writer" id="author" name="author" value="익명" readonly/>
+                                      {{#sessionedUser}}
+                                        <input class="comment-writer" id="author" name="author" value="{{nickName}}" readonly/>
+                                      {{/sessionedUser}}
+                                      {{^sessionedUser}}
+                                        <input class="comment-writer" id="unknownAuthor" name="author" value="익명" readonly/>
+                                      {{/sessionedUser}}
                                   </div>
                                   <div class="form-group">
                                       <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
