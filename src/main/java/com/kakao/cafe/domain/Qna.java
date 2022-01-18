@@ -39,4 +39,13 @@ public class Qna {
     public void setIndex(Integer index) {
         this.index = index;
     }
+
+    public Boolean isValidUpdateUser(String userId) {
+        return writer.equals(userId);
+    }
+
+    public void updateQna(Qna qna) {
+        this.title = qna.getTitle();
+        this.contents = qna.getContents();
+    }
 }

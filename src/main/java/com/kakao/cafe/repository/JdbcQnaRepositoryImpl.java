@@ -26,7 +26,7 @@ public class JdbcQnaRepositoryImpl implements QnaRepository {
         try {
             jdbcTemplate.queryForObject("SELECT `index` FROM QNA WHERE `index` = ?", Integer.class, qna.getIndex());
             jdbcTemplate.update("UPDATE QNA " +
-                    "SET writer = ?, titile = ?, contents = ?" +
+                    "SET writer = ?, title = ?, contents = ?" +
                     "WHERE `index` = ?", qna.getWriter(), qna.getTitle(), qna.getContents(), qna.getIndex());
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
             jdbcTemplate.update("INSERT INTO QNA(writer, title, contents)" +
