@@ -6,8 +6,8 @@ import com.kakao.cafe.dto.user.CreateUserDto;
 import com.kakao.cafe.dto.user.LoginDto;
 import com.kakao.cafe.dto.user.ShowUserDto;
 import com.kakao.cafe.dto.user.UpdateUserDto;
-import com.kakao.cafe.exception.NotFoundException;
-import com.kakao.cafe.exception.UnAuthorizedException;
+import com.kakao.cafe.util.exception.NotFoundException;
+import com.kakao.cafe.util.exception.UnAuthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.post.PostRepository;
 import com.kakao.cafe.dto.post.CreatePostDto;
 import com.kakao.cafe.dto.post.ShowPostDto;
-import com.kakao.cafe.exception.NotFoundException;
+import com.kakao.cafe.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
