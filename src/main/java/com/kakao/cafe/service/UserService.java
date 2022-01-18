@@ -1,20 +1,16 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.entity.User;
+import com.kakao.cafe.domain.repository.user.H2UserRepository;
+import com.kakao.cafe.domain.repository.user.UserRepository;
 import com.kakao.cafe.dto.RequestUserDto;
 import com.kakao.cafe.dto.ResponseUserDto;
-
-import com.kakao.cafe.domain.repository.user.H2UserRepository;
-
-import com.kakao.cafe.domain.repository.user.UserRepository;
 import com.kakao.cafe.dto.SessionUser;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.beans.factory.annotation.Qualifier;
-
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -25,9 +21,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class UserService {
+    private final UserRepository userRepository;
     @Autowired
     private ModelMapper modelMapper;
-    private final UserRepository userRepository;
 
     public UserService(@Qualifier("h2UserRepository") H2UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -49,8 +45,8 @@ public class UserService {
     }
 
     /*
-    * 전체 유저 조회
-    */
+     * 전체 유저 조회
+     */
     public List<ResponseUserDto> findUsers() {
         return userRepository.findAll().stream()
                 .map(user -> modelMapper.map(user, ResponseUserDto.class))
@@ -58,8 +54,8 @@ public class UserService {
     }
 
     /*
-    * id로 유저 조회
-    */
+     * id로 유저 조회
+     */
     public ResponseUserDto findOne(long id) {
         User result = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
 
@@ -67,8 +63,8 @@ public class UserService {
     }
 
     /*
-    * userId로 유저 조회
-    */
+     * userId로 유저 조회
+     */
     public ResponseUserDto findOne(String userId) {
         User result = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
 
@@ -76,15 +72,15 @@ public class UserService {
     }
 
     /*
-    * 전체 유저 숫자 조회
-    */
+     * 전체 유저 숫자 조회
+     */
     public long getCountOfUser() {
         return userRepository.countRecords();
     }
 
     /*
-    * id로 유저 정보 수정
-    */
+     * id로 유저 정보 수정
+     */
     public void updateUser(long id, RequestUserDto userDto) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
 
@@ -98,8 +94,8 @@ public class UserService {
     }
 
     /*
-    * 로그인
-    */
+     * 로그인
+     */
     public SessionUser login(String userId, String password) {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
         validatePassword(user, password);

@@ -26,9 +26,9 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        if(article.getId() == 0){
+        if (article.getId() == 0) {
             String sql = "INSERT INTO `ARTICLE`(AUTHOR, TITLE, CONTENT, VIEWS, CREATED_AT) VALUES(?,?,?,?,?)";
-            jdbcTemplate.update(sql, article.getAuthor(), article.getContent(), article.getViews(), article.getContent(), article.getCreatedAt());
+            jdbcTemplate.update(sql, article.getAuthorId(), article.getContent(), article.getViews(), article.getContent(), article.getCreatedAt());
             return article;
         }
 
@@ -37,7 +37,7 @@ public class H2ArticleRepository implements ArticleRepository {
                 "WHERE ID = ?";
 
         jdbcTemplate.update(sql,
-                article.getAuthor(), article.getTitle(), article.getContent(), article.getViews(), article.getCreatedAt(),
+                article.getAuthorId(), article.getTitle(), article.getContent(), article.getViews(), article.getCreatedAt(),
                 article.getId());
 
         return article;
@@ -45,7 +45,12 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(Long id) {
-        String sql = "SELECT * FROM ARTICLE WHERE ID = ?";
+        String sql = "SELECT " +
+                "a.id, u.name as author, a.title, a.content, a.views, a.created_at " +
+                "FROM " +
+                "ARTICLE a join `USER` u " +
+                "ON a.author_id = u.id " +
+                "WHERE a.id = ?";
         List<Article> result = jdbcTemplate.query(sql, articleRowMapper(), id);
 
         return result.stream().findAny();
@@ -53,7 +58,11 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("SELECT * FROM ARTICLE", articleRowMapper());
+        return jdbcTemplate.query("SELECT " +
+                "a.id, u.name as author, a.title, a.content, a.views, a.created_at " +
+                "FROM " +
+                "ARTICLE a join `USER` u " +
+                "ON a.author_id = u.id ", articleRowMapper());
     }
 
     @Override

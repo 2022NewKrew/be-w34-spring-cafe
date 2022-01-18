@@ -2,12 +2,10 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.config.auth.LoginUser;
 import com.kakao.cafe.dto.RequestUserDto;
-import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.dto.SessionUser;
+import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +49,7 @@ public class UserController {
     public String getUserProfile(@PathVariable long id, Model model, @LoginUser SessionUser user) {
         log.info("GET /users/{}", id);
 
-        if (id == user.getId()){
+        if (id == user.getId()) {
             model.addAttribute("myId", user.getId());
         }
 
@@ -65,12 +63,6 @@ public class UserController {
      */
     @GetMapping("/users/{id}/update")
     public String showEditUserPage(@PathVariable long id, Model model, @LoginUser SessionUser user) {
-//        Object value = session.getAttribute("sessionedUser");
-//        if (value == null) {
-//            //로그인 후 이용할 수 있습니다.?
-//            return "redirect:/login.html";
-//        }
-//        SessionUser userVo = (SessionUser) value;
 
         if (user.getId() != id) {
             //본인 정보만 수정할 수 있습니다.
@@ -89,7 +81,7 @@ public class UserController {
     public String editUser(@PathVariable long id, @ModelAttribute RequestUserDto userDto, @LoginUser SessionUser user) {
         log.info("PUT /users/{}/update : {}", id, userDto);
 
-        if (user.getId() != id){
+        if (user.getId() != id) {
             //권한이 없음. 잘못된 접근
             return "redirect:/login.html";
         }
@@ -106,7 +98,6 @@ public class UserController {
     public String login(String userId, String password, HttpSession session) {
         SessionUser userVo = userService.login(userId.trim(), password.trim());
         session.setAttribute("sessionedUser", userVo);
-        log.info(">>>> {}", userVo.getId());
         return "redirect:/";
     }
 

@@ -16,10 +16,7 @@ public class SessionUser {
     @Override
     public boolean equals(Object obj) {
         SessionUser otherUser = (SessionUser) obj;
-        if (this.id == otherUser.getId() && this.userId == otherUser.getUserId()) {
-            return true;
-        }
-        return false;
+        return this.id == otherUser.getId() && this.userId == otherUser.getUserId();
     }
 
 }

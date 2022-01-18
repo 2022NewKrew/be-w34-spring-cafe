@@ -6,7 +6,7 @@ import java.util.*;
 
 public class MemoryArticleRepository implements ArticleRepository {
 
-    private static Map<Long, Article> store = new HashMap<>();
+    private static final Map<Long, Article> store = new HashMap<>();
     private static long sequence = 0L;
 
     @Override

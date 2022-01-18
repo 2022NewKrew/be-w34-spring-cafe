@@ -18,7 +18,7 @@ public class ResponseArticleDto {
     private long views;
     private Date createdAt;
 
-    public String getCreatedAt(){
+    public String getCreatedAt() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(createdAt);
     }

@@ -20,11 +20,17 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @PostMapping("/posts")
-    public String addArticle(@ModelAttribute RequestArticleDto articleDto, @LoginUser SessionUser user) {
-        log.info("POST /posts {}", articleDto);
+    @GetMapping("/posts/form")
+    public String showCreateArticlePage(@LoginUser SessionUser user) {
+        log.info("GET /posts/form");
+        return "post/form";
+    }
 
-        articleService.addPost(articleDto);
+    @PostMapping("/posts/form")
+    public String addArticle(@ModelAttribute RequestArticleDto articleDto, @LoginUser SessionUser user) {
+        log.info("POST /posts/form {}", articleDto);
+
+        articleService.addPost(user.getId(), articleDto);
         return "redirect:/";
     }
 

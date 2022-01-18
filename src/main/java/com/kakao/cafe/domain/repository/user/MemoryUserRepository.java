@@ -4,9 +4,9 @@ import com.kakao.cafe.domain.entity.User;
 
 import java.util.*;
 
-public class MemoryUserRepository implements UserRepository{
+public class MemoryUserRepository implements UserRepository {
 
-    private static Map<Long, User> store = new HashMap<>();
+    private static final Map<Long, User> store = new HashMap<>();
     private static long sequence = 0L;
 
     @Override
@@ -40,7 +40,7 @@ public class MemoryUserRepository implements UserRepository{
 //    }
 
     @Override
-    public long countRecords(){
+    public long countRecords() {
         return store.size();
     }
 }

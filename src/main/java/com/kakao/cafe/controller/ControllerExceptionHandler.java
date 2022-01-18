@@ -1,11 +1,10 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.exception.ArticleNotFoundException;
+import com.kakao.cafe.exception.NoAuthorizationException;
 import com.kakao.cafe.exception.NoLoginException;
 import com.kakao.cafe.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +15,12 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(NoLoginException.class)
     public String noLoginException(Exception e, Model model) {
+        model.addAttribute("errorMessage", e.getMessage());
+        return "error";
+    }
+
+    @ExceptionHandler(NoAuthorizationException.class)
+    public String noAuthorizationException(Exception e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
         return "error";
     }

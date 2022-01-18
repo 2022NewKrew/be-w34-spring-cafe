@@ -1,12 +1,9 @@
 package com.kakao.cafe.domain.entity;
 
 import lombok.Getter;
-
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.text.SimpleDateFormat;
 
 import java.util.Date;
 

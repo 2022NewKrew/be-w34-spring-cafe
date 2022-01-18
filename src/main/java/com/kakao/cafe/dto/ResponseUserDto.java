@@ -17,7 +17,7 @@ public class ResponseUserDto {
     private String email;
     private Date joinedAt;
 
-    public String getJoinedAt(){
+    public String getJoinedAt() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(joinedAt);
     }
