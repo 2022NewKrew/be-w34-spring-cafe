@@ -62,4 +62,15 @@ public class ArticleManager implements ArticleService {
                 new Article("dummyid", articleDto.getTitle(), articleDto.getBody())
         );
     }
+
+    @Override
+    public boolean delete(@NonNull final long idx) {
+        try {
+            getDto(idx);
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+
+        return articleRepository.delete(idx);
+    }
 }

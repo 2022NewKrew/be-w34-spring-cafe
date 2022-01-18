@@ -9,10 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.NoSuchElementException;
@@ -133,6 +130,35 @@ public class ArticleController {
         }
 
         return "redirect:/editArticleFailed";
+    }
+
+    @DeleteMapping("/articles/{idx}")
+    public String deleteArticle(
+            final HttpServletRequest request,
+            @PathVariable("idx") final long idx
+    )
+    {
+        if (checkNotLogin(request)) {
+            return getRedirectLoginWithMsg(request);
+        }
+
+        String articleOwnerId;
+        try {
+            articleOwnerId = articleService.getDto(idx)
+                    .getUserId();
+        } catch (NoSuchElementException e) {
+            return "error/404";
+        }
+
+        if (checkNotOwner(request, articleOwnerId)) {
+            return "redirect:/editArticleFailedNoPerm";
+        }
+
+        if (articleService.delete(idx)) {
+            return "redirect:/";
+        }
+
+        return "error/500";
     }
 
     private boolean checkNotLogin(final HttpServletRequest request) {

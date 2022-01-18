@@ -13,5 +13,6 @@ CREATE TABLE IF NOT EXISTS article (
     body VARCHAR(4095) NOT NULL,
     created_at BIGINT NOT NULL,
     modified_at BIGINT NOT NULL,
+    deleted BOOL DEFAULT false,
     FOREIGN KEY(user_id) REFERENCES userlist(id)
 );

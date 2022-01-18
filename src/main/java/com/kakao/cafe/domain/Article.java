@@ -18,6 +18,7 @@ public class Article {
     private final String body;
     private final long createdAt;
     private final long modifiedAt;
+    private final boolean deleted;
 
     public Article(
             @NonNull final String userId,
@@ -32,6 +33,7 @@ public class Article {
         this.body = body.trim();
         this.createdAt = Instant.now().getEpochSecond();
         this.modifiedAt = 0L;
+        this.deleted = false;
     }
 
     private void validate(
@@ -67,6 +69,10 @@ public class Article {
 
     public long getModifiedAt() {
         return modifiedAt;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 
     @Override

@@ -11,4 +11,5 @@ public interface ArticleService {
     List<ArticleDto> getDtoList();
     ArticleDto getDto(final long idx) throws NoSuchElementException;
     boolean update(@NonNull final ArticleDto articleDto);
+    boolean delete(@NonNull final long idx);
 }

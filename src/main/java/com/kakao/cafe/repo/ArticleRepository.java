@@ -14,4 +14,6 @@ public interface ArticleRepository {
     List<ArticleDto> getDtoList();
 
     boolean update(final long idx, @NonNull final Article article);
+
+    boolean delete(final long idx);
 }
