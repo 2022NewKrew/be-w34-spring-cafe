@@ -77,7 +77,11 @@ public class UserController {
     @PostMapping("/login")
     public String login(LoginDto loginDto, HttpSession session) throws PasswordMismatchException, NoSuchUserException {
         UserInfoDto userInfoDto = this.userService.login(loginDto);
+        log.info("{}", userInfoDto.getUserId());
+        log.info("{}", userInfoDto.getName());
+        log.info("{}", userInfoDto.getEmail());
         session.setAttribute("sessionedUser", userInfoDto);
+        log.info("{}", session.getAttributeNames());
         return "redirect:/users";
     }
 }
