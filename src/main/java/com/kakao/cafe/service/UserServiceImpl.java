@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
                 .email(userJoinDto.getEmail())
                 .password(userJoinDto.getPassword())
                 .nickName(userJoinDto.getNickName())
-                .createdAt(OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.of(OffsetId.KR_ID)))
+                .createdAt(OffsetDateTime.now(ZoneOffset.of(OffsetId.KR_ID)))
                 .build();
     }
 

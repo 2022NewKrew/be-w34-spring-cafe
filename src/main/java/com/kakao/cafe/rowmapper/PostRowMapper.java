@@ -8,7 +8,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class PostRowMapper {
@@ -27,8 +29,9 @@ public class PostRowMapper {
 
     public RowMapper<PostViewDto> getPostViewDtoRowMapper() {
         return (resultSet, rowNum) -> {
-            LocalDateTime createdAt = resultSet.getTimestamp("created_at").toLocalDateTime();
-            String createdDateTime = String.format("%d-%d-%d %d:%d:%d", createdAt.getYear(), createdAt.getMonth().getValue(), createdAt.getDayOfMonth(), createdAt.getHour(), createdAt.getMinute(), createdAt.getSecond());
+            LocalDateTime createdAtLocal = resultSet.getTimestamp("created_at").toLocalDateTime();
+            OffsetDateTime createdAt = OffsetDateTime.of(createdAtLocal, ZoneOffset.of(OffsetId.KR_ID));
+            String createdDateTime = createdAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             return PostViewDto.builder()
                     .id(resultSet.getLong("id"))
                     .title(resultSet.getString("title"))
@@ -42,8 +45,9 @@ public class PostRowMapper {
 
     public RowMapper<SimplePostInfo> getSimplePostInfoRowMapper() {
         return (resultSet, rowNum) -> {
-            LocalDateTime createdAt = resultSet.getTimestamp("created_at").toLocalDateTime();
-            String createdDate = String.format("%d-%d-%d", createdAt.getYear(), createdAt.getMonth().getValue(), createdAt.getDayOfMonth());
+            LocalDateTime createdAtLocal = resultSet.getTimestamp("created_at").toLocalDateTime();
+            OffsetDateTime createdAt = OffsetDateTime.of(createdAtLocal, ZoneOffset.of(OffsetId.KR_ID));
+            String createdDate = createdAt.format(DateTimeFormatter.ISO_LOCAL_DATE);
             return SimplePostInfo.builder()
                     .id(resultSet.getLong("id"))
                     .title(resultSet.getString("title"))

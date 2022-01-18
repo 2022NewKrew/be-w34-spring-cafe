@@ -54,7 +54,7 @@ public class PostServiceImpl implements PostService {
                 .title(addPostDto.getTitle())
                 .contents(addPostDto.getContents())
                 .userId(writerId)
-                .createdAt(OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.of(OffsetId.KR_ID)))
+                .createdAt(OffsetDateTime.now(ZoneOffset.of(OffsetId.KR_ID)))
                 .build();
     }
 
