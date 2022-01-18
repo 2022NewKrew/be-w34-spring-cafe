@@ -3,7 +3,6 @@ package com.kakao.cafe.article.repository;
 import com.kakao.cafe.article.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -20,11 +19,10 @@ public class ArticleJdbcRepository implements ArticleRepository{
 
     @Override
     public void save(Article article){
-        String sql = "INSERT INTO ARTICLE VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ARTICLE (author, title, contents, uploadTime) VALUES ( ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
-                 article.getId(), article.getAuthor()
-                ,article.getTitle(),article.getContents(),
-                article.getUploadTime());
+                article.getAuthor(),article.getTitle(),
+                article.getContents(), article.getUploadTime());
     }
 
     @Override
@@ -41,12 +39,8 @@ public class ArticleJdbcRepository implements ArticleRepository{
 
     @Override
     public Optional<Article> findOneById(Long id){
-        try{
-            String sql = "SELECT * FROM ARTICLE WHERE id=?";
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, articleRowMapper(), id));
-        }catch (DataAccessException e){
-            return Optional.empty();
-        }
+        String sql = "SELECT * FROM ARTICLE WHERE id=?";
+        return jdbcTemplate.query(sql, articleRowMapper(), id).stream().findAny();
     }
 
     public RowMapper<Article> articleRowMapper() {
