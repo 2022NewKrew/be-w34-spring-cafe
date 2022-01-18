@@ -12,12 +12,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class UserH2DAO implements UserDAOInterface {
+public class UserH2Dao implements UserDAOInterface {
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper userMapper = new UserMapper();
 
     @Autowired
-    public UserH2DAO(JdbcTemplate jdbcTemplate) {
+    public UserH2Dao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

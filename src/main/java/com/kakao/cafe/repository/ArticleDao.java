@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 //@Repository
-public class ArticleDAO implements ArticleDAOInterface {
+public class ArticleDao implements ArticleDAOInterface {
     private final JakeDB jakeDB;
 
     @Autowired
-    public ArticleDAO(JakeDB jakeDB) {
+    public ArticleDao(JakeDB jakeDB) {
         this.jakeDB = jakeDB;
     }
 

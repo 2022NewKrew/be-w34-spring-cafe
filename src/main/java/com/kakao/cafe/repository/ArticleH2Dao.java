@@ -13,12 +13,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Repository
-public class ArticleH2DAO implements ArticleDAOInterface {
+public class ArticleH2Dao implements ArticleDAOInterface {
     private final JdbcTemplate jdbcTemplate;
     private final ArticleMapper articleMapper = new ArticleMapper();
 
     @Autowired
-    public ArticleH2DAO(JdbcTemplate jdbcTemplate) {
+    public ArticleH2Dao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
