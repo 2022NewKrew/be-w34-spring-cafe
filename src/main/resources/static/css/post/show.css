@@ -26,6 +26,19 @@ li {
     margin: 3px;
 }
 
+.post-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.writer-menu {
+    display: flex;
+}
+
+.post-delete-btn {
+    margin-left: 20px;
+}
+
 .black-component {
     display: flex;
     flex-direction: column;

@@ -78,7 +78,6 @@ public class PostsRepository {
             connection = DriverManager.getConnection(DB_URL);
             Statement statement = connection.createStatement();
             final String sql = "SELECT * FROM post WHERE id = " + id.toString();
-            System.out.println(sql);
             final PreparedStatement ps = connection.prepareStatement(sql);
             final ResultSet result =  ps.executeQuery();
             result.next();
@@ -93,6 +92,23 @@ public class PostsRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void update(Long id, PostEntity postEntity) {
+        try {
+            connection = DriverManager.getConnection(DB_URL);
+            Statement statement = connection.createStatement();
+            final String sql = "UPDATE post SET title=?, content=? WHERE id=?";
+            final PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setString(1, postEntity.getTitle());
+            ps.setString(2, postEntity.getContent());
+            ps.setLong(3, id);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

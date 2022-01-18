@@ -61,19 +61,4 @@ public class UsersController {
         }
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "user/login";
-    }
-
-    @GetMapping("/login-success")
-    public String login_success() {
-        return "user/success";
-    }
-
-    @GetMapping("/signin")
-    public String signin() {
-        return "user/form";
-    }
-
 }
