@@ -44,7 +44,7 @@ public class UserController { Logger logger = LoggerFactory.getLogger(UserContro
         return "redirect:/users";
     }
 
-    private List<User> selectAllUsers() {
+    private static List<User> selectAllUsers(DataSource dataSource) {
         List<User> users = new ArrayList<>();
         try(Connection conn = dataSource.getConnection();
             Statement stmt = conn.createStatement()) {
@@ -62,7 +62,7 @@ public class UserController { Logger logger = LoggerFactory.getLogger(UserContro
     public String getUsers(Model model) {
         logger.info("[getUsers]");
         List<Map<String, String>> userList = new ArrayList<>();
-        List<User> users = selectAllUsers();
+        List<User> users = selectAllUsers(dataSource);
         for(int i = 0; i < users.size(); i++) {
             userList.add(Map.of("index", Integer.toString(i+1),
                     "userId", users.get(i).getUserId(),
@@ -133,21 +133,14 @@ public class UserController { Logger logger = LoggerFactory.getLogger(UserContro
     @PostMapping("/user/{pathUserId}/update")
     public String updateUserInfo(String userId, String password, String name, String email, HttpSession session) {
         logger.info("POST /user/{}/update UserId = {}, password = {}, name = {}, email = {}", userId, userId, password, name, email);
-        Object value = session.getAttribute("sessionedUser");
-        if (value == null) {
-            logger.info("Session is null");
-            session.setAttribute("errormsg", "세션이 만료되었습니다.");
-            return "redirect:/user/error";
+        List<User> users = List.of(new User(userId, password, name, email));
+        Optional<String> t = SessionController.checkSession(session, users);
+        if(t.isPresent()) {
+            return t.get();
         }
-        User user = (User)value;
-        if(user.getUserId().equals(userId) && user.getPassword().equals(password)) {
-            logger.info("Update name and email: name = {}, email = {}", name, email);
-            updateUserById(userId, password, name, email);
-            return "redirect:/users";
-        }
-        logger.info("Wrong userId or password");
-        session.setAttribute("errormsg", "사용자 아이디 혹은 비밀번호가 일치하지 않습니다.");
-        return "redirect:/user/error";
+        logger.info("Update name and email: name = {}, email = {}", name, email);
+        updateUserById(userId, password, name, email);
+        return "redirect:/users";
     }
 
     @PostMapping("/user/login")
