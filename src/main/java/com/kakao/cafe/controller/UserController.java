@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.user.UserDTO;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.dto.user.UserCreationDTO;
+import com.kakao.cafe.util.SessionIdRequired;
 import com.kakao.cafe.util.Url;
 import com.kakao.cafe.util.View;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Slf4j
@@ -28,7 +30,9 @@ public class UserController {
 
     @GetMapping("/users")
     public String getUserList(Model model) {
-        model.addAttribute("userList", userService.findAllUsers());
+        var userList = userService.findAllUsers();
+        model.addAttribute("userListSize", userList.size());
+        model.addAttribute("userList", userList);
         return View.USER_LIST;
     }
 
@@ -49,12 +53,13 @@ public class UserController {
         return "redirect:" + Url.USERS;
     }
 
+    @SessionIdRequired
     @GetMapping("/users/{id}")
     public String getUserProfile(@PathVariable("id") Long id,
                                  Model model,
                                  RedirectAttributes attr) {
         try {
-            model.addAttribute("user", getUser(id));
+            model.addAttribute("user", getUserById(id));
         } catch (IllegalArgumentException e) {
             handleException(e, attr);
             return "redirect:" + Url.USERS;
@@ -63,22 +68,8 @@ public class UserController {
         return View.USER_PROFILE;
     }
 
-
-    @GetMapping("/users/{id}/form")
-    public String getProfileUpdateForm(@PathVariable("id") Long id,
-                                       Model model,
-                                       RedirectAttributes attr) {
-        try {
-            model.addAttribute("user", getUser(id));
-        } catch (IllegalArgumentException e) {
-            handleException(e, attr);
-            return "redirect:" + Url.USERS;
-        }
-
-        return View.USER_UPDATE_FORM;
-    }
-
-    @PostMapping("/users/{id}/update")
+    @SessionIdRequired
+    @PostMapping("/users/{id}")
     public String updateUserProfile(@PathVariable("id") Long id,
                                     @Valid UserCreationDTO dto,
                                     Errors errors,
@@ -88,25 +79,53 @@ public class UserController {
             userService.update(id, dto);
         } catch (Exception e) {
             handleException(e, attr);
-            return "redirect:/users/" + id + "/form";
+            return "redirect:" + Url.USER_FORM;
         }
 
         return "redirect:" + Url.USERS;
     }
 
-    @PostMapping("/user/login")
-    public String login() {
-        //미구현 상태
+    @SessionIdRequired
+    @GetMapping("/users/form")
+    public String getProfileUpdateForm(Model model,
+                                       HttpSession session,
+                                       RedirectAttributes attr) {
+        long currentUserId = (long) session.getAttribute("sessionedUserId");
+        model.addAttribute("user", userService.findById(currentUserId));
+        return View.USER_UPDATE_FORM;
+    }
+
+    @GetMapping("/users/login")
+    public String getLoginPage() {
+        return View.USER_LOGIN;
+    }
+
+    @PostMapping("/users/login")
+    public String login(String email,
+                        String password,
+                        HttpSession session,
+                        RedirectAttributes attr) {
+        try {
+            var user = userService.findByEmail(email);
+            userService.validatePassword(password, user.getPassword());
+            session.setAttribute("sessionedUserId", user.getId());
+        } catch (IllegalArgumentException e) {
+            handleException(e, attr);
+            return "redirect:" + Url.USER_LOGIN;
+        }
+
         return "redirect:" + Url.INDEX;
     }
 
-    @DeleteMapping("/users/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        //미구현 상태
+    @SessionIdRequired
+    @GetMapping("/users/logout")
+    public String logout(HttpSession session,
+                         RedirectAttributes attr) {
+        session.invalidate();
         return "redirect:" + Url.USER_LOGIN;
     }
 
-    private UserDTO getUser(Long id) {
+    private UserDTO getUserById(Long id) {
         return userService.findById(id);
     }
 
