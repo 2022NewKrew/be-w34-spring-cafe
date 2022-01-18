@@ -111,4 +111,17 @@ public class PostsRepository {
         }
     }
 
+    public void deleteById(Long id) {
+        try {
+            connection = DriverManager.getConnection(DB_URL);
+            Statement statement = connection.createStatement();
+            final String sql = "DELETE FROM post WHERE id=?";
+            final PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setLong(1, id);
+
+            ps.execute();
+        } catch (SQLException e) {
+
+        }
+    }
 }

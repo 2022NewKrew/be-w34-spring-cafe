@@ -42,7 +42,7 @@
             <p class="title">회원 정보 수정</p>
         </header>
         {{#user}}
-        <form name="question" class="info-container" method="post" action="../api/users/{{id}}/update">
+        <form name="question" class="info-container" method="post" action="/api/users/{{id}}/update">
             <input type="hidden" name="_method" value="put" />
             <div class="form-group">
                 <label for="email">이메일</label>

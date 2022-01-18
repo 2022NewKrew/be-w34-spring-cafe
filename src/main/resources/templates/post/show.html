@@ -9,8 +9,13 @@
                   <p class="post-title">{{title}}</p>
                     {{#isWriter}}
                     <div class="writer-menu">
-                        <a href="/post/{{id}}/form" class="post-update-btn">수정</a>
-                        <p class="post-delete-btn">삭제</p>
+                        <form class="post-update-btn" method="get" action="/posts/{{id}}/form">
+                            <input class="post-update-btn" type="submit" value="수정" readonly />
+                        </form>
+                        <form class="post-delete-btn" method="post" action="/posts/{{id}}">
+                            <input type="hidden" name="_method" value="delete" />
+                            <input class="post-delete-btn" type="submit" value="삭제" readonly />
+                        </form>
                     </div>
                     {{/isWriter}}
                 </header>

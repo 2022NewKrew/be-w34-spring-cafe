@@ -35,8 +35,18 @@ li {
     display: flex;
 }
 
+.post-update-btn {
+    background-color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
 .post-delete-btn {
-    margin-left: 20px;
+    background-color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 .black-component {

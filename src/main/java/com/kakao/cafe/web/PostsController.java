@@ -7,10 +7,7 @@ import com.kakao.cafe.web.dto.UserResponseDto;
 import org.h2.engine.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -70,12 +67,19 @@ public class PostsController {
         return "redirect:/login";
     }
 
-    @GetMapping("/post/{index}/form")
-    public String post_update_form(@PathVariable("index") Long index, Model model) {
+    @GetMapping("/posts/{index}/form")
+    public String postUpdateForm(@PathVariable("index") Long index, Model model) {
         PostResponseDto postInfo = postsService.findById(index);
         model.addAttribute("post", postInfo);
 
         return "post/updateForm";
+    }
+
+    @DeleteMapping("/posts/{index}")
+    public String deletePost(@PathVariable("index") Long id){
+        postsService.deleteById(id);
+
+        return "redirect:/";
     }
 
 }
