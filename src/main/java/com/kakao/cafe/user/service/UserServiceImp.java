@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class UserServiceImp implements UserService{
-    static List<String> userIds = new ArrayList<>();
-    static HashMap<String, User> userMap = new HashMap<>();
+    private List<String> userIds = new ArrayList<>();
+    private HashMap<String, User> userMap = new HashMap<>();
 
     @Override
     public User createUser(String id, String password, String name, String email, String age) {
