@@ -28,7 +28,7 @@ public class UserService {
 
     public List<UserDto> getUserList() {
         return userDao.findAllUser().stream()
-                .map(this::voToDtoMapper)
+                .map(UserService::voToDtoMapper)
                 .collect(Collectors.toList());
     }
 
@@ -51,12 +51,12 @@ public class UserService {
         return voToDtoMapper(userVo);
     }
 
-    private UserVo dtoToVoMapper(UserDto userDto) {
-        return new UserVo(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
+    public static UserVo dtoToVoMapper(UserDto userDto) {
+        return new UserVo(userDto.getId(), userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
     }
 
-    private UserDto voToDtoMapper(UserVo userVo) {
-        UserDto userDto =  new UserDto(userVo.getUserId(), userVo.getPassword(), userVo.getName(), userVo.getEmail());
+    public static UserDto voToDtoMapper(UserVo userVo) {
+        UserDto userDto = new UserDto(userVo.getUserId(), userVo.getPassword(), userVo.getName(), userVo.getEmail());
         userDto.setId(userVo.getId());
         return userDto;
     }
