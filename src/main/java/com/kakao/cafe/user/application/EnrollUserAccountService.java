@@ -10,8 +10,10 @@ import com.kakao.cafe.user.exception.UserAccountErrorCode;
 import com.kakao.cafe.user.exception.UserAccountException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class EnrollUserAccountService implements EnrollUserAccountUseCase {
 

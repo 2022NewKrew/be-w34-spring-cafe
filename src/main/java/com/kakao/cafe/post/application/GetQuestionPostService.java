@@ -11,6 +11,7 @@ import com.kakao.cafe.post.exception.QuestionPostException;
 import com.kakao.cafe.util.DateTimeFormatUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 import static java.time.format.DateTimeFormatter.ofPattern;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class GetQuestionPostService implements GetQuestionPostUseCase {
 

@@ -5,8 +5,10 @@ import com.kakao.cafe.post.application.port.in.DeleteQuestionPostUseCase;
 import com.kakao.cafe.post.application.port.out.DeleteQuestionPostPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class DeleteQuestionPostService implements DeleteQuestionPostUseCase {
 
