@@ -1,6 +1,8 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.controller.aop.AuthInfoCheck;
 import com.kakao.cafe.controller.session.AuthInfo;
+import com.kakao.cafe.controller.session.HttpSessionUtil;
 import com.kakao.cafe.controller.viewdto.request.UserCreateRequest;
 import com.kakao.cafe.controller.viewdto.request.UserLoginRequest;
 import com.kakao.cafe.controller.viewdto.request.UserUpdateRequest;
@@ -23,7 +25,6 @@ import javax.servlet.http.HttpSession;
 public class UserController {
 
     private final UserService userService;
-    private final Long fakeSession = 0L;
 
     @GetMapping("")
     public String list(Model model) {
@@ -69,13 +70,10 @@ public class UserController {
     }
 
     @GetMapping("/logout")
+    @AuthInfoCheck
     public String tryLogout(Model model, HttpSession session) {
         log.info("GET /user/logout");
-        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-        if (authInfo!= null) {
-            log.info("Logout user : {}", authInfo.getId());
-            session.invalidate();
-        }
+        session.invalidate();
         return "redirect:/";
     }
 
@@ -94,28 +92,23 @@ public class UserController {
     }
 
     @GetMapping("/update")
+    @AuthInfoCheck
     public String userUpdate(Model model, HttpSession session) {
         log.info("GET /user/update");
-        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-        if (authInfo == null) {
-            return "redirect:/user/login";
-        }
+        AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
         UserProfileServiceResponse res = userService.getUserProfile(authInfo.getStringId());
         model.addAllAttributes(new UserProfileResponse(res.getStringId(), res.getName(), res.getEmail()));
         return "user/update";
     }
 
     @GetMapping("/update/{stringId}")
+    @AuthInfoCheck
     public String userUpdateById(@PathVariable String stringId, Model model, HttpSession session) {
         log.info("GET /user/update/{}", stringId);
-        AuthInfo authInfo = (AuthInfo) session.getAttribute("authInfo");
-        if (authInfo == null) {
-            throw new IllegalArgumentException("로그인 하시기 바랍니다.");
-        }
+        AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
         if (!stringId.equals(authInfo.getStringId())) {
             throw new IllegalArgumentException("자신의 회원정보만 수정 가능합니다.");
         }
-
         UserProfileServiceResponse res = userService.getUserProfile(authInfo.getStringId());
         model.addAllAttributes(new UserProfileResponse(res.getStringId(), res.getName(), res.getEmail()));
         return "user/update";
