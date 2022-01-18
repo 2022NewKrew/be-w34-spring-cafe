@@ -28,6 +28,19 @@
 ## 로그인 관련을 공통관심사로 처래히보자!
 - https://velog.io/@sungjin0757/SPRING-MVC-Filter-Interceptor-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B4%80%EB%A0%A8-%EA%B6%8C%ED%95%9C-%EC%B2%98%EB%A6%AC
 
+## Docker 연동
+- https://perfectacle.github.io/2019/04/16/spring-boot-docker-image-optimization/
+
+### open jdk docekr
+```
+docker build -t redbin/kakao-cafe . 
+docker run --rm -d -p 8080:8080 --name demo redbin/kakao-cafe
+```
+### mysql build
+```
+docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=1234 --name kakao-db -v /Users/kakao/Desktop/db:/var/lib/mysql mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+docker exec -it kakao-db bash
+```
 ## 그 밖의 코드 스타일에 관한 고찰들..
 - https://zdnet.co.kr/view/?no=20150723103651
   - 80자의 굴래?
