@@ -33,17 +33,33 @@ public class ArticleManager implements ArticleService {
     }
 
     @Override
-    public List<ArticleDto> getList() {
+    public List<ArticleDto> getDtoList() {
         return articleRepository.getDtoList();
     }
 
     @Override
-    public ArticleDto getArticle(final long idx) throws NoSuchElementException {
+    public ArticleDto getDto(final long idx) throws NoSuchElementException {
         final Optional<ArticleDto> articleDto = Optional.ofNullable(articleRepository.getDto(idx));
         if (articleDto.isEmpty()) {
             throw new NoSuchElementException("Not found article - " + idx);
         }
 
         return articleDto.get();
+    }
+
+    @Override
+    public boolean update(@NonNull final ArticleDto articleDto) {
+        final long idx = articleDto.getIdx();
+
+        try {
+            getDto(idx);
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+
+        return articleRepository.update(
+                idx,
+                new Article("dummyid", articleDto.getTitle(), articleDto.getBody())
+        );
     }
 }

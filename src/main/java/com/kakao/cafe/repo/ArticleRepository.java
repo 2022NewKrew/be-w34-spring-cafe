@@ -12,4 +12,6 @@ public interface ArticleRepository {
     ArticleDto getDto(final long idx);
 
     List<ArticleDto> getDtoList();
+
+    boolean update(final long idx, @NonNull final Article article);
 }

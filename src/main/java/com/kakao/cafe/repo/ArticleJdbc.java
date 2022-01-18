@@ -90,4 +90,21 @@ public class ArticleJdbc implements ArticleRepository {
                 )
         );
     }
+
+    @Override
+    public boolean update(final long idx, @NonNull final Article article) {
+        final int result = jdbcTemplate.update(con -> {
+            final PreparedStatement pstmt = con.prepareStatement(
+                    "UPDATE article SET title = ?, body = ? " +
+                            "WHERE idx = ?"
+            );
+
+            pstmt.setString(1, article.getTitle());
+            pstmt.setString(2, article.getBody());
+            pstmt.setLong(3, idx);
+            return pstmt;
+        });
+
+        return (result > 0);
+    }
 }
