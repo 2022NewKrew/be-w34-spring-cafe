@@ -13,12 +13,24 @@ public class ArticleMemoryRepository implements ArticleRepository {
         articles = new ArrayList<>();
     }
 
-    public void addArticle(ArticleCreateDTO articleCreateDTO){
-        Article article = new Article(articleCreateDTO, Long.valueOf(articles.size() + 1));
-        articles.add(article);
+    public void addArticle(Article article){
+//        Article article = new Article(articleCreateDTO, Long.valueOf(articles.size() + 1));
+//        articles.add(article);
     }
 
-    public List<Article> getArticles(){
+    @Override
+    public void updateArticle(Long sequence, String title, String contents) {
+
+    }
+
+
+    @Override
+    public void deleteArticle(Article article) {
+
+    }
+
+
+    public List<Article> getArticlesNotDeleted(){
         return articles;
     }
 

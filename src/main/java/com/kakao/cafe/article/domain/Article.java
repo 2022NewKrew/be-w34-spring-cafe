@@ -2,30 +2,38 @@ package com.kakao.cafe.article.domain;
 
 import com.kakao.cafe.article.dto.ArticleCreateDTO;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Article {
+    private String userId;
     private String name; //User의 name과 동일
     private String title;
     private String contents;
-    private Date date;
+    private Timestamp createdAt;
     private Long sequence;
 
-    public Article(ArticleCreateDTO articleCreateDTO, Long sequence) {
+    public Article(ArticleCreateDTO articleCreateDTO) {
+        this.userId = articleCreateDTO.getUserId();
         this.name = articleCreateDTO.getName();
         this.title = articleCreateDTO.getTitle();
         this.contents = articleCreateDTO.getContents();
-        this.date = new Date();
-        this.sequence = sequence;
+        this.sequence = Long.valueOf(0);
     }
 
-    public Article(String name, String title, String contents, java.sql.Date date, long sequence) {
+    //for row mapper
+    public Article(String userId, String name, String title, String contents, Timestamp createdAt, long sequence) {
+        this.userId = userId;
         this.name = name;
         this.title = title;
         this.contents = contents;
-        this.date = date;
+        this.createdAt = createdAt;
         this.sequence = sequence;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getName() {
@@ -40,8 +48,8 @@ public class Article {
         return contents;
     }
 
-    public Date getDate(){
-        return date;
+    public Timestamp getCreatedAt(){
+        return createdAt;
     }
 
     public Long getSequence() {

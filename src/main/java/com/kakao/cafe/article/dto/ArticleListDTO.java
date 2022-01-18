@@ -2,19 +2,26 @@ package com.kakao.cafe.article.dto;
 
 import com.kakao.cafe.article.domain.Article;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class ArticleListDTO {
+    private String userId;
     private String name; //User의 name과 동일
     private String title;
-    private Date date;
+    private Timestamp createdAt;
     private Long sequence;
 
     public ArticleListDTO(Article article) {
+        this.userId = article.getUserId();
         this.name = article.getName();
         this.title = article.getTitle();
-        this.date = article.getDate();
+        this.createdAt = article.getCreatedAt();
         this.sequence = article.getSequence();
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getName() {
@@ -25,8 +32,8 @@ public class ArticleListDTO {
         return title;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     public Long getSequence() {

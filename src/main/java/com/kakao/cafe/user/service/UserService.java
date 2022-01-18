@@ -3,10 +3,12 @@ package com.kakao.cafe.user.service;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserCreateDTO;
 import com.kakao.cafe.user.dto.UserListDTO;
+import com.kakao.cafe.user.dto.UserLoginDTO;
 import com.kakao.cafe.user.dto.UserProfileDTO;
 import com.kakao.cafe.user.repository.UserJdbcRepository;
 import com.kakao.cafe.user.repository.UserMemoryRepository;
 import com.kakao.cafe.user.repository.UserRepository;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,8 @@ public class UserService {
 
 
     public void userCreate(UserCreateDTO userCreateDTO){
-        userRepository.addUser(userCreateDTO);
+        User user = new User(userCreateDTO);
+        userRepository.addUser(user);
     }
 
     public void userUpdate(UserCreateDTO userCreateDTO){
@@ -40,7 +43,24 @@ public class UserService {
             return;
         }
 
-        userRepository.updateUser(userCreateDTO);
+        User updatedUser = new User(userCreateDTO);
+        userRepository.updateUser(updatedUser);
+    }
+
+    public Boolean isValidLogin(UserLoginDTO userLoginDTO){
+        User user = userRepository.getUserByCondition("userid", userLoginDTO.getUserId());
+
+        if(user == null){
+            LoggerFactory.getLogger(UserService.class).error("존재하는 사용자 아이디가 없습니다. (" + (userLoginDTO.getUserId()) + ")");
+            return false;
+        }
+
+        //비밀번호가 일치하지 않는경우
+        if(!user.getPassword().equals(userLoginDTO.getPassword())){
+            return false;
+        }
+
+        return true; //로그인 가능한경우 true
     }
 
     public List<User> getAllUser(){

@@ -1,15 +1,13 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.dto.ArticleCreateDTO;
+import com.kakao.cafe.article.domain.ArticleRowMapper;
+import com.kakao.cafe.article.dto.ArticleUpdateDTO;
 import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.dto.UserCreateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.rsocket.context.LocalRSocketServerPort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -23,31 +21,37 @@ public class ArticleJdbcRepository implements ArticleRepository{
     }
 
     @Override
-    public void addArticle(ArticleCreateDTO articleCreateDTO) {
-        String sql = "INSERT INTO articles(name,title,contents,date) VALUES (?,?,?,?)";
+    public void addArticle(Article article) {
+        String sql = "INSERT INTO articles(userId,name,title,contents,createdAt) VALUES (?,?,?,?,CURRENT_TIMESTAMP())";
         jdbcTemplate.update(sql,
-                articleCreateDTO.getName(),
-                articleCreateDTO.getTitle(),
-                articleCreateDTO.getContents(),
-                new Date()
+                article.getUserId(),
+                article.getName(),
+                article.getTitle(),
+                article.getContents()
         );
     }
 
     @Override
-    public List<Article> getArticles() {
-        String sql = "SELECT * FROM articles";
-        return jdbcTemplate.query(sql,
-                (rs, rn) ->
-                {Article article = new Article(rs.getString("name"), rs.getString("title"), rs.getString("contents"), rs.getDate("date"), rs.getLong("sequence"));
-                    return article;});
+    public void updateArticle(Long sequence, String title, String contents) {
+        String sql = String.format("UPDATE articles SET title='%s', contents='%s' WHERE sequence=%d", title, contents, sequence);
+        jdbcTemplate.update(sql);
+    }
+
+    @Override
+    public void deleteArticle(Article article) {
+        String sql = String.format("UPDATE articles SET isDeleted=true WHERE sequence=%d", article.getSequence());
+        jdbcTemplate.update(sql);
+    }
+
+    @Override
+    public List<Article> getArticlesNotDeleted() {
+        String sql = "SELECT * FROM articles WHERE isDeleted=false";
+        return jdbcTemplate.query(sql, new ArticleRowMapper());
     }
 
     @Override
     public Article getArticleByCondition(String key, String value) {
         String sql = String.format("SELECT * FROM articles WHERE %s = %s", key, value);
-        return jdbcTemplate.query(sql,
-                (rs, rn) ->
-                {Article article = new Article(rs.getString("name"), rs.getString("title"), rs.getString("contents"), rs.getDate("date"), rs.getLong("sequence"));
-                    return article;}).stream().findAny().orElse(null);
+        return (Article) jdbcTemplate.query(sql, new ArticleRowMapper()).stream().findAny().orElse(null);
     }
 }

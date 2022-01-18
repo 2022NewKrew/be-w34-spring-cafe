@@ -10,14 +10,15 @@ public class User {
     private Long sequence;
 
     //setter 대신 객체는 항상 생성자로만 생성하도록 구성.
-    public User(UserCreateDTO userCreateDTO, Long sequence) {
+    public User(UserCreateDTO userCreateDTO) {
         this.userId = userCreateDTO.getUserId();
         this.password = userCreateDTO.getPassword();
         this.name = userCreateDTO.getName();
         this.email = userCreateDTO.getEmail();
-        this.sequence = sequence;
+        this.sequence = Long.valueOf(0);
     }
 
+    //for RowMapper
     public User(String userid, String password, String name, String email, long sequence) {
         this.userId = userid;
         this.password = password;
