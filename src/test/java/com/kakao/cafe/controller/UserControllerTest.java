@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -63,8 +63,8 @@ class UserControllerTest {
         // Given
         User user = User.builder().uid("uid").password("pwd").name("name").email("email@test.com")
             .build();
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         AuthInfo authInfo = AuthInfo.of("uid");
@@ -89,8 +89,8 @@ class UserControllerTest {
         // Given
         User user = User.builder().uid("uid").password("pwd").name("name").email("email@test.com")
             .build();
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         AuthInfo authInfo = AuthInfo.of("uid");
@@ -122,8 +122,8 @@ class UserControllerTest {
         User user3 = User.builder().uid("uid3").password("pwd3").name("name3")
             .email("email3@test.com")
             .build();
-        when(userRepository.findAllUsers())
-            .thenReturn(List.of(user1, user2, user3));
+        given(userRepository.findAllUsers())
+            .willReturn(List.of(user1, user2, user3));
 
         // When
         ResultActions actions = mockMvc.perform(get("/users"));
@@ -152,8 +152,8 @@ class UserControllerTest {
         // Given
         User user = User.builder().uid("uid").password("pwd").name("name").email("email@test.com")
             .build();
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         ResultActions actions = mockMvc.perform(get("/users/uid"));

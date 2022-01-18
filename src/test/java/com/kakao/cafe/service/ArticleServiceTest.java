@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.dto.ArticleDTO.Create;
 import com.kakao.cafe.error.exception.ArticleNotFoundException;
@@ -43,8 +43,8 @@ class ArticleServiceTest {
             .email("email@test.com").createdAt(LocalDateTime.now()).build();
         Create createDTO = new Create("title", "body");
 
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
 
@@ -57,8 +57,8 @@ class ArticleServiceTest {
     void create2() {
         // Given
         AuthInfo authInfo = AuthInfo.of("uid");
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.empty());
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.empty());
 
         // When
         Create createDTO = new Create("title", "body");
@@ -76,8 +76,8 @@ class ArticleServiceTest {
         // Given
         Article article = Article.builder().id(1L).uid("uid").title("title").body("body")
             .createdAt(LocalDateTime.now()).build();
-        when(articleRepository.findArticleById(any()))
-            .thenReturn(Optional.of(article));
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.of(article));
 
         // When
 
@@ -89,8 +89,8 @@ class ArticleServiceTest {
     @DisplayName("Article Repository 존재하지 않는 ID Read 테스트")
     void readById2() {
         // Given
-        when(articleRepository.findArticleById(any()))
-            .thenReturn(Optional.empty());
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.empty());
 
         // When
         ArticleNotFoundException exception = assertThrows(ArticleNotFoundException.class,

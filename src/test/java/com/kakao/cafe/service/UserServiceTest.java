@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Update;
@@ -36,8 +36,8 @@ class UserServiceTest {
         // Given
         User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
             .email("email@test.com").createdAt(LocalDateTime.now()).build();
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         Create createDTO = new Create("uid", "pwd", "name", "email@test.com");
@@ -53,8 +53,8 @@ class UserServiceTest {
     @DisplayName("새로운 User 추가 시 정상 동작 테스트")
     void create2() {
         // Given
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.empty());
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.empty());
 
         // When
         Create createDTO = new Create("uid", "pwd", "name", "email@test.com");
@@ -69,8 +69,8 @@ class UserServiceTest {
         // Given
         User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
             .email("email@test.com").createdAt(LocalDateTime.now()).build();
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         AuthInfo authInfo = AuthInfo.of("uid");
@@ -85,8 +85,8 @@ class UserServiceTest {
     @DisplayName("Repository 에서 User 정보를 읽어오지 못한 경우 테스트")
     void readByUid() {
         // Given
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.empty());
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.empty());
 
         // When
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
@@ -103,8 +103,8 @@ class UserServiceTest {
         // Given
         User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
             .email("email@test.com").createdAt(LocalDateTime.now()).build();
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
 

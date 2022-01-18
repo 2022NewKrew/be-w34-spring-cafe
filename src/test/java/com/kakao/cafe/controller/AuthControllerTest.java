@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -39,8 +39,8 @@ class AuthControllerTest {
         // Given
         User user = User.builder().uid("uid").password("pwd").name("name").email("email@test.com")
             .build();
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();

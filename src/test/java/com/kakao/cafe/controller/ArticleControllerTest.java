@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -48,8 +48,8 @@ class ArticleControllerTest {
         // Given
         User user = User.builder().uid("uid").password("pwd").name("name").email("email@test.com")
             .build();
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         AuthInfo authInfo = AuthInfo.of("uid");
@@ -73,8 +73,8 @@ class ArticleControllerTest {
         // Given
         User user = User.builder().uid("uid").password("pwd").name("name").email("email@test.com")
             .build();
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
@@ -99,8 +99,8 @@ class ArticleControllerTest {
             .createdAt(LocalDateTime.now()).build();
         Article article3 = Article.builder().uid("uid").title("title3").body("body3")
             .createdAt(LocalDateTime.now()).build();
-        when(articleRepository.findAllArticles())
-            .thenReturn(List.of(article1, article2, article3));
+        given(articleRepository.findAllArticles())
+            .willReturn(List.of(article1, article2, article3));
 
         // When
         ResultActions actions = mockMvc.perform(get("/"));
@@ -123,8 +123,8 @@ class ArticleControllerTest {
         // Given
         Article article = Article.builder().uid("uid").title("title").body("body")
             .createdAt(LocalDateTime.now()).build();
-        when(articleRepository.findArticleById(any()))
-            .thenReturn(Optional.of(article));
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.of(article));
 
         // When
         ResultActions actions = mockMvc.perform(get("/articles/1"));
