@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.aop.AuthCheck;
 import com.kakao.cafe.domain.UserAccount;
 import com.kakao.cafe.domain.UserAccountDTO;
 import com.kakao.cafe.service.UserAccountService;
@@ -74,27 +75,15 @@ public class UserController {
         return "/user/profile";
     }
 
+    @AuthCheck
     @GetMapping("{userId}/form")
     public String updateForm(@PathVariable("userId") String userId, HttpSession session){
-        Object value = session.getAttribute("sessionedUser");
-
-        if(userAccountService.isVaildUserAccess(userId, value)){
-            return "/user/update_form";
-        }
-
-        logger.error("[UserController > updateForm] 현재 로그인 중인 사용자의 정보가 아닌 다른 사용자의 정보에 접근하려 합니다.");
-        return "redirect:/user";
+        return "/user/update_form";
     }
 
+    @AuthCheck
     @PutMapping("{userId}/form")
     public String updateForm(@PathVariable("userId") String userId, String curPassword, UserAccountDTO userAccountDTO, HttpSession session){
-        Object value = session.getAttribute("sessionedUser");
-
-        if(!userAccountService.isVaildUserAccess(userId, value)){
-            logger.error("[UserController > updateForm] 현재 로그인 중인 사용자의 정보가 아닌 다른 사용자의 정보에 접근하려 합니다.");
-            return "redirect:/user";
-        }
-
         try {
             Optional<UserAccount> userAccount = userAccountService.updateUserAccount(userAccountDTO, curPassword);
 
