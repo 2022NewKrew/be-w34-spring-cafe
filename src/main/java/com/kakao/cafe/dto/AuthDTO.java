@@ -2,13 +2,13 @@ package com.kakao.cafe.dto;
 
 import javax.validation.constraints.NotBlank;
 
-public class LoginDTO {
+public class AuthDTO {
     @NotBlank
     private final String userId;
     @NotBlank
     private final String password;
 
-    public LoginDTO(String userId, String password) {
+    public AuthDTO(String userId, String password) {
         this.userId = userId;
         this.password = password;
     }

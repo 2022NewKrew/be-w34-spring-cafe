@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.LoginDTO;
+import com.kakao.cafe.dto.AuthDTO;
 import com.kakao.cafe.dto.UserResponseDTO;
 import com.kakao.cafe.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +23,14 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public String login(@ModelAttribute @Validated LoginDTO loginDTO, BindingResult bindingResult, HttpSession session) {
-        logger.error("login {} {}", loginDTO.getUserId(), loginDTO.getPassword());
+    public String login(@ModelAttribute @Validated AuthDTO authDto, BindingResult bindingResult, HttpSession session) {
+        logger.error("login {} {}", authDto.getUserId(), authDto.getPassword());
         if (bindingResult.hasErrors()) {
             bindingResult.getFieldErrors()
                     .forEach(fieldError -> logger.error("Field : {}, Message : {}", fieldError.getField(), fieldError.getDefaultMessage()));
             return "redirect:/login-failed";
         }
-        UserResponseDTO userResponseDTO = authService.login(loginDTO);
+        UserResponseDTO userResponseDTO = authService.login(authDto);
         session.setAttribute(SESSION_USER, userResponseDTO.getUserId());
         return "redirect:/";
     }
