@@ -6,8 +6,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.Optional;
 
-public class JdbcUserRepository {
+public class JdbcUserRepository implements Repository<User, String>{
 
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper userMapper;
@@ -19,18 +20,22 @@ public class JdbcUserRepository {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
     public void createUser(User user) {
         String sqlQuery = "insert into MEMBER (userId, PASSWORD, EMAIL) values (?, ?, ?)";
         jdbcTemplate.update(sqlQuery, user.getUserId(), passwordEncoder.encode(user.getPassword()), user.getEmail());
     }
 
+    @Override
     public List<User> readUsers() {
         return jdbcTemplate.query("SELECT * FROM MEMBER", userMapper);
     }
 
-    public User readUser(String userId) {
+    @Override
+    public Optional<User> readUser(String userId) {
         String sqlQuery = "SELECT * FROM MEMBER WHERE userId = ?";
-        return jdbcTemplate.queryForObject(sqlQuery, userMapper, userId);
+        User user = jdbcTemplate.queryForObject(sqlQuery, userMapper, userId);
+        return Optional.ofNullable(user);
 //        return jdbcTemplate.query("sqlQuery", userMapper, userId);
 
     }

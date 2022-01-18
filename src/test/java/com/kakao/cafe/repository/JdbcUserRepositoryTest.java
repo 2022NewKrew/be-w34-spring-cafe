@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -84,8 +85,8 @@ class JdbcUserRepositoryTest {
         jdbcUserRepository.createUser(user2);
 
         // then
-        User answer = jdbcUserRepository.readUser(userId2);
-        Assertions.assertEquals("testUserId2", answer.getUserId());
-
+        Optional<User> answer = jdbcUserRepository.readUser(userId2);
+        Assertions.assertEquals("testUserId2",
+                answer.orElseThrow(() -> new RuntimeException("userId가 null입니다")).getUserId());
     }
 }

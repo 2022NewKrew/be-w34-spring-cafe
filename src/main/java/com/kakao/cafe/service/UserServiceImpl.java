@@ -6,6 +6,7 @@ import com.kakao.cafe.repository.JdbcUserRepository;
 import com.kakao.cafe.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
@@ -27,6 +28,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(String userId) {
-        return jdbcUserRepository.readUser(userId);
+        Optional<User> user = jdbcUserRepository.readUser(userId);
+        return user.orElseThrow(() -> new RuntimeException("user 조회 null 검증"));
+//        return jdbcUserRepository.readUser(userId);
     }
 }
