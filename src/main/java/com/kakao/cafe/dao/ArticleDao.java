@@ -1,6 +1,7 @@
 package com.kakao.cafe.dao;
 
 import com.kakao.cafe.model.vo.ArticleVo;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -22,8 +23,12 @@ public class ArticleDao {
     }
 
     public ArticleVo filterArticleByIndex(int index) {
-        String sql = "SELECT * FROM articles WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, articleRowMapper(), index);
+        try {
+            String sql = "SELECT * FROM articles WHERE id = ?";
+            return jdbcTemplate.queryForObject(sql, articleRowMapper(), index);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public void writeArticle(ArticleVo article) {
