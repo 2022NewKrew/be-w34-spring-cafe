@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.repository;
+package com.kakao.cafe.user.domain;
 
 import com.kakao.cafe.user.domain.User;
 import org.springframework.jdbc.core.RowMapper;

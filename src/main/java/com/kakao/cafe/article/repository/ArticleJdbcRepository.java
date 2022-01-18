@@ -1,15 +1,11 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.dto.ArticleCreateDTO;
-import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.dto.UserCreateDTO;
+import com.kakao.cafe.article.domain.ArticleRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.rsocket.context.LocalRSocketServerPort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository

@@ -1,11 +1,9 @@
 package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.dto.UserCreateDTO;
-import com.kakao.cafe.user.dto.UserUpdateDTO;
+import com.kakao.cafe.user.domain.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
