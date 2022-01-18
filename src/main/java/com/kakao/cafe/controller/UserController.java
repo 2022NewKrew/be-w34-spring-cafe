@@ -7,18 +7,17 @@ import com.kakao.cafe.controller.dto.request.UserUpdateRequestDto;
 import com.kakao.cafe.controller.dto.response.UserProfileResponseDto;
 import com.kakao.cafe.controller.dto.response.UserQueryResponseDto;
 import com.kakao.cafe.controller.dto.session.UserLoginSession;
+import com.kakao.cafe.controller.validator.OwnershipValidator;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.service.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,6 +31,7 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
+    private final OwnershipValidator ownershipValidator;
 
     @GetMapping()
     public String getAll(Model model) {
@@ -85,7 +85,7 @@ public class UserController {
     public String getUpdateForm(@PathVariable String userId, Model model,
                                 @SessionAttribute(name = Constants.loginUser) UserLoginSession userLoginSession) {
 
-        validateUserAuthority(userLoginSession.getUserId(), userId);
+        ownershipValidator.validate(userLoginSession.getUserId(), userId);
 
         User foundUser = userService.findUserByUserId(userId);
         model.addAttribute("userId", foundUser.getUserId());
@@ -100,16 +100,10 @@ public class UserController {
             throw new IllegalArgumentException();
         }
 
-        validateUserAuthority(userLoginSession.getUserId(), userId);
+        ownershipValidator.validate(userLoginSession.getUserId(), userId);
 
         userService.update(new UserUpdateDto(userId, userUpdateRequestDto));
         return "redirect:/users";
-    }
-
-    private void validateUserAuthority(String loginUserId, String ownerUserId) {
-        if (!loginUserId.equals(ownerUserId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다", new IllegalArgumentException());
-        }
     }
 }
 
