@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository;
 
+import com.kakao.cafe.constants.ArticleDBConstants;
 import com.kakao.cafe.domain.Article;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,11 +19,7 @@ import java.util.NoSuchElementException;
  */
 public class ArticleDao implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final String TABLE_NAME = "ARTICLE";
-    private final String COLUMN_ID = "id";
-    private final String COLUMN_WRITER = "writer";
-    private final String COLUMN_TITLE = "title";
-    private final String COLUMN_CONTENTS = "contents";
+
 
 
     public ArticleDao(JdbcTemplate jdbcTemplate) {
@@ -34,13 +31,13 @@ public class ArticleDao implements ArticleRepository {
         Map<String, Object> param = new HashMap<>();
 
         simpleJdbcInsert
-                .withTableName(TABLE_NAME)
-                .usingColumns(COLUMN_WRITER, COLUMN_TITLE, COLUMN_CONTENTS)
-                .usingGeneratedKeyColumns(COLUMN_ID);
+                .withTableName(ArticleDBConstants.TABLE_NAME)
+                .usingColumns(ArticleDBConstants.COLUMN_WRITER, ArticleDBConstants.COLUMN_TITLE, ArticleDBConstants.COLUMN_CONTENTS)
+                .usingGeneratedKeyColumns(ArticleDBConstants.COLUMN_ID);
 
-        param.put(COLUMN_WRITER, article.getWriter());
-        param.put(COLUMN_TITLE, article.getTitle());
-        param.put(COLUMN_CONTENTS, article.getContents());
+        param.put(ArticleDBConstants.COLUMN_WRITER, article.getWriter());
+        param.put(ArticleDBConstants.COLUMN_TITLE, article.getTitle());
+        param.put(ArticleDBConstants.COLUMN_CONTENTS, article.getContents());
 
         int key = simpleJdbcInsert.executeAndReturnKey(param).intValue();
 
@@ -49,18 +46,21 @@ public class ArticleDao implements ArticleRepository {
     }
 
     public List<Article> findAll() {
+        String sql = String.format("select * from %s", ArticleDBConstants.TABLE_NAME);
+
         return jdbcTemplate.query(
-                "select * from ARTICLE",
+                sql,
                 new ArticleMapper()
         );
     }
 
     public Article findById(int id) throws NoSuchElementException {
         Article article;
+        String sql = String.format("select * from %s where id = ?", ArticleDBConstants.TABLE_NAME);
 
         try {
             article = jdbcTemplate.queryForObject(
-                    "select * from ARTICLE where id = ?",
+                    sql,
                     new ArticleMapper(),
                     id
             );
@@ -71,15 +71,15 @@ public class ArticleDao implements ArticleRepository {
         return article;
     }
 
-    public class ArticleMapper implements RowMapper<Article> {
+    public static class ArticleMapper implements RowMapper<Article> {
         @Override
         public Article mapRow(ResultSet rs, int count) throws SQLException {
 
             return new Article(
-                    rs.getInt(COLUMN_ID),
-                    rs.getString(COLUMN_WRITER),
-                    rs.getString(COLUMN_TITLE),
-                    rs.getString(COLUMN_CONTENTS)
+                    rs.getInt(ArticleDBConstants.COLUMN_ID),
+                    rs.getString(ArticleDBConstants.COLUMN_WRITER),
+                    rs.getString(ArticleDBConstants.COLUMN_TITLE),
+                    rs.getString(ArticleDBConstants.COLUMN_CONTENTS)
             );
         };
     }

@@ -1,14 +1,18 @@
 package com.kakao.cafe.repository;
 
+import com.kakao.cafe.constants.ArticleDBConstants;
+import com.kakao.cafe.constants.UserDBConstants;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserProfileDto;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
@@ -16,36 +20,38 @@ import java.util.NoSuchElementException;
  */
 public class UserDao implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final String COLUMN_ID = "id";
-    private final String COLUMN_USERID = "userId";
-    private final String COLUMN_EMAIL = "email";
-    private final String COLUMN_NAME = "name";
-    private final String COLUMN_PASSWORD = "password";
 
     public UserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public void save(User user) throws SQLException {
-        String sql = "insert into MEMBER values(?,?,?,?)"; // sysdate
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        Map<String, Object> param = new HashMap<>();
 
-        int result = jdbcTemplate.update(sql,
-                user.getUserId(),
-                user.getEmail(),
-                user.getName(),
-                user.getPassword()
-        );
+        simpleJdbcInsert
+                .withTableName(UserDBConstants.TABLE_NAME)
+                .usingColumns(UserDBConstants.COLUMN_USERID, UserDBConstants.COLUMN_EMAIL, UserDBConstants.COLUMN_NAME, UserDBConstants.COLUMN_PASSWORD)
+                .usingGeneratedKeyColumns(UserDBConstants.COLUMN_ID);
 
-        if (result != 1)
-            throw new SQLException("User insertion fail.");
+        param.put(UserDBConstants.COLUMN_USERID, user.getUserId());
+        param.put(UserDBConstants.COLUMN_EMAIL, user.getEmail());
+        param.put(UserDBConstants.COLUMN_NAME, user.getName());
+        param.put(UserDBConstants.COLUMN_PASSWORD, user.getPassword());
+
+        int key = simpleJdbcInsert.executeAndReturnKey(param).intValue();
+
+        if (key < 1)
+            throw new SQLException("MEMBER insertion fail.");
     }
 
     public User findByUserId(String userId) throws NoSuchElementException {
         User user;
+        String sql = String.format("select * from %s where userId = ?", UserDBConstants.TABLE_NAME);
 
         try {
             user = jdbcTemplate.queryForObject(
-                    "select * from MEMBER where userId = ?",
+                    sql,
                     new UserMapper(),
                     userId
             );
@@ -58,10 +64,11 @@ public class UserDao implements UserRepository {
 
     public User findByName(String name) throws NoSuchElementException {
         User user;
+        String sql = String.format("select * from %s where name = ?", UserDBConstants.TABLE_NAME);
 
         try {
             user = jdbcTemplate.queryForObject(
-                    "select * from MEMBER where name = ?",
+                    sql,
                     new UserMapper(),
                     name
             );
@@ -73,15 +80,15 @@ public class UserDao implements UserRepository {
     }
 
     public List<User> findAll() {
-
+        String sql = String.format("select * from %s", UserDBConstants.TABLE_NAME);
         return jdbcTemplate.query(
-                "select * from MEMBER",
+                sql,
                 new UserMapper()
         );
     }
 
     public void update(User user) {
-        String sql = "update MEMBER set email = ?, name = ?  where userId = ?";
+        String sql = String.format("update %s set email = ?, name = ?  where userId = ?", UserDBConstants.TABLE_NAME);
 
         jdbcTemplate.update(sql,
                 user.getEmail(),
@@ -91,19 +98,24 @@ public class UserDao implements UserRepository {
     }
 
     public int count() {
-        return jdbcTemplate.queryForObject("select count(*) from MEMBER", int.class);
+        String sql = String.format("select count(*) from %s", UserDBConstants.TABLE_NAME);
+        try {
+            return jdbcTemplate.queryForObject(sql, int.class);
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
 
-    public class UserMapper implements RowMapper<User> {
+    public static class UserMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet rs, int count) throws SQLException {
 
             return new User(
-                    rs.getInt(COLUMN_ID),
-                    rs.getString(COLUMN_USERID),
-                    rs.getString(COLUMN_EMAIL),
-                    rs.getString(COLUMN_NAME),
-                    rs.getString(COLUMN_PASSWORD)
+                    rs.getInt(UserDBConstants.COLUMN_ID),
+                    rs.getString(UserDBConstants.COLUMN_USERID),
+                    rs.getString(UserDBConstants.COLUMN_EMAIL),
+                    rs.getString(UserDBConstants.COLUMN_NAME),
+                    rs.getString(UserDBConstants.COLUMN_PASSWORD)
             );
         };
     }
