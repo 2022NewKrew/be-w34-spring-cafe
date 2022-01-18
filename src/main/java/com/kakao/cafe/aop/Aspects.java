@@ -1,6 +1,5 @@
 package com.kakao.cafe.aop;
 
-import com.kakao.cafe.model.dto.ArticleDto;
 import com.kakao.cafe.model.service.BoardService;
 import com.kakao.cafe.util.annotation.LoginCheck;
 import com.kakao.cafe.util.annotation.MineCheck;

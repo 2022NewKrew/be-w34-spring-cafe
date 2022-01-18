@@ -2,7 +2,7 @@
 <div class="card" style="border: 0;">
     <article class="card-body mx-auto" style="max-width: 500px; min-width:300px;">
         <h2 class="card-title m-3 text-center">회원가입</h2>
-        <form method="post" action="/user/register">
+        <form action="/user/register" method="post">
             <table class="table align-middle">
                 <tr>
                     <th class="text-end">
@@ -10,10 +10,11 @@
                     </th>
                     <td>
                         {{#user}}
-                        <input type="text" name="userId" class="form-control" value="{{userId}}" placeholder="아이디" required>
+                        <input class="form-control" name="userId" placeholder="아이디" required type="text"
+                               value="{{userId}}">
                         {{/user}}
                         {{^user}}
-                        <input type="text" name="userId" class="form-control" placeholder="아이디" required>
+                        <input class="form-control" name="userId" placeholder="아이디" required type="text">
                         {{/user}}
                         {{#idErrorMessage}}
                         <div class="alert alert-light p-0 m-0" role="alert">{{this}}</div>
@@ -25,7 +26,7 @@
                         PW: &nbsp;
                     </th>
                     <td>
-                        <input type="password" name="password" class="form-control" placeholder="비밀번호" required>
+                        <input class="form-control" name="password" placeholder="비밀번호" required type="password">
                     </td>
                 </tr>
                 <tr>
@@ -34,10 +35,10 @@
                     </th>
                     <td>
                         {{#user}}
-                        <input type="text" name="name" class="form-control" value="{{name}}" placeholder="이름" required>
+                        <input class="form-control" name="name" placeholder="이름" required type="text" value="{{name}}">
                         {{/user}}
                         {{^user}}
-                        <input type="text" name="name" class="form-control" placeholder="이름" required>
+                        <input class="form-control" name="name" placeholder="이름" required type="text">
                         {{/user}}
                     </td>
                 </tr>
@@ -47,16 +48,17 @@
                     </th>
                     <td>
                         {{#user}}
-                        <input type="email" name="email" class="form-control" value="{{email}}" placeholder="이메일" required>
+                        <input class="form-control" name="email" placeholder="이메일" required type="email"
+                               value="{{email}}">
                         {{/user}}
                         {{^user}}
-                        <input type="email" name="email" class="form-control" placeholder="이메일" required>
+                        <input class="form-control" name="email" placeholder="이메일" required type="email">
                         {{/user}}
                     </td>
                 </tr>
             </table>
             <div class="row mt-3">
-                <button type="submit" class="btn btn-dark">회원가입</button>
+                <button class="btn btn-dark" type="submit">회원가입</button>
             </div>
         </form>
     </article>

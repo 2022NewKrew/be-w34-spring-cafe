@@ -3,14 +3,12 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.model.dto.ArticleDto;
 import com.kakao.cafe.model.dto.CommentDto;
 import com.kakao.cafe.model.service.BoardService;
-import com.kakao.cafe.util.annotation.LoginCheck;
 import com.kakao.cafe.util.annotation.MineCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor

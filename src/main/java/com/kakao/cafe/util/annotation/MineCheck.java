@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface MineCheck {
+    Type type() default Type.ARTICLE;
+
     enum Type {
         ARTICLE, COMMENT
     }
-
-    Type type() default Type.ARTICLE;
 }

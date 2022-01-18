@@ -1,8 +1,6 @@
 package com.kakao.cafe.model.repository;
 
 import com.kakao.cafe.model.domain.User;
-import com.kakao.cafe.util.exception.UserNotFoundException;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 

@@ -18,6 +18,11 @@ import java.util.Optional;
 public class BoardRepositoryJdbcImpl implements BoardRepository {
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    public BoardRepositoryJdbcImpl(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) ->
                 Article.builder()
@@ -36,11 +41,6 @@ public class BoardRepositoryJdbcImpl implements BoardRepository {
                         .writerId(rs.getString("WRITER_ID"))
                         .content(rs.getString("CONTENT"))
                         .createdDate(rs.getTimestamp("CREATED_DATE").toLocalDateTime()).build();
-    }
-
-    @Autowired
-    public BoardRepositoryJdbcImpl(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override

@@ -4,10 +4,11 @@
         <h2 class="card-title m-3 text-center">글 조회</h2>
         {{#article}}
         <div class="mt-1 mb-1 float-end">
-            <form method="post" action="/board/delete/{{articleId}}">
-                <input type="hidden" name="_method" value="delete"/>
-                <button type="button" class="btn btn-dark" onclick="location.href='/board/modify/{{articleId}}'">수정</button>
-                <button type="submit" class="btn btn-dark">삭제</button>
+            <form action="/board/delete/{{articleId}}" method="post">
+                <input name="_method" type="hidden" value="delete"/>
+                <button class="btn btn-dark" onclick="location.href='/board/modify/{{articleId}}'" type="button">수정
+                </button>
+                <button class="btn btn-dark" type="submit">삭제</button>
             </form>
         </div>
         <table class="table table-borderless align-middle">
@@ -45,17 +46,17 @@
             </tr>
         </table>
         <div class="mt-1">
-            <form method="post" action="/board/write/comment">
-                <input type="hidden" name="articleId" value="{{articleId}}">
+            <form action="/board/write/comment" method="post">
+                <input name="articleId" type="hidden" value="{{articleId}}">
                 <div class="form-group row">
                     <div class="col-sm-2">
-                        <input type="text" name="writerId" class="form-control" value="{{USER_ID}}" readonly>
+                        <input class="form-control" name="writerId" readonly type="text" value="{{USER_ID}}">
                     </div>
                     <div class="col-sm-8">
-                        <input type="text" name="content" class="form-control" placeholder="댓글을 입력해주세요" required>
+                        <input class="form-control" name="content" placeholder="댓글을 입력해주세요" required type="text">
                     </div>
                     <div class="col-sm-2">
-                        <button type="submit" class="btn btn-dark">작성</button>
+                        <button class="btn btn-dark" type="submit">작성</button>
                     </div>
                 </div>
             </form>
@@ -73,9 +74,9 @@
                     {{formattedCreatedDate}}
                 </td>
                 <td style="width: 70px">
-                    <form method="post" action="/board/delete/{{articleId}}/{{commentId}}">
-                        <input type="hidden" name="_method" value="delete"/>
-                        <button type="submit" class="btn btn-dark">삭제</button>
+                    <form action="/board/delete/{{articleId}}/{{commentId}}" method="post">
+                        <input name="_method" type="hidden" value="delete"/>
+                        <button class="btn btn-dark" type="submit">삭제</button>
                     </form>
                 </td>
             </tr>

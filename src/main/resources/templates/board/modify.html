@@ -2,8 +2,8 @@
 <div class="card" style="border: 0;">
     <article class="card-body mx-auto" style="width: 1000px;">
         <h2 class="card-title m-3 text-center">글쓰기</h2>
-        <form method="post" action="/board/modify/{{articleId}}">
-            <input type="hidden" name="_method" value="put"/>
+        <form action="/board/modify/{{articleId}}" method="post">
+            <input name="_method" type="hidden" value="put"/>
             {{#article}}
             <table class="table align-middle">
                 <tr>
@@ -19,7 +19,8 @@
                         제목: &nbsp;
                     </th>
                     <td>
-                        <input type="text" name="title" class="form-control" placeholder="제목을 입력해주세요." value="{{title}}" required>
+                        <input class="form-control" name="title" placeholder="제목을 입력해주세요." required type="text"
+                               value="{{title}}">
                     </td>
                 </tr>
                 <tr>
@@ -27,13 +28,14 @@
                         내용: &nbsp;
                     </th>
                     <td>
-                        <textarea class="form-control" name="content" style="height: 200px;" placeholder="내용을 입력해주세요.">{{content}}</textarea>
+                        <textarea class="form-control" name="content" placeholder="내용을 입력해주세요." style="height: 200px;">{{content}}</textarea>
                     </td>
                 </tr>
             </table>
             <div class="mt-1 float-end">
-                <button type="submit" class="btn btn-dark">수정</button>
-                <button type="button" class="btn btn-dark" onclick="location.href='/board/view/{{articleId}}'">취소</button>
+                <button class="btn btn-dark" type="submit">수정</button>
+                <button class="btn btn-dark" onclick="location.href='/board/view/{{articleId}}'" type="button">취소
+                </button>
             </div>
             {{/article}}
         </form>
