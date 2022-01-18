@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.controller.listview;
 
 import org.springframework.web.servlet.ModelAndView;
 
