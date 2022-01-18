@@ -25,6 +25,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -111,9 +112,12 @@ class UserControllerTest {
     @MethodSource("com.kakao.cafe.user.data.UsersData#getUpdateRequests")
     void updateInfo(String userId, UpdateUserInfoRequest updateRequest) throws Exception {
         //given
+        final MockHttpSession session = new MockHttpSession();
+        session.setAttribute("userId", userId);
 
         //when
-        final ResultActions actions = mockMvc.perform(post(String.format("/users/update/%s", userId))
+        final ResultActions actions = mockMvc.perform(post("/users/update")
+                .session(session)
                 .param("name", updateRequest.getName())
                 .param("email", updateRequest.getEmail())
         ).andDo(print());

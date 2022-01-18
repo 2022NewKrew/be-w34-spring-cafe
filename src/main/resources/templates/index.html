@@ -45,7 +45,7 @@
             </div>
         </div>
     </div>
-    <div class="post-btn-container">
+    <div th:if="${session.userId != null}" class="post-btn-container">
         <a href="posts/form" class="post-write-btn btn btn-primary pull-right" role="button">글쓰기</a>
     </div>
 </div>
