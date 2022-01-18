@@ -1,5 +1,6 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.repository;
 
+import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.exceptions.PostNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class InMemoryPostRepository implements  PostRepository {
+public class InMemoryPostRepository implements PostRepository {
 
     private final List<Post> postList;
     private final AtomicInteger pk;

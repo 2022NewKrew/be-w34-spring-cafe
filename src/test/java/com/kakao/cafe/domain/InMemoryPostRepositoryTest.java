@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain;
 
 import com.kakao.cafe.exceptions.PostNotFoundException;
+import com.kakao.cafe.repository.InMemoryPostRepository;
 import java.util.Date;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;

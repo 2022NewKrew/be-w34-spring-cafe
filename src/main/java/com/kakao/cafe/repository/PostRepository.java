@@ -1,5 +1,6 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.repository;
 
+import com.kakao.cafe.domain.Post;
 import java.util.List;
 
 public interface PostRepository {

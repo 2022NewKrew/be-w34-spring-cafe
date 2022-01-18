@@ -1,6 +1,8 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.repository;
 
 
+import com.kakao.cafe.domain.Post;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exceptions.PostNotFoundException;
 import java.util.List;
 import org.slf4j.Logger;

@@ -2,6 +2,7 @@ package com.kakao.cafe.domain;
 
 import com.kakao.cafe.exceptions.DuplicateUserException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
+import com.kakao.cafe.repository.InMemoryUserRepository;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

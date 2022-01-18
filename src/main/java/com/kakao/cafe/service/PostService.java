@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Post;
-import com.kakao.cafe.domain.PostRepository;
+import com.kakao.cafe.repository.PostRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
