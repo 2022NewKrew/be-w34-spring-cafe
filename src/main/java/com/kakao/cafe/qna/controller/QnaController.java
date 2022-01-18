@@ -27,6 +27,7 @@ public class QnaController {
     @GetMapping("/")
     public String getUserList(Model model) {
         model.addAttribute("articles", questionService.getArticleSummaryLst());
+        logger.info("date : {}", questionService.getArticleSummaryLst().get(0).getDate());
         return "index";
     }
 }
