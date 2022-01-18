@@ -2,7 +2,9 @@ package com.kakao.cafe.domain.article;
 
 import com.kakao.cafe.domain.article.dto.ArticleRowDataDto;
 import com.kakao.cafe.domain.article.repository.ArticleRepository;
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.repository.UserRepository;
+import com.kakao.cafe.global.error.exception.NoPermissionException;
 import com.kakao.cafe.global.error.exception.NoSuchArticleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +64,28 @@ public class ArticleService {
     }
 
     public Article getArticle(Long id){
-        return articleOf(articleRepository.findById(id).orElseThrow(() -> {throw new NoSuchArticleException("해당 게시글이 존재하지 않습니다.");}));
+        return articleOf(articleRepository.findById(id).orElseThrow(NoSuchArticleException::new));
+    }
+
+    public Article getArticle(Long id, User user) {
+        Article findArticle = checkUserPermission(id, user);
+        return findArticle;
+    }
+
+    private Article checkUserPermission(Long id, User user) {
+        Article findArticle = articleOf(articleRepository.findById(id).orElseThrow(NoSuchArticleException::new));
+        if (!user.getUserId().equals(findArticle.getWriterUserId())) { throw new NoPermissionException(); }
+        return findArticle;
+    }
+
+    public Article updateArticle(Article updateArticle, User user) {
+        checkUserPermission(updateArticle.getId(), user);
+        ArticleRowDataDto articleRowDataDto = ArticleRowDataDto.from(updateArticle, user.getId());
+        return articleOf(articleRepository.update(articleRowDataDto));
+    }
+
+    public boolean deleteArticle(Long id, User user) {
+        Article findArticle = checkUserPermission(id, user);
+        return articleRepository.deleteById(id);
     }
 }

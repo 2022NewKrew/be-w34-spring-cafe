@@ -15,4 +15,8 @@ public interface ArticleRepository {
 
     List<ArticleRowDataDto> findAll();
 
+    ArticleRowDataDto update(ArticleRowDataDto article);
+
+    boolean deleteById(Long id);
+
 }

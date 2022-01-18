@@ -21,6 +21,7 @@ public class Article {
                 .writerUserId(articleForm.getWriter())
                 .title(articleForm.getTitle())
                 .contents(articleForm.getContents())
+                .registerDateTime(LocalDateTime.now())
                 .build();
     }
 

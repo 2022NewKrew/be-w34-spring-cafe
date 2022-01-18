@@ -4,8 +4,15 @@ public enum TableName {
     USER("users"),
     ARTICLE("articles");
 
+    private String name;
 
-    TableName(String articles) {};
+    public String getName() {
+        return name;
+    }
+
+    TableName(String name) {
+        this.name = name;
+    };
 
 
 }

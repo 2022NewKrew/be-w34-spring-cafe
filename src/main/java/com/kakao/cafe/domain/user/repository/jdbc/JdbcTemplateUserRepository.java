@@ -44,7 +44,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-        List<User> result = jdbcTemplate.query("select * from " + TableName.USER +" where id = ?", userRowMapper(), id);
+        List<User> result = jdbcTemplate.query("select * from " + TableName.USER.getName() +" where id = ?", userRowMapper(), id);
 //        List<User> result = jdbcTemplate.query(new Query().SELECT_FROM(TableName.USER).WHERE("id", id.toString()).build(), userRowMapper(), id);
         return result.stream().findAny();
     }
@@ -64,24 +64,24 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        List<User> result = jdbcTemplate.query("select * from " + TableName.USER +" where userId = ?", userRowMapper(), userId);
+        List<User> result = jdbcTemplate.query("select * from " + TableName.USER.getName() +" where userId = ?", userRowMapper(), userId);
         return result.stream().findAny();
     }
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from " + TableName.USER, userRowMapper());
+        return jdbcTemplate.query("select * from " + TableName.USER.getName(), userRowMapper());
     }
 
     @Override
     public Optional<User> findByName(String name) {
-        List<User> result = jdbcTemplate.query("select * from " + TableName.USER +" where name = ?", userRowMapper(), name);
+        List<User> result = jdbcTemplate.query("select * from " + TableName.USER.getName() +" where name = ?", userRowMapper(), name);
         return result.stream().findAny();
     }
 
     @Override
     public User update(User user) {
-        jdbcTemplate.update("update " + TableName.USER +" set name=?, email=? where id=?", user.getName(), user.getEmail(), user.getId());
+        jdbcTemplate.update("update " + TableName.USER.getName() +" set name=?, email=? where id=?", user.getName(), user.getEmail(), user.getId());
         return user;
     }
 }
