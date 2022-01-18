@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
@@ -31,12 +32,15 @@ public class QuestionPostApiController {
     private final DeleteQuestionPostUseCase deleteQuestionPostUseCase;
 
     @PostMapping("")
-    public ResponseEntity<QuestionPostWriteResponse> write(@Valid @RequestBody QuestionPostWriteRequest request) {
+    public ResponseEntity<QuestionPostWriteResponse> write(
+            @Valid @RequestBody QuestionPostWriteRequest request,
+            HttpSession httpSession) {
 
-        QuestionPostSaveResult result = enrollQuestionPostUseCase.enroll(request.toCommand());
+        Long userAccountId = (Long) httpSession.getAttribute("user-id");
+        QuestionPostSaveResult result = enrollQuestionPostUseCase.enroll(request.toCommand(userAccountId));
 
         UriComponents uriComponents = MvcUriComponentsBuilder
-                .fromMethodCall(on(QuestionPostApiController.class).write(request))
+                .fromMethodCall(on(QuestionPostApiController.class).write(request, httpSession))
                 .build();
         return ResponseEntity
                 .created(uriComponents.toUri())

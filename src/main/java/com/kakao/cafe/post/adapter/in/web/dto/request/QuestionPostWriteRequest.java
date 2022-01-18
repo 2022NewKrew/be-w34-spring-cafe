@@ -16,10 +16,8 @@ public class QuestionPostWriteRequest {
     private final String title;
     @NotNull
     private final String content;
-    @NotNull
-    private final Long userAccountId;
 
-    public QuestionPostSaveCommand toCommand() {
+    public QuestionPostSaveCommand toCommand(Long userAccountId) {
         return new QuestionPostSaveCommand(title, content, userAccountId);
     }
 }

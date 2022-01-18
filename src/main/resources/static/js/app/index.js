@@ -63,7 +63,6 @@ var main = {
         var data = {
             title: $('#title').val(),
             content: $('#question').val(),
-            userAccountId: $('#user-id').val()
         };
         $.ajax({
             type: 'POST',
