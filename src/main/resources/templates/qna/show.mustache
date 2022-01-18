@@ -15,6 +15,11 @@
             {{article.content}}
         </div>
         <a href="/articles" class="btn-kakao pull-right" role="button">목록으로</a>
+        <a href="/articles/{{article.id}}/edit" class="btn-kakao pull-right" role="button">수정</a>
+        <form action="/articles/{{article.id}}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            <button type="submit" class="btn-kakao pull-right">삭제</button>
+        </form>
     </div>
     {{> layout/scripts}}
 </body>

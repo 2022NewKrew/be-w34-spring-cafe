@@ -1,13 +1,14 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.exception.NotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ArticleRepository {
 
     void save(Article article);
     List<Article> findAll();
-    Optional<Article> findById(Long id);
+    Article findById(Long id) throws NotFoundException;
+    void deleteById(Long id);
 }
