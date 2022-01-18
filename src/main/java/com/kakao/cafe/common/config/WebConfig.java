@@ -19,7 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(authorizationInterceptor)
                 .addPathPatterns(List.of(
                         "/users/logout",
-                        "/users/update/**"
+                        "/users/update/**",
+                        "/articles/**"
                 ));
     }
 }

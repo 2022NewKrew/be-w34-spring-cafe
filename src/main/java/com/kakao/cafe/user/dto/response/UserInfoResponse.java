@@ -1,6 +1,5 @@
 package com.kakao.cafe.user.dto.response;
 
-import com.kakao.cafe.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

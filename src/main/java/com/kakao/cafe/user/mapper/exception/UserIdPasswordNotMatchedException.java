@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.exception;
+package com.kakao.cafe.user.mapper.exception;
 
 public class UserIdPasswordNotMatchedException extends RuntimeException {
 

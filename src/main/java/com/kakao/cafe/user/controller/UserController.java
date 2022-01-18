@@ -4,8 +4,8 @@ import com.kakao.cafe.user.dto.request.UserCreateRequest;
 import com.kakao.cafe.user.dto.request.UserLoginRequest;
 import com.kakao.cafe.user.dto.request.UserUpdateRequest;
 import com.kakao.cafe.user.dto.response.UserInfoResponse;
-import com.kakao.cafe.user.exception.DuplicateUserIdException;
-import com.kakao.cafe.user.exception.UserNotFoundException;
+import com.kakao.cafe.user.mapper.exception.DuplicateUserIdException;
+import com.kakao.cafe.user.mapper.exception.UserNotFoundException;
 import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -105,7 +105,7 @@ public class UserController {
         log.info("[GET] /users/{} - (id: {}) 유저 상세정보(프로필) 페이지 접속", id, id);
 
         UserInfoResponse userProfile = this.userService.getUserProfile(id);
-        model.addAttribute("user", userProfile);
+        model.addAttribute("userInfo", userProfile);
 
         return "user/profile";
     }
@@ -117,7 +117,7 @@ public class UserController {
     @GetMapping("/users/update")
     @ResponseStatus(HttpStatus.OK)
     public String getUserUpdatePage(HttpSession session) {
-        UserInfoResponse user = (UserInfoResponse) session.getAttribute("user");
+        UserInfoResponse user = this.getUserInfoInSession(session);
         log.info("[GET] /users/update - (id: {}) 유저 정보 수정 페이지 접속", user.getId());
 
         return "/user/update";
@@ -127,11 +127,11 @@ public class UserController {
      * 회원 프로필 수정 요청 [POST]
      * @param req: 회원 프로필 수정 정보
      */
-    @PostMapping("/users/update")
+    @PutMapping("/users")
     public String updateUser(@Valid UserUpdateRequest req, HttpSession session) {
-        UserInfoResponse user = (UserInfoResponse) session.getAttribute("user");
+        UserInfoResponse user = this.getUserInfoInSession(session);
         Long id = user.getId();
-        log.info("[POST] /users/update - (id: {}) 유저 정보 수정", id);
+        log.info("[PUT] /users - (id: {}) 유저 정보 수정", id);
 
         this.userService.updateUser(id, req);
 
@@ -139,5 +139,9 @@ public class UserController {
         session.setAttribute("user", updatedUserProfile);
 
         return "redirect:/";
+    }
+
+    private UserInfoResponse getUserInfoInSession(HttpSession session) {
+        return (UserInfoResponse) session.getAttribute("user");
     }
 }

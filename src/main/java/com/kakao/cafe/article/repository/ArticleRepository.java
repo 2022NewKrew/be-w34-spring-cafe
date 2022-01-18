@@ -1,6 +1,8 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.entity.Article;
+import com.kakao.cafe.user.mapper.exception.UserNotFoundException;
+import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final UserRepository userRepository;
 
     /**
      * 새로운 게시글 만드는(Create) 메서드
@@ -20,11 +23,11 @@ public class ArticleRepository {
      * @return int: 영향받은 행의 수(1)
      */
     public int save(Article article) {
-        String sql = "insert into article_table(writer, title, contents) values(?, ?, ?)";
+        String sql = "insert into article_table(writer_id, title, contents) values(?, ?, ?)";
 
         return this.writeQuery(
                 sql,
-                article.getWriter(),
+                article.getWriter().getId(),
                 article.getTitle(),
                 article.getContents()
         );
@@ -52,6 +55,37 @@ public class ArticleRepository {
     }
 
     /**
+     * 게시글의 정보를 수정하는 메서드
+     * 제목, 내용만 변경이 가능하다.
+     * 만약 제목, 내용이 빈 값("")이면 수정하지 않는다.
+     * @param article: 수정할 게시글의 정보(Entity)
+     * @return int: 영향받은 행의 개수(1)
+     */
+    public int update(Article article) {
+        String sql = "update article_table set title = ?, contents = ? where id = ?";
+
+        return this.writeQuery(
+                sql,
+                article.getTitle(),
+                article.getContents(),
+                article.getId());
+    }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     * @param id - 삭제할 게시글의 id(PK)
+     * @return int: 영향받은 행의 개수(1)
+     */
+    public int deleteById(Long id) {
+        String sql = "delete from article_table where id = ?";
+
+        return this.writeQuery(
+                sql,
+                id
+        );
+    }
+
+    /**
      * 단일 행을 반환하는 SELECT 문을 담당하는 메서드
      * @param sql: 실행하고자 하는 SQL
      * @param parameters: SQL 문에 들어갈 매개변수(가변인자)
@@ -74,7 +108,7 @@ public class ArticleRepository {
                 sql,
                 (rs, rowNum) -> new Article(
                         rs.getLong("id"),
-                        rs.getString("writer"),
+                        userRepository.findById(rs.getLong("writer_id")).orElseThrow(UserNotFoundException::new),
                         rs.getString("title"),
                         rs.getString("contents"),
                         rs.getTimestamp("created_at").toLocalDateTime()
