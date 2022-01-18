@@ -48,6 +48,20 @@ public class ArticleJdbcRepository implements ArticleRepository {
         }
     }
 
+    @Override
+    public void update(Article article) {
+        int articleId = article.getId();
+        String query = "update articles set title = ?, content = ? where id = ?";
+        jdbcTemplate.update(query, article.getTitle(), article.getContent(), articleId);
+    }
+
+    @Override
+    public void delete(Article article) {
+        int articleId = article.getId();
+        String query = "delete from articles where id = ?";
+        jdbcTemplate.update(query, articleId);
+    }
+
     private RowMapper<Article> mapArticleRow() {
         return (rs, rowNum) ->
                 Article.valueOf(

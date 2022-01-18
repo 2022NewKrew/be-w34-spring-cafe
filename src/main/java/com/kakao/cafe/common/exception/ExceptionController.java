@@ -25,7 +25,7 @@ public class ExceptionController {
         return e.getMessage();
     }
 
-//    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = AuthenticationException.class)
     public ModelAndView handleAuthenticationException(AuthenticationException e) {
         log.info(e.getMessage());

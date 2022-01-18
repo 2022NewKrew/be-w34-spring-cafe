@@ -64,4 +64,9 @@ public class Article {
     public boolean isSameArticleById(int targetArticleId) {
         return this.id == targetArticleId;
     }
+
+    public void update(String title, String contents) {
+        this.title = title;
+        this.content = contents;
+    }
 }

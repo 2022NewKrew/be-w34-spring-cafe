@@ -4,11 +4,13 @@ import com.kakao.cafe.article.application.ArticleService;
 import com.kakao.cafe.article.dto.ArticleListResponse;
 import com.kakao.cafe.article.dto.ArticleSaveRequest;
 import com.kakao.cafe.article.dto.ArticleShowResponse;
+import com.kakao.cafe.user.domain.SessionedUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +30,12 @@ public class ArticleController {
     }
 
     @PostMapping
-    public String save(ArticleSaveRequest request) {
+    public String save(ArticleSaveRequest request, HttpSession session) {
         log.info(this.getClass() + ": 게시글 작성");
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null) {
+            return "redirect:/auth/login";
+        }
         articleService.save(request);
         return "redirect:/articles";
     }
@@ -48,5 +54,47 @@ public class ArticleController {
         ArticleShowResponse articleShowResponse = articleService.findById(articleId);
         model.put("article", articleShowResponse);
         return new ModelAndView("qna/show", model);
+    }
+
+    @GetMapping("/{articleId}/form")
+    public ModelAndView findFormById(@PathVariable int articleId, Map<String, Object> model, HttpSession session) {
+        log.info(this.getClass() + ": 게시글 수정 폼");
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null) {
+            return new ModelAndView("redirect:/auth/login");
+        }
+        ArticleShowResponse articleShowResponse = articleService.findById(articleId);
+        model.put("article", articleShowResponse);
+        return new ModelAndView("qna/updateForm", model);
+    }
+
+    @PutMapping("/{articleId}")
+    public String updateById(
+            @PathVariable int articleId,
+            ArticleSaveRequest request,
+            HttpSession session
+    ) {
+        log.info(this.getClass() + ": 게시글 수정");
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null) {
+            return "redirect:/auth/login";
+        }
+
+        SessionedUser user = (SessionedUser) value;
+        articleService.updateById(articleId, request, user);
+        return "redirect:/articles";
+    }
+
+    @DeleteMapping("/{articleId}")
+    public String deleteById(@PathVariable int articleId, HttpSession session) {
+        log.info(this.getClass() + ": 게시글 삭제");
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null) {
+            return "redirect:/auth/login";
+        }
+
+        SessionedUser user = (SessionedUser) value;
+        articleService.deleteById(articleId, user);
+        return "redirect:/articles";
     }
 }

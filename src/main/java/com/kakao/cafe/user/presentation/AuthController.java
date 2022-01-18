@@ -2,7 +2,7 @@ package com.kakao.cafe.user.presentation;
 
 import com.kakao.cafe.user.application.UserService;
 import com.kakao.cafe.user.dto.UserLoginRequest;
-import com.kakao.cafe.user.dto.SessionedUser;
+import com.kakao.cafe.user.domain.SessionedUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;

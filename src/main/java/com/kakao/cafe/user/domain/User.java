@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.domain;
 
 import com.kakao.cafe.common.exception.AuthenticationException;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 

@@ -1,7 +1,11 @@
 package com.kakao.cafe.user.presentation;
 
 import com.kakao.cafe.user.application.UserService;
-import com.kakao.cafe.user.dto.*;
+import com.kakao.cafe.user.domain.SessionedUser;
+import com.kakao.cafe.user.dto.UserListResponse;
+import com.kakao.cafe.user.dto.UserProfileResponse;
+import com.kakao.cafe.user.dto.UserSaveRequest;
+import com.kakao.cafe.user.dto.UserUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -50,15 +54,22 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/form")
-    public ModelAndView findFormById(@PathVariable String userId, Map<String, Object> model) {
+    public ModelAndView findFormById(
+            @PathVariable String userId,
+            Map<String, Object> model,
+            HttpSession session)
+    {
         log.info(this.getClass() + ": 개인정보 수정 폼");
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null) {
+            return new ModelAndView("redirect:/auth/login");
+        }
         UserProfileResponse userProfileResponse = userService.findById(userId);
         model.put("user", userProfileResponse);
         return new ModelAndView("user/updateForm", model);
     }
 
-    // Use @PutMapping
-    @PostMapping("/{userId}/updates")
+    @PutMapping("/{userId}")
     public String updateById(
             @PathVariable String userId,
             UserUpdateRequest userUpdateRequest,
@@ -67,7 +78,7 @@ public class UserController {
         log.info(this.getClass() + ": 개인정보 수정");
         Object value = session.getAttribute("sessionedUser");
         if (value == null) {
-            return "redirect:/auths/login";
+            return "redirect:/auth/login";
         }
 
         SessionedUser user = (SessionedUser) value;
