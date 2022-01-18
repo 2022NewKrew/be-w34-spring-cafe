@@ -148,8 +148,10 @@ class ArticleControllerTest {
                 .createdAt(new Date())
                 .build();
         when(service.getById(id)).thenReturn(Optional.of(article));
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("currentUserId", 1234L);
 
-        mvc.perform(get("/articles/" + id))
+        mvc.perform(get("/articles/" + id).session(session))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("author1")))
@@ -158,11 +160,20 @@ class ArticleControllerTest {
     }
 
     @Test
+    void read_unauthenticated() throws Exception {
+        mvc.perform(get("/articles/1234"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
     void read_notFound() throws Exception {
         long id = 1234L;
         when(service.getById(id)).thenReturn(Optional.empty());
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("currentUserId", 1234L);
 
-        mvc.perform(get("/articles/" + id))
+        mvc.perform(get("/articles/" + id).session(session))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
