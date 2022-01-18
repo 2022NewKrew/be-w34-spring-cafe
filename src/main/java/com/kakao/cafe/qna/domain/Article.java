@@ -19,6 +19,7 @@ public class Article {
     private String title;
     private String content;
     private String writtenTime;
+    private int point;
 
     public Article(int id, String writer, String title, String content) {
         this.id = id;
@@ -26,7 +27,8 @@ public class Article {
         this.title = title;
         this.content = content;
 
-        writtenTime = LocalDateTime.now()
+        this.writtenTime = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
+        this.point = 0;
     }
 }

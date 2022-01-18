@@ -28,6 +28,6 @@ public class QuestionService {
     }
 
     private ArticleSummaryDTO makeArticleSummaryDTOFromArticle(Article article) {
-        return new ArticleSummaryDTO(article.getTitle(), article.getWriter(), article.getWrittenTime());
+        return new ArticleSummaryDTO(article.getTitle(), article.getWriter(), article.getWrittenTime(), article.getPoint());
     }
 }
