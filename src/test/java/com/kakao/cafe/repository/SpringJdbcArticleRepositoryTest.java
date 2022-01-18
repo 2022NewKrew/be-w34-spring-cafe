@@ -94,4 +94,25 @@ class SpringJdbcArticleRepositoryTest {
         assertThat(updatedArticle.getTitle()).isEqualTo("updatedTitle");
         assertThat(updatedArticle.getContents()).isEqualTo("updatedContents");
     }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void testOfDelete() {
+        User user = User.builder()
+                .userId("leaf")
+                .password("1")
+                .name("asd")
+                .email("asd")
+                .build();
+        springJdbcUserRepository.save(user);
+        springJdbcArticleRepository.save(Article.builder()
+                .writer(user)
+                .title("123")
+                .contents("124124")
+                .build());
+
+        Article article = springJdbcArticleRepository.findAll().get(0);
+        springJdbcArticleRepository.deleteById(article.getId());
+        Assertions.assertThat(springJdbcArticleRepository.findAll().size()).isEqualTo(0);
+    }
 }

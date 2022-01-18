@@ -36,4 +36,9 @@ public class MemoryArticleRepository implements ArticleRepository {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public void deleteById(Long id) {
+        throw new UnsupportedOperationException();
+    }
+
 }

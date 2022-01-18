@@ -91,4 +91,11 @@ class ArticleServiceTest {
         articleService.update(new ArticleUpdateDto(1L, articleUpdateDto));
         BDDMockito.then(articleRepository).should().findById(1L);
     }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void testOfDelete() {
+        articleService.deleteById(1L);
+        BDDMockito.then(articleRepository).should().deleteById(1L);
+    }
 }

@@ -45,5 +45,10 @@ public class SpringJdbcArticleRepository implements ArticleRepository {
                 article.getWriter().getUserId(), article.getTitle(), article.getContents());
     }
 
+    @Override
+    public void deleteById(Long id) {
+        jdbcTemplate.update("delete from ARTICLE where article_seq_id = ?", id);
+    }
+
 
 }

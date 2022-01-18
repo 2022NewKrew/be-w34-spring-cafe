@@ -46,4 +46,9 @@ public class ArticleService {
         foundArticle.update(articleUpdateDto.getTitle(), articleUpdateDto.getContents());
         articleRepository.update(foundArticle);
     }
+
+
+    public void deleteById(Long id) {
+        articleRepository.deleteById(id);
+    }
 }
