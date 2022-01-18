@@ -2,11 +2,12 @@ package com.kakao.cafe.dto;
 
 import com.kakao.cafe.entity.User;
 
+
 public class UserRegistrationDto {
-    private String userId;
-    private String password;
-    private String email;
-    private String profileImage;
+    private final String userId;
+    private final String password;
+    private final String email;
+//    private final String profileImage;
 
     public User toEntity() {
         return new User(userId, password, email);
@@ -30,23 +31,23 @@ public class UserRegistrationDto {
         return email;
     }
 
-    public String getProfileImage() {
-        return profileImage;
-    }
+//    public String getProfileImage() {
+//        return profileImage;
+//    }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
+//    public void setUserId(String userId) {
+//        this.userId = userId;
+//    }
+//
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+//
+//    public void setProfileImage(String profileImage) {
+//        this.profileImage = profileImage;
+//    }
 }

@@ -3,11 +3,11 @@ package com.kakao.cafe.dto;
 import javax.validation.constraints.NotBlank;
 
 public class ArticleRegistrationDto {
-    private Integer articleId;
+    private final Integer articleId;
     @NotBlank(message = "게시글 제목이 null 이거나 한개의 띄어쓰기만 있습니다")
-    private String title;
+    private final String title;
     @NotBlank(message = "게시글 내용이 null 이거나 띄어쓰기만 있습니다")
-    private String content;
+    private final String content;
 
     public ArticleRegistrationDto(Integer articleId, String title, String content) {
         this.articleId = articleId;
@@ -25,17 +25,5 @@ public class ArticleRegistrationDto {
 
     public String getContent() {
         return content;
-    }
-
-    public void setArticleId(Integer articleId) {
-        this.articleId = articleId;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 }
