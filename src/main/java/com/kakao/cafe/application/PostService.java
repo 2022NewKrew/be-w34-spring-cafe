@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class PostService {
@@ -27,7 +28,7 @@ public class PostService {
     }
 
     public Post findById(long id) {
-        return postRepository.findById(id).orElseThrow(RuntimeException::new);
+        return postRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     public void write(PostDto postDto) {
