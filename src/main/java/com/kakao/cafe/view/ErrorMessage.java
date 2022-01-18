@@ -8,8 +8,10 @@ import com.kakao.cafe.domain.user.exceptions.IllegalEmailException;
 import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
+import com.kakao.cafe.domain.user.exceptions.UnauthenticatedUserException;
 import com.kakao.cafe.domain.user.exceptions.UserIdDuplicationException;
 import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
+import com.kakao.cafe.domain.user.exceptions.WrongPasswordException;
 
 public class ErrorMessage {
 
@@ -43,6 +45,12 @@ public class ErrorMessage {
         }
         if (e instanceof ArticleNotExistException) {
             return "존재하지 않는 게시글입니다.";
+        }
+        if (e instanceof WrongPasswordException) {
+            return "비밀번호를 확인하십시오.";
+        }
+        if (e instanceof UnauthenticatedUserException) {
+            return "권한이 없습니다.";
         }
         return "잘못된 접근입니다.";
     }

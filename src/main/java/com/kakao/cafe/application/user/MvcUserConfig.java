@@ -1,24 +1,26 @@
 package com.kakao.cafe.application.user;
 
 import com.kakao.cafe.adapter.out.infra.persistence.user.JdbcUserInfoRepository;
-import com.kakao.cafe.adapter.out.infra.persistence.user.StoreUserInfoAdapter;
+import com.kakao.cafe.adapter.out.infra.persistence.user.UserAdapter;
 import com.kakao.cafe.adapter.out.infra.persistence.user.UserInfoRepository;
 import com.kakao.cafe.application.user.port.in.GetUserInfoUseCase;
+import com.kakao.cafe.application.user.port.in.LoginUserUseCase;
 import com.kakao.cafe.application.user.port.in.SignUpUserUseCase;
 import com.kakao.cafe.application.user.port.in.UpdateUserInfoUseCase;
 import com.kakao.cafe.application.user.port.out.GetUserInfoPort;
+import com.kakao.cafe.application.user.port.out.LoginUserPort;
 import com.kakao.cafe.application.user.port.out.RegisterUserPort;
 import com.kakao.cafe.application.user.port.out.UpdateUserInfoPort;
 import com.kakao.cafe.application.user.service.GetUserInfoService;
+import com.kakao.cafe.application.user.service.LoginUserService;
 import com.kakao.cafe.application.user.service.SignUpUserService;
 import com.kakao.cafe.application.user.service.UpdateUserInfoService;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class MvcUserConfig implements WebMvcConfigurer {
+public class MvcUserConfig {
 
     public final DataSource dataSource;
 
@@ -32,18 +34,28 @@ public class MvcUserConfig implements WebMvcConfigurer {
     }
 
     @Bean
+    public LoginUserPort loginUserPort() {
+        return new UserAdapter(userInfoRepository());
+    }
+
+    @Bean
     public GetUserInfoPort getUserInfoPort() {
-        return new StoreUserInfoAdapter(userInfoRepository());
+        return new UserAdapter(userInfoRepository());
     }
 
     @Bean
     public RegisterUserPort registerUserPort() {
-        return new StoreUserInfoAdapter(userInfoRepository());
+        return new UserAdapter(userInfoRepository());
     }
 
     @Bean
     public UpdateUserInfoPort updateUserInfoPort() {
-        return new StoreUserInfoAdapter(userInfoRepository());
+        return new UserAdapter(userInfoRepository());
+    }
+
+    @Bean
+    public LoginUserUseCase loginUserUseCase() {
+        return new LoginUserService(loginUserPort());
     }
 
     @Bean

@@ -1,6 +1,5 @@
 package com.kakao.cafe.application.user.dto;
 
-import com.kakao.cafe.adapter.out.infra.persistence.user.UserVO;
 import com.kakao.cafe.domain.user.User;
 import java.util.Objects;
 
@@ -18,10 +17,6 @@ public class UserInfo {
 
     public static UserInfo from(User user) {
         return new UserInfo(user.getUserId(), user.getName(), user.getEmail());
-    }
-
-    public static UserInfo from(UserVO userVO) {
-        return new UserInfo(userVO.getUserId(), userVO.getName(), userVO.getEmail());
     }
 
     public String getUserId() {

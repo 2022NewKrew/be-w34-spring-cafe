@@ -4,11 +4,11 @@ import com.kakao.cafe.domain.article.Article;
 import java.util.List;
 import java.util.Optional;
 
-public interface ArticleInfoRepository {
+public interface ArticleRepository {
 
     void save(Article article);
 
-    List<ArticleVO> getAllArticleList();
+    List<Article> getAllArticleList();
 
-    Optional<ArticleVO> findById(int id);
+    Optional<Article> findById(int id);
 }

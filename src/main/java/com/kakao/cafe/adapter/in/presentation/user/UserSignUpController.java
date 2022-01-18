@@ -2,12 +2,16 @@ package com.kakao.cafe.adapter.in.presentation.user;
 
 import com.kakao.cafe.application.user.dto.SignUpRequest;
 import com.kakao.cafe.application.user.port.in.SignUpUserUseCase;
-import com.kakao.cafe.view.ErrorMessage;
+import com.kakao.cafe.domain.user.exceptions.IllegalEmailException;
+import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
+import com.kakao.cafe.domain.user.exceptions.UserIdDuplicationException;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserSignUpController {
@@ -21,16 +25,11 @@ public class UserSignUpController {
     }
 
     @PostMapping("/users")
-    public String signUp(SignUpRequest signUpRequest, RedirectAttributes redirectAttributes) {
-        try {
-            signUpUserUseCase.signUpUser(signUpRequest);
-            log.info("{} joined as a member", signUpRequest.getUserId());
-            return "redirect:/users";
-        } catch (Exception e) {
-            log.info("{}", e.getMessage());
-            String message = ErrorMessage.getErrorMessage(e);
-            redirectAttributes.addAttribute("message", message);
-            return "redirect:/errors";
-        }
+    public String signUp(HttpServletRequest request, SignUpRequest signUpRequest)
+        throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, UserIdDuplicationException, IllegalEmailException {
+        log.info("[{}]User {} tries to join as a member", request.getRequestURI(), signUpRequest.getUserId());
+        signUpUserUseCase.signUpUser(signUpRequest);
+        log.info("[{}]Success user {} join", request.getRequestURI(), signUpRequest.getUserId());
+        return "redirect:/users";
     }
 }

@@ -9,14 +9,46 @@ public class User {
 
     private final String userId;
     private final String password;
-    private final String name;
-    private final String email;
+    private String email;
+    private String name;
 
     public User(Builder builder) {
         this.userId = builder.userId;
         this.password = builder.password;
         this.name = builder.name;
         this.email = builder.email;
+    }
+
+    private static boolean checkBlankInString(String str) {
+        return str.contains(" ");
+    }
+
+    private static boolean checkLengthOfString(String str) {
+        return str.length() <= 0;
+    }
+
+    private static void checkUserId(String userId) throws IllegalUserIdException {
+        if (checkLengthOfString(userId) || checkBlankInString(userId)) {
+            throw new IllegalUserIdException("잘못된 ID 입니다.");
+        }
+    }
+
+    private static void checkPassword(String password) throws IllegalPasswordException {
+        if (checkLengthOfString(password) || checkBlankInString(password)) {
+            throw new IllegalPasswordException("잘못된 password 입니다.");
+        }
+    }
+
+    private static void checkUserName(String userName) throws IllegalUserNameException {
+        if (checkLengthOfString(userName) || checkBlankInString(userName)) {
+            throw new IllegalUserNameException("잘못된 이름 입니다.");
+        }
+    }
+
+    private static void checkEmail(String email) throws IllegalEmailException {
+        if (checkLengthOfString(email) || checkBlankInString(email)) {
+            throw new IllegalEmailException("잘못된 email 주소 입니다.");
+        }
     }
 
     public String getUserId() {
@@ -31,8 +63,22 @@ public class User {
         return name;
     }
 
+    public void setName(String name) throws IllegalUserNameException {
+        checkUserName(name);
+        this.name = name;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) throws IllegalEmailException {
+        checkEmail(email);
+        this.email = email;
+    }
+
+    public boolean equalsPassword(String password) {
+        return this.password.equals(password);
     }
 
     public static class Builder {
@@ -69,38 +115,6 @@ public class User {
             checkUserName(name);
             checkEmail(email);
             return new User(this);
-        }
-
-        private boolean checkBlankInString(String str) {
-            return str.contains(" ");
-        }
-
-        private boolean checkLengthOfString(String str) {
-            return str.length() <= 0;
-        }
-
-        private void checkUserId(String userId) throws IllegalUserIdException {
-            if (checkLengthOfString(userId) || checkBlankInString(userId)) {
-                throw new IllegalUserIdException("잘못된 ID 입니다.");
-            }
-        }
-
-        private void checkPassword(String password) throws IllegalPasswordException {
-            if (checkLengthOfString(password) || checkBlankInString(password)) {
-                throw new IllegalPasswordException("잘못된 password 입니다.");
-            }
-        }
-
-        private void checkUserName(String userName) throws IllegalUserNameException {
-            if (checkLengthOfString(userName) || checkBlankInString(userName)) {
-                throw new IllegalUserNameException("잘못된 이름 입니다.");
-            }
-        }
-
-        private void checkEmail(String email) throws IllegalEmailException {
-            if (checkLengthOfString(email) || checkBlankInString(email)) {
-                throw new IllegalEmailException("잘못된 email 주소 입니다.");
-            }
         }
     }
 }

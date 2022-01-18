@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.BDDMockito.given;
 
+import com.kakao.cafe.application.user.dto.LoginRequest;
 import com.kakao.cafe.application.user.dto.SignUpRequest;
 import com.kakao.cafe.application.user.dto.UpdateRequest;
 import com.kakao.cafe.application.user.dto.UserInfo;
@@ -15,6 +16,7 @@ import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
 import com.kakao.cafe.domain.user.exceptions.UserIdDuplicationException;
 import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
+import com.kakao.cafe.domain.user.exceptions.WrongPasswordException;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,13 +26,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class StoreUserInfoAdapterTest {
+class UserAdapterTest {
 
     @Mock
     UserInfoRepository userInfoRepository;
 
     @InjectMocks
-    StoreUserInfoAdapter storeUserInfoAdapter;
+    UserAdapter userAdapter;
 
     @DisplayName("정상 회원가입 테스트")
     @Test
@@ -39,7 +41,7 @@ class StoreUserInfoAdapterTest {
         SignUpRequest signUpRequest = new SignUpRequest("champ", "test", "HaChanho", "champ@kakao.com");
 
         // then
-        assertThatNoException().isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+        assertThatNoException().isThrownBy(() -> userAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("ID 누락 user 회원가입 테스트")
@@ -50,7 +52,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalUserIdException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("ID 공백 user 회원가입 테스트")
@@ -61,7 +63,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalUserIdException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("Password 누락 user 회원가입 테스트")
@@ -72,7 +74,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalPasswordException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("Password 공백 user 회원가입 테스트")
@@ -83,7 +85,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalPasswordException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("이름 누락 user 회원가입 테스트")
@@ -94,7 +96,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalUserNameException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("이름 공백 user 회원가입 테스트")
@@ -105,7 +107,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalUserNameException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("Email 누락 user 회원가입 테스트")
@@ -116,7 +118,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalEmailException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("Email 공백 user 회원가입 테스트")
@@ -127,7 +129,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(IllegalEmailException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("ID 중복없는 회원가입 테스트")
@@ -138,7 +140,7 @@ class StoreUserInfoAdapterTest {
         given(userInfoRepository.findByUserId("champ")).willReturn(Optional.empty());
 
         // then
-        assertThatNoException().isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+        assertThatNoException().isThrownBy(() -> userAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("ID 중복있는 회원가입 테스트")
@@ -152,11 +154,11 @@ class StoreUserInfoAdapterTest {
                                            .name("Champion")
                                            .email("Champion@kakao.com")
                                            .build();
-        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
+        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
 
         // then
         assertThatExceptionOfType(UserIdDuplicationException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.registerUser(signUpRequest));
+            .isThrownBy(() -> userAdapter.registerUser(signUpRequest));
     }
 
     @DisplayName("ID검색 성공 테스트")
@@ -170,10 +172,10 @@ class StoreUserInfoAdapterTest {
                                            .name("HaChanho")
                                            .email("champ@kakao.com")
                                            .build();
-        given(userInfoRepository.findByUserId(userId)).willReturn(Optional.of(UserVO.from(givenUser)));
+        given(userInfoRepository.findByUserId(userId)).willReturn(Optional.of(givenUser));
 
         // when
-        UserInfo foundUser = storeUserInfoAdapter.findUserByUserId(userId);
+        UserInfo foundUser = userAdapter.findUserByUserId(userId);
 
         // then
         assertThat(foundUser).isEqualTo(UserInfo.from(givenUser));
@@ -188,7 +190,7 @@ class StoreUserInfoAdapterTest {
 
         // then
         assertThatExceptionOfType(UserNotExistException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.findUserByUserId(userId));
+            .isThrownBy(() -> userAdapter.findUserByUserId(userId));
     }
 
     @DisplayName("정상 업데이트 테스트")
@@ -196,16 +198,17 @@ class StoreUserInfoAdapterTest {
     void updateNormalUser()
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
         // given
+        String password = "test";
         User givenUser = new User.Builder().userId("champ")
-                                           .password("test")
+                                           .password(password)
                                            .name("HaChanho")
                                            .email("champ@kakao.com")
                                            .build();
-        UpdateRequest updateRequest = new UpdateRequest("kakao", "kakao@kakao.com");
-        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
+        UpdateRequest updateRequest = new UpdateRequest(password, "kakao", "kakao@kakao.com");
+        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
 
         // then
-        assertThatNoException().isThrownBy(() -> storeUserInfoAdapter.updateUser(givenUser.getUserId(), updateRequest));
+        assertThatNoException().isThrownBy(() -> userAdapter.updateUser(givenUser.getUserId(), updateRequest));
     }
 
     @DisplayName("이름 누락 user 업데이트 테스트")
@@ -213,16 +216,17 @@ class StoreUserInfoAdapterTest {
     void updateNullUserIdUser()
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
         // given
+        String password = "test";
         User givenUser = new User.Builder().userId("champ")
-                                           .password("test")
+                                           .password(password)
                                            .name("HaChanho")
                                            .email("champ@kakao.com")
                                            .build();
-        UpdateRequest updateRequest = new UpdateRequest("", "kakao@kakao.com");
-        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
+        UpdateRequest updateRequest = new UpdateRequest(password, "", "kakao@kakao.com");
+        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
 
         // then
-        assertThatExceptionOfType(IllegalUserNameException.class).isThrownBy(() -> storeUserInfoAdapter.updateUser(
+        assertThatExceptionOfType(IllegalUserNameException.class).isThrownBy(() -> userAdapter.updateUser(
             givenUser.getUserId(),
             updateRequest
         ));
@@ -233,16 +237,17 @@ class StoreUserInfoAdapterTest {
     void updateBlankUserIdUser()
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
         // given
+        String password = "test";
         User givenUser = new User.Builder().userId("champ")
-                                           .password("test")
+                                           .password(password)
                                            .name("HaChanho")
                                            .email("champ@kakao.com")
                                            .build();
-        UpdateRequest updateRequest = new UpdateRequest("kaka o", "kakao@kakao.com");
-        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
+        UpdateRequest updateRequest = new UpdateRequest(password, "kaka o", "kakao@kakao.com");
+        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
 
         // then
-        assertThatExceptionOfType(IllegalUserNameException.class).isThrownBy(() -> storeUserInfoAdapter.updateUser(
+        assertThatExceptionOfType(IllegalUserNameException.class).isThrownBy(() -> userAdapter.updateUser(
             givenUser.getUserId(),
             updateRequest
         ));
@@ -253,16 +258,17 @@ class StoreUserInfoAdapterTest {
     void updateNullEmailUser()
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
         // given
+        String password = "test";
         User givenUser = new User.Builder().userId("champ")
-                                           .password("test")
+                                           .password(password)
                                            .name("HaChanho")
                                            .email("champ@kakao.com")
                                            .build();
-        UpdateRequest updateRequest = new UpdateRequest("kakao", "");
-        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
+        UpdateRequest updateRequest = new UpdateRequest(password, "kakao", "");
+        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
 
         // then
-        assertThatExceptionOfType(IllegalEmailException.class).isThrownBy(() -> storeUserInfoAdapter.updateUser(
+        assertThatExceptionOfType(IllegalEmailException.class).isThrownBy(() -> userAdapter.updateUser(
             givenUser.getUserId(),
             updateRequest
         ));
@@ -273,17 +279,18 @@ class StoreUserInfoAdapterTest {
     void updateBlankEmailUser()
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
         // given
+        String password = "test";
         User givenUser = new User.Builder().userId("champ")
-                                           .password("test")
+                                           .password(password)
                                            .name("HaChanho")
                                            .email("champ@kakao.com")
                                            .build();
-        UpdateRequest updateRequest = new UpdateRequest("kakao", "kaka o@kakao.com");
-        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(UserVO.from(givenUser)));
+        UpdateRequest updateRequest = new UpdateRequest(password, "kakao", "kaka o@kakao.com");
+        given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
 
         // then
         assertThatExceptionOfType(IllegalEmailException.class)
-            .isThrownBy(() -> storeUserInfoAdapter.updateUser(givenUser.getUserId(), updateRequest));
+            .isThrownBy(() -> userAdapter.updateUser(givenUser.getUserId(), updateRequest));
     }
 
     @DisplayName("존재하지 않는 user 업데이트")
@@ -291,13 +298,65 @@ class StoreUserInfoAdapterTest {
     void updateNotExistUser() {
         // given
         String userId = "champ";
-        UpdateRequest updateRequest = new UpdateRequest("kakao", "kaka o@kakao.com");
+        UpdateRequest updateRequest = new UpdateRequest("test", "kakao", "kaka o@kakao.com");
         given(userInfoRepository.findByUserId(userId)).willReturn(Optional.empty());
 
         // then
-        assertThatExceptionOfType(UserNotExistException.class).isThrownBy(() -> storeUserInfoAdapter.updateUser(
+        assertThatExceptionOfType(UserNotExistException.class).isThrownBy(() -> userAdapter.updateUser(
             userId,
             updateRequest
         ));
+    }
+
+    @DisplayName("정상 로그인 테스트")
+    @Test
+    void loginNormalUser()
+        throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
+        // given
+        String givenUserId = "champ";
+        String givenPassword = "test";
+        LoginRequest loginRequest = new LoginRequest(givenUserId, givenPassword);
+        User givenUser = new User.Builder().userId(givenUserId)
+                                           .password(givenPassword)
+                                           .name("champion")
+                                           .email("champ@kakao.com")
+                                           .build();
+        given(userInfoRepository.findByUserId(givenUserId)).willReturn(Optional.of(givenUser));
+
+        // then
+        assertThatNoException().isThrownBy(() -> userAdapter.login(loginRequest));
+    }
+
+    @DisplayName("ID 오류 로그인 테스트")
+    @Test
+    void loginUserIdMismatch() {
+        // given
+        String givenUserId = "champ";
+        String givenPassword = "test";
+        LoginRequest loginRequest = new LoginRequest(givenUserId, givenPassword);
+
+        given(userInfoRepository.findByUserId(givenUserId)).willReturn(Optional.empty());
+
+        // then
+        assertThatExceptionOfType(UserNotExistException.class).isThrownBy(() -> userAdapter.login(loginRequest));
+    }
+
+    @DisplayName("패스워드 오류 로그인 테스트")
+    @Test
+    void loginPasswordMismatch()
+        throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
+        // given
+        String givenUserId = "champ";
+        String givenPassword = "test";
+        LoginRequest loginRequest = new LoginRequest(givenUserId, givenPassword);
+        User givenUser = new User.Builder().userId(givenUserId)
+                                           .password(givenPassword + "aaaa")
+                                           .name("champion")
+                                           .email("champ@kakao.com")
+                                           .build();
+        given(userInfoRepository.findByUserId(givenUserId)).willReturn(Optional.of(givenUser));
+
+        // then
+        assertThatExceptionOfType(WrongPasswordException.class).isThrownBy(() -> userAdapter.login(loginRequest));
     }
 }

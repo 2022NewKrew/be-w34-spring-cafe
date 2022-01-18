@@ -1,15 +1,25 @@
 package com.kakao.cafe.adapter.out.infra.persistence.user;
 
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.exceptions.IllegalEmailException;
+import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.sql.DataSource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 public class JdbcUserInfoRepository implements UserInfoRepository {
+
+    private static final String SELECT_ALL = "select * from user";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -38,32 +48,34 @@ public class JdbcUserInfoRepository implements UserInfoRepository {
     }
 
     @Override
-    public List<UserVO> getAllUserList() {
-        String sql = "select * from user";
-        return jdbcTemplate.query(
-            sql,
-            (rs, count) -> new UserVO(
-                rs.getString("id"),
-                rs.getString("password"),
-                rs.getString("name"),
-                rs.getString("email")
-            )
-        );
+    public List<User> getAllUserList() {
+        return jdbcTemplate.query(SELECT_ALL, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
     }
 
     @Override
-    public Optional<UserVO> findByUserId(String userId) {
-        String sql = "select * from user where id = ?";
-        List<UserVO> userVOList = jdbcTemplate.query(
-            sql,
-            (rs, count) -> new UserVO(
-                rs.getString("id"),
-                rs.getString("password"),
-                rs.getString("name"),
-                rs.getString("email")
-            ), userId
-        );
-        return userVOList.size() == 0 ? Optional.empty()
-                                      : Optional.of(userVOList.get(0));  // TODO : size >= 2 일 때 예외처리 필요
+    public Optional<User> findByUserId(String userId) {
+        String sql = SELECT_ALL + " where id = ?";
+        try {
+            User user = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum), userId);
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    private static final class UserMapper implements RowMapper<User> {
+
+        @Override
+        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+            try {
+                return new User.Builder().userId(rs.getString("id"))
+                                         .password(rs.getString("password"))
+                                         .name(rs.getString("name"))
+                                         .email(rs.getString("email"))
+                                         .build();
+            } catch (IllegalUserIdException | IllegalPasswordException | IllegalUserNameException | IllegalEmailException e) {
+                throw new SQLException("DB에서 값을 읽어오지 못했습니다.");
+            }
+        }
     }
 }

@@ -2,13 +2,18 @@ package com.kakao.cafe.adapter.in.presentation.user;
 
 import com.kakao.cafe.application.user.dto.UpdateRequest;
 import com.kakao.cafe.application.user.port.in.UpdateUserInfoUseCase;
-import com.kakao.cafe.view.ErrorMessage;
+import com.kakao.cafe.domain.user.exceptions.IllegalEmailException;
+import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
+import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
+import com.kakao.cafe.domain.user.exceptions.WrongPasswordException;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserUpdateController {
@@ -22,16 +27,11 @@ public class UserUpdateController {
     }
 
     @PostMapping("/users/{userId}/form")
-    public String update(@PathVariable String userId, UpdateRequest updateRequest, RedirectAttributes redirectAttributes) {
-        try {
-            updateUserInfoUseCase.updateUserInfo(userId, updateRequest);
-            log.info("{} info updated", userId);
-            return "redirect:/users";
-        } catch (Exception e) {
-            log.info("{}", e.getMessage());
-            String message = ErrorMessage.getErrorMessage(e);
-            redirectAttributes.addAttribute("message", message);
-            return "redirect:/errors";
-        }
+    public String update(HttpServletRequest request, @PathVariable String userId, UpdateRequest updateRequest)
+        throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException, UserNotExistException, WrongPasswordException {
+        log.info("[{}]User {} required info update", request.getRequestURI(), userId);
+        updateUserInfoUseCase.updateUserInfo(userId, updateRequest);
+        log.info("[{}]Success user {} info update", request.getRequestURI(), userId);
+        return "redirect:/users";
     }
 }

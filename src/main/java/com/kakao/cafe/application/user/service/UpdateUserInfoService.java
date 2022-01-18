@@ -8,6 +8,7 @@ import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
 import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
+import com.kakao.cafe.domain.user.exceptions.WrongPasswordException;
 
 public class UpdateUserInfoService implements UpdateUserInfoUseCase {
 
@@ -19,7 +20,7 @@ public class UpdateUserInfoService implements UpdateUserInfoUseCase {
 
     @Override
     public void updateUserInfo(String userId, UpdateRequest updateRequest)
-        throws UserNotExistException, IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
+        throws UserNotExistException, IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException, WrongPasswordException {
         updateUserInfoPort.updateUser(userId, updateRequest);
     }
 }
