@@ -31,6 +31,7 @@ class PostServiceTest {
     @Qualifier("postJdbcRepositoryImpl")
     @Autowired
     private PostRepository postRepository;
+    private Post post;
     private final int size = 20;
     private final long writerId = 1L;
 
@@ -45,6 +46,7 @@ class PostServiceTest {
                     .build();
             postRepository.save(post);
         }
+        this.post = postRepository.findAll().stream().max((p1, p2) -> (int) (p1.getId() - p2.getId())).orElse(null);
     }
 
     @DisplayName("정상적으로 게시글을 저장할 때, 에러가 발생하지 않아야 한다.")
@@ -134,6 +136,63 @@ class PostServiceTest {
 
         assertThatExceptionOfType(NoAuthorizationException.class).isThrownBy(() -> {
             PostDto post = postService.getPostById(id, writerId);
+        });
+    }
+
+    @DisplayName("게시글 수정하기 - 정상")
+    @Test
+    void updatePost() {
+        long id = post.getId();
+        long writerId = post.getWriterId();
+        String title = "게시글 제목 수정";
+        String content = "게시글 내용 수정 입니다.";
+        PostWriteRequest request = PostWriteRequest.builder()
+                .title(title)
+                .content(content)
+                .build();
+
+        assertThatNoException().isThrownBy(() -> {
+            postService.updatePost(id, writerId, request);
+
+            Post updatedPost = postRepository.findById(id).orElse(null);
+            assertThat(updatedPost).isNotNull();
+            assertThat(updatedPost.getId()).isEqualTo(id);
+            assertThat(updatedPost.getTitle()).isEqualTo(title);
+            assertThat(updatedPost.getContent()).isEqualTo(content);
+            assertThat(updatedPost.getUpdatedAt()).isNotNull();
+        });
+    }
+
+    @DisplayName("게시글 수정하기 - 게시글 id가 존재하지 않는 경우 에러가 발생해야 한다.")
+    @Test
+    void updatePost_idNotExist() {
+        long id = post.getId() + 1;
+        long writerId = post.getWriterId();
+        String title = "게시글 제목 수정";
+        String content = "게시글 내용 수정 입니다.";
+        PostWriteRequest request = PostWriteRequest.builder()
+                .title(title)
+                .content(content)
+                .build();
+
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            postService.updatePost(id, writerId, request);
+        });
+    }
+
+    @DisplayName("게시글 수정하기 - 게시글 작성자 id가 일치하지 않는 경우 에러가 발생해야 한다.")
+    @Test
+    void updatePost_writerIdNotMatch() {
+        long id = post.getId();
+        long writerId = post.getWriterId() + 1;
+        String title = "게시글 제목 수정";
+        String content = "게시글 내용 수정 입니다.";
+        PostWriteRequest request = PostWriteRequest.builder()
+                .title(title)
+                .content(content)
+                .build();
+        assertThatExceptionOfType(NoAuthorizationException.class).isThrownBy(() -> {
+            postService.updatePost(id, writerId, request);
         });
     }
 

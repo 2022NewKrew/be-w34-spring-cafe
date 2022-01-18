@@ -59,4 +59,18 @@ public class PostService {
         return post;
     }
 
+    public void updatePost(long id, long writerId, PostWriteRequest request) {
+        PostDto post = getPostById(id, writerId);
+        try {
+            postRepository.update(Post.builder()
+                    .id(post.getId())
+                    .title(request.getTitle())
+                    .content(request.getContent())
+                    .updatedAt(LocalDateTime.now())
+                    .build());
+        } catch (DataAccessException e) {
+            throw new IllegalArgumentException("게시글 수정에 실패하였습니다.");
+        }
+    }
+
 }
