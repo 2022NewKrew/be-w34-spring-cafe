@@ -27,4 +27,8 @@ public class SimpleArticleRepository implements ArticleRepository {
     public List<Article> findAll() {
         return articles;
     }
+
+    @Override
+    public void update(Long id, Article article) {
+    }
 }

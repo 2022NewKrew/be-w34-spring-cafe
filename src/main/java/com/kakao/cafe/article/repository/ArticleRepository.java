@@ -10,4 +10,6 @@ public interface ArticleRepository {
     Article findById(Long id);
 
     List<Article> findAll();
+
+    void update(Long id, Article article);
 }

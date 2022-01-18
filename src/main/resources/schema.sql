@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS articles;
 DROP TABLE IF EXISTS users;
 CREATE TABLE users
 (
@@ -12,7 +13,6 @@ CREATE TABLE users
     name     varchar(20) not null,
     email    varchar(50) not null
 );
-DROP TABLE IF EXISTS articles;
 CREATE TABLE articles
 (
     id
@@ -21,7 +21,8 @@ CREATE TABLE articles
         primary
         key,
     writer
-             varchar(20) not null,
+             varchar(20),
     title    varchar(50) not null,
-    contents longtext    not null
+    contents longtext    not null,
+    foreign key (writer) references users (userId) on update cascade
 );

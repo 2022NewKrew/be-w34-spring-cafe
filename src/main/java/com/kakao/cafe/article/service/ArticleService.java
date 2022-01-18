@@ -2,14 +2,17 @@ package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.repository.ArticleRepository;
+import com.kakao.cafe.article.web.dto.ArticleModifyDto;
 import com.kakao.cafe.article.web.dto.ArticleSaveDto;
 import com.kakao.cafe.article.web.dto.ArticleShowDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class ArticleService {
 
@@ -42,5 +45,13 @@ public class ArticleService {
 
     public ArticleShowDto findArticle(Long id) {
         return createArticleShowDto(articleRepository.findById(id));
+    }
+
+    public void modifyArticle(Long id, ArticleModifyDto articleModifyDto) {
+        Article article = Article.builder()
+            .title(articleModifyDto.getTitle())
+            .contents(articleModifyDto.getContents())
+            .build();
+        articleRepository.update(id, article);
     }
 }

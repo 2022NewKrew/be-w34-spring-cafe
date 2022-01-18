@@ -15,6 +15,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     private static final String INSERT_QUERY = "insert into articles(writer, title, contents) values(?, ?, ?)";
     private static final String SELECT_QUERY = "select * from articles where id=?";
     private static final String SELECT_ALL_QUERY = "select * from articles";
+    private static final String UPDATE_QUERY = "update articles set title=?, contents=? where id=?";
 
     @Override
     public void save(Article article) {
@@ -31,6 +32,12 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query(SELECT_ALL_QUERY, mapper);
+    }
+
+    @Override
+    public void update(Long id, Article article) {
+        jdbcTemplate.update(UPDATE_QUERY,
+            article.getTitle(), article.getContents(), id.toString());
     }
 
     static RowMapper<Article> mapper = (rs, rowNum) ->
