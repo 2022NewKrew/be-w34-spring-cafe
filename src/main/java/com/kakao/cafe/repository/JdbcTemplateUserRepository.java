@@ -41,19 +41,25 @@ public class JdbcTemplateUserRepository implements UserRepository{
 
     @Override
     public Optional<User> findById(Long id) {
-        List<User> result =  jdbcTemplate.query("select * from `user` where id = ?", userRowMapper(), id);
+        List<User> result =  jdbcTemplate.query("select * from `user` where `id` = ?", userRowMapper(), id);
         return result.stream().findAny();
     }
 
     @Override
     public Optional<User> findByNickname(String nickname) {
-        List<User> result =  jdbcTemplate.query("select * from `user` where name = ?", userRowMapper(), nickname);
+        List<User> result =  jdbcTemplate.query("select * from `user` where `nickname` = ?", userRowMapper(), nickname);
         return result.stream().findAny();
     }
 
     @Override
     public List<User> findAll() {
         return jdbcTemplate.query("select * from `user`", userRowMapper());
+    }
+
+    public Optional<User> findByNicknameAndPassword(String nickname, String password) {
+        final String sql = "select * from `user` where `nickname` = ? and `password` = ?";
+        List<User> result = jdbcTemplate.query(sql, userRowMapper(), nickname, password);
+        return result.stream().findAny();
     }
 
     private RowMapper<User> userRowMapper(){
@@ -65,4 +71,5 @@ public class JdbcTemplateUserRepository implements UserRepository{
                 .email(rs.getString("email"))
                 .build();
     }
+
 }
