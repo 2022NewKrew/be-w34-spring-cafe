@@ -7,6 +7,7 @@ import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
 import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
+import com.kakao.cafe.domain.user.exceptions.WrongPasswordException;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ public class UserUpdateController {
 
     @PostMapping("/users/{userId}/form")
     public String update(HttpServletRequest request, @PathVariable String userId, UpdateRequest updateRequest)
-        throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException, UserNotExistException {
+        throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException, UserNotExistException, WrongPasswordException {
         log.info("[{}]User {} required info update", request.getRequestURI(), userId);
         updateUserInfoUseCase.updateUserInfo(userId, updateRequest);
         log.info("[{}]Success user {} info update", request.getRequestURI(), userId);

@@ -21,7 +21,6 @@ public class CafeControllerAdvice {
         return "error";
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(Exception.class)
     public String domainExceptionHandler(HttpServletRequest request, RedirectAttributes redirectAttributes, Exception e) {
         String url = request.getRequestURI();

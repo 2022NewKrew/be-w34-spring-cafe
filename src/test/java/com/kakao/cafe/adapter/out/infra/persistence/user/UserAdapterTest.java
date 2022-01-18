@@ -198,12 +198,13 @@ class UserAdapterTest {
     void updateNormalUser()
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
         // given
+        String password = "test";
         User givenUser = new User.Builder().userId("champ")
-                                           .password("test")
+                                           .password(password)
                                            .name("HaChanho")
                                            .email("champ@kakao.com")
                                            .build();
-        UpdateRequest updateRequest = new UpdateRequest("kakao", "kakao@kakao.com");
+        UpdateRequest updateRequest = new UpdateRequest(password, "kakao", "kakao@kakao.com");
         given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
 
         // then
@@ -215,12 +216,13 @@ class UserAdapterTest {
     void updateNullUserIdUser()
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
         // given
+        String password = "test";
         User givenUser = new User.Builder().userId("champ")
-                                           .password("test")
+                                           .password(password)
                                            .name("HaChanho")
                                            .email("champ@kakao.com")
                                            .build();
-        UpdateRequest updateRequest = new UpdateRequest("", "kakao@kakao.com");
+        UpdateRequest updateRequest = new UpdateRequest(password, "", "kakao@kakao.com");
         given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
 
         // then
@@ -235,12 +237,13 @@ class UserAdapterTest {
     void updateBlankUserIdUser()
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
         // given
+        String password = "test";
         User givenUser = new User.Builder().userId("champ")
-                                           .password("test")
+                                           .password(password)
                                            .name("HaChanho")
                                            .email("champ@kakao.com")
                                            .build();
-        UpdateRequest updateRequest = new UpdateRequest("kaka o", "kakao@kakao.com");
+        UpdateRequest updateRequest = new UpdateRequest(password, "kaka o", "kakao@kakao.com");
         given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
 
         // then
@@ -255,12 +258,13 @@ class UserAdapterTest {
     void updateNullEmailUser()
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
         // given
+        String password = "test";
         User givenUser = new User.Builder().userId("champ")
-                                           .password("test")
+                                           .password(password)
                                            .name("HaChanho")
                                            .email("champ@kakao.com")
                                            .build();
-        UpdateRequest updateRequest = new UpdateRequest("kakao", "");
+        UpdateRequest updateRequest = new UpdateRequest(password, "kakao", "");
         given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
 
         // then
@@ -275,12 +279,13 @@ class UserAdapterTest {
     void updateBlankEmailUser()
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
         // given
+        String password = "test";
         User givenUser = new User.Builder().userId("champ")
-                                           .password("test")
+                                           .password(password)
                                            .name("HaChanho")
                                            .email("champ@kakao.com")
                                            .build();
-        UpdateRequest updateRequest = new UpdateRequest("kakao", "kaka o@kakao.com");
+        UpdateRequest updateRequest = new UpdateRequest(password, "kakao", "kaka o@kakao.com");
         given(userInfoRepository.findByUserId(givenUser.getUserId())).willReturn(Optional.of(givenUser));
 
         // then
@@ -293,7 +298,7 @@ class UserAdapterTest {
     void updateNotExistUser() {
         // given
         String userId = "champ";
-        UpdateRequest updateRequest = new UpdateRequest("kakao", "kaka o@kakao.com");
+        UpdateRequest updateRequest = new UpdateRequest("test", "kakao", "kaka o@kakao.com");
         given(userInfoRepository.findByUserId(userId)).willReturn(Optional.empty());
 
         // then

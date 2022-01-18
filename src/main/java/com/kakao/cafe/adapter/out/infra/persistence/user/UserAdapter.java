@@ -58,7 +58,23 @@ public class UserAdapter implements RegisterUserPort, GetUserInfoPort, UpdateUse
     public void login(LoginRequest loginRequest) throws UserNotExistException, WrongPasswordException {
         User user = getUserByUserId(loginRequest.getUserId());
 
-        if (!user.equalsPassword(loginRequest.getPassword())) {
+        checkPassword(user, loginRequest.getPassword());
+    }
+
+    @Override
+    public void updateUser(String userId, UpdateRequest updateRequest)
+        throws UserNotExistException, IllegalUserNameException, IllegalEmailException, WrongPasswordException {
+        User user = getUserByUserId(userId);
+
+        checkPassword(user, updateRequest.getPassword());
+
+        user.setName(updateRequest.getName());
+        user.setEmail(updateRequest.getEmail());
+        userInfoRepository.update(user);
+    }
+
+    private void checkPassword(User user, String password) throws WrongPasswordException {
+        if (!user.equalsPassword(password)) {
             throw new WrongPasswordException("패스워드가 잘못 되었습니다.");
         }
     }
@@ -84,15 +100,5 @@ public class UserAdapter implements RegisterUserPort, GetUserInfoPort, UpdateUse
         if (userInfoRepository.findByUserId(userId).isPresent()) {
             throw new UserIdDuplicationException("ID는 중복될 수 없습니다.");
         }
-    }
-
-    @Override
-    public void updateUser(String userId, UpdateRequest updateRequest)
-        throws UserNotExistException, IllegalUserNameException, IllegalEmailException {
-        User user = getUserByUserId(userId);
-
-        user.setName(updateRequest.getName());
-        user.setEmail(updateRequest.getEmail());
-        userInfoRepository.update(user);
     }
 }
