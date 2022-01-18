@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,12 +29,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void create(PostCreateDto postCreateDto) {
-        Member member = memberRepository.findByUserId(postCreateDto.getWriter());
-        if (member == null)
-            throw new IllegalArgumentException("user not found");
+    public void create(PostCreateDto postCreateDto, HttpSession session) {
+        Member loginMember = (Member)session.getAttribute("sessionedUser");
 
-        Post post = Post.of(postCreateDto, member);
+        Post post = Post.of(postCreateDto, loginMember);
         postRepository.save(post);
     }
 

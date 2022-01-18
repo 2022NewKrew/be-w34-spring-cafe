@@ -1,25 +1,15 @@
 package com.kakao.cafe.dto;
 
 public class PostCreateDto {
-    private String writer;
     private String title;
     private String contents;
 
     public PostCreateDto() {
     }
 
-    public PostCreateDto(String writer, String title, String contents) {
-        this.writer = writer;
+    public PostCreateDto(String title, String contents) {
         this.title = title;
         this.contents = contents;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
     }
 
     public String getTitle() {
