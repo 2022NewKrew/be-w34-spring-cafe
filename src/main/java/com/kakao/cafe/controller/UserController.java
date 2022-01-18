@@ -39,9 +39,9 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("/{userId}")
-    public String user(@PathVariable String userId, Model model) {
-        User user = userService.findById(userId);
+    @GetMapping("/{id}")
+    public String user(@PathVariable Integer id, Model model) {
+        User user = userService.findById(id);
         model.addAttribute("user", user);
         return "user/profile";
     }

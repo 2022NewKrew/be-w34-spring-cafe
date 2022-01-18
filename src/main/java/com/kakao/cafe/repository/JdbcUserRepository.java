@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 import java.util.Optional;
 
-public class JdbcUserRepository implements Repository<User, String>{
+public class JdbcUserRepository implements Repository<User, Integer>{
 
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper userMapper;
@@ -32,9 +32,9 @@ public class JdbcUserRepository implements Repository<User, String>{
     }
 
     @Override
-    public Optional<User> readById(String userId) {
-        String sqlQuery = "SELECT * FROM MEMBER WHERE userId = ?";
-        User user = jdbcTemplate.queryForObject(sqlQuery, userMapper, userId);
+    public Optional<User> readById(Integer id) {
+        String sqlQuery = "SELECT * FROM MEMBER WHERE id = ?";
+        User user = jdbcTemplate.queryForObject(sqlQuery, userMapper, id);
         return Optional.ofNullable(user);
     }
 

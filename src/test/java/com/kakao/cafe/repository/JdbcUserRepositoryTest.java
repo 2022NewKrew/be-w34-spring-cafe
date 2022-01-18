@@ -46,7 +46,7 @@ class JdbcUserRepositoryTest {
     void createUser() {
         // given
         JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate, userMapper, new SecurityConfig().passwordEncoder());
-        User user = new User(userId, password, email);
+        User user = new User(1, userId, password, email);
 
         // when & then
         jdbcUserRepository.create(user);
@@ -56,8 +56,8 @@ class JdbcUserRepositoryTest {
     @DisplayName("[성공] JdbcUserRepository 유저 전체 조회")
     void readUsers() {
         JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate, userMapper, new SecurityConfig().passwordEncoder());
-        User user = new User(userId, password, email);
-        User user2 = new User(userId2, password2, email2);
+        User user = new User(1, userId, password, email);
+        User user2 = new User(2, userId2, password2, email2);
 
         // when
         jdbcUserRepository.create(user);
@@ -72,16 +72,16 @@ class JdbcUserRepositoryTest {
     @DisplayName("[성공] JdbcUserRepository 유저 단일 조회")
     void readUser() {
         JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate, userMapper, new SecurityConfig().passwordEncoder());
-        User user = new User(userId, password, email);
-        User user2 = new User(userId2, password2, email2);
+        User user = new User(1, userId, password, email);
+        User user2 = new User(2, userId2, password2, email2);
 
         // when
         jdbcUserRepository.create(user);
         jdbcUserRepository.create(user2);
 
         // then
-        Optional<User> answer = jdbcUserRepository.readById(userId2);
-        Assertions.assertEquals("testUserId2",
+        Optional<User> answer = jdbcUserRepository.readById(1);
+        Assertions.assertEquals("chen",
                 answer.orElseThrow(() -> new RuntimeException("userId가 null입니다")).getUserId());
     }
 }

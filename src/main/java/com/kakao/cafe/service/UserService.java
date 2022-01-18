@@ -10,6 +10,6 @@ public interface UserService {
 
     List<User> getUsers();
 
-    User findById(String id);
+    User findById(Integer id);
 
 }
