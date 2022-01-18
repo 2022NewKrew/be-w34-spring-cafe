@@ -1,6 +1,5 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.constants.ArticleDBConstants;
 import com.kakao.cafe.constants.UserDBConstants;
 import com.kakao.cafe.domain.User;
 import org.springframework.dao.DataAccessException;
@@ -56,7 +55,7 @@ public class UserDao implements UserRepository {
                     userId
             );
         } catch (DataAccessException e) {
-            throw new NoSuchElementException("해당 Id를 갖는 유저가 존재하지 않음");
+            throw new NoSuchElementException(String.format("id (%s) 를 갖는 유저가 존재하지 않음", userId));
         }
 
         return user;
@@ -73,7 +72,7 @@ public class UserDao implements UserRepository {
                     name
             );
         } catch (DataAccessException e) {
-            throw new NoSuchElementException("해당 name을 갖는 유저가 존재하지 않음");
+            throw new NoSuchElementException(String.format("name (%s) 을 갖는 유저가 존재하지 않음.", name));
         }
 
         return user;

@@ -14,11 +14,6 @@ public class UserRepositoryTest {
 
     @Test
     void testSaveUser() {
-        User user = new User("aid", "test@daum.net", "testname", "testpasswd");
-        try {
-            userRepository.save(user);
-        } catch (SQLException e) {
-        }
 
 
     }

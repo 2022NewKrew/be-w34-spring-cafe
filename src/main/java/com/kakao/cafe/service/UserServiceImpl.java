@@ -50,7 +50,6 @@ public class UserServiceImpl implements UserService {
         if (!(password != null && password.equals(user.getPassword()))) {
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
-        System.out.println(user.getId());
 
         User newUser = new User(
                 user.getId(),
