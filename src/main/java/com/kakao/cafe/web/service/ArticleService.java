@@ -4,7 +4,11 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticleBoard;
 import com.kakao.cafe.domain.ArticlePage;
 import com.kakao.cafe.domain.Delete;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.NoArticleException;
+import com.kakao.cafe.exception.NoAuthorityException;
+import com.kakao.cafe.utils.SessionUtils;
+import com.kakao.cafe.web.dto.ArticleDTO;
 import com.kakao.cafe.web.repository.ArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,16 +47,15 @@ public class ArticleService {
 
 
   /**
-   * 게시 번호에 해당하는 게시물 반환
+   * 게시 번호에 해당하는 게시물 반환 및 조회수 증가
    *
    * @param id 게시 번호
+   * @throws NoArticleException 해당하는 게시물이 없음.
    * @return Article
    */
   public Article viewArticle(Long id) {
 
-    Article article = articleRepository.findById(id, Delete.NOT_DELETED)
-        .orElseThrow(NoArticleException::new);
-
+    Article article = findArticle(id);
     article.addReadCount();
     articleRepository.updateReadCount(article);
 
@@ -61,25 +64,71 @@ public class ArticleService {
 
 
   /**
-   * 새 게시물 생성 후 생성된 게시물 반환
+   * 게시 번호에 해당하는 게시물 반환
    *
-   * @param article 새 게시물
+   * @param id 게시 번호
+   * @throws NoArticleException 해당하는 게시물이 없음.
    * @return Article
    */
-  public Article createArticle(Article article) {
+  public Article findArticle(Long id) {
+    return articleRepository.findById(id, Delete.NOT_DELETED)
+        .orElseThrow(NoArticleException::new);
+  }
+
+
+  /**
+   * 새 게시물 생성 후 생성된 게시물 반환
+   *
+   * @param articleDTO 새 게시물 요청 값
+   * @return Article
+   */
+  public Article createArticle(ArticleDTO articleDTO) {
+    Article article = Article.of(articleDTO);
     return articleRepository.save(article);
   }
 
 
   /**
-   * 게시 번호에 해당하는 게시물 삭제
+   * 변경 권한이 있는지 확인 후 게시물 수정.
+   * 선 조회 후 항목 변경
+   *
+   * @param articleDTO 변경 게시물 요청 값
+   * @throws NoArticleException 게시 번호에 해당하는 게시물 미존재
+   * @throws NoAuthorityException 게시 수정 권한 없는 로그인 상태
+   * @return Article
+   */
+  public Article modifyArticle(ArticleDTO articleDTO) {
+
+    Article origin = articleRepository.findById(articleDTO.getId(), Delete.NOT_DELETED)
+        .orElseThrow(NoArticleException::new);
+
+    if(!hasEditPermissions(origin)) {
+      throw new NoAuthorityException();
+    }
+
+    Article modified = Article.create(origin, articleDTO);
+    articleRepository.save(modified);
+
+    return modified;
+  }
+
+
+  /**
+   * 삭제 권한이 있는지 확인 후, 게시 번호에 해당하는 게시물 삭제
    * 단, 유저에게만 보이지 않는 Soft delete 실행
    * Delete.SOFT_DELETED
    *
    * @param id 게시 번호
    * @throws NoArticleException 삭제할 게시물 없음.
+   * @throws NoAuthorityException 게시 삭제 권한 없는 로그인 상태
    */
   public void softDeleteArticle(Long id) {
+
+    Article article = findArticle(id);
+
+    if(!hasEditPermissions(article)) {
+      throw new NoAuthorityException();
+    }
 
     int deleteCount = articleRepository.softDeleteById(id, Delete.SOFT_DELETED);
 
@@ -87,6 +136,18 @@ public class ArticleService {
       throw new NoArticleException();
     }
 
+  }
+
+
+  /**
+   * 현재 로그인 유저가 해당 게시물에 대한 수정 권한이 있는지 판단
+   *
+   * @param article 수정할 게시물
+   * @return 수정 권한 여부
+   */
+  public boolean hasEditPermissions(Article article) {
+    User author = article.getAuthor();
+    return SessionUtils.isLoginUser(author);
   }
 
 }

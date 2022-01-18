@@ -1,10 +1,13 @@
 package com.kakao.cafe.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
-
+/**
+ * DB 삭제 칼럼 - is_deleted 와 매핑하여 사용.
+ *
+ */
 public enum Delete {
 
+  //'Not Deleted', 'Soft Deleted', 'Admin Only', 'Completely Deleted'
+  NULL,
   NOT_DELETED,
   SOFT_DELETED,
   ADMIN_ONLY,
@@ -14,8 +17,6 @@ public enum Delete {
   public String toString() {
     return name();
   }
-
-  //'Not Deleted', 'Soft Deleted', 'Admin Only', 'Completely Deleted'
 
 }
 

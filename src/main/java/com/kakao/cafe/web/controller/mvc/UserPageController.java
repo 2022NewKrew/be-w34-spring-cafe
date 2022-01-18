@@ -2,6 +2,7 @@ package com.kakao.cafe.web.controller.mvc;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.Users;
+import com.kakao.cafe.utils.SessionUtils;
 import com.kakao.cafe.web.common.EnableSession;
 import com.kakao.cafe.web.common.RequireLogin;
 import com.kakao.cafe.web.controller.KakaoCafePageController;
@@ -43,7 +44,7 @@ public class UserPageController {
   public String users(Model model, @PathVariable("id") Long id) {
 
     User user = userService.findUserById(id);
-    boolean isLoginUser = userService.isLoginUser(user);
+    boolean isLoginUser = SessionUtils.isLoginUser(user);
 
     model.addAttribute("user", new UserDTO(user));
     model.addAttribute("isLoginUser", isLoginUser);

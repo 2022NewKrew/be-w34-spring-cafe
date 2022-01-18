@@ -85,6 +85,7 @@ public class UserRepository {
         + "modified_at = now(),"
         + "last_login_at = ? "
         + "WHERE id = ?";
+
     jdbcTemplate.update(query,
         user.getEmail().toString(),
         user.getNickName(),
@@ -93,7 +94,9 @@ public class UserRepository {
         user.getPassword(),
         user.getCreateAt(),
         user.getLastLoginAt(),
-        user.getId());
+        user.getId()
+    );
+
     return user;
   }
 

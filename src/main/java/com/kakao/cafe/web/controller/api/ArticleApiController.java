@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @KakaoCafeApiController
@@ -37,7 +38,7 @@ public class ArticleApiController {
   @PostMapping("/article")
   public ResponseEntity<ArticleDTO> createArticle(@RequestBody ArticleDTO articleDTO) {
 
-    Article createdArticle = articleService.createArticle(Article.of(articleDTO));
+    Article createdArticle = articleService.createArticle(articleDTO);
 
     return ResponseEntity.status(HttpStatus.OK)
         .header(HttpHeaders.LOCATION, "/article/" + createdArticle.getId())
@@ -46,9 +47,26 @@ public class ArticleApiController {
 
 
   /**
-   * ID 해당 글 삭제 후 응답
+   * 해당 글 변경 후 결과 반환
    *
-   * @param id article_id
+   * @param articleDTO 글 정보
+   * @return ResponseEntity<ArticleDTO>
+   */
+  @PutMapping("/article")
+  public ResponseEntity<ArticleDTO> modifyArticle(@RequestBody ArticleDTO articleDTO) {
+
+    Article modifiedArticle = articleService.modifyArticle(articleDTO);
+
+    return ResponseEntity.status(HttpStatus.OK)
+        .header(HttpHeaders.LOCATION, "/article/" + modifiedArticle.getId())
+        .body(new ArticleDTO(modifiedArticle));
+  }
+
+
+  /**
+   * 해당 글 삭제 후 결과 반환
+   *
+   * @param id 게시 번호
    * @return ResponseEntity<ResponseDTO>
    */
   @DeleteMapping("/article/{id}")
@@ -59,7 +77,5 @@ public class ArticleApiController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(ResponseDTO.createSuccess());
   }
-
-
 
 }

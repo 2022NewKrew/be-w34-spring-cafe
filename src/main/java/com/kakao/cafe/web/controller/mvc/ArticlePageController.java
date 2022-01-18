@@ -2,6 +2,7 @@ package com.kakao.cafe.web.controller.mvc;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticleBoard;
+import com.kakao.cafe.exception.NoAuthorityException;
 import com.kakao.cafe.web.common.EnableSession;
 import com.kakao.cafe.web.common.RequireLogin;
 import com.kakao.cafe.web.controller.KakaoCafePageController;
@@ -27,32 +28,78 @@ public class ArticlePageController {
   }
 
 
+  /**
+   * 특정 페이지의 게시판 조회 화면
+   *
+   * @param model MVC
+   * @param pageIndex 게시판 페이지 번호
+   * @return articles.html
+   */
   @GetMapping({"/articles", "/articles/{pageIndex}"})
   public String getArticleBoard(Model model, @PathVariable Optional<Integer> pageIndex) {
 
     int boardPageIndex = pageIndex.orElse(ArticleBoard.FIRST_PAGE_INDEX);
     ArticleBoard articleBoard = articleService.getArticleBoard(boardPageIndex);
+
     model.addAttribute("articleBoard", new ArticleBoardDTO(articleBoard));
 
     return "articles";
   }
 
 
+  /**
+   * 게시물 조회 화면
+   *
+   * @param model MVC
+   * @param id 게시 번호
+   * @return article.html
+   */
   @RequireLogin
   @GetMapping("/article/{id}")
-  public String getArticle(Model model, @PathVariable Long id) {
+  public String showArticle(Model model, @PathVariable Long id) {
 
     Article article = articleService.viewArticle(id);
+    boolean editPermissions = articleService.hasEditPermissions(article);
+
     model.addAttribute("article", new ArticleDTO(article));
+    model.addAttribute("editPermissions", editPermissions);
 
     return "article";
   }
 
 
+  /**
+   * 게시물 생성 화면
+   *
+   * @param model MVC
+   * @return article_create.html
+   */
   @RequireLogin
   @GetMapping("/article")
   public String createArticle(Model model) {
     return "article_create";
+  }
+
+
+  /**
+   * 게시물 변경 화면, 변경은 게시글 작성자와 로그인 유저가 같아야 한다.
+   *
+   * @param model MVC
+   * @return article_modify.html
+   */
+  @RequireLogin
+  @GetMapping("/article/{id}/modify")
+  public String modifyArticle(Model model, @PathVariable Long id) {
+
+    Article article = articleService.findArticle(id);
+
+    if(!articleService.hasEditPermissions(article)) {
+      throw new NoAuthorityException();
+    }
+
+    model.addAttribute("article", new ArticleDTO(article));
+
+    return "article_modify";
   }
 
 }

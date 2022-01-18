@@ -59,6 +59,7 @@ public class SessionUtils {
 
   /**
    * 로그아웃
+   *
    */
   public static void logout() {
     HttpSession session = getSession();
@@ -74,6 +75,19 @@ public class SessionUtils {
   public static void updateUser(User user) {
     HttpSession session = getSession();
     session.setAttribute(SessionUtils.LOGIN, user);
+  }
+
+
+  /**
+   * 해당 유저가 현재 로그인 한 유저인지 확인
+   *
+   * @param user 검증 유저
+   * @return 로그인 유저 여부
+   */
+  public static boolean isLoginUser(User user) {
+    return SessionUtils.getLoginUser()
+        .stream()
+        .anyMatch(loginUser -> loginUser.equals(user));
   }
 
 }

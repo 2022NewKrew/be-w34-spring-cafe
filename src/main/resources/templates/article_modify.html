@@ -10,7 +10,7 @@
         <div class="col-md-12">
           <div class="block text-center">
             <span class="text-white">{{author.nickName}}</span>
-            <h1 class="text-capitalize mb-4 text-lg">{{title}}</h1>
+            <h1 class="text-capitalize mb-4 text-lg">내 글 수정</h1>
           </div>
         </div>
       </div>
@@ -25,12 +25,12 @@
         <div class="col" style="text-align: center">
           <div class="about-item pr-3 mb-5 mb-lg-0">
             <span class="h6 text-color">{{author.nickName}} 의 글</span>
-            <h2 class="mt-3 mb-4 position-relative content-title">{{title}}</h2>
-            {{#editPermissions}}
-            <input type="button" onclick="modifyArticle()" class="btn btn-outline-danger" style="padding:5px; font-family: Hind" value="수정"/>
-            <input type="button" onclick="deleteArticle()" class="btn btn-outline-danger" style="padding:5px; font-family: Hind" value="삭제"/>
-            {{/editPermissions}}
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="text-align: center">
+          <input id="title" type="text" style="width:600px;font-family: Hind;text-align: center;border: 0px;font-size: xx-large" placeholder="제목을 입력해 주세요." value="{{title}}"/>
         </div>
       </div>
 
@@ -40,27 +40,18 @@
       border-top: 1px #f75757 solid;border-bottom: 1px #f75757 solid;">
         <div class="col" style="text-align: center">
           <div class="about-item pr-3 mb-5 mb-lg-0">
-            <p class="mb-5" style="font-family: Hind;color:rgba(0, 0, 0, 0.65); padding-bottom: 500px;">
-              {{content}}
-            </p>
+            <div class="form-group">
+              <label for="content"></label>
+              <textarea class="form-control" id="content" style="font-family: Hind" rows="30">{{content}}</textarea>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- footer -->
       <div class="row" style="text-align: center;font-family: Hind">
-        <div class="col">
-          글 번호 : {{id}}
-        </div>
-        <div class="col">
-          조회수 : {{readCount}}
-        </div>
-        <div class="col">
-          생성일 : {{createAt}}
-        </div>
-        <div class="col">
-          변경일 : {{modifiedAt}}
-        </div>
+        <button onclick="submitArticle()" type="button" class="btn btn-danger btn-lg btn-block" style="font-family: Hind">수정 완료</button>
+        <button onclick="cancel()" type="button" class="btn btn-outline-danger btn-lg btn-block" style="font-family: Hind">취소</button>
       </div>
 
     </div>
@@ -79,30 +70,36 @@ Essential Scripts
 
   });
 
-  function modifyArticle() {
-    location.href = '/article/{{id}}/modify';
-  }
+  async function submitArticle() {
 
-  async function deleteArticle() {
-
-    if(!confirm("해당 글을 삭제하시겠습니까?")) {
+    if(!confirm("해당 글을 수정하시겠습니까?")) {
       return;
     }
 
-    const id = '{{id}}'
-    const response = await fetch('/api/article/' + id, {
-      method: 'DELETE',
+    const id = '{{id}}';
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+    const response = await fetch('/api/article', {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({id, title, content})
     });
 
     if(response.ok) {
-      alert('삭제 성공! 게시판으로 돌아갑니다.');
-      location.replace('/articles');
+      alert('수정 성공! 게시판으로 돌아갑니다.');
+      location.replace('/article/{{id}}');
       return;
     }
 
     const parsedResponse = await response.json();
     alert(parsedResponse.message + '(' + parsedResponse.code + ')');
 
+  }
+
+  function cancel() {
+    window.history.back();
   }
 
 </script>

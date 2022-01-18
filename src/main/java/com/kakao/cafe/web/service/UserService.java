@@ -80,17 +80,8 @@ public class UserService {
   }
 
 
-
-  public boolean isLoginUser(User user) {
-    return SessionUtils.getLoginUser()
-        .stream()
-        .anyMatch(loginUser -> loginUser.equals(user));
-  }
-
-
-
   public void requireLoginUser(User user) {
-    if(!isLoginUser(user)) {
+    if(!SessionUtils.isLoginUser(user)) {
       throw new NoAuthorityException();
     }
   }

@@ -59,6 +59,7 @@ public class SessionAspectManager {
         .findAny();
   }
 
+
   @Around("requireLogin()")
   public Object checkLogin(ProceedingJoinPoint joinPoint) throws Throwable {
 

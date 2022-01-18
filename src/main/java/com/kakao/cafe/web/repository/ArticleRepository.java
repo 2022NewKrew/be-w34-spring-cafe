@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.apache.tomcat.util.descriptor.XmlErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,6 +37,17 @@ public class ArticleRepository {
 
 
   public Article save(Article article) {
+    if (isNew(article)) {
+      return persist(article);
+    }
+    return merge(article);
+  }
+
+  private boolean isNew(Article article) {
+    return findById(article.getId(), Delete.COMPLETELY_DELETED).isEmpty();
+  }
+
+  private Article persist(Article article) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     String query = "INSERT INTO article ( "
@@ -59,15 +71,39 @@ public class ArticleRepository {
       return ps;
     }, keyHolder);
 
-    Long generatedId = Objects.requireNonNull(keyHolder.getKey().longValue());
+    Long generatedId = Objects.requireNonNull(keyHolder.getKey()).longValue();
     return Article.of(generatedId, article);
+  }
+
+
+  private Article merge(Article article) {
+    String query = "UPDATE ARTICLE "
+        + "SET "
+        + "title = ?, "
+        + "content = ?, "
+        + "read_count = ?, "
+        + "is_deleted = ?, "
+        + "create_at = ?, "
+        + "modified_at = now() "
+        + "WHERE id = ?";
+
+    jdbcTemplate.update(query,
+        article.getTitle(),
+        article.getContent(),
+        article.getReadCount(),
+        article.getIsDeleted().name(),
+        article.getCreateAt(),
+        article.getId()
+    );
+
+    return article;
   }
 
 
   public Integer totalSize(Delete deleteLevel) {
     String query = "SELECT COUNT(*) FROM ARTICLE "
         + "WHERE is_deleted <= ?";
-    return jdbcTemplate.queryForObject(query, Integer.class, deleteLevel.name());
+    return jdbcTemplate.queryForObject(query, Integer.class, deleteLevel.ordinal());
   }
 
 
@@ -81,9 +117,11 @@ public class ArticleRepository {
         + "   LIMIT ?, ? "
         + "   ) article "
         + "INNER JOIN USERS "
-        + "ON article.user_id = users.id";
+        + "ON article.user_id = users.id "
+        + "ORDER BY article.id DESC";
 
-    List<Article> articles = jdbcTemplate.query(query, articleMapper, deleteLevel.name(), offset, limit);
+    List<Article> articles = jdbcTemplate.query(query, articleMapper, deleteLevel.ordinal(), offset,
+        limit);
     return ArticlePage.of(articles);
   }
 
@@ -97,8 +135,8 @@ public class ArticleRepository {
         + "INNER JOIN USERS "
         + "ON article.user_id = users.id";
 
-    List<Article> articles = jdbcTemplate.query(query, articleMapper, id, deleteLevel.name());
-    if(articles.isEmpty()) {
+    List<Article> articles = jdbcTemplate.query(query, articleMapper, id, deleteLevel.ordinal());
+    if (articles.isEmpty()) {
       return Optional.empty();
     }
     return Optional.of(articles.get(0));

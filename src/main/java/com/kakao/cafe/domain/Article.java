@@ -24,22 +24,67 @@ public class Article {
   private Timestamp createAt;
   private Timestamp modifiedAt;
 
+
+  /**
+   * TODO:
+   *
+   * @param articleDTO
+   * @return
+   */
   public static Article of(ArticleDTO articleDTO) {
     return new Article(
-        articleDTO.getId(), User.create(articleDTO.getAuthor()), articleDTO.getTitle(),
-        articleDTO.getContent(), articleDTO.getReadCount(), articleDTO.getIsDeleted(),
-        articleDTO.getComments().stream().map(Comment::of).collect(Collectors.toList()),
-        articleDTO.getCreateAt(), articleDTO.getModifiedAt()
+        articleDTO.getId(),
+        User.create(articleDTO.getAuthor()),
+        articleDTO.getTitle(),
+        articleDTO.getContent(),
+        articleDTO.getReadCount(),
+        articleDTO.getIsDeleted(),
+        articleDTO.getComments()
+            .stream()
+            .map(Comment::of)
+            .collect(Collectors.toList()),
+        articleDTO.getCreateAt(),
+        articleDTO.getModifiedAt()
     );
   }
 
+
   public static Article of(Long id, Article article) {
     return new Article(
-        id, article.author, article.getTitle(),
-        article.getContent(), article.getReadCount(), article.getIsDeleted(),
-        article.getComments(), article.getCreateAt(), article.getModifiedAt()
+        id,
+        article.author,
+        article.getTitle(),
+        article.getContent(),
+        article.getReadCount(),
+        article.getIsDeleted(),
+        article.getComments(),
+        article.getCreateAt(),
+        article.getModifiedAt()
     );
   }
+
+
+  /**
+   * 변경전 게시물에서 변경할 title, content 정보를 통해 새 게시물 생성
+   *
+   * @param article 변경전 게시물
+   * @param articleDTO 변경 내용
+   * @return 변경 후 게시물
+   */
+  public static Article create(Article article, ArticleDTO articleDTO) {
+    return new Article(
+        article.getId(),
+        article.getAuthor(),
+        articleDTO.getTitle(),
+        articleDTO.getContent(),
+        article.getReadCount(),
+        article.getIsDeleted(),
+        article.getComments(),
+        article.getCreateAt(),
+        article.getModifiedAt()
+    );
+  }
+
 
   public static Article create(
       Long id, User author, String title,
@@ -47,8 +92,15 @@ public class Article {
       List<Comment> comments, Timestamp createAt, Timestamp modifiedAt
   ) {
     return new Article(
-        id, author, title, content, readCount, isDeleted,
-        comments, createAt, modifiedAt
+        id,
+        author,
+        title,
+        content,
+        readCount,
+        isDeleted,
+        comments,
+        createAt,
+        modifiedAt
     );
   }
 
