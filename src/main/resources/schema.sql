@@ -10,7 +10,7 @@ CREATE TABLE USER
 DROP TABLE IF EXISTS ARTICLE;
 CREATE TABLE ARTICLE
 (
-    id        BIGINT PRIMARY KEY,
+    id        BIGINT PRIMARY KEY auto_increment,
     writer    VARCHAR(30),
     title     VARCHAR(30),
     contents  VARCHAR(1000),
