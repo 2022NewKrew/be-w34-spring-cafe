@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+@Builder
 @Getter
 @ToString
 public class User {
@@ -14,6 +15,7 @@ public class User {
     private String userName;
     private String email;
 
+
     @Builder
     public User(Long id, String userId, String password, String userName, String email) {
         this.id = id;
@@ -22,7 +24,7 @@ public class User {
         this.userName = userName;
         this.email = email;
     }
-
+  
     public static User of(String userId, String password, String userName, String email) {
         return User.builder()
                 .userId(userId)

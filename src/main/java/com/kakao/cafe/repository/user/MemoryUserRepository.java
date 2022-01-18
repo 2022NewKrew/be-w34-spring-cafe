@@ -39,6 +39,7 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
+
     public Long update(User updateUser) {
         long id = updateUser.getId();
         userMap.put(id, updateUser);

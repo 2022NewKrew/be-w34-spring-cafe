@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller.users;
 
+
 import com.kakao.cafe.common.exception.custom.UpdateFailedException;
 import com.kakao.cafe.common.exception.data.ErrorCode;
 import com.kakao.cafe.controller.users.dto.request.UserUpdateRequest;
@@ -52,6 +53,7 @@ public class UserController {
         return "user/profile";
     }
 
+
     @GetMapping("{userId}/form")
     public String showUpdateForm(@PathVariable String userId, Model model, HttpSession httpSession) {
         UserIdentification loginInfo = UserIdentification.getIdFromSession(httpSession);
@@ -60,6 +62,7 @@ public class UserController {
         model.addAttribute("user", userViewMapper.toUserUpdateFormResponse(userInfo));
         return "user/updateForm";
     }
+
 
     @PostMapping("{userId}/update")
     public String updateUser(@PathVariable String userId, UserUpdateRequest userUpdateRequest, HttpSession httpSession) {

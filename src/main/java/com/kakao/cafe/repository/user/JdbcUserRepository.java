@@ -52,6 +52,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
+
         List<User> users = jdbcTemplate.query(SELECT_USER_BY_USER_ID_QUERY, userRowMapper, userId);
         return Optional.ofNullable(users.isEmpty() ? null : users.get(0));
     }
