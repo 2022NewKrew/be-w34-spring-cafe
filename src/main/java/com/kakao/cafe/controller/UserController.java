@@ -36,7 +36,9 @@ public class UserController {
         return "user/list";
     }
     @GetMapping("/user/update_failed")
-    public String ttt(Model model) {
+
+    public String update_fail(Model model) {
+
         List<User> users = userService.findUserList();
         model.addAttribute("users", users);
         return "user/update_failed_list";
