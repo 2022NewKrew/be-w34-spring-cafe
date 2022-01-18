@@ -48,8 +48,8 @@ public class Qna {
         return writer.equals(userId);
     }
 
-    public void updateQna(Qna qna) {
-        this.title = qna.getTitle();
-        this.contents = qna.getContents();
+    public void updateQna(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
     }
 }

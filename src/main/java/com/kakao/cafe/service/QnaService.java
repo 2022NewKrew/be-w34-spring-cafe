@@ -62,8 +62,7 @@ public class QnaService {
             throw new AccessDeniedException("수정 권한이 없습니다");
         }
 
-        Qna updatedQna = updateQnaRequest.toEntity(index);
-        qna.updateQna(updatedQna);
+        qna.updateQna(updateQnaRequest.getTitle(), updateQnaRequest.getContents());
         qnaRepository.save(qna);
     }
 
