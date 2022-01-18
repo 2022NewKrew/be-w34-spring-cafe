@@ -38,6 +38,6 @@ public class UserService {
     }
 
     public void logout(HttpSession session) {
-        session.removeAttribute("sessionedUser");
+        session.invalidate();
     }
 }
