@@ -1,9 +1,11 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.annotation.Auth;
 import com.kakao.cafe.dto.user.*;
 import com.kakao.cafe.exception.InputDataException;
 import com.kakao.cafe.exception.LoginFailedException;
 import com.kakao.cafe.exception.NullSessionException;
+import com.kakao.cafe.exception.UserMismatchException;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +41,12 @@ public class UserController {
         }
         userService.addUser(userDto);
         logger.info("회원 등록 완료 : {}", userDto);
-        return "redirect:/user/users";
+        return "redirect:/";
     }
 
     @GetMapping("/users")
-    public String users(Model model, HttpSession session) throws NullSessionException {
-        if (session.getAttribute("sessionedUser") == null) {
-            throw new NullSessionException("로그인 되어있지 않습니다.");
-        }
+    @Auth
+    public String users(Model model) {
         List<UserInfoDto> users = userService.getUsers();
         model.addAttribute("users", users);
         return "./user/list";
@@ -65,10 +65,10 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/update")
-    public String getUpdateUserForm(@PathVariable String userId, Model model, HttpSession session) throws InputDataException {
+    public String getUpdateUserForm(@PathVariable String userId, Model model, HttpSession session) throws UserMismatchException {
         UserSessionDto sessionedUser = (UserSessionDto) session.getAttribute("sessionedUser");
         if (!userId.equals(sessionedUser.getUserId())) {
-            throw new InputDataException("다른 사용자의 정보를 수정할 수 없습니다.");
+            throw new UserMismatchException("다른 사용자의 정보를 수정할 수 없습니다.");
         }
         UserInfoDto matchedUser = userService.getUser(userId);
         model.addAttribute("matchedUser", matchedUser);
