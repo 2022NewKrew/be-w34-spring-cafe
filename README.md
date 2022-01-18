@@ -35,3 +35,36 @@
     <h4>< 로그인하지 않았을 때 접근 방지 ></h4>
     <img src="img/step2_1_5_ban.gif" alt="step2_1_5_ban">
 </details>
+
+## 2-2단계 ([링크](https://lucas.codesquad.kr/2022-kakao/course/%EC%9B%B9%EB%B0%B1%EC%97%94%EB%93%9C/Kakao-Cafe-2/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%B9%B4%ED%8E%98-2---2-%EB%8B%A8%EA%B3%84))
+### 기능 요구사항
+- 게시글 요구 사항
+  - 로그인하지 않은 사용자는 게시글의 목록만 볼 수 있다.
+  - 로그인한 사용자만 게시글의 세부내용을 볼 수 있다.
+  - 로그인한 사용자만 게시글을 작성할 수 있다.
+  - 로그인한 사용자는 자신의 글을 수정 및 삭제할 수 있다.
+- DB 요구 사항 (예정)
+  - 데이터베이스를 MySQL로 변경한다.
+  - 서버에 MySQL을 설치하는 경험을 해 본다.
+  - 프로젝트 구성은 필요에 따라 로컬 설치, 도커를 통한 설치, 서버에 설치 중 편한 방법을 선택해서 연동한다.
+### 상세 구현사항
+- 네비게이션 바 내용 수정
+  - 로그인을 하지 않더라도 `게시판` 버튼 표시
+  - 로그인을 했을 때, 로그인한 계정의 정보 (ID, 이름)를 표시
+- 직접 정의한 Annotation(`MineCheck`)과 AOP를 통해 게시글에서 로그인이 필요한 부분 체크
+  - `BoardService` 인터페이스에 현재 게시글 또는 댓글이 받은 ID로 작성된 것인지 확인해주는 메소드들 추가 후 구현
+  - Annotation 및 표현식으로 구분된 메소드에 AOP를 적용하며 게시글인지 댓글인지 확인한 후 파라미터를 가져와서 확인
+### 실행 화면
+<details>
+    <summary>펼치기</summary>
+    <h4>< 게시글 접근 ></h4>
+    <img src="img/step2_2_1_read_article.gif" alt="step2_2_1_read_article">
+    <h4>< 게시글 추가 후 수정, 삭제 ></h4>
+    <img src="img/step2_2_2_modify_delete_article.gif" alt="step2_2_2_modify_delete_article">
+    <h4>< 게시글 수정 및 삭제 실패 ></h4>
+    <img src="img/step2_2_3_modify_delete_article_fail.gif" alt="step2_2_3_modify_delete_article_fail">
+    <h4>< 댓글 추가 후 삭제 ></h4>
+    <img src="img/step2_2_4_add_delete_comment.gif" alt="step2_2_4_add_delete_comment">
+    <h4>< 댓글 삭제 실패 ></h4>
+    <img src="img/step2_2_5_delete_comment_fail.gif" alt="step2_2_5_delete_comment_fail">
+</details>
