@@ -1,10 +1,13 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.model.User;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor

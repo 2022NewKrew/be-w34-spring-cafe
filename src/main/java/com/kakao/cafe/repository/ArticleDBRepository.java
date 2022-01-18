@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,30 +27,33 @@ public class ArticleDBRepository implements ArticleRepository{
     public void save(ArticleSaveDTO articleSaveDTO) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 
-        simpleJdbcInsert.withTableName("ARTICLE_TABLE").usingGeneratedKeyColumns("ID");
+        simpleJdbcInsert.withTableName("ARTICLE_TABLE").usingGeneratedKeyColumns("ID", "CREATED_AT");
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("title", articleSaveDTO.getTitle());
         parameters.put("content", articleSaveDTO.getContent());
+        parameters.put("userId", articleSaveDTO.getUserId());
 
         simpleJdbcInsert.execute(parameters);
     }
 
     @Override
     public Article findArticleById(int id) {
-        List<Article> articles = jdbcTemplate.query("SELECT ID, TITLE, CONTENT FROM ARTICLE_TABLE WHERE ID = ?", articleRowMapper(), id);
+        List<Article> articles = jdbcTemplate.query("SELECT ID, TITLE, CONTENT, CREATED_AT, USERID FROM ARTICLE_TABLE WHERE ID = ?", articleRowMapper(), id);
         return articles.stream().findAny().orElse(null);
     }
 
     @Override
     public List<Article> findAllArticles() {
-        return jdbcTemplate.query("SELECT ID, TITLE, CONTENT FROM ARTICLE_TABLE", articleRowMapper());
+        return jdbcTemplate.query("SELECT ID, TITLE, CONTENT, CREATED_AT, USERID FROM ARTICLE_TABLE", articleRowMapper());
     }
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) ->
                 new Article(rs.getInt("ID"),
                         rs.getString("TITLE"),
-                        rs.getString("CONTENT"));
+                        rs.getString("CONTENT"),
+                        rs.getString("USERID"),
+                       rs.getTimestamp("CREATED_AT"));
     }
 }

@@ -2,13 +2,18 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.model.Article;
 import com.kakao.cafe.domain.dto.ArticleSaveDTO;
+import com.kakao.cafe.domain.model.User;
+import com.kakao.cafe.exception.InvalidUserException;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.message.AuthException;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/article")
@@ -29,7 +34,14 @@ public class ArticleController {
     }
 
     @PostMapping("/post")
-    public String postArticle(@Valid ArticleSaveDTO articleSaveDTO){
+    public String postArticle(@Valid ArticleSaveDTO articleSaveDTO, HttpSession session) throws Exception {
+
+        Object value = session.getAttribute("sessionedUser");
+        if(Objects.isNull(value)){
+            throw new InvalidUserException();
+        }
+        User user = (User) value;
+        articleSaveDTO.setUserId(user.getUserId());
         articleService.save(articleSaveDTO);
         return "redirect:/";
     }
