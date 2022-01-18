@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class UserController {
     private final UserDao userDao;
@@ -24,12 +26,6 @@ public class UserController {
 
     // 회원가입 -> Post로 요청을 받아서 user 인스턴스 추가 후 redirect
     @PostMapping("/user/create")
-//    public String singUp(User user) {
-//        logger.info(user.getUserId());
-//        this.users.addUser(user);
-//        logger.info("user signup");
-//        return "redirect:/user/list";
-//    }
     public String singUp(User user) {
         logger.info("user signup");
         userDao.createUser(user);
@@ -39,30 +35,48 @@ public class UserController {
     @GetMapping("/user/form")
     public String getForm(){
         logger.info("getForm");
-        return "/user/form";
+        return "user/form";
     }
 
     // 사용자 리스트 view에 userList전달
     @GetMapping("/user/list")
     public String getList(Model model){
         logger.info("getList");
-//        model.addAttribute("users", this.users.getUserList());
         model.addAttribute("users", userDao.readUsers());
-        return "/user/list";
+        return "user/list";
     }
 
     // 해당하는 사용자 검색 후 view에 user전달
     @GetMapping("/user/{userId}")
     public String getProfile(@PathVariable String userId, Model model) {
         logger.info("getProfile");
-//        model.addAttribute("user", this.users.findUserById(userId));
         model.addAttribute("user", userDao.findUserById(Integer.valueOf(userId)));
-        return "/user/profile";
+        return "user/profile";
     }
 
     @GetMapping("/user/login")
-    public String getLogin(){
+    public String getLogin() {
         logger.info("getLogin");
-        return "/user/login";
+        return "user/login";
+    }
+
+    // 로그인 (세션 생성)
+    @PostMapping("/user/loginCheck")
+    public String login(String email, String password, HttpSession session) {
+        logger.info("loginCheck");
+        User user = userDao.findUserByEmail(email);
+        if (user.getPassword().equals(password)) {
+            session.setAttribute("sessionedUser", user);
+            return "index";
+        }
+        return "user/login_failed";
+    }
+
+    // 로그아웃 (세션 폐기)
+    @GetMapping("/user/logout")
+    public String logout(HttpSession session) {
+        logger.info("logout");
+        session.invalidate();
+        return "index";
     }
 }

@@ -26,8 +26,13 @@ public class UserDao {
     }
 
     public User findUserById(int id) {
-        String sql = "SELECT USERID, EMAIL, NAME, PASSWORD FROM USERS WHERE ID = ?";
+        String sql = "SELECT ID, USERID, EMAIL, NAME, PASSWORD FROM USERS WHERE ID = ?";
         return jdbcTemplate.queryForObject(sql, new UserMapper(), id);
+    }
+
+    public User findUserByEmail(String email) {
+        String sql = "SELECT ID, USERID, NAME, PASSWORD, EMAIL FROM USERS WHERE EMAIL = ?";
+        return jdbcTemplate.queryForObject(sql, new UserMapper(), email);
     }
 
     public void updateUser(User updatedUser, int id, String password) {
