@@ -1,6 +1,7 @@
 package com.kakao.cafe.common.interceptor;
 
 import com.kakao.cafe.common.exception.BaseException;
+import com.kakao.cafe.user.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -15,8 +16,9 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         HttpSession session = request.getSession();
+        UserDto loginUser = (UserDto) session.getAttribute("loginUser");
 
-        if (session == null || session.getAttribute("loginUser") == null) {
+        if (loginUser == null) {
             throw new BaseException("로그인이 필요한 서비스입니다.");
         }
 

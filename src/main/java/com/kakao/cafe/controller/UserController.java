@@ -38,7 +38,7 @@ public class UserController {
 
     // TODO : 저장할 때 단방향 해시 필요
     @PostMapping(value = "/create")
-    public String insertUser(@ModelAttribute("user") @Valid UserCreateDto userCreateDto, Errors errors, Model model) throws BaseException {
+    public String insertUser(@ModelAttribute("user") @Valid UserCreateDto userCreateDto, Errors errors, Model model) throws BaseException, SQLException {
 
         // 유효성 에러 발생시 회원가입 폼으로 유효성 메세지와 함께 전송
         if (errors.hasErrors()) {
@@ -48,12 +48,7 @@ public class UserController {
 
         User user = modelMapper.map(userCreateDto, User.class);
 
-        try {
-            userService.save(user);
-        } catch (SQLException e) {
-            log.error("USER TABLE SAVE 실패 SQLState : {}", e.getSQLState());
-            throw new BaseException("회원가입 실패했습니다.");
-        }
+        userService.save(user);
 
         return "redirect:/";
     }
