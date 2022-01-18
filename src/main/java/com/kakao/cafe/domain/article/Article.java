@@ -22,6 +22,16 @@ public class Article {
         this.updatedAt = updatedAt;
     }
 
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public boolean isAuthor(String userId) {
+        return author.equals(userId);
+    }
+
     public Long getId() {
         return id;
     }

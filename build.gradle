@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'mysql:mysql-connector-java:8.0.27'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'com.h2database:h2:2.0.206'
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'

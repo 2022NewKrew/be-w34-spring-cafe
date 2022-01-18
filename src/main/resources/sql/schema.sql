@@ -1,18 +1,21 @@
+DROP TABLE IF EXISTS USERS;
+DROP TABLE IF EXISTS ARTICLE;
+
 CREATE TABLE IF NOT EXISTS USERS (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    user_id VARCHAR NOT NULL UNIQUE,
-    password VARCHAR NOT NULL,
-    name VARCHAR,
-    email VARCHAR,
+    user_id VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(50) NOT NULL,
+    name VARCHAR(50),
+    email VARCHAR(50),
     created_at DATETIME,
     updated_at DATETIME
 );
 
 CREATE TABLE IF NOT EXISTS ARTICLE (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    author VARCHAR NOT NULL,
-    title VARCHAR NOT NULL,
-    content CLOB,
+    author VARCHAR(50) NOT NULL,
+    title VARCHAR(50) NOT NULL,
+    content TEXT,
     created_at DATETIME,
     updated_at DATETIME
 );

@@ -41,6 +41,25 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Long save(Article article) {
+        if(article.getId() == null) {
+            return insertArticle(article);
+        }
+        return updateArticle(article);
+    }
+
+    @Override
+    public Long delete(Article article) {
+        jdbcTemplate.update("DELETE FROM ARTICLE WHERE id = ?", article.getId());
+        return article.getId();
+    }
+
+    @Override
+    public Long deleteAll() {
+        int affectedRows = jdbcTemplate.update("DELETE FROM ARTICLE");
+        return (long) affectedRows;
+    }
+
+    private Long insertArticle(Article article) {
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(conn -> {
             PreparedStatement statement = conn.prepareStatement(
@@ -56,9 +75,12 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         return generatedKeyHolder.getKey().longValue();
     }
 
-    @Override
-    public Long deleteAll() {
-        int affectedRows = jdbcTemplate.update("DELETE FROM ARTICLE");
-        return (long) affectedRows;
+    private Long updateArticle(Article article) {
+        jdbcTemplate.update("UPDATE ARTICLE SET title = ?, content = ?, updated_at = ? WHERE id = ?",
+                article.getTitle(),
+                article.getContent(),
+                article.getUpdatedAt(),
+                article.getId());
+        return article.getId();
     }
 }
