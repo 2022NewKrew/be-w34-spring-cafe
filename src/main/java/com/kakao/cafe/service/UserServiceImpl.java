@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.constant.OffsetId;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.SimpleUserInfo;
@@ -9,11 +10,9 @@ import com.kakao.cafe.error.exception.duplication.UserNickNameDuplicationExcepti
 import com.kakao.cafe.error.exception.nonexist.UserNotFoundedException;
 import com.kakao.cafe.error.msg.UserErrorMsg;
 import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.constant.OffsetId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;

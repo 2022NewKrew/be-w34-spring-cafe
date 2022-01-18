@@ -69,7 +69,7 @@ public class PostServiceImpl implements PostService {
     public Post updatePost(UpdatePostDto updatePostDto, Long writerId) {
         Long postId = updatePostDto.getPostId();
         Post targetPost = findById(postId);
-        if(!writerId.equals(targetPost.getUserId())) {
+        if (!writerId.equals(targetPost.getUserId())) {
             throw new PostNotMineException(PostErrorMsg.POST_NOT_MINE.getDescription());
         }
         updatePostByUpdatePostDto(targetPost, updatePostDto);
