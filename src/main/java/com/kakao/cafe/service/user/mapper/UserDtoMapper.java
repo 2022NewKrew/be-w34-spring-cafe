@@ -1,10 +1,10 @@
 package com.kakao.cafe.service.user.mapper;
 
 import com.kakao.cafe.controller.users.dto.request.UserUpdateRequest;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.user.dto.UserInfo;
 import com.kakao.cafe.service.user.dto.UserSignUpForm;
 import com.kakao.cafe.service.user.dto.UserUpdateForm;
+import com.kakao.cafe.domain.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,9 +21,8 @@ public class UserDtoMapper {
                 .email(email).build();
     }
 
-    public UserUpdateForm toUserUpdateForm(Long id, UserUpdateRequest updateRequest) {
+    public UserUpdateForm toUserUpdateForm(UserUpdateRequest updateRequest) {
         return UserUpdateForm.builder()
-                .id(id)
                 .userId(updateRequest.getUserId())
                 .password(updateRequest.getPassword())
                 .userName(updateRequest.getName())
@@ -38,7 +37,6 @@ public class UserDtoMapper {
 
     public UserInfo toUserInfo(User user){
         return UserInfo.builder()
-                .id(user.getId())
                 .userId(user.getUserId())
                 .userName(user.getUserName())
                 .email(user.getEmail())

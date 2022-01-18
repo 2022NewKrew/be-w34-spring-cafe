@@ -1,5 +1,8 @@
 package com.kakao.cafe.service.user;
 
+import com.kakao.cafe.common.exception.custom.UpdateFailedException;
+import com.kakao.cafe.common.exception.data.ErrorCode;
+import com.kakao.cafe.common.exception.custom.UserNotFoundException;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.user.UserRepository;
 import com.kakao.cafe.service.user.dto.UserInfo;
@@ -20,7 +23,7 @@ public class UserService {
 
     public Long signUp(UserSignUpForm userSignUpForm) {
         User signUpUser = User.of(userSignUpForm.getUserId(), userSignUpForm.getPassword(), userSignUpForm.getUserName(), userSignUpForm.getEmail());
-        return userRepository.insertUser(signUpUser);
+        return userRepository.insert(signUpUser);
     }
 
     public List<UserInfo> getUsersAll() {
@@ -29,19 +32,25 @@ public class UserService {
     }
 
     public UserInfo getUserInfo(String userId) {
-        User findUser = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+        User findUser = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
         return userDtoMapper.toUserInfo(findUser);
     }
 
     public UserInfo getUserInfo(Long id) {
-        User findUser = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+        User findUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
         return userDtoMapper.toUserInfo(findUser);
     }
 
-    public Long updateUser(UserUpdateForm updateForm) {
-        User updateUser = userRepository.findById(updateForm.getId()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+    public Long update(UserUpdateForm updateForm) {
+        User updateUser = userRepository.findByUserId(updateForm.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
+        if(!updateUser.isCorrectPassword(updateForm.getPassword())) {
+            throw new UpdateFailedException(ErrorCode.UPDATE_PASSWORD_INCORRECT);
+        }
         updateUser.update(updateForm);
-        return userRepository.updateUser(updateUser);
+        return userRepository.update(updateUser);
     }
 
 }

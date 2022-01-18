@@ -1,0 +1,31 @@
+package com.kakao.cafe.common.exception.data;
+
+public enum ErrorCode {
+
+    USER_NOT_FOUND(1000, "유저 조회 오류", "해당 유저가 존재하지 않습니다."),
+    PASSWORD_INCORRECT(1001, "로그인 오류", "패스워드가 올바르지 않습니다."),
+    UPDATE_USER_ID_INCORRECT(1002, "개인 정보 수정 실패", "자신의 정보만 수정 가능합니다."),
+    UPDATE_PASSWORD_INCORRECT(1003, "개인 정보 수정 실패", "패스워드가 올바르지 않습니다.");
+
+    private Integer code;
+    private String message;
+    private String detail;
+
+    ErrorCode(Integer code, String message, String detail) {
+        this.code = code;
+        this.message = message;
+        this.detail = detail;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+}

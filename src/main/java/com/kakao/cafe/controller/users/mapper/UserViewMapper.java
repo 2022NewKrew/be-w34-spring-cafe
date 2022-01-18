@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Component
 public class UserViewMapper {
@@ -19,14 +20,15 @@ public class UserViewMapper {
     }
 
     public List<UserItemResponse> toUserItemResponseList(List<UserInfo> userInfoList) {
-        return userInfoList.stream()
-                .map(user -> toUserItemResponse(user))
+        return IntStream.range(0, userInfoList.size())
+                .filter(seq -> seq < userInfoList.size())
+                .mapToObj(seq -> toUserItemResponse(seq + 1, userInfoList.get(seq)))
                 .collect(Collectors.toList());
     }
 
-    public UserItemResponse toUserItemResponse(UserInfo userInfo) {
+    public UserItemResponse toUserItemResponse(int seq, UserInfo userInfo) {
         return UserItemResponse.builder()
-                .id(userInfo.getId())
+                .seq(seq)
                 .userId(userInfo.getUserId())
                 .userName(userInfo.getUserName())
                 .email(userInfo.getEmail()).build();
@@ -34,7 +36,6 @@ public class UserViewMapper {
 
     public UserUpdateFormResponse toUserUpdateFormResponse(UserInfo userInfo) {
         return UserUpdateFormResponse.builder()
-                .id(userInfo.getId())
                 .userId(userInfo.getUserId())
                 .userName(userInfo.getUserName())
                 .email(userInfo.getEmail()).build();

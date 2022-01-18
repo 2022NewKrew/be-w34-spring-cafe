@@ -4,16 +4,15 @@ import com.kakao.cafe.repository.article.ArticleRepository;
 import com.kakao.cafe.repository.article.JdbcArticleRepository;
 import com.kakao.cafe.repository.user.JdbcUserRepository;
 import com.kakao.cafe.repository.user.UserRepository;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.kakao.cafe.repository.user.mapper.UserRowMapper;
 
 @Configuration
 public class RepositoryConfig {
 
     @Bean
-    public UserRepository userRepository(JdbcTemplate jdbcTemplate) {
-        return new JdbcUserRepository(jdbcTemplate);
+    public UserRepository userRepository(JdbcTemplate jdbcTemplate, UserRowMapper userRowMapper) {
+        return new JdbcUserRepository(jdbcTemplate, userRowMapper);
     }
 
     @Bean

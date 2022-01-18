@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
-    Long insertUser(User user);
-    Long updateUser(User user);
+    Long insert(User user);
+    Long update(User user);
     List<User> findAll();
     Optional<User> findByUserId(String userId);
     Optional<User> findById(Long id);
