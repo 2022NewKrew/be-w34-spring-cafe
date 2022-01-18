@@ -58,7 +58,7 @@ public class UserController {
         }
 
         userService.signUp(userSignUpRequestDto);
-        return "redirect:/users";
+        return "redirect:/";
     }
 
     @PostMapping("/login")
