@@ -22,8 +22,11 @@
         <a class="navbar-brand" href="/">
             <img class="navLogo" src="/assets/img/kakao_logo.png" alt="kakao_logo"/>
         </a>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav align-middle">
             {{#USER_ID}}
+            <li class="nav-item" style="padding-top: 0.8rem; padding-right: 0.8rem;">
+                {{USER_NAME}} ({{this}})님 환영합니다.
+            </li>
             <li class="nav-item">
                 <button type="button" class="btn btn-dark" onclick="location.href='/user/logout'">로그아웃</button>
             </li>
@@ -33,9 +36,6 @@
                     <button type="submit" class="btn btn-dark" style="width: 120px;">회원정보 수정</button>
                 </li>
             </form>
-            <li class="nav-item">
-                <button type="button" class="btn btn-dark" onclick="location.href='/board/list'">게시판</button>
-            </li>
             {{/USER_ID}}
             {{#IS_ADMIN}}
             <li class="nav-item">
@@ -50,6 +50,9 @@
                 <button type="button" class="btn btn-dark" onclick="location.href='/user/register'">회원가입</button>
             </li>
             {{/USER_ID}}
+            <li class="nav-item">
+                <button type="button" class="btn btn-dark" onclick="location.href='/board/list'">게시판</button>
+            </li>
         </ul>
     </div>
 </nav>

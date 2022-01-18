@@ -51,8 +51,10 @@ public class UserController {
 
     @PostMapping("/login")
     public String userLogin(String userId, String password, HttpSession session, Model model) {
+        UserDto userDto = null;
+
         try {
-            userService.findUserByLoginInfo(userId, password, "일치하는 회원 정보가 없습니다.");
+            userDto = userService.findUserByLoginInfo(userId, password, "일치하는 회원 정보가 없습니다.");
         } catch (UserNotFoundException e) {
             model.addAttribute("userId", userId);
             model.addAttribute("UserNotFoundErrorMessage", e.getMessage());
@@ -60,6 +62,7 @@ public class UserController {
         }
 
         session.setAttribute("USER_ID", userId);
+        session.setAttribute("USER_NAME", userDto.getName());
 
         if ("admin".equals(userId)) {
             session.setAttribute("IS_ADMIN", true);
