@@ -2,6 +2,14 @@
 
 const SUBMIT = document.getElementById('submit');
 
+let validTitle = true;
+let validBody = true;
+let validId = true;
+let validPassword = true;
+let validNewPassword = true;
+let validName = true;
+let validEmail = true;
+
 function updateSubmitBtn() {
     if (
         validTitle &&
@@ -48,7 +56,6 @@ function checkBoundAndRegex(elem, min, max, regex) {
     return valid;
 }
 
-let validTitle = true;
 const INPUT_TITLE = document.getElementById('title');
 const TITLE_MIN = 1;
 const TITLE_MAX = 255;
@@ -64,7 +71,6 @@ function checkTitle() {
     updateSubmitBtn();
 }
 
-let validBody = true;
 const INPUT_BODY = document.getElementById('body');
 const BODY_MIN = 1;
 const BODY_MAX = 4095;
@@ -80,7 +86,6 @@ function checkBody() {
     updateSubmitBtn();
 }
 
-let validId = true;
 const INPUT_ID = document.getElementById('id');
 const ID_MIN = 6;
 const ID_MAX = 12;
@@ -97,7 +102,6 @@ function checkId() {
     updateSubmitBtn();
 }
 
-let validPassword = true;
 const INPUT_PASSWORD = document.getElementById('password');
 const PASSWORD_MIN = 8;
 const PASSWORD_MAX = 18;
@@ -114,7 +118,6 @@ function checkPassword() {
     updateSubmitBtn();
 }
 
-let validNewPassword = true;
 const INPUT_NEW_PASSWORD = document.getElementById('newPassword');
 
 if (INPUT_NEW_PASSWORD !== null && INPUT_NEW_PASSWORD.readOnly === false) {
@@ -128,7 +131,6 @@ function checkNewPassword() {
     updateSubmitBtn();
 }
 
-let validName = true;
 const INPUT_NAME = document.getElementById('name');
 const NAME_MIN = 1;
 const NAME_MAX = 32;
@@ -144,7 +146,6 @@ function checkName() {
     updateSubmitBtn();
 }
 
-let validEmail = true;
 const INPUT_EMAIL = document.getElementById('email');
 const EMAIL_MIN = 1;
 const EMAIL_MAX = 32;
