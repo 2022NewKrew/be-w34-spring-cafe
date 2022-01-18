@@ -18,8 +18,8 @@ public class QnaController {
     Logger logger = LoggerFactory.getLogger(com.kakao.cafe.user.controller.UserController.class);
 
     @PostMapping("/questions")
-    public String SignUp(@ModelAttribute QuestionDTO newQuestion) {
-        logger.info("a%s\n",newQuestion.getWriter());
+    public String submitArticle(@ModelAttribute QuestionDTO newQuestion) {
+        logger.debug("Article submitted. Title : {}, Writer : {}", newQuestion.getTitle(), newQuestion.getWriter());
         return "redirect:/";
     }
 }

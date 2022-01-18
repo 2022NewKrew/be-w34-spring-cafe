@@ -3,11 +3,6 @@
 #2일차
 
 ### TODO
-##### 글쓰기 기능 구현a
-* article domain 구현
-  * id, writer, title, content 필요
-* domain과 controller를 연결할 내부 로직 구현
-  * service, repository, DTO
 ##### 글 목록 기능 구현
 * qna.controller에 GET 구현
 * repository에서 모든 article 객체를 가져오게 한다.
@@ -25,3 +20,7 @@
 * qna.controller에 POST 구현
   * 적어도 mockup으로 게시글 보내기
   * qna/form.html을 통해 시도
+  * article domain 구현
+  * id, writer, title, content 필요
+* domain과 controller를 연결할 내부 로직 구현
+  * service, repository, DTO
