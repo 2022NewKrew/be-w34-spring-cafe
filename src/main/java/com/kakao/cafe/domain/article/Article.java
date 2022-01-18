@@ -13,11 +13,24 @@ public class Article {
     }
 
     public Article(Long id, Long authorId, String author, String title, String description) {
+        validateTitleAndDescription(title, description);
         this.id = id;
         this.authorId = authorId;
         this.author = author;
         this.title = title;
         this.description = description;
+    }
+
+    public void update(String title, String description) {
+        validateTitleAndDescription(title, description);
+        this.title = title;
+        this.description = description;
+    }
+
+    private void validateTitleAndDescription(String title, String description) {
+        if (title.isBlank() || description.isBlank()) {
+            throw new IllegalArgumentException("게시글의 제목과 내용을 반드시 입력해야 합니다.");
+        }
     }
 
     public Long getId() {

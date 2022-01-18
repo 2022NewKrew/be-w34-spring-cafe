@@ -3,6 +3,8 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.auth.Auth;
 import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.dto.article.ArticleRequest;
+import com.kakao.cafe.dto.article.ArticleUpdateRequest;
+import com.kakao.cafe.exception.UnauthorizedAccessException;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,5 +43,29 @@ public class ArticleController {
         model.addAttribute("article", article);
 
         return "article/show";
+    }
+
+    @GetMapping("/{articleId}/form")
+    public String updateForm(@PathVariable Long articleId, Model model, HttpSession session) {
+        Auth auth = (Auth) session.getAttribute("auth");
+        ArticleDto article = articleService.findById(articleId);
+        if (auth == null || !auth.validateById(article.getAuthorId())) {
+            throw new UnauthorizedAccessException("인가되지 않은 접근입니다.");
+        }
+        model.addAttribute("article", article);
+
+        return "article/updateForm";
+    }
+
+    @PutMapping("/{articleId}/update")
+    public String updateArticle(@PathVariable Long articleId, ArticleUpdateRequest articleUpdateRequest, HttpSession session) {
+        Auth auth = (Auth) session.getAttribute("auth");
+        ArticleDto article = articleService.findById(articleId);
+        if (auth == null || !auth.validateById(article.getAuthorId())) {
+            throw new UnauthorizedAccessException("인가되지 않은 접근입니다.");
+        }
+        articleService.update(articleId, articleUpdateRequest);
+
+        return "redirect:/articles/{articleId}";
     }
 }

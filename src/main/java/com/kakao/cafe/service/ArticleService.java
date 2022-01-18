@@ -3,11 +3,13 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.dto.article.ArticleRequest;
+import com.kakao.cafe.dto.article.ArticleUpdateRequest;
 import com.kakao.cafe.exception.ArticleNotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,5 +35,12 @@ public class ArticleService {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
         return new ArticleDto(article);
+    }
+
+    public void update(Long id, ArticleUpdateRequest articleUpdateRequest) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
+        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getDescription());
+        articleRepository.update(article);
     }
 }

@@ -36,11 +36,7 @@
                               {{this.description}}
                           </div>
                       </article>
-                  {{/article}}
-                  {{^article}}
-                      <header class="post-header">
-                          <p class="post-title">존재하지 않는 게시글입니다.</p>
-                      </header>
+                      <a class="black-component" href="/articles/{{this.articleId}}/form" role="button">수정하기</a>
                   {{/article}}
 
 <!--                      <div class="post-comment">-->
