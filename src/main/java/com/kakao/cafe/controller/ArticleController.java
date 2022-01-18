@@ -67,4 +67,12 @@ public class ArticleController {
         articleService.update(article);
         return "redirect:/";
     }
+
+    @DeleteMapping("articles/delete/{id}")
+    public String deleteById(@PathVariable String id, HttpSession httpSession) {
+        Article article = articleService.findById(id, httpSession);
+        articleService.isWriter(article, httpSession);
+        articleService.deleteById(id);
+        return "redirect:/";
+    }
 }

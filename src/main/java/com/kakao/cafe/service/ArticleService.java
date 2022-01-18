@@ -41,11 +41,15 @@ public class ArticleService {
         User curUser = (User)httpSession.getAttribute("curUser");
         String curUserId = curUser.getUserId();
         if(!article.isWriter(curUserId)) {
-            throw new IllegalArgumentException("다른 사람의 글을 수정할 수 없습니다.");
+            throw new IllegalArgumentException("다른 사람의 글을 수정, 삭제할 수 없습니다.");
         }
     }
 
     public void update(Article article) {
         articleRepository.update(article);
+    }
+
+    public void deleteById(String id) {
+        articleRepository.deleteById(id);
     }
 }
