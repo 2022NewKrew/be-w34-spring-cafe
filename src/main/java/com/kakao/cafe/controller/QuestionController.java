@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.common.exception.BaseException;
+import com.kakao.cafe.controller.common.SessionLoginUser;
 import com.kakao.cafe.question.Question;
 import com.kakao.cafe.question.QuestionService;
 import com.kakao.cafe.question.dto.QuestionCreateDto;
@@ -29,11 +30,12 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final ModelMapper modelMapper;
+    private final SessionLoginUser<UserDto> sessionLoginUser;
 
     @PostMapping("/create")
     public String insertQuestion(HttpSession session, @ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto, Model model) throws BaseException, SQLException {
 
-        User user = modelMapper.map(getLoginUser(session), User.class);
+        User user = modelMapper.map(sessionLoginUser.getLoginUser(), User.class);
         Question question = modelMapper.map(questionCreateDto, Question.class);
 
         question.setMemberId(user.getId());
@@ -46,7 +48,7 @@ public class QuestionController {
     @GetMapping
     public String viewQuestionList(HttpSession session, Model model) {
 
-        Long id = getMemberId(session);
+        Long id = getMemberId();
         List<QuestionDto> questions = getQuestionDtos(id);
 
         model.addAttribute("questions", questions);
@@ -71,7 +73,7 @@ public class QuestionController {
     @GetMapping("/{id}")
     public String viewQuestionDetail(HttpSession session, @PathVariable("id") Long id, Model model) {
 
-        Long memberId = getMemberId(session);
+        Long memberId = getMemberId();
         QuestionDto question = modelMapper.map(questionService.findOne(id), QuestionDto.class);
 
         question.setThisIsMine(memberId.equals(question.getMemberId()));
@@ -89,7 +91,7 @@ public class QuestionController {
     @DeleteMapping("/{id}")
     public String deleteQuestion(HttpSession session, @PathVariable("id") Long id, Model model) throws BaseException {
 
-        Long memberId = getMemberId(session);
+        Long memberId = getMemberId();
 
         questionService.deleteOne(id, memberId);
 
@@ -99,7 +101,7 @@ public class QuestionController {
     @PutMapping("/update/{id}")
     public String updateQuestion(HttpSession session, @PathVariable("id") Long id, @Valid @ModelAttribute("question") QuestionUpdateDto questionUpdateDto, Model model) throws BaseException {
 
-        Long memberId = getMemberId(session);
+        Long memberId = getMemberId();
         Question question = new Question();
 
         question.setId(id);
@@ -117,7 +119,7 @@ public class QuestionController {
 
         Question origin = questionService.findOne(id);
         QuestionUpdateDto question = modelMapper.map(origin, QuestionUpdateDto.class);
-        UserDto loginUser = getLoginUser(session);
+        UserDto loginUser = sessionLoginUser.getLoginUser();
 
         if (origin != null && !origin.getMemberId().equals(loginUser.getId())) {
             throw new BaseException("게시글의 권한이 없는 사용자 입니다.");
@@ -128,13 +130,9 @@ public class QuestionController {
         return "qna/update_form";
     }
 
-    private Long getMemberId(HttpSession session) {
+    private Long getMemberId() {
 
-        UserDto loginUser = getLoginUser(session);
+        UserDto loginUser = sessionLoginUser.getLoginUser();
         return loginUser == null ? -1L : loginUser.getId();
-    }
-
-    private UserDto getLoginUser(HttpSession session) {
-        return (UserDto) session.getAttribute("loginUser");
     }
 }

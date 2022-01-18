@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.common.auth.Auth;
 import com.kakao.cafe.common.exception.BaseException;
+import com.kakao.cafe.controller.common.SessionLoginUser;
 import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.UserService;
 import com.kakao.cafe.user.UserStatus;
@@ -35,6 +36,7 @@ public class UserController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final SessionLoginUser<UserDto> sessionLoginUser;
 
     // TODO : 저장할 때 단방향 해시 필요
     @PostMapping(value = "/create")
@@ -112,7 +114,7 @@ public class UserController {
     public String viewUserUpdateForm(HttpServletRequest request, Model model, @RequestParam String password) throws BaseException {
 
         HttpSession session = request.getSession();
-        UserDto loginUser = (UserDto) session.getAttribute("loginUser");
+        UserDto loginUser = sessionLoginUser.getLoginUser();
         User user = userService.loginCheck(loginUser.getUserId(), password);
 
         if (user == null) {
@@ -147,7 +149,7 @@ public class UserController {
     public String updateUser(HttpServletRequest request, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) throws BaseException {
 
         HttpSession session = request.getSession();
-        UserDto loginUser = (UserDto) session.getAttribute("loginUser");
+        UserDto loginUser = sessionLoginUser.getLoginUser();
 
         User user = new User(loginUser.getId(), userUpdateDto.getName(), userUpdateDto.getEmail());
 
