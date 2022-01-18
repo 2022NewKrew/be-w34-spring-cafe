@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.dto.request.ArticleRegisterRequestDto;
+import com.kakao.cafe.controller.dto.request.ArticleUpdateRequestDto;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.ArticleNotFoundException;
@@ -10,7 +11,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -78,18 +78,17 @@ class ArticleServiceTest {
     @Test
     @DisplayName("게시글 수정")
     void testOfUpdate() {
-        ArticleUpdateDto articleUpdateDto = ArticleUpdateDto.builder()
-                .id(1L)
-                .title("updatedTitle")
-                .contents("updatedContents")
+        ArticleUpdateRequestDto articleUpdateDto = ArticleUpdateRequestDto.builder()
                 .build();
+
+
         BDDMockito.given(articleRepository.findById(1L)).willReturn(Optional.of(Article.builder()
                 .id(1L)
                 .title("title")
                 .contents("contents")
                 .build()));
 
-        articleService.update(articleUpdateDto);
+        articleService.update(new ArticleUpdateDto(1L, articleUpdateDto));
         BDDMockito.then(articleRepository).should().findById(1L);
     }
 }
