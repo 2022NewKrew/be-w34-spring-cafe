@@ -29,7 +29,7 @@ public class UserService {
     @Transactional
     public void createUser(UserDto.CreateUserProfileRequest createUserProfileRequest) throws AlreadyExistUserException {
         userRepository.findByUserId(createUserProfileRequest.getUserId()).ifPresent(m -> {
-            throw new AlreadyExistUserException("Already Exist User (user id: " + createUserProfileRequest.getUserId() + ")");
+            throw new AlreadyExistUserException(createUserProfileRequest.getUserId());
         });
 
         User user = createUserProfileRequest.toUserEntity();
@@ -43,14 +43,14 @@ public class UserService {
     }
 
     public UserDto.UserProfileResponse readUser(String userId) throws UserNotFoundException {
-        User user = userRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException("Not Found User (user id: " + userId + ")"));
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException(userId));
         return UserDto.UserProfileResponse.of(user);
     }
 
     @Transactional
     public void updateUser(String userId, UserDto.UpdateUserProfileRequest updateUserProfileRequest) {
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundException("Not Found User (user id: " + userId + ")"));
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
         if (!user.isCorrectPassword(updateUserProfileRequest.getOriginPassword())) {
             throw new IllegalArgumentException("Password is incorrect");
@@ -62,10 +62,10 @@ public class UserService {
 
     public UserDto.UserSessionDto authenticateUser(UserDto.LoginDto loginDto) {
         User user = userRepository.findByUserId(loginDto.getUserId())
-                .orElseThrow(() -> new LoginUserNotFoundException("Not Found User (user id: " + loginDto.getUserId() + ")"));
+                .orElseThrow(() -> new LoginUserNotFoundException(loginDto.getUserId()));
 
         if (!user.isCorrectPassword(loginDto.getPassword())) {
-            throw new IncorrectLoginPasswordException("Password is incorrect");
+            throw new IncorrectLoginPasswordException();
         }
 
         return UserDto.UserSessionDto.of(user);

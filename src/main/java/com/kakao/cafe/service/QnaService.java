@@ -36,7 +36,7 @@ public class QnaService {
 
     public QnaDto.QnaResponse findQna(Integer index) {
         Qna qna = qnaRepository.findByIndex(index)
-                .orElseThrow(() -> new QnaNotFoundException("Qna Not Found (index: " + index + ")"));
+                .orElseThrow(() -> new QnaNotFoundException(index));
 
         return QnaDto.QnaResponse.of(qna);
     }

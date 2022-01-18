@@ -1,7 +1,14 @@
 package com.kakao.cafe.exception;
 
 public class QnaNotFoundException extends RuntimeException {
-    public QnaNotFoundException(String message) {
-        super(message);
+    private final String message;
+
+    public QnaNotFoundException(Integer index) {
+        this.message = "Qna Not Found (index: " + index + ")";
+    }
+
+    @Override
+    public String getMessage() {
+        return this.message;
     }
 }
