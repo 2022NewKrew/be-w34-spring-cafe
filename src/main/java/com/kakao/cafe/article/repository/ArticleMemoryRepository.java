@@ -18,6 +18,12 @@ public class ArticleMemoryRepository implements ArticleRepository {
 //        articles.add(article);
     }
 
+    @Override
+    public void deleteArticle(Article article) {
+
+    }
+
+
     public List<Article> getArticles(){
         return articles;
     }

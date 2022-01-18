@@ -2,6 +2,7 @@ package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleRowMapper;
+import com.kakao.cafe.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -27,6 +28,12 @@ public class ArticleJdbcRepository implements ArticleRepository{
                 article.getTitle(),
                 article.getContents()
         );
+    }
+
+    @Override
+    public void deleteArticle(Article article) {
+        String sql = String.format("UPDATE articles SET isDeleted=true WHERE sequence=%d", article.getSequence());
+        jdbcTemplate.update(sql);
     }
 
     @Override

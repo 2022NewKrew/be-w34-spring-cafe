@@ -95,13 +95,14 @@ public class ArticleController {
         model.addAttribute("title", articleViewDTO.getTitle());
         model.addAttribute("createdAt", articleViewDTO.getCreatedAt());
         model.addAttribute("contents", articleViewDTO.getContents());
+        model.addAttribute("sequence", articleViewDTO.getSequence());
         return "/qna/show";
     }
 
 
-    //상세 질문글 확인
-    @DeleteMapping(value = "/qnas/delete/{userId}")
-    public String showArticle(@PathVariable("userId") String userId, HttpSession session){
+    //작성글 삭제
+    @DeleteMapping(value = "/qnas/delete/{userId}/{sequence}")
+    public String showArticle(@PathVariable("userId") String userId, @PathVariable("sequence") Long sequence, HttpSession session){
         User user;
         //로그인 상태가 아닌경우
         if((user = (User) session.getAttribute("sessionedUser")) == null){
@@ -113,9 +114,14 @@ public class ArticleController {
         }
 
         //클라이언트 개발자모드에서 session 에 저장된 user.getUserId() 와 같은 값을 href에서 다른사람이 쓴 글을 대상으로 조작한다면 여기까지 통과할 것이니 그것에 대한 예외처리도 추가해야함.
+        Article article;
+        if( (article = articleService.getArticleBySequence(sequence)) == null || !article.getUserId().equals(user.getUserId()) ){
+            throw new ArticleNotMatchedUser("로그인된 사용자가 작성한 글이 아닙니다.");
+        }
 
 
         //service에서 삭제메소드를 추가해야함
+        articleService.articleDelete(article.getSequence());
 
         return "redirect:/";
     }

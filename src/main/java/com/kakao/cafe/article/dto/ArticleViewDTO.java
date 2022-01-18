@@ -11,6 +11,7 @@ public class ArticleViewDTO {
     private String title;
     private String contents;
     private Timestamp createdAt;
+    private Long sequence;
 
     public ArticleViewDTO(Article article) {
         this.userId = article.getUserId();
@@ -18,6 +19,7 @@ public class ArticleViewDTO {
         this.title = article.getTitle();
         this.contents = article.getContents();
         this.createdAt = article.getCreatedAt();
+        this.sequence = article.getSequence();
     }
 
     public String getUserId() {
@@ -38,5 +40,9 @@ public class ArticleViewDTO {
 
     public Date getCreatedAt() {
         return createdAt;
+    }
+
+    public Long getSequence() {
+        return sequence;
     }
 }

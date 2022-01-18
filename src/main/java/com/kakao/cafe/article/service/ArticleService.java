@@ -22,6 +22,12 @@ public class ArticleService {
         articleRepository.addArticle(article);
     }
 
+
+    public void articleDelete(Long sequence){
+        Article article = getArticleBySequence(sequence);
+        articleRepository.deleteArticle(article);
+    }
+
     public Article getArticleBySequence(Long sequence){
         Article article = articleRepository.getArticleByCondition("sequence", sequence.toString());
 
