@@ -21,7 +21,7 @@ public class AppConfig {
 
     @Bean
     public JdbcArticleRepository jdbcArticleRepository() {
-        return new JdbcArticleRepository(jdbcTemplate(), articleMapper())
+        return new JdbcArticleRepository(jdbcTemplate(), articleMapper());
     }
 
     @Bean

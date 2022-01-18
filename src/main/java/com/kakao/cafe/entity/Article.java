@@ -14,4 +14,12 @@ public class Article {
     public Integer getArticleId() {
         return articleId;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
 }

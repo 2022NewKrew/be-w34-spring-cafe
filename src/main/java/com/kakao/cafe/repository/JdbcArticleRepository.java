@@ -18,8 +18,9 @@ public class JdbcArticleRepository implements Repository<Article, Integer> {
     }
 
     @Override
-    public void create(Article entity) {
-
+    public void create(Article article) {
+        String sqlQuery = "insert into ARTICLE (title, content) values (?, ?)";
+        jdbcTemplate.update(sqlQuery, article.getTitle(), article.getContent());
     }
 
     @Override

@@ -15,6 +15,6 @@ class ArticleRegistrationDtoTest {
     @DisplayName("[확인] article_Title_null_검증_시점")
     void article_Title_Null() {
         // given
-        new ArticleRegistrationDto(1, null, "abc");
+        new ArticleRegistrationDto(null, "abc");
     }
 }
