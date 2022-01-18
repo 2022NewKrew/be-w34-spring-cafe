@@ -14,27 +14,27 @@ import org.springframework.context.annotation.Configuration;
 public class ServiceSpringConfig {
 
     @Bean
-    public UserCreateService getUserCreateService(UserRepository userRepository) {
+    public UserCreateService userCreateService(UserRepository userRepository) {
         return new UserCreateService(userRepository);
     }
 
     @Bean
-    public UserFindService getUserFindService(UserRepository userRepository) {
+    public UserFindService userFindService(UserRepository userRepository) {
         return new UserFindService(userRepository);
     }
 
     @Bean
-    public UserUpdateService getUserUpdateService(UserRepository userRepository) {
+    public UserUpdateService userUpdateService(UserRepository userRepository) {
         return new UserUpdateService(userRepository);
     }
 
     @Bean
-    public ArticleCreateService getArticleCreateService(ArticleRepository articleRepository) {
+    public ArticleCreateService articleCreateService(ArticleRepository articleRepository) {
         return new ArticleCreateService(articleRepository);
     }
 
     @Bean
-    public ArticleFindService getArticleFindService(ArticleRepository articleRepository) {
+    public ArticleFindService articleFindService(ArticleRepository articleRepository) {
         return new ArticleFindService(articleRepository);
     }
 }
