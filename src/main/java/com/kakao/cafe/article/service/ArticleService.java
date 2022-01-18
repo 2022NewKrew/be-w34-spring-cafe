@@ -25,7 +25,7 @@ public class ArticleService {
     @PostConstruct
     private void init() {
         createArticle(1L, "게시물 제목입니다.", "이것은 게시물 입니다.");
-        createArticle(2L, "새로운 게시물입니다.", "이것도 게시물 입니다.");
+        createArticle(4L, "새로운 게시물입니다.", "이것도 게시물 입니다.");
         log.info("Add basic article data: 게시물 제목입니다. 새로운 게시물입니다.");
     }
 
@@ -48,7 +48,7 @@ public class ArticleService {
     public ArticleReadServiceResponse getArticleReadViewDTO(Long id) {
         articleRepository.increaseHit(id);
         Article article = articleRepository.find(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글 입니다."));
-        String authorStringId = userRepository.find(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다.")).getStringId();
+        String authorStringId = userRepository.find(article.getAuthorId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다.")).getStringId();
         return ArticleServiceDTOMapper.convertToArticleReadServiceResponse(article, authorStringId);
     }
 

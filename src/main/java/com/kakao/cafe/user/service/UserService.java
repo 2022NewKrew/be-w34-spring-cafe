@@ -24,16 +24,19 @@ public class UserService {
     @PostConstruct
     private void init() {
         createUser("aiden.jang", "aiden@kakaocorp.com", "에이든", "1234");
-        createUser("javajigi", "javajigi@slipp.net", "자바지기", "test");
-        createUser("sanjigi", "sanjigi@slipp.net", "산지기", "test");
+        createUser("javajigi", "javajigi@slipp.net", "자바지기", "1234");
+        createUser("sanjigi", "sanjigi@slipp.net", "산지기", "1234");
+        createUser("wcts", "wcts@kakao.com", "내이름", "1234");
         log.info("Add basic user data: 에이든, 자바지기, 산지기");
     }
+
 
     public Long createUser(String stringId, String email, String name, String password) {
         User user = makeUser(stringId, password, name, email);
         return userRepository.persist(user);
     }
 
+    // 페이징 구현 시 리펙토링 필요
     public AllUserProfileServiceResponse getAllUserViewData(Long startIndex) {
         ArrayList<User> users = userRepository.findAll().stream()
                 .skip(startIndex)
@@ -55,13 +58,16 @@ public class UserService {
         userRepository.updateUserInfo(user);
     }
 
-    public void validateUser(String stringId, String password) {
+    public Long validateUser(String stringId, String password) {
         Optional<User> op = userRepository.find(stringId);
         User user = op.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
-        if (password.equals(user.getPassword())) {
+        if (!password.equals(user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 틀립니다.");
         }
+        return user.getId();
     }
+
+
 
     private User makeUser(String stringId, String password, String name, String email) {
         return User.builder()

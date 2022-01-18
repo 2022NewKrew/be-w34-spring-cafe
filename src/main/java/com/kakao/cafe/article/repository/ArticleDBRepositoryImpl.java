@@ -30,8 +30,8 @@ public class ArticleDBRepositoryImpl implements ArticleRepository {
 
     @Override
     public Optional<Article> find(Long id) {
-        Article article = jdbcTemplate.queryForObject(SQL.FIND_BY_DB_ID.stmt, this::convertToArticle, id);
-        return Optional.ofNullable(article);
+        List<Article> result = jdbcTemplate.query(SQL.FIND_BY_DB_ID.stmt, this::convertToArticle, id);
+        return Optional.ofNullable((result.size() > 0) ? result.get(0) : null);
     }
 
     @Override

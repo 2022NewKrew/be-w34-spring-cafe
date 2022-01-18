@@ -13,20 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("/")
 @Slf4j
-public class RootController {
+public class HomeController {
 
     private final ArticleService articleService;
 
     @GetMapping("/")
     public String getLandingPage(Model model) {
-        log.info("GET / access, getLandingPage");
+        log.info("GET /");
         model.addAllAttributes(new ArticleListResponse(articleService.getAllArticleViewDTO(0L)));
         return "index";
     }
 
-    @GetMapping("*")
-    public String wildCard(Model model) {
-        log.info("RootController.wildCard redirect");
-        return "redirect:";
-    }
 }
