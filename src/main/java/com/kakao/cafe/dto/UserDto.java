@@ -5,14 +5,14 @@ import com.kakao.cafe.entity.User;
 import java.time.LocalDate;
 
 public class UserDto {
-    private int id;
-    private String password;
-    private String name;
-    private String email;
-    private LocalDate createdTime;
+    private final int userId;
+    private final String password;
+    private final String name;
+    private final String email;
+    private final LocalDate createdTime;
 
     public UserDto(int id, String password, String name, String email, LocalDate createdTime) {
-        this.id = id;
+        this.userId = id;
         this.password = password;
         this.name = name;
         this.email = email;
@@ -27,5 +27,9 @@ public class UserDto {
                 user.getEmail(),
                 user.getCreatedTime()
         );
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

@@ -1,11 +1,15 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.UserController;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,4 +37,18 @@ public class UserService {
         return UserDto.entityToDto(userRepository.findById(userId));
     }
 
+    public void login(UserRequestDto userRequestDto, HttpSession httpSession) throws IllegalArgumentException {
+        UserDto userRetrieved = UserDto.entityToDto(userRepository.findByMail(userRequestDto.getEmail()));
+
+        if (userRetrieved == null)
+            throw new IllegalArgumentException("올바른 메일을 입력해주세요");
+        if (!userRequestDto.getPassword().equals(userRetrieved.getPassword()))
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
+
+        httpSession.setAttribute("sessionedUser", userRetrieved);
+    }
+
+    public void logout(HttpSession httpSession) {
+        httpSession.invalidate();
+    }
 }

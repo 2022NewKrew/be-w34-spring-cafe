@@ -4,7 +4,6 @@ import com.kakao.cafe.entity.Article;
 import com.kakao.cafe.entity.User;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +23,7 @@ public class ArticleRepositoryImpl implements ArticleRepository{
     @Override
     @Transactional
     public Article save(Article article) {
-        String sql = "INSERT INTO ARTICLE (TITLE, CONTENT, CREATEDTIME, VIEWS, WRITER)" +
+        String sql = "INSERT INTO ARTICLE (TITLE, CONTENT, CREATED_TIME, VIEWS, WRITER)" +
                     "VALUES (:title, :content, :createdTime, :views, :writer)";
 
         Map<String, Object> params = new HashMap<>();
@@ -75,21 +74,19 @@ public class ArticleRepositoryImpl implements ArticleRepository{
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> {
-            return new Article(
-                    rs.getInt("ARTICLE_ID"),
-                    rs.getString("TITLE"),
-                    rs.getString("CONTENT"),
-                    rs.getDate("CREATED_TIME").toLocalDate(),
-                    rs.getInt("CONTENT"),
-                    new User(
-                            rs.getInt("USER_ID"),
-                            rs.getString("PASSWORD"),
-                            rs.getString("NAME"),
-                            rs.getString("EMAIL"),
-                            rs.getDate("USER_CREATED_TIME").toLocalDate()
-                    )
-            );
-        };
+        return (rs, rowNum) -> new Article(
+                rs.getInt("ARTICLE_ID"),
+                rs.getString("TITLE"),
+                rs.getString("CONTENT"),
+                rs.getDate("CREATED_TIME").toLocalDate(),
+                rs.getInt("CONTENT"),
+                new User(
+                        rs.getInt("USER_ID"),
+                        rs.getString("PASSWORD"),
+                        rs.getString("NAME"),
+                        rs.getString("EMAIL"),
+                        rs.getDate("USER_CREATED_TIME").toLocalDate()
+                )
+        );
     }
 }
