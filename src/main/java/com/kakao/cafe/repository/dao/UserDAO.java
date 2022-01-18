@@ -19,8 +19,8 @@ public class UserDAO {
     }
 
     public void create(User user) {
-        String sql = "INSERT INTO USERS VALUES (?,?,?,?,?)";
-        jdbcTemplate.update(sql, user.getId(), user.getUserId(), user.getPassword(), user.getEmail(), user.getRegisterDate());
+        String sql = "INSERT INTO USERS (USER_ID,PASSWORD,EMAIL,REGISTER_DATE) VALUES (?,?,?,?)";
+        jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getEmail(), user.getRegisterDate());
     }
 
     public User findByUserId(String userId) {
@@ -34,7 +34,7 @@ public class UserDAO {
     }
 
     private RowMapper<User> userRowMapper() {
-        return (rs, rowNum) -> new User(rs.getLong("id"), rs.getString("user_id"), rs.getString("password"), rs.getString("email"), rs.getString("register_date"));
+        return (rs, rowNum) -> User.newInstance(rs.getLong("id"), rs.getString("user_id"), rs.getString("password"), rs.getString("email"), rs.getString("register_date"));
     }
 
 }

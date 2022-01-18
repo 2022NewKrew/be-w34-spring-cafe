@@ -18,8 +18,8 @@ public class ArticleDAO {
     }
 
     public void create(Article article) {
-        String sql = "INSERT INTO ARTICLES VALUES (?,?,?,?,?,?)";
-        jdbcTemplate.update(sql, article.getId(), article.getTitle(), article.getContent(), article.getCreateUserId(), article.getCreateDate(), article.getViews());
+        String sql = "INSERT INTO ARTICLES (TITLE,CONTENT,CREATE_USER_ID,CREATE_DATE,VIEWS) VALUES (?,?,?,?,?)";
+        jdbcTemplate.update(sql, article.getTitle(), article.getContent(), article.getCreateUserId(), article.getCreateDate(), article.getViews());
     }
 
     public Article findById(long id) {
@@ -33,6 +33,6 @@ public class ArticleDAO {
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> new Article(rs.getLong("id"), rs.getString("title"), rs.getString("content"), rs.getString("create_user_id"), rs.getString("create_date"), rs.getInt("views"));
+        return (rs, rowNum) -> Article.newInstance(rs.getLong("id"), rs.getString("title"), rs.getString("content"), rs.getString("create_user_id"), rs.getString("create_date"), rs.getInt("views"));
     }
 }

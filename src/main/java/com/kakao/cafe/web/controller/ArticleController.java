@@ -1,5 +1,6 @@
 package com.kakao.cafe.web.controller;
 
+import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.web.dto.ArticleDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +20,8 @@ public class ArticleController {
     }
 
     @PostMapping(value = "/article/create")
-    public String postCreateArticle(String title, String content) {
-        articleService.createArticle(title, content);
+    public String postCreateArticle(Article article) {
+        articleService.createArticle(article);
         return "redirect:/index";
     }
 

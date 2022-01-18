@@ -1,5 +1,6 @@
 package com.kakao.cafe.web.controller;
 
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +27,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/create")
-    public String postSignUp(String userId, String password, String email) {
-        userService.createUser(userId, password, email);
+    public String postSignUp(User user) {
+        userService.createUser(user);
         log.info("userList:{}", userService.getUserList());
         return "redirect:/user/list";
     }

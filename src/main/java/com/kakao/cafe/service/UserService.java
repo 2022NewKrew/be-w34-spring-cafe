@@ -11,15 +11,13 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private static long idIndex = 1;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public void createUser(String userId, String password, String email) {
-        userRepository.create(new User(idIndex, userId, password, email));
-        idIndex++;
+    public void createUser(User user) {
+        userRepository.create(user);
     }
 
     public UserDTO getUserByUserId(String userId) {

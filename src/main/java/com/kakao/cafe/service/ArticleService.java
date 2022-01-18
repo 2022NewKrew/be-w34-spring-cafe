@@ -13,15 +13,13 @@ import java.util.List;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private static long idIndex = 0;
 
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
-    public void createArticle(String title, String content) {
-        articleRepository.create(new Article(idIndex, title, content));
-        idIndex++;
+    public void createArticle(Article article) {
+        articleRepository.create(article);
     }
 
     public int getArticleListSize() {
