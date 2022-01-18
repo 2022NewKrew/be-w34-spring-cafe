@@ -1,7 +1,7 @@
 package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.user.*;
-import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
@@ -41,9 +41,13 @@ public class H2UserRepository implements UserRepository{
 
     @Override
     public User findById(UserId id) {
-        return DataAccessUtils.singleResult(jdbcTemplate.query(
-                "SELECT USERID, PASSWORD, NAME, EMAIL FROM USERS WHERE USERID = ?", rowMapper , id.getValue()
-        ));
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT USERID, PASSWORD, NAME, EMAIL FROM USERS WHERE USERID = ?", rowMapper, id.getValue()
+            );
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
     }
 
     @Override

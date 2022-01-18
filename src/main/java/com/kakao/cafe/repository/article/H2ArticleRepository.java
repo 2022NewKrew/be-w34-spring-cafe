@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.article.Article;
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.Timestamp;
@@ -33,9 +32,9 @@ public class H2ArticleRepository implements ArticleRepository{
 
     @Override
     public Article findById(int articleId) {
-        return DataAccessUtils.singleResult(jdbcTemplate.query(
+        return jdbcTemplate.queryForObject(
                 "SELECT ID, TITLE, CONTENT, CREATEDAT, MODIFIEDAT FROM ARTICLES WHERE ID = ?", rowMapper , articleId
-        ));
+        );
     }
 
     @Override
