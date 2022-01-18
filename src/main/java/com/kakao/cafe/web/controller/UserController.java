@@ -2,6 +2,7 @@ package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.domain.user.User;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Slf4j
 @Controller
 public class UserController {
     private final UserService userService;
-    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -32,16 +33,15 @@ public class UserController {
 
     @GetMapping(value = "/user/list")
     public String getUserList(Model model) {
-        model.addAttribute("userListSize", userService.getUserRepository().getUserList().size());
-        model.addAttribute("userList", userService.getUserRepository().getUserList().getCopiedUserList());
+        model.addAttribute("userListSize", userService.getUserListSize());
+        model.addAttribute("userList", userService.getUserList());
         return "user/list";
     }
 
     @PostMapping(value = "/user/create")
-    public String postSignUp(User user) {
-        logger.info("user:{}", user);
-        userService.getUserRepository().getUserList().add(user);
-        logger.info("userList:{}", userService.getUserRepository().getUserList().getCopiedUserList());
+    public String postSignUp(String userId,String password,String email) {
+        userService.createUser(userId,password,email);
+        log.info("userList:{}", userService.getUserList());
         return "redirect:/user/list";
     }
 
@@ -52,8 +52,8 @@ public class UserController {
 
     @GetMapping(value = "user/profile/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model) {
-        User user = userService.getUserRepository().getUserList().findByUserId(userId);
-        logger.info("user:{}", user);
+        User user = userService.getUserByUserId(userId);
+        log.info("user:{}", user);
         model.addAttribute("user", user);
         return "/user/profile";
     }
