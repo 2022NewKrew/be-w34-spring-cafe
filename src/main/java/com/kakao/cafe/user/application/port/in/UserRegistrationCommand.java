@@ -1,11 +1,13 @@
 package com.kakao.cafe.user.application.port.in;
 
+import lombok.Getter;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+@Getter
 public class UserRegistrationCommand {
     @NotEmpty(message = "아이디는 필수사항입니다.")
     @Size(min = 3, max = 15, message = "아이디는 3글자 이상 15글자 이하입니다.")
@@ -20,7 +22,6 @@ public class UserRegistrationCommand {
     private final String name;
 
     @NotEmpty(message = "패스워드는 필수사항입니다.")
-    @Size(min = 8, message = "패스워드는 8글자 이상이어야 합니다.")
     private final String password;
 
     public UserRegistrationCommand(String nickname, String email, String name, String password) {
@@ -28,21 +29,5 @@ public class UserRegistrationCommand {
         this.email = email;
         this.name = name;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPassword() {
-        return password;
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +21,13 @@ public class SecurityConfig {
         noAuthUrlPatterns.add("/images/(.*)");
 
         noAuthUrlPatterns.add("/error/(.*)");
+        noAuthUrlPatterns.add("/index");
 
         noAuthUrlPatterns.add(URLPath.INDEX.getPath());
         noAuthUrlPatterns.add(URLPath.LOGIN_FORM.getPath());
         noAuthUrlPatterns.add(URLPath.LOGIN_FAILED.getPath());
         noAuthUrlPatterns.add(URLPath.SHOW_SIGN_UP_FORM.getPath());
+        noAuthUrlPatterns.add(URLPath.SHOW_USERS.getPath());
     }
 
     @Bean

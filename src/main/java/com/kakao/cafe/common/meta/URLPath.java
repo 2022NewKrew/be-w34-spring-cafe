@@ -1,10 +1,12 @@
 package com.kakao.cafe.common.meta;
 
 public enum URLPath {
+
+    HOME("/index"),
     INDEX("/"),
-    SHOW_ARTICLE_FORM("/qna/form"),
+    SHOW_ARTICLE_FORM("/post/form"),
     SHOW_SIGN_UP_FORM("/user/form"),
-    SHOW_ARTICLE("/qna/show"),
+    SHOW_ARTICLE("/post/show"),
     LOGIN_FORM("/user/login"),
     LOGIN_FAILED("/user/login_failed"),
     SHOW_USER_LIST("/user/list"),

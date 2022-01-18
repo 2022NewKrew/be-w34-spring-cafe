@@ -9,7 +9,6 @@ public class LoginForm {
     private final String nickname;
 
     @NotEmpty(message = "패스워드는 필수사항입니다.")
-    @Size(min = 8, message = "패스워드는 8글자 이상이어야 합니다.")
     private final String password;
 
     public LoginForm(String nickname, String password) {

@@ -49,4 +49,10 @@ public class LoginController {
         return URLPath.LOGIN_FAILED.getPath();
     }
 
+    @GetMapping("/users/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return URLPath.INDEX.getRedirectPath();
+    }
+
 }

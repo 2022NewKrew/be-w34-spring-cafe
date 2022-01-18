@@ -7,10 +7,9 @@ import javax.validation.constraints.Size;
 public class ModifyingUserInfo {
     @NotEmpty(message = "아이디는 필수사항입니다.")
     @Size(min = 3, max = 15, message = "아이디는 3글자 이상 15글자 이하입니다.")
-    private final String nickName;
+    private final String nickname;
 
     @NotEmpty(message = "패스워드는 필수사항입니다.")
-    @Size(min = 8, message = "패스워드는 8글자 이상이어야 합니다.")
     private final String password;
 
     @NotEmpty(message = "이름은 필수사항입니다.")
@@ -21,15 +20,15 @@ public class ModifyingUserInfo {
     @Email(message = "이메일 형식에 맞춰주세요.")
     private final String email;
 
-    public ModifyingUserInfo(String nickName, String password, String name, String email) {
-        this.nickName = nickName;
+    public ModifyingUserInfo(String nickname, String password, String name, String email) {
+        this.nickname = nickname;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
     public String getPassword() {

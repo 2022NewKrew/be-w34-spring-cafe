@@ -15,9 +15,9 @@ public class ArticleRegistrationService implements ArticleRegistrationUseCase {
     }
 
     @Override
-    public void registerArticle(ArticleRegistrationCommand articleRegistrationCommand) {
+    public void registerArticle(ArticleRegistrationCommand articleRegistrationCommand, String nickName) {
         articleRegistrationPort.saveArticle(new ArticleCreateCommand(LocalDateTime.now(),
-                articleRegistrationCommand.getWriterName(),
+                nickName,
                 articleRegistrationCommand.getTitle(),
                 articleRegistrationCommand.getContents(),
                 0));

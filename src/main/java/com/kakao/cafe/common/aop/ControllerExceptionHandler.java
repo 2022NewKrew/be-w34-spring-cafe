@@ -1,5 +1,6 @@
 package com.kakao.cafe.common.aop;
 
+import com.kakao.cafe.common.exception.ArticleUpdateException;
 import com.kakao.cafe.common.exception.SignUpException;
 import com.kakao.cafe.common.meta.URLPath;
 import com.kakao.cafe.user.application.port.in.UserRegistrationCommand;
@@ -15,20 +16,29 @@ import java.util.NoSuchElementException;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(LoginException.class)
-    public String loginExceptionHandle() {
+    public String loginExceptionHandle(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("isFailed", true);
         return URLPath.LOGIN_FAILED.getRedirectPath();
     }
 
     @ExceptionHandler(SignUpException.class)
     public String signUpExceptionHandle(@ModelAttribute UserRegistrationCommand userRegistrationCommand,
                                         RedirectAttributes redirectAttributes) {
+
         redirectAttributes.addFlashAttribute("name", userRegistrationCommand.getName());
         redirectAttributes.addFlashAttribute("email", userRegistrationCommand.getEmail());
+        redirectAttributes.addFlashAttribute("isFailed", true);
+
         return URLPath.SHOW_SIGN_UP_FORM.getRedirectPath();
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     public String noSuchElementExceptionHandle(NoSuchElementException ex) {
         return URLPath.SHOW_ERROR_404.getRedirectPath();
+    }
+
+    @ExceptionHandler(ArticleUpdateException.class)
+    public String articleUpdateExceptionHandle() {
+        return URLPath.INDEX.getRedirectPath();
     }
 }
