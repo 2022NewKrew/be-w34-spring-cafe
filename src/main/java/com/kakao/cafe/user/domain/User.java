@@ -1,8 +1,6 @@
 package com.kakao.cafe.user.domain;
 
 
-import com.kakao.cafe.user.dto.UpdateDTO;
-import com.kakao.cafe.user.factory.UserFactory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,9 +33,8 @@ public class User {
         this.email = email;
     }
 
-
-    public User updateInfo(UpdateDTO updateDTO) {
-        return UserFactory.toUser(updateDTO);
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public boolean equalsPassword(String InputPassword) {

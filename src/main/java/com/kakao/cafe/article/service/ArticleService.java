@@ -1,7 +1,6 @@
 package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.dto.QuestionDTO;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,8 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public void question(QuestionDTO questionDTO) {
-        articleRepository.save(questionDTO);
+    public void question(Article article) {
+        articleRepository.save(article);
     }
 
     public Article findById(Long id) {

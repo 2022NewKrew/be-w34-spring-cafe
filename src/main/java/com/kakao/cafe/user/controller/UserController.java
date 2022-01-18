@@ -5,6 +5,7 @@ import com.kakao.cafe.user.dto.ProfileViewDTO;
 import com.kakao.cafe.user.dto.SignUpDTO;
 import com.kakao.cafe.user.dto.UpdateDTO;
 import com.kakao.cafe.user.dto.UserViewDTO;
+import com.kakao.cafe.user.factory.UserFactory;
 import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ public class UserController {
 
     @PostMapping("/users/create")
     public String singUp(SignUpDTO signUpDTO) {
-        userService.signUp(signUpDTO);
+        userService.signUp(UserFactory.toUser(signUpDTO));
         return "redirect:/users";
     }
 

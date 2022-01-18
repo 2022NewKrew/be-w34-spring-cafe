@@ -1,9 +1,6 @@
 package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.dto.SignUpDTO;
-import com.kakao.cafe.user.dto.UpdateDTO;
-import com.kakao.cafe.user.factory.UserFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,8 +23,11 @@ public class JdbcTemplateUserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void save(SignUpDTO singUpDto) {
-        User user = UserFactory.toUser(singUpDto);
+    public void save(User user) {
+        if (user.getId() != null) {
+            update(user);
+            return;
+        }
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement pstmt = con.prepareStatement("insert into USERS (USER_ID,PASSWORD,NAME,EMAIL)" +
@@ -54,11 +54,10 @@ public class JdbcTemplateUserRepository implements UserRepository {
         return jdbcTemplate.query("select * from USERS", userRowMapper());
     }
 
-    @Override
-    public void update(UpdateDTO updateDto) {
+    public void update(User user) {
         jdbcTemplate.update("update USERS set PASSWORD=?,NAME=?,EMAIL=? where ID=?"
-                , updateDto.getNewPassword(), updateDto.getName(), updateDto.getEmail(),
-                updateDto.getId());
+                , user.getPassword(), user.getName(), user.getEmail(),
+                user.getId());
     }
 
     private RowMapper<User> userRowMapper() {

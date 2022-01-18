@@ -1,8 +1,8 @@
 package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.dto.SignUpDTO;
 import com.kakao.cafe.user.dto.UpdateDTO;
+import com.kakao.cafe.user.factory.UserFactory;
 import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void signUp(SignUpDTO signUpDTO) {
-        userRepository.save(signUpDTO);
+    public void signUp(User user) {
+        userRepository.save(user);
     }
 
     public List<User> getAllUsers() {
@@ -33,6 +33,6 @@ public class UserService {
         if (!user.equalsPassword(updateDTO.getPassword())) {
             throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
         }
-        userRepository.update(updateDTO);
+        userRepository.save(UserFactory.toUser(updateDTO));
     }
 }

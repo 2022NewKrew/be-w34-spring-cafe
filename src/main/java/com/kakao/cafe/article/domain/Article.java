@@ -43,4 +43,8 @@ public class Article {
         this.writingTime = writingTime;
         this.countOfComment = countOfComment;
     }
+
+    public void setArticleId(Long id) {
+        this.id = id;
+    }
 }

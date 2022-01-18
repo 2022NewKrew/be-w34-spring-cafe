@@ -3,6 +3,7 @@ package com.kakao.cafe.article.controller;
 import com.kakao.cafe.article.dto.ArticleViewDTO;
 import com.kakao.cafe.article.dto.DetailArticleViewDTO;
 import com.kakao.cafe.article.dto.QuestionDTO;
+import com.kakao.cafe.article.factory.ArticleFactory;
 import com.kakao.cafe.article.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,7 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String question(QuestionDTO questionDTO) {
-        articleService.question(questionDTO);
+        articleService.question(ArticleFactory.toArticle(questionDTO));
 
         return "redirect:/";
     }
