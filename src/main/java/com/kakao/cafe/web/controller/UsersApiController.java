@@ -92,8 +92,8 @@ public class UsersApiController {
 
     @PostMapping
     String createUser(Users user, HttpSession session) {
-        userService.addUser(user);
-        session.setAttribute("sessionedUser", user);
+        Users createdUser = userService.addUser(user);
+        session.setAttribute("sessionedUser", createdUser);
         logger.info("User API: 회원가입");
         return "redirect:/users";
     }
