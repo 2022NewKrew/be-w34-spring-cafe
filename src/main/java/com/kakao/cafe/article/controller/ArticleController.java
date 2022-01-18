@@ -27,7 +27,13 @@ public class ArticleController {
 
     //새로운 질문 생성
     @PostMapping(value = "/qna/create")
-    public String createArticle(ArticleCreateDTO articleCreateDTO){
+    public String createArticle(ArticleCreateDTO articleCreateDTO, HttpSession session){
+
+        //로그인 상태가 아닌경우
+        if(session.getAttribute("sessionedUser") == null){
+            throw new RuntimeException("로그인 상태에서만 게시글을 작성할 수 있습니다.");
+        }
+
         articleService.articleCreate(articleCreateDTO);
         return "redirect:/";
     }
@@ -52,7 +58,14 @@ public class ArticleController {
 
     //상세 질문글 확인
     @GetMapping(value = "/qnas/{sequence}")
-    public String showArticle(@PathVariable("sequence") Long sequence, Model model){
+    public String showArticle(@PathVariable("sequence") Long sequence, Model model, HttpSession session){
+
+        //로그인 상태가 아닌경우
+        if(session.getAttribute("sessionedUser") == null){
+            throw new RuntimeException("로그인 상태에서만 상세글을 볼 수 있습니다.");
+        }
+
+
         Article article = articleService.getArticleBySequence(sequence);
         ArticleViewDTO articleViewDTO = new ArticleViewDTO(article);
 
