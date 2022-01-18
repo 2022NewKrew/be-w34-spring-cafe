@@ -9,7 +9,6 @@ import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,5 +41,9 @@ public class ArticleService {
                 .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
         article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getDescription());
         articleRepository.update(article);
+    }
+
+    public void delete(Long id) {
+        articleRepository.delete(id);
     }
 }

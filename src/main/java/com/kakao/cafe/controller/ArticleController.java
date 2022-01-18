@@ -68,4 +68,16 @@ public class ArticleController {
 
         return "redirect:/articles/{articleId}";
     }
+
+    @DeleteMapping("/{articleId}")
+    public String deleteArticle(@PathVariable Long articleId, HttpSession session) {
+        Auth auth = (Auth) session.getAttribute("auth");
+        ArticleDto article = articleService.findById(articleId);
+        if (auth == null || !auth.validateById(article.getAuthorId())) {
+            throw new UnauthorizedAccessException("인가되지 않은 접근입니다.");
+        }
+        articleService.delete(articleId);
+
+        return "redirect:/";
+    }
 }

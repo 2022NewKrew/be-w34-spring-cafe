@@ -77,6 +77,12 @@ public class ArticleRepository implements MyRepository<Article, Long> {
         );
     }
 
+    public void delete(Long id) {
+        String sql = "delete from article where id = ?";
+
+        jdbcTemplate.update(sql, id);
+    }
+
     private static class ArticleMapper implements RowMapper<Article> {
         @Override
         public Article mapRow(ResultSet rs, int rowNum) throws SQLException {

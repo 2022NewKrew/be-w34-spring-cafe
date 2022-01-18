@@ -37,6 +37,10 @@
                           </div>
                       </article>
                       <a class="black-component" href="/articles/{{this.articleId}}/form" role="button">수정하기</a>
+                      <form id="delete" action="/articles/{{this.articleId}}" method="post">
+                          <input type="hidden" name="_method" value="DELETE" />
+                          <a class="black-component" href="javascript:{}" onclick="document.getElementById('delete').submit();">삭제하기</a>
+                      </form>
                   {{/article}}
 
 <!--                      <div class="post-comment">-->
