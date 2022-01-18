@@ -105,7 +105,7 @@ public class UserController {
         log.info("[GET] /users/{} - (id: {}) 유저 상세정보(프로필) 페이지 접속", id, id);
 
         UserInfoResponse userProfile = this.userService.getUserProfile(id);
-        model.addAttribute("user", userProfile);
+        model.addAttribute("userInfo", userProfile);
 
         return "user/profile";
     }
@@ -127,7 +127,7 @@ public class UserController {
      * 회원 프로필 수정 요청 [POST]
      * @param req: 회원 프로필 수정 정보
      */
-    @PostMapping("/users/update")
+    @PutMapping("/users/update")
     public String updateUser(@Valid UserUpdateRequest req, HttpSession session) {
         UserInfoResponse user = (UserInfoResponse) session.getAttribute("user");
         Long id = user.getId();

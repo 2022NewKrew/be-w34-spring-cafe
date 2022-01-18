@@ -4,6 +4,7 @@ import com.kakao.cafe.article.dto.request.ArticleCreateRequest;
 import com.kakao.cafe.article.dto.response.ArticleDetailResponse;
 import com.kakao.cafe.article.exception.ArticleNotFoundException;
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.user.dto.response.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -69,10 +71,12 @@ public class ArticleController {
      * @param req: 게시글 작성 정보
      */
     @PostMapping("/articles")
-    public String createArticle(@Valid ArticleCreateRequest req) {
+    public String createArticle(@Valid ArticleCreateRequest req, HttpSession session) {
         log.info("[POST] /articles - 게시글 작성 요청");
 
-        this.articleService.createArticle(req);
+        UserInfoResponse user = (UserInfoResponse) session.getAttribute("user");
+        Long writerId = user.getId();
+        this.articleService.createArticle(req, writerId);
         log.info("test");
         return "redirect:/";
     }

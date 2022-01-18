@@ -6,6 +6,9 @@ import com.kakao.cafe.article.entity.Article;
 import com.kakao.cafe.article.exception.ArticleNotFoundException;
 import com.kakao.cafe.article.mapper.ArticleMapper;
 import com.kakao.cafe.article.repository.ArticleRepository;
+import com.kakao.cafe.user.entity.User;
+import com.kakao.cafe.user.exception.UserNotFoundException;
+import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +21,18 @@ import java.util.stream.Collectors;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
     private final ArticleMapper articleMapper;
 
     /**
      * 게시글 작성 로직
      * @param req: 컨트롤러에 들어온 게시글 작성 정보
      */
-    public void createArticle(ArticleCreateRequest req) {
+    public void createArticle(ArticleCreateRequest req, Long writerId) {
+
         Article article = articleMapper.articleCreateRequestToEntity(req);
+        Optional<User> writer = userRepository.findById(writerId);
+        article.setWriter(writer.orElseThrow(UserNotFoundException::new));
 
         this.articleRepository.save(article);
     }

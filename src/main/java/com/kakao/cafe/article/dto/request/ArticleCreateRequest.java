@@ -12,9 +12,6 @@ public class ArticleCreateRequest {
 
     @NotNull
     @NotBlank
-    private final String writer;
-    @NotNull
-    @NotBlank
     private final String title;
     @NotNull
     @NotBlank

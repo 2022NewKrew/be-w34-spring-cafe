@@ -1,7 +1,7 @@
 package com.kakao.cafe.common.interceptor;
 
 import com.kakao.cafe.user.dto.response.UserInfoResponse;
-import com.kakao.cafe.user.exception.NotLoggedInException;
+import com.kakao.cafe.user.exception.UnAuthorizedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -23,7 +23,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
                 Optional.ofNullable((UserInfoResponse) session.getAttribute("user"));
 
         if(user.isEmpty()) {
-            throw new NotLoggedInException();
+            throw new UnAuthorizedException();
         }
 
         return true;

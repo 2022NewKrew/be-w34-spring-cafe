@@ -1,6 +1,8 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.entity.Article;
+import com.kakao.cafe.user.exception.UserNotFoundException;
+import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final UserRepository userRepository;
 
     /**
      * 새로운 게시글 만드는(Create) 메서드
@@ -20,11 +23,11 @@ public class ArticleRepository {
      * @return int: 영향받은 행의 수(1)
      */
     public int save(Article article) {
-        String sql = "insert into article_table(writer, title, contents) values(?, ?, ?)";
+        String sql = "insert into article_table(writer_id, title, contents) values(?, ?, ?)";
 
         return this.writeQuery(
                 sql,
-                article.getWriter(),
+                article.getWriter().getId(),
                 article.getTitle(),
                 article.getContents()
         );
@@ -74,7 +77,7 @@ public class ArticleRepository {
                 sql,
                 (rs, rowNum) -> new Article(
                         rs.getLong("id"),
-                        rs.getString("writer"),
+                        userRepository.findById(rs.getLong("writer_id")).orElseThrow(UserNotFoundException::new),
                         rs.getString("title"),
                         rs.getString("contents"),
                         rs.getTimestamp("created_at").toLocalDateTime()

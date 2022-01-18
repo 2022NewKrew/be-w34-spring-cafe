@@ -1,8 +1,8 @@
 package com.kakao.cafe.user.exception;
 
-public class NotLoggedInException extends RuntimeException {
+public class UnAuthorizedException extends RuntimeException {
 
-    public NotLoggedInException() {
+    public UnAuthorizedException() {
         super("로그인 되어 있지 않습니다.");
     }
 }
