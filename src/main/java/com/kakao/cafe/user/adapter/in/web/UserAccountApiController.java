@@ -4,8 +4,11 @@ import com.kakao.cafe.user.adapter.in.web.dto.request.UserAccountEnrollRequest;
 import com.kakao.cafe.user.adapter.in.web.dto.request.UserAccountLoginRequest;
 import com.kakao.cafe.user.adapter.in.web.dto.response.UserAccountEnrollResponse;
 import com.kakao.cafe.user.adapter.in.web.dto.response.UserAccountLoginResponse;
+import com.kakao.cafe.user.application.dto.command.UserAccountCheckCommand;
+import com.kakao.cafe.user.application.dto.result.UserAccountCheckResult;
 import com.kakao.cafe.user.application.dto.result.UserAccountDetailResult;
 import com.kakao.cafe.user.application.dto.result.UserAccountEnrollResult;
+import com.kakao.cafe.user.application.port.in.CheckUserAccountUseCase;
 import com.kakao.cafe.user.application.port.in.EnrollUserAccountUseCase;
 import com.kakao.cafe.user.application.port.in.GetUserAccountUseCase;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +32,7 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 public class UserAccountApiController {
 
     private final EnrollUserAccountUseCase enrollUserAccountUseCase;
-    private final GetUserAccountUseCase getUserAccountUseCase;
+    private final CheckUserAccountUseCase checkUserAccountUseCase;
 
     @PostMapping("")
     public ResponseEntity<UserAccountEnrollResponse> enroll(@Valid @RequestBody UserAccountEnrollRequest request) {
@@ -47,9 +50,13 @@ public class UserAccountApiController {
             @Valid @RequestBody UserAccountLoginRequest request,
             HttpSession httpSession) {
 
-        UserAccountDetailResult user = getUserAccountUseCase.getUserInfoByEmail(request.toCommand());
-        if(user.getPassword().equals(request.getPassword())) {
-            httpSession.setAttribute("user-id", user.getUserAccountId());
+        UserAccountCheckResult userAccountCheckResult = checkUserAccountUseCase.checkPassword(
+                new UserAccountCheckCommand(
+                        request.getEmail(),
+                        request.getPassword()));
+
+        if(userAccountCheckResult.isCorrect()) {
+            httpSession.setAttribute("user-id", userAccountCheckResult.getUserAccountId());
             return ResponseEntity.ok()
                     .body(new UserAccountLoginResponse("success"));
         }

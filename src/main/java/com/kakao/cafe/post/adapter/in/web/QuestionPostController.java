@@ -30,12 +30,9 @@ public class QuestionPostController {
         model.addAttribute("post", postDetail);
 
         if(Objects.equals(httpSession.getAttribute("user-id"), postDetail.getUserAccountId())) {
-            return "after/updateqnadetail";
+            return "updateqnadetail";
         }
-        if(httpSession.getAttribute("user-id") != null) {
-            return "after/qnadetail";
-        }
-        return "before/qnadetail";
+        return "qnadetail";
     }
 
     @GetMapping("/{post-id}/update")
@@ -44,6 +41,6 @@ public class QuestionPostController {
 
         model.addAttribute("post", postDetail);
 
-        return "after/qnaupdateform";
+        return "qnaupdateform";
     }
 }

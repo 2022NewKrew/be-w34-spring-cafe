@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @ToString(exclude = {"password"})
 @EqualsAndHashCode
@@ -37,5 +38,9 @@ public class UserAccount {
 
     public boolean checkEmail(String email) {
         return this.email.equals(email);
+    }
+
+    public boolean checkPassword(String password) {
+        return Objects.equals(this.password, password);
     }
 }
