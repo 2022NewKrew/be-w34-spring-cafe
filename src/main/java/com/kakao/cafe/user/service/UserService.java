@@ -6,7 +6,6 @@ import com.kakao.cafe.user.domain.UserValidator;
 import com.kakao.cafe.user.dto.LoginRequest;
 import com.kakao.cafe.user.dto.Profile;
 import com.kakao.cafe.user.exception.UserNotFoundException;
-import com.kakao.cafe.user.exception.WrongPasswordException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,9 +35,7 @@ public class UserService {
     public User login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(UserNotFoundException::new);
-        if (!user.getPassword().equals(request.getPassword())) {
-            throw new WrongPasswordException();
-        }
+        user.login(userValidator, request.getPassword());
         return user;
     }
 }

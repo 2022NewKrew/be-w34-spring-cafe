@@ -16,6 +16,10 @@ public class User implements Serializable {
     private LocalDateTime createdAt;
 
     public void signup(UserValidator userValidator) {
-        userValidator.validate(this);
+        userValidator.validateSignup(this);
+    }
+
+    public void login(UserValidator userValidator, String password) {
+        userValidator.validateLogin(this.password, password);
     }
 }
