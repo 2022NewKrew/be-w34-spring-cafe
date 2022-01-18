@@ -24,4 +24,8 @@ public class ArticleService {
     public ArticleReadDto showArticle(Long id) {
         return articleRepository.findArticleById(id);
     }
+
+    public void updateArticle(Long id, ArticleUpdateDto articleUpdateDto) {
+        articleRepository.updateArticle(id, articleUpdateDto.getTitle(), articleUpdateDto.getContents());
+    }
 }

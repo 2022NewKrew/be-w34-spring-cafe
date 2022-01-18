@@ -8,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpSessionRequiredException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -42,5 +39,22 @@ public class ArticleController {
         model.addAttribute("article", article);
         logger.info("Get Article : {}", id);
         return "article/show";
+    }
+
+    @GetMapping("/{id}/form")
+    public String getArticleUpdateForm(@PathVariable Long id, Model model, HttpSession session) throws HttpSessionRequiredException {
+        ArticleReadDto article = articleService.showArticle(id);
+        infraService.validateSession(session, article.getAuthorId());
+        model.addAttribute("article", article);
+        logger.info("Get Article Update Form : {}", id);
+        return "article/updateForm";
+    }
+
+    @PutMapping("/{id}")
+    public String updateArticle(@PathVariable Long id, ArticleUpdateDto articleUpdateDto, HttpSession session) throws HttpSessionRequiredException {
+        infraService.validateSession(session, id);
+        articleService.updateArticle(id, articleUpdateDto);
+        logger.info("Update Article : {}", id);
+        return "redirect:/articles/{id}";
     }
 }

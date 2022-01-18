@@ -57,6 +57,12 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         return jdbcTemplate.query(query, mapRowArticles());
     }
 
+    @Override
+    public void updateArticle(Long id, String title, String contents) {
+        jdbcTemplate.update("UPDATE ARTICLE SET title = ?, contents = ? WHERE id = ?",
+                title, contents, id);
+    }
+
     public RowMapper<ArticleListDto> mapRowArticles() {
         return ((rs, rowNum) -> new ArticleListDto(
                 rs.getLong("ARTICLE.id"),

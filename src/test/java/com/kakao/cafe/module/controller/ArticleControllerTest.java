@@ -16,8 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static com.kakao.cafe.module.model.dto.ArticleDtos.*;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -96,5 +95,37 @@ class ArticleControllerTest {
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("msg"))
                 .andExpect(view().name("user/login"));
+    }
+
+    @Test
+    void 게시물_정보_수정폼() throws Exception {
+        mockMvc.perform(get("/articles/1/form")
+                        .session(session))
+                .andExpect(status().isOk())
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("article"))
+                .andExpect(model().attribute("article", hasProperty("authorId", is(1L))))
+                .andExpect(view().name("article/updateForm"));
+    }
+
+    @Test
+    void 자신이_쓰지_않은_게시물_수정() throws Exception {
+        mockMvc.perform(get("/articles/2/form")
+                        .session(session))
+                .andExpect(status().isForbidden())
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("msg"))
+                .andExpect(view().name("infra/error"));
+    }
+
+    @Test
+    void 게시물_수정() throws Exception {
+        ArticleUpdateDto input = new ArticleUpdateDto(1L, 1L, "update title", "update contents");
+
+        mockMvc.perform(put("/articles/1")
+                        .flashAttr("articleUpdateDto", input)
+                        .session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/articles/1"));
     }
 }
