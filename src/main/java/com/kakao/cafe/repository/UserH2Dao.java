@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
+@Primary
 public class UserH2Dao implements UserDAOInterface {
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper userMapper = new UserMapper();
