@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>글 작성</title>
-</head>
-<body>
-<header>
-    <p>글 작성</p>
-</header>
+
+{{>template/header}}
+
+{{>template/navigator}}
+
+<div class ="main">
 <form name="question" class="info-container" method="post" action="/article/post">
     <div class="form-group">
         <label for="title">제목</label>
@@ -19,5 +15,5 @@
     <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
     </div>
 </form>
-</body>
-</html>
+</div>
+{{>template/footer}}
