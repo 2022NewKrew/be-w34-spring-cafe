@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.dto.AuthInfoDTO.Login;
 import com.kakao.cafe.error.exception.AuthInvalidPasswordException;
@@ -32,8 +32,8 @@ class AuthServiceTest {
     @DisplayName("잘못된 UID 입력으로 조회 불가능한 상황 테스트")
     void login() {
         // Given
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.empty());
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.empty());
 
         // When
         Login loginDTO = new Login("uid", "pwd");
@@ -49,9 +49,10 @@ class AuthServiceTest {
     @DisplayName("잘못된 Password 입력으로 인증 불가능한 상황 테스트")
     void login2() {
         // Given
-        User user = User.of(1L, "uid", "pwd", "name", "email@test.com", LocalDateTime.now());
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
+            .email("email@test.com").createdAt(LocalDateTime.now()).build();
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         Login loginDTO = new Login("uid", "wrongPwd");
@@ -67,9 +68,10 @@ class AuthServiceTest {
     @DisplayName("정상적인 로그인 정보 입력 테스트")
     void login3() {
         // Given
-        User user = User.of(1L, "uid", "pwd", "name", "email@test.com", LocalDateTime.now());
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
+            .email("email@test.com").createdAt(LocalDateTime.now()).build();
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         Login loginDTO = new Login("uid", "pwd");

@@ -36,10 +36,12 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     private Article articleRowMapper(ResultSet rs, int rowNum) throws SQLException {
-        return Article.of(rs.getLong("id"),
-            rs.getString("uid"),
-            rs.getString("title"),
-            rs.getString("body"),
-            rs.getTimestamp("created_at").toLocalDateTime());
+        return Article.builder()
+            .id(rs.getLong("id"))
+            .uid(rs.getString("uid"))
+            .title(rs.getString("title"))
+            .body(rs.getString("body"))
+            .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+            .build();
     }
 }

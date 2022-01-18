@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,31 +28,40 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public void create(Create createDTO, AuthInfo authInfo) {
         Optional<User> foundUser = userRepository.findUserByUid(authInfo.getUid());
         if (foundUser.isEmpty()) {
             throw new UserNotFoundException(ErrorCode.NOT_FOUND, authInfo.getUid());
         }
 
-        Article article = Article.of(foundUser.get().getUid(), createDTO.getTitle(),
-            createDTO.getBody());
+        Article article = Article.builder()
+            .uid(foundUser.get().getUid())
+            .title(createDTO.getTitle())
+            .body(createDTO.getBody())
+            .build();
 
         articleRepository.save(article);
         logger.info("Article Created : {}", article);
     }
 
+    @Transactional(readOnly = true)
     public List<Result> readAll() {
-        return articleRepository.findAllArticles().stream()
+        List<Article> articles = articleRepository.findAllArticles();
+        logger.info("Read All Articles {}", articles);
+        return articles.stream()
             .map(Result::from)
             .collect(Collectors.toUnmodifiableList());
     }
 
+    @Transactional(readOnly = true)
     public Result readById(Long id) {
         Optional<Article> foundArticle = articleRepository.findArticleById(id);
         if (foundArticle.isEmpty()) {
             throw new ArticleNotFoundException(ErrorCode.NOT_FOUND, id);
         }
 
+        logger.info("Read Article by [ID : {}] :: {}", id, foundArticle.get());
         return Result.from(foundArticle.get());
     }
 }

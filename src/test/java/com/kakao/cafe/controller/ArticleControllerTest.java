@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -14,6 +14,7 @@ import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.persistence.model.User;
 import com.kakao.cafe.persistence.repository.ArticleRepository;
 import com.kakao.cafe.persistence.repository.UserRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -45,8 +46,10 @@ class ArticleControllerTest {
     @DisplayName("게시글 생성 테스트")
     void create() throws Exception {
         // Given
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(User.of("uid", "pwd", "name", "email@test.com")));
+        User user = User.builder().uid("uid").password("pwd").name("name").email("email@test.com")
+            .build();
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         AuthInfo authInfo = AuthInfo.of("uid");
@@ -61,7 +64,6 @@ class ArticleControllerTest {
 
         // Then
         actions
-            .andExpect(status().isCreated())
             .andExpect(redirectedUrl("/"));
     }
 
@@ -69,8 +71,10 @@ class ArticleControllerTest {
     @DisplayName("인증 정보가 없을 때 게시글 생성 테스트")
     void create2() throws Exception {
         // Given
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(User.of("uid", "pwd", "name", "email@test.com")));
+        User user = User.builder().uid("uid").password("pwd").name("name").email("email@test.com")
+            .build();
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
@@ -82,18 +86,21 @@ class ArticleControllerTest {
 
         // Then
         actions
-            .andExpect(status().isCreated())
-            .andExpect(redirectedUrl("/articles/form-failed"));
+            .andExpect(redirectedUrl("/error"));
     }
 
     @Test
     @DisplayName("게시글 목록 조회 테스트")
     void readAll() throws Exception {
         // Given
-        when(articleRepository.findAllArticles())
-            .thenReturn(List.of(Article.of("uid", "title1", "body1"),
-                Article.of("uid", "title2", "body2"),
-                Article.of("uid", "title3", "body3")));
+        Article article1 = Article.builder().uid("uid").title("title1").body("body1")
+            .createdAt(LocalDateTime.now()).build();
+        Article article2 = Article.builder().uid("uid").title("title2").body("body2")
+            .createdAt(LocalDateTime.now()).build();
+        Article article3 = Article.builder().uid("uid").title("title3").body("body3")
+            .createdAt(LocalDateTime.now()).build();
+        given(articleRepository.findAllArticles())
+            .willReturn(List.of(article1, article2, article3));
 
         // When
         ResultActions actions = mockMvc.perform(get("/"));
@@ -108,20 +115,16 @@ class ArticleControllerTest {
             .isInstanceOf(List.class);
         assertThat(results.size())
             .isEqualTo(3);
-
-        actions
-            .andExpect(status().isOk());
-        assertThat(actions.andReturn().getModelAndView().getViewName())
-            .isNotNull()
-            .isEqualTo("index");
     }
 
     @Test
     @DisplayName("특정 게시글 조회 테스트")
     void read() throws Exception {
         // Given
-        when(articleRepository.findArticleById(any()))
-            .thenReturn(Optional.of(Article.of("uid", "title", "body")));
+        Article article = Article.builder().uid("uid").title("title").body("body")
+            .createdAt(LocalDateTime.now()).build();
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.of(article));
 
         // When
         ResultActions actions = mockMvc.perform(get("/articles/1"));
