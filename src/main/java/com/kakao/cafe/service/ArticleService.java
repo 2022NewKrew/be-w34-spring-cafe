@@ -5,8 +5,6 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.QuestionCreateRequest;
 import com.kakao.cafe.dto.QuestionDetailResponse;
 import com.kakao.cafe.dto.QuestionListResponse;
-import com.kakao.cafe.repository.InMemoryQuestionRepository;
-import com.kakao.cafe.repository.InMemoryUserRepository;
 import com.kakao.cafe.repository.QuestionRepository;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

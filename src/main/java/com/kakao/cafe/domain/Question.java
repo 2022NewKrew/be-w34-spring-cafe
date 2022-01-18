@@ -1,6 +1,5 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.dto.QuestionCreateRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +24,4 @@ public class Question {
         this.createdDateTime = createdDateTime;
     }
 
-    //TODO
-    public void setId(Long id) {
-        this.id = id;
-    }
 }
