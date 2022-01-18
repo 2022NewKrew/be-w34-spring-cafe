@@ -6,7 +6,7 @@ import com.kakao.cafe.util.SHA256;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class User {
-    private static final AtomicInteger userCnt = new AtomicInteger(3);
+    private static final AtomicInteger userCnt = new AtomicInteger(2);
     private final long id;
     private final String userId;
     private final String password;
