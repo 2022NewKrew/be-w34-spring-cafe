@@ -34,12 +34,12 @@ public class ArticleController {
     }
 
     @GetMapping("/articles")
-    public String writeArticleView(HttpSession session, Model model) {
+    public String writeArticleView(HttpSession session) {
         UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
-        if (loginUser != null) {
-            return "qna/form";
+        if (loginUser == null) {
+            return "redirect:/users/login";
         }
-        return "redirect:/users/login";
+        return "qna/form";
     }
 
     @PostMapping("/articles")
