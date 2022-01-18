@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class UserVo {
 
+    private int id;
     private final String userId;
     private final String password;
     private final String name;
@@ -14,6 +15,18 @@ public class UserVo {
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public UserVo(int id, String userId, String password, String name, String email) {
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUserId() {
@@ -37,11 +50,11 @@ public class UserVo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserVo userVo = (UserVo) o;
-        return Objects.equals(userId, userVo.userId) && Objects.equals(password, userVo.password) && Objects.equals(name, userVo.name) && Objects.equals(email, userVo.email);
+        return id == userVo.id && Objects.equals(userId, userVo.userId) && Objects.equals(password, userVo.password) && Objects.equals(name, userVo.name) && Objects.equals(email, userVo.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, password, name, email);
+        return Objects.hash(id, userId, password, name, email);
     }
 }

@@ -2,6 +2,7 @@ package com.kakao.cafe.model.dto;
 
 public class UserDto {
 
+    private int id;
     private String userId;
     private String password;
     private String name;
@@ -12,6 +13,10 @@ public class UserDto {
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUserId() {
@@ -28,6 +33,10 @@ public class UserDto {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setUserId(String userId) {

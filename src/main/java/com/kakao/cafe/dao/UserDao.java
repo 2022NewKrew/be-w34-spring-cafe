@@ -23,13 +23,13 @@ public class UserDao {
     }
 
     public List<UserVo> findAllUser() {
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT id, user_id, password, name, email FROM users";
         return jdbcTemplate.query(sql, userRowMapper());
     }
 
     public UserVo filterUserById(String userId) {
         try {
-            String sql = "SELECT * FROM users WHERE user_id = ?";
+            String sql = "SELECT id, user_id, password, name, email FROM users WHERE user_id = ?";
             return jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -48,6 +48,7 @@ public class UserDao {
 
     private RowMapper<UserVo> userRowMapper() {
         return (rs, rowNum) -> new UserVo(
+                rs.getInt("id"),
                 rs.getString("user_id"),
                 rs.getString("password"),
                 rs.getString("name"),

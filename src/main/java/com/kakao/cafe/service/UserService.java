@@ -56,6 +56,8 @@ public class UserService {
     }
 
     private UserDto voToDtoMapper(UserVo userVo) {
-        return new UserDto(userVo.getUserId(), userVo.getPassword(), userVo.getName(), userVo.getEmail());
+        UserDto userDto =  new UserDto(userVo.getUserId(), userVo.getPassword(), userVo.getName(), userVo.getEmail());
+        userDto.setId(userVo.getId());
+        return userDto;
     }
 }
