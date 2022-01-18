@@ -25,7 +25,7 @@
                       <article class="article">
                           <div class="article-header">
                               <div class="article-header-text">
-                                  <p class="article-content">닉네임</p>
+                                  <p class="article-content">{{this.author}}</p>
                                   <p class="article-content">
                                       2015-12-30 01:47
                                   </p>
@@ -36,11 +36,11 @@
                               {{this.description}}
                           </div>
                       </article>
-                  {{/article}}
-                  {{^article}}
-                      <header class="post-header">
-                          <p class="post-title">존재하지 않는 게시글입니다.</p>
-                      </header>
+                      <a class="black-component" href="/articles/{{this.articleId}}/form" role="button">수정하기</a>
+                      <form id="delete" action="/articles/{{this.articleId}}" method="post">
+                          <input type="hidden" name="_method" value="DELETE" />
+                          <a class="black-component" href="javascript:{}" onclick="document.getElementById('delete').submit();">삭제하기</a>
+                      </form>
                   {{/article}}
 
 <!--                      <div class="post-comment">-->

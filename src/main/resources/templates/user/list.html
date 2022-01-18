@@ -36,7 +36,12 @@
                 {{#users}}
                 <tr>
                     <td>{{this.username}}</td>
-                    <td><a href="/users/{{this.id}}"/>{{this.nickname}}</td>
+                    {{^auth}}
+                    <td>{{nickname}}</td>
+                    {{/auth}}
+                    {{#auth}}
+                    <td><a href="/users/{{userId}}"/>{{nickname}}</td>
+                    {{/auth}}
                     <td>{{this.email}}</td>
                 </tr>
                 {{/users}}

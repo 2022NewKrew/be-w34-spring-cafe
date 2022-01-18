@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.auth.Auth;
 import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.service.ArticleService;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -18,13 +20,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ArticleControllerTest {
 
     private static final long FIRST_ARTICLE_ID = 1L;
-    private static final long SECOND_ARTICLE_ID = 2L;
+    private static final long FIRST_USER_ID = 10L;
+    private static final long SECOND_USER_ID = 20L;
+    private static final String FIRST_AUTHOR = "author";
     private static final String TITLE = "title";
     private static final String DESCRIPTION = "description";
-    private static final Article mockArticle = new Article(FIRST_ARTICLE_ID, TITLE, DESCRIPTION);
+    private static final Article FIRST_USER_ARTICLE = new Article(FIRST_ARTICLE_ID, FIRST_USER_ID, FIRST_AUTHOR, TITLE, DESCRIPTION);
 
-    // TODO - 멤버 변수 author, reply, viewCount 추가 구현 & 테스트 예정
-    // TODO - 로그인 여부에 따른 글쓰기 테스트 추가 예정
+    // TODO - 멤버 변수 reply, viewCount 추가 구현 & 테스트 예정
 
     @Autowired
     MockMvc mockMvc;
@@ -34,23 +37,114 @@ class ArticleControllerTest {
     @Test
     @DisplayName("[POST] /articles - 새 게시글을 작성할 수 있다")
     void publish() throws Exception {
+        MockHttpSession mockSession = new MockHttpSession();
+        mockSession.setAttribute("auth", new Auth(FIRST_USER_ID));
+
         mockMvc.perform(post("/articles")
                         .param("title", TITLE)
                         .param("description", DESCRIPTION)
+                        .session(mockSession)
                 )
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/"));
     }
 
     @Test
+    @DisplayName("[POST] /articles - 로그인하지 않고 게시글을 작성하는 경우 실패하며 로그인 페이지로 이동한다")
+    void failToPublishWithNoSession() throws Exception {
+        mockMvc.perform(post("/articles")
+                        .param("title", TITLE)
+                        .param("description", DESCRIPTION)
+                )
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/user/login"));
+    }
+
+
+    @Test
     @DisplayName("[GET] /articles/{articleId} - 게시글의 상세 내용을 조회할 수 있다")
     void getArticle() throws Exception {
+        MockHttpSession mockSession = new MockHttpSession();
+        mockSession.setAttribute("auth", new Auth(FIRST_USER_ID));
         Mockito.when(articleService.findById(FIRST_ARTICLE_ID))
-                        .thenReturn(new ArticleDto(mockArticle));
+                        .thenReturn(new ArticleDto(FIRST_USER_ARTICLE));
 
-        mockMvc.perform(get("/articles/" + FIRST_ARTICLE_ID))
+        mockMvc.perform(get("/articles/" + FIRST_ARTICLE_ID)
+                        .session(mockSession)
+                )
                 .andExpect(status().isOk())
                 .andExpect(view().name("article/show"))
                 .andExpect(model().attributeExists("article"));
+    }
+
+    @Test
+    @DisplayName("[GET] /articles/{articleId} - 로그인하지 않고 게시글의 상세조회를 할 수 없다")
+    void failToGetArticleWithNoSession() throws Exception {
+        Mockito.when(articleService.findById(FIRST_ARTICLE_ID))
+                .thenReturn(new ArticleDto(FIRST_USER_ARTICLE));
+
+        mockMvc.perform(get("/articles/" + FIRST_ARTICLE_ID))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/user/login"));
+    }
+
+    @Test
+    @DisplayName("[PUT] /articles/{articleId} - 게시글의 제목과 내용을 수정할 수 있다")
+    void update() throws Exception {
+        MockHttpSession mockSession = new MockHttpSession();
+        mockSession.setAttribute("auth", new Auth(FIRST_USER_ID));
+        Mockito.when(articleService.findById(FIRST_ARTICLE_ID))
+                .thenReturn(new ArticleDto(FIRST_USER_ARTICLE));
+
+        mockMvc.perform(put("/articles/" + FIRST_ARTICLE_ID)
+                        .session(mockSession)
+                )
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/articles/" + FIRST_ARTICLE_ID));
+    }
+
+    @Test
+    @DisplayName("[PUT] /articles/{articleId} - 다른 유저의 게시글은 수정할 수 없다")
+    void failToUpdateWithInvalidSession() throws Exception {
+        MockHttpSession mockSession = new MockHttpSession();
+        mockSession.setAttribute("auth", new Auth(SECOND_USER_ID));
+        Mockito.when(articleService.findById(FIRST_ARTICLE_ID))
+                .thenReturn(new ArticleDto(FIRST_USER_ARTICLE));
+
+        mockMvc.perform(put("/articles/" + FIRST_ARTICLE_ID)
+                        .session(mockSession)
+                )
+                .andExpect(status().isUnauthorized())
+                .andExpect(view().name("error"));
+    }
+
+    @Test
+    @DisplayName("[DELETE] /articles/{articleId} - 게시글을 삭제할 수 있다")
+    void deleteArticle() throws Exception {
+        MockHttpSession mockSession = new MockHttpSession();
+        mockSession.setAttribute("auth", new Auth(FIRST_USER_ID));
+        Mockito.when(articleService.findById(FIRST_ARTICLE_ID))
+                .thenReturn(new ArticleDto(FIRST_USER_ARTICLE));
+
+        mockMvc.perform(delete("/articles/" + FIRST_ARTICLE_ID)
+                        .session(mockSession)
+                )
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/"));
+    }
+
+    @Test
+    @DisplayName("[DELETE] /articles/{articleId} - 다른 유저의 게시글은 삭제할 수 없다")
+    void failToDeleteWithInvalidSession() throws Exception {
+        MockHttpSession mockSession = new MockHttpSession();
+        mockSession.setAttribute("auth", new Auth(SECOND_USER_ID));
+        Mockito.when(articleService.findById(FIRST_ARTICLE_ID))
+                .thenReturn(new ArticleDto(FIRST_USER_ARTICLE));
+
+        mockMvc.perform(delete("/articles/" + FIRST_ARTICLE_ID)
+                        .session(mockSession)
+                )
+                .andExpect(status().isUnauthorized())
+                .andExpect(view().name("error"));
     }
 }

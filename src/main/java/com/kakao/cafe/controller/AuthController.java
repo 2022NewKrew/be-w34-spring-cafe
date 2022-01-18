@@ -22,7 +22,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(AuthRequest authRequest, HttpSession session) {
-        Auth auth = authService.login(authRequest);
+        Auth auth = authService.login(authRequest.getUsername(), authRequest.getPassword());
         session.setAttribute("auth", auth);
 
         return "redirect:/";

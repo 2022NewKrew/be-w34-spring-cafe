@@ -1,7 +1,6 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.auth.Auth;
-import com.kakao.cafe.dto.auth.AuthRequest;
 import com.kakao.cafe.exception.InvalidPasswordException;
 import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.service.AuthService;
@@ -28,12 +27,10 @@ class AuthControllerTest {
     @MockBean
     AuthService authService;
 
-    // TODO - MockMvcTest 에서 세션 값을 검증하는 방법 찾고 적용해보기
-
     @Test
     @DisplayName("[POST] /login - 아이디와 비밀번호를 통해 로그인을 할 수 있다")
     void login() throws Exception {
-        Mockito.when(authService.login(new AuthRequest(USERNAME, PASSWORD)))
+        Mockito.when(authService.login(USERNAME, PASSWORD))
                 .thenReturn(new Auth(FIRST_SESSION_ID));
 
         mockMvc.perform(post("/login")
@@ -47,7 +44,7 @@ class AuthControllerTest {
     @Test
     @DisplayName("[POST] /login - 비밀번호가 일치하지 않는 경우 로그인에 실패한다")
     void failToLoginWithInvalidPassword() throws Exception {
-        Mockito.when(authService.login(new AuthRequest(USERNAME, "invalidPwd")))
+        Mockito.when(authService.login(USERNAME, "invalidPwd"))
                 .thenThrow(new InvalidPasswordException("error test"));
 
         mockMvc.perform(post("/login")
@@ -62,7 +59,7 @@ class AuthControllerTest {
     @Test
     @DisplayName("[POST] /login - username 과 일치하는 유저가 없는 경우 로그인에 실패한다")
     void failToLoginWithNotExistsUser() throws Exception {
-        Mockito.when(authService.login(new AuthRequest("notExistsUsername", PASSWORD)))
+        Mockito.when(authService.login("notExistsUsername", PASSWORD))
                 .thenThrow(new UserNotFoundException("error test"));
 
         mockMvc.perform(post("/login")

@@ -5,9 +5,8 @@ spring:
     expose-session-attributes: true
 
   datasource:
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cafe
 
   h2:
     console:
@@ -17,6 +16,12 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+      data-locations: classpath:sql/data.sql
+
 server:
   servlet:
     session:

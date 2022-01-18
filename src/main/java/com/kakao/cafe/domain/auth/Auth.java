@@ -2,13 +2,13 @@ package com.kakao.cafe.domain.auth;
 
 public class Auth {
 
-    private final Long id;
+    private final Long authId;
 
-    public Auth(Long id) {
-        this.id = id;
+    public Auth(Long authId) {
+        this.authId = authId;
     }
 
-    public Long getId() {
-        return id;
+    public boolean validateById(Long id) {
+        return authId.equals(id);
     }
 }

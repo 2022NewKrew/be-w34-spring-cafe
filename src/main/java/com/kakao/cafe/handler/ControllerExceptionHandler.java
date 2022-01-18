@@ -1,9 +1,6 @@
 package com.kakao.cafe.handler;
 
-import com.kakao.cafe.exception.ArticleNotFoundException;
-import com.kakao.cafe.exception.InvalidPasswordException;
-import com.kakao.cafe.exception.UnauthorizedAccessException;
-import com.kakao.cafe.exception.UserNotFoundException;
+import com.kakao.cafe.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,8 +21,11 @@ public class ControllerExceptionHandler {
         return view;
     }
 
-    @ExceptionHandler(InvalidPasswordException.class)
-    protected  ModelAndView handleInvalidPasswordException(InvalidPasswordException e) {
+    @ExceptionHandler({
+            InvalidPasswordException.class,
+            IllegalArgumentException.class
+    })
+    protected  ModelAndView handleInvalidPasswordException(RuntimeException e) {
         ModelAndView view = new ModelAndView("error");
         view.addObject("errorMessage", e.getMessage());
         view.setStatus(HttpStatus.BAD_REQUEST);

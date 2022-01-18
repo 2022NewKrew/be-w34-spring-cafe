@@ -19,7 +19,7 @@
             <p class="title">개인정보 수정</p>
         </header>
         {{#user}}
-        <form name="question" class="info-container" method="post" action="/users/{{id}}/update">
+        <form name="question" class="info-container" method="post" action="/users/{{this.userId}}">
             <input type="hidden" name="_method" value="PUT" />
             <div class="form-group">
                 <label for="email">아이디</label>
