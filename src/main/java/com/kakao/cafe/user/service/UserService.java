@@ -39,12 +39,15 @@ public class UserService {
     }
 
     public UserProfileDto getUserProfile(String userId){
-        if(!isExistUser(userId)) throw new UserNotExistException();
         User user = userRepository.findOneByUserId(userId).orElseThrow(UserNotExistException::new);
         return modelMapper.map(user, UserProfileDto.class);
     }
 
     public boolean isExistUser(String userId){
-        return Optional.ofNullable(userRepository.findOneByUserId(userId)).isPresent();
+        return userRepository.findOneByUserId(userId).isPresent();
+    }
+
+    public User getOneByUserId(String userId){
+        return userRepository.findOneByUserId(userId).orElseThrow(UserNotExistException::new);
     }
 }

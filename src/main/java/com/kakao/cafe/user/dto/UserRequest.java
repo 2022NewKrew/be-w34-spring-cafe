@@ -1,25 +1,15 @@
 package com.kakao.cafe.user.dto;
 
-
-import com.kakao.cafe.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-
+@ToString
 @Getter
 @AllArgsConstructor
 public class UserRequest {
-    @NotNull
-    private final String userId;
-
-    @NotNull
-    private final String name;
-
-    @NotNull
-    private final String password;
-
-    @Email
-    private final String email;
+    private String userId;
+    private String password;
+    private String name;
+    private String email;
 }
