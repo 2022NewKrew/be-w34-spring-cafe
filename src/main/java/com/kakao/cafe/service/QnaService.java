@@ -42,9 +42,13 @@ public class QnaService {
         return QnaDto.QnaResponse.of(qna);
     }
 
-    public QnaDto.QnaForUpdateReponse findQnaForUpdate(Integer index) {
+    public QnaDto.QnaForUpdateReponse findQnaForUpdate(Integer index, String userId) throws AccessDeniedException {
         Qna qna = qnaRepository.findByIndex(index)
                 .orElseThrow(() -> new QnaNotFoundException(index));
+
+        if (!qna.isValidUpdateUser(userId)) {
+            throw new AccessDeniedException("수정 권한이 없습니다");
+        }
 
         return QnaDto.QnaForUpdateReponse.of(qna);
     }
@@ -73,11 +77,5 @@ public class QnaService {
         }
 
         qnaRepository.deleteByIndex(index);
-    }
-
-    public void validateUpdateUser(String writer, String userId) throws AccessDeniedException {
-        if (!writer.equals(userId)) {
-            throw new AccessDeniedException("수정 권한이 없습니다");
-        }
     }
 }

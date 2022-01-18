@@ -37,9 +37,8 @@ public class QnaController {
 
     @GetMapping("/questions/{index}/updateform")
     public String updateQnaForm(@PathVariable("index") Integer index, Model model, HttpSession session) throws AccessDeniedException {
-        QnaDto.QnaForUpdateReponse qnaForUpdate = qnaService.findQnaForUpdate(index);
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        qnaService.validateUpdateUser(qnaForUpdate.getWriter(), sessionedUser.getUserId());
+        QnaDto.QnaForUpdateReponse qnaForUpdate = qnaService.findQnaForUpdate(index, sessionedUser.getUserId());
 
         model.addAttribute("qna", qnaForUpdate);
         return "qna/updateForm";
