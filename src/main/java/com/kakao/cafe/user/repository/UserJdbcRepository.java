@@ -22,11 +22,10 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO USERS (userId, name, password, email) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql,
-                user.getId(), user.getUserId()
-                , user.getName(), user.getPassword(),
-                user.getEmail());
+                user.getUserId(), user.getName(),
+                user.getPassword(), user.getEmail());
     }
 
     @Override
@@ -43,12 +42,8 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public Optional<User> findOneByUserId(String userId) {
-        try{
-            String sql = "SELECT * FROM USERS WHERE userId=?";
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper(), userId));
-        }catch (DataAccessException e){
-            return Optional.empty();
-        }
+        String sql = "SELECT * FROM USERS WHERE userId=?";
+        return jdbcTemplate.query(sql, userRowMapper(), userId).stream().findAny();
     }
 
     public RowMapper<User> userRowMapper() {
