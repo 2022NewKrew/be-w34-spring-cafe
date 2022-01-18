@@ -62,7 +62,7 @@ public class UserController {
         log.info(this.getClass() + ": 개인정보 수정 폼");
         Object value = session.getAttribute("sessionedUser");
         if (value == null) {
-            return new ModelAndView("redirect:/auths/login");
+            return new ModelAndView("redirect:/auth/login");
         }
         UserProfileResponse userProfileResponse = userService.findById(userId);
         model.put("user", userProfileResponse);
@@ -78,7 +78,7 @@ public class UserController {
         log.info(this.getClass() + ": 개인정보 수정");
         Object value = session.getAttribute("sessionedUser");
         if (value == null) {
-            return "redirect:/auths/login";
+            return "redirect:/auth/login";
         }
 
         SessionedUser user = (SessionedUser) value;

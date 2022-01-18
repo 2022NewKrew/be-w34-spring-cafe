@@ -34,7 +34,7 @@ public class ArticleController {
         log.info(this.getClass() + ": 게시글 작성");
         Object value = session.getAttribute("sessionedUser");
         if (value == null) {
-            return "redirect:/auths/login";
+            return "redirect:/auth/login";
         }
         articleService.save(request);
         return "redirect:/articles";
@@ -61,7 +61,7 @@ public class ArticleController {
         log.info(this.getClass() + ": 게시글 수정 폼");
         Object value = session.getAttribute("sessionedUser");
         if (value == null) {
-            return new ModelAndView("redirect:/auths/login");
+            return new ModelAndView("redirect:/auth/login");
         }
         ArticleShowResponse articleShowResponse = articleService.findById(articleId);
         model.put("article", articleShowResponse);
@@ -77,7 +77,7 @@ public class ArticleController {
         log.info(this.getClass() + ": 게시글 수정");
         Object value = session.getAttribute("sessionedUser");
         if (value == null) {
-            return "redirect:/auths/login";
+            return "redirect:/auth/login";
         }
 
         SessionedUser user = (SessionedUser) value;
@@ -90,7 +90,7 @@ public class ArticleController {
         log.info(this.getClass() + ": 게시글 삭제");
         Object value = session.getAttribute("sessionedUser");
         if (value == null) {
-            return "redirect:/auths/login";
+            return "redirect:/auth/login";
         }
 
         SessionedUser user = (SessionedUser) value;
