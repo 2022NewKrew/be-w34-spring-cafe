@@ -88,7 +88,7 @@ public class UserRepository {
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getNickName());
-            ps.setTimestamp(4, Timestamp.valueOf(user.getCreatedAt()));
+            ps.setTimestamp(4, Timestamp.valueOf(user.getCreatedAt().toLocalDateTime()));
             return ps;
         }, keyHolder);
         user.setId(keyHolder.getKey().longValue());

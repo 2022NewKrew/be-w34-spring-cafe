@@ -4,9 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -16,5 +14,5 @@ public class User {
     private final String email;
     private String password;
     private String nickName;
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 }

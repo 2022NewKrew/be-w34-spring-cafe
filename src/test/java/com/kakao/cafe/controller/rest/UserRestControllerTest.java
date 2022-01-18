@@ -6,6 +6,7 @@ import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.UserJoinDto;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.testutil.user.UserDtoUtil;
+import com.kakao.cafe.constant.OffsetId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.GregorianCalendar;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -67,7 +69,7 @@ class UserRestControllerTest {
                 .id(Long.valueOf(124))
                 .email("gallix@kakao.com")
                 .password("abcd1234!")
-                .createdAt(LocalDateTime.now())
+                .createdAt(OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.of(OffsetId.KR_ID)))
                 .nickName("gallix")
                 .build();
     }

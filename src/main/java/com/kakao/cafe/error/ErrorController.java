@@ -2,6 +2,7 @@ package com.kakao.cafe.error;
 
 import com.kakao.cafe.error.exception.duplication.DuplicationException;
 import com.kakao.cafe.error.exception.nonexist.NotFoundedException;
+import com.kakao.cafe.error.exception.notmine.NotMineException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,6 +20,12 @@ public class ErrorController {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DuplicationException.class)
     public String duplicationFounded(DuplicationException e) {
+        return e.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(NotMineException.class)
+    public String notMine(NotMineException e) {
         return e.getMessage();
     }
 }

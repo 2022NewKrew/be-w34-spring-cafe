@@ -68,7 +68,7 @@ public class PostRepository {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
             ps.setString(1, post.getTitle());
             ps.setString(2, post.getContents());
-            ps.setTimestamp(3, Timestamp.valueOf(post.getCreatedAt()));
+            ps.setTimestamp(3, Timestamp.valueOf(post.getCreatedAt().toLocalDateTime()));
             ps.setInt(4, post.getViewNum());
             ps.setLong(5, post.getUserId());
             return ps;
@@ -91,5 +91,12 @@ public class PostRepository {
     public int countAll() {
         String sql = "SELECT COUNT(id) FROM `POST`";
         return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    public int deleteByIdAndUserId(Long postId, Long userId) {
+        String sql = "DELETE FROM `POST` AS p " +
+                "WHERE (p.id = ?) " +
+                "AND (p.user_id = ?)";
+        return jdbcTemplate.update(sql, postId, userId);
     }
 }

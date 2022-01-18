@@ -5,8 +5,10 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.post.AddPostDto;
 import com.kakao.cafe.dto.post.PostViewDto;
 import com.kakao.cafe.dto.post.SimplePostInfo;
+import com.kakao.cafe.dto.post.UpdatePostDto;
 import com.kakao.cafe.error.exception.nonexist.PostNotFoundedException;
 import com.kakao.cafe.error.exception.nonexist.UserNotFoundedException;
+import com.kakao.cafe.error.exception.notmine.PostNotMineException;
 import com.kakao.cafe.repository.PostRepository;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.testutil.post.PostDtoUtil;
@@ -18,7 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,15 +49,17 @@ class PostServiceImplTest {
 
     @BeforeEach
     void setUp() {
+        Long userId = Long.valueOf(1);
+
         postInRepo = Post.builder()
                 .id(Long.valueOf(2))
                 .title("Good title")
                 .contents("Bad Contents")
-                .userId(Long.valueOf(1))
+                .userId(userId)
                 .build();
 
         postWriter = User.builder()
-                .id(Long.valueOf(1))
+                .id(userId)
                 .email("gallix@kakao.com")
                 .password("abcd1234!")
                 .nickName("gallix")
@@ -155,6 +159,68 @@ class PostServiceImplTest {
     }
 
     @Test
+    @DisplayName("게시글 수정 -> 해당 ID의 게시글 존재하지 않음")
+    void updatePost_nonExist() {
+        //Given
+        Long nonExistPostId = Long.valueOf(25);
+        UpdatePostDto updatePostDto = PostDtoUtil.createUpdatePostDto(nonExistPostId);
+        given(postRepository.findById(nonExistPostId)).willReturn(Optional.empty());
+
+        Long writerId = postWriter.getId();
+
+        //When, Then
+        assertThrows(PostNotFoundedException.class, () -> postService.updatePost(updatePostDto, writerId));
+        then(postRepository).should(never()).save(any(Post.class));
+    }
+
+    @Test
+    @DisplayName("게시글 수정 -> 게시글의 작성자 ID와 접속자의 ID 가 일치하지 않음")
+    void updatePost_notMine() {
+        //Given
+        Long postId = postInRepo.getId();
+        UpdatePostDto updatePostDto = PostDtoUtil.createUpdatePostDto(postId);
+        given(postRepository.findById(postId)).willReturn(Optional.of(postInRepo));
+
+        Long anotherUserId = postWriter.getId() + 12;
+
+        //When, Then
+        assertThrows(PostNotMineException.class, () -> postService.updatePost(updatePostDto, anotherUserId));
+        then(postRepository).should(never()).save(any(Post.class));
+    }
+
+    @Test
+    @DisplayName("게시글 수정 -> 정상, 게시글 변화 확인")
+    void updatePost() {
+        //Given
+        Long postId = postInRepo.getId();
+        UpdatePostDto updatePostDto = PostDtoUtil.createUpdatePostDto(postId);
+        given(postRepository.findById(postId)).willReturn(Optional.of(postInRepo));
+
+        Long writerId = postWriter.getId();
+
+        assertNotEqualUpdatePostDtoAndPostMember(updatePostDto, postInRepo);
+
+        given(postRepository.save(postInRepo)).willReturn(postInRepo);
+
+        //When
+        Post result = postService.updatePost(updatePostDto, writerId);
+
+        //Then
+        assertEquals(postInRepo, result);
+        assertEqualUpdatePostDtoAndPostMember(updatePostDto, result);
+    }
+
+    private void assertNotEqualUpdatePostDtoAndPostMember(UpdatePostDto updatePostDto, Post post) {
+        assertNotEquals(updatePostDto.getTitle(), post.getTitle());
+        assertNotEquals(updatePostDto.getContents(), post.getContents());
+    }
+
+    private void assertEqualUpdatePostDtoAndPostMember(UpdatePostDto updatePostDto, Post result) {
+        assertEquals(updatePostDto.getTitle(), result.getTitle());
+        assertEquals(updatePostDto.getContents(), result.getContents());
+    }
+
+    @Test
     @DisplayName("ID에 해당하는 게시글 조회수 추가 -> 정상")
     void increaseViewNumById() {
         //Given
@@ -179,5 +245,32 @@ class PostServiceImplTest {
 
         //Then
         assertEquals(numOfPost, result);
+    }
+
+    @Test
+    @DisplayName("게시글 ID와 유저 ID로 게시글 삭제 -> 그런 게시글 없습니다")
+    void deleteByIdAndUserId_notMine() {
+        //Given
+        Long postId = Long.valueOf(21);
+        Long loginUserId = Long.valueOf(55);
+        given(postRepository.deleteByIdAndUserId(postId, loginUserId)).willReturn(0);
+
+        //When, Then
+        assertThrows(PostNotFoundedException.class, () -> postService.deleteByIdAndUserId(postId, loginUserId));
+    }
+
+    @Test
+    @DisplayName("게시글 ID와 유저 ID로 게시글 삭제 -> 정상")
+    void deleteByIdAndUserId() {
+        //Given
+        Long postId = postInRepo.getId();
+        Long loginUserId = postWriter.getId();
+        given(postRepository.deleteByIdAndUserId(postId, loginUserId)).willReturn(1);
+
+        //When
+        postService.deleteByIdAndUserId(postId, loginUserId);
+
+        //Then
+        //nothing to verify
     }
 }

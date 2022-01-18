@@ -1,8 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.constant.PageSize;
 import com.kakao.cafe.dto.post.PostViewDto;
-import com.kakao.cafe.dto.post.SimplePostInfo;
 import com.kakao.cafe.service.PostService;
 import com.kakao.cafe.testutil.post.PostDtoUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,10 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
@@ -33,33 +27,10 @@ class PostControllerTest {
     private PostController postController;
 
     private ModelAndView mav;
-    private ModelAndPageView mapv;
 
     @BeforeEach
     void setUp() {
         mav = mock(ModelAndView.class);
-        mapv = mock(ModelAndPageView.class);
-    }
-
-    @Test
-    @DisplayName("게시글 리스트 화면 반환 -> 정상, check mav")
-    void postListView_checkMav() {
-        //Given
-        int numOfPost = 1245;
-        given(postService.countAll()).willReturn(numOfPost);
-
-        Integer pageNum = 1;
-        List<SimplePostInfo> postInfoList = new ArrayList<>();
-        given(postService.getListOfSimplePostInfo(pageNum, PageSize.POST_LIST_SIZE)).willReturn(postInfoList);
-
-        //When
-        postController.postListView(pageNum, mapv);
-
-        //Then
-        then(mapv).should(times(1)).addObject("numOfPost", numOfPost);
-        then(mapv).should(times(1)).addObject("postInfos", postInfoList);
-        then(mapv).should(times(1)).setPageNumbers(pageNum, numOfPost / PageSize.POST_LIST_SIZE + 1);
-        then(mapv).should(times(1)).setViewName("postList");
     }
 
     @Test
@@ -76,6 +47,5 @@ class PostControllerTest {
         //Then
         then(mav).should(times(1)).addObject("postViewDto", postViewDto);
         then(mav).should(times(1)).setViewName("postDetail");
-        then(postService).should(times(1)).increaseViewNumById(postId);
     }
 }
