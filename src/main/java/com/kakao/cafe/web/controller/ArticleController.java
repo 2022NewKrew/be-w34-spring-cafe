@@ -1,11 +1,8 @@
 package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.web.dto.ArticleDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,18 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ArticleController {
     private final ArticleService articleService;
 
-    @GetMapping(value = "/")
-    public String indexPage() {
-        return "/index";
-    }
-
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
-    }
-
-    @GetMapping(value = "/article/form")
-    public String createArticleForm() {
-        return "/article/form";
     }
 
     @PostMapping(value = "/article/create")
@@ -47,8 +34,8 @@ public class ArticleController {
 
     @GetMapping(value = "/articles/{index}")
     public String getArticleShow(@PathVariable int index, Model model) {
-        Article article = articleService.getArticleByIndex(index-1);
-        model.addAttribute("article", article);
+        ArticleDTO articleDTO = articleService.getArticleByIndex(index-1);
+        model.addAttribute("article", articleDTO);
         return "/article/show";
     }
 }

@@ -2,7 +2,8 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kakao.cafe.web.dto.UserDTO;
+import com.kakao.cafe.web.dto.UserListDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +22,13 @@ public class UserService {
         idIndex++;
     }
 
-    public User getUserByUserId(String userId){
-        return userRepository.findByUserId(userId);
+    public UserDTO getUserByUserId(String userId){
+        return new UserDTO(userRepository.findByUserId(userId));
     }
 
-    public List<User> getUserList(){
-        return userRepository.getUserList();
+    public List<UserDTO> getUserList(){
+        UserListDTO userListDTO = new UserListDTO(userRepository.getUserList());
+        return userListDTO.getCopiedUserList();
     }
 
     public int getUserListSize() {

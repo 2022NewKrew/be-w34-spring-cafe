@@ -6,7 +6,6 @@ import lombok.ToString;
 import java.time.LocalDate;
 
 @Getter
-@ToString
 public class Article {
     private final long id;
     private final String title;

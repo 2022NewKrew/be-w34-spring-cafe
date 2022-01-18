@@ -2,6 +2,8 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.web.dto.ArticleDTO;
+import com.kakao.cafe.web.dto.ArticleListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +28,12 @@ public class ArticleService {
         return articleRepository.getArticleList().size();
     }
 
-    public List<Article> getArticleList() {
-        return articleRepository.getArticleList();
+    public List<ArticleDTO> getArticleList() {
+        ArticleListDTO articleListDTO = new ArticleListDTO(articleRepository.getArticleList());
+        return articleListDTO.getCopiedUserList();
     }
 
-    public Article getArticleByIndex(int id) {
-        return articleRepository.findById(id);
+    public ArticleDTO getArticleByIndex(int id) {
+        return new ArticleDTO(articleRepository.findById(id));
     }
 }
