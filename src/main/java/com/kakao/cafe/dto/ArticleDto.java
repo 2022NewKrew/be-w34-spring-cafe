@@ -14,6 +14,7 @@ public class ArticleDto {
     private String body;
     private String[] bodyLines;
     private String createdAtPretty;
+    private String modifiedAtPretty;
 
     static public ArticleDto from(
             @NonNull final long idx,
@@ -21,7 +22,8 @@ public class ArticleDto {
             @NonNull final String userName,
             @NonNull final String title,
             @NonNull final String body,
-            @NonNull final long createdAt
+            @NonNull final long createdAt,
+            @NonNull final long modifiedAt
     )
     {
         ArticleDto articleDto = new ArticleDto();
@@ -36,6 +38,11 @@ public class ArticleDto {
         articleDto.setCreatedAtPretty(
                 Pretty.epochSecond(createdAt, Locale.KOREA, ZoneId.of("Asia/Seoul"))
         );
+        if (modifiedAt != 0L) {
+            articleDto.setModifiedAtPretty(
+                    Pretty.epochSecond(modifiedAt, Locale.KOREA, ZoneId.of("Asia/Seoul"))
+            );
+        }
         return articleDto;
     }
 
@@ -93,5 +100,13 @@ public class ArticleDto {
 
     public void setCreatedAtPretty(String createAtPretty) {
         this.createdAtPretty = createAtPretty;
+    }
+
+    public String getModifiedAtPretty() {
+        return modifiedAtPretty;
+    }
+
+    public void setModifiedAtPretty(String modifiedAtPretty) {
+        this.modifiedAtPretty = modifiedAtPretty;
     }
 }

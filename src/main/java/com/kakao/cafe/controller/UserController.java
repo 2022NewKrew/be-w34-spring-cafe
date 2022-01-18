@@ -77,11 +77,11 @@ public class UserController {
         }
 
         final HttpSession session = request.getSession();
-        if (!userService.verifyUserLogin(id, rawPassword)) {
+        if (!userService.verifyPassword(id, rawPassword)) {
             return redirectLoginFailed(session);
         }
 
-        AuthControl.login(request, userService.getUser(id));
+        AuthControl.login(request, userService.getDto(id));
         return "redirect:/";
     }
 
@@ -109,7 +109,7 @@ public class UserController {
     )
     {
         try {
-            final UserDto userDto = userService.getUser(id);
+            final UserDto userDto = userService.getDto(id);
             model.addAttribute("user", userDto);
         } catch (NoSuchElementException ignored) {}
 
@@ -123,14 +123,14 @@ public class UserController {
         }
 
         final HttpSession session = request.getSession();
-        final UserDto userDto = userService.getUser((String)session.getAttribute(AuthControl.TAG_ID));
+        final UserDto userDto = userService.getDto((String)session.getAttribute(AuthControl.TAG_ID));
         model.addAttribute("email", userDto.getEmail());
         model.addAttribute("idx", userDto.getIdx());
 
         return "users/edit";
     }
 
-    @PutMapping("/users/edit")
+    @PutMapping("/users")
     public String editUser(
             final HttpServletRequest request,
             @NonNull final UserDto userDto,
@@ -142,7 +142,7 @@ public class UserController {
             return "redirect:/";
         }
 
-        if (userService.updateUser(userDto, rawPassword, newRawPassword)) {
+        if (userService.update(userDto, rawPassword, newRawPassword)) {
             AuthControl.logout(request);
             request.getSession().setAttribute(TAG_LOGIN_ERROR, MSG_PW_UPDATED);
             return "redirect:/login";

@@ -9,12 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -32,7 +29,7 @@ public class ArticleController {
 
     @GetMapping("/")
     public String getArticles(final Model model) {
-        model.addAttribute("articles", articleService.getList());
+        model.addAttribute("articles", articleService.getDtoList());
         return "articles/index";
     }
 
@@ -43,20 +40,16 @@ public class ArticleController {
 
     @GetMapping("/articles/new")
     public String getArticles(final HttpServletRequest request) {
-        if (!AuthControl.isLogon(request, userService)) {
-            request.getSession()
-                    .setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
-            return "redirect:/login";
+        if (checkNotLogin(request)) {
+            return getRedirectLoginWithMsg(request);
         }
         return "articles/new";
     }
 
     @PostMapping("/articles")
     public String writeArticle(final HttpServletRequest request, @NonNull final ArticleDto articleDto) {
-        if (!AuthControl.isLogon(request, userService)) {
-            request.getSession()
-                    .setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
-            return "redirect:/login";
+        if (checkNotLogin(request)) {
+            return getRedirectLoginWithMsg(request);
         }
 
         articleService.add(articleDto);
@@ -66,15 +59,123 @@ public class ArticleController {
 
     @GetMapping("/articles/{idx}")
     public String getArticleDetail(
+            final HttpServletRequest request,
             @PathVariable("idx") @NonNull final long idx,
             final Model model
     )
     {
+        if (checkNotLogin(request)) {
+            return getRedirectLoginWithMsg(request);
+        }
+
         try {
-            final ArticleDto articleDto = articleService.getArticle(idx);
+            final ArticleDto articleDto = articleService.getDto(idx);
             model.addAttribute("article", articleDto);
         } catch (NoSuchElementException ignored) {}
 
         return "articles/detail";
+    }
+
+    @GetMapping("/articles/edit/{idx}")
+    public String editArticle(
+            final HttpServletRequest request,
+            @PathVariable("idx") @NonNull final long idx,
+            final Model model
+    )
+    {
+        if (checkNotLogin(request)) {
+            return getRedirectLoginWithMsg(request);
+        }
+
+        ArticleDto articleDto;
+        try {
+            articleDto = articleService.getDto(idx);
+        } catch (NoSuchElementException e) {
+            // handle error in mustache
+            return "articles/detail";
+        }
+
+        if (checkNotOwner(request, articleDto.getUserId())) {
+            return "redirect:/editArticleFailedNoPerm";
+        }
+
+        model.addAttribute("article", articleDto);
+        return "articles/edit";
+    }
+
+    @PutMapping("/articles")
+    public String editArticle(
+            final HttpServletRequest request,
+            @NonNull final ArticleDto articleDto
+    )
+    {
+        if (checkNotLogin(request)) {
+            return getRedirectLoginWithMsg(request);
+        }
+
+        String articleOwnerId;
+        try {
+            articleOwnerId = articleService.getDto(articleDto.getIdx())
+                    .getUserId();
+        } catch (NoSuchElementException e) {
+            return "error/404";
+        }
+
+        if (checkNotOwner(request, articleOwnerId)) {
+            return "redirect:/editArticleFailedNoPerm";
+        }
+
+        if (articleService.update(articleDto)) {
+            return "redirect:/articles/" + articleDto.getIdx();
+        }
+
+        return "redirect:/editArticleFailed";
+    }
+
+    @DeleteMapping("/articles/{idx}")
+    public String deleteArticle(
+            final HttpServletRequest request,
+            @PathVariable("idx") final long idx
+    )
+    {
+        if (checkNotLogin(request)) {
+            return getRedirectLoginWithMsg(request);
+        }
+
+        String articleOwnerId;
+        try {
+            articleOwnerId = articleService.getDto(idx)
+                    .getUserId();
+        } catch (NoSuchElementException e) {
+            return "error/404";
+        }
+
+        if (checkNotOwner(request, articleOwnerId)) {
+            return "redirect:/editArticleFailedNoPerm";
+        }
+
+        if (articleService.delete(idx)) {
+            return "redirect:/";
+        }
+
+        return "error/500";
+    }
+
+    private boolean checkNotLogin(final HttpServletRequest request) {
+        return !AuthControl.isLogon(request, userService);
+    }
+
+    private String getRedirectLoginWithMsg(final HttpServletRequest request) {
+        request.getSession()
+                .setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
+        return "redirect:/login";
+    }
+
+    private boolean checkNotOwner(final HttpServletRequest request, final String articleUserId) {
+        final String curUserId = AuthControl.getLogonId(request);
+        if (curUserId == null) {
+            return true;
+        }
+        return !curUserId.equals(articleUserId);
     }
 }

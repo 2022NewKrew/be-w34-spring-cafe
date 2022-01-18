@@ -7,7 +7,6 @@ import java.time.Instant;
 import java.util.Objects;
 
 public class Article {
-    public static final Article NONE = new Article();
     public static final int TITLE_MIN = 1;
     public static final int TITLE_MAX = 255;
     public static final int BODY_MIN = 1;
@@ -18,6 +17,8 @@ public class Article {
     private final String title;
     private final String body;
     private final long createdAt;
+    private final long modifiedAt;
+    private final boolean deleted;
 
     public Article(
             @NonNull final String userId,
@@ -31,14 +32,8 @@ public class Article {
         this.title = title.trim();
         this.body = body.trim();
         this.createdAt = Instant.now().getEpochSecond();
-    }
-
-    private Article() {
-        this.idx = 0;
-        this.userId = User.NONE.getId();
-        this.title = "";
-        this.body = "";
-        this.createdAt = Instant.now().getEpochSecond();
+        this.modifiedAt = 0L;
+        this.deleted = false;
     }
 
     private void validate(
@@ -72,8 +67,12 @@ public class Article {
         return createdAt;
     }
 
-    public boolean isNone() {
-        return this.equals(NONE);
+    public long getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 
     @Override

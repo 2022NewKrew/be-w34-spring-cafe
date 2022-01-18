@@ -49,12 +49,12 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public UserDto getUser(@NonNull final String id) throws NoSuchElementException {
-        return UserDto.from(getUserEntity(id));
+    public UserDto getDto(@NonNull final String id) throws NoSuchElementException {
+        return UserDto.from(get(id));
     }
 
     @Override
-    public User getUserEntity(@NonNull final String id) throws NoSuchElementException {
+    public User get(@NonNull final String id) throws NoSuchElementException {
         final User user = userRepository.findById(id);
         if (user.isNone()) {
             throw new NoSuchElementException("Not found user - " + id);
@@ -63,10 +63,10 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public boolean verifyUserLogin(@NonNull final String id, @NonNull final String rawPassword) {
+    public boolean verifyPassword(@NonNull final String id, @NonNull final String rawPassword) {
         User user;
         try {
-            user = getUserEntity(id);
+            user = get(id);
         } catch (NoSuchElementException e) {
             return false;
         }
@@ -75,7 +75,7 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public boolean updateUser(
+    public boolean update(
             @NonNull final UserDto userDto,
             @NonNull final String rawPassword,
             @NonNull final String newRawPassword
@@ -84,7 +84,7 @@ public class UserManager implements UserService {
         final String id = userDto.getId();
         User user;
         try {
-            user = getUserEntity(id);
+            user = get(id);
         } catch (NoSuchElementException e) {
             return false;
         }

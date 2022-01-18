@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -24,14 +25,15 @@ public class ArticleJdbc implements ArticleRepository {
     public boolean add(@NonNull final Article article) {
         final int result = jdbcTemplate.update(con -> {
             final PreparedStatement pstmt = con.prepareStatement(
-                    "INSERT INTO article (user_id, title, body, created_at) " +
-                            "values (?,?,?,?)"
+                    "INSERT INTO article (user_id, title, body, created_at, modified_at) " +
+                            "values (?,?,?,?,?)"
             );
 
             pstmt.setString(1, article.getUserId());
             pstmt.setString(2, article.getTitle());
             pstmt.setString(3, article.getBody());
             pstmt.setLong(4, article.getCreatedAt());
+            pstmt.setLong(5, article.getModifiedAt());
             return pstmt;
         });
 
@@ -43,12 +45,10 @@ public class ArticleJdbc implements ArticleRepository {
         final List<ArticleDto> list = jdbcTemplate.query(
                 con -> {
                     final PreparedStatement pstmt = con.prepareStatement(
-                            "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at " +
-                                    "FROM article AS a " +
-                                    "JOIN userlist AS u " +
-                                    "ON a.user_id = u.id " +
-                                    "WHERE a.idx = ? " +
-                                    "LIMIT 1"
+                            "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at " +
+                                    "FROM userlist AS u " +
+                                    "JOIN (SELECT * FROM article WHERE idx = ? AND deleted = false LIMIT 1) AS a " +
+                                    "ON u.id = a.user_id"
                     );
                     pstmt.setLong(1, idx);
                     return pstmt;
@@ -59,7 +59,8 @@ public class ArticleJdbc implements ArticleRepository {
                         rs.getString("user_name"),
                         rs.getString("title"),
                         rs.getString("body"),
-                        rs.getLong("created_at")
+                        rs.getLong("created_at"),
+                        rs.getLong("modified_at")
                 )
         );
 
@@ -75,10 +76,11 @@ public class ArticleJdbc implements ArticleRepository {
         return Collections.unmodifiableList(
                 jdbcTemplate.query(
                         con -> con.prepareStatement(
-                                "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at " +
-                                        "FROM article AS a " +
-                                        "JOIN userlist AS u " +
-                                        "ON a.user_id = u.id " +
+                                "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at " +
+                                        "FROM userlist AS u " +
+                                        "JOIN article AS a " +
+                                        "ON u.id = a.user_id " +
+                                        "WHERE deleted = false " +
                                         "ORDER BY created_at DESC"
                         ),
                         (rs, count) -> ArticleDto.from(
@@ -87,9 +89,41 @@ public class ArticleJdbc implements ArticleRepository {
                                 rs.getString("user_name"),
                                 rs.getString("title"),
                                 rs.getString("body"),
-                                rs.getLong("created_at")
+                                rs.getLong("created_at"),
+                                rs.getLong("modified_at")
                         )
                 )
         );
+    }
+
+    @Override
+    public boolean update(final long idx, @NonNull final Article article) {
+        final int result = jdbcTemplate.update(con -> {
+            final PreparedStatement pstmt = con.prepareStatement(
+                    "UPDATE article SET title = ?, body = ?, modified_at = ? " +
+                            "WHERE idx = ?"
+            );
+
+            pstmt.setString(1, article.getTitle());
+            pstmt.setString(2, article.getBody());
+            pstmt.setLong(3, Instant.now().getEpochSecond());
+            pstmt.setLong(4, idx);
+            return pstmt;
+        });
+
+        return (result > 0);
+    }
+
+    @Override
+    public boolean delete(final long idx) {
+        final int result = jdbcTemplate.update(con -> {
+            final PreparedStatement pstmt = con.prepareStatement(
+                    "UPDATE article SET deleted = true WHERE idx = ? AND deleted = false"
+            );
+            pstmt.setLong(1, idx);
+            return pstmt;
+        });
+
+        return (result > 0);
     }
 }

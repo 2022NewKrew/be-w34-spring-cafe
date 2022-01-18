@@ -19,7 +19,10 @@
                           </strong>
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
-                              <span class="time">{{createdAtPretty}}</span>
+                              <span class="time">
+                                  {{#modifiedAtPretty}}{{.}} 수정됨{{/modifiedAtPretty}}
+                                  {{^modifiedAtPretty}}{{createdAtPretty}}{{/modifiedAtPretty}}
+                              </span>
                               <a href="/users/{{userId}}" class="author">{{userName}}</a>
                           </div>
                           <div class="reply" title="댓글">
