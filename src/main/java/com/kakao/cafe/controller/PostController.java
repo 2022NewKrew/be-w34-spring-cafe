@@ -34,14 +34,7 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public String addPost(@ModelAttribute @Validated CreatePostDto postDto, Errors errors, Model model){
-        if(errors.hasErrors()){
-            errors.getFieldErrors()
-                    .forEach(err -> model.addAttribute(err.getField(), err.getDefaultMessage()));
-
-            return "post/form";
-        }
-
+    public String addPost(@ModelAttribute @Validated CreatePostDto postDto){
         postService.createPost(postDto);
         log.info("Create Post - {}", postDto);
         return "redirect:/";
@@ -50,6 +43,6 @@ public class PostController {
     @GetMapping("/posts/{postId}")
     public String detailPost(@PathVariable Long postId, Model model){
         model.addAttribute("post", postService.findPost(postId));
-        return "post/show";
+        return "posts/show";
     }
 }
