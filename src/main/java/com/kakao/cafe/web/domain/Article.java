@@ -5,6 +5,7 @@ public class Article {
     private Long id;
     private String title;
     private String content;
+    private String writer;
 
     public Long getId() {
         return id;
@@ -30,12 +31,21 @@ public class Article {
         this.content = content;
     }
 
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", writer='" + writer + '\'' +
                 '}';
     }
 }

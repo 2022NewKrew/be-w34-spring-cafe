@@ -1,8 +1,12 @@
 package com.kakao.cafe.web.repository.article;
 
 import com.kakao.cafe.web.domain.Article;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,40 +15,29 @@ import java.util.Optional;
 @Repository
 public class JdbcTemplateArticleRepository implements ArticleRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final RowMapper<Article> articleRowMapper = new BeanPropertyRowMapper<>(Article.class);
 
-    public JdbcTemplateArticleRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public JdbcTemplateArticleRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.jdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
     public void save(Article article) {
-        final String sql = "insert into articles (`title`, `content`) values(?,?)";
-        Object[] parameters = {
-                article.getTitle(),
-                article.getContent()
-        };
-        jdbcTemplate.update(sql, parameters);
+        String sql = "insert into articles (`title`, `content`, `writer`) values(:title,:content,:writer)";
+        BeanPropertySqlParameterSource paramSource = new BeanPropertySqlParameterSource(article);
+        jdbcTemplate.update(sql, paramSource);
     }
 
     @Override
     public Optional<Article> findById(Long id) {
-        List<Article> result = jdbcTemplate.query("select * from articles where `id` = ?", articleRowMapper(), id);
+        SqlParameterSource param = new MapSqlParameterSource("id", id);
+        List<Article> result = jdbcTemplate.query("select * from articles where `id` = :id", param, articleRowMapper);
         return result.stream().findAny();
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from articles", articleRowMapper());
-    }
-
-    private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> {
-            Article article = new Article();
-            article.setId(rs.getLong("id"));
-            article.setTitle(rs.getString("title"));
-            article.setContent(rs.getString("content"));
-            return article;
-        };
+        return jdbcTemplate.query("select * from articles", articleRowMapper);
     }
 }
