@@ -1,4 +1,4 @@
-package com.kakao.cafe.app.controller.advice;
+package com.kakao.cafe.app.advice;
 
 import com.kakao.cafe.domain.exception.CannotAuthenticateException;
 import com.kakao.cafe.domain.exception.DuplicateUserIdException;

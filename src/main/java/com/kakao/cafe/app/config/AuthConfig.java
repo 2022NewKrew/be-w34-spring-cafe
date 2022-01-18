@@ -1,6 +1,6 @@
 package com.kakao.cafe.app.config;
 
-import com.kakao.cafe.app.controller.interceptor.AuthInterceptor;
+import com.kakao.cafe.app.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

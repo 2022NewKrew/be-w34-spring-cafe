@@ -1,4 +1,4 @@
-package com.kakao.cafe.app.controller.interceptor;
+package com.kakao.cafe.app.interceptor;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
