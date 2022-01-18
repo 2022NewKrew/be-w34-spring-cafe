@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.exception.user.NotAllowedUserException;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
@@ -50,13 +51,16 @@ public class UserController {
 
     @GetMapping("/{userId}/update")
     public String updateView(@PathVariable String userId, HttpSession session, Model model) {
-        UserDto user = userService.filterUserById(userId);
         UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
-        if (loginUser != null && loginUser.getUserId().equals(user.getUserId())) {
+        if (loginUser == null) {
+            return "redirect:/users/login";
+        }
+        if (loginUser.getUserId().equals(userId)) {
+            UserDto user = userService.filterUserById(userId);
             model.addAttribute("user", user);
             return "user/updateForm";
         }
-        return "redirect:/users/login";
+        throw new NotAllowedUserException();
     }
 
     @PutMapping("/{userId}/update")
