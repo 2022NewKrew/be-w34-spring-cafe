@@ -2,7 +2,6 @@
 
 
 ## 초기설정
-
 - [x] 프로젝트 생성
   - [x] java 11 gradle 로 생성하기
   - [x] .gitignore 설정하기
