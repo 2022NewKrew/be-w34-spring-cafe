@@ -14,7 +14,7 @@ public class WebConfig {
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new LoginFilter());
         filterRegistrationBean.setOrder(1);
-        filterRegistrationBean.addUrlPatterns("/user/*", "/users/*", "/articles/*", "/article/*");
+        filterRegistrationBean.addUrlPatterns("/users/*", "/articles/*");
         return filterRegistrationBean;
     }
 }

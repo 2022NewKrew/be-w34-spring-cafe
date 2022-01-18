@@ -24,7 +24,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/signup")
+    @PostMapping("")
     public String createUser(@Valid @ModelAttribute UserJoinForm userDto, BindingResult bindingResult, Model model) {
         System.out.println("error exists? : "+bindingResult.hasErrors());
         if(bindingResult.hasErrors()) {

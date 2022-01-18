@@ -1,18 +1,16 @@
 package com.kakao.cafe.auth;
 
 import com.kakao.cafe.core.SessionConst;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
+@Slf4j
 public class LoginFilter implements Filter {
-
-    private static final List<String> whiteList = Arrays.asList("/", "/users/login", "/users/form", "/users/signup");
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -24,10 +22,12 @@ public class LoginFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
+        String method = httpRequest.getMethod();
         String requestURI = httpRequest.getRequestURI();
-
+        log.debug(requestURI + method);
         try {
-            if(!checkWhiteList(requestURI)) {
+            if(!WhiteURL.matchURL(requestURI, method)){
+                log.warn("검증 대상");
                 HttpSession session = httpRequest.getSession(false);
                 if (session == null || session.getAttribute(SessionConst.LOGIN_COOKIE) == null) {
                     httpResponse.sendRedirect("/users/login?redirectURL=" + requestURI);
@@ -38,10 +38,6 @@ public class LoginFilter implements Filter {
         } catch (Exception e) {
             throw e;
         }
-    }
-
-    private boolean checkWhiteList(String requestURI) {
-        return whiteList.contains(requestURI);
     }
 
     @Override

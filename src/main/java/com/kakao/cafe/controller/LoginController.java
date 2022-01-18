@@ -29,11 +29,9 @@ public class LoginController {
         try {
             User user = loginService.login(userLogin);
             httpSession.setAttribute(SessionConst.LOGIN_COOKIE, user);
-            System.out.println("로그인 성공");
             return "redirect:/";
         } catch (Exception e) {
             model.addAttribute("messages", Arrays.asList("아이디나 비밀번호가 일치하지 않습니다."));
-            System.out.println("로그인 실패" + userLogin.getPassword());
             return "redirect:/users/login";
         }
     }
