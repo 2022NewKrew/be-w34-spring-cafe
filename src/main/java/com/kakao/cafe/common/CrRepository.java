@@ -2,10 +2,10 @@ package com.kakao.cafe.common;
 
 import java.util.List;
 
-public interface Dao<T> {
+public interface CrRepository<T> {
+    long save(T target);
+
     T fetch(long id);
 
     List<T> fetchAll();
-
-    long save(T target);
 }

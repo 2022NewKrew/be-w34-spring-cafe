@@ -18,6 +18,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security:spring-security-test'
 	implementation 'com.google.guava:guava:31.0.1-jre'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+	implementation group: 'com.h2database', name: 'h2', version: '1.4.196'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.6.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

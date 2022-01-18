@@ -1,19 +1,23 @@
 package com.kakao.cafe.user.validator;
 
 import com.google.common.collect.Range;
-import com.kakao.cafe.common.Validator;
+import com.kakao.cafe.user.constraint.Name;
 import com.kakao.cafe.user.exception.InvalidNameException;
 
-public class NameValidator implements Validator<String> {
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+public class NameValidator implements ConstraintValidator<Name, String> {
     private static final Range<Integer> RANGE = Range.closed(1, 20);
 
     @Override
-    public void validate(String name) {
+    public boolean isValid(String name, ConstraintValidatorContext context) {
         if (name == null) {
             throw new InvalidNameException(null);
         }
         if (!RANGE.contains(name.length())) {
             throw new InvalidNameException(name);
         }
+        return true;
     }
 }

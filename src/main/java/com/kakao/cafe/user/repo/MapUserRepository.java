@@ -1,17 +1,17 @@
-package com.kakao.cafe.user.dao;
+package com.kakao.cafe.user.repo;
 
-import com.kakao.cafe.common.Dao;
 import com.kakao.cafe.user.model.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Repository
-public class UserDao implements Dao<User> {
+public class MapUserRepository implements UserRepository {
     private static final AtomicLong ID_COUNTER = new AtomicLong();
     private final Map<Long, User> map = new HashMap<>();
 
@@ -33,15 +33,15 @@ public class UserDao implements Dao<User> {
         return id;
     }
 
-    public User fetchByUserId(String userId) {
-        for (Map.Entry<Long, User> entry : map.entrySet()) {
-            if (entry.getValue().getUserId().equals(userId)) {
-                return entry.getValue();
-            }
-        }
-        return null;
+    @Override
+    public Optional<User> fetchByUserId(String userId) {
+        return map.values()
+                .stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findFirst();
     }
 
+    @Override
     public int getUserCount() {
         return map.size();
     }

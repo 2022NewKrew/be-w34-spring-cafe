@@ -1,15 +1,16 @@
-package com.kakao.cafe.user.dao;
+package com.kakao.cafe.user.repo;
 
 import com.kakao.cafe.user.model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserDaoTest {
-    private final UserDao dao = new UserDao();
+class MapUserRepositoryTest {
+    private final MapUserRepository repository = new MapUserRepository();
     private final User user1 = new User("charlie123",
             "test1234",
             "Chanmin Kim",
@@ -22,31 +23,31 @@ class UserDaoTest {
     @Test
     @DisplayName("주어진 User 객체를 저장할 수 있다.")
     void save() {
-        assertDoesNotThrow(() -> dao.save(user1));
+        assertDoesNotThrow(() -> repository.save(user1));
     }
 
     @Test
     @DisplayName("id로 저장된 User 객체를 가져올 수 있다.")
     void fetch() {
-        long id = dao.save(user1);
-        User fetch = dao.fetch(id);
+        long id = repository.save(user1);
+        User fetch = repository.fetch(id);
         assertNotNull(fetch);
     }
 
     @Test
     @DisplayName("저장된 모든 User 객체를 가져올 수 있다.")
     void fetchAll() {
-        dao.save(user1);
-        dao.save(user2);
-        List<User> users = dao.fetchAll();
+        repository.save(user1);
+        repository.save(user2);
+        List<User> users = repository.fetchAll();
         assertEquals(2, users.size());
     }
 
     @Test
     @DisplayName("사용자 아이디로 User 객체를 가져올 수 있다.")
     void fetchByUserId() {
-        dao.save(user1);
-        User fetch = dao.fetchByUserId(user1.getUserId());
-        assertNotNull(fetch);
+        repository.save(user1);
+        Optional<User> fetch = repository.fetchByUserId(user1.getUserId());
+        assertTrue(fetch.isPresent());
     }
 }

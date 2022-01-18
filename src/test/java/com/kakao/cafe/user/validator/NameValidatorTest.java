@@ -15,7 +15,7 @@ class NameValidatorTest {
     @DisplayName("이름의 길이는 1~20자 사이여야 한다.")
     @ValueSource(strings = {"charlie.p1", "Chanmin Kim", "김찬민"})
     void validName(String validName) {
-        assertDoesNotThrow(() -> validator.validate(validName));
+        assertDoesNotThrow(() -> validator.isValid(validName, null));
     }
 
     @ParameterizedTest
@@ -23,6 +23,6 @@ class NameValidatorTest {
     @ValueSource(strings = {"", "123456789012345678901"})
     void invalidLengthOfName(String invalidName) {
         assertThrows(InvalidNameException.class,
-                () -> validator.validate(invalidName));
+                () -> validator.isValid(invalidName, null));
     }
 }
