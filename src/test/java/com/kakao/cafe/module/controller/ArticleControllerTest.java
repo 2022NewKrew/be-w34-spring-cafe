@@ -70,7 +70,8 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_열람() throws Exception {
-        mockMvc.perform(get("/articles/1"))
+        mockMvc.perform(get("/articles/1")
+                        .session(session))
                 .andExpect(status().isOk())
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("article"))
@@ -80,10 +81,20 @@ class ArticleControllerTest {
 
     @Test
     void 존재하지_않는_게시물_열람() throws Exception {
-        mockMvc.perform(get("/articles/100"))
+        mockMvc.perform(get("/articles/100")
+                        .session(session))
                 .andExpect(status().isBadRequest())
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("msg"))
                 .andExpect(view().name("infra/error"));
+    }
+
+    @Test
+    void 로그인_없이_게시물_열람() throws Exception {
+        mockMvc.perform(get("/articles/1"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("msg"))
+                .andExpect(view().name("user/login"));
     }
 }

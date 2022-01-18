@@ -36,7 +36,8 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public String showArticle(@PathVariable Long id, Model model) {
+    public String showArticle(@PathVariable Long id, Model model, HttpSession session) throws HttpSessionRequiredException {
+        infraService.retrieveUserSession(session);
         ArticleReadDto article = articleService.showArticle(id);
         model.addAttribute("article", article);
         logger.info("Get Article : {}", id);
