@@ -16,7 +16,7 @@ public class JdbcConfig {
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("kakao")
                 .addScript("db/sql/schema.sql");
-        if (System.getProperty("spring.profiles.active").equals("test")) {
+        if ("test".equals(System.getProperty("spring.profiles.active"))) {
             builder.addScript("db/sql/test-data.sql");
         }
         return builder.build();
