@@ -36,6 +36,12 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByUserId(String userId) {
+        return jdbcTemplate.query("SELECT id, userId, email, nickname, password FROM `USER` WHERE userId=?", userMapper, userId)
+                .stream().findAny();
+    }
+
+    @Override
     public List<User> findAll() {
         return jdbcTemplate.query("SELECT id, userId, email, nickname, password FROM `USER`", userMapper);
     }

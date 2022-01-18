@@ -1,6 +1,7 @@
 INSERT INTO `user`
     (userId, email, nickname, password)
 VALUES
+    ('test', 'test@abc.com', 'testnick', 'test'),
     ('vincejoe', 'abc@abc.com', 'vvv123', 'abc1234'),
     ('sjack', 'sjackson@abc.com', 'winner123', 'dasflkjd'),
     ('jojojo9', 'jojo9@abc.com', 'johndoe1566', 'dddddff');

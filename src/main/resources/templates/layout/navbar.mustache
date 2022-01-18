@@ -15,8 +15,16 @@
                 </li>
             </ul>
             <form class="d-flex">
-<!--                <a class="btn btn-light" href="#" role="button">Login</a>-->
-                <a class="btn btn-outline-dark" href="/signup" role="button">Sign up</a>
+                {{^loginUser}}
+                    <a class="btn btn-light" href="/login" role="button">Login</a>
+                    <a class="btn btn-outline-dark" href="/signup" role="button">Sign up</a>
+                {{/loginUser}}
+                {{#loginUser}}
+                    <a class="align-self-center" href="/users/{{id}}">
+                        <span class="badge rounded-pill bg-primary">{{userId}}</span>
+                    </a>
+                    <a class="btn btn-light" href="/users/logout" role="button">Logout</a>
+                {{/loginUser}}
             </form>
         </div>
     </div>

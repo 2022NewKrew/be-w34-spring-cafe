@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface UserRepository {
     void add(User user);
     Optional<User> findById(long id);
+    Optional<User> findByUserId(String userId);
     List<User> findAll();
 }

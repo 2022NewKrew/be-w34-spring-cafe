@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -27,10 +28,15 @@ public class UserService {
     }
 
     public User findById(long id) {
-        return userRepository.findById(id).orElseThrow(RuntimeException::new);
+        return userRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     public void signup(UserDto userDto) {
         userRepository.add(userMapper.toEntity(userDto));
+    }
+
+    public User login(UserDto userDto) {
+        User user = userRepository.findByUserId(userDto.getUserId()).orElseThrow(NoSuchElementException::new);
+        return user;
     }
 }

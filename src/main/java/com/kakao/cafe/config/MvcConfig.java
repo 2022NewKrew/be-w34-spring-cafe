@@ -1,7 +1,6 @@
 package com.kakao.cafe.config;
 
 import com.kakao.cafe.domain.post.PostMapper;
-import com.kakao.cafe.domain.post.impl.InMemoryPostRepository;
 import com.kakao.cafe.domain.post.PostRepository;
 import com.kakao.cafe.domain.post.impl.JdbcTemplatePostRepository;
 import com.kakao.cafe.domain.user.UserMapper;
@@ -21,6 +20,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("/", "/users");
         registry.addViewController("/signup").setViewName("signup");
+        registry.addViewController("/login").setViewName("login");
         registry.addViewController("/write").setViewName("post_new");
     }
 
