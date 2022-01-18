@@ -2,21 +2,18 @@ package com.kakao.cafe.dao;
 
 import com.kakao.cafe.dao.mapper.UserRowMapper;
 import com.kakao.cafe.vo.UserVo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class UserDao {
 
     private final JdbcTemplate jdbcTemplate;
     private final UserRowMapper userRowMapper;
-
-    public UserDao(JdbcTemplate jdbcTemplate, UserRowMapper userRowMapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.userRowMapper = userRowMapper;
-    }
 
     public void save(UserVo userVo) {
         String userId = userVo.getUserId();

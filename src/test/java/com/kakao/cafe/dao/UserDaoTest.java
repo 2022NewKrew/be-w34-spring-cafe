@@ -1,5 +1,6 @@
 package com.kakao.cafe.dao;
 
+import com.kakao.cafe.config.MapperConfig;
 import com.kakao.cafe.config.SpringJdbcConfig;
 import com.kakao.cafe.dao.mapper.UserRowMapper;
 import com.kakao.cafe.dto.user.UserDto;
@@ -20,13 +21,15 @@ class UserDaoTest {
 
     DataSource dataSource;
     SpringJdbcConfig springJdbcConfig;
+    MapperConfig mapperConfig;
     UserDao userDao;
     ModelMapper modelMapper;
 
     @BeforeEach
     void init() throws SQLException {
         springJdbcConfig = new SpringJdbcConfig();
-        modelMapper = springJdbcConfig.modelMapper();
+        mapperConfig = new MapperConfig();
+        modelMapper = mapperConfig.modelMapper();
         dataSource = springJdbcConfig.dataSource();
         dataSource.getConnection();
         userDao = new UserDao(new JdbcTemplate(dataSource),new UserRowMapper());
