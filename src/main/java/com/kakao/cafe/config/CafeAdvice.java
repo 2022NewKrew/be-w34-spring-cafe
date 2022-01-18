@@ -1,10 +1,7 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.exception.user.EditAccountFailedException;
-import com.kakao.cafe.exception.user.LoginFailedException;
+import com.kakao.cafe.exception.user.*;
 import com.kakao.cafe.exception.article.ArticleNotFoundException;
-import com.kakao.cafe.exception.user.UserNotFoundException;
-import com.kakao.cafe.exception.user.UserRegisterFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,6 +24,14 @@ public class CafeAdvice {
         log.info("Edit account failed");
         log.info(e.getMessage());
         redirectAttributes.addFlashAttribute("message", "기존 비밀번호가 일치하지 않습니다.");
+        return "redirect:/accounts/mypage/edit";
+    }
+
+    @ExceptionHandler(PasswordConfirmFailedException.class)
+    public String handlePasswordConfirmFailedException(RedirectAttributes redirectAttributes, Exception e) {
+        log.info("Password confirm failed");
+        log.info(e.getMessage());
+        redirectAttributes.addFlashAttribute("message", "새로운 비밀번호와 비밀번호 확인 값이 일치하지 않습니다.");
         return "redirect:/accounts/mypage/edit";
     }
 

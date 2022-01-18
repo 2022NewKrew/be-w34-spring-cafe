@@ -23,10 +23,16 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("/new")
-    public String writeArticleForm(HttpSession session) {
+    public String writeArticleForm() {
         log.debug("[Get] /articles/new");
-        AuthDto authDto = (AuthDto) session.getAttribute("auth");
         return "article/write";
+    }
+
+    @PostMapping("/new")
+    public String writeArticle(ArticleDto articleDto) {
+        log.debug("[Post] /articles " + articleDto);
+        articleService.register(articleDto);
+        return "redirect:/";
     }
 
     @GetMapping("/{articleId}")
@@ -36,11 +42,17 @@ public class ArticleController {
         return "article/read";
     }
 
-    @PostMapping("/new")
-    public String writeArticle(ArticleDto articleDto, HttpSession session) {
-        log.debug("[Post] /articles " + articleDto);
-        AuthDto authDto = (AuthDto) session.getAttribute("auth");
-        articleService.register(articleDto);
+    @GetMapping("/{articleId}/edit")
+    public String editArticleForm(@PathVariable Long articleId, Model model) {
+        log.debug("[Get] /articles/" + articleId + "/edit");
+//        articleService.register(articleDto);
+        return "redirect:/";
+    }
+
+    @PostMapping("/{articleId}/edit")
+    public String editArticle(@PathVariable Long articleId, ArticleDto articleDto) {
+        log.debug("[Post] /articles/" + articleId + "/edit " + articleDto);
+//        articleService.register(articleDto);
         return "redirect:/";
     }
 

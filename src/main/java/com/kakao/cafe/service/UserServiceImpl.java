@@ -2,10 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.*;
 import com.kakao.cafe.entity.User;
-import com.kakao.cafe.exception.user.EditAccountFailedException;
-import com.kakao.cafe.exception.user.LoginFailedException;
-import com.kakao.cafe.exception.user.UserException;
-import com.kakao.cafe.exception.user.UserRegisterFailedException;
+import com.kakao.cafe.exception.user.*;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.util.Page;
 import com.kakao.cafe.util.Pageable;
@@ -57,11 +54,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void modify(EditUserDto dto) {
+        if (!dto.confirmPassword())
+            throw new PasswordConfirmFailedException();
         userRepository.findByEmail(User.builder().email(dto.getEmail()).build())
                 .filter(entity -> entity.getPassword().equals(dto.getPassword()))
                 .map(entity -> {
                     entity.changeUsername(dto.getUsername());
-                    entity.changePassword(dto.getPassword());
+                    entity.changePassword(dto.getNewPassword());
                     userRepository.update(entity);
                     return entity;
                 })

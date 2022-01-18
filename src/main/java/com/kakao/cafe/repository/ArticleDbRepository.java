@@ -38,7 +38,7 @@ public class ArticleDbRepository implements ArticleRepository {
     @Override
     public Optional<Article> findById(Long articleId) {
         String sql = "" +
-                "select a.article_id, a.title, a.content, a.view_count, a.reg_date, a.mod_date, u.email, u.username " +
+                "select a.*, u.* " +
                 "from article as a " +
                 "left join user as u " +
                 "on a.writer_email = u.email " +
@@ -50,10 +50,11 @@ public class ArticleDbRepository implements ArticleRepository {
     @Override
     public Page<Article> findAll(Pageable pageable) {
         String sql = "" +
-                "select a.article_id, a.title, a.content, a.view_count, a.reg_date, a.mod_date, u.email, u.username " +
+                "select a.*, u.* " +
                 "from article a " +
                 "left join user u " +
                 "on a.writer_email = u.email " +
+                "ORDER BY a.reg_date DESC " +
                 "limit ? offset ?";
         int totalRow = jdbcTemplate.queryForObject("select count(*) from article", (rs, rowNum) -> rs.getInt(1));
         int totalPage = (int) Math.ceil(totalRow / (double) pageable.getSize());

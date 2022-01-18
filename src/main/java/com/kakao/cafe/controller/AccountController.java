@@ -70,27 +70,21 @@ public class AccountController {
     }
 
     @PostMapping("/mypage/edit")
-    public String editMyPage(HttpSession session, EditUserDto editUserDto) {
+    public String editMyPage(EditUserDto editUserDto) {
         log.debug("[Post] /account/mypage/edit " + editUserDto);
-        AuthDto authDto = (AuthDto) session.getAttribute("auth");
         userService.modify(editUserDto);
         return "redirect:/users";
     }
 
     @GetMapping("/delete")
-    public String deleteMyAccountForm(HttpSession session) {
+    public String deleteMyAccountForm() {
         log.debug("[Get] /account/delete");
-        AuthDto authDto = (AuthDto) session.getAttribute("auth");
         return "user/delete";
     }
 
     @DeleteMapping("/delete")
-    public String deleteMyAccount(HttpSession session) {
+    public String deleteMyAccount() {
         log.debug("[Delete] /account/delete");
-        AuthDto authDto = (AuthDto) session.getAttribute("auth");
-        if (authDto == null) {
-            return "redirect:/accounts/login";
-        }
         return "redirect:/";
     }
 

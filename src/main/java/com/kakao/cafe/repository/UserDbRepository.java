@@ -55,7 +55,7 @@ public class UserDbRepository implements UserRepository {
 
     @Override
     public Page<User> findAll(Pageable pageable) {
-        String sql = "select email, username, password, reg_date, mod_date from user limit ? offset ?";
+        String sql = "select email, username, password, reg_date, mod_date from user ORDER BY reg_date DESC limit ? offset ?";
         int totalRow = jdbcTemplate.queryForObject("select count(*) from user", (rs, rowNum) -> rs.getInt(1));
         int totalPage = (int) Math.ceil(totalRow / (double) pageable.getSize());
         int fromIndex = pageable.getPage() * pageable.getSize();
