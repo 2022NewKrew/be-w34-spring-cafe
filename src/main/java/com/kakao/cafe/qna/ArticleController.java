@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 
 /**
  * Created by melodist
@@ -29,13 +28,9 @@ public class ArticleController {
         }
 
         Article article = new Article(
-                null,
                 user.getUserId(),
                 articleDto.getTitle(),
-                articleDto.getContents(),
-                0,
-                LocalDateTime.now(),
-                LocalDateTime.now());
+                articleDto.getContents());
         articleService.saveArticle(article);
 
         return "redirect:/";
@@ -72,34 +67,29 @@ public class ArticleController {
         return "/qna/form_edit";
     }
 
-    @PutMapping("/articles/{id}/edit")
-    public String questionEdit(@ModelAttribute("article") ArticleDto articleDto, @PathVariable("id") Integer id) {
+    @PutMapping("/articles/{id}")
+    public String questionEdit(ArticleDto articleDto, @PathVariable("id") Integer id) {
         User user = getSessionedUser();
         if (user == null) return "/user/login";
 
-        Article article = articleService.findArticleById(id);
-
-        // 글 ID가 존재하지 않을 경우 예외 발생
-        if (article == null) {
-            throw new IllegalArgumentException();
-        }
-
-        // 글 작성자 ID와 수정 요청자 ID가 일치해야 함
-        if (!user.getUserId().equals(article.getWriter())) {
-            throw new IllegalArgumentException();
-        }
-
-        Article editedArticle = new Article(id,
-                null,
-                articleDto.getTitle(),
-                articleDto.getContents(),
-                null,
-                null,
-                LocalDateTime.now());
-
-        articleService.updateArticle(editedArticle);
+        articleService.updateArticle(id, articleDto.getTitle(), articleDto.getContents(), user.getUserId());
 
         return "redirect:/articles/{id}";
+    }
+
+    @DeleteMapping("/articles/{id}")
+    public String questionDelete(@PathVariable("id") Integer id) {
+        User user = getSessionedUser();
+        if (user == null) return "/user/login";
+
+        articleService.deleteArticle(id, user.getUserId());
+
+        return "redirect:/";
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public String illegalArgumentException() {
+        return "/qna/show_edit_failed";
     }
 
     private User getSessionedUser() {
