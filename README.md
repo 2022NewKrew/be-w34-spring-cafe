@@ -81,3 +81,17 @@
     - public String updateForm(@PathVariable String id)와 같이 구현
   - [ ] Controller에서 전달한 값을 입력 폼에서 출력하려면 value를 사용
     - `<input type="text" name="name" value="{{name}}" />`
+
+## 3단계
+### 요구사항
+- [x] 사용자 데이터를 DB를 저장
+  - [x] ORM은 사용하지 않는다. 
+  - [x] Spring JDBC를 사용한다. (DB는 H2를 사용)
+  - [x] DB 저장 및 검색에 필요한 SQL은 직접 작성한다.
+- [x] 게시글 데이터 저장하기
+  - [x] Article 클래스를 DB 테이블에 저장할 수 있게 구현한다.
+  - [x] Article 테이블이 적절한 PK를 가지도록 구현한다.
+- [x] 게시글 목록 구현하기
+  - 전체 게시글 목록 데이터를 DB에서 조회하도록 구현한다.
+- [x] 게시글 상세보기 구현하기
+  - 게시글의 세부 내용을 DB에서 가져오도록 구현한다.
