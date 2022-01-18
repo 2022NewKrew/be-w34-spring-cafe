@@ -1,37 +1,27 @@
-package com.kakao.cafe.persistence.user.h2;
+package com.kakao.cafe.persistence;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class H2UserQueryBuilder {
-    private static final String TABLE_NAME = "USER";
-    private static final List<String> FIELDS = List.of("user_id", "user_password", "user_name", "user_email");
-    private static final String SELECT_ALL;
-    private static final String SELECT_BY_ONE_FIELD;
+public class H2QueryBuilder {
+    private final String table;
+    private final List<String> fields;
 
-    static {
-        SELECT_ALL = String.valueOf(new StringBuilder("SELECT ")
-                .append(String.join(", ", FIELDS))
+    public H2QueryBuilder(String table, List<String> fields) {
+        this.table = table;
+        this.fields = fields;
+    }
+    
+    public String selectAll() {
+        return String.valueOf(new StringBuilder("SELECT ")
+                .append(String.join(", ", fields))
                 .append(" FROM ")
-                .append(TABLE_NAME));
-        SELECT_BY_ONE_FIELD = String.valueOf(new StringBuilder("SELECT ")
-                .append(String.join(", ", FIELDS))
-                .append(" FROM ")
-                .append(TABLE_NAME)
-                .append(" WHERE ")
-        );
+                .append(table));
     }
 
-    private H2UserQueryBuilder() {
-    }
-
-    public static String selectAll() {
-        return SELECT_ALL;
-    }
-
-    public static String selectOneByField(String field) {
+    public String selectOneByField(String field) {
         return String.valueOf(
-                new StringBuilder(SELECT_BY_ONE_FIELD)
+                new StringBuilder(selectAll())
                         .append(field)
                         .append(" = :")
                         .append(field)
@@ -39,20 +29,24 @@ public class H2UserQueryBuilder {
         );
     }
 
-    public static String selectOneByMultipleField(List<String> fields) {
+    public String selectOneByMultipleField(List<String> fields) {
         return String.valueOf(
-                new StringBuilder(SELECT_BY_ONE_FIELD)
+                new StringBuilder("SELECT ")
+                        .append(String.join(", ", fields))
+                        .append(" FROM ")
+                        .append(table)
+                        .append(" WHERE ")
                         .append(String.join(" and ",
                                 fields.stream().map(e -> new StringBuilder(e).append(" = :").append(e))
                                         .collect(Collectors.toList())
-                                ))
+                        ))
                         .append(" LIMIT 1")
         );
     }
 
-    public static String insertOne(List<String> fields) {
+    public String insertOne(List<String> fields) {
         return String.valueOf(new StringBuilder("INSERT INTO ")
-                .append(TABLE_NAME)
+                .append(table)
                 .append(" ( ")
                 .append(String.join(", ", fields))
                 .append(" ) VALUES (:")
@@ -61,9 +55,9 @@ public class H2UserQueryBuilder {
         );
     }
 
-    public static String updateOne(List<String> setFields, List<String> whereFields) {
+    public String updateOne(List<String> setFields, List<String> whereFields) {
         return String.valueOf(new StringBuilder("UPDATE ")
-                .append(TABLE_NAME)
+                .append(table)
                 .append(" SET ")
                 .append(String.join(", ",
                         setFields.stream()

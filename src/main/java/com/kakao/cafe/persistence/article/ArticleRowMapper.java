@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 @Component
 public class ArticleRowMapper implements RowMapper<Article> {
+
     @Override
     public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
         return Article.builder()
@@ -19,4 +20,5 @@ public class ArticleRowMapper implements RowMapper<Article> {
                 .contents(rs.getString("article_contents"))
                 .build();
     }
+
 }

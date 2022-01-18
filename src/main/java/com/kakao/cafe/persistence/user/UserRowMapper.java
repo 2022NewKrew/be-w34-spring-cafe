@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 @Component
 public class UserRowMapper implements RowMapper<User> {
+
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
         return User.builder()
@@ -18,4 +19,5 @@ public class UserRowMapper implements RowMapper<User> {
                 .email(rs.getString("user_email"))
                 .build();
     }
+
 }

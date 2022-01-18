@@ -2,9 +2,8 @@ package com.kakao.cafe.application.user;
 
 import com.kakao.cafe.application.user.validation.DuplicatedUserIdException;
 import com.kakao.cafe.application.user.validation.UserErrorCode;
-import com.kakao.cafe.domain.user.FindUserPort;
-import com.kakao.cafe.domain.user.SignUpUserPort;
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserDaoPort;
 import com.kakao.cafe.domain.user.UserVo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,24 +28,21 @@ class SignUpUserServiceTest {
     SignUpUserService signUpUserService;
 
     @Mock
-    FindUserPort findUserPort;
-
-    @Mock
-    SignUpUserPort signUpUserPort;
+    UserDaoPort userDaoPort;
 
     @DisplayName("기존에 존재하지 않는 사용자는 회원 가입이 가능하다")
     @Test
     void checkUserJoin() {
         // given
         UserVo user = new UserVo("2wls", "0224", "윤이진", "483759@naver.com");
-        given(findUserPort.findByUserId("2wls"))
+        given(userDaoPort.findByUserId("2wls"))
                 .willReturn(Optional.empty());
 
         // when
         signUpUserService.join(user);
 
         //then
-        verify(signUpUserPort).save(any(User.class));
+        verify(userDaoPort).save(any(User.class));
     }
 
     @DisplayName("이미 존재하는 사용자는 회원 가입을 할 수 없다")
@@ -55,7 +51,7 @@ class SignUpUserServiceTest {
         // given
         UserVo userVo = new UserVo("2wls", "0224", "윤이진", "483759@naver.com");
         User user = new User("2wls", "0224", "윤이진", "483759@naver.com");
-        given(findUserPort.findByUserId("2wls"))
+        given(userDaoPort.findByUserId("2wls"))
                 .willReturn(Optional.of(user));
 
         // when
@@ -64,6 +60,6 @@ class SignUpUserServiceTest {
         //then
         assertThat(exception.getMessage())
                 .isEqualTo(UserErrorCode.DUPLICATED_USER_ID.getMessage());
-        verify(signUpUserPort, never()).save(any(User.class));
+        verify(userDaoPort, never()).save(any(User.class));
     }
 }
