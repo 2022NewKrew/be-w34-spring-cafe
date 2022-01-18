@@ -5,17 +5,17 @@ import java.util.Objects;
 public class ArticleVo {
 
     private int id;
-    private final String writer;
+    private final UserVo writer;
     private final String title;
     private final String contents;
 
-    public ArticleVo(String writer, String title, String contents) {
+    public ArticleVo(UserVo writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
     }
 
-    public ArticleVo(int id, String writer, String title, String contents) {
+    public ArticleVo(int id, UserVo writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -26,7 +26,7 @@ public class ArticleVo {
         return id;
     }
 
-    public String getWriter() {
+    public UserVo getWriter() {
         return writer;
     }
 
@@ -50,5 +50,4 @@ public class ArticleVo {
     public int hashCode() {
         return Objects.hash(id, writer, title, contents);
     }
-
 }

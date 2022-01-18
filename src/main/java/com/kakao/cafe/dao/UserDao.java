@@ -4,6 +4,7 @@ import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.vo.UserVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -22,13 +23,17 @@ public class UserDao {
     }
 
     public List<UserVo> findAllUser() {
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT id, user_id, password, name, email FROM users";
         return jdbcTemplate.query(sql, userRowMapper());
     }
 
     public UserVo filterUserById(String userId) {
-        String sql = "SELECT * FROM users WHERE user_id = ?";
-        return jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
+        try {
+            String sql = "SELECT id, user_id, password, name, email FROM users WHERE user_id = ?";
+            return jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public void createUser(UserVo user) {
@@ -43,6 +48,7 @@ public class UserDao {
 
     private RowMapper<UserVo> userRowMapper() {
         return (rs, rowNum) -> new UserVo(
+                rs.getInt("id"),
                 rs.getString("user_id"),
                 rs.getString("password"),
                 rs.getString("name"),

@@ -10,8 +10,8 @@ CREATE TABLE users (
 
 CREATE TABLE articles (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  writer VARCHAR(32),
   title VARCHAR(100),
-  contents TEXT
+  contents TEXT,
+  writer_id INT REFERENCES users (id)
 );
 
