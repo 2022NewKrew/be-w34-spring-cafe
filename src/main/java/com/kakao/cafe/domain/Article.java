@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 public class Article {
 
     private int id;
-    private String author;
+    private int authorId;
+    private Users author;
     private LocalDateTime createdAt;
     private String title;
     private String content;
