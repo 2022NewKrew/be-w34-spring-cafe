@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -35,9 +36,9 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public String postArticles(@Valid ArticleRequestDTO articleRequestDTO) {
+    public String postArticles(@Valid ArticleRequestDTO articleRequestDTO, HttpSession session) {
         logger.info(articleRequestDTO.toString());
-        articleService.posting(articleRequestDTO);
+        articleService.posting(articleRequestDTO, (Long) session.getAttribute("loginId"));
         return "redirect:/";
     }
 

@@ -15,17 +15,14 @@ public class ArticleRequestDTO {
     private String title;
 
     @NotBlank
-    private String author;
-
-    @NotBlank
     private String content;
 
-    public Article toArticle(LocalDate createDate) {
+    public Article toArticle(LocalDate createDate, Long memberId) {
         return Article.builder()
                 .title(title)
-                .author(author)
                 .content(content)
                 .createDate(createDate)
+                .memberId(memberId)
                 .build();
     }
 }
