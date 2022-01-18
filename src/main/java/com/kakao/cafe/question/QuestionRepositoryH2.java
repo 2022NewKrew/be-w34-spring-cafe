@@ -52,6 +52,7 @@ public class QuestionRepositoryH2 implements QuestionRepository {
 
     @Override
     public Question findOne(Long id) {
+
         String sql = "SELECT id, member_id, writer, title, contents, create_time FROM question WHERE id=?";
 
         return jdbcTemplate.queryForObject(sql, new QuestionRowMapper(), id);
@@ -59,6 +60,7 @@ public class QuestionRepositoryH2 implements QuestionRepository {
 
     @Override
     public List<Question> findAll() {
+
         String sql = "SELECT id, member_id, writer, title, contents, create_time FROM question";
 
         return jdbcTemplate.query(sql, new QuestionRowMapper());
@@ -66,11 +68,29 @@ public class QuestionRepositoryH2 implements QuestionRepository {
 
     @Override
     public boolean deleteOne(Long id) {
-        return false;
+
+        String sql = "DELETE FROM question WHERE id = ?";
+        int rs = jdbcTemplate.update(sql, id);
+
+        if (rs == FAIL) {
+            log.error("USER TABLE UPDATE FAIL ");
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public boolean deleteOne(Long id, Long memberId) {
-        return false;
+
+        String sql = "DELETE FROM question WHERE id = ? AND member_id = ?";
+        int rs = jdbcTemplate.update(sql, id, memberId);
+
+        if (rs == FAIL) {
+            log.error("USER TABLE UPDATE FAIL ");
+            return false;
+        }
+
+        return true;
     }
 }

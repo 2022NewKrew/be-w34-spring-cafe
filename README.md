@@ -33,13 +33,13 @@
 
 ### open jdk docekr
 ```
-docker build -t redbin/kakao-cafe . 
-docker run --rm -d -p 8080:8080 --name demo redbin/kakao-cafe
+docker build -t redbin/kakao-cafe . // docekr image파일 만들기
+docker run --rm -d -p 8080:8080 --name demo redbin/kakao-cafe // 만든 이미지파일로 접속 
 ```
 ### mysql build
 ```
 docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=1234 --name kakao-db -v /Users/kakao/Desktop/db:/var/lib/mysql mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-docker exec -it kakao-db bash
+docker exec -it kakao-db bash // 배시접속
 ```
 ## 그 밖의 코드 스타일에 관한 고찰들..
 - https://zdnet.co.kr/view/?no=20150723103651

@@ -30,14 +30,14 @@ public interface QuestionRepository {
     List<Question> findAll();
 
     /**
-     *
-     * @param id
+     * key값 하나로 테이블을 삭제한다.
+     * @param id 삭제하고 싶은 table key
      * @return 삭제 성공 여부
      */
     boolean deleteOne(Long id);
 
     /**
-     *
+     * key값과 memberId값으로 삭제한다. (해당 테이블의 소유권자만 삭제 가능)
      * @param id 삭제하고 싶은 table의 키 값
      * @param memberId 삭제하고 싶은 테이블의 외래키
      * @return 삭제 성공 여부
