@@ -4,6 +4,8 @@ import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.Users;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.util.exception.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -45,14 +49,19 @@ public class UserService {
     }
 
     public String login(String id, String password) {
+        LOGGER.info("login() : start");
         User user = null;
         try {
             user = userRepository.findById(id);
         } catch (Exception exception) {
+            LOGGER.error("login() : loginFailException id not exists : {}", id);
             throw new LoginFailException(exception, id);
         }
-        if (user.isPassword(password))
+        if (user.isPassword(password)) {
+            LOGGER.error("login() : loginFailException password Invalid : (password : {}, user.password : {})", password, user.getPassword());
             throw new LoginFailException(new InvalidPasswordException(password), id);
+        }
+        LOGGER.info("login() : user.getId() : {}", user.getId());
         return user.getId();
     }
 
