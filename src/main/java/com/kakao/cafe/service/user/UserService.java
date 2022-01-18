@@ -1,29 +1,41 @@
 package com.kakao.cafe.service.user;
 
-import com.kakao.cafe.domain.user.Users;
-import com.kakao.cafe.web.dto.user.UserResponseDto;
-import com.kakao.cafe.web.dto.user.UserUpdateRequestDto;
-import com.kakao.cafe.web.dto.user.UsersListResponseDto;
-import com.kakao.cafe.web.dto.user.UsersSaveRequestDto;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.dto.user.UserDto;
+import com.kakao.cafe.repository.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    private Users users = new Users();
 
-    public void add(UsersSaveRequestDto reqDto){
-        users.addUser(reqDto);
-    }
+	private final UserRepository h2UserRepository;
+	private final ModelMapper modelMapper;
 
-    public UsersListResponseDto findAll(){
-        return users.findAll();
-    }
+	public void save(UserDto userDto) {
+		h2UserRepository.save(modelMapper.map(userDto, User.class));
+	}
 
-    public UserResponseDto findById(int id){
-        return users.findUserById(id);
-    }
+	public List<User> findAll() {
+		return h2UserRepository.findAll();
+	}
 
-    public void update(int id, UserUpdateRequestDto userDto) {
-        users.update(id, userDto);
-    }
+	public UserDto findById(int id) {
+		return modelMapper.map(h2UserRepository.findById(id), UserDto.class);
+	}
+
+	public void update(int id, UserDto userDto) {
+		if (!Objects.equals(userDto.getPrevAccPw(), findById(id).getAccPw())) {
+			throw new IllegalArgumentException("변경 전 비밀번호가 일치하지 않습니다.");
+		}
+		User user = modelMapper.map(userDto, User.class);
+		user.setId(id);
+		user.setAccPw(userDto.getNewAccPw());
+		h2UserRepository.update(user);
+	}
 }

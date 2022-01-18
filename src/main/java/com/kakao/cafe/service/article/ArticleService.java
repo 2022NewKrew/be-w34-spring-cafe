@@ -1,24 +1,30 @@
 package com.kakao.cafe.service.article;
 
-import com.kakao.cafe.domain.article.Articles;
-import com.kakao.cafe.web.dto.article.ArticleAddRequestDto;
-import com.kakao.cafe.web.dto.article.ArticleResponseDto;
-import com.kakao.cafe.web.dto.article.ArticlesListResponseDto;
+import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.dto.article.ArticleDto;
+import com.kakao.cafe.repository.article.ArticleRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@RequiredArgsConstructor
 @Service
 public class ArticleService {
-    Articles articles = new Articles();
 
-    public void add(ArticleAddRequestDto artDto) {
-        articles.add(artDto);
-    }
+	private final ArticleRepository memoryArticleRepository;
+	private final ModelMapper modelMapper;
 
-    public ArticlesListResponseDto findAll() {
-        return articles.findAll();
-    }
+	public void save(ArticleDto articleDto) {
+		memoryArticleRepository.save(modelMapper.map(articleDto, Article.class));
+	}
 
-    public ArticleResponseDto findByIndex(int index) {
-        return articles.findByIndex(index);
-    }
+	public List<Article> findAll() {
+		return memoryArticleRepository.findAll();
+	}
+
+	public ArticleDto findByIndex(int index) {
+		return modelMapper.map(memoryArticleRepository.findByIndex(index), ArticleDto.class);
+	}
 }
