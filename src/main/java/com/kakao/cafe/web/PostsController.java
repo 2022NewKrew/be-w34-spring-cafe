@@ -4,7 +4,8 @@ import com.kakao.cafe.service.PostsService;
 import com.kakao.cafe.web.dto.PostResponseDto;
 import com.kakao.cafe.web.dto.PostsCreateRequestDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
-import org.h2.engine.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 @Controller
 public class PostsController {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(PostsController.class.getName());
     private final PostsService postsService = new PostsService();
 
     @GetMapping("/")
@@ -35,6 +37,7 @@ public class PostsController {
         String writer = userInfo.getName();
         requestDto.setWriter(writer);
         postsService.save(requestDto);
+        LOGGER.info(userInfo.getEmail() + " posted article");
 
         return "redirect:/";
     }

@@ -3,6 +3,8 @@ package com.kakao.cafe.web;
 import com.kakao.cafe.service.UsersService;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import com.kakao.cafe.web.dto.UsersCreateRequestDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 @Controller
 public class UsersController {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(UsersController.class.getName());
     private final UsersService usersService = new UsersService();
 
     @GetMapping("/users")
@@ -36,6 +39,7 @@ public class UsersController {
     @PostMapping("/api/users")
     public String Signin(UsersCreateRequestDto requestDto) {
         usersService.save(requestDto);
+        LOGGER.info(requestDto.getEmail() + " sign in");
         return "redirect:/users";
     }
 
@@ -53,11 +57,12 @@ public class UsersController {
         UserResponseDto userInfo = usersService.findByEmail(email);
         if (userInfo.checkLoginInfo(email, password)) {
             session.setAttribute("sessionedUser", userInfo);
-            System.out.println("login success");
+            LOGGER.info(email + "login success");
             return "redirect:/";
         } else {
-            System.out.println("login failed");
-            return "redirect:/";
+            //LOGGER.info(email + "login failed");
+            throw new IllegalArgumentException("login failed");
+            //return "redirect:/";
         }
     }
 
