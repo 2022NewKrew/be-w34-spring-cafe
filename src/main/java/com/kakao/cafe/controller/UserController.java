@@ -18,8 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.SQLException;
 import java.util.List;
@@ -36,7 +34,7 @@ public class UserController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final SessionLoginUser<UserDto> sessionLoginUser;
+    private final SessionLoginUser sessionLoginUser;
 
     // TODO : 저장할 때 단방향 해시 필요
     @PostMapping(value = "/create")
@@ -111,10 +109,9 @@ public class UserController {
     }
 
     @PostMapping("/updateAuth")
-    public String viewUserUpdateForm(HttpServletRequest request, Model model, @RequestParam String password) throws BaseException {
+    public String viewUserUpdateForm(Model model, @RequestParam String password) throws BaseException {
 
-        HttpSession session = request.getSession();
-        UserDto loginUser = sessionLoginUser.getLoginUser();
+        UserDto loginUser = (UserDto) sessionLoginUser.getLoginUser();
         User user = userService.loginCheck(loginUser.getUserId(), password);
 
         if (user == null) {
@@ -132,9 +129,6 @@ public class UserController {
     @PutMapping("/{id}/update")
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) throws BaseException {
 
-        //TODO: model Mapper 매핑에러
-        //User user = modelMapper.map(userUpdateDto, User.class);
-
         User user = new User(id, userUpdateDto.getName(), userUpdateDto.getEmail());
 
         if (!userService.update(user)) {
@@ -146,25 +140,22 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public String updateUser(HttpServletRequest request, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) throws BaseException {
+    public String updateUser( @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) throws BaseException {
 
-        HttpSession session = request.getSession();
-        UserDto loginUser = sessionLoginUser.getLoginUser();
+        UserDto loginUser = (UserDto) sessionLoginUser.getLoginUser();
 
         User user = new User(loginUser.getId(), userUpdateDto.getName(), userUpdateDto.getEmail());
 
         if (!userService.update(user)) {
             log.info("회원 정보 수정 실패 에러페이지로 이동");
             throw new BaseException("회원 정보 수정 실패");
-
         }
-
 
         return "redirect:/";
     }
 
     @PostMapping("/login")
-    public String login(HttpSession session, @ModelAttribute("user") @Valid UserLoginDto userLoginDto, Model model) throws BaseException {
+    public String login(@ModelAttribute("user") @Valid UserLoginDto userLoginDto, Model model) throws BaseException {
 
         User user = userService.loginCheck(userLoginDto.getUserId(), userLoginDto.getPassword());
 
@@ -172,27 +163,26 @@ public class UserController {
             throw new BaseException("login error 페이지 입니다.");
         }
 
-        setLoginUserSession(session, user);
+        setLoginUserSession(user);
 
         return "redirect:/";
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout() {
 
-        session.invalidate();
-        log.info("success invalidate session");
+        sessionLoginUser.invalidate();
         return "redirect:/";
     }
 
-    private void setLoginUserSession(HttpSession session, User user) {
+    private void setLoginUserSession(User user) {
 
         UserDto userDto = modelMapper.map(user, UserDto.class);
 
-        session.setAttribute("loginUser", userDto);
+        sessionLoginUser.setLoginUser(userDto);
 
         if (user.getRole() == UserStatus.ADMIN) {
-            session.setAttribute("admin", true);
+            sessionLoginUser.setAdmin();
         }
     }
 

@@ -30,10 +30,10 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final ModelMapper modelMapper;
-    private final SessionLoginUser<UserDto> sessionLoginUser;
+    private final SessionLoginUser sessionLoginUser;
 
     @PostMapping("/create")
-    public String insertQuestion(HttpSession session, @ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto, Model model) throws BaseException, SQLException {
+    public String insertQuestion(@ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto, Model model) throws BaseException, SQLException {
 
         User user = modelMapper.map(sessionLoginUser.getLoginUser(), User.class);
         Question question = modelMapper.map(questionCreateDto, Question.class);
@@ -46,7 +46,7 @@ public class QuestionController {
     }
 
     @GetMapping
-    public String viewQuestionList(HttpSession session, Model model) {
+    public String viewQuestionList(Model model) {
 
         Long id = getMemberId();
         List<QuestionDto> questions = getQuestionDtos(id);
@@ -71,7 +71,7 @@ public class QuestionController {
     }
 
     @GetMapping("/{id}")
-    public String viewQuestionDetail(HttpSession session, @PathVariable("id") Long id, Model model) {
+    public String viewQuestionDetail(@PathVariable("id") Long id, Model model) {
 
         Long memberId = getMemberId();
         QuestionDto question = modelMapper.map(questionService.findOne(id), QuestionDto.class);
@@ -99,7 +99,7 @@ public class QuestionController {
     }
 
     @PutMapping("/update/{id}")
-    public String updateQuestion(HttpSession session, @PathVariable("id") Long id, @Valid @ModelAttribute("question") QuestionUpdateDto questionUpdateDto, Model model) throws BaseException {
+    public String updateQuestion(@PathVariable("id") Long id, @Valid @ModelAttribute("question") QuestionUpdateDto questionUpdateDto, Model model) throws BaseException {
 
         Long memberId = getMemberId();
         Question question = new Question();
@@ -115,11 +115,11 @@ public class QuestionController {
     }
 
     @GetMapping("/update/{id}")
-    public String viewUpdateQuestionForm(HttpSession session, @PathVariable("id") Long id, Model model) throws BaseException {
+    public String viewUpdateQuestionForm(@PathVariable("id") Long id, Model model) throws BaseException {
 
         Question origin = questionService.findOne(id);
         QuestionUpdateDto question = modelMapper.map(origin, QuestionUpdateDto.class);
-        UserDto loginUser = sessionLoginUser.getLoginUser();
+        UserDto loginUser = (UserDto) sessionLoginUser.getLoginUser();
 
         if (origin != null && !origin.getMemberId().equals(loginUser.getId())) {
             throw new BaseException("게시글의 권한이 없는 사용자 입니다.");
@@ -132,7 +132,7 @@ public class QuestionController {
 
     private Long getMemberId() {
 
-        UserDto loginUser = sessionLoginUser.getLoginUser();
+        UserDto loginUser = (UserDto) sessionLoginUser.getLoginUser();
         return loginUser == null ? -1L : loginUser.getId();
     }
 }
