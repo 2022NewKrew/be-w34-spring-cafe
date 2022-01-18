@@ -1,6 +1,6 @@
 INSERT INTO USERS(USER_ID, PASSWORD, NAME, EMAIL) VALUES ( 'admin', 'admin', '관리자', 'admin@kafe.com' ),
                                                          ( 'jynah92', '1111', '나준엽', 'jynah92@kakao.com' );
 
-INSERT INTO ARTICLES(TITLE, WRITER_ID, CONTENT, DATE) VALUES ( '안녕하세요', 'admin', '안녕하세요, 관리자입니다.', NOW() );
+INSERT INTO ARTICLES(TITLE, WRITER_ID, CONTENT, CREATED_DATE) VALUES ( '안녕하세요', 'admin', '안녕하세요, 관리자입니다.', NOW() );
 
-INSERT INTO COMMENTS(ARTICLE_ID, WRITER_ID, CONTENT, DATE) VALUES ( 1, 'jynah92', '안녕하세요!', NOW() );
+INSERT INTO COMMENTS(ARTICLE_ID, WRITER_ID, CONTENT, CREATED_DATE) VALUES ( 1, 'jynah92', '안녕하세요!', NOW() );

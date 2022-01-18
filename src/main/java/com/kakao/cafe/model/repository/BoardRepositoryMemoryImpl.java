@@ -4,7 +4,6 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.kakao.cafe.model.domain.Article;
 import com.kakao.cafe.model.domain.Comment;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -20,7 +19,7 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
     @Override
     public boolean saveArticle(Article article) {
         article.setArticleId(maxArticleId++);
-        article.setDate(LocalDateTime.now());
+        article.setCreatedDate(LocalDateTime.now());
         storedArticles.put(article.getArticleId(), article);
         return true;
     }
@@ -36,7 +35,7 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
 
         comment.setArticleId(articleId);
         comment.setCommentId(commentId);
-        comment.setDate(LocalDateTime.now());
+        comment.setCreatedDate(LocalDateTime.now());
 
         storedComments.put(articleId, commentId, comment);
         currArticle.setCommentsCount(++commentId);
@@ -85,7 +84,7 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
                 .title(article.getTitle())
                 .writerId(originalArticle.getWriterId())
                 .content(article.getContent())
-                .date(originalArticle.getDate())
+                .createdDate(originalArticle.getCreatedDate())
                 .commentsCount(originalArticle.getCommentsCount())
                 .build());
         return true;
@@ -106,7 +105,7 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
                 .commentId(commentId)
                 .writerId(originalComment.getWriterId())
                 .content(originalComment.getContent())
-                .date(originalComment.getDate()).build());
+                .createdDate(originalComment.getCreatedDate()).build());
         return true;
     }
 

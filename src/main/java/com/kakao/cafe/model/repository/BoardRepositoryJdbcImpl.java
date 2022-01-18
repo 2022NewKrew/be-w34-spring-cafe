@@ -25,7 +25,7 @@ public class BoardRepositoryJdbcImpl implements BoardRepository {
                         .title(rs.getString("TITLE"))
                         .writerId(rs.getString("WRITER_ID"))
                         .content(rs.getString("CONTENT"))
-                        .date(rs.getTimestamp("DATE").toLocalDateTime()).build();
+                        .createdDate(rs.getTimestamp("CREATED_DATE").toLocalDateTime()).build();
     }
 
     private RowMapper<Comment> commentRowMapper() {
@@ -35,7 +35,7 @@ public class BoardRepositoryJdbcImpl implements BoardRepository {
                         .commentId(rs.getInt("COMMENT_ID"))
                         .writerId(rs.getString("WRITER_ID"))
                         .content(rs.getString("CONTENT"))
-                        .date(rs.getTimestamp("DATE").toLocalDateTime()).build();
+                        .createdDate(rs.getTimestamp("CREATED_DATE").toLocalDateTime()).build();
     }
 
     @Autowired
@@ -45,62 +45,62 @@ public class BoardRepositoryJdbcImpl implements BoardRepository {
 
     @Override
     public boolean saveArticle(Article article) {
-        jdbcTemplate.update("INSERT INTO ARTICLES (TITLE, WRITER_ID, CONTENT, DATE) VALUES ( ?, ?, ?, ? )",
+        jdbcTemplate.update("INSERT INTO ARTICLES (TITLE, WRITER_ID, CONTENT, CREATED_DATE) VALUES ( ?, ?, ?, ? )",
                 article.getTitle(), article.getWriterId(), article.getContent(), LocalDateTime.now());
         return true;
     }
 
     @Override
     public boolean saveComment(long articleId, Comment comment) {
-        jdbcTemplate.update("INSERT INTO COMMENTS (ARTICLE_ID, WRITER_ID, CONTENT, DATE) VALUES ( ?, ?, ?, ? )",
+        jdbcTemplate.update("INSERT INTO COMMENTS (ARTICLE_ID, WRITER_ID, CONTENT, CREATED_DATE) VALUES ( ?, ?, ?, ? )",
                 articleId, comment.getWriterId(), comment.getContent(), LocalDateTime.now());
         return true;
     }
 
     @Override
     public List<Article> findAllArticle() {
-        return jdbcTemplate.query("SELECT ARTICLE_ID, TITLE, WRITER_ID, CONTENT, DATE FROM ARTICLES",
+        return jdbcTemplate.query("SELECT ARTICLE_ID, TITLE, WRITER_ID, CONTENT, CREATED_DATE FROM ARTICLES",
                 articleRowMapper());
     }
 
     @Override
     public Optional<Article> findArticleByArticleId(long articleId) {
-        List<Article> result = jdbcTemplate.query("SELECT ARTICLE_ID, TITLE, WRITER_ID, CONTENT, DATE FROM ARTICLES WHERE ARTICLE_ID = ?",
+        List<Article> result = jdbcTemplate.query("SELECT ARTICLE_ID, TITLE, WRITER_ID, CONTENT, CREATED_DATE FROM ARTICLES WHERE ARTICLE_ID = ?",
                 articleRowMapper(), articleId);
         return result.stream().findAny();
     }
 
     @Override
     public List<Article> findArticlesByWriterId(String writerId) {
-        return jdbcTemplate.query("SELECT ARTICLE_ID, TITLE, WRITER_ID, CONTENT, DATE FROM ARTICLES WHERE WRITER_ID = ?",
+        return jdbcTemplate.query("SELECT ARTICLE_ID, TITLE, WRITER_ID, CONTENT, CREATED_DATE FROM ARTICLES WHERE WRITER_ID = ?",
                 articleRowMapper(), writerId);
     }
 
     @Override
     public List<Comment> findCommentsByArticleId(long articleId) {
-        return jdbcTemplate.query("SELECT ARTICLE_ID, COMMENT_ID, WRITER_ID, CONTENT, DATE FROM COMMENTS WHERE ARTICLE_ID = ?",
+        return jdbcTemplate.query("SELECT ARTICLE_ID, COMMENT_ID, WRITER_ID, CONTENT, CREATED_DATE FROM COMMENTS WHERE ARTICLE_ID = ?",
                 commentRowMapper(), articleId);
     }
 
     @Override
     public Optional<Comment> findComment(long articleId, long commentId) {
-        List<Comment> result = jdbcTemplate.query("SELECT ARTICLE_ID, COMMENT_ID, WRITER_ID, CONTENT, DATE FROM COMMENTS WHERE ARTICLE_ID = ? AND COMMENT_ID = ?",
+        List<Comment> result = jdbcTemplate.query("SELECT ARTICLE_ID, COMMENT_ID, WRITER_ID, CONTENT, CREATED_DATE FROM COMMENTS WHERE ARTICLE_ID = ? AND COMMENT_ID = ?",
                 commentRowMapper(), articleId, commentId);
         return result.stream().findAny();
     }
 
     @Override
     public boolean modifyArticle(Article article) {
-        jdbcTemplate.update("UPDATE ARTICLES SET TITLE = ?, WRITER_ID = ?, CONTENT = ?, DATE = ? WHERE ARTICLE_ID = ?",
+        jdbcTemplate.update("UPDATE ARTICLES SET TITLE = ?, WRITER_ID = ?, CONTENT = ?, CREATED_DATE = ? WHERE ARTICLE_ID = ?",
                 article.getTitle(), article.getWriterId(), article.getContent(),
-                article.getDate(), article.getArticleId());
+                article.getCreatedDate(), article.getArticleId());
         return true;
     }
 
     @Override
     public boolean modifyComment(long articleId, Comment comment) {
-        jdbcTemplate.update("UPDATE COMMENTS SET ARTICLE_ID = ?, WRITER_ID = ?, CONTENT = ?, DATE = ? WHERE ARTICLE_ID = ? AND COMMENT_ID = ?",
-                comment.getWriterId(), comment.getContent(), comment.getDate(), articleId, comment.getCommentId());
+        jdbcTemplate.update("UPDATE COMMENTS SET ARTICLE_ID = ?, WRITER_ID = ?, CONTENT = ?, CREATED_DATE = ? WHERE ARTICLE_ID = ? AND COMMENT_ID = ?",
+                comment.getWriterId(), comment.getContent(), comment.getCreatedDate(), articleId, comment.getCommentId());
         return true;
     }
 

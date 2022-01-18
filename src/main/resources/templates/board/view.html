@@ -32,7 +32,7 @@
                     작성일자: &nbsp;
                 </th>
                 <td>
-                    {{formattedDate}}
+                    {{formattedCreatedDate}}
                 </td>
             </tr>
             <tr>
@@ -49,7 +49,7 @@
                 <input type="hidden" name="articleId" value="{{articleId}}">
                 <div class="form-group row">
                     <div class="col-sm-2">
-                        <input type="text" name="writerId" class="form-control" placeholder="작성자" required>
+                        <input type="text" name="writerId" class="form-control" value="{{USER_ID}}" readonly>
                     </div>
                     <div class="col-sm-8">
                         <input type="text" name="content" class="form-control" placeholder="댓글을 입력해주세요" required>
@@ -70,7 +70,7 @@
                     {{content}}
                 </td>
                 <td style="width: 250px">
-                    {{formattedDate}}
+                    {{formattedCreatedDate}}
                 </td>
                 <td style="width: 70px">
                     <form method="post" action="/board/delete/{{articleId}}/{{commentId}}">
