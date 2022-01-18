@@ -15,7 +15,7 @@
                       <article class="article">
                           <div class="article-header">
                               <div class="article-header-text">
-                                  <p class="article-content">멋진삼</p>
+                                  <p class="article-content">{{article.writer}}</p>
                                   <p class="article-content">
                                       작성일자:2015-12-30 01:47
                                   </p>
@@ -26,6 +26,11 @@
                               <p>{{article.content}}</p>
                           </div>
                       </article>
+
+                      <div class="post-btn-container">
+                          <a class="post-write-btn" href="/articles/{{article.id}}/form" class="btn btn-primary pull-right" role="button">수정</a>
+                          <a class="post-write-btn" href="" class="btn btn-primary pull-right" role="button">삭제</a>
+                      </div>
 
                       <div class="post-comment">
                           <div class="post-comment-slipp">

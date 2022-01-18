@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface ArticleRepository {
     void save(Article article);
+    void update(Article article);
     Optional<Article> findById(Long id);
     List<Article> findAll();
 

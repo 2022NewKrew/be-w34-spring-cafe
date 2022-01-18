@@ -1,6 +1,7 @@
 package com.kakao.cafe.web.repository.article;
 
 import com.kakao.cafe.web.domain.Article;
+import com.kakao.cafe.web.domain.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -25,6 +26,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     @Override
     public void save(Article article) {
         String sql = "insert into articles (`title`, `content`, `writer`) values(:title,:content,:writer)";
+        BeanPropertySqlParameterSource paramSource = new BeanPropertySqlParameterSource(article);
+        jdbcTemplate.update(sql, paramSource);
+    }
+
+    @Override
+    public void update(Article article) {
+        String sql = "update `articles` set `title` = :title, `content` = :content, `writer` = :writer where `id` = :id";
         BeanPropertySqlParameterSource paramSource = new BeanPropertySqlParameterSource(article);
         jdbcTemplate.update(sql, paramSource);
     }
