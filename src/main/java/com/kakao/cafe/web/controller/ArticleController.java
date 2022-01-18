@@ -2,6 +2,7 @@ package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.domain.article.Article;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Slf4j
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
-    Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     @GetMapping(value = "/")
     public String indexPage() {
@@ -38,7 +39,7 @@ public class ArticleController {
 
     @GetMapping(value = "/index")
     public String getArticleList(Model model) {
-        logger.info("articleList:{}", articleService.getArticleList());
+        log.info("articleList:{}", articleService.getArticleList());
         model.addAttribute("articleListSize", articleService.getArticleListSize());
         model.addAttribute("articleList", articleService.getArticleList());
         return "/index";
