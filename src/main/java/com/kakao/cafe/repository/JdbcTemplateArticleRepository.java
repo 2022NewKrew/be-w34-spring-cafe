@@ -57,5 +57,25 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     }
 
+    @Override
+    public void updateArticle(Long id, Article updateArticle) {
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement("UPDATE ARTICLE_TABLE SET TITLE = ?, CONTENTS = ? where id = ?");
+            ps.setString(1, updateArticle.getTitle());
+            ps.setString(2, updateArticle.getContents());
+            ps.setString(3, String.valueOf(id));
+            return ps;
+        });
+    }
+
+    @Override
+    public void deleteArticle(Long id) {
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM ARTICLE_TABLE where id = ?");
+            ps.setString(1, String.valueOf(id));
+            return ps;
+        });
+    }
+
 
 }

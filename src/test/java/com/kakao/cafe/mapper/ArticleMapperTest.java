@@ -1,20 +1,18 @@
 package com.kakao.cafe.mapper;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserCreateRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class ArticleMapperTest {
     private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
     @Test
-    @DisplayName("UserMapper 가 UserDto를 Entㅑty로 매핑한다.")
+    @DisplayName("UserMapper 가 UserCreateRequest를 Entㅑty로 매핑한다.")
     void toEntity() {
-        UserDto userDto = new UserDto();
+        UserCreateRequest userDto = new UserCreateRequest();
         userDto.setUserId("trevi");
         userDto.setEmail("trevi.kim@abc.com");
         userDto.setName("김현석");

@@ -1,13 +1,5 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserDto;
-import com.kakao.cafe.mapper.UserMapper;
-import com.kakao.cafe.repository.UserRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 

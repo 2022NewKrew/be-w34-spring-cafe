@@ -1,8 +1,7 @@
 package com.kakao.cafe.mapper;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.dto.ArticleDto;
-import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.dto.ArticleFormRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -17,8 +16,9 @@ public interface ArticleMapper extends RowMapper<Article> {
     ArticleMapper INSTANCE = Mappers.getMapper( ArticleMapper.class );
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "writer", ignore = true)
     @Mapping(target = "time", ignore = true)
-    Article toEntity(ArticleDto user);
+    Article toEntity(ArticleFormRequest articleFormRequest);
 
     @Override
     default Article mapRow(ResultSet rs, int rowNum) throws SQLException {

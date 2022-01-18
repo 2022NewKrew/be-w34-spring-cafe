@@ -1,25 +1,21 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserCreateRequest;
 import com.kakao.cafe.mapper.UserMapper;
 import com.kakao.cafe.repository.UserRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -35,7 +31,7 @@ class UserServiceTest {
 
     @Test
     void save() {
-        UserDto userDto = new UserDto();
+        UserCreateRequest userDto = new UserCreateRequest();
         userDto.setUserId("trevi");
         userDto.setEmail("trevi.kim@abc.com");
         userDto.setName("김현석");

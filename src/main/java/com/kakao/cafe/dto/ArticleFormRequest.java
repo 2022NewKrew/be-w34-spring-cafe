@@ -2,8 +2,7 @@ package com.kakao.cafe.dto;
 import lombok.Data;
 
 @Data
-public class ArticleDto {
-    private String writer;
+public class ArticleFormRequest {
     private String title;
     private String contents;
 }
