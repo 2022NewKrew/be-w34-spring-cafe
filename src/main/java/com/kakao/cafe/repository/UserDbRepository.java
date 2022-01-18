@@ -1,9 +1,11 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.entity.User;
+import com.kakao.cafe.exception.user.UserNotFoundException;
 import com.kakao.cafe.util.Page;
 import com.kakao.cafe.util.Pageable;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -43,15 +45,12 @@ public class UserDbRepository implements UserRepository {
     @Override
     public Optional<User> findByEmail(User entity) {
         String sql = "select email, username, password, reg_date, mod_date from user where email = ?";
-        User user = jdbcTemplate.queryForObject(sql, mapper, entity.getEmail());
-        return Optional.ofNullable(user);
-    }
-
-    @Override
-    public Optional<User> findByEmailAndPassword(User entity) {
-        String sql = "select email, username, password, reg_date, mod_date from user where email = ? and password = ?";
-        User user = jdbcTemplate.queryForObject(sql, mapper, entity.getEmail(), entity.getPassword());
-        return Optional.ofNullable(user);
+        try {
+            User user = jdbcTemplate.queryForObject(sql, mapper, entity.getEmail());
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.ofNullable(null);
+        }
     }
 
     @Override
@@ -73,13 +72,17 @@ public class UserDbRepository implements UserRepository {
     private static class UserMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return User.builder()
-                    .email(rs.getString("email"))
-                    .username(rs.getString("username"))
-                    .password(rs.getString("password"))
-                    .regDate(rs.getTimestamp("reg_date").toLocalDateTime())
-                    .modDate(rs.getTimestamp("mod_date").toLocalDateTime())
-                    .build();
+            try {
+                return User.builder()
+                        .email(rs.getString("email"))
+                        .username(rs.getString("username"))
+                        .password(rs.getString("password"))
+                        .regDate(rs.getTimestamp("reg_date").toLocalDateTime())
+                        .modDate(rs.getTimestamp("mod_date").toLocalDateTime())
+                        .build();
+            } catch (SQLException e) {
+                throw new UserNotFoundException();
+            }
         }
     }
 

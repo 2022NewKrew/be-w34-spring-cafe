@@ -1,5 +1,6 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.exception.user.EditAccountFailedException;
 import com.kakao.cafe.exception.user.LoginFailedException;
 import com.kakao.cafe.exception.article.ArticleNotFoundException;
 import com.kakao.cafe.exception.user.UserNotFoundException;
@@ -7,18 +8,26 @@ import com.kakao.cafe.exception.user.UserRegisterFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.sql.SQLException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @ControllerAdvice
 public class CafeAdvice {
 
     @ExceptionHandler(LoginFailedException.class)
-    public String handleLoginFailedException(Exception e) {
+    public String handleLoginFailedException(RedirectAttributes redirectAttributes, Exception e) {
         log.info("Login failed");
         log.info(e.getMessage());
-        return "user/login";
+        redirectAttributes.addFlashAttribute("message", "로그인에 실패하였습니다. 아이디와 비밀번호를 확인해 주세요.");
+        return "redirect:/accounts/login";
+    }
+
+    @ExceptionHandler(EditAccountFailedException.class)
+    public String handleEditAccountFailedException(RedirectAttributes redirectAttributes, Exception e) {
+        log.info("Edit account failed");
+        log.info(e.getMessage());
+        redirectAttributes.addFlashAttribute("message", "기존 비밀번호가 일치하지 않습니다.");
+        return "redirect:/accounts/mypage/edit";
     }
 
     @ExceptionHandler(UserRegisterFailedException.class)
@@ -44,8 +53,8 @@ public class CafeAdvice {
 
     @ExceptionHandler(Exception.class)
     public String handleException(Exception e) {
-        log.info("Exception");
-        log.info(e.getMessage());
+        log.error("Exception");
+        log.error("[" + e.getClass() + "] " + e.getMessage());
         return "error/404";
     }
 }

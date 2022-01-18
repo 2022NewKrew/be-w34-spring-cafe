@@ -24,31 +24,29 @@ public class ArticleController {
 
     @GetMapping("/new")
     public String writeArticleForm(HttpSession session) {
+        log.debug("[Get] /articles/new");
         AuthDto authDto = (AuthDto) session.getAttribute("auth");
-        if (authDto == null) {
-            return "redirect:/accounts/login";
-        }
         return "article/write";
     }
 
     @GetMapping("/{articleId}")
     public String readArticle(@PathVariable Long articleId, Model model) {
+        log.debug("[Get] /articles/" + articleId);
         model.addAttribute("article", articleService.read(articleId));
         return "article/read";
     }
 
-    @PostMapping
+    @PostMapping("/new")
     public String writeArticle(ArticleDto articleDto, HttpSession session) {
+        log.debug("[Post] /articles " + articleDto);
         AuthDto authDto = (AuthDto) session.getAttribute("auth");
-        if (authDto == null) {
-            return "redirect:/accounts/login";
-        }
         articleService.register(articleDto);
         return "redirect:/";
     }
 
     @GetMapping
     public String articleFList(PageRequestDto pageRequestDto, Model model) {
+        log.debug("[Get] /articles " + pageRequestDto);
         model.addAttribute("articles", articleService.getList(pageRequestDto));
         return "article/list";
     }

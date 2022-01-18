@@ -19,12 +19,14 @@ public class UserController {
 
     @GetMapping
     public String userList(PageRequestDto pageRequestDto, Model model) {
+        log.debug("[Get] /users " + pageRequestDto);
         model.addAttribute("users", userService.getList(pageRequestDto));
         return "user/list";
     }
 
     @GetMapping("/{email}")
     public String getUser(@PathVariable String email, Model model) {
+        log.debug("[Get] /users/" + email);
         model.addAttribute("user", userService.getUserByEmail(email));
         return "user/info";
     }

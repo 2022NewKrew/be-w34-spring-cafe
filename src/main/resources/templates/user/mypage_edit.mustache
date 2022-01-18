@@ -43,6 +43,11 @@
                        placeholder="비밀번호를 한 번 더 입력해 주세요"
                        aria-label="Username" aria-describedby="basic-addon1">
             </div>
+            {{#message}}
+                <div class="alert alert-danger mb-3" role="alert">
+                    {{message}}
+                </div>
+            {{/message}}
             <div class="d-flex flex-column w-100 mt-5">
                 <button type="submit" class="btn btn-dark p-3">변경하기</button>
             </div>
