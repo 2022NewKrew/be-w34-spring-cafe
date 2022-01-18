@@ -2,6 +2,7 @@ package com.kakao.cafe.web.repository;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticlePage;
+import com.kakao.cafe.domain.Delete;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.web.repository.UserRepository.UserMapper;
 import java.sql.PreparedStatement;
@@ -33,6 +34,7 @@ public class ArticleRepository {
     this.articleMapper = articleMapper;
   }
 
+
   public Article save(Article article) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -61,44 +63,69 @@ public class ArticleRepository {
     return Article.of(generatedId, article);
   }
 
-  public Integer totalSize() {
-    String query = "SELECT COUNT(*) FROM ARTICLE";
-    return jdbcTemplate.queryForObject(query, Integer.class);
+
+  public Integer totalSize(Delete deleteLevel) {
+    String query = "SELECT COUNT(*) FROM ARTICLE "
+        + "WHERE is_deleted <= ?";
+    return jdbcTemplate.queryForObject(query, Integer.class, deleteLevel.name());
   }
 
+
   //TODO: 페이징 최적화 방법 더 고민하고 연구해보기
-  public ArticlePage findByOffset(int offset, int limit) {
+  public ArticlePage findByOffset(int offset, int limit, Delete deleteLevel) {
     String query = ArticleMapper.SELECT_ALL_COLUMNS
-        + "FROM (SELECT * FROM article ORDER BY id DESC LIMIT ?, ?) article "
+        + "FROM ("
+        + "   SELECT * FROM article "
+        + "   WHERE is_deleted <= ? "
+        + "   ORDER BY id DESC "
+        + "   LIMIT ?, ? "
+        + "   ) article "
         + "INNER JOIN USERS "
         + "ON article.user_id = users.id";
 
-    List<Article> articles = jdbcTemplate.query(query, articleMapper, offset, limit);
+    List<Article> articles = jdbcTemplate.query(query, articleMapper, deleteLevel.name(), offset, limit);
     return ArticlePage.of(articles);
   }
 
-  public Optional<Article> findById(int id) {
+
+  public Optional<Article> findById(Long id, Delete deleteLevel) {
     String query = ArticleMapper.SELECT_ALL_COLUMNS
-        + "FROM (SELECT * FROM article WHERE id = ?) article "
+        + "FROM ("
+        + "   SELECT * FROM article "
+        + "   WHERE id = ? "
+        + "   AND is_deleted <= ?) article "
         + "INNER JOIN USERS "
         + "ON article.user_id = users.id";
 
-    List<Article> articles = jdbcTemplate.query(query, articleMapper, id);
+    List<Article> articles = jdbcTemplate.query(query, articleMapper, id, deleteLevel.name());
     if(articles.isEmpty()) {
       return Optional.empty();
     }
     return Optional.of(articles.get(0));
   }
 
+
   public Article updateReadCount(Article article) {
     String query = "UPDATE article "
         + "SET "
         + "read_count = ? "
-        + "WHERE id = ?";
+        + "WHERE id = ? "
+        + "AND is_deleted = ?";
 
-    jdbcTemplate.update(query, article.getReadCount(), article.getId());
+    jdbcTemplate.update(query, article.getReadCount(), article.getId(), Delete.NOT_DELETED.name());
     return article;
   }
+
+
+  public int softDeleteById(Long id, Delete deleteLevel) {
+    String query = "UPDATE article "
+        + "SET "
+        + "is_deleted = ? "
+        + "WHERE id = ?";
+
+    return jdbcTemplate.update(query, deleteLevel.name(), id);
+  }
+
 
   @Component
   public static class ArticleMapper implements RowMapper<Article> {
@@ -109,6 +136,7 @@ public class ArticleRepository {
             + "article.title, "
             + "article.content, "
             + "article.read_count, "
+            + "article.is_deleted, "
             + "article.create_at, "
             + "article.modified_at, "
             + "users.id as user_id, "
@@ -134,15 +162,16 @@ public class ArticleRepository {
       String title = rs.getString("TITLE");
       String content = rs.getString("CONTENT");
       Long readCount = rs.getLong("READ_COUNT");
+      Delete isDeleted = Delete.valueOf(rs.getString("IS_DELETED"));
       Timestamp createAt = rs.getTimestamp("CREATE_AT");
-      Timestamp modified_at = rs.getTimestamp("MODIFIED_AT");
+      Timestamp modifiedAt = rs.getTimestamp("MODIFIED_AT");
 
       // user mapping
       User author = userMapper.mapRowExternal(rs, rowNum);
 
       return Article.create(
-          id, author, title, content, readCount,
-          new ArrayList<>(), createAt, modified_at
+          id, author, title, content, readCount, isDeleted,
+          new ArrayList<>(), createAt, modifiedAt
       );
     }
   }

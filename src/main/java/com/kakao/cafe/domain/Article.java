@@ -19,6 +19,7 @@ public class Article {
   private String title;
   private String content;
   private Long readCount;
+  private Delete isDeleted;
   private List<Comment> comments;
   private Timestamp createAt;
   private Timestamp modifiedAt;
@@ -26,7 +27,7 @@ public class Article {
   public static Article of(ArticleDTO articleDTO) {
     return new Article(
         articleDTO.getId(), User.create(articleDTO.getAuthor()), articleDTO.getTitle(),
-        articleDTO.getContent(), articleDTO.getReadCount(),
+        articleDTO.getContent(), articleDTO.getReadCount(), articleDTO.getIsDeleted(),
         articleDTO.getComments().stream().map(Comment::of).collect(Collectors.toList()),
         articleDTO.getCreateAt(), articleDTO.getModifiedAt()
     );
@@ -35,18 +36,18 @@ public class Article {
   public static Article of(Long id, Article article) {
     return new Article(
         id, article.author, article.getTitle(),
-        article.getContent(), article.getReadCount(), article.getComments(),
-        article.getCreateAt(), article.getModifiedAt()
+        article.getContent(), article.getReadCount(), article.getIsDeleted(),
+        article.getComments(), article.getCreateAt(), article.getModifiedAt()
     );
   }
 
   public static Article create(
       Long id, User author, String title,
-      String content, Long readCount, List<Comment> comments,
-      Timestamp createAt, Timestamp modifiedAt
+      String content, Long readCount, Delete isDeleted,
+      List<Comment> comments, Timestamp createAt, Timestamp modifiedAt
   ) {
     return new Article(
-        id, author, title, content, readCount,
+        id, author, title, content, readCount, isDeleted,
         comments, createAt, modifiedAt
     );
   }

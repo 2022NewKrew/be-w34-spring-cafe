@@ -121,10 +121,6 @@ public class UserRepository {
     return Optional.of(user.get(0));
   }
 
-  public int delete(User user) {
-    String query = "DELETE FROM USERS WHERE id = ?";
-    return jdbcTemplate.update(query, user.getId());
-  }
 
   @Component
   public static class UserMapper implements RowMapper<User> {

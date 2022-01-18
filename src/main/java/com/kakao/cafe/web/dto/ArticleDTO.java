@@ -2,6 +2,7 @@ package com.kakao.cafe.web.dto;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.Comment;
+import com.kakao.cafe.domain.Delete;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +19,11 @@ public class ArticleDTO {
   private String content;
   private UserDTO author;
   private Long readCount;
+  private Delete isDeleted;
   private List<CommentDTO> comments;
   private Timestamp createAt;
   private Timestamp modifiedAt;
+
 
   public ArticleDTO(Article article) {
     this.id = article.getId();
@@ -28,26 +31,31 @@ public class ArticleDTO {
     this.content = article.getContent();
     this.author = new UserDTO(article.getAuthor());
     this.readCount = article.getReadCount();
+    this.isDeleted = article.getIsDeleted();
     this.comments = fromDomain(article.getComments());
     this.createAt = article.getCreateAt();
     this.modifiedAt = article.getModifiedAt();
   }
+
 
   public ArticleDTO(Long userId, String title, String content) {
     this.title = title;
     this.content = content;
     this.author = new UserDTO(userId);
     this.readCount = 0L;
+    this.isDeleted = Delete.NOT_DELETED;
     this.comments = new ArrayList<>();
     this.createAt = new Timestamp(System.currentTimeMillis());
     this.modifiedAt = new Timestamp(System.currentTimeMillis());
   }
+
 
   private List<CommentDTO> fromDomain(List<Comment> comments) {
     return comments.stream()
         .map(CommentDTO::new)
         .collect(Collectors.toList());
   }
+
 
   @Override
   public String toString() {

@@ -40,7 +40,7 @@ public class ArticlePageController {
 
   @RequireLogin
   @GetMapping("/article/{id}")
-  public String getArticle(Model model, @PathVariable int id) {
+  public String getArticle(Model model, @PathVariable Long id) {
 
     Article article = articleService.viewArticle(id);
     model.addAttribute("article", new ArticleDTO(article));
