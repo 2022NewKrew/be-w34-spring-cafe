@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
             User entity = result.get();
             entity.changeUsername(dto.getUsername());
             entity.changePassword(dto.getPassword());
-            userRepository.save(entity);
+            userRepository.update(entity);
         }
     }
 

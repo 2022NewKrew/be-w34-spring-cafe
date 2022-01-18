@@ -31,19 +31,13 @@ public class UserDbRepository implements UserRepository {
     @Override
     public void save(User entity) {
         String sql = "insert into user (email, username, password) values (?, ?, ?)";
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, entity.getEmail());
-            ps.setString(2, entity.getUsername());
-            ps.setString(3, entity.getPassword());
-            return ps;
-        }, keyHolder);
+        jdbcTemplate.update(sql, entity.getEmail(), entity.getUsername(), entity.getPassword());
     }
 
     @Override
     public void update(User entity) {
-
+        String sql = "update user set username=?, password=? where email=?";
+        jdbcTemplate.update(sql, entity.getUsername(), entity.getPassword(), entity.getEmail());
     }
 
     @Override
