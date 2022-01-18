@@ -1,4 +1,4 @@
-package com.kakao.cafe.user;
+package com.kakao.cafe.user.controller;
 
 import com.kakao.cafe.user.domain.Password;
 import com.kakao.cafe.user.domain.User;

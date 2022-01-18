@@ -65,7 +65,7 @@ public class ArticlePostServiceTest {
     @Test
     @DisplayName("WriterId가 존재하지 않는 UserId인 경우 Article을 게시할 수 없다.")
     void postFailedNoExistUserId() {
-        when(userService.findUserByUserId(article.getWriterId().getUserId()))
+        when(userService.findUserByUserId(article.getWriterId()))
                 .thenThrow(new UserException(ErrorCode.USER_NOT_FOUND));
 
         assertThatThrownBy(() -> articlePostService.postArticle(articleContainsId))
