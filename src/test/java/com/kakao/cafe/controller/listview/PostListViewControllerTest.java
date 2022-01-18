@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -43,15 +44,15 @@ class PostListViewControllerTest {
         given(postService.countAll()).willReturn(numOfPost);
 
         Integer pageNum = 1;
-        List<SimplePostInfo> postInfoList = new ArrayList<>();
+        List<SimplePostInfo> postInfoList = Collections.emptyList();
         given(postService.getListOfSimplePostInfo(pageNum, PageSize.POST_LIST_SIZE)).willReturn(postInfoList);
 
         //When
         postListViewController.postListView(pageNum, mapv);
 
         //Then
-        then(mapv).should(times(1)).addObject("numOfPost", numOfPost);
-        then(mapv).should(times(1)).addObject("postInfos", postInfoList);
+        then(mapv).should(times(1)).addObject("numOfElement", numOfPost);
+        then(mapv).should(times(1)).addObject("elementInfos", postInfoList);
         then(mapv).should(times(1)).setPageNumbers(pageNum, numOfPost / PageSize.POST_LIST_SIZE + 1);
         then(mapv).should(times(1)).setViewName("postList");
     }

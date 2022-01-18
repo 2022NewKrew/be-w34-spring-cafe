@@ -1,7 +1,9 @@
 package com.kakao.cafe.controller.rest;
 
 import com.kakao.cafe.constant.RedirectedURL;
+import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.dto.post.AddPostDto;
+import com.kakao.cafe.dto.post.UpdatePostDto;
 import com.kakao.cafe.service.PostService;
 import com.kakao.cafe.testutil.post.PostDtoUtil;
 import com.kakao.cafe.util.SessionUtil;
@@ -58,5 +60,21 @@ class PostRestControllerTest {
         //Then
         then(postService).should(times(1)).addPost(addPostDto, writerId);
         then(response).should(times(1)).sendRedirect(RedirectedURL.AFTER_WRITE_POST);
+    }
+
+    @Test
+    @DisplayName("게시글 수정 -> 정상")
+    void updatePost() throws IOException {
+        //Given
+        Long writerId = Long.valueOf(235);
+        given(httpSession.getAttribute(SessionUtil.LOGIN_USER_ID)).willReturn(writerId);
+        UpdatePostDto updatePostDto = PostDtoUtil.createUpdatePostDto();
+
+        //When
+        postRestController.updatePost(updatePostDto, response);
+
+        //Then
+        then(postService).should(times(1)).updatePost(updatePostDto, writerId);
+        then(response).should(times(1)).sendRedirect(RedirectedURL.AFTER_UPDATE_POST);
     }
 }

@@ -29,7 +29,7 @@ public class PostListViewController extends ListViewController<SimplePostInfo> {
 
     @Override
     protected int getPageSize() {
-        return PageSize.POST_LIST_SIZE + 1;
+        return PageSize.POST_LIST_SIZE;
     }
 
     @Override

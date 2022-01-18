@@ -3,10 +3,12 @@ package com.kakao.cafe.controller.rest;
 import com.kakao.cafe.aop.login.LoginIdSessionNotNull;
 import com.kakao.cafe.constant.RedirectedURL;
 import com.kakao.cafe.dto.post.AddPostDto;
+import com.kakao.cafe.dto.post.UpdatePostDto;
 import com.kakao.cafe.service.PostService;
 import com.kakao.cafe.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,5 +30,14 @@ public class PostRestController {
         postService.addPost(addPostDto, writerId);
 
         response.sendRedirect(RedirectedURL.AFTER_WRITE_POST);
+    }
+
+    @PutMapping("/auth/posts/update")
+    @LoginIdSessionNotNull
+    public void updatePost(UpdatePostDto updatePostDto, HttpServletResponse response) throws IOException {
+        Long writerId = SessionUtil.getLoginUserId(session);
+        postService.updatePost(updatePostDto, writerId);
+
+        response.sendRedirect(RedirectedURL.AFTER_UPDATE_POST);
     }
 }

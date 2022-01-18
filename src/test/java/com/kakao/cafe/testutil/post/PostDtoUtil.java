@@ -2,6 +2,7 @@ package com.kakao.cafe.testutil.post;
 
 import com.kakao.cafe.dto.post.AddPostDto;
 import com.kakao.cafe.dto.post.PostViewDto;
+import com.kakao.cafe.dto.post.UpdatePostDto;
 
 public final class PostDtoUtil {
 
@@ -31,6 +32,18 @@ public final class PostDtoUtil {
                 .writerNickName("gallix")
                 .createdDateTime("2022-01-01 00:00:00")
                 .viewNum(100)
+                .build();
+    }
+
+    public static UpdatePostDto createUpdatePostDto() {
+        return createUpdatePostDto(Long.valueOf(1));
+    }
+
+    public static UpdatePostDto createUpdatePostDto(Long postId) {
+        return UpdatePostDto.builder()
+                .postId(postId)
+                .title("new title")
+                .contents("new contents")
                 .build();
     }
 }

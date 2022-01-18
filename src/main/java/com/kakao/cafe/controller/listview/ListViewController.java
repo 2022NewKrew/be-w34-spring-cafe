@@ -11,7 +11,7 @@ public abstract class ListViewController<T> {
         mapv.addObject("numOfElement", numOfElement);
 
         Integer pageSize = getPageSize();
-        Integer totalPageNum = numOfElement / pageSize;
+        Integer totalPageNum = numOfElement / pageSize + 1;
         mapv.setPageNumbers(pageNum, totalPageNum);
 
         List<T> simpleElementInfos = getSimpleElementInfos(pageNum, pageSize);

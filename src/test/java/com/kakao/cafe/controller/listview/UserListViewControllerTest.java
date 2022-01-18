@@ -52,8 +52,8 @@ class UserListViewControllerTest {
         userListViewController.userListView(pageNum, mapv);
 
         //Then
-        then(mapv).should(times(1)).addObject("numOfUser", numOfUser);
-        then(mapv).should(times(1)).addObject("userInfos", userInfos);
+        then(mapv).should(times(1)).addObject("numOfElement", numOfUser);
+        then(mapv).should(times(1)).addObject("elementInfos", userInfos);
         then(mapv).should(times(1)).setPageNumbers(pageNum, numOfUser / PageSize.USER_LIST_SIZE + 1);
         then(mapv).should(times(1)).setViewName("userList");
     }

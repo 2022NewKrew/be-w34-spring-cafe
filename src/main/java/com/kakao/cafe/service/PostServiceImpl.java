@@ -5,8 +5,10 @@ import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.dto.post.AddPostDto;
 import com.kakao.cafe.dto.post.PostViewDto;
 import com.kakao.cafe.dto.post.SimplePostInfo;
+import com.kakao.cafe.dto.post.UpdatePostDto;
 import com.kakao.cafe.error.exception.nonexist.PostNotFoundedException;
 import com.kakao.cafe.error.exception.nonexist.UserNotFoundedException;
+import com.kakao.cafe.error.exception.notmine.PostNotMineException;
 import com.kakao.cafe.error.msg.PostErrorMsg;
 import com.kakao.cafe.error.msg.UserErrorMsg;
 import com.kakao.cafe.repository.PostRepository;
@@ -26,6 +28,12 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     private final UserRepository userRepository;
+
+    @Override
+    public Post findById(Long id) {
+        Optional<Post> optionalPost = postRepository.findById(id);
+        return optionalPost.orElseThrow(() -> new PostNotFoundedException(PostErrorMsg.POST_NOT_FOUNDED.getDescription()));
+    }
 
     @Override
     public PostViewDto findPostViewDtoById(Long postId) {
@@ -55,6 +63,22 @@ public class PostServiceImpl implements PostService {
                 .userId(writerId)
                 .createdAt(OffsetDateTime.now(ZoneOffset.of(OffsetId.KR_ID)))
                 .build();
+    }
+
+    @Override
+    public Post updatePost(UpdatePostDto updatePostDto, Long writerId) {
+        Long postId = updatePostDto.getPostId();
+        Post targetPost = findById(postId);
+        if(!writerId.equals(targetPost.getUserId())) {
+            throw new PostNotMineException(PostErrorMsg.POST_NOT_MINE.getDescription());
+        }
+        updatePostByUpdatePostDto(targetPost, updatePostDto);
+        return postRepository.save(targetPost);
+    }
+
+    private void updatePostByUpdatePostDto(Post post, UpdatePostDto updatePostDto) {
+        post.setTitle(updatePostDto.getTitle());
+        post.setContents(updatePostDto.getContents());
     }
 
     @Override
