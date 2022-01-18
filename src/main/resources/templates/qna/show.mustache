@@ -14,7 +14,8 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/users/92/kimmunsu" class="article-author-name">{{articleInfo.writer}}</a>
+                            <a href="/users/{{articleInfo.writer}}"
+                               class="article-author-name">{{articleInfo.writer}}</a>
                             <a href="/questions/413" class="article-header-time" title="퍼머링크">
                                 {{articleInfo.updatedTime}}
                                 <i class="icon-link"></i>
@@ -25,29 +26,31 @@
                         {{{articleInfo.contents}}}
                     </div>
                     <div class="article-util">
-                      <ul class="article-util-list">
-                          <li>
-                              <a class="link-modify-article" href="/questions/423/form">수정</a>
-                          </li>
-                          <li>
-                              <form class="form-delete" action="/questions/423" method="POST">
-                                  <input type="hidden" name="_method" value="DELETE">
-                                  <button class="link-delete-article" type="submit">삭제</button>
-                              </form>
-                          </li>
-                          <li>
-                              <a class="link-modify-article" href="/index.html">목록</a>
-                          </li>
-                      </ul>
-                  </div>
-              </article>
+                        <ul class="article-util-list">
+                            <li>
+                                <a class="link-modify-article" href="/articles/{{articleInfo.id}}/form">수정</a>
+                            </li>
+                            <li>
+                                <form class="form-delete" action="/articles/{{articleInfo.id}}" method="POST">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="sessionUser" value="{{sessionedUser.userId}}">
+                                    <input type="hidden" name="articleUser" value="{{articleInfo.writer}}">
+                                    <button class="link-delete-article" type="submit">삭제</button>
+                                </form>
+                            </li>
+                            <li>
+                                <a class="link-modify-article" href="/">목록</a>
+                            </li>
+                        </ul>
+                    </div>
+                </article>
 
-              <div class="qna-comment">
-                  <div class="qna-comment-slipp">
-                      <p class="qna-comment-count"><strong>2</strong>개의 의견</p>
-                      <div class="qna-comment-slipp-articles">
+                <div class="qna-comment">
+                    <div class="qna-comment-slipp">
+                        <p class="qna-comment-count"><strong>2</strong>개의 의견</p>
+                        <div class="qna-comment-slipp-articles">
 
-                          <article class="article" id="answer-1405">
+                            <article class="article" id="answer-1405">
                               <div class="article-header">
                                   <div class="article-header-thumb">
                                       <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
