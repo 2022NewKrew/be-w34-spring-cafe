@@ -1,12 +1,9 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.RequestArticleDto;
+import com.kakao.cafe.domain.dto.RequestArticleDto;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mindrot.jbcrypt.BCrypt;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

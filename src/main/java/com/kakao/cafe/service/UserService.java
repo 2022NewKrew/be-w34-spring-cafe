@@ -1,14 +1,13 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.RequestUserDto;
-import com.kakao.cafe.dto.ResponseUserDto;
+import com.kakao.cafe.domain.dto.RequestUserDto;
+import com.kakao.cafe.domain.dto.ResponseUserDto;
 
 import com.kakao.cafe.repository.user.H2UserRepository;
 
-import com.kakao.cafe.repository.user.MemoryUserRepository;
 import com.kakao.cafe.repository.user.UserRepository;
-import com.kakao.cafe.vo.UserVo;
+import com.kakao.cafe.domain.dto.SessionUser;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
@@ -81,11 +80,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserVo login(String userId, String password) {
+    public SessionUser login(String userId, String password) {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
         validatePassword(user, password);
 
-        UserVo result = modelMapper.map(user, UserVo.class);
+        SessionUser result = modelMapper.map(user, SessionUser.class);
         log.info("userVo : {}", result);
         log.info("user : {}", user);
         return result;

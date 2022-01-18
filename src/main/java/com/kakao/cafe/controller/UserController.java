@@ -1,14 +1,11 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.RequestUserDto;
+import com.kakao.cafe.config.auth.LoginUser;
+import com.kakao.cafe.domain.dto.RequestUserDto;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.vo.UserVo;
+import com.kakao.cafe.domain.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -49,17 +46,11 @@ public class UserController {
      * 유저 상세 정보
      */
     @GetMapping("/users/{id}")
-    public String getUserProfile(@PathVariable long id, Model model, HttpSession session) {
+    public String getUserProfile(@PathVariable long id, Model model, @LoginUser SessionUser user) {
         log.info("GET /users/{}", id);
-        Object value = session.getAttribute("sessionedUser");
-        if (value == null) {
-            //로그인 후 이용할 수 있습니다.?
-            return "redirect:/login.html";
-        }
-        UserVo userVo = (UserVo) value;
 
-        if (id == userVo.getId()){
-            model.addAttribute("myId", userVo.getId());
+        if (id == user.getId()){
+            model.addAttribute("myId", user.getId());
         }
 
         model.addAttribute("user", userService.findOne(id));
@@ -71,20 +62,20 @@ public class UserController {
      * 유저 상세 정보 수정 페이지 로드
      */
     @GetMapping("/users/{id}/update")
-    public String showEditUserPage(@PathVariable long id, Model model, HttpSession session) {
-        Object value = session.getAttribute("sessionedUser");
-        if (value == null) {
-            //로그인 후 이용할 수 있습니다.?
-            return "redirect:/login.html";
-        }
-        UserVo userVo = (UserVo) value;
+    public String showEditUserPage(@PathVariable long id, Model model, @LoginUser SessionUser user) {
+//        Object value = session.getAttribute("sessionedUser");
+//        if (value == null) {
+//            //로그인 후 이용할 수 있습니다.?
+//            return "redirect:/login.html";
+//        }
+//        SessionUser userVo = (SessionUser) value;
 
-        if (userVo.getId() != id) {
+        if (user.getId() != id) {
             //본인 정보만 수정할 수 있습니다.
             return "redirect:/login.html";
         }
 
-        model.addAttribute("user", userService.findOne(userVo.getUserId()));
+        model.addAttribute("user", userService.findOne(user.getId()));
         return "user/updateForm";
 
     }
@@ -93,18 +84,10 @@ public class UserController {
      * 유저 상세 정보 수정
      */
     @PutMapping("/users/{id}/update")
-    public String editUser(@PathVariable long id, @ModelAttribute RequestUserDto userDto, HttpSession session) {
-        // TO DO : PathVariable id 어떻게 할 건지 로그인 api 예제 찾아보고 변경
+    public String editUser(@PathVariable long id, @ModelAttribute RequestUserDto userDto, @LoginUser SessionUser user) {
         log.info("PUT /users/{}/update : {}", id, userDto);
 
-        Object value = session.getAttribute("sessionedUser");
-        if (value == null) {
-            //로그인 후 이용할 수 있습니다.?
-            return "redirect:/login.html";
-        }
-        UserVo userVo = (UserVo) value;
-
-        if (userVo.getId() != id){
+        if (user.getId() != id){
             //권한이 없음. 잘못된 접근
             return "redirect:/login.html";
         }
@@ -119,7 +102,7 @@ public class UserController {
      */
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession session) {
-        UserVo userVo = userService.login(userId.trim(), password.trim());
+        SessionUser userVo = userService.login(userId.trim(), password.trim());
         session.setAttribute("sessionedUser", userVo);
         log.info(">>>> {}", userVo.getId());
         return "redirect:/";

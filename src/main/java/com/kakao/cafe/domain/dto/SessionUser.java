@@ -1,4 +1,4 @@
-package com.kakao.cafe.vo;
+package com.kakao.cafe.domain.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,13 +9,13 @@ import lombok.ToString;
 @Setter
 @RequiredArgsConstructor
 @ToString
-public class UserVo {
+public class SessionUser {
     private long id;
     private String userId;
 
     @Override
     public boolean equals(Object obj) {
-        UserVo otherUser = (UserVo) obj;
+        SessionUser otherUser = (SessionUser) obj;
         if (this.id == otherUser.getId() && this.userId == otherUser.getUserId()) {
             return true;
         }
