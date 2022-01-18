@@ -45,4 +45,11 @@ public class PostController {
         return "post/show";
     }
 
+    @GetMapping("/posts/{id}/update")
+    public String getPostUpdateForm(@PathVariable long id, HttpSession session, Model model) {
+        UserDto currentUser = (UserDto) session.getAttribute("currentUser");
+        model.addAttribute("post", postService.getPostById(id, currentUser.getId()));
+        return "post/updateForm";
+    }
+
 }

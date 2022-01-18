@@ -1,6 +1,7 @@
 package com.kakao.cafe.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Slf4j
 @ControllerAdvice
@@ -23,6 +26,11 @@ public class GlobalExceptionHandler {
         Errors errors = e.getBindingResult();
         errors.getFieldErrors().forEach(error -> rttr.addFlashAttribute(error.getField(), error.getDefaultMessage()));
         return getPathOfRedirectionFromRequest(request);
+    }
+
+    @ExceptionHandler(NoAuthorizationException.class)
+    public void handleNoAuthorizationException(HttpServletResponse response) throws IOException {
+        response.sendError(HttpStatus.FORBIDDEN.value());
     }
 
     @ExceptionHandler(Exception.class)

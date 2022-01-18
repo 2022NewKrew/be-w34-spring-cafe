@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 수정</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div class="container flex flex-col mx-auto">
+    {{> fragments/header}}
+
+    <div class="flex justify-center my-8">
+        <div class="w-full">
+            <h1 class="text-4xl font-medium tracking-wider mb-16">게시글 수정</h1>
+            <form class="flex flex-col space-y-8" action="/posts" method="post">
+                <div class="relative">
+                    <div class="px-4 py-2 border">
+                        <label for="title" class="inline-block w-28">제목</label>
+                        <input class="placeholder:text-sm focus:outline-none" id="title" name="title" value="{{ post.title }}" placeholder="제목을 입력하세요" />
+                    </div>
+                    {{#title}}
+                    <p class="absolute -bottom-6 left-32 text-sm text-red-500">{{this}}</p>
+                    {{/title}}
+                </div>
+                <div class="relative">
+                    <div class="px-4 py-2 border">
+                        <label for="content" class="absolute">내용</label>
+                        <textarea class="w-full h-64 mt-10 focus:outline-none placeholder:text-sm" id="content" name="content" value="{{ post.content }}" placeholder="내용을 입력하세요"></textarea>
+                    </div>
+                    {{#content}}
+                    <p class="absolute -bottom-6 left-4 text-sm text-red-500">{{this}}</p>
+                    {{/content}}
+                </div>
+                <div class="flex justify-end">
+                    <input type="submit" value="수정" class="w-24 text-sm px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black cursor-pointer" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
