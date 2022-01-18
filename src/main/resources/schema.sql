@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS `POST` (
     title VARCHAR(50) NOT NULL,
     content TEXT NOT NULL,
     writer VARCHAR(32) NOT NULL,
-    regDate DATE DEFAULT now(),
+    regDateTime TIMESTAMP DEFAULT NOW(),
     PRIMARY KEY (id)
 );

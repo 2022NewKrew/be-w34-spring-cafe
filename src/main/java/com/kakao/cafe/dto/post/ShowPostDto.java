@@ -3,8 +3,7 @@ package com.kakao.cafe.dto.post;
 import com.kakao.cafe.domain.post.Post;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -13,13 +12,13 @@ public class ShowPostDto {
     private String title;
     private String content;
     private String writer;
-    private String regDate;
+    private String regDateTime;
 
     public ShowPostDto(Post post) {
         id = post.getId();
         title = post.getTitle();
         content = post.getContent();
         writer = post.getWriter();
-        regDate = new SimpleDateFormat("yyyy-MM-dd").format(post.getRegDate());
+        regDateTime = post.getRegDateTime().format(DateTimeFormatter.ofPattern("[yyyy-MM-dd] HH:mm:ss"));
     }
 }

@@ -10,9 +10,7 @@ public class MemoryPostRepository implements PostRepository {
     @Override
     public void save(Post post) {
         long insertId = postStore.size() + 1;
-        post.setId(insertId);
-        post.setRegDate(new Date());
-
+        post.setId(insertId);;
         postStore.put(insertId, post);
     }
 

@@ -33,23 +33,16 @@ public class PostController {
         return "index";
     }
 
-    @PostMapping("/post")
-    public String addPost(@ModelAttribute @Validated CreatePostDto postDto, Errors errors, Model model){
-        if(errors.hasErrors()){
-            errors.getFieldErrors()
-                    .forEach(err -> model.addAttribute(err.getField(), err.getDefaultMessage()));
-
-            return "post/form";
-        }
-
+    @PostMapping("/posts")
+    public String addPost(@ModelAttribute @Validated CreatePostDto postDto){
         postService.createPost(postDto);
         log.info("Create Post - {}", postDto);
         return "redirect:/";
     }
 
-    @GetMapping("/post/{postId}")
+    @GetMapping("/posts/{postId}")
     public String detailPost(@PathVariable Long postId, Model model){
         model.addAttribute("post", postService.findPost(postId));
-        return "post/show";
+        return "posts/show";
     }
 }

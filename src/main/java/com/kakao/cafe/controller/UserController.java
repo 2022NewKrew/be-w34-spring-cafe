@@ -1,17 +1,19 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.user.CreateUserDto;
+import com.kakao.cafe.dto.user.LoginDto;
 import com.kakao.cafe.dto.user.ShowUserDto;
 import com.kakao.cafe.dto.user.UpdateUserDto;
+import com.kakao.cafe.exception.UnAuthorizedException;
 import com.kakao.cafe.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import javax.servlet.http.HttpSession;
+
 
 @Controller
 @Slf4j
@@ -23,49 +25,50 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     public String getUserList(Model model){
         model.addAttribute("users", userService.findAllUser());
-        return "user/list";
+        return "users/list";
     }
 
-    @PostMapping("/user")
-    public String createUser(@ModelAttribute @Validated CreateUserDto createUserDto, Errors errors, Model model){
-        if(errors.hasErrors()){
-            errors.getFieldErrors().forEach(err -> model.addAttribute(err.getField(), err.getDefaultMessage()));
-            return "user/addForm";
-        }
-
+    @PostMapping("/users")
+    public String createUser(@ModelAttribute @Validated CreateUserDto createUserDto){
         userService.join(createUserDto);
         log.info("Create User - {}", createUserDto);
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model){
         ShowUserDto profile = userService.findProfile(userId);
         model.addAttribute("user", profile);
-        return "user/profile";
+        return "users/profile";
     }
 
-    @GetMapping("/user/{userId}/form")
-    public String userUpdateForm(@PathVariable String userId, Model model){
-        ShowUserDto profile = userService.findProfile(userId);
-        model.addAttribute("user", profile);
-
-        return "user/editForm";
-    }
-
-    @PostMapping("/user/{userId}/update")
-    public String userUpdate(@PathVariable String userId, @ModelAttribute @Validated UpdateUserDto updateUserDto, Errors errors, Model model){
-        if(errors.hasErrors()){
-            errors.getFieldErrors().forEach(err -> model.addAttribute(err.getField(), err.getDefaultMessage()));
-            model.addAttribute("user", updateUserDto);
-            return "user/editForm";
+    @GetMapping("/users/{userId}/form")
+    public String userUpdateForm(@PathVariable String userId, Model model, HttpSession session){
+        ShowUserDto sessionUser = (ShowUserDto) session.getAttribute("sessionUser");
+        if(sessionUser == null || !sessionUser.getUserId().equals(userId)){
+            // 401에러 반환하기
+            throw new UnAuthorizedException("로그인이 필요합니다.");
         }
 
-        User editUser = userService.editProfile(userId, updateUserDto);
+        model.addAttribute("user", sessionUser);
+        return "users/editForm";
+    }
+
+    @PutMapping("/users/{userId}")
+    public String userUpdate(@PathVariable String userId, @ModelAttribute @Validated UpdateUserDto updateUserDto){
+        ShowUserDto editUser = userService.editProfile(userId, updateUserDto);
         log.info("Update User - {}", editUser);
-        return "redirect:/user";
+        return "redirect:/users";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute LoginDto loginDto, HttpSession session){
+        ShowUserDto loginUser = userService.login(loginDto);
+        session.setAttribute("sessionUser", loginUser);
+
+        return "redirect:/";
     }
 }

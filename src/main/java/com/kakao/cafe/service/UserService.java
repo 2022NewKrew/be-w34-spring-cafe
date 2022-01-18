@@ -3,8 +3,11 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.dto.user.CreateUserDto;
+import com.kakao.cafe.dto.user.LoginDto;
 import com.kakao.cafe.dto.user.ShowUserDto;
 import com.kakao.cafe.dto.user.UpdateUserDto;
+import com.kakao.cafe.exception.NotFoundException;
+import com.kakao.cafe.exception.UnAuthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,17 +40,17 @@ public class UserService {
 
     public ShowUserDto findProfile(String userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 사용자 입니다."));
+                .orElseThrow(() -> new NotFoundException("등록되지 않은 사용자 입니다."));
 
         return new ShowUserDto(user);
     }
 
-    public User editProfile(String userId, UpdateUserDto userDto){
+    public ShowUserDto editProfile(String userId, UpdateUserDto userDto){
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 사용자 입니다."));
+                .orElseThrow(() -> new NotFoundException("등록되지 않은 사용자 입니다."));
 
         if(!userDto.getPassword().equals(user.getPassword())){
-            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+            throw new UnAuthorizedException("현재 비밀번호가 일치하지 않습니다.");
         }
 
         String newPassword = (userDto.getNewPassword().equals("")) ? userDto.getPassword() : userDto.getNewPassword();
@@ -59,7 +62,7 @@ public class UserService {
                 .email(userDto.getEmail())
                 .build();
 
-        return userRepository.edit(userId, editUser);
+        return new ShowUserDto(userRepository.edit(userId, editUser));
 
     }
 
@@ -69,7 +72,18 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public boolean checkDuplicateUserId(String userId) {
+    public ShowUserDto login(LoginDto loginDto){
+        User user = userRepository.findById(loginDto.getUserId())
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 아이디 입니다."));
+
+        if(!user.getPassword().equals(loginDto.getPassword())){
+            throw new UnAuthorizedException("비밀번호가 일치하지 않습니다.");
+        }
+
+        return new ShowUserDto(user);
+    }
+
+    private boolean checkDuplicateUserId(String userId) {
         return userRepository.findById(userId).isPresent();
     }
 }

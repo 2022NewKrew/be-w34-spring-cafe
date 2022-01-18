@@ -16,4 +16,13 @@ public class ShowUserDto {
         email = user.getEmail();
         name = user.getName();
     }
+
+    @Override
+    public String toString() {
+        return "ShowUserDto{" +
+                "userId='" + userId + '\'' +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
