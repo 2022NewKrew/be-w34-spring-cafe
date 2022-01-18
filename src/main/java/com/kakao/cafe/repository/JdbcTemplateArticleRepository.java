@@ -68,5 +68,14 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
         });
     }
 
+    @Override
+    public void deleteArticle(Long id) {
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM ARTICLE_TABLE where id = ?");
+            ps.setString(1, String.valueOf(id));
+            return ps;
+        });
+    }
+
 
 }

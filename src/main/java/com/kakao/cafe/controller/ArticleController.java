@@ -6,10 +6,7 @@ import com.kakao.cafe.dto.ArticleFormRequest;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpSession;
@@ -51,6 +48,11 @@ public class ArticleController {
     public String update(@PathVariable("id") Long id, ArticleFormRequest articleFormRequest, HttpSession session) {
         articleService.updateArticleInfo(id, articleFormRequest);
         return "redirect:/articles/" + id;
+    }
+    @DeleteMapping("/questions/{id}")
+    public String delete(@PathVariable("id") Long id, HttpSession session) {
+        articleService.deleteArticle(id);
+        return "redirect:/";
     }
 
     @GetMapping("/articles/{id}")
