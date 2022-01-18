@@ -2,10 +2,12 @@ package com.kakao.cafe.article.dto.request;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.user.domain.User;
+import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class WriteArticleRequest {
+
     @NotNull
     private final Long userId;
 
@@ -21,8 +23,8 @@ public class WriteArticleRequest {
         this.content = content;
     }
 
-    public Article toArticle(Long id, User user){
-        return new Article(id,this.title,this.content,user);
+    public Article toArticle(User user) {
+        return new Article(null, this.title, this.content, user, 0L, LocalDateTime.now());
     }
 
     public Long getUserId() {

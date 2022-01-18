@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class User {
+
     @NotNull
     private final Long id;
 
@@ -22,12 +23,12 @@ public class User {
     @NotNull
     private final LocalDateTime createdDate;
 
-    public User(Long id, String email, String nickname, String password) {
+    public User(Long id, String email, String nickname, String password, LocalDateTime createdDate) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = createdDate;
     }
 
     public Long getId() {
@@ -40,6 +41,10 @@ public class User {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public LocalDateTime getCreatedDate() {

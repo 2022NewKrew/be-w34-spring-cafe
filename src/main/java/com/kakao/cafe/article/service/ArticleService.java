@@ -27,7 +27,7 @@ public class ArticleService {
     public ArticleResponse save(WriteArticleRequest writeArticleRequest) {
         User user = userRepository.findById(writeArticleRequest.getUserId())
             .orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUNT_MESSAGE));
-        Article article = writeArticleRequest.toArticle(articleRepository.autoIncrement(), user);
+        Article article = writeArticleRequest.toArticle(user);
         return ArticleResponse.of(articleRepository.save(article));
     }
 
@@ -37,8 +37,9 @@ public class ArticleService {
 
     public ArticleDetailResponse findById(Long id) {
         Article article = articleRepository.findById(id)
-            .orElseThrow(()-> new IllegalArgumentException(ARTICLE_NOT_FOUNT_MESSAGE));
+            .orElseThrow(() -> new IllegalArgumentException(ARTICLE_NOT_FOUNT_MESSAGE));
         article.incrementViewNum();
+        articleRepository.updateViewNum(id);
         return ArticleDetailResponse.of(article);
     }
 }
