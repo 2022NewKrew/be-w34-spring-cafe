@@ -12,8 +12,8 @@ public class ArticleMapper implements RowMapper<Article> {
         Article article = new Article();
 
         article.setId(rs.getInt("id"));
-        article.setAuthor(rs.getString("author"));
-        article.setCreatedAt(new java.sql.Timestamp(rs.getDate("createdate").getTime()).toLocalDateTime());
+        article.setAuthorId(rs.getInt("author_id"));
+        article.setCreatedAt(new java.sql.Timestamp(rs.getTimestamp("createdate").getTime()).toLocalDateTime());
         article.setTitle(rs.getString("title"));
         article.setContent(rs.getString("content"));
 

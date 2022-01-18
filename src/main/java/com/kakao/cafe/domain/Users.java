@@ -15,4 +15,9 @@ public class Users {
     private String name;
     private String email;
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }
