@@ -1,66 +1,230 @@
 package com.kakao.cafe.controller;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-
 public class PostControllerTest {
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
     @Autowired
     private MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() throws Exception {
-        this.mockMvc.perform(get("/posts/deleteAll"));
-        this.mockMvc.perform(get("/users/deleteAll"));
-    }
+//    @BeforeEach
+//    void setUp() throws Exception {
+//        this.mockMvc.perform(get("/posts/deleteAll"));
+//        this.mockMvc.perform(get("/users/deleteAll"));
+//    }
 
     @Test
+    @Transactional
     void postCreateErrorTest() throws Exception {
         this.mockMvc.perform(post("/post")
                 .param("title", "제목")
                 .param("writer", "yunyul")
-                .param("content", "제곧네")).andExpect(status().is4xxClientError());
+                .param("content", "제곧네")).andExpect(status().isUnauthorized());
     }
 
     @Test
+    @Transactional
     void postCreateTest() throws Exception {
-        this.mockMvc.perform(post("/user/create")
+        MockMvc mockMvc = getMethodSessionMvc();
+
+        mockMvc.perform(post("/user/create")
                 .param("userId", "yunyul")
                 .param("password", "1q2w3e4r")
                 .param("name", "윤렬")
                 .param("email", "eden.yoon@kakaocorp.com"));
 
-        this.mockMvc.perform(post("/post")
+        mockMvc.perform(post("/users/login")
+                .param("id", "yunyul")
+                .param("password", "1q2w3e4r"));
+
+        mockMvc.perform(post("/post")
+                        .param("title", "제목")
+                        .param("writer", "yunyul")
+                        .param("content", "제곧네"))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    @Transactional
+    void postCreateNoLoginFail() throws Exception {
+        MockMvc mockMvc = getMethodSessionMvc();
+
+        mockMvc.perform(post("/user/create")
+                .param("userId", "yunyul")
+                .param("password", "1q2w3e4r")
+                .param("name", "윤렬")
+                .param("email", "eden.yoon@kakaocorp.com"));
+
+        mockMvc.perform(post("/post")
                 .param("title", "제목")
                 .param("writer", "yunyul")
-                .param("content", "제곧네")).andExpect(status().is3xxRedirection());
+                .param("content", "제곧네")).andExpect(status().isUnauthorized());
     }
 
+
     @Test
+    @Transactional
     void postViewTest() throws Exception {
-        this.mockMvc.perform(post("/user/create")
+        MockMvc mockMvc = getMethodSessionMvc();
+
+        mockMvc.perform(post("/user/create")
                 .param("userId", "yunyul")
                 .param("password", "1q2w3e4r")
                 .param("name", "윤렬")
                 .param("email", "eden.yoon@kakaocorp.com"));
 
-        this.mockMvc.perform(post("/post")
+        mockMvc.perform(post("/users/login")
+                .param("id", "yunyul")
+                .param("password", "1q2w3e4r"));
+
+        mockMvc.perform(post("/post")
                 .param("title", "제목")
                 .param("writer", "yunyul")
                 .param("content", "제곧네"));
 
-        this.mockMvc.perform(get("/post/-1"))
+        mockMvc.perform(get("/post/-1"))
                 .andExpect(status().is5xxServerError());
+    }
+
+
+    @Test
+    @Transactional
+    void postViewNoLoginFail() throws Exception {
+        MockMvc mockMvc = getMethodSessionMvc();
+
+        mockMvc.perform(post("/user/create")
+                .param("userId", "yunyul")
+                .param("password", "1q2w3e4r")
+                .param("name", "윤렬")
+                .param("email", "eden.yoon@kakaocorp.com"));
+
+        mockMvc.perform(post("/users/login")
+                .param("id", "yunyul")
+                .param("password", "1q2w3e4r"));
+
+        mockMvc.perform(post("/post")
+                .param("title", "제목")
+                .param("writer", "yunyul")
+                .param("content", "제곧네"));
+
+        mockMvc.perform(get("/logout"));
+
+        mockMvc.perform(get("/post/1"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @Transactional
+    void updateFromFailByDifferentUser() throws Exception {
+        MockMvc mockMvc = getMethodSessionMvc();
+        mockMvc.perform(post("/users/login")
+                .param("id", "javajigi")
+                .param("password", "test"));
+
+        mockMvc.perform(get("/questions/2"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @Transactional
+    void updateFormSuccess() throws Exception {
+        MockMvc mockMvc = getMethodSessionMvc();
+
+        mockMvc.perform(post("/users/login")
+                .param("id", "javajigi")
+                .param("password", "test"));
+
+        mockMvc.perform(get("/questions/1"))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    @Transactional
+    void updateFailByWrongUser() throws Exception {
+        MockMvc mockMvc = getMethodSessionMvc();
+
+        mockMvc.perform(post("/users/login")
+                .param("id", "javajigi")
+                .param("password", "test"));
+
+        mockMvc.perform(put("/questions/2")
+                        .param("title", "WRONG_TITLE")
+                        .param("content", "WRONG_CONTENT"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @Transactional
+    void updateSuccess() throws Exception {
+        MockMvc mockMvc = getMethodSessionMvc();
+
+        mockMvc.perform(post("/users/login")
+                .param("id", "javajigi")
+                .param("password", "test"));
+
+        mockMvc.perform(put("/questions/1")
+                        .param("title", "RIGHT_THING")
+                        .param("content", "RIGHT_CONTENT"))
+                .andExpect(status().is3xxRedirection());
+
+    }
+
+    @Test
+    @Transactional
+    void deleteFailByNoLogin() throws Exception {
+        MockMvc mockMvc = getMethodSessionMvc();
+        mockMvc.perform(delete("/posts/1"))
+                .andExpect(view().name("redirect:/users/login"));
+
+    }
+
+
+    @Test
+    @Transactional
+    void deleteFailByWrongGuy() throws Exception {
+        MockMvc mockMvc = getMethodSessionMvc();
+        mockMvc.perform(post("/users/login")
+                .param("id", "yunyul")
+                .param("password", "1q2w3e4r"));
+        mockMvc.perform(delete("/posts/2"))
+                .andExpect(view().name("redirect:/users/login"));
+
+    }
+
+    @Test
+    @Transactional
+    void deleteSuccess() throws Exception {
+        MockMvc mockMvc = getMethodSessionMvc();
+        mockMvc.perform(post("/users/login")
+                .param("id", "javajigi")
+                .param("password", "test"));
+        mockMvc.perform(delete("/posts/1"))
+                .andExpect(view().name("redirect:/posts"));
+
+    }
+
+
+    private MockMvc getMethodSessionMvc() {
+        return mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext)
+                .apply(sharedHttpSession()) // use this session across requests
+                .build();
     }
 }

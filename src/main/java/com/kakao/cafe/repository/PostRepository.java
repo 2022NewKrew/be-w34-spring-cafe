@@ -25,11 +25,19 @@ public class PostRepository {
         postDao.deleteAll();
     }
 
-    public Post findById(int id) {
+    public Post findById(long id) {
         return postDao.findById(id);
     }
 
     public Posts findAll() {
         return postDao.findAll();
+    }
+
+    public int update(Post post) {
+        return postDao.update(post);
+    }
+
+    public int delete(long id) {
+        return postDao.delete(id);
     }
 }

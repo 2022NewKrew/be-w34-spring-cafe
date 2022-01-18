@@ -9,9 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class PostRepositoryTest {
@@ -59,5 +61,43 @@ public class PostRepositoryTest {
         Posts posts = postRepository.findAll();
         assertThat(posts.size()).isEqualTo(0);
     }
+
+    @Test
+    void updateSuccessTest() {
+        PostDto postDto = new PostDto("writer1", "hello", "world");
+        Post post = PostMapper.toPost(postDto);
+        postDto.setId(postRepository.insert(post));
+        postDto.setTitle("hello2");
+        postDto.setContents("world2");
+        assertThat(postRepository.update(PostMapper.toPost(postDto))).isEqualTo(1);
+    }
+
+    @Test
+    void updateFailTest() {
+        PostDto postDto = new PostDto("writer1", "hello", "world");
+        Post post = PostMapper.toPost(postDto);
+        postDto.setId(-2);
+        postDto.setTitle("hello2");
+        postDto.setContents("world2");
+        assertThat(postRepository.update(PostMapper.toPost(postDto))).isEqualTo(0);
+    }
+
+
+    @Test
+    @Transactional
+    void deleteSuccess() {
+        PostDto postDto = new PostDto("writer1", "hello", "world");
+        Post post = PostMapper.toPost(postDto);
+        int id = postRepository.insert(post);
+        assertEquals(postRepository.delete(id), 1);
+
+    }
+
+    @Test
+    @Transactional
+    void deleteFail() {
+        assertEquals(postRepository.delete(-1), 0);
+    }
+
 
 }
