@@ -17,25 +17,20 @@ public class ArticleService {
     }
 
     public List<Article> getArticles() {
-        String sql = "SELECT ID, AUTHOR_ID, CREATEDATE, TITLE, CONTENT FROM ARTICLES";
-        List<Article> articles = jdbcTemplate.query(sql, new ArticleMapper());
+        List<Article> articles = jdbcTemplate.query(QueryConstants.articleSelect, new ArticleMapper());
         for (Article a : articles) {
-            String authorQuery = "SELECT ID, USERID, PASSWORD, NAME, EMAIL FROM USERS WHERE ID=?";
-            a.setAuthor(jdbcTemplate.queryForObject(authorQuery, new UserMapper(), a.getAuthorId()));
+            a.setAuthor(jdbcTemplate.queryForObject(QueryConstants.userSelectById, new UserMapper(), a.getAuthorId()));
         }
         return articles;
     }
 
     public void addArticle(Article article) {
-        String sql = "INSERT INTO ARTICLES (AUTHOR_ID, TITLE, CONTENT) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, article.getAuthorId(), article.getTitle(), article.getContent());
+        jdbcTemplate.update(QueryConstants.articleInsert, article.getAuthorId(), article.getTitle(), article.getContent());
     }
 
     public Article getByArticleId(int id) {
-        String sql = "SELECT ID, AUTHOR_ID, TITLE, CONTENT, CREATEDATE FROM ARTICLES WHERE ID=?";
-        Article article = jdbcTemplate.queryForObject(sql, new ArticleMapper(), id);
-        String authorQuery = "SELECT ID, USERID, PASSWORD, NAME, EMAIL FROM USERS WHERE ID=?";
-        article.setAuthor(jdbcTemplate.queryForObject(authorQuery, new UserMapper(), article.getAuthorId()));
+        Article article = jdbcTemplate.queryForObject(QueryConstants.articleSelectById, new ArticleMapper(), id);
+        article.setAuthor(jdbcTemplate.queryForObject(QueryConstants.userSelectById, new UserMapper(), article.getAuthorId()));
         return article;
     }
 
@@ -44,12 +39,10 @@ public class ArticleService {
             throw new IllegalArgumentException("제목이 빈 값일 수 없습니다.");
         if (updateArticle.getContent().isBlank())
             throw new IllegalArgumentException("내용이 빈 값일 수 없습니다.");
-        String sql = "UPDATE ARTICLES SET TITLE=?, CONTENT=? WHERE ID=?";
-        jdbcTemplate.update(sql, updateArticle.getTitle(), updateArticle.getContent(), id);
+        jdbcTemplate.update(QueryConstants.articleUpdate, updateArticle.getTitle(), updateArticle.getContent(), id);
     }
 
     public void deleteArticle(int id) {
-        String sql = "DELETE FROM ARTICLES WHERE ID=?";
-        jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(QueryConstants.articleDelete, id);
     }
 }
