@@ -123,12 +123,13 @@ public class ArticleController {
     }
 
     //글 수정하기
-    @PostMapping(value = "/qnas/update/apply")
+    @PutMapping(value = "/qnas/update/apply")
     public String updateArticle(ArticleUpdateDTO articleUpdateDTO, HttpSession session) {
         User user = (User) session.getAttribute("sessionedUser");
         Article article = articleService.getArticleBySequence(articleUpdateDTO.getSequence());
-        if(!article.getUserId().equals(user.getUserId())){
-            throw new ArticleNotMatchedUser("로그인된 사용자가 작성한 글이 아닙니다.");
+
+        if(user == null || !article.getUserId().equals(user.getUserId())){
+            throw new ArticleNotMatchedUser("다른 사람의 글을 수정할 수 없다.");
         }
 
         articleService.articleUpdate(articleUpdateDTO);
