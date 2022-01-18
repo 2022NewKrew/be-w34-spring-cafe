@@ -28,11 +28,14 @@ public class ArticleController {
     //새로운 질문 생성
     @PostMapping(value = "/qna/create")
     public String createArticle(ArticleCreateDTO articleCreateDTO, HttpSession session){
-
+        User user;
         //로그인 상태가 아닌경우
-        if(session.getAttribute("sessionedUser") == null){
+        if((user = (User) session.getAttribute("sessionedUser")) == null){
             throw new RuntimeException("로그인 상태에서만 게시글을 작성할 수 있습니다.");
         }
+
+        //로그인된 사용자의 이름을 지정
+        articleCreateDTO.setName(user.getName());
 
         articleService.articleCreate(articleCreateDTO);
         return "redirect:/";
