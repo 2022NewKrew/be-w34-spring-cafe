@@ -32,9 +32,14 @@ public class JdbcTemplatesUser {
         return jdbcTemplate.query(sql, userRowMapper(), userId).get(0);
     }
 
-    public List<User> findOneByUserIdPassword(String userId, String password){
+    public List<User> findOneByUserIdPassword(String userId, String password) {
         String sql = "SELECT * FROM USERS WHERE user_id = ? AND password = ?";
         return jdbcTemplate.query(sql, userRowMapper(), userId, password);
+    }
+
+    public void updateUser(User changeUser) {
+        String sql = "UPDATE USERS SET name = ?, email = ? WHERE user_id = ?";
+        jdbcTemplate.update(sql, changeUser.getName(), changeUser.getEmail(), changeUser.getUserId());
     }
 
     private RowMapper<User> userRowMapper() {

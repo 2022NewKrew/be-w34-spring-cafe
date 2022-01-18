@@ -34,4 +34,16 @@ public class UserService {
     public List<User> logIn(String userId, String password) {
         return jdbcTemplatesUser.findOneByUserIdPassword(userId, password);
     }
+
+    public void updateUser(User changedUser) {
+        jdbcTemplatesUser.updateUser(changedUser);
+    }
+
+    public boolean validateUser(String userId, User user){
+        if (userId.compareTo(user.getUserId()) != 0) {
+            throw new IllegalArgumentException("사용자의 정보를 수정할 수 없습니다.");
+        }
+        return false;
+    }
+
 }

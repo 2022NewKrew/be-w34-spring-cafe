@@ -1,7 +1,6 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserList;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}/form")
-    public String openUserProfile(@PathVariable String userId, Model model, HttpSession session) {
+    public String openUserProfile(Model model, HttpSession session) {
         Object value = session.getAttribute("sessionUser");
         if (value != null) {
             User user = (User) value;
@@ -63,11 +62,13 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/form")
-    public String updateUserProfile(@PathVariable String userId, User changedUser) {
-        User curUser = UserList.getUserByUserId(userId);
-        logger.info("update profile success : {}", changedUser.getName());
+    public String updateUserProfile(@PathVariable String userId, User changedUser, HttpSession session) {
 
-        curUser.updateUser(changedUser);
+        userService.updateUser(changedUser);
+        userService.validateUser(userId, (User) session.getAttribute("sessionUser"));
+
+        logger.info("update profile success : {}", changedUser.getName());
+        session.setAttribute("sessionUser", changedUser);
 
         return "redirect:/user/list";
     }
