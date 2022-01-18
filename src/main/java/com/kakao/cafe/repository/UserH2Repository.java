@@ -54,17 +54,14 @@ public class UserH2Repository implements UserRepository {
     }
 
     private RowMapper<User> memberRowMapper() {
-        return new RowMapper<User>() {
-            @Override
-            public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-                User user = new User();
-                user.setId(rs.getLong("id"));
-                user.setUserId(rs.getString("userid"));
-                user.setPassword(rs.getString("password"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-                return user;
-            }
+        return (rs, rowNum) -> {
+            User user = new User();
+            user.setId(rs.getLong("id"));
+            user.setUserId(rs.getString("userid"));
+            user.setPassword(rs.getString("password"));
+            user.setName(rs.getString("name"));
+            user.setEmail(rs.getString("email"));
+            return user;
         };
     }
 }

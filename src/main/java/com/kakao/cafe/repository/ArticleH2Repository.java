@@ -59,16 +59,13 @@ public class ArticleH2Repository implements ArticleRepository {
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return new RowMapper<Article>() {
-            @Override
-            public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return (rs, rowNum) -> {
                 Article article = new Article();
                 article.setId(rs.getLong("id"));
                 article.setWriter(rs.getString("writer"));
                 article.setTitle(rs.getString("title"));
                 article.setContents(rs.getString("contents"));
                 return article;
-            }
         };
     }
 
