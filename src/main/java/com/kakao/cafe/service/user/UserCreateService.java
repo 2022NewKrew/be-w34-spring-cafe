@@ -15,7 +15,7 @@ public class UserCreateService {
     }
 
     @Transactional
-    public void save(User user) {
+    public void create(User user) {
         validPresentUserCheck(user);
         userRepository.save(user);
     }

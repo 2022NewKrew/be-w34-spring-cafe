@@ -43,8 +43,8 @@ public class UserCreateServiceTest {
         given(userRepository.findById(newUserId)).willReturn(null);
 
         //then
-        assertThatNoException().isThrownBy( () -> userCreateService.save(newUser));
-        assertThatIllegalArgumentException().isThrownBy(() -> userCreateService.save(givenUser));
+        assertThatNoException().isThrownBy( () -> userCreateService.create(newUser));
+        assertThatIllegalArgumentException().isThrownBy(() -> userCreateService.create(givenUser));
     }
 
     private static Stream<Arguments> provideUsers() {

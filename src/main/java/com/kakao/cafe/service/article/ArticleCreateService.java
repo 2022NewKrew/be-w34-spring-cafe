@@ -12,7 +12,7 @@ public class ArticleCreateService {
     }
 
     @Transactional
-    public void save(Article article) {
+    public void create(Article article) {
         articleRepository.save(article);
     }
 }

@@ -29,7 +29,7 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String postSave(@ModelAttribute ArticleCreateRequest requestDto) {
-        articleCreateService.save(requestDto.toEntity());
+        articleCreateService.create(requestDto.toEntity());
         return "redirect:/";
     }
 
