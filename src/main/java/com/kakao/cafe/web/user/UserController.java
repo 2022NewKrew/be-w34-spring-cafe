@@ -40,7 +40,11 @@ public class UserController {
     }
 
     @PostMapping()
-    public String save(@ModelAttribute UserCreateRequest requestDto) {
+    public String save(@RequestParam String userId,
+                       @RequestParam String password,
+                       @RequestParam String name,
+                       @RequestParam String email) {
+        UserCreateRequest requestDto = new UserCreateRequest(userId, password, name, email);
         userCreateService.create(requestDto.toEntity());
         return "redirect:/users";
     }

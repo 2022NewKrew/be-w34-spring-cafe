@@ -153,7 +153,7 @@ li {
     display: flex;
     border: 1px solid lightgray;
     margin: 20px;
-    width: 40%;
+    width: 60%;
 }
 
 .form-control {
@@ -182,4 +182,13 @@ li {
 
 label {
     width: 25%;
+}
+
+.password-error {
+    padding: 20px;
+    font-size: 14px;
+    background-color: #FFC0CB;
+    color: #FF0000;
+    border: 1px #FF0000;
+    width: 60%;
 }
