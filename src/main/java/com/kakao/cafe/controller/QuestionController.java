@@ -32,22 +32,14 @@ public class QuestionController {
     private final ModelMapper modelMapper;
 
     @PostMapping("/create")
-    public String insertQuestion(HttpServletRequest request, @ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto, Model model) throws BaseException {
+    public String insertQuestion(HttpSession session, @ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto, Model model) throws BaseException, SQLException {
 
-        HttpSession httpSession = request.getSession();
-        User user = modelMapper.map(httpSession.getAttribute("loginUser"), User.class);
+        User user = modelMapper.map(getLoginUser(session), User.class);
         Question question = modelMapper.map(questionCreateDto, Question.class);
 
         question.setMemberId(user.getId());
         question.setWriter(user.getUserId());
-
-        try {
-            questionService.save(question);
-        } catch (SQLException e) {
-            log.error("QUESTION TABLE SAVE 실패 SQLState : {}", e.getSQLState());
-            throw new BaseException("게시글 작성 실패");
-
-        }
+        questionService.save(question);
 
         return "redirect:/";
     }
@@ -109,7 +101,6 @@ public class QuestionController {
     public String updateQuestion(HttpSession session, @PathVariable("id") Long id, @Valid @ModelAttribute("question") QuestionUpdateDto questionUpdateDto, Model model) throws BaseException {
 
         Long memberId = getMemberId(session);
-
         Question question = new Question();
 
         question.setId(id);
@@ -123,8 +114,12 @@ public class QuestionController {
     }
 
     private Long getMemberId(HttpSession session) {
-        UserDto loginUser = (UserDto) session.getAttribute("loginUser");
-        Long memberId = loginUser == null ? -1L : loginUser.getId();
-        return memberId;
+
+        UserDto loginUser = getLoginUser(session);
+        return loginUser == null ? -1L : loginUser.getId();
+    }
+
+    private UserDto getLoginUser(HttpSession session) {
+        return (UserDto) session.getAttribute("loginUser");
     }
 }
