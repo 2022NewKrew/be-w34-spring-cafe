@@ -39,7 +39,7 @@ public class UserController {
     public String updateUserHtml(HttpSession session, Model model) {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
 
-        UserDto.UserProfileResponse userProfileResponse = userService.readUser(sessionedUser.getUserId());
+        UserDto.UserProfileForUpdateReponse userProfileResponse = userService.readUserForUpdate(sessionedUser.getUserId());
         model.addAttribute("user", userProfileResponse);
         return "user/updateForm";
     }

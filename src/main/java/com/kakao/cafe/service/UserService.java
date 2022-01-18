@@ -47,6 +47,11 @@ public class UserService {
         return UserDto.UserProfileResponse.of(user);
     }
 
+    public UserDto.UserProfileForUpdateReponse readUserForUpdate(String userid) throws UserNotFoundException {
+        User user = userRepository.findByUserId(userid).orElseThrow(() -> new UserNotFoundException(userid));
+        return UserDto.UserProfileForUpdateReponse.of(user);
+    }
+
     @Transactional
     public void updateUser(String userId, UserDto.UpdateUserProfileRequest updateUserProfileRequest) {
         User user = userRepository.findByUserId(userId)
