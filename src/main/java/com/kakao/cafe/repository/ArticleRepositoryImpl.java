@@ -50,7 +50,9 @@ public class ArticleRepositoryImpl implements ArticleRepository{
                 "U.NAME AS NAME, " +
                 "U.EMAIL AS EMAIL, " +
                 "U.CREATED_TIME AS USER_CREATED_TIME " +
-                "FROM ARTICLE A JOIN WRITER U ON (U.USER_ID = A.WRITER)";
+                "FROM ARTICLE AS A "+
+                "JOIN WRITER AS U "+
+                "ON U.USER_ID = A.WRITER";
         return namedParameterJdbcTemplate.query(sql, articleRowMapper());
     }
 
@@ -66,7 +68,9 @@ public class ArticleRepositoryImpl implements ArticleRepository{
                 "U.NAME AS NAME, " +
                 "U.EMAIL AS EMAIL, " +
                 "U.CREATED_TIME AS USER_CREATED_TIME " +
-                "FROM ARTICLE A JOIN WRITER U ON (U.USER_ID = A.WRITER)" +
+                "FROM ARTICLE AS A "+
+                "JOIN WRITER AS U "+
+                "ON U.USER_ID = A.WRITER " +
                 "WHERE A.ARTICLE_ID = :articleId";
         Map<String, Object> param = new HashMap<>();
         param.put("articleId", articleId);
