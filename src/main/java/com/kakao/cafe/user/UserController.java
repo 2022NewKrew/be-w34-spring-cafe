@@ -1,7 +1,9 @@
 package com.kakao.cafe.user;
 
+import com.kakao.cafe.user.domain.Password;
 import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.dto.UserDto;
+import com.kakao.cafe.user.domain.UserId;
+import com.kakao.cafe.user.dto.LoginFormDto;
 import com.kakao.cafe.user.dto.UserFormDto;
 import com.kakao.cafe.user.dto.UserMapper;
 import com.kakao.cafe.user.dto.UserProfileDto;
@@ -10,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -26,11 +30,11 @@ public class UserController {
         return "user/form";
     }
 
-    @GetMapping("/users/{userId}/form")
-    public String showUpdateUserForm(@PathVariable String userId, Model model) {
-        User user = userService.findUserByUserId(userId);
-        UserDto userDto = UserMapper.toUserDto(user);
-        model.addAttribute("user", userDto);
+    @GetMapping("/user/{userId}/form")
+    public String showUpdateUserForm(@PathVariable String userId, Model model, HttpSession session) {
+        Optional<UserId> loginId = Optional.ofNullable((UserId) session.getAttribute("loginUser"));
+        User user = userService.findLoginUser(new UserId(userId), loginId);
+        model.addAttribute("user", UserMapper.toUserDto(user));
         return "user/updateForm";
     }
 
@@ -51,16 +55,35 @@ public class UserController {
     @GetMapping("/users")
     public String findUsers(Model model) {
         List<User> users = userService.findUsers();
-        List<UserDto> userlist = UserMapper.toListUserDto(users);
-        model.addAttribute("users", userlist);
+        model.addAttribute("users", UserMapper.toListUserDto(users));
         return "user/list";
     }
 
     @GetMapping("/users/{userId}")
     public String findUserProfile(@PathVariable String userId, Model model) {
-        User user = userService.findUserByUserId(userId);
+        User user = userService.findUserByUserId(new UserId(userId));
         UserProfileDto userProfileDto = UserMapper.toUserProfileDto(user);
         model.addAttribute("user", userProfileDto);
         return "user/profile";
+    }
+
+    @GetMapping("user/login")
+    public String showLoginForm() {
+        return "/user/login";
+    }
+
+    @GetMapping("user/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
+    @PostMapping("user/login")
+    public String login(@ModelAttribute LoginFormDto loginFormDto, HttpSession session) {
+        UserId userId = new UserId(loginFormDto.getUserId());
+        Password password = new Password(loginFormDto.getPassword());
+        User user = userService.login(userId, password);
+        session.setAttribute("loginUser", user.getUserId());
+        return "redirect:/";
     }
 }

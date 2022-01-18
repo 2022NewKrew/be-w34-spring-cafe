@@ -19,12 +19,17 @@ public class UserService {
     }
 
     public void joinUser(User user) {
-        validateDuplicateUser(user.getUserId().getUserId());
+        validateDuplicateUser(user.getUserId());
         userRepository.save(user);
     }
 
+    private void validateDuplicateUser(UserId userId) {
+        if (userRepository.findByUserId(userId).isPresent())
+            throw new UserException(ErrorCode.DUPLICATE_USER_ID);
+    }
+
     public void updateUser(User updateUser) {
-        User user = findUserByUserId(updateUser.getUserId().getUserId());
+        User user = findUserByUserId(updateUser.getUserId());
         // TODO: UserId 변경된 경우 예외처리
         if (!user.getPassword().equals(updateUser.getPassword())) {
             throw new UserException(ErrorCode.WRONG_USER_PASSWORD);
@@ -32,9 +37,12 @@ public class UserService {
         userRepository.update(updateUser);
     }
 
-    private void validateDuplicateUser(String userId) {
-        if (userRepository.findByUserId(userId).isPresent())
-            throw new UserException(ErrorCode.DUPLICATE_USER_ID);
+    public User login(UserId userId, Password password) {
+        Optional<User> user = userRepository.findByUserIdAndPassword(userId, password);
+        if (user.isEmpty()) {
+            throw new LoginFailedException(ErrorCode.FAILED_LOGIN);
+        }
+        return user.get();
     }
 
     public List<User> findUsers() {

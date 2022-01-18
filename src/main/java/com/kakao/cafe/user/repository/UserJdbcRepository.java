@@ -1,6 +1,8 @@
 package com.kakao.cafe.user.repository;
 
+import com.kakao.cafe.user.domain.Password;
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserId;
 import com.kakao.cafe.user.dto.UserMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,10 +27,10 @@ public class UserJdbcRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
+    public Optional<User> findByUserId(UserId userId) {
         try {
             String sql = "SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USERS WHERE USER_ID = ?";
-            User user = jdbcTemplate.queryForObject(sql, new UserMapper(), userId);
+            User user = jdbcTemplate.queryForObject(sql, new UserMapper(), userId.getUserId());
             return Optional.ofNullable(user);
         } catch (EmptyResultDataAccessException exception) {
             return Optional.empty();
@@ -51,6 +53,17 @@ public class UserJdbcRepository implements UserRepository {
     public void update(User user) {
         String sql = "UPDATE USERS SET NAME = ?, EMAIL = ? WHERE USER_ID = ?";
         jdbcTemplate.update(sql, user.getName().getName(), user.getEmail().getEmail(), user.getUserId().getUserId());
+    }
+
+    @Override
+    public Optional<User> findByUserIdAndPassword(UserId userId, Password password) {
+        try {
+            String sql = "SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USERS WHERE USER_ID = ? AND PASSWORD = ?";
+            User user = jdbcTemplate.queryForObject(sql, new UserMapper(), userId.getUserId(), password.getPassword());
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException exception) {
+            return Optional.empty();
+        }
     }
 }
 
