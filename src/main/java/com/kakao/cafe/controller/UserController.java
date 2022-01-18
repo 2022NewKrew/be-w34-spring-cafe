@@ -49,10 +49,9 @@ public class UserController {
     @GetMapping("/{userId}/form")
     public String updateForm(@PathVariable Long userId, Model model, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
-        if (auth == null || !userId.equals(auth.getId())) {
+        if (auth == null || !auth.validateById(userId)) {
             return "redirect:/users";
         }
-
         UserDto user = userService.findById(userId);
         model.addAttribute("user", user);
 
@@ -62,10 +61,9 @@ public class UserController {
     @PutMapping("/{userId}/update")
     public String updateUser(@PathVariable Long userId, UserUpdateRequest userUpdateRequest, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
-        if (auth == null || !userId.equals(auth.getId())) {
+        if (auth == null || !auth.validateById(userId)) {
             throw new UnauthorizedAccessException("인가되지 않은 접근입니다.");
         }
-
         userService.update(userId, userUpdateRequest);
 
         return "redirect:/";
