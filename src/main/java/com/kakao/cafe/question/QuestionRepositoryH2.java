@@ -93,4 +93,23 @@ public class QuestionRepositoryH2 implements QuestionRepository {
 
         return true;
     }
+
+    @Override
+    public boolean updateOne(Question question) {
+
+        String sql = "UPDATE question SET title=?, contents=? WHERE id=?";
+
+        int rs = jdbcTemplate.update(sql,
+                question.getTitle(),
+                question.getContents(),
+                question.getId()
+        );
+
+        if (rs == FAIL) {
+            log.error("QUESTION TABLE UPDATE FAIL ");
+            return false;
+        }
+
+        return true;
+    }
 }

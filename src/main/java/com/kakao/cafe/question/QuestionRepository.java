@@ -44,4 +44,10 @@ public interface QuestionRepository {
      */
     boolean deleteOne(Long id, Long memberId);
 
+    /**
+     * Question에 담긴 정보를 기준으로 수정합니다.
+     * @param question 수정한 Question
+     * @return 삭제 성공 여부
+     */
+    boolean updateOne(Question question);
 }
