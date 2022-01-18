@@ -1,6 +1,7 @@
 package com.kakao.cafe.web.service;
 
 import com.kakao.cafe.web.domain.Article;
+import com.kakao.cafe.web.domain.User;
 import com.kakao.cafe.web.repository.article.ArticleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,27 @@ public class ArticleService {
     @Transactional
     public void write(Article article) {
         articleRepository.save(article);
+    }
+
+    @Transactional
+    public void update(Article newArticle, Long id) {
+        Optional<Article> article = articleRepository.findById(id);
+        if (article.isEmpty()) {
+            throw new IllegalArgumentException("존재하지 않는 게시글입니다.");
+        }
+        Article updateArticle = article.get();
+        updateArticle.setTitle(newArticle.getTitle());
+        updateArticle.setContent(newArticle.getContent());
+        articleRepository.update(updateArticle);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Optional<Article> article = articleRepository.findById(id);
+        if (article.isEmpty()) {
+            throw new IllegalArgumentException("존재하지 않는 게시글입니다.");
+        }
+        articleRepository.delete(id);
     }
 
     public List<Article> findArticles() {

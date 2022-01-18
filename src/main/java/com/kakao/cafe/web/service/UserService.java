@@ -44,6 +44,7 @@ public class UserService {
         return loginUser;
     }
 
+    @Transactional
     public void update(User newUser, String userId) {
         Optional<User> user = userRepository.findByUserId(userId);
         if (user.isEmpty()) {
