@@ -43,7 +43,7 @@ public class ArticleController {
     @GetMapping("/articles/new")
     public String getArticles(final HttpServletRequest request) {
         if (checkNotLogin(request)) {
-            return "redirect:/login";
+            return getRedirectLoginWithMsg(request);
         }
         return "articles/new";
     }
@@ -51,7 +51,7 @@ public class ArticleController {
     @PostMapping("/articles")
     public String writeArticle(final HttpServletRequest request, @NonNull final ArticleDto articleDto) {
         if (checkNotLogin(request)) {
-            return "redirect:/login";
+            return getRedirectLoginWithMsg(request);
         }
 
         articleService.add(articleDto);
@@ -67,7 +67,7 @@ public class ArticleController {
     )
     {
         if (checkNotLogin(request)) {
-            return "redirect:/login";
+            return getRedirectLoginWithMsg(request);
         }
 
         try {
@@ -85,5 +85,11 @@ public class ArticleController {
             return true;
         }
         return false;
+    }
+
+    private String getRedirectLoginWithMsg(final HttpServletRequest request) {
+        request.getSession()
+                .setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
+        return "redirect:/login";
     }
 }
