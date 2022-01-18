@@ -1,0 +1,38 @@
+{{>template/header}}
+<div class="card" style="border: 0;">
+    <article class="card-body mx-auto" style="max-width: 500px; min-width:300px;">
+        <h2 class="card-title m-3 text-center">로그인</h2>
+        <form method="post" action="/user/login">
+            <table class="table align-middle">
+                <tr>
+                    <th class="text-end">
+                        ID: &nbsp;
+                    </th>
+                    <td>
+                        {{#userId}}
+                        <input type="text" name="userId" class="form-control" value="{{userId}}" placeholder="아이디" required>
+                        {{/userId}}
+                        {{^userId}}
+                        <input type="text" name="userId" class="form-control" placeholder="아이디" required>
+                        {{/userId}}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-end">
+                        PW: &nbsp;
+                    </th>
+                    <td>
+                        <input type="password" name="password" class="form-control" placeholder="비밀번호" required>
+                    </td>
+                </tr>
+            </table>
+            {{#UserNotFoundErrorMessage}}
+            <div class="alert alert-light p-0 m-0" role="alert">{{this}}</div>
+            {{/UserNotFoundErrorMessage}}
+            <div class="row mt-3">
+                <button type="submit" class="btn btn-dark">로그인</button>
+            </div>
+        </form>
+    </article>
+</div>
+{{>template/footer}}
