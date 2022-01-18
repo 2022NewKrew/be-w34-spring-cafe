@@ -27,13 +27,15 @@ import java.util.stream.Collectors;
 public class UserService {
     @Autowired
     private ModelMapper modelMapper;
-
     private final UserRepository userRepository;
 
     public UserService(@Qualifier("h2UserRepository") H2UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    /*
+     * 회원가입
+     */
     public void join(RequestUserDto userDto) {
         Optional<User> result = userRepository.findByUserId(userDto.getUserId());
         result.ifPresent(u -> {
@@ -46,28 +48,43 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /*
+    * 전체 유저 조회
+    */
     public List<ResponseUserDto> findUsers() {
         return userRepository.findAll().stream()
                 .map(user -> modelMapper.map(user, ResponseUserDto.class))
                 .collect(Collectors.toList());
     }
 
+    /*
+    * id로 유저 조회
+    */
     public ResponseUserDto findOne(long id) {
         User result = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
 
         return modelMapper.map(result, ResponseUserDto.class);
     }
 
+    /*
+    * userId로 유저 조회
+    */
     public ResponseUserDto findOne(String userId) {
         User result = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
 
         return modelMapper.map(result, ResponseUserDto.class);
     }
 
+    /*
+    * 전체 유저 숫자 조회
+    */
     public long getCountOfUser() {
         return userRepository.countRecords();
     }
 
+    /*
+    * id로 유저 정보 수정
+    */
     public void updateUser(long id, RequestUserDto userDto) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
 
@@ -80,13 +97,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /*
+    * 로그인
+    */
     public SessionUser login(String userId, String password) {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
         validatePassword(user, password);
 
         SessionUser result = modelMapper.map(user, SessionUser.class);
-        log.info("userVo : {}", result);
-        log.info("user : {}", user);
         return result;
     }
 

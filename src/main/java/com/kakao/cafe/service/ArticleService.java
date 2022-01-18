@@ -18,13 +18,15 @@ import java.util.stream.Collectors;
 public class ArticleService {
     @Autowired
     private ModelMapper modelMapper;
-    
     private final ArticleRepository articleRepository;
 
     public ArticleService(@Qualifier("h2ArticleRepository") H2ArticleRepository articleRepository){
         this.articleRepository = articleRepository;
     }
 
+    /*
+    * 새 게시글 작성
+    */
     public void addPost(RequestArticleDto articleDto) {
         Article article = modelMapper.map(articleDto, Article.class);
         article.setCreatedAt(new Date());
@@ -32,6 +34,9 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    /*
+    * 전체 게시글 조회
+    */
     public List<ResponseArticleDto> findArticles() {
 
         return articleRepository.findAll().stream()
@@ -39,6 +44,9 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * id로 게시글 조회
+    */
     public ResponseArticleDto findOne(long id) {
         Article article = articleRepository.findById(id).orElseThrow(() -> new IllegalStateException("해당 글이 존재하지 않습니다."));
         return modelMapper.map(article, ResponseArticleDto.class);
