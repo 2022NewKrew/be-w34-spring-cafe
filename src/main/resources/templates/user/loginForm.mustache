@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="kr">
+{{> layout/header}}
+<body>
+{{> layout/navbar}}
+<div class="container mw-50">
+    <div class="jumbotron bg-none">
+        <div class="display-large text-center">로그인</div>
+    </div>
+    <form action="/login" method="post">
+        <div class="input-kakao-group">
+            <label class="input-kakao-group-addon" for="email">이메일</label>
+            <input class="input-kakao" type="email"
+                   id="email" name="email" placeholder="이메일을 입력해주세요" />
+        </div>
+        <div class="input-kakao-group">
+            <label class="input-kakao-group-addon" for="password">패스워드</label>
+            <input class="input-kakao" type="password" id="password" name="password"
+                   placeholder="패스워드를 입력해주세요" />
+        </div>
+
+        <button type="submit" class="btn-kakao">완료</button>
+    </form>
+</div>
+{{> layout/scripts}}
+</body>
+</html>

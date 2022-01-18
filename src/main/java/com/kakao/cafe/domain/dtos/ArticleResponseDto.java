@@ -2,10 +2,9 @@ package com.kakao.cafe.domain.dtos;
 
 import com.kakao.cafe.domain.Article;
 
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 public class ArticleResponseDto {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private final Long id;
     private final String writer;
     private final String title;
@@ -17,7 +16,7 @@ public class ArticleResponseDto {
         this.writer = article.getWriter();
         this.title = article.getTitle();
         this.content = article.getContent();
-        this.creationTime = dateFormat.format(article.getCreationTime());
+        this.creationTime = article.getCreationTime().format(DateTimeFormatter.ISO_DATE);
     }
 
     public Long getId() {

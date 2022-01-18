@@ -1,13 +1,14 @@
 package com.kakao.cafe.domain;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Article {
     private Long id;
     private final String writer;
-    private final String title;
-    private final String content;
-    private Date creationTime;
+    private String title;
+    private String content;
+    private LocalDateTime creationTime;
 
     public Article(String writer, String title, String content) {
         this.writer = writer;
@@ -19,7 +20,19 @@ public class Article {
         this.id = id;
     }
 
-    public void setCreationTime(Date creationTime) {
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setCreationTime(Timestamp timestamp) {
+        creationTime = timestamp.toLocalDateTime();
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
 
@@ -39,7 +52,7 @@ public class Article {
         return content;
     }
 
-    public Date getCreationTime() {
+    public LocalDateTime getCreationTime() {
         return creationTime;
     }
 }

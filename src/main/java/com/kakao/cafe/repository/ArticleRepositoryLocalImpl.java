@@ -1,8 +1,10 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -14,7 +16,7 @@ public class ArticleRepositoryLocalImpl implements ArticleRepository {
     @Override
     public void save(Article article) {
         article.setId(count.getAndIncrement());
-        article.setCreationTime(new Date());
+        article.setCreationTime(LocalDateTime.now());
         articles.add(article);
     }
 
@@ -24,9 +26,15 @@ public class ArticleRepositoryLocalImpl implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findById(Long id) {
+    public Article findById(Long id) throws NotFoundException {
         return articles.stream()
                 .filter(article -> article.getId().equals(id))
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("해당 아이디의 게시물이 없습니다."));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        articles.removeIf(article -> article.getId().equals(id));
     }
 }

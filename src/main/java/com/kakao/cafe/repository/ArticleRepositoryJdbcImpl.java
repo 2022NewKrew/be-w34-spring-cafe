@@ -1,13 +1,14 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class ArticleRepositoryJdbcImpl implements ArticleRepository {
@@ -19,7 +20,7 @@ public class ArticleRepositoryJdbcImpl implements ArticleRepository {
                 rs.getString("content")
         );
         article.setId(rs.getLong("id"));
-        article.setCreationTime(rs.getDate("creation_time"));
+        article.setCreationTime(rs.getTimestamp("creation_time"));
         return article;
     };
 
@@ -30,11 +31,24 @@ public class ArticleRepositoryJdbcImpl implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        String INSERT_USER = "INSERT INTO ARTICLE (WRITER, TITLE, CONTENT) " +
-                "VALUES ('%s', '%s', '%s');";
-        jdbcTemplate.execute(String.format(
-                INSERT_USER, article.getWriter(), article.getTitle(), article.getContent())
-        );
+        if (article.getId() == null) {
+            insert(article);
+        } else {
+            update(article);
+        }
+    }
+
+    private void insert(Article article) {
+        String INSERT_ARTICLE = "INSERT INTO ARTICLE (WRITER, TITLE, CONTENT) " +
+                "VALUES (?, ?, ?);";
+        jdbcTemplate.update(INSERT_ARTICLE, article.getWriter(), article.getTitle(), article.getContent());
+    }
+
+    private void update(Article article) {
+        String UPDATE_ARTICLE = "UPDATE ARTICLE " +
+                "SET TITLE=?, CONTENT=? " +
+                "WHERE ID=?";
+        jdbcTemplate.update(UPDATE_ARTICLE, article.getTitle(), article.getContent(), article.getId());
     }
 
     @Override
@@ -44,11 +58,20 @@ public class ArticleRepositoryJdbcImpl implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findById(Long id) {
+    public Article findById(Long id) throws NotFoundException {
         String SELECT_ARTICLE = "SELECT ID, WRITER, TITLE, CONTENT, CREATION_TIME " +
                 "FROM ARTICLE " +
-                "WHERE ID=%d";
-        List<Article> repositoryArticles = jdbcTemplate.query(String.format(SELECT_ARTICLE, id), articleMapper);
-        return repositoryArticles.stream().findFirst();
+                "WHERE ID=?";
+        try {
+            return jdbcTemplate.queryForObject(SELECT_ARTICLE, articleMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException("해당 아이디의 게시물이 없습니다.");
+        }
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        String DELETE_ARTICLE = "DELETE FROM ARTICLE WHERE id=?";
+        jdbcTemplate.update(DELETE_ARTICLE, id);
     }
 }

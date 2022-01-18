@@ -2,10 +2,9 @@ package com.kakao.cafe.domain.dtos;
 
 import com.kakao.cafe.domain.User;
 
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 public class UserResponseDto {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private final Long id;
     private final String email;
     private final String name;
@@ -15,7 +14,7 @@ public class UserResponseDto {
         this.id = user.getId();
         this.email = user.getEmail();
         this.name = user.getName();
-        this.creationTime = dateFormat.format(user.getCreationTime());
+        this.creationTime = user.getCreationTime().format(DateTimeFormatter.ISO_DATE);
     }
 
     public Long getId() {

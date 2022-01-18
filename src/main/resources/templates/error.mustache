@@ -4,9 +4,16 @@
 <body>
     {{> layout/navbar}}
     <div class="container">
-        <div>Url: {{url}}</div>
-        <div>Exception: {{exception}}</div>
+    {{#url}}
+        <h4>Url:</h4>
+        <div>{{url}}</div>
+        <div>Exception</div>
+        <div>- Class: {{exceptionClass}}</div>
+        {{#exceptionMessage}}
+            <div>- Message: {{exceptionMessage}}</div>
+        {{/exceptionMessage}}
+    {{/url}}
     </div>
-    {{>layout/scripts}}
+    {{> layout/scripts}}
 </body>
 </html>
