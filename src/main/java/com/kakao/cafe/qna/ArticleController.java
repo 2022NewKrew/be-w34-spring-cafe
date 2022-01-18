@@ -4,9 +4,7 @@ import com.kakao.cafe.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
@@ -25,12 +23,10 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String question(ArticleDto articleDto) {
-        Object value = session.getAttribute("sessionedUser");
-        if (value == null) {
+        User user = getSessionedUser();
+        if (user == null) {
             return "/user/login";
         }
-
-        User user = (User) value;
 
         Article article = new Article(
                 null,
@@ -45,9 +41,9 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{index}")
-    public String articleView(Model model, @PathVariable("index") Integer index) {
-        Article article = articleService.findArticleById(index);
+    @GetMapping("/articles/{id}")
+    public String articleView(Model model, @PathVariable("id") Integer id) {
+        Article article = articleService.findArticleById(id);
         model.addAttribute("article", new ArticleDto(article));
         return "/qna/show";
     }
@@ -59,5 +55,59 @@ public class ArticleController {
             return "/qna/form";
         }
         return "/user/login";
+    }
+
+    @GetMapping("/articles/{id}/edit")
+    public String questionEditForm(Model model, @PathVariable("id") Integer id) {
+        Article article = articleService.findArticleById(id);
+
+        // 글 작성자 ID와 수정 요청자 ID가 일치해야 함
+        User user = getSessionedUser();
+        if (!user.getUserId().equals(article.getWriter())) {
+            model.addAttribute("article", article);
+            return "/qna/show_edit_failed";
+        }
+
+        model.addAttribute("article", new ArticleDto(article));
+        return "/qna/form_edit";
+    }
+
+    @PutMapping("/articles/{id}/edit")
+    public String questionEdit(@ModelAttribute("article") ArticleDto articleDto, @PathVariable("id") Integer id) {
+        User user = getSessionedUser();
+        if (user == null) return "/user/login";
+
+        Article article = articleService.findArticleById(id);
+
+        // 글 ID가 존재하지 않을 경우 예외 발생
+        if (article == null) {
+            throw new IllegalArgumentException();
+        }
+
+        // 글 작성자 ID와 수정 요청자 ID가 일치해야 함
+        if (!user.getUserId().equals(article.getWriter())) {
+            throw new IllegalArgumentException();
+        }
+
+        Article editedArticle = new Article(id,
+                null,
+                articleDto.getTitle(),
+                articleDto.getContents(),
+                null,
+                null,
+                LocalDateTime.now());
+
+        articleService.updateArticle(editedArticle);
+
+        return "redirect:/articles/{id}";
+    }
+
+    private User getSessionedUser() {
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null) {
+            return null;
+        }
+
+        return (User) value;
     }
 }

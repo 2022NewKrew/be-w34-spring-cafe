@@ -47,4 +47,17 @@ public class H2ArticleRepository implements ArticleRepository{
         String sql = "SELECT * FROM ARTICLES";
         return jdbcTemplate.query(sql, new ArticleMapper());
     }
+
+    @Override
+    public Article update(Article article) {
+        String sql = "UPDATE ARTICLES SET" +
+                " TITLE=?, CONTENTS=?, MODIFIED_DATE=?" +
+                " WHERE ID = ?";
+        jdbcTemplate.update(sql,
+                article.getTitle(),
+                article.getContents(),
+                article.getModifiedDate(),
+                article.getId());
+        return article;
+    }
 }

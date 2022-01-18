@@ -12,4 +12,8 @@ public interface ArticleRepository {
     Article save(Article article);
     Article findArticleById(Integer id);
     List<Article> findAll();
+
+    default Article update(Article article) {
+        return null;
+    }
 }
