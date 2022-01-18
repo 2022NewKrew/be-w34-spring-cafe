@@ -60,6 +60,7 @@ public class SessionUtils {
 
   /**
    * 로그아웃
+   *
    */
   public static void logout() {
     HttpSession session = getSession();

@@ -50,6 +50,7 @@ public class ArticleService {
    * 게시 번호에 해당하는 게시물 반환 및 조회수 증가
    *
    * @param id 게시 번호
+   * @throws NoArticleException 해당하는 게시물이 없음.
    * @return Article
    * @throws NoArticleException 해당하는 게시물이 없음.
    */
