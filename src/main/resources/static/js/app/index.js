@@ -106,7 +106,7 @@ var main = {
         };
         $.ajax({
             type: 'POST',
-            url: '/api/users/login',
+            url: '/api/auth/login',
             dataType: 'json',
             contentType: 'application/json; charset-utf-8',
             data: JSON.stringify(data)
