@@ -32,4 +32,14 @@ public class ArticleServiceImpl implements ArticleService {
     public int increaseViews(long articleId) {
         return articleRepository.increaseViews(articleId);
     }
+
+    @Override
+    public int updateArticle(long id, ArticleDTO article) {
+        return articleRepository.updateArticle(id, article);
+    }
+
+    @Override
+    public int deleteArticle(long id) {
+        return articleRepository.deleteArticle(id);
+    }
 }

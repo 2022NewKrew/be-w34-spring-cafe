@@ -71,4 +71,14 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         return jdbcTemplate.update("update ArticleTable set views = views+1 where id = ?",
                 articleId);
     }
+
+    @Override
+    public int updateArticle(long id, ArticleDTO article) {
+        return jdbcTemplate.update("update ArticleTable set title = ?, contents = ? where id = ?", article.getTitle(), article.getContents(), id);
+    }
+
+    @Override
+    public int deleteArticle(long id) {
+        return jdbcTemplate.update("delete from ArticleTable where id = ?", id);
+    }
 }
