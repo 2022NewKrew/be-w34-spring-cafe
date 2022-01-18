@@ -11,9 +11,9 @@ public class Article {
 
     private Long id;
     private String title;
-    private String author;
     private String content;
     private LocalDate createDate;
+    private Long memberId;
 
     public void setId(Long id) {
         this.id = id;

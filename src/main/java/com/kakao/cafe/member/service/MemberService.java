@@ -47,13 +47,13 @@ public class MemberService {
         }));
     }
 
-    public Long login(LoginRequestDTO loginRequestDTO) {
+    public MemberResponseDTO login(LoginRequestDTO loginRequestDTO) {
         Member member = memberRepository.findByEmail(loginRequestDTO.getEmail()).orElseThrow(() -> {
             throw new IllegalArgumentException("해당 유저가 존재하지 않습니다.");
         });
 
         validateCheckPassword(member.getPassword(), loginRequestDTO.getPassword());
-        return member.getId();
+        return new MemberResponseDTO(member);
     }
 
     public List<MemberResponseDTO> findAll() {

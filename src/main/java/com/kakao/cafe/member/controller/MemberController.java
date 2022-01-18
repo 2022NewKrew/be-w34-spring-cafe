@@ -31,7 +31,6 @@ public class MemberController {
     @GetMapping("/members")
     public String getMembers(Model model) {
         List<MemberResponseDTO> members = memberService.findAll();
-
         model.addAttribute("totalSize", members.size());
         model.addAttribute("members", members);
         return "members/list";
@@ -58,9 +57,8 @@ public class MemberController {
 
     @PutMapping("/members/{id}")
     public String patchMember(@PathVariable Long id, @Valid MemberUpdateRequestDTO memberUpdateRequestDTO, HttpSession session) {
-        Long memberId = (Long) session.getAttribute("memberId");
-
-        memberService.update(id, memberId, memberUpdateRequestDTO);
+        MemberResponseDTO loginMemberDTO = (MemberResponseDTO) session.getAttribute("loginMemberDTO");
+        memberService.update(id, loginMemberDTO.getId(), memberUpdateRequestDTO);
         return "redirect:/members";
     }
 
@@ -72,19 +70,18 @@ public class MemberController {
     @PostMapping("/login")
     public String postLogin(LoginRequestDTO loginRequestDTO, HttpSession session) {
         logger.info("loginDTO : {}", loginRequestDTO);
-
-        session.setAttribute("memberId", memberService.login(loginRequestDTO));
-        return "redirect:/members";
+        session.setAttribute("loginMemberDTO", memberService.login(loginRequestDTO));
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
     public String getLogout(HttpSession session) {
-        Long memberId = (Long) session.getAttribute("memberId");
+        MemberResponseDTO loginMemberDTO = (MemberResponseDTO) session.getAttribute("loginMemberDTO");
 
-        if (memberId != null) {
+        if (loginMemberDTO != null) {
             session.invalidate();
         }
 
-        return "redirect:/members";
+        return "redirect:/";
     }
 }

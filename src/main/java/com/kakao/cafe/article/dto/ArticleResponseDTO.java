@@ -14,11 +14,11 @@ public class ArticleResponseDTO {
     private String author;
     private String createDate;
 
-    public ArticleResponseDTO(Article article) {
+    public ArticleResponseDTO(Article article, String author) {
         this.id = article.getId();
         this.title = article.getTitle();
         this.content = article.getContent();
-        this.author = article.getAuthor();
+        this.author = author;
         this.createDate = article.getCreateDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 }
