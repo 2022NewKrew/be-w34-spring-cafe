@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,8 +37,47 @@ public class QnaService {
 
     public QnaDto.QnaResponse findQna(Integer index) {
         Qna qna = qnaRepository.findByIndex(index)
-                .orElseThrow(() -> new QnaNotFoundException("Qna Not Found (index: " + index + ")"));
+                .orElseThrow(() -> new QnaNotFoundException(index));
 
         return QnaDto.QnaResponse.of(qna);
+    }
+
+    public QnaDto.QnaForUpdateReponse findQnaForUpdate(Integer index) {
+        Qna qna = qnaRepository.findByIndex(index)
+                .orElseThrow(() -> new QnaNotFoundException(index));
+
+        return QnaDto.QnaForUpdateReponse.of(qna);
+    }
+
+    @Transactional
+    public void updateQna(Integer index, QnaDto.UpdateQnaRequest updateQnaRequest) throws AccessDeniedException {
+        Qna qna = qnaRepository.findByIndex(index)
+                .orElseThrow(() -> new QnaNotFoundException(index));
+
+        if (!qna.isValidUpdateUser(updateQnaRequest.getWriter())) {
+            throw new AccessDeniedException("수정 권한이 없습니다");
+        }
+
+        Qna updatedQna = updateQnaRequest.toEntity(index);
+        qna.updateQna(updatedQna);
+        qnaRepository.save(qna);
+    }
+
+    @Transactional
+    public void deleteQna(Integer index, String userId) throws AccessDeniedException {
+        Qna qna = qnaRepository.findByIndex(index)
+                .orElseThrow(() -> new QnaNotFoundException(index));
+
+        if (!qna.isValidDeleteUser(userId)) {
+            throw new AccessDeniedException("삭제 권한이 없습니다");
+        }
+
+        qnaRepository.deleteByIndex(index);
+    }
+
+    public void validateUpdateUser(String writer, String userId) throws AccessDeniedException {
+        if (!writer.equals(userId)) {
+            throw new AccessDeniedException("수정 권한이 없습니다");
+        }
     }
 }

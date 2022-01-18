@@ -24,10 +24,10 @@ public class JdbcQnaRepositoryImpl implements QnaRepository {
     @Override
     public void save(Qna qna) {
         try {
-            jdbcTemplate.queryForObject("SELECT index FROM QNA WHERE index = ?", Integer.class, qna.getIndex());
+            jdbcTemplate.queryForObject("SELECT `index` FROM QNA WHERE `index` = ?", Integer.class, qna.getIndex());
             jdbcTemplate.update("UPDATE QNA " +
-                    "SET writer = ?, titile = ?, contents = ?" +
-                    "WHERE index = ?", qna.getWriter(), qna.getTitle(), qna.getContents(), qna.getIndex());
+                    "SET writer = ?, title = ?, contents = ?" +
+                    "WHERE `index` = ?", qna.getWriter(), qna.getTitle(), qna.getContents(), qna.getIndex());
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
             jdbcTemplate.update("INSERT INTO QNA(writer, title, contents)" +
                     "VALUES(?, ? ,?)", qna.getWriter(), qna.getTitle(), qna.getContents());
@@ -36,16 +36,21 @@ public class JdbcQnaRepositoryImpl implements QnaRepository {
 
     @Override
     public List<Qna> findAll() {
-        return jdbcTemplate.query("SELECT index, writer, title, contents FROM QNA", this::qnaMapRow);
+        return jdbcTemplate.query("SELECT `index`, writer, title, contents FROM QNA", this::qnaMapRow);
     }
 
     @Override
     public Optional<Qna> findByIndex(Integer index) {
         try {
-            return Optional.of(jdbcTemplate.queryForObject("SELECT index, writer, title, contents FROM QNA WHERE index = ?", this::qnaMapRow, index));
+            return Optional.of(jdbcTemplate.queryForObject("SELECT `index`, writer, title, contents FROM QNA WHERE `index` = ?", this::qnaMapRow, index));
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public void deleteByIndex(Integer index) {
+        jdbcTemplate.update("delete from QNA where `index` = ?", index);
     }
 
     private Qna qnaMapRow(ResultSet resultSet, int rowNum) throws SQLException {

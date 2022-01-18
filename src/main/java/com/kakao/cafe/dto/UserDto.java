@@ -157,4 +157,20 @@ public class UserDto {
             return name;
         }
     }
+
+    public static class UserProfileForUpdateReponse {
+        private String userId;
+        private String name;
+        private String email;
+
+        public UserProfileForUpdateReponse(String userId, String name, String email) {
+            this.userId = userId;
+            this.name = name;
+            this.email = email;
+        }
+
+        public static UserProfileForUpdateReponse of(User user) {
+            return new UserProfileForUpdateReponse(user.getUserId(), user.getName(), user.getEmail());
+        }
+    }
 }

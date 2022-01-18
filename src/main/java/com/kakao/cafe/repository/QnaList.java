@@ -27,4 +27,8 @@ public class QnaList {
     public Qna findQnaByIndex(Integer index) {
         return qnaList.get(index - 1);
     }
+
+    public void deleteByIndex(Integer index) {
+        qnaList.removeIf(qna -> qna.getIndex().equals(index));
+    }
 }
