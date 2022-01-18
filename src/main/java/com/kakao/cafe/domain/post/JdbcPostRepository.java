@@ -16,20 +16,20 @@ public class JdbcPostRepository implements PostRepository{
 
     @Override
     public void save(Post post) {
-        String sql = "INSERT INTO `POST` (title, content, writer) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getWriter());
+        String sql = "INSERT INTO `POST` (title, content, writer, regDateTime) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getWriter(), post.getRegDateTime());
     }
 
     @Override
     public List<Post> findAll() {
-        String sql = "SELECT id, title, content, writer, regDate FROM `POST`";
+        String sql = "SELECT id, title, content, writer, regDateTime FROM `POST`";
         return jdbcTemplate.query(sql, getPostRowMapper());
     }
 
 
     @Override
     public Optional<Post> findById(Long id) {
-        String sql = "SELECT id, title, content, writer, regDate FROM `POST` WHERE id=?";
+        String sql = "SELECT id, title, content, writer, regDateTime FROM `POST` WHERE id=?";
         Post post = jdbcTemplate.queryForObject(sql, getPostRowMapper(), id);
         return Optional.ofNullable(post);
     }
@@ -43,7 +43,7 @@ public class JdbcPostRepository implements PostRepository{
             post.setTitle(rs.getString("title"));
             post.setContent(rs.getString("content"));
             post.setWriter(rs.getString("writer"));
-            post.setRegDate(rs.getDate("regDate"));
+            post.setRegDateTime(rs.getTimestamp("regDateTime").toLocalDateTime());
 
             return post;
         };
