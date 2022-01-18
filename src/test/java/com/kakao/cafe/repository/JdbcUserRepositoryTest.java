@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class JdbcUserRepositoryTest {
 
     private final String userId = "testUserId";
@@ -35,7 +37,6 @@ class JdbcUserRepositoryTest {
 
     @Autowired
     UserMapper userMapper;
-
 
     @Test
     @DisplayName("[성공] JdbcUserRepository 클래스 생성")
@@ -56,8 +57,9 @@ class JdbcUserRepositoryTest {
     }
 
     @Test
+    @DisplayName("[성공] JdbcUserRepository 유저 전체 조회")
     void readUsers() {
-        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(new JdbcTemplate(new JdbcConfig().dataSource()), new UserMapper(), new SecurityConfig().passwordEncoder());
+        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate, userMapper, new SecurityConfig().passwordEncoder());
         User user = new User(userId, password, email);
         User user2 = new User(userId2, password2, email2);
 
@@ -71,6 +73,19 @@ class JdbcUserRepositoryTest {
     }
 
     @Test
+    @DisplayName("[성공] JdbcUserRepository 유저 단일 조회")
     void readUser() {
+        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate, userMapper, new SecurityConfig().passwordEncoder());
+        User user = new User(userId, password, email);
+        User user2 = new User(userId2, password2, email2);
+
+        // when
+        jdbcUserRepository.createUser(user);
+        jdbcUserRepository.createUser(user2);
+
+        // then
+        User answer = jdbcUserRepository.readUser(userId2);
+        Assertions.assertEquals("testUserId2", answer.getUserId());
+
     }
 }

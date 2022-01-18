@@ -29,7 +29,10 @@ public class JdbcUserRepository {
     }
 
     public User readUser(String userId) {
-        return null;
+        String sqlQuery = "SELECT * FROM MEMBER WHERE userId = ?";
+        return jdbcTemplate.queryForObject(sqlQuery, userMapper, userId);
+//        return jdbcTemplate.query("sqlQuery", userMapper, userId);
+
     }
 
 }
