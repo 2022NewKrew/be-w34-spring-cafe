@@ -1,3 +1,6 @@
+##DB 설정파일
+src/main/resources/application-db.properties
+
 HELP.md
 .gradle
 build/

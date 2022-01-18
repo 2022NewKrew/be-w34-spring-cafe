@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Objects;
 
 @Repository("articleRepository")
 public class ArticleRepositoryImpl implements ArticleRepository {
@@ -24,19 +25,19 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     public long insertArticle(ArticleDTO article) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("insert into ARTICLETABLE (WRITERID, TITLE, CONTENTS, time) values (?,?,?,now())", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = connection.prepareStatement("insert into  ArticleTable (WRITERID, TITLE, CONTENTS, time) values (?,?,?,now())", Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, article.getWriterId());
             ps.setString(2, article.getTitle());
             ps.setString(3, article.getContents());
             return ps;
         }, keyHolder);
 
-        return (long) keyHolder.getKey();
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
     @Override
     public List<ArticleDTO> getAllArticle() {
-        return jdbcTemplate.query("select A.id, WRITERID, USERID as writer, title, contents, views, to_char(A.time,'yyyy-MM-dd hh:mi') time from USERTABLE U join ARTICLETABLE A on U.ID = A.WRITERID",
+        return jdbcTemplate.query("select A.id, WRITERID, USERID as writer, title, contents, views, date_format(A.time,'%Y-%m-%d %H:%i') time from UserTable U join ArticleTable A on U.ID = A.WRITERID",
                 (rs, rowNum) -> new ArticleDTO(
                         rs.getLong("id"),
                         rs.getLong("writerId"),
@@ -53,7 +54,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public ArticleDTO getArticleById(long id) {
         return jdbcTemplate
-                .queryForObject("select A.id, WRITERID, USERID as writer, title, contents,views,  to_char(A.time,'yyyy-MM-dd hh:mi') time from USERTABLE U join ARTICLETABLE A on U.ID = A.WRITERID where A.ID = ?",
+                .queryForObject("select A.id, WRITERID, USERID as writer, title, contents,views,  date_format(A.time,'%Y-%m-%d %H:%i') time from UserTable U join ArticleTable A on U.ID = A.WRITERID where A.ID = ?",
                         (rs, rowNum) -> new ArticleDTO(
                                 rs.getLong("id"),
                                 rs.getLong("writerId"),
@@ -67,7 +68,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public int increaseViews(long articleId) {
-        return jdbcTemplate.update("update ARTICLETABLE set views = views+1 where id = ?",
+        return jdbcTemplate.update("update ArticleTable set views = views+1 where id = ?",
                 articleId);
     }
 }
