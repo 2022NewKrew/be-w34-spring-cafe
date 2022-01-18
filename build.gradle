@@ -26,6 +26,9 @@ dependencies {
 	
 	// jdbc template
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+	// mysql
+	implementation('mysql:mysql-connector-java')
 }
 
 test {
