@@ -9,9 +9,10 @@ services:
       dockerfile: Dockerfile
     container_name: api_server
     ports:
-      - "80:8080"
+      - "8081:8080"
     depends_on:
-      - database
+      database:
+        condition: service_healthy
 
   database:
     restart: always
@@ -21,3 +22,7 @@ services:
     ports:
       - "3306:3306"
     env_file: ./.env
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
