@@ -36,21 +36,27 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/{userId}/form")
-    public String updateUserHtml(@PathVariable("userId") String userId, HttpSession session, Model model) throws AccessDeniedException {
+    @GetMapping("/{userId}/updateform")
+    public String updateUserByUserIdHtml(@PathVariable("userId") String userId, HttpSession session) throws AccessDeniedException {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        userService.validateAuthForUpdateUser(sessionedUser.getUserId(), userId);
+        userService.validateAuthForUpdateUser(userId, sessionedUser.getUserId());
 
-        UserDto.UserProfileResponse userProfileResponse = userService.readUser(userId);
+        return "redirect:/users/updateform";
+    }
+
+    @GetMapping("/updateform")
+    public String updateUserHtml(HttpSession session, Model model) {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+
+        UserDto.UserProfileResponse userProfileResponse = userService.readUser(sessionedUser.getUserId());
         model.addAttribute("user", userProfileResponse);
         return "user/updateForm";
     }
 
-    @PostMapping("/{userId}")
-    public String updateUser(@PathVariable("userId") String userId, @ModelAttribute("user") UserDto.UpdateUserProfileRequest updateUserProfileRequest,
-                             HttpSession session) throws AccessDeniedException {
+    @PostMapping
+    public String updateUser(@ModelAttribute("user") UserDto.UpdateUserProfileRequest updateUserProfileRequest, HttpSession session) {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        userService.updateUser(userId, updateUserProfileRequest, sessionedUser.getUserId());
+        userService.updateUser(sessionedUser.getUserId(), updateUserProfileRequest);
         return "redirect:/users";
     }
 }

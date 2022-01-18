@@ -48,9 +48,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(String userId, UserDto.UpdateUserProfileRequest updateUserProfileRequest, String loginUserId) throws AccessDeniedException {
-        validateAuthForUpdateUser(loginUserId, userId);
-
+    public void updateUser(String userId, UserDto.UpdateUserProfileRequest updateUserProfileRequest) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException("Not Found User (user id: " + userId + ")"));
 
