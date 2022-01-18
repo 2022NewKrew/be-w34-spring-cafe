@@ -17,7 +17,7 @@ public class ArticleDao implements ArticleDAOInterface {
     }
 
     @Override
-    public void save(Article article) {
+    public void insert(Article article) {
         jakeDB.getArticleList().add(article);
     }
 

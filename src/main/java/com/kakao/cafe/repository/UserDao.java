@@ -17,7 +17,7 @@ public class UserDao implements UserDAOInterface {
     }
 
     @Override
-    public void save(User user) {
+    public void insert(User user) {
         jakeDB.getUserList().add(user);
     }
 

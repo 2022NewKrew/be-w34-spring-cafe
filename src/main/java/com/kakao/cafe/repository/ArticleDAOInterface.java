@@ -7,7 +7,7 @@ import java.util.List;
 
 @Repository
 public interface ArticleDAOInterface {
-    void save(Article article);
+    void insert(Article article);
 
     public List<Article> findAll();
 

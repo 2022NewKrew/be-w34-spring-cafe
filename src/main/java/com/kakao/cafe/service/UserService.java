@@ -27,7 +27,7 @@ public class UserService {
             throw new IllegalArgumentException("아이디가 이미 존재합니다");
         }
         User createUser = new User(createUserDto);
-        userDAO.save(createUser);
+        userDAO.insert(createUser);
     }
 
     public List<ShowUserDto> findAll() {

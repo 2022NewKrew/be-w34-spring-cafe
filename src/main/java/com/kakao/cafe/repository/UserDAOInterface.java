@@ -5,7 +5,7 @@ import com.kakao.cafe.domain.User;
 import java.util.List;
 
 public interface UserDAOInterface {
-    void save(User user);
+    void insert(User user);
 
     void editUser(String userId, String name, String email);
 

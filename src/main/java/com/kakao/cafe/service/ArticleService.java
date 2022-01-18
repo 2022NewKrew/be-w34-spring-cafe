@@ -23,7 +23,7 @@ public class ArticleService {
 
     public void save(CreateArticleDto createArticleDto) {
         Article article = new Article(createArticleDto);
-        articleDAO.save(article);
+        articleDAO.insert(article);
     }
 
     public List<ShowArticleDto> findAll() {
