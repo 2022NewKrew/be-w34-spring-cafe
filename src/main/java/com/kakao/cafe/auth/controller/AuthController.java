@@ -4,7 +4,6 @@ import com.kakao.cafe.auth.dto.LoginRequest;
 import com.kakao.cafe.auth.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,6 +17,12 @@ public class AuthController {
     @PostMapping("/login")
     public String login(LoginRequest loginRequest){
         authService.login(loginRequest);
+        return "redirect:/";
+    }
+
+    @PostMapping("/logout")
+    public String logout(){
+        authService.logout();
         return "redirect:/";
     }
 }

@@ -27,6 +27,10 @@ public class AuthService {
         }
     }
 
+    public void logout(){
+        session.removeAttribute("LOGIN_USER_ID");
+    }
+
     public void validatePassword(String userPassword, String requestPassword){
         if(!userPassword.equals(requestPassword)){
             throw new IdPasswordMismatchException();
