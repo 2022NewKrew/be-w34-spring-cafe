@@ -9,13 +9,13 @@ import com.kakao.cafe.application.user.port.in.GetUserInfoUseCase;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.sql.DataSource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -30,9 +30,6 @@ class UserInfoControllerTest {
 
     @MockBean
     private GetUserInfoUseCase getUserInfoUseCase;
-
-    @MockBean
-    private DataSource dataSource;
 
     @DisplayName("회원 목록 출력 테스트")
     @Test
@@ -74,6 +71,44 @@ class UserInfoControllerTest {
                .andExpect(MockMvcResultMatchers.status().isOk())
                .andExpect(MockMvcResultMatchers.model().attribute("name", name))
                .andExpect(MockMvcResultMatchers.model().attribute("email", email))
+               .andDo(MockMvcResultHandlers.print());
+    }
+
+    @DisplayName("개인 정보 변경 화면 출력 성공 테스트")
+    @Test
+    void displayUpdateUserInfoSuccess() throws Exception {
+        String userId = "champ";
+        String name = "HaChanho";
+        String email = "champ@kakao.com";
+        UserInfo givenUserInfo = new UserInfo(userId, name, email);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("sessionedUser", userId);
+        String url = "/users/" + userId + "/form";
+        given(getUserInfoUseCase.getUserProfile(userId)).willReturn(givenUserInfo);
+
+        // then
+        mockMvc.perform(MockMvcRequestBuilders.get(url).session(session).accept(MediaType.TEXT_HTML))
+               .andExpect(MockMvcResultMatchers.status().isOk())
+               .andExpect(MockMvcResultMatchers.model().attribute("user", givenUserInfo))
+               .andDo(MockMvcResultHandlers.print());
+    }
+
+    @DisplayName("개인 정보 변경 권한 오류 테스트")
+    @Test
+    void displayUpdateUserInfoFail() throws Exception {
+        String sessionedUserId = "kakao";
+        String userId = "champ";
+        String name = "HaChanho";
+        String email = "champ@kakao.com";
+        UserInfo givenUserInfo = new UserInfo(userId, name, email);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("sessionedUser", sessionedUserId);
+        String url = "/users/" + userId + "/form";
+        given(getUserInfoUseCase.getUserProfile(userId)).willReturn(givenUserInfo);
+
+        // then
+        mockMvc.perform(MockMvcRequestBuilders.get(url).session(session).accept(MediaType.TEXT_HTML))
+               .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                .andDo(MockMvcResultHandlers.print());
     }
 }
