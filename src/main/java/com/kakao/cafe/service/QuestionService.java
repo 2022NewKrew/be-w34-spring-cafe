@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class QuestionService {
     @Autowired
-    @Qualifier("QuestionRepositoryJdbc")
+    @Qualifier("QuestionRepositoryList")
     private QuestionRepository questionRepository;
 
     public void save(QuestionSaveDto questionSaveDto){
@@ -30,12 +30,15 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
+    public void deleteById(int id){
+        questionRepository.deleteById(id);
+    }
 
     public List<QuestionResponseDto> findAll(){
         return QuestionMapper.INSTANCE.toDtoList(questionRepository.findAll());
     }
 
-    public QuestionResponseDto findbyId(int id){
+    public QuestionResponseDto findById(int id){
         return QuestionMapper.INSTANCE.toDto(questionRepository.findById(id));
     }
 }

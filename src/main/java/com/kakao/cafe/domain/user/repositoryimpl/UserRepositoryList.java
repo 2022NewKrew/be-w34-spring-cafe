@@ -10,7 +10,7 @@ import java.util.List;
 @Repository("UserRepositoryList")
 public class UserRepositoryList implements UserRepository {
     private List<User> users = new ArrayList<User>();
-    private int maxIndex = 0;
+    private int maxIndex = 1;
 
     @Override
     public User save(User user){

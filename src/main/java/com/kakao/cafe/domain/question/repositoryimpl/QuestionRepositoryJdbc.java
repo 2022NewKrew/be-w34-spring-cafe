@@ -25,7 +25,7 @@ public class QuestionRepositoryJdbc implements QuestionRepository {
 
     @Override
     public Question findById(int id) {
-        String sql = "SELECT ID, USER_ID, TITLE, WRITER, CONTENTS, CREATED_AT FROM `QUESTION` WHERE ID = ?";
+        String sql = "SELECT ID, USER_ID, TITLE, WRITER, CONTENTS, CREATED_AT FROM `QUESTION` WHERE ID = ? and IS_DELETED=FALSE";
         try{
             return this.jdbcTemplate.queryForObject(sql,
                     (rs, rowNum) -> Question.builder()
@@ -44,7 +44,7 @@ public class QuestionRepositoryJdbc implements QuestionRepository {
 
     @Override
     public List<Question> findAll() {
-        String sql = "SELECT ID, USER_ID, TITLE, WRITER, CONTENTS, CREATED_AT FROM `QUESTION`";
+        String sql = "SELECT ID, USER_ID, TITLE, WRITER, CONTENTS, CREATED_AT FROM `QUESTION` WHERE IS_DELETED=FALSE";
         return this.jdbcTemplate.query(sql,
                 (rs, rowNum) -> Question.builder()
                         .id(rs.getInt("ID"))
@@ -55,6 +55,12 @@ public class QuestionRepositoryJdbc implements QuestionRepository {
                         .createdAt(rs.getTimestamp("CREATED_AT").toLocalDateTime())
                         .build()
                 );
+    }
+
+    @Override
+    public void deleteById(int id){
+        String sql = "UPDATE `QUESTION` SET IS_DELETED=? WHERE ID=?";
+        jdbcTemplate.update(sql, true, id);
     }
 
     private void insert(Question question){

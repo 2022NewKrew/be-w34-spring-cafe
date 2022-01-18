@@ -36,14 +36,14 @@ public class QuestionController {
     }
 
     @GetMapping("/questions/{id}")
-    public String findbyId(@PathVariable int id, Model model) {
-        model.addAttribute("question", questionService.findbyId(id));
+    public String findById(@PathVariable int id, Model model) {
+        model.addAttribute("question", questionService.findById(id));
         return "qna/show";
     }
 
     @GetMapping("/questions/{id}/form")
     public String serveUpdateForm(@PathVariable int id, Model model) {
-        model.addAttribute("question", questionService.findbyId(id));
+        model.addAttribute("question", questionService.findById(id));
         return "qna/updateForm";
     }
 
@@ -55,5 +55,15 @@ public class QuestionController {
         }
         questionService.update(id, questionUpdateDto);
         return "redirect:/questions/"+id;
+    }
+
+    @DeleteMapping("/questions/{id}")
+    public String update(@PathVariable int id, HttpSession session) {
+        User user = (User)session.getAttribute("sessionedUser");
+        if (user.getId() != questionService.findById(id).getUserId()){
+            throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 게시글의 사용자 정보가 다릅니다.");
+        }
+        questionService.deleteById(id);
+        return "redirect:/";
     }
 }

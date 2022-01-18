@@ -1,10 +1,12 @@
 package com.kakao.cafe.dto.question;
 
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Builder
+@Getter
 public class QuestionResponseDto {
     private int id;
     private int userId;
