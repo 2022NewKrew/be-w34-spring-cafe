@@ -46,8 +46,4 @@ public class UserService {
     public boolean isExistUser(String userId){
         return userRepository.findOneByUserId(userId).isPresent();
     }
-
-    public User getOneByUserId(String userId){
-        return userRepository.findOneByUserId(userId).orElseThrow(UserNotExistException::new);
-    }
 }
