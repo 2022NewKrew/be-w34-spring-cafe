@@ -39,4 +39,16 @@ public class ArticleService {
 
         return articleMapper.toArticleDetailResDto(articleEntity);
     }
+
+    public void update(ArticleReqDto articleReqDto) {
+        ArticleEntity articleEntity = articleRepository.findById(articleReqDto.getId())
+                .orElseThrow();
+
+        articleEntity.update(articleReqDto.getTitle(), articleReqDto.getContents());
+        articleRepository.save(articleEntity);
+    }
+
+    public void delete(Long id) {
+        articleRepository.delete(id);
+    }
 }

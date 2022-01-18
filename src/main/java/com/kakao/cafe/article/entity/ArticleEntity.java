@@ -29,4 +29,9 @@ public class ArticleEntity {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public void update(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 }
