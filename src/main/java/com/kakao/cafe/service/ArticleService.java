@@ -29,12 +29,10 @@ public class ArticleService {
     }
 
     public List<ArticleDto> getArticleList() {
-        return articleRepository.findAll().
-                map(articles -> articles
+        return articleRepository.findAll()
                         .stream()
                         .map(ArticleDto::entityToDto)
-                        .collect(Collectors.toList())
-                ).orElse(null);
+                        .collect(Collectors.toList());
     }
 
     public ArticleDto findById(String index) {
