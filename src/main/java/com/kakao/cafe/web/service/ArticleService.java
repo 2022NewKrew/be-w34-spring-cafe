@@ -23,6 +23,7 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    @Transactional
     public void update(Article newArticle, Long id) {
         Optional<Article> article = articleRepository.findById(id);
         if (article.isEmpty()) {
@@ -32,6 +33,15 @@ public class ArticleService {
         updateArticle.setTitle(newArticle.getTitle());
         updateArticle.setContent(newArticle.getContent());
         articleRepository.update(updateArticle);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Optional<Article> article = articleRepository.findById(id);
+        if (article.isEmpty()) {
+            throw new IllegalArgumentException("존재하지 않는 게시글입니다.");
+        }
+        articleRepository.delete(id);
     }
 
     public List<Article> findArticles() {

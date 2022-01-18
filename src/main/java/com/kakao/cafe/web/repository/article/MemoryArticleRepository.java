@@ -29,8 +29,19 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public void delete(Long id) {
+        articles.stream()
+                .filter(article -> id.equals(article.getId()))
+                .findFirst()
+                .ifPresent(article -> articles.remove(article));
+
+    }
+
+    @Override
     public Optional<Article> findById(Long id) {
-        return Optional.ofNullable(articles.get((int) (id - 1)));
+        return articles.stream()
+                .filter(article -> id.equals(article.getId()))
+                .findFirst();
     }
 
     @Override

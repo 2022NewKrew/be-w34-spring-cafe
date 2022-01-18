@@ -9,10 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
@@ -114,10 +111,32 @@ public class ArticleController {
             return "error/401";
         }
         // article 수정
-        logger.info("POST /articles/{}/update: request {} and update", id, newArticle);
+        logger.info("PUT /articles/{}/update: request {} and update", id, newArticle);
         try {
             articleService.update(newArticle, id);
             return "redirect:/articles/{id}";
+        } catch (IllegalArgumentException e) {
+            return "error/404";
+        }
+    }
+
+    @DeleteMapping ("/articles/{id}/delete")
+    public String deleteArticle(@PathVariable Long id, HttpSession session) {
+        // article 찾기
+        Optional<Article> article = articleService.findArticle(id);
+        if (article.isEmpty()) {
+            return "error/404";
+        }
+        // sessionUser 찾기
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null || !article.get().getWriter().equals(sessionUser.getUserId())) {
+            return "error/401";
+        }
+        // article 삭제
+        logger.info("DELETE /articles/{}/delete: request article delete", id);
+        try {
+            articleService.delete(id);
+            return "redirect:/";
         } catch (IllegalArgumentException e) {
             return "error/404";
         }

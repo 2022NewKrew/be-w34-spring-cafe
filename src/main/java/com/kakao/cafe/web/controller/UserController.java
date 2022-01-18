@@ -115,7 +115,7 @@ public class UserController {
         if (sessionUser == null || !userId.equals(sessionUser.getUserId())) {
             return "error/401";
         }
-        logger.info("POST /users/{}/update: request {} and update", userId, newUser);
+        logger.info("PUT /users/{}/update: request {} and update", userId, newUser);
         // user 수정
         try {
             userService.update(newUser, userId);

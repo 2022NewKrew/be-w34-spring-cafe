@@ -1,7 +1,6 @@
 package com.kakao.cafe.web.repository.article;
 
 import com.kakao.cafe.web.domain.Article;
-import com.kakao.cafe.web.domain.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -35,6 +34,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
         String sql = "update `articles` set `title` = :title, `content` = :content, `writer` = :writer where `id` = :id";
         BeanPropertySqlParameterSource paramSource = new BeanPropertySqlParameterSource(article);
         jdbcTemplate.update(sql, paramSource);
+    }
+
+    @Override
+    public void delete(Long id) {
+        SqlParameterSource param = new MapSqlParameterSource("id", id);
+        String sql = "delete from articles where id = :id";
+        jdbcTemplate.update(sql, param);
     }
 
     @Override

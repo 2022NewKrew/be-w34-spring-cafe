@@ -30,7 +30,10 @@
                       {{#isWriter}}
                       <div class="post-btn-container">
                           <a class="post-write-btn" href="/articles/{{article.id}}/form" class="btn btn-primary pull-right" role="button">수정</a>
-                          <a class="post-write-btn" href="" class="btn btn-primary pull-right" role="button">삭제</a>
+                          <form method="post" action="/articles/{{article.id}}/delete">
+                              <input type="hidden" name="_method" value="DELETE"/>
+                              <input class="post-write-btn" class="btn btn-primary pull-right" type="submit" value="삭제"/>
+                          </form>
                       </div>
                       {{/isWriter}}
 
