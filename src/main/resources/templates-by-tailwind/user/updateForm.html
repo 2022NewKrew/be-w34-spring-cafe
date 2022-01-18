@@ -12,12 +12,12 @@
     <div class="flex justify-center my-8">
         <div>
             <h1 class="text-4xl text-center font-medium tracking-wider mb-16">회원정보 수정</h1>
-            <form class="flex flex-col space-y-8" action="/users/{{ user.id }}" method="post">
+            <form class="flex flex-col space-y-8" action="/users/{{ currentUser.id }}" method="post">
                 <input type="hidden" name="_method" value="put" />
                 <div class="relative">
                     <div class="px-4 py-2 border">
                         <label for="email" class="inline-block w-28">이메일</label>
-                        <input type="email" class="w-64 placeholder:text-sm" id="email" name="email" value="{{ user.email }}" placeholder="이메일을 입력하세요" />
+                        <input type="email" class="w-64 placeholder:text-sm" id="email" name="email" value="{{ currentUser.email }}" placeholder="이메일을 입력하세요" />
                     </div>
                     {{#email}}
                     <p class="absolute -bottom-6 left-32 text-sm text-red-500">{{this}}</p>
@@ -26,7 +26,7 @@
                 <div class="relative">
                     <div class="px-4 py-2 border">
                         <label for="nickname" class="inline-block w-28">닉네임</label>
-                        <input class="w-64 placeholder:text-sm" id="nickname" name="nickname" value="{{ user.nickname }}" placeholder="닉네임을 입력하세요" />
+                        <input class="w-64 placeholder:text-sm" id="nickname" name="nickname" value="{{ currentUser.nickname }}" placeholder="닉네임을 입력하세요" />
                     </div>
                     {{#nickname}}
                     <p class="absolute -bottom-6 left-32 text-sm text-red-500">{{this}}</p>

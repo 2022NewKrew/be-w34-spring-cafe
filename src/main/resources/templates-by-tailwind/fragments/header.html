@@ -10,7 +10,7 @@
         {{/currentUser}}
         {{#currentUser}}
         <a href="/logout" class="text-sm px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black">로그아웃</a>
-        <a href="#" class="text-sm px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black">개인정보수정</a>
+        <a href="/users/{{currentUser.id}}/update" class="text-sm px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black">개인정보수정</a>
         {{/currentUser}}
     </div>
 </header>
