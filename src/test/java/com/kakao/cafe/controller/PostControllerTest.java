@@ -92,7 +92,7 @@ class PostControllerTest {
 
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/index"));
+                .andExpect(view().name("post/list"));
     }
 
     @Test
@@ -100,7 +100,7 @@ class PostControllerTest {
     void postList_By_EmptyPost() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/index"));
+                .andExpect(view().name("post/list"));
     }
 
     @Test
