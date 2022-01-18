@@ -23,22 +23,14 @@ public class ArticleController {
     }
 
     @PostMapping
-    public String publish(ArticleRequest articleRequest, HttpSession session) {
-        Auth auth = (Auth) session.getAttribute("auth");
-        if (auth == null) {
-            return "redirect:/user/login";
-        }
+    public String publish(ArticleRequest articleRequest) {
         articleService.publishArticle(articleRequest);
 
         return "redirect:/";
     }
 
     @GetMapping("/{articleId}")
-    public String getArticle(@PathVariable Long articleId, Model model, HttpSession session) {
-        Auth auth = (Auth) session.getAttribute("auth");
-        if (auth == null) {
-            return "redirect:/user/login";
-        }
+    public String getArticle(@PathVariable Long articleId, Model model) {
         ArticleDto article = articleService.findById(articleId);
         model.addAttribute("article", article);
 
@@ -49,7 +41,7 @@ public class ArticleController {
     public String updateForm(@PathVariable Long articleId, Model model, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
         ArticleDto article = articleService.findById(articleId);
-        if (auth == null || !auth.validateById(article.getAuthorId())) {
+        if (!auth.validateById(article.getAuthorId())) {
             throw new UnauthorizedAccessException("인가되지 않은 접근입니다.");
         }
         model.addAttribute("article", article);
@@ -61,7 +53,7 @@ public class ArticleController {
     public String updateArticle(@PathVariable Long articleId, ArticleUpdateRequest articleUpdateRequest, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
         ArticleDto article = articleService.findById(articleId);
-        if (auth == null || !auth.validateById(article.getAuthorId())) {
+        if (!auth.validateById(article.getAuthorId())) {
             throw new UnauthorizedAccessException("인가되지 않은 접근입니다.");
         }
         articleService.update(articleId, articleUpdateRequest);
@@ -73,7 +65,7 @@ public class ArticleController {
     public String deleteArticle(@PathVariable Long articleId, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
         ArticleDto article = articleService.findById(articleId);
-        if (auth == null || !auth.validateById(article.getAuthorId())) {
+        if (!auth.validateById(article.getAuthorId())) {
             throw new UnauthorizedAccessException("인가되지 않은 접근입니다.");
         }
         articleService.delete(articleId);

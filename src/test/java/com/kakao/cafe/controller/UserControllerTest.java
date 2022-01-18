@@ -59,10 +59,15 @@ class UserControllerTest {
     @Test
     @DisplayName("[GET] /users/{userId} - 존재하는 유저의 상세정보를 조회할 수 있다")
     void profile() throws Exception {
+        MockHttpSession mockSession = new MockHttpSession();
+        mockSession.setAttribute("auth", new Auth(FIRST_USER_ID));
+
         Mockito.when(userService.findById(FIRST_USER_ID))
                 .thenReturn(new UserDto(mockUser));
 
-        mockMvc.perform(get("/users/" + FIRST_USER_ID))
+        mockMvc.perform(get("/users/" + FIRST_USER_ID)
+                        .session(mockSession)
+                )
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/profile"))
                 .andExpect(model().attributeExists("user"));
@@ -72,10 +77,15 @@ class UserControllerTest {
     @Test
     @DisplayName("[GET] /users/{userId} - 존재하지 않는 유저의 상세정보를 조회할 수 없다")
     void failToGetUserProfile() throws Exception {
+        MockHttpSession mockSession = new MockHttpSession();
+        mockSession.setAttribute("auth", new Auth(FIRST_USER_ID));
+
         Mockito.when(userService.findById(FIRST_USER_ID))
                         .thenThrow(new UserNotFoundException("error test"));
 
-        mockMvc.perform(get("/users/" + FIRST_USER_ID))
+        mockMvc.perform(get("/users/" + FIRST_USER_ID)
+                        .session(mockSession)
+                )
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("error"))
                 .andExpect(model().attributeDoesNotExist("user"))
