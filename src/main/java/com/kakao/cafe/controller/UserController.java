@@ -1,6 +1,8 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.user.LoginDto;
 import com.kakao.cafe.dto.user.SignUpDto;
+import com.kakao.cafe.dto.user.UserInfoDto;
 import com.kakao.cafe.exceptions.NoSuchUserException;
 import com.kakao.cafe.exceptions.PasswordMismatchException;
 import com.kakao.cafe.exceptions.UserIdDuplicationException;
@@ -10,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Controller
@@ -60,6 +64,20 @@ public class UserController {
     @PatchMapping("users/{userId}/update")
     public String updateUserInfo(SignUpDto signUpDto, @PathVariable String userId) throws PasswordMismatchException, NoSuchUserException {
         this.userService.updateUser(signUpDto);
+        return "redirect:/users";
+    }
+
+    // 로그인 페이지
+    @GetMapping("/user/login")
+    public String loginForm() {
+        return "user/login";
+    }
+
+    // 로그인
+    @PostMapping("/login")
+    public String login(LoginDto loginDto, HttpSession session) throws PasswordMismatchException, NoSuchUserException {
+        UserInfoDto userInfoDto = this.userService.login(loginDto);
+        session.setAttribute("sessionedUser", userInfoDto);
         return "redirect:/users";
     }
 }

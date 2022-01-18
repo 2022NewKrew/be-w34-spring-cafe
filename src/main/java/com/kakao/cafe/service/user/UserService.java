@@ -2,6 +2,7 @@ package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.Entity.User;
 import com.kakao.cafe.domain.Repository.user.UserRepository;
+import com.kakao.cafe.dto.user.LoginDto;
 import com.kakao.cafe.dto.user.SignUpDto;
 import com.kakao.cafe.dto.user.UserInfoDto;
 import com.kakao.cafe.exceptions.NoSuchUserException;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public void saveNewUser(SignUpDto signUpDto) throws UserIdDuplicationException {
         if (this.userRepository.isUserIdExist(signUpDto.getUserId())) {
@@ -43,6 +44,14 @@ public class UserService {
             throw new PasswordMismatchException();
         }
         this.userRepository.updateUser(signUpDto.toEntity());
+    }
+
+    public UserInfoDto login(LoginDto loginDto) throws NoSuchUserException, PasswordMismatchException {
+        User user = this.userRepository.findUserByUserId(loginDto.getUserId());
+        if (!user.getPassword().equals(loginDto.getPassword())) {
+            throw new PasswordMismatchException();
+        }
+        return new UserInfoDto(user);
     }
 
 }
