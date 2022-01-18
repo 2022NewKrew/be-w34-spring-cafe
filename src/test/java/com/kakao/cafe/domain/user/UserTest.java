@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
-    User user = new User(0,"cih468","1234","cih468@naver.com");
+    User user = new User("cih468", "1234", "cih468@naver.com");
 
     @Test
-    void getUserId(){
-        assertEquals(user.getUserId(),"cih468");
+    void getUserId() {
+        assertEquals(user.getUserId(), "cih468");
     }
 }
