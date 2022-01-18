@@ -1,1 +1,1 @@
-INSERT INTO USERS VALUES (0,'cih468','1234','cih468@naver.com','2022-01-17');
+INSERT INTO USERS VALUES (0,'admin','1234','admin@kakaocorp.com','2022-01-17');
