@@ -5,12 +5,14 @@ import com.kakao.cafe.domain.Member;
 import com.kakao.cafe.dto.PostCreateDto;
 import com.kakao.cafe.dto.PostDetailDto;
 import com.kakao.cafe.dto.PostListItemDto;
+import com.kakao.cafe.dto.PostUpdateDto;
 import com.kakao.cafe.repository.PostRepository;
 import com.kakao.cafe.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,12 +30,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void create(PostCreateDto postCreateDto) {
-        Member member = memberRepository.findByUserId(postCreateDto.getWriter());
-        if (member == null)
-            throw new IllegalArgumentException("user not found");
+    public void create(PostCreateDto postCreateDto, HttpSession session) {
+        Member loginMember = (Member)session.getAttribute("sessionedUser");
 
-        Post post = Post.of(postCreateDto, member);
+        Post post = Post.of(postCreateDto, loginMember);
         postRepository.save(post);
     }
 
@@ -54,5 +54,47 @@ public class PostServiceImpl implements PostService {
         post.updateViewCount();
         postRepository.update(post);
         return PostDetailDto.of(post);
+    }
+
+    @Override
+    public void delete(int questionId, HttpSession session) {
+        Member loginMember = (Member)session.getAttribute("sessionedUser");
+
+        Post post = postRepository.findById(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("post not found"));
+
+        if (post.getWriter().getId() != loginMember.getId())
+            throw new IllegalArgumentException("Access denied");
+
+        postRepository.remove(post);
+    }
+
+    @Override
+    public PostDetailDto getUpdate(int questionId, HttpSession session) {
+        Member loginMember = (Member)session.getAttribute("sessionedUser");
+
+        Post post = postRepository.findById(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("post not found"));
+
+        if (post.getWriter().getId() != loginMember.getId())
+            throw new IllegalArgumentException("Access denied");
+
+        return PostDetailDto.of(post);
+    }
+
+    @Override
+    public void update(int questionId, PostUpdateDto postUpdateDto, HttpSession session) {
+        Member loginMember = (Member)session.getAttribute("sessionedUser");
+
+        Post post = postRepository.findById(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("post not found"));
+
+        if (post.getWriter().getId() != loginMember.getId())
+            throw new IllegalArgumentException("Access denied");
+
+        post.setContent(postUpdateDto.getContents());
+        post.setTitle(postUpdateDto.getTitle());
+
+        postRepository.update(post);
     }
 }

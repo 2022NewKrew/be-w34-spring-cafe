@@ -1,13 +1,13 @@
 package com.kakao.cafe.dto;
 
-public class PostCreateDto {
+public class PostUpdateDto {
     private String title;
     private String contents;
 
-    public PostCreateDto() {
+    public PostUpdateDto() {
     }
 
-    public PostCreateDto(String title, String contents) {
+    public PostUpdateDto(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }

@@ -88,8 +88,20 @@ public class PostRepositoryJDBC implements PostRepository {
 
     @Override
     public void update(Post post) {
-        this.jdbcTemplate.update("update Post set viewCount=? where id=?",
-                post.getViewCount(), post.getId());
+        this.jdbcTemplate.update("update Post set " +
+                        "viewCount=?, " +
+                        "title=?, " +
+                        "content=? " +
+                        "where id=?",
+                post.getViewCount(),
+                post.getTitle(),
+                post.getContent(),
+                post.getId());
+    }
+
+    @Override
+    public void remove(Post post) {
+        this.jdbcTemplate.update("delete Post where id=?", post.getId());
     }
 
     private static class PostMapper implements RowMapper<Post> {
