@@ -26,9 +26,15 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String postQuestions(String writer, String title, String contents) {
+    public String postQuestions(String writer, String title, String contents, HttpSession session) {
         logger.info("[postQuestions] writer = {}, title = {}, contents = {}", writer, title, contents);
-        Article article = new Article(0, writer, title, contents);
+        List<User> users = UserController.selectAllUsers(dataSource);
+        Optional<String> validate = SessionController.checkSession(session, users);
+        if(validate.isPresent()) {
+            return "user/login";
+        }
+        User user = (User) session.getAttribute("sessionedUser");
+        Article article = new Article(0, user.getName(), title, contents);
         insertArticle(article);
 
         return "redirect:/";
