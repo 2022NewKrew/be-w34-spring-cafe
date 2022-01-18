@@ -24,7 +24,7 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public String getArticle(@PathVariable Long id, Model model, HttpSession session) {
+    public String showArticle(@PathVariable Long id, Model model, HttpSession session) {
         checkSessionUser(session);
 
         ArticleDetailResDto article = articleService.getArticle(id);
@@ -34,7 +34,7 @@ public class ArticleController {
     }
 
     @GetMapping("/form")
-    public String showArticleForm(HttpSession session) {
+    public String showRegisterForm(HttpSession session) {
         checkSessionUser(session);
 
         return "/qna/form";
@@ -49,7 +49,7 @@ public class ArticleController {
     }
 
     @PutMapping
-    public String updateArticle(@ModelAttribute ArticleReqDto articleReqDto, HttpSession session) {
+    public String updateArticle(@ModelAttribute ArticleReqDto articleReqDto) {
         articleService.update(articleReqDto);
         return "redirect:/articles/" + articleReqDto.getId();
     }
