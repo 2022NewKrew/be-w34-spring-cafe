@@ -18,6 +18,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'
 }
 
 test {

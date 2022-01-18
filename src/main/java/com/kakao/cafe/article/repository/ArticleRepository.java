@@ -3,11 +3,18 @@ package com.kakao.cafe.article.repository;
 import com.kakao.cafe.article.entity.Article;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository {
-    public Article save(Article user);
+    Article save(Article user);
 
-    public Article findById(Long id);
+    Optional<Article> findOneById(Long id);
 
-    public List<Article> findAll();
+    List<Article> findAll();
+
+    void clear();
+
+    void update(long id, String title, String contents, String writer);
+
+    void delete(long id);
 }

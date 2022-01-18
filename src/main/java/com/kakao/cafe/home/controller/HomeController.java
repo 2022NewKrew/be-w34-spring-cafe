@@ -19,6 +19,12 @@ public class HomeController {
         return "user/login";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
     @GetMapping("/login_failed")
     public String loginFailed() {
         return "user/login_failed";
@@ -26,7 +32,7 @@ public class HomeController {
 
     @GetMapping("/profile")
     public String profile(Model model, HttpSession session) {
-        if (session.getAttribute("user") == null) {
+        if (session.getAttribute("sessionedUser") == null) {
             return "redirect:/";
         }
         return "user/profile";
@@ -34,7 +40,7 @@ public class HomeController {
 
     @GetMapping("/question")
     public String question(HttpSession session) {
-        if (session.getAttribute("user") == null) {
+        if (session.getAttribute("sessionedUser") == null) {
             return "redirect:/";
         }
         return "qna/form";
