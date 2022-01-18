@@ -49,5 +49,7 @@
   - Read의 경우, 전체 조회 및 ID로 조회 로직 2개 생성.
 - DTO 클래스를 생성하여 Controller에 도메인 객체가 아닌 DTO 객체를 반환.
 - MvcConfig 파일을 이용하여 정적 리소스를 관리하도록 수정.
-- @Slfj4 이용하여 log 출력코드 간소화
+- @Slfj4 이용하여 log 출력코드 간소화.
 - User와 Article의 고유 id index 값은 Service Layer에서 static 변수가 관리하도록 처리.
+- 생성자 대신 정적 팩토리 메소드를 이용.
+- Article,user의 id 값은 db의 auto increment 를 이용하여 생성한 값을 사용.
