@@ -57,8 +57,7 @@ public class UserController {
         return new ModelAndView("user/updateForm", model);
     }
 
-    // Use @PutMapping
-    @PostMapping("/{userId}/updates")
+    @PutMapping("/{userId}")
     public String updateById(
             @PathVariable String userId,
             UserUpdateRequest userUpdateRequest,
