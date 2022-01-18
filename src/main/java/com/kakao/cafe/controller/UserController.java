@@ -1,15 +1,20 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.user.LoginDto;
 import com.kakao.cafe.dto.user.SignUpDto;
+import com.kakao.cafe.dto.user.UserInfoDto;
 import com.kakao.cafe.exceptions.NoSuchUserException;
 import com.kakao.cafe.exceptions.PasswordMismatchException;
 import com.kakao.cafe.exceptions.UserIdDuplicationException;
+import com.kakao.cafe.exceptions.WrongAccessException;
 import com.kakao.cafe.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Controller
@@ -51,15 +56,37 @@ public class UserController {
 
     // 회원정보 수정 페이지
     @GetMapping("users/{userId}/form")
-    public String updateForm(@PathVariable String userId, Model model) throws NoSuchUserException {
-    model.addAttribute("user", this.userService.getUserByUserId(userId));
-    return "user/updateForm";
+    public String updateForm(@PathVariable String userId, Model model, HttpSession session) throws NoSuchUserException, WrongAccessException {
+        UserInfoDto sessionedUser = (UserInfoDto) session.getAttribute("sessionedUser");
+        if (!userId.equals(sessionedUser.getUserId())) {
+            throw new WrongAccessException();
+        }
+        model.addAttribute("user", this.userService.getUserByUserId(userId));
+        return "user/updateForm";
     }
 
     // 회원정보 수정 요청
     @PatchMapping("users/{userId}/update")
     public String updateUserInfo(SignUpDto signUpDto, @PathVariable String userId) throws PasswordMismatchException, NoSuchUserException {
         this.userService.updateUser(signUpDto);
+        return "redirect:/users";
+    }
+
+    // 로그인 페이지
+    @GetMapping("/user/login")
+    public String loginForm() {
+        return "user/login";
+    }
+
+    // 로그인
+    @PostMapping("/login")
+    public String login(LoginDto loginDto, HttpSession session) throws PasswordMismatchException, NoSuchUserException {
+        UserInfoDto userInfoDto = this.userService.login(loginDto);
+        log.info("{}", userInfoDto.getUserId());
+        log.info("{}", userInfoDto.getName());
+        log.info("{}", userInfoDto.getEmail());
+        session.setAttribute("sessionedUser", userInfoDto);
+        log.info("{}", session.getAttributeNames());
         return "redirect:/users";
     }
 }
