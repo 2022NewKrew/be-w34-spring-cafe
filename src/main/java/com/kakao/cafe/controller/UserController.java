@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -39,20 +40,19 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public String getUser(@PathVariable long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
+    public String getUser(@PathVariable long id) {
         return "user/profile";
     }
 
     @GetMapping("/users/{id}/update")
-    public String getUpdateForm(@PathVariable long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "/user/updateForm";
+    public String getUpdateForm(@PathVariable long id) {
+        return "user/updateForm";
     }
 
     @PutMapping("/users/{id}")
-    public String updateUser(@PathVariable long id, @Valid UserUpdateRequest request, RedirectAttributes rttr) {
+    public String updateUser(@PathVariable long id, @Valid UserUpdateRequest request, HttpSession session, RedirectAttributes rttr) {
         userService.updateUser(id, request);
+        session.setAttribute("currentUser", userService.getUserById(id));
         rttr.addFlashAttribute("msg", "회원 정보를 수정하였습니다.");
         return "redirect:/users";
     }

@@ -4,8 +4,14 @@
     </a>
     <div class="flex align-center space-x-4">
         <a href="/users" class="text-sm px-4 py-2">멤버리스트</a>
-        <a href="#" class="text-sm px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black">로그인</a>
+        {{^currentUser}}
+        <a href="/signin" class="text-sm px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black">로그인</a>
         <a href="/signup" class="text-sm px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black">회원가입</a>
+        {{/currentUser}}
+        {{#currentUser}}
+        <a href="/logout" class="text-sm px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black">로그아웃</a>
+        <a href="/users/{{currentUser.id}}/update" class="text-sm px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black">개인정보수정</a>
+        {{/currentUser}}
     </div>
 </header>
 
