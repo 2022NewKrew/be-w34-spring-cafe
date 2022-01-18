@@ -2,6 +2,7 @@ package com.kakao.cafe.repository.memory;
 
 import com.kakao.cafe.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.domain.entity.Article;
+import com.kakao.cafe.dto.article.ArticleModifyCommand;
 import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +21,12 @@ public class ArticleMemoryRepository implements ArticleRepository {
 
     @Override
     public void store(ArticleCreateCommand acc) {
-        Article article = new Article(nextId(), acc.getWriter(), acc.getTitle(), acc.getContents(), LocalDateTime.now());
+        Article article = new Article(nextId(),
+                acc.getWriter(),
+                acc.getWriterId(),
+                acc.getTitle(),
+                acc.getContents(),
+                LocalDateTime.now());
         this.repository.add(article);
     }
 
@@ -31,8 +37,14 @@ public class ArticleMemoryRepository implements ArticleRepository {
     }
 
     @Override
-    public void modify(Long id, ArticleCreateCommand acc) {
-        Article article = new Article(nextId(), acc.getWriter(), acc.getTitle(), acc.getContents(), LocalDateTime.now());
+    public void modify(Long id, ArticleModifyCommand amc) {
+        Article oldArticle = this.repository.get(id.intValue());
+        Article article = new Article(id,
+                oldArticle.getWriter(),
+                oldArticle.getWriterId(),
+                amc.getTitle(),
+                amc.getContents(),
+                LocalDateTime.now());
         this.repository.set(id.intValue(), article);
     }
 

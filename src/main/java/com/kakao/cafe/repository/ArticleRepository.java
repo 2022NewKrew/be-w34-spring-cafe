@@ -4,13 +4,14 @@ import com.kakao.cafe.dto.article.ArticleContents;
 import com.kakao.cafe.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.dto.article.ArticleListShow;
 import com.kakao.cafe.domain.entity.Article;
+import com.kakao.cafe.dto.article.ArticleModifyCommand;
 
 import java.util.List;
 
 public interface ArticleRepository {
     void store(ArticleCreateCommand acc);
     Article retrieve(Long id);
-    void modify(Long id, ArticleCreateCommand acc);
+    void modify(Long id, ArticleModifyCommand amc);
     void delete(Long id);
     List<Article> toList();
 }

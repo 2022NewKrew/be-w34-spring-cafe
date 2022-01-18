@@ -8,12 +8,14 @@ public class Article {
     private final long articleId;
     private final LocalDateTime time;
     private final String writer;
+    private final String writerId;
     private final String title;
     private final String content;
 
-    public Article(long articleId, String writer, String title, String contents, LocalDateTime time) {
+    public Article(long articleId, String writer,String writerId, String title, String contents, LocalDateTime time) {
         this.articleId = articleId;
         this.writer = writer;
+        this.writerId = writerId;
         this.title = title;
         this.content = contents;
         this.time = time;
@@ -24,6 +26,8 @@ public class Article {
     public String getTitle() { return title; }
 
     public String getWriter() { return writer; }
+
+    public String getWriterId() { return writerId; }
 
     public String getTime() { return TimeStringParser.parseTimeToString(time); }
 
