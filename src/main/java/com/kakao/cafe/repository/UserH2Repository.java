@@ -8,9 +8,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
+
+import static com.kakao.cafe.query.user.H2RepositoryQuery.*;
 
 @Primary
 @Repository
@@ -24,22 +24,19 @@ public class UserH2Repository implements UserRepository {
 
     @Override
     public void save(User user) {
-        String sql = "insert into user (userid, password, name, email) values (?,?,?,?)";
-        jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        jdbcTemplate.update(insertQuery, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
     @Override
     public List<User> getAllUser() {
-        String sql = "select * from user";
         return jdbcTemplate
-                .query(sql, memberRowMapper());
+                .query(selectAllQuery, memberRowMapper());
     }
 
     @Override
     public User findById(String userId) {
-        String sql = "select * from user where userid = ?";
         return jdbcTemplate
-                .query(sql, memberRowMapper(), userId)
+                .query(selectByIdQuery, memberRowMapper(), userId)
                 .stream()
                 .findAny()
                 .orElseThrow(() -> {
@@ -49,22 +46,18 @@ public class UserH2Repository implements UserRepository {
 
     @Override
     public void deleteById(String userId) {
-        String sql = "delete from user where userid = ?";
-        jdbcTemplate.update(sql, userId);
+        jdbcTemplate.update(deleteByIdQuery, userId);
     }
 
     private RowMapper<User> memberRowMapper() {
-        return new RowMapper<User>() {
-            @Override
-            public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-                User user = new User();
-                user.setId(rs.getLong("id"));
-                user.setUserId(rs.getString("userid"));
-                user.setPassword(rs.getString("password"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-                return user;
-            }
+        return (rs, rowNum) -> {
+            User user = new User();
+            user.setId(rs.getLong("id"));
+            user.setUserId(rs.getString("userid"));
+            user.setPassword(rs.getString("password"));
+            user.setName(rs.getString("name"));
+            user.setEmail(rs.getString("email"));
+            return user;
         };
     }
 }

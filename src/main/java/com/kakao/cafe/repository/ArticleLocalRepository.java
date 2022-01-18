@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ArticleLocalRepository implements ArticleRepository {
@@ -15,11 +16,11 @@ public class ArticleLocalRepository implements ArticleRepository {
     }
 
     @Override
-    public Long save(Article article) {
+    public Optional<Long> save(Article article) {
         int curSize = articleList.size() + 1;
         article.setId((long) curSize);
         articleList.add(article);
-        return (long) curSize;
+        return Optional.ofNullable((long) curSize);
     }
 
     @Override
@@ -44,6 +45,11 @@ public class ArticleLocalRepository implements ArticleRepository {
 
     @Override
     public void deleteByWriter(String writer) {
+
+    }
+
+    @Override
+    public void update(Article article) {
 
     }
 }

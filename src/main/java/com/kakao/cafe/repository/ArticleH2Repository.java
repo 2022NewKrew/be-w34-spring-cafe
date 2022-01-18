@@ -11,9 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
+
+import static com.kakao.cafe.query.article.H2RepositoryQuery.*;
 
 @Primary
 @Repository
@@ -26,31 +27,28 @@ public class ArticleH2Repository implements ArticleRepository {
     }
 
     @Override
-    public Long save(Article article) {
-        String sql = "insert into article (writer, title, contents) values(?, ?, ?)";
+    public Optional<Long> save(Article article) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, new String[] { "ID" });
+            PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"ID"});
             ps.setString(1, article.getWriter());
             ps.setString(2, article.getTitle());
             ps.setString(3, article.getContents());
             return ps;
         }, keyHolder);
-        return keyHolder.getKey().longValue();
+        return Optional.ofNullable(keyHolder.getKey().longValue());
     }
 
     @Override
     public List<Article> getAllQuestions() {
-        String sql = "select * from article";
         return jdbcTemplate
-                .query(sql, articleRowMapper());
+                .query(selectAllQuery, articleRowMapper());
     }
 
     @Override
     public Article findById(String id) {
-        String sql = "select * from article where id = ?";
         return jdbcTemplate
-                .query(sql, articleRowMapper(), id)
+                .query(selectByIdQuery, articleRowMapper(), id)
                 .stream()
                 .findAny()
                 .orElseThrow(() -> {
@@ -59,28 +57,28 @@ public class ArticleH2Repository implements ArticleRepository {
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return new RowMapper<Article>() {
-            @Override
-            public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Article article = new Article();
-                article.setId(rs.getLong("id"));
-                article.setWriter(rs.getString("writer"));
-                article.setTitle(rs.getString("title"));
-                article.setContents(rs.getString("contents"));
-                return article;
-            }
+        return (rs, rowNum) -> {
+            Article article = new Article();
+            article.setId(rs.getLong("id"));
+            article.setWriter(rs.getString("writer"));
+            article.setTitle(rs.getString("title"));
+            article.setContents(rs.getString("contents"));
+            return article;
         };
     }
 
     @Override
     public void deleteById(String Id) {
-        String sql = "delete from article where id = ?";
-        jdbcTemplate.update(sql, Id);
+        jdbcTemplate.update(deleteByIdQuery, Id);
     }
 
     @Override
     public void deleteByWriter(String writer) {
-        String sql = "delete from article where writer = ?";
-        jdbcTemplate.update(sql, writer);
+        jdbcTemplate.update(deleteByWriterQuery, writer);
+    }
+
+    @Override
+    public void update(Article article) {
+        jdbcTemplate.update(updateQuery, article.getContents(), article.getId());
     }
 }

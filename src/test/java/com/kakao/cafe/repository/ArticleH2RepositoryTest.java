@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class ArticleH2RepositoryTest {
@@ -29,32 +31,32 @@ class ArticleH2RepositoryTest {
     @Test
     @DisplayName("글 저장 테스트")
     void save() {
-        Long returnId = articleRepository.save(article);
-        Article findArticle = articleRepository.findById(returnId.toString());
+        Optional<Long> returnId = articleRepository.save(article);
+        Article findArticle = articleRepository.findById(returnId.get().toString());
         assertEquals("testTitle", findArticle.getTitle());
-        deleteId = returnId.toString();
+        deleteId = returnId.get().toString();
     }
 
     @Test
     @DisplayName("모든 글 조회 테스트")
     void findall() {
         int beforeSize = articleRepository.getAllQuestions().size();
-        Long returnId = articleRepository.save(article);
+        Optional<Long> returnId = articleRepository.save(article);
         int afterSize = articleRepository.getAllQuestions().size();
         assertEquals(beforeSize + 1, afterSize);
-        deleteId = returnId.toString();
+        deleteId = returnId.get().toString();
     }
 
     @Test
     @DisplayName("id값으로 글 조회")
     void findById() {
-        Long returnId = articleRepository.save(article);
-        Long findId = returnId + 1L;
+        Optional<Long> returnId = Optional.ofNullable(articleRepository.save(article).orElse(99999L));
+        Long findId = returnId.get() + 1L;
         Throwable exception = assertThrows(RuntimeException.class, () -> {
             articleRepository.findById(findId.toString());
         });
         assertEquals("존재하지 않는 Id 입니다", exception.getMessage());
-        deleteId = returnId.toString();
+        deleteId = returnId.get().toString();
     }
 
     @AfterEach
