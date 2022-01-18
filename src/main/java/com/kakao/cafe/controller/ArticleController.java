@@ -1,9 +1,13 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.ArticleResponse;
-import com.kakao.cafe.controller.dto.ArticleSaveForm;
-import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.controller.error.ErrorMessageBox;
+import com.kakao.cafe.core.exception.IsNotAuthorOfThisArticle;
+import com.kakao.cafe.domain.article.dto.ArticleResponse;
+import com.kakao.cafe.domain.article.dto.ArticleSaveForm;
+import com.kakao.cafe.domain.article.dto.ArticleUpdateForm;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.core.SessionConst;
+import com.kakao.cafe.domain.article.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,19 +21,53 @@ import javax.validation.Valid;
 @RequestMapping("/articles")
 public class ArticleController {
 
-    private final ArticleRepository articleRepository;
-    private final ArticleService postService;
+    private final ArticleService articleService;
 
     @PostMapping("")
-    public String createQuestion(@Valid @ModelAttribute ArticleSaveForm articleSaveForm) {
-        articleRepository.save(articleSaveForm);
+    public String createQuestion(@Valid @ModelAttribute ArticleSaveForm articleSaveForm, @SessionAttribute(name = SessionConst.LOGIN_COOKIE) User user) {
+        articleService.save(articleSaveForm, user);
         return "redirect:/";
     }
 
     @GetMapping("/{id}")
     public String getArticleInfo(@PathVariable Long id, Model model) {
-        ArticleResponse article = postService.findById(id);
+        ArticleResponse article = articleService.findById(id);
         model.addAttribute("article", article);
         return "qna/detail";
+    }
+
+    @GetMapping("/{id}/form")
+    public String updateForm(@PathVariable Long id, Model model, @SessionAttribute(name = SessionConst.LOGIN_COOKIE) User user) {
+        try {
+            ArticleUpdateForm updateForm = articleService.getUpdateForm(id, user.getId());
+            model.addAttribute("article", updateForm);
+            return "qna/updateForm";
+        } catch (IsNotAuthorOfThisArticle e) {
+            model.addAttribute("error", new ErrorMessageBox("권한이 없습니다."));
+            return "/error";
+        }
+    }
+
+    @PutMapping("/{id}")
+    public String update(@PathVariable Long id, Model model, @ModelAttribute ArticleUpdateForm updateForm, @SessionAttribute(name = SessionConst.LOGIN_COOKIE) User user) {
+        try {
+            articleService.update(id, updateForm, user.getId());
+            return "redirect:/articles/" + id;
+        } catch (IsNotAuthorOfThisArticle e) {
+            model.addAttribute("error", new ErrorMessageBox("권한이 없습니다."));
+            return "/error";
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id, Model model, @SessionAttribute(name = SessionConst.LOGIN_COOKIE) User user) {
+        //삭제 권한 확인 로직 추가
+        try {
+            articleService.delete(id, user.getId());
+            return "redirect:/";
+        } catch (Exception e) {
+            model.addAttribute("error", new ErrorMessageBox("삭제할 수 없습니다."));
+            return "/error";
+        }
     }
 }

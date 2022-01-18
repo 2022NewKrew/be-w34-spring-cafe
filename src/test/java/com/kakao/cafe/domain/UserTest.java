@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.controller.dto.UserJoinForm;
+import com.kakao.cafe.domain.user.dto.UserJoinForm;
+import com.kakao.cafe.domain.user.User;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,7 +19,7 @@ class UserTest {
 
 
         //when
-        User user = User.from(dto);
+        User user = dto.toUser();
         boolean b = user.chcekPassword("1234");
 
         //then
@@ -38,7 +39,7 @@ class UserTest {
         String updateEmail = "newEmail";
 
         // when
-        User user = User.from(dto);
+        User user = dto.toUser();
         user.updateEmailAndName(updateEmail, updateName);
 
         // then

@@ -1,20 +1,16 @@
 package com.kakao.cafe.login;
 
-import com.kakao.cafe.controller.dto.UserJoinForm;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.login.dto.UserLogin;
-import com.kakao.cafe.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import com.kakao.cafe.domain.login.LoginService;
+import com.kakao.cafe.domain.user.dto.UserJoinForm;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.login.dto.UserLogin;
+import com.kakao.cafe.domain.user.UserRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -33,7 +29,7 @@ class LoginServiceTest {
         form.setName("hello");
         form.setUserId("test");
         form.setPassword("password");
-        User from = User.from(form);
+        User from = form.toUser();
         userRepository.save(from);
     }
 

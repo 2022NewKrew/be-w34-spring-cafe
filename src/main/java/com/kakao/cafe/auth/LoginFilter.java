@@ -1,20 +1,18 @@
 package com.kakao.cafe.auth;
 
-import com.kakao.cafe.login.SessionConfig;
+import com.kakao.cafe.core.SessionConst;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class LoginFilter implements Filter {
 
-    private static final List<String> whiteList = Arrays.asList("/", "/users/login", "/users/form");
-
+    private static final List<String> whiteList = Arrays.asList("/", "/users/login", "/users/form", "/users/signup");
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -31,7 +29,7 @@ public class LoginFilter implements Filter {
         try {
             if(!checkWhiteList(requestURI)) {
                 HttpSession session = httpRequest.getSession(false);
-                if (session == null || session.getAttribute(SessionConfig.LOGIN_COOKIE) == null) {
+                if (session == null || session.getAttribute(SessionConst.LOGIN_COOKIE) == null) {
                     httpResponse.sendRedirect("/users/login?redirectURL=" + requestURI);
                     return;
                 }

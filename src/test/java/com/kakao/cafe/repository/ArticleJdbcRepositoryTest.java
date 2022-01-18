@@ -1,8 +1,8 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.controller.dto.ArticleSaveForm;
-import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.repository.jdbc.ArticleJdbcRepository;
+import com.kakao.cafe.domain.article.dto.ArticleSaveForm;
+import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.ArticleJdbcRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +22,7 @@ class ArticleJdbcRepositoryTest {
         ArticleSaveForm articleSaveForm = new ArticleSaveForm();
         articleSaveForm.setContent("content");
         articleSaveForm.setTitle("title");
-        articleSaveForm.setWriter("me");
+        articleSaveForm.setAuthor("me");
 
         // when
         Long savedId = articleJdbcRepository.save(articleSaveForm);

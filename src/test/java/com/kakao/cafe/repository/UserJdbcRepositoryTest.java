@@ -1,8 +1,8 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.controller.dto.UserJoinForm;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.jdbc.UserJdbcRepository;
+import com.kakao.cafe.domain.user.dto.UserJoinForm;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserJdbcRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,11 +32,11 @@ class UserJdbcRepositoryTest {
         dto.setName("lsh");
 
         //when
-        User user = User.from(dto);
+        User user = dto.toUser();
         userJdbcRepository.save(user);
 
         // then
-        User byId = userJdbcRepository.findById(userId).get();
+        User byId = userJdbcRepository.findByUserId(userId).get();
         Assertions.assertThat(byId).isEqualTo(user);
     }
 
@@ -61,9 +61,9 @@ class UserJdbcRepositoryTest {
         dto2.setName("lsh");
 
         //when
-        User user = User.from(dto);
+        User user = dto.toUser();
         userJdbcRepository.save(user);
-        User user2 = User.from(dto2);
+        User user2 = dto2.toUser();
         userJdbcRepository.save(user2);
 
         // then

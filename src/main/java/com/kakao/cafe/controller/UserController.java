@@ -1,11 +1,12 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.UserUpdateForm;
-import com.kakao.cafe.controller.dto.UserResponse;
-import com.kakao.cafe.controller.dto.UserJoinForm;
-import com.kakao.cafe.controller.dto.UserListDto;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.domain.user.dto.UserUpdateForm;
+import com.kakao.cafe.domain.user.dto.UserResponse;
+import com.kakao.cafe.domain.user.dto.UserJoinForm;
+import com.kakao.cafe.domain.user.dto.UserListDto;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.core.SessionConst;
+import com.kakao.cafe.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("")
+    @PostMapping("/signup")
     public String createUser(@Valid @ModelAttribute UserJoinForm userDto, BindingResult bindingResult, Model model) {
         System.out.println("error exists? : "+bindingResult.hasErrors());
         if(bindingResult.hasErrors()) {
@@ -41,9 +42,10 @@ public class UserController {
     }
 
     @GetMapping({"", "/list"})
-    public String userList(Model model) {
+    public String userList(@SessionAttribute(name = SessionConst.LOGIN_COOKIE) User user, Model model) {
         List<UserListDto> userList = userService.getUserList();
         model.addAttribute("users", userList);
+        model.addAttribute("user", user);
         return "user/list";
     }
 
@@ -55,19 +57,16 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/{id}/update")
-    public String showForm(@PathVariable("id") String userId, Model model) {
-        User user = userService.findUser(userId);
+    @GetMapping("/update")
+    public String showForm(@SessionAttribute(name = SessionConst.LOGIN_COOKIE) User user, Model model) {
         UserResponse dtoUser = UserResponse.from(user);
         model.addAttribute("user", dtoUser);
         return "user/updateForm";
     }
 
-    @PutMapping("/{id}")
-    public String updateForm(@Valid @PathVariable("id") String userId, @ModelAttribute UserUpdateForm updateUser) {
-//        validator.updateUserCheck(updateUser);
-        userService.updateUser(userId, updateUser);
-
+    @PutMapping("")
+    public String updateForm(@Valid @ModelAttribute UserUpdateForm updateUser, @SessionAttribute(name = SessionConst.LOGIN_COOKIE) User user) {
+        userService.updateUser(user, updateUser);
         return "redirect:/users";
     }
 }
