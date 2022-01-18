@@ -9,4 +9,5 @@ public interface UserRepository {
     void create(User user);
     List<User> findAll();
     User findByUserId(String userId);
+    User findByIDPW(String userId, String password);
 }

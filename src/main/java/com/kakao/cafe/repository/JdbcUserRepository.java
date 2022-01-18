@@ -45,6 +45,16 @@ public class JdbcUserRepository implements UserRepository {
         }
     }
 
+    @Override
+    public User findByIDPW(String userId, String password) {
+        String sql = "SELECT * FROM users where userID = ? AND password = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, userRowMapper(), userId, password);
+        } catch (EmptyResultDataAccessException e) {
+            throw new RuntimeException("입력한 ID, PW 와 일치하는 사용자가 존재하지 않습니다.");
+        }
+    }
+
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> new User(rs.getLong("id"), rs.getString("userId"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
     }

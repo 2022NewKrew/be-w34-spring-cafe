@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.web.dto.UserCreateRequestDto;
+import com.kakao.cafe.web.dto.UserLoginRequestDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import com.kakao.cafe.web.dto.UserProfileResponseDto;
 import org.slf4j.Logger;
@@ -35,5 +36,14 @@ public class UserService {
 
     public UserProfileResponseDto getUserProfile(String userId) {
         return UserProfileResponseDto.from(userRepository.findByUserId(userId));
+    }
+
+    public boolean login(UserLoginRequestDto requestDto) {
+        User foundUser;
+        foundUser = userRepository.findByIDPW(requestDto.getUserId(), requestDto.getPassword());
+        if (foundUser != null) {
+            return true;
+        }
+        return false;
     }
 }
