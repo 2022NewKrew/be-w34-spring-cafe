@@ -1,5 +1,6 @@
 package com.kakao.cafe.users;
 
+import com.kakao.cafe.CafeApplicationTests;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +12,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class JdbcUserRepositoryTest {
+class JdbcUserRepositoryTest extends CafeApplicationTests {
     @Autowired
     JdbcUserRepository jdbcUserRepository;
 
-    List<User> users = List.of(
-            new User("1234", "1234", "1234", "1234"),
-            new User("asdf", "asdf", "asdf", "asdf")
-    );
 
     @Test
     void 저장() {

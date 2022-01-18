@@ -1,6 +1,7 @@
 package com.kakao.cafe.articles;
 
 import com.kakao.cafe.exceptions.NotFoundException;
+import com.kakao.cafe.users.UserDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,11 +15,11 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public ArticleDto createArticle(ArticleRequest articleRequest) {
+    public ArticleDto createArticle(ArticleRequest articleRequest, UserDto userDto) {
         int articleId = articleRepository.getSize() + 1;
 
         ArticleContent content = new ArticleContent(articleRequest.getContent());
-        Article article = new Article((long) articleId, articleRequest.getTitle(), content, articleRequest.getWriter());
+        Article article = new Article((long) articleId, articleRequest.getTitle(), content, userDto.getName(), userDto.getId());
 
         Article savedArticle = articleRepository.save(article);
 

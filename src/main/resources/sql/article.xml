@@ -3,7 +3,7 @@
 <properties>
     <entry key="article.findById">
         SELECT
-        a.id as id, a.title as title, a.writer as writer, ac.body as body
+        a.id as id, a.title as title, a.writer as writer, a.writer_id as writer_id, ac.body as body
         FROM
         article a
         JOIN
@@ -15,7 +15,7 @@
     </entry>
     <entry key="article.findAll">
         SELECT
-        a.id as id, a.title as title, a.writer as writer, ac.body as body
+        a.id as id, a.title as title, a.writer as writer, a.writer_id as writer_id, ac.body as body
         FROM
         article a
         JOIN
@@ -26,9 +26,9 @@
     <entry key="article.save">
         INSERT INTO
         article
-        (id, title, writer)
+        (id, title, writer, writer_id)
         VALUES
-        (:id, :title, :writer)
+        (:id, :title, :writer, :writer_id)
     </entry>
     <entry key="article_content.save">
         INSERT INTO

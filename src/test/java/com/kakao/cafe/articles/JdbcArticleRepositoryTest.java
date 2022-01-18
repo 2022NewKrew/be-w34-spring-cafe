@@ -1,6 +1,9 @@
 package com.kakao.cafe.articles;
 
+import com.kakao.cafe.CafeApplicationTests;
+import com.kakao.cafe.users.JdbcUserRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,14 +13,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class JdbcArticleRepositoryTest {
+class JdbcArticleRepositoryTest extends CafeApplicationTests {
+
     @Autowired
     JdbcArticleRepository articleRepository;
+    @Autowired
+    JdbcUserRepository userRepository;
 
-    List<Article> articles = List.of(
-            new Article(1L, "title", new ArticleContent("content"), "me"),
-            new Article(2L, "title2", new ArticleContent("content2"), "me2")
-    );
+    @BeforeEach
+    void before() {
+        userRepository.save(users.get(0));
+        userRepository.save(users.get(1));
+    }
 
     @Test
     void 저장() {

@@ -32,7 +32,8 @@ public class JdbcArticleRepository implements ArticleRepository {
             resultSet.getLong("id"),
             resultSet.getString("title"),
             new ArticleContent(resultSet.getString("body")),
-            resultSet.getString("writer")
+            resultSet.getString("writer"),
+            resultSet.getLong("writer_id")
     );
 
     public JdbcArticleRepository(NamedParameterJdbcTemplate jdbcTemplate) {
@@ -46,6 +47,7 @@ public class JdbcArticleRepository implements ArticleRepository {
         params.put("id", article.getId());
         params.put("title", article.getTitle());
         params.put("writer", article.getWriter());
+        params.put("writer_id", article.getWriterId());
 
         jdbcTemplate.update(SAVE_SQL, params);
 

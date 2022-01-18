@@ -1,5 +1,6 @@
 package com.kakao.cafe.articles;
 
+import com.kakao.cafe.users.UserDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -19,8 +21,9 @@ public class ArticleController {
     }
 
     @PostMapping
-    public String createArticle(ArticleRequest articleRequest) {
-        articleService.createArticle(articleRequest);
+    public String createArticle(ArticleRequest articleRequest, HttpSession session) {
+        UserDto userDto = (UserDto) session.getAttribute("user");
+        articleService.createArticle(articleRequest, userDto);
 
         return "redirect:/articles";
     }

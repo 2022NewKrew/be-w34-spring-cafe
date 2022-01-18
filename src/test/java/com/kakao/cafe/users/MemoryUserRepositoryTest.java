@@ -1,5 +1,6 @@
 package com.kakao.cafe.users;
 
+import com.kakao.cafe.CafeApplicationTests;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -7,14 +8,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MemoryUserRepositoryTest {
+class MemoryUserRepositoryTest extends CafeApplicationTests {
 
     UserRepository userRepository = new MemoryUserRepository();
-
-    List<User> users = List.of(
-            new User("1234", "1234", "1234", "1234"),
-            new User("asdf", "asdf", "asdf", "asdf")
-    );
 
     @Test
     void save() {
