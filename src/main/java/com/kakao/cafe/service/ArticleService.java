@@ -18,7 +18,7 @@ public class ArticleService {
     }
 
     public Long save(Article article) {
-        return articleRepository.save(article);
+        return articleRepository.save(article).orElseThrow(() -> new NullPointerException("게시글이 저장되지 않았습니다."));
     }
 
 

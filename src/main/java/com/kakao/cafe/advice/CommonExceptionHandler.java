@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class CommonExceptionHandler {
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})
     public ModelAndView handleArithmeticException(Exception e){
         ModelAndView mav = new ModelAndView();
         mav.addObject("errorMessage",e.getMessage());
