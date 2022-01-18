@@ -21,7 +21,6 @@ public class ArticleController {
         return "/index";
     }
 
-    @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }

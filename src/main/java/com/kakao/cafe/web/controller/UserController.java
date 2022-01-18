@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.domain.user.User;
@@ -16,7 +16,6 @@ public class UserController {
     private final UserService userService;
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
