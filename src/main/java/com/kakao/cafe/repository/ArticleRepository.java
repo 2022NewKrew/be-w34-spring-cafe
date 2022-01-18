@@ -14,4 +14,6 @@ public interface ArticleRepository {
     void deleteById(String id);
 
     void deleteByWriter(String writer);
+
+    void update(Article article);
 }

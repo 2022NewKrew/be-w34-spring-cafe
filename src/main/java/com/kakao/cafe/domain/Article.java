@@ -8,4 +8,8 @@ public class Article {
     private String writer;
     private String title;
     private String contents;
+
+    public boolean isWriter(String curUserId) {
+        return writer.equals(curUserId);
+    }
 }

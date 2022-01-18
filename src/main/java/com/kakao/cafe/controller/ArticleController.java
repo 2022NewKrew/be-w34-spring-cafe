@@ -36,7 +36,6 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String addQuestions(@ModelAttribute Article article) {
-        System.out.println(article);
         articleService.save(article);
         return "redirect:/";
     }
@@ -52,6 +51,20 @@ public class ArticleController {
     @DeleteMapping("/articles/deleteByWriter")
     public String deleteByWriter(@RequestParam(value = "writer") String writer) {
         articleService.deleteByWriter(writer);
+        return "redirect:/";
+    }
+
+    @GetMapping("/articles/update/{id}")
+    public String updateForm(@PathVariable String id, Model model, HttpSession httpSession) {
+        Article article = articleService.findById(id, httpSession);
+        articleService.isWriter(article, httpSession);
+        model.addAttribute("article", article);
+        return "qna/updateForm";
+    }
+
+    @PutMapping("/articles")
+    public String updateArticle(@ModelAttribute Article article) {
+        articleService.update(article);
         return "redirect:/";
     }
 }

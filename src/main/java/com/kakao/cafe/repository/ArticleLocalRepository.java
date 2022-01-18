@@ -46,4 +46,9 @@ public class ArticleLocalRepository implements ArticleRepository {
     public void deleteByWriter(String writer) {
 
     }
+
+    @Override
+    public void update(Article article) {
+
+    }
 }
