@@ -85,8 +85,9 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public RedirectView logout(HttpSession session, RedirectAttributes redirectAttributes) {
         session.removeAttribute("loginUser");
-        return "redirect:/";
+        redirectAttributes.addFlashAttribute("flashMessage", "로그아웃 되었습니다");
+        return new RedirectView("/", true);
     }
 }
