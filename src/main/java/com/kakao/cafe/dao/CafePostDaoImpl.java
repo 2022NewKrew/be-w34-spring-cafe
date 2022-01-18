@@ -116,13 +116,14 @@ public class CafePostDaoImpl implements CafePostDao {
     public boolean editPost(int postId, Post post) {
         String sql = "UPDATE post\n"
                 + "SET title=?, content=?"
-                + "WHERE postId=?";
+                + "WHERE postId=? and userId=?";
 
         try (Connection conn = dataSource.getConnection() ) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, post.getTitle());
             pstmt.setString(2, post.getContent());
             pstmt.setInt(3, postId);
+            pstmt.setString(4, post.getUserId());
 
             int updateCnt = pstmt.executeUpdate();
             if( updateCnt > 0 ) {

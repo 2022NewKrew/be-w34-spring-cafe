@@ -34,7 +34,7 @@ public class CafePostController {
     private static final String POST_REDIRECT_WRITE_FAIL = REDIRECT_PREFIX+"/posts/write/fail";
     private static final String POST_REDIRECT_NON_USER = REDIRECT_PREFIX+"/users/sign-in";
     private static final String POST_REDIRECT_EDIT_SUCCESS = REDIRECT_PREFIX+"/posts/list";
-    private static final String POST_REDIRECT_EDIT_FAIL = REDIRECT_PREFIX+"/posts/form_fail";
+    private static final String POST_REDIRECT_EDIT_FAIL = REDIRECT_PREFIX+"/posts/edit/fail";
 
     @GetMapping("/write")
     String postViewWrite(HttpSession httpSession) {
@@ -67,22 +67,39 @@ public class CafePostController {
     }
 
     @GetMapping("/content/{postId}")
-    String getPostContent(Model model, @NonNull @PathVariable("postId") int postId) {
-        Post post = cafePostService.getPostContent(postId);
-        model.addAttribute("post", post);
+    String getPostContent(Model model, HttpSession httpSession, @NonNull @PathVariable("postId") int postId) {
+        User loginUser = (User) httpSession.getAttribute("signInUser");
+        if( loginUser != null ) {
+            Post post = cafePostService.getPostContent(postId);
+            model.addAttribute("post", post);
+
+            boolean canEdit = loginUser.getUserId().equals(post.getUserId());
+            model.addAttribute("canEdit", canEdit);
+        }
         return POST_VIEW_CONTENT;
     }
 
     @GetMapping("/edit/{postId}")
-    String postViewEdit(Model model, @PathVariable("postId") int postId) {
-        Post post = cafePostService.postViewEdit(postId);
-        model.addAttribute("post", post);
-        return POST_VIEW_EDIT;
+    String postViewEdit(Model model, HttpSession httpSession, @PathVariable("postId") int postId) {
+        User loginUser = (User) httpSession.getAttribute("signInUser");
+        if( loginUser != null ) {
+            Post post = cafePostService.postViewEdit(postId);
+            boolean canEdit = loginUser.getUserId().equals(post.getUserId());
+            if( canEdit ) {
+                model.addAttribute("post", post);
+                return POST_VIEW_EDIT;
+            }
+        }
+       return POST_REDIRECT_EDIT_FAIL;
     }
     @PostMapping("/edit/{postId}")
-    String editPost (@NonNull @PathVariable("postId") int postId, Post post) {
-        if(cafePostService.editPost(postId,post)) {
-            return POST_REDIRECT_EDIT_SUCCESS;
+    String editPost (HttpSession httpSession, @NonNull @PathVariable("postId") int postId, Post post) {
+        User loginUser = (User) httpSession.getAttribute("signInUser");
+        if( loginUser != null ) {
+            String userId = loginUser.getUserId();
+            if (cafePostService.editPost(userId, postId, post)) {
+                return POST_REDIRECT_EDIT_SUCCESS;
+            }
         }
         return POST_REDIRECT_EDIT_FAIL;
     }

@@ -45,6 +45,9 @@
         {{#signInUser}}
         <div class="container" id="main">
             <div class="col-md-12 col-sm-12 col-lg-12">
+                {{^post}}
+                <p class="user-title">게시글 정보가 없습니다.</p>
+                {{/post}}
                 {{#post}}
                 <div class="panel panel-default">
                   <header class="post-header">
@@ -70,7 +73,9 @@
                           <div class="post-comment-slipp">
                               <div class="post-comment-count">
                                   <p>댓글 2개</p>
+                                  {{#canEdit}}
                                   <a class="post-edit-btn" href="/posts/edit/{{postId}}" class="btn btn-primary pull-right" role="button">게시글 수정</a>
+                                  {{/canEdit}}
                               </div>
 
                               <div class="post-comment-slipp-articles">

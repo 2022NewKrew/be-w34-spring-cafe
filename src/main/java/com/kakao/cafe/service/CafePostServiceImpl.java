@@ -40,7 +40,10 @@ public class CafePostServiceImpl implements CafePostService {
     }
 
     @Override
-    public boolean editPost(int postId, Post post) {
+    public boolean editPost(String loginUser, int postId, Post post) {
+        if(loginUser == null || !loginUser.equals(post.getUserId())) {
+            return false;
+        }
         if(PostHelper.checkRegexOfPost(post)) {
             return cafePostDao.editPost(postId, post);
         }
