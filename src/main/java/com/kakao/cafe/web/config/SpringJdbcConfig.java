@@ -1,4 +1,4 @@
-package com.kakao.cafe.config;
+package com.kakao.cafe.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
