@@ -1,13 +1,14 @@
 package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.dto.request.ArticleCreateRequest;
+import com.kakao.cafe.article.dto.request.ArticleUpdateRequest;
 import com.kakao.cafe.article.dto.response.ArticleDetailResponse;
 import com.kakao.cafe.article.entity.Article;
 import com.kakao.cafe.article.exception.ArticleNotFoundException;
 import com.kakao.cafe.article.mapper.ArticleMapper;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import com.kakao.cafe.user.entity.User;
-import com.kakao.cafe.user.exception.UserNotFoundException;
+import com.kakao.cafe.user.mapper.exception.UserNotFoundException;
 import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -61,5 +62,36 @@ public class ArticleService {
         return articleMapper.articleToArticleDetailResponse(
                 article.orElseThrow(ArticleNotFoundException::new)
         );
+    }
+
+    /**
+     * 입력 인자로 들어온 id에 해당하는 Article 의 정보를 수정하는 로직
+     * @param id: 수정할 게시글의 ID(PK)
+     * @param req: 게시글 수정 정보
+     */
+    public void updateArticle(Long id, ArticleUpdateRequest req) {
+        Article article = this.articleRepository.findById(id)
+                .orElseThrow(ArticleNotFoundException::new);
+
+        this.changeArticleInfo(article, req);
+
+        this.articleRepository.update(article);
+    }
+
+    /**
+     * 입력 인자로 들어온 id에 해당하는 Article 을 삭제하는 로직
+     * @param id: 수정할 게시글의 ID(PK)
+     */
+    public void deleteArticle(Long id) {
+        this.articleRepository.deleteById(id);
+    }
+
+    private void changeArticleInfo(Article article, ArticleUpdateRequest req) {
+        if(!req.getTitle().isBlank()) {
+            article.setTitle(req.getTitle());
+        }
+        if(!req.getContents().isBlank()) {
+            article.setContents(req.getContents());
+        }
     }
 }

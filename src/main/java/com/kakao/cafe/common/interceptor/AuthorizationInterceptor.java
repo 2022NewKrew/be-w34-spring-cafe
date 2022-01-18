@@ -1,7 +1,7 @@
 package com.kakao.cafe.common.interceptor;
 
 import com.kakao.cafe.user.dto.response.UserInfoResponse;
-import com.kakao.cafe.user.exception.UnAuthorizedException;
+import com.kakao.cafe.user.mapper.exception.UnAuthorizedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 

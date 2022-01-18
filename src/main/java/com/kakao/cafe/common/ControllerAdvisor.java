@@ -1,6 +1,7 @@
 package com.kakao.cafe.common;
 
-import com.kakao.cafe.user.exception.UnAuthorizedException;
+import com.kakao.cafe.user.mapper.exception.ForbiddenException;
+import com.kakao.cafe.user.mapper.exception.UnAuthorizedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -29,6 +30,14 @@ public class ControllerAdvisor {
         return "/user/login";
     }
 
+    @ExceptionHandler(value = ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String handleForbiddenException(ForbiddenException e) {
+        log.error("[ERROR] - {}", e.getMessage());
+
+        return "/";
+    }
+
     @ExceptionHandler(value = BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleValidationException(BindException e, Model model) {
@@ -43,11 +52,9 @@ public class ControllerAdvisor {
     private String getResultMessage(BindException e) {
         StringBuilder resultMessageBuilder = new StringBuilder("\n");
 
-        e.getFieldErrors().forEach(fe -> {
-            resultMessageBuilder.append(fe.getField())
-                                .append(" : ")
-                                .append(fe.getDefaultMessage()).append("\n");
-        });
+        e.getFieldErrors().forEach(fe -> resultMessageBuilder.append(fe.getField())
+                                                             .append(" : ")
+                                                             .append(fe.getDefaultMessage()).append("\n"));
 
         return resultMessageBuilder.toString();
     }

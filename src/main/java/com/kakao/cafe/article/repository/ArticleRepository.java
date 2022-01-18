@@ -1,7 +1,7 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.entity.Article;
-import com.kakao.cafe.user.exception.UserNotFoundException;
+import com.kakao.cafe.user.mapper.exception.UserNotFoundException;
 import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -52,6 +52,37 @@ public class ArticleRepository {
         String sql = "select * from article_table where id = ?";
 
         return this.readOneQuery(sql, id);
+    }
+
+    /**
+     * 게시글의 정보를 수정하는 메서드
+     * 제목, 내용만 변경이 가능하다.
+     * 만약 제목, 내용이 빈 값("")이면 수정하지 않는다.
+     * @param article: 수정할 게시글의 정보(Entity)
+     * @return int: 영향받은 행의 개수(1)
+     */
+    public int update(Article article) {
+        String sql = "update article_table set title = ?, contents = ? where id = ?";
+
+        return this.writeQuery(
+                sql,
+                article.getTitle(),
+                article.getContents(),
+                article.getId());
+    }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     * @param id - 삭제할 게시글의 id(PK)
+     * @return int: 영향받은 행의 개수(1)
+     */
+    public int deleteById(Long id) {
+        String sql = "delete from article_table where id = ?";
+
+        return this.writeQuery(
+                sql,
+                id
+        );
     }
 
     /**

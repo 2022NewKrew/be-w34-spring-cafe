@@ -20,8 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns(List.of(
                         "/users/logout",
                         "/users/update/**",
-                        "/articles/write",
-                        "/articles"
+                        "/articles/**"
                 ));
     }
 }

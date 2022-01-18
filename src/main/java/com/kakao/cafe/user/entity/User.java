@@ -1,6 +1,5 @@
 package com.kakao.cafe.user.entity;
 
-import com.kakao.cafe.user.dto.request.UserCreateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
