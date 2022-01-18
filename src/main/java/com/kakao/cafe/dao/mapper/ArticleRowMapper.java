@@ -16,6 +16,7 @@ public class ArticleRowMapper implements RowMapper<ArticleVo> {
         String title = rs.getString("title");
         String contents = rs.getString("contents");
         String date = rs.getString("date");
-        return new ArticleVo(id,writer,title,contents,date);
+        String userId = rs.getString("userId");
+        return new ArticleVo(id, writer, title, contents, date, userId);
     }
 }
