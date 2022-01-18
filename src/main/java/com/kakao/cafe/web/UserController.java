@@ -10,6 +10,7 @@ import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -41,10 +42,10 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/form")
-    public String updateForm(@PathVariable String userId, Model model, HttpSession session) {
-        User user = (User) session.getAttribute("sessionedUser");
-        if (user == null || !user.getUserId().equals(userId)) {
-            return "/error";
+    public String updateForm(@PathVariable String userId, Model model,
+                             @SessionAttribute("sessionedUser") User user) {
+        if (userNotExists(user) || userNoPermission(user, userId)) {
+            return "/noPermission";
         }
 
         UserInfo userInfo = userService.getUserInfo(userId);
@@ -53,24 +54,31 @@ public class UserController {
     }
 
     @PutMapping("/users/{userId}/update")
-    public String updateUser(@PathVariable String userId, UserModifyCommand umc, HttpSession session) {
-        User user = (User)session.getAttribute("sessionedUser");
-        if (user == null || !user.getUserId().equals(userId)) {
-            return "/error";
+    public String updateUser(@PathVariable String userId, UserModifyCommand umc,
+                             @SessionAttribute("sessionedUser") User user, RedirectAttributes ra) {
+        if (userNotExists(user) || userNoPermission(user, userId)) {
+            return "/noPermission";
         }
 
-        if (!user.getPassword().equals(umc.getPassword())) {
+        if (userPasswordNotMatching(user, umc)) {
+            ra.addFlashAttribute("passwordNotMatching", true);
             return "redirect:/users/{userId}/form";
         }
         userService.modifyUser(userId, umc);
         return "redirect:/users";
     }
 
+    @GetMapping("/users/login")
+    public String showLoginForm(Model model) {
+        return "user/login";
+    }
+
     @PostMapping("/login")
-    public String login(String userId, String password, HttpSession session) {
+    public String login(String userId, String password, HttpSession session, RedirectAttributes ra) {
         User user = userService.getUser(userId);
         if (user == null || !user.getPassword().equals(password)) {
-            return "user/login_failed";
+            ra.addFlashAttribute("loginFailed", true);
+            return "redirect:users/login";
         }
         session.setAttribute("sessionedUser", user);
         return "redirect:/";
@@ -80,5 +88,17 @@ public class UserController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
+    }
+
+    private boolean userNotExists(User user) {
+        return user == null;
+    }
+
+    private boolean userNoPermission(User user, String userId) {
+        return !user.getUserId().equals(userId);
+    }
+
+    private boolean userPasswordNotMatching(User user, UserModifyCommand umc) {
+        return !user.getPassword().equals(umc.getPassword());
     }
 }

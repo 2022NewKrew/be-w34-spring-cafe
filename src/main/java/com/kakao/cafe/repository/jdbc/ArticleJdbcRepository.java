@@ -2,6 +2,7 @@ package com.kakao.cafe.repository.jdbc;
 
 import com.kakao.cafe.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.domain.entity.Article;
+import com.kakao.cafe.dto.article.ArticleModifyCommand;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.util.TimeStringParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,15 @@ import java.util.List;
 @Primary
 public class ArticleJdbcRepository implements ArticleRepository {
     private static final String STORE_SQL =
-            "INSERT INTO ARTICLES(WRITER, TITLE, CONTENT, CREATED_DATE) VALUES(?, ?, ?, ?)";
+            "INSERT INTO ARTICLES(WRITER, WRITER_ID, TITLE, CONTENT, CREATED_DATE) VALUES(?, ?, ?, ?, ?)";
     private static final String RETRIEVE_SQL =
-            "SELECT * FROM ARTICLES WHERE ARTICLE_ID=?";
+            "SELECT * FROM ARTICLES WHERE ARTICLE_ID=? AND DELETED=FALSE";
     private static final String MODIFY_SQL =
-            "UPDATE ARTICLES SET WRITER=?, TITLE=?, CONTENT=? WHERE ARTICLE_ID=?";
+            "UPDATE ARTICLES SET TITLE=?, CONTENT=? WHERE ARTICLE_ID=?";
     private static final String DELETE_SQL =
-            "DELETE FROM ARTICLES WHERE ARTICLE_ID=?";
+            "UPDATE ARTICLES SET DELETED=TRUE WHERE ARTICLE_ID=?";
     private static final String TO_LIST_SQL =
-            "SELECT * FROM ARTICLES";
+            "SELECT * FROM ARTICLES WHERE DELETED=FALSE";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -35,6 +36,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
     public void store(ArticleCreateCommand acc) {
         jdbcTemplate.update(STORE_SQL,
                 acc.getWriter(),
+                acc.getWriterId(),
                 acc.getTitle(),
                 acc.getContents(),
                 TimeStringParser.parseTimeToString(LocalDateTime.now()));
@@ -50,11 +52,10 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
-    public void modify(Long id, Article article) {
+    public void modify(Long id, ArticleModifyCommand amc) {
         jdbcTemplate.update(MODIFY_SQL,
-                article.getWriter(),
-                article.getTitle(),
-                article.getContent(),
+                amc.getTitle(),
+                amc.getContents(),
                 id);
     }
 
@@ -72,6 +73,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
         return (rs, rowNum) -> new Article(
                 rs.getLong("ARTICLE_ID"),
                 rs.getString("WRITER"),
+                rs.getString("WRITER_ID"),
                 rs.getString("TITLE"),
                 rs.getString("CONTENT"),
                 TimeStringParser.parseStringToTime(rs.getString("CREATED_DATE"))

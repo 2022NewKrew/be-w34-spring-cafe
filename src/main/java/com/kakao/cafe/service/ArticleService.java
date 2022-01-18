@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.dto.article.ArticleContents;
 import com.kakao.cafe.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.dto.article.ArticleListShow;
+import com.kakao.cafe.dto.article.ArticleModifyCommand;
 import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,11 @@ public class ArticleService {
         articleRepository.store(acc);
     }
 
-    public ArticleContents getArticle(Long id) {
-        return new ArticleContents(articleRepository.retrieve(id));
-    }
+    public void modifyArticle(long articleId, ArticleModifyCommand amc) { articleRepository.modify(articleId, amc); }
+
+    public void deleteArticle(long articleId) { articleRepository.delete(articleId); }
+
+    public ArticleContents getArticle(Long id) { return new ArticleContents(articleRepository.retrieve(id)); }
 
     public List<ArticleListShow> getAllArticles() {
         return articleRepository.toList().stream()
