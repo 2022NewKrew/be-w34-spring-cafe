@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.model.Article;
+import com.kakao.cafe.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,9 +24,9 @@ public class ArticleJdbcRepository implements ArticleRepository{
 
     public void save(Article article){
         jdbcTemplate.update(
-                "insert into article(id, writer, title, contents, createTime) values ( ?, ?, ?, ?, ?)",
+                "insert into article(article_id, writer, title, contents, createTime) values ( ?, ?, ?, ?, ?)",
                 article.getId(),
-                article.getWriter(),
+                article.getUser().getUserName(),
                 article.getTitle(),
                 article.getContents(),
                 Timestamp.valueOf(article.getCreateTime())
@@ -35,28 +36,32 @@ public class ArticleJdbcRepository implements ArticleRepository{
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query(
-                "SELECT * FROM article ORDER BY id DESC",
+                "select * from article join users on article.writer = users.userName order by article_id desc",
                 mapper
         );
     }
 
     @Override
     public Optional<Article> findOne(Integer id) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(
-                "select id, writer, title, contents, createTime time from article where id = ?",
+        return jdbcTemplate.query(
+                "select * from article join users on article.writer = users.userName where article_id = ?",
                 mapper,
                 id
-        ));
+        ).stream().findAny();
     }
 
 
-    private final RowMapper<Article> mapper = (rs, rowNum) -> {
-        Article article = new Article(
-                rs.getInt("id"),
-                rs.getString("writer"),
-                rs.getString("title"),
-                rs.getString("contents"),
-                rs.getTimestamp("createTime").toLocalDateTime());
-        return article;
-    };
+    private final RowMapper<Article> mapper = (rs, rowNum) -> Article.builder()
+            .id(rs.getInt("article_id"))
+            .user(User.builder()
+                    .id(rs.getInt("id"))
+                    .userId(rs.getString("userID"))
+                    .password(rs.getString("password"))
+                    .userName(rs.getString("userName"))
+                    .email(rs.getString("email"))
+                    .build())
+            .title(rs.getString("title"))
+            .contents(rs.getString("contents"))
+            .createTime(rs.getTimestamp("createTime").toLocalDateTime())
+            .build();
 }

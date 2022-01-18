@@ -14,7 +14,7 @@ public class ArticleShowDto {
 
     public ArticleShowDto(Article article){
         this.id = article.getId();
-        this.writer = article.getWriter();
+        this.writer = article.getUser().getUserName();
         this.title = article.getTitle();
         this.contents = article.getContents();
         this.createTime = article.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
