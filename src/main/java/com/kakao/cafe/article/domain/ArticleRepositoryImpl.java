@@ -15,11 +15,10 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    // TODO: author_id 세션 로그인 구현 후에 수정
     @Override
     public void save(Article article) {
         final String sql = "insert into articles(title, body, author_id) values(?, ?, ?)";
-        jdbcTemplate.update(sql, article.getTitle(), article.getBody(), 1L);
+        jdbcTemplate.update(sql, article.getTitle(), article.getBody(), article.getAuthorId());
     }
 
     @Override

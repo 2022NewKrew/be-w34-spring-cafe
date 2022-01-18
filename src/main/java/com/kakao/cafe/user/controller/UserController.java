@@ -1,7 +1,10 @@
 package com.kakao.cafe.user.controller;
 
+import com.kakao.cafe.common.auth.LoginUser;
+import com.kakao.cafe.common.util.SessionUtil;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.LoginRequest;
+import com.kakao.cafe.user.dto.SessionUser;
 import com.kakao.cafe.user.dto.SignupRequest;
 import com.kakao.cafe.user.service.UserService;
 import javax.servlet.http.HttpSession;
@@ -19,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class UserController {
 
-    private static final String SESSION_USER = "sessionUser";
     private final UserService userService;
+    private final SessionUtil sessionUtil;
 
     @PostMapping
     public String signup(@Valid SignupRequest request) {
@@ -30,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping
-    public String getAllUsers(Model model) {
+    public String getAllUsers(@LoginUser SessionUser user, Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "user/list";
     }
@@ -43,13 +46,13 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(LoginRequest request, HttpSession session) {
-        session.setAttribute(SESSION_USER, userService.login(request));
+        sessionUtil.add(userService.login(request), session);
         return "redirect:/";
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
+    public String logout(@LoginUser SessionUser user, HttpSession session) {
+        sessionUtil.remove(session);
         return "redirect:/";
     }
 }

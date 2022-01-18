@@ -1,13 +1,15 @@
 package com.kakao.cafe.user.domain;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class User implements Serializable {
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public class User {
 
     private Long id;
     private String email;

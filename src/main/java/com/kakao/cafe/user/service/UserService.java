@@ -5,6 +5,7 @@ import com.kakao.cafe.user.domain.UserRepository;
 import com.kakao.cafe.user.domain.UserValidator;
 import com.kakao.cafe.user.dto.LoginRequest;
 import com.kakao.cafe.user.dto.Profile;
+import com.kakao.cafe.user.dto.SessionUser;
 import com.kakao.cafe.user.exception.UserNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +33,10 @@ public class UserService {
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
-    public User login(LoginRequest request) {
+    public SessionUser login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(UserNotFoundException::new);
         user.login(userValidator, request.getPassword());
-        return user;
+        return SessionUser.from(user);
     }
 }

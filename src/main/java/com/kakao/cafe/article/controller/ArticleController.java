@@ -2,6 +2,8 @@ package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.article.dto.ArticlePostRequest;
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.common.auth.LoginUser;
+import com.kakao.cafe.user.dto.SessionUser;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,8 +21,8 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping
-    public String post(@Valid ArticlePostRequest request) {
-        articleService.post(request.toEntity());
+    public String post(@LoginUser SessionUser author, @Valid ArticlePostRequest request) {
+        articleService.post(request.toEntity(), author.getId());
         return "redirect:/";
     }
 
@@ -31,8 +33,10 @@ public class ArticleController {
     }
 
     @GetMapping("/{articleId}")
-    public String getArticle(@PathVariable Long articleId, Model model) {
+    public String getArticle(@LoginUser SessionUser user, @PathVariable Long articleId,
+        Model model) {
         model.addAttribute("article", articleService.getArticleById(articleId));
+        model.addAttribute("user", user);
         return "article/show";
     }
 }

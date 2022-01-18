@@ -17,7 +17,8 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     @Transactional
-    public void post(Article article) {
+    public void post(Article article, Long authorId) {
+        article.setAuthorId(authorId);
         articleRepository.save(article);
     }
 
