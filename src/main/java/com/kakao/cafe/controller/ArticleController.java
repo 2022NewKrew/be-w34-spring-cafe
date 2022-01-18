@@ -46,12 +46,29 @@ public class ArticleController {
 
     @PutMapping("/questions/{id}")
     public String update(@PathVariable("id") Long id, ArticleFormRequest articleFormRequest, HttpSession session) {
-        articleService.updateArticleInfo(id, articleFormRequest);
-        return "redirect:/articles/" + id;
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null)
+            return "redirect:/user/login";
+        User sessionUser = (User) value;
+        try {
+            articleService.updateArticleInfo(id, sessionUser, articleFormRequest);
+        } catch (AuthenticationException e) {
+            return "redirect:/articles/" + id;
+        }
+        return "redirect:/";
     }
+
     @DeleteMapping("/questions/{id}")
     public String delete(@PathVariable("id") Long id, HttpSession session) {
-        articleService.deleteArticle(id);
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null)
+            return "redirect:/user/login";
+        User sessionUser = (User) value;
+        try {
+            articleService.deleteArticle(id, sessionUser);
+        } catch (AuthenticationException e) {
+            return "redirect:/articles/" + id;
+        }
         return "redirect:/";
     }
 
@@ -61,10 +78,11 @@ public class ArticleController {
         model.addAttribute("article", article);
         return "qna/show";
     }
+
     @GetMapping("/questions/{id}/form")
     public String updateForm(@PathVariable("id") Long articleId, Model model, HttpSession session) {
         Object value = session.getAttribute("sessionedUser");
-        if(value == null)
+        if (value == null)
             return "redirect:/";
         Article article = articleService.findArticle(articleId);
         model.addAttribute("article", article);
