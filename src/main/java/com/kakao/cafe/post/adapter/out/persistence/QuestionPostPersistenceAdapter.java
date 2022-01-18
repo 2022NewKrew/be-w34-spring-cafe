@@ -1,5 +1,6 @@
 package com.kakao.cafe.post.adapter.out.persistence;
 
+import com.kakao.cafe.post.application.port.out.DeleteQuestionPostPort;
 import com.kakao.cafe.post.application.port.out.LoadQuestionPostPort;
 import com.kakao.cafe.post.application.port.out.SaveQuestionPostPort;
 import com.kakao.cafe.post.application.port.out.UpdateQuestionPostPort;
@@ -11,7 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class QuestionPostPersistenceAdapter implements LoadQuestionPostPort, SaveQuestionPostPort, UpdateQuestionPostPort {
+public class QuestionPostPersistenceAdapter implements
+        LoadQuestionPostPort,
+        SaveQuestionPostPort,
+        UpdateQuestionPostPort,
+        DeleteQuestionPostPort {
 
     private final QuestionPostRepository questionPostRepository;
 
@@ -37,5 +42,10 @@ public class QuestionPostPersistenceAdapter implements LoadQuestionPostPort, Sav
     @Override
     public void update(QuestionPost questionPost) {
         questionPostRepository.update(questionPost);
+    }
+
+    @Override
+    public void delete(Long id) {
+        questionPostRepository.delete(id);
     }
 }
