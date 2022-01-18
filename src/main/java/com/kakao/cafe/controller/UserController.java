@@ -50,7 +50,7 @@ public class UserController {
     public String updateForm(@PathVariable Long userId, Model model, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
         if (auth == null || !auth.validateById(userId)) {
-            return "redirect:/users";
+            throw new UnauthorizedAccessException("인가되지 않은 접근입니다.");
         }
         UserDto user = userService.findById(userId);
         model.addAttribute("user", user);

@@ -23,9 +23,10 @@ public class ArticleController {
     @PostMapping
     public String publish(ArticleRequest articleRequest, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
-        if (auth != null) {
-            articleService.publishArticle(articleRequest);
+        if (auth == null) {
+            return "redirect:/user/login";
         }
+        articleService.publishArticle(articleRequest);
 
         return "redirect:/";
     }
@@ -34,7 +35,7 @@ public class ArticleController {
     public String getArticle(@PathVariable Long articleId, Model model, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
         if (auth == null) {
-            return "redirect:/";
+            return "redirect:/user/login";
         }
         ArticleDto article = articleService.findById(articleId);
         model.addAttribute("article", article);
