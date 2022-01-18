@@ -130,7 +130,7 @@ public class UserController {
         return "users/edit";
     }
 
-    @PutMapping("/users/edit")
+    @PutMapping("/users")
     public String editUser(
             final HttpServletRequest request,
             @NonNull final UserDto userDto,
