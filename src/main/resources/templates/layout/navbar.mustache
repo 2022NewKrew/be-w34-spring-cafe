@@ -10,12 +10,22 @@
                 <li><a href="/users" class="navbar-link font-small">멤버리스트</a></li>
                 <li>
                     <p class="navbar-btn">
-                        <a href="#" class="btn-kakao font-small">로그인</a>
+                    {{#sessionUser}}
+                        <a href="/users/{{sessionUser.id}}" class="btn-kakao font-small">정보수정</a>
+                    {{/sessionUser}}
+                    {{^sessionUser}}
+                        <a href="/login" class="btn-kakao font-small">로그인</a>
+                    {{/sessionUser}}
                     </p>
                 </li>
                 <li>
                     <p class="navbar-btn">
+                    {{#sessionUser}}
+                        <a href="/logout" class="btn-kakao font-small">로그아웃</a>
+                    {{/sessionUser}}
+                    {{^sessionUser}}
                         <a href="/users/create" class="btn-kakao font-small">회원가입</a>
+                    {{/sessionUser}}
                     </p>
                 </li>
             </ul>
