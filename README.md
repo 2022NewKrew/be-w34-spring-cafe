@@ -88,6 +88,14 @@
   - 출력하는 .html 파일 경로에 /가 중첩으로 들어간 것을 확인 ( templates//path/~.html )
   - 아무래도, spring 이 template/ 까지를 기본 경로로 추가해줘서 생긴 문제 같음 (로컬에선 왜 돌아간건지 의문)
   - 각 View 경로의 앞에 "/" 를 제거해주고, 리빌딩하여 서버에서 작동시키니 정상동작함
+- mysql 과의 연동과정에서, application.properties 설정문제가 발생
+  - hikari 라는 도구가 스프링의 기본툴로 잡혀있음
+  - 그래서 인자 명칭에 hikari 라는 경로명이 추가되었으나, 에러가 발생
+  - HikariPool-1 - jdbcUrl is required with driverClassName.
+    - jdbc-url 에는 hikari 경로를 제거하니 일단은 해결됨
+    - 확인해보니, 하단에 정의된 h2 선언이 해당 내용을 덧씌워서 생긴 오류 ( h2 설정을 주석처리 )
+  - 테이블이 존재해여 접근이 가능하므로, workbench 나 cli 로 테이블을 미리 생성해줘야함
+    - h2 랑 다르게 스크립트를 추가시켜 같이 실행시키는 기능은 따로 없는 것 같음
 
 # 참고 사이트
 - Collection 관련
@@ -116,3 +124,7 @@
   - https://cirius.tistory.com/1769
   - https://dev-coco.tistory.com/85
   - https://doozi0316.tistory.com/entry/Spring-Boot-MyBatis-MySQL-%EC%97%B0%EB%8F%99-%EB%B0%A9%EB%B2%95
+  - https://offbyone.tistory.com/54
+  - https://deviscreen.tistory.com/85
+  - https://engkimbs.tistory.com/794 ( 실패 )
+

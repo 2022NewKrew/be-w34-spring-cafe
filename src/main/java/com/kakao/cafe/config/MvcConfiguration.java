@@ -1,5 +1,7 @@
 package com.kakao.cafe.config;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -36,13 +38,19 @@ public class MvcConfiguration implements WebMvcConfigurer {
         registry.addRedirectViewController("/", "/posts/list");
     }
 
+//    @Bean
+//    public DataSource h2DataSource() {
+//        // jdbc:h2:tcp://localhost:3306/kakaodb
+//        return new EmbeddedDatabaseBuilder()
+//                .setType(EmbeddedDatabaseType.H2)
+//                .setName("kakaodb")
+//                .addScript("classpath:/sql/schema.sql")
+//                .addScript("classpath:/sql/data.sql").build();
+//    }
+
+    @ConfigurationProperties(prefix = "spring.datasource.hikari")
     @Bean
-    public DataSource myDataSource() {
-        // jdbc:h2:tcp://localhost:3306/kakaodb
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .setName("kakaodb")
-                .addScript("classpath:/sql/schema.sql")
-                .addScript("classpath:/sql/data.sql").build();
+    public DataSource mySqlDataSource() {
+        return DataSourceBuilder.create().build();
     }
 }
