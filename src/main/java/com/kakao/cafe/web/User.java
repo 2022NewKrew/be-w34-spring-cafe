@@ -4,6 +4,7 @@ public class User {
 
     private static final int INITIAL_POINT = 100;
 
+    private Long id;
     private final String email;
     private String nickname;
     private int point;
@@ -24,6 +25,14 @@ public class User {
 
     public int getPoint() {
         return point;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void validate() {
