@@ -4,12 +4,16 @@ import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.domain.exception.CannotAuthenticateException;
 import com.kakao.cafe.domain.exception.DuplicateUserIdException;
+import com.kakao.cafe.domain.exception.NoSuchUserException;
+import com.kakao.cafe.domain.exception.UnauthorizedException;
 import com.kakao.cafe.domain.repository.UserRepository;
 import com.kakao.cafe.service.dto.CredentialsDto;
+import com.kakao.cafe.service.dto.ModifyUserDto;
 import com.kakao.cafe.service.dto.SignUpDto;
 import com.kakao.cafe.service.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,5 +58,48 @@ public class UserService {
             throw new CannotAuthenticateException();
         }
         return entity.get().toDto();
+    }
+
+    @Transactional
+    public UserDto modify(long actorId, long targetId, ModifyUserDto modifyUser) {
+        if (actorId != targetId) {
+            throw new UnauthorizedException();
+        }
+        Optional<User> found = userRepository.getById(targetId);
+        if (found.isEmpty()) {
+            throw new NoSuchUserException();
+        }
+        modifyUserId(targetId, modifyUser.getUserId());
+        modifyPassword(targetId, modifyUser.getPassword());
+        modifyName(targetId, modifyUser.getName());
+        modifyEmail(targetId, modifyUser.getEmail());
+        Optional<User> updated = userRepository.getById(targetId);
+        if (updated.isEmpty()) {
+            throw new IllegalStateException();
+        }
+        return updated.get().toDto();
+    }
+
+    private void modifyUserId(long id, String userId) {
+        Optional<User> found = userRepository.getByUserId(userId);
+        if (found.isPresent() && found.get().getId() != id) {
+            throw new DuplicateUserIdException();
+        }
+        userRepository.updateUserId(id, userId);
+    }
+
+    private void modifyPassword(long id, String password) {
+        if (password.equals("")) {
+            return;
+        }
+        userRepository.updatePassword(id, password);
+    }
+
+    private void modifyName(long id, String name) {
+        userRepository.updateName(id, name);
+    }
+
+    private void modifyEmail(long id, String email) {
+        userRepository.updateEmail(id, email);
     }
 }

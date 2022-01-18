@@ -12,10 +12,13 @@ public class JdbcConfig {
 
     @Bean
     public DataSource dataSource() {
-        return new EmbeddedDatabaseBuilder()
+        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("kakao")
-                .addScript("db/sql/schema.sql")
-                .build();
+                .addScript("db/sql/schema.sql");
+        if ("test".equals(System.getProperty("spring.profiles.active"))) {
+            builder.addScript("db/sql/test-data.sql");
+        }
+        return builder.build();
     }
 }

@@ -80,4 +80,32 @@ public class JdbcUserRepository implements UserRepository {
             return Optional.empty();
         }
     }
+
+    @Override
+    public void updateUserId(long id, String userId) {
+        String sql = "UPDATE users SET user_id = :user_id WHERE id = :id";
+        Map<String, ?> params = Map.of("user_id", userId, "id", id);
+        jdbcTemplate.update(sql, params);
+    }
+
+    @Override
+    public void updatePassword(long id, String password) {
+        String sql = "UPDATE users SET password = :password WHERE id = :id";
+        Map<String, ?> params = Map.of("password", password, "id", id);
+        jdbcTemplate.update(sql, params);
+    }
+
+    @Override
+    public void updateName(long id, String name) {
+        String sql = "UPDATE users SET name = :name WHERE id = :id";
+        Map<String, ?> params = Map.of("name", name, "id", id);
+        jdbcTemplate.update(sql, params);
+    }
+
+    @Override
+    public void updateEmail(long id, String email) {
+        String sql = "UPDATE users SET email = :email WHERE id = :id";
+        Map<String, ?> params = Map.of("email", email, "id", id);
+        jdbcTemplate.update(sql, params);
+    }
 }

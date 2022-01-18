@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
@@ -33,11 +30,11 @@ public class ArticleController {
             @Valid @ModelAttribute ArticleRequest request,
             HttpSession session
     ) {
-        Long ownerId = (Long) session.getAttribute("currentUserId");
-        if (ownerId == null) {
+        Long authorId = (Long) session.getAttribute("currentUserId");
+        if (authorId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
         }
-        service.create(ownerId, request.toDraftDto());
+        service.create(authorId, request.toDraftDto());
         return "redirect:/";
     }
 
@@ -56,5 +53,40 @@ public class ArticleController {
         }
         model.addAttribute("article", article.get());
         return "articles/item";
+    }
+
+    @GetMapping("/articles/{id}/form")
+    public String updateForm(@PathVariable long id, Model model, HttpSession session) {
+        Long authorId = (Long) session.getAttribute("currentUserId");
+        if (authorId == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
+        }
+        ArticleDto article = service.getEditableById(authorId, id);
+        model.addAttribute("article", article);
+        return "articles/form";
+    }
+
+    @PutMapping("/articles/{id}")
+    public String update(
+            @PathVariable long id,
+            @Valid @ModelAttribute ArticleRequest request,
+            HttpSession session
+    ) {
+        Long authorId = (Long) session.getAttribute("currentUserId");
+        if (authorId == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
+        }
+        service.update(authorId, id, request.toDraftDto());
+        return "redirect:/articles/" + id;
+    }
+
+    @DeleteMapping("/articles/{id}")
+    public String delete(@PathVariable long id, HttpSession session) {
+        Long authorId = (Long) session.getAttribute("currentUserId");
+        if (authorId == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
+        }
+        service.delete(authorId, id);
+        return "redirect:/";
     }
 }

@@ -2,10 +2,11 @@
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
-          <form name="question" method="get" action="/user/create">
+          <form name="question" method="post" action="{{#user}}/users/{{id}}{{/user}}{{^user}}/users{{/user}}">
+              {{#user}}<input type="hidden" name="_method" value="PUT">{{/user}}
               <div class="form-group">
                   <label for="userId">사용자 아이디</label>
-                  <input class="form-control" id="userId" name="userId" placeholder="User ID">
+                  <input class="form-control" id="userId" name="userId" placeholder="User ID" value="{{#user}}{{userId}}{{/user}}">
               </div>
               <div class="form-group">
                   <label for="password">비밀번호</label>
@@ -13,13 +14,13 @@
               </div>
               <div class="form-group">
                   <label for="name">이름</label>
-                  <input class="form-control" id="name" name="name" placeholder="Name">
+                  <input class="form-control" id="name" name="name" placeholder="Name" value="{{#user}}{{name}}{{/user}}">
               </div>
               <div class="form-group">
                   <label for="email">이메일</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{#user}}{{email}}{{/user}}">
               </div>
-              <button type="submit" class="btn btn-success clearfix pull-right">회원가입</button>
+              <button type="submit" class="btn btn-success clearfix pull-right">{{#user}}수정{{/user}}{{^user}}회원가입{{/user}}</button>
               <div class="clearfix" />
           </form>
         </div>

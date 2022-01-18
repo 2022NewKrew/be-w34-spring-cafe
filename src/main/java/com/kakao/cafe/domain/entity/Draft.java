@@ -5,13 +5,11 @@ import java.util.Map;
 
 public class Draft {
 
-    private final User owner;
-    private final String author;
+    private final User author;
     private final String title;
     private final String content;
 
-    public Draft(User owner, String author, String title, String content) {
-        this.owner = owner;
+    public Draft(User author, String title, String content) {
         this.author = author;
         this.title = title;
         this.content = content;
@@ -19,8 +17,7 @@ public class Draft {
 
     public Map<String, Object> toMap() {
         return Map.of(
-                "owner_id", owner.getId(),
-                "author", author,
+                "owner_id", author.getId(),
                 "title", title,
                 "content", content
         );
@@ -29,7 +26,6 @@ public class Draft {
     public Article createArticle(long id, Date createdAt) {
         return new Article.Builder()
                 .id(id)
-                .owner(owner)
                 .author(author)
                 .title(title)
                 .content(content)

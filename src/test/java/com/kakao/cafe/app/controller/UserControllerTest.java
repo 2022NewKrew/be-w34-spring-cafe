@@ -21,8 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,7 +42,7 @@ class UserControllerTest {
         when(service.create(any())).thenReturn(new UserDto.Builder().id(id).build());
         MockHttpSession session = new MockHttpSession();
 
-        MockHttpServletRequestBuilder request = get("/user/create")
+        MockHttpServletRequestBuilder request = post("/users")
                 .session(session)
                 .param("userId", "test")
                 .param("name", "test")
@@ -60,7 +59,7 @@ class UserControllerTest {
         when(service.create(any())).thenReturn(null);
         MockHttpSession session = new MockHttpSession();
 
-        MockHttpServletRequestBuilder request = get("/user/create")
+        MockHttpServletRequestBuilder request = post("/users")
                 .session(session)
                 .param("userId", "test")
                 .param("name", "")
@@ -80,7 +79,7 @@ class UserControllerTest {
         });
         MockHttpSession session = new MockHttpSession();
 
-        MockHttpServletRequestBuilder request = get("/user/create")
+        MockHttpServletRequestBuilder request = post("/users")
                 .session(session)
                 .param("userId", "test")
                 .param("name", "name")
@@ -89,6 +88,59 @@ class UserControllerTest {
         mvc.perform(request)
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void modify() throws Exception {
+        UserDto user = new UserDto.Builder().id(1234L).build();
+        when(service.modify(anyLong(), anyLong(), any())).thenReturn(user);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("currentUserId", 1234L);
+
+        MockHttpServletRequestBuilder request = put("/users/1234")
+                .session(session)
+                .param("userId", "newUserId")
+                .param("name", "newName")
+                .param("email", "new@example.com")
+                .param("password", "newPassword");
+        mvc.perform(request)
+                .andDo(print())
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    void modify_unauthenticated() throws Exception {
+        UserDto user = new UserDto.Builder().id(1234L).build();
+        when(service.modify(anyLong(), anyLong(), any())).thenReturn(user);
+        MockHttpSession session = new MockHttpSession();
+
+        MockHttpServletRequestBuilder request = put("/users/1234")
+                .session(session)
+                .param("userId", "newUserId")
+                .param("name", "newName")
+                .param("email", "new@example.com")
+                .param("password", "newPassword");
+        mvc.perform(request)
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void modify_blankPassword() throws Exception {
+        UserDto user = new UserDto.Builder().id(1234L).build();
+        when(service.modify(anyLong(), anyLong(), any())).thenReturn(user);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("currentUserId", 1234L);
+
+        MockHttpServletRequestBuilder request = put("/users/1234")
+                .session(session)
+                .param("userId", "newUserId")
+                .param("name", "newName")
+                .param("email", "new@example.com")
+                .param("password", "");
+        mvc.perform(request)
+                .andDo(print())
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test

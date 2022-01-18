@@ -5,15 +5,13 @@ import java.util.Date;
 public class ArticleDto {
 
     private long id;
-    private final UserDto owner;
-    private final String author;
+    private final UserDto author;
     private final String title;
     private final String content;
     private final Date createdAt;
 
-    private ArticleDto(long id, UserDto owner, String author, String title, String content, Date createdAt) {
+    private ArticleDto(long id, UserDto author, String title, String content, Date createdAt) {
         this.id = id;
-        this.owner = owner;
         this.author = author;
         this.title = title;
         this.content = content;
@@ -23,8 +21,7 @@ public class ArticleDto {
     public static class Builder {
 
         private long id;
-        private UserDto owner;
-        private String author;
+        private UserDto author;
         private String title;
         private String content;
         private Date createdAt;
@@ -34,12 +31,7 @@ public class ArticleDto {
             return this;
         }
 
-        public Builder owner(UserDto owner) {
-            this.owner = owner;
-            return this;
-        }
-
-        public Builder author(String author) {
+        public Builder author(UserDto author) {
             this.author = author;
             return this;
         }
@@ -60,7 +52,7 @@ public class ArticleDto {
         }
 
         public ArticleDto build() {
-            return new ArticleDto(id, owner, author, title, content, createdAt);
+            return new ArticleDto(id, author, title, content, createdAt);
         }
     }
 }

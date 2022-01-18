@@ -13,4 +13,8 @@ public interface UserRepository {
     Optional<User> getById(long id);
     Optional<User> getByUserId(String userId);
     Optional<User> login(String userId, String password);
+    void updateUserId(long id, String userId);
+    void updatePassword(long id, String password);
+    void updateName(long id, String name);
+    void updateEmail(long id, String email);
 }

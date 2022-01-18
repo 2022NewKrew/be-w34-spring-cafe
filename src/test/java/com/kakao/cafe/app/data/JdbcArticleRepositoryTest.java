@@ -29,7 +29,7 @@ class JdbcArticleRepositoryTest {
 
     private JdbcArticleRepository subject;
     private Long insertedId;
-    private long insertedOwnerId;
+    private long insertedAuthorId;
 
     @BeforeEach
     public void setUp() {
@@ -42,18 +42,18 @@ class JdbcArticleRepositoryTest {
                 new MapSqlParameterSource(Collections.emptyMap()),
                 holder
         );
-        insertedOwnerId = holder.getKey().longValue();
+        insertedAuthorId = holder.getKey().longValue();
         jdbcTemplate.update(
                 "INSERT INTO articles " +
-                        "(owner_id, author, title, content, created_at) " +
-                        "VALUES (:owner_id, 'author', 'title', 'content', NOW())",
-                new MapSqlParameterSource(Collections.singletonMap("owner_id", insertedOwnerId)),
+                        "(owner_id, title, content, created_at) " +
+                        "VALUES (:owner_id, 'title', 'content', NOW())",
+                new MapSqlParameterSource(Collections.singletonMap("owner_id", insertedAuthorId)),
                 holder
         );
         insertedId = holder.getKey().longValue();
         jdbcTemplate.queryForObject(
-                "SELECT id FROM articles WHERE author = 'author'",
-                Collections.emptyMap(),
+                "SELECT id FROM articles WHERE owner_id = :owner_id",
+                Collections.singletonMap("owner_id", insertedAuthorId),
                 Long.class
         );
     }
@@ -66,8 +66,8 @@ class JdbcArticleRepositoryTest {
 
     @Test
     public void create() {
-        User owner = new User.Builder().id(insertedOwnerId).build();
-        Draft draft = new Draft(owner, "author", "title", "content");
+        User author = new User.Builder().id(insertedAuthorId).build();
+        Draft draft = new Draft(author, "title", "content");
 
         Article result = subject.create(draft);
 
