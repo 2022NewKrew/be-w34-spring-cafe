@@ -19,5 +19,7 @@ CREATE TABLE article
     title       VARCHAR(30),
     contents    LONGTEXT,
     create_time DATETIME DEFAULT CURRENT_TIME,
+    modify_time DATETIME DEFAULT CURRENT_TIME,
+    is_deleted  BOOLEAN  DEFAULT FALSE,
     PRIMARY KEY (id)
 );
