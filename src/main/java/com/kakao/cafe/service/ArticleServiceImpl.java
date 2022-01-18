@@ -38,6 +38,18 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public void modify(ArticleDto dto) {
+        articleRepository.findById(dto.getArticleId())
+                .map(entity -> {
+                    entity.changeTitle(dto.getTitle());
+                    entity.changeContent(dto.getContent());
+//                    articleRepository.update(entity);
+                    return entity;
+                })
+                .orElseThrow(RuntimeException::new);
+    }
+
+    @Override
     public PageResultDto<ArticleDto, Article> getList(PageRequestDto requestDto) {
         Pageable pageable = requestDto.getPageable();
         Page<Article> result = articleRepository.findAll(pageable);

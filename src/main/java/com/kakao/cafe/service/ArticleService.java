@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.dto.EditUserDto;
 import com.kakao.cafe.dto.PageRequestDto;
 import com.kakao.cafe.dto.PageResultDto;
 import com.kakao.cafe.dto.ArticleDto;
@@ -10,6 +11,8 @@ public interface ArticleService {
     void register(ArticleDto dto);
 
     ArticleDto read(Long articleId);
+
+    void modify(ArticleDto dto);
 
     PageResultDto<ArticleDto, Article> getList(PageRequestDto requestDto);
 

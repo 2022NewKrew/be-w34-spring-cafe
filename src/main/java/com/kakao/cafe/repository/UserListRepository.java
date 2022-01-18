@@ -69,15 +69,7 @@ public class UserListRepository implements UserRepository {
                 .filter(user -> user.getEmail().equals(entity.getEmail()))
                 .findFirst();
     }
-
-    @Override
-    public Optional<User> findByEmailAndPassword(User entity) {
-        return userList.stream()
-                .filter(user -> user.getEmail().equals(entity.getEmail()))
-                .filter(user -> user.getPassword().equals(entity.getPassword()))
-                .findFirst();
-    }
-
+    
     @Override
     public Page<User> findAll(Pageable pageable) {
         int totalPage = (int) Math.ceil(userList.size() / (double) pageable.getSize());

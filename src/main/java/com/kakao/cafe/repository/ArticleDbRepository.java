@@ -32,20 +32,13 @@ public class ArticleDbRepository implements ArticleRepository {
     @Override
     public void save(Article entity) {
         String sql = "insert into article (title, content, view_count, writer_email) values (?, ?, 0, ?)";
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, entity.getTitle());
-            ps.setString(2, entity.getContent());
-            ps.setString(3, entity.getWriter().getEmail());
-            return ps;
-        }, keyHolder);
+        jdbcTemplate.update(sql, entity.getTitle(), entity.getContent(), entity.getWriter().getEmail());
     }
 
     @Override
     public Optional<Article> findById(Long articleId) {
         String sql = "" +
-                "select a.article_id, a.title, a.content, a.view_count, a.reg_date, a.mod_date, u.email, u.username " +
+                "select a.*, u.* " +
                 "from article as a " +
                 "left join user as u " +
                 "on a.writer_email = u.email " +
@@ -57,10 +50,11 @@ public class ArticleDbRepository implements ArticleRepository {
     @Override
     public Page<Article> findAll(Pageable pageable) {
         String sql = "" +
-                "select a.article_id, a.title, a.content, a.view_count, a.reg_date, a.mod_date, u.email, u.username " +
+                "select a.*, u.* " +
                 "from article a " +
                 "left join user u " +
                 "on a.writer_email = u.email " +
+                "ORDER BY a.reg_date DESC " +
                 "limit ? offset ?";
         int totalRow = jdbcTemplate.queryForObject("select count(*) from article", (rs, rowNum) -> rs.getInt(1));
         int totalPage = (int) Math.ceil(totalRow / (double) pageable.getSize());

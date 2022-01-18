@@ -13,7 +13,5 @@ public interface UserRepository {
 
     public Optional<User> findByEmail(User entity);
 
-    public Optional<User> findByEmailAndPassword(User entity);
-
     public Page<User> findAll(Pageable pageable);
 }

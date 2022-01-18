@@ -23,32 +23,42 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("/new")
-    public String writeArticleForm(HttpSession session) {
-        AuthDto authDto = (AuthDto) session.getAttribute("auth");
-        if (authDto == null) {
-            return "redirect:/accounts/login";
-        }
+    public String writeArticleForm() {
+        log.debug("[Get] /articles/new");
         return "article/write";
+    }
+
+    @PostMapping("/new")
+    public String writeArticle(ArticleDto articleDto) {
+        log.debug("[Post] /articles " + articleDto);
+        articleService.register(articleDto);
+        return "redirect:/";
     }
 
     @GetMapping("/{articleId}")
     public String readArticle(@PathVariable Long articleId, Model model) {
+        log.debug("[Get] /articles/" + articleId);
         model.addAttribute("article", articleService.read(articleId));
         return "article/read";
     }
 
-    @PostMapping
-    public String writeArticle(ArticleDto articleDto, HttpSession session) {
-        AuthDto authDto = (AuthDto) session.getAttribute("auth");
-        if (authDto == null) {
-            return "redirect:/accounts/login";
-        }
-        articleService.register(articleDto);
+    @GetMapping("/{articleId}/edit")
+    public String editArticleForm(@PathVariable Long articleId, Model model) {
+        log.debug("[Get] /articles/" + articleId + "/edit");
+//        articleService.register(articleDto);
+        return "redirect:/";
+    }
+
+    @PostMapping("/{articleId}/edit")
+    public String editArticle(@PathVariable Long articleId, ArticleDto articleDto) {
+        log.debug("[Post] /articles/" + articleId + "/edit " + articleDto);
+//        articleService.register(articleDto);
         return "redirect:/";
     }
 
     @GetMapping
     public String articleFList(PageRequestDto pageRequestDto, Model model) {
+        log.debug("[Get] /articles " + pageRequestDto);
         model.addAttribute("articles", articleService.getList(pageRequestDto));
         return "article/list";
     }

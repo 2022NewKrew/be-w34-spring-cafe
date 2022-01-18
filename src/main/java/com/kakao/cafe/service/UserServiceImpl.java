@@ -2,9 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.*;
 import com.kakao.cafe.entity.User;
-import com.kakao.cafe.exception.user.LoginFailedException;
-import com.kakao.cafe.exception.user.UserException;
-import com.kakao.cafe.exception.user.UserRegisterFailedException;
+import com.kakao.cafe.exception.user.*;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.util.Page;
 import com.kakao.cafe.util.Pageable;
@@ -34,15 +32,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AuthDto login(UserDto dto) {
-        User entity = dtoToEntity(dto);
-        return userRepository.findByEmailAndPassword(entity)
+        return userRepository.findByEmail(dtoToEntity(dto))
+                .filter(entity -> entity.getPassword().equals(dto.getPassword()))
                 .map(this::entityToAuthDto)
                 .orElseThrow(LoginFailedException::new);
     }
 
     @Override
     public UserDto getUser(AuthDto dto) {
-        Optional<User> result = userRepository.findByEmail(User.builder().email(dto.getEmail()).build());
         return userRepository.findByEmail(User.builder().email(dto.getEmail()).build())
                 .map(this::entityToDto)
                 .orElseThrow(UserException::new);
@@ -57,14 +54,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void modify(EditUserDto dto) {
-        User user = User.builder().email(dto.getEmail()).password(dto.getPassword()).build();
-        Optional<User> result = userRepository.findByEmailAndPassword(user);
-        if (result.isPresent()) {
-            User entity = result.get();
-            entity.changeUsername(dto.getUsername());
-            entity.changePassword(dto.getPassword());
-            userRepository.save(entity);
-        }
+        if (!dto.confirmPassword())
+            throw new PasswordConfirmFailedException();
+        userRepository.findByEmail(User.builder().email(dto.getEmail()).build())
+                .filter(entity -> entity.getPassword().equals(dto.getPassword()))
+                .map(entity -> {
+                    entity.changeUsername(dto.getUsername());
+                    entity.changePassword(dto.getNewPassword());
+                    userRepository.update(entity);
+                    return entity;
+                })
+                .orElseThrow(EditAccountFailedException::new);
     }
 
     @Override
