@@ -73,8 +73,14 @@ public class JdbcUserInfoRepository implements UserInfoRepository {
                                          .name(rs.getString("name"))
                                          .email(rs.getString("email"))
                                          .build();
-            } catch (IllegalUserIdException | IllegalPasswordException | IllegalUserNameException | IllegalEmailException e) {
-                throw new SQLException("DB에서 값을 읽어오지 못했습니다.");
+            } catch (IllegalUserIdException e) {
+                throw new SQLException("DB에 저장된 userID가 잘못되었습니다.");
+            } catch (IllegalPasswordException e) {
+                throw new SQLException("DB에 저장된 password가 잘못되었습니다.");
+            } catch (IllegalUserNameException e) {
+                throw new SQLException("DB에 저장된 userName이 잘못되었습니다.");
+            } catch (IllegalEmailException e) {
+                throw new SQLException("DB에 저장된 email이 잘못되었습니다.");
             }
         }
     }

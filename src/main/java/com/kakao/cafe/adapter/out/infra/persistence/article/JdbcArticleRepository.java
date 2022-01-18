@@ -72,8 +72,12 @@ public class JdbcArticleRepository implements ArticleRepository {
                                                        .build();
                 article.setId(rs.getInt("id"));
                 return article;
-            } catch (IllegalWriterException | IllegalTitleException | IllegalDateException e) {
-                throw new SQLException("DB에서 값을 읽어오지 못했습니다.");
+            } catch (IllegalWriterException e) {
+                throw new SQLException("DB에 저장된 writer가 잘못되었습니다.");
+            } catch (IllegalTitleException e) {
+                throw new SQLException("DB에 저장된 title이 잘못되었습니다.");
+            } catch (IllegalDateException e) {
+                throw new SQLException("DB에 저장된 createdAt 값이 잘못되었습니다.");
             }
         }
     }
