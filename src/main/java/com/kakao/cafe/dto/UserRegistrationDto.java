@@ -10,7 +10,7 @@ public class UserRegistrationDto {
 //    private final String profileImage;
 
     public User toEntity() {
-        return new User(userId, password, email);
+        return new User(0, userId, password, email);
     }
 
     public UserRegistrationDto(String userId, String password, String email) {
