@@ -6,6 +6,7 @@ import com.kakao.cafe.dto.user.UserInfoDto;
 import com.kakao.cafe.exceptions.NoSuchUserException;
 import com.kakao.cafe.exceptions.PasswordMismatchException;
 import com.kakao.cafe.exceptions.UserIdDuplicationException;
+import com.kakao.cafe.exceptions.WrongAccessException;
 import com.kakao.cafe.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,9 +56,13 @@ public class UserController {
 
     // 회원정보 수정 페이지
     @GetMapping("users/{userId}/form")
-    public String updateForm(@PathVariable String userId, Model model) throws NoSuchUserException {
-    model.addAttribute("user", this.userService.getUserByUserId(userId));
-    return "user/updateForm";
+    public String updateForm(@PathVariable String userId, Model model, HttpSession session) throws NoSuchUserException, WrongAccessException {
+        UserInfoDto sessionedUser = (UserInfoDto) session.getAttribute("sessionedUser");
+        if (!userId.equals(sessionedUser.getUserId())) {
+            throw new WrongAccessException();
+        }
+        model.addAttribute("user", this.userService.getUserByUserId(userId));
+        return "user/updateForm";
     }
 
     // 회원정보 수정 요청
