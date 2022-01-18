@@ -2,7 +2,6 @@ package com.kakao.cafe.web.article;
 
 import com.kakao.cafe.web.article.domain.Article;
 import com.kakao.cafe.web.article.domain.Articles;
-import com.kakao.cafe.web.user.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -27,16 +26,10 @@ public class ArticleController {
     @GetMapping("/article/form")
     public String getArticleForm () {
         logger.info("getArticleForm");
-        return "/article/form";
+        return "article/form";
     }
 
     // 글쓰기 등록 요청
-//    @PostMapping("/questions")
-//    public String createArticle (Article article) {
-//        logger.info("getQuestion");
-//        articles.addQuestion(article);
-//        return "redirect:/index";
-//    }
     @PostMapping("/questions")
     public String createArticle (Article article) {
         logger.info("createArticle");
@@ -46,28 +39,18 @@ public class ArticleController {
 
 
     @GetMapping("/index")
-//    public String getIndex (Model model) {
-//        logger.info("getIndex");
-//        model.addAttribute("articles", this.articles.getArticleList());
-//        return "/index";
-//    }
     public String getIndex (Model model) {
         logger.info("getIndex");
         model.addAttribute("articles", articleDao.readArticles());
-        return "/index";
+        return "index";
     }
 
     // 특정 글 상세보기 요청
     @GetMapping("/articles/{index}")
-//    public String getArticle (@PathVariable String index, Model model) {
-//        logger.info("getArticle");
-//        model.addAttribute(this.articles.findArticleByID(index));
-//        return "/article/show";
-//    }
     public String getArticle (@PathVariable String index, Model model) {
         logger.info("getArticle");
         model.addAttribute(articleDao.findById(Integer.valueOf(index)));
-        return "/article/show";
+        return "article/show";
     }
 
 
