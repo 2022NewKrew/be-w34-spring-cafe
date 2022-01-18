@@ -38,4 +38,18 @@ public class ArticleService {
         article.setAuthor(jdbcTemplate.queryForObject(authorQuery, new UserMapper(), article.getAuthorId()));
         return article;
     }
+
+    public void updateArticle(int id, Article updateArticle) {
+        if (updateArticle.getTitle().isBlank())
+            throw new IllegalArgumentException("제목이 빈 값일 수 없습니다.");
+        if (updateArticle.getContent().isBlank())
+            throw new IllegalArgumentException("내용이 빈 값일 수 없습니다.");
+        String sql = "UPDATE ARTICLES SET TITLE=?, CONTENT=? WHERE ID=?";
+        jdbcTemplate.update(sql, updateArticle.getTitle(), updateArticle.getContent(), id);
+    }
+
+    public void deleteArticle(int id) {
+        String sql = "DELETE FROM ARTICLES WHERE ID=?";
+        jdbcTemplate.update(sql, id);
+    }
 }
