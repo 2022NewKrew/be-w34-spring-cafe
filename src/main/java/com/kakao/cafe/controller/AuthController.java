@@ -8,6 +8,7 @@ import com.kakao.cafe.service.UserService;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -19,8 +20,18 @@ public class AuthController {
         this.userService = userService;
     }
 
+    @GetMapping("/signup")
+    public String requestSignupForm() {
+        return "users/form";
+    }
+
+    @GetMapping("/login")
+    public String requestLoginForm() {
+        return "auth/login";
+    }
+
     @PostMapping("/login")
-    public String login(@Valid LoginRequestDto dto, HttpSession session) {
+    public String requestLogin(@Valid LoginRequestDto dto, HttpSession session) {
         UserName userName = new UserName(dto.getUserName());
         Password password = new Password(dto.getPassword());
         User user = userService.findUserByLoginInfo(userName, password);
@@ -29,7 +40,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public String logout(HttpSession session) {
+    public String requestLogout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
     }

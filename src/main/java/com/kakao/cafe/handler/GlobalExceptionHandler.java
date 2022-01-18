@@ -2,6 +2,7 @@ package com.kakao.cafe.handler;
 
 import com.kakao.cafe.exception.DuplicateUserException;
 import com.kakao.cafe.exception.LoginFailedException;
+import com.kakao.cafe.exception.LoginRequiredException;
 import com.kakao.cafe.exception.NoSuchArticleException;
 import com.kakao.cafe.exception.NoSuchUserException;
 import org.slf4j.Logger;
@@ -68,5 +69,12 @@ public class GlobalExceptionHandler {
     public String loginFailed(Exception exception) {
         logHandlingException(exception);
         return "error/login-failed";
+    }
+
+    @ExceptionHandler(LoginRequiredException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public String loginRequired(Exception exception) {
+        logHandlingException(exception);
+        return "auth/login";
     }
 }

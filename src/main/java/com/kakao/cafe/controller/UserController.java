@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.annotation.LoginRequired;
 import com.kakao.cafe.dto.user.ProfileResponseDto;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.user.SignupRequestDto;
@@ -32,9 +33,10 @@ public class UserController {
     public String requestSignup(@Valid SignupRequestDto dto) {
         User user = userMapper.signupRequestDtoToUser(dto);
         userService.registerUser(user);
-        return "redirect:/users";
+        return "redirect:/";
     }
 
+    @LoginRequired
     @GetMapping("/users")
     public String requestUserList(Model model) {
         List<User> userList = userService.getUserList();
@@ -43,6 +45,7 @@ public class UserController {
         return "users/list";
     }
 
+    @LoginRequired
     @GetMapping("/users/{userId}")
     public String requestUserProfile(@PathVariable UUID userId, Model model) {
         User user = userService.findUserById(userId);
