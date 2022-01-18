@@ -1,10 +1,11 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.config.auth.LoginUser;
 import com.kakao.cafe.dto.RequestArticleDto;
+import com.kakao.cafe.dto.SessionUser;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,16 +13,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class ArticleController {
-    Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     private final ArticleService articleService;
 
     @PostMapping("/posts")
-    public String addArticle(@ModelAttribute RequestArticleDto articleDto) {
-        logger.info("POST /posts {}", articleDto);
+    public String addArticle(@ModelAttribute RequestArticleDto articleDto, @LoginUser SessionUser user) {
+        log.info("POST /posts {}", articleDto);
+
         articleService.addPost(articleDto);
         return "redirect:/";
     }

@@ -1,22 +1,15 @@
-package com.kakao.cafe.repository.article;
+package com.kakao.cafe.domain.repository.article;
 
-import com.kakao.cafe.config.SpringJdbcConfig;
-import com.kakao.cafe.controller.UserController;
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.entity.Article;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,33 +17,28 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class H2ArticleRepository implements ArticleRepository {
 
-//    @Autowired
     private final JdbcTemplate jdbcTemplate;
-
-    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Override
     public Article save(Article article) {
-        String sql = "MERGE INTO ARTICLE" +
-                "ON (ID= ?)" +
-                "WHEN MATCHED THEN " +
-                "UPDATE SET " +
-                "AUTHOR = ?," +
-                "TITLE = ?," +
-                "CONTENT = ?," +
-                "VIEWS = ?," +
-                "CREATED_AT = ?" +
-                "WHEN NOT MATCHED THEN" +
-                "INSERT (AUTHOR, TITLE, CONTENT, VIEWS, CREATED_AT)" +
-                "VALUES(?,?,?,?,?)";
+        if(article.getId() == 0){
+            String sql = "INSERT INTO `ARTICLE`(AUTHOR, TITLE, CONTENT, VIEWS, CREATED_AT) VALUES(?,?,?,?,?)";
+            jdbcTemplate.update(sql, article.getAuthor(), article.getContent(), article.getViews(), article.getContent(), article.getCreatedAt());
+            return article;
+        }
+
+        String sql = "UPDATE `ARTICLE` SET " +
+                "AUTHOR = ?, TITLE = ?, CONTENT = ?, VIEWS = ?, CREATED_AT = ?" +
+                "WHERE ID = ?";
+
         jdbcTemplate.update(sql,
-                article.getId(),
                 article.getAuthor(), article.getTitle(), article.getContent(), article.getViews(), article.getCreatedAt(),
-                article.getAuthor(), article.getTitle(), article.getContent(), article.getViews(), article.getCreatedAt());
+                article.getId());
 
         return article;
     }
@@ -65,7 +53,6 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        logger.info(">>>>> {}", jdbcTemplate==null);
         return jdbcTemplate.query("SELECT * FROM ARTICLE", articleRowMapper());
     }
 

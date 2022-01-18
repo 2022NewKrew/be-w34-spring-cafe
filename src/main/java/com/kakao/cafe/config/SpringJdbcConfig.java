@@ -20,9 +20,4 @@ public class SpringJdbcConfig {
                 .addScript("classpath:data.sql").build();
     }
 
-//    @Bean
-//    public JdbcTemplate db(DataSource dataSource) {
-//        return new JdbcTemplate(dataSource);
-//    }
-
 }

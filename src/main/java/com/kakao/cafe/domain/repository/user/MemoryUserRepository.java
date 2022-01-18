@@ -1,6 +1,6 @@
-package com.kakao.cafe.repository.user;
+package com.kakao.cafe.domain.repository.user;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.entity.User;
 
 import java.util.*;
 
@@ -33,11 +33,11 @@ public class MemoryUserRepository implements UserRepository{
         return new ArrayList<>(store.values());
     }
 
-    @Override
-    public User updateById(Long id, User user) {
-        store.put(id, user);
-        return user;
-    }
+//    @Override
+//    public User updateById(Long id, User user) {
+//        store.put(id, user);
+//        return user;
+//    }
 
     @Override
     public long countRecords(){

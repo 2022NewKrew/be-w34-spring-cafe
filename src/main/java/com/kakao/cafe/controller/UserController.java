@@ -1,57 +1,120 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.config.auth.LoginUser;
 import com.kakao.cafe.dto.RequestUserDto;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class UserController {
 
-    Logger logger = LoggerFactory.getLogger(UserController.class);
-
     private final UserService userService;
 
+    /*
+     * 회원가입
+     */
     @PostMapping("/users")
     public String join(@ModelAttribute RequestUserDto userDto) {
 
-        logger.info("POST /users {}", userDto);
+        log.info("POST /users {}", userDto);
 
         userService.join(userDto);
         return "redirect:/users";
     }
 
+    /*
+     * 유저 리스트
+     */
     @GetMapping("/users")
     public String getAllUsers(Model model) {
-        logger.info("GET /users");
+        log.info("GET /users");
         model.addAttribute("users", userService.findUsers());
         model.addAttribute("countOfUser", userService.getCountOfUser());
         return "user/list";
     }
 
+    /*
+     * 유저 상세 정보
+     */
     @GetMapping("/users/{id}")
-    public String getUserProfile(@PathVariable int id , Model model) {
-        logger.info("GET /users/{}", id);
-        model.addAttribute("user",userService.findOne(id));
+    public String getUserProfile(@PathVariable long id, Model model, @LoginUser SessionUser user) {
+        log.info("GET /users/{}", id);
+
+        if (id == user.getId()){
+            model.addAttribute("myId", user.getId());
+        }
+
+        model.addAttribute("user", userService.findOne(id));
+
         return "user/profile";
     }
 
-    @GetMapping("/users/{id}/form")
-    public String showEditUserPage(@PathVariable int id, Model model) {
-        model.addAttribute("user", userService.findOne(id));
+    /*
+     * 유저 상세 정보 수정 페이지 로드
+     */
+    @GetMapping("/users/{id}/update")
+    public String showEditUserPage(@PathVariable long id, Model model, @LoginUser SessionUser user) {
+//        Object value = session.getAttribute("sessionedUser");
+//        if (value == null) {
+//            //로그인 후 이용할 수 있습니다.?
+//            return "redirect:/login.html";
+//        }
+//        SessionUser userVo = (SessionUser) value;
+
+        if (user.getId() != id) {
+            //본인 정보만 수정할 수 있습니다.
+            return "redirect:/login.html";
+        }
+
+        model.addAttribute("user", userService.findOne(user.getId()));
         return "user/updateForm";
+
     }
 
-    @PostMapping("/users/{id}/update")
-    public String editUser(@PathVariable int id, @ModelAttribute RequestUserDto userDto){
+    /*
+     * 유저 상세 정보 수정
+     */
+    @PutMapping("/users/{id}/update")
+    public String editUser(@PathVariable long id, @ModelAttribute RequestUserDto userDto, @LoginUser SessionUser user) {
+        log.info("PUT /users/{}/update : {}", id, userDto);
+
+        if (user.getId() != id){
+            //권한이 없음. 잘못된 접근
+            return "redirect:/login.html";
+        }
+
         userService.updateUser(id, userDto);
         return "redirect:/users";
+
+    }
+
+    /*
+     * 로그인
+     */
+    @PostMapping("/login")
+    public String login(String userId, String password, HttpSession session) {
+        SessionUser userVo = userService.login(userId.trim(), password.trim());
+        session.setAttribute("sessionedUser", userVo);
+        log.info(">>>> {}", userVo.getId());
+        return "redirect:/";
+    }
+
+    /*
+     * 로그아웃
+     */
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 
 
