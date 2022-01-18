@@ -1,4 +1,4 @@
-package com.kakao.cafe.qna;
+package com.kakao.cafe.qna.repository;
 
 import com.kakao.cafe.exception.CustomEmptyDataAccessException;
 import com.kakao.cafe.qna.domain.Qna;
@@ -9,12 +9,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class QnaRepository {
+public class QnaH2Repository implements QnaRepository {
 
     private final RowMapper<Qna> qnaMapper = getQnaMapper();
     private final JdbcTemplate jdbcTemplate;
 
-    public QnaRepository(JdbcTemplate jdbcTemplate) {
+    public QnaH2Repository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
