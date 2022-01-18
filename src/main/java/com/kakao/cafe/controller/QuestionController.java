@@ -5,6 +5,7 @@ import com.kakao.cafe.question.Question;
 import com.kakao.cafe.question.QuestionService;
 import com.kakao.cafe.question.dto.QuestionCreateDto;
 import com.kakao.cafe.question.dto.QuestionDto;
+import com.kakao.cafe.question.dto.QuestionUpdateDto;
 import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -100,6 +101,23 @@ public class QuestionController {
         Long memberId = getMemberId(session);
 
         questionService.deleteOne(id, memberId);
+
+        return "redirect:/";
+    }
+
+    @PutMapping("/{id}")
+    public String updateQuestion(HttpSession session, @PathVariable("id") Long id, @Valid @ModelAttribute("question") QuestionUpdateDto questionUpdateDto, Model model) throws BaseException {
+
+        Long memberId = getMemberId(session);
+
+        Question question = new Question();
+
+        question.setId(id);
+        question.setMemberId(memberId);
+        question.setTitle(questionUpdateDto.getTitle());
+        question.setContents(questionUpdateDto.getContents());
+
+        questionService.updateOne(question);
 
         return "redirect:/";
     }
