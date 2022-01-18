@@ -4,17 +4,15 @@ import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.dto.ArticleCreateDTO;
 import com.kakao.cafe.article.dto.ArticleListDTO;
 import com.kakao.cafe.article.dto.ArticleViewDTO;
+import com.kakao.cafe.article.exception.ArticleNotLoggedInException;
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.user.domain.User;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -31,7 +29,7 @@ public class ArticleController {
         User user;
         //로그인 상태가 아닌경우
         if((user = (User) session.getAttribute("sessionedUser")) == null){
-            throw new RuntimeException("로그인 상태에서만 게시글을 작성할 수 있습니다.");
+            throw new ArticleNotLoggedInException("로그인 상태에서만 게시글을 작성할 수 있습니다.");
         }
 
         //로그인된 사용자의 이름을 지정
@@ -65,7 +63,7 @@ public class ArticleController {
 
         //로그인 상태가 아닌경우
         if(session.getAttribute("sessionedUser") == null){
-            throw new RuntimeException("로그인 상태에서만 상세글을 볼 수 있습니다.");
+            throw new ArticleNotLoggedInException("로그인 상태에서만 상세글을 볼 수 있습니다.");
         }
 
 
