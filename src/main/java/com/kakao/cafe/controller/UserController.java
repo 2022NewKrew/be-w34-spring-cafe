@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Controller
@@ -34,14 +33,6 @@ public class UserController {
         UserDto.UserProfileResponse readUserResponse = userService.readUser(userId);
         model.addAttribute("user", readUserResponse);
         return "user/profile";
-    }
-
-    @GetMapping("/{userId}/updateform")
-    public String updateUserByUserIdHtml(@PathVariable("userId") String userId, HttpSession session) throws AccessDeniedException {
-        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        userService.validateAuthForUpdateUser(userId, sessionedUser.getUserId());
-
-        return "redirect:/users/updateform";
     }
 
     @GetMapping("/updateform")
