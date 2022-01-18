@@ -7,3 +7,13 @@ String.prototype.format = function() {
         ;
   });
 };
+
+(function logOutHandler() {
+  document.querySelector('#logout').addEventListener('click', (e) => {
+    fetch("/auth/logout", {
+      method: "POST",
+    }).then((response) => {
+      location.href = response.url;
+    });
+  })
+})();

@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,12 +38,16 @@ public class UserService {
     }
 
     public UserProfileDto getUserProfile(String userId){
-        if(!isExistUser(userId)) throw new UserNotExistException();
         User user = userRepository.findOneByUserId(userId).orElseThrow(UserNotExistException::new);
         return modelMapper.map(user, UserProfileDto.class);
     }
 
     public boolean isExistUser(String userId){
-        return Optional.ofNullable(userRepository.findOneByUserId(userId)).isPresent();
+        return userRepository.findOneByUserId(userId).isPresent();
+    }
+
+    public void updateUser(UserRequest userRequest){
+        User user = modelMapper.map(userRequest, User.class);
+        userRepository.updateOne(user);
     }
 }

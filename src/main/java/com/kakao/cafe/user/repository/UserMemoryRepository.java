@@ -30,4 +30,6 @@ public class UserMemoryRepository implements UserRepository{
                 .filter(user -> user.getUserId().equals(userId))
                 .collect(Collectors.toList()).get(0));
     }
+
+    public void updateOne(User user){}
 }

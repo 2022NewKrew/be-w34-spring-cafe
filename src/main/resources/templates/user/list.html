@@ -19,7 +19,9 @@
                     <td><a href="/user/profile/{{userId}}" role="button">{{userId}}</a></td>
                     <td>{{name}}</td>
                     <td>{{email}}</td>
-                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                    {{#LOGIN_USER_ID}}
+                        <td><a href="/user/update/{{userId}}" class="btn btn-success" role="button">수정</a></td>
+                    {{/LOGIN_USER_ID}}
                 </tr>
                 {{/users}}
               </tbody>

@@ -1,14 +1,11 @@
-package com.kakao.cafe.user.dto;
+package com.kakao.cafe.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
 @AllArgsConstructor
-public class UserRequest {
+public class LoginRequest {
     private String userId;
     private String password;
-    private String name;
-    private String email;
 }
