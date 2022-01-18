@@ -1,0 +1,1 @@
+POST http://localhost:8080/questions?writer=a&title=b&content=c
