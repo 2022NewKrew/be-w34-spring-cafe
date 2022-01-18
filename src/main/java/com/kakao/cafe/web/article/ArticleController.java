@@ -7,12 +7,10 @@ import com.kakao.cafe.web.article.dto.ArticleDetailResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/article")
 public class ArticleController {
 
     private final ArticleCreateService articleCreateService;
@@ -23,18 +21,22 @@ public class ArticleController {
         this.articleCreateService = articleCreateService;
         this.articleFindService = articleFindService;
     }
+    @GetMapping("/form")
+    public String tmp() {
+        return "/article/form";
+    }
 
-    @PostMapping("/questions")
-    public String postSave(@ModelAttribute ArticleCreateRequest requestDto) {
+    @PostMapping("/form")
+    public String articleCreate(@ModelAttribute ArticleCreateRequest requestDto) {
         articleCreateService.create(requestDto.toEntity());
         return "redirect:/";
     }
 
-    @GetMapping("/post/{articleId}")
+    @GetMapping("/{articleId}")
     public String showArticle(@PathVariable int articleId, Model model) {
         model.addAttribute("article", new ArticleDetailResponse(articleFindService.findById(articleId)));
 
-        return "/post/show";
+        return "/article/show";
     }
 
     //TODO: article show에서 목록, 수정, 삭제버튼

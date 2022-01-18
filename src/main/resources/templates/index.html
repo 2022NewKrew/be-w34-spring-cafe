@@ -37,8 +37,8 @@
                     <tbody>
                     {{#articles}}
                     <tr>
-                        <td>{{articleId}}</td><td><a href="/post/{{articleId}}" style="color: blue;">{{title}}</a></td><td>{{createdAt}}</td>
-                        <!--           <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td> -->
+                        <td>{{articleId}}</td><td><a href="/article/{{articleId}}" style="color: blue;">{{title}}</a></td><td>{{createdAt}}</td>
+                        <!--           <td><a href="article/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td> -->
                     </tr>
                     {{/articles}}
                     </tbody>
@@ -46,8 +46,8 @@
             </div>
         </div>
     </div>
-    <div class="post-btn-container">
-        <a class="post-write-btn" href="/post/form" class="btn btn-primary pull-right" role="button">글쓰기</a>
+    <div class="article-btn-container">
+        <a class="article-write-btn" href="/article/form" class="btn btn-primary pull-right" role="button">글쓰기</a>
     </div>
 </div>
 

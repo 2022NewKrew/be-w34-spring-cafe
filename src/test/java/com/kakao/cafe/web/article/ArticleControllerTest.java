@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.article.Content;
 import com.kakao.cafe.domain.article.Title;
 import com.kakao.cafe.service.article.ArticleCreateService;
 import com.kakao.cafe.service.article.ArticleFindService;
+import com.kakao.cafe.web.IndexController;
 import com.kakao.cafe.web.article.dto.ArticleCreateRequest;
 import com.kakao.cafe.web.article.dto.ArticleListResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +27,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ArticleController.class)
+@WebMvcTest({ArticleController.class, IndexController.class})
 class ArticleControllerTest {
     @Autowired
     private MockMvc mvc;

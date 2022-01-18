@@ -86,11 +86,11 @@ li {
     margin-bottom: 50px;
 }
 
-.post-comment {
+.article-comment {
     margin-top: 60px;
 }
 
-.post-comment-count {
+.article-comment-count {
     margin-bottom: 30px;
 }
 
@@ -107,13 +107,13 @@ li {
     margin-bottom: 10px;
 }
 
-.post-title {
+.article-title {
     font-weight: bold;
     margin-top: 20px;
     margin-left: 3%;
 }
 
-.post-content {
+.article-content {
     margin-top: 20px;
     margin-left: 3%;
     font-weight: bold;
@@ -146,7 +146,7 @@ li {
     margin: 20px;
 }
 
-.post-btn-container {
+.article-btn-container {
     display: flex;
     justify-content: end;
 }
