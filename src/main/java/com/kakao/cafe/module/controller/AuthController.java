@@ -40,7 +40,7 @@ public class AuthController {
         return "redirect:/";
     }
 
-    @GetMapping("/sign-out")
+    @PostMapping("/sign-out")
     public String signOut(HttpSession session) throws HttpSessionRequiredException {
         UserDto userDto = infraService.retrieveUserSession(session);
         session.invalidate();

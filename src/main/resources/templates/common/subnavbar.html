@@ -6,7 +6,8 @@
                     class="glyphicon glyphicon-chevron-down"></i></small></a>
             <ul class="nav dropdown-menu">
                 {{#sessionUser}}
-                <li><a href="/users/{{id}}"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a></li>
+                <li><a href="/users/{{id}}"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a>
+                </li>
                 <li class="nav-divider"></li>
                 {{/sessionUser}}
                 <li><a href="#"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>
@@ -27,7 +28,10 @@
                 <li><a href="/auth/form" role="button">회원가입</a></li>
                 {{/sessionUser}}
                 {{#sessionUser}}
-                <li><a href="/auth/sign-out" role="button">로그아웃</a></li>
+                <li>
+                    <form name="signOut" action="/auth/sign-out" method="post"></form>
+                    <a href="#" role="button" onclick="javascript:document.signOut.submit();">로그아웃</a>
+                </li>
                 <li><a href="/users/{{id}}/form" role="button">개인정보수정</a></li>
                 {{/sessionUser}}
             </ul>

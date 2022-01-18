@@ -1,8 +1,6 @@
 package com.kakao.cafe.module.controller;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +12,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static com.kakao.cafe.module.model.dto.UserDtos.*;
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -106,17 +103,16 @@ class AuthControllerTest {
         session.setAttribute("sessionUser", new UserDto(100L, "test", "테스트", "test@test.com"));
 
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
-        mockMvc.perform(get("/auth/sign-out")
+        mockMvc.perform(post("/auth/sign-out")
                         .session(session))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(request().sessionAttribute("sessionUser", is(nullValue())))
                 .andExpect(redirectedUrl("/"));
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"/auth/sign-out", "/users/1/form"})
-    void 로그인없이_로그인이_필요한_API_접근(String url) throws Exception {
-        mockMvc.perform(get(url))
+    @Test
+    void 로그인없이_로그아웃() throws Exception {
+        mockMvc.perform(post("/auth/sign-out"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("msg"))
