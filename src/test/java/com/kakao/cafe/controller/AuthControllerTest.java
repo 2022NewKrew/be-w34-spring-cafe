@@ -28,8 +28,6 @@ class AuthControllerTest {
     @MockBean
     AuthService authService;
 
-    // TODO - MockMvcTest 에서 세션 값을 검증하는 방법 찾고 적용해보기
-
     @Test
     @DisplayName("[POST] /login - 아이디와 비밀번호를 통해 로그인을 할 수 있다")
     void login() throws Exception {
