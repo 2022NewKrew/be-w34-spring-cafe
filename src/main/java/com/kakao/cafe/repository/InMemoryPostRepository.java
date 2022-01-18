@@ -15,7 +15,7 @@ public class InMemoryPostRepository implements PostRepository {
 
     private final List<Post> postList;
     private final AtomicInteger pk;
-    private Logger logger = LoggerFactory.getLogger(InMemoryPostRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(InMemoryPostRepository.class);
 
     public InMemoryPostRepository() {
         this.postList = Collections.synchronizedList(new ArrayList<>());

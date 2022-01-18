@@ -18,7 +18,7 @@ public class JdbcPostRepository implements PostRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final UserRepository userRepository;
-    private Logger logger = LoggerFactory.getLogger(JdbcPostRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(JdbcPostRepository.class);
 
     public JdbcPostRepository(JdbcTemplate jdbcTemplate, UserRepository userRepository) {
         this.jdbcTemplate = jdbcTemplate;

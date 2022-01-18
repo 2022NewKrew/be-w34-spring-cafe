@@ -13,7 +13,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 @Configuration
 public class JdbcConfig {
 
-    private Logger logger = LoggerFactory.getLogger(JdbcConfig.class);
+    private final Logger logger = LoggerFactory.getLogger(JdbcConfig.class);
 
     @Bean
     @Profile("local")

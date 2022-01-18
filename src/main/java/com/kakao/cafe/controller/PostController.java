@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class PostController {
 
     private final PostService postService;
-    private Logger logger = LoggerFactory.getLogger(PostController.class);
+    private final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     public PostController(PostService postService) {
         this.postService = postService;

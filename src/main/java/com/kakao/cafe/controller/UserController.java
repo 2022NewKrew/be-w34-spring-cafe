@@ -26,7 +26,7 @@ public class UserController {
 
     private static final String SESSION = "KAKAO_USER_SESSION";
     private final UserService userService;
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService) {
         this.userService = userService;

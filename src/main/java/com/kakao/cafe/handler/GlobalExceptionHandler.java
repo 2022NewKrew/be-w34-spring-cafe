@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
 
     private static final String ERROR_VIEW_NAME = "errors/error";
     private final ModelAndView mv = new ModelAndView(ERROR_VIEW_NAME);
-    private Logger logger = LoggerFactory.getLogger(PostController.class);
+    private final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

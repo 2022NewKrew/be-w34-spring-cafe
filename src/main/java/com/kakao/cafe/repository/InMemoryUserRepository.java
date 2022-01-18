@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 public class InMemoryUserRepository implements UserRepository {
 
     private final List<User> userList;
-    private Logger logger = LoggerFactory.getLogger(InMemoryUserRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(InMemoryUserRepository.class);
 
 
     public InMemoryUserRepository() {

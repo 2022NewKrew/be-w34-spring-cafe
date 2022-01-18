@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 public class JdbcUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private Logger logger = LoggerFactory.getLogger(JdbcUserRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(JdbcUserRepository.class);
 
 
     public JdbcUserRepository(JdbcTemplate jdbcTemplate) {
