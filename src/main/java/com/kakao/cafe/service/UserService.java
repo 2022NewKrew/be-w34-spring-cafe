@@ -43,8 +43,7 @@ public class UserService {
 
     public User login(UserLoginRequestDto userLoginRequestDto) {
         User loginUser = findUserByUserId(userLoginRequestDto.getUserId());
-        //TODO: User 클래스에 패스워드 검증로직 추가
-        if (loginUser.getPassword().equals(userLoginRequestDto.getPassword())) {
+        if (loginUser.isCorrectPassword(userLoginRequestDto.getPassword())) {
             return loginUser;
         }
 

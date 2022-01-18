@@ -38,4 +38,12 @@ public class SpringJdbcArticleRepository implements ArticleRepository {
     public List<Article> findAll() {
         return jdbcTemplate.query("select * from ARTICLE a join USERS u on a.writer_id = u.user_id", articleMapper);
     }
+
+    @Override
+    public void update(Article article) {
+        jdbcTemplate.update("update ARTICLE set writer_id=?, title=?, contents=?",
+                article.getWriter().getUserId(), article.getTitle(), article.getContents());
+    }
+
+
 }

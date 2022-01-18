@@ -13,4 +13,6 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
+    void update(Article article);
+
 }

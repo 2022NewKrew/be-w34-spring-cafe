@@ -21,4 +21,8 @@ public class User {
         password = updatePassword;
         email = updateEmail;
     }
+
+    public boolean isCorrectPassword(String password) {
+        return this.password.equals(password);
+    }
 }
