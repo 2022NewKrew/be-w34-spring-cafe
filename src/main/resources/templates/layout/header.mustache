@@ -53,11 +53,11 @@
                data-toggle="dropdown"><i class="glyphicon glyphicon-home" style="color:#dd1111;"></i> Home <small><i
                     class="glyphicon glyphicon-chevron-down"></i></small></a>
             <ul class="nav dropdown-menu">
-                {{#user}}
+                {{#sessionedUser}}
                     <li><a href="/users/{{userId}}"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i>
                         Profile</a>
                     </li>
-                {{/user}}
+                {{/sessionedUser}}
                 <li class="nav-divider"></li>
                 <li><a href="#"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>
             </ul>
@@ -72,18 +72,18 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/">Posts</a></li>
-                {{^user}}
+                {{^sessionedUser}}
                     <li><a href="/login" role="button">로그인</a></li>
                     <li><a href="/signup" role="button">회원가입</a></li>
-                {{/user}}
+                {{/sessionedUser}}
                 <!--
                 <li><a href="#loginModal" role="button" data-toggle="modal">로그인</a></li>
                 <li><a href="#registerModal" role="button" data-toggle="modal">회원가입</a></li>
                 -->
-                {{#user}}
-                    <li><a href="#" role="button">로그아웃</a></li>
+                {{#sessionedUser}}
+                    <li><a href="/logout" role="button">로그아웃</a></li>
                     <li><a href="#" role="button">개인정보수정</a></li>
-                {{/user}}
+                {{/sessionedUser}}
             </ul>
         </div>
     </div>
