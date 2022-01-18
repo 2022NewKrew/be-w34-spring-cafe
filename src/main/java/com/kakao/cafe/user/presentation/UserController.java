@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -88,9 +89,11 @@ public class UserController {
         return "user/join_success";
     }
 
-    @GetMapping("/updateForm/{id}")
-    public String updateForm(@PathVariable String id, Model model){
-        model.addAttribute("id", id);
+    @GetMapping("/updateForm")
+    public String updateForm(HttpSession httpSession, Model model){
+        String userId = Objects.requireNonNull((String) httpSession.getAttribute("userId"), "로그인을 먼저 하세요.");
+
+        model.addAttribute("id", userId);
         return "user/updateForm";
     }
 
