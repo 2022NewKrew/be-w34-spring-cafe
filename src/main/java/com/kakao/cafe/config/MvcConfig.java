@@ -19,9 +19,4 @@ public class MvcConfig {
 
         return modelMapper;
     }
-
-    @Bean
-    public HiddenHttpMethodFilter httpMethodFilter() {
-        return new HiddenHttpMethodFilter();
-    }
 }
