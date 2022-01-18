@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserRequestDTO;
+import com.kakao.cafe.dto.UserUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     @Override
-    public void update(UserRequestDTO user, Long id) {
+    public void update(UserUpdateDTO user, Long id) {
         logger.info("update Repository {} {} {} {} {}", user.getUserId(), user.getPassword(), user.getName(), user.getEmail(), id);
         String sql = "UPDATE USERS SET name = ?, password = ?, email = ? WHERE id = ?";
         jdbcTemplate.update(sql, user.getName(), user.getPassword(), user.getEmail(), id);

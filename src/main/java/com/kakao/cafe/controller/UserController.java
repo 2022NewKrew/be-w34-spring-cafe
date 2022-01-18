@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.UserResponseDTO;
 import com.kakao.cafe.dto.UserRequestDTO;
+import com.kakao.cafe.dto.UserUpdateDTO;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -10,12 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
+    private static final String SESSION_USER = "sessionUser";
     private final UserService userService;
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -45,8 +48,11 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/form")
-    public String updateUser(@PathVariable String userId, Model model) {
-        logger.info("updateUser(GET): {}", userId);
+    public String updateUser(@PathVariable String userId, Model model, HttpSession session) {
+        logger.info("updateUser(GET): {} {}", userId, session.getAttribute(SESSION_USER));
+        if(!userId.equals(session.getAttribute(SESSION_USER))) {
+            throw new IllegalArgumentException("권한이 없습니다.");
+        }
         UserResponseDTO user = userService.read(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
         model.addAttribute("user", user);
         logger.info("update {}, {}, {}", user.getUserId(), user.getName(), user.getEmail());
@@ -54,9 +60,9 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public String updateUser(@PathVariable String userId, UserRequestDTO userRequestDto) {
-        logger.info("updateUser(PUT): {}, {}, {}", userId, userRequestDto.getPassword(), userRequestDto.getName());
-        userService.update(userRequestDto);
+    public String updateUser(@PathVariable String userId, UserUpdateDTO user) {
+        logger.info("updateUser(PUT): {}, {}, {}, {}", userId, user.getPassword(), user.getPasswordCheck(), user.getName());
+        userService.update(user);
         return "redirect:";
     }
 }
