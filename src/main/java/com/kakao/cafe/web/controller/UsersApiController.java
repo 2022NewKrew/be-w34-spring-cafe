@@ -4,10 +4,7 @@ import com.kakao.cafe.domain.Users;
 import com.kakao.cafe.web.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -52,12 +49,12 @@ public class UsersApiController {
             Users user = userService.getByUserName(userId);
             if (!user.getPassword().equals(password)) {
                 System.out.println("패스워드가 일치하지 않습니다.");
-                return "redirect:/users/login";
+                return "users/login";
             }
             session.setAttribute("sessionedUser", user);
             return "redirect:/";
         } catch (Exception e) {
-            System.out.println("아이디가 존재하지 않습니다."); // TODO: 경고창 띄우는 것으로 변경
+            System.out.println("아이디가 존재하지 않습니다.");
             return "users/login";
         }
     }
@@ -100,7 +97,7 @@ public class UsersApiController {
         return "users/updateForm";
     }
 
-    @PostMapping("/update")
+    @PutMapping("/{id}")
     String updateUserProfile(String newPassword, Users updateUser, HttpSession session) {
         Users currentUser = (Users) session.getAttribute("sessionedUser");
         userService.updateUser(currentUser.getId(), updateUser, newPassword);
