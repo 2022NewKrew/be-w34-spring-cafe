@@ -11,4 +11,5 @@ public interface PostService {
     void create(PostCreateDto postCreateDto, HttpSession session);
     List<PostListItemDto> getList();
     PostDetailDto get(int questionId);
+    void delete(int questionId, HttpSession session);
 }

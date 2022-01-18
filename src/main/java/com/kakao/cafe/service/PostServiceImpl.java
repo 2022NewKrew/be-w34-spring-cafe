@@ -54,4 +54,17 @@ public class PostServiceImpl implements PostService {
         postRepository.update(post);
         return PostDetailDto.of(post);
     }
+
+    @Override
+    public void delete(int questionId, HttpSession session) {
+        Member loginMember = (Member)session.getAttribute("sessionedUser");
+
+        Post post = postRepository.findById(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("post not found"));
+
+        if (post.getWriter().getId() != loginMember.getId())
+            throw new IllegalArgumentException("Access denied");
+
+        postRepository.remove(post);
+    }
 }

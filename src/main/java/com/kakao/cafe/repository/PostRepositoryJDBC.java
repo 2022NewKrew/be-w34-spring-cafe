@@ -92,6 +92,11 @@ public class PostRepositoryJDBC implements PostRepository {
                 post.getViewCount(), post.getId());
     }
 
+    @Override
+    public void remove(Post post) {
+        this.jdbcTemplate.update("delete Post where id=?", post.getId());
+    }
+
     private static class PostMapper implements RowMapper<Post> {
         public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
             Member member = new Member(

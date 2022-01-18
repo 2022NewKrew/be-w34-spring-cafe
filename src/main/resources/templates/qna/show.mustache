@@ -3,10 +3,50 @@
 
 {{>layout/header}}
 
+
+<style>
+    .change .target {
+        opacity: 0;
+    }
+    .target {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #666;
+        top: 30px;
+        right: 6px;
+        background-color: #fff;
+    }
+    .menu-button {
+        border: none;
+        background-color: #fff;
+        padding: 8px 16px 8px 16px;
+        width: 70px
+    }
+    .menu-button:hover {
+        background-color: #eee;
+    }
+
+</style>
+
 <div id="main">
     <div style="display: flex; min-width: 1040px; justify-content: center">
         <div style="display: flex; flex-direction: column; margin-top:80px; min-width:680px; width: 680px">
-            <span style="font-size: 32px; font-weight: 500">{{post.title}}</span>
+            <div style ="display:flex; justify-content: space-between; align-items: center">
+                <span style="font-size: 32px; font-weight: 500">{{post.title}}</span>
+                <div class="change" style="position: relative; height: 20px; width: 20px" onclick="menu(this)">
+                    <img style="position: relative; height: 20px; width: 20px" src="/images/more.png">
+                    <div class="target" style="position: absolute">
+                        <form method="GET" action="/qna/update">
+                            <button class="menu-button">수정</button>
+                        </form>
+                        <form method="post" action="/questions/{{post.id}}">
+                            <input type="hidden" name="_method" value="DELETE" />
+                            <button class="menu-button">삭제</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div style="display:flex; align-items: center; color: #666; margin-top: 40px; height: 52px; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
                 <span style="margin-right: 5px">작성자:</span>
                 <span style="margin-right: 32px">{{post.writer.name}}</span>
@@ -28,6 +68,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    function menu(x) {
+        x.classList.toggle("change");
+    }
+</script>
 
 <script type="text/template" id="answerTemplate">
 	<article class="article">
