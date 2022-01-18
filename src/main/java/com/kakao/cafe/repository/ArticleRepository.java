@@ -12,5 +12,7 @@ public interface ArticleRepository {
     List<Article> findAll();
     Optional<Article> findById(int id);
     int save(Article article);
+    int update(Article article);
+    int delete(Article article);
 
 }

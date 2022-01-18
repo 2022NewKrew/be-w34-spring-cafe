@@ -43,17 +43,19 @@ public class UserController {
         return "/user/profile";
     }
 
-    @GetMapping("{userId}/form")
-    public String showUpdateForm(@PathVariable String userId, Model model) {
-        UserDto user = userService.findByUserId(userId);
+    @GetMapping("form")
+    public String showUpdateForm(Model model, HttpSession httpSession) {
+        Object sessionId = httpSession.getAttribute("sessionId");
+        UserDto user = userService.findByUserId(String.valueOf(sessionId));
         model.addAttribute("user", user);
         logger.info("GET /users/{}/form: {}", user.getUserId(), user);
         return "/user/userform";
     }
 
-    @PostMapping("{userId}")
-    public String updateUser(@PathVariable String userId, @ModelAttribute UserDto userDto) {
-        int id = userService.update(userId, userDto);
+    @PutMapping
+    public String updateUser(@ModelAttribute UserDto userDto, HttpSession httpSession) {
+        Object sessionId = httpSession.getAttribute("sessionId");
+        int id = userService.update(String.valueOf(sessionId), userDto);
         logger.info("PUT /users/{}: {}", id, userDto);
         return "redirect:/users";
     }

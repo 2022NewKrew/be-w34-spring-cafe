@@ -31,4 +31,15 @@ public class ArticleDto {
         articleDto.setDate(article.getDate());
         return articleDto;
     }
+
+    @Override
+    public String toString() {
+        return "ArticleDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", writer='" + writer + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }

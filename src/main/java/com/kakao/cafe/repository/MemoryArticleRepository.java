@@ -35,4 +35,17 @@ public class MemoryArticleRepository implements ArticleRepository{
         articles.add(article);
         return article.getId();
     }
+
+    @Override
+    public int update(Article article) {
+        Article updateArticle = articles.get(article.getId());
+        updateArticle.setTitle(article.getTitle());
+        updateArticle.setContent(article.getContent());
+        return updateArticle.getId();
+    }
+
+    @Override
+    public int delete(Article article) {
+        return 0;
+    }
 }
