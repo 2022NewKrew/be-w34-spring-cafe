@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class UserControllerExceptionHandler {
+public class CafeControllerExceptionHandler {
 
     public static final String INCORRECT_PASSWORD_ERROR = "/error/incorrect_password_error";
     public static final String NOT_LOGIN_ERROR = "/error/not_login_error";
