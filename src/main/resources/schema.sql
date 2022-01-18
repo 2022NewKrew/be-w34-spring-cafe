@@ -1,4 +1,6 @@
+DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS users;
+
 CREATE TABLE IF NOT EXISTS users (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -8,11 +10,12 @@ CREATE TABLE IF NOT EXISTS users (
     updatedAt DATETIME
 );
 
-DROP TABLE IF EXISTS posts;
 CREATE TABLE IF NOT EXISTS posts (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    writer VARCHAR(50) NOT NULL,
+    writer_id BIGINT NOT NULL,
     title VARCHAR(100) NOT NULL,
     content TEXT NOT NULL,
-    createdAt DATETIME
+    createdAt DATETIME,
+    updatedAt DATETIME,
+    FOREIGN KEY (writer_id) REFERENCES users(id)
 );
