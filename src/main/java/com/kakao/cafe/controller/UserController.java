@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 @Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor
