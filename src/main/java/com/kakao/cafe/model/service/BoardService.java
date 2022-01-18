@@ -20,4 +20,7 @@ public interface BoardService {
 
     void deleteArticle(long articleId);
     void deleteComment(long articleId, long commentId);
+
+    boolean isSameArticleWriter(long articleId, String writerId);
+    boolean isSameCommentWriter(long articleId, long commentId, String writerId);
 }
