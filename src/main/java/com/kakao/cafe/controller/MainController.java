@@ -20,7 +20,7 @@ public class MainController {
     public String home(Model model){
         logger.info("GET:/");
         model.addAttribute("questions", articleService.findAllQuestions());
-        return "index";
+        return "redirect:/questions";
     }
 
 }

@@ -31,6 +31,11 @@ public class ArticleController {
         model.addAttribute("article", articleService.findOneQuestion(id));
         return "qna/show";
     }
+    @GetMapping("")
+    public String viewArticleList(Model model){
+        model.addAttribute("questions", articleService.findAllQuestions());
+        return "index";
+    }
 
 
 }

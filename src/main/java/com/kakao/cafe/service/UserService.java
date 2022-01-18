@@ -40,8 +40,9 @@ public class UserService {
         return new UserProfileResponse(user);
     }
 
-    public void updateUser(UserUpdateRequest userDTO) {
+    public void updateUser(UserUpdateRequest userDTO, Long loginUserId) {
         User user = userRepository.findByNickname(userDTO.getNickname()).orElseThrow(IllegalArgumentException::new);
+        validateSameUser(user.getId(), loginUserId);
         validateEqualPassword(user, userDTO);
 
         User updateUser = User.builder()
@@ -53,6 +54,11 @@ public class UserService {
                 .build();
 
         userRepository.update(updateUser);
+    }
+
+    private void validateSameUser(Long repositoryUserId, Long loginUserId){
+        if(repositoryUserId != loginUserId)
+            throw new IllegalStateException("유저 정보가 일치하지 않습니다.");
     }
 
     private void validateDuplicateUserId(User user){
