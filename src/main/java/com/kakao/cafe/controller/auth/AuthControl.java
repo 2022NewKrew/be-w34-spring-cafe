@@ -15,13 +15,13 @@ public class AuthControl {
     private AuthControl() {}
 
     public static boolean isLogon(@NonNull final HttpServletRequest request, @NonNull final UserService userService) {
-        final String userStr = getLogonId(request);
-        if (userStr == null) {
+        final String userId = getLogonId(request);
+        if (userId == null) {
             return false;
         }
 
         try {
-            userService.getUser(userStr);
+            userService.getDto(userId);
         } catch (NoSuchElementException e) {
             return false;
         }
