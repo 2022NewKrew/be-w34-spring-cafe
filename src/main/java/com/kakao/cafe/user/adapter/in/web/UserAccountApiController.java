@@ -32,7 +32,6 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 public class UserAccountApiController {
 
     private final EnrollUserAccountUseCase enrollUserAccountUseCase;
-    private final CheckUserAccountUseCase checkUserAccountUseCase;
 
     @PostMapping("")
     public ResponseEntity<UserAccountEnrollResponse> enroll(@Valid @RequestBody UserAccountEnrollRequest request) {
@@ -43,26 +42,5 @@ public class UserAccountApiController {
 
         return ResponseEntity.created(uriComponents.toUri())
                 .body(enroll.toResponse());
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<UserAccountLoginResponse> login(
-            @Valid @RequestBody UserAccountLoginRequest request,
-            HttpSession httpSession) {
-
-        UserAccountCheckResult userAccountCheckResult = checkUserAccountUseCase.checkPassword(
-                new UserAccountCheckCommand(
-                        request.getEmail(),
-                        request.getPassword()));
-
-        if(userAccountCheckResult.isCorrect()) {
-            httpSession.setAttribute("user-id", userAccountCheckResult.getUserAccountId());
-            return ResponseEntity.ok()
-                    .body(new UserAccountLoginResponse("success"));
-        }
-
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(new UserAccountLoginResponse("unAuthorized"));
     }
 }
