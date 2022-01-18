@@ -1,27 +1,26 @@
 package com.kakao.cafe.application.user;
 
-import com.kakao.cafe.domain.user.FindUserPort;
-import com.kakao.cafe.domain.user.SignUpUserPort;
+import com.kakao.cafe.application.user.validation.DuplicatedUserIdException;
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserDaoPort;
 import com.kakao.cafe.domain.user.UserVo;
 
 import java.util.Optional;
 
 public class SignUpUserService {
-    private final SignUpUserPort signUpUserPort;
-    private final FindUserPort findUserPort;
+    private final UserDaoPort userDao;
 
-    public SignUpUserService(SignUpUserPort signUpUserPort, FindUserPort findUserPort) {
-        this.signUpUserPort = signUpUserPort;
-        this.findUserPort = findUserPort;
+    public SignUpUserService(UserDaoPort userDao) {
+        this.userDao = userDao;
     }
 
-    public void join(UserVo userVo) throws IllegalArgumentException {
-        Optional<User> optionalUser = findUserPort.findByUserId(userVo.getUserId());
+
+    public void join(UserVo userVo) throws DuplicatedUserIdException {
+        Optional<User> optionalUser = userDao.findByUserId(userVo.getUserId());
         if (optionalUser.isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 ID는 가입할 수 없습니다.");
+            throw new DuplicatedUserIdException();
         }
 
-        signUpUserPort.save(userVo.convertVoToEntity());
+        userDao.save(userVo.convertVoToEntity());
     }
 }

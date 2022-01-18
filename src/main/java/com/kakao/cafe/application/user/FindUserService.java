@@ -1,29 +1,30 @@
 package com.kakao.cafe.application.user;
 
-import com.kakao.cafe.domain.user.FindUserPort;
+import com.kakao.cafe.application.user.validation.NonExistsUserIdException;
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserDaoPort;
 
 import java.util.List;
 import java.util.Optional;
 
 public class FindUserService {
-    private final FindUserPort findUserPort;
+    private final UserDaoPort userDao;
 
-    public FindUserService(FindUserPort findUserPort) {
-        this.findUserPort = findUserPort;
+    public FindUserService(UserDaoPort userDao) {
+        this.userDao = userDao;
     }
 
-    public User findByUserId(String userId) throws IllegalArgumentException {
-        return findUserPort.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID는 조회할 수 없습니다."));
+    public User findByUserId(String userId) throws NonExistsUserIdException {
+        return userDao.findByUserId(userId)
+                .orElseThrow(() -> new NonExistsUserIdException());
     }
 
     public List<User> findAllUser() {
-        return findUserPort.findAll();
+        return userDao.findAll();
     }
 
     public boolean checkPassWordMatch(String userId, String password) {
-        Optional<User> optionalUser = findUserPort.findByUserIdAndPassword(userId, password);
+        Optional<User> optionalUser = userDao.findByUserIdAndPassword(userId, password);
         return optionalUser.isPresent();
     }
 }

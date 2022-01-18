@@ -5,11 +5,8 @@ import com.kakao.cafe.application.article.WriteArticleService;
 import com.kakao.cafe.application.user.FindUserService;
 import com.kakao.cafe.application.user.SignUpUserService;
 import com.kakao.cafe.application.user.UpdateUserService;
-import com.kakao.cafe.domain.article.FindArticlePort;
-import com.kakao.cafe.domain.article.WriteArticlePort;
-import com.kakao.cafe.domain.user.FindUserPort;
-import com.kakao.cafe.domain.user.SignUpUserPort;
-import com.kakao.cafe.domain.user.UpdateUserPort;
+import com.kakao.cafe.domain.article.ArticleDaoPort;
+import com.kakao.cafe.domain.user.UserDaoPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,27 +14,28 @@ import org.springframework.context.annotation.Configuration;
 public class ServiceBeanConfig {
 
     @Bean
-    FindUserService getFindUserServiceBean(FindUserPort findUserPort) {
-        return new FindUserService(findUserPort);
+    FindUserService getFindUserServiceBean(UserDaoPort userDaoPort) {
+        return new FindUserService(userDaoPort);
     }
 
     @Bean
-    SignUpUserService getSignUpUserServiceBean(FindUserPort findUserPort, SignUpUserPort signUpUserPort) {
-        return new SignUpUserService(signUpUserPort, findUserPort);
+    SignUpUserService getSignUpUserServiceBean(UserDaoPort userDaoPort) {
+        return new SignUpUserService(userDaoPort);
     }
 
     @Bean
-    UpdateUserService getUpdateUserServiceBean(FindUserPort findUserPort, UpdateUserPort updateUserPort) {
-        return new UpdateUserService(findUserPort, updateUserPort);
+    UpdateUserService getUpdateUserServiceBean(UserDaoPort userDaoPort) {
+        return new UpdateUserService(userDaoPort);
     }
 
     @Bean
-    FindArticleService getArticleServiceBean(FindArticlePort findArticlePort) {
-        return new FindArticleService(findArticlePort);
+    FindArticleService getArticleServiceBean(ArticleDaoPort articleDaoPort) {
+        return new FindArticleService(articleDaoPort);
     }
 
     @Bean
-    WriteArticleService getWriteArticleServiceBean(WriteArticlePort writeArticlePort) {
-        return new WriteArticleService(writeArticlePort);
+    WriteArticleService getWriteArticleServiceBean(ArticleDaoPort articleDaoPort) {
+        return new WriteArticleService(articleDaoPort);
     }
+
 }

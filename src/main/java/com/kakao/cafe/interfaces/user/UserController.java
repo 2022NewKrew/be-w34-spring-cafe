@@ -3,15 +3,15 @@ package com.kakao.cafe.interfaces.user;
 import com.kakao.cafe.application.user.FindUserService;
 import com.kakao.cafe.application.user.SignUpUserService;
 import com.kakao.cafe.application.user.UpdateUserService;
+import com.kakao.cafe.application.user.validation.DuplicatedUserIdException;
+import com.kakao.cafe.application.user.validation.IllegalPasswordException;
+import com.kakao.cafe.application.user.validation.NonExistsUserIdException;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserVo;
 import com.kakao.cafe.interfaces.user.dto.UserMapper;
 import com.kakao.cafe.interfaces.user.dto.request.JoinUserRequestDto;
 import com.kakao.cafe.interfaces.user.dto.request.UpdateUserRequestDto;
 import com.kakao.cafe.interfaces.user.dto.response.UserResponseDto;
-import com.kakao.cafe.interfaces.user.validation.DuplicatedUserIdException;
-import com.kakao.cafe.interfaces.user.validation.IllegalPasswordException;
-import com.kakao.cafe.interfaces.user.validation.NonExistsUserIdException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +51,7 @@ public class UserController {
 
         try {
             signUpUserService.join(user);
-        } catch (IllegalArgumentException e) {
+        } catch (DuplicatedUserIdException e) {
             throw new DuplicatedUserIdException();
         }
 
@@ -64,7 +64,7 @@ public class UserController {
             User user = findUserService.findByUserId(userId);
             model.addAttribute("name", user.getName());
             model.addAttribute("email", user.getEmail());
-        } catch (IllegalArgumentException e) {
+        } catch (NonExistsUserIdException e) {
             throw new NonExistsUserIdException();
         }
         return "user/profile";
@@ -84,17 +84,17 @@ public class UserController {
     @PostMapping("/{id}/update")
     public ModelAndView updateUser(@PathVariable String id, @Valid UpdateUserRequestDto updateUserRequestDto, ModelAndView modelAndView) {
         boolean passwordMatch = findUserService.checkPassWordMatch(id, updateUserRequestDto.getPrePassword());
-        if (passwordMatch == false) {
+
+        if (!passwordMatch) {
             throw new IllegalPasswordException();
         }
 
         UserVo updateUserVo = UserMapper.convertUpdateUserDtoToVo(id, updateUserRequestDto);
         try {
             updateUserService.updateInformation(updateUserVo);
-        } catch (IllegalArgumentException e) {
+        } catch (NonExistsUserIdException e) {
             throw new NonExistsUserIdException();
         }
-
 
         modelAndView.setViewName("redirect:/users");
         return modelAndView;

@@ -1,4 +1,4 @@
-package com.kakao.cafe.interfaces.user.validation;
+package com.kakao.cafe.application.user.validation;
 
 public enum UserErrorCode {
     DUPLICATED_USER_ID("이미 존재하는 ID 입니다."),

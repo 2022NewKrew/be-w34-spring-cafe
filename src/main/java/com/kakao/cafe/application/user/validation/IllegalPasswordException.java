@@ -1,4 +1,4 @@
-package com.kakao.cafe.interfaces.user.validation;
+package com.kakao.cafe.application.user.validation;
 
 public class IllegalPasswordException extends IllegalArgumentException {
     public IllegalPasswordException() {

@@ -29,4 +29,12 @@ public class GlobalExceptionHandler {
         modelAndView.setViewName("error");
         return modelAndView;
     }
+
+    @ExceptionHandler(value = Exception.class)
+    public ModelAndView handle(Exception e) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("message", "에러 발생");
+        modelAndView.setViewName("error");
+        return modelAndView;
+    }
 }

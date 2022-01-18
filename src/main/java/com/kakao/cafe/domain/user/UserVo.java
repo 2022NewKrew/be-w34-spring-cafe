@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain.user;
 
+import java.util.Objects;
+
 public class UserVo {
     private final String userId;
     private final String password;
@@ -31,5 +33,28 @@ public class UserVo {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserVo userVo = (UserVo) o;
+        return Objects.equals(userId, userVo.userId) && Objects.equals(password, userVo.password) && Objects.equals(name, userVo.name) && Objects.equals(email, userVo.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, password, name, email);
+    }
+
+    @Override
+    public String toString() {
+        return "UserVo{" +
+                "userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

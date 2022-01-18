@@ -1,16 +1,16 @@
 package com.kakao.cafe.application.article;
 
+import com.kakao.cafe.domain.article.ArticleDaoPort;
 import com.kakao.cafe.domain.article.ArticleVo;
-import com.kakao.cafe.domain.article.WriteArticlePort;
 
 public class WriteArticleService {
-    private final WriteArticlePort writeArticlePort;
+    private final ArticleDaoPort articleDao;
 
-    public WriteArticleService(WriteArticlePort writeArticlePort) {
-        this.writeArticlePort = writeArticlePort;
+    public WriteArticleService(ArticleDaoPort articleDao) {
+        this.articleDao = articleDao;
     }
 
     public void write(ArticleVo articleVo) {
-        writeArticlePort.save(articleVo);
+        articleDao.save(articleVo);
     }
 }
