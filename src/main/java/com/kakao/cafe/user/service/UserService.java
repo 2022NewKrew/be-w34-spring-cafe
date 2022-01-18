@@ -29,22 +29,29 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("유저가 존재하지 않습니다."));
     }
 
-    public void updateUser(UpdateDTO updateDTO) {
+    public void updateUser(UpdateDTO updateDTO, String sessionUserId) {
+        checkLoginUserId(updateDTO.getUserId(), sessionUserId);
         User user = findByUserId(updateDTO.getUserId());
         user.validateEqualsPassword(updateDTO.getPassword());
         userRepository.save(UserFactory.toUser(updateDTO));
     }
 
-    public void login(String userId,String password,HttpSession httpSession){
+    public void login(String userId, String password, HttpSession httpSession) {
         checkLoginStatus(httpSession);
         User user = findByUserId(userId);
         user.validateEqualsPassword(password);
-        httpSession.setAttribute("sessionOfUser",userId);
+        httpSession.setAttribute("sessionOfUser", userId);
     }
 
-    public void checkLoginStatus(HttpSession httpSession){
-        if(httpSession.getAttribute("userId")!=null){
+    private void checkLoginStatus(HttpSession httpSession) {
+        if (httpSession.getAttribute("userId") != null) {
             throw new RuntimeException("이미 로그인이 된 상태입니다.");
+        }
+    }
+
+    private void checkLoginUserId(String updatedUserId, String sessionUserId) {
+        if (sessionUserId == null || !sessionUserId.equals(updatedUserId)) {
+            throw new RuntimeException("해당 유저에 대한 수정권한이 없습니다.");
         }
     }
 }

@@ -48,20 +48,24 @@ public class UserController {
     }
 
     @PutMapping("/users/update")
-    public String updateUser(UpdateDTO updateDTO) {
-        userService.updateUser(updateDTO);
+    public String updateUser(UpdateDTO updateDTO, HttpSession session) {
+        userService.updateUser(updateDTO, getUserIdFromSession(session));
         return "redirect:/users";
     }
 
     @PostMapping("/users/login")
     public String login(LoginDTO loginDTO, HttpSession session) {
-        userService.login(loginDTO.getUserId(),loginDTO.getPassword(),session);
+        userService.login(loginDTO.getUserId(), loginDTO.getPassword(), session);
         return "redirect:/";
     }
 
     @GetMapping("/users/login")
-    public String getLoginPage(){
+    public String getLoginPage() {
         return "/user/login";
+    }
+
+    private String getUserIdFromSession(HttpSession session) {
+        return (String) session.getAttribute("sessionOfUser");
     }
 
 
