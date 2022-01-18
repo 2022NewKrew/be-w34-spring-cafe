@@ -39,9 +39,9 @@ public class JdbcUserRepository implements UserRepository {
                 keyHolder
         );
         if (keyHolder.getKey() == null) {
-            throw new IllegalStateException("Must not approach here.");
+            throw new IllegalStateException("If approached here, there is a database problem.");
         }
-        return (long) keyHolder.getKey();
+        return keyHolder.getKey().longValue();
     }
 
     @Override

@@ -31,11 +31,10 @@ public class JdbcArticleRepository implements ArticleRepository {
                 },
                 keyHolder
         );
-        Long id = keyHolder.getKeyAs(Long.class);
-        if (id == null) {
-            throw new IllegalStateException("Must not approach here.");
+        if (keyHolder.getKey() == null) {
+            throw new IllegalStateException("If approached here, there is a database problem.");
         }
-        return id;
+        return keyHolder.getKey().longValue();
     }
 
     @Override
