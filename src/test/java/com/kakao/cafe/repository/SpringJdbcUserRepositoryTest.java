@@ -71,5 +71,26 @@ class SpringJbcUserRepositoryTest {
         assertThat(users.size()).isEqualTo(3);
     }
 
+    @Test
+    @DisplayName("회원 수정")
+    void testOfUpdate() {
+        User user1 = User.builder()
+                .userId("1")
+                .password("1")
+                .name("1")
+                .email("1")
+                .build();
+        springJdbcUserRepository.save(user1);
+
+        User foundUser = springJdbcUserRepository.findByUserId(user1.getUserId()).get();
+        foundUser.update("김남현", "123", "leaf.hyeon@kakaocorp.com");
+        springJdbcUserRepository.update(foundUser);
+        User updateUser = springJdbcUserRepository.findByUserId(user1.getUserId()).get();
+        assertThat(updateUser.getName()).isEqualTo("김남현");
+        assertThat(updateUser.getPassword()).isEqualTo("123");
+        assertThat(updateUser.getEmail()).isEqualTo("leaf.hyeon@kakaocorp.com");
+
+    }
+
 
 }

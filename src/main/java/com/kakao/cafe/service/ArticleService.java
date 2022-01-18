@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.ArticleNotFoundException;
 import com.kakao.cafe.repository.article.ArticleRepository;
+import com.kakao.cafe.service.dto.ArticleUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +38,17 @@ public class ArticleService {
 
     public List<Article> findAll() {
         return articleRepository.findAll();
+    }
+
+
+    public void update(ArticleUpdateDto articleUpdateDto) {
+        Article foundArticle = findById(articleUpdateDto.getId());
+        foundArticle.update(articleUpdateDto.getTitle(), articleUpdateDto.getContents());
+        articleRepository.update(foundArticle);
+    }
+
+
+    public void deleteById(Long id) {
+        articleRepository.deleteById(id);
     }
 }

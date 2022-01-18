@@ -10,8 +10,8 @@ public class Article {
 
     private Long id;
     private User writer;
-    private final String title;
-    private final String contents;
+    private String title;
+    private String contents;
 
     public void setId(long id) {
         this.id = id;
@@ -19,5 +19,10 @@ public class Article {
 
     public void setWriter(User writer) {
         this.writer = writer;
+    }
+
+    public void update(String updateTitle, String updateContents) {
+        title = updateTitle;
+        contents = updateContents;
     }
 }

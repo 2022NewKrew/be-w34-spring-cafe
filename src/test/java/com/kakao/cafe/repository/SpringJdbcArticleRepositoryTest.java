@@ -70,23 +70,49 @@ class SpringJdbcArticleRepositoryTest {
     }
 
     @Test
-    @DisplayName("회원 수정")
+    @DisplayName("게시글 수정")
     void testOfUpdate() {
-        User user1 = User.builder()
-                .userId("1")
-                .password("1")
-                .name("1")
-                .email("1")
+        User user = User.builder()
+                .userId("leaf")
+                .name("k")
+                .password("123")
+                .email("leaf.hyeon@kakaocorp.com")
                 .build();
-        springJdbcUserRepository.save(user1);
+        springJdbcUserRepository.save(user);
+        Article article = Article.builder()
+                .writer(user)
+                .title("title")
+                .contents("contents")
+                .build();
+        springJdbcArticleRepository.save(article);
 
-        User foundUser = springJdbcUserRepository.findByUserId(user1.getUserId()).get();
-        foundUser.update("김남현", "123", "leaf.hyeon@kakaocorp.com");
-        springJdbcUserRepository.update(foundUser);
-        User updateUser = springJdbcUserRepository.findByUserId(user1.getUserId()).get();
-        assertThat(updateUser.getName()).isEqualTo("김남현");
-        assertThat(updateUser.getPassword()).isEqualTo("123");
-        assertThat(updateUser.getEmail()).isEqualTo("leaf.hyeon@kakaocorp.com");
+        Article foundArticle = springJdbcArticleRepository.findAll().get(0);
+        foundArticle.update("updatedTitle", "updatedContents");
+        springJdbcArticleRepository.update(foundArticle);
 
+        Article updatedArticle = springJdbcArticleRepository.findAll().get(0);
+        assertThat(updatedArticle.getTitle()).isEqualTo("updatedTitle");
+        assertThat(updatedArticle.getContents()).isEqualTo("updatedContents");
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void testOfDelete() {
+        User user = User.builder()
+                .userId("leaf")
+                .password("1")
+                .name("asd")
+                .email("asd")
+                .build();
+        springJdbcUserRepository.save(user);
+        springJdbcArticleRepository.save(Article.builder()
+                .writer(user)
+                .title("123")
+                .contents("124124")
+                .build());
+
+        Article article = springJdbcArticleRepository.findAll().get(0);
+        springJdbcArticleRepository.deleteById(article.getId());
+        Assertions.assertThat(springJdbcArticleRepository.findAll().size()).isEqualTo(0);
     }
 }
