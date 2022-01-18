@@ -7,12 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.kakao.cafe.exception.ErrorCode;
-import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.repository.UserRepository;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,22 +29,19 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserRepository userRepository;
+    private static final String URL = "/users";
 
-    private static final String URL = "user";
-
-    @BeforeEach
+    /*@BeforeEach
     void setUp() {
         userRepository.deleteAll();
-    }
+    }*/
 
-    @AfterEach()
+    /*@AfterEach()
     void tearDown() {
         userRepository.deleteAll();
         userRepository.save(User.builder().userId("miya.ong").password("1234").name("박예지")
             .email("miya.ong@kakaocorp.com").build());
-    }
+    }*/
 
     @Test
     @DisplayName("존재하지 않는 유저 찾기 테스트")

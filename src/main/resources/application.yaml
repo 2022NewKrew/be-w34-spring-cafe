@@ -4,9 +4,10 @@ spring:
     cache: false
     expose-session-attributes: true
   datasource:
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/kakaodb?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 1234
   h2:
     console:
       enabled: true
@@ -15,6 +16,9 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+  sql:
+    init:
+      mode: always
 management:
   health:
     diskspace:
