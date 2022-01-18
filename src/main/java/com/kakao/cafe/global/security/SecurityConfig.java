@@ -13,6 +13,7 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
+    // 로그인 session을 요구하지 않을 request white list
     private final List<RequestPath> noAuthUrlPatterns = new ArrayList<>();
 
     @PostConstruct
@@ -34,6 +35,7 @@ public class SecurityConfig {
 
     }
 
+    // session(로그인) filter
     @Bean
     public FilterRegistrationBean<SessionFilter> sessionFilterRegister() {
         FilterRegistrationBean<SessionFilter> registrationBean = new FilterRegistrationBean<>();

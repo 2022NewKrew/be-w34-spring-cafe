@@ -49,10 +49,12 @@ public enum RequestPath {
         return path;
     }
 
+    // /users/{userId} -> /users/(.*)
     public String getPathRegex() {
         return path.replaceAll("\\{[\\w-]*}", "(.*)");
     }
 
+    // 정규표현식으로 path matching 확인
     public boolean matchPath(String inputPath) {
         return pathRegexPattern.matcher(inputPath).matches();
     }

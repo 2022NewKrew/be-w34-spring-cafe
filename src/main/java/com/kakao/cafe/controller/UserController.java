@@ -55,6 +55,7 @@ public class UserController {
         return "user/profile";
     }
 
+    // 유저 업데이트 폼
     @GetMapping("/{userId}/form")
     public String updateForm(@PathVariable String userId, Model model){
         User user = userService.findByUserId(userId);
@@ -62,8 +63,9 @@ public class UserController {
         return "user/updateForm";
     }
 
+    // 유저 업데이트
     @PutMapping("/{userId}")
-    public String updateUser(@PathVariable String userId, UserForm userForm, HttpSession session){
+    public String updateUser(@PathVariable String userId, UserForm userForm){
         logger.info("PUT /{userId}/update");
 
         userForm.setUserId(userId);
@@ -71,6 +73,7 @@ public class UserController {
         return "redirect:/users";
     }
 
+    // 로그인
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession session) {
         User user = loginService.login(userId, password);
@@ -78,6 +81,7 @@ public class UserController {
         return "redirect:/";
     }
 
+    // 로그아웃 (session 전부 삭제)
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

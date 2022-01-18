@@ -67,13 +67,14 @@ public class ArticleController {
 
     // article 수정
     @PutMapping("/{id}")
-    public String updateArticle(@PathVariable Long id, @SessionAttribute("sessionedUser") User user, ArticleForm articleForm, Model model) {
+    public String updateArticle(@PathVariable Long id, @SessionAttribute("sessionedUser") User user, ArticleForm articleForm) {
         Article updateArticle = Article.of(articleForm);
         updateArticle.setId(id);
         updateArticle = articleService.updateArticle(updateArticle, user);
         return "redirect:/articles/{id}";
     }
 
+    // article 삭제
     @DeleteMapping("/{id}")
     public String deleteArticle(@PathVariable Long id, @SessionAttribute("sessionedUser") User user) {
         articleService.deleteArticle(id, user);

@@ -15,19 +15,21 @@ import java.util.List;
 
 public class SessionFilter extends OncePerRequestFilter {
 
+    // 로그인 session을 요구하지 않을 request white list
     private final List<RequestPath> noAuthUrlPatterns;
 
     public SessionFilter(List<RequestPath> noAuthUrlPatterns) {
         this.noAuthUrlPatterns = noAuthUrlPatterns;
     }
 
+    // 필터 제외
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        System.out.println("request.getServletPath(): " + request.getServletPath());
         return noAuthUrlPatterns.stream()
                 .anyMatch(requestPath -> matchRequest(request, requestPath));
     }
 
+    // method(GET, POST...) 일치 && path matching
     private boolean matchRequest(HttpServletRequest request, RequestPath requestPath) {
         return request.getMethod().equals(requestPath.getMethod().name()) && requestPath.matchPath(request.getServletPath());
     }
@@ -36,6 +38,7 @@ public class SessionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
+        // session이 없으면 로그인 페이지로 redirect
         Object value = session.getAttribute("sessionedUser");
         if (value == null) { response.sendRedirect("/users/login/form"); }
 

@@ -26,6 +26,7 @@ public class GlobalExceptionHandler {
         return modelAndView;
     }
 
+    // login 관련 exception
     @ExceptionHandler(LoginException.class)
     public ModelAndView loginFailHandle(HttpServletRequest req, LoginException ex) {
         logger.error("Login Request Failed : caused {}", ex.getCause().getMessage());

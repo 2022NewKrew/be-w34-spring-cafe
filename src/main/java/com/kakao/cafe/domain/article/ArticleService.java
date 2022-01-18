@@ -72,6 +72,7 @@ public class ArticleService {
         return findArticle;
     }
 
+    // Article id 와 session의 user로 article의 작성자인지 확인 후 Article 객체를 반환
     private Article checkUserPermission(Long id, User user) {
         Article findArticle = articleOf(articleRepository.findById(id).orElseThrow(NoSuchArticleException::new));
         if (!user.getUserId().equals(findArticle.getWriterUserId())) { throw new NoPermissionException(); }
@@ -85,7 +86,7 @@ public class ArticleService {
     }
 
     public boolean deleteArticle(Long id, User user) {
-        Article findArticle = checkUserPermission(id, user);
+        checkUserPermission(id, user);
         return articleRepository.deleteById(id);
     }
 }
