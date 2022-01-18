@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.annotation.SessionCheck;
 import com.kakao.cafe.dto.ArticleDTO;
 import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.service.ArticleService;
@@ -17,11 +18,10 @@ import java.util.Objects;
 @Slf4j
 @Controller
 public class ArticleController {
-    private static final String ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE = "다른사용자가 작성한 글은 수정할 수 없습니다.";
-
     @Resource(name = "articleService")
     private ArticleService articleService;
 
+    private static final String ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE = "다른사용자가 작성한 글은 수정할 수 없습니다.";
 
     @GetMapping
     String posts(Model model) {
@@ -30,18 +30,14 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/form")
+    @SessionCheck
     String form(HttpSession session) {
-        if (session.getAttribute("sessionUser") == null) {
-            return "redirect:/users/login";
-        }
         return "article/form";
     }
 
     @PostMapping("/articles")
+    @SessionCheck
     String articles(HttpSession session, @Valid ArticleDTO article, Model model) {
-        if (session.getAttribute("sessionUser") == null) {
-            return "redirect:/users/login";
-        }
         if (articleService.insertArticle(article) < 1) {
             model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, Constants.DEFAULT_ERROR_MESSAGE);
             return Constants.ERROR_PAGE_NAME;
@@ -52,12 +48,10 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}/form")
+    @SessionCheck
     String getArticleForm(@PathVariable long id, Model model, HttpSession session) {
         UserDTO user = (UserDTO) session.getAttribute("sessionUser");
         ArticleDTO article = articleService.getArticleById(id);
-        if (user == null) {
-            return "redirect:/users/login";
-        }
         if (!Objects.equals(article.getWriterId(), user.getId())) {
             model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE);
             return Constants.ERROR_PAGE_NAME;
@@ -69,12 +63,10 @@ public class ArticleController {
     }
 
     @PutMapping("/articles/{id}/update")
+    @SessionCheck
     String updateArticle(@PathVariable long id, @Valid ArticleDTO article, Model model, HttpSession session) {
         UserDTO sessionUser = (UserDTO) session.getAttribute("sessionUser");
         ArticleDTO articleInfo = articleService.getArticleById(id);
-        if (sessionUser == null) {
-            return "redirect:/users/login";
-        }
         if (!Objects.equals(articleInfo.getWriterId(), sessionUser.getId())) {
             model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE);
             return Constants.ERROR_PAGE_NAME;
@@ -88,12 +80,10 @@ public class ArticleController {
     }
 
     @DeleteMapping("/articles/{id}/delete")
+    @SessionCheck
     String deleteArticle(@PathVariable long id, Model model, HttpSession session) {
         UserDTO sessionUser = (UserDTO) session.getAttribute("sessionUser");
         ArticleDTO article = articleService.getArticleById(id);
-        if (sessionUser == null) {
-            return "redirect:/users/login";
-        }
         if (!Objects.equals(article.getWriterId(), sessionUser.getId())) {
             model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE);
             return Constants.ERROR_PAGE_NAME;
@@ -107,11 +97,9 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{articleId}")
+    @SessionCheck
     String show(HttpSession session, @PathVariable long articleId, Model model) {
         UserDTO user = (UserDTO) session.getAttribute("sessionUser");
-        if (user == null) {
-            return "redirect:/users/login";
-        }
         articleService.increaseViews(articleId);
         ArticleDTO article = articleService.getArticleById(articleId);
         model.addAttribute("isOwner", Objects.equals(article.getWriterId(), user.getId()));
