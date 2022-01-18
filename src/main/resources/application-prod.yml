@@ -1,0 +1,13 @@
+spring:
+  mustache:
+    cache: false
+    suffix: .html
+    expose-session-attributes: true
+  datasource:
+    url: jdbc:mysql://db:3306/kakaodb
+    username: root
+    password: password
+server:
+  servlet:
+    session:
+      tracking-modes: cookie

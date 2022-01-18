@@ -21,6 +21,6 @@ CREATE TABLE articles
     view_count int           NOT NULL default 0,
     author_id  bigint        NOT NULL,
     PRIMARY KEY (article_id),
-    FOREIGN KEY (author_id) references USERS (user_id)
+    FOREIGN KEY (author_id) references users (user_id)
 );
 
