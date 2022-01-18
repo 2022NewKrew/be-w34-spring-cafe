@@ -1,32 +1,28 @@
 package com.kakao.cafe.account.service;
 
 import com.kakao.cafe.account.dto.AccountDto;
-import com.kakao.cafe.account.entity.Account;
+import com.kakao.cafe.account.mapper.AccountMapper;
 import com.kakao.cafe.account.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AccountFindService {
     private final AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
 
-    public AccountFindService(AccountRepository accountRepository) {
+    public AccountFindService(AccountRepository accountRepository, AccountMapper accountMapper) {
         this.accountRepository = accountRepository;
+        this.accountMapper = accountMapper;
     }
 
     public List<AccountDto> getAccountList() {
-        List<Account> accountList = accountRepository.findAll();
-        List<AccountDto> accountDtoList = new ArrayList<>();
-        for (Account account : accountList) {
-            accountDtoList.add(account.toDto());
-        }
-        return accountDtoList;
+        return accountMapper.toDtoList(accountRepository.findAll());
     }
 
     public AccountDto getProfile(String userId) {
-        return accountRepository.findById(userId).toDto();
+        return accountMapper.toDto(accountRepository.findById(userId));
     }
 
 

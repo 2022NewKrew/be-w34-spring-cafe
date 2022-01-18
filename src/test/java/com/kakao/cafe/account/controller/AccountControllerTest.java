@@ -48,11 +48,9 @@ class AccountControllerTest {
                                 .characterEncoding("utf-8")
                 )
                 .andDo(print())
-                .andExpect(status().is3xxRedirection())
+                .andExpect(status().is2xxSuccessful())
                 .andReturn();
 
-        // then
-        assertThat(result.getResponse().getHeader("Location")).isEqualTo("user/list");
     }
 
     @Test

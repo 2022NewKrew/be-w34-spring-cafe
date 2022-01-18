@@ -15,27 +15,18 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'junit:junit:4.13.1'
+	implementation 'junit:junit:4.13.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-	testImplementation 'org.assertj:assertj-core:3.21.0'
-
-	// https://mvnrepository.com/artifact/org.projectlombok/lombok
+	testImplementation 'org.assertj:assertj-core:3.22.0'
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor('org.projectlombok:lombok:1.18.22')
-
-	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
 	implementation 'org.springframework.boot:spring-boot-devtools:2.6.2'
-
-	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.2'
-
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-
-	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
 	implementation 'com.fasterxml.jackson.core:jackson-core:2.13.1'
-
+	implementation 'org.mapstruct:mapstruct:1.5.0.Beta2'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.0.Beta2'
 }
 
 test {

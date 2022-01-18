@@ -6,42 +6,35 @@ import com.kakao.cafe.exception.custom.DuplicateException;
 import com.kakao.cafe.exception.custom.NotFoundException;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Repository
 public class AccountRepositoryImpl implements AccountRepository {
 
-    private final List<Account> accountList = new ArrayList<>();
+    private final ConcurrentHashMap<String, Account> accounts = new ConcurrentHashMap<>();
 
     @Override
     public Account save(Account account) {
         validDuplicationUserId(account.getUserId());
-        accountList.add(account);
+        accounts.put(account.getUserId(), account);
         return account;
     }
 
     private void validDuplicationUserId(String userId) {
-        for (Account account : accountList) {
-            if(account.getUserId().equals(userId)) {
-                throw new DuplicateException(ErrorCode.DUPLICATED_USER_ID);
-            }
-        }
+        if (accounts.containsKey(userId)) throw new DuplicateException(ErrorCode.DUPLICATED_USER_ID);
     }
 
     @Override
     public List<Account> findAll() {
-        return accountList;
+        return accounts.values().stream().collect(Collectors.toList());
     }
 
     @Override
     public Account findById(String userId) {
-        for (Account account : accountList) {
-            if(account.getUserId().equals(userId)) {
-                return account;
-            }
-        }
-        throw new NotFoundException();
+        if(!accounts.containsKey(userId)) throw new NotFoundException();
+        return accounts.get(userId);
     }
 
 }

@@ -1,6 +1,5 @@
 package com.kakao.cafe.account.dto;
 
-import com.kakao.cafe.account.entity.Account;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,14 +33,6 @@ public class AccountDto {
         this.name = name;
         this.password = password;
         this.email = email;
-    }
-
-    public Account toEntity(){
-        return Account.builder()
-                .userId(userId)
-                .name(name)
-                .password(password)
-                .email(email).build();
     }
 
 }
