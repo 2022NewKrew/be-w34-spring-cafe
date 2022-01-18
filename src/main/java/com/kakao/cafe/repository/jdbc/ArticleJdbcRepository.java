@@ -20,13 +20,13 @@ public class ArticleJdbcRepository implements ArticleRepository {
     private static final String STORE_SQL =
             "INSERT INTO ARTICLES(WRITER, TITLE, CONTENT, CREATED_DATE) VALUES(?, ?, ?, ?)";
     private static final String RETRIEVE_SQL =
-            "SELECT * FROM ARTICLES WHERE ARTICLE_ID=?";
+            "SELECT * FROM ARTICLES WHERE ARTICLE_ID=? AND DELETED=FALSE";
     private static final String MODIFY_SQL =
             "UPDATE ARTICLES SET WRITER=?, TITLE=?, CONTENT=? WHERE ARTICLE_ID=?";
     private static final String DELETE_SQL =
-            "DELETE FROM ARTICLES WHERE ARTICLE_ID=?";
+            "UPDATE ARTICLES SET DELETED=TRUE WHERE ARTICLE_ID=?";
     private static final String TO_LIST_SQL =
-            "SELECT * FROM ARTICLES";
+            "SELECT * FROM ARTICLES WHERE DELETED=FALSE";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -50,11 +50,11 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
-    public void modify(Long id, Article article) {
+    public void modify(Long id, ArticleCreateCommand acc) {
         jdbcTemplate.update(MODIFY_SQL,
-                article.getWriter(),
-                article.getTitle(),
-                article.getContent(),
+                acc.getWriter(),
+                acc.getTitle(),
+                acc.getContents(),
                 id);
     }
 

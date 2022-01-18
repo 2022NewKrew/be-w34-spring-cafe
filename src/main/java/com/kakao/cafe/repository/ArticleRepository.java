@@ -10,7 +10,7 @@ import java.util.List;
 public interface ArticleRepository {
     void store(ArticleCreateCommand acc);
     Article retrieve(Long id);
-    void modify(Long id, Article article);
+    void modify(Long id, ArticleCreateCommand acc);
     void delete(Long id);
     List<Article> toList();
 }

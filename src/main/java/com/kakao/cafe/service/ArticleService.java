@@ -21,9 +21,11 @@ public class ArticleService {
         articleRepository.store(acc);
     }
 
-    public ArticleContents getArticle(Long id) {
-        return new ArticleContents(articleRepository.retrieve(id));
-    }
+    public void modifyArticle(long articleId, ArticleCreateCommand acc) { articleRepository.modify(articleId, acc); }
+
+    public void deleteArticle(long articleId) { articleRepository.delete(articleId); }
+
+    public ArticleContents getArticle(Long id) { return new ArticleContents(articleRepository.retrieve(id)); }
 
     public List<ArticleListShow> getAllArticles() {
         return articleRepository.toList().stream()
