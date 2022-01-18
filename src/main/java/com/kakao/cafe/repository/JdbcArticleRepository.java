@@ -1,11 +1,21 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.entity.Article;
+import com.kakao.cafe.util.ArticleMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 import java.util.Optional;
 
-public class JdbcArticleRepository implements Repository<Article, String> {
+public class JdbcArticleRepository implements Repository<Article, Integer> {
+
+    private final JdbcTemplate jdbcTemplate;
+    private final ArticleMapper articleMapper;
+
+    public JdbcArticleRepository(JdbcTemplate jdbcTemplate, ArticleMapper articleMapper) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.articleMapper = articleMapper;
+    }
 
     @Override
     public void create(Article entity) {
@@ -18,7 +28,7 @@ public class JdbcArticleRepository implements Repository<Article, String> {
     }
 
     @Override
-    public Optional<Article> readById(String id) {
+    public Optional<Article> readById(Integer id) {
         return Optional.empty();
     }
 }
