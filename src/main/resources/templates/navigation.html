@@ -49,14 +49,14 @@
     <div class="collapse navbar-collapse" id="navbar-collapse2">
       <ul class="nav navbar-nav navbar-right">
         <li class="active"><a href="/users">Posts</a></li>
-        {{^user}}
+        {{^sessionId}}
         <li><a href="/login" role="button">로그인</a></li>
         <li><a href="/signup" role="button">회원가입</a></li>
-        {{/user}}
-        {{#user}}
-        <li><a href="/users/logout" role="button">로그아웃</a></li>
-        {{/user}}
-        <li><a href="#" role="button">개인정보수정</a></li>
+        {{/sessionId}}
+        {{#sessionId}}
+        <li><a href="/auth/logout" role="button">로그아웃</a></li>
+        {{/sessionId}}
+        <li><a href="/users/form" role="button">개인정보수정</a></li>
       </ul>
     </div>
   </div>

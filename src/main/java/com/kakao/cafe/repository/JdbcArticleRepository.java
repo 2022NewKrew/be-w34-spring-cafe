@@ -38,6 +38,21 @@ public class JdbcArticleRepository implements ArticleRepository{
                 LocalDateTime.now());
     }
 
+    @Override
+    public int update(Article article) {
+        return jdbcTemplate.update("update article set title = ?, content = ?, date = ? where id = ?",
+                article.getTitle(),
+                article.getContent(),
+                LocalDateTime.now(),
+                article.getId());
+    }
+
+    @Override
+    public int delete(Article article) {
+        return jdbcTemplate.update("delete from article where id = ?",
+                article.getId());
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
             Article article = new Article(rs.getInt("id"),

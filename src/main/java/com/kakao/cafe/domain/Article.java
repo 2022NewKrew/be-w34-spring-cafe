@@ -47,15 +47,8 @@ public class Article {
         this.id = i;
     }
 
-    @Override
-    public String toString() {
-        return "Article{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", writer='" + writer + '\'' +
-                ", date=" + date +
-                '}';
+    public boolean matchWriter(String writer) {
+        return this.writer.equals(writer);
     }
 
 

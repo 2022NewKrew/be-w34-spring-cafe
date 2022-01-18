@@ -42,10 +42,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public UserDto login(UserAuthDto userAuthDto) {
+    public int login(UserAuthDto userAuthDto) {
         User user = userRepository.findByUserId(userAuthDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디"));
         validPassword(user, userAuthDto.getPassword());
-        return UserDto.from(user);
+        return user.getId();
     }
 
     private void validPassword(User user, String password) {

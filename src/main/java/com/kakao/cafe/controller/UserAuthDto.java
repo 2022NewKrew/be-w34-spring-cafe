@@ -18,4 +18,12 @@ public class UserAuthDto {
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public String toString() {
+        return "UserAuthDto{" +
+                "userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
