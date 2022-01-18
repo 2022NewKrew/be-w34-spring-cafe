@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/form")
-    public String getUpdateForm(@PathVariable Long id, Model model, HttpSession session) throws HttpSessionRequiredException {
+    public String getUserUpdateForm(@PathVariable Long id, Model model, HttpSession session) throws HttpSessionRequiredException {
         infraService.validateSession(session, id);
         UserDto user = userService.findUser(id);
         model.addAttribute("user", user);

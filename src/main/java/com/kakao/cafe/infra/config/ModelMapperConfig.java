@@ -5,6 +5,9 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static com.kakao.cafe.module.model.dto.ArticleDtos.*;
+import static com.kakao.cafe.module.model.dto.UserDtos.*;
+
 @Configuration
 public class ModelMapperConfig {
 
@@ -16,6 +19,11 @@ public class ModelMapperConfig {
                 .setFieldMatchingEnabled(true)
                 .setSkipNullEnabled(true)
                 .setMatchingStrategy(MatchingStrategies.STRICT);
+
+        modelMapper.typeMap(UserDto.class, ArticlePostDto.class).addMappings(mapper -> {
+            mapper.map(UserDto::getName, ArticlePostDto::setAuthor);
+            mapper.map(UserDto::getId, ArticlePostDto::setAuthorId);
+        });
         return modelMapper;
     }
 }

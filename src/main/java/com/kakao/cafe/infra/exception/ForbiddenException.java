@@ -5,6 +5,6 @@ public class ForbiddenException extends CustomRuntimeException {
     public ForbiddenException(String msg) {
         super(msg);
         name = "ForbiddenException";
-        status = 403;
+        errorCode = ErrorCode.FORBIDDEN;
     }
 }

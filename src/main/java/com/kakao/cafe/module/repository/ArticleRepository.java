@@ -13,4 +13,8 @@ public interface ArticleRepository {
     ArticleReadDto findArticleById(Long id);
 
     List<ArticleListDto> findAllArticles();
+
+    void updateArticle(Long id, String title, String contents);
+
+    void deleteArticle(Long id);
 }
