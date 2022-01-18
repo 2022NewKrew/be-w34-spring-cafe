@@ -43,7 +43,6 @@ var main = {
         });
     },
     qnaDelete : function () {
-        console.log($('#post-id').val())
         $.ajax({
             type: 'DELETE',
             url: '/api/posts/'+$('#post-id').val(),
