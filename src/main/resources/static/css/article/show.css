@@ -53,13 +53,15 @@ li {
 }
 
 .article-doc {
+    margin-top: 50px;
     line-height: 30px;
+    font-size: 20px;
 }
 
 .post-title {
     font-size: 32px;
     font-weight: 500;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 
 .comment {
@@ -78,12 +80,19 @@ li {
     font-size: 14px;
 }
 
+.article-content-edit {
+    margin-right: 20px;
+    font-size: 14px;
+    color: gray;
+    margin-left: auto;
+}
+
 .article-header {
-    margin-bottom: 50px;
+    margin: 25px 0;
 }
 
 .post-comment {
-    margin-top: 60px;
+    margin-top: 80px;
 }
 
 .post-comment-count {
@@ -101,6 +110,11 @@ li {
 .comment-content {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.comment-doc {
+    margin: 20px 0;
+    font-size: 14px;
 }
 
 .post-write-btn {
@@ -147,6 +161,7 @@ li {
 
 .comment-writer {
     font-weight: bold;
+    font-size: 16px;
     margin: 20px;
     border: none;
 }
@@ -159,4 +174,14 @@ li {
     border: 1px solid lightgray;
     display: flex;
     flex-direction: column;
+}
+
+.panel {
+    width: 100%;
+}
+
+hr {
+    border: 0;
+    background: lightgray;
+    height: 1px;
 }

@@ -1,5 +1,6 @@
 package com.kakao.cafe.web.interceptor;
 
+import com.kakao.cafe.member.dto.MemberResponseDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -17,9 +18,9 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
-        Long loginId = (Long) session.getAttribute("loginId");
+        MemberResponseDTO loginMemberDTO = (MemberResponseDTO) session.getAttribute("loginMemberDTO");
 
-        if (loginId != null) {
+        if (loginMemberDTO != null) {
             return true;
         }
 

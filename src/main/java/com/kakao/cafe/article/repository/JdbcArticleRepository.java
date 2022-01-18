@@ -52,8 +52,15 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void update(Long id) {
+    public void update(Long id, Article article) {
+        String sql = "UPDATE ARTICLE SET TITLE = ?, CONTENT = ? WHERE ID = ?";
+        jdbcTemplate.update(sql, article.getTitle(), article.getContent(), id);
+    }
 
+    @Override
+    public void delete(Long id) {
+        String sql = "DELETE ARTICLE WHERE ID = ?";
+        jdbcTemplate.update(sql, id);
     }
 
     private RowMapper<Article> articleRowMapper() {
