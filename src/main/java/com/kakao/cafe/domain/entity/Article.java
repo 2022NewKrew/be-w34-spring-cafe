@@ -49,6 +49,10 @@ public class Article {
                 .build();
     }
 
+    public long getAuthorId() {
+        return author.getId();
+    }
+
     public static class Builder {
 
         private long id;

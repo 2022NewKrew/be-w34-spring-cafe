@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.Date;
 import java.util.List;
@@ -20,11 +21,9 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ArticleController.class)
 @MockBean(ArticleService.class)
@@ -176,5 +175,97 @@ class ArticleControllerTest {
         mvc.perform(get("/articles/" + id).session(session))
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void updateForm() throws Exception {
+        long id = 1234L;
+        ArticleDto article = new ArticleDto.Builder()
+                .id(id)
+                .author(
+                        new UserDto.Builder()
+                                .name("author1")
+                                .email("email")
+                                .userId("userId")
+                                .build()
+                )
+                .title("title1")
+                .content("content1")
+                .build();
+        when(service.getById(id)).thenReturn(Optional.of(article));
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("currentUserId", 1234L);
+
+        mvc.perform(get("/articles/" + id + "/form").session(session))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateForm_unauthenticated() throws Exception {
+        mvc.perform(get("/articles/1234/form"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    void update() throws Exception {
+        long id = 1234L;
+        ArticleDto article = new ArticleDto.Builder()
+                .id(id)
+                .author(
+                        new UserDto.Builder()
+                                .name("author1")
+                                .email("email")
+                                .userId("userId")
+                                .build()
+                )
+                .title("title1")
+                .content("content1")
+                .build();
+        when(service.getById(id)).thenReturn(Optional.of(article));
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("currentUserId", 1234L);
+
+        MockHttpServletRequestBuilder request = put("/articles/" + id)
+                .param("title", "title2")
+                .param("content", "content2")
+                .session(session);
+        mvc.perform(request)
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/articles/" + id));
+    }
+
+    @Test
+    void update_unauthenticated() throws Exception {
+        long id = 1234L;
+        MockHttpServletRequestBuilder request = put("/articles/" + id);
+
+        mvc.perform(request)
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void delete_() throws Exception {
+        long id = 1234L;
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("currentUserId", 1234L);
+
+        mvc.perform(delete("/articles/" + id).session(session))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+    }
+
+    @Test
+    void delete_unauthenticated() throws Exception {
+        long id = 1234L;
+
+        mvc.perform(delete("/articles/" + id))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users/login"));
     }
 }

@@ -55,6 +55,31 @@ public class ArticleController {
         return "articles/item";
     }
 
+    @GetMapping("/articles/{id}/form")
+    public String updateForm(@PathVariable long id, Model model, HttpSession session) {
+        Long authorId = (Long) session.getAttribute("currentUserId");
+        if (authorId == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
+        }
+        ArticleDto article = service.getEditableById(authorId, id);
+        model.addAttribute("article", article);
+        return "articles/form";
+    }
+
+    @PutMapping("/articles/{id}")
+    public String update(
+            @PathVariable long id,
+            @Valid @ModelAttribute ArticleRequest request,
+            HttpSession session
+    ) {
+        Long authorId = (Long) session.getAttribute("currentUserId");
+        if (authorId == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
+        }
+        service.update(authorId, id, request.toDraftDto());
+        return "redirect:/articles/" + id;
+    }
+
     @DeleteMapping("/articles/{id}")
     public String delete(@PathVariable long id, HttpSession session) {
         Long authorId = (Long) session.getAttribute("currentUserId");

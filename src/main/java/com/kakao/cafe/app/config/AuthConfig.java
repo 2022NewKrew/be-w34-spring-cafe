@@ -12,7 +12,7 @@ public class AuthConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor(HttpMethod.GET))
-                .addPathPatterns("/articles/form");
+                .addPathPatterns("/articles/form", "/articles/*/form");
         registry.addInterceptor(new AuthInterceptor(HttpMethod.GET, HttpMethod.DELETE))
                 .addPathPatterns("/articles/*");
     }

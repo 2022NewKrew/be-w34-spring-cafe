@@ -65,6 +65,17 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public void update(long id, Draft draft) {
+        String sql = "UPDATE articles " +
+                "SET title = :title, content = :content " +
+                "WHERE id = :id";
+        Map<String, Object> map = new HashMap<>(draft.toMap());
+        map.put("id", id);
+        SqlParameterSource params = new MapSqlParameterSource(map);
+        jdbcTemplate.update(sql, params);
+    }
+
+    @Override
     public void delete(long id) {
         String sql = "DELETE FROM articles WHERE id = :id";
         Map<String, Object> params = Collections.singletonMap("id", id);

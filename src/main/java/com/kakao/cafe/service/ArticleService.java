@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.entity.Article;
 import com.kakao.cafe.domain.entity.Draft;
 import com.kakao.cafe.domain.entity.User;
+import com.kakao.cafe.domain.exception.NoSuchArticleException;
 import com.kakao.cafe.domain.exception.NoSuchUserException;
 import com.kakao.cafe.domain.exception.UnauthorizedException;
 import com.kakao.cafe.domain.repository.ArticleRepository;
@@ -48,7 +49,33 @@ public class ArticleService {
         return repository.getById(id).map(Article::toDto);
     }
 
-    public void delete(Long authorId, long id) {
+    public ArticleDto getEditableById(long userId, long id) {
+        Optional<User> user = userRepository.getById(userId);
+        Optional<Article> article = repository.getById(id);
+        if (user.isEmpty()) {
+            throw new NoSuchUserException();
+        }
+        if (article.isEmpty()) {
+            throw new NoSuchArticleException();
+        }
+        if (user.get().getId() != article.get().getAuthorId()) {
+            throw new UnauthorizedException();
+        }
+        return article.get().toDto();
+    }
+
+    public void update(Long authorId, long id, DraftDto draft) {
+        Optional<User> author = userRepository.getById(authorId);
+        if (author.isEmpty()) {
+            throw new NoSuchUserException();
+        }
+        if (author.get().getId() != authorId) {
+            throw new UnauthorizedException();
+        }
+        repository.update(id, draft.toEntity(author.get()));
+    }
+
+    public void delete(long authorId, long id) {
         Optional<User> author = userRepository.getById(authorId);
         if (author.isEmpty()) {
             throw new NoSuchUserException();

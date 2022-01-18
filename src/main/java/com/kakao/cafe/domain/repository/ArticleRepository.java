@@ -11,5 +11,6 @@ public interface ArticleRepository {
     Article create(Draft draft);
     List<Article> list();
     Optional<Article> getById(long id);
+    void update(long id, Draft draft);
     void delete(long id);
 }

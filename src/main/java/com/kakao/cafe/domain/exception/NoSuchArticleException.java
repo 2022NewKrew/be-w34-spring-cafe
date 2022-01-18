@@ -1,4 +1,4 @@
 package com.kakao.cafe.domain.exception;
 
-public class NoSuchUserException extends IllegalArgumentException {
+public class NoSuchArticleException extends IllegalArgumentException {
 }
