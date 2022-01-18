@@ -21,7 +21,7 @@ public class JdbcUserRepository {
 
     public void createUser(User user) {
         String sqlQuery = "insert into MEMBER (userId, PASSWORD, EMAIL) values (?, ?, ?)";
-        jdbcTemplate.update(sqlQuery, user.getUserId(), user.getPassword(), user.getEmail());
+        jdbcTemplate.update(sqlQuery, user.getUserId(), passwordEncoder.encode(user.getPassword()), user.getEmail());
     }
 
     public List<User> readUsers() {
