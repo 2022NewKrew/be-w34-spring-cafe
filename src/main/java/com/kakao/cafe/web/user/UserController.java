@@ -5,10 +5,7 @@ import com.kakao.cafe.domain.user.UserId;
 import com.kakao.cafe.service.user.UserCreateService;
 import com.kakao.cafe.service.user.UserFindService;
 import com.kakao.cafe.service.user.UserUpdateService;
-import com.kakao.cafe.web.user.dto.UserCreateRequest;
-import com.kakao.cafe.web.user.dto.UserListResponse;
-import com.kakao.cafe.web.user.dto.UserProfileResponse;
-import com.kakao.cafe.web.user.dto.UserUpdateRequest;
+import com.kakao.cafe.web.user.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,9 +30,13 @@ public class UserController {
 
     @GetMapping()
     public String showUsers(Model model) {
-        model.addAttribute("users", userFindService.findAll().stream()
-                .map(UserListResponse::new)
-                .collect(Collectors.toList()));
+        UserListResponse userListResponse = new UserListResponse(
+                userFindService.findAll().stream()
+                        .map(UserResponse::new)
+                        .collect(Collectors.toList())
+        );
+
+        model.addAttribute("users", userListResponse);
         return "/user/list";
     }
 

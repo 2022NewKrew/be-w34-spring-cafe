@@ -13,8 +13,8 @@ class UserCreateRequestTest {
     public void testUserCreateRequestDto() {
         //given
         final UserId userId = new UserId("clo.d");
-        final Password password = new Password("1234");
-        final Name name = new Name("dongwoon");
+        final Password password = new Password("1q2w3e4r!Q");
+        final Name name = new Name("김동운");
         final Email email = new Email("clo.d@kakaocorp.com");
         final UserCreateRequest dto = new UserCreateRequest(userId, password, name, email);
 

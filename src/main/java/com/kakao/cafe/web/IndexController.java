@@ -22,12 +22,11 @@ public class IndexController {
 
     @GetMapping("/")
     public String showArticles(Model model) {
-        articleFindService.findByAll();
         ArticleListResponse articleListResponse = new ArticleListResponse(
                 articleFindService.findByAll()
                         .stream()
                         .map(ArticleResponse::new)
-                        .collect(Collectors.toUnmodifiableList())
+                        .collect(Collectors.toList())
         );
 
         model.addAttribute("articles", articleListResponse);

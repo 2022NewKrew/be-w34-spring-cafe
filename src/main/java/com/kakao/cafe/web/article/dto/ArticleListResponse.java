@@ -1,12 +1,13 @@
 package com.kakao.cafe.web.article.dto;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ArticleListResponse {
     private final List<ArticleResponse> articles;
 
     public ArticleListResponse(List<ArticleResponse> articleResponses) {
-        this.articles = articleResponses;
+        this.articles = Collections.unmodifiableList(articleResponses);
     }
 
     public List<ArticleResponse> getArticles() {

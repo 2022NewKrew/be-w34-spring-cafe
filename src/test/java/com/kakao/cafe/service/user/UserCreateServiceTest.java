@@ -32,7 +32,7 @@ public class UserCreateServiceTest {
     @ParameterizedTest
     public void userCreateValidPasswordCorrect(UserId userId, Password password, Name name, Email email) {
         //given
-        final UserId newUserId = new UserId("newClo.d");
+        final UserId newUserId = new UserId("clo.dd");
         final UserCreateRequest givenUserDto = new UserCreateRequest(userId, password, name, email);
         final UserCreateRequest newUserDto = new UserCreateRequest(newUserId, password, name, email);
 
@@ -49,7 +49,7 @@ public class UserCreateServiceTest {
 
     private static Stream<Arguments> provideUsers() {
         return Stream.of(
-                Arguments.of(new UserId("clo.d"), new Password("testPassword"), new Name("dongwoon"), new Email("clo.d@kakaocorp.com"))
+                Arguments.of(new UserId("clo.d"), new Password("1q2w3e4r!Q"), new Name("김동운"), new Email("clo.d@kakaocorp.com"))
         );
     }
 }

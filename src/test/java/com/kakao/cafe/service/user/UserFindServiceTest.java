@@ -45,7 +45,7 @@ class UserFindServiceTest {
 
     private static Stream<Arguments> provideUsers() {
         return Stream.of(
-                Arguments.of(new UserId("clo.d"), new Password("testPassword"), new Name("dongwoon"), new Email("clo.d@kakaocorp.com"))
+                Arguments.of(new UserId("clo.d"), new Password("1q2w3e4r!Q"), new Name("김동운"), new Email("clo.d@kakaocorp.com"))
         );
     }
 }
