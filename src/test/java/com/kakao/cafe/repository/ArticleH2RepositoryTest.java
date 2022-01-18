@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Objects;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class ArticleH2RepositoryTest {
@@ -42,7 +42,6 @@ class ArticleH2RepositoryTest {
     void findall() {
         int beforeSize = articleRepository.getAllQuestions().size();
         Optional<Long> returnId = articleRepository.save(article);
-        System.out.println(returnId);
         int afterSize = articleRepository.getAllQuestions().size();
         assertEquals(beforeSize + 1, afterSize);
         deleteId = returnId.get().toString();

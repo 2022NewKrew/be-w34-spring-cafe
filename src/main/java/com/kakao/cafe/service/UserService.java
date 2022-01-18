@@ -2,14 +2,17 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import javax.servlet.http.HttpSession;
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
 
+    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -28,7 +31,7 @@ public class UserService {
 
     public boolean isvalidateLogin(User user, HttpSession session) {
         User findUser = userRepository.findById(user.getUserId());
-        if(!findUser.isValidateLogin(user)){
+        if (!findUser.isValidateLogin(user)) {
             return false;
         }
         session.setAttribute("curUser", findUser);
