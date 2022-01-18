@@ -36,7 +36,7 @@
                 <div class="change" style="position: relative; height: 20px; width: 20px" onclick="menu(this)">
                     <img style="position: relative; height: 20px; width: 20px" src="/images/more.png">
                     <div class="target" style="position: absolute">
-                        <form method="GET" action="/qna/update">
+                        <form method="GET" action="/questions/{{post.id}}/update">
                             <button class="menu-button">수정</button>
                         </form>
                         <form method="post" action="/questions/{{post.id}}">

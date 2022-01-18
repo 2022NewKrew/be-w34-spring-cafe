@@ -1,15 +1,16 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Post;
+import com.kakao.cafe.dto.PostUpdateDto;
 
 import java.util.List;
 import java.util.Optional;
 
 
 public interface PostRepository {
-    int save(Post post);
     Optional<List<Post>> findAll();
     Optional<Post> findById(int questionId);
-    void update(Post post);
     void remove(Post post);
+    int save(Post post);
+    void update(Post post);
 }
