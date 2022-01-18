@@ -34,7 +34,6 @@ public class AuthAspect {
 
         try {
             Auth auth = getAuth(joinPoint);
-            Object result = joinPoint.proceed();
 
             if (auth.role() == Auth.Role.ADMIN) {
                 UserDto user = getLoginUser();
@@ -44,7 +43,7 @@ public class AuthAspect {
                 }
             }
 
-            return result;
+            return joinPoint.proceed();
         } catch (BaseException e) {
             throw e;
         } catch (Throwable e) {
