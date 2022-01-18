@@ -40,7 +40,7 @@ public class QuestionController {
         question.setWriter(user.getUserId());
         questionService.save(question);
 
-        return "redirect:/";
+        return "redirect:/questions";
     }
 
     @GetMapping
@@ -93,10 +93,10 @@ public class QuestionController {
 
         questionService.deleteOne(id, memberId);
 
-        return "redirect:/";
+        return "redirect:/questions";
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public String updateQuestion(HttpSession session, @PathVariable("id") Long id, @Valid @ModelAttribute("question") QuestionUpdateDto questionUpdateDto, Model model) throws BaseException {
 
         Long memberId = getMemberId(session);
@@ -109,7 +109,23 @@ public class QuestionController {
 
         questionService.updateOne(question);
 
-        return "redirect:/";
+        return String.format("redirect:/questions/%d", id);
+    }
+
+    @GetMapping("/update/{id}")
+    public String viewUpdateQuestionForm(HttpSession session, @PathVariable("id") Long id, Model model) throws BaseException {
+
+        Question origin = questionService.findOne(id);
+        QuestionUpdateDto question = modelMapper.map(origin, QuestionUpdateDto.class);
+        UserDto loginUser = getLoginUser(session);
+
+        if (origin != null && !origin.getMemberId().equals(loginUser.getId())) {
+            throw new BaseException("게시글의 권한이 없는 사용자 입니다.");
+        }
+
+        model.addAttribute("question", question);
+
+        return "qna/update_form";
     }
 
     private Long getMemberId(HttpSession session) {

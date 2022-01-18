@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 public class QuestionUpdateDto {
+    private String id;
     @NotEmpty
     private String title;
     @NotEmpty
