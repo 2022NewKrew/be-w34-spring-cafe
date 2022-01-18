@@ -23,9 +23,8 @@ public class UserH2DAO implements UserDAOInterface {
 
     @Override
     public void save(User user) {
-        String sql = "INSERT INTO USERLIST VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO USERLIST(USERID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql,
-                user.getId(),
                 user.getUserId(),
                 user.getPassword(),
                 user.getName(),

@@ -24,9 +24,8 @@ public class ArticleH2DAO implements ArticleDAOInterface {
 
     @Override
     public void save(Article article) {
-        String sql = "INSERT INTO ARTICLE VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ARTICLE(WRITETIME, WRITER, TITLE, CONTENTS) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql,
-                article.getId(),
                 article.writeTimeToStr(),
                 article.getWriter(),
                 article.getTitle(),
