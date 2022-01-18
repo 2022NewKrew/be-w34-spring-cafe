@@ -63,6 +63,18 @@ public class QnaService {
         qnaRepository.save(qna);
     }
 
+    @Transactional
+    public void deleteQna(Integer index, String userId) throws AccessDeniedException {
+        Qna qna = qnaRepository.findByIndex(index)
+                .orElseThrow(() -> new QnaNotFoundException(index));
+
+        if (!qna.isValidDeleteUser(userId)) {
+            throw new AccessDeniedException("삭제 권한이 없습니다");
+        }
+
+        qnaRepository.deleteByIndex(index);
+    }
+
     public void validateUpdateUser(String writer, String userId) throws AccessDeniedException {
         if (!writer.equals(userId)) {
             throw new AccessDeniedException("수정 권한이 없습니다");

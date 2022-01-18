@@ -29,4 +29,9 @@ public class LocalQnaRepositoryImpl implements QnaRepository {
     public Optional<Qna> findByIndex(Integer index) {
         return Optional.of(qnaList.findQnaByIndex(index));
     }
+
+    @Override
+    public void deleteByIndex(Integer index) {
+        qnaList.deleteByIndex(index);
+    }
 }

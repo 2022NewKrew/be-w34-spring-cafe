@@ -48,6 +48,11 @@ public class JdbcQnaRepositoryImpl implements QnaRepository {
         }
     }
 
+    @Override
+    public void deleteByIndex(Integer index) {
+        jdbcTemplate.update("delete from QNA where `index` = ?", index);
+    }
+
     private Qna qnaMapRow(ResultSet resultSet, int rowNum) throws SQLException {
         return new Qna(resultSet.getInt("index"), resultSet.getString("writer"),
                 resultSet.getString("title"), resultSet.getString("contents"));

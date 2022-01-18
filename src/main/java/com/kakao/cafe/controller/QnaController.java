@@ -53,6 +53,13 @@ public class QnaController {
         return "redirect:/";
     }
 
+    @DeleteMapping("/questions/{index}")
+    public String deleteQna(@PathVariable("index") Integer index, HttpSession session) throws AccessDeniedException {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+        qnaService.deleteQna(index, sessionedUser.getUserId());
+        return "redirect:/";
+    }
+
     @GetMapping("/")
     public String findQnaList(Model model) {
         List<QnaDto.QnaResponse> qnaList = qnaService.findQnaList();

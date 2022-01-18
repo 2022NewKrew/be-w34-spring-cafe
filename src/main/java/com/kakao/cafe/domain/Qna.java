@@ -44,6 +44,10 @@ public class Qna {
         return writer.equals(userId);
     }
 
+    public Boolean isValidDeleteUser(String userId) {
+        return writer.equals(userId);
+    }
+
     public void updateQna(Qna qna) {
         this.title = qna.getTitle();
         this.contents = qna.getContents();

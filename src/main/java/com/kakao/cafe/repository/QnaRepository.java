@@ -11,4 +11,6 @@ public interface QnaRepository {
     List<Qna> findAll();
 
     Optional<Qna> findByIndex(Integer index);
+
+    void deleteByIndex(Integer index);
 }
