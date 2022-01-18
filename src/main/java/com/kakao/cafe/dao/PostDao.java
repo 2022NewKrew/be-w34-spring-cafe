@@ -49,6 +49,15 @@ public class PostDao {
         jdbcTemplate.update(queryString);
     }
 
+    public int update(Post post) {
+        String queryString = "update posts set title = ?, contents = ? where writer = ?;";
+        return jdbcTemplate.update(queryString, post.getTitle(), post.getContents(), post.getWriter());
+    }
+
+    public int delete(long id) {
+        String queryString = "delete from posts where id = ?";
+        return jdbcTemplate.update(queryString, id);
+    }
 
     private Post mapToPost(Map<String, Object> res) {
         return new Post.Builder()

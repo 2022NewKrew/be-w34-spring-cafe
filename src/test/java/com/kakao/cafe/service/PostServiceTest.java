@@ -2,10 +2,11 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.util.exception.PostNotFoundException;
-import org.junit.jupiter.api.BeforeEach;
+import com.kakao.cafe.util.exception.UnauthorizedAction;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -20,12 +21,9 @@ public class PostServiceTest {
         this.postService = postService;
     }
 
-    @BeforeEach
-    void setUp() {
-        postService.deleteAll();
-    }
 
     @Test
+    @Transactional
     void insertAndGet() {
         Post post = new Post.Builder().writer("yunyul").title("hello").contents("world").build();
         int postId = postService.insert(post);
@@ -39,7 +37,9 @@ public class PostServiceTest {
     }
 
     @Test
+    @Transactional
     void findAllTest() {
+        postService.deleteAll();
         Post post = new Post.Builder().writer("yunyul").title("hello").contents("world").build();
         Post post2 = new Post.Builder().writer("yunyul").title("hello").contents("world").build();
         postService.insert(post);
@@ -48,6 +48,7 @@ public class PostServiceTest {
     }
 
     @Test
+    @Transactional
     void postNotFoundTest() {
         Post post = new Post.Builder().writer("yunyul").title("hello").contents("world").build();
         postService.insert(post);
@@ -56,8 +57,62 @@ public class PostServiceTest {
 
     }
 
+    @Test
+    @Transactional
+    void updateNotMineFail() {
 
-    public void deleteAll() {
+        Post post = new Post.Builder()
+                .writer("javajigi")
+                .title("wrong")
+                .contents("post")
+                .id(1)
+                .build();
 
+        String curUserId = "wrongGuy";
+
+        assertThatThrownBy(() -> postService.update(post, curUserId))
+                .isInstanceOf(UnauthorizedAction.class);
+    }
+
+    @Test
+    @Transactional
+    void updateSuccess() {
+        Post post = new Post.Builder()
+                .writer("javajigi")
+                .title("wrong")
+                .contents("post")
+                .id(1)
+                .build();
+        postService.update(post, post.getWriter());
+    }
+
+    @Test
+    @Transactional
+    void deleteFailByPostNotExists() {
+        String curId = "javajigi";
+        assertThatThrownBy(() -> postService.delete(curId, -1)).isInstanceOf(PostNotFoundException.class);
+
+    }
+
+    @Test
+    @Transactional
+    void deleteFailByNoLogin() {
+        assertThatThrownBy(() -> postService.delete(null, 1)).isInstanceOf(UnauthorizedAction.class);
+
+    }
+
+
+    @Test
+    @Transactional
+    void deleteFailByNotWriter() {
+        assertThatThrownBy(() -> postService.delete("wrongGuy", 1)).isInstanceOf(UnauthorizedAction.class);
+
+    }
+
+    @Test
+    @Transactional
+    void deleteSuccess() {
+        String curId = "javajigi";
+        postService.delete(curId, 1);
     }
 }

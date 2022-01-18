@@ -36,7 +36,7 @@ public class Users {
     public boolean update(String id, String oldPassword, User newInformation) {
         User target = getByUserId(id);
         if (target == null) return false;
-        if (!target.passwordIs(oldPassword)) return false;
+        if (target.isPassword(oldPassword)) return false;
         int targetIndex = users.indexOf(target);
         users.remove(target);
         users.add(targetIndex, newInformation);

@@ -12,6 +12,11 @@ public class PostMapper {
     }
 
     public static Post toPost(PostDto postDto) {
-        return new Post(postDto.getTitle(), postDto.getWriter(), postDto.getContents());
+        return new Post.Builder()
+                .title(postDto.getTitle())
+                .writer(postDto.getWriter())
+                .contents(postDto.getContents())
+                .id(postDto.getId())
+                .build();
     }
 }

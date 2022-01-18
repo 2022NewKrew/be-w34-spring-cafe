@@ -5,10 +5,10 @@ public class Title {
 
     public Title(String title) {
         if (title == null)
-            throw new IllegalArgumentException("잘못된 입력입니다!");
+            throw new IllegalArgumentException("Title : title == null");
         title = title.trim();
         if (title.length() == 0)
-            throw new IllegalArgumentException("잘못된 입력입니다!");
+            throw new IllegalArgumentException("Title : title.length() == 0");
         this.title = title;
     }
 

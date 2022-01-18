@@ -41,6 +41,10 @@ public class Post {
         return this.id;
     }
 
+    public boolean isWriter(String curId) {
+        return writer.is(curId);
+    }
+
     public static class Builder {
         String title;
         String writer;
