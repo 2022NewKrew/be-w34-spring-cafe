@@ -20,8 +20,12 @@ public class UserService {
     }
 
     public void save(CreateUserDto createUserDto) {
-        User user = new User(createUserDto);
-        userDAO.save(user);
+        User user = userDAO.findById(createUserDto.getUserId());
+        if (user != null) {
+            throw new IllegalArgumentException("아이디가 이미 존재합니다");
+        }
+        User createUser = new User(createUserDto);
+        userDAO.save(createUser);
     }
 
     public List<ShowUserDto> findAll() {
