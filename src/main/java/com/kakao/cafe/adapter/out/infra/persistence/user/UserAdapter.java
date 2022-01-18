@@ -70,13 +70,9 @@ public class UserAdapter implements RegisterUserPort, GetUserEntityPort, UpdateU
 
     @Override
     public User findUserByUserId(String userId) throws UserNotExistException {
-        User user = userInfoRepository.findByUserId(userId).orElse(null);
-
-        if (user == null) {
-            throw new UserNotExistException("존재하지 않는 회원입니다.");
-        }
-
-        return user;
+        return userInfoRepository.findByUserId(userId).orElseThrow(
+            () -> new UserNotExistException("존재하지 않는 회원입니다.")
+        );
     }
 
     private void checkUserIdDuplication(String userId) throws UserIdDuplicationException {

@@ -50,12 +50,8 @@ public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort {
 
     @Override
     public Article findArticleById(int id) throws ArticleNotExistException {
-        Article article = articleRepository.findById(id).orElse(null);
-
-        if (article == null) {
-            throw new ArticleNotExistException("존재하지 않는 게시글입니다.");
-        }
-
-        return article;
+        return articleRepository.findById(id).orElseThrow(
+            () -> new ArticleNotExistException("존재하지 않는 게시글입니다.")
+        );
     }
 }
