@@ -8,7 +8,6 @@ import javax.validation.constraints.NotEmpty;
 // 회원가입 폼 DTO
 public class ArticleForm {
 
-    @NotBlank
     private String writer;
     @NotBlank
     private String title;

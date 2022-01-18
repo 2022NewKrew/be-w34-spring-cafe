@@ -2,6 +2,7 @@ package com.kakao.cafe.domain.article.repository;
 
 import com.kakao.cafe.domain.article.dto.ArticleRowDataDto;
 import com.kakao.cafe.domain.user.repository.UserRepository;
+import com.kakao.cafe.global.sql.TableName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -29,30 +30,22 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public ArticleRowDataDto save(ArticleRowDataDto articleRowDataDto) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("articles").usingGeneratedKeyColumns("id");
+        final String sql = "insert into " + TableName.ARTICLE.getName() + " (`writer`, `title`, `contents`, `registerDateTime`) values (?,?,?,?)";
 
-        Map<String, Object> parameters = new HashMap<>();
+        jdbcTemplate.update(sql, articleRowDataDto.getWriterId(), articleRowDataDto.getTitle(), articleRowDataDto.getContents(), articleRowDataDto.getRegisterDateTime());
 
-        parameters.put("writer", articleRowDataDto.getWriterId());
-        parameters.put("title", articleRowDataDto.getTitle());
-        parameters.put("contents", articleRowDataDto.getContents());
-        parameters.put("registerDateTime", articleRowDataDto.getRegisterDateTime());
-
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-        articleRowDataDto.setId(key.longValue());
         return articleRowDataDto;
     }
 
     @Override
     public Optional<ArticleRowDataDto> findById(Long id) {
-        List<ArticleRowDataDto> result = jdbcTemplate.query("select * from articles where id=?", articleRowMapper(), id);
+        List<ArticleRowDataDto> result = jdbcTemplate.query("select * from " + TableName.ARTICLE.getName() +" where id=?", articleRowMapper(), id);
         return result.stream().findAny();
     }
 
     @Override
     public Optional<ArticleRowDataDto> findByWriter(String writer) {
-        List<ArticleRowDataDto> result = jdbcTemplate.query("select * from articles where writer=?", articleRowMapper(), writer);
+        List<ArticleRowDataDto> result = jdbcTemplate.query("select * from " + TableName.ARTICLE.getName() +" where writer=?", articleRowMapper(), writer);
         return result.stream().findAny();
     }
 
@@ -70,6 +63,20 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public List<ArticleRowDataDto> findAll() {
-        return jdbcTemplate.query("select * from articles", articleRowMapper());
+        return jdbcTemplate.query("select * from " + TableName.ARTICLE.getName(), articleRowMapper());
+    }
+
+    public ArticleRowDataDto update(ArticleRowDataDto articleRowDataDto) {
+        final String sql = "update " + TableName.ARTICLE.getName() + " set title=?, contents=? where id=?";
+
+        jdbcTemplate.update(sql, articleRowDataDto.getTitle(), articleRowDataDto.getContents(), articleRowDataDto.getId());
+        return articleRowDataDto;
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        final String sql = "delete from " + TableName.ARTICLE.getName() + " where id=?";
+        if (jdbcTemplate.update(sql, id) <= 0) throw new RuntimeException("삭제에 실패하였습니다.");
+        return true;
     }
 }
