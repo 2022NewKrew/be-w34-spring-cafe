@@ -47,7 +47,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User fetch(long id) {
         String query = "SELECT * FROM `USER` WHERE ID = ?";
-        List<User> users = jdbcTemplate.query(query, new UserRowMapper());
+        List<User> users = jdbcTemplate.query(query, new UserRowMapper(), id);
         return users.size() == 0 ? null : users.get(0);
     }
 
