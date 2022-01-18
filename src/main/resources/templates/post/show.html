@@ -1,6 +1,11 @@
 {{>layout/header}}
 <div class="background">
-    {{>layout/mainNavbar}}
+    {{^sessionedUser}}
+    {{>layout/mainLoginNavbar}}
+    {{/sessionedUser}}
+    {{#sessionedUser}}
+    {{>layout/mainLogoutNavbar}}
+    {{/sessionedUser}}
 
     <div class="container" id="main">
         <div class="col-md-12 col-sm-12 col-lg-12">

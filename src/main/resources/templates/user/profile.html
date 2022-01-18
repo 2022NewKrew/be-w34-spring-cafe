@@ -1,6 +1,11 @@
 {{>layout/header}}
 <div class="background">
-    {{>layout/userNavbar}}
+    {{^sessionedUser}}
+    {{>layout/userLoginNavbar}}
+    {{/sessionedUser}}
+    {{#sessionedUser}}
+    {{>layout/userLogoutNavbar}}
+    {{/sessionedUser}}
 
     <div class="profile-container">
         <img class="profile-image" src="/images/chunsik.jpeg">
