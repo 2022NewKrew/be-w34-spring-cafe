@@ -33,9 +33,10 @@
     - [x] 컨트롤러 어드바이스 만들기
 
 # 4단계
-- [ ] 피드백 반영
+- [x] 피드백 반영
   - [x] HTTP 상태코드 위치 변경
-  - [ ] Repository 인터페이스 적용
-- [ ] 로그인기능 구현
-  - [ ] HttpSession 설정 추가
-  - [ ] HTML 변경
+  - [x] Repository 인터페이스 적용
+- [x] 로그인기능 구현
+  - [x] HttpSession 설정 추가
+  - [x] properties 설정 추가
+  - [x] HTML 변경

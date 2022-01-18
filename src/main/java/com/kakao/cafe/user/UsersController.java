@@ -3,6 +3,8 @@ package com.kakao.cafe.user;
 import com.kakao.cafe.user.dto.request.UserRequest;
 import com.kakao.cafe.user.dto.response.UserResponse;
 import com.kakao.cafe.user.dto.response.UsersResponse;
+import java.util.UUID;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,4 +42,10 @@ public class UsersController {
         return "user/profile";
     }
 
+    @PostMapping("/login")
+    public String login(UserRequest userRequest, HttpSession httpSession) {
+        UUID sessionId = userService.loginedUserSessionId(userRequest);
+        httpSession.setAttribute("sessionId", sessionId);
+        return "redirect:/";
+    }
 }

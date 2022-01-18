@@ -1,6 +1,7 @@
 package com.kakao.cafe.user;
 
 import com.kakao.cafe.user.exception.CustomDuplicateUserException;
+import com.kakao.cafe.user.exception.CustomPasswordNotEqualsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,5 +19,11 @@ public class UserControllerAdvice {
         CustomDuplicateUserException e) {
         logger.info("[ERROR] 중복된 유저 아이디", e.getCause());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
+    @ExceptionHandler(CustomPasswordNotEqualsException.class)
+    public String handleCustomPasswordNotEqualsException() {
+        logger.info("[ERROR] 패스워드 불일치, 로그인 실패");
+        return "user/login_failed";
     }
 }
