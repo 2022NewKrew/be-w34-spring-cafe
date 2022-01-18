@@ -11,7 +11,6 @@ import java.util.Date;
 public class ResponseUserDto {
     private long id;
     private String userId;
-    private String password;
     private String name;
     private String email;
     private Date joinedAt;

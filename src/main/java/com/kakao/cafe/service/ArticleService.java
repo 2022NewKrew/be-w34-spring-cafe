@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +28,8 @@ public class ArticleService {
 
     public void addPost(RequestArticleDto articleDto) {
         Article article = modelMapper.map(articleDto, Article.class);
-        //작성 시간
-        //뷰 0으로 초기화
+        article.setCreatedAt(new Date());
+        article.setViews(0);
         articleRepository.save(article);
     }
 

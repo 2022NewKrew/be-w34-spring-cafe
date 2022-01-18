@@ -25,21 +25,10 @@ public class H2UserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        String sql = "MERGE INTO \"USER\"" +
-                "ON (ID= ?)" +
-                "WHEN MATCHED THEN " +
-                "UPDATE SET " +
-                "JOINED_AT = ?," +
-                "USERID = ?," +
-                "PASSWORD = ?," +
-                "NAME = ?," +
-                "EMAIL = ?" +
-                "WHEN NOT MATCHED THEN" +
-                "INSERT (JOINED_AT, USERID, PASSWORD, \"NAME\", EMAIL)" +
+        String sql = "MERGE INTO `USER`(JOINED_AT, USERID, PASSWORD, `NAME`, EMAIL) " +
+                "KEY(USERID) " +
                 "VALUES(?,?,?,?,?)";
         jdbcTemplate.update(sql,
-                user.getId(),
-                user.getJoinedAt(), user.getUserId(), user.getHashedPw(), user.getName(), user.getEmail(),
                 user.getJoinedAt(), user.getUserId(), user.getHashedPw(), user.getName(), user.getEmail());
 
         return user;
@@ -64,10 +53,6 @@ public class H2UserRepository implements UserRepository {
         return jdbcTemplate.query("SELECT * FROM \"USER\"", userRowMapper());
     }
 
-    @Override
-    public User updateById(Long id, User user) {
-        return null;
-    }
 
     @Override
     public long countRecords() {

@@ -20,5 +20,14 @@ public class RequestUserDto {
         this.email = email;
     }
 
+    public String toString(){
+        return "{" +
+                "userId:" + userId + ", " +
+                "password:" + password + ", " +
+                "name:" + name + ", " +
+                "email:" + email +
+                "}";
+    }
+
 
 }

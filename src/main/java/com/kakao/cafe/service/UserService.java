@@ -8,6 +8,8 @@ import com.kakao.cafe.repository.user.H2UserRepository;
 
 import com.kakao.cafe.repository.user.MemoryUserRepository;
 import com.kakao.cafe.repository.user.UserRepository;
+import com.kakao.cafe.vo.UserVo;
+import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class UserService {
     @Autowired
@@ -56,6 +59,12 @@ public class UserService {
         return modelMapper.map(result, ResponseUserDto.class);
     }
 
+    public ResponseUserDto findOne(String userId) {
+        User result = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
+
+        return modelMapper.map(result, ResponseUserDto.class);
+    }
+
     public long getCountOfUser() {
         return userRepository.countRecords();
     }
@@ -69,7 +78,17 @@ public class UserService {
         user.setName(userDto.getName());
         String hashedPw = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
         user.setHashedPw(hashedPw);
-        userRepository.updateById(id, user);
+        userRepository.save(user);
+    }
+
+    public UserVo login(String userId, String password) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
+        validatePassword(user, password);
+
+        UserVo result = modelMapper.map(user, UserVo.class);
+        log.info("userVo : {}", result);
+        log.info("user : {}", user);
+        return result;
     }
 
     public void validatePassword(User user, String password) {
@@ -78,10 +97,13 @@ public class UserService {
         }
     }
 
-    public boolean login(String userId, String password) {
-        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
-        validatePassword(user, password);
-        return true;
+    // TO DO: 없애는 방법 고민
+    public boolean isOwnerOfId(long id, String ownerUserId) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
+        if (user.getUserId().equals(ownerUserId)) {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -44,11 +44,17 @@
                 <td>{{email}}</td>
             </tr>
             </tbody>
+            {{/user}}
         </table>
+
+        {{#myId}}
         <div class="post-btn-container">
-            <a class="black-component" href="/users/{{id}}/form" role="button">수정하기</a>
+            <a class="post-write-btn" href="/users/{{this}}/update" class="btn btn-primary pull-right"
+               role="button">수정하기</a>
         </div>
-        {{/user}}
+        {{/myId}}
+
+
     </div>
 
 </div>

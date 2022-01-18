@@ -34,22 +34,19 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        String sql = "MERGE INTO ARTICLE" +
-                "ON (ID= ?)" +
-                "WHEN MATCHED THEN " +
-                "UPDATE SET " +
-                "AUTHOR = ?," +
-                "TITLE = ?," +
-                "CONTENT = ?," +
-                "VIEWS = ?," +
-                "CREATED_AT = ?" +
-                "WHEN NOT MATCHED THEN" +
-                "INSERT (AUTHOR, TITLE, CONTENT, VIEWS, CREATED_AT)" +
-                "VALUES(?,?,?,?,?)";
+        if(article.getId() == 0){
+            String sql = "INSERT INTO `ARTICLE`(AUTHOR, TITLE, CONTENT, VIEWS, CREATED_AT) VALUES(?,?,?,?,?)";
+            jdbcTemplate.update(sql, article.getAuthor(), article.getContent(), article.getViews(), article.getContent());
+            return article;
+        }
+
+        String sql = "UPDATE `ARTICLE` SET " +
+                "AUTHOR = ?, TITLE = ?, CONTENT = ?, VIEWS = ?, CREATED_AT = ?" +
+                "WHERE ID = ?";
+
         jdbcTemplate.update(sql,
-                article.getId(),
                 article.getAuthor(), article.getTitle(), article.getContent(), article.getViews(), article.getCreatedAt(),
-                article.getAuthor(), article.getTitle(), article.getContent(), article.getViews(), article.getCreatedAt());
+                article.getId());
 
         return article;
     }
