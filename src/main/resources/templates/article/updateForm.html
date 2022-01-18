@@ -19,7 +19,7 @@
             <p class="title">글쓰기</p>
         </header>
         {{#article}}
-        <form class="submit-write" method="post" action="/articles/{{this.articleId}}/update">
+        <form class="submit-write" method="post" action="/articles/{{this.articleId}}">
             <input type="hidden" name="_method" value="PUT" />
             <div class="text-box">
                 <div class="comment-writer-container">

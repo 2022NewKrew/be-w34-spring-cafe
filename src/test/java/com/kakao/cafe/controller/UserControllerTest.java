@@ -83,12 +83,12 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("[PUT] /users/{userId}/update - 자신의 상세정보를 변경할 수 있다")
+    @DisplayName("[PUT] /users/{userId} - 자신의 상세정보를 변경할 수 있다")
     void update() throws Exception {
         MockHttpSession mockSession = new MockHttpSession();
         mockSession.setAttribute("auth", new Auth(FIRST_USER_ID));
 
-        mockMvc.perform(put("/users/" + FIRST_USER_ID + "/update")
+        mockMvc.perform(put("/users/" + FIRST_USER_ID)
                         .session(mockSession)
                 )
                 .andExpect(status().isFound())
@@ -96,12 +96,12 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("[PUT] /users/{userId}/update - 다른사람의 상세정보를 변경할 수 없다")
+    @DisplayName("[PUT] /users/{userId} - 다른사람의 상세정보를 변경할 수 없다")
     void failToUpdate() throws Exception {
         MockHttpSession mockSession = new MockHttpSession();
         mockSession.setAttribute("auth", new Auth(FIRST_USER_ID));
 
-        mockMvc.perform(put("/users/" + SECOND_USER_ID + "/update")
+        mockMvc.perform(put("/users/" + SECOND_USER_ID)
                         .session(mockSession)
                 )
                 .andExpect(status().isUnauthorized())

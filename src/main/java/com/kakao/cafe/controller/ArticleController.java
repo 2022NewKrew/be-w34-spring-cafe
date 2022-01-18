@@ -57,7 +57,7 @@ public class ArticleController {
         return "article/updateForm";
     }
 
-    @PutMapping("/{articleId}/update")
+    @PutMapping("/{articleId}")
     public String updateArticle(@PathVariable Long articleId, ArticleUpdateRequest articleUpdateRequest, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
         ArticleDto article = articleService.findById(articleId);

@@ -58,7 +58,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @PutMapping("/{userId}/update")
+    @PutMapping("/{userId}")
     public String updateUser(@PathVariable Long userId, UserUpdateRequest userUpdateRequest, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
         if (auth == null || !auth.validateById(userId)) {
