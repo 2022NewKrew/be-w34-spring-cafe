@@ -3,31 +3,28 @@ package com.kakao.cafe.domain.entity;
 // NOTE domain 레이어의 객체가 service 레이어 객체를 참조하는 게 괜찮은가?
 // 그렇지 않게 하려면 ArticleDto.fromEntity(...)와 같이 접근해야 하는데
 // 게터가 필요하다는 문제가 생김
+
 import com.kakao.cafe.service.dto.ArticleDto;
 import com.kakao.cafe.service.dto.UserDto;
 
 import java.util.Date;
-import java.util.Map;
 
 public class Article {
 
     private final long id;
-    private final User owner;
-    private final String author;
+    private final User author;
     private final String title;
     private final String content;
     private final Date createdAt;
 
     private Article(
             long id,
-            User owner,
-            String author,
+            User author,
             String title,
             String content,
             Date createdAt
     ) {
         this.id = id;
-        this.owner = owner;
         this.author = author;
         this.title = title;
         this.content = content;
@@ -39,14 +36,13 @@ public class Article {
     }
 
     public ArticleDto toDto() {
-        UserDto ownerDto = null;
-        if (owner != null) {
-            ownerDto = owner.toDto();
+        UserDto authorDto = null;
+        if (author != null) {
+            authorDto = author.toDto();
         }
         return new ArticleDto.Builder()
                 .id(id)
-                .owner(ownerDto)
-                .author(author)
+                .author(authorDto)
                 .title(title)
                 .content(content)
                 .createdAt(createdAt)
@@ -56,8 +52,7 @@ public class Article {
     public static class Builder {
 
         private long id;
-        private User owner;
-        private String author;
+        private User author;
         private String title;
         private String content;
         private Date createdAt;
@@ -67,12 +62,7 @@ public class Article {
             return this;
         }
 
-        public Builder owner(User owner) {
-            this.owner = owner;
-            return this;
-        }
-
-        public Builder author(String author) {
+        public Builder author(User author) {
             this.author = author;
             return this;
         }
@@ -93,7 +83,7 @@ public class Article {
         }
 
         public Article build() {
-            return new Article(id, owner, author, title, content, createdAt);
+            return new Article(id, author, title, content, createdAt);
         }
     }
 }

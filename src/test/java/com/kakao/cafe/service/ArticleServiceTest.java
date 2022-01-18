@@ -40,17 +40,17 @@ class ArticleServiceTest {
         Article article = new Article.Builder().build();
         when(repository.create(any())).thenReturn(article);
 
-        DraftDto draft = new DraftDto("author", "title", "content");
+        DraftDto draft = new DraftDto("title", "content");
         ArticleDto result = subject.create(1L, draft);
 
         assertNotNull(result);
     }
 
     @Test
-    void create_ownerNotFound() {
+    void create_authorNotFound() {
         when(userRepository.getById(anyLong())).thenReturn(Optional.empty());
 
-        DraftDto draft = new DraftDto("author", "title", "content");
+        DraftDto draft = new DraftDto("title", "content");
         Executable body = () -> subject.create(1L, draft);
 
         assertThrowsExactly(NoSuchUserException.class, body);

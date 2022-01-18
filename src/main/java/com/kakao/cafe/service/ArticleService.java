@@ -27,12 +27,12 @@ public class ArticleService {
         this.userRepository = userRepository;
     }
 
-    public ArticleDto create(long ownerId, DraftDto draft) {
-        Optional<User> owner = userRepository.getById(ownerId);
-        if (owner.isEmpty()) {
+    public ArticleDto create(long authorId, DraftDto draft) {
+        Optional<User> author = userRepository.getById(authorId);
+        if (author.isEmpty()) {
             throw new NoSuchUserException();
         }
-        Draft entity = draft.toEntity(owner.get());
+        Draft entity = draft.toEntity(author.get());
         return repository.create(entity).toDto();
     }
 

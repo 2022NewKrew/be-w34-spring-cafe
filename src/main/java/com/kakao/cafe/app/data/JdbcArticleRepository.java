@@ -30,8 +30,8 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public Article create(Draft draft) {
         String sql = "INSERT INTO articles " +
-                "(owner_id, author, title, content, created_at) " +
-                "VALUES (:owner_id, :author, :title, :content, :created_at)";
+                "(owner_id, title, content, created_at) " +
+                "VALUES (:owner_id, :title, :content, :created_at)";
         Date createdAt = new Date();
         Map<String, Object> map = new HashMap<>(draft.toMap());
         map.put("created_at", createdAt);

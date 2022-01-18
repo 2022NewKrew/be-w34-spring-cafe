@@ -33,11 +33,11 @@ public class ArticleController {
             @Valid @ModelAttribute ArticleRequest request,
             HttpSession session
     ) {
-        Long ownerId = (Long) session.getAttribute("currentUserId");
-        if (ownerId == null) {
+        Long authorId = (Long) session.getAttribute("currentUserId");
+        if (authorId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
         }
-        service.create(ownerId, request.toDraftDto());
+        service.create(authorId, request.toDraftDto());
         return "redirect:/";
     }
 

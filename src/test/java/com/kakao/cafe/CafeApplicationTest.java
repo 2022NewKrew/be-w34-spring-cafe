@@ -129,7 +129,6 @@ public class CafeApplicationTest {
 
     private MockHttpServletRequestBuilder createArticleRequest() {
         return post("/articles")
-                .param("writer", "test_author")
                 .param("title", "test_title")
                 .param("contents", "test_content");
     }

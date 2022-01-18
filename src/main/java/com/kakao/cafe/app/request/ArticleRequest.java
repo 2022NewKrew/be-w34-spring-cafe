@@ -6,9 +6,6 @@ import org.hibernate.validator.constraints.Length;
 
 public class ArticleRequest {
 
-    @Length(min=1, max=16)
-    private final String author;
-
     @Length(min=1, max=64)
     private final String title;
 
@@ -16,16 +13,14 @@ public class ArticleRequest {
     private final String content;
 
     public ArticleRequest(
-            String writer,
             String title,
             String contents
     ) {
-        this.author = writer;
         this.title = title;
         this.content = contents;
     }
 
     public DraftDto toDraftDto() {
-        return new DraftDto(author, title, content);
+        return new DraftDto(title, content);
     }
 }

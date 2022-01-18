@@ -3,6 +3,7 @@ package com.kakao.cafe.app.controller;
 import com.kakao.cafe.domain.exception.NoSuchUserException;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.dto.ArticleDto;
+import com.kakao.cafe.service.dto.UserDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -40,7 +41,6 @@ class ArticleControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("currentUserId", 1234L);
         RequestBuilder request = post("/articles")
-                .param("writer", "author")
                 .param("title", "title")
                 .param("contents", "content")
                 .session(session);
@@ -55,7 +55,6 @@ class ArticleControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("currentUserId", 1234L);
         RequestBuilder request = post("/articles")
-                .param("writer", "author")
                 .param("title".repeat(9999), "title")
                 .param("contents", "content")
                 .session(session);
@@ -68,7 +67,6 @@ class ArticleControllerTest {
     @Test
     void write_unauthenticated() throws Exception {
         RequestBuilder request = post("/articles")
-                .param("writer", "author")
                 .param("title", "title")
                 .param("contents", "content");
 
@@ -82,7 +80,6 @@ class ArticleControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("currentUserId", 1234L);
         RequestBuilder request = post("/articles")
-                .param("writer", "author")
                 .param("title", "title")
                 .param("contents", "content")
                 .session(session);
@@ -97,24 +94,29 @@ class ArticleControllerTest {
 
     @Test
     void list() throws Exception {
+        UserDto author = new UserDto.Builder()
+                .name("name")
+                .email("email")
+                .userId("userId")
+                .build();
         List<ArticleDto> articles = List.of(
                 new ArticleDto.Builder()
                         .id(1L)
-                        .author("author1")
+                        .author(author)
                         .title("title1")
                         .content("content1")
                         .createdAt(new Date())
                         .build(),
                 new ArticleDto.Builder()
                         .id(2L)
-                        .author("author2")
+                        .author(author)
                         .title("title2")
                         .content("content2")
                         .createdAt(new Date())
                         .build(),
                 new ArticleDto.Builder()
                         .id(3L)
-                        .author("author3")
+                        .author(author)
                         .title("title3")
                         .content("content3")
                         .createdAt(new Date())
@@ -132,10 +134,15 @@ class ArticleControllerTest {
 
     @Test
     void read() throws Exception {
+        UserDto author = new UserDto.Builder()
+                .name("author1")
+                .email("email")
+                .userId("userId")
+                .build();
         long id = 1234L;
         ArticleDto article = new ArticleDto.Builder()
                 .id(id)
-                .author("author1")
+                .author(author)
                 .title("title1")
                 .content("content1")
                 .createdAt(new Date())
