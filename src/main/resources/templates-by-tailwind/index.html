@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>메인</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
@@ -26,15 +26,17 @@
             {{#posts}}
             <a href="/posts/{{ id }}" class="flex text-center py-3 border-b">
                 <span class="flex-1 text-left px-4">{{ title }}</span>
-                <span class="flex-none w-40">{{ writer }}</span>
+                <span class="flex-none w-40">{{ writerId }}</span>
                 <span class="flex-none w-40">{{ formattedCreatedAt }}</span>
                 <span class="flex-none w-24">0</span>
             </a>
             {{/posts}}
         </div>
+        {{#currentUser}}
         <div class="flex justify-end">
             <a href="/posts/write" class="text-sm mr-1 px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black">글쓰기</a>
         </div>
+        {{/currentUser}}
     </div>
 </div>
 </body>

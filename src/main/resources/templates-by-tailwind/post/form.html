@@ -15,15 +15,6 @@
             <form class="flex flex-col space-y-8" action="/posts" method="post">
                 <div class="relative">
                     <div class="px-4 py-2 border">
-                        <label for="writer" class="inline-block w-28">작성자</label>
-                        <input class="placeholder:text-sm focus:outline-none" id="writer" name="writer" placeholder="작성자를 입력하세요" />
-                    </div>
-                    {{#writer}}
-                    <p class="absolute -bottom-6 left-32 text-sm text-red-500">{{this}}</p>
-                    {{/writer}}
-                </div>
-                <div class="relative">
-                    <div class="px-4 py-2 border">
                         <label for="title" class="inline-block w-28">제목</label>
                         <input class="placeholder:text-sm focus:outline-none" id="title" name="title" placeholder="제목을 입력하세요" />
                     </div>

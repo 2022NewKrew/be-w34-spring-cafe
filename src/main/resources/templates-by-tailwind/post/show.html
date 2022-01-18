@@ -14,7 +14,7 @@
             <h1 class="text-4xl font-medium tracking-wider mb-8">{{ post.title }}</h1>
             <div class="flex flex-col space-y-8">
                 <div class="flex p-4 border-t border-b">
-                    <span class="flex-1">작성자 : {{ post.writer }}</span>
+                    <span class="flex-1">작성자 : {{ post.writerId }}</span>
                     <span class="flex-none w-80">작성일자 : {{ post.formattedCreatedAt }}</span>
                     <span class="flex-none w-32">조회수 : 0</span>
                 </div>
@@ -39,7 +39,7 @@
                 </details>
                 <div class="relative">
                     <form class="px-4 py-2 border">
-                        <label for="content" class="absolute">닉네임</label>
+                        <label for="content" class="absolute">{{ currentUser.nickname }}</label>
                         <textarea class="w-full h-24 mt-10 focus:outline-none resize-none" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
                         <input type="submit" value="등록" class="absolute right-4 bottom-4 w-24 text-sm px-4 py-2 bg-black text-white hover:bg-yellow-400 hover:text-black cursor-pointer" />
                     </form>
