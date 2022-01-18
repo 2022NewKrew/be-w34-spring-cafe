@@ -4,6 +4,7 @@ import com.kakao.cafe.member.domain.Member;
 import com.kakao.cafe.member.dto.MemberRequestDTO;
 import com.kakao.cafe.member.dto.MemberUpdateRequestDTO;
 import com.kakao.cafe.member.repository.MemberRepository;
+import com.kakao.cafe.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,7 +35,7 @@ class MemberControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberService memberService;
 
     @ParameterizedTest
     @MethodSource("validMemberRequest")
@@ -88,16 +89,16 @@ class MemberControllerTest {
     void validMemberUpdateTest() throws Exception {
         // given
         MemberRequestDTO originMember = new MemberRequestDTO("flip@kakao.com", "name", "pass", "pass");
-        Member member = memberRepository.save(originMember.toMember(LocalDate.now()));
+        Long memberId = memberService.join(originMember);
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("memberId", member.getId());
+        session.setAttribute("loginMemberDTO", memberService.findOne(memberId));
 
-        // when
         MemberUpdateRequestDTO memberUpdateRequestDTO = new MemberUpdateRequestDTO("flip@kakao.com", "name", "pass", "1", "1");
 
+        // when
         // then
-        mockMvc.perform(put("/members/" + member.getId())
+        mockMvc.perform(put("/members/" + memberId)
                         .session(session)
                         .flashAttr("memberUpdateRequestDTO", memberUpdateRequestDTO)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -111,14 +112,14 @@ class MemberControllerTest {
     void invalidMemberUpdateTest(MemberUpdateRequestDTO memberUpdateRequestDTO) throws Exception {
         // given
         MemberRequestDTO originMember = new MemberRequestDTO("flip@kakao.com", "name", "pass", "pass");
-        Member member = memberRepository.save(originMember.toMember(LocalDate.now()));
+        Long memberId = memberService.join(originMember);
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("memberId", member.getId());
+        session.setAttribute("loginMemberDTO", memberService.findOne(memberId));
 
         // when
         // then
-        mockMvc.perform(put("/members/" + member.getId())
+        mockMvc.perform(put("/members/" + memberId)
                         .session(session)
                         .flashAttr("memberUpdateRequestDTO", memberUpdateRequestDTO)
                         .contentType(MediaType.APPLICATION_JSON))
