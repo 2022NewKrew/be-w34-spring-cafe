@@ -1,5 +1,9 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.exception.DuplicateUserException;
+import com.kakao.cafe.exception.NotLoginException;
+import com.kakao.cafe.service.ErrorService;
+import com.kakao.cafe.service.SessionService;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.vo.User;
 import org.springframework.stereotype.Controller;
@@ -15,9 +19,13 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final SessionService sessionService;
+    private final ErrorService errorService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, SessionService sessionService, ErrorService errorService) {
         this.userService = userService;
+        this.sessionService = sessionService;
+        this.errorService = errorService;
     }
 
     @GetMapping("/users")
@@ -28,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String signUp(User user) {
+    public String signUp(User user) throws DuplicateUserException {
         userService.addUser(user);
         return "redirect:/users";
     }
@@ -41,8 +49,11 @@ public class UserController {
     }
 
     @GetMapping("/users/login/profile")
-    public String getLoginProfile(Model model, HttpSession session) {
-        return userService.getLoginProfile(session, model);
+    public String getLoginProfile(Model model, HttpSession session) throws NotLoginException {
+        User loginUser = sessionService.getLoginUser(session);
+        errorService.checkLogin(loginUser);
+        model.addAttribute("user", loginUser);
+        return "/user/profile";
     }
 
     @GetMapping("/users/{userId}/form")
@@ -53,20 +64,24 @@ public class UserController {
 
     @GetMapping("/users/edit/profile")
     public String editProfile(Model model, HttpSession session) {
-        User loginUser = userService.getLoginUser(session);
+        User loginUser = sessionService.getLoginUser(session);
         String userId = loginUser.getUserId();
         model.addAttribute("userId", userId);
         return "/user/updateForm";
     }
 
     @PostMapping("/user/edit")
-    public String editUser(User user, HttpSession session) {
-        return userService.updateUser(user, session);
+    public String editUser(User user, HttpSession session) throws Exception {
+        User loginUser = sessionService.getLoginUser(session);
+        userService.updateUser(user, loginUser);
+        return "redirect:/users";
     }
 
     @PostMapping("/login")
-    public String login(String userId, String password, HttpSession session) {
-        return userService.login(userId, password, session);
+    public String login(String userId, String password, HttpSession session) throws Exception {
+        User user = userService.login(userId, password);
+        sessionService.setLoginUser(user, session);
+        return "redirect:/";
     }
 
     @GetMapping("/logout")

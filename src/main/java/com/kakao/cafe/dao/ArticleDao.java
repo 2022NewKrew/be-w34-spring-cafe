@@ -38,4 +38,9 @@ public class ArticleDao {
                 .stream().findFirst().orElse(null);
     }
 
+    public void updateArticle(int index, Article article) {
+        jdbcTemplate.update("UPDATE articles SET title=?,contents=? WHERE id=?",
+                article.getTitle(), article.getContents(), index);
+    }
+
 }
