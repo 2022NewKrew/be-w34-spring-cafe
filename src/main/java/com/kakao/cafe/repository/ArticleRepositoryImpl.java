@@ -44,7 +44,7 @@ public class ArticleRepositoryImpl implements ArticleRepository{
                 "A.TITLE AS TITLE, " +
                 "A.CONTENT AS CONTENT, " +
                 "A.CREATED_TIME AS CREATED_TIME," +
-                "A.CONTENT AS CONTENT," +
+                "A.VIEWS AS VIEWS," +
                 "U.USER_ID AS USER_ID," +
                 "U.PASSWORD AS PASSWORD," +
                 "U.NAME AS NAME, " +
@@ -62,7 +62,7 @@ public class ArticleRepositoryImpl implements ArticleRepository{
                 "A.TITLE AS TITLE, " +
                 "A.CONTENT AS CONTENT, " +
                 "A.CREATED_TIME AS CREATED_TIME," +
-                "A.CONTENT AS CONTENT," +
+                "A.VIEWS AS VIEWS," +
                 "U.USER_ID AS USER_ID," +
                 "U.PASSWORD AS PASSWORD," +
                 "U.NAME AS NAME, " +
@@ -83,7 +83,7 @@ public class ArticleRepositoryImpl implements ArticleRepository{
                 rs.getString("TITLE"),
                 rs.getString("CONTENT"),
                 rs.getDate("CREATED_TIME").toLocalDate(),
-                rs.getInt("CONTENT"),
+                rs.getInt("VIEWS"),
                 new User(
                         rs.getInt("USER_ID"),
                         rs.getString("PASSWORD"),
