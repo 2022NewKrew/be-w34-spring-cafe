@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class JdbcUserRepositoryTest {
 
     private final String userId = "testUserId";
@@ -28,18 +30,17 @@ class JdbcUserRepositoryTest {
     private final String examplePassword = "'1234'";
     private final String exampleEmail = "'chen.kim@kakaocorp.com'";
 
-//    @Autowired
-//    JdbcTemplate jdbcTemplate;
-//
-//    @Autowired
-//    UserMapper userMapper;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    UserMapper userMapper;
 
 
     @Test
     @DisplayName("[성공] JdbcUserRepository 클래스 생성")
     void JdbcUserRepository() {
-//        new JdbcUserRepository(jdbcTemplate, userMapper, new SecurityConfig().passwordEncoder());
-        new JdbcUserRepository(new JdbcTemplate(new JdbcConfig().dataSource()), new UserMapper(), new SecurityConfig().passwordEncoder());
+        new JdbcUserRepository(jdbcTemplate, userMapper, new SecurityConfig().passwordEncoder());
     }
 
 
@@ -47,8 +48,7 @@ class JdbcUserRepositoryTest {
     @DisplayName("[성공] JdbcUserRepository 유저 생성")
     void createUser() {
         // given
-//        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate, userMapper, new SecurityConfig().passwordEncoder());
-        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(new JdbcTemplate(new JdbcConfig().dataSource()), new UserMapper(), new SecurityConfig().passwordEncoder());
+        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate, userMapper, new SecurityConfig().passwordEncoder());
         User user = new User(userId, password, email);
 
         // when & then
