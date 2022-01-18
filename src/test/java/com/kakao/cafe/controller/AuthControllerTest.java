@@ -5,7 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
 import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.persistence.model.User;
@@ -37,8 +37,10 @@ class AuthControllerTest {
     @DisplayName("로그인 테스트")
     void login() throws Exception {
         // Given
+        User user = User.builder().uid("uid").password("pwd").name("name").email("email@test.com")
+            .build();
         when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(User.of("uid", "pwd", "name", "email@test.com")));
+            .thenReturn(Optional.of(user));
 
         // When
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
@@ -57,7 +59,7 @@ class AuthControllerTest {
             .isEqualTo("uid");
 
         actions
-            .andExpect(status().isOk());
+            .andExpect(redirectedUrl("/"));
     }
 
     @Test
@@ -73,7 +75,8 @@ class AuthControllerTest {
         // Then
         assertThat(actions.andReturn().getRequest().getSession().getAttribute("auth"))
             .isNull();
+
         actions
-            .andExpect(status().isOk());
+            .andExpect(redirectedUrl("/"));
     }
 }

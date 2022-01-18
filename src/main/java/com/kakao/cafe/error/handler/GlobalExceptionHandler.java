@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
     public ModelAndView handleGlobalException(RuntimeException e) {
         logger.error("{} {}", e.getClass().getName(), e.getMessage());
 
-        ModelAndView modelAndView = new ModelAndView("/error");
+        ModelAndView modelAndView = new ModelAndView("redirect:/error");
         ErrorDetail errorDetail = ErrorDetail.from(e.getMessage());
         modelAndView.getModelMap().addAttribute("detail", errorDetail);
         return modelAndView;
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
     public ModelAndView handleBindingException(BindingException e) {
         logger.error("{} {}", e.getClass().getName(), e.getMessage());
 
-        ModelAndView modelAndView = new ModelAndView("/error");
+        ModelAndView modelAndView = new ModelAndView("redirect:/error");
         List<ErrorDetail> errorDetails = Arrays.stream(e.getMessage().split(System.lineSeparator()))
             .map(ErrorDetail::from)
             .collect(Collectors.toList());

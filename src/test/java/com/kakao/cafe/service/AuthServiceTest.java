@@ -49,7 +49,8 @@ class AuthServiceTest {
     @DisplayName("잘못된 Password 입력으로 인증 불가능한 상황 테스트")
     void login2() {
         // Given
-        User user = User.of(1L, "uid", "pwd", "name", "email@test.com", LocalDateTime.now());
+        User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
+            .email("email@test.com").createdAt(LocalDateTime.now()).build();
         when(userRepository.findUserByUid(any()))
             .thenReturn(Optional.of(user));
 
@@ -67,7 +68,8 @@ class AuthServiceTest {
     @DisplayName("정상적인 로그인 정보 입력 테스트")
     void login3() {
         // Given
-        User user = User.of(1L, "uid", "pwd", "name", "email@test.com", LocalDateTime.now());
+        User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
+            .email("email@test.com").createdAt(LocalDateTime.now()).build();
         when(userRepository.findUserByUid(any()))
             .thenReturn(Optional.of(user));
 

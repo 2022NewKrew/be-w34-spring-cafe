@@ -39,7 +39,8 @@ class ArticleServiceTest {
     void create() {
         // Given
         AuthInfo authInfo = AuthInfo.of("uid");
-        User user = User.of(1L, "uid", "pwd", "name", "email@test.com", LocalDateTime.now());
+        User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
+            .email("email@test.com").createdAt(LocalDateTime.now()).build();
         Create createDTO = new Create("title", "body");
 
         when(userRepository.findUserByUid(any()))
@@ -73,7 +74,8 @@ class ArticleServiceTest {
     @DisplayName("Article Repository 정상 Read 테스트")
     void readById() {
         // Given
-        Article article = Article.of(1L, "uid", "title", "body", LocalDateTime.now());
+        Article article = Article.builder().id(1L).uid("uid").title("title").body("body")
+            .createdAt(LocalDateTime.now()).build();
         when(articleRepository.findArticleById(any()))
             .thenReturn(Optional.of(article));
 

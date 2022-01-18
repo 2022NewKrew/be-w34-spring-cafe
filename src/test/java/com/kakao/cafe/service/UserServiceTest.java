@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Update;
 import com.kakao.cafe.error.exception.UserAlreadyExistsException;
-import com.kakao.cafe.error.exception.UserInvalidAuthInfoException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.persistence.model.User;
@@ -35,7 +34,8 @@ class UserServiceTest {
     @DisplayName("이미 존재하는 UID 추가 시 오류 테스트")
     void create() {
         // Given
-        User user = User.of(1L, "uid", "pwd", "name", "email@test.com", LocalDateTime.now());
+        User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
+            .email("email@test.com").createdAt(LocalDateTime.now()).build();
         when(userRepository.findUserByUid(any()))
             .thenReturn(Optional.of(user));
 
@@ -67,11 +67,15 @@ class UserServiceTest {
     @DisplayName("올바른 인증 정보를 통한 사용자 정보 수정 테스트")
     void update() {
         // Given
+        User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
+            .email("email@test.com").createdAt(LocalDateTime.now()).build();
+        when(userRepository.findUserByUid(any()))
+            .thenReturn(Optional.of(user));
 
         // When
         AuthInfo authInfo = AuthInfo.of("uid");
         String uid = "uid";
-        Update updateDTO = new Update("name", "email@test.com");
+        Update updateDTO = new Update("pwd", "name", "email@test.com");
 
         // Then
         assertDoesNotThrow(() -> userService.update(authInfo, updateDTO));
@@ -97,7 +101,8 @@ class UserServiceTest {
     @DisplayName("Repository 에서 User 정보를 읽어온 경우 테스트")
     void readByUid2() {
         // Given
-        User user = User.of(1L, "uid", "pwd", "name", "email@test.com", LocalDateTime.now());
+        User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
+            .email("email@test.com").createdAt(LocalDateTime.now()).build();
         when(userRepository.findUserByUid(any()))
             .thenReturn(Optional.of(user));
 

@@ -3,6 +3,7 @@ package com.kakao.cafe.persistence.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kakao.cafe.persistence.model.Article;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,10 +29,12 @@ class ArticleRepositoryTest {
     @DisplayName("Article Repository 저장 후 조회 테스트")
     void saveAndFindAll() {
         // Given
-        Article article1 = Article.of("uid", "title1", "body1");
-        Article article2 = Article.of("uid", "title2", "body2");
-        Article article3 = Article.of("uid", "title3", "body3");
-
+        Article article1 = Article.builder().uid("uid").title("title1").body("body1")
+            .createdAt(LocalDateTime.now()).build();
+        Article article2 = Article.builder().uid("uid").title("title2").body("body2")
+            .createdAt(LocalDateTime.now()).build();
+        Article article3 = Article.builder().uid("uid").title("title3").body("body3")
+            .createdAt(LocalDateTime.now()).build();
         articleRepository.save(article1);
         articleRepository.save(article2);
         articleRepository.save(article3);
@@ -48,8 +51,8 @@ class ArticleRepositoryTest {
     @DisplayName("Article Repository 저장 후 특정 ID 조회 테스트")
     void findArticleById() {
         // Given
-        Article article = Article.of("uid", "title", "body");
-
+        Article article = Article.builder().uid("uid").title("title").body("body")
+            .createdAt(LocalDateTime.now()).build();
         articleRepository.save(article);
 
         // When
