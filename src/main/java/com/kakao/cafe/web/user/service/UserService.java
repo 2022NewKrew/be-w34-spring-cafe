@@ -1,8 +1,8 @@
-package com.kakao.cafe.web.service;
+package com.kakao.cafe.web.user.service;
 
-import com.kakao.cafe.web.domain.User;
-import com.kakao.cafe.web.dto.UserCreateDTO;
-import com.kakao.cafe.web.repository.UserRepository;
+import com.kakao.cafe.web.user.domain.User;
+import com.kakao.cafe.web.user.dto.UserCreateDTO;
+import com.kakao.cafe.web.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

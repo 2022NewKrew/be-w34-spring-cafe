@@ -1,8 +1,8 @@
-package com.kakao.cafe.web.controller;
+package com.kakao.cafe.web.user.controller;
 
-import com.kakao.cafe.web.domain.User;
-import com.kakao.cafe.web.dto.UserCreateDTO;
-import com.kakao.cafe.web.service.UserService;
+import com.kakao.cafe.web.user.domain.User;
+import com.kakao.cafe.web.user.dto.UserCreateDTO;
+import com.kakao.cafe.web.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

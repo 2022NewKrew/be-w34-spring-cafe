@@ -1,9 +1,9 @@
-package com.kakao.cafe.web.service;
+package com.kakao.cafe.web.article.service;
 
-import com.kakao.cafe.web.domain.Article;
-import com.kakao.cafe.web.dto.ArticleCreateDTO;
-import com.kakao.cafe.web.dto.ArticleUpdateDTO;
-import com.kakao.cafe.web.repository.ArticleRepository;
+import com.kakao.cafe.web.article.domain.Article;
+import com.kakao.cafe.web.article.dto.ArticleCreateDTO;
+import com.kakao.cafe.web.article.dto.ArticleUpdateDTO;
+import com.kakao.cafe.web.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +26,10 @@ public class ArticleService {
         return memoryArticleRepository.getArticleList();
     }
 
+    public Object getArticleListNotDeleted() {
+        return memoryArticleRepository.getArticleListNotDeleted();
+    }
+
     public Article getArticleById(long id) {
         Optional<Article> article = memoryArticleRepository.getArticleById(id);
         return article.orElseThrow(NoSuchElementException::new);
@@ -38,4 +42,6 @@ public class ArticleService {
     public void deleteArticleById(long id) {
         memoryArticleRepository.deleteArticleById(id);
     }
+
+
 }

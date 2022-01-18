@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS cafe_article
     title VARCHAR(100) NOT NULL,
     contents VARCHAR(1000) NOT NULL,
     created_time TIMESTAMP NOT NULL,
-    modified_time TIMESTAMP NOT NULL
+    modified_time TIMESTAMP NOT NULL,
+    deleted BOOLEAN NOT NULL
 );
 CREATE TABLE IF NOT EXISTS cafe_reply
 (
@@ -28,5 +29,6 @@ CREATE TABLE IF NOT EXISTS cafe_reply
     FOREIGN KEY (writer) REFERENCES cafe_user(user_id) ON UPDATE CASCADE ON DELETE SET NULL,
     contents VARCHAR(300) NOT NULL,
     created_time TIMESTAMP NOT NULL,
-    modified_time TIMESTAMP NOT NULL
+    modified_time TIMESTAMP NOT NULL,
+    deleted BOOLEAN NOT NULL
 );

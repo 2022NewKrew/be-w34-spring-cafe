@@ -1,4 +1,4 @@
-package com.kakao.cafe.web.domain;
+package com.kakao.cafe.web.article.domain;
 
 import lombok.*;
 
@@ -16,4 +16,5 @@ public class Article {
     private String contents;
     private Timestamp createdTime;
     private Timestamp modifiedTime;
+    private boolean deleted;
 }

@@ -1,8 +1,8 @@
-package com.kakao.cafe.web.repository;
+package com.kakao.cafe.web.article.repository;
 
-import com.kakao.cafe.web.domain.Article;
-import com.kakao.cafe.web.dto.ArticleCreateDTO;
-import com.kakao.cafe.web.dto.ArticleUpdateDTO;
+import com.kakao.cafe.web.article.domain.Article;
+import com.kakao.cafe.web.article.dto.ArticleCreateDTO;
+import com.kakao.cafe.web.article.dto.ArticleUpdateDTO;
 import com.kakao.cafe.web.utility.CombinedSqlParameterSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,8 +77,15 @@ public class MemoryArticleRepository implements ArticleRepository{
 
     @Override
     public void deleteArticleById(long id) {
-        String sql = "DELETE FROM cafe_article WHERE id = :id";
+        String sql = "UPDATE cafe_article SET deleted = true WHERE id = :id;" +
+                "UPDATE cafe_reply SET deleted = true WHERE article_id = :id;";
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+    }
+
+    @Override
+    public Object getArticleListNotDeleted() {
+        String sql = "SELECT * FROM cafe_article WHERE deleted = false";
+        return namedParameterJdbcTemplate.query(sql, articleRowMapper);
     }
 }

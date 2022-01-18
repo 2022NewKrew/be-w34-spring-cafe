@@ -1,7 +1,7 @@
-package com.kakao.cafe.web.repository;
+package com.kakao.cafe.web.user.repository;
 
-import com.kakao.cafe.web.domain.User;
-import com.kakao.cafe.web.dto.UserCreateDTO;
+import com.kakao.cafe.web.user.domain.User;
+import com.kakao.cafe.web.user.dto.UserCreateDTO;
 import com.kakao.cafe.web.utility.CombinedSqlParameterSource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;

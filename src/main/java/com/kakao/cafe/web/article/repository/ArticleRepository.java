@@ -1,8 +1,8 @@
-package com.kakao.cafe.web.repository;
+package com.kakao.cafe.web.article.repository;
 
-import com.kakao.cafe.web.domain.Article;
-import com.kakao.cafe.web.dto.ArticleCreateDTO;
-import com.kakao.cafe.web.dto.ArticleUpdateDTO;
+import com.kakao.cafe.web.article.domain.Article;
+import com.kakao.cafe.web.article.dto.ArticleCreateDTO;
+import com.kakao.cafe.web.article.dto.ArticleUpdateDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +13,5 @@ public interface ArticleRepository {
     Optional<Article> getArticleById(long id);
     Article update(ArticleUpdateDTO articleUpdateDTO);
     void deleteArticleById(long id);
+    Object getArticleListNotDeleted();
 }
