@@ -3,7 +3,6 @@ package com.kakao.cafe.article.controller;
 import com.kakao.cafe.article.dto.ArticleRegistrationDto;
 import com.kakao.cafe.article.model.Article;
 import com.kakao.cafe.article.service.ArticleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,6 @@ import java.util.Map;
 public class ArticleController {
     private final ArticleService service;
 
-    @Autowired
     public ArticleController(ArticleService service) {
         this.service = service;
     }

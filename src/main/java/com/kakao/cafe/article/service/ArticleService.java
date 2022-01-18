@@ -2,7 +2,6 @@ package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.model.Article;
 import com.kakao.cafe.article.repo.ArticleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -14,7 +13,6 @@ import java.util.List;
 public class ArticleService {
     private final ArticleRepository repository;
 
-    @Autowired
     public ArticleService(ArticleRepository repository) {
         this.repository = repository;
     }

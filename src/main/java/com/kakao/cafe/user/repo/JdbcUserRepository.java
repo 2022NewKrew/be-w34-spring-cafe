@@ -1,7 +1,6 @@
 package com.kakao.cafe.user.repo;
 
 import com.kakao.cafe.user.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,7 +18,6 @@ import java.util.Optional;
 public class JdbcUserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
     public JdbcUserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

@@ -1,7 +1,6 @@
 package com.kakao.cafe.article.repo;
 
 import com.kakao.cafe.article.model.Article;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -14,7 +13,6 @@ import java.util.List;
 public class JdbcArticleRepository implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
     public JdbcArticleRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
