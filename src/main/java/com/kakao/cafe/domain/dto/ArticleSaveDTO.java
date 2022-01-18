@@ -1,12 +1,12 @@
 package com.kakao.cafe.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
+@Setter
 public class ArticleSaveDTO {
 
     @NotBlank
@@ -14,5 +14,8 @@ public class ArticleSaveDTO {
 
     @NotBlank
     private final String content;
+
+    private String userId;
+
 
 }
