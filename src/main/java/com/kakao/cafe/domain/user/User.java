@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain.user;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -14,19 +15,24 @@ public class User {
     private final String email;
     private final String registerDate;
 
-    public User(long id, String userId, String password, String email) {
-        this.id = id;
+    @Builder
+    public User(String userId, String password, String email) {
+        this.id = 0;
         this.userId = userId;
         this.password = password;
         this.email = email;
         this.registerDate = LocalDate.now().toString();
     }
 
-    public User(long id, String userId, String password, String email, String registerDate) {
+    private User(long id, String userId, String password, String email, String registerDate) {
         this.id = id;
         this.userId = userId;
         this.password = password;
         this.email = email;
         this.registerDate = registerDate;
+    }
+
+    public static User newInstance(long id, String userId, String password, String email, String registerDate) {
+        return new User(id, userId, password, email, registerDate);
     }
 }
