@@ -91,16 +91,15 @@ public class BoardRepositoryJdbcImpl implements BoardRepository {
 
     @Override
     public boolean modifyArticle(Article article) {
-        jdbcTemplate.update("UPDATE ARTICLES SET TITLE = ?, WRITER_ID = ?, CONTENT = ?, CREATED_DATE = ? WHERE ARTICLE_ID = ?",
-                article.getTitle(), article.getWriterId(), article.getContent(),
-                article.getCreatedDate(), article.getArticleId());
+        jdbcTemplate.update("UPDATE ARTICLES SET TITLE = ?, CONTENT = ? WHERE ARTICLE_ID = ?",
+                article.getTitle(), article.getContent(), article.getArticleId());
         return true;
     }
 
     @Override
     public boolean modifyComment(long articleId, Comment comment) {
-        jdbcTemplate.update("UPDATE COMMENTS SET ARTICLE_ID = ?, WRITER_ID = ?, CONTENT = ?, CREATED_DATE = ? WHERE ARTICLE_ID = ? AND COMMENT_ID = ?",
-                comment.getWriterId(), comment.getContent(), comment.getCreatedDate(), articleId, comment.getCommentId());
+        jdbcTemplate.update("UPDATE COMMENTS SET CONTENT = ? WHERE ARTICLE_ID = ? AND COMMENT_ID = ?",
+                comment.getContent(), articleId, comment.getCommentId());
         return true;
     }
 
