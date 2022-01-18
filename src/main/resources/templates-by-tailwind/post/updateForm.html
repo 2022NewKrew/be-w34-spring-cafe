@@ -12,7 +12,8 @@
     <div class="flex justify-center my-8">
         <div class="w-full">
             <h1 class="text-4xl font-medium tracking-wider mb-16">게시글 수정</h1>
-            <form class="flex flex-col space-y-8" action="/posts" method="post">
+            <form class="flex flex-col space-y-8" action="/posts/{{ post.id }}" method="post">
+                <input type="hidden" name="_method" value="PUT" />
                 <div class="relative">
                     <div class="px-4 py-2 border">
                         <label for="title" class="inline-block w-28">제목</label>
@@ -25,7 +26,7 @@
                 <div class="relative">
                     <div class="px-4 py-2 border">
                         <label for="content" class="absolute">내용</label>
-                        <textarea class="w-full h-64 mt-10 focus:outline-none placeholder:text-sm" id="content" name="content" value="{{ post.content }}" placeholder="내용을 입력하세요"></textarea>
+                        <textarea class="w-full h-64 mt-10 focus:outline-none placeholder:text-sm" id="content" name="content" placeholder="내용을 입력하세요">{{ post.content }}</textarea>
                     </div>
                     {{#content}}
                     <p class="absolute -bottom-6 left-4 text-sm text-red-500">{{this}}</p>

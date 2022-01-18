@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -50,6 +51,14 @@ public class PostController {
         UserDto currentUser = (UserDto) session.getAttribute("currentUser");
         model.addAttribute("post", postService.getPostById(id, currentUser.getId()));
         return "post/updateForm";
+    }
+
+    @PutMapping("/posts/{id}")
+    public String updatePost(@PathVariable long id, @Valid PostWriteRequest request, HttpSession session, RedirectAttributes rttr) {
+        UserDto currentUser = (UserDto) session.getAttribute("currentUser");
+        postService.updatePost(id, currentUser.getId(), request);
+        rttr.addFlashAttribute("msg", "게시글을 수정하였습니다.");
+        return "redirect:/posts/" + id;
     }
 
 }
