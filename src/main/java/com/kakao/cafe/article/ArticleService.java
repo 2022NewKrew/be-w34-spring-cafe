@@ -23,6 +23,10 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    public Article findBySeq(long seq) {
+        return articleRepository.findBySeq(seq).orElseThrow();
+    }
+
     public Article findByTitle(String title) {
         return articleRepository.findByTitle(title).orElseThrow();
     }

@@ -24,9 +24,9 @@ public class ArticleController {
         return "qna/form";
     }
 
-    @GetMapping(path = "/show/{title}")
-    public String showArticle(@PathVariable String title, Model model) {
-        Article article = articleService.findByTitle(title);
+    @GetMapping(path = "/show/{seq}")
+    public String showArticle(@PathVariable long seq, Model model) {
+        Article article = articleService.findBySeq(seq);
         model.addAttribute("article", new ArticleDto(article));
         return "qna/show";
     }
