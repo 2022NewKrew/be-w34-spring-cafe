@@ -1,5 +1,6 @@
 package com.kakao.cafe.common.aop;
 
+import com.kakao.cafe.common.exception.BaseException;
 import com.kakao.cafe.common.log.UrlLogger;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -45,7 +46,7 @@ public class LoggingAspect {
     }
 
     @Around("GetMapping() || PostMapping() || DeleteMapping() || PutMapping()")
-    public Object Mapping(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object Mapping(ProceedingJoinPoint joinPoint) throws Throwable, BaseException {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String requestUrl = request.getRequestURI();
@@ -56,6 +57,8 @@ public class LoggingAspect {
             Object result = joinPoint.proceed();
             urlLogger.log("Controller 요청을 완료하였습니다.");
             return result;
+        } catch (BaseException e) {
+            throw e;
         } catch (Exception e) {
             urlLogger.log("Controller 요청중 에러가 발생했습니다. error message : " + e.getMessage());
             return null;
@@ -70,6 +73,8 @@ public class LoggingAspect {
             Object result = joinPoint.proceed();
             urlLogger.log("Service 요청을 완료하였습니다.");
             return result;
+        } catch (BaseException e) {
+            throw e;
         } catch (Exception e) {
             urlLogger.log("Service 요청중 에러가 발생했습니다. error message : " + e.getMessage());
             return null;
@@ -84,6 +89,8 @@ public class LoggingAspect {
             Object result = joinPoint.proceed();
             urlLogger.log("Repository 요청을 완료하였습니다.");
             return result;
+        } catch (BaseException e) {
+            throw e;
         } catch (Exception e) {
             urlLogger.log("Repository 요청중 에러가 발생했습니다. error message : " + e.getMessage());
             return null;

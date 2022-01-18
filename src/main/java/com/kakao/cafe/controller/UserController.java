@@ -136,7 +136,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public String updateUser( @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) throws BaseException {
+    public String updateUser(@ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) throws BaseException {
 
         UserDto loginUser = (UserDto) sessionLoginUser.getLoginUser();
 
@@ -154,7 +154,7 @@ public class UserController {
     public String login(@ModelAttribute("user") @Valid UserLoginDto userLoginDto, Model model) throws BaseException {
 
         User user = userService.loginCheck(userLoginDto.getUserId(), userLoginDto.getPassword());
-        
+
         setLoginUserSession(user);
 
         return "redirect:/";
