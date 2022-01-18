@@ -26,8 +26,8 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String postQuestions(String writer, String title, String contents, HttpSession session) {
-        logger.info("[postQuestions] writer = {}, title = {}, contents = {}", writer, title, contents);
+    public String postQuestions(String title, String contents, HttpSession session) {
+        logger.info("[postQuestions] title = {}, contents = {}", title, contents);
         List<User> users = UserController.selectAllUsers(dataSource);
         Optional<String> validate = SessionController.checkSession(session, users);
         if(validate.isPresent()) {
@@ -49,7 +49,6 @@ public class ArticleController {
             stmt.setString(2, article.getTitle());
             stmt.setString(3, article.getContents());
             stmt.executeUpdate();
-            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -117,5 +116,15 @@ public class ArticleController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @GetMapping("/qna/form")
+    public String qnaForm(HttpSession session) {
+        List<User> users = UserController.selectAllUsers(dataSource);
+        Optional<String> validate = SessionController.checkSession(session, users);
+        if(validate.isPresent()) {
+            return "/user/login";
+        }
+        return "/qna/form";
     }
 }
