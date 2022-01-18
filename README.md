@@ -34,3 +34,20 @@
 - lombok 적용.
 - Article, Article 객체에 Test 실행.
 - mustache partial 이용하여 html 페이지 중복제거.
+
+# step3
+## 요구사항
+- h2 db 연동.
+- Spring JDBC를 사용.
+  - 사용자 데이터를 DB에 저장하고 DB에서 조회.
+  - 게시글 데이터를 DB에 저장하고 DB에서 조회.
+- ![img_7.png](img_7.png)
+- ![img_6.png](img_6.png)
+
+## 구현내용
+- DAO 클래스를 생성하여 DB 관련 쿼리를 통해 Create, Read 로직 생성.
+  - Read의 경우, 전체 조회 및 ID로 조회 로직 2개 생성.
+- DTO 클래스를 생성하여 Controller에 도메인 객체가 아닌 DTO 객체를 반환.
+- MvcConfig 파일을 이용하여 정적 리소스를 관리하도록 수정.
+- @Slfj4 이용하여 log 출력코드 간소화
+- User와 Article의 고유 id index 값은 Service Layer에서 static 변수가 관리하도록 처리.
