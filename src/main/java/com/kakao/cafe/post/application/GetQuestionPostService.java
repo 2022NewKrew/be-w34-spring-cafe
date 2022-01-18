@@ -8,6 +8,7 @@ import com.kakao.cafe.post.application.port.out.LoadQuestionPostPort;
 import com.kakao.cafe.post.domain.QuestionPost;
 import com.kakao.cafe.post.exception.QuestionPostErrorCode;
 import com.kakao.cafe.post.exception.QuestionPostException;
+import com.kakao.cafe.util.DateTimeFormatUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class GetQuestionPostService implements GetQuestionPostUseCase {
                 questionPost.getQuestionPostId(),
                 questionPost.getTitle(),
                 questionPost.getContent(),
-                questionPost.getCreatedAt().format(ofPattern("yyyy-MM-dd HH:mm:ss")),
+                DateTimeFormatUtil.format(questionPost.getCreatedAt()),
                 questionPost.getViewCount(),
                 questionPost.getUserAccount().getUsername(),
                 questionPost.getUserAccount().getUserAccountId());
@@ -46,7 +47,7 @@ public class GetQuestionPostService implements GetQuestionPostUseCase {
                         post.getQuestionPostId(),
                         post.getTitle(),
                         post.getContent(),
-                        post.getCreatedAt().format(ofPattern("yyyy-MM-dd HH:mm:ss")),
+                        DateTimeFormatUtil.format(post.getCreatedAt()),
                         post.getViewCount(),
                         post.getUserAccount().getUsername(),
                         post.getUserAccount().getUserAccountId())
