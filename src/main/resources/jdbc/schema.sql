@@ -3,7 +3,7 @@ create table qna_user (
     password varchar(255) NOT NULL ,
     name varchar(255) NOT NULL ,
     email varchar(255) NOT NULL ,
-    primary key (userId)
+    PRIMARY KEY (userId)
 );
 
 create table article (
@@ -12,5 +12,7 @@ create table article (
     title varchar(255) NOT NULL ,
     contents varchar(255) NOT NULL ,
     date varchar(255) NOT NULL ,
-    primary key (id)
+    userId varchar(255) ,
+    PRIMARY KEY (id) ,
+    FOREIGN KEY (userId) REFERENCES qna_user(userId)
 );
