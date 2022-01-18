@@ -1,8 +1,11 @@
 package com.kakao.cafe.domain.users;
 
+import com.kakao.cafe.web.dto.PostResponseDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class UsersRepository {
@@ -18,11 +21,11 @@ public class UsersRepository {
             connection = DriverManager.getConnection(DB_URL);
             Statement statement = connection.createStatement();
             final String sql = "CREATE TABLE user (" +
-                    "id BIGINT NOT NULL, " +
+                    "id BIGINT NOT NULL AUTO_INCREMENT, " +
                     "name VARCHAR(32), " +
                     "email VARCHAR(32), "+
                     "password VARCHAR(32)," +
-                    "created_date VARCHAR(50) " +
+                    "created_date DATETIME " +
                     ")";
             statement.execute(sql);
 
@@ -36,13 +39,12 @@ public class UsersRepository {
         try {
             connection = DriverManager.getConnection(DB_URL);
             Statement statement = connection.createStatement();
-            final String sql = "INSERT INTO user VALUES (?, ?, ?, ?, ?)";
+            final String sql = "INSERT INTO user (name, email, password, created_date) VALUES (?, ?, ?, ?)";
             final PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setLong(1, userEntity.getId());
-            ps.setString(2, userEntity.getName());
-            ps.setString(3, userEntity.getEmail());
-            ps.setString(4, userEntity.getPassword());
-            ps.setString(5, userEntity.getTime().toLocalDate().toString());
+            ps.setString(1, userEntity.getName());
+            ps.setString(2, userEntity.getEmail());
+            ps.setString(3, userEntity.getPassword());
+            ps.setTimestamp(4, Timestamp.valueOf(userEntity.getTime()));
 
             ps.execute();
         } catch (SQLException e) {
@@ -64,8 +66,10 @@ public class UsersRepository {
                 String name = result.getString("name");
                 String email = result.getString("email");
                 String password = result.getString("password");
-                String dateTime = result.getString("created_date");
-                userEntities.add(new UserResponseDto(id, name, email, password, dateTime));
+                Timestamp time = result.getTimestamp("created_date");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String created_date = dateFormat.format(time);
+                userEntities.add(new UserResponseDto(id, name, email, password, created_date));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,8 +89,10 @@ public class UsersRepository {
             String name = result.getString("name");
             String email = result.getString("email");
             String password = result.getString("password");
-            String dateTime = result.getString("created_date");
-            UserResponseDto responseDto = new UserResponseDto(id, name, email, password, dateTime);
+            Timestamp time = result.getTimestamp("created_date");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String created_date = dateFormat.format(time);
+            UserResponseDto responseDto = new UserResponseDto(id, name, email, password, created_date);
 
             return responseDto;
         } catch (SQLException e) {
@@ -108,8 +114,10 @@ public class UsersRepository {
             Long id = result.getLong("id");
             String name = result.getString("name");
             String password = result.getString("password");
-            String dateTime = result.getString("created_date");
-            UserResponseDto responseDto = new UserResponseDto(id, name, email, password, dateTime);
+            Timestamp time = result.getTimestamp("created_date");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String created_date = dateFormat.format(time);
+            UserResponseDto responseDto = new UserResponseDto(id, name, email, password, created_date);
 
             return responseDto;
         } catch (SQLException e) {

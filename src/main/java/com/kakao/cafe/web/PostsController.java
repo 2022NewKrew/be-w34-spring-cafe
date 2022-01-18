@@ -3,44 +3,86 @@ package com.kakao.cafe.web;
 import com.kakao.cafe.service.PostsService;
 import com.kakao.cafe.web.dto.PostResponseDto;
 import com.kakao.cafe.web.dto.PostsCreateRequestDto;
+import com.kakao.cafe.web.dto.UserResponseDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 @Controller
 public class PostsController {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(PostsController.class.getName());
     private final PostsService postsService = new PostsService();
 
     @GetMapping("/")
     public String mainPage(Model model) {
-        ArrayList<PostResponseDto> posts = postsService.findAll();
+        ArrayList<PostResponseDto> posts = getAllPosts();
         model.addAttribute("posts", posts);
         return "index";
     }
 
+    @GetMapping("/api/posts")
+    public ArrayList<PostResponseDto> getAllPosts() {
+        return postsService.findAll();
+    }
+
     @PostMapping("/api/posts")
-    public String posts(PostsCreateRequestDto requestDto) {
-        requestDto.setWriter("tester");
+    public String posts(PostsCreateRequestDto requestDto, HttpSession httpSession) {
+        UserResponseDto userInfo = (UserResponseDto) httpSession.getAttribute("sessionedUser");
+        String writer = userInfo.getName();
+        requestDto.setWriter(writer);
         postsService.save(requestDto);
+        LOGGER.info(userInfo.getEmail() + " posted article");
 
         return "redirect:/";
     }
 
     @GetMapping("/posts/{index}")
-    public String postsDetail(@PathVariable("index") Long index, Model model) {
-        PostResponseDto post = postsService.findById(index);
-        model.addAttribute("post", post);
-        return "post/show";
+    public String postsDetail(@PathVariable("index") Long index, Model model, HttpSession httpSession) {
+        UserResponseDto userInfo = (UserResponseDto) httpSession.getAttribute("sessionedUser");
+        if (userInfo != null) {
+            PostResponseDto post = postsService.findById(index);
+            model.addAttribute("post", post);
+            if (userInfo.getName() == post.getUser()) model.addAttribute("isWriter", true);
+            return "post/show";
+        }
+        else {
+            return "redirect:/login";
+        }
     }
 
-    @GetMapping("/post-article")
-    public String post_form() {
-        return "post/form";
+    @PutMapping("/api/posts/{index}")
+    public String postsUpdate(@PathVariable("index") Long index, PostsCreateRequestDto requestDto) {
+        postsService.update(index, requestDto);
+        return "redirect:/";
+    }
+
+    @GetMapping("/post/form")
+    public String post_form(HttpSession httpSession) {
+        if (httpSession.getAttribute("sessionedUser") != null) {
+            return "post/form";
+        }
+        return "redirect:/login";
+    }
+
+    @GetMapping("/posts/{index}/form")
+    public String postUpdateForm(@PathVariable("index") Long index, Model model) {
+        PostResponseDto postInfo = postsService.findById(index);
+        model.addAttribute("post", postInfo);
+
+        return "post/updateForm";
+    }
+
+    @DeleteMapping("/posts/{index}")
+    public String deletePost(@PathVariable("index") Long id){
+        postsService.deleteById(id);
+
+        return "redirect:/";
     }
 
 }

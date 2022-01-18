@@ -24,4 +24,10 @@ public class PostsService {
     @Transactional
     public PostResponseDto findById(Long id) {return postsRepository.findById(id); }
 
+    @Transactional
+    public void update(Long id, PostsCreateRequestDto requestDto) { postsRepository.update(id, requestDto.toEntity()); }
+
+    @Transactional
+    public void deleteById(Long id) { postsRepository.deleteById(id); }
+
 }
