@@ -44,6 +44,11 @@ public class UserAccountNoDbUseRepository implements Repository<UserAccount, Use
 
     }
 
+    @Override
+    public void update(UserAccountDTO dto) {
+
+    }
+
     public void clearStore() {
         DB.clear();
     }

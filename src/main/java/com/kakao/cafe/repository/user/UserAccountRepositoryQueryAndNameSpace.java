@@ -10,6 +10,11 @@ public class UserAccountRepositoryQueryAndNameSpace {
         return String.format("select * from %s where %s = ?", tableName, ColumnName.USER_ID.getColumnName());
     }
 
+    public String getUpdateSqlQuery(){
+        return String.format("update %s set (%s, %s, %s) = (?, ?, ?) where %s=?", tableName, ColumnName.PASSWORD.getColumnName(),
+                ColumnName.USER_NAME.getColumnName(), ColumnName.EMAIL.getColumnName(), ColumnName.USER_ID.getColumnName());
+    }
+
     public String getFindAllSqlQuery(){
         return String.format("select * from %s", tableName);
     }

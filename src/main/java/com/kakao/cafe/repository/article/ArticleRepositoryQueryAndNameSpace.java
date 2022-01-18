@@ -15,11 +15,18 @@ public class ArticleRepositoryQueryAndNameSpace {
     }
 
     public String getFindAllSqlQuery(){
-        return String.format("select * from %s where flag = 1 or flag is null", tableName);
+        return String.format("select * from %s where %s = 1 or %s is null", tableName,
+                ColumnName.FLAG.getColumnName(), ColumnName.FLAG.getColumnName());
     }
 
     public String getDeleteSqlQuery(){
-        return String.format("update %s set flag=0 where id = ?", tableName);
+        return String.format("update %s set %s=0 where %s = ?", tableName,
+                ColumnName.FLAG.getColumnName(), ColumnName.ID.getColumnName());
+    }
+
+    public String getContentsUpdateSqlQuery(){
+        return String.format("update %s set (%s, %s) = (?, ?) where %s=?", tableName, ColumnName.TITLE.getColumnName(),
+                ColumnName.CONTENTS.getColumnName(), ColumnName.ID.getColumnName());
     }
 
     public enum ColumnName{
@@ -29,7 +36,8 @@ public class ArticleRepositoryQueryAndNameSpace {
         CONTENTS("contents"),
         DATE("date"),
         COMMENT_SIZE("comment_size"),
-        PARENT("parent");
+        PARENT("parent"),
+        FLAG("flag");
 
         private final String name;
 

@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.aop.AuthCheck;
+import com.kakao.cafe.aop.UserAccountAuthCheck;
 import com.kakao.cafe.domain.UserAccount;
 import com.kakao.cafe.domain.UserAccountDTO;
 import com.kakao.cafe.service.UserAccountService;
@@ -75,13 +75,13 @@ public class UserController {
         return "/user/profile";
     }
 
-    @AuthCheck
+    @UserAccountAuthCheck
     @GetMapping("{userId}/form")
     public String updateForm(@PathVariable("userId") String userId, HttpSession session){
         return "/user/update_form";
     }
 
-    @AuthCheck
+    @UserAccountAuthCheck
     @PutMapping("{userId}/form")
     public String updateForm(@PathVariable("userId") String userId, String curPassword, UserAccountDTO userAccountDTO){
         try {

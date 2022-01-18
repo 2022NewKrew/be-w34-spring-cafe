@@ -8,4 +8,5 @@ public interface Service <T, U, V>{
     List<T> findAll();
     Optional<T> findOne(V id);
     void delete(V id);
+    void update(U dto);
 }

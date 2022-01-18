@@ -8,4 +8,5 @@ public interface Repository <T, U, V>{
     Optional<T> findById(V id);
     List<T> findAll();
     void delete(V id);
+    void update(U dto);
 }

@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.ArticleDTO;
 import com.kakao.cafe.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,5 +36,17 @@ public class ArticleService implements Service<Article, ArticleDTO, Integer>{
     @Override
     public void delete(Integer id) {
         articleRepository.delete(id);
+    }
+
+    @Override
+    public void update(ArticleDTO articleDTO) {
+        articleRepository.update(articleDTO);
+    }
+
+    public void updateArticle(ArticleDTO articleDTO) throws InputMismatchException {
+        articleRepository.findById(articleDTO.getId())
+                .orElseThrow(() -> new InputMismatchException(articleDTO.getId() + "로 등록된 게시글을 찾울 수 없습니다."));
+
+        update(articleDTO);
     }
 }

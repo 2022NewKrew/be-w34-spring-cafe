@@ -45,6 +45,11 @@ public class ArticleNoBdUseRepository implements Repository<Article, ArticleDTO,
 
     }
 
+    @Override
+    public void update(ArticleDTO dto) {
+
+    }
+
     public void clearStore() {
         DB.clear();
     }

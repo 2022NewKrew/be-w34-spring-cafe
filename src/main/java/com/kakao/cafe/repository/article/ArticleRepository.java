@@ -69,6 +69,11 @@ public class ArticleRepository implements Repository<Article, ArticleDTO, Intege
         jdbcTemplate.update(queryAndNameSpace.getDeleteSqlQuery(), id);
     }
 
+    @Override
+    public void update(ArticleDTO articleDTO) {
+        jdbcTemplate.update(queryAndNameSpace.getContentsUpdateSqlQuery(), articleDTO.getTitle(), articleDTO.getContents(), articleDTO.getId());
+    }
+
     private RowMapper<Article> articleRowMapper(){
         return (rs, rowNum) -> {
             ArticleDTO articleDTO = new ArticleDTO();

@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.aop.ArticleAuthCheck;
 import com.kakao.cafe.aop.LogInCheck;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticleDTO;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
@@ -66,25 +68,27 @@ public class ArticleController {
     }
 
     @LogInCheck
+    @ArticleAuthCheck
     @DeleteMapping("/detail/{index}")
-    public String delete(@PathVariable("index") int index, HttpSession session){
-        Optional<Article> find = articleService.findOne(index);
+    public String delete(@PathVariable("index") int id, HttpSession session){
 
-        if(find.isEmpty()){
-            logger.error("[ArticleController > delete] Id가 " + index + "인 레코드를 찾을 수 없습니다");
-            return "redirect:/";
-        }
-
-        Article article = find.get();
-        UserAccount userAccount = (UserAccount) session.getAttribute("sessionedUser");
-
-        if(article.getWriter().equals(userAccount.getUserId())){
-            articleService.delete(index);
-
-            return "redirect:/";
-        }
-
-        logger.error("[ArticleController > delete] Id가 " + index + "인 레코드의 작성자와 현재 로그인 사용자 " + userAccount.getUserId() + "가 불일치합니다.");
+        articleService.delete(id);
         return "redirect:/";
+    }
+
+    @LogInCheck
+    @ArticleAuthCheck
+    @GetMapping("/detail/{index}/form")
+    public String update(@PathVariable("index") int id){
+        return "/qna/update_form";
+    }
+
+    @LogInCheck
+    @ArticleAuthCheck
+    @PutMapping("/detail/{index}/form")
+    public String update(@PathVariable("index") int id, ArticleDTO articleDTO){
+        articleDTO.setId(id);
+        articleService.updateArticle(articleDTO);
+        return "redirect:/detail/{index}";
     }
 }

@@ -1,5 +1,6 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.aop.CheckArticleAuthAop;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticleDTO;
 import com.kakao.cafe.domain.UserAccount;
@@ -65,4 +66,8 @@ public class SpringConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public CheckArticleAuthAop CheckArticleAuthAop(){
+        return new CheckArticleAuthAop(ArticleService());
+    }
 }

@@ -52,6 +52,11 @@ public class UserAccountService implements Service<UserAccount, UserAccountDTO, 
 
     }
 
+    @Override
+    public void update(UserAccountDTO userAccountDTO) {
+        userRepository.update(userAccountDTO);
+    }
+
     public Optional<UserAccount> updateUserAccount(UserAccountDTO userAccountDTO, String curPassword) throws InputMismatchException{
         UserAccount savedUserAccount = userRepository.findById(userAccountDTO.getUserId())
                 .orElseThrow(() -> new InputMismatchException(userAccountDTO.getUserId() + "로 가입된 유저 계정을 찾을 수 없습니다."));
@@ -60,7 +65,8 @@ public class UserAccountService implements Service<UserAccount, UserAccountDTO, 
 
         if(passwordEncoder.matches(curPassword, savedUserAccount.getPassword())){
             userAccountDTO.setPassword(passwordEncoder.encode(userAccountDTO.getPassword()));
-            newUserAccount = userRepository.save(userAccountDTO);
+            update(userAccountDTO);
+            newUserAccount = new UserAccount(userAccountDTO);
         }
 
         return Optional.ofNullable(newUserAccount);
@@ -70,14 +76,4 @@ public class UserAccountService implements Service<UserAccount, UserAccountDTO, 
         return passwordEncoder.matches(userInputPassword, userAccount.getPassword());
     }
 
-    public boolean isVaildUserAccess(String userId, Object value){
-        if(value != null){
-            UserAccount userAccount = (UserAccount) value;
-
-            if(userAccount.getUserId().equals(userId))
-                return true;
-        }
-
-        return false;
-    }
 }

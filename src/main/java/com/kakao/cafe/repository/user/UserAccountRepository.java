@@ -57,6 +57,12 @@ public class UserAccountRepository implements Repository<UserAccount, UserAccoun
 
     }
 
+    @Override
+    public void update(UserAccountDTO userAccountDTO) {
+        jdbcTemplate.update(queryAndNameSpace.getUpdateSqlQuery(), userAccountDTO.getPassword(), userAccountDTO.getName(),
+                userAccountDTO.getEmail(), userAccountDTO.getUserId());
+    }
+
     private RowMapper<UserAccount> userAccountRowMapper(){
         return (rs, rowNum) -> {
             UserAccountDTO userAccountDTO = new UserAccountDTO();
