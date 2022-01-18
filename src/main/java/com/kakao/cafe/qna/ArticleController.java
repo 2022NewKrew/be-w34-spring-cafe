@@ -63,7 +63,7 @@ public class ArticleController {
 
         // 글 작성자 ID와 수정 요청자 ID가 일치해야 함
         User user = getSessionedUser();
-        if (!user.getUserId().equals(article.getWriter())) {
+        if (user == null || !user.getUserId().equals(article.getWriter())) {
             model.addAttribute("article", article);
             return "/qna/show_edit_failed";
         }
