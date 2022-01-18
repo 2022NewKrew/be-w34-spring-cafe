@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class Question {
     @Builder.Default
     private int id = -1;
+    private int userId;
     private String title;
     private String writer;
     private String contents;

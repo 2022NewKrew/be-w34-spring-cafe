@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @Builder
 public class QuestionResponseDto {
     private int id;
+    private int userId;
     private String title;
     private String writer;
     private String contents;
