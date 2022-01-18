@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 @Service
 public class LogoutService {
-    Logger logger = LoggerFactory.getLogger(LoginService.class);
+    private final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
     public void logout(HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("sessionedUser");

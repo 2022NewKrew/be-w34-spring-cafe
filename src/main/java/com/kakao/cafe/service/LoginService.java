@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 @Service
 public class LoginService {
     private final UserDAOInterface userDAO;
-    Logger logger = LoggerFactory.getLogger(LoginService.class);
+    private final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
     @Autowired
     public LoginService(UserDAOInterface userDAO) {
