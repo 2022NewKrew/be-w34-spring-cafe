@@ -35,6 +35,12 @@ public class PostJdbcRepositoryImpl implements PostRepository {
     }
 
     @Override
+    public void update(Post post) {
+        String sql = "UPDATE posts SET title = ?, content = ?, updatedAt = ? WHERE id = ?";
+        template.update(sql, post.getTitle(), post.getContent(), post.getUpdatedAt(), post.getId());
+    }
+
+    @Override
     public void deleteAll() {
         String sql = "DELETE FROM posts";
         template.update(sql);
@@ -47,6 +53,7 @@ public class PostJdbcRepositoryImpl implements PostRepository {
                 .title(rs.getString("title"))
                 .content(rs.getString("content"))
                 .createdAt(getLocalDateTime(rs, "createdAt"))
+                .updatedAt(getLocalDateTime(rs, "updatedAt"))
                 .writerNickname(rs.getString("nickname"))
                 .build();
     }

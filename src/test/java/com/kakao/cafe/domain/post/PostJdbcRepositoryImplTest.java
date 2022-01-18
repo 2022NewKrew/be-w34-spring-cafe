@@ -143,4 +143,33 @@ class PostJdbcRepositoryImplTest {
         assertThat(foundPost.getWriterNickname()).isEqualTo(writer.getNickname());
     }
 
+    @DisplayName("게시글 수정 - 정상 테스트")
+    @Test
+    void update() {
+        long id = post.getId();
+        String title = "게시글 제목 수정";
+        String content = "게시글 내용 수정 합니다.";
+        LocalDateTime updatedAt = LocalDateTime.now();
+        Post postForUpdate = Post.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .updatedAt(updatedAt)
+                .build();
+
+        assertThatNoException().isThrownBy(() -> {
+            postRepository.update(postForUpdate);
+
+            Post updatedPost = postRepository.findById(id).orElse(null);
+            assertThat(updatedPost).isNotNull();
+            assertThat(updatedPost.getId()).isEqualTo(id);
+            assertThat(updatedPost.getTitle()).isEqualTo(title);
+            assertThat(updatedPost.getContent()).isEqualTo(content);
+            assertThat(updatedPost.getUpdatedAt()).isEqualTo(updatedAt);
+            assertThat(updatedPost.getCreatedAt()).isEqualTo(post.getCreatedAt());
+            assertThat(updatedPost.getWriterId()).isEqualTo(post.getWriterId());
+            assertThat(updatedPost.getWriterNickname()).isEqualTo(post.getWriterNickname());
+        });
+    }
+
 }
