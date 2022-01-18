@@ -2,6 +2,7 @@ package com.kakao.cafe.service.post;
 
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.post.PostRepository;
+import com.kakao.cafe.exception.NoAuthorizationException;
 import com.kakao.cafe.model.post.PostDto;
 import com.kakao.cafe.model.post.PostWriteRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,14 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 정보를 찾을 수 없습니다."));;
         return modelMapper.map(post, PostDto.class);
+    }
+
+    public PostDto getPostById(long id, long writerId) {
+        PostDto post = getPostById(id);
+        if (!post.getWriterId().equals(writerId)) {
+            throw new NoAuthorizationException();
+        }
+        return post;
     }
 
 }
