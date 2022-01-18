@@ -21,7 +21,11 @@ public class InMemoryPostRepository implements PostRepository {
 
     @Override
     public Optional<Post> findById(long id) {
-        return Optional.ofNullable(store.get((int)id - 1));
+        if (id > store.size()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(store.get((int)id - 1));
     }
 
     @Override

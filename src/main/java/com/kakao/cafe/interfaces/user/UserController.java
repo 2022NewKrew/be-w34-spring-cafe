@@ -7,10 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpSession;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/users")
@@ -57,5 +59,47 @@ public class UserController {
         logger.info("[유저 가입] {}", userDto);
         userService.signup(userDto);
         return "redirect:/users";
+    }
+
+    @PutMapping("/update")
+    public RedirectView update(UserDto userDto, HttpSession session, RedirectAttributes redirectAttributes) {
+        User loginUser = (User)session.getAttribute("loginUser");
+        userService.update(loginUser, userDto);
+
+        updateLoginSession(userDto, session);
+        redirectAttributes.addFlashAttribute("flashMessage", "유저 정보가 수정되었습니다");
+        return new RedirectView("/", true);
+    }
+
+    @PostMapping("/login")
+    public RedirectView login(
+            UserDto userDto,
+            HttpSession session,
+            RedirectAttributes redirectAttributes
+    ) {
+        logger.info("[로그인 시도] {}", userDto);
+
+        try {
+            updateLoginSession(userDto, session);
+            redirectAttributes.addFlashAttribute("flashMessage", "로그인 되었습니다.");
+            return new RedirectView("/", true);
+        } catch (NoSuchElementException e) {
+            logger.info("[로그인 실패] {}", userDto);
+            redirectAttributes.addFlashAttribute("flashMessage", "로그인에 실패했습니다");
+            return new RedirectView("/login", true);
+        }
+    }
+
+    @GetMapping("/logout")
+    public RedirectView logout(HttpSession session, RedirectAttributes redirectAttributes) {
+        session.removeAttribute("loginUser");
+        redirectAttributes.addFlashAttribute("flashMessage", "로그아웃 되었습니다");
+        return new RedirectView("/", true);
+    }
+
+    /* ----------------------------------------------------------------------------------------- */
+    private void updateLoginSession(UserDto userDto, HttpSession session) {
+        User loginUser = userService.login(userDto);
+        session.setAttribute("loginUser", loginUser);
     }
 }
