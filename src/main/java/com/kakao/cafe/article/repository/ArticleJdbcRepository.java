@@ -2,6 +2,7 @@ package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleRowMapper;
+import com.kakao.cafe.article.dto.ArticleUpdateDTO;
 import com.kakao.cafe.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,6 +29,12 @@ public class ArticleJdbcRepository implements ArticleRepository{
                 article.getTitle(),
                 article.getContents()
         );
+    }
+
+    @Override
+    public void updateArticle(Long sequence, String title, String contents) {
+        String sql = String.format("UPDATE articles SET title='%s', contents='%s' WHERE sequence=%d", title, contents, sequence);
+        jdbcTemplate.update(sql);
     }
 
     @Override

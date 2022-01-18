@@ -3,6 +3,7 @@ package com.kakao.cafe.article.controller;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.dto.ArticleCreateDTO;
 import com.kakao.cafe.article.dto.ArticleListDTO;
+import com.kakao.cafe.article.dto.ArticleUpdateDTO;
 import com.kakao.cafe.article.dto.ArticleViewDTO;
 import com.kakao.cafe.article.exception.ArticleNotLoggedInException;
 import com.kakao.cafe.article.exception.ArticleNotMatchedUser;
@@ -47,7 +48,7 @@ public class ArticleController {
 
 
     //글작성폼
-    @GetMapping(value = "/qna/form.html") //form으로 수정해야함
+    @GetMapping(value = "/qna/form") //form으로 수정해야함
     public String writeArticle(Model model, HttpSession session){
         User user;
         //로그인 상태가 아닌경우
@@ -99,6 +100,41 @@ public class ArticleController {
         return "/qna/show";
     }
 
+    //글 수정시 폼에 원본글 불러오기
+    @GetMapping(value = "/qnas/update/{sequence}")
+    public String updateArticleForm(@PathVariable("sequence") Long sequence, Model model, HttpSession session){
+        //로그인 상태가 아닌경우
+        User user;
+        if((user = (User) session.getAttribute("sessionedUser")) == null){
+            throw new ArticleNotLoggedInException("로그인 상태에서만 상세글을 볼 수 있습니다.");
+        }
+
+        Article article = articleService.getArticleBySequence(sequence);
+        if(!article.getUserId().equals(user.getUserId())){
+            throw new ArticleNotMatchedUser("로그인된 사용자가 작성한 글이 아닙니다.");
+        }
+
+        model.addAttribute("userId", article.getUserId());
+        model.addAttribute("title", article.getTitle());
+        model.addAttribute("contents", article.getContents());
+        model.addAttribute("sequence", article.getSequence());
+
+        return "/qna/updateform";
+    }
+
+    //글 수정하기
+    @PostMapping(value = "/qnas/update/apply")
+    public String updateArticle(ArticleUpdateDTO articleUpdateDTO, HttpSession session) {
+        User user = (User) session.getAttribute("sessionedUser");
+        Article article = articleService.getArticleBySequence(articleUpdateDTO.getSequence());
+        if(!article.getUserId().equals(user.getUserId())){
+            throw new ArticleNotMatchedUser("로그인된 사용자가 작성한 글이 아닙니다.");
+        }
+
+        articleService.articleUpdate(articleUpdateDTO);
+
+        return "redirect:/qnas/" + articleUpdateDTO.getSequence();
+    }
 
     //작성글 삭제
     @DeleteMapping(value = "/qnas/delete/{userId}/{sequence}")

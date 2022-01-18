@@ -19,6 +19,12 @@ public class ArticleMemoryRepository implements ArticleRepository {
     }
 
     @Override
+    public void updateArticle(Long sequence, String title, String contents) {
+
+    }
+
+
+    @Override
     public void deleteArticle(Article article) {
 
     }
