@@ -17,9 +17,11 @@ import java.util.Optional;
 @Repository
 public class JdbcUserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final UserRowMapper mapper;
 
-    public JdbcUserRepository(JdbcTemplate jdbcTemplate) {
+    public JdbcUserRepository(JdbcTemplate jdbcTemplate, UserRowMapper mapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.mapper = mapper;
     }
 
     @Override
@@ -45,14 +47,14 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User fetch(long id) {
         String query = "SELECT * FROM `USER` WHERE ID = ?";
-        List<User> users = jdbcTemplate.query(query, new UserRowMapper(), id);
+        List<User> users = jdbcTemplate.query(query, mapper, id);
         return users.size() == 0 ? null : users.get(0);
     }
 
     @Override
     public List<User> fetchAll() {
         String query = "SELECT * FROM `USER`";
-        return jdbcTemplate.query(query, new UserRowMapper());
+        return jdbcTemplate.query(query, mapper);
     }
 
     @Override
@@ -67,7 +69,7 @@ public class JdbcUserRepository implements UserRepository {
         String query = "SELECT * FROM `USER` WHERE USER_ID=?";
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("USER_ID", userId);
-        List<User> users = jdbcTemplate.query(query, new UserRowMapper(), parameterSource);
+        List<User> users = jdbcTemplate.query(query, mapper, parameterSource);
         return users.size() == 0 ? Optional.empty() : Optional.of(users.get(0));
     }
 }

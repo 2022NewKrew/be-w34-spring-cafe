@@ -12,9 +12,11 @@ import java.util.List;
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final ArticleRowMapper mapper;
 
-    public JdbcArticleRepository(JdbcTemplate jdbcTemplate) {
+    public JdbcArticleRepository(JdbcTemplate jdbcTemplate, ArticleRowMapper mapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.mapper = mapper;
     }
 
     @Override
@@ -38,13 +40,13 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public Article fetch(long id) {
         String query = "SELECT * FROM `ARTICLE` WHERE ID = ?";
-        List<Article> articles = jdbcTemplate.query(query, new ArticleRowMapper(), id);
+        List<Article> articles = jdbcTemplate.query(query, mapper, id);
         return articles.size() == 0 ? null : articles.get(0);
     }
 
     @Override
     public List<Article> fetchAll() {
         String query = "SELECT * FROM `ARTICLE`";
-        return jdbcTemplate.query(query, new ArticleRowMapper());
+        return jdbcTemplate.query(query, mapper);
     }
 }
