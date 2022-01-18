@@ -33,6 +33,13 @@ public class UserH2DAO implements UserDAOInterface {
     }
 
     @Override
+    public void editUser(String userId, String name, String email) {
+        String sql = "UPDATE USERLIST SET NAME=?, EMAIL=? WHERE USERID=?";
+        jdbcTemplate.update(sql, name, email, userId);
+    }
+
+
+    @Override
     public List<User> findAll() {
         String sql = "SELECT ID, USERID, PASSWORD, NAME, EMAIL FROM USERLIST";
         return jdbcTemplate.query(sql, userMapper);

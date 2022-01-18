@@ -1,6 +1,7 @@
 package com.kakao.cafe.web;
 
 import com.kakao.cafe.dto.CreateUserDto;
+import com.kakao.cafe.dto.EditUserDto;
 import com.kakao.cafe.dto.LoginUserDto;
 import com.kakao.cafe.dto.ShowUserDto;
 import com.kakao.cafe.service.LoginService;
@@ -66,6 +67,20 @@ public class UserController {
         model.addAttribute("user", user);
         return "user/profile";
     }
+
+    @GetMapping("/editform")
+    public String editUser() {
+        return "user/editform";
+    }
+
+    @PostMapping("/{userId}")
+    public String changeUser(HttpSession httpsession, EditUserDto editUserDto, Model model, @PathVariable String userId) {
+        userService.editUser(httpsession, editUserDto);
+        ShowUserDto user = userService.findById(userId);
+        model.addAttribute("user", user);
+        return "user/profile";
+    }
+
 
     @GetMapping("/login")
     public String userLogin() {

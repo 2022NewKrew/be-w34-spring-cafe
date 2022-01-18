@@ -21,6 +21,11 @@ public class UserDAO implements UserDAOInterface {
     }
 
     @Override
+    public void editUser(String userId, String name, String email) {
+
+    }
+
+    @Override
     public List<User> findAll() {
         return jakeDB.getUserList();
     }

@@ -2,11 +2,13 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.CreateUserDto;
+import com.kakao.cafe.dto.EditUserDto;
 import com.kakao.cafe.dto.ShowUserDto;
 import com.kakao.cafe.repository.UserDAOInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,4 +45,9 @@ public class UserService {
         return new ShowUserDto(user);
     }
 
+    public void editUser(HttpSession httpSession, EditUserDto editUserDto) {
+        User sessionedUser = (User) httpSession.getAttribute("sessionedUser");
+        String userId = sessionedUser.getUserId();
+        userDAO.editUser(userId, editUserDto.getName(), editUserDto.getEmail());
+    }
 }
