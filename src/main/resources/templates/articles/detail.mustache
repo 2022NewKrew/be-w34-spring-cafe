@@ -29,7 +29,8 @@
                       </div>
                       <div class="article-header-text">
                           <a href="/users/{{userId}}" class="article-author-name">{{userName}}</a>
-                          {{createdAtPretty}}
+                          {{#modifiedAtPretty}}{{.}} 수정됨{{/modifiedAtPretty}}
+                          {{^modifiedAtPretty}}{{createdAtPretty}}{{/modifiedAtPretty}}
                       </div>
                   </div>
                   <div class="article-doc">
