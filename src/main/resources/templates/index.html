@@ -35,7 +35,15 @@
                     <tbody>
                     {{#articles}}
                     <tr>
-                        <td><a href="/articles/{{this.id}}">{{this.title}}</a></td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
+                        {{^auth}}
+                        <td>{{title}}</td>
+                        {{/auth}}
+                        {{#auth}}
+                        <td><a href="/articles/{{articleId}}">{{title}}</a></td>
+                        {{/auth}}
+                        <td>author</td>
+                        <td>2021-12-14</td>
+                        <td>0</td>
                     </tr>
                     {{/articles}}
                     </tbody>
