@@ -1,4 +1,5 @@
 drop table if exists users;
+drop table if exists article;
 
 create table users (
     id integer primary key auto_increment,
