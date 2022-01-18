@@ -45,4 +45,9 @@ public class UserService {
     public boolean isExistUser(String userId){
         return userRepository.findOneByUserId(userId).isPresent();
     }
+
+    public void updateUser(UserRequest userRequest){
+        User user = modelMapper.map(userRequest, User.class);
+        userRepository.updateOne(user);
+    }
 }

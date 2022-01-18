@@ -13,4 +13,6 @@ public interface UserRepository {
     Long getNumberOfUsers();
 
     Optional<User> findOneByUserId(String userId);
+
+    void updateOne(User user);
 }

@@ -51,4 +51,9 @@ public class UserController {
         return "/user/updateForm";
     }
 
+    @PutMapping("/update")
+    public String updateUser(UserRequest userRequest){
+        userService.updateUser(userRequest);
+        return "redirect:/user/list";
+    }
 }
