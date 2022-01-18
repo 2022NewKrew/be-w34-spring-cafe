@@ -5,9 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class QuestionRequestDto {
-    private int userId;
+public class QuestionUpdateDto {
     private String title;
-    private String writer;
     private String contents;
 }
