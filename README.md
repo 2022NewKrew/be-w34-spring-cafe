@@ -111,4 +111,8 @@
   - https://eehoeskrap.tistory.com/543
 - java sdk
   - https://hoohaha.tistory.com/41
-
+- mysql
+  - https://whitepaek.tistory.com/16
+  - https://cirius.tistory.com/1769
+  - https://dev-coco.tistory.com/85
+  - https://doozi0316.tistory.com/entry/Spring-Boot-MyBatis-MySQL-%EC%97%B0%EB%8F%99-%EB%B0%A9%EB%B2%95
