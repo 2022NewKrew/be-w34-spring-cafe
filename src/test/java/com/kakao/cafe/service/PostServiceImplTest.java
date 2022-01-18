@@ -246,4 +246,31 @@ class PostServiceImplTest {
         //Then
         assertEquals(numOfPost, result);
     }
+
+    @Test
+    @DisplayName("게시글 ID와 유저 ID로 게시글 삭제 -> 그런 게시글 없습니다")
+    void deleteByIdAndUserId_notMine() {
+        //Given
+        Long postId = Long.valueOf(21);
+        Long loginUserId = Long.valueOf(55);
+        given(postRepository.deleteByIdAndUserId(postId, loginUserId)).willReturn(0);
+
+        //When, Then
+        assertThrows(PostNotFoundedException.class, () -> postService.deleteByIdAndUserId(postId, loginUserId));
+    }
+
+    @Test
+    @DisplayName("게시글 ID와 유저 ID로 게시글 삭제 -> 정상")
+    void deleteByIdAndUserId() {
+        //Given
+        Long postId = postInRepo.getId();
+        Long loginUserId = postWriter.getId();
+        given(postRepository.deleteByIdAndUserId(postId, loginUserId)).willReturn(1);
+
+        //When
+        postService.deleteByIdAndUserId(postId, loginUserId);
+
+        //Then
+        //nothing to verify
+    }
 }

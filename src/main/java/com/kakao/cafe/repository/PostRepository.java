@@ -92,4 +92,11 @@ public class PostRepository {
         String sql = "SELECT COUNT(id) FROM `POST`";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
+
+    public int deleteByIdAndUserId(Long postId, Long userId) {
+        String sql = "DELETE FROM `POST` AS p " +
+                "WHERE (p.id = ?) " +
+                "AND (p.user_id = ?)";
+        return jdbcTemplate.update(sql, postId, userId);
+    }
 }

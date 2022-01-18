@@ -7,6 +7,7 @@ import com.kakao.cafe.dto.post.UpdatePostDto;
 import com.kakao.cafe.service.PostService;
 import com.kakao.cafe.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,9 +36,18 @@ public class PostRestController {
     @PutMapping("/auth/posts/update")
     @LoginIdSessionNotNull
     public void updatePost(UpdatePostDto updatePostDto, HttpServletResponse response) throws IOException {
-        Long writerId = SessionUtil.getLoginUserId(session);
-        postService.updatePost(updatePostDto, writerId);
+        Long loginUserId = SessionUtil.getLoginUserId(session);
+        postService.updatePost(updatePostDto, loginUserId);
 
         response.sendRedirect(RedirectedURL.AFTER_UPDATE_POST);
+    }
+
+    @DeleteMapping("/auth/posts/delete")
+    @LoginIdSessionNotNull
+    public void deletePost(Long postId, HttpServletResponse response) throws IOException {
+        Long loginUserId = SessionUtil.getLoginUserId(session);
+        postService.deleteByIdAndUserId(postId, loginUserId);
+
+        response.sendRedirect(RedirectedURL.AFTER_DELETE_POST);
     }
 }

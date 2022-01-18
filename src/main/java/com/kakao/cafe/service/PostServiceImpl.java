@@ -90,4 +90,12 @@ public class PostServiceImpl implements PostService {
     public int countAll() {
         return postRepository.countAll();
     }
+
+    @Override
+    public void deleteByIdAndUserId(Long postId, Long userId) {
+        int effectedRow = postRepository.deleteByIdAndUserId(postId, userId);
+        if (effectedRow == 0) {
+            throw new PostNotFoundedException(PostErrorMsg.POST_NOT_FOUNDED.getDescription());
+        }
+    }
 }

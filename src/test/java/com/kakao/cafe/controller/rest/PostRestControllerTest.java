@@ -77,4 +77,20 @@ class PostRestControllerTest {
         then(postService).should(times(1)).updatePost(updatePostDto, writerId);
         then(response).should(times(1)).sendRedirect(RedirectedURL.AFTER_UPDATE_POST);
     }
+
+    @Test
+    @DisplayName("게시글 삭제 -> 정상")
+    void deletePost() throws IOException {
+        //Given
+        Long writerId = Long.valueOf(1);
+        given(httpSession.getAttribute(SessionUtil.LOGIN_USER_ID)).willReturn(writerId);
+        Long targetPostId = Long.valueOf(25);
+
+        //When
+        postRestController.deletePost(targetPostId, response);
+
+        //Then
+        then(postService).should(times(1)).deleteByIdAndUserId(targetPostId, writerId);
+        then(response).should(times(1)).sendRedirect(RedirectedURL.AFTER_DELETE_POST);
+    }
 }

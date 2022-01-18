@@ -23,4 +23,6 @@ public interface PostService {
     void increaseViewNumById(Long postId);
 
     int countAll();
+
+    void deleteByIdAndUserId(Long postId, Long userId);
 }
