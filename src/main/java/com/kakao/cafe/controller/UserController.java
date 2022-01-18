@@ -7,10 +7,7 @@ import com.kakao.cafe.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -63,7 +60,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @PostMapping("/{id}/update")
+    @PutMapping("/{id}/update")
     String updateUser(@PathVariable long id, @Valid UserDTO user, Model model, HttpSession session) {
         UserDTO sessionUser = (UserDTO) session.getAttribute("sessionUser");
         if (sessionUser == null || id != sessionUser.getId()) {
@@ -78,7 +75,7 @@ public class UserController {
             model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, WRONG_PASSWORD_MESSAGE);
             return Constants.ERROR_PAGE_NAME;
         }
-        log.info("update User -> UserId : {}, Email : {}", user.getUserId(), user.getEmail());
+        log.info("update User -> Id : {}, Email : {}", id, user.getEmail());
         return "redirect:/users";
     }
 
