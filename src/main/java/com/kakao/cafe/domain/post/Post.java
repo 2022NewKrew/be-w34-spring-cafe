@@ -15,14 +15,16 @@ public class Post {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    private String writerNickname;
+
     @Builder
-    public Post(Long id, Long writerId, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Post(Long id, Long writerId, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt, String writerNickname) {
         this.id = id;
         this.writerId = writerId;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.writerNickname = writerNickname;
     }
-
 }

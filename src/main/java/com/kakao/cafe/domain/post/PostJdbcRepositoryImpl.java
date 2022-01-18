@@ -24,13 +24,13 @@ public class PostJdbcRepositoryImpl implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        String sql = "SELECT * FROM posts";
+        String sql = "SELECT posts.*, users.nickname FROM posts INNER JOIN users ON posts.writer_Id = users.id";
         return template.query(sql, postRowMapper());
     }
 
     @Override
     public Optional<Post> findById(long id) {
-        String sql = "SELECT * FROM posts WHERE id = ?";
+        String sql = "SELECT posts.*, users.nickname FROM posts INNER JOIN users ON posts.writer_Id = users.id WHERE posts.id = ?";
         return template.query(sql, postRowMapper(), id).stream().findFirst();
     }
 
@@ -47,6 +47,7 @@ public class PostJdbcRepositoryImpl implements PostRepository {
                 .title(rs.getString("title"))
                 .content(rs.getString("content"))
                 .createdAt(getLocalDateTime(rs, "createdAt"))
+                .writerNickname(rs.getString("nickname"))
                 .build();
     }
 

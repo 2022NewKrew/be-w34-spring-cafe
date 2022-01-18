@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain.post;
 
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +26,10 @@ class PostJdbcRepositoryImplTest {
     @Qualifier("postJdbcRepositoryImpl")
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private UserRepository userRepository;
     private Post post;
+    private User writer;
 
     @BeforeEach
     void setup() {
@@ -40,6 +45,7 @@ class PostJdbcRepositoryImplTest {
 
         postRepository.save(post);
         this.post = postRepository.findAll().stream().findFirst().orElse(null);
+        this.writer = userRepository.findById(writerId).orElse(null);
     }
 
     @DisplayName("정상적인 게시글이라면 저장할 때 에러가 발생하지 않아야 한다.")
@@ -118,7 +124,7 @@ class PostJdbcRepositoryImplTest {
     @Test
     void findAll() {
         List<Post> posts = postRepository.findAll();
-
+        log.info("posts : {}", posts);
         assertThat(posts.size()).isEqualTo(INIT_SIZE_OF_POSTS + 1);
     }
 
@@ -134,14 +140,7 @@ class PostJdbcRepositoryImplTest {
         assertThat(foundPost.getTitle()).isEqualTo(post.getTitle());
         assertThat(foundPost.getContent()).isEqualTo(post.getContent());
         assertThat(foundPost.getCreatedAt()).isEqualTo(post.getCreatedAt());
+        assertThat(foundPost.getWriterNickname()).isEqualTo(writer.getNickname());
     }
 
-    @DisplayName("게시글의 목록을 전체 삭제하면, 게시글의 목록의 크기는 0이 되어야 한다.")
-    @Test
-    void deleteAll() {
-        postRepository.deleteAll();
-        List<Post> posts = postRepository.findAll();
-
-        assertThat(posts.isEmpty()).isTrue();
-    }
 }
