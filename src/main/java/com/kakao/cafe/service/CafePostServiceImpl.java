@@ -49,4 +49,12 @@ public class CafePostServiceImpl implements CafePostService {
         }
         return false;
     }
+
+    @Override
+    public boolean deletePost(int postId, String userId) {
+        if(userId != null) {
+            return cafePostDao.deletePost(postId, userId);
+        }
+        return false;
+    }
 }

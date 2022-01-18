@@ -43,7 +43,8 @@ public class CafePostDaoImpl implements CafePostDao {
     @Override
     public List<Post> getPostList() {
         List<Post> postList = new ArrayList<>();
-        String sql = "SELECT postId, userId, title, content, SUBSTR(createdAt,1,10) AS createdAt FROM post\n";
+        String sql = "SELECT postId, userId, title, content, SUBSTR(createdAt,1,10) AS createdAt FROM post\n"
+                + "where tombstone=false";
 
         try(Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -69,7 +70,7 @@ public class CafePostDaoImpl implements CafePostDao {
     public Post getPostContent(int postId) {
         Post selectedPost = null;
         String sql = "SELECT userId, title, content, SUBSTR(createdAt,1,19) AS createdAt FROM post\n"
-                + "WHERE postId=?";
+                + "WHERE postId=? and tombstone=false";
 
         try ( Connection conn = dataSource.getConnection() ) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -93,7 +94,7 @@ public class CafePostDaoImpl implements CafePostDao {
     public Post postViewEdit(int postId) {
         Post selectedPost = null;
         String sql = "SELECT userId, title, content AS createdAt FROM post\n"
-                + "WHERE postId=?";
+                + "WHERE postId=? and tombstone=false";
 
         try (Connection conn = dataSource.getConnection() ) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -115,7 +116,7 @@ public class CafePostDaoImpl implements CafePostDao {
     @Override
     public boolean editPost(int postId, Post post) {
         String sql = "UPDATE post\n"
-                + "SET title=?, content=?"
+                + "SET title=?, content=?\n"
                 + "WHERE postId=? and userId=?";
 
         try (Connection conn = dataSource.getConnection() ) {
@@ -124,6 +125,27 @@ public class CafePostDaoImpl implements CafePostDao {
             pstmt.setString(2, post.getContent());
             pstmt.setInt(3, postId);
             pstmt.setString(4, post.getUserId());
+
+            int updateCnt = pstmt.executeUpdate();
+            if( updateCnt > 0 ) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deletePost(int postId, String userId) {
+        String sql = "UPDATE post\n"
+                + "SET tombstone=true\n"
+                + "WHERE postId=? and userId=?";
+
+        try (Connection conn = dataSource.getConnection() ) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, postId);
+            pstmt.setString(2, userId);
 
             int updateCnt = pstmt.executeUpdate();
             if( updateCnt > 0 ) {

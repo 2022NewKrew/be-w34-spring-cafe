@@ -7,10 +7,7 @@ import com.kakao.cafe.service.CafePostService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -35,6 +32,8 @@ public class CafePostController {
     private static final String POST_REDIRECT_NON_USER = REDIRECT_PREFIX+"/users/sign-in";
     private static final String POST_REDIRECT_EDIT_SUCCESS = REDIRECT_PREFIX+"/posts/list";
     private static final String POST_REDIRECT_EDIT_FAIL = REDIRECT_PREFIX+"/posts/edit/fail";
+    private static final String POST_REDIRECT_DELETE_SUCCESS = REDIRECT_PREFIX+"/posts/list";
+    private static final String POST_REDIRECT_DELETE_FAIL = REDIRECT_PREFIX+"/posts/edit/fail";
 
     @GetMapping("/write")
     String postViewWrite(HttpSession httpSession) {
@@ -102,5 +101,16 @@ public class CafePostController {
             }
         }
         return POST_REDIRECT_EDIT_FAIL;
+    }
+    @DeleteMapping("/delete/{postId}")
+    String deletePost(HttpSession httpSession, @NonNull @PathVariable("postId") int postId) {
+        User loginUser = (User) httpSession.getAttribute("signInUser");
+        if(loginUser != null) {
+            String userId = loginUser.getUserId();
+            if(cafePostService.deletePost(postId, userId)) {
+                return POST_REDIRECT_DELETE_SUCCESS;
+            }
+        }
+        return POST_REDIRECT_DELETE_FAIL;
     }
 }

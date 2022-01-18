@@ -182,3 +182,7 @@ li {
     display: flex;
     flex-direction: column;
 }
+
+.post-action-box {
+    display: flex;
+}

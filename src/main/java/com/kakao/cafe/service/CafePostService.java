@@ -11,4 +11,5 @@ public interface CafePostService {
 
     Post postViewEdit(int postId);
     boolean editPost(String loginUser, int postId, Post post);
+    boolean deletePost(int postId, String userId);
 }

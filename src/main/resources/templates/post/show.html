@@ -74,7 +74,16 @@
                               <div class="post-comment-count">
                                   <p>댓글 2개</p>
                                   {{#canEdit}}
-                                  <a class="post-edit-btn" href="/posts/edit/{{postId}}" class="btn btn-primary pull-right" role="button">게시글 수정</a>
+                                  <script>
+                                      function deletePost(e) {
+                                          return confirm("정말 삭제할까요?")
+                                      }
+                                  </script>
+                                  <form class="post-action-box" method="post" action="/posts/delete/{{postId}}" onsubmit="return deletePost(this)">
+                                      <a class="post-edit-btn" href="/posts/edit/{{postId}}" class="btn btn-primary pull-right" role="button">게시글 수정</a>
+                                      <input type="hidden" name="_method" value="DELETE">
+                                      <button class="post-edit-btn" class="btn btn-primary pull-right" role="button">게시글 삭제</button>
+                                  </form>
                                   {{/canEdit}}
                               </div>
 

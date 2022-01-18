@@ -11,4 +11,5 @@ public interface CafePostDao {
 
     Post postViewEdit(int postId);
     boolean editPost(int postId, Post post);
+    boolean deletePost(int postId, String userId);
 }
