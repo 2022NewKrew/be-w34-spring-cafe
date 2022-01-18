@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.kakao.cafe.common.auth.Auth.*;
+import static com.kakao.cafe.common.auth.Auth.Role;
 
 @Slf4j
 @Controller
@@ -167,7 +167,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(HttpServletRequest request, @ModelAttribute("user") @Valid UserLoginDto userLoginDto, Model model) throws BaseException {
+    public String login(HttpSession session, @ModelAttribute("user") @Valid UserLoginDto userLoginDto, Model model) throws BaseException {
 
         User user = userService.loginCheck(userLoginDto.getUserId(), userLoginDto.getPassword());
 
@@ -175,22 +175,22 @@ public class UserController {
             throw new BaseException("login error 페이지 입니다.");
         }
 
-        setLoginUserSession(request, user);
+        setLoginUserSession(session, user);
 
         return "redirect:/";
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    public String logout(HttpSession session) {
 
-        sessionInvalidate(request);
+        session.invalidate();
+        log.info("success invalidate session");
         return "redirect:/";
     }
 
-    private void setLoginUserSession(HttpServletRequest request, User user) {
+    private void setLoginUserSession(HttpSession session, User user) {
 
         UserDto userDto = modelMapper.map(user, UserDto.class);
-        HttpSession session = request.getSession();
 
         session.setAttribute("loginUser", userDto);
 
@@ -198,13 +198,5 @@ public class UserController {
             session.setAttribute("admin", true);
         }
     }
-
-    private void sessionInvalidate(HttpServletRequest request) {
-
-        HttpSession httpSession = request.getSession();
-        httpSession.invalidate();
-        log.info("success invalidate session");
-    }
-
 
 }

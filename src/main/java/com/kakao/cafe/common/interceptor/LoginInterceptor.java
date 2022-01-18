@@ -20,8 +20,6 @@ public class LoginInterceptor implements HandlerInterceptor {
             throw new BaseException("로그인이 필요한 서비스입니다.");
         }
 
-        log.debug(session.getAttribute("loginUser").toString());
-
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 }
