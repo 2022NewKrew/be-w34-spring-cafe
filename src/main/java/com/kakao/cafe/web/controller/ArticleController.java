@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.domain.article.Article;
@@ -32,9 +32,8 @@ public class ArticleController {
     }
 
     @PostMapping(value = "/article/create")
-    public String postCreateArticle(Article article) {
-        logger.info("article:{}", article);
-        articleService.createArticle(article);
+    public String postCreateArticle(String title,String content) {
+        articleService.createArticle(title,content);
         return "redirect:/index";
     }
 
@@ -48,7 +47,7 @@ public class ArticleController {
 
     @GetMapping(value = "/articles/{index}")
     public String getArticleShow(@PathVariable int index, Model model) {
-        Article article = articleService.getArticleByIndex(index);
+        Article article = articleService.getArticleByIndex(index-1);
         model.addAttribute("article", article);
         return "/article/show";
     }
