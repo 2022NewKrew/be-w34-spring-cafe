@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.exception.CafeExceptionHandler;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
+import com.kakao.cafe.exception.user.IncorrectPasswordException;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +19,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.*;
 
 
@@ -47,8 +50,8 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/users/signup")
             .flashAttr("user", user)
         ).andExpectAll(
-            MockMvcResultMatchers.status().is3xxRedirection(),
-            MockMvcResultMatchers.redirectedUrl("")
+            status().is3xxRedirection(),
+            redirectedUrl("")
         );
     }
 
@@ -61,10 +64,41 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/users/signup")
             .flashAttr("user", user)
         ).andExpectAll(
-            MockMvcResultMatchers.status().isOk(),
-            MockMvcResultMatchers.view().name("error"),
-            MockMvcResultMatchers.model().attribute("errorStatus", HttpStatus.CONFLICT),
-            MockMvcResultMatchers.model().attribute("errorMessage", "이미 존재하는 아이디입니다.")
+            status().isOk(),
+            view().name("error"),
+            model().attribute("errorStatus", HttpStatus.CONFLICT),
+            model().attribute("errorMessage", "이미 존재하는 아이디입니다.")
+        );
+    }
+
+    @Test
+    @DisplayName("회원정보 변경 성공")
+    public void updateTest() throws Exception {
+        UserDto user = generateUser();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/{userId}/update", user.getUserId())
+            .flashAttr("user", user)
+            .param("newPassword", "2345")
+        ).andExpectAll(
+            status().is3xxRedirection(),
+            redirectedUrl("")
+        );
+    }
+
+    @Test
+    @DisplayName("회원정보 변경 실패 - 비밀번호 불일치")
+    public void updateIncorrectPasswordTest() throws Exception {
+        UserDto user = generateUser();
+        doThrow(new IncorrectPasswordException()).when(userService).updateUser(any(), any());
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/{userId}/update", user.getUserId())
+            .flashAttr("user", user)
+            .param("newPassword", "2345")
+        ).andExpectAll(
+            status().isOk(),
+            view().name("error"),
+            model().attribute("errorStatus", HttpStatus.BAD_REQUEST),
+            model().attribute("errorMessage", "잘못된 비밀번호입니다.")
         );
     }
 

@@ -3,6 +3,7 @@ package com.kakao.cafe.service.validation;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.IncorrectPasswordException;
 import com.kakao.cafe.exception.user.UserNotFoundException;
+import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.vo.UserVo;
 import org.springframework.stereotype.Component;
 
@@ -28,9 +29,8 @@ public class UserValidation {
         }
     }
 
-    public void validateUpdate(UserVo user, String newPassword) {
-        String oldPassword = user.getPassword();
-        if (!oldPassword.equals(newPassword)) {
+    public void validateUpdate(String password, String inputPassword) {
+        if (!password.equals(inputPassword)) {
             throw new IncorrectPasswordException();
         }
     }

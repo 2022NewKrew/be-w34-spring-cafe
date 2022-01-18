@@ -40,7 +40,7 @@ public class UserService {
 
     public void updateUser(UserDto user, String newPassword) {
         UserVo userVo = userDao.filterUserById(user.getUserId());
-        userValidation.validateUpdate(userVo, newPassword);
+        userValidation.validateUpdate(userVo.getPassword(), user.getPassword());
         user.setPassword(newPassword);
         userDao.updateUser(dtoToVoMapper(user));
     }
