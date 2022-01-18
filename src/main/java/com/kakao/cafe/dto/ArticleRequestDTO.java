@@ -1,15 +1,15 @@
 package com.kakao.cafe.dto;
 
-public class ArticleRequestDto {
+public class ArticleRequestDTO {
     private final String author;
     private final String title;
     private final String content;
 
-    public static ArticleRequestDto of(String author, String title, String content) {
-        return new ArticleRequestDto(author, title, content);
+    public static ArticleRequestDTO of(String author, String title, String content) {
+        return new ArticleRequestDTO(author, title, content);
     }
 
-    private ArticleRequestDto(String author, String title, String content) {
+    private ArticleRequestDTO(String author, String title, String content) {
         this.author = author;
         this.title = title;
         this.content = content;

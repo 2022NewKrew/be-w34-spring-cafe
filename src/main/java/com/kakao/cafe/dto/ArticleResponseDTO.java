@@ -2,18 +2,18 @@ package com.kakao.cafe.dto;
 
 import java.time.LocalDateTime;
 
-public class ArticleResponseDto {
+public class ArticleResponseDTO {
     private final Long id;
     private final String author;
     private final String title;
     private final String content;
     private final LocalDateTime createdAt;
 
-    public static ArticleResponseDto of(Long id, String author, String title, String content, LocalDateTime createdAt) {
-        return new ArticleResponseDto(id, author, title, content, createdAt);
+    public static ArticleResponseDTO of(Long id, String author, String title, String content, LocalDateTime createdAt) {
+        return new ArticleResponseDTO(id, author, title, content, createdAt);
     }
 
-    private ArticleResponseDto(Long id, String author, String title, String content, LocalDateTime createdAt) {
+    private ArticleResponseDTO(Long id, String author, String title, String content, LocalDateTime createdAt) {
         this.id = id;
         this.author = author;
         this.title = title;

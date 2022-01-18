@@ -1,5 +1,8 @@
 package com.kakao.cafe.domain;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -9,19 +12,24 @@ public class User {
     private String password;
     private String name;
     private String email;
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static User of(Long id, String userId, String password, String name, String email) {
-        return new User(id, userId, password, name, email);
+    public static User of(Long id, String userId, String password, String name, String email, LocalDateTime createdAt) {
+        return new User(id, userId, password, name, email, createdAt);
     }
 
-    private User(Long id, String userId, String password, String name, String email) {
+    private User(Long id, String userId, String password, String name, String email, LocalDateTime createdAt) {
         this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
+        this.createdAt = createdAt;
+    }
+
+    public boolean validatePassword(String password) {
+        return password.equals(this.password);
     }
 
     public Long getId() {
@@ -30,6 +38,10 @@ public class User {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getName() {
