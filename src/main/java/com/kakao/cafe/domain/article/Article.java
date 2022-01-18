@@ -4,7 +4,7 @@ public class Article {
 
     private final Long id;
     private final Long authorId;
-    private String author;
+    private final String author;
     private String title;
     private String description;
 
@@ -32,11 +32,10 @@ public class Article {
     }
 
     public String getAuthor() {
+        if (author == null) {
+            throw new AssertionError("author 값이 설정되지 않은 엔티티입니다.");
+        }
         return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public String getTitle() {
