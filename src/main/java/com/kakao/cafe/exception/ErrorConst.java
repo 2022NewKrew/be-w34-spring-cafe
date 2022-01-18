@@ -15,7 +15,8 @@ public enum ErrorConst {
   NO_REQUIRED_VALUE("필수 값이 부족합니다. 다시 한번 확인해주세요.", "LC_005", HttpStatus.BAD_REQUEST, NoRequiredValueException.class),
   NO_ARTICLE_ID("해당 게시물을 찾을 수 없습니다.", "LC_006", HttpStatus.BAD_REQUEST, NoArticleException.class),
   NEED_AUTHORITY("권한이 없습니다. 다시 한번 확인해주세요.", "LC_007", HttpStatus.FORBIDDEN, NoAuthorityException.class),
-  WRONG_PASSWORD("패스워드가 일치하지 않습니다. 다시 시도해주세요.", "LC_008", HttpStatus.BAD_REQUEST, WrongPasswordException.class)
+  WRONG_PASSWORD("패스워드가 일치하지 않습니다. 다시 시도해주세요.", "LC_008", HttpStatus.BAD_REQUEST, WrongPasswordException.class),
+  WRONG_EMAIL_FORMAT("이메일 양식이 일치하지 않습니다.", "LC_009", HttpStatus.BAD_REQUEST, EmailFormatException.class)
   ;
 
   private final String message;

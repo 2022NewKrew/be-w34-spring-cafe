@@ -1,5 +1,6 @@
 package com.kakao.cafe.web.dto;
 
+import com.kakao.cafe.domain.Email;
 import com.kakao.cafe.domain.User;
 import java.sql.Timestamp;
 import lombok.Getter;
@@ -13,7 +14,7 @@ public class UserDTO {
 
   private Integer index;
   private Long id;
-  private String email;
+  private Email email;
   private String nickName;
   private String summary;
   private String profile;

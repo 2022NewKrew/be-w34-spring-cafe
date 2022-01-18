@@ -58,7 +58,7 @@ public class UserRepository {
     jdbcTemplate.update(con -> {
       PreparedStatement ps = con.prepareStatement(query,
           new String[]{"id"});   // auto-increment key holder
-      ps.setString(1, user.getEmail());
+      ps.setString(1, user.getEmail().toString());
       ps.setString(2, user.getNickName());
       ps.setString(3, user.getSummary());
       ps.setString(4, user.getProfile());
@@ -86,7 +86,7 @@ public class UserRepository {
         + "last_login_at = ? "
         + "WHERE id = ?";
     jdbcTemplate.update(query,
-        user.getEmail(),
+        user.getEmail().toString(),
         user.getNickName(),
         user.getSummary(),
         user.getProfile(),

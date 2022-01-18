@@ -19,7 +19,7 @@ public class User {
 
   private Integer index;
   private final Long id;
-  private String email;
+  private Email email;
   private String nickName;
   private String password;
   private String summary;
@@ -30,7 +30,7 @@ public class User {
   private boolean isPasswordHashed;
 
   private User(
-      Integer index, Long id, String email, String nickName,
+      Integer index, Long id, Email email, String nickName,
       String summary, String profile, String password,
       Timestamp createAt, Timestamp modifiedAt, Timestamp lastLoginAt,
       boolean isPasswordHashed
@@ -70,7 +70,7 @@ public class User {
     return new User(
         null,
         null,
-        email,
+        Email.of(email),
         nickName,
         DEFAULT_SUMMARY,
         DEFAULT_PROFILE,
@@ -171,7 +171,7 @@ public class User {
     return new User(
         index,
         id,
-        email,
+        Email.of(email),
         nickName,
         summary,
         profile,
