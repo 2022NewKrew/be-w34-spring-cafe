@@ -14,4 +14,8 @@ public interface ArticleRepository {
     ArticleDTO getArticleById(long id);
 
     int increaseViews(long articleId);
+
+    int updateArticle(long id, ArticleDTO article);
+
+    int deleteArticle(long id);
 }

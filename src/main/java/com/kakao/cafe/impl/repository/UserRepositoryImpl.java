@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Objects;
 
 @Repository("userRepository")
 @Transactional
@@ -33,7 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
         try {
 
             jdbcTemplate.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement("insert into USERTABLE (userid, password, email, time) values (?,?,?,now())", Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = connection.prepareStatement("insert into UserTable (userid, password, email, time) values (?,?,?,now())", Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, user.getUserId());
                 ps.setString(2, user.getPassword());
                 ps.setString(3, user.getEmail());
@@ -42,14 +43,14 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (DuplicateKeyException exception) {
             return -1;
         }
-        return (long) keyHolder.getKey();
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
     @Override
     public UserDTO getUserById(long id) {
         try {
             return jdbcTemplate
-                    .queryForObject("select id, userid, password, email, to_char(time,'yyyy-MM-dd hh:mi') time from USERTABLE where id = ?",
+                    .queryForObject("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from UserTable where id = ?",
                             (rs, rowNum) -> new UserDTO(
                                     rs.getLong("id"),
                                     rs.getString("userid"),
@@ -64,7 +65,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<UserDTO> getAllUser() {
-        return jdbcTemplate.query("select id, userid, password, email, to_char(time,'yyyy-MM-dd hh:mi') time from USERTABLE",
+        return jdbcTemplate.query("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from UserTable",
                 (rs, rowNum) -> new UserDTO(
                         rs.getLong("id"),
                         rs.getString("userid"),
@@ -77,7 +78,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public int updateUser(long id, UserDTO user) {
-        return jdbcTemplate.update("update USERTABLE set email = ?,password = ? where id = ?",
+        return jdbcTemplate.update("update UserTable set email = ?,password = ? where id = ?",
                 user.getEmail(),
                 user.getPassword(),
                 id);
@@ -88,7 +89,7 @@ public class UserRepositoryImpl implements UserRepository {
     public UserDTO getUserByLoginData(LoginDTO login) {
         try {
             return jdbcTemplate
-                    .queryForObject("select id, userid, password, email, to_char(time,'yyyy-MM-dd hh:mi') time from USERTABLE where email = ? and password = ?",
+                    .queryForObject("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from UserTable where email = ? and password = ?",
                             (rs, rowNum) -> new UserDTO(
                                     rs.getLong("id"),
                                     rs.getString("userid"),

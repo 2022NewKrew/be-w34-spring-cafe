@@ -14,4 +14,8 @@ public interface ArticleService {
     ArticleDTO getArticleById(long articleId);
 
     int increaseViews(long articleId);
+
+    int updateArticle(long id, ArticleDTO article);
+
+    int deleteArticle(long id);
 }
