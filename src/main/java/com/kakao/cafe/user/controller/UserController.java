@@ -23,12 +23,10 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public String signup(@Valid SignupRequest request, Model model) {
+    public String signup(@Valid SignupRequest request) {
         User user = request.toEntity();
         userService.signup(user);
-        model.addAttribute("email", user.getEmail());
-        model.addAttribute("nickname", user.getNickname());
-        return "/user/signup_success";
+        return "redirect:/user";
     }
 
     @GetMapping
