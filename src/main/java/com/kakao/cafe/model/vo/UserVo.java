@@ -4,17 +4,15 @@ import java.util.Objects;
 
 public class UserVo {
 
-    private int id;
-    private final String userId;
-    private final String password;
+    private final int id;
+    private String userId;
+    private String password;
     private final String name;
-    private final String email;
+    private String email;
 
-    public UserVo(String userId, String password, String name, String email) {
-        this.userId = userId;
-        this.password = password;
+    public UserVo(int id, String name) {
+        this.id = id;
         this.name = name;
-        this.email = email;
     }
 
     public UserVo(int id, String userId, String password, String name, String email) {
@@ -44,6 +42,7 @@ public class UserVo {
     public String getEmail() {
         return email;
     }
+
 
     @Override
     public boolean equals(Object o) {

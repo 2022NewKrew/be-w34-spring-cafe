@@ -1,9 +1,11 @@
 package com.kakao.cafe.model.dto;
 
+import com.kakao.cafe.model.vo.UserVo;
+
 public class ArticleDto {
 
     private int id;
-    private String writer;
+    private UserVo writer;
     private String title;
     private String contents;
 
@@ -16,7 +18,7 @@ public class ArticleDto {
         return id;
     }
 
-    public String getWriter() {
+    public UserVo getWriter() {
         return writer;
     }
 
@@ -32,7 +34,7 @@ public class ArticleDto {
         this.id = id;
     }
 
-    public void setWriter(String writer) {
+    public void setWriter(UserVo writer) {
         this.writer = writer;
     }
 
