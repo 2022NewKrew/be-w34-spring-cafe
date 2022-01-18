@@ -1,13 +1,9 @@
 package com.kakao.cafe.dto;
 
-
-import com.kakao.cafe.model.Article;
 import com.kakao.cafe.model.User;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 
 @Getter
 public class UserCreateDto {

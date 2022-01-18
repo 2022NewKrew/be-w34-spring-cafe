@@ -38,13 +38,11 @@ public class UserService {
 
     public User validate(UserLoginDto userLoginDto){
         Optional<User> user = userRepository.findByUserId(userLoginDto.getUserId());
-        System.out.println(user);
-        System.out.println(userLoginDto.getPassword());
         if(user.isEmpty()){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("해당 아이디의 유저를 찾을 수 없습니다");
         }
         if(!user.orElseThrow().matchPassword(userLoginDto.getPassword())){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("유저 아이디와 패스워드가 일치하지 않습니다");
         }
         return user.orElseThrow();
     }

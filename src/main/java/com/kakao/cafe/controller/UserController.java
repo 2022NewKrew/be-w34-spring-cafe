@@ -48,7 +48,7 @@ public class UserController {
             return "user/form_failed";
         }
         userService.save(userCreateDto);
-        return "redirect:/users";
+        return "redirect:/login/form";
     }
 
     @GetMapping("/users")
@@ -79,12 +79,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(UserLoginDto userLoginDto, HttpSession session) {
+    public String login(UserLoginDto userLoginDto, HttpSession session, Model model) {
         logger.info("id = {}, pw = {}", userLoginDto.getUserId(), userLoginDto.getPassword());
         try {
             User user = userService.validate(userLoginDto);
             session.setAttribute("sessionUser", user);
         } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
             return "/user/login_failed";
         }
         return "index";
