@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/users")
 public class UserController {
 
+    private static final String SESSION = "KAKAO_USER_SESSION";
     private final UserService userService;
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -67,5 +68,17 @@ public class UserController {
         model.addAttribute("user", user);
 
         return "user/profile";
+    }
+
+    @PostMapping("/login")
+    public String login(LoginRequest request, HttpSession session) {
+        session.setAttribute(SESSION, userService.login(request));
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 }
