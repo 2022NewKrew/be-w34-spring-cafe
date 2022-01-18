@@ -1,95 +1,110 @@
 package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.repository.UserCreateRequestDTO;
-import com.kakao.cafe.user.repository.UserRepository;
-import com.kakao.cafe.user.repository.UserUpdateRequestDTO;
+import com.kakao.cafe.user.domain.UserRepository;
+import com.kakao.cafe.user.service.dto.AllUserProfileServiceResponse;
+import com.kakao.cafe.user.service.dto.UserProfileServiceResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
-    public Long createUser(String stringId, String email, String nickName, String passWord) {
-        return userRepository.persist(new UserCreateRequestDTO(stringId, email, nickName, passWord, LocalDateTime.now()));
+    @PostConstruct
+    private void init() {
+        createUser("aiden.jang", "aiden@kakaocorp.com", "에이든", "1234");
+        createUser("javajigi", "javajigi@slipp.net", "자바지기", "1234");
+        createUser("sanjigi", "sanjigi@slipp.net", "산지기", "1234");
+        createUser("wcts", "wcts@kakao.com", "내이름", "1234");
+        log.info("Add basic user data: 에이든, 자바지기, 산지기");
     }
 
-    public GetSignUpResultResponseDTO getSignUpResultViewData(Long userId) {
-        User user = userRepository.find(userId);
-        return new GetSignUpResultResponseDTO(user.getStringId(), user.getEmail(), user.getNickName());
+
+    public Long createUser(String stringId, String email, String name, String password) {
+        User user = makeUser(stringId, password, name, email);
+        return userRepository.persist(user);
     }
 
-    public AllUsersResponseDTO getAllUserViewData(Long startIndex, Long endIndex) {
-        ArrayList<User> userCollection = userRepository.findAll();
-        if (startIndex < 0) {
-            startIndex = 0L;
-        }
-        if (endIndex > userCollection.size()) {
-            endIndex = userCollection.size() + 1L;
-        }
-        if (startIndex > userCollection.size() || startIndex >= endIndex) {
-            return new AllUsersResponseDTO(new ArrayList<User>());
-        }
-        Stream<User> stream = userCollection.stream();
-        if (startIndex > 0) {
-            stream = stream.skip(startIndex);
-        }
-        ArrayList<User> users = stream.limit(endIndex - startIndex).collect(Collectors.toCollection(ArrayList::new));
+    // 페이징 구현 시 리펙토링 필요
+    public AllUserProfileServiceResponse getAllUserViewData(Long startIndex) {
+        ArrayList<User> users = userRepository.findAll().stream()
+                .skip(startIndex)
+                .collect(Collectors.toCollection(ArrayList::new));
         Collections.reverse(users);
-        return new AllUsersResponseDTO(users);
+        return new AllUserProfileServiceResponse(users);
     }
 
-    public AllUsersResponseDTO getAllUserViewData(Long startIndex) {
-        ArrayList<User> users = userRepository.findAll()
-                .stream().skip(startIndex).collect(Collectors.toCollection(ArrayList::new));
-        Collections.reverse(users);
-        return new AllUsersResponseDTO(users);
+    public UserProfileServiceResponse getUserProfile(String stringId) {
+        Optional<User> op = userRepository.find(stringId);
+        User user = op.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        return UserServiceDTOMapper.convertToUserProfileServiceResponse(user);
     }
 
-    public UserProfileResponseDTO getUserProfile(Long userId) {
-        User user = userRepository.find(userId);
-        return new UserProfileResponseDTO(user.getNickName(), user.getEmail(), user.getStringId());
-    }
-
-    public String findUserNickNameById(Long userId) {
-        return userRepository.find(userId).getNickName();
-    }
-
-    public UserProfileResponseDTO getUserProfile(String stringId) {
-        return getUserProfile(getUserDBId(stringId));
-    }
-
-    private Long getUserDBId(String stringId) {
-        return userRepository.findDBIdById(stringId);
-    }
-
-    public void updateUserInfo(Long userId, String oldPassword, String newPassword, String name, String email) {
+    public void updateUserInfo(String stringId, String oldPassword, String newPassword, String name, String email) {
         // 검증
-        if (!validateUserPassWord(userId, oldPassword)) {
+        validateUser(stringId, oldPassword);
+        User user = makeUser(stringId, newPassword, name, email);
+        userRepository.updateUserInfo(user);
+    }
+
+    public Long validateUser(String stringId, String password) {
+        Optional<User> op = userRepository.find(stringId);
+        User user = op.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
+        if (!password.equals(user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 틀립니다.");
         }
-        // 업데이터
-        userRepository.updateUserInfo(new UserUpdateRequestDTO(userId, newPassword, name, email));
-    }
-
-    public void updateUserInfo(String userStringId, String oldPassword, String newPassword, String name, String email) {
-        updateUserInfo(getUserDBId(userStringId), oldPassword, newPassword, name, email);
+        return user.getId();
     }
 
 
-    public boolean validateUserPassWord(Long userId, String password) {
-        if (password.equals(userRepository.findPasswordByDBId(userId))) {
-            return true;
-        }
-        return false;
+
+    private User makeUser(String stringId, String password, String name, String email) {
+        return User.builder()
+                .stringId(stringId)
+                .password(password)
+                .name(name)
+                .email(email)
+                .build();
     }
+
+
+    // 세션 구현 후 활용 예정 메서드
+//    public UserProfileServiceResponse getSignUpResultViewData(Long userId) {
+//        Optional<User> op = userRepository.find(userId);
+//        User user = op.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+//        return UserServiceDTOMapper.convertToUserProfileServiceResponse(user);
+//    }
+
+    // DB 페이진 구현 후 활용 예정 메서드
+//    public AllUserProfileServiceResponse getAllUserViewData(Long startIndex, Long endIndex) {
+//        ArrayList<User> userCollection = userRepository.findAll();
+//        if (startIndex < 0) {
+//            startIndex = 0L;
+//        }
+//        if (endIndex > userCollection.size()) {
+//            endIndex = userCollection.size() + 1L;
+//        }
+//        if (startIndex > userCollection.size() || startIndex >= endIndex) {
+//            return new AllUserProfileServiceResponse(new ArrayList<User>());
+//        }
+//        Stream<User> stream = userCollection.stream();
+//        if (startIndex > 0) {
+//            stream = stream.skip(startIndex);
+//        }
+//        ArrayList<User> users = stream.limit(endIndex - startIndex).collect(Collectors.toCollection(ArrayList::new));
+//        Collections.reverse(users);
+//        return new AllUserProfileServiceResponse(users);
+//    }
+
 }

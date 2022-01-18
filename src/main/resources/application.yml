@@ -2,6 +2,11 @@ spring:
   mustache:
     cache: false
     suffix: .html
+    expose-session-attributes: true
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
   datasource:
       driverClassName: org.h2.Driver
       username: sa

@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class UserCreateRequest {
-    private final String userId;
+public class UserLoginRequest {
+    private final String stringId;
     private final String password;
-    private final String name;
-    private final String email;
-
 }

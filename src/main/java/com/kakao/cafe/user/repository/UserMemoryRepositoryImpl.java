@@ -1,55 +1,57 @@
 package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
-public class UserMemoryRepositoryImpl implements UserRepository{
-    private static AtomicLong idSequence = new AtomicLong();
+public class UserMemoryRepositoryImpl implements UserRepository {
+    private final static AtomicLong idSequence = new AtomicLong();
     private final static HashMap<Long, User> userDB = new HashMap<>();
 
-    public UserMemoryRepositoryImpl() {
-        // 기본 유저 생성
-        persist(new UserCreateRequestDTO("aiden.jang", "aiden@kakaocorp.com", "aiden", "1234", LocalDateTime.now()));
+    @Override
+    public Optional<User> find(Long id) {
+        return Optional.ofNullable(userDB.get(id));
     }
 
-    public User find(Long id) {
-        return userDB.get(id);
-    }
-
+    @Override
     public ArrayList<User> findAll() {
         return new ArrayList<>(userDB.values());
     }
 
-    public Long persist(UserCreateRequestDTO dto) {
-        userDB.put(idSequence.get(), new User(idSequence.get(), dto.stringId, dto.email, dto.nickName, dto.password, dto.signUpDate));
+    @Override
+    public Optional<User> find(String stringId) {
+        Long dbId = userDB.keySet().stream().filter(key->stringId.equals(userDB.get(key).getStringId())).findAny().orElseGet(()->-1L);
+        return Optional.ofNullable(userDB.get(dbId));
+    }
 
-//Article article = jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE ID = ?", rowMapper, id);
-        
-
+    @Override
+    public Long persist(User user) {
+        userDB.put(idSequence.get(), makeUser(idSequence.get(), user, LocalDateTime.now()));
         return idSequence.getAndIncrement();
     }
 
-    public Long findDBIdById(String stringId) {
-        return userDB.keySet().stream().filter(key->stringId.equals(userDB.get(key).getStringId())).findAny().orElseGet(()->-1L);
+    @Override
+    public void updateUserInfo(User user) {
+        Long id = userDB.keySet().stream().filter(key -> userDB.get(key).getStringId().equals(user.getStringId())).findAny().orElseThrow(()-> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
+        userDB.put(id, makeUser(id, user, user.getSignUpDate()));
     }
 
-    public String findStringIdByDBId(Long id) {
-        return userDB.get(id).getStringId();
-    }
-
-    public String findPasswordByDBId(Long userId) {
-        return userDB.get(userId).getPassword();
-    }
-
-    public void updateUserInfo(UserUpdateRequestDTO dto) {
-        User oldUserData = userDB.get(dto.getUserId());
-        User user = new User(oldUserData.getId(), oldUserData.getStringId(), dto.getEmail(), dto.getName(), dto.getNewPassword(), oldUserData.getSignUpDate());
-        userDB.put(dto.getUserId(), user);
+    private User makeUser(Long id, User user, LocalDateTime time)  {
+        User newUser = User.builder()
+                .id(id)
+                .stringId(user.getStringId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .password(user.getPassword())
+                .signUpDate(time)
+                .build();
+        return newUser;
     }
 }

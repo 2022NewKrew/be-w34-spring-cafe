@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS USERS
 (
     id             BIGINT  NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    user_string_id VARCHAR NOT NULL,
+    string_id      VARCHAR NOT NULL UNIQUE,
     password       VARCHAR NOT NULL,
     name           VARCHAR,
     email          VARCHAR,
