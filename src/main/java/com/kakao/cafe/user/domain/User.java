@@ -37,7 +37,13 @@ public class User {
         this.id = id;
     }
 
-    public boolean equalsPassword(String InputPassword) {
-        return this.password.equals(InputPassword);
+    public void validateEqualsPassword(String inputPassword){
+        if (!equalsPassword(inputPassword)) {
+            throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
+        }
+    }
+
+    public boolean equalsPassword(String inputPassword) {
+        return this.password.equals(inputPassword);
     }
 }

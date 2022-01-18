@@ -7,6 +7,7 @@ import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -30,9 +31,20 @@ public class UserService {
 
     public void updateUser(UpdateDTO updateDTO) {
         User user = findByUserId(updateDTO.getUserId());
-        if (!user.equalsPassword(updateDTO.getPassword())) {
-            throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
-        }
+        user.validateEqualsPassword(updateDTO.getPassword());
         userRepository.save(UserFactory.toUser(updateDTO));
+    }
+
+    public void login(String userId,String password,HttpSession httpSession){
+        checkLoginStatus(httpSession);
+        User user = findByUserId(userId);
+        user.validateEqualsPassword(password);
+        httpSession.setAttribute("sessionOfUser",userId);
+    }
+
+    public void checkLoginStatus(HttpSession httpSession){
+        if(httpSession.getAttribute("userId")!=null){
+            throw new RuntimeException("이미 로그인이 된 상태입니다.");
+        }
     }
 }

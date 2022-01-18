@@ -1,20 +1,15 @@
 package com.kakao.cafe.user.controller;
 
 
-import com.kakao.cafe.user.dto.ProfileViewDTO;
-import com.kakao.cafe.user.dto.SignUpDTO;
-import com.kakao.cafe.user.dto.UpdateDTO;
-import com.kakao.cafe.user.dto.UserViewDTO;
+import com.kakao.cafe.user.dto.*;
 import com.kakao.cafe.user.factory.UserFactory;
 import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,6 +51,17 @@ public class UserController {
     public String updateUser(UpdateDTO updateDTO) {
         userService.updateUser(updateDTO);
         return "redirect:/users";
+    }
+
+    @PostMapping("/users/login")
+    public String login(LoginDTO loginDTO, HttpSession session) {
+        userService.login(loginDTO.getUserId(),loginDTO.getPassword(),session);
+        return "redirect:/";
+    }
+
+    @GetMapping("/users/login")
+    public String getLoginPage(){
+        return "/user/login";
     }
 
 
