@@ -38,7 +38,12 @@ public class ArticleMemoryRepositoryImpl implements ArticleRepository {
         articleDB.put(id, article);
     }
 
-    private Article makeArticle(Long id, Article article, LocalDateTime time){
+    @Override
+    public void updateArticle(Article article) {
+        articleDB.put(article.getId(), article);
+    }
+
+    private Article makeArticle(Long id, Article article, LocalDateTime time) {
         return Article.builder()
                 .id(id)
                 .title(article.getTitle())

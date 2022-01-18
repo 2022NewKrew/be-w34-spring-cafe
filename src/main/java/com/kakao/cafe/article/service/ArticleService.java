@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,6 +61,32 @@ public class ArticleService {
                 .hits(0)
                 .build();
     }
+
+    public void isAuthorOfArticle(Long articleId, Long authorId) {
+        Optional<Article> article = articleRepository.find(articleId);
+        Long id = article.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다.")).getAuthorId();
+        if (id != authorId) {
+            throw new IllegalArgumentException("작성자 본인만 수정 가능합니다.");
+        }
+    }
+
+    public void updateArticle(long articleId, String title, String contents) {
+        Optional<Article> findArticle = articleRepository.find(articleId);
+        Article article = findArticle.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+        articleRepository.updateArticle(makeUpdatingArticle(article, title, contents));
+    }
+
+    private Article makeUpdatingArticle(Article article, String title, String contents) {
+        return Article.builder()
+                .title(title)
+                .id(article.getId())
+                .authorId(article.getAuthorId())
+                .contents(contents)
+                .hits(article.getHits())
+                .date(article.getDate())
+                .build();
+    }
+
     // 나중에 페이징 구현할 때 활용
 //    public AllArticlesListServiceResponse getAllArticleViewDTO(Long startIndex, Long endIndex) {
 //        ArrayList<Article> articleList = articleRepository.findAll();

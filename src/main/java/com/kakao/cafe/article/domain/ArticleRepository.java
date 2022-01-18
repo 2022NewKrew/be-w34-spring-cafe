@@ -12,4 +12,7 @@ public interface ArticleRepository {
     ArrayList<Article> findAll();
 
     void increaseHit(Long id);
+
+    void
+    updateArticle(Article article);
 }

@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PutMapping("")
-    public String updateUserInfo2(@ModelAttribute UserUpdateRequest req) {
+    public String updateUserInfo(@ModelAttribute UserUpdateRequest req) {
         log.info("PUT /user");
         try{
             log.info("{} {} {} {}",req.getOldPassword(), req.getNewPassword(), req.getName(), req.getEmail());

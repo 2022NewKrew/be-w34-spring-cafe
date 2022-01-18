@@ -38,13 +38,16 @@
                         <br>
                         {{contents}}
                     </div>
-<!--                    <div class="article-util">-->
-<!--                        <ul class="article-util-list">-->
+                    <br>
+                    <div class="article-util">
+                        <ul class="article-util-list">
+                            <li>
+                                <form class="form-update" action="/article/update/{{articleId}}" method="GET">
+                                    <button class="link-delete-article" type="submit">수정</button>
+                                </form>
+                            </li>
 <!--                            <li>-->
-<!--                                <a class="link-modify-article" href="/questions/423/form">수정</a>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <form class="form-delete" action="/questions/423" method="POST">-->
+<!--                                <form class="form-delete" action="/article/{{articleId}}" method="POST">-->
 <!--                                    <input type="hidden" name="_method" value="DELETE">-->
 <!--                                    <button class="link-delete-article" type="submit">삭제</button>-->
 <!--                                </form>-->
@@ -52,8 +55,8 @@
 <!--                            <li>-->
 <!--                                <a class="link-modify-article" href="/index.html">목록</a>-->
 <!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
+                        </ul>
+                    </div>
                 </article>
 
 <!--                <div class="qna-comment">-->

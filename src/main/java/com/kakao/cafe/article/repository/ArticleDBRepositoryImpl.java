@@ -45,6 +45,11 @@ public class ArticleDBRepositoryImpl implements ArticleRepository {
         jdbcTemplate.update(SQL.INCREASE_HITS.stmt, id);
     }
 
+    @Override
+    public void updateArticle(Article article) {
+        jdbcTemplate.update(SQL.UPDATE_ARTICLE.stmt, article.getTitle(), article.getContents(), article.getId());
+    }
+
     private PreparedStatement makePersistStatement(Connection conn, Article article) throws SQLException {
         PreparedStatement statement = conn.prepareStatement(SQL.CREATE.stmt, Statement.RETURN_GENERATED_KEYS);
         statement.setLong(1, article.getAuthorId());
@@ -71,7 +76,8 @@ public class ArticleDBRepositoryImpl implements ArticleRepository {
         FIND_BY_DB_ID("SELECT * FROM ARTICLE WHERE ID = ?"),
         FIND_ALL("SELECT * FROM ARTICLE"),
         CREATE("INSERT INTO ARTICLE (author, title, write_date, content, hits) VALUES (?, ?, ?, ?, ?)"),
-        INCREASE_HITS("UPDATE ARTICLE SET hits = hits + 1 WHERE id = ?");
+        INCREASE_HITS("UPDATE ARTICLE SET hits = hits + 1 WHERE id = ?"),
+        UPDATE_ARTICLE("UPDATE ARTICLE SET title = ?, content = ? WHERE id = ?");
 
         public final String stmt;
 

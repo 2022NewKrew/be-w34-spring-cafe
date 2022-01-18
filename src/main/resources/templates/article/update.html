@@ -25,11 +25,14 @@
                     <label for="title">제목</label>
                     <input type="text" class="form-control" id="title" name="title" value="{{title}}" placeholder="제목"/>
                 </div>
+                <input type="hidden" class="form-control" id="articleId" name="articleId" value="{{articleId}}"/>
                 <div class="form-group">
                     <label for="contents">내용</label>
-                    <textarea name="contents" id="contents" rows="5" placeholder="내용" value="{{contents}}" class="form-control"></textarea>
+                    <textarea name="contents" id="contents" rows="5" placeholder="내용"
+                              class="form-control">{{contents}}</textarea>
                 </div>
                 <button type="submit" class="btn btn-success clearfix pull-right">질문하기</button>
+                <input type="hidden" name="_method" value="put"/>
                 <div class="clearfix"/>
             </form>
         </div>

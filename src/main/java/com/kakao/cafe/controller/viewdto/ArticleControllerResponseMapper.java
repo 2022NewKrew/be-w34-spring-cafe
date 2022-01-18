@@ -1,9 +1,7 @@
 package com.kakao.cafe.controller.viewdto;
 
 import com.kakao.cafe.article.service.dto.AllArticlesListServiceResponse;
-import com.kakao.cafe.article.service.dto.ArticleReadServiceResponse;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,14 +22,4 @@ public class ArticleControllerResponseMapper {
         }
         return articles;
     }
-
-    public static Map<String, Object> getArticleReadResponse(ArticleReadServiceResponse dto){
-        Map<String, Object> article = new HashMap<>();
-        article.put("title", dto.getTitle());
-        article.put("authorstringid", dto.getAuthorStringId());
-        article.put("writedate", dto.getMakeTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        article.put("contents", dto.getContents());
-        return article;
-    }
-
 }
