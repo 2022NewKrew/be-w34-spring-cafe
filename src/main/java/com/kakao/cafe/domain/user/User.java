@@ -46,7 +46,20 @@ public class User {
     }
 
     @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + userId.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + email.hashCode();
+        return result;
+    }
+
+    @Override
     public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
         if(!(obj instanceof User)) {
             return false;
         }

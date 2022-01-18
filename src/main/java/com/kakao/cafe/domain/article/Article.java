@@ -49,13 +49,27 @@ public class Article {
         this.modifiedAt = modifiedAt;
     }
 
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + Integer.hashCode(id);
+        result = 31 * result + content.hashCode();
+        result = 31 * result + createdAt.hashCode();
+        result = 31 * result + modifiedAt.hashCode();
+        return result;
+    }
+
+    @Override
     public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
         if(!(obj instanceof Article))
             return false;
 
-        Article article = (Article) obj;
-        return article.id == id &&
-                article.title.equals(title) &&
-                article.content.equals(content);
+        Article other = (Article) obj;
+        return other.id == id &&
+                other.title.equals(title) &&
+                other.content.equals(content);
     }
 }

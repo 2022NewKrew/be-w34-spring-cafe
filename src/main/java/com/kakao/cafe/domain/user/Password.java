@@ -12,12 +12,21 @@ public class Password {
     }
 
     @Override
+    public int hashCode() {
+        return password.hashCode();
+    }
+
+    @Override
     public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
         if(!(obj instanceof Password)) {
             return false;
         }
 
-        return password.equals(((Password) obj).getValue());
+        Password other = (Password) obj;
+        return password.equals(other.getValue());
     }
 
     @Override

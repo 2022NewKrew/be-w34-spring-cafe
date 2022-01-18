@@ -13,12 +13,21 @@ public class UserId {
     }
 
     @Override
+    public int hashCode() {
+        return userId.hashCode();
+    }
+
+    @Override
     public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
         if(!(obj instanceof UserId)) {
             return false;
         }
 
-        return userId.equals(((UserId) obj).getValue());
+        UserId other = (UserId) obj;
+        return userId.equals(other.getValue());
     }
 
     @Override

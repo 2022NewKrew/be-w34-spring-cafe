@@ -12,12 +12,21 @@ public class Content {
     }
 
     @Override
+    public int hashCode() {
+        return content.hashCode();
+    }
+
+    @Override
     public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
         if(!(obj instanceof Content)) {
             return false;
         }
 
-        return content.equals(((Content) obj).getValue());
+        Content other = (Content) obj;
+        return content.equals(other.getValue());
     }
 
     @Override

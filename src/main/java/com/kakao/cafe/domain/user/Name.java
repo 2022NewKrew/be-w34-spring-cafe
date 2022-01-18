@@ -12,12 +12,21 @@ public class Name {
     }
 
     @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
     public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
         if(!(obj instanceof Name)) {
             return false;
         }
 
-        return name.equals(((Name) obj).getValue());
+        Name other = (Name) obj;
+        return name.equals(other.getValue());
     }
 
     @Override

@@ -12,12 +12,21 @@ public class Email {
     }
 
     @Override
+    public int hashCode() {
+        return email.hashCode();
+    }
+
+    @Override
     public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
         if(!(obj instanceof Email)) {
             return false;
         }
 
-        return email.equals(((Email) obj).getValue());
+        Email other = (Email) obj;
+        return email.equals(other.getValue());
     }
 
     @Override
