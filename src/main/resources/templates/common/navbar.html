@@ -11,6 +11,9 @@
         <ul class="nav navbar-nav navbar-right">
             <li th:if="${session.userId == null}" ><a class="black-component" href="/users/loginForm" role="button">로그인</a></li>
             <li th:if="${session.userId == null}"><a class="black-component" href="/users/joinForm" role="button">회원가입</a></li>
+
+            <li th:if="${session.userId != null}"><a class="black-component" href="/users" role="button">회원 목록</a></li>
+            <li th:if="${session.userId != null}"><a class="black-component" href="/users/updateForm" role="button">회원정보 수정</a></li>
             <form name="logout" action="/users/logout" method="post"></form>
             <li th:if="${session.userId != null}">
                 <a class="black-component" onclick="javascript:document.logout.submit();" role="button">로그아웃</a>

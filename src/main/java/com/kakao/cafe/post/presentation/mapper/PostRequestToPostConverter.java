@@ -11,8 +11,6 @@ public class PostRequestToPostConverter implements Converter<PostRequest, Post> 
     @Override
     public Post convert(MappingContext<PostRequest, Post> context) {
         PostRequest postRequest = context.getSource();
-        String defaultName = "아무개"; // session 적용 전 잠시
-
-        return new Post(postRequest.getTitle(), postRequest.getContent(), defaultName);
+        return new Post(postRequest.getTitle(), postRequest.getContent(), postRequest.getWriterName());
     }
 }

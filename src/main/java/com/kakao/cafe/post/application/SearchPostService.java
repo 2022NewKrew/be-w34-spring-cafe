@@ -15,7 +15,6 @@ public class SearchPostService {
 
     public List<Post> getPosts(int page) {
         List<Post> posts = postRepository.getPosts((page-1) * PAGE_SIZE, PAGE_SIZE);
-        System.out.println(posts);
         return posts;
     }
 

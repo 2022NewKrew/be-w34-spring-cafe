@@ -1,32 +1,19 @@
 package com.kakao.cafe.user.persistence;
 
+import com.kakao.cafe.JdbcRepositoryTest;
 import com.kakao.cafe.user.data.UsersData;
 import com.kakao.cafe.user.domain.entity.User;
 import com.kakao.cafe.user.domain.entity.UserInfo;
-import com.kakao.cafe.user.domain.repository.UserRepository;
-import com.kakao.cafe.user.persistence.mapper.UserRowMapper;
-import com.kakao.cafe.util.MyJdbcTemplate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@JdbcTest
-class JdbcUserRepositoryTest {
-    @Autowired
-    private UserRepository userRepository;
-
+class JdbcUserRepositoryTest extends JdbcRepositoryTest {
     @Test
     @DisplayName("Repository 생성 성공")
     void successCreateRepository(){
@@ -118,20 +105,5 @@ class JdbcUserRepositoryTest {
         assertThatThrownBy(() -> userRepository.update(user.getUserId(), newUserInfo))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("없어");
-    }
-
-    @TestConfiguration
-    static class PersistenceConfig {
-        @Bean
-        UserRepository userRepository(DataSource dataSource){
-            MyJdbcTemplate myJdbcTemplate = new MyJdbcTemplate(dataSource);
-            UserRowMapper userRowMapper = new UserRowMapper();
-            return new JdbcUserRepository(myJdbcTemplate, userRowMapper);
-        }
-
-        @Bean
-        PlatformTransactionManager platformTransactionManager(DataSource dataSource){
-            return new DataSourceTransactionManager(dataSource);
-        }
     }
 }

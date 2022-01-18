@@ -11,7 +11,6 @@ public class CommentRequestToCommentConverter implements Converter<CommentReques
     @Override
     public Comment convert(MappingContext<CommentRequest, Comment> context) {
         CommentRequest commentRequest = context.getSource();
-        String defaultName ="아무개씨";
-        return new Comment(defaultName, commentRequest.getComment());
+        return new Comment(commentRequest.getWriterName(), commentRequest.getComment());
     }
 }

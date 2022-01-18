@@ -18,7 +18,7 @@
         <header class="post-header">
             <p class="title">회원정보 수정</p>
         </header>
-        <form name="question" class="info-container" method="post" th:action="@{/users/update/{id}(id=${id})}">
+        <form name="question" class="info-container" method="post" action="/users/update">
             <div class="form-group">
                 <label for="name">이름</label>
                 <input class="form-control" id="name" name="name" placeholder="이름를 입력하세요">

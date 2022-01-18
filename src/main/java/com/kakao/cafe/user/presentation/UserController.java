@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -37,25 +38,29 @@ public class UserController {
 
     @GetMapping("/loginForm")
     public String loginForm(){
+        logger.info("로그인을 시도합니다.");
         return "user/loginForm";
     }
 
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession httpSession){
-        logger.info("로그인 시도 : user {}", userId);
         loginService.login(userId, password);
         httpSession.setAttribute("userId", userId);
+        logger.info("사용자 {}가 로그인 하였습니다.", userId);
         return "redirect:/";
     }
 
     @PostMapping("/logout")
-    public String logout(HttpSession httpSession){
-        httpSession.invalidate();
+    public String logout(HttpSession session){
+        String userId = getSessionUserId(session);
+        logger.info("사용자 {}가 로그아웃합니다.", userId);
+        session.invalidate();
         return "redirect:/";
     }
 
     @GetMapping("")
     public String listUsers(Model model){
+        logger.info("사용자 목록을 조회합니다.");
         List<UserDto> users = searchUserService.getAllUsers()
                 .stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
@@ -65,8 +70,9 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/{id}")
-    public String  getUserInfo(@PathVariable String id, Model model){
+    @GetMapping("/{userId}")
+    public String  getUserInfo(@PathVariable String userId, Model model){
+        logger.info("사용자 {}의 상세정보를 조회합니다.", userId);
         return "redirect:/";
     }
 
@@ -79,24 +85,32 @@ public class UserController {
 
     @PostMapping("")
     public String join(JoinRequest joinRequest, Model model){
-        logger.info("회원가입 요청이 시도되었습니다.");
-
         User user = modelMapper.map(joinRequest, User.class);
         joinService.save(user);
+        logger.info("사용자 {}가 새로 가입하였습니다.", user.getUserId());
 
         model.addAttribute("user", modelMapper.map(user, UserDto.class));
         return "user/join_success";
     }
 
-    @GetMapping("/updateForm/{id}")
-    public String updateForm(@PathVariable String id, Model model){
-        model.addAttribute("id", id);
+    @GetMapping("/updateForm")
+    public String updateForm(HttpSession session, Model model){
+        String userId = getSessionUserId(session);
+        logger.info("사용자 {}가 정보 갱신을 시도합니다.", userId);
+        model.addAttribute("id", userId);
         return "user/updateForm";
     }
 
-    @PostMapping("/update/{id}")
-    public String updateInfo(@PathVariable String id, UpdateUserInfoRequest updateRequest){
-        updateUserInfoService.updateUserInfo(id, modelMapper.map(updateRequest, UserInfo.class));
+    @PostMapping("/update")
+    public String updateInfo(UpdateUserInfoRequest updateRequest, HttpSession session){
+        String userId = getSessionUserId(session);
+        updateUserInfoService.updateUserInfo(userId, modelMapper.map(updateRequest, UserInfo.class));
+        logger.info("사용자 {}의 정보 갱신을 완료하였습니다.", userId);
+
         return "redirect:/users";
+    }
+
+    public String getSessionUserId(HttpSession session){
+        return Objects.requireNonNull((String) session.getAttribute("userId"), "로그인을 먼저 하세요.");
     }
 }

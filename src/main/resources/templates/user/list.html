@@ -12,7 +12,7 @@
     <link href="/css/user/list.css" rel="stylesheet">
 </head>
 <body>
-<spa class="background">
+<div class="background">
     <div th:insert="common/navbar :: navbar"></div>
     <div class="description">
         <div class="desc-container">
@@ -29,14 +29,13 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
+                        <th>아이디</th>
                         <th>닉네임</th>
                         <th>이메일</th>
-                        <th>회원가입일</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-
                     <tr class="clickable-list-item" th:each="user : ${users}" th:onclick="'location.href=\'' + @{/users/updateForm/{id}(id=${user.userId})} + '\';'">
                         <td th:text="${user.userId}"></td>
                         <td th:text="${user.name}"></td>
@@ -47,6 +46,6 @@
             </div>
         </div>
     </div>
-</spa>
+</div>
 </body>
 </html>
