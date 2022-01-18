@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -43,9 +42,7 @@ public class ArticleController {
 
     @GetMapping("/articles/new")
     public String getArticles(final HttpServletRequest request) {
-        if (!AuthControl.isLogon(request, userService)) {
-            request.getSession()
-                    .setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
+        if (checkNotLogin(request)) {
             return "redirect:/login";
         }
         return "articles/new";
@@ -53,9 +50,7 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String writeArticle(final HttpServletRequest request, @NonNull final ArticleDto articleDto) {
-        if (!AuthControl.isLogon(request, userService)) {
-            request.getSession()
-                    .setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
+        if (checkNotLogin(request)) {
             return "redirect:/login";
         }
 
@@ -66,15 +61,29 @@ public class ArticleController {
 
     @GetMapping("/articles/{idx}")
     public String getArticleDetail(
+            final HttpServletRequest request,
             @PathVariable("idx") @NonNull final long idx,
             final Model model
     )
     {
+        if (checkNotLogin(request)) {
+            return "redirect:/login";
+        }
+
         try {
             final ArticleDto articleDto = articleService.getArticle(idx);
             model.addAttribute("article", articleDto);
         } catch (NoSuchElementException ignored) {}
 
         return "articles/detail";
+    }
+
+    private boolean checkNotLogin(final HttpServletRequest request) {
+        if (!AuthControl.isLogon(request, userService)) {
+            request.getSession()
+                    .setAttribute(UserController.TAG_LOGIN_ERROR, UserController.MSG_REQUIRE_LOGIN);
+            return true;
+        }
+        return false;
     }
 }
