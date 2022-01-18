@@ -84,4 +84,17 @@ public class ArticleController {
         articleService.updateById(articleId, request, user);
         return "redirect:/articles";
     }
+
+    @DeleteMapping("/{articleId}")
+    public String deleteById(@PathVariable int articleId, HttpSession session) {
+        log.info(this.getClass() + ": 게시글 삭제");
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null) {
+            return "redirect:/auths/login";
+        }
+
+        SessionedUser user = (SessionedUser) value;
+        articleService.deleteById(articleId, user);
+        return "redirect:/articles";
+    }
 }

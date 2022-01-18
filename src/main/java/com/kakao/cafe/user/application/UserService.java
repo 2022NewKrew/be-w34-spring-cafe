@@ -79,7 +79,8 @@ public class UserService {
 
     private void validateUpdateRequest(String userId, UserUpdateRequest request, SessionedUser user)
             throws AuthenticationException {
-        if (!(user.hasSameUserLoggedIn(userId) && user.matchesPassword(request.password))) {
+        user.validateSession(userId);
+        if (user.matchesPassword(request.password)) {
             AuthenticationException.throwAuthFailure(REQUIRED_RE_LOGIN_EXCEPTION);
         }
     }

@@ -13,4 +13,6 @@ public interface ArticleRepository {
     Article findByIdOrNull(int articleId);
 
     void update(Article article);
+
+    void delete(Article article);
 }

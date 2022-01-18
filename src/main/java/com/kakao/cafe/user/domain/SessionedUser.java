@@ -1,10 +1,12 @@
 package com.kakao.cafe.user.domain;
 
+import com.kakao.cafe.common.exception.AuthenticationException;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 
 import java.util.Objects;
+
+import static com.kakao.cafe.common.exception.ExceptionMessage.REQUIRED_RE_LOGIN_EXCEPTION;
 
 @Builder
 @Getter
@@ -23,8 +25,10 @@ public class SessionedUser {
                 .build();
     }
 
-    public boolean hasSameUserLoggedIn(String userId) {
-        return Objects.equals(userId, this.userId);
+    public void validateSession(String userId) throws AuthenticationException {
+        if (!Objects.equals(userId, this.userId)) {
+            AuthenticationException.throwAuthFailure(REQUIRED_RE_LOGIN_EXCEPTION);
+        }
     }
 
     public boolean matchesPassword(String password) {

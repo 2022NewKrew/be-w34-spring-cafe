@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.kakao.cafe.common.exception.ExceptionMessage.UPDATE_OTHERS_ARTICLE_NOT_ALLOWED_EXCEPTION;
-
 @Service
 @Slf4j
 public class ArticleService {
@@ -58,7 +56,7 @@ public class ArticleService {
 
     public void updateById(int articleId, ArticleSaveRequest request, SessionedUser sessionedUser) {
         log.info(this.getClass() + ": 게시글 수정");
-        validateUpdateRequest(request.writer, sessionedUser);
+        sessionedUser.validateSession(request.writer);
         String userId = sessionedUser.getUserId();
         Article article = articleRepository.findByIdOrNull(articleId);
         if (article == null) {
@@ -74,9 +72,12 @@ public class ArticleService {
         articleRepository.update(article);
     }
 
-    private void validateUpdateRequest(String authorId, SessionedUser user) throws IllegalArgumentException {
-        if (!user.hasSameUserLoggedIn(authorId)) {
-            throw new IllegalArgumentException(UPDATE_OTHERS_ARTICLE_NOT_ALLOWED_EXCEPTION);
-        }
+    public void deleteById(int articleId, SessionedUser sessionedUser) {
+        log.info(this.getClass() + ": 게시글 삭제");
+        Article article = articleRepository.findByIdOrNull(articleId);
+        String authorId = article.getAuthorId();
+        sessionedUser.validateSession(authorId);
+
+        articleRepository.delete(article);
     }
 }

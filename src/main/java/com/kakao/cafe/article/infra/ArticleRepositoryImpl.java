@@ -35,4 +35,9 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     public void update(Article article) {
 
     }
+
+    @Override
+    public void delete(Article article) {
+
+    }
 }
