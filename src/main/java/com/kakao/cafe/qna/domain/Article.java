@@ -1,13 +1,14 @@
 package com.kakao.cafe.qna.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Getter
 @Setter
-@AllArgsConstructor
 public class Article {
     @Setter(AccessLevel.NONE)
     private final int id;
@@ -17,4 +18,15 @@ public class Article {
 
     private String title;
     private String content;
+    private String writtenTime;
+
+    public Article(int id, String writer, String title, String content) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.content = content;
+
+        writtenTime = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
+    }
 }
