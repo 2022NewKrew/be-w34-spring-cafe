@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.entity.Article;
 import com.kakao.cafe.domain.entity.Draft;
 import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.domain.exception.NoSuchUserException;
+import com.kakao.cafe.domain.exception.UnauthorizedException;
 import com.kakao.cafe.domain.repository.ArticleRepository;
 import com.kakao.cafe.domain.repository.UserRepository;
 import com.kakao.cafe.service.dto.ArticleDto;
@@ -45,5 +46,16 @@ public class ArticleService {
 
     public Optional<ArticleDto> getById(long id) {
         return repository.getById(id).map(Article::toDto);
+    }
+
+    public void delete(Long authorId, long id) {
+        Optional<User> author = userRepository.getById(authorId);
+        if (author.isEmpty()) {
+            throw new NoSuchUserException();
+        }
+        if (author.get().getId() != authorId) {
+            throw new UnauthorizedException();
+        }
+        repository.delete(id);
     }
 }

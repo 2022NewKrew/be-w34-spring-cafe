@@ -63,4 +63,11 @@ public class JdbcArticleRepository implements ArticleRepository {
             return Optional.empty();
         }
     }
+
+    @Override
+    public void delete(long id) {
+        String sql = "DELETE FROM articles WHERE id = :id";
+        Map<String, Object> params = Collections.singletonMap("id", id);
+        jdbcTemplate.update(sql, params);
+    }
 }

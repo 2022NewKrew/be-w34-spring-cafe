@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
@@ -56,5 +53,15 @@ public class ArticleController {
         }
         model.addAttribute("article", article.get());
         return "articles/item";
+    }
+
+    @DeleteMapping("/articles/{id}")
+    public String delete(@PathVariable long id, HttpSession session) {
+        Long authorId = (Long) session.getAttribute("currentUserId");
+        if (authorId == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not logged in");
+        }
+        service.delete(authorId, id);
+        return "redirect:/";
     }
 }
