@@ -71,10 +71,6 @@ public class QuestionRepositoryHash implements QuestionRepository {
         return false;
     }
 
-    @Override
-    public boolean deleteOne(Long id, Long memberId) {
-        return false;
-    }
 
     @Override
     public boolean updateOne(Question question) {

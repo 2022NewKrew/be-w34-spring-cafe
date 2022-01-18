@@ -54,8 +54,7 @@ public class QuestionController {
     @GetMapping
     public String viewQuestionList(HttpSession session, Model model) {
 
-        UserDto loginUser = (UserDto) session.getAttribute("loginUser");
-        Long id = loginUser == null ? -1L : loginUser.getId();
+        Long id = getMemberId(session);
         List<QuestionDto> questions = getQuestionDtos(id);
 
         model.addAttribute("questions", questions);
@@ -80,8 +79,7 @@ public class QuestionController {
     @GetMapping("/{id}")
     public String viewQuestionDetail(HttpSession session, @PathVariable("id") Long id, Model model) {
 
-        UserDto loginUser = (UserDto) session.getAttribute("loginUser");
-        Long memberId = loginUser == null ? -1L : loginUser.getId();
+        Long memberId = getMemberId(session);
         QuestionDto question = modelMapper.map(questionService.findOne(id), QuestionDto.class);
 
         question.setThisIsMine(memberId.equals(question.getMemberId()));
@@ -94,5 +92,21 @@ public class QuestionController {
     @GetMapping("/create")
     public String viewQuestionForm(Model model) {
         return "qna/form";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteQuestion(HttpSession session, @PathVariable("id") Long id, Model model) throws BaseException {
+
+        Long memberId = getMemberId(session);
+
+        questionService.deleteOne(id, memberId);
+
+        return "redirect:/";
+    }
+
+    private Long getMemberId(HttpSession session) {
+        UserDto loginUser = (UserDto) session.getAttribute("loginUser");
+        Long memberId = loginUser == null ? -1L : loginUser.getId();
+        return memberId;
     }
 }

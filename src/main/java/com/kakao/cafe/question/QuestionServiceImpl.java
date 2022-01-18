@@ -1,5 +1,7 @@
 package com.kakao.cafe.question;
 
+import com.kakao.cafe.common.auth.Auth;
+import com.kakao.cafe.common.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,8 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public Long save(Question question) throws SQLException {
 
-        Long id = questionRepository.save(question);;
+        Long id = questionRepository.save(question);
+        ;
 
         return id;
     }
@@ -41,5 +44,36 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> findAll() {
         return questionRepository.findAll();
+    }
+
+    @Override
+    @Auth(role = Auth.Role.ADMIN)
+    public boolean deleteOneWidthAdmin(Long id) {
+        return questionRepository.deleteOne(id);
+    }
+
+    @Override
+    public boolean deleteOne(Long id, Long memberId) throws BaseException {
+
+        Question origin = questionRepository.findOne(id);
+
+        if (!origin.getMemberId().equals(memberId)) {
+            throw new BaseException("권한이 없는 사용자는 삭제 할 수 없습니다.");
+        }
+
+        return questionRepository.deleteOne(id);
+    }
+
+    @Override
+    public boolean updateOne(Question question) throws BaseException {
+
+        Long id = question.getId();
+        Question origin = questionRepository.findOne(id);
+
+        if (!origin.getMemberId().equals(question.getMemberId())) {
+            throw new BaseException("권한이 없는 사용자는 수정을 할 수 없습니다.");
+        }
+
+        return questionRepository.updateOne(question);
     }
 }

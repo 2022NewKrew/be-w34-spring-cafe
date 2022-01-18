@@ -81,20 +81,6 @@ public class QuestionRepositoryH2 implements QuestionRepository {
     }
 
     @Override
-    public boolean deleteOne(Long id, Long memberId) {
-
-        String sql = "DELETE FROM question WHERE id = ? AND member_id = ?";
-        int rs = jdbcTemplate.update(sql, id, memberId);
-
-        if (rs == FAIL) {
-            log.error("USER TABLE UPDATE FAIL ");
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
     public boolean updateOne(Question question) {
 
         String sql = "UPDATE question SET title=?, contents=? WHERE id=?";

@@ -1,5 +1,7 @@
 package com.kakao.cafe.question;
 
+import com.kakao.cafe.common.exception.BaseException;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -28,4 +30,27 @@ public interface QuestionService {
      * @return 질문글에대한 모든데이터를 반환
      */
     List<Question> findAll();
+
+    /**
+     * key값 하나로 테이블을 삭제한다.
+     * @param id 삭제하고 싶은 table key
+     * @return 삭제 성공 여부
+     */
+    boolean deleteOneWidthAdmin(Long id);
+
+    /**
+     * key값과 memberId값으로 삭제한다. (해당 테이블의 소유권자만 삭제 가능)
+     * @param id 삭제하고 싶은 table의 키 값
+     * @param memberId 삭제하고 싶은 테이블의 외래키
+     * @return 삭제 성공 여부
+     */
+    boolean deleteOne(Long id, Long memberId) throws BaseException;
+
+    /**
+     * Question에 담긴 정보를 기준으로 수정합니다.
+     * @param question 수정한 Question
+     * @return 삭제 성공 여부
+     */
+    boolean updateOne(Question question) throws BaseException;
+
 }
