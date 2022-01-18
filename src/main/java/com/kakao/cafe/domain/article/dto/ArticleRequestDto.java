@@ -2,7 +2,7 @@ package com.kakao.cafe.domain.article.dto;
 
 import com.kakao.cafe.domain.article.Article;
 
-public class ArticleCreateRequestDto {
+public class ArticleRequestDto {
     private String author;
     private String title;
     private String content;

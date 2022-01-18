@@ -3,6 +3,8 @@ spring:
     group:
       "local": "localdb, common"
       "test": "testdb, common"
+      "dev": "mysqldb, common"
+
 ---
 
 spring:
@@ -23,6 +25,23 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "mysqldb"
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
+    url: jdbc:mysql://localhost:3306/cafe
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+      data-locations: classpath:sql/data.sql
 
 ---
 

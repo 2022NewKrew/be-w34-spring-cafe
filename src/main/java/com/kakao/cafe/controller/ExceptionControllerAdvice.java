@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.user.exception.AnonymousUserException;
 import com.kakao.cafe.domain.user.exception.UserLoginFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +28,15 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserLoginFailedException.class)
     public String loginError(UserLoginFailedException e, Model model) {
-        logger.info("Login Error : {} ", e.getMessage());
         model.addAttribute("message", e.getMessage());
-        return "/user/login_failed";
+        return "user/login";
+    }
+
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AnonymousUserException.class)
+    public String anonymousUserError(AnonymousUserException e, Model model) {
+        model.addAttribute("message", e.getMessage());
+        return "user/login";
     }
 
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
