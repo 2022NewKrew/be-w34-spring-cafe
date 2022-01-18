@@ -3,10 +3,12 @@ package com.kakao.cafe.rowmapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.SimpleUserInfo;
+import com.kakao.cafe.constant.OffsetId;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Component
 public class UserRowMapper {
@@ -18,7 +20,7 @@ public class UserRowMapper {
                         .email(resultSet.getString("email"))
                         .nickName(resultSet.getString("nick_name"))
                         .password(resultSet.getString("password"))
-                        .createdAt(resultSet.getTimestamp("created_at").toLocalDateTime())
+                        .createdAt(resultSet.getTimestamp("created_at").toInstant().atOffset(ZoneOffset.of(OffsetId.KR_ID)))
                         .build();
     }
 

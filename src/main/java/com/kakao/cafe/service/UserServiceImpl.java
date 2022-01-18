@@ -9,10 +9,13 @@ import com.kakao.cafe.error.exception.duplication.UserNickNameDuplicationExcepti
 import com.kakao.cafe.error.exception.nonexist.UserNotFoundedException;
 import com.kakao.cafe.error.msg.UserErrorMsg;
 import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.constant.OffsetId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +76,7 @@ public class UserServiceImpl implements UserService {
                 .email(userJoinDto.getEmail())
                 .password(userJoinDto.getPassword())
                 .nickName(userJoinDto.getNickName())
-                .createdAt(LocalDateTime.now())
+                .createdAt(OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.of(OffsetId.KR_ID)))
                 .build();
     }
 

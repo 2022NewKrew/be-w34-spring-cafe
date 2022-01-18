@@ -68,7 +68,7 @@ public class PostRepository {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
             ps.setString(1, post.getTitle());
             ps.setString(2, post.getContents());
-            ps.setTimestamp(3, Timestamp.valueOf(post.getCreatedAt()));
+            ps.setTimestamp(3, Timestamp.valueOf(post.getCreatedAt().toLocalDateTime()));
             ps.setInt(4, post.getViewNum());
             ps.setLong(5, post.getUserId());
             return ps;

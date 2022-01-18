@@ -1,5 +1,6 @@
 package com.kakao.cafe.rowmapper;
 
+import com.kakao.cafe.constant.OffsetId;
 import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.dto.post.PostViewDto;
 import com.kakao.cafe.dto.post.SimplePostInfo;
@@ -7,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Component
 public class PostRowMapper {
@@ -18,7 +20,7 @@ public class PostRowMapper {
                         .title(resultSet.getString("title"))
                         .contents(resultSet.getString("contents"))
                         .viewNum(resultSet.getInt("view_num"))
-                        .createdAt(resultSet.getTimestamp("created_at").toLocalDateTime())
+                        .createdAt(resultSet.getTimestamp("created_at").toInstant().atOffset(ZoneOffset.of(OffsetId.KR_ID)))
                         .userId(resultSet.getLong("user_id"))
                         .build();
     }
