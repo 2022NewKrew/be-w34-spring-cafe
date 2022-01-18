@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
         response.setStatus(ErrorCode.UNAUTHORIZED.getValue());
         model.addAttribute("msg", errorMsg("HttpSessionRequiredException", e.getMessage()));
         logger.error("HttpSessionRequiredException");
-        return "infra/error";
+        return "user/login";
     }
     private String errorMsg(String name, String msg) {
         return name + " : " + msg;

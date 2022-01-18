@@ -116,6 +116,6 @@ class AuthControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("msg"))
-                .andExpect(view().name("infra/error"));
+                .andExpect(view().name("user/login"));
     }
 }
