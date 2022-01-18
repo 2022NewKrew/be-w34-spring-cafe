@@ -65,4 +65,21 @@ public class JdbcUserRepository implements UserRepository {
             throw new UserNotFoundException("사용자 ID가 없습니다");
         }
     }
+
+    @Override
+    public User findByUuid(String uuid) {
+        logger.info("[Jdbc] user findByUuid");
+        String sql = "select * from users where uuid = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getString("uuid"),
+                            rs.getString("user_id"),
+                            rs.getString("password"),
+                            rs.getString("name"),
+                            rs.getString("email")),
+                    uuid);
+        } catch (EmptyResultDataAccessException e) {
+            throw new UserNotFoundException("사용자 ID가 없습니다");
+        }
+    }
 }

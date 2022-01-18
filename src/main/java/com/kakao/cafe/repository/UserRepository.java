@@ -10,4 +10,6 @@ public interface UserRepository {
     List<User> findAll();
 
     User findByUserId(String userId);
+
+    User findByUuid(String uuid);
 }

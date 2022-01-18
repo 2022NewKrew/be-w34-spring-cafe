@@ -53,4 +53,15 @@ public class InMemoryUserRepository implements UserRepository {
 
         return findUser;
     }
+
+    @Override
+    public User findByUuid(String uuid) {
+        logger.info("[InMemory] user findByUuid");
+        User findUser = userList.stream()
+                .filter(user -> Objects.equals(user.getUuid(), uuid))
+                .findAny()
+                .orElseThrow(() -> new UserNotFoundException("사용자 uuid가 없습니다"));
+
+        return findUser;
+    }
 }

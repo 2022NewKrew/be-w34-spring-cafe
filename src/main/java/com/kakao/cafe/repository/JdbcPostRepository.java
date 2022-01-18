@@ -39,7 +39,7 @@ public class JdbcPostRepository implements PostRepository {
         logger.info("[Jdbc] post findAll");
         String sql = "select * from post";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new Post(rs.getInt("id"),
-                rs.getString("user_uuid"),
+                userRepository.findByUuid(rs.getString("user_uuid")).getUserId(),
                 rs.getString("title"),
                 rs.getString("content"),
                 rs.getDate("created_at")));
@@ -52,7 +52,7 @@ public class JdbcPostRepository implements PostRepository {
 
         try {
             return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Post(rs.getInt("id"),
-                            rs.getString("user_uuid"),
+                            userRepository.findByUuid(rs.getString("user_uuid")).getUserId(),
                             rs.getString("title"),
                             rs.getString("content"),
                             rs.getDate("created_at")),
