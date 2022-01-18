@@ -40,7 +40,12 @@
                 </ul>
               </div>
               <div class="col-md-3 qna-write">
+                  {{#sessionedUser}}
                   <a href="qna/form" class="btn btn-primary pull-right" role="button">게시글 작성</a>
+                  {{/sessionedUser}}
+                  {{^sessionedUser}}
+                  <a href="/auth/login" class="btn btn-primary pull-right" role="button">게시글 작성</a>
+                  {{/sessionedUser}}
               </div>
           </div>
         </div>

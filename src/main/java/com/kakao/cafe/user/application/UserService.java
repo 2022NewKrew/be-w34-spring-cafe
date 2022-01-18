@@ -2,6 +2,7 @@ package com.kakao.cafe.user.application;
 
 import com.kakao.cafe.common.exception.AuthenticationException;
 import com.kakao.cafe.common.exception.EntityNotFoundException;
+import com.kakao.cafe.user.domain.SessionedUser;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
 import com.kakao.cafe.user.dto.*;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.kakao.cafe.common.exception.ExceptionMessage.*;
@@ -77,9 +77,9 @@ public class UserService {
         return SessionedUser.valueOf(user);
     }
 
-    private void validateUpdateRequest(String userId, UserUpdateRequest userUpdateRequest, SessionedUser sessionedUser) {
-        if (!Objects.equals(userId, sessionedUser.userId)
-                || !Objects.equals(userUpdateRequest.password, sessionedUser.password)) {
+    private void validateUpdateRequest(String userId, UserUpdateRequest request, SessionedUser user)
+            throws AuthenticationException {
+        if (!(user.hasSameUserLoggedIn(userId) && user.matchesPassword(request.password))) {
             AuthenticationException.throwAuthFailure(REQUIRED_RE_LOGIN_EXCEPTION);
         }
     }

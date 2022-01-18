@@ -8,4 +8,5 @@ public class ExceptionMessage {
     public static String NOT_MATCHING_PASSWORD_EXCEPTION = "비밀번호가 일치하지 않습니다.";
     public static String NO_SUCH_USER_EXCEPTION = "id에 해당하는 User가 존재하지 않습니다.";
     public static String REQUIRED_RE_LOGIN_EXCEPTION = "인증정보가 유효하지 않습니다. 다시 로그인해주세요.";
+    public static String UPDATE_OTHERS_ARTICLE_NOT_ALLOWED_EXCEPTION = "다른 사람의 글을 수정할 수 없습니다.";
 }

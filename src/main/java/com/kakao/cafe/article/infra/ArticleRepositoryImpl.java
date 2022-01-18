@@ -30,4 +30,9 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                 .filter(article -> article.isSameArticleById(articleId))
                 .findFirst().orElse(null);
     }
+
+    @Override
+    public void update(Article article) {
+
+    }
 }

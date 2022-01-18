@@ -7,6 +7,7 @@ import lombok.Builder;
 @Builder
 public class ArticleShowResponse {
 
+    public final int articleId;
     public final String authorId;
     public final String authorName;
     public final String title;
@@ -16,13 +17,12 @@ public class ArticleShowResponse {
     public static ArticleShowResponse valueOf(Article article) {
         User author = article.getAuthor();
         return ArticleShowResponse.builder()
+                .articleId(article.getId())
                 .authorId(author.getUserId())
                 .authorName(author.getName())
                 .title(article.getTitle())
                 .content(article.getContent())
                 .createdAt(article.getCreatedAt())
                 .build();
-
-
     }
 }
