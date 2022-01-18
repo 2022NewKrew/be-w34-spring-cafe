@@ -1,1 +1,1 @@
-INSERT INTO USERS VALUES (0,'admin','1234','admin@kakaocorp.com','2022-01-17');
+INSERT INTO USERS (USER_ID,PASSWORD,EMAIL,REGISTER_DATE) VALUES ('admin','1234','admin@kakaocorp.com','2022-01-17');
