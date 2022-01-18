@@ -1,10 +1,10 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.dto.RequestArticleDto;
-import com.kakao.cafe.domain.dto.ResponseArticleDto;
-import com.kakao.cafe.repository.article.ArticleRepository;
-import com.kakao.cafe.repository.article.H2ArticleRepository;
+import com.kakao.cafe.domain.entity.Article;
+import com.kakao.cafe.dto.RequestArticleDto;
+import com.kakao.cafe.dto.ResponseArticleDto;
+import com.kakao.cafe.domain.repository.article.ArticleRepository;
+import com.kakao.cafe.domain.repository.article.H2ArticleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

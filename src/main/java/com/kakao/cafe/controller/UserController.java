@@ -1,9 +1,9 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.config.auth.LoginUser;
-import com.kakao.cafe.domain.dto.RequestUserDto;
+import com.kakao.cafe.dto.RequestUserDto;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.domain.dto.SessionUser;
+import com.kakao.cafe.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

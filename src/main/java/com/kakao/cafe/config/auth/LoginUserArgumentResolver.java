@@ -1,6 +1,6 @@
 package com.kakao.cafe.config.auth;
 
-import com.kakao.cafe.domain.dto.SessionUser;
+import com.kakao.cafe.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;

@@ -1,13 +1,13 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.dto.RequestUserDto;
-import com.kakao.cafe.domain.dto.ResponseUserDto;
+import com.kakao.cafe.domain.entity.User;
+import com.kakao.cafe.dto.RequestUserDto;
+import com.kakao.cafe.dto.ResponseUserDto;
 
-import com.kakao.cafe.repository.user.H2UserRepository;
+import com.kakao.cafe.domain.repository.user.H2UserRepository;
 
-import com.kakao.cafe.repository.user.UserRepository;
-import com.kakao.cafe.domain.dto.SessionUser;
+import com.kakao.cafe.domain.repository.user.UserRepository;
+import com.kakao.cafe.dto.SessionUser;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
@@ -94,15 +94,6 @@ public class UserService {
         if (!BCrypt.checkpw(password, user.getHashedPw())) {
             throw new IllegalStateException("패스워드가 일치하지 않습니다.");
         }
-    }
-
-    // TO DO: 없애는 방법 고민
-    public boolean isOwnerOfId(long id, String ownerUserId) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
-        if (user.getUserId().equals(ownerUserId)) {
-            return true;
-        }
-        return false;
     }
 
 }

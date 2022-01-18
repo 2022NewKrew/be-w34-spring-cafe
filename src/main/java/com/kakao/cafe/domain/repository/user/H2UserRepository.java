@@ -1,8 +1,7 @@
-package com.kakao.cafe.repository.user;
+package com.kakao.cafe.domain.repository.user;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;

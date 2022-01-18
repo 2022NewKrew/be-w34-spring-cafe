@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.domain.entity;
 
 import lombok.Getter;
 

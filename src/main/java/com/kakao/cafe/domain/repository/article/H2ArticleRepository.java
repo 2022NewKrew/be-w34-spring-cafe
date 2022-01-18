@@ -1,23 +1,15 @@
-package com.kakao.cafe.repository.article;
+package com.kakao.cafe.domain.repository.article;
 
-import com.kakao.cafe.config.SpringJdbcConfig;
-import com.kakao.cafe.controller.UserController;
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.entity.Article;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,7 +28,7 @@ public class H2ArticleRepository implements ArticleRepository {
     public Article save(Article article) {
         if(article.getId() == 0){
             String sql = "INSERT INTO `ARTICLE`(AUTHOR, TITLE, CONTENT, VIEWS, CREATED_AT) VALUES(?,?,?,?,?)";
-            jdbcTemplate.update(sql, article.getAuthor(), article.getContent(), article.getViews(), article.getContent());
+            jdbcTemplate.update(sql, article.getAuthor(), article.getContent(), article.getViews(), article.getContent(), article.getCreatedAt());
             return article;
         }
 

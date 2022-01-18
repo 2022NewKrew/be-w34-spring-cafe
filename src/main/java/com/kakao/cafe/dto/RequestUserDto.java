@@ -1,11 +1,13 @@
-package com.kakao.cafe.domain.dto;
+package com.kakao.cafe.dto;
 
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class RequestUserDto {
     private String userId;
     private String password;
@@ -19,15 +21,5 @@ public class RequestUserDto {
         this.name = name;
         this.email = email;
     }
-
-    public String toString(){
-        return "{" +
-                "userId:" + userId + ", " +
-                "password:" + password + ", " +
-                "name:" + name + ", " +
-                "email:" + email +
-                "}";
-    }
-
 
 }

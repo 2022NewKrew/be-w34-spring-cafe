@@ -1,6 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.dto.RequestArticleDto;
+import com.kakao.cafe.config.auth.LoginUser;
+import com.kakao.cafe.dto.RequestArticleDto;
+import com.kakao.cafe.dto.SessionUser;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +21,9 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("/posts")
-    public String addArticle(@ModelAttribute RequestArticleDto articleDto) {
+    public String addArticle(@ModelAttribute RequestArticleDto articleDto, @LoginUser SessionUser user) {
         log.info("POST /posts {}", articleDto);
+
         articleService.addPost(articleDto);
         return "redirect:/";
     }

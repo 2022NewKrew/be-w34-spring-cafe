@@ -1,14 +1,16 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Getter
 @Setter
-public class Article {
+@ToString
+public class ResponseArticleDto {
     private long id;
     private String author;
     private String title;
@@ -16,10 +18,8 @@ public class Article {
     private long views;
     private Date createdAt;
 
-//    public Article(long id) {
-//        this.id = id;
-//        this.createdAt = new Date();
-//    }
-
-
+    public String getCreatedAt(){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(createdAt);
+    }
 }
