@@ -32,14 +32,7 @@ public class ArticleDbRepository implements ArticleRepository {
     @Override
     public void save(Article entity) {
         String sql = "insert into article (title, content, view_count, writer_email) values (?, ?, 0, ?)";
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, entity.getTitle());
-            ps.setString(2, entity.getContent());
-            ps.setString(3, entity.getWriter().getEmail());
-            return ps;
-        }, keyHolder);
+        jdbcTemplate.update(sql, entity.getTitle(), entity.getContent(), entity.getWriter().getEmail());
     }
 
     @Override
