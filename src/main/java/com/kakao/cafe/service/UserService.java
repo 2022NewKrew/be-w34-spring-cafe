@@ -23,30 +23,30 @@ public class UserService {
     }
 
     public User findUser(Integer id) {
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
     }
 
     public User login(String userId, String password) {
-        User user = userRepository.findByUserId(userId).orElse(null);
-        if (user != null && user.getPassword().equals(password)) {  // TODO: 여기도 exception으로 처리하기
-            return user;
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("없는 아이디거나 비밀번호가 잘못되었습니다."));
+        if (!user.getPassword().equals(password)) {
+            throw new IllegalArgumentException("없는 아이디거나 비밀번호가 잘못되었습니다.");
         }
-        return null;
+
+        return user;
     }
 
     public List<User> list() {
         return userRepository.findAll();
     }
 
-    public boolean updateUser(int id, UserUpdateRequest request) {
-        User user = userRepository.findById(id).get();
+    public void updateUser(int id, UserUpdateRequest request) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("없는 아이디거나 비밀번호가 잘못되었습니다."));
         if (!user.getPassword().equals(request.getPassword())) {
-            return false;
+            throw new IllegalArgumentException("기존 비밀번호가 잘못되었습니다.");
         }
 
         user.update(request.getPassword(), request.getName(), request.getEmail());
         userRepository.update(user);
-        return true;
     }
 
 }

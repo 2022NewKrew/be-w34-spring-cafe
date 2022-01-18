@@ -62,7 +62,7 @@ public class UserRepository implements CrudRepository<User, Integer> {
         query.append(" WHERE users.user_id = ?");
 
         User user;
-        try {  // TODO: controller advice로 통합하기
+        try {
             user = jdbcTemplate.queryForObject(query.toString(), (rs, rowNum) -> new User(rs.getInt("id"), rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email")), userId);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();

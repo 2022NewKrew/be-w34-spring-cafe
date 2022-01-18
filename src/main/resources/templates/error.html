@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    {{> partials/header}}
+</head>
+<body>
+{{> partials/nav}}
+{{> partials/subnav}}
+
+<div class="container" id="main">
+    <div>
+        {{#message}}
+        {{message}}
+        {{/message}}
+    </div>
+    <div>
+        {{#referer}}
+        <a href="{{referer}}" class="btn btn-primary" role="button">이전 화면</a>
+        {{/referer}}
+    </div>
+</div>
+
+{{> partials/script-references}}
+</body>
+</html>

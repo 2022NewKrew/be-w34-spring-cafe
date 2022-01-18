@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -64,26 +65,9 @@ public class UserController {
     public String updateUser(@PathVariable Integer id, UserUpdateRequest request, HttpSession session, Model model) {
         log.info("start updateUser()");
         User sessionedUser = (User) session.getAttribute("sessionedUser");
-        if (sessionedUser == null) {
-            model.addAttribute("isNotLogin", true);
-            return "/users/updateForm";
-        }
 
-        log.info(sessionedUser.getUserId());
-        log.info(request.getUserId());
-        if (sessionedUser.getUserId() != request.getUserId()) {
-            model.addAttribute("wrongUser", UserProfileResponse.from(sessionedUser));
-            return "/users/updateForm";
-        }
-
-        if (userService.updateUser(id, request)) {
-            return "redirect:/users";
-        }
-
-        User user = userService.findUser(id);
-        model.addAttribute("userProfile", UserProfileResponse.from(user));
-        model.addAttribute("isFailed", true);
-        return "/users/updateForm";
+        userService.updateUser(id, request);
+        return "redirect:/users";
     }
 
     @GetMapping("/users/login")
@@ -112,6 +96,14 @@ public class UserController {
         }
 
         return "redirect:/";
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public String illegalArgumentException(IllegalArgumentException e, HttpServletRequest request, Model model) {
+        log.info("start illegalArgumentException()");
+        model.addAttribute("referer", request.getHeader("referer"));
+        model.addAttribute("message", e.getMessage());
+        return "/error";
     }
 
 }
