@@ -96,6 +96,8 @@
     - 확인해보니, 하단에 정의된 h2 선언이 해당 내용을 덧씌워서 생긴 오류 ( h2 설정을 주석처리 )
   - 테이블이 존재해여 접근이 가능하므로, workbench 나 cli 로 테이블을 미리 생성해줘야함
     - h2 랑 다르게 스크립트를 추가시켜 같이 실행시키는 기능은 따로 없는 것 같음
+- Dotenv 로 mysql 비밀번호를 좀 보호하려고 했는데, spring 환경에선 적용이 안되는 듯 하다.
+  - 관련 모듈을 발견했는데, 적용하긴 좀 껄끄러운 상태
 
 # 참고 사이트
 - Collection 관련
@@ -127,4 +129,8 @@
   - https://offbyone.tistory.com/54
   - https://deviscreen.tistory.com/85
   - https://engkimbs.tistory.com/794 ( 실패 )
-
+  - https://m.blog.naver.com/jesang1/221993846056
+- dotenv
+  - http://daplus.net/java-spring-boot%EC%9D%98-application-properties%EC%97%90%EC%84%9C-env-%EB%B3%80%EC%88%98-%EC%82%AC%EC%9A%A9/
+  - https://wordbe.tistory.com/entry/Springboot-%EC%99%B8%EB%B6%80%EC%84%A4%EC%A0%95-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC
+  - https://github.com/paulschwarz/spring-dotenv
