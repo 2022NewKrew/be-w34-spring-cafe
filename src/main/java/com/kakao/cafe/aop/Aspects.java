@@ -67,7 +67,7 @@ public class Aspects {
         String loggedInId = (String) session.getAttribute("USER_ID");
 
         if (mineCheck.type().toString().equals("ARTICLE") && !(boardService.isSameArticleWriter((long) joinPoint.getArgs()[0], loggedInId))) {
-            throw new NotMineException("해당 글의 작성자가 아니므로 수정하거나 삭제할 수 없습니다.");
+            throw new NotMineException("해당 게시글의 작성자가 아니므로 수정하거나 삭제할 수 없습니다.");
         }
 
         if (mineCheck.type().toString().equals("COMMENT")
