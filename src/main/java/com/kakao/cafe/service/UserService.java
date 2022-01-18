@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.dto.UserCreateDto;
 import com.kakao.cafe.dto.UserLoginDto;
 import com.kakao.cafe.dto.UserShowDto;
+import com.kakao.cafe.dto.UserUpdateDto;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.repository.UserJdbcRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,10 @@ public class UserService {
             throw new IllegalArgumentException("유저 아이디와 패스워드가 일치하지 않습니다");
         }
         return user.orElseThrow();
+    }
+
+
+    public void update(Integer id, UserUpdateDto userUpdateDto){
+        userRepository.update(id, userUpdateDto);
     }
 }

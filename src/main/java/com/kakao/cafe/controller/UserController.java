@@ -5,6 +5,7 @@ import com.kakao.cafe.dto.UserCreateDto;
 import com.kakao.cafe.dto.UserLoginDto;
 import com.kakao.cafe.dto.UserShowDto;
 
+import com.kakao.cafe.dto.UserUpdateDto;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.UserService;
 
@@ -64,15 +65,6 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/update")
-    public String getUpdateForm(HttpSession session) {
-        Object value = session.getAttribute("sessionUser");
-        if (value != null) {
-            User sessionUser = (User)value;
-        }
-        return "redirect:/";
-    }
-
     @GetMapping("/login/form")
     public String loginForm(){
         return "user/login";
@@ -94,6 +86,23 @@ public class UserController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
+        return "redirect:/";
+    }
+
+    @GetMapping("/update")
+    public String getUpdateForm(HttpSession session, Model model) {
+        Object value = session.getAttribute("sessionUser");
+        if (value != null) {
+            User sessionUser = (User)value;
+            model.addAttribute("user", sessionUser);
+            return "user/updateForm";
+        }
+        return "redirect:/login";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateUser(@PathVariable Integer id, UserUpdateDto userUpdateDto){
+        userService.update(id, userUpdateDto);
         return "redirect:/";
     }
 
