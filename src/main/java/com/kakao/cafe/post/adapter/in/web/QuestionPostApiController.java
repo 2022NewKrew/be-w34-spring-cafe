@@ -45,10 +45,10 @@ public class QuestionPostApiController {
 
     @PutMapping("/{post-id}")
     public ResponseEntity<QuestionPostResponse> update(
-            @PathVariable(name = "post-id") Long id,
+            @PathVariable(name = "post-id") Long postId,
             @Valid @RequestBody QuestionPostUpdateRequest updateRequest) {
         updateQuestionPostUseCase.updatePost(new QuestionPostUpdateCommand(
-                id,
+                postId,
                 updateRequest.getTitle(),
                 updateRequest.getContent()));
         return ResponseEntity
@@ -56,8 +56,8 @@ public class QuestionPostApiController {
     }
 
     @DeleteMapping("/{post-id}")
-    public ResponseEntity<QuestionPostResponse> delete(@PathVariable(name = "post-id") Long id) {
-        deleteQuestionPostUseCase.deletePost(new QuestionPostDeleteCommand(id));
+    public ResponseEntity<QuestionPostResponse> delete(@PathVariable(name = "post-id") Long postId) {
+        deleteQuestionPostUseCase.deletePost(new QuestionPostDeleteCommand(postId));
         return ResponseEntity
                 .ok(new QuestionPostResponse("success"));
     }

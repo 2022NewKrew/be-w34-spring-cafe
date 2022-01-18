@@ -24,9 +24,9 @@ public class QuestionPostController {
     private final UpdateQuestionPostUseCase updateQuestionPostUseCase;
 
     @GetMapping("/{post-id}/detail")
-    public String postDetail(@PathVariable(name = "post-id") Long id, Model model, HttpSession httpSession) {
-        QuestionPostDetailResult postDetail = getQuestionPostUseCase.getPostDetail(new QuestionPostDetailCommand(id));
-        updateQuestionPostUseCase.clickPost(new QuestionPostClickCommand(id));
+    public String postDetail(@PathVariable(name = "post-id") Long postId, Model model, HttpSession httpSession) {
+        QuestionPostDetailResult postDetail = getQuestionPostUseCase.getPostDetail(new QuestionPostDetailCommand(postId));
+        updateQuestionPostUseCase.clickPost(new QuestionPostClickCommand(postId));
         model.addAttribute("post", postDetail);
 
         if(Objects.equals(httpSession.getAttribute("user-id"), postDetail.getUserAccountId())) {
@@ -39,8 +39,8 @@ public class QuestionPostController {
     }
 
     @GetMapping("/{post-id}/update")
-    public String updatePost(@PathVariable(name = "post-id") Long id, Model model) {
-        QuestionPostDetailResult postDetail = getQuestionPostUseCase.getPostDetail(new QuestionPostDetailCommand(id));
+    public String updatePost(@PathVariable(name = "post-id") Long postId, Model model) {
+        QuestionPostDetailResult postDetail = getQuestionPostUseCase.getPostDetail(new QuestionPostDetailCommand(postId));
 
         model.addAttribute("post", postDetail);
 

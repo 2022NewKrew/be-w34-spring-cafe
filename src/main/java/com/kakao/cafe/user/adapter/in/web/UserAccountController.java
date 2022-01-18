@@ -34,9 +34,9 @@ public class UserAccountController {
         return "before/users";
     }
 
-    @GetMapping("/{id}/detail")
-    public String userInfo(@PathVariable(name = "id") Long id, Model model, HttpSession httpSession) {
-        UserAccountDetailResult userInfo = getUserAccountUseCase.getUserInfo(new UserAccountDetailIdCommand(id));
+    @GetMapping("/{user-id}/detail")
+    public String userInfo(@PathVariable(name = "user-id") Long userId, Model model, HttpSession httpSession) {
+        UserAccountDetailResult userInfo = getUserAccountUseCase.getUserInfo(new UserAccountDetailIdCommand(userId));
         model.addAttribute("userInfo", userInfo);
 
         if(httpSession.getAttribute("user-id") != null) {
