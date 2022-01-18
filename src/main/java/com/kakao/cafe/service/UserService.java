@@ -34,7 +34,7 @@ public class UserService {
 
     public void updateUser(User user, User loginUser) throws Exception {
         errorService.checkLogin(loginUser);
-        errorService.checkSameUser(user, loginUser);
+        errorService.checkSameUser(user.getUserId(), loginUser.getUserId());
         errorService.checkPassword(user.getPassword(), loginUser.getPassword());
         userDao.updateUser(user);
     }

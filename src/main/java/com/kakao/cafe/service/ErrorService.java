@@ -22,8 +22,8 @@ public class ErrorService {
             throw new NotLoginException();
     }
 
-    public void checkSameUser(User user, User loginUser) throws IncorrectUserException {
-        if(!user.getUserId().equals(loginUser.getUserId()))
+    public void checkSameUser(String userId, String loginUserId) throws IncorrectUserException {
+        if(!userId.equals(loginUserId))
             throw new IncorrectUserException();
     }
 

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -29,8 +30,9 @@ public class ArticleController {
     }
 
     @PostMapping("/article/create")
-    public String questionForm(Article article) {
-        articleService.addArticle(article);
+    public String questionForm(Article article, HttpSession session) throws Exception {
+        User loginUser = sessionService.getLoginUser(session);
+        articleService.addArticle(article, loginUser);
         return "redirect:/";
     }
 
@@ -41,6 +43,7 @@ public class ArticleController {
 
         Article article = articleService.getArticle(index);
         model.addAttribute("article", article);
+        model.addAttribute("index", index);
         return "/qna/show";
     }
 
@@ -55,8 +58,28 @@ public class ArticleController {
     public String getQuestionForm(Model model, HttpSession session) throws NotLoginException {
         User loginUser = sessionService.getLoginUser(session);
         errorService.checkLogin(loginUser);
+
         model.addAttribute("userId", loginUser.getUserId());
         return "/qna/form";
+    }
+
+    @GetMapping("/questions/{index}/edit")
+    public String updateForm(@PathVariable int index, Model model, HttpSession session) throws Exception{
+        User loginUser = sessionService.getLoginUser(session);
+        errorService.checkLogin(loginUser);
+
+        Article article = articleService.getArticle(index);
+        errorService.checkSameUser(loginUser.getUserId(), article.getWriter());
+        model.addAttribute("article", article);
+        model.addAttribute("index", index);
+        return "/qna/updateForm";
+    }
+
+    @PutMapping("/article/{index}/edit")
+    public String editArticle(@PathVariable int index, Article article, HttpSession session) throws Exception {
+        User loginUser = sessionService.getLoginUser(session);
+        articleService.updateArticle(index, article, loginUser);
+        return "redirect:/";
     }
 
 }
