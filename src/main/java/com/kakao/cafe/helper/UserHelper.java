@@ -15,10 +15,10 @@ public class UserHelper {
     private static boolean checkRegexOfId (String userId) {
         return userId != null && userId.matches(regexOfId);
     }
-    private static boolean checkRegexOfPassword (String password) {
+    public static boolean checkRegexOfPassword (String password) {
         return password != null && password.matches(regexOfPassword);
     }
-    private static boolean checkRegexOfEmail (String email) {
+    public static boolean checkRegexOfEmail (String email) {
         return email != null && email.matches(regexOfEmail);
     }
 }

@@ -10,7 +10,7 @@
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link href="/css/index.css" rel="stylesheet">
-    <link href="/css/user/login_success.css" rel="stylesheet">
+    <link href="/css/user/form.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -42,11 +42,21 @@
 
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">가입이 완료되었습니다!</p>
+            <p class="title">프로필 변경</p>
         </header>
-        <p class="user-info"> 이메일: sam@codesquad.kr</p>
-        <p class="user-info"> 닉네임: 멋진삼</p>
-        <a href="/" class="btn">홈으로</a>
+        {{^signInUser}}
+        <p class="user-title">로그인 정보를 찾을 수 없습니다.</p>
+        {{/signInUser}}
+        {{#signInUser}}
+        <form name="question" class="info-container" method="post" action="/users/profile/edit">
+            <input type="hidden" name="_method" value="PUT"/>
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요" value="{{email}}">
+            </div>
+            <button type="submit" class="btn btn-success clearfix pull-right">변경</button>
+        </form>
+        {{/signInUser}}
     </div>
 </div>
 </body>

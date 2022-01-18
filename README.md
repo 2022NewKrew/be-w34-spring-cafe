@@ -71,7 +71,7 @@
   - application.properties 에 "spring.mustache.expose-session-attributes=true" 설정이 필요
 - @Aspect 를 쓰기 위해선, spring-aop 가 아닌 spring-boot-starter-aop 가 필요
   - Get/Post Mapping 의 경우, annotation 기반으로 적용시켜서 되는데, execute 는 왜 실행이 안되는지 잘 파악을 못하겠음
-  
+
 # 배포 절차
 - 실패한 방법
   - File -> project structure -> artifacts 추가
@@ -88,6 +88,16 @@
   - 출력하는 .html 파일 경로에 /가 중첩으로 들어간 것을 확인 ( templates//path/~.html )
   - 아무래도, spring 이 template/ 까지를 기본 경로로 추가해줘서 생긴 문제 같음 (로컬에선 왜 돌아간건지 의문)
   - 각 View 경로의 앞에 "/" 를 제거해주고, 리빌딩하여 서버에서 작동시키니 정상동작함
+- mysql 과의 연동과정에서, application.properties 설정문제가 발생
+  - hikari 라는 도구가 스프링의 기본툴로 잡혀있음
+  - 그래서 인자 명칭에 hikari 라는 경로명이 추가되었으나, 에러가 발생
+  - HikariPool-1 - jdbcUrl is required with driverClassName.
+    - jdbc-url 에는 hikari 경로를 제거하니 일단은 해결됨
+    - 확인해보니, 하단에 정의된 h2 선언이 해당 내용을 덧씌워서 생긴 오류 ( h2 설정을 주석처리 )
+  - 테이블이 존재해여 접근이 가능하므로, workbench 나 cli 로 테이블을 미리 생성해줘야함
+    - h2 랑 다르게 스크립트를 추가시켜 같이 실행시키는 기능은 따로 없는 것 같음
+- Dotenv 로 mysql 비밀번호를 좀 보호하려고 했는데, spring 환경에선 적용이 안되는 듯 하다.
+  - 관련 모듈을 발견했는데, 적용하긴 좀 껄끄러운 상태
 
 # 참고 사이트
 - Collection 관련
@@ -111,4 +121,16 @@
   - https://eehoeskrap.tistory.com/543
 - java sdk
   - https://hoohaha.tistory.com/41
-
+- mysql
+  - https://whitepaek.tistory.com/16
+  - https://cirius.tistory.com/1769
+  - https://dev-coco.tistory.com/85
+  - https://doozi0316.tistory.com/entry/Spring-Boot-MyBatis-MySQL-%EC%97%B0%EB%8F%99-%EB%B0%A9%EB%B2%95
+  - https://offbyone.tistory.com/54
+  - https://deviscreen.tistory.com/85
+  - https://engkimbs.tistory.com/794 ( 실패 )
+  - https://m.blog.naver.com/jesang1/221993846056
+- dotenv
+  - http://daplus.net/java-spring-boot%EC%9D%98-application-properties%EC%97%90%EC%84%9C-env-%EB%B3%80%EC%88%98-%EC%82%AC%EC%9A%A9/
+  - https://wordbe.tistory.com/entry/Springboot-%EC%99%B8%EB%B6%80%EC%84%A4%EC%A0%95-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC
+  - https://github.com/paulschwarz/spring-dotenv

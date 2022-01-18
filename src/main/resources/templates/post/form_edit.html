@@ -10,7 +10,7 @@
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link href="/css/index.css" rel="stylesheet">
-    <link href="/css/user/login_success.css" rel="stylesheet">
+    <link href="/css/post/form.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -42,11 +42,39 @@
 
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">가입이 완료되었습니다!</p>
+            <p class="title">글 수정</p>
         </header>
-        <p class="user-info"> 이메일: sam@codesquad.kr</p>
-        <p class="user-info"> 닉네임: 멋진삼</p>
-        <a href="/" class="btn">홈으로</a>
+        {{^signInUser}}
+        <p class="user-title">게시글 수정을 위해선 로그인이 필요합니다.</p>
+        {{/signInUser}}
+        {{#signInUser}}
+        {{^post}}
+        <p class="user-title">해당 게시글의 수정 권한이 없습니다.</p>
+        {{/post}}
+        {{#post}}
+        <form class="submit-write" method="post" action="/posts/edit/{{postId}}">
+            <input type="hidden" name="userId" value="{{userId}}">
+            <div class="text-box">
+                <div class="comment-writer-container">
+                    <p class="post-title">제목</p>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요">{{title}}</textarea>
+                </div>
+            </div>
+
+            <div class="text-box">
+                <div class="comment-writer-container">
+                    <p class="post-content">내용</p>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요">{{content}}</textarea>
+                </div>
+            </div>
+            <input class="post-write-btn" type="submit" value="수정"/>
+        </form>
+        {{/post}}
+        {{/signInUser}}
     </div>
 </div>
 </body>
