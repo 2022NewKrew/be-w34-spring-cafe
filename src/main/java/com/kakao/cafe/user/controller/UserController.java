@@ -25,11 +25,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/form")
-    public String showUserForm() {
-        return "user/form";
-    }
-
     @GetMapping("/user/{userId}/form")
     public String showUpdateUserForm(@PathVariable String userId, Model model, HttpSession session) {
         Optional<UserId> loginId = Optional.ofNullable((UserId) session.getAttribute("loginUser"));
@@ -67,23 +62,18 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("user/login")
-    public String showLoginForm() {
-        return "/user/login";
-    }
-
-    @GetMapping("user/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/";
-    }
-
     @PostMapping("user/login")
     public String login(@ModelAttribute LoginFormDto loginFormDto, HttpSession session) {
         UserId userId = new UserId(loginFormDto.getUserId());
         Password password = new Password(loginFormDto.getPassword());
         User user = userService.login(userId, password);
         session.setAttribute("loginUser", user.getUserId());
+        return "redirect:/";
+    }
+
+    @GetMapping("user/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
         return "redirect:/";
     }
 }

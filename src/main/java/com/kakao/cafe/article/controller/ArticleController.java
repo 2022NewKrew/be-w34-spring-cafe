@@ -38,11 +38,6 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("/question/form")
-    public String showArticleForm() {
-        return "qna/form";
-    }
-
     @PostMapping("/question/create")
     public String createArticle(ArticleFormDto articleFormDto) {
         Article article = articleMapper.toArticle(articleFormDto);
