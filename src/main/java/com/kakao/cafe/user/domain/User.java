@@ -1,7 +1,6 @@
 package com.kakao.cafe.user.domain;
 
-import com.kakao.cafe.user.dto.SignUpDTO;
-import com.kakao.cafe.user.dto.UpdateDTO;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,21 +18,6 @@ public class User {
 
     private String email;
 
-    public User(Long id, SignUpDTO signUpDTO) {
-        this.id = id;
-        this.userId = signUpDTO.getUserId();
-        this.password = signUpDTO.getPassword();
-        this.name = signUpDTO.getName();
-        this.email = signUpDTO.getEmail();
-    }
-
-    public User(SignUpDTO signUpDTO) {
-        this.userId = signUpDTO.getUserId();
-        this.password = signUpDTO.getPassword();
-        this.name = signUpDTO.getName();
-        this.email = signUpDTO.getEmail();
-    }
-
     public User(Long id, String userId, String password, String name, String email) {
         this.id = id;
         this.userId = userId;
@@ -42,19 +26,24 @@ public class User {
         this.email = email;
     }
 
-    public User(UpdateDTO updateDTO) {
-        this.id = updateDTO.getId();
-        this.userId = updateDTO.getUserId();
-        this.password = updateDTO.getPassword();
-        this.name = updateDTO.getName();
-        this.email = updateDTO.getEmail();
+    public User(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
-    public User updateInfo(UpdateDTO updateDTO) {
-        return new User(updateDTO);
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public boolean equalsPassword(String InputPassword) {
-        return this.password.equals(InputPassword);
+    public void validateEqualsPassword(String inputPassword){
+        if (!equalsPassword(inputPassword)) {
+            throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
+        }
+    }
+
+    public boolean equalsPassword(String inputPassword) {
+        return this.password.equals(inputPassword);
     }
 }

@@ -1,12 +1,13 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.dto.QuestionDTO;
-import com.kakao.cafe.article.factory.ArticleFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
 
 
 @Repository
@@ -14,11 +15,10 @@ import java.util.*;
 public class ArticleMemoryRepository implements ArticleRepository {
 
     private final static Map<Long, Article> articleMap = new TreeMap<>();
-    private final ArticleFactory articleFactory;
 
     @Override
-    public void save(QuestionDTO articleDTO) {
-        Article article = articleFactory.of(articleMap.size() + 1L, articleDTO);
+    public void save(Article article) {
+        article.setArticleId(articleMap.size() + 1L);
         articleMap.put(articleMap.size() + 1L, article);
     }
 

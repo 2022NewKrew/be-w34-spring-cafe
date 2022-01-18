@@ -2,16 +2,19 @@ package com.kakao.cafe.user.factory;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.SignUpDTO;
-import org.springframework.stereotype.Component;
+import com.kakao.cafe.user.dto.UpdateDTO;
 
-@Component
+
 public class UserFactory {
 
-    public User of(Long id, SignUpDTO signUpDTO) {
-        return new User(id, signUpDTO);
+    private UserFactory() {
     }
 
-    public User of(SignUpDTO signUpDTO) {
-        return new User(signUpDTO);
+    public static User toUser(SignUpDTO signUpDTO) {
+        return new User(signUpDTO.getUserId(), signUpDTO.getPassword(), signUpDTO.getName(), signUpDTO.getEmail());
+    }
+
+    public static User toUser(UpdateDTO updateDTO) {
+        return new User(updateDTO.getId(), updateDTO.getUserId(), updateDTO.getNewPassword(), updateDTO.getName(), updateDTO.getEmail());
     }
 }

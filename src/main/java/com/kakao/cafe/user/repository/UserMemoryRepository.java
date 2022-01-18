@@ -1,24 +1,27 @@
 package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.dto.SignUpDTO;
-import com.kakao.cafe.user.dto.UpdateDTO;
-import com.kakao.cafe.user.factory.UserFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
 
 @Repository
 @RequiredArgsConstructor
 public class UserMemoryRepository implements UserRepository {
 
-    private final UserFactory userFactory;
     private final static Map<Long, User> userMap = new TreeMap<>();
 
     @Override
-    public void save(SignUpDTO signUpDTO) {
-        User user = userFactory.of(userMap.size() + 1L, signUpDTO);
+    public void save(User user) {
+        if (user.getId() != null) {
+            userMap.put(user.getId(), user);
+            return;
+        }
+        user.setId(userMap.size() + 1L);
         userMap.put(userMap.size() + 1L, user);
     }
 
@@ -32,11 +35,5 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return List.copyOf(userMap.values());
-    }
-
-    @Override
-    public void update(UpdateDTO updateDTO) {
-        User user = userMap.get(updateDTO.getId());
-        userMap.put(updateDTO.getId(), user.updateInfo(updateDTO));
     }
 }

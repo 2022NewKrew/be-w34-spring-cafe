@@ -7,11 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ArticleFactory {
 
-    public Article of(Long id, QuestionDTO questionDTO) {
-        return new Article(id, questionDTO);
-    }
-
-    public Article of(QuestionDTO questionDTO) {
-        return new Article(questionDTO);
+    public static Article toArticle(QuestionDTO questionDTO) {
+        return new Article(questionDTO.getWriter(), questionDTO.getTitle(), questionDTO.getContents());
     }
 }

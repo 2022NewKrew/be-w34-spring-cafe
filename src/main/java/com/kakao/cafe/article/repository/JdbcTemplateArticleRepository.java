@@ -1,8 +1,6 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.dto.QuestionDTO;
-import com.kakao.cafe.article.factory.ArticleFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,13 +20,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JdbcTemplateArticleRepository implements ArticleRepository {
 
-    private final ArticleFactory articleFactory;
+
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void save(QuestionDTO articleDTO) {
-
-        Article article = articleFactory.of(articleDTO);
+    public void save(Article article) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement pstmt = con.prepareStatement("insert into ARTICLES (WRITER,TITLE,CONTENTS,WRITING_TIME,COUNT_COMMENT)" +

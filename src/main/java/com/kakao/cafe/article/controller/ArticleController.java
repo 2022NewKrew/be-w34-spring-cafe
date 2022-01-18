@@ -3,6 +3,7 @@ package com.kakao.cafe.article.controller;
 import com.kakao.cafe.article.dto.ArticleViewDTO;
 import com.kakao.cafe.article.dto.DetailArticleViewDTO;
 import com.kakao.cafe.article.dto.QuestionDTO;
+import com.kakao.cafe.article.factory.ArticleFactory;
 import com.kakao.cafe.article.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,9 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @PostMapping("/question")
+    @PostMapping("/questions")
     public String question(QuestionDTO questionDTO) {
-        articleService.question(questionDTO);
+        articleService.question(ArticleFactory.toArticle(questionDTO));
 
         return "redirect:/";
     }
@@ -30,14 +31,14 @@ public class ArticleController {
     @GetMapping("/")
     public String home(Model model) {
         List<ArticleViewDTO> articleList = articleService.getAllArticles().stream()
-                .map(article -> new ArticleViewDTO(article))
+                .map(ArticleViewDTO::new)
                 .collect(Collectors.toList());
         model.addAttribute("questions", articleList);
 
         return "index";
     }
 
-    @GetMapping("/article/{index}")
+    @GetMapping("/articles/{index}")
     public String getArticleById(@PathVariable("index") Long id, Model model) {
         model.addAttribute("article", new DetailArticleViewDTO(articleService.findById(id)));
 
