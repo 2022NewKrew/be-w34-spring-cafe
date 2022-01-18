@@ -35,6 +35,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     static RowMapper<Article> mapper = (rs, rowNum) ->
         Article.builder()
+            .id((long) rs.getInt("id"))
             .title(rs.getString("title"))
             .writer(rs.getString("writer"))
             .contents(rs.getString("contents"))
