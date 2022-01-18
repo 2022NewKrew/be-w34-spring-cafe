@@ -54,11 +54,11 @@ public class QnaService {
     }
 
     @Transactional
-    public void updateQna(Integer index, QnaDto.UpdateQnaRequest updateQnaRequest) throws AccessDeniedException {
+    public void updateQna(Integer index, QnaDto.UpdateQnaRequest updateQnaRequest, String userId) throws AccessDeniedException {
         Qna qna = qnaRepository.findByIndex(index)
                 .orElseThrow(() -> new QnaNotFoundException(index));
 
-        if (!qna.isValidUpdateUser(updateQnaRequest.getWriter())) {
+        if (!qna.isValidUpdateUser(userId)) {
             throw new AccessDeniedException("수정 권한이 없습니다");
         }
 

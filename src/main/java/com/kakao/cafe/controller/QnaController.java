@@ -47,8 +47,7 @@ public class QnaController {
     @PutMapping("/questions/{index}")
     public String updateQna(@PathVariable("index") Integer index, @ModelAttribute QnaDto.UpdateQnaRequest updateQnaRequest, HttpSession session) throws AccessDeniedException {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        updateQnaRequest.setWriter(sessionedUser.getUserId());
-        qnaService.updateQna(index, updateQnaRequest);
+        qnaService.updateQna(index, updateQnaRequest, sessionedUser.getUserId());
         return "redirect:/";
     }
 

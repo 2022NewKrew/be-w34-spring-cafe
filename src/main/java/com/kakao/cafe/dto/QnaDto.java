@@ -98,16 +98,8 @@ public class QnaDto {
             return title;
         }
 
-        public String getWriter() {
-            return writer;
-        }
-
         public String getContents() {
             return contents;
-        }
-
-        public void setWriter(String writer) {
-            this.writer = writer;
         }
 
         public Qna toEntity(Integer index) {
