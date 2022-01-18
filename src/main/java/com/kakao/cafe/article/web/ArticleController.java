@@ -17,30 +17,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/articles")
 @Controller
 public class ArticleController {
 
     private final ArticleService articleService;
     private static final String SESSION_NAME = "sessionedUser";
 
-    @GetMapping("/")
-    public String articleList(Model model) {
-        List<ArticleShowDto> articleShowDtoList = articleService.findAllArticle();
-        model.addAttribute("articles", articleShowDtoList);
-        return "qna/list";
-    }
-
-    @GetMapping("/articles/{index}")
-    public String articleDetail(@PathVariable("index") Long index, Model model) {
-        ArticleShowDto articleShowDto = articleService.findArticle(index);
-        model.addAttribute("article", articleShowDto);
-        return "qna/show";
-    }
-
-    @PostMapping("/questions")
+    @PostMapping
     public String articleAdd(@Valid ArticleSaveDto articleSaveDto, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute(SESSION_NAME);
         articleSaveDto.setWriter(user.getUserId());
@@ -48,9 +36,24 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/questions/{index}")
-    public String questionDetail(@PathVariable("index") Long index, Model model,
+    @GetMapping
+    public String articleList(Model model) {
+        List<ArticleShowDto> articleShowDtoList = articleService.findAllArticle();
+        model.addAttribute("articles", articleShowDtoList);
+        return "qna/list";
+    }
+
+    @GetMapping("/{index}")
+    public String articleDetail(@PathVariable("index") Long index, Model model) {
+        ArticleShowDto articleShowDto = articleService.findArticle(index);
+        model.addAttribute("article", articleShowDto);
+        return "qna/show";
+    }
+
+    @GetMapping("/{index}/editform")
+    public String articleEditForm(@PathVariable("index") Long index, Model model,
         HttpSession httpSession) {
+        // 수정 form 요청
         // 자신의 글이 맞는지 validate
         if (!validate(httpSession, index)) {
             return "redirect:/";
@@ -60,14 +63,14 @@ public class ArticleController {
         return "qna/editform";
     }
 
-    @PutMapping("/questions/{index}")
+    @PutMapping("/{index}")
     public String questionModify(@Valid ArticleModifyDto articleModifyDto,
         @PathVariable("index") Long index) {
         articleService.modifyArticle(index, articleModifyDto);
         return "redirect:/articles/" + index;
     }
 
-    @DeleteMapping("/questions/{index}")
+    @DeleteMapping("/{index}")
     public String questionRemove(@PathVariable("index") Long index, HttpSession httpSession) {
         if (!validate(httpSession, index)) {
             return "redirect:/";

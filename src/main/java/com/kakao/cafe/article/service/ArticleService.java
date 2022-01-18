@@ -34,6 +34,10 @@ public class ArticleService {
             .collect(Collectors.toList());
     }
 
+    public ArticleShowDto findArticle(Long id) {
+        return createArticleShowDto(articleRepository.findById(id));
+    }
+
     private ArticleShowDto createArticleShowDto(Article article) {
         return ArticleShowDto.builder()
             .index(article.getId())
@@ -41,10 +45,6 @@ public class ArticleService {
             .title(article.getTitle())
             .contents(article.getContents())
             .build();
-    }
-
-    public ArticleShowDto findArticle(Long id) {
-        return createArticleShowDto(articleRepository.findById(id));
     }
 
     public void modifyArticle(Long id, ArticleModifyDto articleModifyDto) {
@@ -55,11 +55,11 @@ public class ArticleService {
         articleRepository.update(id, article);
     }
 
-    public String findArticleWriter(Long id) {
-        return findArticle(id).getWriter();
-    }
-
     public void removeArticle(Long id) {
         articleRepository.delete(id);
+    }
+
+    public String findArticleWriter(Long id) {
+        return findArticle(id).getWriter();
     }
 }
