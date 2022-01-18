@@ -31,6 +31,7 @@ public class QuestionController {
     private final QuestionService questionService;
     private final ModelMapper modelMapper;
     private final SessionLoginUser sessionLoginUser;
+    private static final Long NOT_FOUND_MEMBER_ID = -1L;
 
     @PostMapping("/create")
     public String insertQuestion(@ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto, Model model) throws BaseException, SQLException {
@@ -133,6 +134,6 @@ public class QuestionController {
     private Long getMemberId() {
 
         UserDto loginUser = (UserDto) sessionLoginUser.getLoginUser();
-        return loginUser == null ? -1L : loginUser.getId();
+        return loginUser == null ? NOT_FOUND_MEMBER_ID : loginUser.getId();
     }
 }
