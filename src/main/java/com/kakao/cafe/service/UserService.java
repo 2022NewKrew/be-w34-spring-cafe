@@ -33,14 +33,12 @@ public class UserService {
     }
 
     public UserResponseDto findById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 아이디의 사용자가 없습니다"));
+        User user = userRepository.findById(id);
         return new UserResponseDto(user);
     }
 
     public void update(Long id, UserSaveDto dto) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 아이디의 사용자가 없습니다"));
+        User user = userRepository.findById(id);
         user.setEmail(dto.getEmail());
         user.setName(dto.getName());
         user.setPassword(dto.getPassword());
