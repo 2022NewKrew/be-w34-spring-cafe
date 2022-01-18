@@ -8,8 +8,14 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="/users">멤버 리스트</a></li>
-            <li><a class="black-component" href="/user/login" role="button">로그인</a></li>
-            <li><a class="black-component" href="/user/form" role="button">회원가입</a></li>
+            {{^sessionedUserId}}
+            <li><a class="black-component" href="/users/login" role="button">로그인</a></li>
+            <li><a class="black-component" href="/users/register" role="button">회원가입</a></li>
+            {{/sessionedUserId}}
+            {{#sessionedUserId}}
+            <li><a class="black-component" href="/users/logout" role="button">로그아웃</a></li>
+            <li><a class="black-component" href="/users/form" role="button">개인정보수정</a></li>
+            {{/sessionedUserId}}
         </ul>
     </div>
 </nav>

@@ -2,6 +2,7 @@ package com.kakao.cafe.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -13,9 +14,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         registry.addViewController("/").setViewName("/articles");
-        registry.addViewController("/user/login").setViewName("user/login");
-        registry.addViewController("/user/form").setViewName("user/form");
-        registry.addViewController("/article/form").setViewName("article/form");
+        registry.addViewController("/users/register").setViewName("user/form");
 
         WebMvcConfigurer.super.addViewControllers(registry);
     }

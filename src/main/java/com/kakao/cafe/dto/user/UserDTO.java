@@ -1,5 +1,6 @@
 package com.kakao.cafe.dto.user;
 
+import com.kakao.cafe.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 

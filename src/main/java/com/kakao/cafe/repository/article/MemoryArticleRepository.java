@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
     private static List<Article> store;

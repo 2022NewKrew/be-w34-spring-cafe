@@ -12,15 +12,30 @@ public class Article {
     private long id;
     private long userId;
     private String title;
-    private String content;
+    private String body;
     private LocalDateTime createdAt;
     private int views;
 
     public Article(ArticleCreationDTO dto) {
         this.userId = dto.getUserId();
         this.title = dto.getTitle();
-        this.content = dto.getContent();
+        this.body = dto.getBody();
         createdAt = LocalDateTime.now();
         views = 0;
+    }
+
+    public Article(long id,
+                   long userId,
+                   String title,
+                   String body,
+                   LocalDateTime createdAt,
+                   int views)
+    {
+        this.id = id;
+        this.userId = userId;
+        this.title = title;
+        this.body = body;
+        this.createdAt = createdAt;
+        this.views = views;
     }
 }

@@ -8,5 +8,5 @@ import lombok.Setter;
 public class ArticleCreationDTO {
     private long userId;
     private String title;
-    private String content;
+    private String body;
 }

@@ -15,7 +15,7 @@ public class ArticleDTO {
     //    private String author;
     private long userId;
     private String title;
-    private String content;
+    private String body;
     private LocalDateTime createdAt;
     private int views;
 
