@@ -4,7 +4,6 @@ import com.kakao.cafe.service.article.ArticleCreateService;
 import com.kakao.cafe.service.article.ArticleFindService;
 import com.kakao.cafe.web.article.dto.ArticleCreateRequest;
 import com.kakao.cafe.web.article.dto.ArticleDetailResponse;
-import com.kakao.cafe.web.article.dto.ArticleListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.stream.Collectors;
 
 @Controller
 public class ArticleController {
@@ -31,15 +28,6 @@ public class ArticleController {
     public String postSave(@ModelAttribute ArticleCreateRequest requestDto) {
         articleCreateService.create(requestDto.toEntity());
         return "redirect:/";
-    }
-
-    @GetMapping("/")
-    public String showArticles(Model model) {
-        articleFindService.findByAll();
-        model.addAttribute("articles", articleFindService.findByAll().stream()
-                .map(ArticleListResponse::new)
-                .collect(Collectors.toList()));
-        return "/index";
     }
 
     @GetMapping("/post/{articleId}")
