@@ -21,8 +21,11 @@ public class ArticleController {
     }
 
     @PostMapping
-    public String publish(ArticleRequest articleRequest) {
-        articleService.publishArticle(articleRequest);
+    public String publish(ArticleRequest articleRequest, HttpSession session) {
+        Auth auth = (Auth) session.getAttribute("auth");
+        if (auth != null) {
+            articleService.publishArticle(articleRequest);
+        }
 
         return "redirect:/";
     }
