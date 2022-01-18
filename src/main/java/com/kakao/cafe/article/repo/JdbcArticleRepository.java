@@ -40,8 +40,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public Article fetch(long id) {
         String query = "SELECT * FROM `ARTICLE` WHERE ID = ?";
-        List<Article> articles = jdbcTemplate.query(query, mapper, id);
-        return articles.size() == 0 ? null : articles.get(0);
+        return jdbcTemplate.queryForObject(query, mapper, id);
     }
 
     @Override

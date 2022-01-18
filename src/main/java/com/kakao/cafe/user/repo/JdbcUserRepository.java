@@ -47,8 +47,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User fetch(long id) {
         String query = "SELECT * FROM `USER` WHERE ID = ?";
-        List<User> users = jdbcTemplate.query(query, mapper, id);
-        return users.size() == 0 ? null : users.get(0);
+        return jdbcTemplate.queryForObject(query, mapper, id);
     }
 
     @Override
@@ -69,7 +68,7 @@ public class JdbcUserRepository implements UserRepository {
         String query = "SELECT * FROM `USER` WHERE USER_ID=?";
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("USER_ID", userId);
-        List<User> users = jdbcTemplate.query(query, mapper, parameterSource);
-        return users.size() == 0 ? Optional.empty() : Optional.of(users.get(0));
+        User user = jdbcTemplate.queryForObject(query, mapper, parameterSource);
+        return Optional.ofNullable(user);
     }
 }
