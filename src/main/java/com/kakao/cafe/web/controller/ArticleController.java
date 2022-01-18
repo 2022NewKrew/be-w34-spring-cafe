@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -74,7 +75,11 @@ public class ArticleController {
         if (article.isEmpty()) {
             return "error/404";
         }
+
+        boolean isWriter = Objects.equals(article.get().getWriter(), sessionUser.getUserId());
+
         model.addAttribute("article", article.get());
+        model.addAttribute("isWriter", isWriter);
         return "article/show";
     }
 
@@ -82,7 +87,7 @@ public class ArticleController {
     public String updateForm(Model model, @PathVariable Long id, HttpSession session) {
         // article 찾기
         Optional<Article> article = articleService.findArticle(id);
-        if(article.isEmpty()) {
+        if (article.isEmpty()) {
             return "error/404";
         }
         // sessionUser 찾기
@@ -100,7 +105,7 @@ public class ArticleController {
     public String updateArticle(Article newArticle, @PathVariable Long id, HttpSession session) {
         // article 찾기
         Optional<Article> article = articleService.findArticle(id);
-        if(article.isEmpty()) {
+        if (article.isEmpty()) {
             return "error/404";
         }
         // sessionUser 찾기

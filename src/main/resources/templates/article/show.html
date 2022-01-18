@@ -27,10 +27,12 @@
                           </div>
                       </article>
 
+                      {{#isWriter}}
                       <div class="post-btn-container">
                           <a class="post-write-btn" href="/articles/{{article.id}}/form" class="btn btn-primary pull-right" role="button">수정</a>
                           <a class="post-write-btn" href="" class="btn btn-primary pull-right" role="button">삭제</a>
                       </div>
+                      {{/isWriter}}
 
                       <div class="post-comment">
                           <div class="post-comment-slipp">
