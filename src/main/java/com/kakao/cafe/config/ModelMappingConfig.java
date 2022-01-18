@@ -1,5 +1,7 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.user.domain.entity.User;
+import com.kakao.cafe.user.domain.entity.UserInfo;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

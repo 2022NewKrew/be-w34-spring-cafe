@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.presentation;
 
 import com.kakao.cafe.user.application.JoinService;
+import com.kakao.cafe.user.application.LoginService;
 import com.kakao.cafe.user.application.SearchUserService;
 import com.kakao.cafe.user.application.UpdateUserInfoService;
 import com.kakao.cafe.user.domain.entity.User;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -26,10 +28,31 @@ import static java.util.stream.Collectors.toList;
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    private final LoginService loginService;
     private final JoinService joinService;
     private final SearchUserService searchUserService;
     private final UpdateUserInfoService updateUserInfoService;
+
     private final ModelMapper modelMapper;
+
+    @GetMapping("/loginForm")
+    public String loginForm(){
+        return "user/loginForm";
+    }
+
+    @PostMapping("/login")
+    public String login(String userId, String password, HttpSession httpSession){
+        logger.info("로그인 시도 : user {}", userId);
+        loginService.login(userId, password);
+        httpSession.setAttribute("userId", userId);
+        return "redirect:/";
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession httpSession){
+        httpSession.invalidate();
+        return "redirect:/";
+    }
 
     @GetMapping("")
     public String listUsers(Model model){
@@ -44,14 +67,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String  getUserInfo(@PathVariable String id, Model model){
-        return "구현 미완료";
+        return "redirect:/";
     }
 
-    @GetMapping("/join")
+    @GetMapping("/joinForm")
     public String joinForm(){
         logger.info("회원가입 시도합니다.");
 
-        return "user/form";
+        return "user/joinForm";
     }
 
     @PostMapping("")

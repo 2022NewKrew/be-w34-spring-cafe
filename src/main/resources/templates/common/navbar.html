@@ -9,9 +9,12 @@
 
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li><a class="black-component" href="/" role="button">메인 페이지</a></li>
-            <li><a class="black-component" href="/users/login" role="button">로그인</a></li>
-            <li><a class="black-component" href="/users/join" role="button">회원가입</a></li>
+            <li th:if="${session.userId == null}" ><a class="black-component" href="/users/loginForm" role="button">로그인</a></li>
+            <li th:if="${session.userId == null}"><a class="black-component" href="/users/joinForm" role="button">회원가입</a></li>
+            <form name="logout" action="/users/logout" method="post"></form>
+            <li th:if="${session.userId != null}">
+                <a class="black-component" onclick="javascript:document.logout.submit();" role="button">로그아웃</a>
+            </li>
         </ul>
     </div>
 </nav>

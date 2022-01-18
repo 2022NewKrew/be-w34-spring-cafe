@@ -2,6 +2,7 @@ package com.kakao.cafe.user.presentation;
 
 import com.kakao.cafe.matcher.LambdaMatcher;
 import com.kakao.cafe.user.application.JoinService;
+import com.kakao.cafe.user.application.LoginService;
 import com.kakao.cafe.user.application.SearchUserService;
 import com.kakao.cafe.user.application.UpdateUserInfoService;
 import com.kakao.cafe.user.data.UsersData;
@@ -47,6 +48,9 @@ class UserControllerTest {
 
     @MockBean
     private SearchUserService searchUserService;
+
+    @MockBean
+    private LoginService loginService;
 
     @MockBean
     private JoinService joinService;
