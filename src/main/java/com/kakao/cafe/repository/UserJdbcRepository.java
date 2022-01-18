@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+@Slf4j
 @Repository
 public class UserJdbcRepository implements UserRepository {
 
@@ -40,11 +42,19 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public Optional<User> findOne(Integer id) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(
-                "select id, userId, password, userName, email time from users where id = ?",
+        return jdbcTemplate.query(
+                "select id, userId, password, userName, email from users where id = ?",
                 mapper,
                 id
-        ));
+        ).stream().findAny();
+    }
+
+    public Optional<User> findByUserId(String userId) {
+        return jdbcTemplate.query(
+                "select id, userId, password, userName, email from users where userId = ?",
+                mapper,
+                userId
+        ).stream().findAny();
     }
 
     private final RowMapper<User> mapper = (rs, rowNum) -> {

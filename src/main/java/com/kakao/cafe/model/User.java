@@ -40,10 +40,6 @@ public class User {
         return email;
     }
 
-    public void validate(){
-
-    }
-
     public boolean matchPassword(String password){
         return this.password.equals(password);
     }
