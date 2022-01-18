@@ -37,9 +37,4 @@ public class SimpleUserRepository implements UserRepository {
             .filter(user -> user.getUserId().equals(userId))
             .findFirst();
     }
-
-    @Override
-    public void deleteAll() {
-        users.clear();
-    }
 }

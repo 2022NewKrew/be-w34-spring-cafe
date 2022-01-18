@@ -4,11 +4,9 @@ import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class ArticleSaveDto {
-
-    private String writer;
+@Setter
+public class ArticleModifyDto {
 
     @NotBlank(message = "Title is mandatory")
     private String title;

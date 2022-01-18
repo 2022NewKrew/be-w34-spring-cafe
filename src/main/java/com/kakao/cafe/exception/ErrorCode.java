@@ -4,7 +4,8 @@ public enum ErrorCode {
 
     USER_DUPLICATED(400, "Duplicated UserId"),
     USER_NOT_FOUND(404, "User Not Found"),
-    INVALID_DTO(400, "Invalid parameter exists");
+    INVALID_DTO(400, "Invalid parameter exists"),
+    UNAUTHORIZED_USER(401, "Unauthorized user");
 
     private final int status;
     private final String message;

@@ -2,13 +2,10 @@ package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.exception.UserDuplicatedException;
 import com.kakao.cafe.exception.UserNotFoundException;
-import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.repository.UserRepository;
 import com.kakao.cafe.user.web.dto.UserLoginDto;
 import com.kakao.cafe.user.web.dto.UserSaveDto;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,7 @@ class UserServiceTest {
     @Autowired
     UserRepository userRepository;
 
-    @BeforeEach
+    /*@BeforeEach
     void setUp() {
     }
 
@@ -32,7 +29,7 @@ class UserServiceTest {
         userRepository.deleteAll();
         userRepository.save(User.builder().userId("miya.ong").password("1234").name("박예지")
             .email("miya.ong@kakaocorp.com").build());
-    }
+    }*/
 
     @Test
     @DisplayName("유저 아이디 중복 테스트")

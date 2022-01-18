@@ -16,7 +16,6 @@ public class JdbcUserRepository implements UserRepository {
     private static final String INSERT_QUERY = "insert into users(userId, password, name, email) values(?, ?, ?, ?)";
     private static final String SELECT_QUERY = "select * from users where userId=?";
     private static final String SELECT_ALL_QUERY = "select * from users";
-    private static final String DELETE_ALL_QUERY = "delete from users where true";
 
     @Override
     public void save(User user) throws UserDuplicatedException {
@@ -41,11 +40,6 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return jdbcTemplate.query(SELECT_ALL_QUERY, mapper);
-    }
-
-    @Override
-    public void deleteAll() {
-        jdbcTemplate.update(DELETE_ALL_QUERY);
     }
 
     static RowMapper<User> mapper = (rs, rowNum) ->
