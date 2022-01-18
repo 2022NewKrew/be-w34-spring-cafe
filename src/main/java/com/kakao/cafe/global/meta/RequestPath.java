@@ -14,6 +14,7 @@ public enum RequestPath {
     USER_UPDATE_FORM(HttpMethod.GET, "/users/{userId}/form"),
     USER_UPDATE(HttpMethod.PUT, "/users/{userId}"),
     USER_LOGIN(HttpMethod.POST, "/users/login"),
+    USER_LOGOUT(HttpMethod.GET, "/users/logout"),
 
     USER_JOIN_FORM(HttpMethod.GET, "/users/joinForm"),
     USER_LOGIN_FORM(HttpMethod.GET, "/users/login/form"),
@@ -22,6 +23,9 @@ public enum RequestPath {
     ARTICLE_LIST(HttpMethod.GET, "/articles"),
     ARTICLE_REGISTER(HttpMethod.POST, "/articles"),
     ARTICLE_SHOW(HttpMethod.GET, "/articles/{id}"),
+    ARTICLE_UPDATE_FORM(HttpMethod.GET, "/articles/{id}/updateForm"),
+    ARTICLE_UPDATE(HttpMethod.POST, "/articles/{id}"),
+    ARTICLE_DELETE(HttpMethod.DELETE, "/articles/{id}"),
 
     ARTICLE_FROM(HttpMethod.GET, "/articles/form"),
 
