@@ -19,7 +19,12 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 public class JdbcUserInfoRepository implements UserInfoRepository {
 
-    private static final String SELECT_ALL = "select * from user";
+    private static final String USER_TABLE = "user";
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_PASSWORD = "password";
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_EMAIL = "email";
+    private static final String SELECT_ALL = "select * from " + USER_TABLE;
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -30,20 +35,20 @@ public class JdbcUserInfoRepository implements UserInfoRepository {
     @Override
     public void save(User user) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        simpleJdbcInsert.withTableName("user");
+        simpleJdbcInsert.withTableName(USER_TABLE);
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("id", user.getUserId());
-        parameters.put("password", user.getPassword());
-        parameters.put("name", user.getName());
-        parameters.put("email", user.getEmail());
+        parameters.put(COLUMN_ID, user.getUserId());
+        parameters.put(COLUMN_PASSWORD, user.getPassword());
+        parameters.put(COLUMN_NAME, user.getName());
+        parameters.put(COLUMN_EMAIL, user.getEmail());
 
         simpleJdbcInsert.execute(parameters);
     }
 
     @Override
     public void update(User user) {
-        String sql = "update user set name=?, email=? where id=?";
+        String sql = "update user set " + COLUMN_NAME + "=?, " + COLUMN_EMAIL + "=? where " + COLUMN_ID + "=?";
         jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getUserId());
     }
 
@@ -54,7 +59,7 @@ public class JdbcUserInfoRepository implements UserInfoRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        String sql = SELECT_ALL + " where id = ?";
+        String sql = SELECT_ALL + " where " + COLUMN_ID + " = ?";
         try {
             User user = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum), userId);
             return Optional.ofNullable(user);
@@ -68,10 +73,10 @@ public class JdbcUserInfoRepository implements UserInfoRepository {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             try {
-                return new User.Builder().userId(rs.getString("id"))
-                                         .password(rs.getString("password"))
-                                         .name(rs.getString("name"))
-                                         .email(rs.getString("email"))
+                return new User.Builder().userId(rs.getString(COLUMN_ID))
+                                         .password(rs.getString(COLUMN_PASSWORD))
+                                         .name(rs.getString(COLUMN_NAME))
+                                         .email(rs.getString(COLUMN_EMAIL))
                                          .build();
             } catch (IllegalUserIdException e) {
                 throw new SQLException("DB에 저장된 userID가 잘못되었습니다.");
