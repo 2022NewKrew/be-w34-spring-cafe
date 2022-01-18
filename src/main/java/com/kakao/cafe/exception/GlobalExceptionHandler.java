@@ -22,7 +22,6 @@ public class GlobalExceptionHandler {
     public String handleInvalidRequestException(BindException e, HttpServletRequest request, RedirectAttributes rttr) {
         Errors errors = e.getBindingResult();
         errors.getFieldErrors().forEach(error -> rttr.addFlashAttribute(error.getField(), error.getDefaultMessage()));
-        rttr.addFlashAttribute("msg", "잘못된 입력 값입니다.");
         return getPathOfRedirectionFromRequest(request);
     }
 
