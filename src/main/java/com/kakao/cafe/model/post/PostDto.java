@@ -22,7 +22,7 @@ public class PostDto {
     private String writerNickname;
 
     public String formattedCreatedAt() {
-        return createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        return createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
 }
