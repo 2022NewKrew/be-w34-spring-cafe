@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpSession;
@@ -41,8 +42,15 @@ public class ArticleController {
     @PostMapping("/questions")
     public String create(ArticleFormRequest articleFormRequest, HttpSession session) {
         Object value = session.getAttribute("sessionedUser");
+
         articleService.save(articleFormRequest, ((User) value).getName());
         return "redirect:/";
+    }
+
+    @PutMapping("/questions/{id}")
+    public String update(@PathVariable("id") Long id, ArticleFormRequest articleFormRequest, HttpSession session) {
+        articleService.updateArticleInfo(id, articleFormRequest);
+        return "redirect:/articles/" + id;
     }
 
     @GetMapping("/articles/{id}")
@@ -50,5 +58,14 @@ public class ArticleController {
         Article article = articleService.findArticle(articleId);
         model.addAttribute("article", article);
         return "qna/show";
+    }
+    @GetMapping("/questions/{id}/form")
+    public String updateForm(@PathVariable("id") Long articleId, Model model, HttpSession session) {
+        Object value = session.getAttribute("sessionedUser");
+        if(value == null)
+            return "redirect:/";
+        Article article = articleService.findArticle(articleId);
+        model.addAttribute("article", article);
+        return "qna/updateform";
     }
 }

@@ -32,4 +32,9 @@ public class MemoryArticleRepository implements ArticleRepository{
     public Optional<Article> findById(Long id) {
         return Optional.of(store.get(id.intValue() - 1));
     }
+
+    @Override
+    public void updateArticle(Long id, Article updateArticle) {
+
+    }
 }
