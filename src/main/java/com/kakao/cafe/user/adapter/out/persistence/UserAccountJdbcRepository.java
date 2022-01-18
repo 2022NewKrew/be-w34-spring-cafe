@@ -1,6 +1,12 @@
 package com.kakao.cafe.user.adapter.out.persistence;
 
+<<<<<<< HEAD:src/main/java/com/kakao/cafe/user/adapter/out/persistence/UserAccountJdbcRepository.java
 import com.kakao.cafe.user.domain.UserAccount;
+=======
+import com.kakao.cafe.domain.post.QuestionPost;
+import com.kakao.cafe.domain.user.UserAccount;
+import com.kakao.cafe.domain.user.UserAccountRepository;
+>>>>>>> 097c71c (feat : update 쿼리 작성):src/main/java/com/kakao/cafe/persistence/user/UserAccountJdbcRepository.java
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
