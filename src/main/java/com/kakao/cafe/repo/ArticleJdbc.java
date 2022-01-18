@@ -74,8 +74,8 @@ public class ArticleJdbc implements ArticleRepository {
                 jdbcTemplate.query(
                         con -> con.prepareStatement(
                                 "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at " +
-                                        "FROM article AS a " +
-                                        "JOIN userlist AS u " +
+                                        "FROM userlist AS u " +
+                                        "JOIN article AS a " +
                                         "ON u.id = a.user_id " +
                                         "ORDER BY created_at DESC"
                         ),
