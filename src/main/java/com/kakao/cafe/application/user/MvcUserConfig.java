@@ -7,7 +7,7 @@ import com.kakao.cafe.application.user.port.in.GetUserInfoUseCase;
 import com.kakao.cafe.application.user.port.in.LoginUserUseCase;
 import com.kakao.cafe.application.user.port.in.SignUpUserUseCase;
 import com.kakao.cafe.application.user.port.in.UpdateUserInfoUseCase;
-import com.kakao.cafe.application.user.port.out.GetUserInfoPort;
+import com.kakao.cafe.application.user.port.out.GetUserEntityPort;
 import com.kakao.cafe.application.user.port.out.LoginUserPort;
 import com.kakao.cafe.application.user.port.out.RegisterUserPort;
 import com.kakao.cafe.application.user.port.out.UpdateUserInfoPort;
@@ -39,7 +39,7 @@ public class MvcUserConfig {
     }
 
     @Bean
-    public GetUserInfoPort getUserInfoPort() {
+    public GetUserEntityPort getUserEntityPort() {
         return new UserAdapter(userInfoRepository());
     }
 
@@ -60,7 +60,7 @@ public class MvcUserConfig {
 
     @Bean
     public GetUserInfoUseCase getUserInfoUseCase() {
-        return new GetUserInfoService(getUserInfoPort());
+        return new GetUserInfoService(getUserEntityPort());
     }
 
     @Bean
@@ -70,6 +70,6 @@ public class MvcUserConfig {
 
     @Bean
     public UpdateUserInfoUseCase updateUserInfoUseCase() {
-        return new UpdateUserInfoService(updateUserInfoPort());
+        return new UpdateUserInfoService(updateUserInfoPort(), getUserEntityPort());
     }
 }

@@ -1,5 +1,8 @@
 package com.kakao.cafe.application.user.dto;
 
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.exceptions.WrongPasswordException;
+
 public class UpdateRequest {
 
     private final String password;
@@ -22,5 +25,11 @@ public class UpdateRequest {
 
     public String getEmail() {
         return email;
+    }
+
+    public void checkPassword(User user) throws WrongPasswordException {
+        if (!user.equalsPassword(this.password)) {
+            throw new WrongPasswordException("패스워드가 잘못 되었습니다.");
+        }
     }
 }

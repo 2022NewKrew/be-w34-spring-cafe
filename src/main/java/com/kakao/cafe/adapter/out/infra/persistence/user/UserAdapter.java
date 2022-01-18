@@ -5,7 +5,7 @@ import com.kakao.cafe.application.user.dto.SignUpRequest;
 import com.kakao.cafe.application.user.dto.UpdateRequest;
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.application.user.dto.UserInfoList;
-import com.kakao.cafe.application.user.port.out.GetUserInfoPort;
+import com.kakao.cafe.application.user.port.out.GetUserEntityPort;
 import com.kakao.cafe.application.user.port.out.LoginUserPort;
 import com.kakao.cafe.application.user.port.out.RegisterUserPort;
 import com.kakao.cafe.application.user.port.out.UpdateUserInfoPort;
@@ -16,13 +16,12 @@ import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
 import com.kakao.cafe.domain.user.exceptions.UserIdDuplicationException;
 import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
-import com.kakao.cafe.domain.user.exceptions.WrongPasswordException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserAdapter implements RegisterUserPort, GetUserInfoPort, UpdateUserInfoPort, LoginUserPort {
+public class UserAdapter implements RegisterUserPort, GetUserEntityPort, UpdateUserInfoPort, LoginUserPort {
 
     private final UserInfoRepository userInfoRepository;
 
@@ -55,31 +54,22 @@ public class UserAdapter implements RegisterUserPort, GetUserInfoPort, UpdateUse
     }
 
     @Override
-    public void login(LoginRequest loginRequest) throws UserNotExistException, WrongPasswordException {
-        User user = getUserByUserId(loginRequest.getUserId());
-
-        checkPassword(user, loginRequest.getPassword());
+    public User login(LoginRequest loginRequest) throws UserNotExistException {
+        return findUserByUserId(loginRequest.getUserId());
     }
 
     @Override
     public void updateUser(String userId, UpdateRequest updateRequest)
-        throws UserNotExistException, IllegalUserNameException, IllegalEmailException, WrongPasswordException {
-        User user = getUserByUserId(userId);
-
-        checkPassword(user, updateRequest.getPassword());
+        throws UserNotExistException, IllegalUserNameException, IllegalEmailException {
+        User user = findUserByUserId(userId);
 
         user.setName(updateRequest.getName());
         user.setEmail(updateRequest.getEmail());
         userInfoRepository.update(user);
     }
 
-    private void checkPassword(User user, String password) throws WrongPasswordException {
-        if (!user.equalsPassword(password)) {
-            throw new WrongPasswordException("패스워드가 잘못 되었습니다.");
-        }
-    }
-
-    private User getUserByUserId(String userId) throws UserNotExistException {
+    @Override
+    public User findUserByUserId(String userId) throws UserNotExistException {
         User user = userInfoRepository.findByUserId(userId).orElse(null);
 
         if (user == null) {
@@ -87,13 +77,6 @@ public class UserAdapter implements RegisterUserPort, GetUserInfoPort, UpdateUse
         }
 
         return user;
-    }
-
-    @Override
-    public UserInfo findUserByUserId(String userId) throws UserNotExistException {
-        User user = getUserByUserId(userId);
-
-        return UserInfo.from(user);
     }
 
     private void checkUserIdDuplication(String userId) throws UserIdDuplicationException {
