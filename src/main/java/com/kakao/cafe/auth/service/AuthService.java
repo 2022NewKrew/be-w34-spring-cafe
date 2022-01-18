@@ -18,13 +18,9 @@ public class AuthService {
     private HttpSession session;
 
     public void login(LoginRequest loginRequest){
-        User user = userRepository.findOneByUserId(loginRequest.getUserId())
-                .orElseThrow(UserNotExistException::new);
+        User user = userRepository.findOneByUserId(loginRequest.getUserId()).orElseThrow(UserNotExistException::new);
         validatePassword(loginRequest.getPassword(), user.getPassword());
-
-        if (!(session.getAttribute("LOGIN_USER_ID") == (user.getUserId()))) {
-            session.setAttribute("LOGIN_USER_ID", user.getUserId());
-        }
+        session.setAttribute("LOGIN_USER_ID", user.getUserId());
     }
 
     public void logout(){

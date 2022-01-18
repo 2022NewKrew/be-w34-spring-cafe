@@ -3,12 +3,14 @@ package com.kakao.cafe.user.controller;
 import com.kakao.cafe.user.dto.UserDto;
 import com.kakao.cafe.user.dto.UserProfileDto;
 import com.kakao.cafe.user.dto.UserRequest;
+import com.kakao.cafe.user.exception.UserInfoMismatchException;
 import com.kakao.cafe.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -39,6 +41,14 @@ public class UserController {
         userService.signUp(userRequest);
 
         return "redirect:/user/list";
+    }
+
+    @GetMapping("/update/{userId}")
+    public String getUserUpdateFormPage(@PathVariable String userId, HttpSession session){
+        if (!((session.getAttribute("LOGIN_USER_ID")).equals(userId))) {
+            throw new UserInfoMismatchException();
+        }
+        return "/user/updateForm";
     }
 
 }
