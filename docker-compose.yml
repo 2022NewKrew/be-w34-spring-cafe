@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  api_server:
+    image: api_server
+    platform: linux/x86_64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api_server
+    ports:
+      - "80:8080"
+    depends_on:
+      - database
+
+  database:
+    restart: always
+    image: mysql
+    platform: linux/x86_64
+    container_name: database
+    ports:
+      - "3306:3306"
+    env_file: ./.env
