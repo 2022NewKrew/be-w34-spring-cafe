@@ -1,9 +1,13 @@
 package com.kakao.cafe.web.dto;
 
 import com.kakao.cafe.domain.article.Article;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
+@Getter
+@Setter
 public class ArticleDetailResponseDto {
 
     private Long id;
@@ -20,38 +24,6 @@ public class ArticleDetailResponseDto {
 
     public static ArticleDetailResponseDto from(Article article) {
         return new ArticleDetailResponseDto(article.getId(), article.getWriter(), article.getTitle(), article.getContents());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
     }
 
     @Override
