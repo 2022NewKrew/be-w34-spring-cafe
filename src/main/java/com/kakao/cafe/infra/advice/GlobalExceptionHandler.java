@@ -2,6 +2,7 @@ package com.kakao.cafe.infra.advice;
 
 import com.kakao.cafe.common.dto.ErrorResponse;
 import com.kakao.cafe.common.exception.BadRequestException;
+import com.kakao.cafe.common.exception.ForbiddenException;
 import com.kakao.cafe.common.exception.NotFoundException;
 import com.kakao.cafe.common.exception.UnauthorizedException;
 import java.util.Map;
@@ -34,6 +35,15 @@ public class GlobalExceptionHandler {
     public String unauthorizedException(UnauthorizedException e) {
         log.error("[UnauthorizedException] - {}", e.getMessage());
         return "/user/login-form";
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ModelAndView badRequestException(ForbiddenException e) {
+        log.error("[ForbiddenException] - {}", e.getMessage());
+        Map<String, Object> model = mv.getModel();
+        model.put("message", ErrorResponse.of(e.getMessage()));
+        return mv;
     }
 
     @ExceptionHandler(BadRequestException.class)

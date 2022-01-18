@@ -10,6 +10,10 @@ spring:
     url: jdbc:mysql://localhost:3306/kakaodb
     username: root
     password: password
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 server:
   servlet:
     session:

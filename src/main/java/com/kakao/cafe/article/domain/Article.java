@@ -14,8 +14,4 @@ public class Article {
     private LocalDateTime createdAt;
     private int viewCount;
     private Long authorId;
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
 }

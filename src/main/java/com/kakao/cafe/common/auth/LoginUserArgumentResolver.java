@@ -25,7 +25,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
         Object attribute = webRequest.getAttribute(SessionUtil.SESSION_USER,
             RequestAttributes.SCOPE_SESSION);
         if (Objects.isNull(attribute)) {
-            throw new UnauthorizedException("로그인이 필요합니다.");
+            throw new UnauthorizedException();
         }
         return attribute;
     }

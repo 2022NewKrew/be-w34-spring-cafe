@@ -22,7 +22,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public Optional<SingleArticle> findById(Long id) {
+    public Optional<SingleArticle> findSingleArticle(Long id) {
         final String sql = "select a.article_id, "
             + "a.title, "
             + "a.body, "
@@ -45,6 +45,27 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                     .viewCount(rs.getInt("view_count"))
                     .authorId(rs.getLong("author_id"))
                     .authorName(rs.getString("author_nickname"))
+                    .build(),
+                id));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<Article> findById(Long id) {
+        final String sql = "select * from articles where article_id = ?";
+
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(
+                sql,
+                (rs, rowNum) -> Article.builder()
+                    .id(rs.getLong("article_id"))
+                    .title(rs.getString("title"))
+                    .body(rs.getString("body"))
+                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                    .viewCount(rs.getInt("view_count"))
+                    .authorId(rs.getLong("author_id"))
                     .build(),
                 id));
         } catch (DataAccessException e) {
@@ -80,5 +101,12 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         final String sql = "update articles set view_count = view_count + 1 where article_id = ?";
 
         jdbcTemplate.update(sql, id);
+    }
+
+    @Override
+    public void update(Article article) {
+        final String sql = "update articles set title = ?, body = ? where article_id = ?";
+
+        jdbcTemplate.update(sql, article.getTitle(), article.getBody(), article.getId());
     }
 }
