@@ -5,6 +5,7 @@ import com.kakao.cafe.article.dto.ArticleCreateDTO;
 import com.kakao.cafe.article.dto.ArticleListDTO;
 import com.kakao.cafe.article.dto.ArticleViewDTO;
 import com.kakao.cafe.article.exception.ArticleNotLoggedInException;
+import com.kakao.cafe.article.exception.ArticleNotMatchedUser;
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.user.domain.User;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,11 @@ public class ArticleController {
         //로그인 상태가 아닌경우
         if((user = (User) session.getAttribute("sessionedUser")) == null){
             throw new ArticleNotLoggedInException("로그인 상태에서만 게시글을 작성할 수 있습니다.");
+        }
+
+        //로그인된 사용자가 아닌 다른 사용자를 글쓴이로 작성한경우
+        if(!user.getUserId().equals(articleCreateDTO.getUserId())){
+            throw new ArticleNotMatchedUser("로그인된 사용자와 글쓴이가 다릅니다.");
         }
 
         //로그인된 사용자의 이름을 지정
