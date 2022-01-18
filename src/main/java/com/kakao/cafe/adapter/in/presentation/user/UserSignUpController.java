@@ -7,6 +7,7 @@ import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
 import com.kakao.cafe.domain.user.exceptions.UserIdDuplicationException;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,10 +25,11 @@ public class UserSignUpController {
     }
 
     @PostMapping("/users")
-    public String signUp(SignUpRequest signUpRequest)
+    public String signUp(HttpServletRequest request, SignUpRequest signUpRequest)
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, UserIdDuplicationException, IllegalEmailException {
+        log.info("[{}]User {} tries to join as a member", request.getRequestURI(), signUpRequest.getUserId());
         signUpUserUseCase.signUpUser(signUpRequest);
-        log.info("{} joined as a member", signUpRequest.getUserId());
+        log.info("[{}]Success user {} join", request.getRequestURI(), signUpRequest.getUserId());
         return "redirect:/users";
     }
 }

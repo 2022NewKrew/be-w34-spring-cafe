@@ -1,29 +1,28 @@
 package com.kakao.cafe.adapter.in.presentation;
 
-import com.kakao.cafe.adapter.in.presentation.user.UserInfoController;
-import com.kakao.cafe.adapter.in.presentation.user.UserSignUpController;
-import com.kakao.cafe.adapter.in.presentation.user.UserUpdateController;
+import com.kakao.cafe.domain.user.exceptions.UnauthenticatedUserException;
 import com.kakao.cafe.view.ErrorMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@ControllerAdvice(basePackageClasses = {
-    UserInfoController.class, UserSignUpController.class, UserUpdateController.class
-})
+@ControllerAdvice
 public class CafeControllerAdvice {
 
-    private static final String VIEW_ERROR_PAGE = "error";
-
-    private static final Logger log = LoggerFactory.getLogger(CafeControllerAdvice.class);
-
-    @ExceptionHandler(Exception.class)
-    public String cafeExceptionHandler(Model model, Exception e) {
-        log.info("{}", e.getMessage());
+    @ExceptionHandler(UnauthenticatedUserException.class)
+    public String authenticatedException(Model model, Exception e) {
         String message = ErrorMessage.getErrorMessage(e);
         model.addAttribute("message", message);
-        return VIEW_ERROR_PAGE;
+        return "error";
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String domainExceptionHandler(HttpServletRequest request, RedirectAttributes redirectAttributes, Exception e) {
+        String url = request.getRequestURI();
+        String message = ErrorMessage.getErrorMessage(e);
+        redirectAttributes.addFlashAttribute("message", message);
+        return "redirect:" + url + "/error";
     }
 }

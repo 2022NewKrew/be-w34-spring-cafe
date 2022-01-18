@@ -6,6 +6,7 @@ import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -28,19 +29,22 @@ public class ArticleInfoController {
     }
 
     @GetMapping("/")
-    public String displayArticleList(Model model) {
+    public String displayArticleList(HttpServletRequest request, Model model) {
+        log.info("[{}]Article list required", request.getRequestURI());
         model.addAttribute(
             "articles",
             getArticleInfoUseCase.getListOfAllArticles().getArticleList()
         );
+        log.info("[{}]Success show article list", request.getRequestURI());
         return VIEWS_ARTICLE_LIST;
     }
 
     @GetMapping("/articles/{id}")
-    public String displayArticleDetail(@PathVariable int id, Model model)
+    public String displayArticleDetail(HttpServletRequest request, @PathVariable int id, Model model)
         throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException {
+        log.info("[{}]Article {} is required opening", request.getRequestURI(), id);
         Article article = getArticleInfoUseCase.getArticleDetail(id);
-        log.info("{} is opened", article.getTitle());
+        log.info("[{}]Success {} is opened", request.getRequestURI(), article.getTitle());
         model.addAttribute("article", article);
         return VIEWS_ARTICLE_DETAIL;
     }
