@@ -36,8 +36,6 @@ public class JdbcUserRepository implements Repository<User, String>{
         String sqlQuery = "SELECT * FROM MEMBER WHERE userId = ?";
         User user = jdbcTemplate.queryForObject(sqlQuery, userMapper, userId);
         return Optional.ofNullable(user);
-//        return jdbcTemplate.query("sqlQuery", userMapper, userId);
-
     }
 
 }

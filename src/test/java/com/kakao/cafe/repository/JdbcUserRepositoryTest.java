@@ -1,8 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.config.JdbcConfig;
 import com.kakao.cafe.config.SecurityConfig;
-import com.kakao.cafe.dto.UserRegistrationDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.util.UserMapper;
 import org.junit.jupiter.api.Assertions;
@@ -11,13 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
