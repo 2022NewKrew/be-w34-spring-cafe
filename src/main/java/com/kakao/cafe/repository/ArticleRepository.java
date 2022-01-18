@@ -2,7 +2,6 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.repository.dao.ArticleDAO;
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.ArticleList;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,9 +23,7 @@ public class ArticleRepository {
         return articleDAO.findById(id);
     }
 
-    public ArticleList getArticleList() {
-        return new ArticleList(articleDAO.findAll());
+    public List<Article> getArticleList() {
+        return articleDAO.findAll();
     }
-
-
 }
