@@ -17,16 +17,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void createUser(String userId,String password,String email){
-        userRepository.create(new User(idIndex,userId,password,email));
+    public void createUser(String userId, String password, String email) {
+        userRepository.create(new User(idIndex, userId, password, email));
         idIndex++;
     }
 
-    public UserDTO getUserByUserId(String userId){
+    public UserDTO getUserByUserId(String userId) {
         return new UserDTO(userRepository.findByUserId(userId));
     }
 
-    public List<UserDTO> getUserList(){
+    public List<UserDTO> getUserList() {
         UserListDTO userListDTO = new UserListDTO(userRepository.getUserList());
         return userListDTO.getCopiedUserList();
     }

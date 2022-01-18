@@ -14,7 +14,7 @@ public class User {
     private final String email;
     private final String registerDate;
 
-    public User(long id,String userId, String password, String email) {
+    public User(long id, String userId, String password, String email) {
         this.id = id;
         this.userId = userId;
         this.password = password;

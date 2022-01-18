@@ -19,8 +19,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void createArticle(String title,String content) {
-        articleRepository.create(new Article(idIndex,title,content));
+    public void createArticle(String title, String content) {
+        articleRepository.create(new Article(idIndex, title, content));
         idIndex++;
     }
 

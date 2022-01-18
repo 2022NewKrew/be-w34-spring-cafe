@@ -19,8 +19,8 @@ public class ArticleController {
     }
 
     @PostMapping(value = "/article/create")
-    public String postCreateArticle(String title,String content) {
-        articleService.createArticle(title,content);
+    public String postCreateArticle(String title, String content) {
+        articleService.createArticle(title, content);
         return "redirect:/index";
     }
 
@@ -34,7 +34,7 @@ public class ArticleController {
 
     @GetMapping(value = "/articles/{index}")
     public String getArticleShow(@PathVariable int index, Model model) {
-        ArticleDTO articleDTO = articleService.getArticleByIndex(index-1);
+        ArticleDTO articleDTO = articleService.getArticleByIndex(index - 1);
         model.addAttribute("article", articleDTO);
         return "/article/show";
     }

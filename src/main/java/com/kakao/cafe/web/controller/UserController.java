@@ -26,8 +26,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/create")
-    public String postSignUp(String userId,String password,String email) {
-        userService.createUser(userId,password,email);
+    public String postSignUp(String userId, String password, String email) {
+        userService.createUser(userId, password, email);
         log.info("userList:{}", userService.getUserList());
         return "redirect:/user/list";
     }
