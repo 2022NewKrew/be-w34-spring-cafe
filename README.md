@@ -100,11 +100,13 @@
     - [x] 없는 계정의 정보 변경 요청 시 예외 처리 
     - [x] 비밀번호 6 글자 미만 입력 시 예외 처리
 
+
 - [ ] 리뷰
   - [ ] spring interceptor 를 이용해 의도치 않은 url 요청 처리
 
-  - [ ] controllerAdvice 를 이용해 에러와 템플릿 연결
+  - [x] controllerAdvice 를 이용해 에러와 템플릿 연결
+    - [x] GlobalControllerAdvice 클래스 생성
 
-  - [ ] 동시성 보장을 위한 자료구조
-    - [ ] UserRepositoryImplMemoryDB
-    - [ ] ArticleRepositoryImplMemoryDB
+  - [x] 동시성 보장을 위한 자료구조
+    - [x] UserRepositoryImplMemoryDB -> ConcurrentHashMap
+    - [x] ArticleRepositoryImplMemoryDB -> CopyOnWriteArrayList

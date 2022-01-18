@@ -1,14 +1,14 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ArticleRepositoryImplMemoryDB implements ArticleRepository{
 
-    private final List<Article> articleMemoryDB = new ArrayList<>();
+    private final List<Article> articleMemoryDB = new CopyOnWriteArrayList<>();
 
     @Override
     public void createArticle(Article article) {

@@ -2,14 +2,14 @@ package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepositoryImplMemoryDB implements UserRepository {
 
-    private final Map<String, User> userMemoryDB = new HashMap<>();
+    private final Map<String, User> userMemoryDB = new ConcurrentHashMap<>();
 
     @Override
     public void createUser(User user) {
