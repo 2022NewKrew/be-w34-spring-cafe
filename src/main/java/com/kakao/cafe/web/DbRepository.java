@@ -3,6 +3,7 @@ package com.kakao.cafe.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -25,7 +26,12 @@ public class DbRepository {
         final String insertQuery = "insert into `user` (email, nickname, point) values (?, ?, ?)";
         final String selectIdQuery = "select id from `user` where email = :email";
 
-        jdbcTemplate.update(insertQuery, user.getEmail(), user.getNickname(), user.getPoint());
+        try {
+            jdbcTemplate.update(insertQuery, user.getEmail(), user.getNickname(), user.getPoint());
+        } catch (DataAccessException e) {
+            logger.info("사용자 아이디 중복: {}", user);
+            return user;
+        }
 
         SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(user);
         Long id = namedParameterJdbcTemplate.queryForObject(selectIdQuery, namedParameters, Long.class);
@@ -39,14 +45,18 @@ public class DbRepository {
         User user = new User();
         user.setEmail(email);
         SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(user);
-        user = namedParameterJdbcTemplate.queryForObject(sql, namedParameters, (rs, rowNum) -> {
+        try {
+            return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, (rs, rowNum) -> {
                 User u = new User();
                 u.setId(rs.getLong("id"));
                 u.setEmail(rs.getString("email"));
                 u.setNickname(rs.getString("nickname"));
                 u.setPoint(rs.getInt("point"));
                 return u;
-        });
-        return user;
+            });
+        } catch (DataAccessException e) {
+            logger.info("findUserByEmail Exception: {}", e.getMessage());
+            return null;
+        }
     }
 }

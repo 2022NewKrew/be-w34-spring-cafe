@@ -13,15 +13,21 @@
 <div class="background">
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">로그인</p>
+            <p class="title">사용자 정보</p>
         </header>
-        <form name="register" class="info-container" method="post" action="/login">
-            <div class="form-group">
-                <label for="email">이메일</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
-            </div>
-            <button type="submit" class="btn btn-success clearfix pull-right">로그인</button>
-        </form>
+        <div class="form-group">
+            {{^sessionUser}}
+            <p>세션 정보가 없습니다.</p>
+            {{/sessionUser}}
+            {{#sessionUser}}
+            <p>ID: {{id}}</p>
+            <p>이메일: {{email}}</p>
+            <p>닉네임: {{nickname}}</p>
+            <p>포인트: {{point}}</p>
+            {{/sessionUser}}
+        </div>
+
+
     </div>
 </div>
 </body>

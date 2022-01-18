@@ -59,6 +59,12 @@ public class User {
         }
     }
 
+    public void validId() {
+        if (id == null) {
+            throw new IllegalArgumentException("No User ID: " + this);
+        }
+    }
+
     @Override
     public String toString() {
         return "User{" +
