@@ -60,7 +60,7 @@ class UserControllerTest {
         ).andExpect(
                 MockMvcResultMatchers.status().is3xxRedirection()
         ).andExpect(
-                MockMvcResultMatchers.redirectedUrl("/user/users")
+                MockMvcResultMatchers.redirectedUrl("/")
         ).andDo(MockMvcResultHandlers.print());
     }
 
@@ -74,7 +74,7 @@ class UserControllerTest {
                         .param("name","")
                         .param("email","david.dh@kakaocorp.com")
         ).andExpect(
-                MockMvcResultMatchers.status().isOk()
+                MockMvcResultMatchers.status().isBadRequest()
         ).andExpect(
                 MockMvcResultMatchers.forwardedUrl("./error/alert")
          ).andDo(MockMvcResultHandlers.print());

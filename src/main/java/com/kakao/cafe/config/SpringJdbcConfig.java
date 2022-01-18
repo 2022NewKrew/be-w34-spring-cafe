@@ -1,6 +1,5 @@
 package com.kakao.cafe.config;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -18,14 +17,5 @@ public class SpringJdbcConfig {
                 .addScript("classpath:jdbc/schema.sql")
                 .addScript("classpath:jdbc/data.sql")
                 .build();
-    }
-
-    @Bean
-    public ModelMapper modelMapper(){
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
-                .setFieldMatchingEnabled(true);
-        return modelMapper;
     }
 }

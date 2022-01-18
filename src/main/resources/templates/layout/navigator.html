@@ -22,6 +22,8 @@
                 <li><a href="/user/signup" role="button">회원가입</a></li>
                 {{/sessionedUser}}
                 {{#sessionedUser}}
+                <li class="active"><a href="/">{{userId}}</a></li>
+                <li class="active"><a href="/">{{name}}</a></li>
                 <li class="active"><a href="/">Posts</a></li>
                 <li><a href="/user/logout" role="button">로그아웃</a></li>
                 <li><a href="/user/{{userId}}/update" role="button">개인정보수정</a></li>
