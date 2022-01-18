@@ -25,10 +25,10 @@ public class PostService {
         this.modelMapper = modelMapper;
     }
 
-    public void writePost(PostWriteRequest post) {
+    public void writePost(PostWriteRequest post, long writerId) {
         try {
             postRepository.save(Post.builder()
-                    .writer(post.getWriter())
+                    .writerId(writerId)
                     .title(post.getTitle())
                     .content(post.getContent())
                     .createdAt(LocalDateTime.now())

@@ -28,11 +28,11 @@ class PostJdbcRepositoryImplTest {
 
     @BeforeEach
     void setup() {
-        String writer = "테스터";
+        long writerId = 1;
         String title = "게시글 제목";
         String content = "게시글 내용입니다.";
         Post post = Post.builder()
-                .writer(writer)
+                .writerId(writerId)
                 .title(title)
                 .content(content)
                 .createdAt(LocalDateTime.now())
@@ -45,11 +45,11 @@ class PostJdbcRepositoryImplTest {
     @DisplayName("정상적인 게시글이라면 저장할 때 에러가 발생하지 않아야 한다.")
     @Test
     void save() {
-        String writer = "테스터";
+        long writerId = 1;
         String title = "게시글 제목";
         String content = "게시글 내용입니다.";
         Post post = Post.builder()
-                .writer(writer)
+                .writerId(writerId)
                 .title(title)
                 .content(content)
                 .createdAt(LocalDateTime.now())
@@ -60,14 +60,14 @@ class PostJdbcRepositoryImplTest {
         });
     }
 
-    @DisplayName("게시글의 작성자가 null 이라면 에러가 발생해야 한다.")
+    @DisplayName("게시글의 작성자가 등록된 회원이 아니라면 에러가 발생해야 한다.")
     @Test
     void saveWhenTitleIsNull() {
-        String writer = null;
+        long writerId = 5;
         String title = "게시글 제목";
         String content = "게시글 내용입니다.";
         Post post = Post.builder()
-                .writer(writer)
+                .writerId(writerId)
                 .title(title)
                 .content(content)
                 .createdAt(LocalDateTime.now())
@@ -81,11 +81,11 @@ class PostJdbcRepositoryImplTest {
     @DisplayName("게시글의 제목이 null 이라면 에러가 발생해야 한다.")
     @Test
     void saveWhenWriterIsNull() {
-        String writer = "테스터";
+        long writerId = 1;
         String title = null;
         String content = "게시글 내용입니다.";
         Post post = Post.builder()
-                .writer(writer)
+                .writerId(writerId)
                 .title(title)
                 .content(content)
                 .createdAt(LocalDateTime.now())
@@ -99,11 +99,11 @@ class PostJdbcRepositoryImplTest {
     @DisplayName("게시글의 내용이 null 이라면 에러가 발생해야 한다.")
     @Test
     void saveWhenContentIsNull() {
-        String writer = "테스터";
+        long writerId = 1;
         String title = "게시글 제목";
         String content = null;
         Post post = Post.builder()
-                .writer(writer)
+                .writerId(writerId)
                 .title(title)
                 .content(content)
                 .createdAt(LocalDateTime.now())
@@ -130,7 +130,7 @@ class PostJdbcRepositoryImplTest {
         Post foundPost = postRepository.findById(id).orElse(null);
 
         assertThat(foundPost).isNotNull();
-        assertThat(foundPost.getWriter()).isEqualTo(post.getWriter());
+        assertThat(foundPost.getWriterId()).isEqualTo(post.getWriterId());
         assertThat(foundPost.getTitle()).isEqualTo(post.getTitle());
         assertThat(foundPost.getContent()).isEqualTo(post.getContent());
         assertThat(foundPost.getCreatedAt()).isEqualTo(post.getCreatedAt());

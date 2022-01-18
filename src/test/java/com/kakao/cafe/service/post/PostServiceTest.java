@@ -36,7 +36,7 @@ class PostServiceTest {
     void setup() {
         for (int i = 0; i < size; i++) {
             Post post = Post.builder()
-                    .writer("작성자")
+                    .writerId(1L)
                     .title("게시글 제목" + i)
                     .content("게시글 내용 " + i)
                     .createdAt(LocalDateTime.now())
@@ -48,33 +48,31 @@ class PostServiceTest {
     @DisplayName("정상적으로 게시글을 저장할 때, 에러가 발생하지 않아야 한다.")
     @Test
     void writePost() {
-        String writer = "작성자";
         String title = "게시글 제목";
         String content = "게시글 내용";
         PostWriteRequest post = PostWriteRequest.builder()
-                .writer(writer)
                 .title(title)
                 .content(content)
                 .build();
+        long writerId = 1L;
 
         assertThatNoException().isThrownBy(() -> {
-            postService.writePost(post);
+            postService.writePost(post, writerId);
         });
     }
 
     @DisplayName("게시글을 저장하면, 작성일자가 null이 아니여야 한다.")
     @Test
     void writePostForCheckingCreatedAt() {
-        String writer = "작성자";
         String title = "게시글 제목";
         String content = "게시글 내용";
         PostWriteRequest post = PostWriteRequest.builder()
-                .writer(writer)
                 .title(title)
                 .content(content)
                 .build();
+        long writerId = 1L;
 
-        postService.writePost(post);
+        postService.writePost(post, writerId);
         List<Post> posts = postRepository.findAll();
         posts.forEach(p -> assertThat(p.getCreatedAt()).isNotNull());
     }

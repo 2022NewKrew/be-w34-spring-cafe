@@ -18,8 +18,8 @@ public class PostJdbcRepositoryImpl implements PostRepository {
 
     @Override
     public void save(Post post) {
-        String sql = "INSERT INTO posts(writer, title, content, createdAt) VALUES(?, ?, ?, ?)";
-        template.update(sql, post.getWriter(), post.getTitle(), post.getContent(), post.getCreatedAt());
+        String sql = "INSERT INTO posts(writer_id, title, content, createdAt) VALUES(?, ?, ?, ?)";
+        template.update(sql, post.getWriterId(), post.getTitle(), post.getContent(), post.getCreatedAt());
     }
 
     @Override
@@ -43,7 +43,7 @@ public class PostJdbcRepositoryImpl implements PostRepository {
     private RowMapper<Post> postRowMapper() {
         return (rs, rowNum) -> Post.builder()
                 .id(rs.getLong("id"))
-                .writer(rs.getString("writer"))
+                .writerId(rs.getLong("writer_id"))
                 .title(rs.getString("title"))
                 .content(rs.getString("content"))
                 .createdAt(getLocalDateTime(rs, "createdAt"))

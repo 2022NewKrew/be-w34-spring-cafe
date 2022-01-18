@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -143,7 +142,7 @@ class UserServiceTest {
     void getUserByIdNotSignup() {
         long id = 11234L;
 
-        assertThatExceptionOfType(DataAccessException.class).isThrownBy(() -> {
+        assertThatIllegalArgumentException().isThrownBy(() -> {
            UserDto user = userService.getUserById(id);
         });
     }
@@ -188,7 +187,7 @@ class UserServiceTest {
                 .build();
         long id = user.getId() + 1;
 
-        assertThatExceptionOfType(DataAccessException.class).isThrownBy(() -> {
+        assertThatIllegalArgumentException().isThrownBy(() -> {
             userService.updateUser(id, updateRequest);
         });
     }
