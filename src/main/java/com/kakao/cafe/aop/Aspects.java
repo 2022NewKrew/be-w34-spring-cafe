@@ -1,13 +1,18 @@
 package com.kakao.cafe.aop;
 
+import com.kakao.cafe.model.service.BoardService;
 import com.kakao.cafe.util.annotation.LoginCheck;
+import com.kakao.cafe.util.annotation.MineCheck;
 import com.kakao.cafe.util.exception.NoAdminException;
 import com.kakao.cafe.util.exception.NotLoggedInException;
+import com.kakao.cafe.util.exception.NotMineException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -18,6 +23,13 @@ import javax.servlet.http.HttpSession;
 @Aspect
 public class Aspects {
     private final Logger logger = LoggerFactory.getLogger(Aspects.class);
+    private BoardService boardService;
+
+    @Lazy
+    @Autowired
+    private void setBoardService(BoardService boardService) {
+        this.boardService = boardService;
+    }
 
     @Before(value = "execution(* com.kakao.cafe..*.*(..))")
     public void logging(JoinPoint joinPoint) {
@@ -38,13 +50,28 @@ public class Aspects {
         }
     }
 
-    @Before("execution(* com.kakao.cafe.controller.BoardController.*(..))")
+    @Before("execution(* com.kakao.cafe.controller.BoardController.*(..)) && !execution(* com.kakao.cafe.controller.BoardController.goAllView(..))")
     public void loginCheckForBoard() {
         HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest().getSession();
         String loggedInId = (String) session.getAttribute("USER_ID");
 
         if (loggedInId == null) {
             throw new NotLoggedInException("로그인하지 않은 상태이므로 접근할 수 없습니다.");
+        }
+    }
+
+    @Before("execution(* com.kakao.cafe.controller.BoardController.*(..)) && @annotation(com.kakao.cafe.util.annotation.MineCheck) && @annotation(mineCheck)")
+    public void boardMineCheckUsingAnnotation(JoinPoint joinPoint, MineCheck mineCheck) {
+        HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest().getSession();
+        String loggedInId = (String) session.getAttribute("USER_ID");
+
+        if (mineCheck.type().toString().equals("ARTICLE") && !(boardService.isSameArticleWriter((long) joinPoint.getArgs()[0], loggedInId))) {
+            throw new NotMineException("해당 게시글의 작성자가 아니므로 수정하거나 삭제할 수 없습니다.");
+        }
+
+        if (mineCheck.type().toString().equals("COMMENT")
+                && !(boardService.isSameCommentWriter((long) joinPoint.getArgs()[0], (long) joinPoint.getArgs()[1], loggedInId))) {
+            throw new NotMineException("해당 댓글의 작성자가 아니므로 삭제할 수 없습니다.");
         }
     }
 }

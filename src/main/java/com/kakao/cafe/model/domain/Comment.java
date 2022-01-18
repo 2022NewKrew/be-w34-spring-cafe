@@ -19,5 +19,5 @@ public class Comment {
     private String content;
 
     @Setter
-    private LocalDateTime date;
+    private LocalDateTime createdDate;
 }

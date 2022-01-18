@@ -9,8 +9,11 @@ public interface UserRepository {
     boolean saveUser(User user);
 
     List<User> findAllUsers();
+
     Optional<User> findUserById(Long id);
+
     Optional<User> findUserByUserId(String userId);
+
     Optional<User> findUserByLoginInfo(String userId, String password);
 
     boolean modifyUser(User user);

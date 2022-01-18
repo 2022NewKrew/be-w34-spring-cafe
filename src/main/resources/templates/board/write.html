@@ -2,14 +2,14 @@
 <div class="card" style="border: 0;">
     <article class="card-body mx-auto" style="width: 1000px;">
         <h2 class="card-title m-3 text-center">글쓰기</h2>
-        <form method="post" action="/board/write">
+        <form action="/board/write" method="post">
             <table class="table align-middle">
                 <tr>
                     <th class="text-end">
                         작성자: &nbsp;
                     </th>
                     <td>
-                        <input type="text" name="writerId" class="w-25 form-control" placeholder="작성자" required>
+                        <input class="w-25 form-control" name="writerId" readonly type="text" value="{{USER_ID}}">
                     </td>
                 </tr>
                 <tr>
@@ -17,7 +17,7 @@
                         제목: &nbsp;
                     </th>
                     <td>
-                        <input type="text" name="title" class="form-control" placeholder="제목을 입력해주세요." required>
+                        <input class="form-control" name="title" placeholder="제목을 입력해주세요." required type="text">
                     </td>
                 </tr>
                 <tr>
@@ -25,13 +25,14 @@
                         내용: &nbsp;
                     </th>
                     <td>
-                        <textarea class="form-control" name="content" style="height: 200px;" placeholder="내용을 입력해주세요."></textarea>
+                        <textarea class="form-control" name="content" placeholder="내용을 입력해주세요."
+                                  style="height: 200px;"></textarea>
                     </td>
                 </tr>
             </table>
             <div class="mt-1 float-end">
-                <button type="submit" class="btn btn-dark">작성</button>
-                <button type="button" class="btn btn-dark" onclick="location.href='/board/list'">목록</button>
+                <button class="btn btn-dark" type="submit">작성</button>
+                <button class="btn btn-dark" onclick="location.href='/board/list'" type="button">목록</button>
             </div>
         </form>
     </article>

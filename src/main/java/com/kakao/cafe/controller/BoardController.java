@@ -3,13 +3,12 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.model.dto.ArticleDto;
 import com.kakao.cafe.model.dto.CommentDto;
 import com.kakao.cafe.model.service.BoardService;
-import com.kakao.cafe.util.annotation.LoginCheck;
+import com.kakao.cafe.util.annotation.MineCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -51,12 +50,14 @@ public class BoardController {
     }
 
     @GetMapping("/modify/{articleId}")
+    @MineCheck
     public String goModifyArticleView(@PathVariable long articleId, Model model) {
         model.addAttribute("article", boardService.findArticleByArticleId(articleId));
         return "board/modify";
     }
 
     @PutMapping("/modify/{articleId}")
+    @MineCheck
     public String modifyArticle(@PathVariable long articleId, String title, String content) {
         boardService.modifyArticle(ArticleDto.builder()
                 .articleId(articleId)
@@ -66,13 +67,14 @@ public class BoardController {
     }
 
     @DeleteMapping("/delete/{articleId}")
+    @MineCheck
     public String deleteArticle(@PathVariable long articleId) {
         boardService.deleteArticle(articleId);
         return "redirect:/board/list";
     }
 
     @PostMapping("/write/comment")
-    public String writeComment(String writerId, String content, long articleId) {
+    public String writeComment(long articleId, String writerId, String content) {
         CommentDto commentDto = CommentDto.builder()
                 .writerId(writerId)
                 .content(content).build();
@@ -83,6 +85,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/delete/{articleId}/{commentId}")
+    @MineCheck(type = MineCheck.Type.COMMENT)
     public String deleteComment(@PathVariable("articleId") long articleId,
                                 @PathVariable("commentId") long commentId) {
         boardService.deleteComment(articleId, commentId);

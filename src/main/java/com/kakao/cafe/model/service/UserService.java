@@ -8,8 +8,11 @@ public interface UserService {
     void registerUser(UserDto userDto);
 
     List<UserDto> findAllUsers();
+
     UserDto findUserById(Long id);
+
     UserDto findUserByUserId(String userId);
+
     UserDto findUserByLoginInfo(String userId, String password, String errorMessage);
 
     void modifyUser(UserDto userDto);
