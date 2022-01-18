@@ -18,7 +18,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 public class JdbcArticleRepository implements ArticleRepository {
 
-    private final static String ARTICLE_TABLE = "article";
+    private final static String ARTICLE_TABLE = "ARTICLE";
     private final static String COLUMN_ID = "id";
     private final static String COLUMN_WRITER = "writer";
     private final static String COLUMN_TITLE = "title";

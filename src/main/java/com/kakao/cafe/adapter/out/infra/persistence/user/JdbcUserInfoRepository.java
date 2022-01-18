@@ -19,7 +19,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 public class JdbcUserInfoRepository implements UserInfoRepository {
 
-    private static final String USER_TABLE = "user";
+    private static final String USER_TABLE = "USER";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_NAME = "name";
@@ -48,7 +48,8 @@ public class JdbcUserInfoRepository implements UserInfoRepository {
 
     @Override
     public void update(User user) {
-        String sql = "update user set " + COLUMN_NAME + "=?, " + COLUMN_EMAIL + "=? where " + COLUMN_ID + "=?";
+        String sql = "update " + USER_TABLE + " set " + COLUMN_NAME + "=?, " + COLUMN_EMAIL + "=? where " + COLUMN_ID +
+                     "=?";
         jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getUserId());
     }
 

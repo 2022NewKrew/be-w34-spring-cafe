@@ -10,6 +10,7 @@ import com.kakao.cafe.application.article.port.out.RegisterArticlePort;
 import com.kakao.cafe.application.article.service.GetArticleInfoService;
 import com.kakao.cafe.application.article.service.WriteArticleService;
 import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,6 +19,7 @@ public class MvcArticleConfig {
 
     public final DataSource dataSource;
 
+    @Autowired
     public MvcArticleConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }

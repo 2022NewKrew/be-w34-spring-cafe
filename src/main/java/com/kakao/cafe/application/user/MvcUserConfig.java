@@ -16,6 +16,7 @@ import com.kakao.cafe.application.user.service.LoginUserService;
 import com.kakao.cafe.application.user.service.SignUpUserService;
 import com.kakao.cafe.application.user.service.UpdateUserInfoService;
 import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,6 +25,7 @@ public class MvcUserConfig {
 
     public final DataSource dataSource;
 
+    @Autowired
     public MvcUserConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }
