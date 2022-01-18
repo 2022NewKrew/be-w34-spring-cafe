@@ -3,22 +3,16 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.model.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
-public class UserRepository {
-    private final List<User> userList = new ArrayList<>();
-    private static Integer seq = 0;
+public interface UserRepository {
+    void save(User user);
 
-    public void save(User user){
-        user.setId(seq++);
-        userList.add(user);
-    }
+    List<User> findAll();
 
-    public List<User> getUserList() {
-        return userList;
-    }
+    Optional<User> findOne(Integer id);
 
 }
