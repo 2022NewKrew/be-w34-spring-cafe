@@ -23,18 +23,18 @@ public class GlobalExceptionHandler {
         Errors errors = e.getBindingResult();
         errors.getFieldErrors().forEach(error -> rttr.addFlashAttribute(error.getField(), error.getDefaultMessage()));
         rttr.addFlashAttribute("msg", "잘못된 입력 값입니다.");
-        return PREFIX_FOR_REDIRECTION + getPathOfRedirectionFromRequest(request);
+        return getPathOfRedirectionFromRequest(request);
     }
 
     @ExceptionHandler(Exception.class)
     public String handleException(Exception e, HttpServletRequest request, RedirectAttributes rttr) {
         e.printStackTrace();
         rttr.addFlashAttribute("msg", e.getMessage());
-        return PREFIX_FOR_REDIRECTION + getPathOfRedirectionFromRequest(request);
+        return getPathOfRedirectionFromRequest(request);
     }
 
     private String getPathOfRedirectionFromRequest(HttpServletRequest request) {
         String path = request.getHeader(HEADER_REFERER);
-        return StringUtils.hasLength(path) ? path : ROOT_PATH;
+        return PREFIX_FOR_REDIRECTION + (StringUtils.hasLength(path) ? path : ROOT_PATH);
     }
 }
