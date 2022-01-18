@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
             ForbiddenException.class
     })
     public String handleRuntimeExceptions(final CustomRuntimeException e, Model model, HttpServletResponse response) {
-        response.setStatus(e.getStatus());
+        response.setStatus(e.getErrorCode().getValue());
         model.addAttribute("msg", errorMsg(e.getName(), e.getMessage()));
         logger.error(e.getName());
         return "infra/error";
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public String handleIllegalArgumentException(final IllegalArgumentException e, Model model, HttpServletResponse response) {
-        response.setStatus(400);
+        response.setStatus(ErrorCode.BAD_REQUEST.getValue());
         model.addAttribute("msg", errorMsg("IllegalArgumentException", e.getMessage()));
         logger.error("IllegalArgumentException");
         return "infra/error";
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpSessionRequiredException.class)
     public String handleHttpSessionRequiredException(final HttpSessionRequiredException e, Model model, HttpServletResponse response) {
-        response.setStatus(401);
+        response.setStatus(ErrorCode.UNAUTHORIZED.getValue());
         model.addAttribute("msg", errorMsg("HttpSessionRequiredException", e.getMessage()));
         logger.error("HttpSessionRequiredException");
         return "infra/error";

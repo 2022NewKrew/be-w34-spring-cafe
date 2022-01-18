@@ -5,6 +5,6 @@ public class NoSuchDataException extends CustomRuntimeException {
     public NoSuchDataException(String msg) {
         super(msg);
         name = "NoSuchDataException";
-        status = 400;
+        errorCode = ErrorCode.BAD_REQUEST;
     }
 }
