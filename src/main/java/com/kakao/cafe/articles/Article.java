@@ -7,12 +7,14 @@ public class Article {
     private String title;
     private ArticleContent content;
     private String writer;
+    private Long writerId;
 
-    public Article(Long id, String title, ArticleContent content, String writer) {
+    public Article(Long id, String title, ArticleContent content, String writer, Long writerId) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
+        this.writerId = writerId;
     }
 
     public Long getId() {
@@ -29,6 +31,10 @@ public class Article {
 
     public String getWriter() {
         return writer;
+    }
+
+    public Long getWriterId() {
+        return writerId;
     }
 
     @Override

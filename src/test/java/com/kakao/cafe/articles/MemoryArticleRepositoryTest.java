@@ -1,5 +1,6 @@
 package com.kakao.cafe.articles;
 
+import com.kakao.cafe.CafeApplicationTests;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -7,13 +8,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MemoryArticleRepositoryTest {
+class MemoryArticleRepositoryTest extends CafeApplicationTests {
     ArticleRepository articleRepository = new MemoryArticleRepository();
-
-    List<Article> articles = List.of(
-            new Article(1L, "title", new ArticleContent("content"), "me"),
-            new Article(2L, "title2", new ArticleContent("content2"), "me2")
-    );
 
     @Test
     void 저장() {

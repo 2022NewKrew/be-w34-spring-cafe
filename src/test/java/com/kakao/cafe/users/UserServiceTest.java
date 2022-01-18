@@ -1,5 +1,6 @@
 package com.kakao.cafe.users;
 
+import com.kakao.cafe.CafeApplicationTests;
 import com.kakao.cafe.exceptions.BadCredentialException;
 import com.kakao.cafe.exceptions.NotFoundException;
 import org.assertj.core.api.Assertions;
@@ -19,17 +20,12 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class UserServiceTest extends CafeApplicationTests {
     @Mock
     MemoryUserRepository userRepository;
 
     @InjectMocks
     UserService userService;
-
-    List<User> users = List.of(
-            new User("1234", "1234", "1234", "1234"),
-            new User("asdf", "asdf", "asdf", "asdf")
-    );
 
     @Test
     void 회원가입() {
