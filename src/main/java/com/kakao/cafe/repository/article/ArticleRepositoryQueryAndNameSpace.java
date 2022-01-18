@@ -15,8 +15,9 @@ public class ArticleRepositoryQueryAndNameSpace {
     }
 
     public String getFindAllSqlQuery(){
-        return String.format("select * from %s", tableName);
+        return String.format("select * from %s where flag = 1 or flag is null", tableName);
     }
+
     public enum ColumnName{
         ID("id"),
         WRITER("writer"),

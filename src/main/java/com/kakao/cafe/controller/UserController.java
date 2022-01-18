@@ -83,7 +83,7 @@ public class UserController {
 
     @AuthCheck
     @PutMapping("{userId}/form")
-    public String updateForm(@PathVariable("userId") String userId, String curPassword, UserAccountDTO userAccountDTO, HttpSession session){
+    public String updateForm(@PathVariable("userId") String userId, String curPassword, UserAccountDTO userAccountDTO){
         try {
             Optional<UserAccount> userAccount = userAccountService.updateUserAccount(userAccountDTO, curPassword);
 
