@@ -17,6 +17,18 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
+    public void update(User user) {
+        store.stream()
+                .filter(x -> Objects.equals(x.getId(), user.getId()))
+                .findAny()
+                .ifPresent(x -> {
+                    x.setEmail(user.getEmail());
+                    x.setNickname(user.getNickname());
+                    x.setPassword(user.getPassword());
+                });
+    }
+
+    @Override
     public Optional<User> findById(long id) {
         if (id > store.size()) {
             return Optional.empty();
@@ -26,9 +38,10 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
+    public Optional<User> findByUserIdAndPassword(String userId, String password) {
         return store.stream()
                 .filter(user -> user.getUserId().equals(userId))
+                .filter(user -> user.getPassword().equals(password))
                 .findAny();
     }
 

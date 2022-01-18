@@ -1,31 +1,71 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">VINCE CAFE</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+<!--    <div class="container-fluid">-->
+<!--        <a class="navbar-brand" href="/">VINCE CAFE</a>-->
+<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="users" href="/users">Users</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="posts" href="/posts">Posts</a>
-                </li>
+<!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--            <ul class="navbar-nav me-auto">-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link active" aria-current="users" href="/users">Users</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link active" aria-current="posts" href="/posts">Posts</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--            <div class="d-flex align-items-center">-->
+<!--                <div class="flex-shrink-0 dropdown">-->
+<!--                    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                        <img src="https://github.com/sh-cho.png" alt="vince" width="32" height="32" class="rounded-circle">-->
+<!--                    </a>-->
+
+<!--                    {{^loginUser}}-->
+<!--                     <a class="btn btn-light" href="/login" role="button">Login</a>-->
+<!--                     <a class="btn btn-outline-dark" href="/signup" role="button">Sign up</a>-->
+<!--                    {{/loginUser}}-->
+<!--                    {{#loginUser}}-->
+<!--                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2" style="">-->
+<!--                        <li><a class="dropdown-item" href="/users/{{id}}">Profile</a></li>-->
+<!--                        <li><hr class="dropdown-divider"></li>-->
+<!--                        <li><a class="dropdown-item" href="/users/logout">Logout</a></li>-->
+<!--                    </ul>-->
+<!--                    {{/loginUser}}-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+
+
+<header class="p-3 mb-3 border-bottom">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                VINCE CAFE
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/users" class="nav-link px-2 link-secondary">Users</a></li>
+                <li><a href="/posts" class="nav-link px-2 link-dark">Posts</a></li>
             </ul>
-            <form class="d-flex">
+
+            <div class="dropdown text-end">
                 {{^loginUser}}
-                    <a class="btn btn-light" href="/login" role="button">Login</a>
-                    <a class="btn btn-outline-dark" href="/signup" role="button">Sign up</a>
+                <a class="btn btn-light" href="/login" role="button">Login</a>
+                <a class="btn btn-outline-dark" href="/signup" role="button">Sign up</a>
                 {{/loginUser}}
                 {{#loginUser}}
-                    <a class="align-self-center" href="/users/{{id}}">
-                        <span class="badge rounded-pill bg-primary">{{userId}}</span>
-                    </a>
-                    <a class="btn btn-light" href="/users/logout" role="button">Logout</a>
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/sh-cho.png" alt="profile image" width="32" height="32" class="rounded-circle">
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2" style="">
+                    <li><a class="dropdown-item" href="/users/{{id}}">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/users/logout">Logout</a></li>
+                </ul>
                 {{/loginUser}}
-            </form>
+            </div>
         </div>
     </div>
-</nav>
+</header>

@@ -35,8 +35,15 @@ public class UserService {
         userRepository.add(userMapper.toEntity(userDto));
     }
 
+    public void update(User user, UserDto userDto) {
+        user.setNickname(userDto.getNickname());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        userRepository.update(user);
+    }
+
     public User login(UserDto userDto) {
-        User user = userRepository.findByUserId(userDto.getUserId()).orElseThrow(NoSuchElementException::new);
-        return user;
+        return userRepository.findByUserIdAndPassword(userDto.getUserId(), userDto.getPassword())
+                .orElseThrow(NoSuchElementException::new);
     }
 }

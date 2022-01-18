@@ -1,0 +1,37 @@
+{{> layout/header}}
+<body>
+{{> layout/navbar}}
+
+<div class="container">
+    <h1 class="mt-5">유저 정보 갱신</h1>
+    <hr>
+
+    {{#loginUser}}
+    <form action="/users/update" method="post">
+        <input type="hidden" name="_method" value="put"> {{! PutMapping workaround }}
+
+        <div class="mb-3">
+            <label for="userId" class="form-label">ID</label>
+            <input type="text" class="form-control" id="userId" name="userId" value="{{userId}}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{email}}">
+        </div>
+        <div class="mb-3">
+            <label for="nickname" class="form-label">Nickname</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" value="{{nickname}}">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    {{/loginUser}}
+</div>
+
+{{> layout/footer}}
+</body>
+</html>

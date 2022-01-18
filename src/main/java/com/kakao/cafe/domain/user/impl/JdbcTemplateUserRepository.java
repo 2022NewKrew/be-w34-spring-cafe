@@ -24,9 +24,14 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public void add(User user) {
-        logger.info("[유저 가입] {}", user);
         jdbcTemplate.update("INSERT INTO `USER` (userId, email, nickname, password) VALUES (?, ?, ?, ?)",
                 user.getUserId(), user.getEmail(), user.getNickname(), user.getPassword());
+    }
+
+    @Override
+    public void update(User user) {
+        jdbcTemplate.update("UPDATE `USER` SET email=?, nickname=?, password=? WHERE id=?",
+                user.getEmail(), user.getNickname(), user.getPassword(), user.getId());
     }
 
     @Override
@@ -36,8 +41,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
-        return jdbcTemplate.query("SELECT id, userId, email, nickname, password FROM `USER` WHERE userId=?", userMapper, userId)
+    public Optional<User> findByUserIdAndPassword(String userId, String password) {
+        return jdbcTemplate.query("SELECT id, userId, email, nickname, password FROM `USER` WHERE userId=? AND password=?", userMapper, userId, password)
                 .stream().findAny();
     }
 
