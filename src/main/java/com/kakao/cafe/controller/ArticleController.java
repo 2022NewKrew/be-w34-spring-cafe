@@ -1,11 +1,12 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.article.service.dto.ArticleReadServiceResponse;
 import com.kakao.cafe.controller.aop.AuthInfoCheck;
 import com.kakao.cafe.controller.session.AuthInfo;
 import com.kakao.cafe.controller.session.HttpSessionUtil;
+import com.kakao.cafe.controller.viewdto.ArticleControllerResponseMapper;
 import com.kakao.cafe.controller.viewdto.request.ArticleCreateRequest;
-import com.kakao.cafe.controller.viewdto.response.ArticleReadResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -44,7 +46,9 @@ public class ArticleController {
     @GetMapping("/{id}")
     public String getArticle(@PathVariable("id") String articleId, Model model) {
         log.info("Get /article/{}", articleId);
-        model.addAllAttributes(new ArticleReadResponse(articleService.getArticleReadViewDTO(Long.parseLong(articleId))));
+        ArticleReadServiceResponse dto = articleService.getArticleReadViewDTO(Long.parseLong(articleId));
+        Map<String, Object> result = ArticleControllerResponseMapper.getArticleReadResponse(dto);
+        model.addAllAttributes(result);
         return "article/show";
     }
 }

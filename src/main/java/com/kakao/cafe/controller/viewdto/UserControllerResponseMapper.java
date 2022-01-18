@@ -1,14 +1,13 @@
-package com.kakao.cafe.controller.viewdto.response;
+package com.kakao.cafe.controller.viewdto;
 
 import com.kakao.cafe.user.service.dto.AllUserProfileServiceResponse;
 import com.kakao.cafe.user.service.dto.UserProfileServiceResponse;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
-public class UserListResponse extends HashMap<String, Object> {
-    public UserListResponse(AllUserProfileServiceResponse dto) {
-        ArrayList<HashMap<String, Object>> users = new ArrayList<>();
+public class UserControllerResponseMapper {
+    public static List<Map<String, Object>> getUserListResponse(AllUserProfileServiceResponse dto) {
+        List<Map<String, Object>> users = new ArrayList<>();
         int index = dto.getAllUserProfileList().size();
 
         for (UserProfileServiceResponse res : dto.getAllUserProfileList()) {
@@ -19,6 +18,6 @@ public class UserListResponse extends HashMap<String, Object> {
             user.put("email", res.getEmail());
             users.add(user);
         }
-        this.put("users", users);
+        return users;
     }
 }

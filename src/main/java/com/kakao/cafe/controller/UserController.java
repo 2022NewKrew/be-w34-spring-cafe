@@ -3,12 +3,12 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.controller.aop.AuthInfoCheck;
 import com.kakao.cafe.controller.session.AuthInfo;
 import com.kakao.cafe.controller.session.HttpSessionUtil;
+import com.kakao.cafe.controller.viewdto.UserControllerResponseMapper;
 import com.kakao.cafe.controller.viewdto.request.UserCreateRequest;
 import com.kakao.cafe.controller.viewdto.request.UserLoginRequest;
 import com.kakao.cafe.controller.viewdto.request.UserUpdateRequest;
-import com.kakao.cafe.controller.viewdto.response.UserListResponse;
-import com.kakao.cafe.controller.viewdto.response.UserProfileResponse;
 import com.kakao.cafe.user.service.UserService;
+import com.kakao.cafe.user.service.dto.AllUserProfileServiceResponse;
 import com.kakao.cafe.user.service.dto.UserProfileServiceResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,10 @@ public class UserController {
     @GetMapping("")
     public String list(Model model) {
         log.info("GET /user access");
-        model.addAllAttributes(new UserListResponse(userService.getAllUserViewData(0L)));
+        AllUserProfileServiceResponse dto = userService.getAllUserViewData(0L);
+//
+//        model.addAllAttributes(new UserListResponse());
+        model.addAttribute("users", UserControllerResponseMapper.getUserListResponse(dto));
         return "user/list";
     }
 
@@ -87,7 +90,9 @@ public class UserController {
     public String userProfile(@PathVariable("id") String stringId, Model model) {
         log.info("GET /user/profile/{}", stringId);
         UserProfileServiceResponse res = userService.getUserProfile(stringId);
-        model.addAllAttributes(new UserProfileResponse(res.getStringId(), res.getName(), res.getEmail()));
+        model.addAttribute("stringId", res.getStringId());
+        model.addAttribute("name", res.getName());
+        model.addAttribute("email", res.getEmail());
         return "user/profile";
     }
 
@@ -97,7 +102,9 @@ public class UserController {
         log.info("GET /user/update");
         AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
         UserProfileServiceResponse res = userService.getUserProfile(authInfo.getStringId());
-        model.addAllAttributes(new UserProfileResponse(res.getStringId(), res.getName(), res.getEmail()));
+        model.addAttribute("stringId", res.getStringId());
+        model.addAttribute("name", res.getName());
+        model.addAttribute("email", res.getEmail());
         return "user/update";
     }
 
@@ -110,7 +117,9 @@ public class UserController {
             throw new IllegalArgumentException("자신의 회원정보만 수정 가능합니다.");
         }
         UserProfileServiceResponse res = userService.getUserProfile(authInfo.getStringId());
-        model.addAllAttributes(new UserProfileResponse(res.getStringId(), res.getName(), res.getEmail()));
+        model.addAttribute("stringId", res.getStringId());
+        model.addAttribute("name", res.getName());
+        model.addAttribute("email", res.getEmail());
         return "user/update";
     }
 }
