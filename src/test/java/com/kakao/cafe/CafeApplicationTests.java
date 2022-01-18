@@ -1,6 +1,5 @@
 package com.kakao.cafe;
 
-import com.kakao.cafe.web.HelloController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,14 +14,6 @@ import org.slf4j.Logger;
 class CafeApplicationTests {
 
 	Logger logger = LoggerFactory.getLogger(CafeApplicationTests.class);
-
-	@Autowired
-	HelloController helloController;
-
-	@Test
-	void controllerNotNull() {
-		assertThat(helloController).isNotNull();
-	}
 
 	@ParameterizedTest
 	@DisplayName("여러 값으로 반복 테스트를 진행한다")
