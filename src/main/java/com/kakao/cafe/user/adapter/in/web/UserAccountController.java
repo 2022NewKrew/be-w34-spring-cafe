@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/users")
@@ -22,26 +21,20 @@ public class UserAccountController {
     private final GetUserAccountUseCase getUserAccountUseCase;
 
     @GetMapping("/list")
-    public String userList(Model model, HttpSession httpSession) {
+    public String userList(Model model) {
         UserAccountDetailListResult users = getUserAccountUseCase.getAllUser();
         model.addAttribute("users", users.getUserAccountDetailResults());
         model.addAttribute("user-count", users.getUserAccountDetailResults().size());
 
-        if(httpSession.getAttribute("user-id") != null) {
-            return "after/users";
-        }
-        return "before/users";
+        return "users";
     }
 
-    @GetMapping("/{id}/detail")
-    public String userInfo(@PathVariable(name = "id") Long id, Model model, HttpSession httpSession) {
-        UserAccountDetailResult userInfo = getUserAccountUseCase.getUserInfo(new UserAccountDetailIdCommand(id));
+    @GetMapping("/{user-account-id}/detail")
+    public String userInfo(@PathVariable(name = "user-account-id") Long userId, Model model) {
+        UserAccountDetailResult userInfo = getUserAccountUseCase.getUserInfo(new UserAccountDetailIdCommand(userId));
         model.addAttribute("userInfo", userInfo);
 
-        if(httpSession.getAttribute("user-id") != null) {
-            return "after/userinfo";
-        }
-        return "before/userInfo";
+        return "userInfo";
     }
 
     @GetMapping("/logout")

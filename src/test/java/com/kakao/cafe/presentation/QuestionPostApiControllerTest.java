@@ -1,6 +1,6 @@
 package com.kakao.cafe.presentation;
 
-import com.kakao.cafe.post.adapter.in.web.dto.QuestionPostWriteRequest;
+import com.kakao.cafe.post.adapter.in.web.dto.request.QuestionPostWriteRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -23,9 +23,6 @@ public class IndexController {
         model.addAttribute("count", allPost.getDetailResults().size());
         model.addAttribute("posts", allPost.getDetailResults());
 
-        if(httpSession.getAttribute("user-id") != null) {
-            return "after/afterindex";
-        }
         return "index";
     }
 }

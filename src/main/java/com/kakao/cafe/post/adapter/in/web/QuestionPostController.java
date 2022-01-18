@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/posts")
@@ -22,22 +23,24 @@ public class QuestionPostController {
     private final GetQuestionPostUseCase getQuestionPostUseCase;
     private final UpdateQuestionPostUseCase updateQuestionPostUseCase;
 
-    @GetMapping("/{id}/detail")
-    public String postDetail(@PathVariable(name = "id") Long id, Model model, HttpSession httpSession) {
-        QuestionPostDetailResult postDetail = getQuestionPostUseCase.getPostDetail(new QuestionPostDetailCommand(id));
-        updateQuestionPostUseCase.clickPost(new QuestionPostClickCommand(id));
+    @GetMapping("/{post-id}/detail")
+    public String postDetail(@PathVariable(name = "post-id") Long postId, Model model, HttpSession httpSession) {
+        QuestionPostDetailResult postDetail = getQuestionPostUseCase.getPostDetail(new QuestionPostDetailCommand(postId));
+        updateQuestionPostUseCase.clickPost(new QuestionPostClickCommand(postId));
         model.addAttribute("post", postDetail);
-        if(httpSession.getAttribute("user-id") != null) {
-            return "after/qnadetail";
+
+        if(Objects.equals(httpSession.getAttribute("user-id"), postDetail.getUserAccountId())) {
+            return "updateqnadetail";
         }
-        return "before/qnadetail";
+        return "qnadetail";
     }
 
-    @GetMapping("/form")
-    public String writePost(Model model, HttpSession httpSession) {
+    @GetMapping("/{post-id}/update")
+    public String updatePost(@PathVariable(name = "post-id") Long postId, Model model) {
+        QuestionPostDetailResult postDetail = getQuestionPostUseCase.getPostDetail(new QuestionPostDetailCommand(postId));
 
-        Long id = (Long) httpSession.getAttribute("user-id");
-        model.addAttribute("user-id", id);
-        return "after/qnaform";
+        model.addAttribute("post", postDetail);
+
+        return "qnaupdateform";
     }
 }

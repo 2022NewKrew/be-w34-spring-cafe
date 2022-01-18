@@ -1,6 +1,5 @@
-package com.kakao.cafe.post.adapter.in.web;
+package com.kakao.cafe.post.exception;
 
-import com.kakao.cafe.post.exception.QuestionPostException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

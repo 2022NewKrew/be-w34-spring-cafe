@@ -8,8 +8,10 @@ import com.kakao.cafe.post.application.port.out.LoadQuestionPostPort;
 import com.kakao.cafe.post.domain.QuestionPost;
 import com.kakao.cafe.post.exception.QuestionPostErrorCode;
 import com.kakao.cafe.post.exception.QuestionPostException;
+import com.kakao.cafe.util.DateTimeFormatUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 import static java.time.format.DateTimeFormatter.ofPattern;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class GetQuestionPostService implements GetQuestionPostUseCase {
 
@@ -31,9 +34,10 @@ public class GetQuestionPostService implements GetQuestionPostUseCase {
                 questionPost.getQuestionPostId(),
                 questionPost.getTitle(),
                 questionPost.getContent(),
-                questionPost.getCreatedAt().format(ofPattern("yyyy-MM-dd HH:mm:ss")),
+                DateTimeFormatUtil.format(questionPost.getCreatedAt()),
                 questionPost.getViewCount(),
-                questionPost.getUserAccount().getUsername());
+                questionPost.getUserAccount().getUsername(),
+                questionPost.getUserAccount().getUserAccountId());
     }
 
     @Override
@@ -45,9 +49,10 @@ public class GetQuestionPostService implements GetQuestionPostUseCase {
                         post.getQuestionPostId(),
                         post.getTitle(),
                         post.getContent(),
-                        post.getCreatedAt().format(ofPattern("yyyy-MM-dd HH:mm:ss")),
+                        DateTimeFormatUtil.format(post.getCreatedAt()),
                         post.getViewCount(),
-                        post.getUserAccount().getUsername())
+                        post.getUserAccount().getUsername(),
+                        post.getUserAccount().getUserAccountId())
                 )
                 .collect(Collectors.toList());
 

@@ -1,6 +1,5 @@
-package com.kakao.cafe.user.adapter.in.web;
+package com.kakao.cafe.user.exception;
 
-import com.kakao.cafe.user.exception.UserAccountException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,15 +1,10 @@
 package com.kakao.cafe.user.adapter.in.web;
 
 import com.kakao.cafe.user.adapter.in.web.dto.request.UserAccountEnrollRequest;
-import com.kakao.cafe.user.adapter.in.web.dto.request.UserAccountLoginRequest;
 import com.kakao.cafe.user.adapter.in.web.dto.response.UserAccountEnrollResponse;
-import com.kakao.cafe.user.adapter.in.web.dto.response.UserAccountLoginResponse;
-import com.kakao.cafe.user.application.dto.result.UserAccountDetailResult;
 import com.kakao.cafe.user.application.dto.result.UserAccountEnrollResult;
 import com.kakao.cafe.user.application.port.in.EnrollUserAccountUseCase;
-import com.kakao.cafe.user.application.port.in.GetUserAccountUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
@@ -29,7 +23,6 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 public class UserAccountApiController {
 
     private final EnrollUserAccountUseCase enrollUserAccountUseCase;
-    private final GetUserAccountUseCase getUserAccountUseCase;
 
     @PostMapping("")
     public ResponseEntity<UserAccountEnrollResponse> enroll(@Valid @RequestBody UserAccountEnrollRequest request) {
@@ -40,22 +33,5 @@ public class UserAccountApiController {
 
         return ResponseEntity.created(uriComponents.toUri())
                 .body(enroll.toResponse());
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<UserAccountLoginResponse> login(
-            @Valid @RequestBody UserAccountLoginRequest request,
-            HttpSession httpSession) {
-
-        UserAccountDetailResult user = getUserAccountUseCase.getUserInfoByEmail(request.toCommand());
-        if(user.getPassword().equals(request.getPassword())) {
-            httpSession.setAttribute("user-id", user.getUserAccountId());
-            return ResponseEntity.ok()
-                    .body(new UserAccountLoginResponse("success"));
-        }
-
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(new UserAccountLoginResponse("unAuthorized"));
     }
 }

@@ -1,4 +1,4 @@
-package com.kakao.cafe.post.adapter.in.web.dto;
+package com.kakao.cafe.post.adapter.in.web.dto.request;
 
 import com.kakao.cafe.post.application.dto.command.QuestionPostSaveCommand;
 import lombok.Getter;
@@ -16,10 +16,8 @@ public class QuestionPostWriteRequest {
     private final String title;
     @NotNull
     private final String content;
-    @NotNull
-    private final Long userAccountId;
 
-    public QuestionPostSaveCommand toCommand() {
+    public QuestionPostSaveCommand toCommand(Long userAccountId) {
         return new QuestionPostSaveCommand(title, content, userAccountId);
     }
 }

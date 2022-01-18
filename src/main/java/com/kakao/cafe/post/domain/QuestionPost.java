@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class QuestionPost {
 
     private final Long questionPostId;
-    private final String title;
-    private final String content;
+    private String title;
+    private String content;
     private final LocalDateTime createdAt;
     private int viewCount;
     private final UserAccount userAccount;
@@ -28,6 +28,14 @@ public class QuestionPost {
         this.createdAt = createdAt;
         this.viewCount = viewCount;
         this.userAccount = userAccount;
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
     }
 
     public void viewCountIncrease() {

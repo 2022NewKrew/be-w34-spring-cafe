@@ -16,6 +16,45 @@ var main = {
         $('#btn-write').on('click', function () {
             _this.write();
         })
+        $('#qna-update').on('click', function () {
+            _this.qnaUpdate();
+        })
+        $('#qna-delete').on('click', function () {
+            _this.qnaDelete();
+        })
+    },
+    qnaUpdate : function () {
+        var data = {
+            title: $('#title').val(),
+            content: $('#question').val()
+        };
+        $.ajax({
+            type: 'PUT',
+            url: '/api/posts/'+$('#post-id').val(),
+            dataType: 'json',
+            accept: 'application/json',
+            contentType: 'application/json; charset-utf-8',
+            data: JSON.stringify(data)
+        }).done(function () {
+            alert("수정완료")
+            window.location.href = '/';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    qnaDelete : function () {
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/posts/'+$('#post-id').val(),
+            dataType: 'json',
+            accept: 'application/json',
+            contentType: 'application/json; charset-utf-8',
+        }).done(function () {
+            alert("삭제완료")
+            window.location.href = '/';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
     },
     write : function () {
         window.location.href = '/posts/form'
@@ -24,7 +63,6 @@ var main = {
         var data = {
             title: $('#title').val(),
             content: $('#question').val(),
-            userAccountId: $('#user-id').val()
         };
         $.ajax({
             type: 'POST',
@@ -68,7 +106,7 @@ var main = {
         };
         $.ajax({
             type: 'POST',
-            url: '/api/users/login',
+            url: '/api/auth/login',
             dataType: 'json',
             contentType: 'application/json; charset-utf-8',
             data: JSON.stringify(data)

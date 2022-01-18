@@ -9,14 +9,17 @@ import com.kakao.cafe.user.application.port.out.LoadUserAccountPort;
 import com.kakao.cafe.user.domain.UserAccount;
 import com.kakao.cafe.user.exception.UserAccountErrorCode;
 import com.kakao.cafe.user.exception.UserAccountException;
+import com.kakao.cafe.util.DateTimeFormatUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class GetUserAccountService implements GetUserAccountUseCase {
 
@@ -32,7 +35,7 @@ public class GetUserAccountService implements GetUserAccountUseCase {
                 userAccount.getUsername(),
                 userAccount.getEmail(),
                 userAccount.getPassword(),
-                userAccount.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                DateTimeFormatUtil.format(userAccount.getCreatedAt()));
     }
 
     @Override
@@ -43,7 +46,7 @@ public class GetUserAccountService implements GetUserAccountUseCase {
                         user.getUsername(),
                         user.getEmail(),
                         user.getPassword(),
-                        user.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                        DateTimeFormatUtil.format(user.getCreatedAt())
                 )).collect(Collectors.toList());
 
         return new UserAccountDetailListResult(result);
@@ -59,6 +62,6 @@ public class GetUserAccountService implements GetUserAccountUseCase {
                 userAccount.getUsername(),
                 userAccount.getEmail(),
                 userAccount.getPassword(),
-                userAccount.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                DateTimeFormatUtil.format(userAccount.getCreatedAt()));
     }
 }

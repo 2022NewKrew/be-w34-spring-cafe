@@ -1,4 +1,4 @@
-package com.kakao.cafe.post.adapter.in.web.dto;
+package com.kakao.cafe.post.adapter.in.web.dto.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -112,7 +112,7 @@ public class QuestionPostJdbcRepository implements QuestionPostRepository {
 
     @Override
     public void delete(Long id) {
-        String sql = "delete from question_post where id = ?";
+        String sql = "delete from question_post where question_post_id = ?";
         jdbcTemplate.update(sql, id);
     }
 

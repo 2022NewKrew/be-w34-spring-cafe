@@ -1,0 +1,30 @@
+{{>common/header}}
+{{>common/afterloginbar}}
+<div class="container">
+    <br>
+    <div>
+        <h1>질문 수정</h1>
+    </div>
+    <br>
+    <div>
+        {{#post}}
+        <form>
+            <div class="form-floating mb-3">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" id="title" placeholder="제목을 입력해주세요" value="{{title}}">
+            </div>
+            <div class="form-floating">
+                <label for="question">질문</label>
+                <textarea class="form-control" placeholder="질문을 작성해주세요" id="question" style="height: 100px" >{{content}}</textarea>
+            </div>
+            <div class="form-floating" hidden>
+                <label for="question">post-id</label>
+                <textarea class="form-control" id="post-id" style="height: 100px" >{{post-id}}</textarea>
+            </div>
+        </form>
+        {{/post}}
+        <br>
+        <button type="button" class="btn btn-primary" id="qna-update">완료</button>
+    </div>
+</div>
+{{>common/footer}}

@@ -1,10 +1,8 @@
 package com.kakao.cafe.application.post;
 
-import com.kakao.cafe.post.adapter.out.persistence.QuestionPostRepository;
 import com.kakao.cafe.post.application.GetQuestionPostService;
 import com.kakao.cafe.post.application.dto.command.QuestionPostDetailCommand;
 import com.kakao.cafe.post.application.dto.result.QuestionPostDetailResult;
-import com.kakao.cafe.post.application.port.in.GetQuestionPostUseCase;
 import com.kakao.cafe.post.application.port.out.LoadQuestionPostPort;
 import com.kakao.cafe.post.domain.QuestionPost;
 import com.kakao.cafe.user.domain.UserAccount;
@@ -38,10 +36,11 @@ public class GetQuestionPostServiceTest {
         String title = "질문";
         String content = "질문내용";
         int viewCount = 0;
+        Long userAccountId = 1L;
         LocalDateTime date = LocalDateTime.now();
         String formatDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         UserAccount userAccount = UserAccount.builder()
-                .userAccountId(1L)
+                .userAccountId(userAccountId)
                 .username("peach")
                 .build();
 
@@ -51,7 +50,8 @@ public class GetQuestionPostServiceTest {
                 content,
                 formatDate,
                 viewCount,
-                author);
+                author,
+                userAccountId);
 
         given(loadQuestionPostPort.findById(postId)).willReturn(Optional.of(
                 QuestionPost.builder()
