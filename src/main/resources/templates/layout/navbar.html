@@ -50,15 +50,15 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="../index">Posts</a></li>
-                {{^loggedInUserName}}
+                {{^sessionedUser}}
                     <li><a href="/user/login.html" role="button">로그인</a></li>
                     <li><a href="/user/form.html" role="button">회원가입</a></li>
-                {{/loggedInUserName}}
+                {{/sessionedUser}}
 
-                {{#loggedInUserName}}
-                    <li><a href="/user/logout" role="button">({{loggedInUserName}})로그아웃</a></li>
-                    <li><a href="/users/{{loggedInUserName}}/form" role="button">개인정보수정</a></li>
-                {{/loggedInUserName}}
+                {{#sessionedUser}}
+                    <li><a href="/user/logout" role="button">({{sessionedUser.getUserId}})로그아웃</a></li>
+                    <li><a href="/users/{{sessionedUser.getUserId}}/form" role="button">개인정보수정</a></li>
+                {{/sessionedUser}}
             </ul>
         </div>
     </div>

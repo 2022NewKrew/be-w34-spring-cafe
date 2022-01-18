@@ -63,12 +63,6 @@ public class ArticleController {
     //index.html에 노출되는 질문리스트
     @GetMapping(value = {"/", "/index"})
     public String showArticleList(Model model, HttpSession session) {
-        String loggedInUserId;
-        if(session.getAttribute("sessionedUser") != null) {
-            loggedInUserId = ((User) session.getAttribute("sessionedUser")).getUserId();
-            model.addAttribute("loggedInUserName", loggedInUserId);
-        }
-
         List<Article> articles = articleService.getAllArticles();
         List<ArticleListDTO> articleListDTO = articles.stream().map(ArticleListDTO::new).collect(Collectors.toList());
         model.addAttribute("articles", articleListDTO);
