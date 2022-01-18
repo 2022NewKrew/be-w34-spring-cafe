@@ -1,24 +1,20 @@
 {{>layout/header}}
 <div class="background">
     {{^sessionedUser}}
-    {{>layout/mainLoginNavbar}}
+    {{>layout/userLoginNavbar}}
     {{/sessionedUser}}
     {{#sessionedUser}}
-    {{>layout/mainLogoutNavbar}}
+    {{>layout/userLogoutNavbar}}
     {{/sessionedUser}}
 
     <div class="container" id="main">
         <header class="center-header">
-            <p class="display-large">회원가입</p>
+            <p class="display-large">로그인</p>
         </header>
-        <form name="question" class="info-container" method="post" action="/users">
+        <form name="question" class="info-container" method="post" action="/users/login">
             <div class="signup-form-group">
                 <label for="email">이메일</label>
                 <input type="email" class="signup-form-control" id="email" name="email" placeholder="이메일을 입력하세요">
-            </div>
-            <div class="signup-form-group">
-                <label for="nickname">닉네임</label>
-                <input type="text" class="signup-form-control" id="nickname" name="nickname" placeholder="닉네입을 입력하세요">
             </div>
             <div class="signup-form-group">
                 <label for="password">비밀번호</label>

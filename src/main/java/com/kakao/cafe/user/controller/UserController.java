@@ -1,9 +1,11 @@
 package com.kakao.cafe.user.controller;
 
 import com.kakao.cafe.user.dto.request.SignUpRequest;
+import com.kakao.cafe.user.dto.request.loginRequest;
 import com.kakao.cafe.user.dto.response.UserResponse;
 import com.kakao.cafe.user.dto.response.UsersResponse;
 import com.kakao.cafe.user.service.UserService;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+    private static final int LOGIN_TIME = 1800;
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -24,6 +27,20 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostMapping("/login")
+    public String login(HttpSession session, @Valid loginRequest loginRequest){
+        UserResponse userResponse = userService.login(loginRequest);
+        session.setMaxInactiveInterval(LOGIN_TIME);
+        session.setAttribute("sessionedUser",userResponse);
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
     }
 
     @GetMapping
