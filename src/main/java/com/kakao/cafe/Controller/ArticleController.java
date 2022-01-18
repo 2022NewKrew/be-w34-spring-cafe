@@ -6,13 +6,13 @@ import com.kakao.cafe.Domain.Comment;
 import com.kakao.cafe.Service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,17 +22,21 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
     @PostMapping("/articles")
-    public String post(Article article) {
-        articleService.post(article);
-        logger.info("{}(title) was posted", article.getTitle());
+    public String post(Article article, HttpSession session, Model model) {
+        try{
+            articleService.post(article, session);
+            logger.info("{}(title) was posted", article.getTitle());
 
-        return "redirect:/";
+            return "redirect:/";
+        }catch(IllegalArgumentException e){
+            model.addAttribute("error", e.getMessage());
+            return "error/page";
+        }
     }
 
     @GetMapping("/")
@@ -43,6 +47,7 @@ public class ArticleController {
         
         model.addAttribute("articles", findArticles);
         model.addAttribute("articlesCount", findArticles.size());
+
         return "index";
     }
 
@@ -61,12 +66,18 @@ public class ArticleController {
     }
 
     @PostMapping("/comments/{articleId}")
-    public String postComment(@PathVariable("articleId") int articleId, Comment comment){
+    public String postComment(@PathVariable("articleId") int articleId,
+                              Comment comment, HttpSession session, Model model){
         logger.info("POST /comment/{} : Create a comment on article({})", articleId, articleId);
 
-        articleService.postComment(comment);
-        logger.info("Comment was posted by {}", comment.getAuthor());
+        try{
+            articleService.postComment(comment, session);
+            logger.info("Comment was posted by {}", comment.getAuthor());
 
-        return "redirect:/articles/{articleId}";
+            return "redirect:/articles/{articleId}";
+        }catch(IllegalArgumentException e){
+            model.addAttribute("error", e.getMessage());
+            return "error/page";
+        }
     }
 }

@@ -3,22 +3,14 @@ package com.kakao.cafe.Domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import java.sql.Timestamp;
-
 @Getter
 @Setter
 public class User {
     private Long id;
-    private Timestamp created;
+    private String created;
 
-    @NotBlank
-    @Email
     private String email;
-    @NotBlank
     private String nickName;
-    @NotBlank
     private String password;
 
     public User(String email, String nickName, String password) {

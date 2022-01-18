@@ -30,7 +30,7 @@ class UserServiceIntegrationTest {
         String savedNickname = userService.join(user);
 
         //then
-        User findUser = userService.findOne(savedNickname).get();
+        User findUser = userService.findOneByNickname(savedNickname).get();
         assertThat(user.getNickName()).isEqualTo(findUser.getNickName());
     }
 
