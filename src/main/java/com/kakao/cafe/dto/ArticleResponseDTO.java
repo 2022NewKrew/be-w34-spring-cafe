@@ -1,5 +1,7 @@
 package com.kakao.cafe.dto;
 
+import lombok.Builder;
+
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
@@ -15,11 +17,8 @@ public class ArticleResponseDTO {
     @NotBlank
     private final LocalDateTime createdAt;
 
-    public static ArticleResponseDTO of(Long id, String author, String title, String content, LocalDateTime createdAt) {
-        return new ArticleResponseDTO(id, author, title, content, createdAt);
-    }
-
-    private ArticleResponseDTO(Long id, String author, String title, String content, LocalDateTime createdAt) {
+    @Builder
+    public ArticleResponseDTO(Long id, String author, String title, String content, LocalDateTime createdAt) {
         this.id = id;
         this.author = author;
         this.title = title;

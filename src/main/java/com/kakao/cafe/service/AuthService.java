@@ -24,6 +24,12 @@ public class AuthService {
         if(!user.validatePassword(authDto.getPassword())) {
             throw new InvalidPasswordException();
         }
-        return UserResponseDTO.of(user.getId(), user.getUserId(), user.getName(), user.getEmail(), user.getCreatedAt());
+        return UserResponseDTO.builder()
+                .id(user.getId())
+                .userId(user.getUserId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .createdAt(user.getCreatedAt())
+                .build();
     }
 }

@@ -25,14 +25,26 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public ArticleResponseDTO read(Long id) {
         Article article = articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
-        return ArticleResponseDTO.of(article.getId(), article.getAuthor(), article.getTitle(), article.getContent(), article.getCreatedAt());
+        return ArticleResponseDTO.builder()
+                .id(article.getId())
+                .author(article.getAuthor())
+                .title(article.getTitle())
+                .content(article.getContent())
+                .createdAt(article.getCreatedAt())
+                .build();
     }
 
     @Transactional(readOnly = true)
     public List<ArticleResponseDTO> readAll() {
         return articleRepository.findAll()
                 .stream()
-                .map(article -> ArticleResponseDTO.of(article.getId(), article.getAuthor(), article.getTitle(), article.getContent(), article.getCreatedAt()))
+                .map(article -> ArticleResponseDTO.builder()
+                        .id(article.getId())
+                        .author(article.getAuthor())
+                        .title(article.getTitle())
+                        .content(article.getContent())
+                        .createdAt(article.getCreatedAt())
+                        .build())
                 .collect(Collectors.toUnmodifiableList());
     }
 }

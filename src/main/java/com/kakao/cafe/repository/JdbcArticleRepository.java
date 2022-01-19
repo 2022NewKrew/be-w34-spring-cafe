@@ -38,10 +38,12 @@ public class JdbcArticleRepository implements ArticleRepository{
     }
 
     private Article articleRowMapper(ResultSet rs, int rowNum) throws SQLException {
-        return Article.of(rs.getLong("id"),
-                rs.getString("author"),
-                rs.getString("title"),
-                rs.getString("content"),
-                rs.getTimestamp("createdAt").toLocalDateTime());
+        return Article.builder()
+                .id(rs.getLong("id"))
+                .author(rs.getString("author"))
+                .title(rs.getString("title"))
+                .content(rs.getString("content"))
+                .createdAt(rs.getTimestamp("createdAt").toLocalDateTime())
+                .build();
     }
 }

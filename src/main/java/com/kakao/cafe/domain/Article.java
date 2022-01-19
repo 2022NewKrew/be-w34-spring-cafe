@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain;
 
+import lombok.Builder;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
@@ -19,11 +20,8 @@ public class Article {
     @Nullable
     private LocalDateTime updatedAt;
 
-    public static Article of(Long id, String author, String title, String content, LocalDateTime createdAt) {
-        return new Article(id, author, title, content, createdAt);
-    }
-
-    private Article(Long id, String author, String title, String content, LocalDateTime createdAt) {
+    @Builder
+    public Article(Long id, String author, String title, String content, LocalDateTime createdAt) {
         this.id = id;
         this.author = author;
         this.title = title;

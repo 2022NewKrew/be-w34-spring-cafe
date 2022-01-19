@@ -1,5 +1,7 @@
 package com.kakao.cafe.dto;
 
+import lombok.Builder;
+
 import javax.validation.constraints.NotBlank;
 
 public class ArticleRequestDTO {
@@ -10,11 +12,8 @@ public class ArticleRequestDTO {
     @NotBlank
     private final String content;
 
-    public static ArticleRequestDTO of(String author, String title, String content) {
-        return new ArticleRequestDTO(author, title, content);
-    }
-
-    private ArticleRequestDTO(String author, String title, String content) {
+    @Builder
+    public ArticleRequestDTO(String author, String title, String content) {
         this.author = author;
         this.title = title;
         this.content = content;

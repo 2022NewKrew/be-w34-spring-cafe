@@ -43,14 +43,26 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponseDTO read(String userId) {
         User user = userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
-        return UserResponseDTO.of(user.getId(), user.getUserId(), user.getName(), user.getEmail(), user.getCreatedAt());
+        return UserResponseDTO.builder()
+                .id(user.getId())
+                .userId(user.getUserId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .createdAt(user.getCreatedAt())
+                .build();
     }
 
     @Transactional(readOnly = true)
     public List<UserResponseDTO> readAll() {
         return userRepository.findAll()
                 .stream()
-                .map(user -> UserResponseDTO.of(user.getId(), user.getUserId(), user.getName(), user.getEmail(), user.getCreatedAt()))
+                .map(user -> UserResponseDTO.builder()
+                        .id(user.getId())
+                        .userId(user.getUserId())
+                        .name(user.getName())
+                        .email(user.getEmail())
+                        .createdAt(user.getCreatedAt())
+                        .build())
                 .collect(Collectors.toUnmodifiableList());
     }
 }

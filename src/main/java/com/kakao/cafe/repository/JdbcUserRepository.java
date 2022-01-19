@@ -50,11 +50,13 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     private User userRowMapper(ResultSet rs, int rowNum) throws SQLException {
-        return User.of(rs.getLong("id"),
-                rs.getString("userId"),
-                rs.getString("password"),
-                rs.getString("name"),
-                rs.getString("email"),
-                rs.getTimestamp("createdAt").toLocalDateTime());
+        return User.builder()
+                .id(rs.getLong("id"))
+                .userId(rs.getString("userId"))
+                .password(rs.getString("password"))
+                .name(rs.getString("name"))
+                .email(rs.getString("email"))
+                .createdAt(rs.getTimestamp("createdAt").toLocalDateTime())
+                .build();
     }
 }
