@@ -27,6 +27,10 @@
                 </header>
                 <div class="container-right">
                     <a class="post-write-btn" href="/articles/{{id}}/form" type="button">수정</a>
+                    <form method="post" action="/articles/{{id}}">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <input type="submit" class="post-write-btn" value="삭제"/>
+                    </form>
                 </div>
                 <div class="content-main">
                     <article class="article">

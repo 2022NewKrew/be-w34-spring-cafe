@@ -27,6 +27,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public void delete(Long id) {
+        store.remove(id);
+    }
+
+    @Override
     public long countRecords() {
         return store.size();
     }

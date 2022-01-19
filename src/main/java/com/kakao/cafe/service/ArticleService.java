@@ -8,7 +8,6 @@ import com.kakao.cafe.dto.ResponseArticleDto;
 import com.kakao.cafe.exception.ArticleNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +71,13 @@ public class ArticleService {
         article.setTitle(articleDto.getTitle());
         article.setContent(articleDto.getContent());
         articleRepository.save(article);
+    }
+
+    /*
+     * id로 게시글 삭제
+     */
+    public void deleteArticle(long id) {
+        articleRepository.delete(id);
     }
 
 }

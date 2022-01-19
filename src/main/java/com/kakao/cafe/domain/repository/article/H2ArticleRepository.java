@@ -34,8 +34,7 @@ public class H2ArticleRepository implements ArticleRepository {
 
         String sql = "UPDATE `ARTICLE` SET " +
                 "author_id = ?, title = ?, content = ?" +
-                "WHERE ID = ?";
-
+                "WHERE id = ?";
         jdbcTemplate.update(sql,
                 article.getAuthorId(), article.getTitle(), article.getContent(),
                 article.getId());
@@ -50,7 +49,7 @@ public class H2ArticleRepository implements ArticleRepository {
                 "FROM " +
                 "ARTICLE a join `USER` u " +
                 "ON a.author_id = u.id " +
-                "WHERE a.id = ?";
+                "WHERE a.id = ? AND a.deleted = false";
         List<Article> result = jdbcTemplate.query(sql, articleRowMapper(), id);
 
         return result.stream().findAny();
@@ -59,10 +58,18 @@ public class H2ArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query("SELECT " +
-                "a.id, u.id as author_id, u.name as author, a.title, a.content, a.views, a.created_at " +
-                "FROM " +
-                "ARTICLE a join `USER` u " +
-                "ON a.author_id = u.id ", articleRowMapper());
+                        "a.id, u.id as author_id, u.name as author, a.title, a.content, a.views, a.created_at " +
+                        "FROM " +
+                        "ARTICLE a join `USER` u " +
+                        "ON a.author_id = u.id " +
+                        "WHERE a.deleted = false"
+                , articleRowMapper());
+    }
+
+    @Override
+    public void delete(Long id) {
+        String sql = "UPDATE `ARTICLE` SET deleted = true WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
@@ -70,7 +77,7 @@ public class H2ArticleRepository implements ArticleRepository {
         return jdbcTemplate.query(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                return con.prepareStatement("SELECT COUNT(*) FROM ARTICLE");
+                return con.prepareStatement("SELECT COUNT(*) FROM ARTICLE WHERE deleted=false");
             }
         }, new ResultSetExtractor<Long>() {
             @Override

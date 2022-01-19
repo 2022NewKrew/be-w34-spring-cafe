@@ -20,8 +20,8 @@ public class ArticleController {
     private final ArticleService articleService;
 
     /*
-    * 게시글 리스트 조회
-    */
+     * 게시글 리스트 조회
+     */
     @GetMapping("/")
     public String getAllArticles(Model model) {
         model.addAttribute("posts", articleService.getAllArticles());
@@ -29,8 +29,8 @@ public class ArticleController {
     }
 
     /*
-    * 게시글 작성 페이지 조회
-    */
+     * 게시글 작성 페이지 조회
+     */
     @GetMapping("/posts/form")
     public String showCreateArticlePage(@LoginUser SessionUser user) {
         log.info("GET /posts/form");
@@ -38,8 +38,8 @@ public class ArticleController {
     }
 
     /*
-    * 게시글 작성
-    */
+     * 게시글 작성
+     */
     @PostMapping("/posts/form")
     public String addArticle(@ModelAttribute RequestArticleDto articleDto, @LoginUser SessionUser user) {
         log.info("POST /posts/form {}", articleDto);
@@ -49,12 +49,12 @@ public class ArticleController {
     }
 
     /*
-    * 게시글 세부 내용 조회
-    */
+     * 게시글 세부 내용 조회
+     */
     @GetMapping("/articles/{id}")
     public String getArticleDetail(@PathVariable int id, Model model, @LoginUser SessionUser user) {
         long authorId = articleService.getAuthorIdOfArticle(id);
-        if (user.getId() == authorId){
+        if (user.getId() == authorId) {
             model.addAttribute("isMyArticle", true);
         }
         model.addAttribute("post", articleService.getArticleById(id));
@@ -62,8 +62,8 @@ public class ArticleController {
     }
 
     /*
-    * 게시글 수정 페이지 조회
-    */
+     * 게시글 수정 페이지 조회
+     */
     @GetMapping("/articles/{id}/form")
     public String showEditArticlePage(@PathVariable long id, Model model, @LoginUser SessionUser user) {
         long authorId = articleService.getAuthorIdOfArticle(id);
@@ -75,16 +75,29 @@ public class ArticleController {
     }
 
     /*
-    * 게시글 수정
-    */
+     * 게시글 수정
+     */
     @PutMapping("/articles/{id}/form")
-    public String editArticle(@PathVariable long id, @ModelAttribute RequestArticleDto articleDto, Model model, @LoginUser SessionUser user){
+    public String editArticle(@PathVariable long id, @ModelAttribute RequestArticleDto articleDto, Model model, @LoginUser SessionUser user) {
         long authorId = articleService.getAuthorIdOfArticle(id);
         if (user.getId() != authorId) {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
         articleService.updateArticle(id, articleDto);
         return "redirect:/articles/{id}";
+    }
+
+    /*
+     * 게시글 삭제
+     */
+    @DeleteMapping("/articles/{id}")
+    public String deleteArticle(@PathVariable long id, @LoginUser SessionUser user) {
+        long authorId = articleService.getAuthorIdOfArticle(id);
+        if (user.getId() != authorId) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        }
+        articleService.deleteArticle(id);
+        return "redirect:/";
     }
 
 
