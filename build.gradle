@@ -13,12 +13,20 @@ repositories {
 }
 
 dependencies {
+	// Spring Boot
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.6.2'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'com.h2database:h2:2.0.206'
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
 	annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.6.2'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 }
 
 test {

@@ -1,12 +1,20 @@
 package com.kakao.cafe.global.config;
 
+import com.kakao.cafe.global.interceptor.AuthLoginInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 @Configuration
+@RequiredArgsConstructor
 public class MvcConfig implements WebMvcConfigurer {
+
+    private final AuthLoginInterceptor authLoginInterceptor;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -15,10 +23,20 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("index");
 
         registry.addViewController("/users/signup").setViewName("user/form");
-        registry.addViewController("/user/login").setViewName("user/login");
+        registry.addViewController("/users/login").setViewName("user/login");
         registry.addViewController("/users/loginSuccess").setViewName("user/login_success");
 
         registry.addViewController("/posts/form").setViewName("post/form");
         registry.addViewController("/posts/show").setViewName("post/show");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authLoginInterceptor)
+                .addPathPatterns(List.of(
+                        "/users/logout",
+                        "/users/update/**",
+                        "/articles/**"
+                ));
     }
 }

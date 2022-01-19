@@ -1,6 +1,5 @@
-package com.kakao.cafe.user.dto;
+package com.kakao.cafe.user.dto.request;
 
-import com.kakao.cafe.user.domain.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -24,8 +23,4 @@ public class SignUpReq {
 
     @Email
     private final String email;
-
-    public User toEntity() {
-        return User.of(userId, password, name, email);
-    }
 }

@@ -1,40 +1,81 @@
 package com.kakao.cafe.user.repository;
 
-import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.dto.SignUpReq;
-import com.kakao.cafe.user.exception.UserIdDuplicateException;
+import com.kakao.cafe.user.persistence.User;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
-    private final Map<String, User> userTable = new HashMap<>();
+    private final JdbcTemplate jdbcTemplate;
+    private final RowMapper<User> rowMapper;
 
-    private UserRepositoryImpl() {
-        User user1 = User.of("ltk3934", "lee7431!", "이태경", "ltk3934@daum.net");
-        userTable.put(user1.getUserId(), user1);
+    @Override
+    public void save(User user) {
+        String sql = "INSERT INTO USERS(user_id, password, name, email) VALUES(?, ?, ?, ?)";
+        writeRecord(sql,
+                user.getUserId(),
+                user.getPassword(),
+                user.getName(),
+                user.getEmail()
+        );
     }
 
     @Override
-    public void save(SignUpReq req) {
-        if(userTable.containsKey(req.getUserId()))
-            throw new UserIdDuplicateException();
-        User user = req.toEntity();
-        userTable.put(user.getUserId(), user);
+    public void update(User user) {
+        String sql = "UPDATE USERS SET password = ?, name = ?, email = ? WHERE id = ?";
+        writeRecord(sql,
+                user.getPassword(),
+                user.getName(),
+                user.getEmail(),
+                user.getId()
+        );
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return Optional.ofNullable(userTable.getOrDefault(userId, null));
+        String sql = "SELECT * FROM USERS WHERE user_id = ?";
+        return readRecord(sql, userId);
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        String sql = "SELECT * FROM USERS WHERE id = ?";
+        return readRecord(sql, id);
+    }
+
+    @Override
+    public Optional<User> findByUserIdAndPassword(String userId, String password) {
+        String sql = "SELECT * FROM USERS WHERE user_id = ?, password = ?";
+        return readRecord(sql, userId, password);
     }
 
     @Override
     public List<User> findAll() {
-        return List.copyOf(userTable.values());
+        String sql = "SELECT * FROM USERS";
+        return readRecords(sql);
+    }
+
+    private Optional<User> readRecord(String sql, Object... params) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, params));
+        } catch(EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    private List<User> readRecords(String sql, Object... params) {
+        return jdbcTemplate.query(sql, rowMapper, params);
+    }
+
+    private void writeRecord(String sql, Object... params) {
+        jdbcTemplate.update(sql, params);
     }
 }
