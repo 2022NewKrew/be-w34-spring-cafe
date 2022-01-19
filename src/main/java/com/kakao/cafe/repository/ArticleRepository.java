@@ -12,4 +12,8 @@ public interface ArticleRepository {
     Optional<Article> selectByKey(Long key);
 
     Long insert(Article article);
+
+    void update(Long key, Article article);
+
+    void delete(Long key);
 }

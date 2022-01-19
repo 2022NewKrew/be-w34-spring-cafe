@@ -14,6 +14,7 @@ public class User {
     private String name;
     private String pw;
     private String email;
+    private boolean deleted;
 
     public static User fromDTO(UserDTO userDTO) {
         User user = User.builder()

@@ -1,0 +1,27 @@
+version: "3"
+services:
+  database:
+    image: mysql
+    container_name: cafe_db
+    environment:
+      - MYSQL_DATABASE=cafe
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    ports:
+      - 3306:3306
+    networks:
+      - cafe_network
+  application:
+    build: .
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - database
+    container_name: cafe_app
+    networks:
+      - cafe_network
+networks:
+  cafe_network:
+
+

@@ -74,3 +74,9 @@
     }
     document.getElementById(window.location.pathname).className = "active"
 </script>
+
+{{#error}}
+<script>
+    alert("{{errorMessage}}");
+</script>
+{{/error}}

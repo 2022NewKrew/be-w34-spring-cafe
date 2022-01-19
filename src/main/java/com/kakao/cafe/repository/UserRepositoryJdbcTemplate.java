@@ -29,7 +29,7 @@ public class UserRepositoryJdbcTemplate implements UserRepository {
 
     @Override
     public Optional<User> selectByKey(Long key) {
-        List<User> result = jdbcTemplate.query("SELECT * FROM user where key = ?", userRowMapper(), key);
+        List<User> result = jdbcTemplate.query("SELECT * FROM user where `key` = ?", userRowMapper(), key);
         return result.stream().findAny();
     }
 
@@ -57,7 +57,7 @@ public class UserRepositoryJdbcTemplate implements UserRepository {
 
     @Override
     public void update(Long key, User user) {
-        jdbcTemplate.update("UPDATE user SET name = ?, pw = ?, email = ? WHERE key = ?",
+        jdbcTemplate.update("UPDATE user SET name = ?, pw = ?, email = ? WHERE `key` = ?",
                 user.getName(), user.getPw(), user.getEmail(), key);
     }
 
