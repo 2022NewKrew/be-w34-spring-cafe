@@ -32,6 +32,7 @@
                   </div>
                   <div class="article-util">
                       <ul class="article-util-list">
+                          {{#isWriterOfArticle}}
                           <li>
                               <a class="link-modify-article" href="/qnas/update/{{sequence}}">수정</a>
                           </li>
@@ -41,6 +42,7 @@
                                   <button class="link-delete-article" type="submit">삭제</button>
                               </form>
                           </li>
+                          {{/isWriterOfArticle}}
                           <li>
                               <a class="link-modify-article" href="/index.html">목록</a>
                           </li>
@@ -71,6 +73,7 @@
                               </div>
                               <div class="article-util">
                                   <ul class="article-util-list">
+                                      {{#isWriterOfReply}}
                                       <li>
                                           <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
                                       </li>
@@ -80,6 +83,7 @@
                                               <button type="submit" class="delete-answer-button">삭제</button>
                                           </form>
                                       </li>
+                                      {{/isWriterOfReply}}
                                   </ul>
                               </div>
                           </article>

@@ -67,9 +67,9 @@ public class ArticleController {
     //상세 질문글 확인
     @GetMapping(value = "/qnas/{sequence}")
     public String showArticle(@PathVariable("sequence") Long sequence, Model model, HttpSession session){
-
+        User user;
         //로그인 상태가 아닌경우
-        if(session.getAttribute("sessionedUser") == null){
+        if((user = (User) session.getAttribute("sessionedUser")) == null){
             throw new ArticleNotLoggedInException("로그인 상태에서만 상세글을 볼 수 있습니다.");
         }
 
@@ -84,8 +84,25 @@ public class ArticleController {
         model.addAttribute("contents", articleViewDTO.getContents());
         model.addAttribute("sequence", articleViewDTO.getSequence());
 
+        //글 작성자인 경우
+        if(articleViewDTO.getUserId().equals(user.getUserId())){
+            model.addAttribute("isWriterOfArticle", true);
+        }
+
         List<ReplyViewDTO> replies = articleService.getReplies(sequence);
+
+        //isWriterOfReply적용
+        replies.stream().forEach((reply) -> {reply.setWriterOfReply(reply.getUserId().equals(user.getUserId()));});
+
         model.addAttribute("replies", replies);
+
+        for(Integer i = 0 ; i < replies.size() ; i++){
+            ReplyViewDTO replyViewDTO = replies.get(i);
+            if(replyViewDTO.getUserId().equals(user.getUserId())){
+                model.addAttribute("isWriterOfReply" + (i+1), true);
+            }
+        }
+
 
         return "/qna/show";
     }

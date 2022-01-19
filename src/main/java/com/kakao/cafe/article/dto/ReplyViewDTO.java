@@ -10,6 +10,7 @@ public class ReplyViewDTO {
     private String name;
     private String contents;
     private Timestamp createdAt;
+    private Boolean isWriterOfReply;
 
     public ReplyViewDTO(Long sequence, String userId, String name, String contents, Timestamp createdAt){
         this.sequence = sequence;
@@ -37,5 +38,13 @@ public class ReplyViewDTO {
 
     public Timestamp getCreatedAt() {
         return createdAt;
+    }
+
+    public Boolean getWriterOfReply() {
+        return isWriterOfReply;
+    }
+
+    public void setWriterOfReply(Boolean writerOfReply) {
+        isWriterOfReply = writerOfReply;
     }
 }
