@@ -71,13 +71,28 @@
                                       {{^modifiedAtPretty}}{{createdAtPretty}}{{/modifiedAtPretty}}
                                   </div>
                               </div>
-                              <div class="article-doc comment-doc">
+                              <div class="article-doc comment-doc" id="origComment{{idx}}">
                                   {{#bodyLines}}{{.}}<br>{{/bodyLines}}
                               </div>
+
+                              <form class="submit-write" id="editComment{{idx}}" style="display:none;" action="/comments/{{article.idx}}/{{idx}}" method="POST">
+                                  <input type="hidden" name="_method" value="PUT">
+                                  <input type="hidden" name="userId" value="{{curUserId}}">
+                                  <input type="hidden" name="articleIdx" value="{{article.idx}}">
+                                  <input type="hidden" name="origBody" value="{{body}}" disabled>
+                                  <div class="form-group" style="padding:14px;">
+                                      <label for="comment{{idx}}">댓글 수정</label>
+                                      <textarea class="form-control" id="comment{{idx}}" name="body" placeholder="댓글 내용"></textarea>
+                                  </div>
+                                  <button class="btn btn-success pull-right" onclick="cancelEditComment({{idx}})">취소</button>
+                                  <button class="btn btn-success pull-right" id="submit{{idx}}" type="submit">수정</button>
+                                  <div class="clearfix"></div>
+                              </form>
+
                               <div class="article-util">
                                   <ul class="article-util-list">
                                       <li>
-                                          <a class="link-modify-article" href="/comments">수정</a>
+                                          <button class="delete-answer-button" onclick="toggleEditComment({{idx}})">수정</button>
                                       </li>
                                       <li>
                                           <form class="delete-answer-form" action="/comments/{{article.idx}}/{{idx}}" method="POST" onsubmit="return confirm('정말로 삭제하시겠습니까?')">
@@ -114,7 +129,8 @@
     </div>
 </div>
 
-<script src="/js/form-validator.js"></script>
+<script src="/js/checker.js"></script>
+<script src="/js/comment-validator.js"></script>
 {{> partials/footer}}
 </body>
 </html>

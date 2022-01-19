@@ -9,7 +9,6 @@ let validPassword = true;
 let validNewPassword = true;
 let validName = true;
 let validEmail = true;
-let validComment = true;
 
 function updateSubmitBtn() {
     if (
@@ -19,43 +18,12 @@ function updateSubmitBtn() {
         validPassword &&
         validNewPassword &&
         validName &&
-        validEmail &&
-        validComment
+        validEmail
     ) {
         SUBMIT.disabled = false;
         return;
     }
     SUBMIT.disabled = true;
-}
-
-function checkBound(elem, min, max) {
-    if (!elem instanceof HTMLInputElement) {
-        return false;
-    }
-    if (typeof(min) !== 'number' || typeof(max) !== 'number') {
-        return false;
-    }
-    const str = elem.value;
-    const valid = str.length >= min && str.length <= max;
-    elem.style.border = valid ? '1px solid #22cc22' : '';
-    return valid;
-}
-
-function checkBoundAndRegex(elem, min, max, regex) {
-    if (!elem instanceof HTMLInputElement) {
-        return false;
-    }
-    if (typeof(min) !== 'number' || typeof(max) !== 'number') {
-        return false;
-    }
-    if (!regex instanceof RegExp) {
-        return false;
-    }
-
-    const str = elem.value;
-    const valid = str.length >= min && str.length <= max && regex.test(str);
-    elem.style.border = valid ? '1px solid #22cc22' : '';
-    return valid;
 }
 
 const INPUT_TITLE = document.getElementById('title');
@@ -161,20 +129,5 @@ if (INPUT_EMAIL !== null && INPUT_EMAIL.readOnly === false) {
 
 function checkEmail() {
     validEmail = checkBoundAndRegex(INPUT_EMAIL, EMAIL_MIN, EMAIL_MAX, EMAIL_REGEX);
-    updateSubmitBtn();
-}
-
-const INPUT_COMMENT = document.getElementById('comment');
-const COMMENT_MIN = 1;
-const COMMENT_MAX = 400;
-
-if (INPUT_COMMENT !== null && INPUT_COMMENT.readOnly === false) {
-    SUBMIT.disabled = true;
-    INPUT_COMMENT.onchange = checkComment;
-    checkComment();
-}
-
-function checkComment() {
-    validEmail = checkBound(INPUT_COMMENT, COMMENT_MIN, COMMENT_MAX);
     updateSubmitBtn();
 }
