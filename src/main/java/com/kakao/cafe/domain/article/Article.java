@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @Setter
 public class Article {
-    private int index;
+    private long id;
     private String writer;
     private String title;
     private String contents;
@@ -20,7 +20,6 @@ public class Article {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        index = ArticleList.getArticleList().size() + 1;
         time = getCreatedTime();
     }
 
@@ -33,7 +32,4 @@ public class Article {
         return nowDate.format(dateFormatter) + " " + nowTime.format(timeFormatter);
     }
 
-    public String getContents(){
-        return contents;
-    }
 }

@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS USERS
 (
     id       BIGINT PRIMARY KEY AUTO_INCREMENT,
-    user_id   VARCHAR(32) unique,
+    user_id   VARCHAR(32),
     password VARCHAR(32),
     name     VARCHAR(16),
     email    VARCHAR(64)

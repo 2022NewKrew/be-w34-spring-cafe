@@ -4,8 +4,12 @@ import com.kakao.cafe.domain.article.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 public class JdbcTemplatesArticle {
@@ -18,9 +22,18 @@ public class JdbcTemplatesArticle {
     }
 
     public void save(Article article) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO ARTICLES (writer, title, contents, created_at) VALUES(?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                article.getWriter(), article.getTitle(), article.getContents(), article.getTime());
+        jdbcTemplate.update((con) -> {
+            PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, article.getWriter());
+            pstmt.setString(2, article.getTitle());
+            pstmt.setString(3, article.getContents());
+            pstmt.setString(4, article.getTime());
+            return pstmt;
+        }, keyHolder);
+
+        article.setId(keyHolder.getKey().longValue());
     }
 
     public List<Article> findAll() {
@@ -28,10 +41,20 @@ public class JdbcTemplatesArticle {
         return jdbcTemplate.query(sql, articleRowMapper());
     }
 
-    public Article findOneById(int id) {
+    public Article findOneById(long id) {
         String sql = "SELECT * FROM ARTICLES WHERE id = ?";
         List<Article> result = jdbcTemplate.query(sql, articleRowMapper(), id);
         return result.get(0);
+    }
+
+    public void update(Article article, long id){
+        String sql = "UPDATE ARTICLES SET title = ?, contents = ? WHERE id = ?";
+        jdbcTemplate.update(sql, article.getTitle(), article.getContents(), id);
+    }
+
+    public void delete(long id){
+        String sql = "DELETE FROM ARTICLES WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 
     private RowMapper<Article> articleRowMapper() {
@@ -41,7 +64,7 @@ public class JdbcTemplatesArticle {
                     rs.getString("title"),
                     rs.getString("contents")
             );
-            article.setIndex(rs.getInt("id"));
+            article.setId(rs.getLong("id"));
             return article;
         };
     }
