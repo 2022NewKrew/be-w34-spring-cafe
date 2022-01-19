@@ -42,11 +42,13 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private User userRowMapper(ResultSet rs, int rowNum) throws SQLException {
-        return User.of(rs.getLong("id"),
-            rs.getString("uid"),
-            rs.getString("password"),
-            rs.getString("name"),
-            rs.getString("email"),
-            rs.getTimestamp("created_at").toLocalDateTime());
+        return User.builder()
+            .id(rs.getLong("id"))
+            .uid(rs.getString("uid"))
+            .password(rs.getString("password"))
+            .name(rs.getString("name"))
+            .email(rs.getString("email"))
+            .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+            .build();
     }
 }

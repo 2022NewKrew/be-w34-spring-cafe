@@ -28,6 +28,8 @@ public interface UserDTO {
     class Update {
 
         @NotBlank
+        String password;
+        @NotBlank
         String name;
         @NotBlank @Pattern(regexp = "(\\w+\\.)*\\w+@(\\w+\\.)+\\w{2,3}")
         String email;

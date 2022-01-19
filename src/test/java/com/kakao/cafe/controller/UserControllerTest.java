@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -54,7 +54,6 @@ class UserControllerTest {
 
         // Then
         actions
-            .andExpect(status().isCreated())
             .andExpect(redirectedUrl("/users"));
     }
 
@@ -62,23 +61,25 @@ class UserControllerTest {
     @DisplayName("사용자 정보 수정 테스트")
     void update() throws Exception {
         // Given
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(User.of("uid", "pwd", "name", "email@test.com")));
+        User user = User.builder().uid("uid").password("pwd").name("name").email("email@test.com")
+            .build();
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         AuthInfo authInfo = AuthInfo.of("uid");
 
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("password", "pwd");
         requestParams.add("name", "modified");
         requestParams.add("email", "modified@test.com");
 
-        ResultActions actions = mockMvc.perform(put("/users/uid")
+        ResultActions actions = mockMvc.perform(put("/users")
             .params(requestParams)
             .sessionAttr("auth", authInfo));
 
         // Then
         actions
-            .andExpect(status().isCreated())
             .andExpect(redirectedUrl("/users"));
     }
 
@@ -86,31 +87,43 @@ class UserControllerTest {
     @DisplayName("인증 정보가 없을 때 사용자 정보 수정 테스트")
     void update2() throws Exception {
         // Given
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(User.of("uid", "pwd", "name", "email@test.com")));
+        User user = User.builder().uid("uid").password("pwd").name("name").email("email@test.com")
+            .build();
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
+        AuthInfo authInfo = AuthInfo.of("uid");
+
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("password", "pwd0");
         requestParams.add("name", "modified");
         requestParams.add("email", "modified@test.com");
 
-        ResultActions actions = mockMvc.perform(put("/users/uid")
-            .params(requestParams));
+        ResultActions actions = mockMvc.perform(put("/users")
+            .params(requestParams)
+            .sessionAttr("auth", authInfo));
 
         // Then
         actions
-            .andExpect(status().isCreated())
-            .andExpect(redirectedUrl("/users/uid"));
+            .andExpect(redirectedUrl("/error"));
     }
 
     @Test
     @DisplayName("사용자 목록 조회 테스트")
     void readAll() throws Exception {
         // Given
-        when(userRepository.findAllUsers())
-            .thenReturn(List.of(User.of("uid1", "pwd1", "name1", "email1@test.com"),
-                User.of("uid2", "pwd2", "name2", "email2@test.com"),
-                User.of("uid3", "pwd3", "name3", "email3@test.com")));
+        User user1 = User.builder().uid("uid1").password("pwd1").name("name1")
+            .email("email1@test.com")
+            .build();
+        User user2 = User.builder().uid("uid2").password("pwd2").name("name2")
+            .email("email2@test.com")
+            .build();
+        User user3 = User.builder().uid("uid3").password("pwd3").name("name3")
+            .email("email3@test.com")
+            .build();
+        given(userRepository.findAllUsers())
+            .willReturn(List.of(user1, user2, user3));
 
         // When
         ResultActions actions = mockMvc.perform(get("/users"));
@@ -137,8 +150,10 @@ class UserControllerTest {
     @DisplayName("특정 사용자 조회 테스트")
     void read() throws Exception {
         // Given
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(User.of("uid", "pwd", "name", "email@test.com")));
+        User user = User.builder().uid("uid").password("pwd").name("name").email("email@test.com")
+            .build();
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         ResultActions actions = mockMvc.perform(get("/users/uid"));

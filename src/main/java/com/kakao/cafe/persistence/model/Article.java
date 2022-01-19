@@ -1,53 +1,27 @@
 package com.kakao.cafe.persistence.model;
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.ToString;
+import org.springframework.lang.Nullable;
 
 @ToString
+@Getter
+@Builder
 public class Article {
 
+    @Nullable
     private final Long id;
 
+    @NotBlank
     private final String uid;
+    @NotBlank
     private final String title;
+    @NotBlank
     private final String body;
 
+    @Nullable
     private final LocalDateTime createdAt;
-
-    public static Article of(String authorUid, String title, String body) {
-        return new Article(null, authorUid, title, body, LocalDateTime.now());
-    }
-
-    public static Article of(Long id, String uid, String title, String body,
-        LocalDateTime createdAt) {
-        return new Article(id, uid, title, body, createdAt);
-    }
-
-    private Article(Long id, String uid, String title, String body, LocalDateTime createdAt) {
-        this.id = id;
-        this.uid = uid;
-        this.title = title;
-        this.body = body;
-        this.createdAt = createdAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public String getUid() {
-        return uid;
-    }
 }

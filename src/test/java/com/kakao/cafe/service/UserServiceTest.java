@@ -4,12 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Update;
 import com.kakao.cafe.error.exception.UserAlreadyExistsException;
-import com.kakao.cafe.error.exception.UserInvalidAuthInfoException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.persistence.model.User;
@@ -35,9 +34,10 @@ class UserServiceTest {
     @DisplayName("이미 존재하는 UID 추가 시 오류 테스트")
     void create() {
         // Given
-        User user = User.of(1L, "uid", "pwd", "name", "email@test.com", LocalDateTime.now());
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
+            .email("email@test.com").createdAt(LocalDateTime.now()).build();
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         Create createDTO = new Create("uid", "pwd", "name", "email@test.com");
@@ -53,8 +53,8 @@ class UserServiceTest {
     @DisplayName("새로운 User 추가 시 정상 동작 테스트")
     void create2() {
         // Given
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.empty());
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.empty());
 
         // When
         Create createDTO = new Create("uid", "pwd", "name", "email@test.com");
@@ -64,42 +64,29 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("사용자 정보 수정 시 인증 오류 테스트")
+    @DisplayName("올바른 인증 정보를 통한 사용자 정보 수정 테스트")
     void update() {
         // Given
-
-        // When
-        AuthInfo authInfo = AuthInfo.of("uid");
-        String uid = "invalidUid";
-        Update updateDTO = new Update("name", "email@test.com");
-        UserInvalidAuthInfoException exception = assertThrows(UserInvalidAuthInfoException.class,
-            () -> userService.update(authInfo, uid, updateDTO));
-
-        // Then
-        assertThat(exception.getMessage())
-            .contains("Invalid Auth Info");
-    }
-
-    @Test
-    @DisplayName("올바른 인증 정보를 통한 사용자 정보 수정 테스트")
-    void update2() {
-        // Given
+        User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
+            .email("email@test.com").createdAt(LocalDateTime.now()).build();
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
         AuthInfo authInfo = AuthInfo.of("uid");
         String uid = "uid";
-        Update updateDTO = new Update("name", "email@test.com");
+        Update updateDTO = new Update("pwd", "name", "email@test.com");
 
         // Then
-        assertDoesNotThrow(() -> userService.update(authInfo, uid, updateDTO));
+        assertDoesNotThrow(() -> userService.update(authInfo, updateDTO));
     }
 
     @Test
     @DisplayName("Repository 에서 User 정보를 읽어오지 못한 경우 테스트")
     void readByUid() {
         // Given
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.empty());
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.empty());
 
         // When
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
@@ -114,9 +101,10 @@ class UserServiceTest {
     @DisplayName("Repository 에서 User 정보를 읽어온 경우 테스트")
     void readByUid2() {
         // Given
-        User user = User.of(1L, "uid", "pwd", "name", "email@test.com", LocalDateTime.now());
-        when(userRepository.findUserByUid(any()))
-            .thenReturn(Optional.of(user));
+        User user = User.builder().id(1L).uid("uid").password("pwd").name("name")
+            .email("email@test.com").createdAt(LocalDateTime.now()).build();
+        given(userRepository.findUserByUid(any()))
+            .willReturn(Optional.of(user));
 
         // When
 
