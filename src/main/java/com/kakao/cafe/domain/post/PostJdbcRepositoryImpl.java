@@ -18,7 +18,7 @@ public class PostJdbcRepositoryImpl implements PostRepository {
 
     @Override
     public void save(Post post) {
-        String sql = "INSERT INTO posts(writer_id, title, content, createdAt) VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO posts(writer_id, title, content, created_at) VALUES(?, ?, ?, ?)";
         template.update(sql, post.getWriterId(), post.getTitle(), post.getContent(), post.getCreatedAt());
     }
 
@@ -36,7 +36,7 @@ public class PostJdbcRepositoryImpl implements PostRepository {
 
     @Override
     public void update(Post post) {
-        String sql = "UPDATE posts SET title = ?, content = ?, updatedAt = ? WHERE id = ?";
+        String sql = "UPDATE posts SET title = ?, content = ?, updated_at = ? WHERE id = ?";
         template.update(sql, post.getTitle(), post.getContent(), post.getUpdatedAt(), post.getId());
     }
 
@@ -58,8 +58,8 @@ public class PostJdbcRepositoryImpl implements PostRepository {
                 .writerId(rs.getLong("writer_id"))
                 .title(rs.getString("title"))
                 .content(rs.getString("content"))
-                .createdAt(getLocalDateTime(rs, "createdAt"))
-                .updatedAt(getLocalDateTime(rs, "updatedAt"))
+                .createdAt(getLocalDateTime(rs, "created_at"))
+                .updatedAt(getLocalDateTime(rs, "updated_at"))
                 .writerNickname(rs.getString("nickname"))
                 .build();
     }

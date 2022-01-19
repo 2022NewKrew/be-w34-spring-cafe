@@ -18,7 +18,7 @@ public class UserJdbcRepositoryImpl implements UserRepository {
 
     @Override
     public void save(User user) {
-        String sql = "INSERT INTO users(email, nickname, password, createdAt) VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO users(email, nickname, password, created_at) VALUES(?, ?, ?, ?)";
         template.update(sql, user.getEmail(), user.getNickname(), user.getPassword(), user.getCreatedAt());
     }
 
@@ -42,7 +42,7 @@ public class UserJdbcRepositoryImpl implements UserRepository {
 
     @Override
     public void update(User user) {
-        String sql = "UPDATE users SET email = ?, nickname = ?, password = ?, updatedAt = ? WHERE id = ?";
+        String sql = "UPDATE users SET email = ?, nickname = ?, password = ?, updated_at = ? WHERE id = ?";
         template.update(sql, user.getEmail(), user.getNickname(), user.getPassword(), user.getUpdatedAt(), user.getId());
     }
 
@@ -58,8 +58,8 @@ public class UserJdbcRepositoryImpl implements UserRepository {
                     .email(rs.getString("email"))
                     .nickname(rs.getString("nickname"))
                     .password(rs.getString("password"))
-                    .createdAt(getLocalDateTime(rs, "createdAt"))
-                    .updatedAt(getLocalDateTime(rs, "updatedAt"))
+                    .createdAt(getLocalDateTime(rs, "created_at"))
+                    .updatedAt(getLocalDateTime(rs, "updated_at"))
                     .build();
     }
 

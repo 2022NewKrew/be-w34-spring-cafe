@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(100) UNIQUE NOT NULL,
     nickname VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    createdAt DATETIME,
-    updatedAt DATETIME
+    created_at DATETIME,
+    updated_at DATETIME
 );
 
 CREATE TABLE IF NOT EXISTS posts (
@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS posts (
     writer_id BIGINT NOT NULL,
     title VARCHAR(100) NOT NULL,
     content TEXT NOT NULL,
-    createdAt DATETIME,
-    updatedAt DATETIME,
+    created_at DATETIME,
+    updated_at DATETIME,
     FOREIGN KEY (writer_id) REFERENCES users(id)
 );
 
