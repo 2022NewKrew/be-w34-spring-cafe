@@ -16,3 +16,15 @@ CREATE TABLE IF NOT EXISTS article (
     deleted BOOL DEFAULT false,
     FOREIGN KEY(user_id) REFERENCES userlist(id)
 );
+
+CREATE TABLE IF NOT EXISTS comment (
+    idx BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id VARCHAR(12) NOT NULL,
+    article_idx BIGINT NOT NULL,
+    body VARCHAR(4095) NOT NULL,
+    created_at BIGINT NOT NULL,
+    modified_at BIGINT NOT NULL,
+    deleted BOOL DEFAULT false,
+    FOREIGN KEY(user_id) REFERENCES userlist(id),
+    FOREIGN KEY(article_idx) REFERENCES article(idx)
+);
