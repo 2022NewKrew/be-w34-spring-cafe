@@ -10,8 +10,9 @@ import java.util.List;
 
 @Repository("QuestionRepositoryList")
 public class QuestionRepositoryList implements QuestionRepository {
-    private List<Question> questions = new ArrayList<Question>();
-    private int maxIndex = 0;
+    private List<Question> questions = new ArrayList<>();
+    private List<Question> deletedQuestions = new ArrayList<>();
+    private int maxIndex = 1;
 
     @Override
     public void save(Question question){
@@ -34,9 +35,22 @@ public class QuestionRepositoryList implements QuestionRepository {
         return questions;
     }
 
+    @Override
+    public void deleteById(int id){
+        questions.stream()
+                .filter(question -> question.getId()==id)
+                .findFirst()
+                .map(question -> {
+                    questions.remove(question);
+                    deletedQuestions.add(question);
+                    return question;
+                });
+    }
+
     private void insert(Question question){
         questions.add(Question.builder()
                 .id(maxIndex)
+                .userId(question.getUserId())
                 .title(question.getTitle())
                 .writer(question.getWriter())
                 .contents(question.getContents())

@@ -21,7 +21,6 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         registry.addViewController("/user/form.html").setViewName("user/form");
-        registry.addViewController("/user/login.html").setViewName("user/login");
         registry.addViewController("/qna/form.html").setViewName("qna/form");
     }
 
@@ -29,7 +28,13 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns();
+                .excludePathPatterns("/")
+                .excludePathPatterns("/user/form.html")
+                .excludePathPatterns("/login")
+                .excludePathPatterns("/css/**")
+                .excludePathPatterns("/fonts/**")
+                .excludePathPatterns("/images/**")
+                .excludePathPatterns("/js/**");
     }
 
     @Bean

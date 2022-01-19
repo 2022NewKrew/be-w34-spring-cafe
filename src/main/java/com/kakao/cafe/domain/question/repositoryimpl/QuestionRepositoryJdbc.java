@@ -25,11 +25,12 @@ public class QuestionRepositoryJdbc implements QuestionRepository {
 
     @Override
     public Question findById(int id) {
-        String sql = "SELECT ID, TITLE, WRITER, CONTENTS, CREATED_AT FROM `QUESTION` WHERE ID = ?";
+        String sql = "SELECT ID, USER_ID, TITLE, WRITER, CONTENTS, CREATED_AT FROM `QUESTION` WHERE ID = ? and IS_DELETED=FALSE";
         try{
             return this.jdbcTemplate.queryForObject(sql,
                     (rs, rowNum) -> Question.builder()
                             .id(rs.getInt("ID"))
+                            .userId(rs.getInt("USER_ID"))
                             .title(rs.getString("TITLE"))
                             .writer(rs.getString("WRITER"))
                             .contents(rs.getString("CONTENTS"))
@@ -43,10 +44,11 @@ public class QuestionRepositoryJdbc implements QuestionRepository {
 
     @Override
     public List<Question> findAll() {
-        String sql = "SELECT ID, TITLE, WRITER, CONTENTS, CREATED_AT FROM `QUESTION`";
+        String sql = "SELECT ID, USER_ID, TITLE, WRITER, CONTENTS, CREATED_AT FROM `QUESTION` WHERE IS_DELETED=FALSE";
         return this.jdbcTemplate.query(sql,
                 (rs, rowNum) -> Question.builder()
                         .id(rs.getInt("ID"))
+                        .userId(rs.getInt("USER_ID"))
                         .title(rs.getString("TITLE"))
                         .writer(rs.getString("WRITER"))
                         .contents(rs.getString("CONTENTS"))
@@ -55,10 +57,16 @@ public class QuestionRepositoryJdbc implements QuestionRepository {
                 );
     }
 
+    @Override
+    public void deleteById(int id){
+        String sql = "UPDATE `QUESTION` SET IS_DELETED=? WHERE ID=?";
+        jdbcTemplate.update(sql, true, id);
+    }
+
     private void insert(Question question){
-        String sql = "INSERT INTO `QUESTION`(TITLE, WRITER, CONTENTS) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO `QUESTION`(USER_ID, TITLE, WRITER, CONTENTS) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql,
-                question.getTitle(), question.getWriter(),question.getContents());
+                question.getUserId(), question.getTitle(), question.getWriter(),question.getContents());
     }
 
     private void update(Question question){

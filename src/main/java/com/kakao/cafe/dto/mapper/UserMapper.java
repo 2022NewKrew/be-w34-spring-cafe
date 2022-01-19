@@ -1,6 +1,7 @@
 package com.kakao.cafe.dto.mapper;
 
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.dto.user.SessionUser;
 import com.kakao.cafe.dto.user.UserResponseDto;
 import com.kakao.cafe.dto.user.UserSaveDto;
 import com.kakao.cafe.dto.user.UserUpdateDto;
@@ -14,6 +15,8 @@ public interface UserMapper{
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     UserResponseDto toDto(User user);
+
+    SessionUser toSession(User user);
 
     User toEntityFromSaveDto(UserSaveDto userSaveDto);
 

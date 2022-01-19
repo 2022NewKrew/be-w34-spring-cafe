@@ -3,15 +3,11 @@ package com.kakao.cafe.dto.question;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
-@Builder
 @Getter
-public class QuestionResponseDto {
-    private int id;
+@Builder
+public class QuestionSaveDto {
     private int userId;
     private String title;
     private String writer;
     private String contents;
-    private LocalDateTime createdAt;
 }

@@ -1,8 +1,9 @@
 package com.kakao.cafe.dto.mapper;
 
 import com.kakao.cafe.domain.question.Question;
-import com.kakao.cafe.dto.question.QuestionRequestDto;
+import com.kakao.cafe.dto.question.QuestionSaveDto;
 import com.kakao.cafe.dto.question.QuestionResponseDto;
+import com.kakao.cafe.dto.question.QuestionUpdateDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import java.util.List;
@@ -13,7 +14,9 @@ public interface QuestionMapper {
 
     QuestionResponseDto toDto(Question question);
 
-    Question toEntity(QuestionRequestDto questionRequestDto);
+    Question toEntityFromSaveDto(QuestionSaveDto questionSaveDto);
+
+    Question toEntityFromUpdateDto(QuestionUpdateDto questionUpdateDto);
 
     List<QuestionResponseDto> toDtoList(List<Question> questions);
 }

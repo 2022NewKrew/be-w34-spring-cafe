@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.dto.mapper.UserMapper;
+import com.kakao.cafe.dto.user.SessionUser;
 import com.kakao.cafe.dto.user.UserResponseDto;
 import com.kakao.cafe.dto.user.UserSaveDto;
 import com.kakao.cafe.dto.user.UserUpdateDto;
@@ -45,10 +46,10 @@ public class UserService {
         return UserMapper.INSTANCE.toDto(userRepository.findById(id));
     }
 
-    public User login(String stringId, String password){
+    public SessionUser login(String stringId, String password){
         User user = userRepository.findByStringId(stringId);
         if(user!=null && user.getPassword().equals(password)){
-            return user;
+            return UserMapper.INSTANCE.toSession(user);
         }
         throw new IllegalArgumentException("로그인 비밀번호와 DB비밀번호가 불일치 합니다.");
     }

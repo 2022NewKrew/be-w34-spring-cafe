@@ -5,8 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class QuestionRequestDto {
+public class QuestionUpdateDto {
     private String title;
-    private String writer;
     private String contents;
 }
