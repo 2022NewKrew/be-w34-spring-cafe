@@ -42,25 +42,18 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/form")
-    public String updateForm(@PathVariable String userId, Model model,
-                             @SessionAttribute("sessionedUser") User user) {
-        if (userNotExists(user) || userNoPermission(user, userId)) {
-            return "/noPermission";
-        }
-
+    public String updateForm(@PathVariable String userId, Model model) {
         UserInfo userInfo = userService.getUserInfo(userId);
         model.addAttribute("user", userInfo);
         return "user/updateForm";
     }
 
     @PutMapping("/users/{userId}/update")
-    public String updateUser(@PathVariable String userId, UserModifyCommand umc,
-                             @SessionAttribute("sessionedUser") User user, RedirectAttributes ra) {
-        if (userNotExists(user) || userNoPermission(user, userId)) {
-            return "/noPermission";
-        }
-
-        if (userPasswordNotMatching(user, umc)) {
+    public String updateUser(@PathVariable String userId,
+                             @SessionAttribute("sessionedUser") User user,
+                             UserModifyCommand umc,
+                             RedirectAttributes ra) {
+        if (userPasswordNotMatching(user, umc.getPassword())) {
             ra.addFlashAttribute("passwordNotMatching", true);
             return "redirect:/users/{userId}/form";
         }
@@ -76,7 +69,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession session, RedirectAttributes ra) {
         User user = userService.getUser(userId);
-        if (user == null || !user.getPassword().equals(password)) {
+        if (user == null || userPasswordNotMatching(user, password)) {
             ra.addFlashAttribute("loginFailed", true);
             return "redirect:users/login";
         }
@@ -90,15 +83,7 @@ public class UserController {
         return "redirect:/";
     }
 
-    private boolean userNotExists(User user) {
-        return user == null;
-    }
-
-    private boolean userNoPermission(User user, String userId) {
-        return !user.getUserId().equals(userId);
-    }
-
-    private boolean userPasswordNotMatching(User user, UserModifyCommand umc) {
-        return !user.getPassword().equals(umc.getPassword());
+    private boolean userPasswordNotMatching(User user, String password) {
+        return !user.getPassword().equals(password);
     }
 }

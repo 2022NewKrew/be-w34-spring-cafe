@@ -5,13 +5,9 @@ import com.kakao.cafe.dto.article.ArticleContents;
 import com.kakao.cafe.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.dto.article.ArticleModifyCommand;
 import com.kakao.cafe.service.ArticleService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
 
 @Controller
 public class ArticleController {
@@ -27,68 +23,52 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("/articles/{id}")
-    public String getArticle(@PathVariable Long id, Model model, HttpSession session) {
-        User user = (User)session.getAttribute("sessionedUser");
-        if (userNotExists(user)) {
-            return "redirect:/users/login";
-        }
-        ArticleContents articleContents = articleService.getArticle(id);
+    @GetMapping("/articles/{articleId}")
+    public String getArticle(@PathVariable Long articleId, Model model) {
+        ArticleContents articleContents = articleService.getArticle(articleId);
         model.addAttribute("article", articleContents);
         return "qna/show";
     }
 
     @GetMapping("/articles/form")
-    public String writeForm(Model model, HttpSession session) {
-        User user = (User)session.getAttribute("sessionedUser");
-        if (userNotExists(user)) {
-            return "redirect:/users/login";
-        }
-
+    public String writeForm(@SessionAttribute("sessionedUser") User user, Model model) {
         model.addAttribute("writer", user.getName());
         return "qna/form";
     }
 
     @GetMapping("/articles/{articleId}/form")
-    public String updateForm(@PathVariable long articleId, Model model,
-                             @SessionAttribute("sessionedUser") User user) {
+    public String updateForm(@PathVariable long articleId,
+                             @SessionAttribute("sessionedUser") User user,
+                             Model model) {
         ArticleContents articleContents = articleService.getArticle(articleId);
-        if (userNoPermission(user, articleContents)) {
-            return "/noPermission";
-        }
-
         model.addAttribute("articleContents", articleContents);
         return "qna/updateForm";
     }
 
     @PostMapping("/questions")
-    public String addArticle(String title, String contents, @SessionAttribute("sessionedUser") User user) {
+    public String addArticle(String title,
+                             String contents,
+                             @SessionAttribute("sessionedUser") User user) {
         articleService.createArticle(new ArticleCreateCommand(user.getName(), user.getUserId(), title, contents));
         return "redirect:/";
     }
 
     @PutMapping("/questions/{articleId}/update")
-    public String updateArticle(@PathVariable long articleId, String title, String contents,
-                                @SessionAttribute("sessionedUser") User user) {
+    public String updateArticle(@PathVariable long articleId,
+                                String title,
+                                String contents) {
         articleService.modifyArticle(articleId, new ArticleModifyCommand(title, contents));
         return "redirect:/articles/{articleId}";
     }
 
     @DeleteMapping("questions/{articleId}")
-    public String deleteArticle(@PathVariable long articleId, @SessionAttribute("sessionedUser") User user) {
-        ArticleContents articleContents = articleService.getArticle(articleId);
-        if (userNoPermission(user, articleContents)) {
-            return "/noPermission";
-        }
+    public String deleteArticle(@PathVariable long articleId,
+                                @SessionAttribute("sessionedUser") User user) {
         articleService.deleteArticle(articleId);
         return "redirect:/";
     }
 
-    private boolean userNotExists(User user) {
-        return user == null;
-    }
-
-    private boolean userNoPermission(User user, ArticleContents articleContents) {
+    private boolean userNotPermitted(User user, ArticleContents articleContents) {
         return !user.getUserId().equals(articleContents.getWriterId());
     }
 }
