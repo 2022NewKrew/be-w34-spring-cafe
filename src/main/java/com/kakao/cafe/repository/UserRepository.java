@@ -45,9 +45,11 @@ public class UserRepository {
         return users;
     }
 
-    public User findById(String userId) {
+    public User findById(String userId) {   //
         String query = String.format("SELECT userId, userPassword, userName, email FROM Users WHERE userId = '%s'", userId);
         Map<String, Object> result = jdbcTemplate.queryForMap(query);
+//        String query = "SELECT userId, userPassword, userName, email FROM Users WHERE userId = ?";
+//        jdbcTemplate.
         return new User((String) result.get("userId"),
                         (String) result.get("userPassword"),
                         (String) result.get("userName"),

@@ -1,2 +1,4 @@
-package com.kakao.cafe.domain;public class Login {
+package com.kakao.cafe.domain;
+
+public class Login {
 }

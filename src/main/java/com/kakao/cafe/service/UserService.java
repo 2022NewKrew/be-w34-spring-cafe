@@ -38,7 +38,6 @@ public class UserService {
 
     public UserDTO findById(String userId) {
         User user = userRepository.findById(userId);
-
         return new UserDTO(user);
     }
 }
