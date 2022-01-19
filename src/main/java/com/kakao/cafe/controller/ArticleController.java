@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.ArticleRequestDTO;
 import com.kakao.cafe.dto.ArticleResponseDTO;
+import com.kakao.cafe.error.exception.ArticleNotFoundException;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String getArticle(@PathVariable Long id, Model model) {
-        ArticleResponseDTO article = articleService.read(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+        ArticleResponseDTO article = articleService.read(id);
         model.addAttribute("article", article);
         return "article/show";
     }

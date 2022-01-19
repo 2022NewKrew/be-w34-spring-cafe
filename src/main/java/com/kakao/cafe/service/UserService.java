@@ -4,6 +4,9 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserResponseDTO;
 import com.kakao.cafe.dto.UserRequestDTO;
 import com.kakao.cafe.dto.UserUpdateDTO;
+import com.kakao.cafe.error.exception.InvalidPasswordException;
+import com.kakao.cafe.error.exception.UserAlreadyExistException;
+import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,27 +23,23 @@ public class UserService {
     public void create(UserRequestDTO userRequestDto) {
         Optional<User> user = userRepository.findByUserId(userRequestDto.getUserId());
         if(user.isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+            throw new UserAlreadyExistException();
         }
         userRepository.save(userRequestDto);
     }
 
     public void update(UserUpdateDTO userUpdateDTO) {
         if(!userUpdateDTO.getPassword().equals(userUpdateDTO.getPasswordCheck())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new InvalidPasswordException();
         }
         User user = userRepository.findByUserId(userUpdateDTO.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+                .orElseThrow(UserNotFoundException::new);
         userRepository.update(userUpdateDTO, user.getId());
     }
 
-    public Optional<UserResponseDTO> read(String userId) {
-        Optional<User> userOptional = userRepository.findByUserId(userId);
-        if(userOptional.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 유저입니다.");
-        }
-        User user = userOptional.get();
-        return Optional.ofNullable(UserResponseDTO.of(user.getId(), user.getUserId(), user.getName(), user.getEmail(), user.getCreatedAt()));
+    public UserResponseDTO read(String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
+        return UserResponseDTO.of(user.getId(), user.getUserId(), user.getName(), user.getEmail(), user.getCreatedAt());
     }
 
     public List<UserResponseDTO> readAll() {

@@ -3,6 +3,8 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.AuthDTO;
 import com.kakao.cafe.dto.UserResponseDTO;
+import com.kakao.cafe.error.exception.InvalidPasswordException;
+import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,9 @@ public class AuthService {
 
     public UserResponseDTO login(AuthDTO authDto) {
         Optional<User> userOptional = userRepository.findByUserId((authDto.getUserId()));
-        User user = userOptional.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+        User user = userOptional.orElseThrow(UserNotFoundException::new);
         if(!user.validatePassword(authDto.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new InvalidPasswordException();
         }
         return UserResponseDTO.of(user.getId(), user.getUserId(), user.getName(), user.getEmail(), user.getCreatedAt());
     }

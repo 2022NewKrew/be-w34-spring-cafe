@@ -3,6 +3,8 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.UserResponseDTO;
 import com.kakao.cafe.dto.UserRequestDTO;
 import com.kakao.cafe.dto.UserUpdateDTO;
+import com.kakao.cafe.error.exception.AuthorizationException;
+import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -35,7 +37,7 @@ public class UserController {
     @GetMapping("/{userId}")
     public String getUser(@PathVariable String userId, Model model) {
         logger.info("getUser: {}", userId);
-        UserResponseDTO user = userService.read(userId).get();
+        UserResponseDTO user = userService.read(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
@@ -51,9 +53,9 @@ public class UserController {
     public String updateUser(@PathVariable String userId, Model model, HttpSession session) {
         logger.info("updateUser(GET): {} {}", userId, session.getAttribute(SESSION_USER));
         if(!userId.equals(session.getAttribute(SESSION_USER))) {
-            throw new IllegalArgumentException("권한이 없습니다.");
+            throw new AuthorizationException();
         }
-        UserResponseDTO user = userService.read(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+        UserResponseDTO user = userService.read(userId);
         model.addAttribute("user", user);
         logger.info("update {}, {}, {}", user.getUserId(), user.getName(), user.getEmail());
         return "user/updateForm";
