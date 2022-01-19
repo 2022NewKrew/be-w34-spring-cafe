@@ -37,6 +37,11 @@ public class InMemoryPostRepository implements PostRepository {
     }
 
     @Override
+    public void savePostAll(List<Post> posts) {
+
+    }
+
+    @Override
     public void saveComment(Long postId, Comment comment) {
         Post post = idToPost.get(postId);
         post.addComment(comment);

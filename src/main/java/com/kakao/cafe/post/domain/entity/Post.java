@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Getter
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 public class Post {
     @NonNull
     private final Long id;

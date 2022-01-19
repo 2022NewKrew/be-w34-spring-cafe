@@ -12,5 +12,6 @@ public interface PostRepository {
     Optional<Post> getPost(Long id);
     List<Post> getPosts(int start, int size);
     void savePost(Post post);
+    void savePostAll(List<Post> posts);
     void saveComment(Long postId, Comment comment);
 }
