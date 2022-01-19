@@ -1,8 +1,13 @@
 package com.kakao.cafe.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class ArticleRequestDTO {
+    @NotBlank
     private final String author;
+    @NotBlank
     private final String title;
+    @NotBlank
     private final String content;
 
     public static ArticleRequestDTO of(String author, String title, String content) {

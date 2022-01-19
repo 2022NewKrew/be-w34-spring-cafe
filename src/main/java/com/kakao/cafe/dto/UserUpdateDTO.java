@@ -1,10 +1,19 @@
 package com.kakao.cafe.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 public class UserUpdateDTO {
+    @NotBlank
     private final String userId;
+    @NotBlank
     private final String password;
+    @NotBlank
     private final String passwordCheck;
+    @NotBlank
     private final String name;
+    @NotBlank
+    @Pattern(regexp = "^(.+)@(.+)$")
     private final String email;
 
     public static UserUpdateDTO of(String userId, String password, String passwordCheck, String name, String email) {

@@ -1,18 +1,28 @@
 package com.kakao.cafe.domain;
 
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class User {
+    @NotBlank
     private final Long id;
+    @NotBlank
     private final String userId;
+    @NotBlank
     private String password;
+    @NotBlank
     private String name;
+    @NotBlank
+    @Pattern(regexp = "^(.+)@(.+)$")
     private String email;
+    @NotBlank
     private final LocalDateTime createdAt;
+    @Nullable
     private LocalDateTime updatedAt;
 
     public static User of(Long id, String userId, String password, String name, String email, LocalDateTime createdAt) {

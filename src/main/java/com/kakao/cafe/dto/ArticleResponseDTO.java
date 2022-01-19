@@ -1,12 +1,18 @@
 package com.kakao.cafe.dto;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 public class ArticleResponseDTO {
+    @NotBlank
     private final Long id;
+    @NotBlank
     private final String author;
+    @NotBlank
     private final String title;
+    @NotBlank
     private final String content;
+    @NotBlank
     private final LocalDateTime createdAt;
 
     public static ArticleResponseDTO of(Long id, String author, String title, String content, LocalDateTime createdAt) {

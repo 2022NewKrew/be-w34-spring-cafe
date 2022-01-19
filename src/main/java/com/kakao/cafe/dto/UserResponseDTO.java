@@ -1,12 +1,20 @@
 package com.kakao.cafe.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 public class UserResponseDTO {
+    @NotBlank
     private final Long id;
+    @NotBlank
     private final String userId;
+    @NotBlank
     private final String name;
+    @NotBlank
+    @Pattern(regexp = "^(.+)@(.+)$")
     private final String email;
+    @NotBlank
     private final LocalDateTime createdAt;
 
     public static UserResponseDTO of(Long id, String userId, String name, String email, LocalDateTime createdAt) {
