@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS users;
 
@@ -17,5 +18,15 @@ CREATE TABLE IF NOT EXISTS posts (
     content TEXT NOT NULL,
     createdAt DATETIME,
     updatedAt DATETIME,
+    FOREIGN KEY (writer_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    post_id BIGINT NOT NULL,
+    writer_id BIGINT NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME,
+    FOREIGN KEY (post_id) REFERENCES posts(id),
     FOREIGN KEY (writer_id) REFERENCES users(id)
 );
