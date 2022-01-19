@@ -13,7 +13,6 @@ import java.util.concurrent.atomic.AtomicLong;
 @Repository
 public class UserJdbcRepository implements UserRepository {
 
-    private static AtomicLong id = new AtomicLong(0L);
     private final JdbcTemplate jdbcTemplate;
 
     public UserJdbcRepository(DataSource dataSource) {
@@ -22,8 +21,7 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        long nextId = id.incrementAndGet();
-        jdbcTemplate.update("insert into " + DBConst.USER_DB + " values(?,?,?,?,?)", nextId, user.getUserId(), user.getEmail(), user.getName(), user.getPassword());
+        jdbcTemplate.update("insert into " + DBConst.USER_DB + " (userId, email, name, password) values(?,?,?,?)", user.getUserId(), user.getEmail(), user.getName(), user.getPassword());
     }
 
     @Override

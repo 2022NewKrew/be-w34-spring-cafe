@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain.article;
 
+import com.kakao.cafe.core.exception.CannotDeleteArticle;
 import com.kakao.cafe.core.exception.IsNotAuthorOfThisArticle;
 import com.kakao.cafe.domain.article.dto.ArticleResponse;
 import com.kakao.cafe.domain.article.dto.ArticleSaveForm;
@@ -39,10 +40,16 @@ public class ArticleService {
         return ArticleUpdateForm.from(byId);
     }
 
-    public void delete(Long id, Long userId) throws IsNotAuthorOfThisArticle {
-        isAuthor(id, userId);
+    public void delete(Long id, Long userId) throws IsNotAuthorOfThisArticle, CannotDeleteArticle {
+        canDeleteAndCheckAuthority(id, userId);
 
         articleRepository.delete(id);
+    }
+
+    private void canDeleteAndCheckAuthority(Long id, Long userId) {
+        if(!articleRepository.canDeleteAndCheckAuthority(id, userId)) {
+            throw new CannotDeleteArticle();
+        }
     }
 
     public void update(Long id, ArticleUpdateForm updateForm, Long userId) throws IsNotAuthorOfThisArticle{

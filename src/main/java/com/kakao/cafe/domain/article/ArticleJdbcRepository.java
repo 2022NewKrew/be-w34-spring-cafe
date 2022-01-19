@@ -9,14 +9,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ArticleJdbcRepository implements ArticleRepository {
 
-    private static AtomicLong id = new AtomicLong(0L);
     private final JdbcTemplate jdbcTemplate;
 
     public ArticleJdbcRepository(DataSource dataSource) {
@@ -24,18 +21,12 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
-    public Long save(ArticleSaveForm article) {
-        long articleId = id.incrementAndGet();
-        jdbcTemplate.update("insert into " + DBConst.ARTICLE_DB + " values(?,?,?,?,?,?,?,?)"
-                , articleId
+    public void save(ArticleSaveForm article) {
+        jdbcTemplate.update("insert into " + DBConst.ARTICLE_DB + " (authorId, author, title, content) values(?,?,?,?)"
                 , article.getAuthorId()
                 , article.getAuthor()
                 , article.getTitle()
-                , article.getContent()
-                , LocalDateTime.now()
-                , 0
-                , 'N');
-        return articleId;
+                , article.getContent());
     }
 
     @Override
@@ -69,6 +60,30 @@ public class ArticleJdbcRepository implements ArticleRepository {
     public void incrementNumOfComment(Long articleId) {
         String sql = "update " + DBConst.ARTICLE_DB + " set numOfComment = numOfComment + 1 where id = ?";
         jdbcTemplate.update(sql, articleId);
+    }
+
+    @Override
+    public void decrementNumOfComment(Long articleId) {
+        String sql = "update " + DBConst.ARTICLE_DB + " set numOfComment = numOfComment - 1 where id = ?";
+        jdbcTemplate.update(sql, articleId);
+    }
+
+    @Override
+    public boolean canDeleteAndCheckAuthority(Long id, Long userId) {
+        String sql = "Select CASE \n" +
+                "WHEN authorCnt = 1 and replyCnt = 0 THEN true\n" +
+                "WHEN authorCnt = 1 and replyCnt = 1 THEN true\n" +
+                "else false\n" +
+                "END as result\n" +
+                "from (SELECT count(distinct a.authorId) authorCnt, count(distinct r.replyerId) replyCnt\n" +
+                "FROM article a left join reply r on a.id = r.articleId\n" +
+                "WHERE a.authorId = ? and a.id = ?)";
+        List<Boolean> result = jdbcTemplate.query(sql, booleanMapper(), userId, id);
+        return result.get(0);
+    }
+
+    private RowMapper<Boolean> booleanMapper() {
+        return (rs, rowNum) -> rs.getBoolean("result");
     }
 
     private RowMapper<Article> articleRowMapper() {

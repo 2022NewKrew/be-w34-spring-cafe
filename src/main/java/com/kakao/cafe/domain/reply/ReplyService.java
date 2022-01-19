@@ -1,10 +1,10 @@
 package com.kakao.cafe.domain.reply;
 
-import com.kakao.cafe.core.exception.IsNotAuthorOfThisArticle;
 import com.kakao.cafe.core.exception.IsNotAuthorOfThisComment;
 import com.kakao.cafe.domain.article.ArticleRepository;
 import com.kakao.cafe.domain.reply.dto.ReplyCreateForm;
 import com.kakao.cafe.domain.reply.dto.ReplyResponse;
+import com.kakao.cafe.domain.reply.dto.ReplyUpdateForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +17,9 @@ public class ReplyService {
     private final ReplyJdbcRepository replyRepository;
     private final ArticleRepository articleRepository;
 
+    //매번 join 연산으로 댓글 갯수 가져오는 것에 비해 댓글 달때마다 쿼리 2번 나가는게 성능이 낫지 않을까 하는 판단
     public void save(ReplyCreateForm replyCreateForm) {
         replyRepository.save(replyCreateForm);
-        //매번 join 연산으로 댓글 갯수 가져오는 것에 비해 댓글 달때마다 쿼리 2번 나가는게 성능이 낫지 않을까 하는 판단
         articleRepository.incrementNumOfComment(replyCreateForm.getArticleId());
     }
 
@@ -27,9 +27,10 @@ public class ReplyService {
         return replyRepository.getAllByArticleId(articleId);
     }
 
-    public void delete(Long id, Long userId) throws IsNotAuthorOfThisComment {
+    public void delete(Long id, Long userId, Long articleId) throws IsNotAuthorOfThisComment {
         authorityCheck(id, userId);
         replyRepository.delete(id);
+        articleRepository.decrementNumOfComment(articleId);
     }
 
 
@@ -44,4 +45,10 @@ public class ReplyService {
         }
     }
 
+    public ReplyUpdateForm getUpdateForm(Long id, Long userId) {
+        authorityCheck(id, userId);
+        return replyRepository.getContentFindById(id).orElseThrow(() -> {
+            throw new IllegalArgumentException("없는 댓글입니다.");
+        });
+    }
 }

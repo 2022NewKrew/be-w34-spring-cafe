@@ -3,6 +3,7 @@ package com.kakao.cafe.domain.reply;
 import com.kakao.cafe.core.DBConst;
 import com.kakao.cafe.domain.reply.dto.ReplyCreateForm;
 import com.kakao.cafe.domain.reply.dto.ReplyResponse;
+import com.kakao.cafe.domain.reply.dto.ReplyUpdateForm;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReplyJdbcRepository {
@@ -55,5 +57,20 @@ public class ReplyJdbcRepository {
 
     private RowMapper<Integer> isExistMapper() {
         return (rs, rowNum) -> rs.getInt("id");
+    }
+
+    public Optional<ReplyUpdateForm> getContentFindById(Long replyId) {
+        List<ReplyUpdateForm> query = jdbcTemplate.query("select id, content, articleId from reply where id = ?", updateFormMapper(), replyId);
+        return query.stream().findAny();
+    }
+
+    private RowMapper<ReplyUpdateForm> updateFormMapper() {
+        return (rs, rowNum) -> {
+            ReplyUpdateForm updateForm = new ReplyUpdateForm();
+            updateForm.setId(rs.getLong("id"));
+            updateForm.setArticleId(rs.getLong("articleId"));
+            updateForm.setContent(rs.getString("content"));
+            return updateForm;
+        };
     }
 }

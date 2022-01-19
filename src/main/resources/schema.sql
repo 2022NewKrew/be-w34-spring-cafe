@@ -3,7 +3,7 @@ drop table article IF EXISTS;
 drop table users IF EXISTS;
 
 create table if not exists users (
-                    id BIGINT PRIMARY KEY
+                    id BIGINT PRIMARY KEY AUTO_INCREMENT
                     , userId varchar(15) NOT NULL
                     , email varchar(40) NOT NULL
                     , name varchar(20) NOT NULL
@@ -11,7 +11,7 @@ create table if not exists users (
 
 
 create table if not exists article (
-                    id BIGINT PRIMARY KEY
+                    id BIGINT PRIMARY KEY AUTO_INCREMENT
                     , authorId BIGINT NOT NULL
                     , author varchar(15) NOT NULL
                     , title varchar(50) NOT NULL
