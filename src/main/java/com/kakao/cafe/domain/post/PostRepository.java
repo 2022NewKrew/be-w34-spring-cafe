@@ -9,4 +9,8 @@ public interface PostRepository {
     List<Post> findAll();
 
     Optional<Post> findById(Long id);
+
+    Post edit(Long id, Post post);
+
+    void remove(Long id);
 }

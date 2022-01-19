@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class JdbcPostRepository implements PostRepository{
+public class JdbcPostRepository implements PostRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -22,18 +22,31 @@ public class JdbcPostRepository implements PostRepository{
 
     @Override
     public List<Post> findAll() {
-        String sql = "SELECT id, title, content, writer, regDateTime FROM `POST`";
+        String sql = "SELECT id, title, content, writer, regDateTime FROM `POST` WHERE isDeleted=0";
         return jdbcTemplate.query(sql, getPostRowMapper());
     }
 
 
     @Override
     public Optional<Post> findById(Long id) {
-        String sql = "SELECT id, title, content, writer, regDateTime FROM `POST` WHERE id=?";
+        String sql = "SELECT id, title, content, writer, regDateTime FROM `POST` WHERE id=? AND isDeleted=0";
         Post post = jdbcTemplate.queryForObject(sql, getPostRowMapper(), id);
         return Optional.ofNullable(post);
     }
 
+    @Override
+    public Post edit(Long id, Post post) {
+        String sql = "UPDATE `POST` SET title=?, content=? WHERE id=?";
+        jdbcTemplate.update(sql, post.getTitle(), post.getContent(), id);
+
+        return post;
+    }
+
+    @Override
+    public void remove(Long id) {
+        String sql = "UPDATE `POST` SET isDeleted=1 WHERE id=?";
+        jdbcTemplate.update(sql, id);
+    }
 
 
     private RowMapper<Post> getPostRowMapper() {

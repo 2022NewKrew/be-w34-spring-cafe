@@ -1,7 +1,5 @@
 package com.kakao.cafe.domain.user;
 
-import org.springframework.stereotype.Repository;
-
 import java.util.*;
 
 
@@ -31,7 +29,7 @@ public class MemoryUserRepository implements UserRepository {
         return new ArrayList<>(userStore.values());
     }
 
-    public void clear(){
+    public void clear() {
         userStore.clear();
     }
 }

@@ -15,5 +15,6 @@ CREATE TABLE IF NOT EXISTS `POST` (
     content TEXT NOT NULL,
     writer VARCHAR(32) NOT NULL,
     regDateTime TIMESTAMP DEFAULT NOW(),
+    isDeleted INT DEFAULT 0,
     PRIMARY KEY (id)
 );
