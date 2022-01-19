@@ -26,30 +26,31 @@ public class UserDao {
         jdbcTemplate = new JdbcTemplate(this.dataSource);
     }
 
+
     public void insert(User user) {
-        String queryString = "insert into Users (ID, PASSWORD, EMAIL, NAME) values (?, ?, ?, ?);";
+        String queryString = "insert into USERS (ID, PASSWORD, EMAIL, NAME) values (?, ?, ?, ?);";
         jdbcTemplate.update(queryString, user.getId(), user.getPassword(), user.getEmail(), user.getName());
     }
 
     public User findById(String id) {
-        String queryString = "select id, password, email, name from users where ID = ?";
+        String queryString = "select id, password, email, name from USERS where ID = ?";
         Map<String, Object> res = jdbcTemplate.queryForMap(queryString, id);
         return mapToUser(res);
     }
 
     public Users findAll() {
-        String queryString = "select * from users;";
+        String queryString = "select * from USERS;";
         List<Map<String, Object>> res = jdbcTemplate.queryForList(queryString);
         return new Users(res.stream().map(this::mapToUser).collect(Collectors.toList()));
     }
 
     public int update(User user) {
-        String queryString = "update users set name = ?, email = ?, password = ? where id = ?;";
+        String queryString = "update USERS set name = ?, email = ?, password = ? where id = ?;";
         return jdbcTemplate.update(queryString, user.getName(), user.getEmail(), user.getPassword(), user.getId());
     }
 
     public void deleteAll() {
-        String queryString = "delete from users";
+        String queryString = "delete from USERS";
         jdbcTemplate.execute(queryString);
     }
 
