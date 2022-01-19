@@ -5,7 +5,9 @@ import com.kakao.cafe.article.dto.ArticlePostRequest;
 import com.kakao.cafe.article.dto.ArticleUpdateRequest;
 import com.kakao.cafe.article.dto.MultipleArticle;
 import com.kakao.cafe.article.dto.SingleArticle;
+import com.kakao.cafe.article.dto.SingleComment;
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.article.service.CommentService;
 import com.kakao.cafe.common.auth.LoginUser;
 import com.kakao.cafe.user.dto.SessionUser;
 import java.util.List;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final CommentService commentService;
 
     @PostMapping
     public String post(@LoginUser SessionUser user, @Valid ArticlePostRequest request) {
@@ -45,7 +48,9 @@ public class ArticleController {
     public String getArticle(@LoginUser SessionUser user, @PathVariable Long articleId,
         Model model) {
         SingleArticle singleArticle = articleService.getSingleArticle(articleId);
+        List<SingleComment> comments = commentService.getAllComments(articleId);
         model.addAttribute("article", singleArticle);
+        model.addAttribute("comments", comments);
         model.addAttribute("user", user);
         return "article/show";
     }
