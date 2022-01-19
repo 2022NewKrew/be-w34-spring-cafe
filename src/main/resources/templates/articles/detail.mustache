@@ -75,7 +75,7 @@
                                   {{#bodyLines}}{{.}}<br>{{/bodyLines}}
                               </div>
 
-                              <form class="submit-write" id="editComment{{idx}}" style="display:none;" action="/comments/{{article.idx}}/{{idx}}" method="POST">
+                              <form class="submit-write" id="editComment{{idx}}" style="display:none;" action="/comments/{{article.idx}}/{{idx}}" method="POST" onsubmit="return checkValidComment({{idx}})">
                                   <input type="hidden" name="_method" value="PUT">
                                   <input type="hidden" name="userId" value="{{curUserId}}">
                                   <input type="hidden" name="articleIdx" value="{{article.idx}}">
@@ -85,7 +85,7 @@
                                       <textarea class="form-control" id="comment{{idx}}" name="body" placeholder="댓글 내용"></textarea>
                                   </div>
                                   <button class="btn btn-success pull-right" onclick="cancelEditComment({{idx}})">취소</button>
-                                  <button class="btn btn-success pull-right" id="submit{{idx}}" type="submit">수정</button>
+                                  <button class="btn btn-success pull-right" type="submit">수정</button>
                                   <div class="clearfix"></div>
                               </form>
 
@@ -104,14 +104,14 @@
                               </div>
                           </article>
                           {{/comments}}
-                          <form class="submit-write" action="/comments" method="POST">
+                          <form class="submit-write" action="/comments" method="POST" onsubmit="return checkValidInput()">
                               <input type="hidden" name="userId" value="{{curUserId}}">
                               <input type="hidden" name="articleIdx" value="{{article.idx}}">
                               <div class="form-group" style="padding:14px;">
                                   <label for="comment">새 댓글 작성</label>
                                   <textarea class="form-control" id="comment" name="body" placeholder="댓글 내용"></textarea>
                               </div>
-                              <button class="btn btn-success pull-right" id="submit" type="submit">댓글 쓰기</button>
+                              <button class="btn btn-success pull-right" type="submit">댓글 쓰기</button>
                               <div class="clearfix"></div>
                           </form>
                       </div>

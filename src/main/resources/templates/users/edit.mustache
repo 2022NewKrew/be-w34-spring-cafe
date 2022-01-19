@@ -9,7 +9,7 @@
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
-          <form name="signup" method="post" action="/users">
+          <form name="signup" method="post" action="/users" onsubmit="return checkValidInput()">
               <input type="hidden" name="_method" value="PUT">
               <input type="hidden" name="idx" value="{{idx}}">
               <div class="form-group">
@@ -32,7 +32,7 @@
                   <label for="email">이메일</label>
                   <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{email}}">
               </div>
-              <button type="submit" id="submit" class="btn btn-success clearfix pull-right">정보 수정</button>
+              <button type="submit" class="btn btn-success clearfix pull-right">정보 수정</button>
               <div class="clearfix">모든 값을 올바르게 입력해주세요.</div>
           </form>
         </div>
