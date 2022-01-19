@@ -35,13 +35,13 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public ArticleDto findById(Long id) {
+    public ArticleDto findArticleById(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
         return new ArticleDto(article);
     }
 
-    public ArticleDetailDto findDetailById(Long id) {
+    public ArticleDetailDto findArticleDetailById(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
         List<ReplyDto> replies = replyRepository.findAllByArticleId(id).stream()
@@ -50,14 +50,14 @@ public class ArticleService {
         return new ArticleDetailDto(article, replies);
     }
 
-    public void update(Long id, ArticleRequest articleRequest) {
+    public void updateArticle(Long id, ArticleRequest articleRequest) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
         article.update(articleRequest.getTitle(), articleRequest.getDescription());
         articleRepository.update(article);
     }
 
-    public void delete(Long id) {
+    public void deleteArticle(Long id) {
         articleRepository.delete(id);
     }
 }

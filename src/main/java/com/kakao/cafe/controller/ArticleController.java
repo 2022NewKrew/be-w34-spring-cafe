@@ -41,7 +41,7 @@ public class ArticleController {
 
     @GetMapping("/{articleId}")
     public String getArticle(@PathVariable Long articleId, Model model) {
-        ArticleDetailDto article = articleService.findDetailById(articleId);
+        ArticleDetailDto article = articleService.findArticleDetailById(articleId);
         model.addAttribute("article", article);
 
         return "article/show";
@@ -50,7 +50,7 @@ public class ArticleController {
     @UserAuthorized
     @GetMapping("/{articleId}/form")
     public String updateForm(@PathVariable Long articleId, Model model) {
-        ArticleDto article = articleService.findById(articleId);
+        ArticleDto article = articleService.findArticleById(articleId);
         model.addAttribute("article", article);
 
         return "article/updateForm";
@@ -59,7 +59,7 @@ public class ArticleController {
     @UserAuthorized
     @PutMapping("/{articleId}")
     public String updateArticle(@PathVariable Long articleId, ArticleRequest articleRequest) {
-        articleService.update(articleId, articleRequest);
+        articleService.updateArticle(articleId, articleRequest);
 
         return "redirect:/articles/{articleId}";
     }
@@ -67,7 +67,7 @@ public class ArticleController {
     @UserAuthorized
     @DeleteMapping("/{articleId}")
     public String deleteArticle(@PathVariable Long articleId) {
-        articleService.delete(articleId);
+        articleService.deleteArticle(articleId);
 
         return "redirect:/";
     }

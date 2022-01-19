@@ -66,7 +66,7 @@ class ArticleControllerTest {
     void getArticle() throws Exception {
         MockHttpSession mockSession = new MockHttpSession();
         mockSession.setAttribute("auth", new Auth(FIRST_USER_ID));
-        Mockito.when(articleService.findById(FIRST_ARTICLE_ID))
+        Mockito.when(articleService.findArticleById(FIRST_ARTICLE_ID))
                         .thenReturn(new ArticleDto(FIRST_USER_ARTICLE));
 
         mockMvc.perform(get("/articles/" + FIRST_ARTICLE_ID)
@@ -80,7 +80,7 @@ class ArticleControllerTest {
     @Test
     @DisplayName("[GET] /articles/{articleId} - 로그인하지 않고 게시글의 상세조회를 할 수 없다")
     void failToGetArticleWithNoSession() throws Exception {
-        Mockito.when(articleService.findById(FIRST_ARTICLE_ID))
+        Mockito.when(articleService.findArticleById(FIRST_ARTICLE_ID))
                 .thenReturn(new ArticleDto(FIRST_USER_ARTICLE));
 
         mockMvc.perform(get("/articles/" + FIRST_ARTICLE_ID))
@@ -93,7 +93,7 @@ class ArticleControllerTest {
     void update() throws Exception {
         MockHttpSession mockSession = new MockHttpSession();
         mockSession.setAttribute("auth", new Auth(FIRST_USER_ID));
-        Mockito.when(articleService.findById(FIRST_ARTICLE_ID))
+        Mockito.when(articleService.findArticleById(FIRST_ARTICLE_ID))
                 .thenReturn(new ArticleDto(FIRST_USER_ARTICLE));
 
         mockMvc.perform(put("/articles/" + FIRST_ARTICLE_ID)
@@ -108,7 +108,7 @@ class ArticleControllerTest {
     void failToUpdateWithInvalidSession() throws Exception {
         MockHttpSession mockSession = new MockHttpSession();
         mockSession.setAttribute("auth", new Auth(SECOND_USER_ID));
-        Mockito.when(articleService.findById(FIRST_ARTICLE_ID))
+        Mockito.when(articleService.findArticleById(FIRST_ARTICLE_ID))
                 .thenReturn(new ArticleDto(FIRST_USER_ARTICLE));
 
         mockMvc.perform(put("/articles/" + FIRST_ARTICLE_ID)
@@ -123,7 +123,7 @@ class ArticleControllerTest {
     void deleteArticle() throws Exception {
         MockHttpSession mockSession = new MockHttpSession();
         mockSession.setAttribute("auth", new Auth(FIRST_USER_ID));
-        Mockito.when(articleService.findById(FIRST_ARTICLE_ID))
+        Mockito.when(articleService.findArticleById(FIRST_ARTICLE_ID))
                 .thenReturn(new ArticleDto(FIRST_USER_ARTICLE));
 
         mockMvc.perform(delete("/articles/" + FIRST_ARTICLE_ID)
@@ -138,7 +138,7 @@ class ArticleControllerTest {
     void failToDeleteWithInvalidSession() throws Exception {
         MockHttpSession mockSession = new MockHttpSession();
         mockSession.setAttribute("auth", new Auth(SECOND_USER_ID));
-        Mockito.when(articleService.findById(FIRST_ARTICLE_ID))
+        Mockito.when(articleService.findArticleById(FIRST_ARTICLE_ID))
                 .thenReturn(new ArticleDto(FIRST_USER_ARTICLE));
 
         mockMvc.perform(delete("/articles/" + FIRST_ARTICLE_ID)

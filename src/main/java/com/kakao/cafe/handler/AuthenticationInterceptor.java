@@ -47,7 +47,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     private void validateArticle(Map<String, String> pathVariableMap, Auth auth) {
         if (pathVariableMap.containsKey("articleId")) {
             long articleId = Long.parseLong(pathVariableMap.get("articleId"));
-            ArticleDto article = articleService.findById(articleId);
+            ArticleDto article = articleService.findArticleById(articleId);
             throwIfNotAuthorized(auth, article.getAuthorId());
         }
     }
