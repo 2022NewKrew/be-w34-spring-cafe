@@ -23,8 +23,12 @@ import java.util.List;
 @Controller
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    private static final UserService userService = new UserService();
+    private final UserService userService;
     private static final UserView userView = new UserView();
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/users")
     public String getUsers(Model model) {

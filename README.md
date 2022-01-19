@@ -56,3 +56,16 @@
       * 암호 비교는 service 에서
       * 로그인 상태에 따라 로그아웃, 개인정보수정 표시 혹은 로그인, 회원가입 표시
       * logout 기능
+  * step2-2
+    * 로컬 도커 MySQL 설정 O
+      * docker-compose.yml 세팅
+      * docker-compose로 mysql 컨테이너 실행
+      * mysql_secure_installation로 기본적인 보안 설정
+      * 데이터베이스 cafe 생성
+      * spring 사용자 생성
+      * spring 사용자 권한
+    * 어플리케이션 MySQL과 연동하는지 테스트 O
+      * jdbc template를 빈에서 가져오도록 service, controller, repository 어노테이션 사용
+      * 어플리케이션 MySQL연동 세팅(url, username, password)
+      * 테스트 쿼리 작성
+      * 실행후 데이터베이스가 변했는지 확인
