@@ -16,17 +16,7 @@ public class Article {
     private String writingTime;
     private Long countOfComment;
 
-    public Article(Long id, String writer, String title, String contents) {
-        this.id = id;
-        this.writer = writer;
-        this.contents = contents;
-        this.title = title;
-        this.writingTime = LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
-        this.countOfComment = 0L;
-    }
-
-    public Article(String writer, String contents, String title) {
+    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.contents = contents;
         this.title = title;

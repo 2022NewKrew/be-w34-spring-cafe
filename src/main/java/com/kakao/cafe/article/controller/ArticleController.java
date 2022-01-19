@@ -6,6 +6,8 @@ import com.kakao.cafe.article.dto.DetailArticleViewDTO;
 import com.kakao.cafe.article.dto.QuestionDTO;
 import com.kakao.cafe.article.factory.ArticleFactory;
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,11 +24,13 @@ import java.util.stream.Collectors;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final UserService userService;
 
     @PostMapping("/questions")
-    public String question(QuestionDTO questionDTO) {
-
-        articleService.question(ArticleFactory.toArticle(questionDTO));
+    public String question(QuestionDTO questionDTO, HttpSession session) {
+        String userId = (String) session.getAttribute("sessionOfUser");
+        User user = userService.findByUserId(userId);
+        articleService.question(ArticleFactory.toArticle(user.getName(), questionDTO));
 
         return "redirect:/";
     }
@@ -46,5 +51,11 @@ public class ArticleController {
         model.addAttribute("article", new DetailArticleViewDTO(articleService.findById(id)));
 
         return "qna/show";
+    }
+
+    @LoginCheck
+    @GetMapping("/questions/form")
+    public String getQuestionsForm() {
+        return "qna/form";
     }
 }
