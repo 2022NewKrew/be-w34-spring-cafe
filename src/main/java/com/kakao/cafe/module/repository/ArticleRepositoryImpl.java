@@ -58,6 +58,17 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
+    public void updateArticleCommentCount(Long id) {
+        int commentCount = jdbcTemplate.query("SELECT comment_count FROM ARTICLE WHERE id = ?",
+                        (rs, rowNum) -> rs.getInt("comment_count"), id)
+                .stream().findAny()
+                .orElseThrow(() -> new NoSuchDataException("해당하는 게시물이 없습니다."));
+
+        jdbcTemplate.update("UPDATE ARTICLE SET comment_count = ? WHERE id = ?",
+                commentCount + 1, id);
+    }
+
+    @Override
     public void updateArticle(Long id, String title, String contents) {
         jdbcTemplate.update("UPDATE ARTICLE SET title = ?, contents = ? WHERE id = ?",
                 title, contents, id);

@@ -14,6 +14,8 @@ public interface ArticleRepository {
 
     List<ArticleListDto> findAllArticles();
 
+    void updateArticleCommentCount(Long id);
+
     void updateArticle(Long id, String title, String contents);
 
     void deleteArticle(Long id);
