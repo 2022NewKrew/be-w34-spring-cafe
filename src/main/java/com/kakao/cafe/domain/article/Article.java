@@ -1,11 +1,7 @@
 package com.kakao.cafe.domain.article;
 
-import lombok.Builder;
+import com.kakao.cafe.web.dto.ArticleDTO;
 import lombok.Getter;
-import lombok.ToString;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 @Getter
 public class Article {
@@ -16,14 +12,14 @@ public class Article {
     private final String createDate;
     private final int views;
 
-    @Builder
-    public Article(String title, String content) {
+
+    public Article(ArticleDTO articleDTO) {
         this.id = 0;
-        this.title = title;
-        this.content = content;
-        this.createUserId = "unknown";
-        this.createDate = LocalDate.now().toString();
-        this.views = 0;
+        this.title = articleDTO.getTitle();
+        this.content = articleDTO.getContent();
+        this.createUserId = articleDTO.getCreateUserId();
+        this.createDate = articleDTO.getCreateDate();
+        this.views = articleDTO.getViews();
     }
 
     private Article(long id, String title, String content, String createUserId, String createDate, int views) {

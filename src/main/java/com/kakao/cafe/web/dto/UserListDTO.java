@@ -12,8 +12,8 @@ public class UserListDTO {
 
     private final List<UserDTO> userListDTO;
 
-    public UserListDTO(List<User> articleList) {
-        userListDTO = articleList.stream().map(UserDTO::new).collect(Collectors.toUnmodifiableList());
+    public UserListDTO(List<User> UserList) {
+        userListDTO = UserList.stream().map(UserDTO::newInstance).collect(Collectors.toUnmodifiableList());
     }
 
     public List<UserDTO> getCopiedUserList() {

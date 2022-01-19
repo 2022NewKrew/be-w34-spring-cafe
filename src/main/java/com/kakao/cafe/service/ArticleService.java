@@ -4,7 +4,6 @@ import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.web.dto.ArticleDTO;
 import com.kakao.cafe.web.dto.ArticleListDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +17,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void createArticle(Article article) {
-        articleRepository.create(article);
+    public void createArticle(ArticleDTO articleDTO) {
+        articleRepository.create(new Article(articleDTO));
     }
 
     public int getArticleListSize() {
@@ -32,6 +31,6 @@ public class ArticleService {
     }
 
     public ArticleDTO getArticleByIndex(int id) {
-        return new ArticleDTO(articleRepository.findById(id));
+        return ArticleDTO.newInstance(articleRepository.findById(id));
     }
 }

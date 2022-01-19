@@ -16,12 +16,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void createUser(User user) {
-        userRepository.create(user);
+    public void createUser(UserDTO userDTO) {
+        userRepository.create(new User(userDTO));
     }
 
     public UserDTO getUserByUserId(String userId) {
-        return new UserDTO(userRepository.findByUserId(userId));
+        return UserDTO.newInstance(userRepository.findByUserId(userId));
     }
 
     public List<UserDTO> getUserList() {

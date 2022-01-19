@@ -12,7 +12,7 @@ public class ArticleListDTO {
     private final List<ArticleDTO> articleListDTO;
 
     public ArticleListDTO(List<Article> articleList) {
-        articleListDTO = articleList.stream().map(ArticleDTO::new).collect(Collectors.toUnmodifiableList());
+        articleListDTO = articleList.stream().map(ArticleDTO::newInstance).collect(Collectors.toUnmodifiableList());
     }
 
     public List<ArticleDTO> getCopiedUserList() {
