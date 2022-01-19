@@ -32,12 +32,17 @@ public class UserController {
     public String login(String userId, String password, HttpSession session) {
         UserDTO userDTO = userService.findById(userId);
         if (userDTO.getPassWord().equals(password)) {
-            session.setAttribute("sessionedUser", userDTO);  // userDTO가 아니라 user가 돼야되는데...
-
+            session.setAttribute("sessionedUser", userDTO);  // userDTO가 아니라 user가 돼야되나?
         }
-
-        return null;
+        return "redirect:/";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
 
     @GetMapping("")
     public String listUsers(Model model) {
