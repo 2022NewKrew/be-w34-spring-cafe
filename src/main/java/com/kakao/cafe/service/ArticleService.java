@@ -2,8 +2,10 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.ArticleDTO.Create;
 import com.kakao.cafe.dto.ArticleDTO.Result;
+import com.kakao.cafe.dto.ArticleDTO.Update;
 import com.kakao.cafe.error.ErrorCode;
 import com.kakao.cafe.error.exception.ArticleNotFoundException;
+import com.kakao.cafe.error.exception.ForbiddenAccessException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.persistence.model.Article;
 import com.kakao.cafe.persistence.model.AuthInfo;
@@ -12,7 +14,6 @@ import com.kakao.cafe.persistence.repository.ArticleRepository;
 import com.kakao.cafe.persistence.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -43,6 +44,21 @@ public class ArticleService {
 
         articleRepository.save(article);
         logger.info("Article Created : {}", article);
+    }
+
+    @Transactional
+    public void update(AuthInfo authInfo, Long articleId, Update updateDTO) {
+        User foundUser = userRepository.findUserByUid(authInfo.getUid())
+            .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND, authInfo.getUid()));
+
+        Article article = articleRepository.findArticleById(articleId)
+            .orElseThrow(() -> new ArticleNotFoundException(ErrorCode.NOT_FOUND, articleId));
+        if (!article.getUid().equals(foundUser.getUid())) {
+            throw new ForbiddenAccessException(ErrorCode.FORBIDDEN_ACCESS,
+                "Update Article " + articleId);
+        }
+
+        articleRepository.update(articleId, updateDTO.getTitle(), updateDTO.getBody());
     }
 
     @Transactional(readOnly = true)

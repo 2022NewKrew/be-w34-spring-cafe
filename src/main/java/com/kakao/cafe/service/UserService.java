@@ -12,7 +12,6 @@ import com.kakao.cafe.persistence.model.User;
 import com.kakao.cafe.persistence.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
