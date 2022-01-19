@@ -1,9 +1,9 @@
 package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.exception.ArticleException;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import com.kakao.cafe.util.ErrorCode;
+import com.kakao.cafe.util.exception.ArticleException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Article findArticleByArticleId(Long articleId) {
+    public Article findByArticleId(Long articleId) {
         Optional<Article> article = articleRepository.findByArticleId(articleId);
         if (article.isEmpty()) {
             throw new ArticleException(ErrorCode.ARTICLE_NOT_FOUND);
@@ -28,5 +28,21 @@ public class ArticleService {
 
     public List<Article> findArticles() {
         return articleRepository.findAll();
+    }
+
+    public void update(Article article) {
+        articleRepository.update(article);
+    }
+
+    public Article save(Article article) {
+        return articleRepository.save(article);
+    }
+
+    public void delete(Long articleId) {
+        articleRepository.delete(articleId);
+    }
+
+    public boolean isDuplicated(Long articleId) {
+        return articleRepository.findByArticleId(articleId).isPresent();
     }
 }

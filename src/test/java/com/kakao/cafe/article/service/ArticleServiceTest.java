@@ -3,10 +3,10 @@ package com.kakao.cafe.article.service;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.Contents;
 import com.kakao.cafe.article.domain.Title;
-import com.kakao.cafe.article.exception.ArticleException;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import com.kakao.cafe.user.domain.UserId;
 import com.kakao.cafe.util.ErrorCode;
+import com.kakao.cafe.util.exception.ArticleException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ public class ArticleServiceTest {
         when(articleRepository.findByArticleId(article.getArticleId()))
                 .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> articleService.findArticleByArticleId(0L))
+        assertThatThrownBy(() -> articleService.findByArticleId(0L))
                 .isInstanceOf(ArticleException.class)
                 .hasMessageMatching(ErrorCode.ARTICLE_NOT_FOUND.getErrorMessage());
     }
@@ -58,7 +58,7 @@ public class ArticleServiceTest {
         when(articleRepository.findByArticleId(articleContainsId.getArticleId()))
                 .thenReturn(Optional.of(articleContainsId));
 
-        assertThat(articleService.findArticleByArticleId(articleContainsId.getArticleId()))
+        assertThat(articleService.findByArticleId(articleContainsId.getArticleId()))
                 .isEqualTo(articleContainsId);
     }
 

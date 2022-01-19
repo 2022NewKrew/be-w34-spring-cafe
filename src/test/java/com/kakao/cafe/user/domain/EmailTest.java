@@ -1,7 +1,7 @@
 package com.kakao.cafe.user.domain;
 
-import com.kakao.cafe.user.exception.UserException;
 import com.kakao.cafe.util.ErrorCode;
+import com.kakao.cafe.util.exception.UserException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

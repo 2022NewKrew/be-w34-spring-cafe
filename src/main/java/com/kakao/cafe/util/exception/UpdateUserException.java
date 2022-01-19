@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.exception;
+package com.kakao.cafe.util.exception;
 
 import com.kakao.cafe.util.CustomException;
 import com.kakao.cafe.util.ErrorCode;

@@ -3,9 +3,9 @@ package com.kakao.cafe.article.repository;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.Contents;
 import com.kakao.cafe.article.domain.Title;
-import com.kakao.cafe.article.exception.ArticleException;
 import com.kakao.cafe.user.domain.UserId;
 import com.kakao.cafe.util.ErrorCode;
+import com.kakao.cafe.util.exception.ArticleException;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;

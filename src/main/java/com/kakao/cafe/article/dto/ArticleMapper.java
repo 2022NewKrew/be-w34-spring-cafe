@@ -28,9 +28,20 @@ public class ArticleMapper implements RowMapper<Article> {
         );
     }
 
+    public Article toArticle(Long articleId, ArticleFormDto articleFormDto) {
+        return new Article(
+                articleId,
+                new UserId(articleFormDto.getWriter()),
+                new Date(),
+                new Title(articleFormDto.getTitle()),
+                new Contents(articleFormDto.getContents())
+        );
+    }
+
     public List<ArticleListDto> toListArticleDto(List<Article> articles) {
         return articles.stream()
                 .map(article -> new ArticleListDto(
+                        article.getArticleId(),
                         article.getWriterId().getUserId(),
                         article.getWriteTime(),
                         article.getTitle().getTitle())
@@ -39,6 +50,7 @@ public class ArticleMapper implements RowMapper<Article> {
 
     public ArticleDto toArticleDto(Article article) {
         return new ArticleDto(
+                article.getArticleId(),
                 article.getWriterId().getUserId(),
                 article.getWriteTime(),
                 article.getTitle().getTitle(),
