@@ -1,6 +1,7 @@
 package com.kakao.cafe.adapter.in.presentation.user;
 
 import com.kakao.cafe.application.user.dto.LoginRequest;
+import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.application.user.port.in.LoginUserUseCase;
 import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
 import com.kakao.cafe.domain.user.exceptions.WrongPasswordException;
@@ -20,8 +21,8 @@ public class UserLoginController {
     @PostMapping("/login")
     public String login(LoginRequest loginRequest, HttpSession session)
         throws UserNotExistException, WrongPasswordException {
-        loginUserUseCase.login(loginRequest);
-        session.setAttribute("sessionedUser", loginRequest.getUserId());
+        UserInfo userInfo = loginUserUseCase.login(loginRequest);
+        session.setAttribute("sessionedUser", userInfo);
         return "redirect:/";
     }
 }

@@ -1,4 +1,4 @@
-package com.kakao.cafe.adapter.in.presentation;
+package com.kakao.cafe.adapter.in.presentation.common;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

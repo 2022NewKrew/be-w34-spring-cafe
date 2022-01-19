@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 import com.kakao.cafe.application.article.dto.ArticleInfo;
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
+import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.domain.article.Article;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -73,11 +75,14 @@ class ArticleInfoControllerTest {
                                                     .contents(contents)
                                                     .createdAt(createdAt)
                                                     .build();
+        UserInfo sessionedUser = new UserInfo("kakao", writer, "kakao@kakao.com");
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("sessionedUser", sessionedUser);
         String url = "/articles/" + id;
         given(getArticleInfoUseCase.getArticleDetail(id)).willReturn(givenArticle);
 
         //when
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.TEXT_HTML))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(url).session(session).accept(MediaType.TEXT_HTML))
                                   .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                   .andReturn();
 

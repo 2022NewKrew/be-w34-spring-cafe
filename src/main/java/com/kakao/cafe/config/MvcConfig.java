@@ -1,6 +1,6 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.adapter.in.presentation.SessionCheckInterceptor;
+import com.kakao.cafe.adapter.in.presentation.common.SessionCheckInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;

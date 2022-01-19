@@ -1,4 +1,4 @@
-package com.kakao.cafe.adapter.in.presentation;
+package com.kakao.cafe.adapter.in.presentation.common;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

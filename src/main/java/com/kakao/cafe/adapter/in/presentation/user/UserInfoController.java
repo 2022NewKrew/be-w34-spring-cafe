@@ -41,8 +41,8 @@ public class UserInfoController {
     @GetMapping(path = {"/users/{userId}/form", "/users/{userId}/form/error"})
     public String displayUserUpdateForm(@PathVariable String userId, Model model, HttpSession session)
         throws UserNotExistException, UnauthenticatedUserException {
-        String sessionedUserId = (String) session.getAttribute("sessionedUser");
-        if (!sessionedUserId.equals(userId)) {
+        UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
+        if (!sessionedUser.getUserId().equals(userId)) {
             throw new UnauthenticatedUserException("인증 오류");
         }
         UserInfo userInfo = getUserInfoUseCase.getUserProfile(userId);
