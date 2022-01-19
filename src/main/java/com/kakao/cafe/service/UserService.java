@@ -36,7 +36,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void updateUserInfo(Long id, UserCreateRequest updateUserRequest) {
+    public void updateUserInfo(Long id, UserCreateRequest updateUserRequest) throws IllegalStateException {
         // updateUser 는 기존 user와 동일한 id를 갖기 때문에 채워주는 과정.
         User updateUser = UserMapper.INSTANCE.toEntity(updateUserRequest);
         updateUser.setId(id);
@@ -66,9 +66,8 @@ public class UserService {
             throw new AuthenticationException();
         return user;
     }
-    public void validateUserUpdate(User sessionUser, Long userId) throws AuthenticationException {
-
-        if(!sessionUser.getUserId().equals(userId))
+    public void validateUserUpdate(User sessionUser, Long id) throws AuthenticationException {
+        if(!sessionUser.getId().equals(id))
             throw new AuthenticationException();
     }
 }

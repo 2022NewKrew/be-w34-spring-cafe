@@ -7,12 +7,17 @@ import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.security.sasl.AuthenticationException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -20,72 +25,63 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
-    @PostMapping("/users")
-    public String create(UserCreateRequest userCreateRequest) {
-        userService.save(userCreateRequest);
-        return "redirect:/users";
-    }
-
-    @GetMapping("/users")
+    @GetMapping
     public String findUserList(Model model) {
         List<User> users = userService.findUserList();
         model.addAttribute("users", users);
-        return "user/list";
+        return "/user/list";
     }
-    @GetMapping("/user/update_failed")
-
-    public String update_fail(Model model) {
-
-        List<User> users = userService.findUserList();
-        model.addAttribute("users", users);
-        return "user/update_failed_list";
-    }
-    @PostMapping("/login")
-    public String login(UserLoginRequest userLoginRequest, HttpSession session) {
-        try {
-            User user = userService.validateUserLogin(userLoginRequest);
-            session.setAttribute("sessionedUser", user);
-        } catch (AuthenticationException e) {
-            return "/user/login_failed";
-        }
-        return "redirect:/";
-    }
-
-    @RequestMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/";
-    }
-
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public String findUser(@PathVariable("userId") String userId, Model model) {
         User user = userService.findUser(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
-
-    @GetMapping("/users/{id}/form")
-    public String createUserUpdateForm(@PathVariable("id") Long id, Model model, HttpSession session) {
+    @PostMapping("/signup")
+    public String signup(UserCreateRequest userCreateRequest) {
+        userService.save(userCreateRequest);
+        return "redirect:/users";
+    }
+    @PostMapping("/login")
+    public RedirectView login(UserLoginRequest userLoginRequest, HttpSession session, RedirectAttributes redirectAttributes) {
+        try {
+            User user = userService.validateUserLogin(userLoginRequest);
+            session.setAttribute("sessionedUser", user);
+            return new RedirectView("/");
+        } catch (AuthenticationException e) {
+            redirectAttributes.addFlashAttribute("flashMessage", "로그인에 실패했습니다");
+            return new RedirectView("/login");
+        }
+    }
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+    @GetMapping("/{id}/update")
+    public RedirectView createUserUpdateForm(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 
         Object value = session.getAttribute("sessionedUser");
-        if(value == null)
-            return "/user/update_failed";
         try {
             User sessionUser = (User)value;
             userService.validateUserUpdate(sessionUser, id);
-            model.addAttribute("user", sessionUser);
-
+            redirectAttributes.addFlashAttribute("user", sessionUser);
+            return new RedirectView("/update");
         } catch (AuthenticationException e) {
-            return "/user/update_failed";
+            redirectAttributes.addFlashAttribute("flashMessage", "자기 정보만 수정할 수 있습니다.");
+            return new RedirectView("/users");
         }
-        return "user/update";
     }
 
-    @PutMapping("/users/{id}/update")
-    public String updateUser(@PathVariable("id") Long id, UserCreateRequest userUpdateRequest) {
-        userService.updateUserInfo(id, userUpdateRequest);
-
-        return "redirect:/users";
+    @PutMapping("/{id}/update")
+    public RedirectView updateUser(@PathVariable("id") Long id, @ModelAttribute("user") User user, UserCreateRequest userUpdateRequest, RedirectAttributes redirectAttributes) {
+        try {
+            userService.updateUserInfo(id, userUpdateRequest);
+            return new RedirectView("/users");
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("flashMessage", "비밀번호가 일치하지 않습니다.");
+            redirectAttributes.addFlashAttribute("user", user);
+            return new RedirectView("/update");
+        }
     }
 }
