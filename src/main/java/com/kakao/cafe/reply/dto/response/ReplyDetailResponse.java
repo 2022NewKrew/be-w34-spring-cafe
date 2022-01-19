@@ -1,21 +1,17 @@
-package com.kakao.cafe.article.dto.response;
+package com.kakao.cafe.reply.dto.response;
 
-import com.kakao.cafe.reply.dto.response.ReplyDetailResponse;
 import com.kakao.cafe.user.dto.response.UserInfoResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class ArticleDetailResponse {
+public class ReplyDetailResponse {
 
     private final Long id;
     private final UserInfoResponse writer;
-    private final List<ReplyDetailResponse> replies;
-    private final String title;
     private final String contents;
     private final LocalDateTime createdAt;
 }

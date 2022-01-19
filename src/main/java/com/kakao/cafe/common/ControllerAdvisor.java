@@ -1,7 +1,7 @@
 package com.kakao.cafe.common;
 
-import com.kakao.cafe.user.mapper.exception.ForbiddenException;
-import com.kakao.cafe.user.mapper.exception.UnAuthorizedException;
+import com.kakao.cafe.user.exception.ForbiddenException;
+import com.kakao.cafe.user.exception.UnAuthorizedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -32,10 +32,10 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(value = ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public String handleForbiddenException(ForbiddenException e) {
+    public String handleForbiddenException(ForbiddenException e, Model model) {
         log.error("[ERROR] - {}", e.getMessage());
-
-        return "/";
+        model.addAttribute("msg", e.getMessage());
+        return "/error";
     }
 
     @ExceptionHandler(value = BindException.class)

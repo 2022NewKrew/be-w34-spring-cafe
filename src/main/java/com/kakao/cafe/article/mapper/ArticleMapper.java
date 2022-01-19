@@ -15,7 +15,8 @@ public interface ArticleMapper {
 
     @Mappings({
         @Mapping(target = "id", constant = "0L"),
-        @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())")
+        @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())"),
+        @Mapping(target = "replies", expression = "java(new ArrayList<>())")
     })
     Article articleCreateRequestToEntity(ArticleCreateRequest articleCreateRequest);
     ArticleDetailResponse articleToArticleDetailResponse(Article article);
