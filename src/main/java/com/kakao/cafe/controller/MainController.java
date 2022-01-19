@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
 
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final PostService postService;
 
     @GetMapping
