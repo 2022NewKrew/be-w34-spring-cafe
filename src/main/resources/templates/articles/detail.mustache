@@ -39,10 +39,10 @@
                   <div class="article-util">
                       <ul class="article-util-list">
                           <li>
-                              <a class="link-modify-article" href="/articles/edit/{{idx}}">수정</a>
+                              <a class="link-modify-article" href="/articles/edit/{{article.idx}}">수정</a>
                           </li>
                           <li>
-                              <form class="form-delete" action="/articles/{{idx}}" method="POST" onsubmit="return confirm('정말로 삭제하시겠습니까?')">
+                              <form class="form-delete" action="/articles/{{article.idx}}" method="POST" onsubmit="return confirm('정말로 삭제하시겠습니까?')">
                                   <input type="hidden" name="_method" value="DELETE">
                                   <button class="link-delete-article" type="submit">삭제</button>
                               </form>
@@ -80,7 +80,7 @@
                                           <a class="link-modify-article" href="/comments">수정</a>
                                       </li>
                                       <li>
-                                          <form class="delete-answer-form" action="/comments/{{article.idx}}/{{idx}}" method="POST" onsubmit="return confirm('정말로 삭제하시겠습니까?')">
+                                          <form class="delete-answer-form" action="/comments/{{article.idx}}/{{comments.idx}}" method="POST" onsubmit="return confirm('정말로 삭제하시겠습니까?')">
                                               <input type="hidden" name="_method" value="DELETE">
                                               <button type="submit" class="delete-answer-button">삭제</button>
                                           </form>
@@ -90,8 +90,7 @@
                           </article>
                           {{/comments}}
                           <form class="submit-write" action="/comments" method="POST">
-                              <input type="hidden" name="userId" value="{{curUserId}}">
-                              <input type="hidden" name="articleIdx" value="{{idx}}">
+                              <input type="hidden" name="articleIdx" value="{{article.idx}}">
                               <div class="form-group" style="padding:14px;">
                                   <label for="comment">새 댓글 작성</label>
                                   <textarea class="form-control" id="comment" name="body" placeholder="댓글 내용"></textarea>

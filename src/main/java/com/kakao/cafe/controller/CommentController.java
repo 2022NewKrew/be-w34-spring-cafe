@@ -117,11 +117,11 @@ public class CommentController {
         return "redirect:/login";
     }
 
-    private boolean checkNotOwner(final HttpServletRequest request, final String articleUserId) {
+    private boolean checkNotOwner(final HttpServletRequest request, final String commentUserId) {
         final String curUserId = AuthControl.getLogonId(request);
         if (curUserId == null) {
             return true;
         }
-        return !curUserId.equals(articleUserId);
+        return !curUserId.equals(commentUserId);
     }
 }
