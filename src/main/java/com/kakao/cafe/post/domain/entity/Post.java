@@ -42,9 +42,9 @@ public class Post {
         this.writerName = writerName;
         this.timeWritten = LocalDateTime.now();
         this.comments = new ArrayList<>();
+        validate();
     }
 
-    @PostConstruct
     protected void validate(){
         ValidationService.validate(this);
     }
