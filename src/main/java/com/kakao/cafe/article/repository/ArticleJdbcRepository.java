@@ -3,9 +3,8 @@ package com.kakao.cafe.article.repository;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleRowMapper;
 import com.kakao.cafe.article.domain.Reply;
-import com.kakao.cafe.article.domain.ReplyRowMapper;
-import com.kakao.cafe.article.dto.ArticleUpdateDTO;
-import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.article.domain.ReplyViewRowMapper;
+import com.kakao.cafe.article.dto.ReplyViewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -66,9 +65,10 @@ public class ArticleJdbcRepository implements ArticleRepository{
                 contents);
     }
 
+    //이 부분을 join없이 List<Reply> 로만 얻고싶은데 다른방법이 없을까 고민중이다.
     @Override
-    public List<Reply> getRepliesByArticleSeq(Long articleSeq) {
-        String sql = String.format("SELECT * FROM reply WHERE articleSeq = %s", articleSeq);
-        return jdbcTemplate.query(sql, new ReplyRowMapper());
+    public List<ReplyViewDTO> getRepliesByArticleSeqWithUser(Long articleSeq) {
+        String sql = String.format("SELECT * FROM REPLY JOIN USERS ON REPLY.USERID = USERS.USERID WHERE REPLY.ARTICLESEQ=%d;", articleSeq);
+        return jdbcTemplate.query(sql, new ReplyViewRowMapper());
     }
 }

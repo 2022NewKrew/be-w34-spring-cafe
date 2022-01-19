@@ -7,14 +7,16 @@ import java.sql.Timestamp;
 public class ReplyViewDTO {
     private Long sequence;
     private String userId;
+    private String name;
     private String contents;
     private Timestamp createdAt;
 
-    public ReplyViewDTO(Reply reply){
-        this.sequence = reply.getSequence();
-        this.userId = reply.getUserId();
-        this.contents = reply.getContents();
-        this.createdAt = reply.getCreatedAt();
+    public ReplyViewDTO(Long sequence, String userId, String name, String contents, Timestamp createdAt){
+        this.sequence = sequence;
+        this.userId = userId;
+        this.name = name;
+        this.contents = contents;
+        this.createdAt = createdAt;
     }
 
     public Long getSequence() {
@@ -23,6 +25,10 @@ public class ReplyViewDTO {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getContents() {

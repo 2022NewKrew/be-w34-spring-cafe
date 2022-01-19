@@ -54,8 +54,7 @@ public class ArticleService {
     }
 
     public List<ReplyViewDTO> getReplies(Long articleSeq){
-        List<Reply> replies = articleRepository.getRepliesByArticleSeq(articleSeq);
-        List<ReplyViewDTO> repliesViewDTO = replies.stream().map(ReplyViewDTO::new).collect(Collectors.toList());
-        return repliesViewDTO;
+        List<ReplyViewDTO> replies = articleRepository.getRepliesByArticleSeqWithUser(articleSeq);
+        return replies;
     }
 }
