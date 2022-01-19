@@ -2,6 +2,8 @@ package com.kakao.cafe.domain.article;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.util.Objects;
 
@@ -16,10 +18,7 @@ public class Article {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Article article = (Article) o;
-        return Objects.equals(id, article.id) && Objects.equals(writer, article.writer) && Objects.equals(title, article.title) && Objects.equals(contents, article.contents);
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override

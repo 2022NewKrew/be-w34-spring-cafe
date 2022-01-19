@@ -18,6 +18,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.projectlombok:lombok'
+	implementation 'org.apache.commons:commons-lang3'
 	testImplementation 'org.assertj:assertj-core'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

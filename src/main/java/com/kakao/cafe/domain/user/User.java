@@ -2,6 +2,7 @@ package com.kakao.cafe.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.util.Objects;
 
@@ -17,14 +18,11 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(userId, user.userId) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(email, user.email);
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, password, name, email);
+        return Objects.hash(userId, password, name, email);
     }
 }
