@@ -7,6 +7,7 @@ import com.example.kakaocafe.core.exception.HasNotPermissionException;
 import com.example.kakaocafe.core.meta.URLPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Proxy;
 import java.util.NoSuchElementException;
 
 @ControllerAdvice

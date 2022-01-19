@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(path = "/")
+@RequestMapping
 @RequiredArgsConstructor
 public class SignUpController {
 
-    @GetMapping(path = "sign-up")
+    @GetMapping(path = "/sign-up")
     public ModelAndView showSignUpForm(Model model) {
         return new ModelAndView(ViewPath.SIGN_UP)
                 .addAllObjects(model.asMap());
     }
 
-    @GetMapping(path = "sign-up-success")
+    @GetMapping(path = "/sign-up-success")
     public ModelAndView showSignUpSuccess(Model model) {
         return new ModelAndView(ViewPath.SIGN_UP_SUCCESS)
                 .addAllObjects(model.asMap());
