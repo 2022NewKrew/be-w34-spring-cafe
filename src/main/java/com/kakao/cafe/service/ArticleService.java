@@ -2,16 +2,18 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.ArticleDTO.Create;
 import com.kakao.cafe.dto.ArticleDTO.Result;
+import com.kakao.cafe.dto.ArticleDTO.Update;
 import com.kakao.cafe.error.ErrorCode;
 import com.kakao.cafe.error.exception.ArticleNotFoundException;
+import com.kakao.cafe.error.exception.ForbiddenAccessException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.persistence.model.Article;
 import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.persistence.model.User;
 import com.kakao.cafe.persistence.repository.ArticleRepository;
 import com.kakao.cafe.persistence.repository.UserRepository;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -30,19 +32,30 @@ public class ArticleService {
 
     @Transactional
     public void create(Create createDTO, AuthInfo authInfo) {
-        Optional<User> foundUser = userRepository.findUserByUid(authInfo.getUid());
-        if (foundUser.isEmpty()) {
-            throw new UserNotFoundException(ErrorCode.NOT_FOUND, authInfo.getUid());
-        }
+        User foundUser = userRepository.findUserByUid(authInfo.getUid())
+            .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND, authInfo.getUid()));
 
         Article article = Article.builder()
-            .uid(foundUser.get().getUid())
+            .uid(foundUser.getUid())
             .title(createDTO.getTitle())
             .body(createDTO.getBody())
+            .createdAt(LocalDateTime.now())
             .build();
 
         articleRepository.save(article);
         logger.info("Article Created : {}", article);
+    }
+
+    @Transactional
+    public void update(AuthInfo authInfo, Long articleId, Update updateDTO) {
+        Article foundArticle = articleRepository.findArticleById(articleId)
+            .orElseThrow(() -> new ArticleNotFoundException(ErrorCode.NOT_FOUND, articleId));
+        if (!authInfo.matchUid(foundArticle.getUid())) {
+            throw new ForbiddenAccessException(ErrorCode.FORBIDDEN_ACCESS,
+                "Update Article " + articleId);
+        }
+
+        articleRepository.update(articleId, updateDTO.getTitle(), updateDTO.getBody());
     }
 
     @Transactional(readOnly = true)
@@ -56,12 +69,22 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public Result readById(Long id) {
-        Optional<Article> foundArticle = articleRepository.findArticleById(id);
-        if (foundArticle.isEmpty()) {
-            throw new ArticleNotFoundException(ErrorCode.NOT_FOUND, id);
+        Article foundArticle = articleRepository.findArticleById(id)
+            .orElseThrow(() -> new ArticleNotFoundException(ErrorCode.NOT_FOUND, id));
+
+        logger.info("Read Article by [ID : {}] :: {}", id, foundArticle);
+        return Result.from(foundArticle);
+    }
+
+    @Transactional
+    public void delete(AuthInfo authInfo, Long articleId) {
+        Article foundArticle = articleRepository.findArticleById(articleId)
+            .orElseThrow(() -> new ArticleNotFoundException(ErrorCode.NOT_FOUND, articleId));
+        if (!authInfo.matchUid(foundArticle.getUid())) {
+            throw new ForbiddenAccessException(ErrorCode.FORBIDDEN_ACCESS,
+                "Delete Article " + articleId);
         }
 
-        logger.info("Read Article by [ID : {}] :: {}", id, foundArticle.get());
-        return Result.from(foundArticle.get());
+        articleRepository.delete(articleId);
     }
 }

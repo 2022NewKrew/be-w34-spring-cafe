@@ -20,6 +20,16 @@ public interface ArticleDTO {
     }
 
     @Getter
+    @AllArgsConstructor
+    class Update {
+
+        @NotBlank
+        String title;
+        @NotBlank
+        String body;
+    }
+
+    @Getter
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     class Result {
 

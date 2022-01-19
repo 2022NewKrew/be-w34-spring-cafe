@@ -5,9 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.never;
 
 import com.kakao.cafe.dto.ArticleDTO.Create;
+import com.kakao.cafe.dto.ArticleDTO.Update;
 import com.kakao.cafe.error.exception.ArticleNotFoundException;
+import com.kakao.cafe.error.exception.ForbiddenAccessException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.persistence.model.Article;
 import com.kakao.cafe.persistence.model.AuthInfo;
@@ -47,9 +51,12 @@ class ArticleServiceTest {
             .willReturn(Optional.of(user));
 
         // When
+        assertDoesNotThrow(() -> articleService.create(createDTO, authInfo));
 
         // Then
-        assertDoesNotThrow(() -> articleService.create(createDTO, authInfo));
+        then(articleRepository)
+            .should()
+            .save(any());
     }
 
     @Test
@@ -68,6 +75,54 @@ class ArticleServiceTest {
         // Then
         assertThat(exception.getMessage())
             .contains("Not Found User");
+        then(articleRepository)
+            .should(never())
+            .save(any());
+    }
+
+    @Test
+    @DisplayName("작성자의 게시글 수정 테스트")
+    void update() {
+        // Given
+        Article article = Article.builder().id(1L).uid("uid").title("title").body("body")
+            .createdAt(LocalDateTime.now()).build();
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.of(article));
+
+        // When
+        AuthInfo authInfo = AuthInfo.of("uid");
+        Update updateDTO = new Update("new title", "new body");
+        Long articleId = 1L;
+        assertDoesNotThrow(() -> articleService.update(authInfo, articleId, updateDTO));
+
+        // Then
+        then(articleRepository)
+            .should()
+            .update(any(), any(), any());
+    }
+
+    @Test
+    @DisplayName("올바르지 않은 인증 정보로 게시글 수정 테스트")
+    void update2() {
+        // Given
+        Article article = Article.builder().id(1L).uid("uid").title("title").body("body")
+            .createdAt(LocalDateTime.now()).build();
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.of(article));
+
+        // When
+        AuthInfo authInfo = AuthInfo.of("invalidUid");
+        Update updateDTO = new Update("new title", "new body");
+        Long articleId = 1L;
+        ForbiddenAccessException exception = assertThrows(ForbiddenAccessException.class,
+            () -> articleService.update(authInfo, articleId, updateDTO));
+
+        // Then
+        assertThat(exception.getMessage())
+            .contains("Update Article 1");
+        then(articleRepository)
+            .should(never())
+            .update(any(), any(), any());
     }
 
     @Test
@@ -80,9 +135,9 @@ class ArticleServiceTest {
             .willReturn(Optional.of(article));
 
         // When
+        assertDoesNotThrow(() -> articleService.readById(1L));
 
         // Then
-        assertDoesNotThrow(() -> articleService.readById(1L));
     }
 
     @Test
@@ -99,5 +154,48 @@ class ArticleServiceTest {
         // Then
         assertThat(exception.getMessage())
             .contains("Not Found Article");
+    }
+
+    @Test
+    @DisplayName("게시글 삭제 테스트")
+    void delete() {
+        // Given
+        Article article = Article.builder().id(1L).uid("uid").title("title").body("body")
+            .createdAt(LocalDateTime.now()).build();
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.of(article));
+
+        // When
+        AuthInfo authInfo = AuthInfo.of("uid");
+        Long articleId = 1L;
+        assertDoesNotThrow(() -> articleService.delete(authInfo, articleId));
+
+        // Then
+        then(articleRepository)
+            .should()
+            .delete(any());
+    }
+
+    @Test
+    @DisplayName("인증 정보 없이 게시글 삭제 테스트")
+    void delete2() {
+        // Given
+        Article article = Article.builder().id(1L).uid("uid").title("title").body("body")
+            .createdAt(LocalDateTime.now()).build();
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.of(article));
+
+        // When
+        AuthInfo authInfo = AuthInfo.of("invalidUid");
+        Long articleId = 1L;
+        ForbiddenAccessException exception = assertThrows(ForbiddenAccessException.class,
+            () -> articleService.delete(authInfo, articleId));
+
+        // Then
+        assertThat(exception.getMessage())
+            .contains("Delete Article 1");
+        then(articleRepository)
+            .should(never())
+            .delete(any());
     }
 }
