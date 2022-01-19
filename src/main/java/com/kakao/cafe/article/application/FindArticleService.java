@@ -1,6 +1,6 @@
 package com.kakao.cafe.article.application;
 
-import com.kakao.cafe.article.application.port.in.FindArticleQuery;
+import com.kakao.cafe.article.application.port.in.FindArticleUseCase;
 import com.kakao.cafe.article.application.port.in.FoundArticleDto;
 import com.kakao.cafe.article.application.port.out.LoadArticlePort;
 import com.kakao.cafe.article.domain.Article;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class FindArticleService implements FindArticleQuery {
+public class FindArticleService implements FindArticleUseCase {
 
     private final LoadArticlePort loadArticlePort;
 

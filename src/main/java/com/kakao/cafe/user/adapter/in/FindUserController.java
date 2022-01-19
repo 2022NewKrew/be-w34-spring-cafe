@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class FindUserController {
 
-    private final FindUserQuery findUserQuery;
+    private final FindUserUseCase findUserUseCase;
     private final Logger logger = LoggerFactory.getLogger(FindUserController.class);
 
-    public FindUserController(FindUserQuery findUserQuery) {
-        this.findUserQuery = findUserQuery;
+    public FindUserController(FindUserUseCase findUserUseCase) {
+        this.findUserUseCase = findUserUseCase;
     }
 
     @GetMapping("/users/{userId}")
