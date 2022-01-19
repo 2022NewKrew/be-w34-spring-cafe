@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.auth.Auth;
 import com.kakao.cafe.exception.InvalidPasswordException;
 import com.kakao.cafe.exception.UserNotFoundException;
+import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.AuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,8 @@ class AuthControllerTest {
     MockMvc mockMvc;
     @MockBean
     AuthService authService;
+    @MockBean
+    ArticleService articleService;
 
     @Test
     @DisplayName("[POST] /login - 아이디와 비밀번호를 통해 로그인을 할 수 있다")

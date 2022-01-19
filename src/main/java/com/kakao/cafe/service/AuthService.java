@@ -20,7 +20,7 @@ public class AuthService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 크루입니다."));
 
-        if (!user.isEqualPassword(password)) {
+        if (user.isNotEqualPassword(password)) {
             throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
         }
 

@@ -1,11 +1,11 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.dto.article.ArticleDto;
-import com.kakao.cafe.dto.article.ArticleRequest;
-import com.kakao.cafe.dto.article.ArticleUpdateRequest;
+import com.kakao.cafe.domain.article.Reply;
+import com.kakao.cafe.dto.article.*;
 import com.kakao.cafe.exception.ArticleNotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,13 +15,19 @@ import java.util.stream.Collectors;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ReplyRepository replyRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository, ReplyRepository replyRepository) {
         this.articleRepository = articleRepository;
+        this.replyRepository = replyRepository;
     }
 
-    public void publishArticle(ArticleRequest request) {
-        articleRepository.save(request.toEntity());
+    public void publishArticle(Long id, ArticleRequest request) {
+        articleRepository.save(request.toEntity(id));
+    }
+
+    public void saveComment(Long articleId, Long authorId, ReplyRequest request) {
+        replyRepository.save(request.toEntity(articleId, authorId));
     }
 
     public List<ArticleDto> getArticles() {
@@ -30,20 +36,46 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public ArticleDto findById(Long id) {
+    public ArticleDto findArticleById(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
         return new ArticleDto(article);
     }
 
-    public void update(Long id, ArticleUpdateRequest articleUpdateRequest) {
+    public ReplyDto findReplyById(Long id) {
+        Reply reply = replyRepository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 댓글입니다."));
+        return new ReplyDto(reply);
+    }
+
+    public ArticleDetailDto findArticleDetailById(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
-        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getDescription());
+        List<ReplyDto> replies = replyRepository.findAllByArticleId(id).stream()
+                .map(ReplyDto::new)
+                .collect(Collectors.toList());
+        return new ArticleDetailDto(article, replies);
+    }
+
+    public void updateArticle(Long id, ArticleRequest articleRequest) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
+        article.update(articleRequest.getTitle(), articleRequest.getDescription());
         articleRepository.update(article);
     }
 
-    public void delete(Long id) {
-        articleRepository.delete(id);
+    public void deleteArticle(Long AuthorId, Long articleId) {
+        List<Reply> replies = replyRepository.findAllByArticleId(articleId);
+        replies.forEach(r -> {
+                    if (!r.getAuthorId().equals(AuthorId)) {
+                        throw new IllegalStateException("다른 유저의 댓글이 있는 게시글은 삭제할 수 없습니다.");
+                    }
+                    deleteReply(r.getId());
+                });
+        articleRepository.delete(articleId);
+    }
+
+    public void deleteReply(Long id) {
+        replyRepository.delete(id);
     }
 }

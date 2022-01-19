@@ -23,7 +23,8 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler({
             InvalidPasswordException.class,
-            IllegalArgumentException.class
+            IllegalArgumentException.class,
+            IllegalStateException.class
     })
     protected  ModelAndView handleInvalidPasswordException(RuntimeException e) {
         ModelAndView view = new ModelAndView("error");

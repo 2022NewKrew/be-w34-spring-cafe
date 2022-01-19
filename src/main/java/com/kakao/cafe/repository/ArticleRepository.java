@@ -27,9 +27,9 @@ public class ArticleRepository implements MyRepository<Article, Long> {
 
     @Override
     public Optional<Article> findById(Long id) {
-        String sql = "select a.id, a.authorId, u.nickname, a.title, a.description " +
+        String sql = "select a.id, a.author_id, u.nickname, a.title, a.description, a.deleted " +
                 "from article a join users u " +
-                "on a.authorId = u.id " +
+                "on a.author_id = u.id " +
                 "where a.id = ?";
 
         try {
@@ -42,16 +42,17 @@ public class ArticleRepository implements MyRepository<Article, Long> {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select a.id, a.authorId, u.nickname, a.title, a.description " +
+        String sql = "select a.id, a.author_id, u.nickname, a.title, a.description, a.deleted " +
                 "from article a join users u " +
-                "on a.authorId = u.id";
+                "on a.author_id = u.id " +
+                "where not a.deleted";
 
         return jdbcTemplate.query(sql, mapper);
     }
 
     @Override
     public void save(Article entity) {
-        String sql = "insert into article (authorId, title, description) values ( ?, ?, ? )";
+        String sql = "insert into article (author_id, title, description, deleted) values ( ?, ?, ?, ? )";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(con -> {
@@ -59,6 +60,7 @@ public class ArticleRepository implements MyRepository<Article, Long> {
             ps.setLong(1, entity.getAuthorId());
             ps.setString(2, entity.getTitle());
             ps.setString(3, entity.getDescription());
+            ps.setBoolean(4, entity.isDeleted());
             return ps;
         }, keyHolder);
     }
@@ -77,8 +79,11 @@ public class ArticleRepository implements MyRepository<Article, Long> {
         );
     }
 
+    @Override
     public void delete(Long id) {
-        String sql = "delete from article where id = ?";
+        String sql = "update article " +
+                "set deleted = 1 " +
+                "where id = ?";
 
         jdbcTemplate.update(sql, id);
     }
@@ -88,10 +93,11 @@ public class ArticleRepository implements MyRepository<Article, Long> {
         public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Article(
                     rs.getLong("id"),
-                    rs.getLong("authorId"),
+                    rs.getLong("author_id"),
                     rs.getString("nickname"),
                     rs.getString("title"),
-                    rs.getString("description")
+                    rs.getString("description"),
+                    rs.getBoolean("deleted")
             );
         }
     }

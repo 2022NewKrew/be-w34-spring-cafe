@@ -30,13 +30,13 @@ public class User {
     }
 
     private void validatePassword(String inputPassword) {
-        if (!isEqualPassword(inputPassword)) {
+        if (isNotEqualPassword(inputPassword)) {
             throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
         }
     }
 
-    public boolean isEqualPassword(String inputPassword) {
-        return password.equals(inputPassword);
+    public boolean isNotEqualPassword(String inputPassword) {
+        return !password.equals(inputPassword);
     }
 
     public Long getId() {

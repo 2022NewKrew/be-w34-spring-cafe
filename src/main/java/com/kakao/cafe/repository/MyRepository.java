@@ -5,12 +5,18 @@ import java.util.Optional;
 
 public interface MyRepository<T, I> {
 
-    Optional<T> findById(I id);
+    default Optional<T> findById(I id) {
+        return Optional.empty();
+    }
 
-    List<T> findAll();
+    default List<T> findAll() {
+        return null;
+    }
 
-    void save(T entity);
+    default void save(T entity) {}
 
-    void update(T entity);
+    default void update(T entity) {}
+
+    default void delete(I id) {}
 
 }

@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.auth.Auth;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.exception.UserNotFoundException;
+import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,8 @@ class UserControllerTest {
     MockMvc mockMvc;
     @MockBean
     UserService userService;
+    @MockBean
+    ArticleService articleService;
 
     @Test
     @DisplayName("[GET] /users - 전체 유저의 목록을 조회할 수 있다")
