@@ -9,6 +9,7 @@
                     {{#sessionedUser}}
                     <input class="form-control" id="name" name="bane" value="{{this.name}}" disabled/>
                     <input type='hidden' id='writer' name='writer' value="{{this.name}}">
+                    <input type="hidden" id="writerId" name="writerId" value="{{this.userId}}"/>
                     {{/sessionedUser}}
                 </div>
                 <div class="form-group">

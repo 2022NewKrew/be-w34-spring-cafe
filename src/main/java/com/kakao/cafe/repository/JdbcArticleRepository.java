@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-public class JdbcArticleRepository implements RepositoryInterface<Article> {
+public class JdbcArticleRepository implements ArticleRepositoryInterface {
     private final DataSource dataSource;
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
@@ -24,7 +24,7 @@ public class JdbcArticleRepository implements RepositoryInterface<Article> {
 
     @Override
     public Article save(Article article) {
-        String sql = "insert into articles(title, content, date, writer, view) values(?, ?, ?, ?, ?)";
+        String sql = "insert into articles(title, content, date, writer, writerid, view) values(?, ?, ?, ?, ?, ?)";
         article.setDate(UtilClass.getLocalDateTimeNow());
         article.setView(0L);
 
@@ -35,7 +35,8 @@ public class JdbcArticleRepository implements RepositoryInterface<Article> {
             preparedStatement.setString(2, article.getContent());
             preparedStatement.setString(3, article.getDate());
             preparedStatement.setString(4, article.getWriter());
-            preparedStatement.setLong(5, article.getView());
+            preparedStatement.setLong(5, article.getWriterId());
+            preparedStatement.setLong(6, article.getView());
 
             preparedStatement.executeUpdate();
 
@@ -141,21 +142,6 @@ public class JdbcArticleRepository implements RepositoryInterface<Article> {
         }
     }
 
-    private Article getResult(ResultSet resultSet) {
-        try {
-            Article article = new Article();
-            article.setIndex(resultSet.getLong("index"));
-            article.setTitle(resultSet.getString("title"));
-            article.setContent(resultSet.getString("content"));
-            article.setDate(resultSet.getString("date"));
-            article.setWriter(resultSet.getString("writer"));
-            article.setView(resultSet.getLong("view"));
-            return article;
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
     @Override
     public void delete(Long id) {
         String sql = "delete from articles where `index` = ?";
@@ -169,6 +155,39 @@ public class JdbcArticleRepository implements RepositoryInterface<Article> {
             throw new IllegalStateException(e);
         } finally {
             JdbcUtils.close(connection, preparedStatement, resultSet);
+        }
+    }
+
+    @Override
+    public void updateWriter(Long writerId, String writer) {
+        String sql = "update articles set writer=? where writerid=?";
+        try {
+            connection = JdbcUtils.getConnection(dataSource);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, writer);
+            preparedStatement.setLong(2, writerId);
+
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            JdbcUtils.close(connection, preparedStatement, resultSet);
+        }
+    }
+
+    private Article getResult(ResultSet resultSet) {
+        try {
+            Article article = new Article();
+            article.setIndex(resultSet.getLong("index"));
+            article.setTitle(resultSet.getString("title"));
+            article.setContent(resultSet.getString("content"));
+            article.setDate(resultSet.getString("date"));
+            article.setWriter(resultSet.getString("writer"));
+            article.setWriterId(resultSet.getLong("writerid"));
+            article.setView(resultSet.getLong("view"));
+            return article;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
         }
     }
 }
