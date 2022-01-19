@@ -22,7 +22,7 @@ public class UserService {
         userRepository.createUser(user);
     }
 
-    private void validateDuplicatedUserId(String userId) throws IllegalArgumentException {
+    private void validateDuplicatedUserId(String userId) {
         if (userRepository.isUserIdUsed(userId)) {
             throw new IllegalArgumentException("[ERROR] 이미 사용중인 아이디입니다.");
         }
@@ -32,14 +32,14 @@ public class UserService {
         return userRepository.readUserList();
     }
 
-    public User getUserByUserId(String userId) throws ResponseStatusException{
+    public User getUserByUserId(String userId) {
         if (!userRepository.isUserIdUsed(userId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "[ERROR] 사용자를 찾을 수 없습니다.");
         }
         return userRepository.readByUserId(userId);
     }
 
-    public User updateUser(String userId, String password, String name, String email) throws IllegalArgumentException {
+    public User updateUser(String userId, String password, String name, String email) {
         final User user = getUserByUserId(userId);
         user.validateAndSetPassword(password);
         user.setName(name);
