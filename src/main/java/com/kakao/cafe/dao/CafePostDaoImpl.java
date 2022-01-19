@@ -44,7 +44,8 @@ public class CafePostDaoImpl implements CafePostDao {
     public List<Post> getPostList() {
         List<Post> postList = new ArrayList<>();
         String sql = "SELECT postId, userId, title, content, SUBSTR(createdAt,1,10) AS createdAt FROM post\n"
-                + "where tombstone=false";
+                + "WHERE tombstone=false\n"
+                + "ORDER BY createdAt DESC\n";
 
         try(Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -93,7 +94,7 @@ public class CafePostDaoImpl implements CafePostDao {
     @Override
     public Post postViewEdit(int postId) {
         Post selectedPost = null;
-        String sql = "SELECT userId, title, content AS createdAt FROM post\n"
+        String sql = "SELECT userId, title, content FROM post\n"
                 + "WHERE postId=? and tombstone=false";
 
         try (Connection conn = dataSource.getConnection() ) {

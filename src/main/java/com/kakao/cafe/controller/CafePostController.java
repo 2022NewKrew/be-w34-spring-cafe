@@ -83,8 +83,7 @@ public class CafePostController {
         User loginUser = (User) httpSession.getAttribute("signInUser");
         if( loginUser != null ) {
             Post post = cafePostService.postViewEdit(postId);
-            boolean canEdit = loginUser.getUserId().equals(post.getUserId());
-            if( canEdit ) {
+            if( post != null && loginUser.getUserId().equals(post.getUserId()) ) {
                 model.addAttribute("post", post);
                 return POST_VIEW_EDIT;
             }
@@ -92,7 +91,7 @@ public class CafePostController {
        return POST_REDIRECT_EDIT_FAIL;
     }
     @PostMapping("/edit/{postId}")
-    String editPost (HttpSession httpSession, @NonNull @PathVariable("postId") int postId, Post post) {
+    String editPost (HttpSession httpSession, @NonNull @PathVariable("postId") int postId, @NonNull Post post) {
         User loginUser = (User) httpSession.getAttribute("signInUser");
         if( loginUser != null ) {
             String userId = loginUser.getUserId();
