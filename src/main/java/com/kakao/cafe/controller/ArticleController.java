@@ -26,7 +26,7 @@ public class ArticleController {
     public String getArticleList(Model model) {
         logger.info("index test");
         List<ArticleResponseDTO> articles = articleService.readAll();
-        if(articles.size() > 0) {
+        if(!articles.isEmpty()) {
             logger.info("getArticleList: {}, {}", articles.get(0).getId(), articles.get(0).getAuthor());
         }
         model.addAttribute("articles", articles);
