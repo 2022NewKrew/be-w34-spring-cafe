@@ -17,6 +17,6 @@ public class LoginFailedException extends RuntimeException implements CustomExce
 
     @Override
     public ErrorCode getErrorCode() {
-        return null;
+        return errorCode;
     }
 }

@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller.authentification;
 
 import com.kakao.cafe.common.authentification.UserIdentification;
+import com.kakao.cafe.common.session.SessionKeys;
 import com.kakao.cafe.service.authentification.AuthentificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ public class AuthentificationController {
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession session) {
         UserIdentification userIdentification = authentificationService.login(userId, password);
-        session.setAttribute("sessionedUser", userIdentification);
+        session.setAttribute(SessionKeys.USER_IDENTIFICATION, userIdentification);
         return "redirect:/";
     }
 
