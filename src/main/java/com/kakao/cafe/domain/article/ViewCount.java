@@ -11,10 +11,6 @@ public class ViewCount {
         this.value = value;
     }
 
-    public ViewCount() {
-        this(0);
-    }
-
     public int getValue() {
         return value;
     }

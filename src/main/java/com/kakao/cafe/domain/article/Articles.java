@@ -22,6 +22,7 @@ public class Articles {
     public void add(Article article) {
         article.setArticleId(UUID.randomUUID());
         article.setCreatedAt(LocalDateTime.now());
+        article.setViewCount(new ViewCount(0));
         articleList.add(article);
     }
 
