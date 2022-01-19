@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,8 +44,8 @@ public class QnaController {
     @GetMapping("questions/form/{id}")
     public String updateForm(@PathVariable long id, HttpSession httpSession, Model model) {
         UUID sessionId = (UUID) httpSession.getAttribute("sessionId");
-        String userName = userService.findUserIdBySessionId(sessionId);
-        QnaResponse qnaResponse = qnaService.findById(id, userName);
+        String userId = userService.findUserIdBySessionId(sessionId);
+        QnaResponse qnaResponse = qnaService.findById(id, userId);
         model.addAttribute("qna", qnaResponse);
         return "qna/updateForm";
     }
@@ -55,6 +56,14 @@ public class QnaController {
         qnaRequest.setWriter(userService.findUserIdBySessionId(sessionId));
         qnaService.update(id, qnaRequest);
         return "redirect:/questions/" + id;
+    }
+
+    @DeleteMapping("questions/{id}")
+    public String delete(@PathVariable long id, HttpSession httpSession) {
+        UUID sessionId = (UUID) httpSession.getAttribute("sessionId");
+        String userId = userService.findUserIdBySessionId(sessionId);
+        qnaService.delete(id, userId);
+        return "redirect:/";
     }
 
     @GetMapping()

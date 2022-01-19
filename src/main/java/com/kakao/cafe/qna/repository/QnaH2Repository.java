@@ -20,11 +20,13 @@ public class QnaH2Repository implements QnaRepository {
 
     public void save(Qna qna) {
         String sql = "INSERT INTO qnas (writer, title, contents, create_time) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
+        jdbcTemplate.update(
+            sql,
             qna.getWriter(),
             qna.getTitle(),
             qna.getContents(),
-            qna.getCreateTime());
+            qna.getCreateTime()
+        );
     }
 
     public List<Qna> findAll() {
@@ -44,11 +46,23 @@ public class QnaH2Repository implements QnaRepository {
     @Override
     public void update(Qna qna) {
         String sql = "UPDATE qnas SET title = ?, contents = ? WHERE id = ? AND writer = ?";
-        jdbcTemplate.update(sql,
+        jdbcTemplate.update(
+            sql,
             qna.getTitle(),
             qna.getContents(),
             qna.getId(),
-            qna.getWriter());
+            qna.getWriter()
+        );
+    }
+
+    @Override
+    public void delete(long id, String userId) {
+        String sql = "DELETE FROM qnas WHERE id = ? AND writer = ?";
+        jdbcTemplate.update(
+            sql,
+            id,
+            userId
+        );
     }
 
     public RowMapper<Qna> getQnaMapper() {

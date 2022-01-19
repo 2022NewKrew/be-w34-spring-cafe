@@ -12,4 +12,6 @@ public interface QnaRepository {
     Qna findById(long id);
 
     void update(Qna qna);
+
+    void delete(long id, String userId);
 }

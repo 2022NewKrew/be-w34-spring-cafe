@@ -41,4 +41,8 @@ public class QnaService {
     public void update(long id, QnaRequest qnaRequest) {
         qnaRepository.update(qnaRequest.toQna(id));
     }
+
+    public void delete(long id, String userId) {
+        qnaRepository.delete(id, userId);
+    }
 }
