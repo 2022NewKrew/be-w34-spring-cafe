@@ -8,8 +8,8 @@ public class Reply {
     private final String author;
     private final String description;
 
-    public Reply(Long articleId, Long authorId, String author, String description) {
-        this(null, articleId, authorId, author, description);
+    public Reply(Long articleId, Long authorId, String description) {
+        this(null, articleId, authorId, null, description);
     }
 
     public Reply(Long id, Long articleId, Long authorId, String author, String description) {

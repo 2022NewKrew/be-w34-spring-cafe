@@ -10,7 +10,7 @@ public class ReplyRequest {
         this.description = description;
     }
 
-    public Reply toEntity(Long articleId, Long authorId, String author) {
-        return new Reply(articleId, authorId, author, description);
+    public Reply toEntity(Long articleId, Long authorId) {
+        return new Reply(articleId, authorId, description);
     }
 }

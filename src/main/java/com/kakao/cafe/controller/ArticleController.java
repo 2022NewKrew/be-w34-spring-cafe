@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.auth.Auth;
 import com.kakao.cafe.dto.article.ArticleDetailDto;
 import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.dto.article.ArticleRequest;
+import com.kakao.cafe.dto.article.ReplyRequest;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +29,14 @@ public class ArticleController {
         articleService.publishArticle(auth.getAuthId(), articleRequest);
 
         return "redirect:/";
+    }
+
+    @PostMapping("/{articleId}/reply")
+    public String createComment(@PathVariable Long articleId, ReplyRequest replyRequest, HttpSession session) {
+        Auth auth = (Auth) session.getAttribute("auth");
+        articleService.saveComment(articleId, auth.getAuthId(), replyRequest);
+
+        return "redirect:/articles/{articleId}";
     }
 
     @GetMapping("/{articleId}")

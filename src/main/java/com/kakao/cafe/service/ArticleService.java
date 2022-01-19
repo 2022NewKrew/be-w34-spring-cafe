@@ -1,10 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.dto.article.ArticleDetailDto;
-import com.kakao.cafe.dto.article.ArticleDto;
-import com.kakao.cafe.dto.article.ArticleRequest;
-import com.kakao.cafe.dto.article.ReplyDto;
+import com.kakao.cafe.dto.article.*;
 import com.kakao.cafe.exception.ArticleNotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.ReplyRepository;
@@ -26,6 +23,10 @@ public class ArticleService {
 
     public void publishArticle(Long id, ArticleRequest request) {
         articleRepository.save(request.toEntity(id));
+    }
+
+    public void saveComment(Long articleId, Long authorId, ReplyRequest request) {
+        replyRepository.save(request.toEntity(articleId, authorId));
     }
 
     public List<ArticleDto> getArticles() {

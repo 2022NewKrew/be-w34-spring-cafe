@@ -27,6 +27,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return false;
         }
 
+        if (handler instanceof HandlerMethod) {
+            handleUserAuthorization(request, handler, auth);
+        }
+
+        return true;
+    }
+
+    private void handleUserAuthorization(HttpServletRequest request, Object handler, Auth auth) {
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         UserAuthorized userAuthorized = handlerMethod.getMethodAnnotation(UserAuthorized.class);
         if (userAuthorized != null) {
@@ -34,7 +42,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             validateArticle(pathVariableMap, auth);
             validateUser(pathVariableMap, auth);
         }
-        return true;
     }
 
     private void validateArticle(Map<String, String> pathVariableMap, Auth auth) {
