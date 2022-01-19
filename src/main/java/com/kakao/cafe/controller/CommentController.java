@@ -51,56 +51,60 @@ public class CommentController {
     @PutMapping("/comments")
     public String editComment(
             final HttpServletRequest request,
-            @NonNull final ArticleDto articleDto
-    )
-    {
-//        if (checkNotLogin(request)) {
-//            return getRedirectLoginWithMsg(request);
-//        }
-//
-//        String articleOwnerId;
-//        try {
-//            articleOwnerId = articleService.getDto(articleDto.getIdx())
-//                    .getUserId();
-//        } catch (NoSuchElementException e) {
-//            return "error/404";
-//        }
-//
-//        if (checkNotOwner(request, articleOwnerId)) {
-//            return "redirect:/editArticleFailedNoPerm";
-//        }
-//
-//        if (articleService.update(articleDto)) {
-//            return "redirect:/articles/" + articleDto.getIdx();
-//        }
-
-        return "redirect:/editArticleFailed";
-    }
-
-    @DeleteMapping("/comments/{articleIdx}/{idx}")
-    public String deleteComment(
-            final HttpServletRequest request,
-            @PathVariable("articleIdx") final long articleIdx,
-            @PathVariable("idx") final long idx
+            @NonNull final CommentDto commentDto
     )
     {
         if (checkNotLogin(request)) {
             return getRedirectLoginWithMsg(request);
         }
 
-        CommentDto commentDto;
+        CommentDto commentInDB;
         try {
-            commentDto = commentService.getDto(idx);
+            commentInDB = commentService.getDto(commentDto.getIdx());
+            articleService.getDto(commentDto.getArticleIdx());
+        } catch (NoSuchElementException e) {
+            return "error/404";
+        }
+
+        if (commentDto.getArticleIdx() != commentInDB.getArticleIdx()) {
+            return "error/404";
+        }
+
+        if (checkNotOwner(request, commentInDB.getUserId())) {
+            return "redirect:/editCommentFailedNoPerm";
+        }
+
+        if (commentService.update(commentDto)) {
+            return "redirect:/articles/" + commentDto.getArticleIdx();
+        }
+
+        return "error/500";
+    }
+
+    @DeleteMapping("/comments/{idx}")
+    public String deleteComment(
+            final HttpServletRequest request,
+            @PathVariable("idx") final long idx,
+            final long articleIdx
+    )
+    {
+        if (checkNotLogin(request)) {
+            return getRedirectLoginWithMsg(request);
+        }
+
+        CommentDto commentInDB;
+        try {
+            commentInDB = commentService.getDto(idx);
             articleService.getDto(articleIdx);
         } catch (NoSuchElementException e) {
             return "error/404";
         }
 
-        if (commentDto.getArticleIdx() != articleIdx) {
+        if (commentInDB.getArticleIdx() != articleIdx) {
             return "error/404";
         }
 
-        if (checkNotOwner(request, commentDto.getUserId())) {
+        if (checkNotOwner(request, commentInDB.getUserId())) {
             return "redirect:/editCommentFailedNoPerm";
         }
 

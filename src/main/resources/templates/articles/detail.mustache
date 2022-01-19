@@ -75,36 +75,38 @@
                                   {{#bodyLines}}{{.}}<br>{{/bodyLines}}
                               </div>
 
-                              <form class="submit-write" id="editComment{{idx}}" style="display:none;" action="/comments/{{article.idx}}/{{idx}}" method="POST" onsubmit="return checkValidComment({{idx}})">
+                              <form class="submit-write" id="editComment{{idx}}" style="display:none;" action="/comments" method="POST" onsubmit="return checkValidEditComment({{idx}})">
                                   <input type="hidden" name="_method" value="PUT">
+                                  <input type="hidden" name="idx" value="{{idx}}">
                                   <input type="hidden" name="userId" value="{{curUserId}}">
                                   <input type="hidden" name="articleIdx" value="{{article.idx}}">
-                                  <input type="hidden" name="origBody" value="{{body}}" disabled>
+                                  <input type="hidden" id="backupComment{{idx}}" name="origBody" value="{{body}}" disabled>
                                   <div class="form-group" style="padding:14px;">
                                       <label for="comment{{idx}}">댓글 수정</label>
                                       <textarea class="form-control" id="comment{{idx}}" name="body" placeholder="댓글 내용"></textarea>
                                   </div>
-                                  <button class="btn btn-success pull-right" onclick="cancelEditComment({{idx}})">취소</button>
                                   <button class="btn btn-success pull-right" type="submit">수정</button>
+                                  <a class="btn pull-right" onclick="closeEditComment({{idx}})">취소</a>
                                   <div class="clearfix"></div>
                               </form>
-
                               <div class="article-util">
                                   <ul class="article-util-list">
                                       <li>
-                                          <button class="delete-answer-button" onclick="toggleEditComment({{idx}})">수정</button>
+                                          <button class="delete-answer-button" onclick="openEditComment({{idx}})">수정</button>
                                       </li>
                                       <li>
-                                          <form class="delete-answer-form" action="/comments/{{article.idx}}/{{idx}}" method="POST" onsubmit="return confirm('정말로 삭제하시겠습니까?')">
+                                          <form class="delete-answer-form" action="/comments/{{idx}}" method="POST" onsubmit="return confirm('정말로 삭제하시겠습니까?')">
                                               <input type="hidden" name="_method" value="DELETE">
+                                              <input type="hidden" name="articleIdx" value="{{article.idx}}">
                                               <button type="submit" class="delete-answer-button">삭제</button>
                                           </form>
                                       </li>
                                   </ul>
                               </div>
+
                           </article>
                           {{/comments}}
-                          <form class="submit-write" action="/comments" method="POST" onsubmit="return checkValidInput()">
+                          <form class="submit-write" action="/comments" method="POST" onsubmit="return checkValidNewComment()">
                               <input type="hidden" name="userId" value="{{curUserId}}">
                               <input type="hidden" name="articleIdx" value="{{article.idx}}">
                               <div class="form-group" style="padding:14px;">
