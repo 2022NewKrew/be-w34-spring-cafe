@@ -1,7 +1,7 @@
-package com.kakao.cafe.account.controller;
+package com.kakao.cafe.article.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kakao.cafe.account.dto.AccountDto;
+import com.kakao.cafe.article.dto.ArticleDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,29 +21,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class AccountControllerTest {
-
+class ArticleControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
+    private final Long id = 1l;
+    private final String title = "제목";
+    private final String content = "내용";
+
     @Test
-    @DisplayName("정상 가입")
+    @DisplayName("게시물 정상 저장")
     @Order(1)
     void test1() throws Exception {
         // given
-        String content = objectMapper.writeValueAsString(AccountDto.builder()
-                .userId("id")
-                .password("password")
-                .name("name")
-                .email("email@aaa.com").build());
+        String postContent = objectMapper.writeValueAsString(ArticleDto.builder()
+                .title(title)
+                .content(content)
+                .build());
 
         // when
         MvcResult result = this.mockMvc.perform(
-                        post("/user")
-                                .content(content)
+                        post("/article")
+                                .content(postContent)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .characterEncoding("utf-8")
                 )
@@ -54,39 +56,33 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("유저 아이디 검색")
+    @DisplayName("게시글 상세 검색")
     @Order(2)
     void test2() throws Exception {
-        // given
-        String userId = "id";
-        String name = "name";
-        String password = "password";
-        String email = "email@aaa.com";
 
         // when
         MvcResult result = this.mockMvc.perform(
-                        get("/user/{userId}", userId)
+                        get("/article/{id}", id)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .characterEncoding("utf-8")
                 )
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
-        AccountDto user_profile = (AccountDto) result.getModelAndView().getModelMap().get("user_profile");
+        ArticleDto articleDto = (ArticleDto) result.getModelAndView().getModelMap().get("article");
 
         // then
-        assertThat(user_profile.getUserId()).isEqualTo(userId);
-        assertThat(user_profile.getEmail()).isEqualTo(email);
-        assertThat(user_profile.getPassword()).isEqualTo(password);
-        assertThat(user_profile.getName()).isEqualTo(name);
+        assertThat(articleDto.getId()).isEqualTo(id);
+        assertThat(articleDto.getTitle()).isEqualTo(title);
+        assertThat(articleDto.getContent()).isEqualTo(content);
     }
 
     @Test
-    @DisplayName("유저 목록 검색")
+    @DisplayName("게시글 목록 검색")
     @Order(2)
     void test3() throws Exception {
         MvcResult result = this.mockMvc.perform(
-                        get("/user")
+                        get("/article")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .characterEncoding("utf-8")
                 )
@@ -94,8 +90,7 @@ class AccountControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
 
-        List<AccountDto> users = (List<AccountDto>) result.getModelAndView().getModelMap().get("users");
-        assertThat(users.size()).isEqualTo(1);
+        List<ArticleDto> articles = (List<ArticleDto>) result.getModelAndView().getModelMap().get("articles");
+        assertThat(articles.size()).isEqualTo(1);
     }
-
 }

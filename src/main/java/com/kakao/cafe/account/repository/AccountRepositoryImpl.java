@@ -1,47 +1,48 @@
 package com.kakao.cafe.account.repository;
 
 import com.kakao.cafe.account.entity.Account;
-import com.kakao.cafe.exception.ErrorCode;
-import com.kakao.cafe.exception.custom.DuplicateException;
 import com.kakao.cafe.exception.custom.NotFoundException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class AccountRepositoryImpl implements AccountRepository {
+    private final JdbcTemplate jdbcTemplate;
 
-    private final List<Account> accountList = new ArrayList<>();
+    public AccountRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public Account save(Account account) {
-        validDuplicationUserId(account.getUserId());
-        accountList.add(account);
+        jdbcTemplate.update("INSERT INTO account(user_id, name, password, email) VALUES(?, ?, ?, ?)"
+                , account.getUserId(), account.getName(), account.getPassword(), account.getEmail());
         return account;
-    }
-
-    private void validDuplicationUserId(String userId) {
-        for (Account account : accountList) {
-            if(account.getUserId().equals(userId)) {
-                throw new DuplicateException(ErrorCode.DUPLICATED_USER_ID);
-            }
-        }
     }
 
     @Override
     public List<Account> findAll() {
-        return accountList;
+        return jdbcTemplate.query("SELECT user_id, name, password, email FROM account", accountRowMapper());
     }
 
     @Override
     public Account findById(String userId) {
-        for (Account account : accountList) {
-            if(account.getUserId().equals(userId)) {
-                return account;
-            }
-        }
-        throw new NotFoundException();
+        List<Account> query = jdbcTemplate.query("SELECT user_id, name, password, email FROM account WHERE user_id = ?", accountRowMapper(), userId);
+        if(query.isEmpty()) throw new NotFoundException();
+        return query.get(0);
     }
 
+    private RowMapper<Account> accountRowMapper() {
+        return (rs, rowNum) -> {
+            return Account.builder()
+                    .userId(rs.getString("user_id"))
+                    .name(rs.getString("name"))
+                    .password(rs.getString("password"))
+                    .email(rs.getString("email"))
+                    .build();
+        };
+    }
 }

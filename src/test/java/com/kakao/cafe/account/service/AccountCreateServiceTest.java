@@ -2,10 +2,12 @@ package com.kakao.cafe.account.service;
 
 import com.kakao.cafe.account.dto.AccountDto;
 import com.kakao.cafe.account.entity.Account;
+import com.kakao.cafe.account.mapper.AccountMapper;
 import com.kakao.cafe.account.repository.AccountRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -21,6 +23,8 @@ class AccountCreateServiceTest {
     @Mock
     private AccountCreateService accountCreateService;
 
+    private AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
+
     @Test
     @DisplayName("회원가입 성공")
     void test1() {
@@ -31,11 +35,11 @@ class AccountCreateServiceTest {
                 .name("name")
                 .password("password")
                 .email("email@aaa.com").build();
-        Account account = accountDto.toEntity();
+        Account account = accountMapper.toEntity(accountDto);
 
         given(accountRepository.save(account)).willReturn(account);
         Account saveAccount = accountRepository.save(account);
-        given(accountCreateService.save(accountDto)).willReturn(saveAccount.toDto());
+        given(accountCreateService.save(accountDto)).willReturn(accountMapper.toDto(saveAccount));
 
         // when
         AccountDto savedAccountDto = accountCreateService.save(accountDto);

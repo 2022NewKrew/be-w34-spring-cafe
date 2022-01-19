@@ -13,6 +13,10 @@ public enum ErrorCode {
     // Account
     DUPLICATED_USER_ID(400, "A001", "유저 아이디가 중복 되었습니다."),
     NOT_FOUND_USER_ID(400, "A002", "유저 아이디를 찾을 수 없습니다."),
+
+    // Article
+    NOT_FOUND_ARTICLE_ID(400, "AR001", "해당 게시글을 찾을 수 없습니다."),
+
     ;
 
     private final String code;

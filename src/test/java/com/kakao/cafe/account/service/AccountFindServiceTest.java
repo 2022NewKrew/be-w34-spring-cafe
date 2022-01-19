@@ -2,12 +2,15 @@ package com.kakao.cafe.account.service;
 
 import com.kakao.cafe.account.dto.AccountDto;
 import com.kakao.cafe.account.entity.Account;
+import com.kakao.cafe.account.mapper.AccountMapper;
 import com.kakao.cafe.account.repository.AccountRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +22,10 @@ import static org.mockito.BDDMockito.given;
 class AccountFindServiceTest {
 
     @Mock
-    private AccountRepository accountRepository;
-
-    @Mock
     private AccountFindService accountFindService;
+
+    @Autowired
+    private AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
 
     private final AccountDto givenAccountDto =
             AccountDto.builder()
@@ -31,7 +34,7 @@ class AccountFindServiceTest {
                     .password("password")
                     .email("email@aaa.com").build();
 
-    private final Account givenAccount = givenAccountDto.toEntity();
+    private final Account givenAccount = accountMapper.toEntity(givenAccountDto);
 
     @Test
     @DisplayName("회원 검색 성공")

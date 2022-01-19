@@ -2,20 +2,23 @@ package com.kakao.cafe.account.repository;
 
 import com.kakao.cafe.account.dto.AccountDto;
 import com.kakao.cafe.account.entity.Account;
+import com.kakao.cafe.account.mapper.AccountMapper;
 import com.kakao.cafe.exception.custom.DuplicateException;
 import com.kakao.cafe.exception.custom.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.*;
 
 
-class AccountRepositoryTest {
-    private final AccountRepository accountRepository = new AccountRepositoryImpl();
+class InMemoryAccountRepositoryTest {
+    private final AccountRepository accountRepository = new InMemoryAccountRepositoryImpl();
     private AccountDto accountDto;
+
+    private AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
 
     @BeforeEach
     void createDto() {
@@ -30,7 +33,7 @@ class AccountRepositoryTest {
     @DisplayName("회원 정보 저장")
     void test1() {
         // given
-        Account account = accountDto.toEntity();
+        Account account = accountMapper.toEntity(accountDto);
 
         // when
         accountRepository.save(account);
@@ -43,14 +46,14 @@ class AccountRepositoryTest {
     @DisplayName("이미 있는 아이디일시 에러 발생")
     void test2() {
         // given
-        Account account = AccountDto.builder()
+        Account account = accountMapper.toEntity(AccountDto.builder()
                 .userId("id")
                 .name("name")
                 .password("password")
-                .email("email").build().toEntity();
+                .email("email").build());
 
         // when
-        accountRepository.save(accountDto.toEntity());
+        accountRepository.save(accountMapper.toEntity(accountDto));
 
         // then
         assertThatExceptionOfType(DuplicateException.class).isThrownBy(() -> accountRepository.save(account));
