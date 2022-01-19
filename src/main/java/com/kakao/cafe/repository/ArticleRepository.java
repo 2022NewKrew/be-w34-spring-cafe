@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ArticleRepository {
-    void save(Article article) throws SQLException;
+    int save(Article article) throws SQLException;
     List<Article> findAll();
     Article findById(int i);
 }

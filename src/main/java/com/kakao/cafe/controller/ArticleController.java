@@ -39,7 +39,7 @@ public class ArticleController {
             logger.error("/articles/questions, failed to create article (article = {})", article, e);
             return "redirect:/";
         } catch (NoSuchElementException e) {
-            logger.error("/articles/questions, failed to create article. writer(id = {}) does not exist", article.getWriter(), e);
+            logger.info("/articles/questions, failed to create article. writer(id = {}) does not exist", article.getWriter(), e);
             return "redirect:/";
         }
         return "redirect:/";
