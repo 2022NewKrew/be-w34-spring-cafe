@@ -196,4 +196,37 @@ class PostServiceTest {
         });
     }
 
+    @DisplayName("게시글 삭제하기 - 정상")
+    @Test
+    void deletePost() {
+        long id = post.getId();
+        long writerId = post.getWriterId();
+
+        assertThatNoException().isThrownBy(() -> {
+            postService.deletePost(id, writerId);
+        });
+    }
+
+    @DisplayName("게시글 삭제하기 - 게시글 id가 존재하지 않는 경우 에러가 발생해야 한다.")
+    @Test
+    void deletePost_idNotExist() {
+        long id = post.getId() + 1;
+        long writerId = post.getWriterId();
+
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            postService.deletePost(id, writerId);
+        });
+    }
+
+    @DisplayName("게시글 삭제하기 - 게시글 작성자 id가 일치하지 않는 경우 에러가 발생해야 한다.")
+    @Test
+    void deletePost_writerIdNotMatch() {
+        long id = post.getId();
+        long writerId = post.getWriterId() + 1;
+
+        assertThatExceptionOfType(NoAuthorizationException.class).isThrownBy(() -> {
+            postService.deletePost(id, writerId);
+        });
+    }
+
 }

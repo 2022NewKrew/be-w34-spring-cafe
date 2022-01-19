@@ -73,4 +73,13 @@ public class PostService {
         }
     }
 
+    public void deletePost(long id, long writerId) {
+        PostDto post = getPostById(id, writerId);
+        try {
+            postRepository.deleteById(post.getId());
+        } catch (DataAccessException e) {
+            throw new IllegalArgumentException("게시글 삭제에 실패하였습니다.");
+        }
+    }
+
 }
