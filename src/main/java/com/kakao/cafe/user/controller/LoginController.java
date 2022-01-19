@@ -4,6 +4,7 @@ import com.kakao.cafe.exception.InvalidFormatException;
 import com.kakao.cafe.user.dto.LoggedInUser;
 import com.kakao.cafe.user.dto.UserEditForm;
 import com.kakao.cafe.user.dto.UserLoginForm;
+import com.kakao.cafe.user.service.LoginService;
 import com.kakao.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +19,11 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LoginController {
     private final UserService userService;
+    private final LoginService loginService;
 
-    public LoginController(UserService userService) {
+    public LoginController(UserService userService, LoginService loginService) {
         this.userService = userService;
+        this.loginService = loginService;
     }
 
     @GetMapping("/login")
@@ -33,7 +36,7 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             throw new InvalidFormatException();
         }
-        LoggedInUser loggedInUser = userService.login(userLoginForm);
+        LoggedInUser loggedInUser = loginService.login(userLoginForm);
         session.setAttribute("loggedInUser", loggedInUser);
         return "redirect:/";
     }
@@ -46,7 +49,7 @@ public class LoginController {
 
     @GetMapping("/user/edit")
     public String showProfileEditor(HttpSession session, Model model) {
-        LoggedInUser loggedInUser = (LoggedInUser) session.getAttribute("loggedInUser");
+        LoggedInUser loggedInUser = loginService.getLoggedInUser(session);
         model.addAttribute("user", userService.getUserViewByUsername(loggedInUser.getUsername()));
         return "user/edit-form";
     }
@@ -56,14 +59,14 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             throw new InvalidFormatException();
         }
-        LoggedInUser loggedInUser = (LoggedInUser) session.getAttribute("loggedInUser");
+        LoggedInUser loggedInUser = loginService.getLoggedInUser(session);
         userService.updateUser(loggedInUser.getId(), userEditForm);
         return "redirect:/user";
     }
 
     @GetMapping("/user")
     public String showLoggedInUserProfile(HttpSession session) {
-        LoggedInUser loggedInUser = (LoggedInUser) session.getAttribute("loggedInUser");
+        LoggedInUser loggedInUser = loginService.getLoggedInUser(session);
         return "redirect:/users/" + loggedInUser.getUsername();
     }
 }

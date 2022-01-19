@@ -13,7 +13,6 @@ import com.kakao.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,20 +25,20 @@ public class PostService {
         this.userRepository = userRepository;
     }
 
-    private Post toPost(PostCreationForm postCreationForm) {
-        Optional<User> user = userRepository.get(postCreationForm.getAuthor_username());
-        return new Post(null, 1L, user.orElseThrow(UserNotFoundException::new).getId(), postCreationForm.getTitle(), postCreationForm.getContent(),
-                        ThreadStatus.VALID.name(), null, null);
-    }
-
     private PostView toPostView(Post post) {
         User user = userRepository.get(post.getAuthorId()).get();
         return new PostView(post.getId(), new UserView(user.getUsername(), user.getEmail(), user.getDisplayName()), post.getTitle(), post.getContent(),
                             post.getCreatedAt(), post.getLastModifiedAt());
     }
 
-    public Long addFromForm(PostCreationForm postCreationForm) {
-        return postRepository.add(toPost(postCreationForm));
+    public Long addFromForm(Long authorId, PostCreationForm postCreationForm) {
+        return postRepository.add(Post.builder()
+                                      .parentId(1L)
+                                      .authorId(authorId)
+                                      .title(postCreationForm.getTitle())
+                                      .content(postCreationForm.getContent())
+                                      .status(ThreadStatus.VALID.name())
+                                      .build());
     }
 
     public List<PostView> getAll() {

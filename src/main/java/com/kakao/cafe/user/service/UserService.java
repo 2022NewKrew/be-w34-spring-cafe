@@ -55,12 +55,4 @@ public class UserService {
         User user = userRepository.get(username).orElseThrow(UserNotFoundException::new);
         return new UserView(user.getUsername(), user.getEmail(), user.getDisplayName());
     }
-
-    public LoggedInUser login(UserLoginForm userLoginForm) {
-        User user = userRepository.get(userLoginForm.getUsername()).orElseThrow(InvalidUsernamePasswordException::new);
-        if (user.getPassword().equals(userLoginForm.getPassword())) {
-            return new LoggedInUser(user.getId(), user.getUsername());
-        }
-        throw new InvalidUsernamePasswordException();
-    }
 }
