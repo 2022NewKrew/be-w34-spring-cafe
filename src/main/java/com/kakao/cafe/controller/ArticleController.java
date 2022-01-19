@@ -1,17 +1,17 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.exception.IncorrectUserException;
 import com.kakao.cafe.exception.NotLoginException;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.ErrorService;
+import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.service.SessionService;
+import com.kakao.cafe.util.ErrorUtil;
 import com.kakao.cafe.vo.Article;
+import com.kakao.cafe.vo.Reply;
 import com.kakao.cafe.vo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -20,13 +20,13 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final ErrorService errorService;
     private final SessionService sessionService;
+    private final ReplyService replyService;
 
-    public ArticleController(ArticleService articleService, ErrorService errorService, SessionService sessionService) {
+    public ArticleController(ArticleService articleService, SessionService sessionService, ReplyService replyService) {
         this.articleService = articleService;
-        this.errorService = errorService;
         this.sessionService = sessionService;
+        this.replyService = replyService;
     }
 
     @PostMapping("/article/create")
@@ -38,12 +38,13 @@ public class ArticleController {
 
     @GetMapping("/articles/{index}")
     public String getDetails(@PathVariable int index, Model model, HttpSession session) throws NotLoginException {
-        User loginUser = sessionService.getLoginUser(session);
-        errorService.checkLogin(loginUser);
+        sessionService.getLoginUser(session);
 
         Article article = articleService.getArticle(index);
+        List<Reply> replys = replyService.getReplies(index);
         model.addAttribute("article", article);
         model.addAttribute("index", index);
+        model.addAttribute("replys", replys);
         return "/qna/show";
     }
 
@@ -57,7 +58,6 @@ public class ArticleController {
     @GetMapping("questions/form")
     public String getQuestionForm(Model model, HttpSession session) throws NotLoginException {
         User loginUser = sessionService.getLoginUser(session);
-        errorService.checkLogin(loginUser);
 
         model.addAttribute("userId", loginUser.getUserId());
         return "/qna/form";
@@ -66,10 +66,9 @@ public class ArticleController {
     @GetMapping("/questions/{index}/edit")
     public String updateForm(@PathVariable int index, Model model, HttpSession session) throws Exception{
         User loginUser = sessionService.getLoginUser(session);
-        errorService.checkLogin(loginUser);
-
         Article article = articleService.getArticle(index);
-        errorService.checkSameUser(loginUser.getUserId(), article.getWriter());
+        if(!ErrorUtil.checkSameString(loginUser.getUserId(), article.getWriter()))
+            throw new IncorrectUserException();
         model.addAttribute("article", article);
         model.addAttribute("index", index);
         return "/qna/updateForm";
@@ -79,6 +78,13 @@ public class ArticleController {
     public String editArticle(@PathVariable int index, Article article, HttpSession session) throws Exception {
         User loginUser = sessionService.getLoginUser(session);
         articleService.updateArticle(index, article, loginUser);
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/questions/{index}")
+    public String deleteAriticle(@PathVariable int index, HttpSession session) throws Exception {
+        User loginUser = sessionService.getLoginUser(session);
+        articleService.deleteArticle(index, loginUser);
         return "redirect:/";
     }
 

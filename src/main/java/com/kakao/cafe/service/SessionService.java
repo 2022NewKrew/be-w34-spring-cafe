@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.exception.NotLoginException;
 import com.kakao.cafe.vo.User;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,10 @@ public class SessionService {
         session.setAttribute(SESSIONED_USER, user);
     }
 
-    public User getLoginUser(HttpSession session) {
+    public User getLoginUser(HttpSession session) throws NotLoginException {
         Object loginUserObject = session.getAttribute(SESSIONED_USER);
-        if(loginUserObject == null) {
-            return null;
-        }
+        if(loginUserObject == null)
+            throw new NotLoginException();
         return (User)loginUserObject;
     }
 

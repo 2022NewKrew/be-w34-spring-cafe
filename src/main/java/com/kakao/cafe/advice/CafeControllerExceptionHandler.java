@@ -12,6 +12,7 @@ public class CafeControllerExceptionHandler {
     public static final String USER_NOT_EXIST_ERROR = "/error/user_not_exist_error";
     public static final String INCORRECT_USER_ERROR = "/error/incorrect_user_error";
     public static final String DUPLICATE_USER_ERROR = "/error/duplicate_user_error";
+    public static final String OTHER_WRITER_REPLY_EXIST_ERROR = "/error/other_writer_reply_exist_error";
 
     @ExceptionHandler(IncorrectPasswordException.class)
     public String incorrectPasswordError(IncorrectPasswordException e) {
@@ -37,5 +38,8 @@ public class CafeControllerExceptionHandler {
     public String duplicateUserError(DuplicateUserException e) {
         return DUPLICATE_USER_ERROR;
     }
+
+    @ExceptionHandler(OtherWriterReplyExistException.class)
+    public String otherWriterReplyExistError(OtherWriterReplyExistException e) { return OTHER_WRITER_REPLY_EXIST_ERROR; }
 
 }
