@@ -1,5 +1,19 @@
 package com.kakao.cafe.controller;
 
+import javax.servlet.http.HttpSession;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.kakao.cafe.controller.aop.AuthInfoCheck;
 import com.kakao.cafe.controller.session.AuthInfo;
 import com.kakao.cafe.controller.session.HttpSessionUtil;
@@ -10,13 +24,6 @@ import com.kakao.cafe.controller.viewdto.request.UserUpdateRequest;
 import com.kakao.cafe.user.service.UserService;
 import com.kakao.cafe.user.service.dto.AllUserProfileServiceResponse;
 import com.kakao.cafe.user.service.dto.UserProfileServiceResponse;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,9 +53,10 @@ public class UserController {
     @PutMapping("")
     public String updateUserInfo(@ModelAttribute UserUpdateRequest req) {
         log.info("PUT /user");
-        try{
-            log.info("{} {} {} {}",req.getOldPassword(), req.getNewPassword(), req.getName(), req.getEmail());
-            userService.updateUserInfo(req.getUserId(), req.getOldPassword(), req.getNewPassword(), req.getName(), req.getEmail());
+        try {
+            log.info("{} {} {} {}", req.getOldPassword(), req.getNewPassword(), req.getName(), req.getEmail());
+            userService.updateUserInfo(req.getUserId(), req.getOldPassword(), req.getNewPassword(), req.getName(),
+                                       req.getEmail());
         } catch (IllegalArgumentException e) {
             log.info(e.getMessage());
             return "user/update_failed";

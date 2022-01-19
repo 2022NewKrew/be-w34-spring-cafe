@@ -1,13 +1,14 @@
 package com.kakao.cafe.reply.repository;
 
-import com.kakao.cafe.reply.domain.Reply;
-import org.springframework.stereotype.Repository;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Repository;
+
+import com.kakao.cafe.reply.domain.Reply;
 
 @Repository
 public class ReplyRepository {
@@ -20,11 +21,15 @@ public class ReplyRepository {
 
     public ArrayList<Reply>
     findByArticle(Long articleId) {
-        return replyDB.values().stream().filter(reply -> reply.getArticleId().equals(articleId)).collect(Collectors.toCollection(ArrayList::new));
+        return replyDB.values()
+                      .stream()
+                      .filter(reply -> reply.getArticleId().equals(articleId))
+                      .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public Long persist(ReplyCreateRequestDTO dto) {
-        replyDB.put(idSequence.get(), new Reply(idSequence.get(), dto.articleId, dto.authorId, dto.contents, LocalDateTime.now()));
+        replyDB.put(idSequence.get(),
+                    new Reply(idSequence.get(), dto.articleId, dto.authorId, dto.contents, LocalDateTime.now()));
         return idSequence.getAndIncrement();
     }
 

@@ -1,18 +1,21 @@
 package com.kakao.cafe.user.service;
 
-import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.domain.UserRepository;
-import com.kakao.cafe.user.service.dto.AllUserProfileServiceResponse;
-import com.kakao.cafe.user.service.dto.UserProfileServiceResponse;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.annotation.PostConstruct;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.stereotype.Service;
+
+import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserRepository;
+import com.kakao.cafe.user.service.dto.AllUserProfileServiceResponse;
+import com.kakao.cafe.user.service.dto.UserProfileServiceResponse;
 
 @Service
 @Slf4j
@@ -39,8 +42,8 @@ public class UserService {
     // 페이징 구현 시 리펙토링 필요
     public AllUserProfileServiceResponse getAllUserViewData(Long startIndex) {
         ArrayList<User> users = userRepository.findAll().stream()
-                .skip(startIndex)
-                .collect(Collectors.toCollection(ArrayList::new));
+                                              .skip(startIndex)
+                                              .collect(Collectors.toCollection(ArrayList::new));
         Collections.reverse(users);
         return new AllUserProfileServiceResponse(users);
     }
@@ -68,16 +71,14 @@ public class UserService {
     }
 
 
-
     private User makeUser(String stringId, String password, String name, String email) {
         return User.builder()
-                .stringId(stringId)
-                .password(password)
-                .name(name)
-                .email(email)
-                .build();
+                   .stringId(stringId)
+                   .password(password)
+                   .name(name)
+                   .email(email)
+                   .build();
     }
-
 
     // 세션 구현 후 활용 예정 메서드
 //    public UserProfileServiceResponse getSignUpResultViewData(Long userId) {

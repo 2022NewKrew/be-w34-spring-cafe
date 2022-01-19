@@ -1,19 +1,22 @@
 package com.kakao.cafe.article.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.annotation.PostConstruct;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.stereotype.Service;
+
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleRepository;
 import com.kakao.cafe.article.service.dto.AllArticlesListServiceResponse;
 import com.kakao.cafe.article.service.dto.ArticleReadServiceResponse;
 import com.kakao.cafe.user.domain.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,29 +40,36 @@ public class ArticleService {
     // 페이징 구현할 때 리펙토링 필요
     public AllArticlesListServiceResponse getAllArticleViewDTO(Long startIndex) {
         ArrayList<Article> articleList = articleRepository.findAll().stream()
-                .skip(startIndex)
-                .collect(Collectors.toCollection(ArrayList::new));
+                                                          .skip(startIndex)
+                                                          .collect(Collectors.toCollection(ArrayList::new));
         Collections.reverse(articleList);
         ArrayList<String> authorList = articleList.stream()
-                .map(article -> userRepository.find(article.getAuthorId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다.")).getStringId())
-                .collect(Collectors.toCollection(ArrayList::new));
+                                                  .map(article -> userRepository.find(article.getAuthorId())
+                                                                                .orElseThrow(
+                                                                                        () -> new IllegalArgumentException(
+                                                                                                "존재하지 않는 사용자입니다."))
+                                                                                .getStringId())
+                                                  .collect(Collectors.toCollection(ArrayList::new));
         return new AllArticlesListServiceResponse(articleList, authorList);
     }
 
     public ArticleReadServiceResponse getArticleReadViewDTO(Long id) {
         articleRepository.increaseHit(id);
-        Article article = articleRepository.find(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글 입니다."));
-        String authorStringId = userRepository.find(article.getAuthorId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다.")).getStringId();
+        Article article = articleRepository.find(id)
+                                           .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글 입니다."));
+        String authorStringId = userRepository.find(article.getAuthorId())
+                                              .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."))
+                                              .getStringId();
         return ArticleServiceDTOMapper.convertToArticleReadServiceResponse(article, authorStringId);
     }
 
     private Article makeArticle(Long authorId, String title, String contents) {
         return Article.builder()
-                .title(title)
-                .authorId(authorId)
-                .contents(contents)
-                .hits(0)
-                .build();
+                      .title(title)
+                      .authorId(authorId)
+                      .contents(contents)
+                      .hits(0)
+                      .build();
     }
 
     public void isAuthorOfArticle(Long articleId, Long authorId) {
@@ -78,13 +88,13 @@ public class ArticleService {
 
     private Article makeUpdatingArticle(Article article, String title, String contents) {
         return Article.builder()
-                .title(title)
-                .id(article.getId())
-                .authorId(article.getAuthorId())
-                .contents(contents)
-                .hits(article.getHits())
-                .date(article.getDate())
-                .build();
+                      .title(title)
+                      .id(article.getId())
+                      .authorId(article.getAuthorId())
+                      .contents(contents)
+                      .hits(article.getHits())
+                      .date(article.getDate())
+                      .build();
     }
 
     // 나중에 페이징 구현할 때 활용
