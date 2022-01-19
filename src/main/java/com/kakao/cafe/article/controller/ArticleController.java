@@ -4,18 +4,22 @@ import com.kakao.cafe.article.dto.request.ArticleReqDto;
 import com.kakao.cafe.article.dto.response.ArticleDetailResDto;
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.exception.SessionUserNotFoundException;
+import com.kakao.cafe.reply.dto.ReplyResDto;
+import com.kakao.cafe.reply.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/articles")
 public class ArticleController {
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
     @PostMapping
     public String saveArticle(@ModelAttribute ArticleReqDto articleReqDto) {
@@ -28,7 +32,10 @@ public class ArticleController {
         checkSessionUser(session);
 
         ArticleDetailResDto article = articleService.getArticle(id);
+        List<ReplyResDto> replyList = replyService.getReplyListByArticleId(id);
+
         model.addAttribute("article", article);
+        model.addAttribute("replies", replyList);
 
         return "/qna/show";
     }
