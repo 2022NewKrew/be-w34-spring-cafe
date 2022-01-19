@@ -1,25 +1,45 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.dto.reply.ReplyCreateDto;
+
 import java.time.LocalDateTime;
 
 public class Reply {
     private int id;
     private Post post;
     private Member writer;
-    private String contents;
+    private String content;
     private LocalDateTime createdAt;
     private boolean isRemoved;
 
     public Reply() {
     }
 
-    public Reply(int id, Post post, Member writer, String contents, LocalDateTime createdAt, boolean isRemoved) {
+    public Reply(int id, Post post, Member writer, String content, LocalDateTime createdAt, boolean isRemoved) {
         this.id = id;
         this.post = post;
         this.writer = writer;
-        this.contents = contents;
+        this.content = content;
         this.createdAt = createdAt;
         this.isRemoved = isRemoved;
+    }
+
+    public Reply(Post post, Member writer, String content, LocalDateTime createdAt, boolean isRemoved) {
+        this.post = post;
+        this.writer = writer;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.isRemoved = isRemoved;
+    }
+
+    public static Reply of(ReplyCreateDto replyCreateDto, Post post, Member member) {
+        return new Reply(
+                post,
+                member,
+                replyCreateDto.getContents(),
+                LocalDateTime.now(),
+                false
+        );
     }
 
     public int getId() {
@@ -34,8 +54,8 @@ public class Reply {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
+    public String getContent() {
+        return content;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -54,8 +74,8 @@ public class Reply {
         this.writer = writer;
     }
 
-    public void setContents(String contents) {
-        this.contents = contents;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {

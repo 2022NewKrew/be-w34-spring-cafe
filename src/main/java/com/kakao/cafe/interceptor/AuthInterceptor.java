@@ -19,6 +19,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         urlPattern.add(new HttpRequest("GET", "/questions/{}"));
         urlPattern.add(new HttpRequest("POST", "/questions"));
         urlPattern.add(new HttpRequest("GET", "/qna/form"));
+        urlPattern.add(new HttpRequest("POST", "/questions/{}/answers"));
     }
 
     @Override

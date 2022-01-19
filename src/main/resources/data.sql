@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS Answer
     postId integer NOT NULL,
     writerId integer NOT NULL,
     createdAt timestamp,
-    isRemoved bool NOT NULL DEFAULT true,
+    isRemoved bool NOT NULL DEFAULT false,
     foreign key(writerId) references Member(id),
     foreign key(postId) references Post(id),
     primary key(id)
