@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Member;
-import com.kakao.cafe.domain.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -81,7 +80,7 @@ public class MemberRepositoryJDBC implements MemberRepository {
                 " m.name as mName," +
                 " m.createdAt as mCreatedAt from Member m " +
                 "WHERE m.email = ?";
-        try{
+        try {
             return jdbcTemplate.queryForObject(SQL, new MemberMapper(), email);
         } catch (EmptyResultDataAccessException e) {
             return null;

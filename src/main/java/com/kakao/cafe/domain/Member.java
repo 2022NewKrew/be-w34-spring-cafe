@@ -1,7 +1,6 @@
 package com.kakao.cafe.domain;
 
 import com.kakao.cafe.dto.MemberCreateDto;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 
 import java.time.LocalDate;
 

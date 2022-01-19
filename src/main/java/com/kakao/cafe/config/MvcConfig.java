@@ -14,7 +14,7 @@ public class MvcConfig implements WebMvcConfigurer {
     private AuthInterceptor authInterceptor;
 
     @Override
-    public void addInterceptors (InterceptorRegistry registry) {
+    public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor).excludePathPatterns("/assets/**");
     }
 

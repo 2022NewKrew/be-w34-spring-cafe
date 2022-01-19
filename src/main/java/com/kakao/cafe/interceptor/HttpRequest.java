@@ -1,7 +1,5 @@
 package com.kakao.cafe.interceptor;
 
-import java.util.List;
-
 public class HttpRequest {
     private String method;
     private String url;

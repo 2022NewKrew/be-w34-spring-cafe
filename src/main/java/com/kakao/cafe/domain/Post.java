@@ -5,8 +5,6 @@ import com.kakao.cafe.dto.PostCreateDto;
 import java.time.LocalDate;
 
 public class Post {
-    // 다음 생성하는 row 의 id 값을 저장하고 있는 변수
-    private static int postSeq = 1;
     private int id;
     private String title;
     private String content;
@@ -87,6 +85,6 @@ public class Post {
     }
 
     public void updateViewCount() {
-        this.viewCount ++;
+        this.viewCount++;
     }
 }

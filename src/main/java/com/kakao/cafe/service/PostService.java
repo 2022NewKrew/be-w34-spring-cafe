@@ -10,9 +10,14 @@ import java.util.List;
 
 public interface PostService {
     void create(PostCreateDto postCreateDto, HttpSession session);
+
     List<PostListItemDto> getList();
+
     PostDetailDto get(int questionId);
+
     void delete(int questionId, HttpSession session);
+
     PostDetailDto getUpdate(int questionId, HttpSession session);
+
     void update(int questionId, PostUpdateDto postUpdateDto, HttpSession session);
 }

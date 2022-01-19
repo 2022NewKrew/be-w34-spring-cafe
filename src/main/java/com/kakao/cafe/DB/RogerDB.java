@@ -1,7 +1,7 @@
 package com.kakao.cafe.DB;
 
-import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.domain.Member;
+import com.kakao.cafe.domain.Post;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
