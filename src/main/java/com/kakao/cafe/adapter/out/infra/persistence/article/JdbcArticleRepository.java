@@ -47,6 +47,14 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public void update(Article article) {
+        String sql = "update " + ARTICLE_TABLE + " set " + COLUMN_TITLE + "=?, " + COLUMN_CONTENTS + "=?, " +
+                     COLUMN_CREATED_AT + "=? where " + COLUMN_ID +
+                     "=?";
+        jdbcTemplate.update(sql, article.getTitle(), article.getContents(), article.getCreatedAt(), article.getId());
+    }
+
+    @Override
     public List<Article> getAllArticleList() {
         return jdbcTemplate.query(SELECT_ALL, (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum));
     }

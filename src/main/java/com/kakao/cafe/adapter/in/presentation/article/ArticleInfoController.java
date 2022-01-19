@@ -16,6 +16,7 @@ public class ArticleInfoController {
 
     private static final String VIEWS_ARTICLE_LIST = "index";
     private static final String VIEWS_ARTICLE_DETAIL = "article/show";
+    private static final String VIEWS_ARTICLE_MODIFY_FORM = "article/modifyForm";
 
     GetArticleInfoUseCase getArticleInfoUseCase;
 
@@ -38,5 +39,13 @@ public class ArticleInfoController {
         Article article = getArticleInfoUseCase.getArticleDetail(id);
         model.addAttribute("article", article);
         return VIEWS_ARTICLE_DETAIL;
+    }
+
+    @GetMapping("/articles/{id}/form")
+    public String displayArticleModifyForm(@PathVariable int id, Model model)
+        throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException {
+        Article article = getArticleInfoUseCase.getArticleDetail(id);
+        model.addAttribute("article", article);
+        return VIEWS_ARTICLE_MODIFY_FORM;
     }
 }

@@ -8,6 +8,8 @@ public interface ArticleRepository {
 
     void save(Article article);
 
+    void update(Article article);
+
     List<Article> getAllArticleList();
 
     Optional<Article> findById(int id);

@@ -2,9 +2,11 @@ package com.kakao.cafe.adapter.out.infra.persistence.article;
 
 import com.kakao.cafe.application.article.dto.ArticleInfo;
 import com.kakao.cafe.application.article.dto.ArticleList;
+import com.kakao.cafe.application.article.dto.UpdateRequest;
 import com.kakao.cafe.application.article.dto.WriteRequest;
 import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
 import com.kakao.cafe.application.article.port.out.RegisterArticlePort;
+import com.kakao.cafe.application.article.port.out.UpdateArticlePort;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort {
+public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort, UpdateArticlePort {
 
     private final ArticleRepository articleRepository;
 
@@ -36,6 +38,19 @@ public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort {
                 .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .build()
         );
+    }
+
+    @Override
+    public void updateArticle(UpdateRequest updateRequest)
+        throws IllegalWriterException, IllegalTitleException, IllegalDateException {
+        Article article = new Article.Builder()
+            .writer(updateRequest.getWriter())
+            .title(updateRequest.getTitle())
+            .contents(updateRequest.getContents())
+            .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+            .build();
+        article.setId(updateRequest.getId());
+        articleRepository.update(article);
     }
 
     @Override

@@ -24,6 +24,11 @@ public class InMemoryArticleRepository implements ArticleRepository {
         repository.put(article.getId(), article);
     }
 
+    @Override
+    public void update(Article article) {
+        save(article);
+    }
+
     public List<Article> getAllArticleList() {
         return new ArrayList<>(repository.values());
     }
