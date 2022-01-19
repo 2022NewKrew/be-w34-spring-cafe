@@ -49,4 +49,16 @@ public class CommentService {
 
         return CommentDto.ReadCommentForUpdateResponse.of(comment);
     }
+
+    @Transactional
+    public void deleteComment(Integer id, String userId) throws AccessDeniedException {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
+
+        if (!comment.isValidDeleteUser(userId)) {
+            throw new AccessDeniedException("해당 댓글을 삭제할 권한이 없습니다");
+        }
+
+        comment.delete();
+        commentRepository.save(comment);
+    }
 }

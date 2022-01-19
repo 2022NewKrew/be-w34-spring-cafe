@@ -27,10 +27,10 @@ public class JdbcCommentRepositoryImpl implements CommentRepository {
             jdbcTemplate.queryForObject("SELECT id FROM COMMENT WHERE id = ?", Integer.class, comment.getId());
             jdbcTemplate.update("UPDATE COMMENT " +
                     "SET writer = ?, contents = ?, qna_index = ?, created_at = ?, deleted = ? " +
-                    "WHERE id = ?", comment.getWriter(), comment.getContents(), comment.getQnaIndex(), comment.getCreatedAt(), false, comment.getId());
+                    "WHERE id = ?", comment.getWriter(), comment.getContents(), comment.getQnaIndex(), comment.getCreatedAt(), comment.getDeleted(), comment.getId());
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
-            jdbcTemplate.update("INSERT INTO COMMENT(writer, contents, qna_index, created_at)" +
-                    "VALUES (?, ?, ?, ?)", comment.getWriter(), comment.getContents(), comment.getQnaIndex(), comment.getCreatedAt());
+            jdbcTemplate.update("INSERT INTO COMMENT(writer, contents, qna_index, created_at, deleted) " +
+                    "VALUES (?, ?, ?, ?, ?)", comment.getWriter(), comment.getContents(), comment.getQnaIndex(), comment.getCreatedAt(), comment.getDeleted());
         }
     }
 

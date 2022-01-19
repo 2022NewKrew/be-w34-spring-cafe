@@ -102,4 +102,12 @@ public class QnaController {
 
         return "redirect:/questions/" + index;
     }
+
+    @DeleteMapping("/questions/{index}/comments/{id}")
+    public String deleteComment(@PathVariable("index") Integer index, @PathVariable("id") Integer id, HttpSession session) throws AccessDeniedException {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+        commentService.deleteComment(id, sessionedUser.getUserId());
+
+        return "redirect:/questions/" + index;
+    }
 }

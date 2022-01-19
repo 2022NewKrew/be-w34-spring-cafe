@@ -9,6 +9,7 @@ public class Comment {
     private String contents;
     private Integer qnaIndex;
     private LocalDateTime createdAt;
+    private Boolean deleted = false;
 
     public Comment(Integer qnaIndex, String writer, String contents) {
         this.writer = writer;
@@ -27,6 +28,14 @@ public class Comment {
 
     public Boolean isValidUpdateUser(String userId) {
         return writer.equals(userId);
+    }
+
+    public Boolean isValidDeleteUser(String userId) {
+        return writer.equals(userId);
+    }
+
+    public void delete() {
+        this.deleted = true;
     }
 
     public void updateContents(String contents) {
@@ -51,5 +60,9 @@ public class Comment {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
     }
 }
