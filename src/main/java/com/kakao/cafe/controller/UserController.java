@@ -78,10 +78,12 @@ public class UserController {
 
         final HttpSession session = request.getSession();
         if (!userService.verifyPassword(id, rawPassword)) {
+            logger.info("User login failed - wrong password - " + id);
             return redirectLoginFailed(session);
         }
 
         AuthControl.login(request, userService.getDto(id));
+        logger.info("User login success - " + id);
         return "redirect:/";
     }
 
