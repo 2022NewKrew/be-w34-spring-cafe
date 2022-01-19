@@ -1,6 +1,5 @@
 package com.kakao.cafe.user.config;
 
-import com.kakao.cafe.user.repository.SessionMapRepository;
 import com.kakao.cafe.user.repository.SessionRepository;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (request.getMethod().matches(HttpMethod.OPTIONS.name()) || process(request)) {
             return true;
         }
-        response.sendRedirect("user/login.html");
+        response.sendRedirect("/user/login.html");
         return false;
     }
 

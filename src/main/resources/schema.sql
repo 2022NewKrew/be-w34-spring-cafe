@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS users (
      user_id VARCHAR(30) PRIMARY KEY,
      password VARCHAR(255) NOT NULL,
      name VARCHAR(30) NOT NULL,
-     email VARCHAR(30) NOT NULL,
+     email VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS qnas (
@@ -10,5 +10,6 @@ CREATE TABLE IF NOT EXISTS qnas (
     writer VARCHAR(30) NOT NULL,
     title VARCHAR(255) NOT NULL,
     contents TEXT NOT NULL,
-    create_time DATETIME NOT NULL
+    create_time DATETIME NOT NULL,
+    FOREIGN KEY (writer) REFERENCES users (user_id)
 );

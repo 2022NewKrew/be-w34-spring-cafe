@@ -18,7 +18,6 @@ public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor(sessionRepository))
-            .addPathPatterns("/questions/{**")
-            .addPathPatterns("/questions");
+            .addPathPatterns("/questions/**");
     }
 }
