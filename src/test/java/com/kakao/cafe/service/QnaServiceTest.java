@@ -1,8 +1,10 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.Comment;
 import com.kakao.cafe.domain.Qna;
 import com.kakao.cafe.dto.QnaDto;
 import com.kakao.cafe.exception.QnaNotFoundException;
+import com.kakao.cafe.repository.CommentRepository;
 import com.kakao.cafe.repository.QnaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +26,9 @@ class QnaServiceTest {
 
     @Mock
     private QnaRepository jdbcQnaRepositoryImpl;
+
+    @Mock
+    private CommentRepository jdbcCommentRepositoryImpl;
 
     @InjectMocks
     private QnaService qnaService;
@@ -51,7 +57,7 @@ class QnaServiceTest {
         qnaList.add(qna1);
         qnaList.add(qna2);
 
-        when(jdbcQnaRepositoryImpl.findAll()).thenReturn(qnaList);
+        when(jdbcQnaRepositoryImpl.findAllByDeleted(false)).thenReturn(qnaList);
 
         // when
         List<QnaDto.QnaResponse> result = qnaService.findQnaList();
@@ -67,6 +73,12 @@ class QnaServiceTest {
         // given
         Qna qna = new Qna(1, "test writer", "test title", "test contents");
         when(jdbcQnaRepositoryImpl.findByIndex(1)).thenReturn(Optional.of(qna));
+
+        List<Comment> comments = new ArrayList<>();
+        Comment comment = new Comment(1, "lucas", "test", 1, LocalDateTime.now());
+        comments.add(comment);
+
+        when(jdbcCommentRepositoryImpl.findByQnaIndexAndDeleted(1, false)).thenReturn(comments);
 
         // when
         QnaDto.QnaResponse result = qnaService.findQna(1);

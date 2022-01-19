@@ -2,6 +2,8 @@ package com.kakao.cafe.dto;
 
 import com.kakao.cafe.domain.Qna;
 
+import java.util.List;
+
 public class QnaDto {
 
     public static class CreateQnaRequest {
@@ -49,6 +51,7 @@ public class QnaDto {
         private String writer;
         private String title;
         private String contents;
+        private List<CommentDto.ReadCommentResponse> comments;
 
         public QnaResponse(Integer index, String writer, String title, String contents) {
             this.index = index;
@@ -57,26 +60,38 @@ public class QnaDto {
             this.contents = contents;
         }
 
+        public QnaResponse(Integer index, String writer, String title, String contents, List<CommentDto.ReadCommentResponse> comments) {
+            this.index = index;
+            this.writer = writer;
+            this.title = title;
+            this.contents = contents;
+            this.comments = comments;
+        }
+
         public static QnaResponse of(Qna qna) {
             return new QnaResponse(qna.getIndex(), qna.getWriter(), qna.getTitle(), qna.getContents());
         }
+
+        public static QnaResponse of(Qna qna, List<CommentDto.ReadCommentResponse> comments) {
+            return new QnaResponse(qna.getIndex(), qna.getWriter(), qna.getTitle(), qna.getContents(), comments);
+        }
     }
 
-    public static class QnaForUpdateReponse {
+    public static class QnaForUpdateResponse {
         private Integer index;
         private String writer;
         private String title;
         private String contents;
 
-        public QnaForUpdateReponse(Integer index, String writer, String title, String contents) {
+        public QnaForUpdateResponse(Integer index, String writer, String title, String contents) {
             this.index = index;
             this.writer = writer;
             this.title = title;
             this.contents = contents;
         }
 
-        public static QnaForUpdateReponse of(Qna qna) {
-            return new QnaForUpdateReponse(qna.getIndex(), qna.getWriter(), qna.getTitle(), qna.getContents());
+        public static QnaForUpdateResponse of(Qna qna) {
+            return new QnaForUpdateResponse(qna.getIndex(), qna.getWriter(), qna.getTitle(), qna.getContents());
         }
 
         public String getWriter() {
@@ -98,20 +113,8 @@ public class QnaDto {
             return title;
         }
 
-        public String getWriter() {
-            return writer;
-        }
-
         public String getContents() {
             return contents;
-        }
-
-        public void setWriter(String writer) {
-            this.writer = writer;
-        }
-
-        public Qna toEntity(Integer index) {
-            return new Qna(index, writer, title, contents);
         }
     }
 }

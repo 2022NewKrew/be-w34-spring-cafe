@@ -1,7 +1,9 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.CommentDto;
 import com.kakao.cafe.dto.QnaDto;
 import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.service.CommentService;
 import com.kakao.cafe.service.QnaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +18,12 @@ import java.util.List;
 public class QnaController {
 
     private final QnaService qnaService;
+    private final CommentService commentService;
 
     @Autowired
-    public QnaController(QnaService qnaService) {
+    public QnaController(QnaService qnaService, CommentService commentService) {
         this.qnaService = qnaService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/questions")
@@ -37,9 +41,8 @@ public class QnaController {
 
     @GetMapping("/questions/{index}/updateform")
     public String updateQnaForm(@PathVariable("index") Integer index, Model model, HttpSession session) throws AccessDeniedException {
-        QnaDto.QnaForUpdateReponse qnaForUpdate = qnaService.findQnaForUpdate(index);
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        qnaService.validateUpdateUser(qnaForUpdate.getWriter(), sessionedUser.getUserId());
+        QnaDto.QnaForUpdateResponse qnaForUpdate = qnaService.findQnaForUpdate(index, sessionedUser.getUserId());
 
         model.addAttribute("qna", qnaForUpdate);
         return "qna/updateForm";
@@ -48,8 +51,7 @@ public class QnaController {
     @PutMapping("/questions/{index}")
     public String updateQna(@PathVariable("index") Integer index, @ModelAttribute QnaDto.UpdateQnaRequest updateQnaRequest, HttpSession session) throws AccessDeniedException {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        updateQnaRequest.setWriter(sessionedUser.getUserId());
-        qnaService.updateQna(index, updateQnaRequest);
+        qnaService.updateQna(index, updateQnaRequest, sessionedUser.getUserId());
         return "redirect:/";
     }
 
@@ -74,4 +76,38 @@ public class QnaController {
         return "qna/show";
     }
 
+    @PostMapping("/questions/{index}/comments")
+    public String makeComment(@PathVariable("index") Integer index, @ModelAttribute CommentDto.CreateCommentRequest createCommentRequest,
+                              HttpSession session) {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+        commentService.createComment(index, sessionedUser.getUserId(), createCommentRequest.getContents());
+
+        return "redirect:/questions/" + index;
+    }
+
+    @GetMapping("/questions/{index}/comments/{id}/updateform")
+    public String updateCommentForm(@PathVariable("index") Integer index, @PathVariable Integer id, Model model, HttpSession session) throws AccessDeniedException {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+        CommentDto.ReadCommentForUpdateResponse comment = commentService.readCommentForUpdate(id, sessionedUser.getUserId());
+
+        model.addAttribute("comment", comment);
+        return "qna/commentUpdateForm";
+    }
+
+    @PutMapping("/questions/{index}/comments/{id}")
+    public String updateComment(@PathVariable("index") Integer index, @PathVariable("id") Integer id, @ModelAttribute CommentDto.UpdateCommentRequest updateCommentRequest,
+                                HttpSession session) throws AccessDeniedException {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+        commentService.updateComment(id, updateCommentRequest.getContents(), sessionedUser.getUserId());
+
+        return "redirect:/questions/" + index;
+    }
+
+    @DeleteMapping("/questions/{index}/comments/{id}")
+    public String deleteComment(@PathVariable("index") Integer index, @PathVariable("id") Integer id, HttpSession session) throws AccessDeniedException {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+        commentService.deleteComment(id, sessionedUser.getUserId());
+
+        return "redirect:/questions/" + index;
+    }
 }

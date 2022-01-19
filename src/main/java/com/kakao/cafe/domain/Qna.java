@@ -6,6 +6,7 @@ public class Qna {
     private String writer;
     private String title;
     private String contents;
+    private Boolean deleted = false;
 
     public Qna(String writer, String title, String contents) {
         this.writer = writer;
@@ -18,6 +19,23 @@ public class Qna {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+    }
+
+    public void updateQna(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
+
+    public void delete() {
+        this.deleted = true;
+    }
+
+    public Boolean isValidUpdateUser(String userId) {
+        return writer.equals(userId);
+    }
+
+    public Boolean isValidDeleteUser(String userId) {
+        return writer.equals(userId);
     }
 
     public Integer getIndex() {
@@ -36,20 +54,11 @@ public class Qna {
         return contents;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
     public void setIndex(Integer index) {
         this.index = index;
-    }
-
-    public Boolean isValidUpdateUser(String userId) {
-        return writer.equals(userId);
-    }
-
-    public Boolean isValidDeleteUser(String userId) {
-        return writer.equals(userId);
-    }
-
-    public void updateQna(Qna qna) {
-        this.title = qna.getTitle();
-        this.contents = qna.getContents();
     }
 }

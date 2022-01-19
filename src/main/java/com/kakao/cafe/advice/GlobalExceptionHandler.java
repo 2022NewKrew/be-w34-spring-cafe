@@ -37,6 +37,12 @@ public class GlobalExceptionHandler {
         response.sendRedirect("/auth/login/failform");
     }
 
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleCommentNotFoundException(CommentNotFoundException commentNotFoundException) {
+        ErrorResponse errorResponse = new ErrorResponse(404, commentNotFoundException.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException accessDeniedException) {
         ErrorResponse errorResponse = new ErrorResponse(403, accessDeniedException.getMessage());

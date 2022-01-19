@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.exception.QnaNotFoundException;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +8,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Sql({"/schema.sql", "/data.sql"})
+@TestPropertySource("classpath:test.properties")
 @Transactional
 @SpringBootTest
 class QnaControllerIntegrationTest {
@@ -27,9 +33,16 @@ class QnaControllerIntegrationTest {
 
     private MockMvc mock;
 
+    private MockHttpSession session;
+
     @BeforeEach
     public void setUp() {
         mock = MockMvcBuilders.standaloneSetup(qnaController).build();
+
+        UserDto.UserSessionDto userSessionDto = new UserDto.UserSessionDto("lucas", "test");
+
+        session = new MockHttpSession();
+        session.setAttribute("sessionedUser", userSessionDto);
     }
 
     @DisplayName("makeQnaHtml 테스트 - 요청시 Http Status 2XX 반환")
@@ -49,7 +62,7 @@ class QnaControllerIntegrationTest {
 
         // when // then
         mock.perform(post("/questions")
-                        .param("writer", "test")
+                        .session(session)
                         .param("title", "test title")
                         .param("contents", "test contents"))
                 .andExpect(status().is3xxRedirection())
@@ -90,6 +103,6 @@ class QnaControllerIntegrationTest {
         // when // then
         assertThatThrownBy(() ->
                 mock.perform(get("/questions/{index}", index))
-        ).hasCause(new QnaNotFoundException("Qna Not Found (index: " + index + ")"));
+        ).hasCause(new QnaNotFoundException(index));
     }
 }
