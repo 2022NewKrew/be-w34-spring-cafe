@@ -75,10 +75,4 @@ public class UserService {
 
         return UserDto.UserSessionDto.of(user);
     }
-
-    public void validateAuthForUpdateUser(String loginUser, String updateUserId) throws AccessDeniedException {
-        if (!loginUser.equals(updateUserId)) {
-            throw new AccessDeniedException("해당 사용자에게 수정 권한이 없습니다.");
-        }
-    }
 }
