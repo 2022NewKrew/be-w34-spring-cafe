@@ -1,15 +1,18 @@
 package com.kakao.cafe.thread.controller;
 
 import com.kakao.cafe.exception.InvalidFormatException;
-import com.kakao.cafe.thread.service.PostService;
 import com.kakao.cafe.thread.dto.PostCreationForm;
+import com.kakao.cafe.thread.service.PostService;
 import com.kakao.cafe.user.dto.LoggedInUser;
 import com.kakao.cafe.user.service.LoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,7 +29,8 @@ public class PostController {
     }
 
     @PostMapping
-    public String processCreationForm(@Validated PostCreationForm postCreationForm, BindingResult bindingResult, HttpSession session) {
+    public String processCreationForm(@Validated PostCreationForm postCreationForm, BindingResult bindingResult,
+                                      HttpSession session) {
         if (bindingResult.hasErrors()) {
             throw new InvalidFormatException();
         }

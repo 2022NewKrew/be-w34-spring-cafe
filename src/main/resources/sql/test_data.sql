@@ -1,7 +1,7 @@
 -- An example user
 -- type = 'NORMAL_USER'
-INSERT INTO user (email, username, password, status, display_name)
-VALUES ('frank@kakao.com', 'frank', 'password', 'ACTIVE', 'frank');
+INSERT INTO user (username, password, email, display_name, status)
+VALUES ('frank', 'password', 'frank@kakao.com', 'frank', 'ACTIVE');
 
 -- An example post
 -- type = 'POST'
