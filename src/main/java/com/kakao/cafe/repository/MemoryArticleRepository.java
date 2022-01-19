@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.web.dto.ArticleCreateRequestDto;
 
 import java.util.*;
 
@@ -10,17 +11,13 @@ public class MemoryArticleRepository implements ArticleRepository {
     private Long idNumber = 0L;
 
     @Override
-    public Long generateId() {
-        return ++idNumber;
+    public void create(ArticleCreateRequestDto requestDto) {
+        Long id = ++idNumber;
+        articleMap.put(id, new Article(id, requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents()));
     }
 
     @Override
-    public void create(Article article) {
-        articleMap.put(article.getId(), article);
-    }
-
-    @Override
-    public List<Article> findAll() {
+    public List<Article> findNotDeleted() {
         return List.copyOf(articleMap.values());
     }
 
@@ -31,5 +28,10 @@ public class MemoryArticleRepository implements ArticleRepository {
             return result.get();
         }
         throw new RuntimeException("일치하는 게시글이 존재하지 않습니다.");
+    }
+
+    @Override
+    public void shiftIsDeleted(Long id) {
+        articleMap.get(id).shiftIsDeleted();
     }
 }

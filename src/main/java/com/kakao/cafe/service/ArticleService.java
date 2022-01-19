@@ -1,6 +1,5 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.web.dto.ArticleCreateRequestDto;
 import com.kakao.cafe.web.dto.ArticleDetailResponseDto;
@@ -24,16 +23,19 @@ public class ArticleService {
     }
 
     public void postArticle(ArticleCreateRequestDto requestDto) {
-        Long id = articleRepository.generateId();
-        articleRepository.create(new Article(id, requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents()));
+        articleRepository.create(requestDto);
         logger.info("{} 글 생성", requestDto.getTitle());
     }
 
     public List<ArticleResponseDto> getArticleList() {
-        return ArticleResponseDto.from(articleRepository.findAll());
+        return ArticleResponseDto.from(articleRepository.findNotDeleted());
     }
 
     public ArticleDetailResponseDto getArticleDetail(Long id) {
         return ArticleDetailResponseDto.from(articleRepository.findById(id));
+    }
+
+    public void deleteArticle(Long id) {
+        articleRepository.shiftIsDeleted(id);
     }
 }
