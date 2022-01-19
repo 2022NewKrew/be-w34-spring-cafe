@@ -1,5 +1,7 @@
 package com.kakao.cafe.dto.article;
 
+import com.kakao.cafe.domain.article.Reply;
+
 public class ReplyDto {
 
     private final Long replyId;
@@ -8,11 +10,11 @@ public class ReplyDto {
     private final String author;
     private final String description;
 
-    public ReplyDto(Long replyId, Long articleId, Long authorId, String author, String description) {
-        this.replyId = replyId;
-        this.articleId = articleId;
-        this.authorId = authorId;
-        this.author = author;
-        this.description = description;
+    public ReplyDto(Reply reply) {
+        this.replyId = reply.getId();
+        this.articleId = reply.getArticleId();
+        this.authorId = reply.getAuthorId();
+        this.author = reply.getAuthor();
+        this.description = reply.getDescription();
     }
 }

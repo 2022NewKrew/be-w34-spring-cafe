@@ -27,6 +27,10 @@ public class Reply {
         }
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Long getArticleId() {
         return articleId;
     }

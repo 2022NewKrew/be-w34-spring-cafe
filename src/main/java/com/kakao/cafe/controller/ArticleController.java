@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.annotation.UserAuthorized;
 import com.kakao.cafe.domain.auth.Auth;
+import com.kakao.cafe.dto.article.ArticleDetailDto;
 import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.dto.article.ArticleRequest;
 import com.kakao.cafe.service.ArticleService;
@@ -31,7 +32,7 @@ public class ArticleController {
 
     @GetMapping("/{articleId}")
     public String getArticle(@PathVariable Long articleId, Model model) {
-        ArticleDto article = articleService.findById(articleId);
+        ArticleDetailDto article = articleService.findDetailById(articleId);
         model.addAttribute("article", article);
 
         return "article/show";
