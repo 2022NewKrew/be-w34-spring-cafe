@@ -1,6 +1,7 @@
 package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.domain.Reply;
 import com.kakao.cafe.article.dto.*;
 import com.kakao.cafe.article.exception.ArticleNotLoggedInException;
 import com.kakao.cafe.article.exception.ArticleNotMatchedUser;
@@ -82,6 +83,10 @@ public class ArticleController {
         model.addAttribute("createdAt", articleViewDTO.getCreatedAt());
         model.addAttribute("contents", articleViewDTO.getContents());
         model.addAttribute("sequence", articleViewDTO.getSequence());
+
+        List<ReplyViewDTO> replies = articleService.getReplies(sequence);
+        model.addAttribute("replies", replies);
+
         return "/qna/show";
     }
 

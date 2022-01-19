@@ -2,6 +2,8 @@ package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleRowMapper;
+import com.kakao.cafe.article.domain.Reply;
+import com.kakao.cafe.article.domain.ReplyRowMapper;
 import com.kakao.cafe.article.dto.ArticleUpdateDTO;
 import com.kakao.cafe.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +64,11 @@ public class ArticleJdbcRepository implements ArticleRepository{
                 userId,
                 articleSeq,
                 contents);
+    }
+
+    @Override
+    public List<Reply> getRepliesByArticleSeq(Long articleSeq) {
+        String sql = String.format("SELECT * FROM reply WHERE articleSeq = %s", articleSeq);
+        return jdbcTemplate.query(sql, new ReplyRowMapper());
     }
 }

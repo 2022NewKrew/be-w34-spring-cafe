@@ -1,6 +1,7 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.domain.Reply;
 import com.kakao.cafe.article.dto.ArticleCreateDTO;
 import com.kakao.cafe.article.dto.ArticleUpdateDTO;
 
@@ -13,4 +14,5 @@ public interface ArticleRepository {
     public List<Article> getArticlesNotDeleted();
     public Article getArticleByCondition(String key, String value);
     public void addReply(String userId, Long articleSeq, String contents);
+    public List<Reply> getRepliesByArticleSeq(Long articleSeq);
 }

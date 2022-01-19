@@ -1,14 +1,17 @@
 package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.domain.Reply;
 import com.kakao.cafe.article.dto.ArticleCreateDTO;
 import com.kakao.cafe.article.dto.ArticleUpdateDTO;
 import com.kakao.cafe.article.dto.ReplyCreateDTO;
+import com.kakao.cafe.article.dto.ReplyViewDTO;
 import com.kakao.cafe.article.repository.ArticleJdbcRepository;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -48,5 +51,11 @@ public class ArticleService {
 
     public void replyCreate(ReplyCreateDTO replyCreateDTO){
         articleRepository.addReply(replyCreateDTO.getUserId(), replyCreateDTO.getArticleSeq(), replyCreateDTO.getContents());
+    }
+
+    public List<ReplyViewDTO> getReplies(Long articleSeq){
+        List<Reply> replies = articleRepository.getRepliesByArticleSeq(articleSeq);
+        List<ReplyViewDTO> repliesViewDTO = replies.stream().map(ReplyViewDTO::new).collect(Collectors.toList());
+        return repliesViewDTO;
     }
 }
