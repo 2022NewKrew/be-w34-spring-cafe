@@ -36,7 +36,7 @@ class PostControllerTest {
         String name = "testName";
         String email = "testEmail@kakaocorp.com";
 
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users/signup")
                         .param("userId", userId)
                         .param("password", password)
                         .param("name", name)
@@ -60,7 +60,7 @@ class PostControllerTest {
     @ParameterizedTest(name = "{0}, {1}, {2}")
     @CsvSource(value = {"null, title, content", "userId, null, content", "userId, title, null"}, nullValues = {"null"})
     void write_FailedBy_Null(String userId, String title, String content) throws Exception {
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users/signup")
                         .param("userId", userId)
                         .param("title", title)
                         .param("content", content))
@@ -72,7 +72,7 @@ class PostControllerTest {
     @ParameterizedTest(name = "{0}, {1}, {2}")
     @CsvSource(value = {"'', title, content", "userId, '', content", "userId, title, ''"}, nullValues = {"null"})
     void write_FailedBy_EmptyString(String userId, String title, String content) throws Exception {
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users/signup")
                         .param("userId", userId)
                         .param("title", title)
                         .param("content", content))
