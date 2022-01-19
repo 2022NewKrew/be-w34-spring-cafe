@@ -31,20 +31,9 @@ public class ArticleService {
         return ArticleDto.from(article);
     }
 
-    public int create(String writer, ArticleDto articleDto) {
+    public void create(String writer, ArticleDto articleDto) {
         Article article = articleDto.toEntity();
-        validateSession(writer);
-        return articleRepository.save(article);
-    }
-
-    public int update(String writer, int articleId, ArticleDto articleDto) {
-        Article article = findByIdFromRepository(articleId);
-        validateSession(writer);
-        matchWriter(writer, article);
-        article.setTitle(articleDto.getTitle());
-        article.setContent(articleDto.getContent());
-        article.setDate(LocalDateTime.now());
-        return articleRepository.update(article);
+        articleRepository.save(article);
     }
 
     public ArticleDto findByIdForWriter(int id, String writer) {
@@ -53,13 +42,19 @@ public class ArticleService {
         return ArticleDto.from(article);
     }
 
-
-    public ArticleDto delete(int id, String writer) {
+    public void update(String writer, int articleId, ArticleDto articleDto) {
+        Article article = findByIdFromRepository(articleId);
+        matchWriter(writer, article);
+        article.setTitle(articleDto.getTitle());
+        article.setContent(articleDto.getContent());
+        article.setDate(LocalDateTime.now());
+        articleRepository.update(article);
+    }
+    
+    public void delete(int id, String writer) {
         Article article = findByIdFromRepository(id);
-        validateSession(writer);
         matchWriter(writer, article);
         articleRepository.delete(article);
-        return ArticleDto.from(article);
     }
 
     private Article findByIdFromRepository(int id) {
@@ -73,10 +68,5 @@ public class ArticleService {
         }
     }
 
-    private void validateSession(String writer) {
-        if (writer.equals("null")) {
-            throw new InvalidSessionException("로그인 하지 않은 사용자입니다.");
-        }
-    }
 
 }

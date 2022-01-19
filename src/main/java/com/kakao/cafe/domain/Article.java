@@ -3,6 +3,7 @@ package com.kakao.cafe.domain;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class Article {
@@ -12,6 +13,7 @@ public class Article {
     private String content;
     private String writer;
     private LocalDateTime date;
+    private List<Reply> replies;
 
     public Article(String title, String content, String writer) {
         this.title = title;

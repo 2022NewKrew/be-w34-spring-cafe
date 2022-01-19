@@ -1,10 +1,13 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter @Setter
 public class ArticleDto {
@@ -14,6 +17,7 @@ public class ArticleDto {
     private String content;
     private String writer;
     private LocalDateTime date;
+    private List<Reply> replies = new ArrayList<>();
 
     public ArticleDto(String title, String content, String writer) {
         this.title = title;

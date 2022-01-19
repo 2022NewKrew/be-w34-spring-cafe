@@ -4,8 +4,6 @@ import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,11 +39,15 @@ public class ArticleController {
     public String showArticleCreateForm(HttpSession httpSession) {
         Object sessionId = httpSession.getAttribute("sessionId");
         logger.info("GET /articles/form: {}", sessionId);
-        if (sessionId == null) {
-            logger.error("ERROR : 로그인 하지 않은 사용자");
-            return "/login";
-        }
         return "/qna/form";
+    }
+
+    @PostMapping
+    public String createArticle(@ModelAttribute ArticleDto articleDto, HttpSession httpSession) {
+        Object sessionId = httpSession.getAttribute("sessionId");
+        articleService.create(String.valueOf(sessionId), articleDto);
+        logger.info("POST /articles: {}", articleDto);
+        return "redirect:/";
     }
 
     @GetMapping("{id}/form")
@@ -56,19 +58,11 @@ public class ArticleController {
         return "/qna/updateForm";
     }
 
-    @PostMapping
-    public String createArticle(@ModelAttribute ArticleDto articleDto, HttpSession httpSession) {
-        Object sessionId = httpSession.getAttribute("sessionId");
-        int id = articleService.create(String.valueOf(sessionId), articleDto);
-        logger.info("POST /articles: {}", id);
-        return "redirect:/";
-    }
-
     @PutMapping("{id}")
     public String updateArticle(@PathVariable int id, @ModelAttribute ArticleDto articleDto, HttpSession httpSession) {
         Object sessionId = httpSession.getAttribute("sessionId");
-        int articleId = articleService.update(String.valueOf(sessionId), id, articleDto);
-        logger.info("PUT /articles/{} : {}", articleId, articleDto);
+        articleService.update(String.valueOf(sessionId), id, articleDto);
+        logger.info("PUT /articles/{} : {}", id, articleDto);
         return "redirect:/";
     }
 

@@ -30,8 +30,8 @@ public class UserController {
 
     @PostMapping
     public String signup(@ModelAttribute UserDto userDto) {
-        int id = userService.create(userDto);
-        logger.info("POST /users: {}", id);
+        userService.create(userDto);
+        logger.info("POST /users: {}", userDto);
         return "redirect:/users";
     }
 
@@ -55,12 +55,10 @@ public class UserController {
     @PutMapping
     public String updateUser(@ModelAttribute UserDto userDto, HttpSession httpSession) {
         Object sessionId = httpSession.getAttribute("sessionId");
-        int id = userService.update(String.valueOf(sessionId), userDto);
-        logger.info("PUT /users/{}: {}", id, userDto);
+        userService.update(String.valueOf(sessionId), userDto);
+        logger.info("PUT /users/{}: {}", sessionId, userDto);
         return "redirect:/users";
     }
-
-
 
 
 }
