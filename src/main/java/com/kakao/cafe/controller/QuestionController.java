@@ -24,7 +24,7 @@ public class QuestionController {
 
     @PostMapping("/questions")
     public String save(@RequestParam String title, @RequestParam String contents, HttpSession session) {
-        User user = (User) session.getAttribute("sessionedUser");
+        User user = (User) session.getAttribute("sessionUser");
         questionService.save(QuestionSaveDto.builder()
                 .userId(user.getId())
                 .writer(user.getName())
@@ -48,7 +48,7 @@ public class QuestionController {
 
     @PutMapping("/questions/{id}")
     public String update(@PathVariable int id, @ModelAttribute() QuestionUpdateDto questionUpdateDto, HttpSession session) {
-        User user = (User)session.getAttribute("sessionedUser");
+        User user = (User)session.getAttribute("sessionUser");
         if (user.getId() != id){
             throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 게시글의 사용자 정보가 다릅니다.");
         }
@@ -58,7 +58,7 @@ public class QuestionController {
 
     @DeleteMapping("/questions/{id}")
     public String update(@PathVariable int id, HttpSession session) {
-        User user = (User)session.getAttribute("sessionedUser");
+        User user = (User)session.getAttribute("sessionUser");
         if (user.getId() != questionService.findById(id).getUserId()){
             throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 게시글의 사용자 정보가 다릅니다.");
         }
