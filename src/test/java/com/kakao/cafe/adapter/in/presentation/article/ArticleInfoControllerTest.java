@@ -10,7 +10,6 @@ import com.kakao.cafe.application.reply.dto.ReplyList;
 import com.kakao.cafe.application.reply.port.in.GetRepliesUseCase;
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.Reply;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -52,10 +51,7 @@ class ArticleInfoControllerTest {
         givenArticleList.add(new ArticleInfo(5, "kakao", "krew", "2022-01-10 20:00"));
         givenArticleList.add(new ArticleInfo(10, "HaChanho", "champ", "2022-01-11 21:00"));
         given(getArticleInfoUseCase.getListOfAllArticles()).willReturn(ArticleList.from(givenArticleList));
-        List<Reply> givenReplyList = new ArrayList<>();
-        givenReplyList.add(new Reply.Builder().articleId(5).userId("kakao").writer("champ").contents("hello")
-                                              .createdAt("2022-01-10 20:00").build());
-        given(getRepliesUseCase.getListOfRepliesOfTheArticle(5)).willReturn(ReplyList.from(givenReplyList));
+        given(getRepliesUseCase.getListOfRepliesOfTheArticle(5)).willReturn(ReplyList.from(new ArrayList<>()));
 
         // when
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.TEXT_HTML))
@@ -92,6 +88,7 @@ class ArticleInfoControllerTest {
         session.setAttribute("sessionedUser", sessionedUser);
         String url = "/articles/" + id;
         given(getArticleInfoUseCase.getArticleDetail(id)).willReturn(givenArticle);
+        given(getRepliesUseCase.getListOfRepliesOfTheArticle(id)).willReturn(ReplyList.from(new ArrayList<>()));
 
         //when
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(url).session(session).accept(MediaType.TEXT_HTML))

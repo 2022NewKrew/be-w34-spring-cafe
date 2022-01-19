@@ -1,5 +1,7 @@
 package com.kakao.cafe.adapter.in.presentation.article;
 
+import com.kakao.cafe.application.article.dto.WriteRequest;
+import com.kakao.cafe.application.article.port.in.WriteArticleUseCase;
 import com.kakao.cafe.application.reply.dto.WriteReplyRequest;
 import com.kakao.cafe.application.reply.port.in.WriteReplyUseCase;
 import com.kakao.cafe.application.user.dto.UserInfo;
@@ -15,12 +17,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class ReplyWriteController {
+public class ArticleReplyWriteController {
 
+    private final WriteArticleUseCase writeArticleUseCase;
     private final WriteReplyUseCase writeReplyUseCase;
 
-    public ReplyWriteController(WriteReplyUseCase writeReplyUseCase) {
+    public ArticleReplyWriteController(WriteArticleUseCase writeArticleUseCase, WriteReplyUseCase writeReplyUseCase) {
+        this.writeArticleUseCase = writeArticleUseCase;
         this.writeReplyUseCase = writeReplyUseCase;
+    }
+
+    @PostMapping("/articles")
+    public String register(WriteRequest writeRequest, HttpSession session)
+        throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
+        UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
+        writeRequest.setWriter(sessionedUser.getName());
+        writeRequest.setUserId(sessionedUser.getUserId());
+        writeArticleUseCase.writeArticle(writeRequest);
+        return "redirect:/";
     }
 
     @PostMapping("/articles/{articleId}/replies")

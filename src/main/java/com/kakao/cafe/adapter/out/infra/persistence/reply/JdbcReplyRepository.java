@@ -54,6 +54,11 @@ public class JdbcReplyRepository implements ReplyRepository {
         return jdbcTemplate.query(sql, (rs, rowNum) -> new ReplyMapper().mapRow(rs, rowNum), articleId);
     }
 
+    @Override
+    public void deleteById(int id) {
+        jdbcTemplate.update(DELETE_BY_ID, id);
+    }
+
     private static final class ReplyMapper implements RowMapper<Reply> {
 
         @Override

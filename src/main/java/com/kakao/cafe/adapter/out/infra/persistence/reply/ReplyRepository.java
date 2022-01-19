@@ -8,4 +8,6 @@ public interface ReplyRepository {
     void save(Reply reply);
 
     List<Reply> getAllReplyListByArticleId(int articleId);
+
+    void deleteById(int id);
 }
