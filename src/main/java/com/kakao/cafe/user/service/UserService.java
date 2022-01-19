@@ -2,10 +2,11 @@ package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
-import com.kakao.cafe.user.domain.UserValidator;
 import com.kakao.cafe.user.dto.LoginRequest;
 import com.kakao.cafe.user.dto.Profile;
 import com.kakao.cafe.user.dto.SessionUser;
+import com.kakao.cafe.user.exception.DuplicatedEmailException;
+import com.kakao.cafe.user.exception.DuplicatedNicknameException;
 import com.kakao.cafe.user.exception.UserNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserValidator userValidator;
 
     @Transactional
     public void signup(User user) {
-        user.signup(userValidator);
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new DuplicatedEmailException();
+        }
+        if (userRepository.existsByNickname(user.getNickname())) {
+            throw new DuplicatedNicknameException();
+        }
         userRepository.save(user);
     }
 
@@ -36,7 +41,9 @@ public class UserService {
     public SessionUser login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(UserNotFoundException::new);
-        user.login(userValidator, request.getPassword());
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new UserNotFoundException();
+        }
         return SessionUser.from(user);
     }
 }

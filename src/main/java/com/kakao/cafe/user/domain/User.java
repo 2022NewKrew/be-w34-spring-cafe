@@ -18,12 +18,4 @@ public class User {
     private String password;
     private String nickname;
     private LocalDateTime createdAt;
-
-    public void signup(UserValidator userValidator) {
-        userValidator.validateSignup(this);
-    }
-
-    public void login(UserValidator userValidator, String password) {
-        userValidator.validateLogin(this.password, password);
-    }
 }
