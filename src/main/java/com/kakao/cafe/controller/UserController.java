@@ -57,10 +57,7 @@ public class UserController {
     // 회원정보 수정 페이지
     @GetMapping("users/{userId}/form")
     public String updateForm(@PathVariable String userId, Model model, HttpSession session) throws NoSuchUserException, WrongAccessException {
-        UserInfoDto sessionedUser = (UserInfoDto) session.getAttribute("sessionedUser");
-        if (!userId.equals(sessionedUser.getUserId())) {
-            throw new WrongAccessException();
-        }
+        this.userService.userValidation(userId, session);
         model.addAttribute("user", this.userService.getUserByUserId(userId));
         return "user/updateForm";
     }
@@ -68,10 +65,7 @@ public class UserController {
     // 회원정보 수정 요청
     @PatchMapping("users/{userId}/update")
     public String updateUserInfo(SignUpDto signUpDto, @PathVariable String userId, HttpSession session) throws PasswordMismatchException, NoSuchUserException, WrongAccessException {
-        UserInfoDto sessionedUser = (UserInfoDto) session.getAttribute("sessionedUser");
-        if (!userId.equals(sessionedUser.getUserId())) {
-            throw new WrongAccessException();
-        }
+        this.userService.userValidation(userId, session);
         this.userService.updateUser(signUpDto);
         return "redirect:/users";
     }

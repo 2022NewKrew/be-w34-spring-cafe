@@ -8,9 +8,11 @@ import com.kakao.cafe.dto.user.UserInfoDto;
 import com.kakao.cafe.exceptions.NoSuchUserException;
 import com.kakao.cafe.exceptions.PasswordMismatchException;
 import com.kakao.cafe.exceptions.UserIdDuplicationException;
+import com.kakao.cafe.exceptions.WrongAccessException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +54,23 @@ public class UserService {
             throw new PasswordMismatchException();
         }
         return new UserInfoDto(user);
+    }
+
+    public boolean isUserLoggedin(HttpSession session) {
+        if (session == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public void userValidation(String userId, HttpSession session) throws WrongAccessException {
+        if (!isUserLoggedin(session)) {
+            throw new WrongAccessException();
+        }
+        UserInfoDto sessionedUser = (UserInfoDto) session.getAttribute("sessionedUser");
+        if (!userId.equals(sessionedUser.getUserId())) {
+            throw new WrongAccessException();
+        }
     }
 
 }
