@@ -3,10 +3,8 @@ package com.kakao.cafe.article.dto;
 import com.kakao.cafe.article.domain.Article;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
-public class ArticlePostRequest {
+public class ArticleUpdateRequest {
 
     @NotBlank
     @Size(min = 2, max = 20)
@@ -16,11 +14,16 @@ public class ArticlePostRequest {
     @Size(min = 10, max = 5000)
     private final String body;
 
-    public Article toEntity(Long authorId) {
+    public ArticleUpdateRequest(String title, String body) {
+        this.title = title;
+        this.body = body;
+    }
+
+    public Article toEntity(Long articleId) {
         return Article.builder()
+            .id(articleId)
             .title(title)
             .body(body)
-            .authorId(authorId)
             .build();
     }
 }
