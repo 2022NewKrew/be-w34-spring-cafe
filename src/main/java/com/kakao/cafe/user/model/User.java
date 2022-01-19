@@ -1,13 +1,12 @@
 package com.kakao.cafe.user.model;
 
+import com.kakao.cafe.common.BaseEntity;
 import com.kakao.cafe.user.constraint.Email;
 import com.kakao.cafe.user.constraint.Name;
 import com.kakao.cafe.user.constraint.Password;
 import com.kakao.cafe.user.constraint.UserId;
 
-public class User {
-    private Long id;
-
+public class User extends BaseEntity {
     @UserId
     private final String userId;
 
@@ -27,14 +26,6 @@ public class User {
         this.plainPassword = plainPassword;
         this.name = name;
         this.email = email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUserId() {

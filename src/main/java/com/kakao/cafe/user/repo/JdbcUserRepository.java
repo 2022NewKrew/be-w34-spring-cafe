@@ -24,14 +24,17 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public long save(User target) {
+        beforeSave(target);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String query = "INSERT INTO `USER`(USER_ID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO `USER`(CREATED_AT, UPDATED_AT, USER_ID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(connection -> {
                     PreparedStatement ps = connection.prepareStatement(query);
-                    ps.setString(1, target.getUserId());
-                    ps.setString(2, target.getHashedPassword());
-                    ps.setString(3, target.getName());
-                    ps.setString(4, target.getEmail());
+                    ps.setObject(1, target.getCreatedAt());
+                    ps.setObject(2, target.getUpdatedAt());
+                    ps.setString(3, target.getUserId());
+                    ps.setString(4, target.getHashedPassword());
+                    ps.setString(5, target.getName());
+                    ps.setString(6, target.getEmail());
                     return ps;
                 },
                 keyHolder
