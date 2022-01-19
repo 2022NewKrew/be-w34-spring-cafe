@@ -17,7 +17,7 @@ public class UserRepository {
     }
 
     public void createUser(UserRegistrationDto userDto) {
-        User user = new User(userDto.getUserId(), passwordEncoder.encode(userDto.getPassword()), userDto.getEmail());
+        User user = userDto.toEntity();
         users.add(user);
     }
 

@@ -6,8 +6,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.Optional;
 
-public class JdbcUserRepository {
+public class JdbcUserRepository implements Repository<User, Integer>{
 
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper userMapper;
@@ -19,17 +20,29 @@ public class JdbcUserRepository {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void createUser(User user) {
-        String sqlQuery = "insert into MEMBER (userId, PASSWORD, EMAIL) values (?, ?, ?)";
-        jdbcTemplate.update(sqlQuery, user.getUserId(), user.getPassword(), user.getEmail());
+    @Override
+    public void create(User user) {
+        String sqlQuery = "insert into MEMBER (USERID, PASSWORD, EMAIL) values (?, ?, ?)";
+        jdbcTemplate.update(sqlQuery, user.getUserId(), passwordEncoder.encode(user.getPassword()), user.getEmail());
     }
 
-    public List<User> readUsers() {
+    @Override
+    public List<User> readAll() {
         return jdbcTemplate.query("SELECT * FROM MEMBER", userMapper);
     }
 
-    public User readUser(String userId) {
-        return null;
+    @Override
+    public Optional<User> readById(Integer id) {
+        String sqlQuery = "SELECT * FROM MEMBER WHERE id = ?";
+        User user = jdbcTemplate.queryForObject(sqlQuery, userMapper, id);
+        return Optional.ofNullable(user);
     }
+
+    public Optional<User> readByUserId(String userId) {
+        String sqlQuery = "SELECT * FROM MEMBER WHERE userId = ?";
+        User user = jdbcTemplate.queryForObject(sqlQuery, userMapper, userId);
+        return Optional.ofNullable(user);
+    }
+
 
 }

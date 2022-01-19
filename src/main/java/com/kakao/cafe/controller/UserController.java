@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -34,14 +36,19 @@ public class UserController {
     }
 
     @PostMapping
-    public String createUser(UserRegistrationDto userDto) {
+    public String createUser(@Valid UserRegistrationDto userDto) {
         userService.join(userDto);
         return "redirect:/users";
     }
 
-    @GetMapping("/{userId}")
-    public String user(@PathVariable String userId, Model model) {
-        User user = userService.findById(userId);
+    @GetMapping("/{id}")
+    public String user(@PathVariable Integer id, Model model, HttpSession httpSession) {
+        Object auth = httpSession.getAttribute("auth");
+        if (auth == null) {
+            return "redirect:/users";
+        }
+
+        User user = userService.findById(id);
         model.addAttribute("user", user);
         return "user/profile";
     }
