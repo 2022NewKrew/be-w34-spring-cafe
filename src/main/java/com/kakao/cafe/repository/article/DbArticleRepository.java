@@ -1,10 +1,12 @@
 package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.article.Article;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class DbArticleRepository implements ArticleRepository {
     private final ArticleDao articleDao;
 

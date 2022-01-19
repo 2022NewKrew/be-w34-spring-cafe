@@ -16,8 +16,8 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public ArticleService(ArticleDao articleDao) {
-        this.articleRepository = new DbArticleRepository(articleDao);
+    public ArticleService(DbArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 
     public void postArticle(Article article) {

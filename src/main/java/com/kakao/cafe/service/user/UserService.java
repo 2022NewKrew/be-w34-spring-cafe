@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserService(UserDao userDao) {
-        userRepository= new DbUserRepository(userDao);
+    public UserService(DbUserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public void userSingUp(UserCreateRequestDto userCreateRequestDto) {
@@ -43,6 +43,16 @@ public class UserService {
                 .email(userInfo.getEmail())
                 .signUpDate(userInfo.getSignUpDate())
                 .name(userInfo.getName())
+                .password(userInfo.getPassword())
                 .build();
     }
+
+    public UserResponseDto userLogin(String userId, String password) {
+        UserResponseDto target = findById(userId);
+        if (target.getPassword().equals(password)) {
+            return target;
+        }
+        return null;
+    }
+
 }
