@@ -87,6 +87,29 @@ public class ArticleService implements Service<Article, ArticleDTO, Integer>{
         articleRepository.delete(id);
     }
 
+    public void deleteArticle(int id){
+        Optional<ArticleDTO> optArticle = findAddedCommentArticle(id);
+
+        if(optArticle.isEmpty()){
+            return;
+        }
+
+        ArticleDTO articleDTO = optArticle.get();
+
+        if(articleDTO.getParent() != -1){
+            throw new IllegalStateException("deleteArticle 메서드에는 댓글이 아닌 게시글 Id 로만 접근 할 수 있습니다. (" + id + ") is not article");
+        }
+
+        for(ArticleDTO comment: articleDTO.getComments()){
+            if(!comment.getWriter().equals(articleDTO.getWriter()))
+                return;
+        }
+        for(ArticleDTO comment: articleDTO.getComments()){
+            articleRepository.delete(comment.getId());
+        }
+        articleRepository.delete(articleDTO.getId());
+    }
+
     @Override
     public void update(ArticleDTO articleDTO) {
         articleRepository.update(articleDTO);

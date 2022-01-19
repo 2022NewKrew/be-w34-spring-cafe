@@ -71,7 +71,20 @@ public class ArticleController {
     @LogInCheck
     @ArticleAuthCheck
     @DeleteMapping("/detail/{index}")
-    public String delete(@PathVariable("index") int id, HttpSession session){
+    public String delete(@PathVariable("index") int id){
+
+        try {
+            articleService.deleteArticle(id);
+        } catch (IllegalStateException e) {
+            logger.error("[ArticleController > delete] {}", e.getMessage());
+        }
+        return "redirect:/";
+    }
+
+    @LogInCheck
+    @ArticleAuthCheck
+    @DeleteMapping("/detail/{index}/answers/{id}")
+    public String deleteComment(@PathVariable("index") int index, @PathVariable("id") int id){
 
         articleService.delete(id);
         return "redirect:/";
@@ -95,8 +108,9 @@ public class ArticleController {
 
     @LogInCheck
     @PostMapping("/detail/{index}/comment")
-    public String commentForm(@PathVariable("index") int id, String contents){
+    public String commentForm(@PathVariable("index") int id, String contents, HttpSession session){
         Optional<Article> findArticle = articleService.findOne(id);
+        UserAccount userAccount = (UserAccount) session.getAttribute("sessionedUser");
 
         if(findArticle.isEmpty()){
             logger.error("[ArticleController > commentForm] 등록되지 않은 게시글 Id({})의 댓글 작성 부분으로 접근했습니다.", id);
@@ -108,9 +122,35 @@ public class ArticleController {
         ArticleDTO articleDTO = new ArticleDTO(article);
         articleDTO.setParent(id);
         articleDTO.setContents(contents);
+        articleDTO.setWriter(userAccount.getUserId());
 
         articleService.join(articleDTO);
 
         return "redirect:/questions/detail/" + id;
+    }
+
+    @LogInCheck
+    @ArticleAuthCheck
+    @GetMapping("/detail/{index}/answers/{id}/form")
+    public String updateComment(@PathVariable("index") int index, @PathVariable("id") int id){
+        return "/qna/update_comment_form";
+    }
+
+    @LogInCheck
+    @ArticleAuthCheck
+    @PutMapping("/detail/{index}/answers/{id}/form")
+    public String updateComment(@PathVariable("index") int index, @PathVariable("id") int id, String contents){
+        Optional<Article> findArticle = articleService.findOne(id);
+
+        if(findArticle.isEmpty()){
+            logger.error("[ArticleController > updateComment] 등록되지 않은 댓글 Id({})의 댓글 수정 부분으로 접근했습니다.", id);
+            return "redirect:/";
+        }
+
+        ArticleDTO articleDTO = new ArticleDTO(findArticle.get());
+        articleDTO.setContents(contents);
+        articleService.updateArticle(articleDTO);
+
+        return "redirect:/questions/detail/" + index;
     }
 }
