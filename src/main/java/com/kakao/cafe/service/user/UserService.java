@@ -56,9 +56,9 @@ public class UserService {
         return new UserInfoDto(user);
     }
 
-    public boolean isUserLoggedin(HttpSession session) {
+    public boolean isUserLoggedin(HttpSession session) throws WrongAccessException {
         if (session == null) {
-            return false;
+            throw new WrongAccessException();
         }
         return true;
     }

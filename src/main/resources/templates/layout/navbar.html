@@ -54,14 +54,14 @@
             <ul class="nav navbar-nav navbar-right">
                 {{#sessionedUser}}
                 <li><a href="/users">Users</a></li>
-                <li><a href="/">Articles</a></li>
+                <li><a href="/articles">Articles</a></li>
                 <li><a href="/article/post">Write</a></li>
                 <li><a href="#" role="button">로그아웃</a></li>
                 <li><a href="/users/{{userId}}/form" role="button">개인정보수정</a></li>
                 {{/sessionedUser}}
                 {{^sessionedUser}}
                 <li><a href="/users">Users</a></li>
-                <li><a href="/">Articles</a></li>
+                <li><a href="/articles">Articles</a></li>
                 <li><a href="/user/login" role="button">로그인</a></li>
                 <li><a href="/user/signup">SignUp</a></li>
                 {{/sessionedUser}}
