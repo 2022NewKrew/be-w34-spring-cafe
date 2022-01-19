@@ -51,11 +51,7 @@ public class UserController {
             throw new BindingException(bindingResult);
         }
 
-        HttpSession session = request.getSession();
-        AuthInfo authInfo = (AuthInfo) session.getAttribute("auth");
-        if (authInfo == null) {
-            throw new ForbiddenAccessException(ErrorCode.FORBIDDEN_ACCESS, "Edit User Profile");
-        }
+        AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("auth");
 
         userService.update(authInfo, updateDTO);
         return "redirect:/users";

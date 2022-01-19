@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -34,12 +35,7 @@ public class ArticleController {
             throw new BindingException(bindingResult);
         }
 
-        HttpSession session = request.getSession();
-        AuthInfo authInfo = (AuthInfo) session.getAttribute("auth");
-        if (authInfo == null) {
-            throw new ForbiddenAccessException(ErrorCode.FORBIDDEN_ACCESS, "Post New Article");
-        }
-
+        AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("auth");
         articleService.create(createDTO, authInfo);
 
         return "redirect:/";
