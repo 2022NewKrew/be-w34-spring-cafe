@@ -3,28 +3,23 @@ package com.kakao.cafe.impl.repository;
 import com.kakao.cafe.dto.LoginDTO;
 import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Objects;
 
+@RequiredArgsConstructor
 @Repository("userRepository")
-@Transactional
 public class UserRepositoryImpl implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
-
-    public UserRepositoryImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
 
     @Override
     public long insertUser(UserDTO user) {
@@ -34,7 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
         try {
 
             jdbcTemplate.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement("insert into UserTable (userid, password, email, time) values (?,?,?,now())", Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = connection.prepareStatement("insert into User (userid, password, email) values (?,?,?)", Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, user.getUserId());
                 ps.setString(2, user.getPassword());
                 ps.setString(3, user.getEmail());
@@ -50,7 +45,7 @@ public class UserRepositoryImpl implements UserRepository {
     public UserDTO getUserById(long id) {
         try {
             return jdbcTemplate
-                    .queryForObject("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from UserTable where id = ?",
+                    .queryForObject("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from User where id = ?",
                             (rs, rowNum) -> new UserDTO(
                                     rs.getLong("id"),
                                     rs.getString("userid"),
@@ -65,7 +60,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<UserDTO> getAllUser() {
-        return jdbcTemplate.query("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from UserTable",
+        return jdbcTemplate.query("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from User",
                 (rs, rowNum) -> new UserDTO(
                         rs.getLong("id"),
                         rs.getString("userid"),
@@ -77,11 +72,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int updateUser(long id, UserDTO user) {
-        return jdbcTemplate.update("update UserTable set email = ?,password = ? where id = ?",
+    public int updateUser(UserDTO user) {
+        return jdbcTemplate.update("update User set email = ?,password = ? where id = ?",
                 user.getEmail(),
                 user.getPassword(),
-                id);
+                user.getId());
 
     }
 
@@ -89,7 +84,7 @@ public class UserRepositoryImpl implements UserRepository {
     public UserDTO getUserByLoginData(LoginDTO login) {
         try {
             return jdbcTemplate
-                    .queryForObject("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from UserTable where email = ? and password = ?",
+                    .queryForObject("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from User where email = ? and password = ?",
                             (rs, rowNum) -> new UserDTO(
                                     rs.getLong("id"),
                                     rs.getString("userid"),

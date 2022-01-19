@@ -12,7 +12,7 @@ public interface UserService {
 
     UserDTO getUserById(long id);
 
-    int updateUser(long id, UserDTO user);
+    void updateUser(long id, UserDTO user, String password);
 
     UserDTO getUserByLoginData(LoginDTO login);
 }
