@@ -168,6 +168,6 @@ public class ArticleController {
         }
 
         articleService.replyCreate(replyCreateDTO);
-        return "redirect:/";
+        return "redirect:/qnas/" + replyCreateDTO.getArticleSeq();
     }
 }
