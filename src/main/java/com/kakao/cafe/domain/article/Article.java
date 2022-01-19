@@ -7,18 +7,20 @@ public class Article {
     private final String author;
     private String title;
     private String description;
+    private final boolean deleted;
 
     public Article(Long authorId, String title, String description) {
-        this(null, authorId, null, title, description);
+        this(null, authorId, null, title, description, false);
     }
 
-    public Article(Long id, Long authorId, String author, String title, String description) {
+    public Article(Long id, Long authorId, String author, String title, String description, boolean deleted) {
         validateTitleAndDescription(title, description);
         this.id = id;
         this.authorId = authorId;
         this.author = author;
         this.title = title;
         this.description = description;
+        this.deleted = deleted;
     }
 
     public void update(String title, String description) {
@@ -57,6 +59,10 @@ public class Article {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 
     @Override

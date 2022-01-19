@@ -25,7 +25,8 @@ class ArticleControllerTest {
     private static final String FIRST_AUTHOR = "author";
     private static final String TITLE = "title";
     private static final String DESCRIPTION = "description";
-    private static final Article FIRST_USER_ARTICLE = new Article(FIRST_ARTICLE_ID, FIRST_USER_ID, FIRST_AUTHOR, TITLE, DESCRIPTION);
+    private static final boolean NOT_DELETED = false;
+    private static final Article FIRST_USER_ARTICLE = new Article(FIRST_ARTICLE_ID, FIRST_USER_ID, FIRST_AUTHOR, TITLE, DESCRIPTION, NOT_DELETED);
 
     // TODO - 멤버 변수 reply, viewCount 추가 구현 & 테스트 예정
 
