@@ -6,6 +6,15 @@ public final class Checker {
 
     private Checker() {}
 
+    public static void checkIndex (
+            final long index
+    ) throws IllegalStateException
+    {
+        if (index < 0L) {
+            throw new IllegalStateException("index is not 0 or positive integer! - " + index);
+        }
+    }
+
     public static void checkIntMinMax (
             final int min,
             final int max
