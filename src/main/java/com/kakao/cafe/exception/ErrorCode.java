@@ -18,7 +18,7 @@ public enum ErrorCode {
     // 1. username
     // USERNAME_DUPLICATED(409,"Username duplicated"),
     // 2. password
-    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "Invalid username/password"),
+    INVALID_USERNAME_PASSWORD(HttpStatus.UNAUTHORIZED, "Invalid username/password"),
 
     // Posting(title, author, content)
     // 0. Common

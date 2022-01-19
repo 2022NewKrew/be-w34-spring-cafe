@@ -7,8 +7,8 @@ import com.kakao.cafe.thread.domain.ThreadStatus;
 import com.kakao.cafe.thread.dto.PostCreationForm;
 import com.kakao.cafe.thread.dto.PostView;
 import com.kakao.cafe.thread.repository.PostRepository;
-import com.kakao.cafe.user.UserMapper;
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.dto.UserView;
 import com.kakao.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class PostService {
 
     private PostView toPostView(Post post) {
         User user = userRepository.get(post.getAuthorId()).get();
-        return new PostView(post.getId(), UserMapper.toUserView(user), post.getTitle(), post.getContent(),
+        return new PostView(post.getId(), new UserView(user.getUsername(), user.getEmail(), user.getDisplayName()), post.getTitle(), post.getContent(),
                             post.getCreatedAt(), post.getLastModifiedAt());
     }
 

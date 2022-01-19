@@ -1,8 +1,13 @@
 package com.kakao.cafe.user.domain;
 
+import lombok.Builder;
+import lombok.With;
+
 import java.time.LocalDateTime;
 
+@Builder
 public class User {
+    @With
     private final Long id;
     private final String email;
     private final String username;

@@ -11,6 +11,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class ControllerAdvisor {
     private final Logger logger = LoggerFactory.getLogger(ControllerAdvisor.class);
 
+    @ExceptionHandler(InvalidUsernamePasswordException.class)
+    public ModelAndView retryOnLoginFailure(InvalidUsernamePasswordException exception) {
+        ModelAndView mv = new ModelAndView("user/login-failed");
+        mv.setStatus(exception.getResponseStatus());
+        logger.info(exception.getMessage());
+        return mv;
+    }
+
     @ExceptionHandler(CustomException.class)
     public ModelAndView definedExceptionHandler(CustomException exception) {
         ModelAndView mv = new ModelAndView("common/custom-error");

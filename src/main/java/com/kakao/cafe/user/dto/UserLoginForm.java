@@ -3,6 +3,7 @@ package com.kakao.cafe.user.dto;
 import javax.validation.constraints.NotBlank;
 
 public class UserLoginForm {
+
     @NotBlank
     private final String username;
 
