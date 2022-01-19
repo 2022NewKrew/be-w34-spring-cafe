@@ -33,6 +33,12 @@ public class ArticleDAO {
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> Article.newInstance(rs.getLong("id"), rs.getString("title"), rs.getString("content"), rs.getString("create_user_id"), rs.getString("create_date"), rs.getInt("views"));
+        return (rs, rowNum) -> Article.newInstance(
+                rs.getLong("id"),
+                rs.getString("title"),
+                rs.getString("content"),
+                rs.getString("create_user_id"),
+                rs.getString("create_date"),
+                rs.getInt("views"));
     }
 }
