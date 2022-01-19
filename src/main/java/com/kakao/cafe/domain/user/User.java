@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User {
-    private int id = 0;
+    private long id;
     private String userId;
     private String password;
     private String name;
@@ -17,14 +17,5 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
-        id++;
-    }
-
-    public void updateUser(User changedUser){
-        this.setId(changedUser.getId());
-        this.setUserId(changedUser.getUserId());
-        this.setEmail(changedUser.getEmail());
-        this.setName(changedUser.getName());
-        this.setPassword(changedUser.getPassword());
     }
 }
