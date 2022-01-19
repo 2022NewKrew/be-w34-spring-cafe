@@ -1,0 +1,21 @@
+spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  mustache:
+    expose-session-attributes: true
+    cache: false
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: TRACE
+
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
