@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.entity.Article;
 import com.kakao.cafe.dto.article.ArticleContents;
 import com.kakao.cafe.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.dto.article.ArticleListShow;
@@ -8,6 +9,8 @@ import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,7 +29,10 @@ public class ArticleService {
 
     public void deleteArticle(long articleId) { articleRepository.delete(articleId); }
 
-    public ArticleContents getArticle(Long id) { return new ArticleContents(articleRepository.retrieve(id)); }
+    public ArticleContents getArticle(Long id) {
+        Article target = Optional.ofNullable(articleRepository.retrieve(id))
+                .orElseThrow(() -> new NoSuchElementException("Article not found"));
+        return new ArticleContents(target); }
 
     public List<ArticleListShow> getAllArticles() {
         return articleRepository.toList().stream()
