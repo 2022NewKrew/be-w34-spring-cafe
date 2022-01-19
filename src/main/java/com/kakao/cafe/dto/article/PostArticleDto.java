@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class WriteArticleDto {
+public class PostArticleDto {
     private String writer;
     private String title;
     private String contents;

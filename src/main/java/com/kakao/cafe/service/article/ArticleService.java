@@ -3,7 +3,7 @@ package com.kakao.cafe.service.article;
 import com.kakao.cafe.domain.Entity.Article;
 import com.kakao.cafe.domain.Repository.article.ArticleRepository;
 import com.kakao.cafe.dto.article.ReferArticleDto;
-import com.kakao.cafe.dto.article.WriteArticleDto;
+import com.kakao.cafe.dto.article.PostArticleDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +15,26 @@ import java.util.stream.Collectors;
 public class ArticleService {
     private ArticleRepository articleRepository;
 
-    public void save(WriteArticleDto writeArticleDto) {
-        this.articleRepository.save(writeArticleDto.toEntity(1));
+    // 게시물 저장
+    public void save(PostArticleDto postArticleDto) {
+        this.articleRepository.save(postArticleDto.toEntity(1));
     }
 
+    // 전체 게시물 찾기
     public List<ReferArticleDto> findAllArticles() {
         List<ReferArticleDto> articleList = this.articleRepository.findAll().stream()
                 .map(ReferArticleDto::new).collect(Collectors.toList());
         return articleList;
     }
 
+    // id로 해당 게시물 찾기
     public ReferArticleDto findArticleById(int id) {
         Article article = this.articleRepository.findById(id);
         return new ReferArticleDto(article);
     }
 
+    // 게시물 수정
+    public void update(PostArticleDto postArticleDto, int id) {
+        this.articleRepository.updateArticle(id, postArticleDto.getTitle(), postArticleDto.getContents());
+    }
 }
