@@ -9,8 +9,4 @@ public class LoginAuthDto {
     private final Long id;
     private final String email;
     private final String password;
-
-    public boolean matchPassword(String password) {
-        return this.password.equals(password);
-    }
 }

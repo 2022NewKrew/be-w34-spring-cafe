@@ -17,9 +17,13 @@ public class LoginService {
         if (loginAuthDto == null) {
             throw new IllegalArgumentException("이메일 또는 비밀번호가 다릅니다.");
         }
-        if (!loginAuthDto.matchPassword(loginRequestDto.getPassword())) {
+        if (!matchPassword(loginRequestDto, loginAuthDto)) {
             throw new IllegalArgumentException("이메일 또는 비밀번호가 다릅니다.");
         }
         return loginAuthDto;
+    }
+
+    private boolean matchPassword(LoginRequestDto loginRequestDto, LoginAuthDto loginAuthDto) {
+        return loginRequestDto.getPassword().equals(loginAuthDto.getPassword());
     }
 }
