@@ -35,7 +35,7 @@ public class QuestionPostController {
         return "qnadetail";
     }
 
-    @GetMapping("/{post-id}/update")
+    @GetMapping("/{post-id}/updateform")
     public String updatePost(@PathVariable(name = "post-id") Long postId, Model model) {
         QuestionPostDetailResult postDetail = getQuestionPostUseCase.getPostDetail(new QuestionPostDetailCommand(postId));
 
