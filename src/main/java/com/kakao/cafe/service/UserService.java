@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.dto.LoginRequest;
 import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.dto.UserRegisterRequest;
 import com.kakao.cafe.exception.CustomException;
@@ -40,5 +41,16 @@ public class UserService {
                 user.getId(),
                 user.getName(),
                 user.getEmail());
+    }
+
+    public User login(LoginRequest requestDto) {
+        User user = userRepository.findByUserId(requestDto.getUserId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_INPUT));
+
+        if (!user.match(requestDto.getPassword())) {
+            throw new CustomException(ErrorCode.WRONG_PASSWORD_INPUT);
+        }
+
+        return user;
     }
 }

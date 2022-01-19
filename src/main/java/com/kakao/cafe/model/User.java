@@ -46,6 +46,10 @@ public class User {
         return createdAt;
     }
 
+    public boolean match(String password) {
+        return this.password.equals(password);
+    }
+
     public static class Builder {
         private final UUID id;
         private final String userId;
