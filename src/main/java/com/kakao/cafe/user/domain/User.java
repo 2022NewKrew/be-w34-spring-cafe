@@ -1,5 +1,7 @@
 package com.kakao.cafe.user.domain;
 
+import com.kakao.cafe.exception.WrongPasswordException;
+
 public class User {
 
     private final UserId userId;
@@ -12,6 +14,12 @@ public class User {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
+    }
+
+    public void isValidPassword(Password targetPassword) {
+        if (!targetPassword.equals(password)) {
+            throw new WrongPasswordException();
+        }
     }
 
     public UserId getUserId() {

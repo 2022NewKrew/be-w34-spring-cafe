@@ -10,8 +10,22 @@ public class Password {
         this.value = value;
     }
 
-    public boolean isSame(Password targetPassword) {
-        return Objects.equals(value, targetPassword.value);
+
+    @Override
+    public boolean equals(Object target) {
+        if (this == target) {
+            return true;
+        }
+        if (target == null || getClass() != target.getClass()) {
+            return false;
+        }
+        Password password = (Password) target;
+        return Objects.equals(value, password.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 
     public String getValue() {
