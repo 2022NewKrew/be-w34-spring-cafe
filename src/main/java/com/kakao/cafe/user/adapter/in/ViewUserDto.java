@@ -1,23 +1,18 @@
-package com.kakao.cafe.user.application.port.in;
+package com.kakao.cafe.user.adapter.in;
 
-import com.kakao.cafe.user.adapter.in.ViewUserDto;
 import com.kakao.cafe.user.domain.Email;
 import com.kakao.cafe.user.domain.UserId;
 
-public class FoundUserDto {
+public class ViewUserDto {
 
     private final UserId userId;
     private final Email email;
     private final String nickname;
 
-    public FoundUserDto(UserId userId, Email email, String nickname) {
+    public ViewUserDto(UserId userId, Email email, String nickname) {
         this.userId = userId;
         this.email = email;
         this.nickname = nickname;
-    }
-
-    public ViewUserDto toViewUserDto() {
-        return new ViewUserDto(userId, email, nickname);
     }
 
     public UserId getUserId() {
