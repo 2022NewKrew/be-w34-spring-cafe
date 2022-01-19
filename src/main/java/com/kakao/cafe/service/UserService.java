@@ -48,11 +48,9 @@ public class UserService {
 
     @Transactional
     public void update(AuthInfo authInfo, Update updateDTO) {
-        Optional<User> foundUser = userRepository.findUserByUid(authInfo.getUid());
-        if (foundUser.isEmpty()) {
-            throw new UserNotFoundException(ErrorCode.NOT_FOUND, authInfo.getUid());
-        }
-        if (!foundUser.get().matchPassword(updateDTO.getPassword())) {
+        User foundUser = userRepository.findUserByUid(authInfo.getUid())
+            .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND, authInfo.getUid()));
+        if (!foundUser.matchPassword(updateDTO.getPassword())) {
             throw new AuthInvalidPasswordException(ErrorCode.AUTHENTICATION_INVALID,
                 authInfo.getUid());
         }
@@ -73,12 +71,10 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Result readByUid(String uid) {
-        Optional<User> foundUser = userRepository.findUserByUid(uid);
-        if (foundUser.isEmpty()) {
-            throw new UserNotFoundException(ErrorCode.NOT_FOUND, uid);
-        }
+        User foundUser = userRepository.findUserByUid(uid)
+            .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND, uid));
 
-        logger.info("Read User by [UID : {}] :: {}", uid, foundUser.get());
-        return Result.from(foundUser.get());
+        logger.info("Read User by [UID : {}] :: {}", uid, foundUser);
+        return Result.from(foundUser);
     }
 }

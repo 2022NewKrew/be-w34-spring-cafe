@@ -31,13 +31,11 @@ public class ArticleService {
 
     @Transactional
     public void create(Create createDTO, AuthInfo authInfo) {
-        Optional<User> foundUser = userRepository.findUserByUid(authInfo.getUid());
-        if (foundUser.isEmpty()) {
-            throw new UserNotFoundException(ErrorCode.NOT_FOUND, authInfo.getUid());
-        }
+        User foundUser = userRepository.findUserByUid(authInfo.getUid())
+            .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND, authInfo.getUid()));
 
         Article article = Article.builder()
-            .uid(foundUser.get().getUid())
+            .uid(foundUser.getUid())
             .title(createDTO.getTitle())
             .body(createDTO.getBody())
             .createdAt(LocalDateTime.now())
@@ -58,12 +56,10 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public Result readById(Long id) {
-        Optional<Article> foundArticle = articleRepository.findArticleById(id);
-        if (foundArticle.isEmpty()) {
-            throw new ArticleNotFoundException(ErrorCode.NOT_FOUND, id);
-        }
+        Article foundArticle = articleRepository.findArticleById(id)
+            .orElseThrow(() -> new ArticleNotFoundException(ErrorCode.NOT_FOUND, id));
 
-        logger.info("Read Article by [ID : {}] :: {}", id, foundArticle.get());
-        return Result.from(foundArticle.get());
+        logger.info("Read Article by [ID : {}] :: {}", id, foundArticle);
+        return Result.from(foundArticle);
     }
 }
