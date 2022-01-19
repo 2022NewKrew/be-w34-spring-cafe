@@ -37,6 +37,8 @@ public class Question {
      */
     private LocalDateTime createTime;
 
+    private QuestionStatus status;
+
     /**
      * 시스템 시간으로 Question.createTime 을 업데이트합니다.
      */

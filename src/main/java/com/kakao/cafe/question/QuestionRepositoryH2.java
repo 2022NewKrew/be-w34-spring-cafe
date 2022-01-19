@@ -53,7 +53,7 @@ public class QuestionRepositoryH2 implements QuestionRepository {
     @Override
     public Question findOne(Long id) {
 
-        String sql = "SELECT id, member_id, writer, title, contents, create_time FROM question WHERE id=?";
+        String sql = "SELECT id, member_id, writer, title, contents, create_time, status FROM question WHERE id=? AND status != 'delete'";
 
         return jdbcTemplate.queryForObject(sql, new QuestionRowMapper(), id);
     }
@@ -61,7 +61,7 @@ public class QuestionRepositoryH2 implements QuestionRepository {
     @Override
     public List<Question> findAll() {
 
-        String sql = "SELECT id, member_id, writer, title, contents, create_time FROM question";
+        String sql = "SELECT id, member_id, writer, title, contents, create_time, status FROM question WHERE status != 'delete'";
 
         return jdbcTemplate.query(sql, new QuestionRowMapper());
     }
@@ -69,8 +69,9 @@ public class QuestionRepositoryH2 implements QuestionRepository {
     @Override
     public boolean deleteOne(Long id) {
 
-        String sql = "DELETE FROM question WHERE id = ?";
-        int rs = jdbcTemplate.update(sql, id);
+        String sql = "UPDATE question SET status=? WHERE id = ?";
+
+        int rs = jdbcTemplate.update(sql, QuestionStatus.DELETE.toString(), id);
 
         if (rs == FAIL) {
             log.error("USER TABLE UPDATE FAIL ");
@@ -92,7 +93,7 @@ public class QuestionRepositoryH2 implements QuestionRepository {
         );
 
         if (rs == FAIL) {
-            log.error("QUESTION TABLE UPDATE FAIL ");
+            log.error("QUESTION TABLE DELETE FAIL ");
             return false;
         }
 

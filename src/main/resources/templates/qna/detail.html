@@ -1,50 +1,88 @@
 {{>layout/header}}
 <div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
-       <div class="panel panel-default content-main">
-<header class="qna-header">
-    <h2 class="qna-title">{{question.title}}</h2>
-</header>
-<div class="content-main">
-    <div class="qna-comment">
-        <div class="qna-comment-slipp">
-            <div class="qna-comment-slipp-articles">
-                <div class="article" id="answer-1405">
-                    <div class="article-header">
-                        <div class="article-header-thumb">
-                            <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="{{question.writer}}">
+        <div class="panel panel-default content-main">
+            <header class="qna-header">
+                <h2 class="qna-title">{{question.title}}</h2>
+            </header>
+            <div class="content-main">
+                <div class="qna-comment">
+                    <div class="qna-comment-slipp">
+                        <div class="qna-comment-slipp-articles">
+                            <div class="article" id="answer-1405">
+                                <div class="article-header">
+                                    <div class="article-header-thumb">
+                                        <img src="https://graph.facebook.com/v2.3/1324855987/picture"
+                                             class="article-author-thumb" alt="{{question.writer}}">
+                                    </div>
+                                    <div class="article-header-text">
+                                        <a href="/users/{{question.writer}}" class="article-author-name">{{question.writer}}</a>
+                                        <a href="#" class="article-header-time" title="퍼머링크">
+                                            {{question.createTime}}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="article-doc comment-doc qna-doc-content">
+                                    <p>{{question.contents}}</p>
+                                </div>
+                                <div class="article-util">
+                                    {{#question.thisIsMine}}
+                                    <ul class="article-util-list">
+                                        <li>
+                                            <a class="link-modify-article"
+                                               href="/questions/update/{{question.id}}">수정</a>
+                                        </li>
+                                        <li>
+                                            <form class="delete-answer-form" action="/questions/{{question.id}}"
+                                                  method="POST">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button type="submit" class="delete-answer-button">삭제</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                    {{/question.thisIsMine}}
+                                </div>
+                            </div>
                         </div>
-                        <div class="article-header-text">
-                            <a href="/users/{{question.writer}}" class="article-author-name">{{question.writer}}</a>
-                            <a href="#" class="article-header-time" title="퍼머링크">
-                                {{question.createTime}}
-                            </a>
-                        </div>
-                    </div>
-                    <div class="article-doc comment-doc qna-doc-content">
-                        <p>{{question.contents}}</p>
-                    </div>
-                    <div class="article-util">
-                        {{#question.thisIsMine}}
-                        <ul class="article-util-list">
-                            <li>
-                                <a class="link-modify-article" href="/questions/update/{{question.id}}">수정</a>
-                            </li>
-                            <li>
-                                <form class="delete-answer-form" action="/questions/{{question.id}}" method="POST">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" class="delete-answer-button">삭제</button>
-                                </form>
-                            </li>
-                        </ul>
-                        {{/question.thisIsMine}}
                     </div>
                 </div>
             </div>
+            {{#replySize}}
+            <div class="reply-comment" style="background-color: #c4e3f3; margin: 15px -14px -14px;">
+                <div>
+                    <em style="font-size: 18px; font-weight: bold; margin-right: 15px">댓글</em>
+                    <span style="font-size: 16px">{{replySize}}개</span>
+                </div>
+                <ul style="margin-top: 15px;list-style: none;padding: 0 10px 14px;">
+                    {{#replies}}
+                    <li style="margin: 15px 0; padding: 10px; background-color: #fff; border-radius: 8px; position:relative;">
+                        <div>
+                            <span style="font-size: 15px;font-weight: bold;">{{writer}}</span><span style="margin-left: 10px; font-size: 14px;">{{createTime}}</span>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 16px;">
+                            {{comment}}
+                        </p>
+                        {{#thisIsMine}}
+                        <form action="/questions/{{question.id}}/answers/{{id}}" method="post" style="position: absolute; top: 10px; right: 10px;">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" style="border-radius: 50%; border: 0;">x</button>
+                        </form>
+                        {{/thisIsMine}}
+                    </li>
+                    {{/replies}}
+                </ul>
+            </div>
+            {{/replySize}}
+
+            <form action="/questions/{{question.id}}/answers" method="post" name="reply" style="padding:10px 0 0;">
+                <span style="font-size: 18px; color: #5e5e5e; font-weight: 700;">댓글 달기</span>
+                <div style="margin-top: 20px; display: flex; flex-direction: row;">
+                    <label style="flex: 1 1 auto; height: 100%; margin:0; border: 1px solid #e0e0e0;">
+                        <textarea style="border: 0; width: 100%;" name="comment"></textarea>
+                    </label><button type="submit">보내기</button>
+                </div>
+            </form>
         </div>
     </div>
-</div>
-</div>
-</div>
 </div>
 {{>layout/footer}}

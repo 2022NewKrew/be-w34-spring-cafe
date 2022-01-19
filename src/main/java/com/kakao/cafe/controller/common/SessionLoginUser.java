@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 @Component
 @RequiredArgsConstructor
 public class SessionLoginUser {
+
     private static final String SESSION_LOGIN_USER = "loginUser";
     private static final String ADMIN = "admin";
     private final HttpSession session;

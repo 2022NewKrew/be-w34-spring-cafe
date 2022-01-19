@@ -24,7 +24,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-//	implementation 'com.h2database:h2:2.0.206'
     implementation 'mysql:mysql-connector-java'
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
