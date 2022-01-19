@@ -3,6 +3,7 @@ package com.kakao.cafe.article.controller;
 import com.kakao.cafe.article.dto.ArticleDto;
 import com.kakao.cafe.article.dto.ArticleRegistrationDto;
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.user.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,8 +37,9 @@ public class ArticleController {
     }
 
     @PostMapping(value = "articles")
-    public String register(ArticleRegistrationDto dto) {
-        service.create(dto);
+    public String register(ArticleRegistrationDto dto, HttpSession session) {
+        User author = (User) session.getAttribute("user");
+        service.create(dto, author);
         return "redirect:/";
     }
 
@@ -46,6 +49,7 @@ public class ArticleController {
         model.addAttribute("title", articleDto.getTitle());
         model.addAttribute("content", articleDto.getContent());
         model.addAttribute("createdAt", articleDto.getCreatedAt());
+        model.addAttribute("author", articleDto.getAuthor());
         return "post/show";
     }
 }

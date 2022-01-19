@@ -3,6 +3,7 @@ package com.kakao.cafe.article.service;
 import com.kakao.cafe.article.dto.ArticleRegistrationDto;
 import com.kakao.cafe.article.model.Article;
 import com.kakao.cafe.article.repo.ArticleRepository;
+import com.kakao.cafe.user.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -22,10 +23,11 @@ public class ArticleService {
         repository.save(article);
     }
 
-    public void create(ArticleRegistrationDto dto) {
+    public void create(ArticleRegistrationDto dto, User author) {
         Article article = new Article();
         article.setTitle(dto.getTitle());
         article.setContent(dto.getContent());
+        article.setAuthor(author);
         create(article);
     }
 

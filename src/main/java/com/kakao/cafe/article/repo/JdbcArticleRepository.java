@@ -23,13 +23,14 @@ public class JdbcArticleRepository implements ArticleRepository {
     public long save(Article target) {
         beforeSave(target);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String query = "INSERT INTO `ARTICLE`(CREATED_AT, UPDATED_AT, TITLE, CONTENT) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO `ARTICLE`(CREATED_AT, UPDATED_AT, TITLE, CONTENT, AUTHOR_ID) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(connection -> {
                     PreparedStatement ps = connection.prepareStatement(query);
                     ps.setObject(1, target.getCreatedAt());
                     ps.setObject(2, target.getUpdatedAt());
                     ps.setString(3, target.getTitle());
                     ps.setString(4, target.getContent());
+                    ps.setLong(5, target.getAuthor().getId());
                     return ps;
                 },
                 keyHolder
