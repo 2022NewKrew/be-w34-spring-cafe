@@ -13,11 +13,13 @@ create table article (
     id integer primary key auto_increment,
     author_id integer references users (id),
     title varchar(100) not null,
-    description longtext not null
+    description longtext not null,
+    deleted boolean
 );
 create table reply (
     id integer primary key auto_increment,
     article_id integer references article (id),
     author_id integer references users (id),
-    description varchar(100) not null
+    description varchar(100) not null,
+    deleted boolean
 )
