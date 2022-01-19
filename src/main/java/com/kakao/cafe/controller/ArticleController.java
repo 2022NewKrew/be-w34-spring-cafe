@@ -66,8 +66,9 @@ public class ArticleController {
 
     @UserAuthorized
     @DeleteMapping("/{articleId}")
-    public String deleteArticle(@PathVariable Long articleId) {
-        articleService.deleteArticle(articleId);
+    public String deleteArticle(@PathVariable Long articleId, HttpSession session) {
+        Auth auth = (Auth) session.getAttribute("auth");
+        articleService.deleteArticle(articleId, auth.getAuthId());
 
         return "redirect:/";
     }

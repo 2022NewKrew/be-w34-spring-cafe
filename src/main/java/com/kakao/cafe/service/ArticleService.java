@@ -64,8 +64,15 @@ public class ArticleService {
         articleRepository.update(article);
     }
 
-    public void deleteArticle(Long id) {
-        articleRepository.delete(id);
+    public void deleteArticle(Long AuthorId, Long articleId) {
+        List<Reply> replies = replyRepository.findAllByArticleId(articleId);
+        replies.forEach(r -> {
+                    if (!r.getAuthorId().equals(AuthorId)) {
+                        throw new IllegalStateException("다른 유저의 댓글이 있는 게시글은 삭제할 수 없습니다.");
+                    }
+                    deleteReply(r.getId());
+                });
+        articleRepository.delete(articleId);
     }
 
     public void deleteReply(Long id) {
