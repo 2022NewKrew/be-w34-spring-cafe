@@ -1,7 +1,7 @@
 package com.kakao.cafe.user.domain;
 
-import com.kakao.cafe.user.exception.UserException;
-import com.kakao.cafe.util.ErrorCode;
+import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.UserException;
 import lombok.Getter;
 
 import java.util.Objects;

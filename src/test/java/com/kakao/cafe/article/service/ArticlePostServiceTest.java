@@ -3,12 +3,12 @@ package com.kakao.cafe.article.service;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.Contents;
 import com.kakao.cafe.article.domain.Title;
-import com.kakao.cafe.article.exception.ArticleException;
 import com.kakao.cafe.article.repository.ArticleRepository;
+import com.kakao.cafe.exception.ArticleException;
+import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.UserException;
 import com.kakao.cafe.user.domain.UserId;
-import com.kakao.cafe.user.exception.UserException;
 import com.kakao.cafe.user.service.UserService;
-import com.kakao.cafe.util.ErrorCode;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,7 +65,7 @@ public class ArticlePostServiceTest {
     @Test
     @DisplayName("WriterId가 존재하지 않는 UserId인 경우 Article을 게시할 수 없다.")
     void postFailedNoExistUserId() {
-        when(userService.findByUserId(article.getWriterId()))
+        when(userService.findUserByUserId(article.getWriterId()))
                 .thenThrow(new UserException(ErrorCode.USER_NOT_FOUND));
 
         assertThatThrownBy(() -> articlePostService.postArticle(articleContainsId))

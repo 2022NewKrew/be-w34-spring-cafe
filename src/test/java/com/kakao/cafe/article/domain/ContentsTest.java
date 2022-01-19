@@ -1,7 +1,7 @@
 package com.kakao.cafe.article.domain;
 
-import com.kakao.cafe.article.exception.ArticleException;
-import com.kakao.cafe.util.ErrorCode;
+import com.kakao.cafe.exception.ArticleException;
+import com.kakao.cafe.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

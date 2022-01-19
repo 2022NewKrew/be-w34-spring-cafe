@@ -1,9 +1,9 @@
 package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.exception.ArticleException;
 import com.kakao.cafe.article.repository.ArticleRepository;
-import com.kakao.cafe.util.ErrorCode;
+import com.kakao.cafe.exception.ArticleException;
+import com.kakao.cafe.exception.ErrorCode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

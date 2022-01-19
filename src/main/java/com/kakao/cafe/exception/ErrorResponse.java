@@ -1,4 +1,4 @@
-package com.kakao.cafe.util;
+package com.kakao.cafe.exception;
 
 import lombok.Builder;
 import lombok.Getter;

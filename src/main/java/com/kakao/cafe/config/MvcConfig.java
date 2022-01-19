@@ -23,14 +23,13 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         registry.addViewController("/user/form").setViewName("user/form");
         registry.addViewController("/login/form").setViewName("user/login");
-        registry.addViewController("/login/failed").setViewName("user/login_failed");
         registry.addViewController("/question/form").setViewName("qna/form");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginCheckInterceptor)
-                .addPathPatterns("/question/**", "/user/{userId}/form");
+                .addPathPatterns("/**");
     }
 
     @Override
