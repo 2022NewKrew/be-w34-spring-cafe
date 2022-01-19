@@ -1,7 +1,7 @@
 package com.kakao.cafe.article.controller;
 
+import com.kakao.cafe.article.dto.ArticleDto;
 import com.kakao.cafe.article.dto.ArticleRegistrationDto;
-import com.kakao.cafe.article.model.Article;
 import com.kakao.cafe.article.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/")
@@ -24,9 +25,12 @@ public class ArticleController {
 
     @GetMapping
     public String list(Model model) {
-        List<Article> articles = service.fetchAll();
-        model.addAllAttributes(Map.of("articles", articles));
-        model.addAttribute("articleCount", articles.size());
+        List<ArticleDto> dtoList = service.fetchAll()
+                .stream()
+                .map(ArticleDto::new)
+                .collect(Collectors.toUnmodifiableList());
+        model.addAllAttributes(Map.of("articles", dtoList));
+        model.addAttribute("articleCount", dtoList.size());
         return "index";
     }
 
@@ -38,9 +42,10 @@ public class ArticleController {
 
     @GetMapping(value = "articles/{id}")
     public String show(@PathVariable Long id, Model model) {
-        Article article = service.fetch(id);
-        model.addAttribute("title", article.getTitle());
-        model.addAttribute("content", article.getContent());
+        ArticleDto articleDto = new ArticleDto(service.fetch(id));
+        model.addAttribute("title", articleDto.getTitle());
+        model.addAttribute("content", articleDto.getContent());
+        model.addAttribute("createdAt", articleDto.getCreatedAt());
         return "post/show";
     }
 }
