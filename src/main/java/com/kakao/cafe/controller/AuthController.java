@@ -23,7 +23,4 @@ public class AuthController {
         httpSession.setAttribute("auth", loginUser);
         return "redirect:/";
     }
-
-
-
 }
