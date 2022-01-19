@@ -10,4 +10,8 @@ public interface ArticleService {
     List<ArticleDto> allArticles();
 
     ArticleDto retrieveArticle(Long articleId);
+
+    void deleteArticle(Long articleId);
+
+    void updateArticle(ArticleDto articleDto);
 }

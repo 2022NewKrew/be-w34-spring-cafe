@@ -33,17 +33,13 @@ public class UserH2Repository implements UserRepository {
 
     @Override
     public <S extends UserEntity> S save(S entity) {
-        try {
-            entity.initDate();
-            SqlParameterSource params = new BeanPropertySqlParameterSource(entity);
+        entity.initDate();
+        SqlParameterSource params = new BeanPropertySqlParameterSource(entity);
 
-            Long id = simpleJdbcInsert.executeAndReturnKey(params).longValue();
-            entity.putUserId(id);
+        Long id = simpleJdbcInsert.executeAndReturnKey(params).longValue();
+        entity.putUserId(id);
 
-            return entity;
-        } catch (Exception e) {
-            throw e;
-        }
+        return entity;
     }
 
     @Override

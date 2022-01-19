@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-01-17T18:18:53+0900",
+    date = "2022-01-18T15:16:26+0900",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 11.0.11 (AdoptOpenJDK)"
 )
 @Component
@@ -31,6 +31,7 @@ public class ArticleMapperImpl implements ArticleMapper {
         articleEntity.title( articleDto.getTitle() );
         articleEntity.content( articleDto.getContent() );
         articleEntity.writer( articleDto.getWriter() );
+        articleEntity.userId( articleDto.getUserId() );
 
         articleEntity.writeDate( java.time.LocalDateTime.now() );
 
@@ -53,6 +54,7 @@ public class ArticleMapperImpl implements ArticleMapper {
         articleDto.content( articleEntity.getContent() );
         articleDto.writer( articleEntity.getWriter() );
         articleDto.views( articleEntity.getViews() );
+        articleDto.userId( articleEntity.getUserId() );
 
         return articleDto.build();
     }

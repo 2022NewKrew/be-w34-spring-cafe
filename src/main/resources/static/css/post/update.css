@@ -56,9 +56,10 @@ li {
     line-height: 30px;
 }
 
-.post-title {
+.title {
     font-size: 32px;
     font-weight: 500;
+    margin-top: 100px;
     margin-bottom: 60px;
 }
 
@@ -103,6 +104,18 @@ li {
     margin-bottom: 10px;
 }
 
+.post-title {
+    font-weight: bold;
+    margin-top: 20px;
+    margin-left: 3%;
+}
+
+.post-content {
+    margin-top: 20px;
+    margin-left: 3%;
+    font-weight: bold;
+}
+
 .post-write-btn {
     margin-top: 20px;
     align-items: center;
@@ -111,7 +124,7 @@ li {
     flex-direction: column;
     text-align: center;
     justify-content: center;
-    width: 60px;
+    width: 100px;
     height: 30px;
     font-size: 14px;
     background-color: black;
@@ -124,16 +137,6 @@ li {
     justify-content: end;
 }
 
-.normal-btn {
-    width: 60px;
-    height: 30px;
-    font-size: 14px;
-    background-color: black;
-    color: white;
-    float: right;
-    margin: 10px;
-}
-
 .post-write-btn:hover {
     background-color: #ffcd00;
     color: black;
@@ -141,6 +144,7 @@ li {
 
 .form-group {
     padding: 0px;
+    border: none;
 }
 
 .form-control {
@@ -158,15 +162,15 @@ li {
 .comment-writer {
     font-weight: bold;
     margin: 20px;
-    border: none;
 }
 
-.comment-writer:focus {
-    outline: none;
+.text-box {
+    border: 1px solid lightgray;
+    margin-top: 20px;
 }
 
 .submit-write {
-    border: 1px solid lightgray;
+
     display: flex;
     flex-direction: column;
 }

@@ -5,11 +5,8 @@
     <meta charset="utf-8">
     <title>kakao Java Web Programming</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="../css/reset.css" rel="stylesheet">
-    <link href="../css/user/success.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link href="../../css/reset.css" rel="stylesheet">
+    <link href="../../css/user/success.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -17,18 +14,13 @@
         <div class="col-md-12">
             <div class="navbar-header">
                 <a href="/" class="navbar-brand">
-                    <img src="../images/KakaoCI.png" />
+                    <img src="../../images/KakaoCI.png" />
                 </a>
 
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/users">멤버 리스트</a></li>
-                {{^sessionUserId}}
                 <li><a class="black-component" href="/user/login.html" role="button">로그인</a></li>
-                {{/sessionUserId}}
-                {{#sessionUserId}}
-                <li><a class="black-component" href="/users/logout" role="button">로그아웃</a></li>
-                {{/sessionUserId}}
                 <li><a class="black-component" href="/user/form.html" role="button">회원가입</a></li>
             </ul>
         </div>
@@ -36,10 +28,9 @@
 
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">가입이 완료되었습니다!</p>
+            <p class="title">권한문제 발생</p>
         </header>
-        <p class="user-info"> 이메일: {{email}}</p>
-        <p class="user-info"> 닉네임: {{nickName}}</p>
+        <p class="user-info">권한이 없습니다. 당장 로그인을 하던 자기 게시물만 접근하시오.</p>
         <a href="/" class="btn">홈으로</a>
     </div>
 </div>

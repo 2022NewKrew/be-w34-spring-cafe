@@ -51,4 +51,19 @@ public class ArticleMemoryRepository implements ArticleRepository{
                 .findFirst()
                 .isPresent();
     }
+
+    @Override
+    public void updateViewsById(Long primaryKey, int views) {
+        return;
+    }
+
+    @Override
+    public void deleteById(Long primaryKey) {
+
+    }
+
+    @Override
+    public void updateTitleAndContentById(Long primaryKey, String title, String content) {
+
+    }
 }

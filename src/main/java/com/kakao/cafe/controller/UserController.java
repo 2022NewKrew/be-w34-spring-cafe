@@ -17,7 +17,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/users")
+    @PostMapping("/users/register")
     public String userRegister(UserDto userDto, Model model) {
         UserDto registeredUser = userService.register(userDto);
 
@@ -25,6 +25,11 @@ public class UserController {
         model.addAttribute("nickName", registeredUser.getNickName());
 
         return "/user/register_success";
+    }
+
+    @GetMapping("/users/register")
+    public String userRegister() {
+        return "/user/form";
     }
 
     @GetMapping("/users")
@@ -45,7 +50,7 @@ public class UserController {
     public String userLogin(UserDto userDto, HttpSession httpSession, Model model) {
         try {
             UserDto loginUser = userService.login(userDto);
-            System.out.println("loginUser.getId() + loginUser.getEmail() = " + loginUser.getId() + loginUser.getEmail());
+
             httpSession.setAttribute("sessionUserName", loginUser.getNickName());
             httpSession.setAttribute("sessionUserId", loginUser.getId());
 
@@ -55,5 +60,17 @@ public class UserController {
 
             return "error/login_fail";
         }
+    }
+
+    @GetMapping("/users/login")
+    public String userLogin() {
+        return "/user/login";
+    }
+
+    @GetMapping("/users/logout")
+    public String userLogout(HttpSession httpSession) {
+        httpSession.invalidate();
+
+        return "redirect:/";
     }
 }
