@@ -1,13 +1,15 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.annotation.UserAuthorized;
+import com.kakao.cafe.domain.auth.Auth;
 import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.dto.article.ArticleRequest;
-import com.kakao.cafe.dto.article.ArticleUpdateRequest;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/articles")
@@ -20,8 +22,9 @@ public class ArticleController {
     }
 
     @PostMapping
-    public String publish(ArticleRequest articleRequest) {
-        articleService.publishArticle(articleRequest);
+    public String publish(ArticleRequest articleRequest, HttpSession session) {
+        Auth auth = (Auth) session.getAttribute("auth");
+        articleService.publishArticle(auth.getAuthId(), articleRequest);
 
         return "redirect:/";
     }
@@ -45,8 +48,8 @@ public class ArticleController {
 
     @UserAuthorized
     @PutMapping("/{articleId}")
-    public String updateArticle(@PathVariable Long articleId, ArticleUpdateRequest articleUpdateRequest) {
-        articleService.update(articleId, articleUpdateRequest);
+    public String updateArticle(@PathVariable Long articleId, ArticleRequest articleRequest) {
+        articleService.update(articleId, articleRequest);
 
         return "redirect:/articles/{articleId}";
     }

@@ -3,7 +3,6 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.dto.article.ArticleRequest;
-import com.kakao.cafe.dto.article.ArticleUpdateRequest;
 import com.kakao.cafe.exception.ArticleNotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -20,8 +19,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void publishArticle(ArticleRequest request) {
-        articleRepository.save(request.toEntity());
+    public void publishArticle(Long id, ArticleRequest request) {
+        articleRepository.save(request.toEntity(id));
     }
 
     public List<ArticleDto> getArticles() {
@@ -36,10 +35,10 @@ public class ArticleService {
         return new ArticleDto(article);
     }
 
-    public void update(Long id, ArticleUpdateRequest articleUpdateRequest) {
+    public void update(Long id, ArticleRequest articleRequest) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
-        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getDescription());
+        article.update(articleRequest.getTitle(), articleRequest.getDescription());
         articleRepository.update(article);
     }
 

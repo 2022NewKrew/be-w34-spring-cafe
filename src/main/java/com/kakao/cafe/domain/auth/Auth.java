@@ -11,4 +11,8 @@ public class Auth {
     public boolean isNotValidId(Long id) {
         return !authId.equals(id);
     }
+
+    public Long getAuthId() {
+        return authId;
+    }
 }
