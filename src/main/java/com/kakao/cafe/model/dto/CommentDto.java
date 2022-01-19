@@ -17,9 +17,9 @@ public class CommentDto {
     private int commentId;
     private String writerId;
     private String content;
-    private LocalDateTime date;
+    private LocalDateTime createdDate;
 
-    public String getFormattedDate() {
-        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public String getFormattedCreatedDate() {
+        return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }

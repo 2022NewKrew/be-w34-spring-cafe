@@ -10,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
@@ -51,8 +49,10 @@ public class UserController {
 
     @PostMapping("/login")
     public String userLogin(String userId, String password, HttpSession session, Model model) {
+        UserDto userDto = null;
+
         try {
-            userService.findUserByLoginInfo(userId, password, "일치하는 회원 정보가 없습니다.");
+            userDto = userService.findUserByLoginInfo(userId, password, "일치하는 회원 정보가 없습니다.");
         } catch (UserNotFoundException e) {
             model.addAttribute("userId", userId);
             model.addAttribute("UserNotFoundErrorMessage", e.getMessage());
@@ -60,6 +60,7 @@ public class UserController {
         }
 
         session.setAttribute("USER_ID", userId);
+        session.setAttribute("USER_NAME", userDto.getName());
 
         if ("admin".equals(userId)) {
             session.setAttribute("IS_ADMIN", true);

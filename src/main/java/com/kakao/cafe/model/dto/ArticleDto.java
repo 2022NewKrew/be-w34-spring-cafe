@@ -17,12 +17,12 @@ public class ArticleDto {
     private String title;
     private String writerId;
     private String content;
-    private LocalDateTime date;
+    private LocalDateTime createdDate;
     private Long hits;
     private int commentsCount;
 
-    public String getFormattedDate() {
-        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public String getFormattedCreatedDate() {
+        return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }
 

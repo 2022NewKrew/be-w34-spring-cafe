@@ -103,4 +103,16 @@ public class BoardServiceImpl implements BoardService {
             throw new CommentNotFoundException("해당 뎃글이 존재하지 않습니다.");
         }
     }
+
+    @Override
+    public boolean isSameArticleWriter(long articleId, String writerId) {
+        return boardRepository.findArticleByArticleId(articleId)
+                .stream().anyMatch(a -> a.getWriterId().equals(writerId));
+    }
+
+    @Override
+    public boolean isSameCommentWriter(long articleId, long commentId, String writerId) {
+        return boardRepository.findComment(articleId, commentId)
+                .stream().anyMatch(a -> a.getWriterId().equals(writerId));
+    }
 }

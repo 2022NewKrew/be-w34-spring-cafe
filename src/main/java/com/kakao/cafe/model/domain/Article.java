@@ -17,7 +17,7 @@ public class Article {
     private String content;
 
     @Setter
-    private LocalDateTime date;
+    private LocalDateTime createdDate;
 
     @Setter
     private long commentsCount;
