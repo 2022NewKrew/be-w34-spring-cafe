@@ -111,11 +111,21 @@
                                   </ul>
                               </div>
                           </article>
-                          <form class="submit-write">
-                              <div class="form-group" style="padding:14px;">
-                                  <textarea class="form-control" placeholder="Update your status"></textarea>
+                          <form class="submit-write" method="post" action="/qnas/reply/create">
+
+                              <div class="form-group">
+                                  <input type="hidden" class="form-control" id="userId" name="userId" value="{{sessionedUser.getUserId}}" readonly>
                               </div>
-                              <button class="btn btn-success pull-right" type="button">답변하기</button>
+
+                              <div class="form-group">
+                                  <input type="hidden" class="form-control" id="articleSeq" name="articleSeq" value="{{sequence}}" readonly>
+                              </div>
+
+                              <div class="form-group" style="padding:14px;">
+                                  <textarea class="form-control" id="contents" placeholder="Update your status"></textarea>
+                              </div>
+                              <button class="btn btn-success pull-right" type="submit">답변하기</button>
+
                               <div class="clearfix" />
                           </form>
                       </div>

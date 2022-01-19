@@ -3,8 +3,8 @@ package com.kakao.cafe.article.service;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.dto.ArticleCreateDTO;
 import com.kakao.cafe.article.dto.ArticleUpdateDTO;
+import com.kakao.cafe.article.dto.ReplyCreateDTO;
 import com.kakao.cafe.article.repository.ArticleJdbcRepository;
-import com.kakao.cafe.article.repository.ArticleMemoryRepository;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +43,10 @@ public class ArticleService {
 
     public List<Article> getAllArticles(){
         return articleRepository.getArticlesNotDeleted();
+    }
+
+
+    public void replyCreate(ReplyCreateDTO replyCreateDTO){
+        articleRepository.addReply(replyCreateDTO.getUserId(), replyCreateDTO.getArticleSeq(), replyCreateDTO.getContents());
     }
 }

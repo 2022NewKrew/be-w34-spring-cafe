@@ -54,4 +54,13 @@ public class ArticleJdbcRepository implements ArticleRepository{
         String sql = String.format("SELECT * FROM articles WHERE %s = %s", key, value);
         return (Article) jdbcTemplate.query(sql, new ArticleRowMapper()).stream().findAny().orElse(null);
     }
+
+    @Override
+    public void addReply(String userId, Long articleSeq, String contents) {
+        String sql = "INSERT INTO REPLY(userId,articleSeq,contents,createdAt) VALUES (?,?,?,CURRENT_TIMESTAMP())";
+        jdbcTemplate.update(sql,
+                userId,
+                articleSeq,
+                contents);
+    }
 }

@@ -12,4 +12,5 @@ public interface ArticleRepository {
     public void deleteArticle(Article article);
     public List<Article> getArticlesNotDeleted();
     public Article getArticleByCondition(String key, String value);
+    public void addReply(String userId, Long articleSeq, String contents);
 }
