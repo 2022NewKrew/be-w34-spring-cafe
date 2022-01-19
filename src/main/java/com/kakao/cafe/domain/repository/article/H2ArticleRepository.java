@@ -25,11 +25,10 @@ public class H2ArticleRepository implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Article save(Article article) {
+    public void save(Article article) {
         if (article.getId() == 0) {
             String sql = "INSERT INTO `ARTICLE`(author_id, title, content, views, created_at) VALUES(?,?,?,?,?)";
             jdbcTemplate.update(sql, article.getAuthorId(), article.getTitle(), article.getContent(), article.getViews(), article.getCreatedAt());
-            return article;
         }
 
         String sql = "UPDATE `ARTICLE` SET " +
@@ -38,8 +37,6 @@ public class H2ArticleRepository implements ArticleRepository {
         jdbcTemplate.update(sql,
                 article.getAuthorId(), article.getTitle(), article.getContent(),
                 article.getId());
-
-        return article;
     }
 
     @Override

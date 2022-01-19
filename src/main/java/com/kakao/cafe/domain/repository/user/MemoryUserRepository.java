@@ -10,10 +10,9 @@ public class MemoryUserRepository implements UserRepository {
     private static long sequence = 0L;
 
     @Override
-    public User save(User user) {
+    public void save(User user) {
         user.setId(++sequence);
         store.put(user.getId(), user);
-        return user;
     }
 
     @Override

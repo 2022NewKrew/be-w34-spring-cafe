@@ -23,14 +23,12 @@ public class H2UserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public User save(User user) {
+    public void save(User user) {
         String sql = "MERGE INTO `USER`(JOINED_AT, USERID, PASSWORD, `NAME`, EMAIL) " +
                 "KEY(USERID) " +
                 "VALUES(?,?,?,?,?)";
         jdbcTemplate.update(sql,
                 user.getJoinedAt(), user.getUserId(), user.getHashedPw(), user.getName(), user.getEmail());
-
-        return user;
     }
 
     @Override
