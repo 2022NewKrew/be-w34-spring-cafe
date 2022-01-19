@@ -1,10 +1,7 @@
 package com.example.kakaocafe.domain.post;
 
-import com.example.kakaocafe.domain.post.comment.dto.Comment;
 import com.example.kakaocafe.domain.post.dto.*;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,13 +10,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-
-import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
