@@ -60,6 +60,8 @@
 - repository 클래스의 query를 query패키지로 따로 분리하였는데 저렇게 분리하는게 옳은 선택인지 궁금합니다!
 
 # step8
-- [ ] 댓글기능 구현
+- [x] 댓글기능 구현
+
+# step9
 - [ ] mysql과 자바 도커로 실행
 - [ ] docker 파일 krane에서 실행
