@@ -65,7 +65,7 @@ public class ArticleDao implements ArticleRepository {
                     id
             );
         } catch (DataAccessException e) {
-            throw new NoSuchElementException("해당 Id를 갖는 article이 없음");
+            throw new NoSuchElementException(String.format("id (%s) 를 갖는 article이 없음", id));
         }
 
         return article;
