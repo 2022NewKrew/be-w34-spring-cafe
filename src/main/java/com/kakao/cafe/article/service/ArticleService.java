@@ -35,8 +35,17 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public ArticlePostDto getArticleById(Long id){
-        Article article = articleRepository.findOneById(id).orElseThrow(ArticleNotFoundException::new);
+    public ArticlePostDto getArticlePostDtoById(Long id){
+        Article article = getArticleById(id);
         return modelMapper.map(article, ArticlePostDto.class);
+    }
+
+    public boolean isAuthor(Long id, String userId){
+        Article article = getArticleById(id);
+        return article.getAuthor().equals(userId);
+    }
+
+    public Article getArticleById(Long id){
+        return articleRepository.findOneById(id).orElseThrow(ArticleNotFoundException::new);
     }
 }

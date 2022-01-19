@@ -42,7 +42,7 @@ class ArticleControllerTest {
         ArticlePostDto articlePostDto =
                 new ArticlePostDto(id, "author", "title", "contents", "2022-01-17");
 
-        when(articleService.getArticleById(id)).thenReturn(articlePostDto);
+        when(articleService.getArticlePostDtoById(id)).thenReturn(articlePostDto);
 
         mockMvc.perform(get("/article/show/" + id))
                 .andExpect(status().isOk())

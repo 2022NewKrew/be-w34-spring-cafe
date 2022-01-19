@@ -2,6 +2,7 @@ package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.article.dto.ArticlePostDto;
 import com.kakao.cafe.article.dto.ArticleRequest;
+import com.kakao.cafe.article.exception.ArticleAuthorMismatchException;
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.auth.service.AuthService;
 import lombok.AllArgsConstructor;
@@ -33,12 +34,21 @@ public class ArticleController {
     }
 
     @GetMapping("/show/{id}")
-    public String getArticleShowPage(@PathVariable String id, Model model){
+    public String getArticleShowPage(@PathVariable Long id, Model model){
         if(authService.isLogin()){
-            ArticlePostDto article = articleService.getArticleById(Long.parseLong(id));
+            ArticlePostDto article = articleService.getArticlePostDtoById(id);
             model.addAttribute("article", article);
             return "/qna/show";
         }
         return "/user/login";
+    }
+
+    @GetMapping("/update/{id}")
+    public String getUpdateArticlePage(@PathVariable Long id, Model model) {
+        if (articleService.isAuthor(id, authService.getLoginUserId())) {
+            model.addAttribute("id", id);
+            return "/qna/updateForm";
+        }
+        throw new ArticleAuthorMismatchException();
     }
 }
