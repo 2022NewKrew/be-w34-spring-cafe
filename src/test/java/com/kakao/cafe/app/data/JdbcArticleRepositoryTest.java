@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @JdbcTest
-@Sql(scripts={"classpath:/db/sql/schema.sql"})
+@Sql(scripts={"classpath:/db/sql/0_schema.sql"})
 class JdbcArticleRepositoryTest {
 
     @Autowired

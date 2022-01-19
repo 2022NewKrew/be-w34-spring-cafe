@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
 
 @SpringBootTest
-@Sql(scripts={"classpath:db/sql/schema.sql"})
+@Sql(scripts={"classpath:db/sql/0_schema.sql"})
 public class CafeApplicationTest {
 
     private static final AtomicInteger userCounter = new AtomicInteger(0);
