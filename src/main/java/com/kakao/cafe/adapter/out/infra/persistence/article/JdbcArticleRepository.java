@@ -27,6 +27,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     private final static String COLUMN_CONTENTS = "contents";
     private final static String COLUMN_CREATED_AT = "createdAt";
     private final static String SELECT_ALL = "select * from " + ARTICLE_TABLE;
+    private final static String DELETE_BY_ID = "delete from " + ARTICLE_TABLE + " where " + COLUMN_ID + "=?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -55,6 +56,11 @@ public class JdbcArticleRepository implements ArticleRepository {
                      COLUMN_CREATED_AT + "=? where " + COLUMN_ID +
                      "=?";
         jdbcTemplate.update(sql, article.getTitle(), article.getContents(), article.getCreatedAt(), article.getId());
+    }
+
+    @Override
+    public void deleteById(int id) {
+        jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
     @Override

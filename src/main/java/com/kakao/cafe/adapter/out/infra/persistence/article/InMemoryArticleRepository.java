@@ -29,6 +29,11 @@ public class InMemoryArticleRepository implements ArticleRepository {
         save(article);
     }
 
+    @Override
+    public void deleteById(int id) {
+        repository.remove(id);
+    }
+
     public List<Article> getAllArticleList() {
         return new ArrayList<>(repository.values());
     }

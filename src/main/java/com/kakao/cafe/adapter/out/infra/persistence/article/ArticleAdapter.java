@@ -4,6 +4,7 @@ import com.kakao.cafe.application.article.dto.ArticleInfo;
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.dto.UpdateRequest;
 import com.kakao.cafe.application.article.dto.WriteRequest;
+import com.kakao.cafe.application.article.port.out.DeleteArticlePort;
 import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
 import com.kakao.cafe.application.article.port.out.RegisterArticlePort;
 import com.kakao.cafe.application.article.port.out.UpdateArticlePort;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort, UpdateArticlePort {
+public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort, UpdateArticlePort, DeleteArticlePort {
 
     private final ArticleRepository articleRepository;
 
@@ -54,6 +55,11 @@ public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort, 
             .build();
         article.setId(updateRequest.getId());
         articleRepository.update(article);
+    }
+
+    @Override
+    public void delete(int id) {
+        articleRepository.deleteById(id);
     }
 
     @Override
