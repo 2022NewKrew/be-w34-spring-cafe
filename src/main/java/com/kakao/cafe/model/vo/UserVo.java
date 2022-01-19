@@ -13,8 +13,9 @@ public class UserVo {
     public UserVo() {
     }
 
-    public UserVo(int id, String name) {
+    public UserVo(int id, String userId, String name) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
     }
 

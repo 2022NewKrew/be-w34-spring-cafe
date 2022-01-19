@@ -23,13 +23,13 @@ public class ArticleDao {
     Logger logger = LoggerFactory.getLogger(ArticleDao.class);
 
     public List<ArticleVo> findAllArticle() {
-        String sql = "SELECT articles.id AS id, writer_id, name, title, contents FROM articles INNER JOIN USERS U on U.ID = ARTICLES.WRITER_ID";
+        String sql = "SELECT articles.id AS id, user_id, writer_id, name, title, contents FROM articles INNER JOIN USERS U on U.ID = ARTICLES.WRITER_ID";
         return jdbcTemplate.query(sql, articleRowMapper());
     }
 
     public ArticleVo filterArticleByIndex(int index) {
         try {
-            String sql = "SELECT articles.id AS id, writer_id, name, title, contents FROM articles INNER JOIN USERS U on U.ID = ARTICLES.WRITER_ID WHERE articles.id = ?";
+            String sql = "SELECT articles.id AS id, user_id, writer_id, name, title, contents FROM articles INNER JOIN USERS U on U.ID = ARTICLES.WRITER_ID WHERE articles.id = ?";
             return jdbcTemplate.queryForObject(sql, articleRowMapper(), index);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -54,7 +54,7 @@ public class ArticleDao {
     private RowMapper<ArticleVo> articleRowMapper() {
         return (rs, rowNum) -> new ArticleVo(
                 rs.getInt("id"),
-                new UserVo(rs.getInt("writer_id"), rs.getString("name")),
+                new UserVo(rs.getInt("writer_id"), rs.getString("user_id"), rs.getString("name")),
                 rs.getString("title"),
                 rs.getString("contents")
         );
