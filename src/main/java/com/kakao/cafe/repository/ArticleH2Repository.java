@@ -79,6 +79,6 @@ public class ArticleH2Repository implements ArticleRepository {
 
     @Override
     public void update(Article article) {
-        jdbcTemplate.update(updateQuery, article.getContents(), article.getId());
+        jdbcTemplate.update(updateQuery, article.getTitle(), article.getContents(), article.getId());
     }
 }
