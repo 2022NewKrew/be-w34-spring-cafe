@@ -56,7 +56,9 @@ public class ArticleController {
 
     // 게시물 수정 양식
     @GetMapping("/articles/{id}/update")
-    public String updateForm(@PathVariable int id, Model model) {
+    public String updateForm(@PathVariable int id, Model model, HttpSession session) throws WrongAccessException {
+        ReferArticleDto referArticleDto = this.articleService.findById(id);
+        this.userService.userValidation(referArticleDto.getWriter(), session);
         model.addAttribute("article", this.articleService.findById(id));
         return "article/updateForm";
     }

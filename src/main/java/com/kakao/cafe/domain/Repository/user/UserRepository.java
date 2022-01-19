@@ -1,14 +1,13 @@
 package com.kakao.cafe.domain.Repository.user;
 
 import com.kakao.cafe.domain.Entity.User;
-import com.kakao.cafe.exceptions.NoSuchUserException;
 import com.kakao.cafe.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor

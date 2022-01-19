@@ -18,7 +18,7 @@ public class ArticleService {
 
     // 게시물 저장
     public void save(PostArticleDto postArticleDto) {
-        this.articleRepository.save(postArticleDto.toEntity(1));
+        this.articleRepository.save(postArticleDto.toEntity());
     }
 
     // 전체 게시물 찾기
