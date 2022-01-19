@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute @Validated AuthDTO authDto, BindingResult bindingResult, HttpSession session) {
-        logger.error("login {} {}", authDto.getUserId(), authDto.getPassword());
+        logger.info("login {} {}", authDto.getUserId(), authDto.getPassword());
         if (bindingResult.hasErrors()) {
             bindingResult.getFieldErrors()
                     .forEach(fieldError -> logger.error("Field : {}, Message : {}", fieldError.getField(), fieldError.getDefaultMessage()));
