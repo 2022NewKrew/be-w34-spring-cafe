@@ -11,12 +11,13 @@ public class ArticleRepositoryQueryAndNameSpace {
     }
 
     public String getFindCommentsSqlQuery(){
-        return String.format("select * from %s where %s = ?", tableName, ColumnName.PARENT.getColumnName());
+        return String.format("select * from %s where %s = ? and (%s = 1 or %s is null)", tableName,
+                ColumnName.PARENT.getColumnName(), ColumnName.FLAG.getColumnName(), ColumnName.FLAG.getColumnName());
     }
 
     public String getFindAllSqlQuery(){
-        return String.format("select * from %s where %s = 1 or %s is null", tableName,
-                ColumnName.FLAG.getColumnName(), ColumnName.FLAG.getColumnName());
+        return String.format("select * from %s where (%s = 1 or %s is null) and %s = -1", tableName,
+                ColumnName.FLAG.getColumnName(), ColumnName.FLAG.getColumnName(), ColumnName.PARENT);
     }
 
     public String getDeleteSqlQuery(){
@@ -35,7 +36,6 @@ public class ArticleRepositoryQueryAndNameSpace {
         TITLE("title"),
         CONTENTS("contents"),
         DATE("date"),
-        COMMENT_SIZE("comment_size"),
         PARENT("parent"),
         FLAG("flag");
 

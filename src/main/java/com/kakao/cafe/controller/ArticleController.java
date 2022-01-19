@@ -44,6 +44,7 @@ public class ArticleController {
         UserAccount userAccount = (UserAccount) session.getAttribute("sessionedUser");
 
         articleDTO.setWriter(userAccount.getUserId());
+        articleDTO.setParent(-1);
 
         articleService.join(articleDTO);
 
@@ -53,14 +54,14 @@ public class ArticleController {
     @LogInCheck
     @GetMapping("/detail/{index}")
     public String datail(@PathVariable("index") int index, Model model){
-        Optional<Article> optArticle = articleService.findOne(index);
+        Optional<ArticleDTO> optArticle = articleService.findAddedCommentArticle(index);
 
         if(optArticle.isEmpty()){
             logger.error("[ArticleController > datail] 등록되지 않은 게시글 Id({})로 접근했습니다.", index);
             return "redirect:/";
         }
 
-        ArticleDTO articleDTO = new ArticleDTO(optArticle.get());
+        ArticleDTO articleDTO = optArticle.get();
 
 
         model.addAttribute("article_detail", articleDTO);
@@ -90,5 +91,26 @@ public class ArticleController {
         articleDTO.setId(id);
         articleService.updateArticle(articleDTO);
         return "redirect:/";
+    }
+
+    @LogInCheck
+    @PostMapping("/detail/{index}/comment")
+    public String commentForm(@PathVariable("index") int id, String contents){
+        Optional<Article> findArticle = articleService.findOne(id);
+
+        if(findArticle.isEmpty()){
+            logger.error("[ArticleController > commentForm] 등록되지 않은 게시글 Id({})의 댓글 작성 부분으로 접근했습니다.", id);
+            return "redirect:/";
+        }
+
+        Article article = findArticle.get();
+
+        ArticleDTO articleDTO = new ArticleDTO(article);
+        articleDTO.setParent(id);
+        articleDTO.setContents(contents);
+
+        articleService.join(articleDTO);
+
+        return "redirect:/questions/detail/" + id;
     }
 }

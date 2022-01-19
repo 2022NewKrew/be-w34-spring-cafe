@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.ArticleDTO;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class RootController {
 
     @GetMapping
     String root(Model model){
-        List<Article> articles = articleService.findAll();
+        List<ArticleDTO> articles = articleService.findAllArticles();
         model.addAttribute("articles", articles);
 
         return "/index";

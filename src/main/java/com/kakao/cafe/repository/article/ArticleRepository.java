@@ -36,7 +36,6 @@ public class ArticleRepository implements Repository<Article, ArticleDTO, Intege
         parameters.put(TITLE.getColumnName(), articleDTO.getTitle());
         parameters.put(CONTENTS.getColumnName(), articleDTO.getContents());
         parameters.put(DATE.getColumnName(), articleDTO.getDate());
-        parameters.put(COMMENT_SIZE.getColumnName(), articleDTO.getCommentSize());
         parameters.put(PARENT.getColumnName(), articleDTO.getParent());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
@@ -49,14 +48,11 @@ public class ArticleRepository implements Repository<Article, ArticleDTO, Intege
     public Optional<Article> findById(Integer id) {
         List<Article> result = jdbcTemplate.query(queryAndNameSpace.getFindByIdSqlQuery(), articleRowMapper(), id);
 
-        Optional<Article> resultArticle = result.stream().findAny();
-        resultArticle.ifPresent(article -> article.getComments().addAll(findComments(id)));
-
-        return resultArticle;
+        return result.stream().findAny();
     }
 
-    public List<Article> findComments(Integer id){
-        return jdbcTemplate.query(queryAndNameSpace.getFindCommentsSqlQuery(), articleRowMapper(), id);
+    public List<ArticleDTO> findComments(Integer id){
+        return jdbcTemplate.query(queryAndNameSpace.getFindCommentsSqlQuery(), articleCommentRowMapper(), id);
     }
 
     @Override
@@ -82,11 +78,25 @@ public class ArticleRepository implements Repository<Article, ArticleDTO, Intege
             articleDTO.setTitle(rs.getString(TITLE.getColumnName()));
             articleDTO.setContents(rs.getString(CONTENTS.getColumnName()));
             articleDTO.setDate(rs.getObject(DATE.getColumnName(), LocalDateTime.class));
-            articleDTO.setCommentSize(rs.getInt(COMMENT_SIZE.getColumnName()));
             articleDTO.setParent(rs.getInt(PARENT.getColumnName()));
             articleDTO.setComments(new ArrayList<>());
 
             return new Article(articleDTO);
+        };
+    }
+
+    private RowMapper<ArticleDTO> articleCommentRowMapper(){
+        return (rs, rowNum) -> {
+            ArticleDTO articleDTO = new ArticleDTO();
+            articleDTO.setId(rs.getInt(ID.getColumnName()));
+            articleDTO.setWriter(rs.getString(WRITER.getColumnName()));
+            articleDTO.setTitle(rs.getString(TITLE.getColumnName()));
+            articleDTO.setContents(rs.getString(CONTENTS.getColumnName()));
+            articleDTO.setDate(rs.getObject(DATE.getColumnName(), LocalDateTime.class));
+            articleDTO.setParent(rs.getInt(PARENT.getColumnName()));
+            articleDTO.setComments(new ArrayList<>());
+
+            return articleDTO;
         };
     }
 }
