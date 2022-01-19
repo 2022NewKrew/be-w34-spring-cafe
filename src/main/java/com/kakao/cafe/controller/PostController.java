@@ -1,9 +1,12 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.PostCreateRequest;
+import com.kakao.cafe.dto.PostDetailDto;
+import com.kakao.cafe.dto.PostUpdateRequest;
+import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.PostService;
-import com.kakao.cafe.service.UserService;
 import java.util.UUID;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -18,12 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PostController {
 
     private final PostService postService;
-    private final UserService userService;
 
     @Autowired
-    public PostController(PostService postService, UserService userService) {
+    public PostController(PostService postService) {
         this.postService = postService;
-        this.userService = userService;
     }
 
     @GetMapping
@@ -33,14 +35,35 @@ public class PostController {
     }
 
     @PostMapping
-    public String write(@Valid PostCreateRequest requestDto) {
-        postService.write(requestDto);
+    public String write(@Valid PostCreateRequest requestDto, HttpSession session) {
+        postService.write(requestDto, (User) session.getAttribute("sessionUser"));
         return "redirect:/";
     }
 
     @GetMapping("/{id}")
-    public String getPostById(@PathVariable("id") UUID id, Model model) {
-        model.addAttribute("post", postService.getPostDetailById(id));
+    public String getPostById(@PathVariable("id") UUID id, HttpSession session, Model model) {
+        PostDetailDto postDetailDto = postService.getPostDetailById(id);
+        model.addAttribute("post", postDetailDto);
+
+        UUID sessionUserId = ((User) session.getAttribute("sessionUser")).getId();
+        model.addAttribute("isWriter", postService.isWriter(postDetailDto.getWriterId(), sessionUserId));
+
         return "posts/detail";
+    }
+
+    @PutMapping("/{id}")
+    public String updatePost(@PathVariable("id") UUID id, @Valid PostUpdateRequest requestDto, HttpSession session) {
+        UUID sessionUserId = ((User) session.getAttribute("sessionUser")).getId();
+        postService.update(id, requestDto, sessionUserId);
+
+        return "redirect:/posts/" + id;
+    }
+
+    @GetMapping("{id}/update")
+    public String getPostUpdateForm(@PathVariable("id") UUID id, Model model){
+        PostDetailDto postDetailDto = postService.getPostDetailById(id);
+        model.addAttribute("post", postDetailDto);
+
+        return "posts/update-form";
     }
 }

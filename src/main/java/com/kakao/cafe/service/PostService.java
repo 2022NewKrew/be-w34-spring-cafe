@@ -2,8 +2,10 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.PostCreateRequest;
 import com.kakao.cafe.dto.PostDetailDto;
+import com.kakao.cafe.dto.PostUpdateRequest;
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.ForbiddenException;
 import com.kakao.cafe.model.Post;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.repository.PostRepository;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PostService {
@@ -47,9 +50,7 @@ public class PostService {
         return postDetailDtoList;
     }
 
-    public void write(PostCreateRequest requestDto) {
-        User writer = userRepository.findByUserId(requestDto.getWriterUserId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_INPUT));
+    public void write(PostCreateRequest requestDto, User writer) {
         postRepository.save(requestDto.toEntity(writer.getId()));
     }
 
@@ -66,5 +67,23 @@ public class PostService {
                 writer.getName(),
                 post.getContent(),
                 post.getCreatedAt());
+    }
+
+    public boolean isWriter(UUID postWriterId, UUID sessionUserId) {
+        return sessionUserId.equals(postWriterId);
+    }
+
+    public void validateWriter(Post post, UUID sessionUserId) {
+        if (!isWriter(post.getWriterId(), sessionUserId)) {
+            throw new ForbiddenException("수정/삭제는 게시글 작성자만 가능합니다.");
+        }
+    }
+
+    @Transactional
+    public void update(UUID postId, PostUpdateRequest requestDto, UUID sessionUserId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+        validateWriter(post, sessionUserId);
+        postRepository.update(requestDto.toEntity(post.getWriterId(), postId));
     }
 }

@@ -26,4 +26,10 @@ public class Posts {
     public List<Post> getPosts() {
         return Collections.unmodifiableList(posts);
     }
+
+    public void update(Post modified) {
+        posts.stream()
+                .filter((original) -> original.getId().equals(modified.getId()))
+                .forEach((original) -> original.update(modified));
+    }
 }

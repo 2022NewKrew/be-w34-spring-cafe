@@ -12,4 +12,6 @@ public interface PostRepository {
     List<Post> findAll();
 
     Optional<Post> findById(UUID id);
+
+    void update(Post post);
 }

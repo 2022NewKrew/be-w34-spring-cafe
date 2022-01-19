@@ -26,4 +26,13 @@ public class GlobalExceptionHandler {
 
         return "errors/error";
     }
+
+    @ExceptionHandler({LoginUserNotFoundException.class, LoginWrongPasswordException.class})
+    public String handleLoginException(Exception e, Model model) {
+        logger.error("LoginException message: {}", e.getMessage());
+
+        model.addAttribute("message", e.getMessage());
+
+        return "users/login";
+    }
 }

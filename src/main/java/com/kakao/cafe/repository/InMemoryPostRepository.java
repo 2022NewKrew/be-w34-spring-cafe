@@ -18,7 +18,6 @@ public class InMemoryPostRepository implements PostRepository {
         this.posts = new Posts(Collections.synchronizedList(new ArrayList<>()));
     }
 
-
     @Override
     public void save(Post post) {
         posts.add(post);
@@ -32,5 +31,10 @@ public class InMemoryPostRepository implements PostRepository {
     @Override
     public Optional<Post> findById(UUID id) {
         return posts.findById(id);
+    }
+
+    @Override
+    public void update(Post post) {
+        posts.update(post);
     }
 }
