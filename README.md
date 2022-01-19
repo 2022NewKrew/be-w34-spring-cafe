@@ -10,11 +10,11 @@
 
 
 ## Spring Cafe 1-1
-- [ ] Spring Layered Architecture 적용
+- [x] Spring Layered Architecture 적용
   
   - [x] Domain
     - [x] UserEntity
-    - [ ] UserDto
+    - [x] UserDto (1-3에서)
   
   - [x] Service
     - [x] 회원가입
@@ -56,7 +56,7 @@
 
 ## Spring Cafe 1-2
 
-- [ ] qna 게시글
+- [x] qna 게시글
 
   - [x] 게시글 쓰기
     - [x] view 만들기 (form)
@@ -74,7 +74,7 @@
     - [x] articleId 를 ArrayList.size() + 1 로 사용하기
     - [x] 기능 구현하기
 
-  - [ ] ArticleDto 사용하기
+  - [x] ArticleDto 사용하기 (1-3에서)
 
 - [x] 회원정보 수정
   - [x] view 만들기 (updateForm)
@@ -108,3 +108,29 @@
   - [x] 동시성 보장을 위한 자료구조
     - [x] UserRepositoryImplMemoryDB -> ConcurrentHashMap
     - [x] ArticleRepositoryImplMemoryDB -> CopyOnWriteArrayList
+
+
+## Spring Cafe 1-3
+
+- [ ] 리뷰
+  - [ ] controller 에서 dto 사용
+    - [ ] UserDto 및 Mapper 만들기
+    - [ ] ArticleDto 및 Mapper 만들기
+    - [ ] RequestBody 를 이용해 controller 에서 dto 객체로 파라미터 받기
+
+  - [ ] exception 처리
+    - [x] UncheckedException 처리
+    - [ ] CustomException 만들기
+    - [ ] ExceptionCode Enum 만들기
+    - [ ] ResponseEntity 로 예외 처리
+
+- [ ] h2 DB 설정
+  - [ ] 의존성 설정
+  - [ ] DB Connection 설정
+  - [ ] Configuration 클래스
+  - [ ] RepositoryImpl 구현
+
+- [ ] 배포하기
+  - [ ] Krane 인스턴스 생성
+  - [ ] Krane 인스턴스에 jar 파일 복붙
+  - [ ] Krane 인스턴스에서 jar 파일 실행 및 정상 작동 확인
