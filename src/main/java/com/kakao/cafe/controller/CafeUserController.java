@@ -4,6 +4,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.CafeUserService;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,9 @@ public class CafeUserController {
     private static final String USER_REDIRECT_SIGN_OUT = REDIRECT_PREFIX+"/";
     private static final String USER_REDIRECT_PROFILE_EDIT_ADMIN_FAIL = REDIRECT_PREFIX+"/users/profile/edit/fail";
     private static final String USER_REDIRECT_PROFILE_EDIT = REDIRECT_PREFIX+"/users/list";
+    private static final String USER_REDIRECT_PROFILE_DELETE_SUCCESS = REDIRECT_PREFIX+"/";
+    private static final String USER_REDIRECT_PROFILE_DELETE_FAIL = REDIRECT_PREFIX+"/users/profile/edit/fail";
+
 
     @GetMapping("/sign-in")
     String userViewSignIn() {
@@ -70,12 +74,27 @@ public class CafeUserController {
     }
 
     @GetMapping("/profile/{userId}")
-    String getUserProfile (Model model, @PathVariable("userId") String userId) { // 유저 프로필
+    String getUserProfile (Model model, HttpSession httpSession, @PathVariable("userId") String userId) { // 유저 프로필
+        User loginUser = (User) httpSession.getAttribute("signInUser");
         User user = cafeUserService.getUserProfile(userId);
         if(user != null) {
             model.addAttribute("user", user);
+            if( loginUser != null ) {
+                boolean canEdit = loginUser.getUserId().equals(user.getUserId());
+                model.addAttribute("canEdit", canEdit);
+            }
         }
         return USER_VIEW_PROFILE;
+    }
+
+    @DeleteMapping("/profile/{userId}")
+    String deleteProfile (HttpSession httpSession, @NonNull @PathVariable("userId") String userId) {
+        User loginUser = (User) httpSession.getAttribute("signInUser");
+        if(loginUser != null && userId.equals(loginUser.getUserId()) && cafeUserService.deleteProfile(userId)) {
+            httpSession.invalidate();
+            return USER_REDIRECT_PROFILE_DELETE_SUCCESS;
+        }
+        return USER_REDIRECT_PROFILE_DELETE_FAIL;
     }
 
     @GetMapping("/profile/edit")

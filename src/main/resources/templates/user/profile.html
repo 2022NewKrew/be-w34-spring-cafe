@@ -65,6 +65,18 @@
                             </div>
                         </div>
                     </div>
+                    {{#canEdit}}
+                    <script>
+                        function deletePost(e) {
+                            return confirm("정말 계정을 삭제하겠습니까?")
+                        }
+                    </script>
+                    <form class="profile-action-box" method="post" action="/users/profile/{{userId}}" onsubmit="return deletePost(this)">
+                        <a class="profile-action-btn" href="/users/profile/edit" class="btn btn-primary pull-right" role="button">정보 수정</a>
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button class="profile-action-btn" class="btn btn-primary pull-right" role="button">계정 탈퇴</button>
+                    </form>
+                    {{/canEdit}}
                     {{/user}}
                     {{^user}}
                     <h1>존재하지 않는 사용자입니다.</h1>

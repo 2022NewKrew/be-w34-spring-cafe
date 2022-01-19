@@ -135,6 +135,7 @@ li {
     border: 1px solid #ffcd00;
     border-radius: 3px;
     padding: 0 20px;
+    margin: 0 2px;
 }
 .post-edit-btn:hover {
     background-color: #ffcd00;

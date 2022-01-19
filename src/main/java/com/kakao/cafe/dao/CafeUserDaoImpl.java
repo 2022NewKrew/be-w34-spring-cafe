@@ -43,7 +43,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
     @Override
     public boolean SignIn(User signInUser) {
         String sql = "SELECT email, password FROM member\n"
-                + "WHERE userId=?";
+                + "WHERE userId=? and tombstone=false";
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,signInUser.getUserId());
@@ -65,7 +65,8 @@ public class CafeUserDaoImpl implements CafeUserDao {
     @Override
     public List<User> getUserList() {
         List<User> userList = new ArrayList<>();
-        String sql = "SELECT userId, email FROM member\n";
+        String sql = "SELECT userId, email FROM member\n"
+                + "WHERE tombstone=false";
 
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -85,7 +86,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
     public User getUserProfile(String userId) {
         User selectedUser = null;
         String sql = "SELECT email FROM member\n"
-                + "WHERE userId=?";
+                + "WHERE userId=? and tombstone=false";
 
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -104,7 +105,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
     @Override
     public boolean adminEditProfile(User user, String inputPassword) {
         String sql = "SELECT password FROM member\n"
-                + "WHERE userId=?";
+                + "WHERE userId=? and tombstone=false";
 
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -124,11 +125,29 @@ public class CafeUserDaoImpl implements CafeUserDao {
     public boolean editProfile(User user, String inputEmail) {
         String sql = "UPDATE member\n"
                 + "SET email=?\n"
-                + "WHERE userId=?";
+                + "WHERE userId=? and tombstone=false";
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, inputEmail);
             pstmt.setString(2, user.getUserId());
+            int updateCnt = pstmt.executeUpdate();
+            if( updateCnt > 0 ) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteProfile(String userId) {
+        String sql = "UPDATE member\n"
+                + "SET tombstone=true\n"
+                + "WHERE userId=?";
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, userId);
             int updateCnt = pstmt.executeUpdate();
             if( updateCnt > 0 ) {
                 return true;

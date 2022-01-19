@@ -58,4 +58,9 @@ public class CafeUserServiceImpl implements CafeUserService {
         }
         return false;
     }
+
+    @Override
+    public boolean deleteProfile(String userId) {
+        return cafeUserDao.deleteProfile(userId);
+    }
 }

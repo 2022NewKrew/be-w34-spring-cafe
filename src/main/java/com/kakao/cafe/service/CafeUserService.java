@@ -12,4 +12,6 @@ public interface CafeUserService {
 
     boolean adminEditProfile (User user, String inputPassword);
     boolean editProfile (User user, String inputEmail);
+
+    boolean deleteProfile(String userId);
 }
