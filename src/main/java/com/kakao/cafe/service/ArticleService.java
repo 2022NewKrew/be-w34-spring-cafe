@@ -1,8 +1,8 @@
-package com.kakao.cafe.article.service;
+package com.kakao.cafe.service;
 
-import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.repository.ArticleRepository;
-import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.ArticleRepository;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

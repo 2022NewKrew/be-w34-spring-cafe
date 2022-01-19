@@ -1,6 +1,5 @@
-package com.kakao.cafe.article.domain;
+package com.kakao.cafe.domain;
 
-import com.kakao.cafe.user.domain.User;
 import java.time.LocalDateTime;
 import lombok.Getter;
 

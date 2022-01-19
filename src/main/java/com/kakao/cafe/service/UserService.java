@@ -16,14 +16,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void signup(User targetUser) throws IllegalArgumentException {
-        targetUser.validate();
-        validateDuplicatedUserId(targetUser.getUserId());
-        userRepository.createUser(targetUser);
+    public void signup(User user) throws IllegalArgumentException {
+        user.validate();
+        validateDuplicatedUserId(user.getUserId());
+        userRepository.createUser(user);
     }
 
-    private void validateDuplicatedUserId(String targetUserId) throws IllegalArgumentException {
-        if (userRepository.isUserIdUsed(targetUserId)) {
+    private void validateDuplicatedUserId(String userId) {
+        if (userRepository.isUserIdUsed(userId)) {
             throw new IllegalArgumentException("[ERROR] 이미 사용중인 아이디입니다.");
         }
     }
@@ -32,11 +32,18 @@ public class UserService {
         return userRepository.readUserList();
     }
 
-    public User getUserFromUserId(String targetUserId) throws ResponseStatusException{
-        if (userRepository.isUserIdUsed(targetUserId)) {
-            return userRepository.readByUserId(targetUserId);
-        } else {
+    public User getUserByUserId(String userId) {
+        if (!userRepository.isUserIdUsed(userId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "[ERROR] 사용자를 찾을 수 없습니다.");
         }
+        return userRepository.readByUserId(userId);
+    }
+
+    public User updateUser(String userId, String password, String name, String email) {
+        final User user = getUserByUserId(userId);
+        user.validateAndSetPassword(password);
+        user.setName(name);
+        user.setEmail(email);
+        return userRepository.updateUser(user);
     }
 }

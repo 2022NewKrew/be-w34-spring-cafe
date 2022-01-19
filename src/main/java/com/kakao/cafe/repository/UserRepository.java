@@ -7,11 +7,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository {
 
-    void createUser(User targetUser);
+    void createUser(User user);
 
-    boolean isUserIdUsed(String targetUserId);
+    boolean isUserIdUsed(String userId);
 
     Collection<User> readUserList();
 
     User readByUserId(String userId);
+
+    User updateUser(User user);
 }

@@ -3,11 +3,8 @@ package com.kakao.cafe.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.kakao.cafe.user.controller.UserController;
-import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.repository.UserRepository;
-import com.kakao.cafe.user.repository.UserRepositoryImplMemoryDB;
-import com.kakao.cafe.user.service.UserService;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

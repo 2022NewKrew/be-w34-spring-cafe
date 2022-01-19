@@ -1,9 +1,9 @@
-package com.kakao.cafe.article.controller;
+package com.kakao.cafe.controller;
 
-import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.service.ArticleService;
-import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.service.UserService;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.UserService;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -3,10 +3,9 @@ package com.kakao.cafe.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.repository.ArticleRepository;
-import com.kakao.cafe.article.service.ArticleService;
-import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.ArticleRepository;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
