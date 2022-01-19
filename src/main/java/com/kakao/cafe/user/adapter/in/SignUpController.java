@@ -1,7 +1,7 @@
 package com.kakao.cafe.user.adapter.in;
 
-import com.kakao.cafe.user.application.port.in.CreateUserDto;
 import com.kakao.cafe.user.application.port.in.SignUpUseCase;
+import com.kakao.cafe.user.application.port.in.SignUpUserDto;
 import com.kakao.cafe.user.domain.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,18 +22,18 @@ public class SignUpController {
 
     @GetMapping("/user/form")
     public String routeSignUpForm() {
-        return "user/form";
+        return "/user/form";
     }
 
     @PostMapping("/users")
     public String signUp(@ModelAttribute SignUpRequestDto signUpRequestDto) {
-        CreateUserDto createUserDto = new CreateUserDto(
+        SignUpUserDto signUpUserDto = new SignUpUserDto(
             signUpRequestDto.getEmail(),
             signUpRequestDto.getNickname(),
             signUpRequestDto.getPassword());
 
-        UserId createdUserId = signUpUseCase.signUp(createUserDto);
-        logger.info("[Log] 유저가 생성되었습니다. {}", createdUserId.getUUID());
+        UserId createdUserId = signUpUseCase.signUp(signUpUserDto);
+        logger.info("[Log] 유저가 생성되었습니다. {}", createdUserId.getId());
         return "redirect:/users";
     }
 

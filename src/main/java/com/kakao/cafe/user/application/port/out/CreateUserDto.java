@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.application.port.in;
+package com.kakao.cafe.user.application.port.out;
 
 public class CreateUserDto {
 
@@ -23,4 +23,5 @@ public class CreateUserDto {
     public String getPassword() {
         return password;
     }
+
 }

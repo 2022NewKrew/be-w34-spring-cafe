@@ -10,17 +10,16 @@ public class Password {
         this.value = value;
     }
 
-
     @Override
-    public boolean equals(Object target) {
-        if (this == target) {
+    public boolean equals(Object other) {
+        if (this == other) {
             return true;
         }
-        if (target == null || getClass() != target.getClass()) {
+        if (other == null || getClass() != other.getClass()) {
             return false;
         }
-        Password password = (Password) target;
-        return Objects.equals(value, password.value);
+        Password password = (Password) other;
+        return value.equals(password.value);
     }
 
     @Override

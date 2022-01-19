@@ -23,7 +23,7 @@ public class FindUserController {
     }
 
     @GetMapping("/users/{userId}")
-    public String showUser(@PathVariable String userId, Model model) {
+    public String showUser(@PathVariable long userId, Model model) {
         FoundUserDto foundUserDto = findUserUseCase.find(new UserId(userId));
         ViewUserDto viewUserDto = foundUserDto.toViewUserDto();
 
@@ -35,11 +35,11 @@ public class FindUserController {
     @GetMapping("/users")
     public String showAllUsers(Model model) {
         List<FoundUserDto> users = findUserUseCase.findAll();
-        List<ViewUserDto> viewUserDtos =
+        List<ViewUserDto> viewUserDtoList =
             users.stream().map(FoundUserDto::toViewUserDto)
                 .collect(Collectors.toUnmodifiableList());
-        
-        model.addAttribute(model.addAttribute("users", viewUserDtos));
+
+        model.addAttribute(model.addAttribute("users", viewUserDtoList));
         return "/user/list";
     }
 }
