@@ -19,6 +19,7 @@ public class Article {
     private final long createdAt;
     private final long modifiedAt;
     private final boolean deleted;
+    private final int countComments;
 
     public Article(
             @NonNull final String userId,
@@ -34,6 +35,7 @@ public class Article {
         this.createdAt = Instant.now().getEpochSecond();
         this.modifiedAt = 0L;
         this.deleted = false;
+        this.countComments = 0;
     }
 
     private void validate(
@@ -75,17 +77,21 @@ public class Article {
         return deleted;
     }
 
+    public int getCountComments() {
+        return countComments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return idx == article.idx && createdAt == article.createdAt && userId.equals(article.userId) && title.equals(article.title) && body.equals(article.body);
+        return idx == article.idx && createdAt == article.createdAt && modifiedAt == article.modifiedAt && deleted == article.deleted && countComments == article.countComments && userId.equals(article.userId) && title.equals(article.title) && body.equals(article.body);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idx, userId, title, body, createdAt);
+        return Objects.hash(idx, userId, title, body, createdAt, modifiedAt, deleted, countComments);
     }
 
     @Override
@@ -96,6 +102,9 @@ public class Article {
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 ", createdAt=" + createdAt +
+                ", modifiedAt=" + modifiedAt +
+                ", deleted=" + deleted +
+                ", countComments=" + countComments +
                 '}';
     }
 }

@@ -15,15 +15,17 @@ public class ArticleDto {
     private String[] bodyLines;
     private String createdAtPretty;
     private String modifiedAtPretty;
+    private int countComments;
 
     static public ArticleDto from(
-            @NonNull final long idx,
+            final long idx,
             @NonNull final String userId,
             @NonNull final String userName,
             @NonNull final String title,
             @NonNull final String body,
-            @NonNull final long createdAt,
-            @NonNull final long modifiedAt
+            final long createdAt,
+            final long modifiedAt,
+            final int countComments
     )
     {
         ArticleDto articleDto = new ArticleDto();
@@ -43,6 +45,7 @@ public class ArticleDto {
                     Pretty.epochSecond(modifiedAt, Locale.KOREA, ZoneId.of("Asia/Seoul"))
             );
         }
+        articleDto.setCountComments(countComments);
         return articleDto;
     }
 
@@ -108,5 +111,13 @@ public class ArticleDto {
 
     public void setModifiedAtPretty(String modifiedAtPretty) {
         this.modifiedAtPretty = modifiedAtPretty;
+    }
+
+    public int getCountComments() {
+        return countComments;
+    }
+
+    public void setCountComments(int countComments) {
+        this.countComments = countComments;
     }
 }

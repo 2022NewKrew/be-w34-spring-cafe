@@ -45,7 +45,7 @@ public class ArticleJdbc implements ArticleRepository {
         final List<ArticleDto> list = jdbcTemplate.query(
                 con -> {
                     final PreparedStatement pstmt = con.prepareStatement(
-                            "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at " +
+                            "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at, a.count_comments " +
                                     "FROM userlist AS u " +
                                     "JOIN (SELECT * FROM article WHERE idx = ? AND deleted = false LIMIT 1) AS a " +
                                     "ON u.id = a.user_id"
@@ -60,7 +60,8 @@ public class ArticleJdbc implements ArticleRepository {
                         rs.getString("title"),
                         rs.getString("body"),
                         rs.getLong("created_at"),
-                        rs.getLong("modified_at")
+                        rs.getLong("modified_at"),
+                        rs.getInt("count_comments")
                 )
         );
 
@@ -76,7 +77,7 @@ public class ArticleJdbc implements ArticleRepository {
         return Collections.unmodifiableList(
                 jdbcTemplate.query(
                         con -> con.prepareStatement(
-                                "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at " +
+                                "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at, a.count_comments " +
                                         "FROM userlist AS u " +
                                         "JOIN article AS a " +
                                         "ON u.id = a.user_id " +
@@ -90,7 +91,8 @@ public class ArticleJdbc implements ArticleRepository {
                                 rs.getString("title"),
                                 rs.getString("body"),
                                 rs.getLong("created_at"),
-                                rs.getLong("modified_at")
+                                rs.getLong("modified_at"),
+                                rs.getInt("count_comments")
                         )
                 )
         );

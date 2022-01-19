@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS article (
     created_at BIGINT NOT NULL,
     modified_at BIGINT NOT NULL,
     deleted BOOL DEFAULT false,
+    count_comments MEDIUMINT DEFAULT 0,
     FOREIGN KEY(user_id) REFERENCES userlist(id)
 );
 
