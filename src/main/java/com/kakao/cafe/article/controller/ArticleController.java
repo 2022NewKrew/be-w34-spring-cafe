@@ -3,10 +3,8 @@ package com.kakao.cafe.article.controller;
 import com.kakao.cafe.article.dto.request.ArticleCreateRequest;
 import com.kakao.cafe.article.dto.request.ArticleUpdateRequest;
 import com.kakao.cafe.article.dto.response.ArticleDetailResponse;
-import com.kakao.cafe.article.exception.ArticleNotFoundException;
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.user.dto.response.UserInfoResponse;
-import com.kakao.cafe.user.mapper.exception.ForbiddenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 
 import static com.kakao.cafe.common.util.KakaoCafeUtil.getUserInfoInSession;
 
@@ -54,7 +51,6 @@ public class ArticleController {
     /**
      * 게시글 상세 페이지 접속 [GET]
      * @param id: 보고자 하는 게시글의 ID(PK)
-     * @throws ArticleNotFoundException: 해당 ID 의 Article 이 존재하지 않을 경우 발생
      */
 
     @GetMapping("/articles/{id}")
@@ -62,12 +58,14 @@ public class ArticleController {
     public String getArticleDetailPage(Model model, @PathVariable("id") Long id, HttpSession session) {
         log.info("[GET] /articles/{} - (id: {}) 게시글 상세 페이지 접속", id, id);
 
+        UserInfoResponse user = getUserInfoInSession(session);
+
         ArticleDetailResponse articleDetail = this.articleService.getArticleDetail(id);
         model.addAttribute("article", articleDetail);
 
-        boolean possibleToWrite = isPossibleToControl(session, articleDetail);
+        boolean modifiable = this.articleService.isModifiable(user, articleDetail);
 
-        model.addAttribute("possibleToControl", possibleToWrite);
+        model.addAttribute("modifiable", modifiable);
         return "article/show";
     }
 
@@ -93,11 +91,11 @@ public class ArticleController {
     public String getArticleUpdatePage(Model model, HttpSession session, @PathVariable("id") Long id) {
         log.info("[GET] /articles/{}/update - (id: {}) 게시글 수정 페이지 접속", id, id);
 
+        UserInfoResponse user = getUserInfoInSession(session);
+
         ArticleDetailResponse article = this.articleService.getArticleDetail(id);
 
-        if(!this.isPossibleToControl(session, article)) {
-            throw new ForbiddenException();
-        }
+        this.articleService.validateUser(user.getId(), id);
 
         model.addAttribute("article", article);
         return "/article/update";
@@ -114,7 +112,7 @@ public class ArticleController {
 
         UserInfoResponse user = getUserInfoInSession(session);
 
-        this.articleService.validateUser(user, id);
+        this.articleService.validateUser(user.getId(), id);
 
         this.articleService.updateArticle(id, req);
 
@@ -123,7 +121,7 @@ public class ArticleController {
 
     /**
      * 게시글 삭제 요청 [DELETE]
-     * @param id - 삭제할 게시글 id(PK)
+     * @param id: 삭제할 게시글 id(PK)
      */
     @DeleteMapping("articles/{id}")
     public String deleteArticle(HttpSession session, @PathVariable("id") Long id) {
@@ -131,19 +129,10 @@ public class ArticleController {
 
         UserInfoResponse user = getUserInfoInSession(session);
 
-        this.articleService.validateUser(user, id);
+        this.articleService.validateUser(user.getId(), id);
 
         this.articleService.deleteArticle(id);
 
         return "redirect:/";
-    }
-
-    private boolean isPossibleToControl(HttpSession session, ArticleDetailResponse articleDetail) {
-        UserInfoResponse userInfo = getUserInfoInSession(session);
-        if(userInfo == null) {
-            return false;
-        }
-
-        return Objects.equals(userInfo.getId(), articleDetail.getWriter().getId());
     }
 }

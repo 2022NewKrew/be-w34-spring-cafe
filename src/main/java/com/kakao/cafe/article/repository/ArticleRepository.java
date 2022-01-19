@@ -2,7 +2,7 @@ package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.entity.Article;
 import com.kakao.cafe.reply.repository.ReplyRepository;
-import com.kakao.cafe.user.mapper.exception.UserNotFoundException;
+import com.kakao.cafe.user.exception.UserNotFoundException;
 import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -75,15 +75,15 @@ public class ArticleRepository {
 
     /**
      * 게시글을 삭제하는 메서드
-     * @param id - 삭제할 게시글의 id(PK)
+     * @param article - 삭제할 게시글
      * @return int: 영향받은 행의 개수(1)
      */
-    public int deleteById(Long id) {
-        String sql = "delete from article_table where id = ?";
+    public int delete(Article article) {
+        String sql = "delete from artlce_table where id = ?";
 
         return this.writeQuery(
                 sql,
-                id
+                article.getId()
         );
     }
 

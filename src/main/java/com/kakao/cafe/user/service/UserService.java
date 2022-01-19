@@ -2,12 +2,12 @@ package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.dto.request.UserLoginRequest;
 import com.kakao.cafe.user.dto.request.UserUpdateRequest;
-import com.kakao.cafe.user.mapper.exception.DuplicateUserIdException;
+import com.kakao.cafe.user.exception.DuplicateUserIdException;
 import com.kakao.cafe.user.dto.request.UserCreateRequest;
 import com.kakao.cafe.user.dto.response.UserInfoResponse;
 import com.kakao.cafe.user.entity.User;
-import com.kakao.cafe.user.mapper.exception.UserIdPasswordNotMatchedException;
-import com.kakao.cafe.user.mapper.exception.UserNotFoundException;
+import com.kakao.cafe.user.exception.UserIdPasswordNotMatchedException;
+import com.kakao.cafe.user.exception.UserNotFoundException;
 import com.kakao.cafe.user.mapper.UserMapper;
 import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

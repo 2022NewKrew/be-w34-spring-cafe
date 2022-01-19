@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.mapper.exception;
+package com.kakao.cafe.user.exception;
 
 public class ForbiddenException extends RuntimeException {
     public ForbiddenException() {

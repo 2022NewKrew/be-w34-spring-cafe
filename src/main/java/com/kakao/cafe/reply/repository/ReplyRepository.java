@@ -1,7 +1,7 @@
 package com.kakao.cafe.reply.repository;
 
 import com.kakao.cafe.reply.entity.Reply;
-import com.kakao.cafe.user.mapper.exception.UserNotFoundException;
+import com.kakao.cafe.user.exception.UserNotFoundException;
 import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,8 +22,8 @@ public class ReplyRepository {
 
         return this.writeQuery(
                 sql,
-                articleId,
                 reply.getWriter().getId(),
+                articleId,
                 reply.getContents()
         );
     }
@@ -32,6 +32,24 @@ public class ReplyRepository {
         String sql = "select * from reply_table where article_id = ?";
 
         return this.readListQuery(sql, articleId);
+    }
+
+    public Optional<Reply> findById(Long replyId) {
+        String sql = "select * from reply_table where id = ?";
+
+        return this.readOneQuery(
+                sql,
+                replyId
+        );
+    }
+
+    public int delete(Reply reply) {
+        String sql = "delete from reply_table where id = ?";
+
+        return this.writeQuery(
+                sql,
+                reply.getId()
+        );
     }
 
     /**

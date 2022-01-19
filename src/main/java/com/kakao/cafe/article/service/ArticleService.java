@@ -9,8 +9,8 @@ import com.kakao.cafe.article.mapper.ArticleMapper;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import com.kakao.cafe.user.dto.response.UserInfoResponse;
 import com.kakao.cafe.user.entity.User;
-import com.kakao.cafe.user.mapper.exception.ForbiddenException;
-import com.kakao.cafe.user.mapper.exception.UserNotFoundException;
+import com.kakao.cafe.user.exception.ForbiddenException;
+import com.kakao.cafe.user.exception.UserNotFoundException;
 import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -86,20 +86,29 @@ public class ArticleService {
      * @param id: 수정할 게시글의 ID(PK)
      */
     public void deleteArticle(Long id) {
-        this.articleRepository.deleteById(id);
+        Article article = this.articleRepository.findById(id)
+                                                .orElseThrow(ArticleNotFoundException::new);
+        this.articleRepository.delete(article);
     }
 
     /**
      * 현재 로그인 중인 유저가 articleId를 id로 갖는 게시글을 다룰 수 있는지 판단하는 메서드
-     * @param user: 현재 로그인 중인 유저
-     * @param articleId: 다루고자 하는 게시글의 id
      * @throws ForbiddenException: 자신의 게시글이 아니라면 발생
      */
-    public void validateUser(UserInfoResponse user, Long articleId) {
-        ArticleDetailResponse article = this.getArticleDetail(articleId);
-        if(!Objects.equals(user.getId(), article.getWriter().getId())) {
+    public void validateUser(Long userPK, Long articleId) {
+        Article article = this.articleRepository.findById(articleId)
+                                                .orElseThrow(ArticleNotFoundException::new);
+        if(!Objects.equals(article.getWriter().getId(), userPK)) {
             throw new ForbiddenException();
         }
+    }
+
+    public boolean isModifiable(UserInfoResponse user, ArticleDetailResponse articleDetail) {
+        if(user == null) {
+            return false;
+        }
+
+        return Objects.equals(user.getId(), articleDetail.getWriter().getId());
     }
 
     private void changeArticleInfo(Article article, ArticleUpdateRequest req) {
