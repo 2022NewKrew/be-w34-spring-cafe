@@ -32,9 +32,10 @@ public class CommentDAO {
     }
 
     public void deleteAllByPostId(long postId) {
-        final String sql = "UPDATE COMMENT " +
+        final String sql = "UPDATE COMMENT as c " +
                 "SET ISDELETED = true " +
-                "WHERE ID in (SELECT id FROM COMMENT WHERE POST_ID = ? AND ISDELETED = false)";
+                "WHERE c.POST_ID = ? " +
+                "  AND ISDELETED = false ";
 
         jdbcTemplate.update(sql, postId);
     }

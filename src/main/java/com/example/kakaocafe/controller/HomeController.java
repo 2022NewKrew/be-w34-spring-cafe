@@ -12,13 +12,13 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/")
+@RequestMapping
 @RequiredArgsConstructor
 public class HomeController {
 
     private final PostDAO postDAO;
 
-    @GetMapping
+    @GetMapping(path = "/")
     public ModelAndView home() {
         final List<PostOfTableRow> postOfTableRowList = postDAO.getAllPostOfTableRow();
 

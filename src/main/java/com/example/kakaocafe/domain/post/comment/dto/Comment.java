@@ -18,7 +18,7 @@ public class Comment {
         return new Comment(
                 postAndComment.getCommentId(),
                 postAndComment.getPostId(),
-                postAndComment.getCommenter(),
+                postAndComment.getCommentWriter(),
                 postAndComment.getCommentContents(),
                 postAndComment.getCommentCreated()
         );

@@ -58,12 +58,13 @@ public class PostService {
     }
 
     private void checkIfCanNotDeleteThrowException(long postId, long writerId) {
-        final int numOfComments = postDAO.getNumOfComments(postId, writerId);
+
+        final int canDelete = postDAO.canDelete(postId, writerId);
         // 0이면 내가 작성한 게시물이 아님
-        // 1이면 삭제가능
-        // 2이상이면 다른 사람이 작성한 코멘트들이 존재
-        final boolean isNotMyPost = numOfComments == 0;
-        final boolean isExistCommentsOfOtherPeople = numOfComments >= 2;
+        // 1이면 다른 사람이 작성한 코멘트들이 존재
+        // 2이면 삭제가능
+        final boolean isNotMyPost = canDelete == 0;
+        final boolean isExistCommentsOfOtherPeople = canDelete == 1;
 
         if (isNotMyPost) {
             throw new HasNotPermissionException();
