@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class QnaController {
@@ -37,6 +38,23 @@ public class QnaController {
         String userName = userService.findUserIdBySessionId(sessionId);
         model.addAttribute("userName", userName);
         return "qna/form";
+    }
+
+    @GetMapping("questions/form/{id}")
+    public String updateForm(@PathVariable long id, HttpSession httpSession, Model model) {
+        UUID sessionId = (UUID) httpSession.getAttribute("sessionId");
+        String userName = userService.findUserIdBySessionId(sessionId);
+        QnaResponse qnaResponse = qnaService.findById(id, userName);
+        model.addAttribute("qna", qnaResponse);
+        return "qna/updateForm";
+    }
+
+    @PutMapping("questions/{id}")
+    public String update(@PathVariable long id, QnaRequest qnaRequest, HttpSession httpSession) {
+        UUID sessionId = (UUID) httpSession.getAttribute("sessionId");
+        qnaRequest.setWriter(userService.findUserIdBySessionId(sessionId));
+        qnaService.update(id, qnaRequest);
+        return "redirect:/questions/" + id;
     }
 
     @GetMapping()

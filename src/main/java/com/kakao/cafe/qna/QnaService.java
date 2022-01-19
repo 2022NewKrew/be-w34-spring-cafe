@@ -31,4 +31,14 @@ public class QnaService {
         Qna qna = qnaRepository.findById(id);
         return QnaResponse.qnaToResponse(qna);
     }
+
+    public QnaResponse findById(long id, String userName) {
+        Qna qna = qnaRepository.findById(id);
+        qna.validateEqualsWriter(userName);
+        return QnaResponse.qnaToResponse(qna);
+    }
+
+    public void update(long id, QnaRequest qnaRequest) {
+        qnaRepository.update(qnaRequest.toQna(id));
+    }
 }

@@ -10,4 +10,6 @@ public interface QnaRepository {
     List<Qna> findAll();
 
     Qna findById(long id);
+
+    void update(Qna qna);
 }

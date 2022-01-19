@@ -17,6 +17,10 @@ public class QnaRequest {
         return new Qna(writer, title, contents);
     }
 
+    public Qna toQna(long id) {
+        return new Qna(id, writer, title, contents);
+    }
+
     public String getWriter() {
         return writer;
     }

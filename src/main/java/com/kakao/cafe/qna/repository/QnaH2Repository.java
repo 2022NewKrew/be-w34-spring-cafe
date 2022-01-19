@@ -41,6 +41,16 @@ public class QnaH2Repository implements QnaRepository {
         }
     }
 
+    @Override
+    public void update(Qna qna) {
+        String sql = "UPDATE qnas SET title = ?, contents = ? WHERE id = ? AND writer = ?";
+        jdbcTemplate.update(sql,
+            qna.getTitle(),
+            qna.getContents(),
+            qna.getId(),
+            qna.getWriter());
+    }
+
     public RowMapper<Qna> getQnaMapper() {
         return (resultSet, rowNumber) -> new Qna(
             resultSet.getLong(1),
