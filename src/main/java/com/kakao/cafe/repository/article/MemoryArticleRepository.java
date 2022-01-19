@@ -31,4 +31,9 @@ public class MemoryArticleRepository implements ArticleRepository {
         return List.copyOf(articleDataBase);
     }
 
+    @Override
+    public void update(Article article) {
+        throw new UnsupportedOperationException();
+    }
+
 }

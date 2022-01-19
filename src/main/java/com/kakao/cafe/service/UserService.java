@@ -43,7 +43,7 @@ public class UserService {
 
     public User login(UserLoginRequestDto userLoginRequestDto) {
         User loginUser = findUserByUserId(userLoginRequestDto.getUserId());
-        if (loginUser.getPassword().equals(userLoginRequestDto.getPassword())) {
+        if (loginUser.isCorrectPassword(userLoginRequestDto.getPassword())) {
             return loginUser;
         }
 
