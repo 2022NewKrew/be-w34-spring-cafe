@@ -13,26 +13,23 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class PostDao implements BaseDao<PostResponseDto, Long, PostCreateRequestDto>{
+public class PostDao{
     private final JdbcTemplate jdbcTemplate;
     private final PostMapper postMapper = new PostMapper();
 
-    @Override
     public List<PostResponseDto> findAll() {
         String sql = "SELECT ID, TITLE, CONTENT FROM POST";
 
         return jdbcTemplate.query(sql, postMapper);
     }
 
-    @Override
-    public void save(PostCreateRequestDto post) {
+    public void insert(PostCreateRequestDto post) {
         String sql = "INSERT INTO POST VALUES (?, ?, ?)";
 
         jdbcTemplate.update(sql,
                 post.getId(), post.getTitle(), post.getContent());
     }
 
-    @Override
     public PostResponseDto findById(Long id) {
         String sql = "SELECT ID, TITLE, CONTENT FROM POST WHERE ID = ?";
 

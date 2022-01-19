@@ -14,7 +14,7 @@ public class PostService {
     private final PostDao postDao;
 
     public void createQuestion(PostCreateRequestDto post) {
-        postDao.save(post);
+        postDao.insert(post);
     }
 
     public List<PostResponseDto> getPostList() {

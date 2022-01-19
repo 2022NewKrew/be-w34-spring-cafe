@@ -13,26 +13,23 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class UserDao implements BaseDao<UserResponseDto, Long, UserCreateRequestDto> {
+public class UserDao {
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper userMapper = new UserMapper();
 
-    @Override
     public List<UserResponseDto> findAll() {
         String sql = "SELECT ID, USERID, NICKNAME, EMAIL FROM USERS";
 
         return jdbcTemplate.query(sql, userMapper);
     }
 
-    @Override
-    public void save(UserCreateRequestDto user) {
+    public void insert(UserCreateRequestDto user) {
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(sql,
                 user.getId(), user.getUserId(), user.getNickname(), user.getEmail(), user.getPassword());
     }
 
-    @Override
     public UserResponseDto findById(Long id) {
         String sql = "SELECT ID, USERID, NICKNAME, EMAIL FROM USERS WHERE ID = ?";
 

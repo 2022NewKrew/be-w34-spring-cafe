@@ -18,7 +18,7 @@ public class UserService {
     }
 
     public void signUp(UserCreateRequestDto user) {
-        userDao.save(user);
+        userDao.insert(user);
     }
 
     public UserResponseDto findUserById(Long id) {
