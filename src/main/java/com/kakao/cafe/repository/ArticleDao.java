@@ -1,4 +1,4 @@
-package com.kakao.cafe.dao;
+package com.kakao.cafe.repository;
 
 import com.kakao.cafe.model.vo.ArticleVo;
 import com.kakao.cafe.model.vo.UserVo;

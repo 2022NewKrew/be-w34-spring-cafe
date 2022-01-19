@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dao.UserDao;
+import com.kakao.cafe.repository.UserDao;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.vo.UserVo;
 import com.kakao.cafe.service.validation.UserValidation;

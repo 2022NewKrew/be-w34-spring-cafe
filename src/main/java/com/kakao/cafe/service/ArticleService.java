@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dao.ArticleDao;
+import com.kakao.cafe.repository.ArticleDao;
 import com.kakao.cafe.model.dto.ArticleDto;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.vo.ArticleVo;
@@ -9,7 +9,6 @@ import com.kakao.cafe.service.validation.ArticleValidation;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.stream.Collectors;
 
