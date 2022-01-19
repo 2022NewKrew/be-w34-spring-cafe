@@ -27,11 +27,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findUserByUserName(UserName userName) {
-        return userRepository.findUserByName(userName)
-                .orElseThrow(() -> new NoSuchUserException("해당 아이디의 사용자를 찾을 수 없습니다."));
-    }
-
     public User findUserById(UUID id) {
         return userRepository.findUserById(id)
                 .orElseThrow(() -> new NoSuchUserException("해당 아이디의 사용자를 찾을 수 없습니다."));

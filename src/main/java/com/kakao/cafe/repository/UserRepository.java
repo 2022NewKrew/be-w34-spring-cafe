@@ -14,8 +14,6 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    Optional<User> findUserByName(UserName id);
-
     Optional<User> findUserById(UUID id);
 
     void update(User user);

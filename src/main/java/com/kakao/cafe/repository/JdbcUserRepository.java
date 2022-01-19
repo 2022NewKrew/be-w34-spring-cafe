@@ -40,16 +40,6 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findUserByName(UserName id) {
-        try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * "
-                    + "FROM users WHERE username = ?", rowMapper, id.getValue()));
-        } catch (EmptyResultDataAccessException exception) {
-            return Optional.empty();
-        }
-    }
-
-    @Override
     public Optional<User> findUserById(UUID id) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * "

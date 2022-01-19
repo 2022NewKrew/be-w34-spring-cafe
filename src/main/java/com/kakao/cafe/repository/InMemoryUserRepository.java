@@ -38,12 +38,6 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findUserByName(UserName id) {
-        return users.findByUserName(id)
-                .map(userMapper::mapResult);
-    }
-
-    @Override
     public Optional<User> findUserById(UUID id) {
         return users.findById(id)
                 .map(userMapper::mapResult);
