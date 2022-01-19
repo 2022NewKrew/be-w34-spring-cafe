@@ -27,4 +27,19 @@ public class Reply {
         }
     }
 
+    public Long getArticleId() {
+        return articleId;
+    }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

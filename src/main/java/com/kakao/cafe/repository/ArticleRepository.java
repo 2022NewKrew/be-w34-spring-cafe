@@ -77,6 +77,7 @@ public class ArticleRepository implements MyRepository<Article, Long> {
         );
     }
 
+    @Override
     public void delete(Long id) {
         String sql = "delete from article where id = ?";
 

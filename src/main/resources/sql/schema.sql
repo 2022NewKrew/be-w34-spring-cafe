@@ -1,5 +1,6 @@
 drop table if exists users;
 drop table if exists article;
+drop table if exists reply;
 
 create table users (
     id integer primary key auto_increment,
@@ -13,4 +14,10 @@ create table article (
     author_id integer references users (id),
     title varchar(100) not null,
     description longtext not null
+);
+create table reply (
+    id integer primary key auto_increment,
+    article_id integer references article (id),
+    author_id integer references users (id),
+    description varchar(100) not null
 )
