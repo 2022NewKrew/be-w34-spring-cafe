@@ -20,6 +20,8 @@ dependencies {
 	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
 
+	runtimeOnly 'mysql:mysql-connector-java'
+
 	compileOnly 'org.projectlombok:lombok'
 	compileOnly 'org.modelmapper:modelmapper:2.4.5'
 

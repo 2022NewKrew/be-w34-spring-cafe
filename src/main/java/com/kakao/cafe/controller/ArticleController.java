@@ -1,9 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.ArticleCreateRequest;
-import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
