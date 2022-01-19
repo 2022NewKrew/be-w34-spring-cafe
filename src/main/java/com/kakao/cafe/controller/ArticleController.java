@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.auth.LoginCheck;
 import com.kakao.cafe.dto.article.ArticleReqDto;
+import com.kakao.cafe.dto.user.SessionUser;
 import com.kakao.cafe.service.article.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,18 +26,18 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String getArticleList(Model model){
+    public String showArticleList(Model model){
         model.addAttribute("articles", articleService.findArticles());
         return "index";
     }
 
     @GetMapping("/articles/form")
-    public String getArticleForm(){
+    public String showArticleForm(@LoginCheck SessionUser sessionUser){
         return "article/form";
     }
 
     @GetMapping("/articles/{articleId}")
-    public String getArticleId(@PathVariable Long articleId, Model model){
+    public String showArticle(@PathVariable Long articleId, Model model, @LoginCheck SessionUser sessionUser){
         model.addAttribute("article", articleService.findArticleById(articleId));
         return "article/show";
     }
