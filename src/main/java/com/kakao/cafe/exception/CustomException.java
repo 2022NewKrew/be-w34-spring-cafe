@@ -1,5 +1,7 @@
 package com.kakao.cafe.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class CustomException extends RuntimeException {
 
     private ErrorCode errorCode;
@@ -9,7 +11,7 @@ public class CustomException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public int getResponseStatus() {
-        return errorCode.getStatus();
+    public HttpStatus getResponseStatus() {
+        return errorCode.getHttpStatus();
     }
 }

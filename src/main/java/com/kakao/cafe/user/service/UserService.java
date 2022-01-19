@@ -1,16 +1,20 @@
 package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.exception.InvalidPasswordException;
 import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.exception.UsernameDuplicatedException;
 import com.kakao.cafe.user.UserMapper;
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.dto.LoggedInUser;
 import com.kakao.cafe.user.dto.UserCreationForm;
+import com.kakao.cafe.user.dto.UserLoginForm;
 import com.kakao.cafe.user.dto.UserView;
 import com.kakao.cafe.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,5 +46,14 @@ public class UserService {
     public UserView getUserViewByUsername(String username) {
         return UserMapper.toUserView(userRepository.get(username).orElseThrow(
                 () -> new UserNotFoundException()));
+    }
+
+    public LoggedInUser login(UserLoginForm userLoginForm) {
+        User user = UserMapper.toUser(userLoginForm);
+        Optional<User> userInRepository = userRepository.get(user.getUsername());
+        if (userInRepository.orElseThrow(() -> new UserNotFoundException()).getPassword().equals(user.getPassword())) {
+            return UserMapper.toLoggedInUser(userInRepository.get());
+        }
+        throw new InvalidPasswordException();
     }
 }
