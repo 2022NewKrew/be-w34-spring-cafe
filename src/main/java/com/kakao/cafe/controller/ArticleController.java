@@ -32,7 +32,7 @@ public class ArticleController {
     }
 
     @PostMapping("/{articleId}/reply")
-    public String createComment(@PathVariable Long articleId, ReplyRequest replyRequest, HttpSession session) {
+    public String createReply(@PathVariable Long articleId, ReplyRequest replyRequest, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
         articleService.saveComment(articleId, auth.getAuthId(), replyRequest);
 
