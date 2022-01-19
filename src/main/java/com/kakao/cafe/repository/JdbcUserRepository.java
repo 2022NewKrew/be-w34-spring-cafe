@@ -38,4 +38,11 @@ public class JdbcUserRepository implements Repository<User, Integer>{
         return Optional.ofNullable(user);
     }
 
+    public Optional<User> readByUserId(String userId) {
+        String sqlQuery = "SELECT * FROM MEMBER WHERE userId = ?";
+        User user = jdbcTemplate.queryForObject(sqlQuery, userMapper, userId);
+        return Optional.ofNullable(user);
+    }
+
+
 }
