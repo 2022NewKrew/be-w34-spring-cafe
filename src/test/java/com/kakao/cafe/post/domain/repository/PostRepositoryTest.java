@@ -9,9 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.*;
@@ -26,7 +25,7 @@ class PostRepositoryTest extends JdbcRepositoryTest {
 
     @Test
     @DisplayName("Post 여러 개 가져오기 성공")
-    void successGetAllPosts() {
+    void successGetAll() {
         //given
         final List<Post> posts = PostsData.getPostList();
         postRepository.savePostAll(posts);
@@ -43,7 +42,7 @@ class PostRepositoryTest extends JdbcRepositoryTest {
     @ParameterizedTest
     @DisplayName("post 저장 성공")
     @MethodSource("com.kakao.cafe.post.data.PostsData#getPostStream")
-    void savePost(Post post) {
+    void successSave(Post post) {
         //given
 
         //when
@@ -74,7 +73,7 @@ class PostRepositoryTest extends JdbcRepositoryTest {
     @ParameterizedTest
     @DisplayName("Post 내용 업데이트 성공")
     @MethodSource("com.kakao.cafe.post.data.PostsData#getPostStream")
-    void successUpdatePost(Post post){
+    void successUpdate(Post post){
         //given
         postRepository.savePost(post);
         final String newContent = post.getContent().concat(" good~");
@@ -86,5 +85,24 @@ class PostRepositoryTest extends JdbcRepositoryTest {
         //then
         assertThat(updatedPost.getContent()).isNotEqualTo(post.getContent());
         assertThat(updatedPost.getContent()).isEqualTo(newContent);
+    }
+
+    @Test
+    @DisplayName("Post 삭제 성공")
+    void successDelete(){
+        //given
+        final List<Post> posts = PostsData.getPostList();
+        final Post deletedPost = posts.get(0);
+        postRepository.savePostAll(posts);
+
+        //when
+        postRepository.softDelete(deletedPost.getId());
+        Optional<Post> actualDeleted = postRepository.getPost(deletedPost.getId());
+        List<Post> remainedPosts = postRepository.getPosts(0, posts.size());
+
+        //then
+        assertThat(actualDeleted.isEmpty()).isEqualTo(true);
+        assertThat(remainedPosts.size()).isEqualTo(posts.size()-1);
+        assertThat(remainedPosts).doesNotContain(deletedPost);
     }
 }

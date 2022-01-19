@@ -51,4 +51,9 @@ public class InMemoryPostRepository implements PostRepository {
     public void update(Long postId, String newContent) {
 
     }
+
+    @Override
+    public void softDelete(Long postId) {
+
+    }
 }

@@ -70,7 +70,7 @@ public class PostsData {
         return IntStream.iterate(1, i->i+1)
                 .mapToObj(num -> new Post(1000L+num, String.format("title%d", num),
                         String.format("content%d", num), String.format("writer%d", num),
-                        LocalDateTime.now(), idToComments.get(1000L+num))
+                        LocalDateTime.now(), false, idToComments.get(1000L+num))
                 )
                 .limit(5)
                 .collect(toList());

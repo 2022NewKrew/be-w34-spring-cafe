@@ -17,15 +17,21 @@
         <div class="container" id="main">
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="panel panel-default">
-                  <header class="post-header">
-                      <ul class="nav navbar-nav navbar-right navbar-space">
-                          <li>
-                              <p class="post-title" th:text="${post.title}"></p>
-                          </li>
+                  <header class="post-header navbar-right navbar-space">
+                      <p class="post-title" th:text="${post.title}"></p>
+                      <ul class="nav navbar-nav navbar-right ">
                           <li>
                               <form name="updateForm" th:action="@{/posts/updateForm/{id}(id=${post.id})}" method="get"></form>
                               <div th:if="${session.userId != null}">
                                   <a class="black-component" onclick="javascript:document.updateForm.submit();" role="button">수정</a>
+                              </div>
+                          </li>
+                          <li>
+                              <form name="submitDelete" method="post" th:action="@{/posts/{id}(id=${post.id})}">
+                                  <input type="hidden" name="_method" value="delete"/>
+                              </form>
+                              <div th:if="${session.userId != null}">
+                                  <a class="black-component" onclick="javascript:document.submitDelete.submit();" role="button">삭제</a>
                               </div>
                           </li>
                       </ul>

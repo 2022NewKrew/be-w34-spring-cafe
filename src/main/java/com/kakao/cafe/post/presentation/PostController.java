@@ -1,9 +1,6 @@
 package com.kakao.cafe.post.presentation;
 
-import com.kakao.cafe.post.application.AddCommentService;
-import com.kakao.cafe.post.application.SearchPostService;
-import com.kakao.cafe.post.application.UpdatePostService;
-import com.kakao.cafe.post.application.WritePostService;
+import com.kakao.cafe.post.application.*;
 import com.kakao.cafe.post.domain.entity.Comment;
 import com.kakao.cafe.post.domain.entity.Post;
 import com.kakao.cafe.post.presentation.dto.CommentRequest;
@@ -12,6 +9,7 @@ import com.kakao.cafe.post.presentation.dto.PostDetailDto;
 import com.kakao.cafe.user.application.SearchUserService;
 import com.kakao.cafe.user.domain.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.h2.engine.Session;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +33,7 @@ public class PostController {
     private final WritePostService writePostService;
     private final AddCommentService commentService;
     private final UpdatePostService updatePostService;
+    private final DeletePostService deletePostService;
 
     private final ModelMapper modelMapper;
 
@@ -90,6 +89,15 @@ public class PostController {
         logger.info("사용자 {}가 id가 {}인 게시글의 내용을 바꿨습니다.", userId, id);
 
         return String.format("redirect:/posts/%d", id);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deletePost(@PathVariable Long id, HttpSession session){
+        User user = searchUserService.getUser(getSessionUserId(session));
+        deletePostService.softDelete(id, user.getUserInfo().getName());
+        logger.info("사용자 {}가 id가 {}인 게시글의 내용을 바꿨습니다.", user.getUserId(), id);
+
+        return "redirect:/";
     }
 
     private String getSessionUserId(HttpSession session){

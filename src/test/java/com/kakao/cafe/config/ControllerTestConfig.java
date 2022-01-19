@@ -8,6 +8,7 @@ import com.kakao.cafe.user.presentation.mapper.JoinRequestToUserConverter;
 import com.kakao.cafe.user.presentation.mapper.UpdateUserInfoRequestToUserInfoConverter;
 import com.kakao.cafe.user.presentation.mapper.UserToUserDtoConverter;
 import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -15,6 +16,16 @@ import java.util.List;
 
 @TestConfiguration
 public class ControllerTestConfig {
+    @Bean
+    public ModelMapper modelMapper(List<Converter<?,?>> converters){
+        ModelMapper modelMapper = new ModelMapper();
+        for(Converter<?,?> converter : converters){
+            modelMapper.addConverter(converter);
+        }
+
+        return modelMapper;
+    }
+
     @Bean
     List<Converter<?,?>> converters(){
         return List.of(

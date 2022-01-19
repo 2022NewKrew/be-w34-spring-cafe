@@ -19,7 +19,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Optional<Post> getPost(Long id) {
-        final String queryString = selectQuery(String.format("where post.id = %d", id));
+        final String queryString = selectQuery(String.format("and post.id = %d", id));
         List<Post> posts = myJdbcTemplate.query(queryString, postRowMapper);
 
         return posts.isEmpty() ? Optional.empty()
@@ -36,7 +36,8 @@ public class JdbcPostRepository implements PostRepository {
     private String selectQuery(String condition){
         String queryString = "select *, comment.id as comment_id, "
                 + "comment.writerName as comment_writerName, comment.content as comment_content "
-                + "from post left join comment on post.id = comment.postId ";
+                + "from post left join comment on post.id = comment.postId "
+                + "where isHidden=false ";
 
         if(condition != null && !condition.isEmpty()){
             return queryString.concat(condition);
@@ -68,6 +69,12 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public void update(Long postId, String newContent) {
         final String queryString = String.format("update post set content = '%s' where id = %d", newContent, postId);
+        myJdbcTemplate.update(queryString);
+    }
+
+    @Override
+    public void softDelete(Long postId) {
+        final String queryString = String.format("update post set isHidden = 'true' where id = %d", postId);
         myJdbcTemplate.update(queryString);
     }
 }

@@ -15,4 +15,5 @@ public interface PostRepository {
     void savePostAll(List<Post> posts);
     void saveComment(Long postId, Comment comment);
     void update(Long postId, String newContent);
+    void softDelete(Long postId);
 }
