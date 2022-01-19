@@ -18,7 +18,6 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("auth")
 public class UserAuthController {
 
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
 
@@ -31,14 +30,12 @@ public class UserAuthController {
             return "/user/login";
         }
         httpSession.setAttribute("sessionId", userAuthDto.getUserId());
-        logger.info("POST /users/login: {}", userAuthDto);
         return "redirect:/users";
     }
 
     @GetMapping("logout")
     public String logout(HttpSession httpSession) {
         httpSession.invalidate();
-        logger.info("GET /users/logout");
         return "redirect:/";
     }
 }

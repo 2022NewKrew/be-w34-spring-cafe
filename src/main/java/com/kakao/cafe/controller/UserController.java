@@ -17,21 +17,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     @GetMapping
     public String findUsers(Model model) {
         List<UserDto> users = userService.findAll();
         model.addAttribute("users", users);
-        logger.info("GET /users: {}", users);
         return "/user/list";
     }
 
     @PostMapping
     public String signup(@ModelAttribute UserDto userDto) {
         userService.create(userDto);
-        logger.info("POST /users: {}", userDto);
         return "redirect:/users";
     }
 
@@ -39,7 +36,6 @@ public class UserController {
     public String findUserOne(@PathVariable String userId, Model model) {
         UserDto user = userService.findByUserId(userId);
         model.addAttribute("user", user);
-        logger.info("GET /users/{}: {}", user.getUserId(), user);
         return "/user/profile";
     }
 
@@ -48,7 +44,6 @@ public class UserController {
         Object sessionId = httpSession.getAttribute("sessionId");
         UserDto user = userService.findByUserId(String.valueOf(sessionId));
         model.addAttribute("user", user);
-        logger.info("GET /users/{}/form: {}", user.getUserId(), user);
         return "/user/userform";
     }
 
@@ -56,7 +51,6 @@ public class UserController {
     public String updateUser(@ModelAttribute UserDto userDto, HttpSession httpSession) {
         Object sessionId = httpSession.getAttribute("sessionId");
         userService.update(String.valueOf(sessionId), userDto);
-        logger.info("PUT /users/{}: {}", sessionId, userDto);
         return "redirect:/users";
     }
 
