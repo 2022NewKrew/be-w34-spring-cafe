@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.dto.ArticleDto;
-import com.kakao.cafe.model.dto.CommentDto;
-import com.kakao.cafe.model.service.BoardService;
+import com.kakao.cafe.application.dto.ArticleDto;
+import com.kakao.cafe.application.dto.CommentDto;
+import com.kakao.cafe.application.service.BoardService;
 import com.kakao.cafe.util.annotation.BoardCheck;
 import com.kakao.cafe.util.exception.NotMineException;
 import lombok.RequiredArgsConstructor;

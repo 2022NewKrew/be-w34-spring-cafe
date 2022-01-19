@@ -1,7 +1,7 @@
-package com.kakao.cafe.model.service;
+package com.kakao.cafe.application.service;
 
 import com.kakao.cafe.model.domain.User;
-import com.kakao.cafe.model.dto.UserDto;
+import com.kakao.cafe.application.dto.UserDto;
 import com.kakao.cafe.model.repository.UserRepository;
 import com.kakao.cafe.util.exception.UserDuplicatedException;
 import com.kakao.cafe.util.exception.UserNotFoundException;

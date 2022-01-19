@@ -1,4 +1,4 @@
-package com.kakao.cafe.model.dto;
+package com.kakao.cafe.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

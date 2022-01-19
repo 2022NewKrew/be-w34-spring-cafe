@@ -1,9 +1,9 @@
-package com.kakao.cafe.model.service;
+package com.kakao.cafe.application.service;
 
 import com.kakao.cafe.model.domain.Article;
 import com.kakao.cafe.model.domain.Comment;
-import com.kakao.cafe.model.dto.ArticleDto;
-import com.kakao.cafe.model.dto.CommentDto;
+import com.kakao.cafe.application.dto.ArticleDto;
+import com.kakao.cafe.application.dto.CommentDto;
 import com.kakao.cafe.model.repository.BoardRepository;
 import com.kakao.cafe.util.exception.ArticleNotFoundException;
 import com.kakao.cafe.util.exception.CommentNotFoundException;

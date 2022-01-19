@@ -1,4 +1,4 @@
-package com.kakao.cafe.model.dto;
+package com.kakao.cafe.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,15 +12,18 @@ import java.time.format.DateTimeFormatter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentDto {
+public class ArticleDto {
     private long articleId;
-    private int commentId;
+    private String title;
     private String writerId;
     private String content;
     private LocalDateTime createdDate;
+    private Long hits;
+    private int commentsCount;
     boolean isDeleted;
 
     public String getFormattedCreatedDate() {
         return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }
+
