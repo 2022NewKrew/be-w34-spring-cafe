@@ -73,25 +73,25 @@
                                               <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
                                           </li>
                                           <li>
-                                              <form class="delete-answer-form" action="/articles/{{articleId}}/reply/{{replyId}}" method="POST">
+                                              <form class="delete-answer-form" action="/api/v1/articles/{{articleId}}/reply/{{replyId}}" method="POST">
                                                   <input type="hidden" name="_method" value="DELETE">
-                                                  <button type="submit" class="delete-answer-button">삭제</button>
+                                                  <button type="button" data-articleId="{{articleId}}" data-replyId="{{replyId}}" class="delete-answer-button">삭제</button>
                                               </form>
                                           </li>
                                       </ul>
                                   </div>
                               </article>
                           {{/article.replies}}
-                          <form class="submit-write" action="/articles/{{id}}/reply" method="post">
-                              <input type="hidden" name="articleId" value="{{id}}">
-                              <input type="hidden" name="userId" value="{{sessionUser.userId}}">
-                              <div class="form-group" style="padding:14px;">
-                                  <textarea class="form-control" placeholder="댓글을 작성해주세요" name="comment"></textarea>
-                              </div>
-                              <button class="btn btn-success pull-right" type="submit">답변하기</button>
-                              <div class="clearfix" />
-                          </form>
                       </div>
+                      <form class="submit-write" action="/api/v1/articles/{{id}}/reply" method="post">
+                          <input id="articleId" type="hidden" name="articleId" value="{{articleId}}">
+                          <input id="userId" type="hidden" name="userId" value="{{sessionUser.userId}}">
+                          <div class="form-group" style="padding:14px;">
+                              <textarea id="comment" class="form-control" placeholder="댓글을 작성해주세요" name="comment"></textarea>
+                          </div>
+                          <button class="btn btn-success pull-right create-reply" type="button">답변하기</button>
+                          <div class="clearfix" />
+                      </form>
                   </div>
               </div>
           </div>
@@ -120,16 +120,19 @@
 				<a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
 			</li>
 			<li>
-				<form class="delete-answer-form" action="/api/questions/{3}/answers/{4}" method="POST">
+				<form class="delete-answer-form" action="/api/v1/articles/{3}/reply/{4}" method="POST">
+                    <input type="hidden" class="articleId" value="{3}"/>
+                    <input type="hidden" class="replyId" value="{4}"/>
 					<input type="hidden" name="_method" value="DELETE">
-                     <button type="submit" class="delete-answer-button">삭제</button>
+                    <button type="button" data-articleId="{3}" data-replyId="{4}" class="delete-answer-button">삭제</button>
 				</form>
 			</li>
 		</ul>
 		</div>
 	</article>
 </script>
-
 {{> partial/script}}
+<script type="application/javascript" src="/js/article/reply.js"></script>
+<script type="application/javascript" src="/js/article/reply-client.js"></script>
 </body>
 </html>

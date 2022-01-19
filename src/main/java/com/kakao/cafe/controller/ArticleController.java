@@ -60,7 +60,7 @@ public class ArticleController {
 
     @PostMapping("/articles/{articleId}/reply")
     public String createReply(@PathVariable Long articleId, ReplyRequestDto replyRequestDto, SessionUser sessionUser) {
-        articleService.createReply(replyRequestDto, sessionUser.getUserId());
+        articleService.createReply(articleId, replyRequestDto, sessionUser.getUserId());
         return "redirect:/articles/" + articleId;
     }
 
