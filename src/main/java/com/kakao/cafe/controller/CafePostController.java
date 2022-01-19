@@ -2,8 +2,10 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.Post;
+import com.kakao.cafe.model.Reply;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.CafePostService;
+import com.kakao.cafe.service.CafeReplyService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +18,10 @@ import java.util.List;
 @RequestMapping("/posts")
 public class CafePostController {
     final CafePostService cafePostService;
-    public CafePostController(CafePostService cafePostService) {
+    final CafeReplyService cafeReplyService;
+    public CafePostController(CafePostService cafePostService, CafeReplyService cafeReplyService) {
         this.cafePostService = cafePostService;
+        this.cafeReplyService = cafeReplyService;
     }
 
     private static final String POST_DIRECTORY = "post";
@@ -74,6 +78,9 @@ public class CafePostController {
 
             boolean canEdit = loginUser.getUserId().equals(post.getUserId());
             model.addAttribute("canEdit", canEdit);
+
+            List<Reply> replyList = cafeReplyService.getReplyList(postId);
+            model.addAttribute("replyList", replyList);
         }
         return POST_VIEW_CONTENT;
     }

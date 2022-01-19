@@ -4,6 +4,7 @@ public class User {
     private String userId;
     private String password;
     private String email;
+    private String name;
 
     public User(String userId, String email) {
         this.userId = userId;
@@ -20,6 +21,9 @@ public class User {
     public String getEmail() {
         return email;
     }
+    public String getName() {
+        return name;
+    }
 
     // setter
     public void setUserId(String userId) {
@@ -30,5 +34,8 @@ public class User {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 }

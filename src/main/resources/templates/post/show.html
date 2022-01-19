@@ -44,7 +44,7 @@
         {{/signInUser}}
         {{#signInUser}}
         <div class="container" id="main">
-            <div class="col-md-12 col-sm-12 col-lg-12">
+            <div class="content-container col-md-12 col-sm-12 col-lg-12">
                 {{^post}}
                 <p class="user-title">게시글 정보가 없습니다.</p>
                 {{/post}}
@@ -88,29 +88,18 @@
                               </div>
 
                               <div class="post-comment-slipp-articles">
+
+                                  {{#replyList}}
                                   <article class="comment">
                                       <div class="article-text">
-                                          <p class="comment-content comment-author-name">자바지기</p>
+                                          <p class="comment-content comment-author-name">{{userId}}</p>
                                           <div class="comment-content comment-doc">
-                                              <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
+                                              <pre>{{content}}</pre>
                                           </div>
-                                          <p class="comment-content comment-time">
-                                              2016-01-12 14:06
-                                          </p>
+                                          <p class="comment-content comment-time">{{createdAt}}</p>
                                       </div>
                                   </article>
-
-                                  <article class="comment" id="answer-1405">
-                                      <div class="article-text">
-                                          <p class="comment-content comment-author-name">자바지기</p>
-                                          <div class="comment-content comment-doc">
-                                              <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
-                                          </div>
-                                          <p class="comment-content comment-time">
-                                              2016-01-12 14:06
-                                          </p>
-                                      </div>
-                                  </article>
+                                  {{/replyList}}
 
                                   <form class="submit-write" method="get" action="/ ">
                                       <div class="comment-writer-container">
