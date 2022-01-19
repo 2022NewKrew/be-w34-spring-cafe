@@ -1,8 +1,10 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.exception.NotSessionInfo;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +16,12 @@ import java.util.List;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
     @Autowired
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @GetMapping("/")
@@ -30,7 +34,9 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String getQuestionsInfo(@PathVariable String id, Model model, HttpSession httpSession) {
         Article article = articleService.findById(id, httpSession);
+        List<Reply> replyList = replyService.findById(id);
         model.addAttribute("article", article);
+        model.addAttribute("replyList", replyList);
         return "qna/show";
     }
 

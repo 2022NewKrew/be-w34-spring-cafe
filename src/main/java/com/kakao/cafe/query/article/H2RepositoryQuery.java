@@ -6,5 +6,5 @@ public class H2RepositoryQuery {
     public static final String selectByIdQuery = "select * from article where id = ?";
     public static final String deleteByIdQuery = "delete from article where id = ?";
     public static final String deleteByWriterQuery = "delete from article where writer = ?";
-    public static final String updateQuery = "UPDATE ARTICLE SET contents = ? WHERE ID = ?";
+    public static final String updateQuery = "UPDATE ARTICLE SET title = ?, contents = ? WHERE ID = ?";
 }
