@@ -13,5 +13,9 @@ public interface ArticleRepository {
 
     Optional<Article> findArticleById(UUID id);
 
+    void increaseViewCount(Article article);
+
     void update(Article article);
+
+    void delete(Article article);
 }

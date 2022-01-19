@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain.article;
 
+import java.util.Objects;
+
 public class Title {
 
     private final String value;
@@ -13,5 +15,22 @@ public class Title {
 
     public String getValue() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Title that = (Title) o;
+        return value.equals(that.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

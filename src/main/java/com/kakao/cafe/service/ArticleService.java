@@ -1,7 +1,9 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.exception.NoSuchArticleException;
+import com.kakao.cafe.exception.UnauthenticatedArticleAccessException;
 import com.kakao.cafe.repository.ArticleRepository;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +30,34 @@ public class ArticleService {
         Article article = articleRepository.findArticleById(articleId)
                 .orElseThrow(() -> new NoSuchArticleException("해당 게시글을 찾을 수 없습니다."));
         article.increaseViewCount();
-        articleRepository.update(article);
+        articleRepository.increaseViewCount(article);
         return article;
+    }
+
+    public Article getArticleByIdAndAuthor(UUID articleId, User user) {
+        Article article = articleRepository.findArticleById(articleId)
+                .orElseThrow(() -> new NoSuchArticleException("해당 게시글을 찾을 수 없습니다."));
+        if (!article.isWriter(user)) {
+            throw new UnauthenticatedArticleAccessException("다른 사람의 게시글을 수정, 삭제할 수 없습니다");
+        }
+        return article;
+    }
+
+    public void updateArticleByIdAndAuthor(Article article) {
+        Article articleToUpdate = articleRepository.findArticleById(article.getArticleId())
+                .orElseThrow(() -> new NoSuchArticleException("해당 게시글을 찾을 수 없습니다."));
+        if (!articleToUpdate.isWriter(article.getWriter())) {
+            throw new UnauthenticatedArticleAccessException("다른 사람의 게시글을 수정, 삭제할 수 없습니다");
+        }
+        articleRepository.update(article);
+    }
+
+    public void deleteArticleByIdAndAuthor(UUID articleId, User user) {
+        Article article = articleRepository.findArticleById(articleId)
+                .orElseThrow(() -> new NoSuchArticleException("해당 게시글을 찾을 수 없습니다."));
+        if (!article.isWriter(user)) {
+            throw new UnauthenticatedArticleAccessException("다른 사람의 게시글을 수정, 삭제할 수 없습니다");
+        }
+        articleRepository.delete(article);
     }
 }

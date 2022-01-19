@@ -47,9 +47,13 @@ public class User {
     }
 
     public void update(User user) {
-        if (this.id.equals(user.getId())) {
+        if (isUserSame(user)) {
             name = user.getName();
             email = user.getEmail();
         }
+    }
+
+    public boolean isUserSame(User user) {
+        return id.equals(user.getId());
     }
 }

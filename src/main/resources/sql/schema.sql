@@ -18,6 +18,7 @@ CREATE TABLE articles
     content CLOB NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     view_count INT DEFAULT 0 NOT NULL,
+    deleted BOOLEAN DEFAULT FALSE,
     users_id UUID NOT NULL,
     PRIMARY KEY(articles_id),
     FOREIGN KEY(users_id) REFERENCES users

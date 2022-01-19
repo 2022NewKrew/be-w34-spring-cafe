@@ -7,8 +7,11 @@ import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.article.ArticleDetailResponseDto;
 import com.kakao.cafe.dto.article.ArticleListResponseDto;
 import com.kakao.cafe.dto.article.ArticleRegisterRequestDto;
+import com.kakao.cafe.dto.article.ArticleUpdateFormResponseDto;
+import com.kakao.cafe.dto.article.ArticleUpdateRequestDto;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
@@ -38,12 +41,28 @@ public class ArticleMapper {
     }
 
     public ArticleDetailResponseDto articleToArticleDetailResponseDto(Article article) {
+        String articleId = article.getArticleId().toString();
         String title = article.getTitle().getValue();
         String content = article.getContent().getValue();
         String writer = article.getWriter().getUserName().getValue();
         String createdAt = article.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         int viewCount = article.getViewCount().getValue();
 
-        return new ArticleDetailResponseDto(title, content, writer, createdAt, viewCount);
+        return new ArticleDetailResponseDto(articleId, title, content, writer, createdAt, viewCount);
+    }
+
+    public ArticleUpdateFormResponseDto articleToArticleUpdateFormResponseDto(Article article) {
+        String articleId = article.getArticleId().toString();
+        String title = article.getTitle().getValue();
+        String content = article.getContent().getValue();
+
+        return new ArticleUpdateFormResponseDto(articleId, title, content);
+    }
+
+    public Article articleUpdateRequestDtoToArticle(UUID articleId, ArticleUpdateRequestDto dto, User user) {
+        Title title = new Title(dto.getTitle());
+        Content content = new Content(dto.getContent());
+
+        return new Article(articleId, title, content, user);
     }
 }

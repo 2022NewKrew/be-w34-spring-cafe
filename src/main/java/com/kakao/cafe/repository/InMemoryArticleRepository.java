@@ -6,6 +6,7 @@ import com.kakao.cafe.repository.mapper.InMemoryArticleMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -26,7 +27,9 @@ public class InMemoryArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return List.copyOf(articles.getArticleList());
+        return articles.getArticleList().stream()
+                .map(articleMapper::mapResult)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -36,7 +39,17 @@ public class InMemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public void increaseViewCount(Article article) {
+        articles.increaseViewCount(article);
+    }
+
+    @Override
     public void update(Article article) {
         articles.update(article);
+    }
+
+    @Override
+    public void delete(Article article) {
+        articles.delete(article);
     }
 }

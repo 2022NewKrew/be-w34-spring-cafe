@@ -11,6 +11,7 @@ import java.util.List;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -34,13 +35,9 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return List.copyOf(users.getUserList());
-    }
-
-    @Override
-    public Optional<User> findUserByName(UserName id) {
-        return users.findByUserName(id)
-                .map(userMapper::mapResult);
+        return users.getUserList().stream()
+                .map(userMapper::mapResult)
+                .collect(Collectors.toList());
     }
 
     @Override

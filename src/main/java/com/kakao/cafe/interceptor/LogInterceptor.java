@@ -1,4 +1,4 @@
-package com.kakao.cafe.config;
+package com.kakao.cafe.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

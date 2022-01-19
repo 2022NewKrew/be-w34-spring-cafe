@@ -1,33 +1,35 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.annotation.LoginRequired;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserName;
 import com.kakao.cafe.dto.article.ArticleDetailResponseDto;
 import com.kakao.cafe.dto.article.ArticleListResponseDto;
 import com.kakao.cafe.dto.article.ArticleRegisterRequestDto;
+import com.kakao.cafe.dto.article.ArticleUpdateFormResponseDto;
+import com.kakao.cafe.dto.article.ArticleUpdateRequestDto;
 import com.kakao.cafe.mapper.ArticleMapper;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.UserService;
 import java.util.List;
 import java.util.UUID;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final UserService userService;
     private final ArticleMapper articleMapper;
 
-    public ArticleController(ArticleService articleService, UserService userService, ArticleMapper articleMapper) {
+    public ArticleController(ArticleService articleService, ArticleMapper articleMapper) {
         this.articleService = articleService;
-        this.userService = userService;
         this.articleMapper = articleMapper;
     }
 
@@ -39,20 +41,54 @@ public class ArticleController {
         return "articles/list";
     }
 
+    @LoginRequired
+    @GetMapping("/article/form")
+    public String requestArticleRegisterForm() {
+        return "articles/form-create";
+    }
+
+    @LoginRequired
     @PostMapping("/articles")
-    public String requestArticleRegister(@Valid ArticleRegisterRequestDto dto) {
-        UserName userName = new UserName(dto.getUserName());
-        User user = userService.findUserByUserName(userName);
+    public String requestArticleRegister(@Valid ArticleRegisterRequestDto dto, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
         Article article = articleMapper.articleRegisterRequestDtoToArticle(dto, user);
         articleService.registerArticle(article);
         return "redirect:/articles";
     }
 
+    @LoginRequired
     @GetMapping("/articles/{articleId}")
     public String requestArticleDetail(@PathVariable UUID articleId, Model model) {
         Article article = articleService.findArticleById(articleId);
         ArticleDetailResponseDto dto = articleMapper.articleToArticleDetailResponseDto(article);
         model.addAttribute("article", dto);
         return "articles/detail";
+    }
+
+    @LoginRequired
+    @GetMapping("/articles/{articleId}/form")
+    public String requestArticleUpdateForm(@PathVariable UUID articleId, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        Article article = articleService.getArticleByIdAndAuthor(articleId, user);
+        ArticleUpdateFormResponseDto dto = articleMapper.articleToArticleUpdateFormResponseDto(article);
+        model.addAttribute("article", dto);
+        return "articles/form-update";
+    }
+
+    @LoginRequired
+    @PutMapping("/articles/{articleId}")
+    public String requestArticleUpdate(@PathVariable UUID articleId, @Valid ArticleUpdateRequestDto dto, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        Article article = articleMapper.articleUpdateRequestDtoToArticle(articleId, dto, user);
+        articleService.updateArticleByIdAndAuthor(article);
+        return String.format("redirect:/articles/%s", articleId.toString());
+    }
+
+    @LoginRequired
+    @DeleteMapping("/articles/{articleId}")
+    public String requestArticleDelete(@PathVariable UUID articleId, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        articleService.deleteArticleByIdAndAuthor(articleId, user);
+        return "redirect:/";
     }
 }

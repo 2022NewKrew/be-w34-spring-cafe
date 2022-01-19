@@ -1,0 +1,32 @@
+spring:
+  mustache:
+    suffix: .html
+    cache: false
+    expose-session-attributes: true
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:kakaodb
+    username: sa
+    password:
+
+  sql:
+    init:
+      schema-locations:
+        - classpath:/sql/schema.sql
+        - classpath:/sql/settings.sql
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+server:
+  servlet:
+    session:
+      tracking-modes: cookie

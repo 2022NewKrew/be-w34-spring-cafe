@@ -9,6 +9,6 @@ public class InMemoryArticleMapper {
         if(result == null) {
             return null;
         }
-        return new Article(result.getArticleId(), result.getTitle(), result.getContent(), result.getWriter(), result.getCreatedAt(), result.getViewCount());
+        return new Article(result.getArticleId(), result.getTitle(), result.getContent(), result.getWriter(), result.getCreatedAt(), result.getViewCount(), result.getArticleDeleted());
     }
 }

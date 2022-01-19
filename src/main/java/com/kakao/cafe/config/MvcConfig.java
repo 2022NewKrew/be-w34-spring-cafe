@@ -1,5 +1,6 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.interceptor.LogInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -16,11 +17,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("signup").setViewName("users/form");
-        registry.addViewController("article/form").setViewName("articles/form");
         registry.addViewController("").setViewName("/articles");
-        registry.addViewController("/login/form").setViewName("auth/login");
-        //registry.addRedirectViewController("", "/articles");
     }
 
     @Override
