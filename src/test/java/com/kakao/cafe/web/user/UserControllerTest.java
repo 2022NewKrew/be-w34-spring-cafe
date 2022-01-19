@@ -44,7 +44,7 @@ class UserControllerTest {
     @ParameterizedTest
     public void showUsers(List<User> users) throws Exception {
         //given
-        String url = "/users";
+        String url = "/user/list";
         given(this.userFindService.findAll()).willReturn(users);
         UserListResponse provideUsers = new UserListResponse(
                 users.stream()
@@ -86,7 +86,7 @@ class UserControllerTest {
     @MethodSource("provideUser")
     @ParameterizedTest
     public void getModifyUserForm(User user) throws Exception {
-        String url = "/users/" + user.getUserId().getValue() + "/form";
+        String url = "/user/" + user.getUserId().getValue() + "/update";
         given(this.userFindService.findById(user.getUserId())).willReturn(user);
 
         mvc.perform(get(url).param("userId", user.getUserId().getValue()))

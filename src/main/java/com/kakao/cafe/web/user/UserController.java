@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserCreateService userCreateService;
@@ -28,7 +28,7 @@ public class UserController {
         this.userUpdateService = userUpdateService;
     }
 
-    @GetMapping()
+    @GetMapping("/list")
     public String showUsers(Model model) {
         UserListResponse userListResponse = new UserListResponse(
                 userFindService.findAll().stream()
@@ -41,12 +41,17 @@ public class UserController {
         return "/user/list";
     }
 
-    @PostMapping()
-    public String save(@RequestParam String userId,
-                       @RequestParam String password,
-                       @RequestParam String name,
-                       @RequestParam String email,
-                       Model model
+    @GetMapping("/form")
+    public String getCreateUserForm() {
+        return "/user/form";
+    }
+
+    @PostMapping("/form")
+    public String createUser(@RequestParam String userId,
+                             @RequestParam String password,
+                             @RequestParam String name,
+                             @RequestParam String email,
+                             Model model
     ) {
         UserCreateRequest requestDto = new UserCreateRequest(userId, password, name, email);
         User user = requestDto.toEntity();
@@ -63,7 +68,7 @@ public class UserController {
         return "/user/profile";
     }
 
-    @GetMapping("/{userId}/form")
+    @GetMapping("/{userId}/update")
     public String updateForm(@PathVariable UserId userId, Model model) {
         model.addAttribute("userId", userId);
         UserProfileResponse userProfileResponse = new UserProfileResponse(userFindService.findById(userId));
@@ -81,7 +86,7 @@ public class UserController {
 
         userUpdateService.update(user, requestDto.getPassword());
 
-        return "redirect:/users";
+        return "redirect:/user";
     }
 
 }

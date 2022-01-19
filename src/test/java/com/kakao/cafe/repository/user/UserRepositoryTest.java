@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -39,7 +38,6 @@ public class UserRepositoryTest {
         //then
         User saved = userRepository.findById(userId);
         assertThat(saved).isEqualTo(user);
-        assertThat(userRepository.findAll()).isEqualTo(List.of(user));
     }
 
     private static Stream<Arguments> provideUsers() {
