@@ -1,7 +1,7 @@
 package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.dto.user.UserResDto;
+import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.dto.user.UserUpdateReqDto;
 import com.kakao.cafe.repository.user.UserRepository;
 import com.kakao.cafe.dto.user.UserReqDto;
@@ -42,15 +42,15 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<UserResDto> findUsers(){
+    public List<UserDto> findUsers(){
         return userRepository.findAll().stream()
-                .map(UserResDto::new)
+                .map(UserDto::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UserResDto findUserById(Long id){
-        return new UserResDto(userRepository.findById(id)
+    public UserDto findUserById(Long id){
+        return new UserDto(userRepository.findById(id)
                 .orElseThrow(() -> new NullPointerException("존재하지 않는 사용자입니다.")));
     }
 
@@ -71,12 +71,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserResDto login(UserReqDto userReqDto) {
+    public UserDto login(UserReqDto userReqDto) {
         User user = userRepository.findByUserId(userReqDto.getUserId())
                 .orElseThrow(() -> new NullPointerException("존재하지 않는 사용자입니다."));
         validatePassword(userReqDto.getPassword(), user.getPassword());
 
-        return new UserResDto(user);
+        return new UserDto(user);
     }
 
     private void validatePassword(String inputPassword, String dataPassword){

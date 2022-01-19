@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 
+import com.kakao.cafe.auth.LoginCheck;
 import com.kakao.cafe.dto.article.ArticleReqDto;
 import com.kakao.cafe.service.article.ArticleService;
 import lombok.RequiredArgsConstructor;

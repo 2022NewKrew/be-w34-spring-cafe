@@ -1,7 +1,7 @@
 package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.dto.user.UserReqDto;
-import com.kakao.cafe.dto.user.UserResDto;
+import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.dto.user.UserUpdateReqDto;
 import com.kakao.cafe.repository.user.MemoryUserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -36,8 +36,8 @@ class UserServiceImplTest {
 
         userService.addUser(userReqDto);
 
-        UserResDto userResDto = userService.findUserById(1L);
-        assertThat(userReqDto.getName()).isEqualTo(userResDto.getName());
+        UserDto userDto = userService.findUserById(1L);
+        assertThat(userReqDto.getName()).isEqualTo(userDto.getName());
 
     }
 
