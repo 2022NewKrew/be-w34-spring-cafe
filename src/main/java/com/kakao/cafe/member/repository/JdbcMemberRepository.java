@@ -33,9 +33,11 @@ public class JdbcMemberRepository implements MemberRepository {
             return ps;
         }, keyHolder);
 
-        Long id = (Long) keyHolder.getKey();
+        Number id = keyHolder.getKey();
 
-        member.setId(id);
+        if (id != null) {
+            member.setId(id.longValue());
+        }
         return member;
     }
 
