@@ -1,11 +1,8 @@
 package com.kakao.cafe.user.repo;
 
 import com.kakao.cafe.user.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -18,22 +15,26 @@ import java.util.Optional;
 @Repository
 public class JdbcUserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final UserRowMapper mapper;
 
-    @Autowired
-    public JdbcUserRepository(JdbcTemplate jdbcTemplate) {
+    public JdbcUserRepository(JdbcTemplate jdbcTemplate, UserRowMapper mapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.mapper = mapper;
     }
 
     @Override
     public long save(User target) {
+        beforeSave(target);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String query = "INSERT INTO `USER`(USER_ID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO `USER`(CREATED_AT, UPDATED_AT, USER_ID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(connection -> {
                     PreparedStatement ps = connection.prepareStatement(query);
-                    ps.setString(1, target.getUserId());
-                    ps.setString(2, target.getHashedPassword());
-                    ps.setString(3, target.getName());
-                    ps.setString(4, target.getEmail());
+                    ps.setObject(1, target.getCreatedAt());
+                    ps.setObject(2, target.getUpdatedAt());
+                    ps.setString(3, target.getUserId());
+                    ps.setString(4, target.getHashedPassword());
+                    ps.setString(5, target.getName());
+                    ps.setString(6, target.getEmail());
                     return ps;
                 },
                 keyHolder
@@ -47,14 +48,13 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User fetch(long id) {
         String query = "SELECT * FROM `USER` WHERE ID = ?";
-        List<User> users = jdbcTemplate.query(query, new UserRowMapper(), id);
-        return users.size() == 0 ? null : users.get(0);
+        return jdbcTemplate.queryForObject(query, mapper, id);
     }
 
     @Override
     public List<User> fetchAll() {
         String query = "SELECT * FROM `USER`";
-        return jdbcTemplate.query(query, new UserRowMapper());
+        return jdbcTemplate.query(query, mapper);
     }
 
     @Override
@@ -67,9 +67,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public Optional<User> fetchByUserId(String userId) {
         String query = "SELECT * FROM `USER` WHERE USER_ID=?";
-        SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("USER_ID", userId);
-        List<User> users = jdbcTemplate.query(query, new UserRowMapper(), parameterSource);
-        return users.size() == 0 ? Optional.empty() : Optional.of(users.get(0));
+        User user = jdbcTemplate.queryForObject(query, mapper, userId);
+        return Optional.ofNullable(user);
     }
 }

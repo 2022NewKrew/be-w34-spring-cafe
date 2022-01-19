@@ -1,9 +1,14 @@
 package com.kakao.cafe.article.model;
 
-import javax.validation.constraints.NotEmpty;
+import com.kakao.cafe.common.BaseEntity;
+import com.kakao.cafe.user.model.User;
 
-public class Article {
-    private Long id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class Article extends BaseEntity {
+    @NotNull
+    private User author;
 
     @NotEmpty
     private String title;
@@ -11,12 +16,12 @@ public class Article {
     @NotEmpty
     private String content;
 
-    public Long getId() {
-        return id;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public String getTitle() {

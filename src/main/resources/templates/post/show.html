@@ -23,8 +23,13 @@
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/users">멤버 리스트</a></li>
+                {{^user}}
                 <li><a class="black-component" href="/user/login.html" role="button">로그인</a></li>
                 <li><a class="black-component" href="/user/form.html" role="button">회원가입</a></li>
+                {{/user}}
+                {{#user}}
+                <li><a class="black-component" href="/session/logout" role="button">로그아웃</a></li>
+                {{/user}}
             </ul>
         </div>
     </nav>
@@ -39,9 +44,9 @@
                     <article class="article">
                         <div class="article-header">
                             <div class="article-header-text">
-                                <p class="article-content">멋진삼</p>
+                                <p class="article-content">{{author}}</p>
                                 <p class="article-content">
-                                    작성일자:2015-12-30 01:47
+                                    작성일자: {{createdAt}}
                                 </p>
                                 <p class="article-content">조회 4</p>
                             </div>

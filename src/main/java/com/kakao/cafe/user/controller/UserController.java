@@ -4,7 +4,6 @@ import com.kakao.cafe.user.dto.UserRegistrationDto;
 import com.kakao.cafe.user.exception.NotFoundUserIdException;
 import com.kakao.cafe.user.model.User;
 import com.kakao.cafe.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,15 +18,13 @@ import java.util.Map;
 public class UserController {
     private final UserService service;
 
-    @Autowired
     public UserController(UserService service) {
         this.service = service;
     }
 
     @PostMapping
     public String register(UserRegistrationDto dto) {
-        User user = new User(dto.getUserId(), dto.getPassword(), dto.getName(), dto.getEmail());
-        service.create(user);
+        service.create(dto);
         return "redirect:/users";
     }
 

@@ -1,7 +1,6 @@
 package com.kakao.cafe.article.repo;
 
 import com.kakao.cafe.article.model.Article;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -13,20 +12,25 @@ import java.util.List;
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final ArticleRowMapper mapper;
 
-    @Autowired
-    public JdbcArticleRepository(JdbcTemplate jdbcTemplate) {
+    public JdbcArticleRepository(JdbcTemplate jdbcTemplate, ArticleRowMapper mapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.mapper = mapper;
     }
 
     @Override
     public long save(Article target) {
+        beforeSave(target);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String query = "INSERT INTO `ARTICLE`(TITLE, CONTENT) VALUES (?, ?)";
+        String query = "INSERT INTO `ARTICLE`(CREATED_AT, UPDATED_AT, TITLE, CONTENT, AUTHOR_ID) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(connection -> {
                     PreparedStatement ps = connection.prepareStatement(query);
-                    ps.setString(1, target.getTitle());
-                    ps.setString(2, target.getContent());
+                    ps.setObject(1, target.getCreatedAt());
+                    ps.setObject(2, target.getUpdatedAt());
+                    ps.setString(3, target.getTitle());
+                    ps.setString(4, target.getContent());
+                    ps.setLong(5, target.getAuthor().getId());
                     return ps;
                 },
                 keyHolder
@@ -40,13 +44,12 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public Article fetch(long id) {
         String query = "SELECT * FROM `ARTICLE` WHERE ID = ?";
-        List<Article> articles = jdbcTemplate.query(query, new ArticleRowMapper(), id);
-        return articles.size() == 0 ? null : articles.get(0);
+        return jdbcTemplate.queryForObject(query, mapper, id);
     }
 
     @Override
     public List<Article> fetchAll() {
         String query = "SELECT * FROM `ARTICLE`";
-        return jdbcTemplate.query(query, new ArticleRowMapper());
+        return jdbcTemplate.query(query, mapper);
     }
 }

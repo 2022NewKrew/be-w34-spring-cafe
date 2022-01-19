@@ -1,8 +1,8 @@
 package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.user.dto.UserRegistrationDto;
 import com.kakao.cafe.user.model.User;
 import com.kakao.cafe.user.repo.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -17,7 +17,6 @@ public class UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
@@ -28,6 +27,11 @@ public class UserService {
         user.setHashedPassword(hashedPassword);
         user.setPlainPassword(null);
         repository.save(user);
+    }
+
+    public void create(UserRegistrationDto dto) {
+        User user = new User(dto.getUserId(), dto.getPassword(), dto.getName(), dto.getEmail());
+        create(user);
     }
 
     public List<User> fetchAll() {
