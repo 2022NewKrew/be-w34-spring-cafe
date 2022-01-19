@@ -1,4 +1,4 @@
-package com.kakao.cafe.auth;
+package com.kakao.cafe.filter;
 
 import com.kakao.cafe.core.SessionConst;
 import lombok.extern.slf4j.Slf4j;

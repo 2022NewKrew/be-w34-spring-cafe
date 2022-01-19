@@ -26,20 +26,21 @@ public class ArticleJdbcRepository implements ArticleRepository {
     @Override
     public Long save(ArticleSaveForm article) {
         long articleId = id.incrementAndGet();
-        jdbcTemplate.update("insert into " + DBConst.ARTICLE_DB + " values(?,?,?,?,?,?,?)"
+        jdbcTemplate.update("insert into " + DBConst.ARTICLE_DB + " values(?,?,?,?,?,?,?,?)"
                 , articleId
                 , article.getAuthorId()
                 , article.getAuthor()
                 , article.getTitle()
                 , article.getContent()
                 , LocalDateTime.now()
-                , 0);
+                , 0
+                , 'N');
         return articleId;
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from " + DBConst.ARTICLE_DB, articleRowMapper());
+        return jdbcTemplate.query("select * from " + DBConst.ARTICLE_DB + " where isDeleted = 'N'", articleRowMapper());
     }
 
     @Override
@@ -50,7 +51,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
     @Override
     public void delete(Long id) {
-        jdbcTemplate.update("delete from " + DBConst.ARTICLE_DB + " where id = ?", id);
+        jdbcTemplate.update("update " + DBConst.ARTICLE_DB + " set isDeleted = 'Y' where id = ?", id);
     }
 
     @Override
@@ -62,6 +63,12 @@ public class ArticleJdbcRepository implements ArticleRepository {
     @Override
     public void update(Long id, ArticleUpdateForm updateForm) {
         jdbcTemplate.update("update " + DBConst.ARTICLE_DB + " set title = ?, content = ? where id = ?", updateForm.getTitle(), updateForm.getContent(), id);
+    }
+
+    @Override
+    public void incrementNumOfComment(Long articleId) {
+        String sql = "update " + DBConst.ARTICLE_DB + " set numOfComment = numOfComment + 1 where id = ?";
+        jdbcTemplate.update(sql, articleId);
     }
 
     private RowMapper<Article> articleRowMapper() {

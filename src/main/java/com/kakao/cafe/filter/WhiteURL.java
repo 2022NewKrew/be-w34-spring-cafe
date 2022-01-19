@@ -1,4 +1,4 @@
-package com.kakao.cafe.auth;
+package com.kakao.cafe.filter;
 
 import java.util.Arrays;
 

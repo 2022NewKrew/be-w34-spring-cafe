@@ -5,6 +5,8 @@ import com.kakao.cafe.core.exception.IsNotAuthorOfThisArticle;
 import com.kakao.cafe.domain.article.dto.ArticleResponse;
 import com.kakao.cafe.domain.article.dto.ArticleSaveForm;
 import com.kakao.cafe.domain.article.dto.ArticleUpdateForm;
+import com.kakao.cafe.domain.reply.ReplyService;
+import com.kakao.cafe.domain.reply.dto.ReplyResponse;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.core.SessionConst;
 import com.kakao.cafe.domain.article.ArticleService;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @Controller
@@ -22,6 +25,7 @@ import javax.validation.Valid;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
     @PostMapping("")
     public String createQuestion(@Valid @ModelAttribute ArticleSaveForm articleSaveForm, @SessionAttribute(name = SessionConst.LOGIN_COOKIE) User user) {
@@ -33,6 +37,9 @@ public class ArticleController {
     public String getArticleInfo(@PathVariable Long id, Model model) {
         ArticleResponse article = articleService.findById(id);
         model.addAttribute("article", article);
+
+        List<ReplyResponse> replyList = replyService.getComments(id);
+        model.addAttribute("replyList", replyList);
         return "qna/detail";
     }
 

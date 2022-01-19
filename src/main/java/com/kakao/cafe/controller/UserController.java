@@ -45,7 +45,6 @@ public class UserController {
     public String userList(@SessionAttribute(name = SessionConst.LOGIN_COOKIE) User user, Model model) {
         List<UserListDto> userList = userService.getUserList();
         model.addAttribute("users", userList);
-        model.addAttribute("user", user);
         return "user/list";
     }
 
@@ -53,14 +52,12 @@ public class UserController {
     public String userProfile(@PathVariable("id") String userId, Model model) {
         User user = userService.findUser(userId);
         UserResponse dtoUser = UserResponse.from(user);
-        model.addAttribute("user", dtoUser);
         return "user/profile";
     }
 
     @GetMapping("/update")
     public String showForm(@SessionAttribute(name = SessionConst.LOGIN_COOKIE) User user, Model model) {
         UserResponse dtoUser = UserResponse.from(user);
-        model.addAttribute("user", dtoUser);
         return "user/updateForm";
     }
 

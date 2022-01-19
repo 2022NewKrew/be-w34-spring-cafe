@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.controller.error.ErrorMessageBox;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.login.LoginService;
 import com.kakao.cafe.core.SessionConst;
@@ -31,8 +32,7 @@ public class LoginController {
             httpSession.setAttribute(SessionConst.LOGIN_COOKIE, user);
             return "redirect:/";
         } catch (Exception e) {
-            model.addAttribute("messages", Arrays.asList("아이디나 비밀번호가 일치하지 않습니다."));
-            return "redirect:/users/login";
+            return ErrorMessageBox.handling("아이디나 비밀번호가 일치하지 않습니다.", model);
         }
     }
 

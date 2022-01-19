@@ -13,4 +13,5 @@ public interface ArticleRepository {
     public void delete(Long id);
     public boolean checkAuthor(Long id, Long userId);
     public void update(Long id, ArticleUpdateForm updateForm);
+    public void incrementNumOfComment(Long articleId);
 }
