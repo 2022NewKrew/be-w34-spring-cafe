@@ -1,7 +1,9 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.handler.AuthInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,5 +17,11 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/user/login").setViewName("user/login");
         registry.addViewController("/user/create").setViewName("user/form");
         registry.addViewController("/post/create").setViewName("post/form");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthInterceptor())
+                .addPathPatterns(AuthInterceptor.includePatterns);
     }
 }

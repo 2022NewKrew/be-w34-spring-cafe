@@ -26,7 +26,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping("/posts")
+    @PostMapping("/posts/write")
     public String write(@Valid WritePostRequest postDto, BindingResult errors) {
         logger.info("[POST] /posts 게시글 작성");
         if (errors.hasErrors()) {
