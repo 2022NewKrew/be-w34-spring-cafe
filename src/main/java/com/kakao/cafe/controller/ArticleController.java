@@ -30,7 +30,7 @@ public class ArticleController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("articles", articleService.list());
-        return "index";
+        return "/index";
     }
 
     @GetMapping("/articles/{articleId}")
@@ -38,6 +38,5 @@ public class ArticleController {
         model.addAttribute("article", articleService.detail(articleId));
         return "/articles/show";
     }
-
 
 }

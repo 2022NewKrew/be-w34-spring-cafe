@@ -3,14 +3,24 @@ spring:
     suffix: .html
     cache: false
     expose-session-attributes: true
-  datasource:
-    driver-class-name: org.h2.Driver
+#  datasource:  # h2 config
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
+  datasource:  # mysql config
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://localhost:3306/kakaodb?serverTimezone=UTC&characterEncoding=UTF-8"
     username: sa
     password:
   h2:
     console:
       enabled: true
       path: /h2-console
+  sql:
+    init:
+      schema-locations: classpath:db/schema-mysql.sql
+      data-locations: classpath:db/data-mysql.sql
+      mode: always
 
 handlebars:
   suffix: .html

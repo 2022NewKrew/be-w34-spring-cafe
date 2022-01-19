@@ -27,12 +27,10 @@ public class UserService {
     }
 
     public User login(String userId, String password) {
-        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("없는 아이디거나 비밀번호가 잘못되었습니다."));
-        if (!user.getPassword().equals(password)) {
-            throw new IllegalArgumentException("없는 아이디거나 비밀번호가 잘못되었습니다.");
-        }
-
-        return user;
+        return userRepository
+                .findByUserId(userId)
+                .filter(u -> u.getPassword().equals(password))
+                .orElseThrow(() -> new IllegalArgumentException("없는 아이디거나 비밀번호가 잘못되었습니다."));
     }
 
     public List<User> list() {
@@ -40,13 +38,12 @@ public class UserService {
     }
 
     public void updateUser(int id, UserUpdateRequest request) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("없는 아이디거나 비밀번호가 잘못되었습니다."));
-        if (!user.getPassword().equals(request.getPassword())) {
-            throw new IllegalArgumentException("기존 비밀번호가 잘못되었습니다.");
-        }
+        User user = userRepository
+                .findById(id)
+                .filter(u -> u.getPassword().equals(request.getPassword()))
+                .orElseThrow(() -> new IllegalArgumentException("기존 비밀번호가 잘못되었습니다."));
 
         user.update(request.getPassword(), request.getName(), request.getEmail());
         userRepository.update(user);
     }
-
 }
