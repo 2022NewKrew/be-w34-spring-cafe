@@ -1,12 +1,14 @@
 package com.kakao.cafe.domain.article;
 
 import com.kakao.cafe.domain.member.Member;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Objects;
 
 //@RequiredArgsConstructor
 @Getter
+@AllArgsConstructor
 public class Comment {
 
     private final Article article;
@@ -26,6 +28,10 @@ public class Comment {
         Comment comment = new Comment(article, time, text, author);
         article.getComments().add(comment);
         return comment;
+    }
+
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
     }
 
     @Override

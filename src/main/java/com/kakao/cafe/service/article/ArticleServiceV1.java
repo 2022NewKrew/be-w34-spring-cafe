@@ -4,6 +4,8 @@ import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.Comments;
 import com.kakao.cafe.domain.member.Member;
 import com.kakao.cafe.domain.member.UserId;
+import com.kakao.cafe.exception.ErrorMessages;
+import com.kakao.cafe.exception.UnauthorizedException;
 import com.kakao.cafe.repository.article.ArticleRepository;
 import com.kakao.cafe.repository.comment.CommentRepository;
 import com.kakao.cafe.repository.member.MemberRepository;
@@ -44,17 +46,27 @@ public class ArticleServiceV1 implements ArticleService {
     }
 
     @Override
-    public void editArticle(Long articleId, Article article) {
-
+    public Article editArticle(Article article, Member member) {
+        checkAuthorization(article.getArticleId(), member);
+        return articleRepository.editArticle(article);
     }
 
     @Override
-    public void deleteArticle(Long articleId) {
-
+    public void deleteArticle(Long articleId, Member loginMember) {
+        checkAuthorization(articleId, loginMember);
+        articleRepository.deleteArticle(articleId);
     }
 
     @Override
     public void deleteAllArticles() {
 
+    }
+
+    @Override
+    public void checkAuthorization(Long article, Member member) {
+        Article existingArticle = articleRepository.findArticle(article);
+        if (!existingArticle.getAuthor().equals(member)) {
+            throw new UnauthorizedException(ErrorMessages.NOT_AUTHORIZED_USER);
+        }
     }
 }

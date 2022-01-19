@@ -1,10 +1,12 @@
 package com.kakao.cafe.exception;
 
 import com.sun.jdi.request.DuplicateRequestException;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.NoSuchElementException;
 
@@ -38,5 +40,20 @@ public class ErrorController {
         log.error("{}", e.getMessage());
         model.addAttribute("error", e.getMessage());
         return "error/error-page";
+    }
+
+    @ExceptionHandler(UnauthenticatedException.class)
+    public String unauthenticatedError(UnauthenticatedException e, RedirectAttributes attributes) {
+        log.error("{}", e.getMessage());
+
+        Error error = new Error();
+        error.setErrorMessage(e.getMessage());
+        attributes.addFlashAttribute("error", error);
+        return "redirect:/users/login";
+    }
+
+    @Data
+    static class Error {
+        private String errorMessage;
     }
 }

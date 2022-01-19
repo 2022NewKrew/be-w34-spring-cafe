@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 public class PostArticleDto {
 
+    private Long articleId;
     @NotEmpty
     private String writer;
     @NotEmpty

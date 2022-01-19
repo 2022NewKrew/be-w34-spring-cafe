@@ -9,6 +9,7 @@ import com.kakao.cafe.dto.JoinMemberDto;
 import com.kakao.cafe.dto.LoginMemberDto;
 import com.kakao.cafe.exception.ErrorMessages;
 import com.kakao.cafe.exception.NotEnoughFieldException;
+import com.kakao.cafe.exception.UnauthorizedException;
 import com.kakao.cafe.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,11 @@ public class MemberController {
         return "user/user-list";
     }
 
+    @GetMapping("/users/login")
+    public String getLoginForm(Model model) {
+        return "user/login-form";
+    }
+
     @PostMapping("/users/create")
     public String joinMember(@Valid JoinMemberDto memberDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -65,8 +71,11 @@ public class MemberController {
 
     @GetMapping("/users/edit/{memberId}")
     @LoginCheckAnnotation
-    public String editMemberInformationForm(@PathVariable("memberId") Long memberId, Model model) {
+    public String editMemberInformationForm(@PathVariable("memberId") Long memberId, Model model, HttpSession session) {
         Member member = memberService.inquireOneMember(memberId);
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (!member.getMemberId().equals(loginMember.getMemberId()))
+            throw new UnauthorizedException(ErrorMessages.NOT_AUTHORIZED_USER);
         InquireMemberDto memberDto = mapper.map(member);
         model.addAttribute("member", memberDto);
         return "user/user-edit";
@@ -75,8 +84,11 @@ public class MemberController {
     @PostMapping("users/edit")
     @AuthCheckAnnotation
     public String editMemberInformation(JoinMemberDto memberDto, HttpSession session) {
-        Member changedMember = mapper.map(memberDto);
+        // 비밀번호 확인하는 부분 질문
         Member loginMember = (Member) session.getAttribute("loginMember");
+        memberService.loginMember(memberDto.getPassword(), loginMember.getPassword().getPassword());
+
+        Member changedMember = mapper.map(memberDto);
         memberService.editMemberInformation(changedMember, loginMember);
         return "redirect:/users/" + loginMember.getMemberId();
     }

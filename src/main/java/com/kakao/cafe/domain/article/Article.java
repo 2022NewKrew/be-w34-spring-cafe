@@ -27,6 +27,13 @@ public class Article {
         this.articleId = articleId;
     }
 
+    public Article(Long articleId, Title title, Text text, Time time) {
+        this.articleId = articleId;
+        this.title = title;
+        this.text = text;
+        this.time = time;
+    }
+
     public void setArticleId(Long articleId) {
         this.articleId = articleId;
     }

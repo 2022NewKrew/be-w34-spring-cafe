@@ -36,6 +36,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public Article editArticle(Article article) {
+        return null;
+    }
+
+    @Override
     public boolean isArticleExist(Long articleId) {
         return store.get(articleId) != null;
     }

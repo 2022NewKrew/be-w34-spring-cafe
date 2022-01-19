@@ -1,6 +1,7 @@
 package com.kakao.cafe.service.article;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.member.Member;
 
 import java.util.List;
 
@@ -12,9 +13,11 @@ public interface ArticleService {
 
     Article inquireOneArticle(Long articleId);
 
-    void editArticle(Long articleId, Article article);
+    Article editArticle(Article article, Member member);
 
-    void deleteArticle(Long articleId);
+    void deleteArticle(Long articleId, Member loginMember);
 
     void deleteAllArticles();
+
+    void checkAuthorization(Long article, Member member);
 }

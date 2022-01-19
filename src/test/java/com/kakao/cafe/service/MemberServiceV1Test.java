@@ -62,11 +62,11 @@ public class MemberServiceV1Test {
                         new Password("Ab12345!"),
                         new Email("rubam@naver.com"),
                         1L));
-        when(memberRepository.findOne(editMember.getMemberId()))
-                .thenReturn(member);
+        when(memberRepository.updateByMemberId(editMember))
+                .thenReturn(editMember);
 
         // when
-        Member updatedMember = memberService.joinMember(editMember);
+        Member updatedMember = memberService.editMemberInformation(editMember, member);
 
         // then
         assertThat(updatedMember.getName()).isEqualTo(editMember.getName());
@@ -79,12 +79,10 @@ public class MemberServiceV1Test {
         // given
         String wrongPassword = "Abc12345!";
         Member editMember = new Member(new UserId("rubam"), new Name("루밤"), new Password(wrongPassword), new Email("rubam@naver.com"), 1L);
-        when(memberRepository.findOne(editMember.getMemberId()))
-                .thenReturn(member);
 
         // then
         String errorMessage = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            memberService.joinMember(editMember);
+            memberService.editMemberInformation(editMember, member);
         }).getMessage();
         assertThat(errorMessage).isEqualTo(ErrorMessages.LOGIN_FAILED);
     }
