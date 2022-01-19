@@ -210,4 +210,14 @@ class ArticleAdapterTest {
         assertThatExceptionOfType(IllegalWriterException.class)
             .isThrownBy(() -> articleAdapter.updateArticle(updateRequest));
     }
+
+    @DisplayName("게시글 삭제 성공 테스트")
+    @Test
+    void deleteArticleSuccess() {
+        // given
+        int id = 5;
+
+        // then
+        assertThatNoException().isThrownBy(() -> articleAdapter.delete(id));
+    }
 }
