@@ -9,6 +9,7 @@ public class ReplyDto {
     private final Long authorId;
     private final String author;
     private final String description;
+    private final boolean deleted;
 
     public ReplyDto(Reply reply) {
         this.replyId = reply.getId();
@@ -16,6 +17,7 @@ public class ReplyDto {
         this.authorId = reply.getAuthorId();
         this.author = reply.getAuthor();
         this.description = reply.getDescription();
+        this.deleted = reply.isDeleted();
     }
 
     public Long getAuthorId() {

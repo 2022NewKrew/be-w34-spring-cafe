@@ -7,18 +7,20 @@ public class Reply {
     private final Long authorId;
     private final String author;
     private final String description;
+    private final boolean deleted;
 
     public Reply(Long articleId, Long authorId, String description) {
-        this(null, articleId, authorId, null, description);
+        this(null, articleId, authorId, null, description, false);
     }
 
-    public Reply(Long id, Long articleId, Long authorId, String author, String description) {
+    public Reply(Long id, Long articleId, Long authorId, String author, String description, boolean deleted) {
         validateDescription(description);
         this.id = id;
         this.articleId = articleId;
         this.authorId = authorId;
         this.author = author;
         this.description = description;
+        this.deleted = deleted;
     }
 
     private void validateDescription(String description) {
@@ -45,5 +47,9 @@ public class Reply {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 }

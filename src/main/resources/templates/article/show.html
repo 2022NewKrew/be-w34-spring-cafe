@@ -46,6 +46,7 @@
                               <p class="post-comment-count">댓글 {{replies.size}}개</p>
                               <div class="post-comment-slipp-articles">
                                   {{#replies}}
+                                  {{^deleted}}
                                   <article class="comment">
                                       <div class="article-text">
                                           <p class="comment-content comment-author-name">{{this.author}}</p>
@@ -61,6 +62,7 @@
                                           </form>
                                       </div>
                                   </article>
+                                  {{/deleted}}
                                   {{/replies}}
                                   <form class="submit-write" method="post" action="/articles/{{articleId}}/reply">
                                       <div class="comment-writer-container">

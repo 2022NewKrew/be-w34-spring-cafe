@@ -24,7 +24,7 @@ public class ReplyRepository implements MyRepository<Reply, Long> {
 
     @Override
     public Optional<Reply> findById(Long id) {
-        String sql = "select r.id, r.article_id, r.author_id, u.nickname, r.description " +
+        String sql = "select r.id, r.article_id, r.author_id, u.nickname, r.description, r.deleted " +
                 "from reply r join users u " +
                 "on r.author_id = u.id " +
                 "where r.id = ?";
@@ -38,29 +38,32 @@ public class ReplyRepository implements MyRepository<Reply, Long> {
     }
 
     public List<Reply> findAllByArticleId(Long articleId) {
-        String sql = "select r.id, r.article_id, r.author_id, u.nickname, r.description " +
+        String sql = "select r.id, r.article_id, r.author_id, u.nickname, r.description, r.deleted " +
                 "from reply r join users u " +
                 "on r.author_id = u.id " +
-                "where r.article_id = ?";
+                "where r.article_id = ? and not r.deleted";
 
         return jdbcTemplate.query(sql, mapper, articleId);
     }
 
     @Override
     public void save(Reply entity) {
-        String sql = "insert into reply (article_id, author_id, description) values ( ?, ?, ? )";
+        String sql = "insert into reply (article_id, author_id, description, deleted) values ( ?, ?, ?, ? )";
 
         jdbcTemplate.update(
                 sql,
                 entity.getArticleId(),
                 entity.getAuthorId(),
-                entity.getDescription()
+                entity.getDescription(),
+                entity.isDeleted()
         );
     }
 
     @Override
     public void delete(Long id) {
-        String sql = "delete from reply where id = ?";
+        String sql = "update reply " +
+                "set deleted = 1 " +
+                "where id = ?";
 
         jdbcTemplate.update(sql, id);
     }
@@ -73,7 +76,8 @@ public class ReplyRepository implements MyRepository<Reply, Long> {
                     rs.getLong("article_id"),
                     rs.getLong("author_id"),
                     rs.getString("nickname"),
-                    rs.getString("description")
+                    rs.getString("description"),
+                    rs.getBoolean("deleted")
             );
         }
     }
