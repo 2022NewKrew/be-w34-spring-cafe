@@ -1,9 +1,10 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.dto.ArticleDto;
-import com.kakao.cafe.model.dto.CommentDto;
-import com.kakao.cafe.model.service.BoardService;
-import com.kakao.cafe.util.annotation.MineCheck;
+import com.kakao.cafe.application.dto.ArticleDto;
+import com.kakao.cafe.application.dto.CommentDto;
+import com.kakao.cafe.application.service.BoardService;
+import com.kakao.cafe.util.annotation.BoardCheck;
+import com.kakao.cafe.util.exception.NotMineException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,14 +51,14 @@ public class BoardController {
     }
 
     @GetMapping("/modify/{articleId}")
-    @MineCheck
+    @BoardCheck
     public String goModifyArticleView(@PathVariable long articleId, Model model) {
         model.addAttribute("article", boardService.findArticleByArticleId(articleId));
         return "board/modify";
     }
 
     @PutMapping("/modify/{articleId}")
-    @MineCheck
+    @BoardCheck
     public String modifyArticle(@PathVariable long articleId, String title, String content) {
         boardService.modifyArticle(ArticleDto.builder()
                 .articleId(articleId)
@@ -67,8 +68,16 @@ public class BoardController {
     }
 
     @DeleteMapping("/delete/{articleId}")
-    @MineCheck
-    public String deleteArticle(@PathVariable long articleId) {
+    @BoardCheck
+    public String deleteArticle(@PathVariable long articleId, String writerId) {
+        List<CommentDto> allComments = boardService.findCommentsByArticleId(articleId);
+        List<CommentDto> writerComments = boardService.findCommentByWriterId(writerId);
+
+        if (allComments.size() != writerComments.size()) {
+            throw new NotMineException("해당 게시글에 게시자가 아닌 다른 계정의 댓글이 존재하여 삭제할 수 없습니다.");
+        }
+
+        boardService.deleteCommentByArticleId(articleId);
         boardService.deleteArticle(articleId);
         return "redirect:/board/list";
     }
@@ -85,7 +94,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/delete/{articleId}/{commentId}")
-    @MineCheck(type = MineCheck.Type.COMMENT)
+    @BoardCheck(type = BoardCheck.Type.COMMENT)
     public String deleteComment(@PathVariable("articleId") long articleId,
                                 @PathVariable("commentId") long commentId) {
         boardService.deleteComment(articleId, commentId);

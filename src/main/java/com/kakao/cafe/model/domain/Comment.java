@@ -20,4 +20,7 @@ public class Comment {
 
     @Setter
     private LocalDateTime createdDate;
+
+    @Setter
+    private boolean isDeleted;
 }

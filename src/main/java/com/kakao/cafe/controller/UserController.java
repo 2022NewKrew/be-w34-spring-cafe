@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.model.dto.UserDto;
-import com.kakao.cafe.model.service.UserService;
+import com.kakao.cafe.application.dto.UserDto;
+import com.kakao.cafe.application.service.UserService;
 import com.kakao.cafe.util.annotation.LoginCheck;
 import com.kakao.cafe.util.exception.UserDuplicatedException;
 import com.kakao.cafe.util.exception.UserNotFoundException;

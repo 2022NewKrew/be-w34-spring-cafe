@@ -55,7 +55,7 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
     @Override
     public List<Article> findArticlesByWriterId(String writerId) {
         return storedArticles.values().stream()
-                .filter(article -> article.getWriterId().equals(writerId))
+                .filter(comment -> comment.getWriterId().equals(writerId))
                 .collect(Collectors.toList());
     }
 
@@ -65,8 +65,15 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
     }
 
     @Override
-    public Optional<Comment> findComment(long articleId, long commentId) {
+    public Optional<Comment> findCommentByArticleIdAndCommentId(long articleId, long commentId) {
         return Optional.ofNullable(storedComments.get(articleId, commentId));
+    }
+
+    @Override
+    public List<Comment> findCommentsByWriterId(String writerId) {
+        return storedComments.values().stream()
+                .filter(article -> article.getWriterId().equals(writerId))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -116,6 +123,24 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
         }
 
         storedArticles.remove(articleId);
+        return true;
+    }
+
+    @Override
+    public boolean deleteCommentByArticleId(long articleId) {
+        if (!storedComments.containsRow(articleId)) {
+            return false;
+        }
+
+        Map<Long, Comment> rowMap = storedComments.row(articleId);
+        int size = rowMap.size();
+
+        for (long commentId : rowMap.keySet()) {
+            storedComments.remove(articleId, commentId);
+        }
+
+        Article article = storedArticles.get(articleId);
+        article.setCommentsCount(article.getCommentsCount() - size);
         return true;
     }
 
