@@ -77,12 +77,7 @@ public class ArticleController {
         Article article = articleService.getArticleBySequence(sequence);
         ArticleViewDTO articleViewDTO = new ArticleViewDTO(article);
 
-        model.addAttribute("userId", articleViewDTO.getUserId());
-        model.addAttribute("name", articleViewDTO.getName());
-        model.addAttribute("title", articleViewDTO.getTitle());
-        model.addAttribute("createdAt", articleViewDTO.getCreatedAt());
-        model.addAttribute("contents", articleViewDTO.getContents());
-        model.addAttribute("sequence", articleViewDTO.getSequence());
+        model.addAttribute("article", articleViewDTO);
 
         //글 작성자인 경우
         if(articleViewDTO.getUserId().equals(user.getUserId())){
@@ -93,16 +88,7 @@ public class ArticleController {
 
         //isWriterOfReply적용
         replies.stream().forEach((reply) -> {reply.setWriterOfReply(reply.getUserId().equals(user.getUserId()));});
-
         model.addAttribute("replies", replies);
-
-        for(Integer i = 0 ; i < replies.size() ; i++){
-            ReplyViewDTO replyViewDTO = replies.get(i);
-            if(replyViewDTO.getUserId().equals(user.getUserId())){
-                model.addAttribute("isWriterOfReply" + (i+1), true);
-            }
-        }
-
 
         return "/qna/show";
     }
