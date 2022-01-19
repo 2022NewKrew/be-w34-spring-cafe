@@ -149,7 +149,7 @@ public class ArticleController {
             return "redirect:/articles/" + articleDto.getIdx();
         }
 
-        return "redirect:/editArticleFailed";
+        return "error/500";
     }
 
     @DeleteMapping("/articles/{idx}")
