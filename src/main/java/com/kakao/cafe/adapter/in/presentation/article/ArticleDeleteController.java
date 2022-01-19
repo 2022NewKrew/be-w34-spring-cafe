@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ArticleDeleteController {
@@ -17,8 +18,8 @@ public class ArticleDeleteController {
         this.deleteArticleUseCase = deleteArticleUseCase;
     }
 
-    @DeleteMapping("/articles/{userId}/{id}/delete")
-    public String delete(@PathVariable String userId, @PathVariable int id, HttpSession session)
+    @DeleteMapping("/articles/{id}/delete")
+    public String delete(@RequestParam String userId, @PathVariable int id, HttpSession session)
         throws UnauthenticatedUserException {
         UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
         if (!sessionedUser.getUserId().equals(userId)) {

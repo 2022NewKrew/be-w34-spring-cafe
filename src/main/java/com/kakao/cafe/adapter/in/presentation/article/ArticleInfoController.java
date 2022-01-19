@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ArticleInfoController {
@@ -44,8 +45,8 @@ public class ArticleInfoController {
         return VIEWS_ARTICLE_DETAIL;
     }
 
-    @GetMapping("/articles/{userId}/{id}/form")
-    public String displayArticleModifyForm(@PathVariable int id, @PathVariable String userId, Model model, HttpSession session)
+    @GetMapping("/articles/{id}/form")
+    public String displayArticleModifyForm(@PathVariable int id, @RequestParam String userId, Model model, HttpSession session)
         throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException, UnauthenticatedUserException {
         Article article = getArticleInfoUseCase.getArticleDetail(id);
         UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");

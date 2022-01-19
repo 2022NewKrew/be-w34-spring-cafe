@@ -30,10 +30,11 @@
           <div class="article-util">
             <ul class="article-util-list">
               <li>
-                <a class="link-modify-article" href="/articles/{{userId}}/{{id}}/form">수정</a>
+                <a class="link-modify-article" href="/articles/{{id}}/form?userId={{userId}}">수정</a>
               </li>
               <li>
-                <form action="/articles/{{userId}}/{{id}}/delete" class="form-delete" method="POST">
+                <form action="/articles/{{id}}/delete?userId={{userId}}" class="form-delete"
+                      method="POST">
                   <input name="_method" type="hidden" value="DELETE"/>
                   <button class="link-delete-article" type="submit">삭제</button>
                 </form>
