@@ -34,4 +34,17 @@ public class ReplyServiceImpl implements ReplyService {
         Reply reply = Reply.of(replyCreateDto, post, member);
         replyRepository.save(reply);
     }
+
+    @Override
+    public void delete(int answerId, HttpSession session) {
+        Member member = (Member)session.getAttribute("sessionedUser");
+
+        Reply answer = replyRepository.findById(answerId)
+                .orElseThrow(() -> new IllegalArgumentException("answer not found"));
+
+        if (answer.getWriter().getId() != member.getId())
+            throw new IllegalArgumentException("not permitted");
+
+        replyRepository.remove(answer);
+    }
 }

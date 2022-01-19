@@ -31,6 +31,13 @@ public class Reply {
         this.isRemoved = isRemoved;
     }
 
+    public Reply(int id, String content, LocalDateTime createdAt, Member member) {
+        this.id = id;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.writer = member;
+    }
+
     public static Reply of(ReplyCreateDto replyCreateDto, Post post, Member member) {
         return new Reply(
                 post,

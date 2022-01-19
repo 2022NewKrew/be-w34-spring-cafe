@@ -6,4 +6,6 @@ import javax.servlet.http.HttpSession;
 
 public interface ReplyService {
     void create(ReplyCreateDto replyCreateDto, int questionId, HttpSession session);
+
+    void delete(int answerId, HttpSession session);
 }

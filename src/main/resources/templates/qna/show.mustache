@@ -70,12 +70,17 @@
                 </div>
 
                 {{#post.replyListInfo.replyList}}
-                <div style="display:flex; flex-direction: column; border-bottom: 1px solid #eee; padding-top: 24px; padding-bottom: 24px">
+                <div style="display:flex; position:relative; flex-direction: column; border-bottom: 1px solid #eee; padding-top: 24px; padding-bottom: 24px">
+                    <form method="post" action="/questions/{{post.id}}/answers/{{id}}">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button style="padding: 6px 8px; border: none; background-color: #000; color: #fff; position: absolute; right: 20px;">삭제</button>
+                    </form>
                     <span style="font-size: 16px; font-weight: 500; margin-bottom: 4px">{{writer.name}}</span>
                     <span style="margin-bottom: 4px; font-weight: normal; font-size: 16px; line-height: 32px; color: #666">{{content}}</span>
                     <span style="font-size: 14px; color: #ccc">{{createdAt}}</span>
                 </div>
                 {{/post.replyListInfo.replyList}}
+
                 <div style="height: 163px; border: 1px solid #eee; padding: 20px; display: flex; flex-direction: column; margin-top: 24px">
                     {{#sessionedUser}}
                         <span style="font-weight: 400; font-size: 16px; margin-bottom: 10px">{{name}}</span>
