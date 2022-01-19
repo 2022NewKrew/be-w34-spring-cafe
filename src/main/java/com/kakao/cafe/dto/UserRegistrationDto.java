@@ -2,10 +2,15 @@ package com.kakao.cafe.dto;
 
 import com.kakao.cafe.entity.User;
 
+import javax.validation.constraints.NotBlank;
+
 
 public class UserRegistrationDto {
+    @NotBlank(message = "유저 닉네임이 null 이거나 한개의 띄어쓰기만 있습니다")
     private final String userId;
+    @NotBlank(message = "유저 패스워드가 null 이거나 한개의 띄어쓰기만 있습니다")
     private final String password;
+    @NotBlank(message = "유저 이메일이 null 이거나 한개의 띄어쓰기만 있습니다")
     private final String email;
 //    private final String profileImage;
 
