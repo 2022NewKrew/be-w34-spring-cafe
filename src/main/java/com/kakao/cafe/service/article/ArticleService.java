@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class ArticleService {
+
     private ArticleRepository articleRepository;
 
     // 게시물 저장
@@ -21,14 +22,14 @@ public class ArticleService {
     }
 
     // 전체 게시물 찾기
-    public List<ReferArticleDto> findAllArticles() {
+    public List<ReferArticleDto> findAll() {
         List<ReferArticleDto> articleList = this.articleRepository.findAll().stream()
                 .map(ReferArticleDto::new).collect(Collectors.toList());
         return articleList;
     }
 
     // id로 해당 게시물 찾기
-    public ReferArticleDto findArticleById(int id) {
+    public ReferArticleDto findById(int id) {
         Article article = this.articleRepository.findById(id);
         return new ReferArticleDto(article);
     }

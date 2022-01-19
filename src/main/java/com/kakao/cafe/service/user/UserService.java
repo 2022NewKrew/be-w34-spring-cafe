@@ -19,37 +19,37 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
 
-    public void saveNewUser(SignUpDto signUpDto) throws UserIdDuplicationException {
+    public void save(SignUpDto signUpDto) throws UserIdDuplicationException {
         if (this.userRepository.isUserIdExist(signUpDto.getUserId())) {
             throw new UserIdDuplicationException();
         }
-        userRepository.saveUser(signUpDto.toEntity());
+        this.userRepository.save(signUpDto.toEntity());
     }
 
-    // Repo로부터 회원 리스트를 받고, 컨트롤러에 전달해줄 요소들만 포함한 DTO로 재구성하여 리턴
-    public List<UserInfoDto> getUserList() {
-        List<UserInfoDto> userList = this.userRepository.findAllUsers().stream()
+    public List<UserInfoDto> findAll() {
+        List<UserInfoDto> userList = this.userRepository.findAll().stream()
                 .map(UserInfoDto::new).collect(Collectors.toList());
         return userList;
     }
 
-    public UserInfoDto getUserByUserId(String userId) throws NoSuchUserException {
-        User user = this.userRepository.findUserByUserId(userId);
+    public UserInfoDto findById(String userId) throws NoSuchUserException {
+        User user = this.userRepository.findById(userId);
         return new UserInfoDto(user);
     }
 
-    public void updateUser(SignUpDto signUpDto) throws NoSuchUserException, PasswordMismatchException {
-        User targetUser = this.userRepository.findUserByUserId(signUpDto.getUserId());
+    public void update(SignUpDto signUpDto) throws NoSuchUserException, PasswordMismatchException {
+        User targetUser = this.userRepository.findById(signUpDto.getUserId());
         if (!targetUser.getPassword().equals(signUpDto.getPassword())) {
             throw new PasswordMismatchException();
         }
-        this.userRepository.updateUser(signUpDto.getUserId(), signUpDto.getName(), signUpDto.getEmail());
+        this.userRepository.update(signUpDto.getUserId(), signUpDto.getName(), signUpDto.getEmail());
     }
 
     public UserInfoDto login(LoginDto loginDto) throws NoSuchUserException, PasswordMismatchException {
-        User user = this.userRepository.findUserByUserId(loginDto.getUserId());
+        User user = this.userRepository.findById(loginDto.getUserId());
         if (!user.getPassword().equals(loginDto.getPassword())) {
             throw new PasswordMismatchException();
         }
@@ -61,10 +61,7 @@ public class UserService {
     }
 
     public boolean isUserLoggedin(HttpSession session) {
-        if (session.getAttribute("sessionedUser") == null) {
-            return false;
-        }
-        return true;
+        return session.getAttribute("sessionedUser") != null;
     }
 
     public void userValidation(String userId, HttpSession session) throws WrongAccessException {

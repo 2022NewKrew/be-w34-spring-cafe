@@ -1,6 +1,6 @@
-drop table if exists kakaoCafe_users, articles;
+drop table if exists users, articles;
 
-create table kakaoCafe_users (
+create table users (
     userId varchar(255) NOT NULL ,
     password varchar(255) NOT NULL ,
     name varchar(255) NOT NULL ,

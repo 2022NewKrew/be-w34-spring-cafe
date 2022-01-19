@@ -26,14 +26,14 @@ public class UserController {
     // 회원 목록 페이지
     @GetMapping("/users")
     public String showAllUsers(Model model) {
-        model.addAttribute("users", this.userService.getUserList());
+        model.addAttribute("users", this.userService.findAll());
         return "user/list";
     }
 
     // 회원 정보 페이지
     @GetMapping("/users/{userId}")
     public String showUser(@PathVariable String userId, Model model) throws NoSuchUserException {
-        model.addAttribute("user", this.userService.getUserByUserId(userId));
+        model.addAttribute("user", this.userService.findById(userId));
         return "user/profile";
     }
 
@@ -46,7 +46,7 @@ public class UserController {
     // 회원 가입 요청
     @PostMapping("/user/signup")
     public String signUp(SignUpDto signUpDto) throws UserIdDuplicationException {
-        this.userService.saveNewUser(signUpDto);
+        this.userService.save(signUpDto);
         return "redirect:/users";
     }
 
@@ -54,7 +54,7 @@ public class UserController {
     @GetMapping("users/{userId}/form")
     public String updateForm(@PathVariable String userId, Model model, HttpSession session) throws NoSuchUserException, WrongAccessException {
         this.userService.userValidation(userId, session);
-        model.addAttribute("user", this.userService.getUserByUserId(userId));
+        model.addAttribute("user", this.userService.findById(userId));
         return "user/updateForm";
     }
 
@@ -62,7 +62,7 @@ public class UserController {
     @PatchMapping("users/{userId}/update")
     public String updateUserInfo(SignUpDto signUpDto, @PathVariable String userId, HttpSession session) throws PasswordMismatchException, NoSuchUserException, WrongAccessException {
         this.userService.userValidation(userId, session);
-        this.userService.updateUser(signUpDto);
+        this.userService.update(signUpDto);
         return "redirect:/users";
     }
 

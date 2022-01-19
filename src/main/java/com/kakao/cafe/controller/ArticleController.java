@@ -24,7 +24,7 @@ public class ArticleController {
     // 게시물 목록 조회
     @GetMapping("/articles")
     public String showArticles(Model model) {
-        model.addAttribute("articles", this.articleService.findAllArticles());
+        model.addAttribute("articles", this.articleService.findAll());
         return "article/list";
     }
 
@@ -50,29 +50,30 @@ public class ArticleController {
         if (!this.userService.isUserLoggedin(session)) {
             return "user/login";
         }
-        model.addAttribute("article", this.articleService.findArticleById(id));
+        model.addAttribute("article", this.articleService.findById(id));
         return "article/show";
     }
 
     // 게시물 수정 양식
     @GetMapping("/articles/{id}/update")
     public String updateForm(@PathVariable int id, Model model) {
-        model.addAttribute("article", this.articleService.findArticleById(id));
+        model.addAttribute("article", this.articleService.findById(id));
         return "article/updateForm";
     }
 
     // 게시물 수정 - 로그인 필요, 회원 검사 필요
     @PatchMapping("/articles/{id}/update")
     public String updateArticle(PostArticleDto postArticleDto, @PathVariable int id, HttpSession session) throws WrongAccessException {
-        ReferArticleDto referArticleDto = this.articleService.findArticleById(id);
+        ReferArticleDto referArticleDto = this.articleService.findById(id);
         this.userService.userValidation(referArticleDto.getWriter(), session);
         this.articleService.update(postArticleDto, id);
         return "redirect:/articles";
     }
 
+    // 게시물 삭제 - 로그인 필요, 회원 검사 필요
     @DeleteMapping("/articles/{id}/delete")
     public String deleteArticle(@PathVariable int id, HttpSession session) throws WrongAccessException {
-        ReferArticleDto referArticleDto = this.articleService.findArticleById(id);
+        ReferArticleDto referArticleDto = this.articleService.findById(id);
         this.userService.userValidation(referArticleDto.getWriter(), session);
         this.articleService.delete(id);
         return "redirect:/articles";

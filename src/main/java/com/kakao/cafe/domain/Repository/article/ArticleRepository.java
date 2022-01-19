@@ -1,7 +1,7 @@
 package com.kakao.cafe.domain.Repository.article;
 
 import com.kakao.cafe.domain.Entity.Article;
-import com.kakao.cafe.mapper.article.ArticleMapper;
+import com.kakao.cafe.mapper.ArticleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class ArticleRepository {
+
     private final JdbcTemplate jdbcTemplate;
     private final ArticleMapper articleMapper;
 
@@ -27,8 +28,7 @@ public class ArticleRepository {
 
     // id로 게시물 찾기
     public Article findById(int id) {
-        Article article = this.jdbcTemplate.queryForObject("SELECT * FROM ARTICLES WHERE id = ?", this.articleMapper, id);
-        return article;
+        return this.jdbcTemplate.queryForObject("SELECT * FROM ARTICLES WHERE id = ?", this.articleMapper, id);
     }
 
     // 게시물 수정
