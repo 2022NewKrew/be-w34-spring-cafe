@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 public class Article {
 
     private final int id;
-    private final Title title;
+    private Title title;
     private final Writer writer;
-    private final Contents contents;
+    private Contents contents;
     private final LocalDateTime createDate;
 
     public Article(int id, Title title, Writer writer, Contents contents,
@@ -41,5 +41,13 @@ public class Article {
 
     public LocalDateTime getCreateDate() {
         return createDate;
+    }
+
+    public void setTitle(Title title) {
+        this.title = title;
+    }
+
+    public void setContents(Contents contents) {
+        this.contents = contents;
     }
 }

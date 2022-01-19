@@ -30,17 +30,14 @@ public class JdbcUserStorage implements UserDao {
     }
 
     @Override
-    public void addUser(UserId userId, Password password, Name name, Email email) {
-        checkUser(userId);
-
+    public void addUser(User user) {
         String query = "INSERT INTO USER_DATA(USER_ID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(
                 query,
-                userId.getValue(),
-                password.getValue(),
-                name.getValue(),
-                email.getValue()
-        );
+                user.getUserId().getValue(),
+                user.getPassword().getValue(),
+                user.getName().getValue(),
+                user.getEmail().getValue());
     }
 
     @Override
@@ -61,14 +58,13 @@ public class JdbcUserStorage implements UserDao {
     }
 
     @Override
-    public void update(UserId userId, Name name, Email email) {
+    public void update(User user) {
         String query = "UPDATE USER_DATA SET NAME = ?, EMAIL = ? WHERE USER_ID = ?";
         jdbcTemplate.update(
                 query,
-                name.getValue(),
-                email.getValue(),
-                userId.getValue()
-        );
+                user.getName().getValue(),
+                user.getEmail().getValue(),
+                user.getUserId().getValue());
     }
 
     private User toUser(ResultSet resultSet) throws SQLException {
@@ -78,16 +74,5 @@ public class JdbcUserStorage implements UserDao {
                 new Name(resultSet.getString("NAME")),
                 new Email(resultSet.getString("EMAIL"))
         );
-    }
-
-    private void checkUser(UserId userId) {
-        String query = String.format(
-                "SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USER_DATA WHERE USER_ID = '%s'",
-                userId.getValue()
-        );
-        if (jdbcTemplate.query(query, (rs, rowNum) -> toUser(rs)).isEmpty()) {
-            return;
-        }
-        throw new IllegalArgumentException("아이디가 중복됩니다!");
     }
 }
