@@ -4,6 +4,7 @@ import com.kakao.cafe.common.meta.URLPath;
 import com.kakao.cafe.user.application.port.in.ModifyingUserInfo;
 import com.kakao.cafe.user.application.port.in.UserUpdateUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,9 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
-@RequiredArgsConstructor
 public class UserUpdateController {
     private final UserUpdateUseCase userUpdateUseCase;
+
+    @Autowired
+    public UserUpdateController(UserUpdateUseCase userUpdateUseCase) {
+        this.userUpdateUseCase = userUpdateUseCase;
+    }
 
     @PostMapping("/users/{userKey}/update")
     public String updateUser(@PathVariable("userKey") Long userId,

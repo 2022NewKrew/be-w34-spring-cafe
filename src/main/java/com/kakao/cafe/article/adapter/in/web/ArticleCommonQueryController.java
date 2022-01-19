@@ -25,6 +25,4 @@ public class ArticleCommonQueryController {
         model.addAttribute("article", articleCommonQueryUserCase.findArticlePostInfo(articleId));
         return URLPath.SHOW_ARTICLE.getPath();
     }
-
-
 }

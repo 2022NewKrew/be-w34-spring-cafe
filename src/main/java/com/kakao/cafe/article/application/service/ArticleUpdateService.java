@@ -27,4 +27,9 @@ public class ArticleUpdateService implements ArticleUpdateUseCase {
                 articleUpdate.getContents()
         );
     }
+
+    @Override
+    public void putUpdatedArticle(Long articleId, String title, String writerName, String contents) {
+        loadUpdateInfoPort.updateArticle(articleId, title, writerName, contents);
+    }
 }

@@ -4,6 +4,7 @@ import com.kakao.cafe.common.meta.URLPath;
 import com.kakao.cafe.user.application.port.in.UserRegistrationCommand;
 import com.kakao.cafe.user.application.port.in.UserSignUpUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 
 @Controller
-@RequiredArgsConstructor
 public class UserRegistrationController {
     private final UserSignUpUseCase userSignUpUseCase;
+
+    @Autowired
+    public UserRegistrationController(UserSignUpUseCase userSignUpUseCase) {
+        this.userSignUpUseCase = userSignUpUseCase;
+    }
 
     @GetMapping("/user/form")
     public String userRegisterForm() {
