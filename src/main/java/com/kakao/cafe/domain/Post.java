@@ -1,6 +1,6 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.dto.PostCreateDto;
+import com.kakao.cafe.dto.post.PostCreateDto;
 
 import java.time.LocalDate;
 

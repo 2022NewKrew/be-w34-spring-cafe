@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.MemberCreateDto;
-import com.kakao.cafe.dto.MemberDto;
+import com.kakao.cafe.dto.member.MemberCreateDto;
+import com.kakao.cafe.dto.member.MemberDto;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;

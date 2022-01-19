@@ -1,6 +1,7 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.dto.post;
 
 import com.kakao.cafe.domain.Post;
+import com.kakao.cafe.dto.member.MemberDto;
 
 import java.time.LocalDate;
 

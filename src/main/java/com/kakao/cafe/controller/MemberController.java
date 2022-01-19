@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.MemberCreateDto;
-import com.kakao.cafe.dto.MemberDto;
-import com.kakao.cafe.dto.MemberListDto;
+import com.kakao.cafe.dto.member.MemberCreateDto;
+import com.kakao.cafe.dto.member.MemberDto;
+import com.kakao.cafe.dto.member.MemberListDto;
 import com.kakao.cafe.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,9 +1,9 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.PostCreateDto;
-import com.kakao.cafe.dto.PostDetailDto;
-import com.kakao.cafe.dto.PostListItemDto;
-import com.kakao.cafe.dto.PostUpdateDto;
+import com.kakao.cafe.dto.post.PostCreateDto;
+import com.kakao.cafe.dto.post.PostDetailDto;
+import com.kakao.cafe.dto.post.PostListItemDto;
+import com.kakao.cafe.dto.post.PostUpdateDto;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;

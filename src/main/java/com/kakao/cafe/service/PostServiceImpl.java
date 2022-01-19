@@ -2,10 +2,10 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Member;
 import com.kakao.cafe.domain.Post;
-import com.kakao.cafe.dto.PostCreateDto;
-import com.kakao.cafe.dto.PostDetailDto;
-import com.kakao.cafe.dto.PostListItemDto;
-import com.kakao.cafe.dto.PostUpdateDto;
+import com.kakao.cafe.dto.post.PostCreateDto;
+import com.kakao.cafe.dto.post.PostDetailDto;
+import com.kakao.cafe.dto.post.PostListItemDto;
+import com.kakao.cafe.dto.post.PostUpdateDto;
 import com.kakao.cafe.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
