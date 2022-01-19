@@ -20,6 +20,15 @@ public class InMemoryPostRepository implements PostRepository {
     }
 
     @Override
+    public void deleteById(long id) {
+        if (id > store.size()) {
+            throw new NoSuchElementException();
+        }
+
+        store.get((int)id - 1).setIsRemoved(true);
+    }
+
+    @Override
     public Optional<Post> findById(long id) {
         if (id > store.size()) {
             return Optional.empty();

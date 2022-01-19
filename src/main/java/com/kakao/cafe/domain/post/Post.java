@@ -17,4 +17,5 @@ public class Post {
     private String title;
     private String body;
     private LocalDateTime createdAt;
+    private Boolean isRemoved;
 }

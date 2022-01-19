@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/posts")
@@ -38,6 +35,12 @@ public class PostController {
     public String findById(@PathVariable long id, Model model) {
         model.addAttribute("post", postService.findById(id));
         return "post_content";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteById(@PathVariable long id) {
+        postService.deleteById(id);
+        return "redirect:/posts";
     }
 
     @PostMapping("/new")

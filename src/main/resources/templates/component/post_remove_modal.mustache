@@ -1,0 +1,19 @@
+<div class="modal fade" id="postRemoveCheckModal" tabindex="-1" aria-labelledby="postRemoveCheckModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="postRemoveCheckModalLabel">⚠️ Alert</h5>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form action="/posts/{{id}}" method="post">
+                    <input type="hidden" name="_method" value="delete"> {{! DeleteMapping workaround }}
+                    <button type="submit" class="btn btn-danger">Delete the post</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
