@@ -46,6 +46,15 @@ public class JdbcPostRepository implements PostRepository {
         }
     }
 
+    @Override
+    public void update(Post post) {
+        final String sql = "UPDATE POSTS SET title = ?, content = ? WHERE id = ?";
+        jdbcTemplate.update(sql,
+                post.getTitle(),
+                post.getContent(),
+                post.getId());
+    }
+
     private RowMapper<Post> postRowMapper() {
         return (rs, rowNum) -> new Post.Builder(
                 rs.getObject("id", UUID.class),

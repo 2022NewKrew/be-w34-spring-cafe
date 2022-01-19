@@ -31,23 +31,26 @@
 - 로그인 상태에 따라 상단 메뉴를 다르게 보여줘야 한다.
     - 로그인 상태 -> 상단 메뉴 `로그아웃`
     - 로그아웃 상태 -> 상단 메뉴가 `로그인`, `회원가입`
-- 로그인하지 않은 사용자는 게시글의 목록만 볼 수 있다. 
-- 로그인한 사용자만 게시글의 세부내용을 볼 수 있다. 
-- 로그인한 사용자만 게시글을 작성할 수 있다. 
+- 로그인하지 않은 사용자는 게시글의 목록만 볼 수 있다.
+- 로그인한 사용자만 게시글의 세부내용을 볼 수 있다.
+- 로그인한 사용자만 게시글을 작성할 수 있다.
 - 로그인한 사용자는 자신의 글을 수정 및 삭제할 수 있다.
 
 ### 📌 URL Convention
 
-| url                 | 기능                  |
-|---------------------|---------------------|
-| `GET` /users        | List all users      |
-| `POST` /users       | Create a new user   |
-| `GET` /users/form   | Get a register form |
-| `GET` /users/:id    | Get a user profile  |
-| `GET` /users/login  | Get a login form    |
-| `POST` /users/login | Login               |
-| `GET` /users/logout | Logout              |
-| `GET` /posts        | List all posts      |
-| `POST` /posts       | Create a new post   |
-| `GET` /posts/form   | Get a post form     |
-| `GET` /posts/:id    | Get a post detail   |
+| url                     | 기능                     |
+|-------------------------|------------------------|
+| `GET` /users            | List all users         |
+| `POST` /users           | Create a new user      |
+| `GET` /users/form       | Get a register form    |
+| `GET` /users/:id        | Get a user profile     |
+| `GET` /users/login      | Get a login form       |
+| `POST` /users/login     | Login                  |
+| `GET` /users/logout     | Logout                 |
+| `GET` /posts            | List all posts         |
+| `POST` /posts           | Create a new post      |
+| `GET` /posts/form       | Get a post form        |
+| `GET` /posts/:id        | Get a post detail      |
+| `GET` /posts/:id        | Update a post          |
+| `DELETE` /posts/:id     | Delete a post          |
+| `GET` /posts/:id/update | Get a post update form |

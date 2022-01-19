@@ -19,4 +19,8 @@ public class PostDetailDto {
         this.content = content;
         this.createdAt = createdAt;
     }
+
+    public UUID getWriterId() {
+        return writerId;
+    }
 }

@@ -8,8 +8,8 @@ public class Post {
 
     private final UUID id;
     private final UUID writerId;
-    private final String title;
-    private final String content;
+    private String title;
+    private String content;
     private final Timestamp createdAt;
 
     private Post(Builder builder) {
@@ -40,6 +40,11 @@ public class Post {
         return createdAt;
     }
 
+    public void update(Post modified) {
+        this.title = modified.title;
+        this.content = modified.content;
+    }
+
     public static class Builder {
         private final UUID id;
         private final UUID writerId;
@@ -49,6 +54,14 @@ public class Post {
 
         public Builder(UUID writerId, String title, String content) {
             this.id = UUID.randomUUID();
+            this.writerId = writerId;
+            this.title = title;
+            this.content = content;
+            this.createdAt = Timestamp.valueOf(LocalDateTime.now());
+        }
+
+        public Builder(UUID id, UUID writerId, String title, String content) {
+            this.id = id;
             this.writerId = writerId;
             this.title = title;
             this.content = content;

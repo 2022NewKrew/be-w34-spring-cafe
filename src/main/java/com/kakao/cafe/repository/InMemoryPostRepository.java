@@ -32,4 +32,9 @@ public class InMemoryPostRepository implements PostRepository {
     public Optional<Post> findById(UUID id) {
         return posts.findById(id);
     }
+
+    @Override
+    public void update(Post post) {
+        posts.update(post);
+    }
 }

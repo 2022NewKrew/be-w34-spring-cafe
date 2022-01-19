@@ -1,6 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.PostCreateRequest;
+import com.kakao.cafe.dto.PostDetailDto;
+import com.kakao.cafe.dto.PostUpdateRequest;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.PostService;
 import java.util.UUID;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -38,8 +41,29 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public String getPostById(@PathVariable("id") UUID id, Model model) {
-        model.addAttribute("post", postService.getPostDetailById(id));
+    public String getPostById(@PathVariable("id") UUID id, HttpSession session, Model model) {
+        PostDetailDto postDetailDto = postService.getPostDetailById(id);
+        model.addAttribute("post", postDetailDto);
+
+        UUID sessionUserId = ((User) session.getAttribute("sessionUser")).getId();
+        model.addAttribute("isWriter", postService.isWriter(postDetailDto.getWriterId(), sessionUserId));
+
         return "posts/detail";
+    }
+
+    @PutMapping("/{id}")
+    public String updatePost(@PathVariable("id") UUID id, @Valid PostUpdateRequest requestDto, HttpSession session) {
+        UUID sessionUserId = ((User) session.getAttribute("sessionUser")).getId();
+        postService.update(id, requestDto, sessionUserId);
+
+        return "redirect:/posts/" + id;
+    }
+
+    @GetMapping("{id}/update")
+    public String getPostUpdateForm(@PathVariable("id") UUID id, Model model){
+        PostDetailDto postDetailDto = postService.getPostDetailById(id);
+        model.addAttribute("post", postDetailDto);
+
+        return "posts/update-form";
     }
 }
