@@ -40,7 +40,13 @@
                       <ul class="nav navbar-nav navbar-right">
                           {{#sessionUser}}
                           <li><a class="black-component" href="/posts/{{post.id}}/update" role="button">수정</a></li>
-                          <li><a class="black-component" href="#" role="button">삭제</a></li>
+                          <li>
+                              <form action="/posts/{{post.id}}" method="post">
+                                  <input type="hidden" name="_method" value="delete"/>
+                                  <button class="black-component" type="submit">삭제</button>
+                              </form>
+                          </li>
+
                           {{/sessionUser}}
                       </ul>
 
