@@ -39,6 +39,10 @@ public class CommentController {
             return getRedirectLoginWithMsg(request);
         }
 
+        if (checkNotOwner(request, commentDto.getUserId())) {
+            return "error/400";
+        }
+
         commentService.add(commentDto);
         logger.info("New Comment added");
         return "redirect:/articles/" + commentDto.getArticleIdx();

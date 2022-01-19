@@ -62,6 +62,10 @@ public class ArticleController {
             return getRedirectLoginWithMsg(request);
         }
 
+        if (checkNotOwner(request, articleDto.getUserId())) {
+            return "error/400";
+        }
+
         articleService.add(articleDto);
         logger.info("New Article added: " + articleDto.getTitle());
         return "redirect:/";
