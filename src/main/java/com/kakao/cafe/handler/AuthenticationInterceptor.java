@@ -13,7 +13,6 @@ import org.springframework.web.servlet.HandlerMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
@@ -30,9 +29,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         UserAuthorized userAuthorized = handlerMethod.getMethodAnnotation(UserAuthorized.class);
-
         if (userAuthorized != null) {
-            Map<String, String> pathVariableMap = (TreeMap<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+            Map<String, String> pathVariableMap = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
             validateArticle(pathVariableMap, auth);
             validateUser(pathVariableMap, auth);
         }
