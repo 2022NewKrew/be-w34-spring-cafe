@@ -18,6 +18,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.kakao.cafe.common.util.KakaoCafeUtil.getUserInfoInSession;
+
 @Controller
 @Slf4j
 @RequiredArgsConstructor
@@ -117,7 +119,7 @@ public class UserController {
     @GetMapping("/users/update")
     @ResponseStatus(HttpStatus.OK)
     public String getUserUpdatePage(HttpSession session) {
-        UserInfoResponse user = this.getUserInfoInSession(session);
+        UserInfoResponse user = getUserInfoInSession(session);
         log.info("[GET] /users/update - (id: {}) 유저 정보 수정 페이지 접속", user.getId());
 
         return "/user/update";
@@ -129,7 +131,7 @@ public class UserController {
      */
     @PutMapping("/users")
     public String updateUser(@Valid UserUpdateRequest req, HttpSession session) {
-        UserInfoResponse user = this.getUserInfoInSession(session);
+        UserInfoResponse user = getUserInfoInSession(session);
         Long id = user.getId();
         log.info("[PUT] /users - (id: {}) 유저 정보 수정", id);
 
@@ -139,9 +141,5 @@ public class UserController {
         session.setAttribute("user", updatedUserProfile);
 
         return "redirect:/";
-    }
-
-    private UserInfoResponse getUserInfoInSession(HttpSession session) {
-        return (UserInfoResponse) session.getAttribute("user");
     }
 }

@@ -19,6 +19,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 
+import static com.kakao.cafe.common.util.KakaoCafeUtil.getUserInfoInSession;
+
 @Controller
 @Slf4j
 @RequiredArgsConstructor
@@ -77,7 +79,7 @@ public class ArticleController {
     public String createArticle(@Valid ArticleCreateRequest req, HttpSession session) {
         log.info("[POST] /articles - 게시글 작성 요청");
 
-        UserInfoResponse user = this.getUserInfoInSession(session);
+        UserInfoResponse user = getUserInfoInSession(session);
         Long writerId = user.getId();
         this.articleService.createArticle(req, writerId);
         return "redirect:/";
@@ -110,13 +112,13 @@ public class ArticleController {
     public String updateArticle(ArticleUpdateRequest req, HttpSession session, @PathVariable("id") Long id) {
         log.info("[PUT] /articles/{} - (id: {}) 게시글 수정 요청", id, id);
 
-        UserInfoResponse user = this.getUserInfoInSession(session);
+        UserInfoResponse user = getUserInfoInSession(session);
 
-        validateUser(user, id);
+        this.articleService.validateUser(user, id);
 
         this.articleService.updateArticle(id, req);
 
-        return "redirect:/articles/" + id;
+        return "redirect:/articles/{id}";
     }
 
     /**
@@ -127,33 +129,21 @@ public class ArticleController {
     public String deleteArticle(HttpSession session, @PathVariable("id") Long id) {
         log.info("[DELETE] /articles/{} - (id: {}) 게시글 삭제 요청", id, id);
 
-        UserInfoResponse user = this.getUserInfoInSession(session);
+        UserInfoResponse user = getUserInfoInSession(session);
 
-        validateUser(user, id);
+        this.articleService.validateUser(user, id);
 
         this.articleService.deleteArticle(id);
 
         return "redirect:/";
     }
 
-
-    private UserInfoResponse getUserInfoInSession(HttpSession session) {
-        return (UserInfoResponse) session.getAttribute("user");
-    }
-
     private boolean isPossibleToControl(HttpSession session, ArticleDetailResponse articleDetail) {
-        UserInfoResponse userInfo = this.getUserInfoInSession(session);
+        UserInfoResponse userInfo = getUserInfoInSession(session);
         if(userInfo == null) {
             return false;
         }
 
         return Objects.equals(userInfo.getId(), articleDetail.getWriter().getId());
-    }
-
-    private void validateUser(UserInfoResponse user, Long articleId) {
-        ArticleDetailResponse article = articleService.getArticleDetail(articleId);
-        if(!Objects.equals(user.getId(), article.getWriter().getId())) {
-            throw new ForbiddenException();
-        }
     }
 }

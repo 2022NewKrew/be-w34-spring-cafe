@@ -1,6 +1,7 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.entity.Article;
+import com.kakao.cafe.reply.repository.ReplyRepository;
 import com.kakao.cafe.user.mapper.exception.UserNotFoundException;
 import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final UserRepository userRepository;
+    private final ReplyRepository replyRepository;
 
     /**
      * 새로운 게시글 만드는(Create) 메서드
@@ -108,9 +110,10 @@ public class ArticleRepository {
                 sql,
                 (rs, rowNum) -> new Article(
                         rs.getLong("id"),
-                        userRepository.findById(rs.getLong("writer_id")).orElseThrow(UserNotFoundException::new),
+                        this.userRepository.findById(rs.getLong("writer_id")).orElseThrow(UserNotFoundException::new),
                         rs.getString("title"),
                         rs.getString("contents"),
+                        this.replyRepository.findByArticleId(rs.getLong("id")),
                         rs.getTimestamp("created_at").toLocalDateTime()
                 ), parameters
         );
