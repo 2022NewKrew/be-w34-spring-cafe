@@ -5,6 +5,13 @@
     {{>partial/header}}
     <link href="/css/post/show.css" rel="stylesheet">
 
+    <script>
+        function deleteReply(replyID) {
+            let form = document.getElementById("deleteReplyForm")
+            form.action = '{{article.id}}/reply/' + replyID
+            form.submit();
+        }
+    </script>
 </head>
 <body>
 
@@ -44,22 +51,38 @@
 
                 <div class="post-comment">
                     <div class="post-comment-slipp">
-                        <p class="post-comment-count">댓글 0개</p>
+                        <p class="post-comment-count">댓글 {{replies.length}}개</p>
                         <div class="post-comment-slipp-articles">
-
-                            {{#sessionUser}}
-                            <form action="../index.html " class="submit-write" method="get">
+                            {{#replies}}
+                            <article class="comment" id="answer-1405">
+                                <div class="article-text">
+                                    <p class="comment-content comment-author-name">{{writerName}}</p>
+                                    <div class="comment-content comment-doc">
+                                        <p>{{contents}}</p>
+                                        {{#isOwner}}
+                                        <button class="post-write-btn" onclick="deleteReply({{id}})"
+                                                style="float: right;background-color: red">삭제
+                                        </button>
+                                        {{/isOwner}}
+                                    </div>
+                                    <p class="comment-content comment-time">
+                                        {{time}}
+                                    </p>
+                                </div>
+                            </article>
+                            {{/replies}}
+                            <form action="/articles/{{article.id}}/reply/" class="submit-write" method="post">
                                 <div class="comment-writer-container">
                                     <input class="comment-writer" id="writer" name="writer" readonly
                                            value="{{sessionUser.userId}}"/>
                                 </div>
+                                <input name="articleID" readonly type="hidden" value="{{article.id}}"/>
                                 <div class="form-group">
-                                    <textarea class="form-control" id="comment" name="comment"
+                                    <textarea class="form-control" id="contents" name="contents"
                                               placeholder="내용을 입력하세요"></textarea>
                                 </div>
                                 <input class="post-write-btn" type="submit" value="등록"/>
                             </form>
-                            {{/sessionUser}}
                         </div>
                     </div>
                 </div>
@@ -67,6 +90,10 @@
         </div>
     </div>
 </div>
+<form id="deleteReplyForm" method="post">
+    <input name="_method" type="hidden" value="DELETE"/>
+
+</form>
 
 {{>partial/footer}}
 

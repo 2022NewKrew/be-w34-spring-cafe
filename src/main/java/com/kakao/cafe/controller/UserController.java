@@ -20,11 +20,10 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-    @Resource(name = "userService")
-    private UserService userService;
-
     private static final String FAIL_LOGIN_MESSAGE = "이메일 혹은 비밀번호가 틀렸습니다.";
     private static final String WRONG_PASSWORD_MESSAGE = "잘못된 비밀번호입니다.";
+    @Resource(name = "userService")
+    private UserService userService;
 
     @GetMapping
     String getUsers(Model model) {
