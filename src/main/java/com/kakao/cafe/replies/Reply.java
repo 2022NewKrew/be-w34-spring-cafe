@@ -7,12 +7,22 @@ public class Reply {
     private String content;
     private Long articleId;
     private Long writerId;
+    private boolean status;
 
     public Reply(Long id, String content, Long articleId, Long writerId) {
         this.id = id;
         this.content = content;
         this.articleId = articleId;
         this.writerId = writerId;
+        this.status = true;
+    }
+
+    public Reply(Long id, String content, Long articleId, Long writerId, boolean status) {
+        this.id = id;
+        this.content = content;
+        this.articleId = articleId;
+        this.writerId = writerId;
+        this.status = status;
     }
 
     public Long getId() {
@@ -31,6 +41,10 @@ public class Reply {
         return writerId;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

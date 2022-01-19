@@ -1,3 +1,4 @@
+drop table if exists reply;
 drop table if exists article_content;
 drop table if exists article;
 drop table if exists user;
@@ -28,5 +29,15 @@ create table article_content
     id         bigint       not null auto_increment primary key,
     body       varchar(255) not null,
     article_id bigint       not null,
+    foreign key (article_id) references article (id)
+);
+
+create table reply
+(
+    id         bigint       not null auto_increment primary key,
+    content    varchar(255) not null,
+    article_id bigint       not null,
+    writer_id  bigint       not null,
+    status     boolean      not null,
     foreign key (article_id) references article (id)
 );
