@@ -8,6 +8,7 @@ import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.ArticleServiceImpl;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.service.UserServiceImpl;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -46,11 +47,20 @@ public class SpringConfig {
 
     @Bean
     public DataSource dataSource() {
+        /*
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("test")
                 .addScript("classpath:schema.sql")
                 .addScript("classpath:data.sql")
+                .build();
+
+         */
+
+        return DataSourceBuilder.create()
+                .url("jdbc:mysql://test-cafe-ed.ay1.krane.9rum.cc:3306/cafedb") // ?useUnicode=yes&characterEncoding=UTF-8
+                .username("ed2")
+                .password("Shim7414!")
                 .build();
     }
 }
