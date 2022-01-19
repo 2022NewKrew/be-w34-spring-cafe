@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-    @ExceptionHandler({AuthorizationException.class, ArticleNotFoundException.class, InvalidPasswordException.class, UserAlreadyExistException.class, UserNotFoundException.class})
+    @ExceptionHandler({AuthorizationException.class, ArticleNotFoundException.class, InvalidPasswordException.class, UserAlreadyExistException.class, UserNotFoundException.class, LoginException.class})
     public String globalHandler(RuntimeException e, Model model) {
         logger.error("{} {}", e.getClass().getName(), e.getMessage());
         ErrorMessage errorMessage = ErrorMessage.from(e.getMessage());

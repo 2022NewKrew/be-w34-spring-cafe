@@ -23,7 +23,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        if (ObjectUtils.isEmpty(request.getSession().getAttribute(SESSION_USER).toString())) {
+        if (ObjectUtils.isEmpty(request.getSession().getAttribute(SESSION_USER))) {
             throw new LoginException();
         }
 
