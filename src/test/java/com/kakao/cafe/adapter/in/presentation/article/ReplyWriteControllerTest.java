@@ -31,7 +31,7 @@ class ReplyWriteControllerTest {
         String name = "champ";
         String email = "champ@kakao.com";
         String contents = "kakao krew";
-        String url = "/articles/" + articleId + "/replys";
+        String url = "/articles/" + articleId + "/replies";
         UserInfo userInfo = new UserInfo(userId, name, email);
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("sessionedUser", userInfo);

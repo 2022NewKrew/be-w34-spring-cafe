@@ -6,8 +6,11 @@ import static org.mockito.BDDMockito.given;
 import com.kakao.cafe.application.article.dto.ArticleInfo;
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
+import com.kakao.cafe.application.reply.dto.ReplyList;
+import com.kakao.cafe.application.reply.port.in.GetRepliesUseCase;
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.Reply;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +38,9 @@ class ArticleInfoControllerTest {
     private GetArticleInfoUseCase getArticleInfoUseCase;
 
     @MockBean
+    private GetRepliesUseCase getRepliesUseCase;
+
+    @MockBean
     private DataSource dataSource;
 
     @DisplayName("게시글 목록 출력 테스트")
@@ -46,6 +52,10 @@ class ArticleInfoControllerTest {
         givenArticleList.add(new ArticleInfo(5, "kakao", "krew", "2022-01-10 20:00"));
         givenArticleList.add(new ArticleInfo(10, "HaChanho", "champ", "2022-01-11 21:00"));
         given(getArticleInfoUseCase.getListOfAllArticles()).willReturn(ArticleList.from(givenArticleList));
+        List<Reply> givenReplyList = new ArrayList<>();
+        givenReplyList.add(new Reply.Builder().articleId(5).userId("kakao").writer("champ").contents("hello")
+                                              .createdAt("2022-01-10 20:00").build());
+        given(getRepliesUseCase.getListOfRepliesOfTheArticle(5)).willReturn(ReplyList.from(givenReplyList));
 
         // when
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.TEXT_HTML))

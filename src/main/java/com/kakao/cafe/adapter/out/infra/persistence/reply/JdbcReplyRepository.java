@@ -49,8 +49,9 @@ public class JdbcReplyRepository implements ReplyRepository {
     }
 
     @Override
-    public List<Reply> getAllReplyList() {
-        return jdbcTemplate.query(SELECT_ALL, (rs, rowNum) -> new ReplyMapper().mapRow(rs, rowNum));
+    public List<Reply> getAllReplyListByArticleId(int articleId) {
+        String sql = SELECT_ALL + " where " + COLUMN_ARTICLE_ID + "=?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new ReplyMapper().mapRow(rs, rowNum), articleId);
     }
 
     private static final class ReplyMapper implements RowMapper<Reply> {

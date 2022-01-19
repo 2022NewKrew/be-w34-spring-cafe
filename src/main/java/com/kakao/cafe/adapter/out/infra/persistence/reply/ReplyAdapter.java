@@ -1,6 +1,8 @@
 package com.kakao.cafe.adapter.out.infra.persistence.reply;
 
+import com.kakao.cafe.application.reply.dto.ReplyList;
 import com.kakao.cafe.application.reply.dto.WriteReplyRequest;
+import com.kakao.cafe.application.reply.port.out.GetRepliesPort;
 import com.kakao.cafe.application.reply.port.out.RegisterReplyPort;
 import com.kakao.cafe.domain.article.Reply;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
@@ -9,8 +11,9 @@ import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-public class ReplyAdapter implements RegisterReplyPort {
+public class ReplyAdapter implements RegisterReplyPort, GetRepliesPort {
 
     private final ReplyRepository replyRepository;
 
@@ -29,5 +32,12 @@ public class ReplyAdapter implements RegisterReplyPort {
                                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                                .build()
         );
+    }
+
+    @Override
+    public ReplyList getListOfRepliesTheArticle(int articleId) {
+        List<Reply> replyList = replyRepository.getAllReplyListByArticleId(articleId);
+
+        return ReplyList.from(replyList);
     }
 }

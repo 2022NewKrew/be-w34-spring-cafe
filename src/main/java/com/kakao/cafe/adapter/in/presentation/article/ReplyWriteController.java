@@ -23,7 +23,7 @@ public class ReplyWriteController {
         this.writeReplyUseCase = writeReplyUseCase;
     }
 
-    @PostMapping("/articles/{articleId}/replys")
+    @PostMapping("/articles/{articleId}/replies")
     public String register(@PathVariable int articleId, @RequestParam String userId, WriteReplyRequest writeReplyRequest, HttpSession session)
         throws UnauthenticatedUserException, IllegalUserIdException, IllegalWriterException, IllegalTitleException, IllegalDateException {
         UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");

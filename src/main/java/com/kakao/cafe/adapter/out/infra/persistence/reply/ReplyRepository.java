@@ -7,5 +7,5 @@ public interface ReplyRepository {
 
     void save(Reply reply);
 
-    List<Reply> getAllReplyList();
+    List<Reply> getAllReplyListByArticleId(int articleId);
 }
