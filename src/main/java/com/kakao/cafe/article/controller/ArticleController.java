@@ -17,6 +17,14 @@ public class ArticleController {
     private final ArticleService articleService;
     private final AuthService authService;
 
+    @GetMapping("/form")
+    public String getArticleFormPage(){
+        if (authService.isLogin()) {
+            return "/qna/form";
+        }
+        return "/user/login";
+    }
+
     @PostMapping("/question")
     public String writeArticle(ArticleRequest articleRequest){
         articleService.writeArticle(articleRequest);
@@ -29,7 +37,6 @@ public class ArticleController {
         if(authService.isLogin()){
             ArticlePostDto article = articleService.getArticleById(Long.parseLong(id));
             model.addAttribute("article", article);
-
             return "/qna/show";
         }
         return "/user/login";
