@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain.user;
 
+import java.util.Objects;
+
 public class Email {
 
     private final String value;
@@ -13,5 +15,22 @@ public class Email {
 
     public String getValue() {
         return this.value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Email that = (Email) o;
+        return value.equals(that.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

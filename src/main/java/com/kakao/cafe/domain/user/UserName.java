@@ -26,7 +26,7 @@ public class UserName {
             return false;
         }
         UserName that = (UserName) o;
-        return Objects.equals(value, that.getValue());
+        return value.equals(that.getValue());
     }
 
     @Override
