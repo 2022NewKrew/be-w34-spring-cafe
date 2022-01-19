@@ -1,7 +1,9 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.UserLoginDto;
+import com.kakao.cafe.dto.UserRegistrationDto;
 import com.kakao.cafe.entity.User;
+import com.kakao.cafe.service.AuthService;
 import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.servlet.http.HttpSession;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -21,16 +25,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest {
 
     @Autowired
-    UserService userService;
-
-    @Autowired
     private MockMvc mockMvc;
 
-    private static final Integer id1 = 2;
+    private static final Integer id1 = 3;
     private static final String userId1 = "testUserId1";
     private static final String password1 = "testPassword1";
     private static final String email1 = "Email1";
-    private static final Integer id2 = 3;
+    private static final Integer id2 = 4;
     private static final String userId2 = "testUserId2";
     private static final String password2 = "testPassword2";
     private static final String email2 = "Email2";
@@ -56,6 +57,7 @@ class UserControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
     }
+
 
     @DisplayName("[실패] 유저 생성 NULL")
     @ParameterizedTest(name = "{0}, {1}, {2}")
@@ -85,14 +87,7 @@ class UserControllerTest {
     @DisplayName("[성공] 로그인 되있어서 상세보기")
     void user() throws Exception{
         // given
-        UserLoginDto userLoginDto = new UserLoginDto("testName", "testPassword");
-//        User loginUser = authService.login(userLoginDto);
-//        httpSession.setAttribute("auth", loginUser);
-//
-//
-//        mockMvc.perform(get("/users/1"))
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(redirectedUrl("/users"));
+
     }
 
     @Test

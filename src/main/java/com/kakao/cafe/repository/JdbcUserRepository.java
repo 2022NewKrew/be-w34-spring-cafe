@@ -22,7 +22,7 @@ public class JdbcUserRepository implements Repository<User, Integer>{
 
     @Override
     public void create(User user) {
-        String sqlQuery = "insert into MEMBER (userId, PASSWORD, EMAIL) values (?, ?, ?)";
+        String sqlQuery = "insert into MEMBER (USERID, PASSWORD, EMAIL) values (?, ?, ?)";
         jdbcTemplate.update(sqlQuery, user.getUserId(), passwordEncoder.encode(user.getPassword()), user.getEmail());
     }
 
