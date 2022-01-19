@@ -3,7 +3,6 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.dto.UserLoginDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.JdbcUserRepository;
-import com.kakao.cafe.repository.Repository;
 
 import java.util.Objects;
 
