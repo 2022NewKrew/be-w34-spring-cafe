@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <title>kakao Java Web Programming</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/static/css/reset.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="/css/post/show.css" rel="stylesheet">
+    <link href="/static/css/post/show.css" rel="stylesheet">
 </head>
 <body>
     <div class="background">
@@ -18,7 +18,17 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="panel panel-default">
                   <header class="post-header">
-                      <p class="post-title" th:text="${post.title}"></p>
+                      <ul class="nav navbar-nav navbar-right navbar-space">
+                          <li>
+                              <p class="post-title" th:text="${post.title}"></p>
+                          </li>
+                          <li>
+                              <form name="updateForm" th:action="@{/posts/updateForm/{id}(id=${post.id})}" method="get"></form>
+                              <div th:if="${session.userId != null}">
+                                  <a class="black-component" onclick="javascript:document.updateForm.submit();" role="button">수정</a>
+                              </div>
+                          </li>
+                      </ul>
                   </header>
                   <div class="content-main">
                       <article class="article">

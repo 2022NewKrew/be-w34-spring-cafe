@@ -14,4 +14,5 @@ public interface PostRepository {
     void savePost(Post post);
     void savePostAll(List<Post> posts);
     void saveComment(Long postId, Comment comment);
+    void update(Long postId, String newContent);
 }

@@ -46,4 +46,9 @@ public class InMemoryPostRepository implements PostRepository {
         Post post = idToPost.get(postId);
         post.addComment(comment);
     }
+
+    @Override
+    public void update(Long postId, String newContent) {
+
+    }
 }

@@ -2,6 +2,7 @@ package com.kakao.cafe.post.presentation;
 
 import com.kakao.cafe.post.application.AddCommentService;
 import com.kakao.cafe.post.application.SearchPostService;
+import com.kakao.cafe.post.application.UpdatePostService;
 import com.kakao.cafe.post.application.WritePostService;
 import com.kakao.cafe.post.domain.entity.Comment;
 import com.kakao.cafe.post.domain.entity.Post;
@@ -33,11 +34,19 @@ public class PostController {
     private final SearchPostService postInfoService;
     private final WritePostService writePostService;
     private final AddCommentService commentService;
+    private final UpdatePostService updatePostService;
+
     private final ModelMapper modelMapper;
 
     @GetMapping("/form")
     public String getPostForm(){
         return "post/form";
+    }
+
+    @GetMapping("/updateForm/{postId}")
+    public String getUpdateForm(@PathVariable Long postId, Model model){
+        model.addAttribute("postId", postId);
+        return "post/updateForm";
     }
 
     @GetMapping("/{id}")
@@ -72,6 +81,15 @@ public class PostController {
         logger.info("사용자 {}가 id가 {}인 게시글에 댓글을 달았습니다.", user.getUserId(), id);
 
         return "redirect:";
+    }
+
+    @PutMapping("/{id}")
+    public String updateComment(@PathVariable Long id, String newContent, HttpSession session){
+        updatePostService.update(id, newContent);
+        String userId = getSessionUserId(session);
+        logger.info("사용자 {}가 id가 {}인 게시글의 내용을 바꿨습니다.", userId, id);
+
+        return String.format("redirect:/posts/%d", id);
     }
 
     private String getSessionUserId(HttpSession session){

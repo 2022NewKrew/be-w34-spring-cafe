@@ -164,3 +164,7 @@ li {
 .panel.panel-default{
     width: inherit;
 }
+
+.navbar-space{
+    justify-content: space-between;
+}

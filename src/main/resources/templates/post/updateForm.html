@@ -16,24 +16,16 @@
     <div th:insert="common/navbar :: navbar"></div>
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">글쓰기</p>
+            <p class="title">수정</p>
         </header>
-        <form class="submit-write" method="post" action="/posts">
-            <div class="text-box">
-                <div class="comment-writer-container">
-                    <p class="post-title">제목</p>
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요"></textarea>
-                </div>
-            </div>
-
+        <form class="submit-write" method="post" th:action="@{/posts/{id}(id=${postId})}">
+            <input type="hidden" name="_method" value="put" />
             <div class="text-box">
                 <div class="comment-writer-container">
                     <p class="post-content">내용</p>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
+                    <textarea class="form-control" id="nwContent" name="newContent" placeholder="내용을 입력하세요"></textarea>
                 </div>
             </div>
             <input class="post-write-btn" type="submit" value="등록"/>

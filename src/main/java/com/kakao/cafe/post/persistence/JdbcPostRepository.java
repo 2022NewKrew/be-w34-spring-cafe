@@ -19,35 +19,37 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Optional<Post> getPost(Long id) {
-        List<Post> posts = myJdbcTemplate.query(selectQuery("where post.id = ".concat(String.valueOf(id))), postRowMapper);
-        if(posts.isEmpty()){
-            return Optional.empty();
-        }
+        final String queryString = selectQuery(String.format("where post.id = %d", id));
+        List<Post> posts = myJdbcTemplate.query(queryString, postRowMapper);
 
-        return Optional.of(posts.get(0));
+        return posts.isEmpty() ? Optional.empty()
+                : Optional.of(posts.get(0));
     }
 
     @Override
     public List<Post> getPosts(int start, int size) {
-        String condition = String.format("order by timewritten desc limit %d offset %d", size, start);
-        return myJdbcTemplate.query(selectQuery(condition), postRowMapper);
+        final String condition = String.format("order by timewritten desc limit %d offset %d", size, start);
+        final String queryString = selectQuery(condition);
+        return myJdbcTemplate.query(queryString, postRowMapper);
     }
 
     private String selectQuery(String condition){
-        String query = "select *, comment.id as comment_id, comment.writerName as comment_writerName, comment.content as comment_content "
-                .concat("from post left join comment on post.id = comment.postId ");
+        String queryString = "select *, comment.id as comment_id, "
+                + "comment.writerName as comment_writerName, comment.content as comment_content "
+                + "from post left join comment on post.id = comment.postId ";
 
         if(condition != null && !condition.isEmpty()){
-            return query.concat(condition);
+            return queryString.concat(condition);
         }
 
-        return query;
+        return queryString;
     }
 
     @Override
     public void savePost(Post post) {
-        myJdbcTemplate.update("insert into post(id, title, content, writerName, timeWritten) values(?,?,?,?,?)",
-                post.getId(), post.getTitle(), post.getContent(), post.getWriterName(), post.getTimeWritten());
+        final String queryString = "insert into post(id, title, content, writerName, timeWritten) values(?,?,?,?,?)";
+        myJdbcTemplate.update(queryString, post.getId(), post.getTitle(),
+                post.getContent(), post.getWriterName(), post.getTimeWritten());
     }
 
     @Override
@@ -59,7 +61,13 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public void saveComment(Long postId, Comment comment) {
-        myJdbcTemplate.update("insert into comment(id, postId, writerName, content) values(?,?,?,?)",
-            comment.getId(), postId, comment.getWriterName(), comment.getContent());
+        final String queryString = "insert into comment(id, postId, writerName, content) values(?,?,?,?)";
+        myJdbcTemplate.update(queryString, comment.getId(), postId, comment.getWriterName(), comment.getContent());
+    }
+
+    @Override
+    public void update(Long postId, String newContent) {
+        final String queryString = String.format("update post set content = '%s' where id = %d", newContent, postId);
+        myJdbcTemplate.update(queryString);
     }
 }

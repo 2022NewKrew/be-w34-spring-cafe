@@ -28,11 +28,11 @@ class PostRepositoryTest extends JdbcRepositoryTest {
     @DisplayName("Post 여러 개 가져오기 성공")
     void successGetAllPosts() {
         //given
-        List<Post> posts = PostsData.getPostList();
+        final List<Post> posts = PostsData.getPostList();
         postRepository.savePostAll(posts);
 
         //when
-        List<Post> actualPosts = postRepository.getPosts(0, 4);
+        final List<Post> actualPosts = postRepository.getPosts(0, 4);
 
         //then
         posts.sort(comparing(Post::getTimeWritten).reversed());
@@ -48,7 +48,7 @@ class PostRepositoryTest extends JdbcRepositoryTest {
 
         //when
         postRepository.savePost(post);
-        Post actualPost = postRepository.getPost(post.getId()).orElseThrow();
+        final Post actualPost = postRepository.getPost(post.getId()).orElseThrow();
 
         //then
         assertThat(actualPost).isEqualTo(post);
@@ -59,15 +59,32 @@ class PostRepositoryTest extends JdbcRepositoryTest {
     @MethodSource("com.kakao.cafe.post.data.PostsData#getCommentStream")
     void saveComment(Comment comment) {
         //given
-        Post post = PostsData.getPostList().get(0);
+        final Post post = PostsData.getPostList().get(0);
         postRepository.savePost(post);
 
         //when
         postRepository.saveComment(post.getId(), comment);
-        Post actualPost = postRepository.getPost(post.getId()).orElseThrow();
+        final Post actualPost = postRepository.getPost(post.getId()).orElseThrow();
 
         //then
         assertThat(actualPost.getComments().size()).isNotEqualTo(post.getComments().size());
         assertThat(actualPost.getComments()).contains(comment);
+    }
+
+    @ParameterizedTest
+    @DisplayName("Post 내용 업데이트 성공")
+    @MethodSource("com.kakao.cafe.post.data.PostsData#getPostStream")
+    void successUpdatePost(Post post){
+        //given
+        postRepository.savePost(post);
+        final String newContent = post.getContent().concat(" good~");
+
+        //when
+        postRepository.update(post.getId(), newContent);
+        final Post updatedPost = postRepository.getPost(post.getId()).orElseThrow();
+
+        //then
+        assertThat(updatedPost.getContent()).isNotEqualTo(post.getContent());
+        assertThat(updatedPost.getContent()).isEqualTo(newContent);
     }
 }

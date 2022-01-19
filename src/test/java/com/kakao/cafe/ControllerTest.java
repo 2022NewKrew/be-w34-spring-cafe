@@ -3,6 +3,7 @@ package com.kakao.cafe;
 import com.kakao.cafe.config.ControllerTestConfig;
 import com.kakao.cafe.post.application.AddCommentService;
 import com.kakao.cafe.post.application.SearchPostService;
+import com.kakao.cafe.post.application.UpdatePostService;
 import com.kakao.cafe.post.application.WritePostService;
 import com.kakao.cafe.post.presentation.PostController;
 import com.kakao.cafe.user.application.JoinService;
@@ -43,6 +44,9 @@ public abstract class ControllerTest {
 
     @MockBean
     protected WritePostService writePostService;
+
+    @MockBean
+    protected UpdatePostService updatePostService;
 
     @MockBean
     protected AddCommentService commentService;
