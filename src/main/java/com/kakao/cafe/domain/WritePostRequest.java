@@ -6,20 +6,17 @@ import javax.validation.constraints.NotBlank;
 public class WritePostRequest {
 
     private static final int INITIAL_ID = 0;
-    @NotBlank(message = "아이디가 비어있습니다")
-    private final String userId;
     @NotBlank(message = "제목이 비어있습니다")
     private final String title;
     @NotBlank(message = "내용이 비어있습니다")
     private final String content;
 
-    public WritePostRequest(String userId, String title, String content) {
-        this.userId = userId;
+    public WritePostRequest(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
-    public Post toEntity() {
+    public Post toEntity(String userId) {
         return new Post(INITIAL_ID, userId, title, content, new Date());
     }
 }

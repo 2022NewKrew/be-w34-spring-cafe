@@ -1,10 +1,12 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Post;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.WritePostRequest;
 import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.service.PostService;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class PostController {
 
+    private static final String SESSION = "sessionUser";
     private final PostService postService;
     private final Logger logger = LoggerFactory.getLogger(PostController.class);
 
@@ -27,7 +30,7 @@ public class PostController {
     }
 
     @PostMapping("/posts/write")
-    public String write(@Valid WritePostRequest postDto, BindingResult errors) {
+    public String write(@Valid WritePostRequest postDto, BindingResult errors, HttpSession session) {
         logger.info("[POST] /posts 게시글 작성");
         if (errors.hasErrors()) {
             String errorMessage = errors.getAllErrors().stream()
@@ -35,7 +38,8 @@ public class PostController {
                     .reduce("", (total, element) -> total + element + "\n");
             throw new InvalidWritePostException(errorMessage);
         }
-        Post post = postDto.toEntity();
+        User user = (User) session.getAttribute(SESSION);
+        Post post = postDto.toEntity(user.getUserId());
         postService.writePost(post);
         return "redirect:/";
     }
