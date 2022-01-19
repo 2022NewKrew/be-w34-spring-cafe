@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostResponseDto {
     private final Long id;
+    private final Long authorId;
     private final String title;
     private final String content;
 }

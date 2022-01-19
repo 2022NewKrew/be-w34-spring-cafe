@@ -25,10 +25,11 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public String createQuestion(PostCreateRequestDto postCreateRequestDto) {
-        logger.info("[POST] 게시글 등록 : {}", postCreateRequestDto.toString());
+    public String createQuestion(String title, String content, HttpSession session) {
+        logger.info("[POST] 게시글 작성");
 
-        postService.createQuestion(postCreateRequestDto);
+        LoginAuthDto authInfo = (LoginAuthDto) session.getAttribute("authInfo");
+        postService.createQuestion(new PostCreateRequestDto(authInfo.getId(), title, content));
 
         return "redirect:/";
     }

@@ -18,20 +18,20 @@ public class PostDao{
     private final PostMapper postMapper = new PostMapper();
 
     public List<PostResponseDto> findAll() {
-        String sql = "SELECT ID, TITLE, CONTENT FROM POST";
+        String sql = "SELECT ID, AUTHOR_ID, TITLE, CONTENT FROM POST";
 
         return jdbcTemplate.query(sql, postMapper);
     }
 
     public void insert(PostCreateRequestDto post) {
-        String sql = "INSERT INTO POST(TITLE, CONTENT) VALUES (?, ?)";
+        String sql = "INSERT INTO POST(AUTHOR_ID, TITLE, CONTENT) VALUES (?, ?, ?)";
 
         jdbcTemplate.update(sql,
-                post.getTitle(), post.getContent());
+                post.getAuthorId(), post.getTitle(), post.getContent());
     }
 
     public PostResponseDto findById(Long id) {
-        String sql = "SELECT ID, TITLE, CONTENT FROM POST WHERE ID = ?";
+        String sql = "SELECT ID, AUTHOR_ID, TITLE, CONTENT FROM POST WHERE ID = ?";
 
         return jdbcTemplate.queryForObject(sql, postMapper, id);
     }
@@ -41,6 +41,7 @@ public class PostDao{
         public PostResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new PostResponseDto(
                     rs.getLong("ID"),
+                    rs.getLong("AUTHOR_Id"),
                     rs.getString("TITLE"),
                     rs.getString("CONTENT")
             );

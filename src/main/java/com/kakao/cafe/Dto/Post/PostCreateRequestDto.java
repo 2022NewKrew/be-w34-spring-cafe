@@ -8,6 +8,7 @@ import lombok.ToString;
 @ToString
 @RequiredArgsConstructor
 public class PostCreateRequestDto {
+    private final Long authorId;
     private final String title;
     private final String content;
 }
