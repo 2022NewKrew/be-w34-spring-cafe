@@ -53,18 +53,7 @@ public class H2UserRepository implements UserRepository {
 
     @Override
     public long countRecords() {
-        return jdbcTemplate.query(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                return con.prepareStatement("SELECT COUNT(*) FROM \"USER\"");
-            }
-        }, new ResultSetExtractor<Long>() {
-            @Override
-            public Long extractData(ResultSet rs) throws SQLException, DataAccessException {
-                rs.next();
-                return rs.getLong(1);
-            }
-        });
+        return jdbcTemplate.queryForObject("select count(*) from `USER`", Long.class);
     }
 
 
