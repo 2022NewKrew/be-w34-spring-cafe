@@ -8,5 +8,6 @@ public interface PostRepository {
     List<Post> findAll();
     Optional<Post> findById(long id);
     void update(Post post);
+    void deleteById(long id);
     void deleteAll();
 }

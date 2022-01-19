@@ -172,4 +172,17 @@ class PostJdbcRepositoryImplTest {
         });
     }
 
+    @DisplayName("게시글 삭제 - 정상 테스트")
+    @Test
+    void deleteById() {
+        long id = post.getId();
+
+        assertThatNoException().isThrownBy(() -> {
+            postRepository.deleteById(id);
+
+            Post deletedPost = postRepository.findById(id).orElse(null);
+            assertThat(deletedPost).isNull();
+        });
+    }
+
 }
