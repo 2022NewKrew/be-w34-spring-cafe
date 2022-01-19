@@ -3,10 +3,13 @@ package com.kakao.cafe.article.controller;
 import com.kakao.cafe.article.dto.request.ArticleReqDto;
 import com.kakao.cafe.article.dto.response.ArticleDetailResDto;
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.config.Authorized;
 import com.kakao.cafe.exception.SessionUserNotFoundException;
+import com.kakao.cafe.home.dto.SessionUser;
 import com.kakao.cafe.reply.dto.ReplyResDto;
 import com.kakao.cafe.reply.service.ReplyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +31,8 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public String showArticle(@PathVariable Long id, Model model, HttpSession session) {
-        checkSessionUser(session);
-
+    @Authorized
+    public String showArticle(@PathVariable Long id, Model model) {
         ArticleDetailResDto article = articleService.getArticle(id);
         List<ReplyResDto> replyList = replyService.getReplyListByArticleId(id);
 
@@ -41,35 +43,37 @@ public class ArticleController {
     }
 
     @GetMapping("/form")
-    public String showRegisterForm(HttpSession session) {
-        checkSessionUser(session);
-
+    @Authorized
+    public String showRegisterForm() {
         return "/qna/form";
     }
 
     @GetMapping("/{id}/form")
-    public String showUpdateForm(@PathVariable Long id, Model model, HttpSession session) {
+    @Authorized
+    public String showUpdateForm(@PathVariable Long id, Model model, @SessionAttribute SessionUser sessionUser) {
         ArticleDetailResDto article = articleService.getArticle(id);
-        checkWriterSameAsSessionUser(session, article.getWriter());
+        checkWriterSameAsSessionUser(sessionUser, article.getWriter());
         model.addAttribute("article", article);
         return "/qna/updateForm";
     }
 
     @PutMapping
+    @Authorized
     public String updateArticle(@ModelAttribute ArticleReqDto articleReqDto) {
         articleService.update(articleReqDto);
         return "redirect:/articles/" + articleReqDto.getId();
     }
 
     @DeleteMapping
-    public String deleteArticle(@ModelAttribute ArticleReqDto articleReqDto, HttpSession session) {
-        checkWriterSameAsSessionUser(session, articleReqDto.getWriter());
+    @Authorized
+    public String deleteArticle(@ModelAttribute ArticleReqDto articleReqDto, @SessionAttribute SessionUser sessionUser) {
+        checkWriterSameAsSessionUser(sessionUser, articleReqDto.getWriter());
         articleService.delete(articleReqDto.getId());
         return "redirect:/";
     }
 
-    private void checkWriterSameAsSessionUser(HttpSession session, String writer) {
-        if (!session.getAttribute("sessionUserId").equals(writer)) {
+    private void checkWriterSameAsSessionUser(SessionUser sessionUser, String writer) {
+        if (!sessionUser.getName().equals(writer)) {
             throw new IllegalArgumentException("작성자만 글을 수정할 수 있습니다.");
         }
     }
