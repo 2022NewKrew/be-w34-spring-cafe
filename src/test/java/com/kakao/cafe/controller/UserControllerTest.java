@@ -1,5 +1,8 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.UserLoginDto;
+import com.kakao.cafe.entity.User;
+import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,17 +12,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
+
+    @Autowired
+    UserService userService;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -79,6 +82,25 @@ class UserControllerTest {
     }
 
     @Test
-    void user() {
+    @DisplayName("[성공] 로그인 되있어서 상세보기")
+    void user() throws Exception{
+        // given
+        UserLoginDto userLoginDto = new UserLoginDto("testName", "testPassword");
+//        User loginUser = authService.login(userLoginDto);
+//        httpSession.setAttribute("auth", loginUser);
+//
+//
+//        mockMvc.perform(get("/users/1"))
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(redirectedUrl("/users"));
+    }
+
+    @Test
+    @DisplayName("[실패] 로그인 안되있어서 상세보기 실패")
+    void user_Fail() throws Exception {
+        mockMvc.perform(get("/users/1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
+
     }
 }
