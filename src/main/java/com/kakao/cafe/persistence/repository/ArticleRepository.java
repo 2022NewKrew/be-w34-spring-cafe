@@ -10,6 +10,8 @@ public interface ArticleRepository {
 
     void update(Long id, String title, String body);
 
+    void delete(Long articleId);
+
     List<Article> findAllArticles();
 
     Optional<Article> findArticleById(Long id);

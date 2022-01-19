@@ -48,12 +48,9 @@ public class ArticleService {
 
     @Transactional
     public void update(AuthInfo authInfo, Long articleId, Update updateDTO) {
-        User foundUser = userRepository.findUserByUid(authInfo.getUid())
-            .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND, authInfo.getUid()));
-
-        Article article = articleRepository.findArticleById(articleId)
+        Article foundArticle = articleRepository.findArticleById(articleId)
             .orElseThrow(() -> new ArticleNotFoundException(ErrorCode.NOT_FOUND, articleId));
-        if (!article.getUid().equals(foundUser.getUid())) {
+        if (!authInfo.matchUid(foundArticle.getUid())) {
             throw new ForbiddenAccessException(ErrorCode.FORBIDDEN_ACCESS,
                 "Update Article " + articleId);
         }
@@ -77,5 +74,17 @@ public class ArticleService {
 
         logger.info("Read Article by [ID : {}] :: {}", id, foundArticle);
         return Result.from(foundArticle);
+    }
+
+    @Transactional
+    public void delete(AuthInfo authInfo, Long articleId) {
+        Article foundArticle = articleRepository.findArticleById(articleId)
+            .orElseThrow(() -> new ArticleNotFoundException(ErrorCode.NOT_FOUND, articleId));
+        if (!authInfo.matchUid(foundArticle.getUid())) {
+            throw new ForbiddenAccessException(ErrorCode.FORBIDDEN_ACCESS,
+                "Delete Article " + articleId);
+        }
+
+        articleRepository.delete(articleId);
     }
 }

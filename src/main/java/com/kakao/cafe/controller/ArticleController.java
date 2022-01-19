@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,5 +79,13 @@ public class ArticleController {
         articleService.update(authInfo, articleId, updateDTO);
 
         return "redirect:/articles/" + articleId;
+    }
+
+    @DeleteMapping("/articles/{articleId}")
+    public String delete(@PathVariable Long articleId, HttpServletRequest request) {
+        AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("auth");
+        articleService.delete(authInfo, articleId);
+
+        return "redirect:/";
     }
 }

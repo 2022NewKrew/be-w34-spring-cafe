@@ -29,6 +29,12 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
+    public void delete(Long id) {
+        String sql = "DELETE FROM ARTICLE WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    @Override
     public List<Article> findAllArticles() {
         String sql = "SELECT * FROM ARTICLE";
         return jdbcTemplate.query(sql, this::articleRowMapper);
