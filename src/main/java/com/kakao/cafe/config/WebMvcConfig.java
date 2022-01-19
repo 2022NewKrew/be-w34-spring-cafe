@@ -1,6 +1,7 @@
 package com.kakao.cafe.config;
 
 import com.kakao.cafe.util.AuthInterceptor;
+import com.kakao.cafe.util.AuthMyArticleInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -9,16 +10,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    private final HandlerInterceptor handlerInterceptor;
+    private final AuthInterceptor authInterceptor;
+    private final AuthMyArticleInterceptor authMyArticleInterceptor;
 
-    public WebMvcConfig(HandlerInterceptor handlerInterceptor) {
-        this.handlerInterceptor = handlerInterceptor;
+    public WebMvcConfig(AuthInterceptor authInterceptor, AuthMyArticleInterceptor authMyArticleInterceptor) {
+        this.authInterceptor = authInterceptor;
+        this.authMyArticleInterceptor = authMyArticleInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(handlerInterceptor)
+        registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns();
+                .excludePathPatterns().order(1);
+
+        registry.addInterceptor(authMyArticleInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns().order(2);
+
     }
 }
