@@ -128,10 +128,12 @@ public class ArticleController {
         log.info("[DELETE] /articles/{} - (id: {}) 게시글 삭제 요청", id, id);
 
         UserInfoResponse user = getUserInfoInSession(session);
+        Long userPK = user.getId();
 
-        this.articleService.validateUser(user.getId(), id);
 
-        this.articleService.deleteArticle(id);
+        this.articleService.validateUser(userPK, id);
+
+        this.articleService.deleteArticle(userPK, id);
 
         return "redirect:/";
     }

@@ -40,7 +40,7 @@ public class ArticleRepository {
      * @return List<Article>: Article 인스턴스로 이루어진 리스트
      */
     public List<Article> findAll() {
-        String sql = "select * from article_table";
+        String sql = "select * from article_table where tombstone = false";
 
         return this.readListQuery(sql);
     }
@@ -51,7 +51,7 @@ public class ArticleRepository {
      * @return Optional<Article>: Optional 로 감싸진 Article 인스턴스
      */
     public Optional<Article> findById(Long id) {
-        String sql = "select * from article_table where id = ?";
+        String sql = "select * from article_table where id = ? and tombstone = false";
 
         return this.readOneQuery(sql, id);
     }
@@ -79,7 +79,7 @@ public class ArticleRepository {
      * @return int: 영향받은 행의 개수(1)
      */
     public int delete(Article article) {
-        String sql = "delete from artlce_table where id = ?";
+        String sql = "update article_table set tombstone = true where id = ?";
 
         return this.writeQuery(
                 sql,

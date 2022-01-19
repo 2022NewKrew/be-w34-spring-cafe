@@ -7,6 +7,7 @@ import com.kakao.cafe.article.entity.Article;
 import com.kakao.cafe.article.exception.ArticleNotFoundException;
 import com.kakao.cafe.article.mapper.ArticleMapper;
 import com.kakao.cafe.article.repository.ArticleRepository;
+import com.kakao.cafe.reply.repository.ReplyRepository;
 import com.kakao.cafe.user.dto.response.UserInfoResponse;
 import com.kakao.cafe.user.entity.User;
 import com.kakao.cafe.user.exception.ForbiddenException;
@@ -27,6 +28,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
     private final ArticleMapper articleMapper;
+    private final ReplyRepository replyRepository;
 
     /**
      * 게시글 작성 로직
@@ -83,12 +85,15 @@ public class ArticleService {
 
     /**
      * 입력 인자로 들어온 id에 해당하는 Article 을 삭제하는 로직
-     * @param id: 수정할 게시글의 ID(PK)
      */
-    public void deleteArticle(Long id) {
-        Article article = this.articleRepository.findById(id)
+    public void deleteArticle(Long userPK, Long articleId) {
+        Article article = this.articleRepository.findById(articleId)
                                                 .orElseThrow(ArticleNotFoundException::new);
+
+        article.checkDeletable(userPK);
+
         this.articleRepository.delete(article);
+        this.replyRepository.deleteByArticleId(article.getId());
     }
 
     /**

@@ -84,7 +84,7 @@ public class UserService {
      * @param id: 수정할 사용자의 ID(PK)
      * @param req: 회원 프로필 수정 정보
      */
-    public void updateUser(Long id, UserUpdateRequest req) {
+    public UserInfoResponse updateUser(Long id, UserUpdateRequest req) {
         User user = this.userRepository.findById(id)
                                        .orElseThrow(UserNotFoundException::new);
 
@@ -95,6 +95,8 @@ public class UserService {
         this.changeUserInfo(user, req);
 
         this.userRepository.update(user);
+
+        return getUserProfile(id);
     }
 
     private void changeUserInfo(User user, UserUpdateRequest req) {

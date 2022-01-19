@@ -135,9 +135,8 @@ public class UserController {
         Long id = user.getId();
         log.info("[PUT] /users - (id: {}) 유저 정보 수정", id);
 
-        this.userService.updateUser(id, req);
+        UserInfoResponse updatedUserProfile = this.userService.updateUser(id, req);
 
-        UserInfoResponse updatedUserProfile = this.userService.getUserProfile(id);
         session.setAttribute("user", updatedUserProfile);
 
         return "redirect:/";

@@ -29,13 +29,13 @@ public class ReplyRepository {
     }
 
     public List<Reply> findByArticleId(Long articleId) {
-        String sql = "select * from reply_table where article_id = ?";
+        String sql = "select * from reply_table where article_id = ? and tombstone = false";
 
         return this.readListQuery(sql, articleId);
     }
 
     public Optional<Reply> findById(Long replyId) {
-        String sql = "select * from reply_table where id = ?";
+        String sql = "select * from reply_table where id = ? and tombstone = false";
 
         return this.readOneQuery(
                 sql,
@@ -44,7 +44,7 @@ public class ReplyRepository {
     }
 
     public int delete(Reply reply) {
-        String sql = "delete from reply_table where id = ?";
+        String sql = "update reply_table set tombstone = true where id = ?";
 
         return this.writeQuery(
                 sql,
@@ -52,11 +52,22 @@ public class ReplyRepository {
         );
     }
 
+    public int deleteByArticleId(Long articleId) {
+        String sql = "update reply_table set tombstone = true where id in (" +
+                "select id from reply_table where article_id = ?" +
+                ")";
+
+        return this.writeQuery(
+                sql,
+                articleId
+        );
+    }
+
     /**
      * 단일 행을 반환하는 SELECT 문을 담당하는 메서드
      * @param sql: 실행하고자 하는 SQL
      * @param parameters: SQL 문에 들어갈 매개변수(가변인자)
-     * @return Optional<Reply>: Optional로 감싸진 Reply 인스턴스
+     * @return Optional<Reply>: Optional 로 감싸진 Reply 인스턴스
      */
     private Optional<Reply> readOneQuery(String sql, Object... parameters) {
         List<Reply> replies = this.readListQuery(sql, parameters);

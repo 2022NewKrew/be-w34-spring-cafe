@@ -12,13 +12,15 @@ create table if not exists article_table (
     writer_id   bigint          not null    references user_table(id),
     title       varchar2(100)   not null,
     contents    clob            not null,
-    created_at  datetime2       not null    default now()
+    created_at  datetime2       not null    default now(),
+    tombstone   boolean         not null    default false
 );
 
 create table if not exists reply_table (
-    id bigint               primary key     auto_increment,
-    writer_id bigint        not null        references user_table(id),
-    article_id bigint       not null        references article_table(id),
-    contents clob           not null,
-    created_at datetime2    not null        default now()
-)
+    id          bigint      primary key     auto_increment,
+    writer_id   bigint      not null        references user_table(id),
+    article_id  bigint      not null        references article_table(id),
+    contents    clob        not null,
+    created_at  datetime2   not null        default now(),
+    tombstone   boolean     not null        default false
+);
