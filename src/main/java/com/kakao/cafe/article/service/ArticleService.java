@@ -5,9 +5,7 @@ import com.kakao.cafe.article.domain.ArticleRepository;
 import com.kakao.cafe.article.dto.MultipleArticle;
 import com.kakao.cafe.article.dto.SingleArticle;
 import com.kakao.cafe.article.exception.ArticleNotFoundException;
-import com.kakao.cafe.common.exception.ForbiddenException;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,20 +32,14 @@ public class ArticleService {
 
     public void update(Long userId, Article article) {
         Article original = getArticle(article.getId());
-        validateAuthor(userId, original);
+        original.validate(userId);
         articleRepository.update(article);
     }
 
-    public void delete(Long authorId, Long articleId) {
+    public void delete(Long userId, Long articleId) {
         Article article = getArticle(articleId);
-        validateAuthor(authorId, article);
+        article.validate(userId);
         articleRepository.delete(article);
-    }
-
-    private void validateAuthor(Long authorId, Article article) {
-        if (!article.isAuthor(authorId)) {
-            throw new ForbiddenException();
-        }
     }
 
     private Article getArticle(Long id) {

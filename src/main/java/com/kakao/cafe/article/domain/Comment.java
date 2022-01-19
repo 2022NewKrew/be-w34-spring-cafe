@@ -8,17 +8,16 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class Article {
+public class Comment {
 
     private Long id;
-    private String title;
     private String body;
     private LocalDateTime createdAt;
-    private int viewCount;
     private Long authorId;
+    private Long articleId;
 
-    public void validate(Long userId) {
-        if (!Objects.equals(authorId, userId)) {
+    public void validate(Long userId, Long articleId) {
+        if (!Objects.equals(this.authorId, userId) || !Objects.equals(this.articleId, articleId)) {
             throw new ForbiddenException();
         }
     }

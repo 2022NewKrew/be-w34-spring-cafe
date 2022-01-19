@@ -24,3 +24,15 @@ CREATE TABLE articles
     FOREIGN KEY (author_id) references users (user_id)
 );
 
+CREATE TABLE comments
+(
+    comment_id bigint       NOT NULL AUTO_INCREMENT,
+    body       varchar(500) NOT NULL,
+    created_at timestamp    NOT NULL default NOW(),
+    author_id  bigint       NOT NULL,
+    article_id bigint       NOT NULL,
+    PRIMARY KEY (comment_id),
+    FOREIGN KEY (author_id) references users (user_id),
+    FOREIGN KEY (article_id) references articles (article_id)
+)
+
