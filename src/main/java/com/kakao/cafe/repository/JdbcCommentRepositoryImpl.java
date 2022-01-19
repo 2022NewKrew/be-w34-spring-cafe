@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class JdbcCommentRepositoryImpl implements CommentRepository {
@@ -38,6 +39,18 @@ public class JdbcCommentRepositoryImpl implements CommentRepository {
         return jdbcTemplate.query("SELECT id, writer, contents, qna_index, created_at " +
                 "FROM COMMENT " +
                 "WHERE qna_index = ? AND deleted = ? ", this::commentMapRow, qnaIndex, isDeleted);
+    }
+
+    @Override
+    public Optional<Comment> findById(Integer id) {
+        try {
+            return Optional.of(jdbcTemplate.queryForObject("SELECT id, writer, contents, qna_index, created_at " +
+                    "FROM COMMENT " +
+                    "WHERE id = ?", this::commentMapRow, id));
+
+        } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
+            return Optional.empty();
+        }
     }
 
     private Comment commentMapRow(ResultSet resultSet, int rowNum) throws SQLException {

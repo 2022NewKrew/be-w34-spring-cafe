@@ -84,4 +84,22 @@ public class QnaController {
 
         return "redirect:/questions/" + index;
     }
+
+    @GetMapping("/questions/{index}/comments/{id}/updateform")
+    public String updateCommentForm(@PathVariable("index") Integer index, @PathVariable Integer id, Model model, HttpSession session) throws AccessDeniedException {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+        CommentDto.ReadCommentForUpdateResponse comment = commentService.readCommentForUpdate(id, sessionedUser.getUserId());
+
+        model.addAttribute("comment", comment);
+        return "qna/commentUpdateForm";
+    }
+
+    @PutMapping("/questions/{index}/comments/{id}")
+    public String updateComment(@PathVariable("index") Integer index, @PathVariable("id") Integer id, @ModelAttribute CommentDto.UpdateCommentRequest updateCommentRequest,
+                                HttpSession session) throws AccessDeniedException {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+        commentService.updateComment(id, updateCommentRequest.getContents(), sessionedUser.getUserId());
+
+        return "redirect:/questions/" + index;
+    }
 }

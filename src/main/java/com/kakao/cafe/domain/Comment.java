@@ -25,6 +25,14 @@ public class Comment {
         this.createdAt = createdAt;
     }
 
+    public Boolean isValidUpdateUser(String userId) {
+        return writer.equals(userId);
+    }
+
+    public void updateContents(String contents) {
+        this.contents = contents;
+    }
+
     public Integer getId() {
         return id;
     }

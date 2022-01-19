@@ -36,4 +36,34 @@ public class CommentDto {
             return new ReadCommentResponse(comment.getId(), comment.getWriter(), comment.getContents(), comment.getCreatedAt());
         }
     }
+
+    public static class UpdateCommentRequest {
+        private String contents;
+
+        public UpdateCommentRequest(String contents) {
+            this.contents = contents;
+        }
+
+        public String getContents() {
+            return contents;
+        }
+    }
+
+    public static class ReadCommentForUpdateResponse {
+        private Integer id;
+        private String writer;
+        private String contents;
+        private Integer qnaIndex;
+
+        public ReadCommentForUpdateResponse(Integer id,String writer, String contents, Integer qnaIndex) {
+            this.id = id;
+            this.writer = writer;
+            this.contents = contents;
+            this.qnaIndex = qnaIndex;
+        }
+
+        public static ReadCommentForUpdateResponse of(Comment comment) {
+            return new ReadCommentForUpdateResponse(comment.getId(), comment.getWriter(), comment.getContents(), comment.getQnaIndex());
+        }
+    }
 }
