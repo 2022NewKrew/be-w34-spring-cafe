@@ -1,16 +1,17 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.dto.article.ArticleCreateDTO;
-import com.kakao.cafe.dto.article.ArticleDTO;
-
-import java.util.*;
+import com.kakao.cafe.domain.article.Article;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface ArticleRepository {
 
-    ArticleDTO save(ArticleCreateDTO articleCreateDTO);
+    void save(Article article);
 
-    Optional<ArticleDTO> findById(Long id);
+    List<Article> findAll();
 
-    List<ArticleDTO> findAll();
+    Optional<Article> findArticleById(UUID id);
 
+    void update(Article article);
 }
