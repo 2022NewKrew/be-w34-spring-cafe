@@ -29,10 +29,10 @@
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>
-                                <a class="link-modify-article" href="/questions/423/form">수정</a>
+                                <a class="link-modify-article" href="/articles/{{id}}/form">수정</a>
                             </li>
                             <li>
-                                <form class="form-delete" action="/questions/423" method="POST">
+                                <form class="form-delete" action="/articles/{{id}}" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button class="link-delete-article" type="submit">삭제</button>
                                 </form>
@@ -83,7 +83,7 @@
 {{/sessionUser}}
 
 {{^sessionUser}}
-<div class="container" id="main">
+<div class="container" id="notLogIn">
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div>
             <h2>로그인을 해주세요.</h2>
