@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.interceptor.ValidateLogin;
-import com.kakao.cafe.dto.UserResponseDTO;
 import com.kakao.cafe.dto.UserRequestDTO;
+import com.kakao.cafe.dto.UserResponseDTO;
 import com.kakao.cafe.dto.UserUpdateDTO;
 import com.kakao.cafe.error.exception.AuthorizationException;
 import com.kakao.cafe.service.UserService;
@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -43,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public String addUser(UserRequestDTO userRequestDto) {
+    public String addUser(@Validated UserRequestDTO userRequestDto) {
         logger.info("addUser: {}, {}", userRequestDto.getUserId(), userRequestDto.getPassword());
         userService.create(userRequestDto);
         return "redirect:";
@@ -64,7 +65,7 @@ public class UserController {
 
     @ValidateLogin
     @PutMapping("/{userId}")
-    public String updateUser(@PathVariable String userId, UserUpdateDTO user) {
+    public String updateUser(@PathVariable String userId, @Validated UserUpdateDTO user) {
         logger.info("updateUser(PUT): {}, {}, {}, {}", userId, user.getPassword(), user.getPasswordCheck(), user.getName());
         userService.update(user);
         return "redirect:";
