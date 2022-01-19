@@ -11,6 +11,7 @@ public class SessionUtils {
 
   public static final String LOGIN = "USER_SESSION";
 
+
   /**
    * 현재 요청스레드의 request 객체를 가져온다.
    *
@@ -59,7 +60,6 @@ public class SessionUtils {
 
   /**
    * 로그아웃
-   *
    */
   public static void logout() {
     HttpSession session = getSession();

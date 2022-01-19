@@ -31,7 +31,7 @@ public class ArticlePageController {
   /**
    * 특정 페이지의 게시판 조회 화면
    *
-   * @param model MVC
+   * @param model     MVC
    * @param pageIndex 게시판 페이지 번호
    * @return articles.html
    */
@@ -51,7 +51,7 @@ public class ArticlePageController {
    * 게시물 조회 화면
    *
    * @param model MVC
-   * @param id 게시 번호
+   * @param id    게시 번호
    * @return article.html
    */
   @RequireLogin
@@ -86,6 +86,7 @@ public class ArticlePageController {
    *
    * @param model MVC
    * @return article_modify.html
+   * @throws NoAuthorityException 수정 권한 없음
    */
   @RequireLogin
   @GetMapping("/article/{id}/modify")
@@ -93,7 +94,7 @@ public class ArticlePageController {
 
     Article article = articleService.findArticle(id);
 
-    if(!articleService.hasEditPermissions(article)) {
+    if (!articleService.hasEditPermissions(article)) {
       throw new NoAuthorityException();
     }
 

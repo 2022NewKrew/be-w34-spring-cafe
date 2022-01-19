@@ -30,6 +30,12 @@ public class UserApiController {
   }
 
 
+  /**
+   * 신규 유저 생성 후 결과 반환
+   *
+   * @param signUpDTO 가입 요청
+   * @return 신규 유저
+   */
   @PostMapping("/user")
   public ResponseEntity<UserDTO> createUser(@RequestBody SignUpDTO signUpDTO) {
 
@@ -41,6 +47,12 @@ public class UserApiController {
   }
 
 
+  /**
+   * 유저 프로필 정보 수정 후 결과 반환
+   *
+   * @param userModifyDTO 프로필 수정 요청
+   * @return 수정된 유저
+   */
   @PutMapping("/user")
   public ResponseEntity<UserDTO> updateUser(@RequestBody UserModifyDTO userModifyDTO) {
 
@@ -51,6 +63,12 @@ public class UserApiController {
   }
 
 
+  /**
+   * 로그인 후 결과 반환
+   *
+   * @param loginDTO 로그인 요청
+   * @return redirect to index page
+   */
   @PostMapping("/login")
   public ResponseEntity<ResponseDTO> login(@RequestBody LoginDTO loginDTO) {
 
@@ -62,6 +80,11 @@ public class UserApiController {
   }
 
 
+  /**
+   * 로그아웃 처리
+   *
+   * @return redirect to index page
+   */
   @PostMapping("/logout")
   public ResponseEntity<ResponseDTO> logout() {
 

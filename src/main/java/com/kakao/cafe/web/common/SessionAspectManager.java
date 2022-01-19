@@ -9,13 +9,9 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
@@ -65,10 +61,8 @@ public class SessionAspectManager {
 
     logger.debug("requireLogin Aspect Start-----------------------------------------------");
 
-//    Object controllerResult = ResponseEntity.status(HttpStatus.FOUND)
-//        .header(HttpHeaders.LOCATION, "/login");
     Object controllerResult = "/login";
-    if(SessionUtils.isLogin()) {
+    if (SessionUtils.isLogin()) {
       controllerResult = joinPoint.proceed();
     }
 

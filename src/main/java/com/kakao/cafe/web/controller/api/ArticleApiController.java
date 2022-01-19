@@ -33,7 +33,7 @@ public class ArticleApiController {
    * 신규 글 작성 및 생성 및 생성된 글 반환
    *
    * @param articleDTO 글 정보
-   * @return ResponseEntity<ArticleDTO>
+   * @return 생성된 글
    */
   @PostMapping("/article")
   public ResponseEntity<ArticleDTO> createArticle(@RequestBody ArticleDTO articleDTO) {
@@ -50,7 +50,7 @@ public class ArticleApiController {
    * 해당 글 변경 후 결과 반환
    *
    * @param articleDTO 글 정보
-   * @return ResponseEntity<ArticleDTO>
+   * @return 변경된 글
    */
   @PutMapping("/article")
   public ResponseEntity<ArticleDTO> modifyArticle(@RequestBody ArticleDTO articleDTO) {
@@ -67,7 +67,7 @@ public class ArticleApiController {
    * 해당 글 삭제 후 결과 반환
    *
    * @param id 게시 번호
-   * @return ResponseEntity<ResponseDTO>
+   * @return 삭제 결과
    */
   @DeleteMapping("/article/{id}")
   public ResponseEntity<ResponseDTO> deleteArticle(@PathVariable Long id) {

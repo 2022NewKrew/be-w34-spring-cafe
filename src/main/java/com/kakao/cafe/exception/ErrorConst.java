@@ -24,12 +24,14 @@ public enum ErrorConst {
   private final HttpStatus status;
   private Class<? extends Throwable> exception;
 
+
   ErrorConst(String message, String code, HttpStatus status, Class<? extends Throwable> exception) {
     this.message = message;
     this.code = code;
     this.status = status;
     this.exception = exception;
   }
+
 
   public static ErrorConst findBy(Exception exception) {
     String className = exception.getClass().getName();
@@ -43,13 +45,16 @@ public enum ErrorConst {
         .orElse(ErrorConst.UNKNOWN);
   }
 
+
   public String getMessage() {
     return message;
   }
 
+
   public String getCode() {
     return code;
   }
+
 
   public HttpStatus getStatus() {
     return status;

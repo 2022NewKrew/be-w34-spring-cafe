@@ -25,21 +25,25 @@ public class UserRepository {
   private final JdbcTemplate jdbcTemplate;
   private final UserMapper userMapper;
 
+
   public UserRepository(JdbcTemplate jdbcTemplate, UserMapper userMapper) {
     this.jdbcTemplate = jdbcTemplate;
     this.userMapper = userMapper;
   }
 
+
   public User save(User user) {
-    if(isNew(user)) {
+    if (isNew(user)) {
       return persist(user);
     }
     return merge(user);
   }
 
+
   private boolean isNew(User user) {
     return findById(user.getId()).isEmpty();
   }
+
 
   private User persist(User user) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -73,6 +77,7 @@ public class UserRepository {
     return User.create(generatedId, user);
   }
 
+
   private User merge(User user) {
     String query = "UPDATE USERS "
         + "SET "
@@ -100,27 +105,44 @@ public class UserRepository {
     return user;
   }
 
+
   public Users findAll() {
-    String query = UserMapper.SELECT_ALL_COLUMNS + "FROM USERS ORDER BY create_at, email;";
+    String query = UserMapper.SELECT_ALL_COLUMNS
+        + "FROM USERS "
+        + "ORDER BY create_at, email";
+
     List<User> users = jdbcTemplate.query(query, userMapper);
+
     return Users.of(users);
   }
 
+
   public Optional<User> findById(Long id) {
-    String query = UserMapper.SELECT_ALL_COLUMNS + "FROM USERS WHERE id = ?";
+    String query = UserMapper.SELECT_ALL_COLUMNS
+        + "FROM USERS "
+        + "WHERE id = ?";
+
     List<User> user = jdbcTemplate.query(query, userMapper, id);
+
     if (user.isEmpty()) {
       return Optional.empty();
     }
+
     return Optional.of(user.get(0));
   }
 
+
   public Optional<User> findByEmail(String email) {
-    String query = UserMapper.SELECT_ALL_COLUMNS + "FROM USERS WHERE email = ?";
+    String query = UserMapper.SELECT_ALL_COLUMNS
+        + "FROM USERS "
+        + "WHERE email = ?";
+
     List<User> user = jdbcTemplate.query(query, userMapper, email);
+
     if (user.isEmpty()) {
       return Optional.empty();
     }
+
     return Optional.of(user.get(0));
   }
 
@@ -154,11 +176,19 @@ public class UserRepository {
       Timestamp lastLoginAt = rs.getTimestamp("LAST_LOGIN_AT");
 
       return User.create(
-          rowNum + 1, id, email, nickName,
-          summary, profile, password, createAt,
-          modifiedAt, lastLoginAt
+          rowNum + 1,
+          id,
+          email,
+          nickName,
+          summary,
+          profile,
+          password,
+          createAt,
+          modifiedAt,
+          lastLoginAt
       );
     }
+
 
     public User mapRowExternal(ResultSet rs, int rowNum) throws SQLException {
 
@@ -172,9 +202,16 @@ public class UserRepository {
       Timestamp lastLoginAt = rs.getTimestamp("USER_LAST_LOGIN_AT");
 
       return User.create(
-          rowNum + 1, id, email, nickName,
-          summary, profile, null, createAt,
-          modifiedAt, lastLoginAt
+          rowNum + 1,
+          id,
+          email,
+          nickName,
+          summary,
+          profile,
+          null,
+          createAt,
+          modifiedAt,
+          lastLoginAt
       );
     }
 

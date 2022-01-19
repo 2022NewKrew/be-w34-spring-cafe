@@ -50,8 +50,8 @@ public class ArticleService {
    * 게시 번호에 해당하는 게시물 반환 및 조회수 증가
    *
    * @param id 게시 번호
-   * @throws NoArticleException 해당하는 게시물이 없음.
    * @return Article
+   * @throws NoArticleException 해당하는 게시물이 없음.
    */
   public Article viewArticle(Long id) {
 
@@ -67,8 +67,8 @@ public class ArticleService {
    * 게시 번호에 해당하는 게시물 반환
    *
    * @param id 게시 번호
-   * @throws NoArticleException 해당하는 게시물이 없음.
    * @return Article
+   * @throws NoArticleException 해당하는 게시물이 없음.
    */
   public Article findArticle(Long id) {
     return articleRepository.findById(id, Delete.NOT_DELETED)
@@ -89,20 +89,19 @@ public class ArticleService {
 
 
   /**
-   * 변경 권한이 있는지 확인 후 게시물 수정.
-   * 선 조회 후 항목 변경
+   * 변경 권한이 있는지 확인 후 게시물 수정. 선 조회 후 항목 변경
    *
    * @param articleDTO 변경 게시물 요청 값
-   * @throws NoArticleException 게시 번호에 해당하는 게시물 미존재
-   * @throws NoAuthorityException 게시 수정 권한 없는 로그인 상태
    * @return Article
+   * @throws NoArticleException   게시 번호에 해당하는 게시물 미존재
+   * @throws NoAuthorityException 게시 수정 권한 없는 로그인 상태
    */
   public Article modifyArticle(ArticleDTO articleDTO) {
 
     Article origin = articleRepository.findById(articleDTO.getId(), Delete.NOT_DELETED)
         .orElseThrow(NoArticleException::new);
 
-    if(!hasEditPermissions(origin)) {
+    if (!hasEditPermissions(origin)) {
       throw new NoAuthorityException();
     }
 
@@ -114,25 +113,23 @@ public class ArticleService {
 
 
   /**
-   * 삭제 권한이 있는지 확인 후, 게시 번호에 해당하는 게시물 삭제
-   * 단, 유저에게만 보이지 않는 Soft delete 실행
-   * Delete.SOFT_DELETED
+   * 삭제 권한이 있는지 확인 후, 게시 번호에 해당하는 게시물 삭제 단, 유저에게만 보이지 않는 Soft delete 실행 Delete.SOFT_DELETED
    *
    * @param id 게시 번호
-   * @throws NoArticleException 삭제할 게시물 없음.
+   * @throws NoArticleException   삭제할 게시물 없음.
    * @throws NoAuthorityException 게시 삭제 권한 없는 로그인 상태
    */
   public void softDeleteArticle(Long id) {
 
     Article article = findArticle(id);
 
-    if(!hasEditPermissions(article)) {
+    if (!hasEditPermissions(article)) {
       throw new NoAuthorityException();
     }
 
     int deleteCount = articleRepository.softDeleteById(id, Delete.SOFT_DELETED);
 
-    if(deleteCount == 0) {
+    if (deleteCount == 0) {
       throw new NoArticleException();
     }
 

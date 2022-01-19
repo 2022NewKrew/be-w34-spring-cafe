@@ -210,7 +210,7 @@ public class User {
    * 현재 유저 패스워드 해시화, BCrypt library 사용
    */
   public void setPasswordHashed() {
-    if(!isPasswordHashed) {
+    if (!isPasswordHashed) {
       String salt = BCrypt.gensalt();
       password = BCrypt.hashpw(password, salt);
       isPasswordHashed = true;

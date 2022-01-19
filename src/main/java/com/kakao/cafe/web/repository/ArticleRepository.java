@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import org.apache.tomcat.util.descriptor.XmlErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -43,9 +42,11 @@ public class ArticleRepository {
     return merge(article);
   }
 
+
   private boolean isNew(Article article) {
     return findById(article.getId(), Delete.COMPLETELY_DELETED).isEmpty();
   }
+
 
   private Article persist(Article article) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -120,8 +121,11 @@ public class ArticleRepository {
         + "ON article.user_id = users.id "
         + "ORDER BY article.id DESC";
 
-    List<Article> articles = jdbcTemplate.query(query, articleMapper, deleteLevel.ordinal(), offset,
-        limit);
+    List<Article> articles = jdbcTemplate.query(query, articleMapper,
+        deleteLevel.ordinal(),
+        offset,
+        limit
+    );
     return ArticlePage.of(articles);
   }
 
@@ -135,7 +139,11 @@ public class ArticleRepository {
         + "INNER JOIN USERS "
         + "ON article.user_id = users.id";
 
-    List<Article> articles = jdbcTemplate.query(query, articleMapper, id, deleteLevel.ordinal());
+    List<Article> articles = jdbcTemplate.query(query, articleMapper,
+        id,
+        deleteLevel.ordinal()
+    );
+
     if (articles.isEmpty()) {
       return Optional.empty();
     }
@@ -150,7 +158,11 @@ public class ArticleRepository {
         + "WHERE id = ? "
         + "AND is_deleted = ?";
 
-    jdbcTemplate.update(query, article.getReadCount(), article.getId(), Delete.NOT_DELETED.name());
+    jdbcTemplate.update(query,
+        article.getReadCount(),
+        article.getId(),
+        Delete.NOT_DELETED.name()
+    );
     return article;
   }
 
@@ -161,7 +173,10 @@ public class ArticleRepository {
         + "is_deleted = ? "
         + "WHERE id = ?";
 
-    return jdbcTemplate.update(query, deleteLevel.name(), id);
+    return jdbcTemplate.update(query,
+        deleteLevel.name(),
+        id
+    );
   }
 
 
@@ -188,9 +203,11 @@ public class ArticleRepository {
 
     private final UserMapper userMapper;
 
+
     public ArticleMapper(UserMapper userMapper) {
       this.userMapper = userMapper;
     }
+
 
     @Override
     public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -208,10 +225,18 @@ public class ArticleRepository {
       User author = userMapper.mapRowExternal(rs, rowNum);
 
       return Article.create(
-          id, author, title, content, readCount, isDeleted,
-          new ArrayList<>(), createAt, modifiedAt
+          id,
+          author,
+          title,
+          content,
+          readCount,
+          isDeleted,
+          new ArrayList<>(),
+          createAt,
+          modifiedAt
       );
     }
+
   }
 
 }

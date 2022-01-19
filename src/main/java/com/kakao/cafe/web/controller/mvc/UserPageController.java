@@ -2,6 +2,7 @@ package com.kakao.cafe.web.controller.mvc;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.Users;
+import com.kakao.cafe.exception.NoAuthorityException;
 import com.kakao.cafe.utils.SessionUtils;
 import com.kakao.cafe.web.common.EnableSession;
 import com.kakao.cafe.web.common.RequireLogin;
@@ -27,6 +28,12 @@ public class UserPageController {
   }
 
 
+  /**
+   * 멤버리스트 페이지
+   *
+   * @param model MVC
+   * @return list.html
+   */
   @GetMapping("/users")
   public String users(Model model) {
 
@@ -40,6 +47,13 @@ public class UserPageController {
   }
 
 
+  /**
+   * 멤버 상세 페이지
+   *
+   * @param model MVC
+   * @param id    유저 id
+   * @return profile.html
+   */
   @GetMapping("/users/{id}")
   public String users(Model model, @PathVariable("id") Long id) {
 
@@ -53,12 +67,23 @@ public class UserPageController {
   }
 
 
+  /**
+   * 멤버 변경 페이지, 수정 권한 필요
+   *
+   * @param model MVC
+   * @param id    유저 id
+   * @return profile_modify.html
+   * @throws NoAuthorityException 수정 권한 없음
+   */
   @RequireLogin
   @GetMapping("/users/{id}/modify")
   public String modifyUser(Model model, @PathVariable("id") Long id) {
 
     User user = userService.findUserById(id);
-    userService.requireLoginUser(user);
+
+    if (userService.hasEditPermission(user)) {
+      throw new NoAuthorityException();
+    }
 
     model.addAttribute("user", new UserDTO(user));
 
