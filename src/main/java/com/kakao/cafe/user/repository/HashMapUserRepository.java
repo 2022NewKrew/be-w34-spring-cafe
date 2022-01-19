@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Repository
 public class HashMapUserRepository implements UserRepository {
     private final Map<Long, User> users = new ConcurrentHashMap<>();
-    private final AtomicLong next_id = new AtomicLong();
+    private final AtomicLong nextId = new AtomicLong();
 
     public boolean isUserInDb(User user) {
         return user.getId() != null && isUserInDb(user.getId());
@@ -27,7 +27,7 @@ public class HashMapUserRepository implements UserRepository {
             throw new RuntimeException("Duplicate primary key: " + user);
         }
 
-        Long id = next_id.incrementAndGet();
+        Long id = nextId.incrementAndGet();
         users.put(id, new User(id, user.getEmail(), user.getUsername(), user.getPassword(), user.getStatus(),
                                user.getDisplayName(), LocalDateTime.now(), LocalDateTime.now()));
         return id;
