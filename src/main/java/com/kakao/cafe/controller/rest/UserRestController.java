@@ -22,7 +22,7 @@ public class UserRestController {
 
     private final PasswordEncoder passwordEncoder;
 
-    @PostMapping("/users/join")
+    @PostMapping("/join")
     public void join(UserJoinDto userJoinDto, HttpServletResponse response) throws IOException {
         userJoinDto.setPassword(encodePassword(userJoinDto.getPassword()));
         User user = userService.join(userJoinDto);
@@ -31,7 +31,7 @@ public class UserRestController {
         response.sendRedirect(redirectedURL);
     }
 
-    @PutMapping("/auth/users/update")
+    @PutMapping("/users")
     public void updateProfile(ProfileDto profileDto, HttpServletResponse response) throws IOException {
         profileDto.setPassword(encodePassword(profileDto.getPassword()));
         userService.updateProfile(profileDto);
