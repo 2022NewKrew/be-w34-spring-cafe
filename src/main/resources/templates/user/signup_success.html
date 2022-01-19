@@ -9,7 +9,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="/css/user/login_success.css" rel="stylesheet">
+    <link href="/css/user/signup_success.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -19,9 +19,11 @@
         <header class="article-header">
             <p class="title">가입이 완료되었습니다!</p>
         </header>
-        <p class="user-info"> 이메일: sam@codesquad.kr</p>
-        <p class="user-info"> 닉네임: 멋진삼</p>
-        <a href="../index.html" class="btn">홈으로</a>
+        {{#user}}
+        <p class="user-info"> 이메일: {{email}}</p>
+        <p class="user-info"> 닉네임: {{userId}}</p>
+        {{/user}}
+        <a href="/" class="btn">홈으로</a>
     </div>
 </div>
 </body>

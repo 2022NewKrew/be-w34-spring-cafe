@@ -22,7 +22,7 @@ public class ArticleController {
         this.articleFindService = articleFindService;
     }
     @GetMapping("/form")
-    public String tmp() {
+    public String articleCreateForm() {
         return "/article/form";
     }
 

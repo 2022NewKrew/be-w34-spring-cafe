@@ -1,7 +1,8 @@
-package com.kakao.cafe.domain.article;
+package com.kakao.cafe.repository.article;
 
-import com.kakao.cafe.repository.article.ArticleRepository;
-import com.kakao.cafe.repository.article.H2ArticleRepository;
+import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.Content;
+import com.kakao.cafe.domain.article.Title;
 import com.kakao.cafe.web.article.dto.ArticleCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

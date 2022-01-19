@@ -51,6 +51,17 @@ public class H2UserRepository implements UserRepository{
     }
 
     @Override
+    public User findByEmail(Email email) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT USERID, PASSWORD, NAME, EMAIL FROM USERS WHERE EMAIL = ?", rowMapper, email.getValue()
+            );
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
     public List<User> findAll() {
         return jdbcTemplate.query(
                 "SELECT USERID, PASSWORD, NAME, EMAIL FROM USERS", rowMapper

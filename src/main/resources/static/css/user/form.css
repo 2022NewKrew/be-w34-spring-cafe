@@ -184,7 +184,7 @@ label {
     width: 25%;
 }
 
-.password-error {
+.form-error {
     padding: 20px;
     font-size: 14px;
     background-color: #FFC0CB;

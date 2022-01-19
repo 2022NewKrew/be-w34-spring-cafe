@@ -36,6 +36,7 @@ public class UserController {
                         .collect(Collectors.toList())
         );
 
+        model.addAttribute("users_length", userListResponse.getUsers().size());
         model.addAttribute("users", userListResponse);
         return "/user/list";
     }
@@ -44,10 +45,16 @@ public class UserController {
     public String save(@RequestParam String userId,
                        @RequestParam String password,
                        @RequestParam String name,
-                       @RequestParam String email) {
+                       @RequestParam String email,
+                       Model model
+    ) {
         UserCreateRequest requestDto = new UserCreateRequest(userId, password, name, email);
-        userCreateService.create(requestDto.toEntity());
-        return "redirect:/users";
+        User user = requestDto.toEntity();
+
+        userCreateService.create(user);
+
+        model.addAttribute("user", user);
+        return "/user/signup_success";
     }
 
     @GetMapping("/{userId}")

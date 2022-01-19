@@ -13,13 +13,18 @@
 </head>
 <body>
 <div class="background">
-    {{>layout/navbar}}>
+    {{>layout/navbar}}
 
     <div class="container" id="main">
         <header class="article-header">
             <p class="title">로그인</p>
         </header>
-        <form name="question" class="info-container" method="post" action="/users">
+        <form name="question" class="info-container" method="post" action="/user/login">
+            {{#loginError}}
+            <div class="form-error">
+                <label>{{loginError}}</label>
+            </div>
+            {{/loginError}}
             <div class="form-group">
                 <label for="email">이메일</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
