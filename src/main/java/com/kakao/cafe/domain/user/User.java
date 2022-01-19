@@ -10,7 +10,6 @@ import java.util.Objects;
 @AllArgsConstructor
 public class User {
 
-    private final Long id;
     private final String userId;
     private final String password;
     private final String name;

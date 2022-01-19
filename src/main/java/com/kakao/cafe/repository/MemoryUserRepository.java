@@ -6,17 +6,11 @@ import java.util.*;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private final Map<Long, User> userMap = new HashMap<>();
-    private Long idNumber = 0L;
-
-    @Override
-    public Long generateId() {
-        return ++idNumber;
-    }
+    private final Map<String, User> userMap = new HashMap<>();
 
     @Override
     public void create(User user) {
-        userMap.put(user.getId(), user);
+        userMap.put(user.getUserId(), user);
     }
 
     @Override

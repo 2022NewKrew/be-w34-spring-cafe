@@ -25,8 +25,7 @@ public class UserService {
     }
 
     public void signUp(UserCreateRequestDto requestDto) {
-        Long id = userRepository.generateId();
-        userRepository.create(new User(id, requestDto.getUserId(), requestDto.getPassword(), requestDto.getName(), requestDto.getEmail()));
+        userRepository.create(new User(requestDto.getUserId(), requestDto.getPassword(), requestDto.getName(), requestDto.getEmail()));
         logger.info("{} 계정 생성", requestDto.getUserId());
     }
 

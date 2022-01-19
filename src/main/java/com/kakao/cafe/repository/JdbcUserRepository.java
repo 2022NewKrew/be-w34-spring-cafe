@@ -12,21 +12,15 @@ import java.util.List;
 public class JdbcUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private static Long idNumber = 0L;
 
     public JdbcUserRepository(JdbcTemplate dataSource) {
         this.jdbcTemplate = dataSource;
     }
 
     @Override
-    public Long generateId() {
-        return ++idNumber;
-    }
-
-    @Override
     public void create(User user) {
-        String sql = "INSERT INTO users VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, user.getId(), user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        String sql = "INSERT INTO users VALUES (?, ?, ?, ?, now())";
+        jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
     @Override
@@ -37,7 +31,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User findByUserId(String userId) {
-        String sql = "SELECT * FROM users where userId = ?";
+        String sql = "SELECT * FROM users where user_id = ?";
         try {
             return jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
         } catch (EmptyResultDataAccessException e) {
@@ -47,7 +41,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User findByIDPW(String userId, String password) {
-        String sql = "SELECT * FROM users where userID = ? AND password = ?";
+        String sql = "SELECT * FROM users where user_id = ? AND password = ?";
         try {
             return jdbcTemplate.queryForObject(sql, userRowMapper(), userId, password);
         } catch (EmptyResultDataAccessException e) {
@@ -56,6 +50,6 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     private RowMapper<User> userRowMapper() {
-        return (rs, rowNum) -> new User(rs.getLong("id"), rs.getString("userId"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
+        return (rs, rowNum) -> new User(rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
     }
 }

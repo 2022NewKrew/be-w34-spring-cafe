@@ -7,13 +7,11 @@ import java.util.List;
 
 public class UserResponseDto {
 
-    private final Long id;
     private final String userId;
     private final String name;
     private final String email;
 
-    private UserResponseDto(Long id, String userId, String name, String email) {
-        this.id = id;
+    private UserResponseDto(String userId, String name, String email) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -22,7 +20,7 @@ public class UserResponseDto {
     public static List<UserResponseDto> from(List<User> userList) {
         List<UserResponseDto> result = new ArrayList<>();
         for (User user : userList) {
-            UserResponseDto responseDto = new UserResponseDto(user.getId(), user.getUserId(), user.getName(), user.getEmail());
+            UserResponseDto responseDto = new UserResponseDto(user.getUserId(), user.getName(), user.getEmail());
             result.add(responseDto);
         }
         return result;

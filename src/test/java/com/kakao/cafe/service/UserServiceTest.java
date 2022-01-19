@@ -37,7 +37,7 @@ class UserServiceTest {
         String password = "testPassword";
         String name = "tom";
         String email = "tom.test@kakaocorp.com";
-        User user = new User(1L, userId, password, name, email);
+        User user = new User(userId, password, name, email);
 
         //when
         UserCreateRequestDto requestDto = new UserCreateRequestDto(userId, password, name, email);
@@ -77,7 +77,7 @@ class UserServiceTest {
         String password = "testPassword";
         String name = "tom";
         String email = "tom.test@kakaocorp.com";
-        User user = new User(1L, userId, password, name, email);
+        User user = new User(userId, password, name, email);
         UserProfileResponseDto expectedDto = UserProfileResponseDto.from(user);
 
         UserCreateRequestDto requestDto = new UserCreateRequestDto(userId, password, name, email);
