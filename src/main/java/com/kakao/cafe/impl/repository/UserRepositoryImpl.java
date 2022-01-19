@@ -72,11 +72,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int updateUser(long id, UserDTO user) {
+    public int updateUser(UserDTO user) {
         return jdbcTemplate.update("update User set email = ?,password = ? where id = ?",
                 user.getEmail(),
                 user.getPassword(),
-                id);
+                user.getId());
 
     }
 

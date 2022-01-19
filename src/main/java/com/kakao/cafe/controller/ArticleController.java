@@ -4,8 +4,10 @@ import com.kakao.cafe.annotation.SessionCheck;
 import com.kakao.cafe.dto.ArticleDTO;
 import com.kakao.cafe.dto.ReplyDTO;
 import com.kakao.cafe.dto.UserDTO;
+import com.kakao.cafe.exception.NoChangeException;
+import com.kakao.cafe.exception.NoModifyPermissionException;
+import com.kakao.cafe.exception.OtherUserReplyExistException;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -15,30 +17,18 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Controller
 @RequestMapping("/articles")
 public class ArticleController {
-    private static final String ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE = "다른사용자가 작성한 내용은 수정할 수 없습니다.";
-    private static final String CANNOT_DELETE_ARTICLE_MESSAGE = "타인의 댓글이 달린 글은 삭제할 수 없습니다.";
     @Resource(name = "articleService")
     private ArticleService articleService;
-    @Resource(name = "replyService")
-    private ReplyService replyService;
 
     @GetMapping
     String posts(Model model) {
         model.addAttribute("articles", articleService.getArticleList());
         return "article/list";
-    }
-
-    @GetMapping("/form")
-    @SessionCheck
-    String form(HttpSession session) {
-        return "article/form";
     }
 
     @PostMapping
@@ -53,15 +43,19 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    @GetMapping("/form")
+    @SessionCheck
+    String form(HttpSession session) {
+        return "article/form";
+    }
+
     @GetMapping("/{id}/form")
     @SessionCheck
     String getArticleForm(HttpSession session, @PathVariable long id, Model model) {
         UserDTO user = (UserDTO) session.getAttribute("sessionUser");
         ArticleDTO article = articleService.getArticleById(id);
-        if (!Objects.equals(article.getWriterId(), user.getId())) {
-            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE);
-            return Constants.ERROR_PAGE_NAME;
-        }
+        articleService.validArticleOwnerShip(article, user);
+
         model.addAttribute("article", article);
         log.info("get Article(Form) -> UserID : {}, ArticleId : {}", user.getId(), article.getId());
 
@@ -72,17 +66,15 @@ public class ArticleController {
     @SessionCheck
     String updateArticle(HttpSession session, @PathVariable long id, @Valid ArticleDTO article, Model model) {
         UserDTO sessionUser = (UserDTO) session.getAttribute("sessionUser");
-        ArticleDTO articleInfo = articleService.getArticleById(id);
-        if (!Objects.equals(articleInfo.getWriterId(), sessionUser.getId())) {
-            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE);
-            return Constants.ERROR_PAGE_NAME;
-        }
-        if (articleService.updateArticle(id, article) <= 0) {
-            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, Constants.DEFAULT_ERROR_MESSAGE);
+        try {
+            articleService.updateArticle(sessionUser, id, article);
+        } catch (NoModifyPermissionException | NoChangeException exception) {
+            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, exception.getMessage());
             return Constants.ERROR_PAGE_NAME;
         }
         log.info("update Article -> ID : {}, Writer : {}, Title : {}", id, article.getWriterId(), article.getTitle());
         return "redirect:/";
+
     }
 
     @DeleteMapping("/{id}/delete")
@@ -90,22 +82,14 @@ public class ArticleController {
     String deleteArticle(HttpSession session, @PathVariable long id, Model model) {
         UserDTO sessionUser = (UserDTO) session.getAttribute("sessionUser");
         ArticleDTO article = articleService.getArticleById(id);
-        if (!Objects.equals(article.getWriterId(), sessionUser.getId())) {
-            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE);
+
+        try {
+            articleService.deleteArticle(id, article, sessionUser);
+        } catch (NoModifyPermissionException | NoChangeException | OtherUserReplyExistException exception) {
+            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, exception.getMessage());
             return Constants.ERROR_PAGE_NAME;
         }
-        if (replyService.getOtherUserRepliesCount(id, sessionUser.getId()) > 0) {
-            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, CANNOT_DELETE_ARTICLE_MESSAGE);
-            return Constants.ERROR_PAGE_NAME;
-        }
-        if (articleService.deleteArticle(id) <= 0) {
-            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, Constants.DEFAULT_ERROR_MESSAGE);
-            return Constants.ERROR_PAGE_NAME;
-        }
-        if (replyService.deleteAllReplies(id) < 0) {
-            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, Constants.DEFAULT_ERROR_MESSAGE);
-            return Constants.ERROR_PAGE_NAME;
-        }
+
         log.info("delete Article -> ID : {}, Writer : {}, Title : {}", id, article.getWriterId(), article.getTitle());
         return "redirect:/";
     }
@@ -114,13 +98,7 @@ public class ArticleController {
     @SessionCheck
     String show(HttpSession session, @PathVariable long articleId, Model model) {
         UserDTO user = (UserDTO) session.getAttribute("sessionUser");
-        articleService.increaseViews(articleId);
-        ArticleDTO article = articleService.getArticleById(articleId);
-        List<ReplyDTO> replies = replyService.getArticleReplies(articleId, user.getId());
-        model.addAttribute("isOwner", Objects.equals(article.getWriterId(), user.getId()));
-        model.addAttribute("article", article);
-        model.addAttribute("articleId", articleId);
-        model.addAttribute("replies", replies);
+        articleService.getArticle(articleId, user, model);
         log.info("get Article -> articleId : {}", articleId);
         return "article/show";
     }
@@ -130,11 +108,14 @@ public class ArticleController {
     String insertReply(HttpSession session, @PathVariable long articleId, @Valid ReplyDTO reply, Model model) {
         UserDTO user = (UserDTO) session.getAttribute("sessionUser");
         long userId = user.getId();
-        reply.setWriterID(userId);
-        if (replyService.insertReply(reply) < 1) {
-            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, Constants.DEFAULT_ERROR_MESSAGE);
+
+        try {
+            articleService.insertReply(reply, userId);
+        } catch (NoChangeException exception) {
+            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, exception.getMessage());
             return Constants.ERROR_PAGE_NAME;
         }
+
         log.info("create Reply -> Article : {}, Writer : {}", articleId, userId);
         return "redirect:/articles/" + articleId;
     }
@@ -142,20 +123,17 @@ public class ArticleController {
     @DeleteMapping("/{articleId}/reply/{replyId}")
     @SessionCheck
     String deleteReply(HttpSession session, @PathVariable long articleId, @PathVariable long replyId, Model model) {
-
         UserDTO sessionUser = (UserDTO) session.getAttribute("sessionUser");
         long userId = sessionUser.getId();
-        ReplyDTO reply = replyService.getReplyById(userId, replyId);
-        if (!reply.getIsOwner()) {
-            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE);
-            return Constants.ERROR_PAGE_NAME;
-        }
-        if (replyService.deleteReply(replyId) <= 0) {
-            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, Constants.DEFAULT_ERROR_MESSAGE);
-            return Constants.ERROR_PAGE_NAME;
-        }
-        log.info("delete Reply -> ID : {}, Article : {}, Writer : {}", replyId, articleId, userId);
 
+        try {
+            articleService.deleteReply(userId, replyId);
+        } catch (NoChangeException | NoModifyPermissionException exception) {
+            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, exception.getMessage());
+            return Constants.ERROR_PAGE_NAME;
+        }
+
+        log.info("delete Reply -> ID : {}, Article : {}, Writer : {}", replyId, articleId, userId);
         return "redirect:/articles/" + articleId;
     }
 
