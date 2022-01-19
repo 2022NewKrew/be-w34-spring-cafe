@@ -90,7 +90,6 @@ public class UserController {
         log.info("{}", userInfoDto.getName());
         log.info("{}", userInfoDto.getEmail());
         session.setAttribute("sessionedUser", userInfoDto);
-        log.info("{}", session.getAttributeNames());
         return "redirect:/users";
     }
 }

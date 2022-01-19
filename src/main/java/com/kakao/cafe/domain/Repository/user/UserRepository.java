@@ -13,7 +13,14 @@ import java.util.Map;
 @Repository
 @RequiredArgsConstructor
 public class UserRepository {
-    private static final Map<String, User> users = new HashMap<>();
+    private static User user1 = new User("jaden.dev", "123", "허홍준", "jaden.dev@kakaocorp.com");
+    private static User user2 = new User("pride.chicken", "456", "심재익", "pride.chicken@kakaocorp.com");
+    private static final Map<String, User> users = new HashMap<>() {
+        {
+            put(user1.getUserId(), user1);
+            put(user2.getUserId(), user2);
+        }
+    };
 
     public void saveUser(User user) {
         users.put(user.getUserId(), user);
