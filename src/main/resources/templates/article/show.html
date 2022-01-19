@@ -14,10 +14,10 @@
 <body>
 {{>common/header}}
 
+{{#article}}
 <div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
-            {{#article}}
           <header class="qna-header">
               <h2 class="qna-title">{{title}}</h2>
           </header>
@@ -36,6 +36,7 @@
                       </div>
                   </div>
                   <div class="article-doc">
+
                       {{content}}
                   </div>
                   <div class="article-util">
@@ -55,16 +56,75 @@
                       </ul>
                   </div>
               </article>
+              <div class="qna-comment">
+                  <div class="qna-comment-slipp">
+                      <p class="qna-comment-count"><strong>{{commentLength}}</strong>개의 의견</p>
+                      <div class="qna-comment-slipp-articles">
+                          {{#commentDTOList}}
+                          <article class="article" id="answer-1405">
+                              <div class="article-header">
+                                  <div class="article-header-thumb">
+                                      <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
+                                  </div>
+                                  <div class="article-header-text">
+                                      <a href="/users/{{authorKey}}" class="article-author-name">{{authorName}}</a>
+                                      <div class="article-header-time">
+                                          {{postTime}}
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class="article-doc comment-doc">
+                                  <form id="comment-form" action="/article/{{articleKey}}/comment/{{key}}" method="POST">
+                                      <input type="hidden" name="_method" value="PUT">
+                                      <div id="comment-content-{{key}}">{{content}}</div>
+                                  </form>
+                              </div>
+                              <div class="article-util">
+                                  <ul id="comment-update-delete-buttons-{{key}}" class="article-util-list">
+                                      <li>
+                                          <div id="comment-update-button">
+                                              <button onclick="changeFormUpdate({{key}})">수정</button>
+                                          </div>
+                                      </li>
+                                      <li>
+                                          <form class="delete-answer-form" action="/article/{{articleKey}}/comment/{{key}}" method="POST">
+                                              <input type="hidden" name="_method" value="DELETE">
+                                              <button type="submit" class="delete-answer-button">삭제</button>
+                                          </form>
+                                      </li>
+                                  </ul>
+                              </div>
+
+                          </article>
+                          {{/commentDTOList}}
+                          <form class="submit-write" action="/article/{{key}}/comment" method="POST">
+                              <div class="form-group" style="padding:14px;">
+                                  <textarea class="form-control" placeholder="Leave your comment" name="content"></textarea>
+                              </div>
+                              <button class="btn btn-success pull-right" type="submit">답변하기</button>
+                              <div class="clearfix" />
+                          </form>
+                      </div>
+                  </div>
+              </div>
           </div>
-            {{/article}}
         </div>
     </div>
 </div>
-
+{{/article}}
 
 <!-- script references -->
 <script src="../js/jquery-2.2.0.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
 <script src="../js/scripts.js"></script>
-	</body>
+<script>
+    function changeFormUpdate(key) {
+        let content = document.getElementById("comment-content-"+key).innerHTML;
+        document.getElementById("comment-update-delete-buttons-"+key).innerHTML = "";
+        document.getElementById("comment-content-"+key).innerHTML = `<input name="content" value = "`+content+`" type="text" class="form-control"><button class="btn btn-success pull-right" type="submit">수정하기</button>`;
+        document.getElementById("comment-content-"+key).style = "display:flex; flex-direction:row;";
+    }
+</script>
+</body>
 </html>

@@ -18,7 +18,24 @@ CREATE TABLE article
     title       varchar(256)    not null,
     content     varchar(256)    not null,
     postTime    datetime        not null,
+    deleted     bool            not null,
     primary key (`key`),
+    foreign key (`authorKey`)
+    REFERENCES user (`key`)
+);
+
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment`
+(
+    `key`       BIGINT          not null auto_increment,
+    articleKey  BIGINT          not null,
+    authorKey   BIGINT          not null,
+    content     varchar(256)    not null,
+    postTime    datetime        not null,
+    deleted     bool            not null,
+    primary key (`key`),
+    foreign key (`articleKey`)
+    REFERENCES article (`key`),
     foreign key (`authorKey`)
     REFERENCES user (`key`)
 );

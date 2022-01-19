@@ -1,10 +1,12 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Comment;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleDTO;
 import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import java.util.Optional;
 @Slf4j
 public class ArticleController {
     private final ArticleService articleService;
+    private final CommentService commentService;
 
     @GetMapping()
     public String articleList(@RequestParam(value="error", required = false, defaultValue = "none") String error,
@@ -50,7 +53,8 @@ public class ArticleController {
     }
 
     @GetMapping("/{key}")
-    public String articleShow(@PathVariable("key") Long key, Model model, HttpSession session) {
+    public String articleShow(@RequestParam(value="error", required = false, defaultValue = "none") String error,
+                              @PathVariable("key") Long key, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/article?error=NO PERMISSION";
         }
@@ -58,7 +62,12 @@ public class ArticleController {
         if (articleDTO.isEmpty()) {
             return "redirect:/article?error=Article doesn't exist";
         }
+        if (!error.equals("none")) {
+            model.addAttribute("error", true);
+            model.addAttribute("errorMessage", error);
+        }
         model.addAttribute("article", articleDTO.get());
+        model.addAttribute("commentLength", articleDTO.get().getCommentDTOList().size());
         return "article/show";
     }
 
@@ -74,9 +83,15 @@ public class ArticleController {
     @DeleteMapping("/{key}")
     public String articleDelete(@PathVariable("key") Long key, HttpSession session) {
         if (isUserHasPermission(session, key).isEmpty()) {
-            return "redirect:/article?error=NO PERMISSION";
+            return "redirect:/article/"+key+"?error=NO PERMISSION";
+        }
+        ArticleDTO article = articleService.findByKeyDTO(key).get();
+        Long authorKey = article.getAuthor().getKey();
+        if (article.getCommentDTOList().stream().filter(commentDTO -> commentDTO.getAuthorKey() != authorKey).count() > 0) {
+            return "redirect:/article/"+key+"?error=ALL OF COMMENTS MUST BE YOURS.";
         }
         articleService.delete(key);
+        commentService.deleteByArticleKey(key);
         return "redirect:/article";
     }
 
@@ -88,6 +103,33 @@ public class ArticleController {
         }
         model.addAttribute("article", articleDTO.get());
         return "article/update";
+    }
+    @PostMapping("/{key}/comment")
+    public String commentDelete(@PathVariable("key") Long articleKey, String content, HttpSession session) {
+        if (!isLoggedIn(session)) return "redirect:/article?error=NO PERMISSION";
+        commentService.join(articleKey, ((User)session.getAttribute("sessionedUser")).getKey(), content);
+        return "redirect:/article/"+articleKey;
+    }
+    @PutMapping("/{key}/comment/{commentKey}")
+    public String commentDelete(@PathVariable("key") Long articleKey, @PathVariable("commentKey") Long commentKey, String content, HttpSession session) {
+        Optional<Comment> comment = commentService.findByKey(commentKey);
+        if (comment.isEmpty()
+                || !isLoggedIn(session)
+                || comment.get().getAuthor().getKey() != ((User)session.getAttribute("sessionedUser")).getKey())
+            return "redirect:/article/"+articleKey+"?error=NO PERMISSION";
+        commentService.update(commentKey, content);
+        return "redirect:/article/"+articleKey;
+    }
+
+    @DeleteMapping("/{key}/comment/{commentKey}")
+    public String commentDelete(@PathVariable("key") Long articleKey, @PathVariable("commentKey") Long commentKey, HttpSession session) {
+        Optional<Comment> comment = commentService.findByKey(commentKey);
+        if (comment.isEmpty()
+                || !isLoggedIn(session)
+                || comment.get().getAuthor().getKey() != ((User)session.getAttribute("sessionedUser")).getKey())
+            return "redirect:/article/"+articleKey+"?error=NO PERMISSION";
+        commentService.delete(commentKey);
+        return "redirect:/article/"+articleKey;
     }
 
     public boolean isLoggedIn(HttpSession session) {

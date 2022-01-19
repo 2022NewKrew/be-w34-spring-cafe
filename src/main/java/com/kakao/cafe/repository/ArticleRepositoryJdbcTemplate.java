@@ -28,6 +28,7 @@ public class ArticleRepositoryJdbcTemplate implements ArticleRepository {
                 "SELECT a.key, a.title, a.content, a.postTime, u.key, u.id, u.pw, u.name, u.email " +
                         "FROM article as a left join user as u " +
                         "on a.authorKey = u.key " +
+                        "WHERE a.deleted = false " +
                         "ORDER BY a.postTime DESC", articleRowMapper());
     }
 
@@ -37,7 +38,7 @@ public class ArticleRepositoryJdbcTemplate implements ArticleRepository {
                 "SELECT a.key, a.title, a.content, a.postTime, u.key, u.id, u.pw, u.name, u.email " +
                         "from article as a left join user as u " +
                         "on a.authorKey = u.key " +
-                        "where a.key = ?", articleRowMapper(), key);
+                        "where a.key = ? and a.deleted = false", articleRowMapper(), key);
         return result.stream().findAny();
     }
 
@@ -46,12 +47,12 @@ public class ArticleRepositoryJdbcTemplate implements ArticleRepository {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("article").usingGeneratedKeyColumns("key");
 
-
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("authorKey", article.getAuthor().getKey());
         parameters.put("title", article.getTitle());
         parameters.put("content", article.getContent());
         parameters.put("postTime", article.getPostTime());
+        parameters.put("deleted", "false");
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         return key.longValue();
@@ -65,7 +66,7 @@ public class ArticleRepositoryJdbcTemplate implements ArticleRepository {
 
     @Override
     public void delete(Long key) {
-        jdbcTemplate.update("DELETE FROM article WHERE `key` = ?", key);
+        jdbcTemplate.update("update article set deleted = true WHERE `key` = ?", key);
     }
 
     private RowMapper<Article> articleRowMapper() {

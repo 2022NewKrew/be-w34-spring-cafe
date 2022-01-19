@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -17,6 +19,8 @@ public class Article {
     private String title;
     private String content;
     private LocalDateTime postTime;
+    private List<Comment> commentList;
+    private boolean deleted;
 
     public static Article fromDTOWithoutPostTime(ArticleDTO articleDTO) {
         Article article = Article.builder()
@@ -45,6 +49,8 @@ public class Article {
                 .content(content)
                 .postTime(postTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
+        if (commentList != null)
+            articleDTO.setCommentDTOList(commentList.stream().map(Comment::getDTO).collect(Collectors.toList()));
         return articleDTO;
     }
 

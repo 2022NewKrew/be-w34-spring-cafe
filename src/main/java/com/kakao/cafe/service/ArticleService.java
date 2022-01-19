@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ArticleService {
     private final ArticleRepository articleRepository;
+    private final CommentService commentService;
 
     public List<Article> findAll() {
         return articleRepository.selectAll();
@@ -24,11 +25,14 @@ public class ArticleService {
 
     public List<ArticleDTO> findAllDTO() {
         List<Article> articleList = findAll();
-        return articleList.stream().map(article -> article.getDTO()).collect(Collectors.toList());
+        return articleList.stream().map(Article::getDTO).collect(Collectors.toList());
     }
 
     public Optional<Article> findByKey(Long key) {
-        return articleRepository.selectByKey(key);
+        Optional<Article> article = articleRepository.selectByKey(key);
+        if (article.isEmpty()) return article;
+        article.get().setCommentList(commentService.findAllByArticleKey(key));
+        return article;
     }
 
     public Optional<ArticleDTO> findByKeyDTO(Long key) {
@@ -36,7 +40,7 @@ public class ArticleService {
         return article.map(Article::getDTO);
     }
 
-    public long join(ArticleDTO articleDTO) {
+    public Long join(ArticleDTO articleDTO) {
         Article article = Article.fromDTOWithoutPostTime(articleDTO);
         article.setPostTime(LocalDateTime.now());
         return articleRepository.insert(article);
