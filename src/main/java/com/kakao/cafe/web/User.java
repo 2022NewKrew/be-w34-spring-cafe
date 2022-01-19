@@ -38,10 +38,6 @@ public class User {
         return content;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public void update(SampleUserForm form){
         this.name = form.getName();
         this.email = form.getEmail();

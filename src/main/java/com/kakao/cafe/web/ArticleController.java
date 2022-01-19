@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class ArticleController {
 
-    private static Logger logger = LoggerFactory.getLogger(ArticleController.class);
+    private final static Logger logger = LoggerFactory.getLogger(ArticleController.class);
     private Articles articles = new Articles();
 
     @GetMapping("/articles")
     public String articles(Model model){
         logger.info("article list print");
         model.addAttribute("articles", articles.getArticles());
-        return "articles";
+        return "articleListPage";
     }
 
     @GetMapping("/articles/{articleID}")
@@ -28,13 +28,13 @@ public class ArticleController {
         logger.info("article print articleID : {}", articleID);
         model.addAttribute("article", articles.findArticle(articleID));
 
-        return "article";
+        return "articlePage";
     }
 
     @GetMapping("/article/write")
     public String writeArticle(){
         logger.info("writeArticle page");
-        return "write";
+        return "articleForm";
     }
 
     @PostMapping("/article/create")

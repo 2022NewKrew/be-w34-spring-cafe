@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class UserController {
 
-    private static Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
     private Users users = new Users();
 
     @GetMapping("/")
@@ -26,9 +26,9 @@ public class UserController {
 
     @GetMapping("/users")
     public String userList(Model model){
-        logger.info("users print");
+        logger.info("userList print");
         model.addAttribute("users", users.getUserList());
-        return "userList";
+        return "userListPage";
     }
 
     @GetMapping("/users/{userID}")
@@ -36,7 +36,7 @@ public class UserController {
         logger.info("userprofile print userID : {}", userID);
         model.addAttribute("userprofile", users.findUser(userID));
 
-        return "profile";
+        return "userPage";
     }
 
     @GetMapping("/users/{userID}/update")
@@ -44,20 +44,23 @@ public class UserController {
         logger.info("updateProfile print userID : {}", userID);
         model.addAttribute("userprofile", users.findUser(userID));
 
-        return "updateForm";
+        return "userUpdateForm";
     }
 
     @GetMapping("/user/signup")
     public String signUp(){
         logger.info("signUp page");
-        return "signUp";
+        return "userForm";
     }
 
     @PostMapping("/user/create")
+    @ResponseBody
     public String userCreate(SampleUserForm form){
         logger.info("userCreate print {}" ,form.toString());
-        users.addUser(form);
-        return "redirect:/users";
+        if (users.addUser(form)){
+            return "<script>alert('Create Success');location.href='/users'</script>";
+        }
+        return "<script>alert('ID already exists');location.href='/user/signup'</script>";
     }
 
     @PostMapping("/user/update")
@@ -65,9 +68,9 @@ public class UserController {
     public String userUpdate(SampleUserForm form){
         logger.info("userUpdate print {}" ,form.toString());
         if (users.updateUser(form)){
-            return "<script>alert('success');location.href='/users'</script>";
-        };
-        return "<script>alert('failed');location.href='/users'</script>";
+            return "<script>alert('Update Success');location.href='/users'</script>";
+        }
+        return "<script>alert('Invalid Password');location.href='/users'</script>";
     }
 
 }

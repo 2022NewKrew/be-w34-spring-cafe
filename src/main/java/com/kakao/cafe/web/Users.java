@@ -9,15 +9,20 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class Users {
-    private static Logger logger = LoggerFactory.getLogger(Users.class);
+    private final static Logger logger = LoggerFactory.getLogger(Users.class);
     private ArrayList<User> userList;
 
     public Users() {
         this.userList = new ArrayList<>();
     }
 
-    public void addUser(SampleUserForm form){
-        userList.add(User.add(form));
+    public boolean addUser(SampleUserForm form){
+        logger.info("addUser Input user ID : {}", form.getId());
+        if (!checkUser(form.getId())){
+            userList.add(User.add(form));
+            return true;
+        }
+        return false;
     }
 
     public User findUser(String userID){
@@ -26,7 +31,7 @@ public class Users {
         if (opt.isPresent()){
             return opt.get();
         }
-        logger.error("Can not find the user with userID");
+        logger.error("Can not find the User with userID");
         throw new RuntimeException("Can not find the user with userID");
     }
 
@@ -37,7 +42,16 @@ public class Users {
             findUser.update(form);
             return true;
         }
-        logger.info("updateUser update not executed");
+        logger.info("updateUser update not executed, Invalid password");
+        return false;
+    }
+
+    public boolean checkUser(String userID){
+        logger.info("Check the User Id existence userID : {}", userID);
+        Optional<User> opt = userList.stream().filter(user -> user.getId().equals(userID)).findFirst();
+        if (opt.isPresent()){
+            return true;
+        }
         return false;
     }
 
