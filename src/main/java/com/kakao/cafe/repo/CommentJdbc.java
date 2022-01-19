@@ -75,13 +75,17 @@ public class CommentJdbc implements CommentRepository {
     public List<CommentDto> getDtoList(final long articleIdx) {
         return Collections.unmodifiableList(
                 jdbcTemplate.query(
-                        con -> con.prepareStatement(
-                                "SELECT c.idx, c.user_id, u.name AS user_name, c.article_idx, c.body, c.created_at, c.modified_at " +
-                                        "FROM userlist AS u " +
-                                        "JOIN comment AS c " +
-                                        "ON u.id = c.user_id " +
-                                        "WHERE c.deleted = false"
-                        ),
+                        con -> {
+                            final PreparedStatement pstmt = con.prepareStatement(
+                                    "SELECT c.idx, c.user_id, u.name AS user_name, c.article_idx, c.body, c.created_at, c.modified_at " +
+                                            "FROM userlist AS u " +
+                                            "JOIN comment AS c " +
+                                            "ON u.id = c.user_id " +
+                                            "WHERE c.deleted = false AND c.article_idx = ?"
+                            );
+                            pstmt.setLong(1, articleIdx);
+                            return pstmt;
+                        },
                         (rs, count) -> CommentDto.from(
                                 rs.getLong("idx"),
                                 rs.getString("user_id"),
