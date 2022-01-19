@@ -38,8 +38,11 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public String getPost(@PathVariable long id, Model model) {
-        model.addAttribute("post", postService.getPostById(id));
+    public String getPost(@PathVariable long id, HttpSession session, Model model) {
+        UserDto currentUser = getCurrentUserFromSession(session);
+        PostDto post = postService.getPostById(id);
+        model.addAttribute("post", post);
+        model.addAttribute("hasAuthority", post.getWriterId().equals(currentUser.getId()));
         return "post/show";
     }
 
