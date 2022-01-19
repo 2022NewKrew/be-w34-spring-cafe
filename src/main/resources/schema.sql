@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS ARTICLE;
 
 CREATE TABLE MEMBER (
                       id INT AUTO_INCREMENT,
-                      userId VARCHAR(64),
+                      user_id VARCHAR(64),
                       email VARCHAR(64),
                       name VARCHAR(64),
                       password VARCHAR(64)

@@ -72,7 +72,7 @@ public class UserController {
         UserProfileDto user;
 
         if (!userService.checkSessionUser(userId, session)) {
-            logger.info("/users/{userId}/update, Invalid session.");
+            logger.info("/users/{userId}/form, Invalid session.");
             return "redirect:/";
         }
 

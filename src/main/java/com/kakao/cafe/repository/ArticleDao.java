@@ -56,7 +56,7 @@ public class ArticleDao implements ArticleRepository {
 
     public Article findById(int id) throws NoSuchElementException {
         Article article;
-        String sql = String.format("select * from %s where id = ?", ArticleDBConstants.TABLE_NAME);
+        String sql = String.format("select * from %s where %s = ?", ArticleDBConstants.TABLE_NAME, ArticleDBConstants.COLUMN_ID);
 
         try {
             article = jdbcTemplate.queryForObject(

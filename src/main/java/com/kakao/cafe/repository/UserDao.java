@@ -48,7 +48,7 @@ public class UserDao implements UserRepository {
 
     public User findByUserId(String userId) throws NoSuchElementException {
         User user;
-        String sql = String.format("select * from %s where userId = ?", UserDBConstants.TABLE_NAME);
+        String sql = String.format("select * from %s where %s = ?", UserDBConstants.TABLE_NAME, UserDBConstants.COLUMN_USERID);
 
         try {
             user = jdbcTemplate.queryForObject(
@@ -65,7 +65,7 @@ public class UserDao implements UserRepository {
 
     public User findByName(String name) throws NoSuchElementException {
         User user;
-        String sql = String.format("select * from %s where name = ?", UserDBConstants.TABLE_NAME);
+        String sql = String.format("select * from %s where %s = ?", UserDBConstants.TABLE_NAME, UserDBConstants.COLUMN_NAME);
 
         try {
             user = jdbcTemplate.queryForObject(
@@ -89,7 +89,7 @@ public class UserDao implements UserRepository {
     }
 
     public void update(User user) {
-        String sql = String.format("update %s set email = ?, name = ?  where userId = ?", UserDBConstants.TABLE_NAME);
+        String sql = String.format("update %s set %s = ?, %s = ?  where %s = ?", UserDBConstants.TABLE_NAME, UserDBConstants.COLUMN_EMAIL, UserDBConstants.COLUMN_NAME, UserDBConstants.COLUMN_USERID);
 
         jdbcTemplate.update(sql,
                 user.getEmail(),
