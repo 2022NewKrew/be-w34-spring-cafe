@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -30,11 +29,9 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String showArticles(Model module, HttpSession session) {
-        boolean isLogin = session.getAttribute("loginUser") != null;
+    public String showArticles(Model module) {
         List<ArticleListDto> articles = articleMapper.toListArticleDto(articleService.findArticles());
         module.addAttribute("articles", articles);
-        module.addAttribute("isLogin", isLogin);
         return "index";
     }
 
