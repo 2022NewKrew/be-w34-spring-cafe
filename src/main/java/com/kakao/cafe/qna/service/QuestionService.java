@@ -1,12 +1,15 @@
 package com.kakao.cafe.qna.service;
 
 import com.kakao.cafe.qna.DTO.ArticleSummaryDTO;
+import com.kakao.cafe.qna.DTO.PackedArticleDTO;
 import com.kakao.cafe.qna.DTO.QuestionDTO;
+import com.kakao.cafe.qna.DTO.WrittenThingDTO;
 import com.kakao.cafe.qna.domain.Article;
 import com.kakao.cafe.qna.domain.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,4 +33,23 @@ public class QuestionService {
     private ArticleSummaryDTO makeArticleSummaryDTOFromArticle(Article article) {
         return new ArticleSummaryDTO(article.getTitle(), article.getWriter(), article.getWrittenTime(), article.getPoint());
     }
+
+    public PackedArticleDTO getPackedArticle(String idx) {
+        WrittenThingDTO article = makeWrittenThingDTOFromArticle(articleRepository.getArticleLst().get(Integer.parseInt(idx) - 1));
+        List<WrittenThingDTO> replies = new ArrayList<>();
+
+        return makePackedArticle(article, replies);
+    }
+
+    private WrittenThingDTO makeWrittenThingDTOFromArticle(Article article) {
+        //TODO addr 변경
+        return new WrittenThingDTO(article.getWriter(), "/images/80-text.png",
+                article.getWrittenTime(), article.getContent());
+    }
+
+    private PackedArticleDTO makePackedArticle(WrittenThingDTO article, List<WrittenThingDTO> replies) {
+        return new PackedArticleDTO(article, replies);
+    }
+
+
 }
