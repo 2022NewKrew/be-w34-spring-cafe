@@ -58,7 +58,7 @@
 > 참고 : https://pinokio0702.tistory.com/189?category=414017
 - [x] 로그아웃은 GET인가? POST인가?
 > 참고 : https://stackoverflow.com/questions/3521290/logout-get-or-post
-- [] 패스워드 암호화 (DB, 백엔드)
+- [ ] 패스워드 암호화 (DB, 백엔드)
 
 ### 2일차 구현
 
@@ -70,3 +70,7 @@
 
 - [ ] 요청한 값이 DB에 존재하지 않을 경우의 예외 처리
 - [ ] `<br>` 태그가 수정 화면에서 노출되는 문제 해결 필요
+
+### 3일차 구현
+
+- MySQL 프로필 추가

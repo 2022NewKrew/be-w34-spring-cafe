@@ -21,6 +21,9 @@ dependencies {
 	// DB 의존성 추가
 	implementation 'com.h2database:h2'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+	// MySQL 의존성 추가
+	implementation 'mysql:mysql-connector-java'
 }
 
 test {

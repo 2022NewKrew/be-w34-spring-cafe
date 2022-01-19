@@ -1,7 +1,7 @@
 package com.kakao.cafe.config;
 
 import com.kakao.cafe.qna.ArticleRepository;
-import com.kakao.cafe.qna.H2ArticleRepository;
+import com.kakao.cafe.qna.JdbcArticleRepository;
 import com.kakao.cafe.user.H2UserRepository;
 import com.kakao.cafe.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +32,5 @@ public class RepoConfig {
 
     @Bean
     public ArticleRepository articleRepository() {
-        return new H2ArticleRepository(dataSource);
+        return new JdbcArticleRepository(dataSource);
     }}
