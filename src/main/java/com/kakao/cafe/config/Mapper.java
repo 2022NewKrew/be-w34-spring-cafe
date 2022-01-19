@@ -27,7 +27,8 @@ public class Mapper {
     }
 
     public Article map(PostArticleDto articleDto) {
-        return new Article(new Title(articleDto.getTitle()),
+        return new Article(articleDto.getArticleId(),
+                new Title(articleDto.getTitle()),
                 new Text(articleDto.getContents()),
                 Time.now());
     }
