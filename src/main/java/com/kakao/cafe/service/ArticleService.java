@@ -80,4 +80,13 @@ public class ArticleService {
         articleRepository.delete(id);
     }
 
+    /*
+     * id로 조회수 1 증가
+     */
+    public void increaseView(long id) {
+        Article article = articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException("해당 글이 존재하지 않습니다."));
+        article.setViews(article.getViews() + 1);
+        articleRepository.save(article);
+    }
+
 }

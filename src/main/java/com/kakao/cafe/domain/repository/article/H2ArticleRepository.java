@@ -25,10 +25,10 @@ public class H2ArticleRepository implements ArticleRepository {
         }
 
         String sql = "UPDATE `ARTICLE` SET " +
-                "author_id = ?, title = ?, content = ?" +
+                "author_id = ?, title = ?, content = ?, views = ? " +
                 "WHERE id = ?";
         jdbcTemplate.update(sql,
-                article.getAuthorId(), article.getTitle(), article.getContent(),
+                article.getAuthorId(), article.getTitle(), article.getContent(), article.getViews(),
                 article.getId());
     }
 

@@ -58,6 +58,7 @@ public class ArticleController {
             model.addAttribute("isMyArticle", true);
         }
         model.addAttribute("post", articleService.getArticleById(id));
+        articleService.increaseView(id);
         return "post/show";
     }
 
