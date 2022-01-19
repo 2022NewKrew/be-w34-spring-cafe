@@ -39,7 +39,17 @@ public class InMemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public void increaseViewCount(Article article) {
+        articles.increaseViewCount(article);
+    }
+
+    @Override
     public void update(Article article) {
         articles.update(article);
+    }
+
+    @Override
+    public void delete(Article article) {
+        articles.delete(article);
     }
 }

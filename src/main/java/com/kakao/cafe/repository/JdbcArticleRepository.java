@@ -33,7 +33,8 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query("SELECT * FROM "
-                + "articles INNER JOIN users USING(users_id)", rowMapper);
+                + "articles INNER JOIN users USING(users_id) "
+                + "WHERE deleted = FALSE", rowMapper);
     }
 
     @Override
@@ -41,19 +42,32 @@ public class JdbcArticleRepository implements ArticleRepository {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM "
                     + "articles INNER JOIN users USING(users_id) "
-                    + "WHERE articles_id = ?", rowMapper, id.toString()));
+                    + "WHERE articles_id = ? AND deleted = FALSE", rowMapper, id.toString()));
         } catch (EmptyResultDataAccessException exception) {
             return Optional.empty();
         }
     }
 
     @Override
+    public void increaseViewCount(Article article) {
+        jdbcTemplate.update("UPDATE articles SET view_count = view_count + 1 "
+                        + "WHERE articles_id = ?",
+                article.getArticleId().toString());
+    }
+
+    @Override
     public void update(Article article) {
-        jdbcTemplate.update("UPDATE articles SET title = ?, content = ?, view_count = ?"
+        jdbcTemplate.update("UPDATE articles SET title = ?, content = ? "
                 + "WHERE articles_id = ?",
                 article.getTitle().getValue(),
                 article.getContent().getValue(),
-                article.getViewCount().getValue(),
+                article.getArticleId().toString());
+    }
+
+    @Override
+    public void delete(Article article) {
+        jdbcTemplate.update("UPDATE articles SET deleted = TRUE "
+                        + "WHERE articles_id = ?",
                 article.getArticleId().toString());
     }
 }

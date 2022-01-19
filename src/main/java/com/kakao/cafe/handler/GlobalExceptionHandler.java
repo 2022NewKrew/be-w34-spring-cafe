@@ -5,6 +5,7 @@ import com.kakao.cafe.exception.LoginFailedException;
 import com.kakao.cafe.exception.LoginRequiredException;
 import com.kakao.cafe.exception.NoSuchArticleException;
 import com.kakao.cafe.exception.NoSuchUserException;
+import com.kakao.cafe.exception.UnauthenticatedArticleAccessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
@@ -76,5 +77,12 @@ public class GlobalExceptionHandler {
     public String loginRequired(Exception exception) {
         logHandlingException(exception);
         return "auth/login";
+    }
+
+    @ExceptionHandler(UnauthenticatedArticleAccessException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String unauthenticatedArticleAccess(Exception exception) {
+        logHandlingException(exception);
+        return "error/unauthenticated-article-access";
     }
 }

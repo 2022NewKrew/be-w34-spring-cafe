@@ -37,6 +37,14 @@
             </div>
           </article>
 
+          <div>
+            <a class="black-component" href="/articles/{{article.articleId}}/form" role="button">수정</a>
+            <form id= "delete" name="delete" method="post" action="/articles/{{article.articleId}}">
+              <input type="hidden" name="_method" value="DELETE" />
+              <a class="black-component" href="#" onclick="document.getElementById('delete').submit(); return false;" role="button">삭제</a>
+            </form>
+          </div>
+
           <div class="post-comment">
             <div class="post-comment-slipp">
               <p class="post-comment-count">댓글 2개</p>

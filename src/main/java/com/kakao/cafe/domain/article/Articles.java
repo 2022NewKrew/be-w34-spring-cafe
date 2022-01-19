@@ -23,6 +23,7 @@ public class Articles {
         article.setArticleId(UUID.randomUUID());
         article.setCreatedAt(LocalDateTime.now());
         article.setViewCount(new ViewCount(0));
+        article.setArticleDeleted(ArticleDeleted.from(false));
         articleList.add(article);
     }
 
@@ -36,9 +37,25 @@ public class Articles {
 
     public void update(Article article) {
         synchronized (articleList) {
-            for (Article existingArticle : articleList) {
-                existingArticle.update(article);
-            }
+            articleList.stream()
+                    .filter((existingArticle) -> existingArticle.getArticleId().equals(article.getArticleId()))
+                    .forEach((filteredArticle) -> filteredArticle.update(article));
+        }
+    }
+
+    public void increaseViewCount(Article article) {
+        synchronized (articleList) {
+            articleList.stream()
+                    .filter((existingArticle) -> existingArticle.getArticleId().equals(article.getArticleId()))
+                    .forEach(Article::increaseViewCount);
+        }
+    }
+
+    public void delete(Article article) {
+        synchronized (articleList) {
+            articleList.stream()
+                    .filter((existingArticle) -> existingArticle.getArticleId().equals(article.getArticleId()))
+                    .forEach(Article::delete);
         }
     }
 }

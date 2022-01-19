@@ -12,18 +12,24 @@ public class Article {
     private final User writer;
     private LocalDateTime createdAt;
     private ViewCount viewCount;
+    private ArticleDeleted articleDeleted;
 
-    public Article(UUID articleId, Title title, Content content, User writer, LocalDateTime createdAt, ViewCount viewCount) {
+    public Article(UUID articleId, Title title, Content content, User writer, LocalDateTime createdAt, ViewCount viewCount, ArticleDeleted articleDeleted) {
         this.articleId = articleId;
         this.title = title;
         this.content = content;
         this.writer = writer;
         this.createdAt = createdAt;
         this.viewCount = viewCount;
+        this.articleDeleted = articleDeleted;
     }
 
     public Article(Title title, Content content, User writer) {
-        this(null, title, content, writer, null, null);
+        this(null, title, content, writer, null, null, null);
+    }
+
+    public Article(UUID articleId, Title title, Content content, User writer) {
+        this(articleId, title, content, writer, null, null, null);
     }
 
     public UUID getArticleId() {
@@ -50,6 +56,10 @@ public class Article {
         return viewCount;
     }
 
+    public ArticleDeleted getArticleDeleted() {
+        return articleDeleted;
+    }
+
     public void setArticleId(UUID id) {
         this.articleId = id;
     }
@@ -62,6 +72,10 @@ public class Article {
         this.viewCount = viewCount;
     }
 
+    public void setArticleDeleted(ArticleDeleted articleDeleted) {
+        this.articleDeleted = articleDeleted;
+    }
+
     public void increaseViewCount() {
         this.viewCount.increase();
     }
@@ -70,7 +84,14 @@ public class Article {
         if (this.articleId.equals(article.getArticleId())) {
             title = article.getTitle();
             content = article.getContent();
-            viewCount = article.getViewCount();
         }
+    }
+
+    public void delete() {
+        this.articleDeleted = ArticleDeleted.from(true);
+    }
+
+    public boolean isWriter(User user) {
+        return writer.isUserSame(user);
     }
 }
