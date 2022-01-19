@@ -37,6 +37,13 @@
                           </div>
                       </article>
 
+                      <ul class="nav navbar-nav navbar-right">
+                          {{#sessionUser}}
+                          <li><a class="black-component" href="#" role="button">수정</a></li>
+                          <li><a class="black-component" href="#" role="button">삭제</a></li>
+                          {{/sessionUser}}
+                      </ul>
+
                       <div class="post-comment">
                           <div class="post-comment-slipp">
                               <p class="post-comment-count">댓글 2개</p>
