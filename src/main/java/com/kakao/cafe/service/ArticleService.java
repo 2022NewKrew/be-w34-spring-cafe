@@ -10,6 +10,7 @@ import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.persistence.model.User;
 import com.kakao.cafe.persistence.repository.ArticleRepository;
 import com.kakao.cafe.persistence.repository.UserRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,6 +40,7 @@ public class ArticleService {
             .uid(foundUser.get().getUid())
             .title(createDTO.getTitle())
             .body(createDTO.getBody())
+            .createdAt(LocalDateTime.now())
             .build();
 
         articleRepository.save(article);

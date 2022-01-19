@@ -10,6 +10,7 @@ import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.persistence.model.User;
 import com.kakao.cafe.persistence.repository.UserRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,6 +39,7 @@ public class UserService {
             .password(createDto.getPassword())
             .name(createDto.getName())
             .email(createDto.getEmail())
+            .createdAt(LocalDateTime.now())
             .build();
 
         userRepository.save(user);
