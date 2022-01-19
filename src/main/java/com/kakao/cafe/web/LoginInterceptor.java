@@ -3,12 +3,9 @@ package com.kakao.cafe.web;
 import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.dto.article.ArticleContents;
 import com.kakao.cafe.service.ArticleService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
-import org.springframework.web.util.pattern.PathPattern;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -20,9 +17,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Resource
     private ArticleService articleService;
-
-
-    private Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -50,7 +44,6 @@ public class LoginInterceptor implements HandlerInterceptor {
         } else if (pathVariables.containsKey("articleId")) {
             long articleId = Long.parseLong((String) pathVariables.get("articleId"));
             ArticleContents articleContents = articleService.getArticle(articleId);
-            AntPathMatcher pathMatcher = new AntPathMatcher();
             if (userNotPermittedToArticle(user, articleContents) && !isRequestGetArticle(request)) {
                 response.sendRedirect("/nopermission");
                 return false;

@@ -1,7 +1,5 @@
 package com.kakao.cafe.dto.user;
 
-import com.kakao.cafe.domain.entity.User;
-
 public class UserCreateCommand {
     private final String userId;
     private final String password;
