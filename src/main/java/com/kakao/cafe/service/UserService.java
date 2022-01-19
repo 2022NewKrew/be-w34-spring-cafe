@@ -47,7 +47,7 @@ public class UserService {
     /*
      * 전체 유저 조회
      */
-    public List<ResponseUserDto> findUsers() {
+    public List<ResponseUserDto> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(user -> modelMapper.map(user, ResponseUserDto.class))
                 .collect(Collectors.toList());
@@ -56,18 +56,16 @@ public class UserService {
     /*
      * id로 유저 조회
      */
-    public ResponseUserDto findOne(long id) {
+    public ResponseUserDto getUserById(long id) {
         User result = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
-
         return modelMapper.map(result, ResponseUserDto.class);
     }
 
     /*
      * userId로 유저 조회
      */
-    public ResponseUserDto findOne(String userId) {
+    public ResponseUserDto getUserByUserId(String userId) {
         User result = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
-
         return modelMapper.map(result, ResponseUserDto.class);
     }
 

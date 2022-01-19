@@ -19,12 +19,27 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
+    /*
+    * 게시글 리스트 조회
+    */
+    @GetMapping("/")
+    public String getAllArticles(Model model) {
+        model.addAttribute("posts", articleService.getAllArticles());
+        return "index";
+    }
+
+    /*
+    * 게시글 작성 페이지 조회
+    */
     @GetMapping("/posts/form")
     public String showCreateArticlePage(@LoginUser SessionUser user) {
         log.info("GET /posts/form");
         return "post/form";
     }
 
+    /*
+    * 게시글 작성
+    */
     @PostMapping("/posts/form")
     public String addArticle(@ModelAttribute RequestArticleDto articleDto, @LoginUser SessionUser user) {
         log.info("POST /posts/form {}", articleDto);
@@ -33,12 +48,9 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/")
-    public String getAllArticles(Model model) {
-        model.addAttribute("posts", articleService.getAllArticles());
-        return "index";
-    }
-
+    /*
+    * 게시글 세부 내용 조회
+    */
     @GetMapping("/articles/{id}")
     public String getArticleDetail(@PathVariable int id, Model model, @LoginUser SessionUser user) {
         long authorId = articleService.getAuthorIdOfArticle(id);
@@ -49,6 +61,9 @@ public class ArticleController {
         return "post/show";
     }
 
+    /*
+    * 게시글 수정 페이지 조회
+    */
     @GetMapping("/articles/{id}/form")
     public String showEditArticlePage(@PathVariable long id, Model model, @LoginUser SessionUser user) {
         long authorId = articleService.getAuthorIdOfArticle(id);
@@ -59,6 +74,9 @@ public class ArticleController {
         return "post/updateForm";
     }
 
+    /*
+    * 게시글 수정
+    */
     @PutMapping("/articles/{id}/form")
     public String editArticle(@PathVariable long id, @ModelAttribute RequestArticleDto articleDto, Model model, @LoginUser SessionUser user){
         long authorId = articleService.getAuthorIdOfArticle(id);

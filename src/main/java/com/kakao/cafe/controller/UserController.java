@@ -34,18 +34,18 @@ public class UserController {
     }
 
     /*
-     * 유저 리스트
+     * 유저 리스트 조회
      */
     @GetMapping("/users")
     public String getAllUsers(Model model) {
         log.info("GET /users");
-        model.addAttribute("users", userService.findUsers());
+        model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("countOfUser", userService.getCountOfUser());
         return "user/list";
     }
 
     /*
-     * 유저 상세 정보
+     * 유저 상세 정보 조회
      */
     @GetMapping("/users/{id}")
     public String getUserProfile(@PathVariable long id, Model model, @LoginUser SessionUser user) {
@@ -55,13 +55,13 @@ public class UserController {
             model.addAttribute("myId", user.getId());
         }
 
-        model.addAttribute("user", userService.findOne(id));
+        model.addAttribute("user", userService.getUserById(id));
 
         return "user/profile";
     }
 
     /*
-     * 유저 상세 정보 수정 페이지 로드
+     * 유저 상세 정보 수정 페이지 조회
      */
     @GetMapping("/users/{id}/update")
     public String showEditUserPage(@PathVariable long id, Model model, @LoginUser SessionUser user) {
@@ -70,7 +70,7 @@ public class UserController {
         if (user.getId() != id) {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
-        model.addAttribute("user", userService.findOne(id));
+        model.addAttribute("user", userService.getUserById(id));
         return "user/updateForm";
     }
 
