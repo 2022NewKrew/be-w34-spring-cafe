@@ -23,15 +23,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String requestPath = request.getServletPath();
-        if (!requestPath.endsWith("/update") && !requestPath.endsWith("/form")) {
-            return true;
-        }
-
         UserResponseDto user = (UserResponseDto)request.getSession().getAttribute("sessionedUser");
         Map<?, ?> pathVariables = (Map<?, ?>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         String pathVariableId = String.valueOf(pathVariables.get("id"));
-        logger.info("인증 요청: ");
 
         if (user == null || !pathVariableId.equals(user.getUserId())) {    //  로그인 안 되어 있음
             request.getRequestDispatcher("/").forward(request, response);

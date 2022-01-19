@@ -1,5 +1,7 @@
 package com.kakao.cafe.interfaces.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,6 +12,8 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(value = IllegalArgumentException.class)
     public ModelAndView handle(IllegalArgumentException e) {
         ModelAndView modelAndView = new ModelAndView();
@@ -32,6 +36,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public ModelAndView handle(Exception e) {
+        logger.info("에러 원인: {}", e.getMessage());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "에러 발생");
         modelAndView.setViewName("error");
