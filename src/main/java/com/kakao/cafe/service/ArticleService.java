@@ -1,6 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.dao.ArticleDao;
+import com.kakao.cafe.exception.IncorrectUserException;
+import com.kakao.cafe.util.ErrorUtil;
 import com.kakao.cafe.vo.Article;
 import com.kakao.cafe.vo.User;
 import org.springframework.stereotype.Service;
@@ -11,16 +13,14 @@ import java.util.List;
 public class ArticleService {
 
     private final ArticleDao articleDao;
-    private final ErrorService errorService;
 
-    public ArticleService(ArticleDao articleDao, ErrorService errorService) {
+    public ArticleService(ArticleDao articleDao) {
         this.articleDao = articleDao;
-        this.errorService = errorService;
     }
 
-    public void addArticle(Article article, User loginUser) throws Exception {
-        errorService.checkLogin(loginUser);
-        errorService.checkSameUser(loginUser.getUserId(), article.getWriter());
+    public void addArticle(Article article, User loginUser) throws IncorrectUserException {
+        if(!ErrorUtil.checkSameString(loginUser.getUserId(), article.getWriter()))
+            throw new IncorrectUserException();
         articleDao.addArticle(article);
     }
 
@@ -32,9 +32,9 @@ public class ArticleService {
         return articleDao.getArticle(index);
     }
 
-    public void updateArticle(int index, Article article, User loginUser) throws Exception {
-        errorService.checkLogin(loginUser);
-        errorService.checkSameUser(loginUser.getUserId(), article.getWriter());
+    public void updateArticle(int index, Article article, User loginUser) throws IncorrectUserException {
+        if(!ErrorUtil.checkSameString(loginUser.getUserId(), article.getWriter()))
+            throw new IncorrectUserException();
         articleDao.updateArticle(index, article);
     }
 

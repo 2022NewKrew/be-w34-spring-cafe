@@ -1,9 +1,10 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.exception.IncorrectUserException;
 import com.kakao.cafe.exception.NotLoginException;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.ErrorService;
 import com.kakao.cafe.service.SessionService;
+import com.kakao.cafe.util.ErrorUtil;
 import com.kakao.cafe.vo.Article;
 import com.kakao.cafe.vo.User;
 import org.springframework.stereotype.Controller;
@@ -20,12 +21,10 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final ErrorService errorService;
     private final SessionService sessionService;
 
-    public ArticleController(ArticleService articleService, ErrorService errorService, SessionService sessionService) {
+    public ArticleController(ArticleService articleService, SessionService sessionService) {
         this.articleService = articleService;
-        this.errorService = errorService;
         this.sessionService = sessionService;
     }
 
@@ -38,8 +37,7 @@ public class ArticleController {
 
     @GetMapping("/articles/{index}")
     public String getDetails(@PathVariable int index, Model model, HttpSession session) throws NotLoginException {
-        User loginUser = sessionService.getLoginUser(session);
-        errorService.checkLogin(loginUser);
+        sessionService.getLoginUser(session);
 
         Article article = articleService.getArticle(index);
         model.addAttribute("article", article);
@@ -57,7 +55,6 @@ public class ArticleController {
     @GetMapping("questions/form")
     public String getQuestionForm(Model model, HttpSession session) throws NotLoginException {
         User loginUser = sessionService.getLoginUser(session);
-        errorService.checkLogin(loginUser);
 
         model.addAttribute("userId", loginUser.getUserId());
         return "/qna/form";
@@ -66,10 +63,9 @@ public class ArticleController {
     @GetMapping("/questions/{index}/edit")
     public String updateForm(@PathVariable int index, Model model, HttpSession session) throws Exception{
         User loginUser = sessionService.getLoginUser(session);
-        errorService.checkLogin(loginUser);
-
         Article article = articleService.getArticle(index);
-        errorService.checkSameUser(loginUser.getUserId(), article.getWriter());
+        if(!ErrorUtil.checkSameString(loginUser.getUserId(), article.getWriter()))
+            throw new IncorrectUserException();
         model.addAttribute("article", article);
         model.addAttribute("index", index);
         return "/qna/updateForm";

@@ -2,7 +2,6 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.exception.DuplicateUserException;
 import com.kakao.cafe.exception.NotLoginException;
-import com.kakao.cafe.service.ErrorService;
 import com.kakao.cafe.service.SessionService;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.vo.User;
@@ -20,12 +19,10 @@ public class UserController {
 
     private final UserService userService;
     private final SessionService sessionService;
-    private final ErrorService errorService;
 
-    public UserController(UserService userService, SessionService sessionService, ErrorService errorService) {
+    public UserController(UserService userService, SessionService sessionService) {
         this.userService = userService;
         this.sessionService = sessionService;
-        this.errorService = errorService;
     }
 
     @GetMapping("/users")
@@ -51,7 +48,6 @@ public class UserController {
     @GetMapping("/users/login/profile")
     public String getLoginProfile(Model model, HttpSession session) throws NotLoginException {
         User loginUser = sessionService.getLoginUser(session);
-        errorService.checkLogin(loginUser);
         model.addAttribute("user", loginUser);
         return "/user/profile";
     }
@@ -63,7 +59,7 @@ public class UserController {
     }
 
     @GetMapping("/users/edit/profile")
-    public String editProfile(Model model, HttpSession session) {
+    public String editProfile(Model model, HttpSession session) throws NotLoginException {
         User loginUser = sessionService.getLoginUser(session);
         String userId = loginUser.getUserId();
         model.addAttribute("userId", userId);
