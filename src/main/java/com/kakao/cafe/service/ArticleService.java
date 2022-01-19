@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleFormRequest;
+import com.kakao.cafe.dto.PreviewArticleResponse;
 import com.kakao.cafe.dto.UserLoginRequest;
 import com.kakao.cafe.mapper.ArticleMapper;
 import com.kakao.cafe.mapper.UserMapper;
@@ -34,7 +35,7 @@ public class ArticleService {
                 orElseThrow(() -> new IllegalArgumentException("해당 id에 맞는 article이 존재하지 않습니다."));
     }
 
-    public List<Article> findArticleList() {
+    public List<PreviewArticleResponse> findArticleList() {
         return articleRepository.findAll();
     }
 
@@ -50,7 +51,7 @@ public class ArticleService {
     }
     public void validateUserSame(Long id, User sessionUser) throws AuthenticationException {
         Article article = findArticle(id);
-        if(!article.getWriter().equals(sessionUser.getName()))
+        if(!article.getWriter().equals(sessionUser.getUserId()))
             throw new AuthenticationException();
     }
 }

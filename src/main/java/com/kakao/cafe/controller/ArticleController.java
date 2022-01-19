@@ -3,7 +3,10 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleFormRequest;
+import com.kakao.cafe.dto.PreviewArticleResponse;
+import com.kakao.cafe.dto.ReplyInfoResponse;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +19,16 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @GetMapping("/")
     public String findArticleList(Model model) {
-        List<Article> articles = articleService.findArticleList();
+        List<PreviewArticleResponse> articles = articleService.findArticleList();
         model.addAttribute("articles", articles);
         return "qna/list";
     }
@@ -68,8 +73,14 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public String findUser(@PathVariable("id") Long articleId, Model model) {
+    public String findArticle(@PathVariable("id") Long articleId, Model model, HttpSession session) {
         Article article = articleService.findArticle(articleId);
+        List<ReplyInfoResponse> replys = replyService.getReplyList(articleId);
+
+        Object value = session.getAttribute("sessionedUser");
+        if(value != null)
+            replyService.applyVisibleEdit(replys,(User)value);
+        model.addAttribute("replys",replys);
         model.addAttribute("article", article);
         return "qna/show";
     }
