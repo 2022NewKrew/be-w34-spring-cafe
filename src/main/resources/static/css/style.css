@@ -60,11 +60,15 @@ input[type="email"], input[type="password"], input[type="text"], input[type="tel
   height: 45px;
   outline: none;
   font-size: 14px;
+  border: 0px;
+  width: 100%;
+  font-family: "Hind";
 }
 
 input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus, input[type="tel"]:focus {
   box-shadow: none;
-  border: 1px solid #f75757;
+  /*border: 1px solid #f75757;*/
+  border: 0px;
 }
 
 .form-control {

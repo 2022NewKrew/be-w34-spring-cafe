@@ -25,12 +25,27 @@ public class UserRepository {
   private final JdbcTemplate jdbcTemplate;
   private final UserMapper userMapper;
 
+
   public UserRepository(JdbcTemplate jdbcTemplate, UserMapper userMapper) {
     this.jdbcTemplate = jdbcTemplate;
     this.userMapper = userMapper;
   }
 
+
   public User save(User user) {
+    if (isNew(user)) {
+      return persist(user);
+    }
+    return merge(user);
+  }
+
+
+  private boolean isNew(User user) {
+    return findById(user.getId()).isEmpty();
+  }
+
+
+  private User persist(User user) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     String query = "INSERT INTO users ("
@@ -47,22 +62,23 @@ public class UserRepository {
     jdbcTemplate.update(con -> {
       PreparedStatement ps = con.prepareStatement(query,
           new String[]{"id"});   // auto-increment key holder
-      ps.setString(1, user.getEmail());
+      ps.setString(1, user.getEmail().toString());
       ps.setString(2, user.getNickName());
       ps.setString(3, user.getSummary());
       ps.setString(4, user.getProfile());
       ps.setString(5, user.getPassword());
-      ps.setTimestamp(6, user.getCreateAt());
-      ps.setTimestamp(7, user.getModifiedAt());
-      ps.setTimestamp(8, user.getLastLoginAt());
+      ps.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+      ps.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
+      ps.setTimestamp(8, null);
       return ps;
     }, keyHolder);
 
     Long generatedId = Objects.requireNonNull(keyHolder.getKey()).longValue();
-    return User.of(generatedId, user);
+    return User.create(generatedId, user);
   }
 
-  public User updateInformation(User user) {
+
+  private User merge(User user) {
     String query = "UPDATE USERS "
         + "SET "
         + "email = ?, "
@@ -71,51 +87,65 @@ public class UserRepository {
         + "profile = ?, "
         + "password = ?, "
         + "create_at = ?, "
-        + "modified_at = now(), "
+        + "modified_at = now(),"
+        + "last_login_at = ? "
         + "WHERE id = ?";
-    jdbcTemplate.update(query, user.getEmail(), user.getNickName(),
-        user.getSummary(), user.getProfile(), user.getPassword(),
-        user.getCreateAt(), user.getId());
+
+    jdbcTemplate.update(query,
+        user.getEmail().toString(),
+        user.getNickName(),
+        user.getSummary(),
+        user.getProfile(),
+        user.getPassword(),
+        user.getCreateAt(),
+        user.getLastLoginAt(),
+        user.getId()
+    );
+
     return user;
   }
 
-  public User updateLoginTime(User user) {
-    String query = "UPDATE USERS "
-        + "SET "
-        + "last_login_at = now() "
-        + "WHERE id = ?";
-    jdbcTemplate.update(query, user.getId());
-    return user;
-  }
 
   public Users findAll() {
-    String query = UserMapper.SELECT_ALL_COLUMNS + "FROM USERS ORDER BY create_at, email;";
+    String query = UserMapper.SELECT_ALL_COLUMNS
+        + "FROM USERS "
+        + "ORDER BY create_at, email";
+
     List<User> users = jdbcTemplate.query(query, userMapper);
+
     return Users.of(users);
   }
 
+
   public Optional<User> findById(Long id) {
-    String query = UserMapper.SELECT_ALL_COLUMNS + "FROM USERS WHERE id = ?";
+    String query = UserMapper.SELECT_ALL_COLUMNS
+        + "FROM USERS "
+        + "WHERE id = ?";
+
     List<User> user = jdbcTemplate.query(query, userMapper, id);
+
     if (user.isEmpty()) {
       return Optional.empty();
     }
+
     return Optional.of(user.get(0));
   }
+
 
   public Optional<User> findByEmail(String email) {
-    String query = UserMapper.SELECT_ALL_COLUMNS + "FROM USERS WHERE email = ?";
+    String query = UserMapper.SELECT_ALL_COLUMNS
+        + "FROM USERS "
+        + "WHERE email = ?";
+
     List<User> user = jdbcTemplate.query(query, userMapper, email);
+
     if (user.isEmpty()) {
       return Optional.empty();
     }
+
     return Optional.of(user.get(0));
   }
 
-  public int delete(User user) {
-    String query = "DELETE FROM USERS WHERE id = ?";
-    return jdbcTemplate.update(query, user.getId());
-  }
 
   @Component
   public static class UserMapper implements RowMapper<User> {
@@ -146,11 +176,19 @@ public class UserRepository {
       Timestamp lastLoginAt = rs.getTimestamp("LAST_LOGIN_AT");
 
       return User.create(
-          rowNum + 1, id, email, nickName,
-          summary, profile, password, createAt,
-          modifiedAt, lastLoginAt
+          rowNum + 1,
+          id,
+          email,
+          nickName,
+          summary,
+          profile,
+          password,
+          createAt,
+          modifiedAt,
+          lastLoginAt
       );
     }
+
 
     public User mapRowExternal(ResultSet rs, int rowNum) throws SQLException {
 
@@ -164,9 +202,16 @@ public class UserRepository {
       Timestamp lastLoginAt = rs.getTimestamp("USER_LAST_LOGIN_AT");
 
       return User.create(
-          rowNum + 1, id, email, nickName,
-          summary, profile, null, createAt,
-          modifiedAt, lastLoginAt
+          rowNum + 1,
+          id,
+          email,
+          nickName,
+          summary,
+          profile,
+          null,
+          createAt,
+          modifiedAt,
+          lastLoginAt
       );
     }
 

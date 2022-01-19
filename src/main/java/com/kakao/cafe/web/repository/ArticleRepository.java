@@ -2,6 +2,7 @@ package com.kakao.cafe.web.repository;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticlePage;
+import com.kakao.cafe.domain.Delete;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.web.repository.UserRepository.UserMapper;
 import java.sql.PreparedStatement;
@@ -33,7 +34,21 @@ public class ArticleRepository {
     this.articleMapper = articleMapper;
   }
 
+
   public Article save(Article article) {
+    if (isNew(article)) {
+      return persist(article);
+    }
+    return merge(article);
+  }
+
+
+  private boolean isNew(Article article) {
+    return findById(article.getId(), Delete.COMPLETELY_DELETED).isEmpty();
+  }
+
+
+  private Article persist(Article article) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     String query = "INSERT INTO article ( "
@@ -57,48 +72,113 @@ public class ArticleRepository {
       return ps;
     }, keyHolder);
 
-    Long generatedId = Objects.requireNonNull(keyHolder.getKey().longValue());
+    Long generatedId = Objects.requireNonNull(keyHolder.getKey()).longValue();
     return Article.of(generatedId, article);
   }
 
-  public Integer totalSize() {
-    String query = "SELECT COUNT(*) FROM ARTICLE";
-    return jdbcTemplate.queryForObject(query, Integer.class);
+
+  private Article merge(Article article) {
+    String query = "UPDATE ARTICLE "
+        + "SET "
+        + "title = ?, "
+        + "content = ?, "
+        + "read_count = ?, "
+        + "is_deleted = ?, "
+        + "create_at = ?, "
+        + "modified_at = now() "
+        + "WHERE id = ?";
+
+    jdbcTemplate.update(query,
+        article.getTitle(),
+        article.getContent(),
+        article.getReadCount(),
+        article.getIsDeleted().name(),
+        article.getCreateAt(),
+        article.getId()
+    );
+
+    return article;
   }
 
-  //TODO: 페이징 최적화 방법 더 고민하고 연구해보기
-  public ArticlePage findByOffset(int offset, int limit) {
-    String query = ArticleMapper.SELECT_ALL_COLUMNS
-        + "FROM (SELECT * FROM article ORDER BY id DESC LIMIT ?, ?) article "
-        + "INNER JOIN USERS "
-        + "ON article.user_id = users.id";
 
-    List<Article> articles = jdbcTemplate.query(query, articleMapper, offset, limit);
+  public Integer totalSize(Delete deleteLevel) {
+    String query = "SELECT COUNT(*) FROM ARTICLE "
+        + "WHERE is_deleted <= ?";
+    return jdbcTemplate.queryForObject(query, Integer.class, deleteLevel.ordinal());
+  }
+
+
+  //TODO: 페이징 최적화 방법 더 고민하고 연구해보기
+  public ArticlePage findByOffset(int offset, int limit, Delete deleteLevel) {
+    String query = ArticleMapper.SELECT_ALL_COLUMNS
+        + "FROM ("
+        + "   SELECT * FROM article "
+        + "   WHERE is_deleted <= ? "
+        + "   ORDER BY id DESC "
+        + "   LIMIT ?, ? "
+        + "   ) article "
+        + "INNER JOIN USERS "
+        + "ON article.user_id = users.id "
+        + "ORDER BY article.id DESC";
+
+    List<Article> articles = jdbcTemplate.query(query, articleMapper,
+        deleteLevel.ordinal(),
+        offset,
+        limit
+    );
     return ArticlePage.of(articles);
   }
 
-  public Optional<Article> findById(int id) {
+
+  public Optional<Article> findById(Long id, Delete deleteLevel) {
     String query = ArticleMapper.SELECT_ALL_COLUMNS
-        + "FROM (SELECT * FROM article WHERE id = ?) article "
+        + "FROM ("
+        + "   SELECT * FROM article "
+        + "   WHERE id = ? "
+        + "   AND is_deleted <= ?) article "
         + "INNER JOIN USERS "
         + "ON article.user_id = users.id";
 
-    List<Article> articles = jdbcTemplate.query(query, articleMapper, id);
-    if(articles.isEmpty()) {
+    List<Article> articles = jdbcTemplate.query(query, articleMapper,
+        id,
+        deleteLevel.ordinal()
+    );
+
+    if (articles.isEmpty()) {
       return Optional.empty();
     }
     return Optional.of(articles.get(0));
   }
 
+
   public Article updateReadCount(Article article) {
     String query = "UPDATE article "
         + "SET "
         + "read_count = ? "
-        + "WHERE id = ?";
+        + "WHERE id = ? "
+        + "AND is_deleted = ?";
 
-    jdbcTemplate.update(query, article.getReadCount(), article.getId());
+    jdbcTemplate.update(query,
+        article.getReadCount(),
+        article.getId(),
+        Delete.NOT_DELETED.name()
+    );
     return article;
   }
+
+
+  public int softDeleteById(Long id, Delete deleteLevel) {
+    String query = "UPDATE article "
+        + "SET "
+        + "is_deleted = ? "
+        + "WHERE id = ?";
+
+    return jdbcTemplate.update(query,
+        deleteLevel.name(),
+        id
+    );
+  }
+
 
   @Component
   public static class ArticleMapper implements RowMapper<Article> {
@@ -109,6 +189,7 @@ public class ArticleRepository {
             + "article.title, "
             + "article.content, "
             + "article.read_count, "
+            + "article.is_deleted, "
             + "article.create_at, "
             + "article.modified_at, "
             + "users.id as user_id, "
@@ -122,9 +203,11 @@ public class ArticleRepository {
 
     private final UserMapper userMapper;
 
+
     public ArticleMapper(UserMapper userMapper) {
       this.userMapper = userMapper;
     }
+
 
     @Override
     public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -134,17 +217,26 @@ public class ArticleRepository {
       String title = rs.getString("TITLE");
       String content = rs.getString("CONTENT");
       Long readCount = rs.getLong("READ_COUNT");
+      Delete isDeleted = Delete.valueOf(rs.getString("IS_DELETED"));
       Timestamp createAt = rs.getTimestamp("CREATE_AT");
-      Timestamp modified_at = rs.getTimestamp("MODIFIED_AT");
+      Timestamp modifiedAt = rs.getTimestamp("MODIFIED_AT");
 
       // user mapping
       User author = userMapper.mapRowExternal(rs, rowNum);
 
       return Article.create(
-          id, author, title, content, readCount,
-          new ArrayList<>(), createAt, modified_at
+          id,
+          author,
+          title,
+          content,
+          readCount,
+          isDeleted,
+          new ArrayList<>(),
+          createAt,
+          modifiedAt
       );
     }
+
   }
 
 }

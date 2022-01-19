@@ -5,6 +5,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### docker save image for deploy
+*.tar
+
 ### STS ###
 .apt_generated
 .classpath

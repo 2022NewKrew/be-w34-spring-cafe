@@ -1,0 +1,112 @@
+{{> partial/head}}
+
+<body>
+{{> partial/header}}
+<div class="main-wrapper ">
+
+  <section class="page-title bg-1">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="block text-center">
+            <span class="text-white">User profile</span>
+            <h1 class="text-capitalize mb-4 text-lg">{{user.nickName}}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section About Start -->
+  <section class="section about-2 position-relative">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6">
+          <div class="about-item pr-3 mb-5 mb-lg-0">
+            <span class="h6 text-color">Our cafe user</span>
+<!--            <h2 class="mt-3 mb-4 position-relative content-title">{{user.summary}}</h2>-->
+            <br><input type="text" id="summary" placeholder="{{user.summary}}" value="{{user.summary}}" style="font-size: x-large" />
+            <table class="table" style="font-family: Hind">
+              <tbody>
+                <tr><th scope="row">Email</th><td>{{user.email}}</td></tr>
+                <tr><th scope="row">NickName</th><td> <input type="text" id="nickName" placeholder="{{user.nickName}}" value="{{user.nickName}}"> </td></tr>
+                <tr><th scope="row">Password</th><td> <input type="password" id="password" placeholder="비밀번호를 입력하세요."> </td></tr>
+                <tr><th scope="row">Last Login At</th><td>{{#user.lastLoginAt}}{{this}}{{/user.lastLoginAt}}{{^user.lastLoginAt}}접속 이력 없음{{/user.lastLoginAt}}</td></tr>
+                <tr><th scope="row">First Joined At</th><td>{{user.createAt}}</td></tr>
+              </tbody>
+            </table>
+
+            <a href="#" onclick="updateUserInfo();" class="btn btn-main btn-round-full" style="font-family: Hind">내 정보 수정</a>
+            <a href="#" onclick="cancel()" class="btn btn-main btn-round-full" style="font-family: Hind;background:#7b3636;">취소</a>
+
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+          <div class="about-item-img">
+            <!--            <figure class="figure">-->
+            <!--              <img src="{{user.profile}}" class="figure-img img-fluid rounded" alt="..." style="width:100%">-->
+            <!--              <figcaption class="figure-caption">{{user.summary}}</figcaption>-->
+            <!--            </figure>-->
+            <img src="{{user.profile}}" class="img-fluid" style="width: 100%">
+            <!--            </div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Section About End -->
+
+</div>
+
+<!--
+Essential Scripts
+=====================================-->
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    // Handler when the DOM is fully loaded
+    setup();
+  });
+
+  function setup() {
+    document.addEventListener('keyup', e => {
+      if(e.key === 'Enter') {
+        updateUserInfo();
+      }
+    })
+  }
+
+  async function updateUserInfo() {
+
+    const id = '{{user.id}}';
+    const summary = document.getElementById('summary').value;
+    const nickName = document.getElementById('nickName').value;
+    const password = document.getElementById('password').value;
+    const response = await fetch('/api/user', {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({id, summary, nickName, password})
+    });
+
+    if(response.ok) {
+      alert('회원정보 수정 성공! 수정한 회원 정보를 확인해 보세요!');
+      location.href = '/users/' + id;
+      return;
+    }
+
+    const parsedResponse = await response.json();
+    alert(parsedResponse.message + '(' + parsedResponse.code + ')');
+
+  }
+
+  function cancel() {
+    window.history.back();
+  }
+
+</script>
+
+
+{{> partial/script}}
+</body>
+</html>

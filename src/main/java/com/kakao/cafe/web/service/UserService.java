@@ -2,9 +2,11 @@ package com.kakao.cafe.web.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.Users;
-import com.kakao.cafe.exception.InvalidAuthenticationException;
 import com.kakao.cafe.exception.NoEmailFoundException;
 import com.kakao.cafe.utils.SessionUtils;
+import com.kakao.cafe.web.dto.LoginDTO;
+import com.kakao.cafe.web.dto.SignUpDTO;
+import com.kakao.cafe.web.dto.UserModifyDTO;
 import com.kakao.cafe.web.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,46 +22,102 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public User createUser(User user) {
 
-    user.setPasswordEncrypted();
+  /**
+   * 패스워드 해시 후 신규 유저 생성 및 반환
+   *
+   * @param signInfo 신규 유저 요청
+   * @return 신규 유저
+   */
+  public User createUser(SignUpDTO signInfo) {
+
+    User user = User.create(signInfo);
+    user.setPasswordHashed();
 
     return userRepository.save(user);
   }
 
+
+  /**
+   * 모든 유저 반환
+   *
+   * @return 모든 유저
+   */
   public Users findAllUsers() {
     return userRepository.findAll();
   }
 
+
+  /**
+   * id 바탕으로 유저 조회 후 반환
+   *
+   * @param id 유저 id
+   * @return 조회된 유저
+   * @throws NoEmailFoundException 조회된 유저 없음
+   */
   public User findUserById(Long id) {
     return userRepository.findById(id)
         .orElseThrow(NoEmailFoundException::new);
   }
 
-  public User login(User user) {
 
-    user.setPasswordEncrypted();
+  /**
+   * 패스워드 검증 및 유저 정보 변경 및 세션 업데이트 후 변경된 유저정보 반환
+   *
+   * @param modifyInfo 유저 정보 변경 요청
+   * @return 변경된 유저
+   */
+  public User modifyUserInformation(UserModifyDTO modifyInfo) {
 
-    User loginUser = userRepository.findByEmail(user.getEmail())
-        .stream()
-        .filter(findUser -> findUser.getPassword().equals(user.getPassword()))
-        .findAny()
-        .orElseThrow(InvalidAuthenticationException::new);
+    User user = userRepository.findById(modifyInfo.getId())
+        .orElseThrow(NoEmailFoundException::new);
 
-    loginUser.updateLastLoginAt();
-    userRepository.updateLoginTime(loginUser);
+    user.checkPassword(modifyInfo.getPassword());
 
-    SessionUtils.login(loginUser);
+    User updateUser = User.create(user, modifyInfo);
+    userRepository.save(updateUser);
 
-    return loginUser;
+    SessionUtils.updateUser(updateUser);
+
+    return updateUser;
   }
 
-  public boolean isLoginUser(User user) {
-    return SessionUtils.getLoginUser()
-        .stream()
-        .anyMatch(loginUser -> loginUser.equals(user));
+
+  /**
+   * 로그인, 유저의 인증정보를 검증 하고 마지막 로그인 갱신 및 세션 처리
+   *
+   * @param loginDTO 로그인 요청
+   * @return 로그인 유저
+   */
+  public User login(LoginDTO loginDTO) {
+
+    User findUser = userRepository.findByEmail(loginDTO.getEmail())
+        .orElseThrow(NoEmailFoundException::new);
+
+    findUser.checkPassword(loginDTO.getPassword());
+    findUser.updateLastLoginAt();
+
+    userRepository.save(findUser);
+    SessionUtils.login(findUser);
+
+    return findUser;
   }
 
+
+  /**
+   * 해당 유저 정보를 수정 권한 유무를 반환, 현재는 로그인한 사용자와 일치할 경우만 처리
+   *
+   * @param user 수정할 유저
+   * @return 수정 권한 유무
+   */
+  public boolean hasEditPermission(User user) {
+    return SessionUtils.isLoginUser(user);
+  }
+
+
+  /**
+   * 로그아웃 처리
+   */
   public void logout() {
     SessionUtils.logout();
   }

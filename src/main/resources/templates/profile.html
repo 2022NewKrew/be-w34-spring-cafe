@@ -25,15 +25,23 @@
           <div class="about-item pr-3 mb-5 mb-lg-0">
             <span class="h6 text-color">Our cafe user</span>
             <h2 class="mt-3 mb-4 position-relative content-title">{{user.summary}}</h2>
-            <p class="mb-5" style="font-family: Hind;">
-              Email : {{user.email}}<br>
-              Nickname : {{user.nickName}}<br>
-              Last login at : {{#user.lastLoginAt}}{{this}}{{/user.lastLoginAt}}{{^user.lastLoginAt}}접속 이력 없음{{/user.lastLoginAt}}<br>
-              First joined at : {{user.createAt}}<br>
-            </p>
+            <table class="table" style="font-family: Hind">
+              <tbody>
+              <tr><th scope="row">Email</th><td>{{user.email}}</td></tr>
+              <tr><th scope="row">NickName</th><td>{{user.nickName}}</td></tr>
+              <tr><th scope="row">Last Login At</th><td>{{#user.lastLoginAt}}{{this}}{{/user.lastLoginAt}}{{^user.lastLoginAt}}접속 이력 없음{{/user.lastLoginAt}}</td></tr>
+              <tr><th scope="row">First Joined At</th><td>{{user.createAt}}</td></tr>
+              </tbody>
+            </table>
+<!--            <p class="mb-5" style="font-family: Hind;">-->
+<!--              Email : {{user.email}}<br>-->
+<!--              Nickname : {{user.nickName}}<br>-->
+<!--              Last login at : {{#user.lastLoginAt}}{{this}}{{/user.lastLoginAt}}{{^user.lastLoginAt}}접속 이력 없음{{/user.lastLoginAt}}<br>-->
+<!--              First joined at : {{user.createAt}}<br>-->
+<!--            </p>-->
 
             {{#isLoginUser}}
-              <a href="#" onclick="navigateModifyProfile('{{session.email}}')" class="btn btn-main btn-round-full">내 정보 수정</a>
+              <a href="/users/{{session.id}}/modify" class="btn btn-main btn-round-full" style="font-family: Hind">내 정보 수정</a>
             {{/isLoginUser}}
 
           </div>

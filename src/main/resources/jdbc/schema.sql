@@ -8,7 +8,7 @@ CREATE TABLE users (
     password        VARCHAR (100) NOT NULL,
     create_at       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modified_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_login_at   TIMESTAMP
+    last_login_at   TIMESTAMP NULL
 );
 
 DROP TABLE IF EXISTS article;
@@ -21,4 +21,6 @@ CREATE TABLE article (
     create_at       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modified_at     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
-)
+);
+
+ALTER TABLE article ADD is_deleted enum('Not Deleted', 'Soft Deleted', 'Admin Only', 'Completely Deleted') NOT NULL DEFAULT 'Not Deleted' AFTER read_count;
