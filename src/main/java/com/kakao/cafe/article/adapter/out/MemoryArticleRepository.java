@@ -10,19 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class MemoryArticleRepository implements SaveArticlePort, LoadArticlePort {
 
     private static final List<Article> store = new ArrayList<>();
-    private static int sequence = 0;
+    private static final int INITIAL_VALUE = 0;
 
     @Override
     public void save(CreateArticleDto createArticleDto) {
-        sequence += 1;
+        AtomicInteger atomicInteger = new AtomicInteger(INITIAL_VALUE);
+        ArticleId articleId = new ArticleId(atomicInteger.incrementAndGet());
         Article article = new Article(
-            new ArticleId(sequence),
+            articleId,
             createArticleDto.getTitle(),
             createArticleDto.getContent(),
             Instant.now());
