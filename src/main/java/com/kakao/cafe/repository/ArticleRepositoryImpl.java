@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.entity.Article;
 import com.kakao.cafe.entity.User;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -74,7 +75,7 @@ public class ArticleRepositoryImpl implements ArticleRepository{
                 "WHERE A.ARTICLE_ID = :articleId";
         Map<String, Object> param = new HashMap<>();
         param.put("articleId", articleId);
-        return namedParameterJdbcTemplate.queryForObject(sql, param, articleRowMapper());
+        return DataAccessUtils.singleResult(namedParameterJdbcTemplate.query(sql, param, articleRowMapper()));
     }
 
     @Override
