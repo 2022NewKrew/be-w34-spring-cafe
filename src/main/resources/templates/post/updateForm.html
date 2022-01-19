@@ -23,6 +23,7 @@
         </header>
         {{#article}}
         <form class="submit-write" method="post" action="/articles/{{id}}/form">
+            <input type="hidden" name="_method" value="PUT"/>
             <div class="text-box">
                 <div class="comment-writer-container">
                     <p class="post-title">제목</p>

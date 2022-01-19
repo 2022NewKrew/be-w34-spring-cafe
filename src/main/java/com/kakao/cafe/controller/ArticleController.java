@@ -9,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 @Slf4j
@@ -62,7 +59,7 @@ public class ArticleController {
         return "post/updateForm";
     }
 
-    @PostMapping("/articles/{id}/form")
+    @PutMapping("/articles/{id}/form")
     public String editArticle(@PathVariable long id, @ModelAttribute RequestArticleDto articleDto, Model model, @LoginUser SessionUser user){
         long authorId = articleService.getAuthorIdOfArticle(id);
         if (user.getId() != authorId) {
