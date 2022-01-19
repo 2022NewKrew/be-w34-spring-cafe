@@ -47,6 +47,16 @@ public class JdbcTemplatesArticle {
         return result.get(0);
     }
 
+    public void update(Article article, long id){
+        String sql = "UPDATE ARTICLES SET title = ?, contents = ? WHERE id = ?";
+        jdbcTemplate.update(sql, article.getTitle(), article.getContents(), id);
+    }
+
+    public void delete(long id){
+        String sql = "DELETE FROM ARTICLES WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
             Article article = new Article(
