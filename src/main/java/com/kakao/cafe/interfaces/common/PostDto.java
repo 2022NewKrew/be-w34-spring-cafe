@@ -8,4 +8,5 @@ public class PostDto {
     private String title;
     private String body;
     private String createdAt;
+    private Boolean isRemoved;
 }

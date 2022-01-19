@@ -16,6 +16,7 @@ CREATE TABLE `post`
     writer     VARCHAR(20) NOT NULL,
     title      VARCHAR(20) NOT NULL,
     body       VARCHAR(1000) NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    is_removed BOOLEAN NOT NULL DEFAULT false,
     PRIMARY KEY (id)
 );

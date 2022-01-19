@@ -15,12 +15,18 @@
             <h5 class="card-title">{{title}}</h5>
             <p class="card-text">{{body}}</p>
         </div>
+        <div class="card-footer">
+            {{> component/post_buttons}}
+        </div>
     </div>
     <hr>
     {{/post}}
 
     {{> component/back}}
 </div>
+
+{{! template, modals }}
+{{> component/post_remove_modal}}
 
 {{> layout/footer}}
 </body>

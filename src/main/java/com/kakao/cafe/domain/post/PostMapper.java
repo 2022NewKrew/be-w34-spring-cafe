@@ -21,6 +21,7 @@ public interface PostMapper extends RowMapper<Post> {
                 .title(rs.getString("title"))
                 .body(rs.getString("body"))
                 .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                .isRemoved(rs.getBoolean("is_removed"))
                 .build();
     }
 }
