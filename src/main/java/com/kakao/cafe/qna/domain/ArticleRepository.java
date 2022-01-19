@@ -14,7 +14,7 @@ public class ArticleRepository {
         articleLst = new ArrayList<>();
     }
 
-    public void submitArticle(String writer, String title, String content) {
+    public synchronized void submitArticle(String writer, String title, String content) {
         articleLst.add(new Article(articleLst.size() + 1, writer, title, content));
     }
 

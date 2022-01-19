@@ -3,7 +3,6 @@
 #2일차
 
 ### TODO
-* Test Code에서 생겼던 문제들 해결
 ##### 게시글 상세보기
 * article id를 input으로 받는 GET controller method 구현 
   * 접근 방식 : /articles/{index}

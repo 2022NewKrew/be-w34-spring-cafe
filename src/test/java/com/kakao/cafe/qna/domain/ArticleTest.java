@@ -51,8 +51,10 @@ class ArticleTest {
     void getPoint() {
         assertThat(testingArticle.getPoint()).isEqualTo(0);
 
-        //TODO set이 아닌 increment, decrement로 변경
-        testingArticle.setPoint(1);
+        testingArticle.increasePoint();
         assertThat(testingArticle.getPoint()).isEqualTo(1);
+
+        testingArticle.decreasePoint();
+        assertThat(testingArticle.getPoint()).isEqualTo(0);
     }
 }
