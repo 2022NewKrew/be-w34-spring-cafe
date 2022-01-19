@@ -8,4 +8,6 @@ public interface SessionRepository {
     User findBySessionId(UUID uuid);
 
     void save(UUID uuid, User user);
+
+    boolean exist(UUID sessionId);
 }

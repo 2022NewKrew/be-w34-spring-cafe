@@ -30,4 +30,9 @@ public class SessionMapRepository implements SessionRepository {
     public void save(UUID uuid, User user) {
         sessions.put(uuid, user);
     }
+
+    @Override
+    public boolean exist(UUID sessionId) {
+        return Objects.nonNull(sessionId) && sessions.containsKey(sessionId);
+    }
 }
