@@ -53,7 +53,7 @@ public class User {
     }
 
     public void checkPasswordMatching(String password) throws WrongPasswordException {
-        if (this.equalsPassword(password)) {
+        if (!this.equalsPassword(password)) {
             throw new WrongPasswordException("패스워드가 잘못 되었습니다.");
         }
     }
