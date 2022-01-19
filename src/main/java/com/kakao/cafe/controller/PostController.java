@@ -89,7 +89,7 @@ public class PostController {
     public String deletePost(@PathVariable int postId) {
         logger.info("[DELETE] /posts/{postId} 게시글 삭제");
 
-//        postService.deletePost(postId); TODO = 게시글 삭제
+        postService.deletePost(postId);
 
         return "redirect:/";
     }

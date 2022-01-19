@@ -69,4 +69,12 @@ public class JdbcPostRepository implements PostRepository {
 
         jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getId());
     }
+
+    @Override
+    public void delete(int id) {
+        logger.info("[Jdbc] post delete");
+        String sql = "delete from post where id = ?";
+
+        jdbcTemplate.update(sql, id);
+    }
 }

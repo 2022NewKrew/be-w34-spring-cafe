@@ -29,4 +29,8 @@ public class PostService {
     public void updatePost(Post post) {
         postRepository.update(post);
     }
+
+    public void deletePost(int postId) {
+        postRepository.delete(postId);
+    }
 }

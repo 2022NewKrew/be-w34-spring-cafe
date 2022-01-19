@@ -50,6 +50,11 @@ public class InMemoryPostRepository implements PostRepository {
 
     @Override
     public void update(Post post) {
-        postList.set(post.getId(), post);
+        postList.set(post.getId() - 1, post);
+    }
+
+    @Override
+    public void delete(int id) {
+        postList.remove(id - 1);
     }
 }

@@ -11,4 +11,6 @@ public interface PostRepository {
     Post findByPostId(int id);
 
     void update(Post post);
+
+    void delete(int id);
 }
