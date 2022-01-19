@@ -1,7 +1,9 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.CommentDto;
 import com.kakao.cafe.dto.QnaDto;
 import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.service.CommentService;
 import com.kakao.cafe.service.QnaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +18,12 @@ import java.util.List;
 public class QnaController {
 
     private final QnaService qnaService;
+    private final CommentService commentService;
 
     @Autowired
-    public QnaController(QnaService qnaService) {
+    public QnaController(QnaService qnaService, CommentService commentService) {
         this.qnaService = qnaService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/questions")
@@ -38,7 +42,7 @@ public class QnaController {
     @GetMapping("/questions/{index}/updateform")
     public String updateQnaForm(@PathVariable("index") Integer index, Model model, HttpSession session) throws AccessDeniedException {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        QnaDto.QnaForUpdateReponse qnaForUpdate = qnaService.findQnaForUpdate(index, sessionedUser.getUserId());
+        QnaDto.QnaForUpdateResponse qnaForUpdate = qnaService.findQnaForUpdate(index, sessionedUser.getUserId());
 
         model.addAttribute("qna", qnaForUpdate);
         return "qna/updateForm";
@@ -72,4 +76,12 @@ public class QnaController {
         return "qna/show";
     }
 
+    @PostMapping("/questions/{index}/comments")
+    public String makeComment(@PathVariable("index") Integer index, @ModelAttribute CommentDto.CreateCommentRequest createCommentRequest,
+                              HttpSession session) {
+        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
+        commentService.createComment(index, sessionedUser.getUserId(), createCommentRequest.getContents());
+
+        return "redirect:/questions/" + index;
+    }
 }

@@ -1,8 +1,11 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.Comment;
 import com.kakao.cafe.domain.Qna;
+import com.kakao.cafe.dto.CommentDto;
 import com.kakao.cafe.dto.QnaDto;
 import com.kakao.cafe.exception.QnaNotFoundException;
+import com.kakao.cafe.repository.CommentRepository;
 import com.kakao.cafe.repository.QnaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +20,12 @@ import java.util.stream.Collectors;
 public class QnaService {
 
     private final QnaRepository qnaRepository;
+    private final CommentRepository commentRepository;
 
     @Autowired
-    public QnaService(QnaRepository jdbcQnaRepositoryImpl) {
+    public QnaService(QnaRepository jdbcQnaRepositoryImpl, CommentRepository jdbcCommentRepositoryImpl) {
         this.qnaRepository = jdbcQnaRepositoryImpl;
+        this.commentRepository = jdbcCommentRepositoryImpl;
     }
 
     @Transactional
@@ -39,10 +44,16 @@ public class QnaService {
         Qna qna = qnaRepository.findByIndex(index)
                 .orElseThrow(() -> new QnaNotFoundException(index));
 
-        return QnaDto.QnaResponse.of(qna);
+        List<Comment> comments = commentRepository.findByQnaIndexAndDeleted(index, false);
+
+        List<CommentDto.ReadCommentResponse> commentResponses = comments.stream()
+                .map(CommentDto.ReadCommentResponse::of)
+                .collect(Collectors.toList());
+
+        return QnaDto.QnaResponse.of(qna, commentResponses);
     }
 
-    public QnaDto.QnaForUpdateReponse findQnaForUpdate(Integer index, String userId) throws AccessDeniedException {
+    public QnaDto.QnaForUpdateResponse findQnaForUpdate(Integer index, String userId) throws AccessDeniedException {
         Qna qna = qnaRepository.findByIndex(index)
                 .orElseThrow(() -> new QnaNotFoundException(index));
 
@@ -50,7 +61,7 @@ public class QnaService {
             throw new AccessDeniedException("수정 권한이 없습니다");
         }
 
-        return QnaDto.QnaForUpdateReponse.of(qna);
+        return QnaDto.QnaForUpdateResponse.of(qna);
     }
 
     @Transactional
