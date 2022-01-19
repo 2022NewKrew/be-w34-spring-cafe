@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.article.Reply;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReplyRepository implements MyRepository<Reply, Long> {
@@ -18,6 +20,21 @@ public class ReplyRepository implements MyRepository<Reply, Long> {
     public ReplyRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.mapper = new ReplyMapper();
+    }
+
+    @Override
+    public Optional<Reply> findById(Long id) {
+        String sql = "select r.id, r.article_id, r.author_id, u.nickname, r.description " +
+                "from reply r join users u " +
+                "on r.author_id = u.id " +
+                "where r.id = ?";
+
+        try {
+            Reply reply = jdbcTemplate.queryForObject(sql, mapper, id);
+            return Optional.ofNullable(reply);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     public List<Reply> findAllByArticleId(Long articleId) {

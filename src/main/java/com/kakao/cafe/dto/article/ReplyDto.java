@@ -17,4 +17,8 @@ public class ReplyDto {
         this.author = reply.getAuthor();
         this.description = reply.getDescription();
     }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
 }

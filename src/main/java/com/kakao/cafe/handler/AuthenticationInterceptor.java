@@ -3,6 +3,7 @@ package com.kakao.cafe.handler;
 import com.kakao.cafe.annotation.UserAuthorized;
 import com.kakao.cafe.domain.auth.Auth;
 import com.kakao.cafe.dto.article.ArticleDto;
+import com.kakao.cafe.dto.article.ReplyDto;
 import com.kakao.cafe.exception.UnauthorizedAccessException;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             Map<String, String> pathVariableMap = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
             validateArticle(pathVariableMap, auth);
             validateUser(pathVariableMap, auth);
+            validateReply(pathVariableMap, auth);
         }
     }
 
     private void validateArticle(Map<String, String> pathVariableMap, Auth auth) {
-        if (pathVariableMap.containsKey("articleId")) {
+        if (pathVariableMap.containsKey("articleId") && !pathVariableMap.containsKey("replyId")) {
             long articleId = Long.parseLong(pathVariableMap.get("articleId"));
             ArticleDto article = articleService.findArticleById(articleId);
             throwIfNotAuthorized(auth, article.getAuthorId());
@@ -56,6 +58,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (pathVariableMap.containsKey("userId")) {
             long userId = Long.parseLong(pathVariableMap.get("userId"));
             throwIfNotAuthorized(auth, userId);
+        }
+    }
+
+    private void validateReply(Map<String, String> pathVariableMap, Auth auth) {
+        if (pathVariableMap.containsKey("replyId")) {
+            long replyId = Long.parseLong(pathVariableMap.get("replyId"));
+            ReplyDto reply = articleService.findReplyById(replyId);
+            throwIfNotAuthorized(auth, reply.getAuthorId());
         }
     }
 

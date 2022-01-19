@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.Reply;
 import com.kakao.cafe.dto.article.*;
 import com.kakao.cafe.exception.ArticleNotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
@@ -41,6 +42,12 @@ public class ArticleService {
         return new ArticleDto(article);
     }
 
+    public ReplyDto findReplyById(Long id) {
+        Reply reply = replyRepository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 댓글입니다."));
+        return new ReplyDto(reply);
+    }
+
     public ArticleDetailDto findArticleDetailById(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
@@ -59,5 +66,9 @@ public class ArticleService {
 
     public void deleteArticle(Long id) {
         articleRepository.delete(id);
+    }
+
+    public void deleteReply(Long id) {
+        replyRepository.delete(id);
     }
 }

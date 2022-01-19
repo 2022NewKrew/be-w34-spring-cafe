@@ -71,4 +71,12 @@ public class ArticleController {
 
         return "redirect:/";
     }
+
+    @UserAuthorized
+    @DeleteMapping("/{articleId}/reply/{replyId}")
+    public String deleteReply(@PathVariable Long replyId) {
+        articleService.deleteReply(replyId);
+
+        return "redirect:/articles/{articleId}";
+    }
 }
