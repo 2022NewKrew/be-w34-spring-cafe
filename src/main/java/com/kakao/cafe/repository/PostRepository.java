@@ -9,4 +9,6 @@ public interface PostRepository {
     List<Post> findAll();
 
     Post findByPostId(int id);
+
+    void update(Post post);
 }

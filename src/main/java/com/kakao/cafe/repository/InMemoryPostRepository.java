@@ -47,4 +47,9 @@ public class InMemoryPostRepository implements PostRepository {
             throw new PostNotFoundException("없는 게시글 입니다");
         return postList.get(id - 1);
     }
+
+    @Override
+    public void update(Post post) {
+        postList.set(post.getId(), post);
+    }
 }
