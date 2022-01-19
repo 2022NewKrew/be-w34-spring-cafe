@@ -4,6 +4,7 @@ import com.kakao.cafe.article.dto.SingleComment;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +23,22 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public Optional<Comment> findById(Long id) {
-        return Optional.empty();
+        final String sql = "select * from comments where comment_id = ?";
+
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(
+                sql,
+                (rs, rowNum) -> Comment.builder()
+                    .id(rs.getLong("comment_id"))
+                    .body(rs.getString("body"))
+                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                    .authorId(rs.getLong("author_id"))
+                    .articleId(rs.getLong("article_id"))
+                    .build(),
+                id));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -48,5 +64,12 @@ public class CommentRepositoryImpl implements CommentRepository {
                 .build(),
             articleId
         );
+    }
+
+    @Override
+    public void delete(Comment comment) {
+        final String sql = "delete from comments where comment_id = ?";
+
+        jdbcTemplate.update(sql, comment.getId());
     }
 }

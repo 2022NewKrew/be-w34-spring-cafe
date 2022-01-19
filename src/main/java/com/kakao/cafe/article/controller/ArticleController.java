@@ -87,4 +87,11 @@ public class ArticleController {
         commentService.save(comment);
         return "redirect:/article/" + articleId;
     }
+
+    @DeleteMapping("/{articleId}/comment/{commentId}")
+    public String deleteComment(@LoginUser SessionUser user, @PathVariable Long articleId,
+        @PathVariable Long commentId) {
+        commentService.delete(user.getId(), articleId, commentId);
+        return "redirect:/article/" + articleId;
+    }
 }
