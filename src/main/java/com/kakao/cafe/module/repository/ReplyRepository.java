@@ -11,4 +11,8 @@ public interface ReplyRepository {
     void addReply(Reply reply);
 
     List<ReplyReadDto> findRepliesByArticleId(Long id);
+
+    Reply findReplyById(Long id);
+
+    void deleteReply(Long id);
 }

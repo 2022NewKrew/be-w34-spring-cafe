@@ -1,5 +1,6 @@
 package com.kakao.cafe.module.repository;
 
+import com.kakao.cafe.infra.exception.NoSuchDataException;
 import com.kakao.cafe.module.model.domain.Reply;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,8 +43,20 @@ public class ReplyRepositoryImpl implements ReplyRepository {
                 " ON REPLY.article_id = ARTICLE.id" +
                 " INNER JOIN USERS" +
                 " ON REPLY.author_id = USERS.id" +
-                " WHERE ARTICLE.id = ?";
+                " WHERE ARTICLE.id = ?" +
+                " ORDER BY REPLY.created";
         return jdbcTemplate.query(query, mapRowReplies(), id);
+    }
+
+    @Override
+    public Reply findReplyById(Long id) {
+        return jdbcTemplate.query("SELECT * FROM REPLY WHERE id = ?", mapRowReply(), id).stream().findAny()
+                .orElseThrow(() -> new NoSuchDataException("해당하는 댓글이 없습니다."));
+    }
+
+    @Override
+    public void deleteReply(Long id) {
+        jdbcTemplate.update("DELETE FROM REPLY WHERE id = ?", id);
     }
 
     private RowMapper<ReplyReadDto> mapRowReplies() {
@@ -54,6 +67,16 @@ public class ReplyRepositoryImpl implements ReplyRepository {
                 rs.getString("USERS.name"),
                 rs.getTimestamp("REPLY.created").toLocalDateTime(),
                 rs.getString("REPLY.comment")
+        ));
+    }
+
+    private RowMapper<Reply> mapRowReply() {
+        return ((rs, rowNum) -> new Reply(
+                rs.getLong("id"),
+                rs.getLong("article_id"),
+                rs.getLong("author_id"),
+                rs.getString("comment"),
+                rs.getTimestamp("created").toLocalDateTime()
         ));
     }
 }

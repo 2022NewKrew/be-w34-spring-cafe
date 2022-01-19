@@ -58,14 +58,14 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public void updateArticleCommentCount(Long id) {
+    public void updateArticleCommentCount(Long id, int value) {
         int commentCount = jdbcTemplate.query("SELECT comment_count FROM ARTICLE WHERE id = ?",
                         (rs, rowNum) -> rs.getInt("comment_count"), id)
                 .stream().findAny()
                 .orElseThrow(() -> new NoSuchDataException("해당하는 게시물이 없습니다."));
 
         jdbcTemplate.update("UPDATE ARTICLE SET comment_count = ? WHERE id = ?",
-                commentCount + 1, id);
+                commentCount + value, id);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         jdbcTemplate.update("DELETE FROM ARTICLE WHERE id = ?", id);
     }
 
-    public RowMapper<ArticleListDto> mapRowArticles() {
+    private RowMapper<ArticleListDto> mapRowArticles() {
         return ((rs, rowNum) -> new ArticleListDto(
                 rs.getLong("ARTICLE.id"),
                 rs.getString("USERS.name"),
@@ -90,7 +90,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         ));
     }
 
-    public RowMapper<ArticleReadDto> mapRowArticle() {
+    private RowMapper<ArticleReadDto> mapRowArticle() {
         return ((rs, rowNum) -> new ArticleReadDto(
                 rs.getLong("ARTICLE.id"),
                 rs.getString("USERS.name"),

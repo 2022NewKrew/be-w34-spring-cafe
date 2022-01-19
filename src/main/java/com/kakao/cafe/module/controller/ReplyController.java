@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.HttpSessionRequiredException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,14 @@ public class ReplyController {
         UserDto userDto = infraService.retrieveUserSession(session);
         replyService.postReply(articleId, userDto.getId(), replyPostDto);
         logger.info("Post Reply at Article : {}", articleId);
+        return "redirect:/articles/{articleId}";
+    }
+
+    @DeleteMapping("/{articleId}/reply/{id}")
+    public String deleteReply(@PathVariable Long articleId, @PathVariable Long id, HttpSession session) throws HttpSessionRequiredException {
+        infraService.validateSession(session, replyService.getReply(id).getAuthorId());
+        replyService.deleteReply(articleId, id);
+        logger.info("Delete Reply at Article : {}", articleId);
         return "redirect:/articles/{articleId}";
     }
 }
