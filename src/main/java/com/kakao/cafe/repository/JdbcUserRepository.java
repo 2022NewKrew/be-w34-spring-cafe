@@ -3,10 +3,12 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.user.Password;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserName;
+import com.kakao.cafe.exception.DuplicateUserException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -26,12 +28,16 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        jdbcTemplate.update(
-                "INSERT INTO users (username, password, name, email) VALUES (?, ?, ?, ?)",
-                user.getUserName().getValue(),
-                user.getPassword().getValue(),
-                user.getName().getValue(),
-                user.getEmail().getValue());
+        try {
+            jdbcTemplate.update(
+                    "INSERT INTO users (username, password, name, email) VALUES (?, ?, ?, ?)",
+                    user.getUserName().getValue(),
+                    user.getPassword().getValue(),
+                    user.getName().getValue(),
+                    user.getEmail().getValue());
+        } catch (DuplicateKeyException e) {
+            throw new DuplicateUserException("해당 아이디를 사용중인 사용자가 이미 존재합니다.");
+        }
     }
 
     @Override

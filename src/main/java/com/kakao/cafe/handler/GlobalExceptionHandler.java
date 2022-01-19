@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
                 e.getMessage());
     }
 
-    @ExceptionHandler({DuplicateUserException.class, DuplicateKeyException.class})
+    @ExceptionHandler(DuplicateUserException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public String userDuplicated(Exception exception) {
         logHandlingException(exception);
