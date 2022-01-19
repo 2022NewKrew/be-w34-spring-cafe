@@ -107,6 +107,8 @@ public class CommentController {
         return "error/500";
     }
 
+    // GET /editCommentFailedNoPerm -> comments/editFailedNoPerm
+
     private boolean checkNotLogin(final HttpServletRequest request) {
         return !AuthControl.isLogon(request, userService);
     }

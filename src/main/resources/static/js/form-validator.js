@@ -9,6 +9,7 @@ let validPassword = true;
 let validNewPassword = true;
 let validName = true;
 let validEmail = true;
+let validComment = true;
 
 function updateSubmitBtn() {
     if (
@@ -18,7 +19,8 @@ function updateSubmitBtn() {
         validPassword &&
         validNewPassword &&
         validName &&
-        validEmail
+        validEmail &&
+        validComment
     ) {
         SUBMIT.disabled = false;
         return;
@@ -159,5 +161,20 @@ if (INPUT_EMAIL !== null && INPUT_EMAIL.readOnly === false) {
 
 function checkEmail() {
     validEmail = checkBoundAndRegex(INPUT_EMAIL, EMAIL_MIN, EMAIL_MAX, EMAIL_REGEX);
+    updateSubmitBtn();
+}
+
+const INPUT_COMMENT = document.getElementById('comment');
+const COMMENT_MIN = 1;
+const COMMENT_MAX = 400;
+
+if (INPUT_COMMENT !== null && INPUT_COMMENT.readOnly === false) {
+    SUBMIT.disabled = true;
+    INPUT_COMMENT.onchange = checkComment;
+    checkComment();
+}
+
+function checkComment() {
+    validEmail = checkBound(INPUT_COMMENT, COMMENT_MIN, COMMENT_MAX);
     updateSubmitBtn();
 }
