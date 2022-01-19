@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public String getUserList(Model model) {
+    public String showUserList(Model model) {
         model.addAttribute("users", userService.findUsers());
         return "user/list";
     }
@@ -33,18 +33,18 @@ public class UserController {
     }
 
     @GetMapping("/form")
-    public String getForm() {
+    public String showForm() {
         return "user/form";
     }
 
     @GetMapping("/{id}")
-    public String getId(@PathVariable Long id, Model model) {
+    public String showId(@PathVariable Long id, Model model) {
         model.addAttribute("user", userService.findUserById(id));
         return "user/profile";
     }
 
     @GetMapping("/{id}/form")
-    public String getUpdateForm(@PathVariable Long id, Model model, @LoginCheck SessionUser sessionUser) {
+    public String showUpdateForm(@PathVariable Long id, Model model, @LoginCheck SessionUser sessionUser) {
 
         if(!sessionUser.getId().equals(id)){
             return "redirect:/users/login";
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String loginForm() {
+    public String showLoginForm() {
         return "user/login";
     }
 

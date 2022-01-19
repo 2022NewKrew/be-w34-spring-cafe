@@ -27,6 +27,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .writer(articleReqDto.getWriter())
                 .title(articleReqDto.getTitle())
                 .contents(articleReqDto.getContents())
+                .deleted(false)
                 .build();
         articleRepository.save(article);
     }

@@ -13,5 +13,6 @@ CREATE TABLE IF NOT EXISTS articles
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     writer VARCHAR(50) NOT NULL,
     title VARCHAR(255) NOT NULL,
-    contents TEXT NOT NULL
+    contents TEXT NOT NULL,
+    deleted BOOLEAN NOT NULL
 );

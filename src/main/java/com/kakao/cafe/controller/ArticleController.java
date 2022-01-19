@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
+
 @RequiredArgsConstructor
 @Controller
 public class ArticleController {
@@ -20,7 +22,12 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("/articles")
-    public String createPost(@ModelAttribute ArticleReqDto articleReqDto){
+    public String createPost(String title, String contents, @LoginCheck SessionUser sessionUser){
+        ArticleReqDto articleReqDto = ArticleReqDto.builder()
+                .writer(sessionUser.getUserId())
+                .title(title)
+                .contents(contents)
+                .build();
         articleService.addArticle(articleReqDto);
         return "redirect:/";
     }

@@ -17,8 +17,8 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public void save(Article article) {
-        jdbcTemplate.update("INSERT INTO articles (writer, title, contents) VALUES (?, ?, ?)",
-                article.getWriter(), article.getTitle(), article.getContents());
+        jdbcTemplate.update("INSERT INTO articles (writer, title, contents, deleted) VALUES (?, ?, ?, ?)",
+                article.getWriter(), article.getTitle(), article.getContents(), article.getDeleted());
     }
 
     @Override
