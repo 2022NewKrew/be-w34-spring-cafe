@@ -34,7 +34,6 @@ public class ArticleService {
 
     public ArticleUpdateForm getUpdateForm(Long id, Long userId) throws IsNotAuthorOfThisArticle {
         isAuthor(id, userId);
-
         Article byId = articleRepository.findById(id);
 
         return ArticleUpdateForm.from(byId);

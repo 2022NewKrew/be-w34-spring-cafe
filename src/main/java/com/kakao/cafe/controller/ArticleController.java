@@ -68,7 +68,6 @@ public class ArticleController {
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id, Model model, @SessionAttribute(name = SessionConst.LOGIN_COOKIE) User user) {
-        //삭제 권한 확인 로직 추가
         try {
             articleService.delete(id, user.getId());
             return "redirect:/";
