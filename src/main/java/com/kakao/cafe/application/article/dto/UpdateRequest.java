@@ -5,11 +5,20 @@ public class UpdateRequest {
     private final String title;
     private final String contents;
     private int id;
+    private String userId;
     private String writer;
 
     public UpdateRequest(String title, String contents) {
         this.title = title;
         this.contents = contents;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public int getId() {

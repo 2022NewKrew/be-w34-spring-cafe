@@ -3,9 +3,11 @@ package com.kakao.cafe.domain.article;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 
 public class Article {
 
+    private final String userId;
     private final String writer;
     private final String title;
     private final String contents;
@@ -13,10 +15,47 @@ public class Article {
     private int id;
 
     public Article(Builder builder) {
+        this.userId = builder.userId;
         this.writer = builder.writer;
         this.title = builder.title;
         this.contents = builder.contents;
         this.createdAt = builder.createdAt;
+    }
+
+    private static boolean checkBlankInString(String str) {
+        return str.contains(" ");
+    }
+
+    private static boolean checkLengthOfString(String str) {
+        return str.length() <= 0;
+    }
+
+    private static void checkUserId(String userId) throws IllegalUserIdException {
+        if (checkLengthOfString(userId) || checkBlankInString(userId)) {
+            throw new IllegalUserIdException("잘못된 ID 입니다.");
+        }
+    }
+
+    private static void checkWriter(String writer) throws IllegalWriterException {
+        if (checkLengthOfString(writer) || checkBlankInString(writer)) {
+            throw new IllegalWriterException("작성자 이름이 잘못되었습니다.");
+        }
+    }
+
+    private static void checkTitle(String title) throws IllegalTitleException {
+        if (checkLengthOfString(title)) {
+            throw new IllegalTitleException("제목이 잘못되었습니다.");
+        }
+    }
+
+    private static void checkDate(String createdAt) throws IllegalDateException {
+        if (checkLengthOfString(createdAt)) {
+            throw new IllegalDateException("잘못된 날짜입니다.");
+        }
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public int getId() {
@@ -45,10 +84,16 @@ public class Article {
 
     public static class Builder {
 
+        private String userId;
         private String writer;
         private String title;
         private String contents;
         private String createdAt;
+
+        public Builder userId(String userId) {
+            this.userId = userId;
+            return this;
+        }
 
         public Builder writer(String writer) {
             this.writer = writer;
@@ -71,37 +116,12 @@ public class Article {
         }
 
         public Article build()
-            throws IllegalWriterException, IllegalTitleException, IllegalDateException {
+            throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
+            checkUserId(userId);
             checkWriter(writer);
             checkTitle(title);
             checkDate(createdAt);
             return new Article(this);
-        }
-    }
-
-    private static boolean checkBlankInString(String str) {
-        return str.contains(" ");
-    }
-
-    private static boolean checkLengthOfString(String str) {
-        return str.length() <= 0;
-    }
-
-    private static void checkWriter(String writer) throws IllegalWriterException {
-        if (checkLengthOfString(writer) || checkBlankInString(writer)) {
-            throw new IllegalWriterException("작성자 이름이 잘못되었습니다.");
-        }
-    }
-
-    private static void checkTitle(String title) throws IllegalTitleException {
-        if (checkLengthOfString(title)) {
-            throw new IllegalTitleException("제목이 잘못되었습니다.");
-        }
-    }
-
-    private static void checkDate(String createdAt) throws IllegalDateException {
-        if (checkLengthOfString(createdAt)) {
-            throw new IllegalDateException("잘못된 날짜입니다.");
         }
     }
 }

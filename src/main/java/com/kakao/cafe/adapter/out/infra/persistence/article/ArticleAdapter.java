@@ -12,6 +12,7 @@ import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -29,9 +30,10 @@ public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort, 
 
     @Override
     public void registerArticle(WriteRequest writeRequest)
-        throws IllegalWriterException, IllegalTitleException, IllegalDateException {
+        throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
         articleRepository.save(
             new Article.Builder()
+                .userId(writeRequest.getUserId())
                 .writer(writeRequest.getWriter())
                 .title(writeRequest.getTitle())
                 .contents(writeRequest.getContents())
@@ -42,8 +44,9 @@ public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort, 
 
     @Override
     public void updateArticle(UpdateRequest updateRequest)
-        throws IllegalWriterException, IllegalTitleException, IllegalDateException {
+        throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
         Article article = new Article.Builder()
+            .userId(updateRequest.getUserId())
             .writer(updateRequest.getWriter())
             .title(updateRequest.getTitle())
             .contents(updateRequest.getContents())

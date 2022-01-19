@@ -66,16 +66,18 @@ class ArticleInfoControllerTest {
     void displayArticleDetail() throws Exception {
         // given
         int id = 5;
+        String userId = "kakao";
         String writer = "champ";
         String title = "HaChanho";
         String contents = "champ@kakao.com";
         String createdAt = "2022-01-10 15:23";
-        Article givenArticle = new Article.Builder().writer(writer)
+        Article givenArticle = new Article.Builder().userId(userId)
+                                                    .writer(writer)
                                                     .title(title)
                                                     .contents(contents)
                                                     .createdAt(createdAt)
                                                     .build();
-        UserInfo sessionedUser = new UserInfo("kakao", writer, "kakao@kakao.com");
+        UserInfo sessionedUser = new UserInfo(userId, writer, "kakao@kakao.com");
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("sessionedUser", sessionedUser);
         String url = "/articles/" + id;

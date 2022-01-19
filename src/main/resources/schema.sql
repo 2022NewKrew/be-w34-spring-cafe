@@ -11,8 +11,10 @@ DROP TABLE IF EXISTS ARTICLE;
 CREATE TABLE ARTICLE
 (
     id        BIGINT PRIMARY KEY auto_increment,
+    userId    VARCHAR(32),
     writer    VARCHAR(32),
     title     VARCHAR(32),
     contents  VARCHAR(1000),
-    createdAt VARCHAR(32)
+    createdAt VARCHAR(32),
+    FOREIGN KEY (userId) REFERENCES USER (ID) ON DELETE CASCADE ON UPDATE CASCADE
 )

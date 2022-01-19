@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     private final static String ARTICLE_TABLE = "ARTICLE";
     private final static String COLUMN_ID = "id";
+    private final static String COLUMN_USER_ID = "userId";
     private final static String COLUMN_WRITER = "writer";
     private final static String COLUMN_TITLE = "title";
     private final static String COLUMN_CONTENTS = "contents";
@@ -38,6 +40,7 @@ public class JdbcArticleRepository implements ArticleRepository {
         simpleJdbcInsert.withTableName(ARTICLE_TABLE).usingGeneratedKeyColumns(COLUMN_ID);
 
         Map<String, Object> parameters = new HashMap<>();
+        parameters.put(COLUMN_USER_ID, article.getUserId());
         parameters.put(COLUMN_WRITER, article.getWriter());
         parameters.put(COLUMN_TITLE, article.getTitle());
         parameters.put(COLUMN_CONTENTS, article.getContents());
@@ -79,7 +82,8 @@ public class JdbcArticleRepository implements ArticleRepository {
         @Override
         public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
             try {
-                Article article = new Article.Builder().writer(rs.getString(COLUMN_WRITER))
+                Article article = new Article.Builder().userId(rs.getString(COLUMN_USER_ID))
+                                                       .writer(rs.getString(COLUMN_WRITER))
                                                        .title(rs.getString(COLUMN_TITLE))
                                                        .contents(rs.getString(COLUMN_CONTENTS))
                                                        .createdAt(rs.getString(COLUMN_CREATED_AT))
@@ -92,6 +96,8 @@ public class JdbcArticleRepository implements ArticleRepository {
                 throw new SQLException("DB에 저장된 title이 잘못되었습니다.");
             } catch (IllegalDateException e) {
                 throw new SQLException("DB에 저장된 createdAt 값이 잘못되었습니다.");
+            } catch (IllegalUserIdException e) {
+                throw new SQLException("DB에 저장된 userId 값이 잘못되었습니다.");
             }
         }
     }

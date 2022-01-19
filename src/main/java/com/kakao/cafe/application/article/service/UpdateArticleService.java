@@ -6,6 +6,7 @@ import com.kakao.cafe.application.article.port.out.UpdateArticlePort;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 
 public class UpdateArticleService implements UpdateArticleUseCase {
 
@@ -17,7 +18,7 @@ public class UpdateArticleService implements UpdateArticleUseCase {
 
     @Override
     public void updateArticle(UpdateRequest updateRequest)
-        throws IllegalWriterException, IllegalTitleException, IllegalDateException {
+        throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
         updateArticlePort.updateArticle(updateRequest);
     }
 }
