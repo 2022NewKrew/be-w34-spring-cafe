@@ -37,9 +37,4 @@ public class UserAccountController {
         return "userInfo";
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        request.getSession().removeAttribute("user-id");
-        return "redirect:/";
-    }
 }
