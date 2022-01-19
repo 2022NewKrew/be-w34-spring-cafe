@@ -35,7 +35,7 @@ function checkBound(elem, min, max) {
     }
     const str = elem.value;
     const valid = str.length >= min && str.length <= max;
-    elem.style.border = valid ? '' : '1px solid #ffa545';
+    elem.style.border = valid ? '1px solid #22cc22' : '';
     return valid;
 }
 
@@ -52,7 +52,7 @@ function checkBoundAndRegex(elem, min, max, regex) {
 
     const str = elem.value;
     const valid = str.length >= min && str.length <= max && regex.test(str);
-    elem.style.border = valid ? '' : '1px solid #ffa545';
+    elem.style.border = valid ? '1px solid #22cc22' : '';
     return valid;
 }
 
