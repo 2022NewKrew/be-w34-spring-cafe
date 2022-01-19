@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.user.domain;
 
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,7 +1,7 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.user.controller;
 
-import com.kakao.cafe.DTO.SignUpDTO;
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.user.DTO.SignUpDTO;
+import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
