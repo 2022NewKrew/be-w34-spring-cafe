@@ -4,8 +4,6 @@
 
 ### TODO
 ##### 게시글 상세보기
-* article id를 input으로 받는 GET controller method 구현 
-  * 접근 방식 : /articles/{index}
 * repository에서 해당 id를 가지는 article을 가져온다.
 * 이를 DTO로 변환 후 리스트화하여 동적페이지에 전달
   * 전달할 페이지: qna/show.html 
@@ -24,3 +22,6 @@
 * 이를 DTO로 변환 후 리스트화하여 동적페이지에 전달
 * 동적 페이지에서 이를 받을 수 있게 작업
 * domain에 대한 Test code 작성
+##### 게시글 상세보기
+* article id를 input으로 받는 GET controller method 구현
+  * 접근 방식 : /articles/{index}

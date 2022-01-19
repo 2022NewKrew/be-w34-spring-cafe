@@ -32,4 +32,9 @@ public class QnaController {
         model.addAttribute("articles", questionService.getArticleSummaryLst());
         return "index";
     }
+
+    @GetMapping("/articles/{index}")
+    public String getArticle(Model model, @PathVariable String index) {
+        return "qna/show";
+    }
 }
