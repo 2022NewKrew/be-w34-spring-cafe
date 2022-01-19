@@ -67,7 +67,11 @@ public class UserController {
 
     // 회원정보 수정 요청
     @PatchMapping("users/{userId}/update")
-    public String updateUserInfo(SignUpDto signUpDto, @PathVariable String userId) throws PasswordMismatchException, NoSuchUserException {
+    public String updateUserInfo(SignUpDto signUpDto, @PathVariable String userId, HttpSession session) throws PasswordMismatchException, NoSuchUserException, WrongAccessException {
+        UserInfoDto sessionedUser = (UserInfoDto) session.getAttribute("sessionedUser");
+        if (!userId.equals(sessionedUser.getUserId())) {
+            throw new WrongAccessException();
+        }
         this.userService.updateUser(signUpDto);
         return "redirect:/users";
     }
@@ -86,7 +90,6 @@ public class UserController {
         log.info("{}", userInfoDto.getName());
         log.info("{}", userInfoDto.getEmail());
         session.setAttribute("sessionedUser", userInfoDto);
-        log.info("{}", session.getAttributeNames());
         return "redirect:/users";
     }
 }

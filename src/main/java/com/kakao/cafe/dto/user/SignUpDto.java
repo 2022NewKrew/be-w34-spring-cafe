@@ -13,12 +13,7 @@ public class SignUpDto {
     private String email;
 
     public User toEntity() {
-        User user = User.builder()
-                .userId(this.userId)
-                .password(this.password)
-                .name(this.name)
-                .email(this.email)
-                .build();
+        User user = new User(userId, password, name, email);
         return user;
     }
 }
