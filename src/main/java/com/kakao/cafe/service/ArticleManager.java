@@ -39,12 +39,12 @@ public class ArticleManager implements ArticleService {
 
     @Override
     public ArticleDto getDto(final long idx) throws NoSuchElementException {
-        final Optional<ArticleDto> articleDto = Optional.ofNullable(articleRepository.getDto(idx));
-        if (articleDto.isEmpty()) {
+        final Optional<ArticleDto> optional = Optional.ofNullable(articleRepository.getDto(idx));
+        if (optional.isEmpty()) {
             throw new NoSuchElementException("Not found article - " + idx);
         }
 
-        return articleDto.get();
+        return optional.get();
     }
 
     @Override
