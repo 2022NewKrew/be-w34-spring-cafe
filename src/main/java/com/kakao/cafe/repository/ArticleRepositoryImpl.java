@@ -29,14 +29,14 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     public Optional<Article> findById(Long id) {
         Article article = null;
         try {
-            article = jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE ID = ?", rowMapper, id);
+            article = jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE id = ? AND is_deleted IS FALSE", rowMapper, id);
         } catch (EmptyResultDataAccessException ignored) {}
         return Optional.ofNullable(article);
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("SELECT * FROM ARTICLE", rowMapper);
+        return jdbcTemplate.query("SELECT * FROM ARTICLE WHERE is_deleted IS FALSE", rowMapper);
     }
 
     @Override
@@ -63,22 +63,24 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(conn -> {
             PreparedStatement statement = conn.prepareStatement(
-                    "INSERT INTO ARTICLE(author, title, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
+                    "INSERT INTO ARTICLE(author, title, content, is_deleted, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, article.getAuthor());
             statement.setString(2, article.getTitle());
             statement.setString(3, article.getContent());
-            statement.setTimestamp(4, Timestamp.valueOf(article.getCreatedAt()));
-            statement.setTimestamp(5, Timestamp.valueOf(article.getUpdatedAt()));
+            statement.setBoolean(4, article.getDeleted());
+            statement.setTimestamp(5, Timestamp.valueOf(article.getCreatedAt()));
+            statement.setTimestamp(6, Timestamp.valueOf(article.getUpdatedAt()));
             return statement;
         }, generatedKeyHolder);
         return generatedKeyHolder.getKey().longValue();
     }
 
     private Long updateArticle(Article article) {
-        jdbcTemplate.update("UPDATE ARTICLE SET title = ?, content = ?, updated_at = ? WHERE id = ?",
+        jdbcTemplate.update("UPDATE ARTICLE SET title = ?, content = ?, is_deleted = ?, updated_at = ? WHERE id = ?",
                 article.getTitle(),
                 article.getContent(),
+                article.getDeleted(),
                 article.getUpdatedAt(),
                 article.getId());
         return article.getId();

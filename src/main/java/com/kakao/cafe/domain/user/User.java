@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain.user;
 
+import com.kakao.cafe.domain.user.exception.UserLoginFailedException;
+
 import java.time.LocalDateTime;
 
 public class User {
@@ -28,23 +30,33 @@ public class User {
     }
 
     public void updateProfile(Profile profile, String confirmPassword) {
-        if(!matchesPassword(confirmPassword)) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+        checkMatchesPasswordForUpdate(confirmPassword);
         this.profile = profile;
         this.updatedAt = LocalDateTime.now();
     }
 
     public void updatePassword(String newPassword, String confirmPassword) {
-        if(!matchesPassword(confirmPassword)) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+        checkMatchesPasswordForUpdate(confirmPassword);
         this.password = newPassword;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public boolean matchesPassword(String confirmPassword) {
-        return password.equals(confirmPassword);
+    public void checkMatchesPasswordForUpdate(String confirmPassword) {
+        if(!password.equals(confirmPassword)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+    }
+
+    public void checkMatchesPasswordForLogin(String confirmPassword) {
+        if(!password.equals(confirmPassword)) {
+            throw new UserLoginFailedException("비밀번호가 일치하지 않습니다.");
+        }
+    }
+
+    public void checkEqualsUser(String currentUserId) {
+        if(!userId.equals(currentUserId)) {
+            throw new IllegalArgumentException("사용자의 정보를 수정할 수 없습니다.");
+        }
     }
 
     public Long getId() {

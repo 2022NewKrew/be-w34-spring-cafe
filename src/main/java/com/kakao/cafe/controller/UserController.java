@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.dto.SessionUser;
+import com.kakao.cafe.controller.interceptor.Authenticated;
 import com.kakao.cafe.domain.user.UserService;
 import com.kakao.cafe.domain.user.dto.UserCreateRequestDto;
 import com.kakao.cafe.domain.user.dto.UserResponseDto;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -38,16 +38,11 @@ public class UserController {
         return "user/profile";
     }
 
+    @Authenticated
     @GetMapping("/users/{userId}/update")
-    public String updateUserForm(@PathVariable String userId, Model model, Optional<SessionUser> sessionUser) {
-        if(sessionUser.isEmpty()) {
-            throw new IllegalArgumentException("사용자의 정보를 수정할 수 없습니다.");
-        }
-        String currentLoginUserId = sessionUser.get().getUserId();
-        if(!userId.equals(currentLoginUserId)) {
-            throw new IllegalArgumentException("사용자의 정보를 수정할 수 없습니다.");
-        }
-        UserResponseDto user = userService.retrieveUser(userId);
+    public String updateUserForm(@PathVariable String userId, Model model, SessionUser sessionUser) {
+        String currentLoginUserId = sessionUser.getUserId();
+        UserResponseDto user = userService.retrieveUserForUpdate(userId, currentLoginUserId);
         model.addAttribute("user", user);
         return "user/updateForm";
     }
@@ -58,6 +53,7 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @Authenticated
     @PutMapping("/users/{userId}")
     public String updateUser(@PathVariable String userId, UserUpdateRequestDto requestDto) {
         userService.updateUser(userId, requestDto);

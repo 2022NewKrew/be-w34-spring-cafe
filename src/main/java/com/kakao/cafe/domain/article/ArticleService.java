@@ -1,7 +1,11 @@
 package com.kakao.cafe.domain.article;
 
+import com.kakao.cafe.domain.article.dto.ArticleRepliesResponseDto;
 import com.kakao.cafe.domain.article.dto.ArticleRequestDto;
-import com.kakao.cafe.domain.article.dto.ArticleResponseDto;
+import com.kakao.cafe.domain.article.dto.ArticleSimpleResponseDto;
+import com.kakao.cafe.domain.article.dto.ReplyRequestDto;
+import com.kakao.cafe.domain.article.reply.Reply;
+import com.kakao.cafe.domain.article.reply.ReplyService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,56 +16,72 @@ import java.util.stream.Collectors;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ReplyService replyService;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository, ReplyService replyService) {
         this.articleRepository = articleRepository;
+        this.replyService = replyService;
     }
 
     @Transactional
-    public Long createArticle(ArticleRequestDto requestDto, String userId) {
+    public Long createArticle(ArticleRequestDto requestDto, String currentUserId) {
         Article article = requestDto.toArticle();
-        if(!article.isAuthor(userId)) {
-            throw new IllegalArgumentException("사용자는 해당 게시글을 생성할 수 있는 권한이 없습니다.");
-        }
+        article.checkAuthor(currentUserId);
         return articleRepository.save(requestDto.toArticle());
     }
 
     @Transactional
-    public Long updateArticle(Long articleId, String userId, ArticleRequestDto requestDto) {
+    public Long updateArticle(Long articleId, String currentUserId, ArticleRequestDto requestDto) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
-        if(!article.isAuthor(userId)) {
-            throw new IllegalArgumentException("사용자는 해당 게시글을 수정할 수 있는 권한이 없습니다.");
-        }
-        article.update(requestDto.getTitle(), requestDto.getContent());
+        article.update(requestDto.getTitle(), requestDto.getContent(), currentUserId);
         return articleRepository.save(article);
     }
 
     @Transactional
-    public Long deleteArticle(Long articleId, String userId) {
+    public Long deleteArticle(Long articleId, String currentUserId) {
+        Article article = findArticleWithReplies(articleId);
+        article.delete(currentUserId);
+        article.getReplies().forEach(reply -> replyService.deleteReply(article, reply, currentUserId));
+        return articleRepository.save(article);
+    }
+
+    @Transactional
+    public Long createReply(ReplyRequestDto replyRequestDto, String currentUserId) {
+        Long articleId = replyRequestDto.getArticleId();
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
-        if(!article.isAuthor(userId)) {
-            throw new IllegalArgumentException("사용자는 해당 게시글을 삭제할 수 있는 권한이 없습니다.");
-        }
-        return articleRepository.delete(article);
+        Reply reply = replyRequestDto.toReply(article);
+        return replyService.createReply(reply, currentUserId);
+    }
+
+    @Transactional
+    public Long deleteReply(Long articleId, Long replyId, String currentUserId) {
+        Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
+        Reply reply = replyService.findReplyByArticleAndId(article, replyId);
+        return replyService.deleteReply(article, reply, currentUserId);
     }
 
     @Transactional(readOnly = true)
-    public ArticleResponseDto retrieveArticle(Long articleId) {
-        Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
-        return new ArticleResponseDto(article);
+    public ArticleRepliesResponseDto retrieveArticleWithReplies(Long articleId) {
+        Article article = findArticleWithReplies(articleId);
+        return new ArticleRepliesResponseDto(article);
     }
 
     @Transactional(readOnly = true)
-    public ArticleResponseDto retrieveArticleForUpdate(Long articleId, String userId) {
+    public ArticleSimpleResponseDto retrieveArticleForUpdate(Long articleId, String currentUserId) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
-        if(!article.isAuthor(userId)) {
-            throw new IllegalArgumentException("사용자는 게시글을 수정할 수 있는 권한이 없습니다.");
-        }
-        return new ArticleResponseDto(article);
+        article.checkAuthor(currentUserId);
+        return new ArticleSimpleResponseDto(article);
     }
 
     @Transactional(readOnly = true)
-    public List<ArticleResponseDto> retrieveAllArticles() {
-        return articleRepository.findAll().stream().map(ArticleResponseDto::new).collect(Collectors.toList());
+    public List<ArticleSimpleResponseDto> retrieveAllArticles() {
+        return articleRepository.findAll().stream().map(ArticleSimpleResponseDto::new).collect(Collectors.toList());
+    }
+
+    private Article findArticleWithReplies(Long articleId) {
+        Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
+        List<Reply> replies = replyService.findRepliesByArticle(article);
+        article.setReplies(replies);
+        return article;
     }
 }

@@ -90,7 +90,8 @@ class UserControllerTest {
                         .param("confirmPassword", password)
                         .param("newPassword", "1234")
                         .param("name", "바뀐유저이름")
-                        .param("email", "바뀐이메일@email.com"))
+                        .param("email", "바뀐이메일@email.com")
+                        .session(mockHttpSession))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
     }

@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.dto.SessionUser;
 import com.kakao.cafe.domain.article.ArticleService;
-import com.kakao.cafe.domain.article.dto.ArticleResponseDto;
+import com.kakao.cafe.domain.article.dto.ArticleSimpleResponseDto;
 import com.kakao.cafe.domain.user.UserService;
 import com.kakao.cafe.domain.user.dto.UserLoginRequestDto;
 import com.kakao.cafe.domain.user.dto.UserResponseDto;
@@ -27,7 +27,7 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(Model model) {
-        List<ArticleResponseDto> articles = articleService.retrieveAllArticles();
+        List<ArticleSimpleResponseDto> articles = articleService.retrieveAllArticles();
         model.addAttribute("articles", articles);
         return "index";
     }

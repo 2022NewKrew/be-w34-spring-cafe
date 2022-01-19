@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.controller.interceptor;
 
 import com.kakao.cafe.domain.user.exception.AnonymousUserException;
 import com.kakao.cafe.domain.user.exception.UserLoginFailedException;

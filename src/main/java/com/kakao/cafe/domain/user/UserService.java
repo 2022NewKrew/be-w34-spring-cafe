@@ -32,14 +32,19 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public UserResponseDto retrieveUserForUpdate(String userId, String currentUserId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+        user.checkEqualsUser(currentUserId);
+        return new UserResponseDto(user);
+    }
+
+    @Transactional(readOnly = true)
     public UserResponseDto loginUser(UserLoginRequestDto requestDto) {
         String userId = requestDto.getUserId();
         String password = requestDto.getPassword();
-        User user = userRepository.findByUserId(userId).orElseThrow(() -> new UserLoginFailedException("아이디 또는 비밀번호가 틀립니다. 다시 로그인 해주세요."));
-        if(user.matchesPassword(password)) {
-            return new UserResponseDto(user);
-        }
-        throw new UserLoginFailedException("아이디 또는 비밀번호가 틀립니다. 다시 로그인 해주세요.");
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new UserLoginFailedException("유저가 존재하지 않습니다."));
+        user.checkMatchesPasswordForLogin(password);
+        return new UserResponseDto(user);
     }
 
     @Transactional
