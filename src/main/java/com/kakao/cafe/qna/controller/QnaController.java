@@ -3,31 +3,33 @@ package com.kakao.cafe.qna.controller;
 import com.kakao.cafe.qna.DTO.QuestionDTO;
 import com.kakao.cafe.qna.service.QuestionService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class QnaController {
     private final QuestionService questionService;
-    Logger logger = LoggerFactory.getLogger(QnaController.class);
 
     @PostMapping("/questions")
     public String submitArticle(@ModelAttribute QuestionDTO newQuestion) {
-        logger.debug("Article submitted. Title : {}, Writer : {}", newQuestion.getTitle(), newQuestion.getWriter());
+        log.debug("Article submitted. Title : {}, Writer : {}", newQuestion.getTitle(), newQuestion.getWriter());
         questionService.submitArticle(newQuestion);
         return "redirect:/";
     }
 
     @GetMapping("/")
-    public String getUserList(Model model) {
+    public String getArticleList(Model model) {
+        log.debug("Article List Request");
         model.addAttribute("articles", questionService.getArticleSummaryLst());
-        logger.info("date : {}", questionService.getArticleSummaryLst().get(0).getDate());
         return "index";
     }
 }
