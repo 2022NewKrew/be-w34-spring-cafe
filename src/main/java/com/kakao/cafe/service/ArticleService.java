@@ -20,7 +20,15 @@ public class ArticleService {
         return jdbcTemplatesArticle.findAll();
     }
 
-    public Article findOneById(int id){
+    public Article findOneById(long id){
         return jdbcTemplatesArticle.findOneById(id);
+    }
+
+    public void update(Article article, long id) {
+        jdbcTemplatesArticle.update(article, id);
+    }
+
+    public void delete(long id){
+        jdbcTemplatesArticle.delete(id);
     }
 }
