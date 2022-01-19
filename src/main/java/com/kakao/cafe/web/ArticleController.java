@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class ArticleController {
 
@@ -24,8 +26,8 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String postArticle(String writer, String title, String contents) {
-        articleService.postArticle(new ArticleCreateRequestDto(writer, title, contents));
+    public String postArticle(String title, String contents, HttpSession session) {
+        articleService.postArticle(new ArticleCreateRequestDto(session.getAttribute("user").toString(), title, contents));
         return "redirect:/";
     }
 
