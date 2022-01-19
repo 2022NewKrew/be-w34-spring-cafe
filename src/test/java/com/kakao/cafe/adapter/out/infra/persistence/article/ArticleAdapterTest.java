@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.BDDMockito.given;
 
+import com.kakao.cafe.application.article.dto.UpdateRequest;
 import com.kakao.cafe.application.article.dto.WriteRequest;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
@@ -120,5 +121,32 @@ class ArticleAdapterTest {
         // then
         assertThatExceptionOfType(ArticleNotExistException.class).isThrownBy(() -> articleAdapter.findArticleById(
             givenId));
+    }
+
+    @DisplayName("게시글 수정 성공 테스트")
+    @Test
+    void updateArticleSuccess() {
+        // given
+        int givenId = 1;
+        UpdateRequest updateRequest = new UpdateRequest("kakao", "Hello Kakao");
+        updateRequest.setId(givenId);
+        updateRequest.setWriter("champ");
+
+        // then
+        assertThatNoException().isThrownBy(() -> articleAdapter.updateArticle(updateRequest));
+    }
+
+    @DisplayName("게시글 수정 실패 테스트")
+    @Test
+    void updateArticleFail() {
+        // given
+        int givenId = 1;
+        UpdateRequest updateRequest = new UpdateRequest("", "Hello Kakao");
+        updateRequest.setId(givenId);
+        updateRequest.setWriter("champ");
+
+        // then
+        assertThatExceptionOfType(IllegalTitleException.class)
+            .isThrownBy(() -> articleAdapter.updateArticle(updateRequest));
     }
 }
