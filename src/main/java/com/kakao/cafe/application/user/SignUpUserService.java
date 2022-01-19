@@ -1,26 +1,29 @@
 package com.kakao.cafe.application.user;
 
 import com.kakao.cafe.application.user.validation.DuplicatedUserIdException;
+import com.kakao.cafe.domain.user.FindUserPort;
+import com.kakao.cafe.domain.user.SignUpUserPort;
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserDaoPort;
 import com.kakao.cafe.domain.user.UserVo;
 
 import java.util.Optional;
 
 public class SignUpUserService {
-    private final UserDaoPort userDao;
+    private final SignUpUserPort signUpUserPort;
+    private final FindUserPort findUserPort;
 
-    public SignUpUserService(UserDaoPort userDao) {
-        this.userDao = userDao;
+    public SignUpUserService(SignUpUserPort signUpUserPort, FindUserPort findUserPort) {
+        this.signUpUserPort = signUpUserPort;
+        this.findUserPort = findUserPort;
     }
 
 
     public void join(UserVo userVo) throws DuplicatedUserIdException {
-        Optional<User> optionalUser = userDao.findByUserId(userVo.getUserId());
+        Optional<User> optionalUser = findUserPort.findByUserId(userVo.getUserId());
         if (optionalUser.isPresent()) {
             throw new DuplicatedUserIdException();
         }
 
-        userDao.save(userVo.convertVoToEntity());
+        signUpUserPort.save(userVo.convertVoToEntity());
     }
 }

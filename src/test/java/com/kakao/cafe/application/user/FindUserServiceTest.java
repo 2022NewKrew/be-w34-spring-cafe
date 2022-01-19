@@ -2,8 +2,8 @@ package com.kakao.cafe.application.user;
 
 import com.kakao.cafe.application.user.validation.NonExistsUserIdException;
 import com.kakao.cafe.application.user.validation.UserErrorCode;
+import com.kakao.cafe.domain.user.FindUserPort;
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserDaoPort;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ class FindUserServiceTest {
     FindUserService findUserService;
 
     @Mock
-    UserDaoPort userDaoPort;
+    FindUserPort findUserPort;
 
     @DisplayName("유저 ID로 사용자를 조회할 수 있다")
     @Test
@@ -36,14 +36,14 @@ class FindUserServiceTest {
         User expectedUser = new User("2wls", "0224", "윤이진", "483759@naver.com");
         Optional<User> expectedOptionalUser = Optional.of(expectedUser);
         String userId = "2wls";
-        given(userDaoPort.findByUserId(userId))
+        given(findUserPort.findByUserId(userId))
                 .willReturn(expectedOptionalUser);
 
         // when
         User user = findUserService.findByUserId(userId);
 
         //then
-        verify(userDaoPort).findByUserId(userId);
+        verify(findUserPort).findByUserId(userId);
         assertThat(user)
                 .usingRecursiveComparison()
                 .isEqualTo(expectedUser);
@@ -54,7 +54,7 @@ class FindUserServiceTest {
     void checkFindNonExistUserByUserIdException() throws Exception {
         // given
         String userIdThatDoesNotExist = "2wls";
-        given(userDaoPort.findByUserId(userIdThatDoesNotExist))
+        given(findUserPort.findByUserId(userIdThatDoesNotExist))
                 .willReturn(Optional.empty());
 
         // when
@@ -62,7 +62,7 @@ class FindUserServiceTest {
 
         assertThat(exception.getMessage())
                 .isEqualTo(UserErrorCode.NON_EXISTS_USER_ID.getMessage());
-        verify(userDaoPort).findByUserId(userIdThatDoesNotExist);
+        verify(findUserPort).findByUserId(userIdThatDoesNotExist);
     }
 
     @DisplayName("모든 사용자의 목록을 조회할 수 있다")
@@ -73,14 +73,14 @@ class FindUserServiceTest {
                 new User("2wls", "0224", "윤이진", "483759@naver.com"),
                 new User("1234", "1234", "1234", "1234@naver.com")
         );
-        given(userDaoPort.findAll())
+        given(findUserPort.findAll())
                 .willReturn(users);
 
         // when
         List<User> userList = findUserService.findAllUser();
 
         //then
-        verify(userDaoPort).findAll();
+        verify(findUserPort).findAll();
         assertThat(userList)
                 .extracting("userId", "password", "name", "email")
                 .containsExactly(
@@ -95,7 +95,7 @@ class FindUserServiceTest {
         // given
         String userId = "2wls";
         String password = "0224";
-        given(userDaoPort.findByUserIdAndPassword(userId, password))
+        given(findUserPort.findByUserIdAndPassword(userId, password))
                 .willReturn(Optional.of(new User("2wls", "0224", "윤이진", "483759@naver.com")));
 
         // when
@@ -104,7 +104,7 @@ class FindUserServiceTest {
         //then
         assertThat(passwordMatch)
                 .isTrue();
-        verify(userDaoPort).findByUserIdAndPassword(userId, password);
+        verify(findUserPort).findByUserIdAndPassword(userId, password);
     }
 
     @DisplayName("사용자의 아이디와 패스워드가 일치하지 않으면 에러를 반환한다")
@@ -113,7 +113,7 @@ class FindUserServiceTest {
         // given
         String userId = "2wls";
         String passwordNotMatch = "1234";
-        given(userDaoPort.findByUserIdAndPassword(userId, passwordNotMatch))
+        given(findUserPort.findByUserIdAndPassword(userId, passwordNotMatch))
                 .willReturn(Optional.empty());
 
         // when
@@ -121,6 +121,6 @@ class FindUserServiceTest {
 
         assertThat(passwordMatch)
                 .isFalse();
-        verify(userDaoPort).findByUserIdAndPassword(userId, passwordNotMatch);
+        verify(findUserPort).findByUserIdAndPassword(userId, passwordNotMatch);
     }
 }

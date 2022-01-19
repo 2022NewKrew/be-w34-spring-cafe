@@ -1,8 +1,9 @@
 package com.kakao.cafe.persistence.article.h2;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.ArticleDaoPort;
 import com.kakao.cafe.domain.article.ArticleVo;
+import com.kakao.cafe.domain.article.FindArticlePort;
+import com.kakao.cafe.domain.article.WriteArticlePort;
 import com.kakao.cafe.persistence.H2QueryBuilder;
 import com.kakao.cafe.persistence.article.ArticleRowMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class ArticleDaoH2Adaptor implements ArticleDaoPort {
+public class ArticleDaoH2Adaptor implements FindArticlePort, WriteArticlePort {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final ArticleRowMapper articleRowMapper;
     private final H2QueryBuilder h2QueryBuilder;

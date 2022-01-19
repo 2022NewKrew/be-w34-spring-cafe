@@ -1,7 +1,7 @@
 package com.kakao.cafe.application.article;
 
-import com.kakao.cafe.domain.article.ArticleDaoPort;
 import com.kakao.cafe.domain.article.ArticleVo;
+import com.kakao.cafe.domain.article.WriteArticlePort;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +19,7 @@ class WriteFindArticleServiceTest {
     WriteArticleService writeArticleService;
 
     @Mock
-    ArticleDaoPort articlePort;
+    WriteArticlePort writeArticlePort;
 
     @DisplayName("회원은 글 작성을 할 수 있다")
     @Test
@@ -31,7 +31,7 @@ class WriteFindArticleServiceTest {
         writeArticleService.write(articleVo);
 
         //then
-        verify(articlePort).save(any(ArticleVo.class));
+        verify(writeArticlePort).save(any(ArticleVo.class));
     }
 
 }

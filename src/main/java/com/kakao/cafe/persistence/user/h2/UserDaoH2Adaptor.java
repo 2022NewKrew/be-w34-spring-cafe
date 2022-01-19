@@ -1,7 +1,9 @@
 package com.kakao.cafe.persistence.user.h2;
 
+import com.kakao.cafe.domain.user.FindUserPort;
+import com.kakao.cafe.domain.user.SignUpUserPort;
+import com.kakao.cafe.domain.user.UpdateUserPort;
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserDaoPort;
 import com.kakao.cafe.persistence.H2QueryBuilder;
 import com.kakao.cafe.persistence.user.UserRowMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class UserDaoH2Adaptor implements UserDaoPort {
+public class UserDaoH2Adaptor implements FindUserPort, SignUpUserPort, UpdateUserPort {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final UserRowMapper userRowMapper;
     private final H2QueryBuilder h2QueryBuilder;
