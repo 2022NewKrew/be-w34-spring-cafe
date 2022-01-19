@@ -1,8 +1,11 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.exception.user.NotAllowedUserException;
 import com.kakao.cafe.model.dto.ArticleDto;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.util.annotation.Auth;
+import com.kakao.cafe.util.annotation.AuthMyArticle;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +29,7 @@ public class ArticleController {
         return "index";
     }
 
+    @Auth
     @GetMapping("/articles/{index}")
     public String articleView(@PathVariable int index, Model model) {
         ArticleDto article = articleService.filterArticleByIndex(index);
@@ -33,15 +37,13 @@ public class ArticleController {
         return "qna/show";
     }
 
+    @Auth
     @GetMapping("/articles")
-    public String writeArticleView(HttpSession session) {
-        UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
-        if (loginUser == null) {
-            return "redirect:/users/login";
-        }
+    public String writeArticleView() {
         return "qna/form";
     }
 
+    @Auth
     @PostMapping("/articles")
     public String writeArticle(ArticleDto article, HttpSession session) {
         UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
@@ -49,21 +51,24 @@ public class ArticleController {
         return "redirect:";
     }
 
+    @AuthMyArticle
     @GetMapping("/articles/{index}/update")
-    public String updateArticleView(@PathVariable int index, Model model) {
+    public String updateArticleView(@PathVariable int index, HttpSession session, Model model) {
         ArticleDto article = articleService.filterArticleByIndex(index);
         model.addAttribute("article", article);
         return "qna/updateForm";
     }
 
+    @AuthMyArticle
     @PutMapping("/articles/{index}/update")
-    public String updateArticle(@PathVariable int index, ArticleDto article) {
+    public String updateArticle(@PathVariable int index, ArticleDto article, HttpSession session) {
         articleService.updateArticle(index, article);
         return "redirect:";
     }
 
+    @AuthMyArticle
     @DeleteMapping("/articles/{index}/delete")
-    public String deleteArticle(@PathVariable int index) {
+    public String deleteArticle(@PathVariable int index, HttpSession session) {
         articleService.deleteArticle(index);
         return "redirect:/";
     }

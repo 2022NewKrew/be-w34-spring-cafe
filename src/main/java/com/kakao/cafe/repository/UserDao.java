@@ -1,6 +1,5 @@
-package com.kakao.cafe.dao;
+package com.kakao.cafe.repository;
 
-import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.vo.UserVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

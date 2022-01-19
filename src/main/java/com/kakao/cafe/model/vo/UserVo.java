@@ -4,14 +4,18 @@ import java.util.Objects;
 
 public class UserVo {
 
-    private final int id;
+    private int id;
     private String userId;
     private String password;
-    private final String name;
+    private String name;
     private String email;
 
-    public UserVo(int id, String name) {
+    public UserVo() {
+    }
+
+    public UserVo(int id, String userId, String name) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
     }
 
@@ -43,6 +47,16 @@ public class UserVo {
         return email;
     }
 
+    @Override
+    public String toString() {
+        return "UserVo{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {

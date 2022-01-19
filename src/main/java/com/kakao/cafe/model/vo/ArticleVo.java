@@ -5,9 +5,13 @@ import java.util.Objects;
 public class ArticleVo {
 
     private int id;
-    private final UserVo writer;
-    private final String title;
-    private final String contents;
+    private UserVo writer;
+    private String title;
+    private String contents;
+
+    public ArticleVo() {
+
+    }
 
     public ArticleVo(UserVo writer, String title, String contents) {
         this.writer = writer;

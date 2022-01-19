@@ -9,6 +9,10 @@ public class ArticleDto {
     private String title;
     private String contents;
 
+    public ArticleDto() {
+
+    }
+
     public ArticleDto(String title, String contents) {
         this.title = title;
         this.contents = contents;
