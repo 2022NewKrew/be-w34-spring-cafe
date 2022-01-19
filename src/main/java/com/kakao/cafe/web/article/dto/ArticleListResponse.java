@@ -1,42 +1,34 @@
 package com.kakao.cafe.web.article.dto;
 
-import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.Title;
-
-import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.List;
 
 public class ArticleListResponse {
-    private final int articleId;
-    private final Title title;
-    private final Timestamp createdAt;
+    private final List<ArticleResponse> articles;
 
-    public ArticleListResponse(Article article) {
-        this.articleId = article.getId();
-        this.title = article.getTitle();
-        this.createdAt = article.getCreatedAt();
+    public ArticleListResponse(List<ArticleResponse> articleResponses) {
+        this.articles = Collections.unmodifiableList(articleResponses);
     }
 
-    public int getArticleId() {
-        return articleId;
+    public List<ArticleResponse> getArticles() {
+        return articles;
     }
 
-    public Title getTitle() {
-        return title;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
+    @Override
+    public int hashCode() {
+        return articles.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
         if(!(obj instanceof ArticleListResponse)) {
             return false;
         }
 
-        ArticleListResponse articleListResponse = (ArticleListResponse) obj;
-        return articleId == articleListResponse.getArticleId() &&
-                title.equals(articleListResponse.getTitle()) &&
-                createdAt == articleListResponse.getCreatedAt();
+        ArticleListResponse other = (ArticleListResponse) obj;
+        return articles.equals(other.getArticles());
     }
 }

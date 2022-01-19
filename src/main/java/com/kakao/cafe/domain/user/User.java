@@ -40,10 +40,23 @@ public class User {
     }
 
     @Override
+    public int hashCode() {
+        int result = userId.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + email.hashCode();
+        return result;
+    }
+
+    @Override
     public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
         if(!(obj instanceof User)) {
             return false;
         }
+
         User user = (User) obj;
         return userId.equals(user.getUserId()) &&
                 password.equals(user.getPassword()) &&

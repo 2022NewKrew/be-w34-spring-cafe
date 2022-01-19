@@ -104,7 +104,7 @@ td {
     text-align: center;
 }
 
-.post-write-btn {
+.article-write-btn {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -117,12 +117,12 @@ td {
     color: white;
 }
 
-.post-btn-container {
+.article-btn-container {
     display: flex;
     justify-content: end;
 }
 
-.post-write-btn:hover {
+.article-write-btn:hover {
     background-color: #ffcd00;
     color: black;
 }

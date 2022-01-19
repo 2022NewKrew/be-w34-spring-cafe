@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository.user;
 
+import com.kakao.cafe.domain.user.Email;
 import com.kakao.cafe.domain.user.Password;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserId;
@@ -26,6 +27,11 @@ public class InMemoryUserRepository implements UserRepository{
     @Override
     public User findById(UserId userId) {
         return users.get(userId);
+    }
+
+    @Override
+    public User findByEmail(Email email) {
+        return null;
     }
 
     @Override

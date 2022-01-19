@@ -1,7 +1,6 @@
-package com.kakao.cafe.domain.user;
+package com.kakao.cafe.repository.user;
 
-import com.kakao.cafe.repository.user.H2UserRepository;
-import com.kakao.cafe.repository.user.UserRepository;
+import com.kakao.cafe.domain.user.*;
 import com.kakao.cafe.web.user.dto.UserCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -29,7 +27,7 @@ public class UserRepositoryTest {
     @DisplayName("저장소 회원정보 저장 테스트")
     @MethodSource("provideUsers")
     @ParameterizedTest
-    public void testSave(UserId userId, Password password, Name name, Email email) {
+    public void userSave(UserId userId, Password password, Name name, Email email) {
         //given
         UserCreateRequest dto = new UserCreateRequest(userId, password, name, email);
         User user = dto.toEntity();
@@ -38,13 +36,13 @@ public class UserRepositoryTest {
         userRepository.save(user);
 
         //then
-        assertThat(userRepository.findById(userId)).isEqualTo(user);
-        assertThat(userRepository.findAll()).isEqualTo(List.of(user));
+        User saved = userRepository.findById(userId);
+        assertThat(saved).isEqualTo(user);
     }
 
     private static Stream<Arguments> provideUsers() {
         return Stream.of(
-                Arguments.of(new UserId("clo.d"), new Password("testPassword"), new Name("dongwoon"), new Email("clo.d@kakaocorp.com"))
+                Arguments.of(new UserId("clo.d"), new Password("1q2w3e4r!Q"), new Name("김동운"), new Email("clo.d@kakaocorp.com"))
         );
     }
 
@@ -57,8 +55,8 @@ public class UserRepositoryTest {
         User user = dto.toEntity();
         userRepository.save(user);
 
-        Name modifiedName = new Name("modifiedName");
-        Email modifiedEmail = new Email("modifiedEmail");
+        Name modifiedName = new Name("김동운운");
+        Email modifiedEmail = new Email("clo.dd@kakaocorp.com");
 
         user.setName(modifiedName);
         user.setEmail(modifiedEmail);

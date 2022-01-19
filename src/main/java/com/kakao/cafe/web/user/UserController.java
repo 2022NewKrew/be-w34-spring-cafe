@@ -5,10 +5,7 @@ import com.kakao.cafe.domain.user.UserId;
 import com.kakao.cafe.service.user.UserCreateService;
 import com.kakao.cafe.service.user.UserFindService;
 import com.kakao.cafe.service.user.UserUpdateService;
-import com.kakao.cafe.web.user.dto.UserCreateRequest;
-import com.kakao.cafe.web.user.dto.UserListResponse;
-import com.kakao.cafe.web.user.dto.UserProfileResponse;
-import com.kakao.cafe.web.user.dto.UserUpdateRequest;
+import com.kakao.cafe.web.user.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserCreateService userCreateService;
@@ -31,18 +28,38 @@ public class UserController {
         this.userUpdateService = userUpdateService;
     }
 
-    @GetMapping()
+    @GetMapping("/list")
     public String showUsers(Model model) {
-        model.addAttribute("users", userFindService.findAll().stream()
-                .map(UserListResponse::new)
-                .collect(Collectors.toList()));
+        UserListResponse userListResponse = new UserListResponse(
+                userFindService.findAll().stream()
+                        .map(UserResponse::new)
+                        .collect(Collectors.toList())
+        );
+
+        model.addAttribute("users_length", userListResponse.getUsers().size());
+        model.addAttribute("users", userListResponse);
         return "/user/list";
     }
 
-    @PostMapping()
-    public String save(@ModelAttribute UserCreateRequest requestDto) {
-        userCreateService.save(requestDto.toEntity());
-        return "redirect:/users";
+    @GetMapping("/form")
+    public String getCreateUserForm() {
+        return "/user/form";
+    }
+
+    @PostMapping("/form")
+    public String createUser(@RequestParam String userId,
+                             @RequestParam String password,
+                             @RequestParam String name,
+                             @RequestParam String email,
+                             Model model
+    ) {
+        UserCreateRequest requestDto = new UserCreateRequest(userId, password, name, email);
+        User user = requestDto.toEntity();
+
+        userCreateService.create(user);
+
+        model.addAttribute("user", user);
+        return "/user/signup_success";
     }
 
     @GetMapping("/{userId}")
@@ -51,7 +68,7 @@ public class UserController {
         return "/user/profile";
     }
 
-    @GetMapping("/{userId}/form")
+    @GetMapping("/{userId}/update")
     public String updateForm(@PathVariable UserId userId, Model model) {
         model.addAttribute("userId", userId);
         UserProfileResponse userProfileResponse = new UserProfileResponse(userFindService.findById(userId));
@@ -69,7 +86,7 @@ public class UserController {
 
         userUpdateService.update(user, requestDto.getPassword());
 
-        return "redirect:/users";
+        return "redirect:/user";
     }
 
 }

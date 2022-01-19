@@ -8,6 +8,10 @@ public class UserCreateRequest {
     private final Name name;
     private final Email email;
 
+    public UserCreateRequest(String userId, String password, String name, String email) {
+        this(new UserId(userId), new Password(password), new Name(name), new Email(email));
+    }
+
     public UserCreateRequest(UserId userId, Password password, Name name, Email email) {
         this.userId = userId;
         this.password = password;

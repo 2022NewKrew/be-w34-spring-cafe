@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <p class="total_num">전체 멤버 {{users.length}}명</p>
+    <p class="total_num">전체 멤버 {{users_length}}명</p>
 
     <div class="container" id="main">
         <div class="col-md-10 col-md-offset-1">
@@ -35,9 +35,11 @@
                     </thead>
                     <tbody>
                     {{#users}}
+                    {{#users}}
                     <tr>
-                        <td><a href="/users/{{userId}}" style="color: blue" >{{userId}}</a></td> <td>{{name}}</td> <td>{{email}}</td><td><a href="/users/{{userId}}/form" style="color: blue" class="btn btn-success" role="button">수정</a></td>
+                        <td><a href="/user/{{userId}}" style="color: blue" >{{userId}}</a></td> <td>{{name}}</td> <td>{{email}}</td><td><a href="/user/{{userId}}/update" style="color: blue" class="btn btn-success" role="button">수정</a></td>
                     </tr>
+                    {{/users}}
                     {{/users}}
                     </tbody>
                 </table>

@@ -24,12 +24,12 @@ public class JdbcSpringConfig {
     }
 
     @Bean
-    public UserRepository getUserRepository(JdbcTemplate jdbcTemplate) {
+    public UserRepository userRepository(JdbcTemplate jdbcTemplate) {
         return new H2UserRepository(jdbcTemplate);
     }
 
     @Bean
-    public ArticleRepository getArticleRepository(JdbcTemplate jdbcTemplate) {
+    public ArticleRepository articleRepository(JdbcTemplate jdbcTemplate) {
         return new H2ArticleRepository(jdbcTemplate);
     }
 }

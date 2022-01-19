@@ -1,1 +1,1 @@
-SELECT * FROM USERS;
+INSERT INTO USERS (USERID, PASSWORD, NAME, EMAIL) VALUES ('hong.test', '1q2w3e4r!Q', '홍길동', 'hong.test@kakaocorp.com')

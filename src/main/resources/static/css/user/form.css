@@ -84,11 +84,11 @@ li {
     margin-bottom: 50px;
 }
 
-.post-comment {
+.article-comment {
     margin-top: 60px;
 }
 
-.post-comment-count {
+.article-comment-count {
     margin-bottom: 30px;
 }
 
@@ -105,13 +105,13 @@ li {
     margin-bottom: 10px;
 }
 
-.post-title {
+.article-title {
     font-weight: bold;
     margin-top: 20px;
     margin-left: 3%;
 }
 
-.post-content {
+.article-content {
     margin-top: 20px;
     margin-left: 3%;
     font-weight: bold;
@@ -138,7 +138,7 @@ li {
     margin: 20px;
 }
 
-.post-btn-container {
+.article-btn-container {
     display: flex;
     justify-content: end;
 }
@@ -153,7 +153,7 @@ li {
     display: flex;
     border: 1px solid lightgray;
     margin: 20px;
-    width: 40%;
+    width: 60%;
 }
 
 .form-control {
@@ -182,4 +182,13 @@ li {
 
 label {
     width: 25%;
+}
+
+.form-error {
+    padding: 20px;
+    font-size: 14px;
+    background-color: #FFC0CB;
+    color: #FF0000;
+    border: 1px #FF0000;
+    width: 60%;
 }

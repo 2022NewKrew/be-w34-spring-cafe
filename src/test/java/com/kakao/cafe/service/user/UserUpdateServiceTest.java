@@ -38,8 +38,8 @@ class UserUpdateServiceTest {
         given(userRepository.findById(userId)).willReturn(givenUser);
 
         Password incorrectPassword = new Password(password + "incorrect");
-        Name modifiedName = new Name("modifiedName");
-        Email modifiedEmail = new Email("modifiedEmail");
+        Name modifiedName = new Name("김동운운");
+        Email modifiedEmail = new Email("clo.dd@kakaocorp.com");
 
         givenUser.setName(modifiedName);
         givenUser.setEmail(modifiedEmail);
@@ -51,7 +51,7 @@ class UserUpdateServiceTest {
 
     private static Stream<Arguments> provideUsers() {
         return Stream.of(
-                Arguments.of(new UserId("clo.d"), new Password("testPassword"), new Name("dongwoon"), new Email("clo.d@kakaocorp.com"))
+                Arguments.of(new UserId("clo.d"), new Password("1q2w3e4r!Q"), new Name("김동운"), new Email("clo.d@kakaocorp.com"))
         );
     }
 }

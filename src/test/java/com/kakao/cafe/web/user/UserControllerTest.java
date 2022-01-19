@@ -5,6 +5,7 @@ import com.kakao.cafe.service.user.UserCreateService;
 import com.kakao.cafe.service.user.UserFindService;
 import com.kakao.cafe.service.user.UserUpdateService;
 import com.kakao.cafe.web.user.dto.UserListResponse;
+import com.kakao.cafe.web.user.dto.UserResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -43,37 +44,39 @@ class UserControllerTest {
     @ParameterizedTest
     public void showUsers(List<User> users) throws Exception {
         //given
-        String url = "/users";
+        String url = "/user/list";
         given(this.userFindService.findAll()).willReturn(users);
-        List<UserListResponse> provideUsers = users.stream().map(UserListResponse::new).collect(Collectors.toList());
+        UserListResponse provideUsers = new UserListResponse(
+                users.stream()
+                        .map(UserResponse::new)
+                        .collect(Collectors.toList())
+
+        );
 
         //when
         MvcResult result = this.mvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<UserListResponse> responseUsers = (List<UserListResponse>) result.getModelAndView().getModelMap().get("users");
+        UserListResponse responseUsers = (UserListResponse) result.getModelAndView().getModelMap().get("users");
 
         //then
         assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
-
-        for(int i = 0; i < users.size(); i++) {
-            assertThat(responseUsers.get(i).equals(provideUsers.get(i))).isTrue();
-        }
+        assertThat(responseUsers.equals(provideUsers)).isTrue();
     }
 
     private static Stream<List<User>> provideUsers() {
         User test1 = new User();
         User test2 = new User();
-        test1.setUserId(new UserId("test1"));
-        test1.setPassword(new Password("1234"));
-        test1.setName(new Name("test1Name"));
-        test1.setEmail(new Email("test1@kakaocorp.com"));
+        test1.setUserId(new UserId("clo.d"));
+        test1.setPassword(new Password("1q2w3e4r!Q"));
+        test1.setName(new Name("김동운"));
+        test1.setEmail(new Email("clo.d@kakaocorp.com"));
 
-        test2.setUserId(new UserId("test2"));
-        test2.setPassword(new Password("5678"));
-        test2.setName(new Name("test2Name"));
-        test2.setEmail(new Email("test2@kakaocorp.com"));
+        test2.setUserId(new UserId("clo.dd"));
+        test2.setPassword(new Password("1q2w3e4r@W"));
+        test2.setName(new Name("김동운운"));
+        test2.setEmail(new Email("clo.dd@kakaocorp.com"));
         return Stream.of(
                 List.of(test1, test2)
         );
@@ -83,7 +86,7 @@ class UserControllerTest {
     @MethodSource("provideUser")
     @ParameterizedTest
     public void getModifyUserForm(User user) throws Exception {
-        String url = "/users/" + user.getUserId().getValue() + "/form";
+        String url = "/user/" + user.getUserId().getValue() + "/update";
         given(this.userFindService.findById(user.getUserId())).willReturn(user);
 
         mvc.perform(get(url).param("userId", user.getUserId().getValue()))
@@ -93,10 +96,10 @@ class UserControllerTest {
 
     private static Stream<User> provideUser() {
         User test = new User();
-        test.setUserId(new UserId("test"));
-        test.setPassword(new Password("1234"));
-        test.setName(new Name("testName"));
-        test.setEmail(new Email("test@kakaocorp.com"));
+        test.setUserId(new UserId("clo.d"));
+        test.setPassword(new Password("1q2w3e4r!Q"));
+        test.setName(new Name("김동운"));
+        test.setEmail(new Email("clo.d@kakaocorp.com"));
         return Stream.of( test );
     }
 }
