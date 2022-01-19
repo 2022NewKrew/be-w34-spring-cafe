@@ -106,9 +106,11 @@ public class ArticleController {
 
         Article article = articleService.findOne(index);
 
-        if (!user.getName().equals(article.getWriter())) {
+        if (!user.getUserId().equals(article.getWriterId())) {
             throw new IllegalStateException(ErrorMessage.UPDATE_FORBIDDEN.getMsg());
         }
+
+        article.setWriterId(user.getUserId());
         return article;
     }
 }
