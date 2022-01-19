@@ -3,8 +3,6 @@ package com.kakao.cafe.user.repo;
 import com.kakao.cafe.user.model.User;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -66,9 +64,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public Optional<User> fetchByUserId(String userId) {
         String query = "SELECT * FROM `USER` WHERE USER_ID=?";
-        SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("USER_ID", userId);
-        User user = jdbcTemplate.queryForObject(query, mapper, parameterSource);
+        User user = jdbcTemplate.queryForObject(query, mapper, userId);
         return Optional.ofNullable(user);
     }
 }
