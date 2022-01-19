@@ -28,14 +28,6 @@ public class ArticleController {
         return "qna/list";
     }
 
-    @GetMapping("/qna/form")
-    public String form(Model model, HttpSession session) {
-        Object value = session.getAttribute("sessionedUser");
-        if (value == null)
-            return "redirect:/user/login";
-        return "/qna/form";
-    }
-
     @PostMapping("/questions")
     public String create(ArticleFormRequest articleFormRequest, HttpSession session) {
         Object value = session.getAttribute("sessionedUser");
@@ -47,8 +39,6 @@ public class ArticleController {
     @PutMapping("/questions/{id}")
     public String update(@PathVariable("id") Long id, ArticleFormRequest articleFormRequest, HttpSession session) {
         Object value = session.getAttribute("sessionedUser");
-        if (value == null)
-            return "redirect:/user/login";
         User sessionUser = (User) value;
         try {
             articleService.updateArticleInfo(id, sessionUser, articleFormRequest);
@@ -61,8 +51,6 @@ public class ArticleController {
     @DeleteMapping("/questions/{id}")
     public String delete(@PathVariable("id") Long id, HttpSession session) {
         Object value = session.getAttribute("sessionedUser");
-        if (value == null)
-            return "redirect:/user/login";
         User sessionUser = (User) value;
         try {
             articleService.deleteArticle(id, sessionUser);
@@ -70,6 +58,13 @@ public class ArticleController {
             return "redirect:/articles/" + id;
         }
         return "redirect:/";
+    }
+    @GetMapping("/questions/{id}/form")
+    public String updateForm(@PathVariable("id") Long articleId, Model model, HttpSession session) {
+        Object value = session.getAttribute("sessionedUser");
+        Article article = articleService.findArticle(articleId);
+        model.addAttribute("article", article);
+        return "qna/updateform";
     }
 
     @GetMapping("/articles/{id}")
@@ -79,13 +74,5 @@ public class ArticleController {
         return "qna/show";
     }
 
-    @GetMapping("/questions/{id}/form")
-    public String updateForm(@PathVariable("id") Long articleId, Model model, HttpSession session) {
-        Object value = session.getAttribute("sessionedUser");
-        if (value == null)
-            return "redirect:/";
-        Article article = articleService.findArticle(articleId);
-        model.addAttribute("article", article);
-        return "qna/updateform";
-    }
+
 }

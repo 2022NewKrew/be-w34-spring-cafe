@@ -10,11 +10,11 @@ import java.util.List;
 
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
-    public static final List<String> loginNeeded = List.of("/users/*/update");
+    public static final List<String> loginNeeded = List.of("/users/*/update","/qna","/questions/*");
     public static final List<String> loginNotNeeded = List.of();
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        User loginUser = (User) request.getSession().getAttribute("loginUser");
+        User loginUser = (User) request.getSession().getAttribute("sessionedUser");
         if (loginUser != null) {
             return true;
         }
