@@ -17,6 +17,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void uploadArticle(ArticleDto articleDto) {
+        articleDto.setViews(articleDto.getViews() + 1);
         articleRepository.save(articleMapper.toArticleEntity(articleDto));
     }
 
