@@ -7,11 +7,11 @@ import com.kakao.cafe.util.Pageable;
 import java.util.Optional;
 
 public interface UserRepository {
-    public void save(User entity);
+    void save(User entity);
 
-    public void update(User entity);
+    void update(User entity);
 
-    public Optional<User> findByEmail(User entity);
+    Optional<User> findByEmail(User entity);
 
-    public Page<User> findAll(Pageable pageable);
+    Page<User> findAll(Pageable pageable);
 }
