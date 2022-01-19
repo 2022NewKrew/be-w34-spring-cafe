@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface CommentRepository {
 
-    List<Comment> findAll();
+    Comment edit();
+
+    Comment delete();
+
+    Comment save(Comment comment);
 
     List<Comment> findAllOfArticle(Article article);
 }

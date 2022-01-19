@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS COMMENT;
 DROP TABLE IF EXISTS ARTICLE;
 DROP TABLE IF EXISTS MEMBER;
 
@@ -18,4 +19,15 @@ CREATE TABLE IF NOT EXISTS ARTICLE
     author_id  int         not null,
     time       DATETIME,
     foreign key (author_id) references member (member_id)
-)
+);
+
+CREATE TABLE IF NOT EXISTS COMMENT
+(
+    comment_id int primary key auto_increment,
+    text       varchar(50) not null,
+    time       DATETIME,
+    author_id  int         not null,
+    article_id int         not null,
+    foreign key (author_id) references MEMBER (member_id),
+    foreign key (article_id) references ARTICLE (article_id)
+);
