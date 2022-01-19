@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class QnaController {
     private final QuestionService questionService;
-    Logger logger = LoggerFactory.getLogger(com.kakao.cafe.user.controller.UserController.class);
+    Logger logger = LoggerFactory.getLogger(QnaController.class);
 
     @PostMapping("/questions")
     public String submitArticle(@ModelAttribute QuestionDTO newQuestion) {
