@@ -55,7 +55,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     }
 
     private void throwIfNotAuthorized(Auth auth, Long id) {
-        if (!auth.validateById(id)) {
+        if (auth.isNotValidId(id)) {
             throw new UnauthorizedAccessException("인가되지 않은 접근입니다.");
         }
     }

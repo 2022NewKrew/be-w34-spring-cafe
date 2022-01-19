@@ -8,7 +8,7 @@ public class Auth {
         this.authId = authId;
     }
 
-    public boolean validateById(Long id) {
-        return authId.equals(id);
+    public boolean isNotValidId(Long id) {
+        return !authId.equals(id);
     }
 }
