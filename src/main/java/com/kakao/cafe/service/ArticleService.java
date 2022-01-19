@@ -26,8 +26,8 @@ public class ArticleService {
         articleDao.save(articleVo);
     }
 
-    public ArticleDto getArticle(int id) {
-        ArticleVo articleVo = articleDao.findById(id);
+    public ArticleDto getArticle(int articleId) {
+        ArticleVo articleVo = articleDao.findByArticleId(articleId);
         return modelMapper.map(articleVo,ArticleDto.class);
     }
 
@@ -43,7 +43,7 @@ public class ArticleService {
         articleDao.update(articleVo);
     }
 
-    public void deleteArticle(int id) {
-        articleDao.deleteById(id);
+    public void deleteArticle(int articleId) {
+        articleDao.deleteByArticleId(articleId);
     }
 }
