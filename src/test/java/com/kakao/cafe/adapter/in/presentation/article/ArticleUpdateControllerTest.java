@@ -36,11 +36,12 @@ class ArticleUpdateControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("sessionedUser", sessionedUser);
 
-        String url = "/articles/" + userId + "/" + articleId + "/form";
+        String url = "/articles/" + articleId + "/form";
 
         // then
         mockMvc.perform(
                    MockMvcRequestBuilders.post(url).session(session)
+                                         .param("userId", userId)
                                          .param("title", title)
                                          .param("contents", contents)
                                          .accept(MediaType.TEXT_HTML)
