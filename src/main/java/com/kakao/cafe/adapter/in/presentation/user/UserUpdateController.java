@@ -8,17 +8,12 @@ import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
 import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
 import com.kakao.cafe.domain.user.exceptions.WrongPasswordException;
-import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UserUpdateController {
-
-    private static final Logger log = LoggerFactory.getLogger(UserUpdateController.class);
 
     private final UpdateUserInfoUseCase updateUserInfoUseCase;
 
@@ -27,11 +22,9 @@ public class UserUpdateController {
     }
 
     @PostMapping("/users/{userId}/form")
-    public String update(HttpServletRequest request, @PathVariable String userId, UpdateRequest updateRequest)
+    public String update(@PathVariable String userId, UpdateRequest updateRequest)
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException, UserNotExistException, WrongPasswordException {
-        log.info("[{}]User {} required info update", request.getRequestURI(), userId);
         updateUserInfoUseCase.updateUserInfo(userId, updateRequest);
-        log.info("[{}]Success user {} info update", request.getRequestURI(), userId);
         return "redirect:/users";
     }
 }
