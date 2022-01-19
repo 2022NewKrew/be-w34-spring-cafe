@@ -37,7 +37,6 @@ public class ReplyRepository implements MyRepository<Reply, Long> {
                 sql,
                 entity.getArticleId(),
                 entity.getAuthorId(),
-                entity.getAuthor(),
                 entity.getDescription()
         );
     }
