@@ -80,8 +80,8 @@ public class ArticleJdbc implements ArticleRepository {
                                         "FROM userlist AS u " +
                                         "JOIN article AS a " +
                                         "ON u.id = a.user_id " +
-                                        "WHERE deleted = false " +
-                                        "ORDER BY created_at DESC"
+                                        "WHERE a.deleted = false " +
+                                        "ORDER BY a.created_at DESC"
                         ),
                         (rs, count) -> ArticleDto.from(
                                 rs.getLong("idx"),
