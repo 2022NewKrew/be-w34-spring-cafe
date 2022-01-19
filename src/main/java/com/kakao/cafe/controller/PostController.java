@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class PostController {
@@ -59,5 +60,25 @@ public class PostController {
 
         model.addAttribute("post", post);
         return "post/show";
+    }
+
+    @PutMapping("/posts/{postId}")
+    public String postById(@Valid WritePostRequest postDto, Model model, HttpSession session) {
+        logger.info("[PUT] /posts/{postId} 게시글 수정");
+        User user = (User) session.getAttribute(SESSION);
+        Post post = postDto.toEntity(user.getUserId());
+//        postService.writePost(post); TODO - 업데이트 추가
+
+        model.addAttribute("post", post);
+        return "post/show";
+    }
+
+    @GetMapping("/posts/{postId}/update")
+    public String updatePostGetContent(@PathVariable int postId, Model model) {
+        logger.info("[GET] /posts/{postId}/update 게시글 수정 페이지");
+        Post post = postService.getPostById(postId);
+
+        model.addAttribute("post", post);
+        return "post/form_update";
     }
 }

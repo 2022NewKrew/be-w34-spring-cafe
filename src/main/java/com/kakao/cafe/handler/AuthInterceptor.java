@@ -10,7 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class AuthInterceptor implements HandlerInterceptor {
 
     private static final String SESSION = "sessionUser";
-    public static final List<String> includePatterns = List.of("/post/write", "/posts/write", "/posts/**");
+    public static final List<String> includePatterns = List.of("/post/write", "/posts/**");
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
