@@ -3,6 +3,7 @@ package com.kakao.cafe.user.adapter.out;
 import com.kakao.cafe.user.application.port.out.LoadUserPort;
 import com.kakao.cafe.user.application.port.out.SaveUserPort;
 import com.kakao.cafe.user.domain.Email;
+import com.kakao.cafe.user.domain.Password;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserId;
 import java.util.List;
@@ -28,7 +29,7 @@ public class JdbcTemplateUserRepository implements SaveUserPort, LoadUserPort {
         UUID userId = user.getUserId().getUUID();
         String email = user.getEmail().getValue();
         String nickname = user.getNickname();
-        String password = user.getPassword();
+        String password = user.getPassword().getValue();
 
         jdbcTemplate.update(
             "INSERT INTO `USER` (id, email, nickname, password) VALUES (?, ?, ?, ? )",
@@ -53,7 +54,7 @@ public class JdbcTemplateUserRepository implements SaveUserPort, LoadUserPort {
             UserId userId = new UserId(rs.getString("id"));
             Email email = new Email(rs.getString("email"));
             String nickname = rs.getString("nickname");
-            String password = rs.getString("password");
+            Password password = new Password(rs.getString("password"));
 
             return new User(userId, email, nickname, password);
         };
