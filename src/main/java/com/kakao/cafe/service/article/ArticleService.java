@@ -35,6 +35,11 @@ public class ArticleService {
 
     // 게시물 수정
     public void update(PostArticleDto postArticleDto, int id) {
-        this.articleRepository.updateArticle(id, postArticleDto.getTitle(), postArticleDto.getContents());
+        this.articleRepository.update(id, postArticleDto.getTitle(), postArticleDto.getContents());
+    }
+
+    // 게시물 삭제
+    public void delete(int id) {
+        this.articleRepository.delete(id);
     }
 }

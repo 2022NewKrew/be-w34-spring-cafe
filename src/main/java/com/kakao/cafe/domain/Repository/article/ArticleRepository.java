@@ -32,10 +32,13 @@ public class ArticleRepository {
     }
 
     // 게시물 수정
-    public void updateArticle(int id, String title, String contents) {
-        Article targetArticle = findById(id);
+    public void update(int id, String title, String contents) {
         this.jdbcTemplate.update("UPDATE ARTICLES SET title=?, contents=? WHERE id =?", title, contents, id);
     }
 
+    // 게시물 삭제
+    public void delete(int id) {
+        this.jdbcTemplate.update("DELETE FROM ARTICLES WHERE id = ?", id);
+    }
 
 }

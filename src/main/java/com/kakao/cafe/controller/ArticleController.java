@@ -65,4 +65,12 @@ public class ArticleController {
         this.articleService.update(postArticleDto, id);
         return "redirect:/articles";
     }
+
+    @DeleteMapping("/articles/{id}/delete")
+    public String deleteArticle(@PathVariable int id, HttpSession session) throws WrongAccessException {
+        ReferArticleDto referArticleDto = this.articleService.findArticleById(id);
+        this.userService.userValidation(referArticleDto.getWriter(), session);
+        this.articleService.delete(id);
+        return "redirect:/articles";
+    }
 }
