@@ -14,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
-	private final static String SAVE_QUERY = "INSERT INTO `user`(user_id, password, name, email) VALUES(?, ?, ?, ?)";
-	private final static String FIND_ALL_QUERY = "SELECT * FROM `user`";
-	private final static String FIND_BY_ID_QUERY = "SELECT * FROM `user` WHERE id = ?";
-	private final static String FIND_BY_USER_ID_QUERY = "SELECT * FROM `user` WHERE user_id = ?";
-	private final static String UPDATE_QUERY = "UPDATE `user` SET password = ?, name = ?, email = ? WHERE id = ?";
+	private static final String SAVE_QUERY = "INSERT INTO `user`(user_id, password, name, email) VALUES(?, ?, ?, ?)";
+	private static final String FIND_ALL_QUERY = "SELECT * FROM `user`";
+	private static final String FIND_BY_ID_QUERY = "SELECT * FROM `user` WHERE id = ?";
+	private static final String FIND_BY_USER_ID_QUERY = "SELECT * FROM `user` WHERE user_id = ?";
+	private static final String UPDATE_QUERY = "UPDATE `user` SET password = ?, name = ?, email = ? WHERE id = ?";
 
 	private final JdbcTemplate jdbcTemplate;
 	private final UserRowMapper userRowMapper;

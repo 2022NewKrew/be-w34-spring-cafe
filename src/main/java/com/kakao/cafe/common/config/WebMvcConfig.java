@@ -1,5 +1,9 @@
 package com.kakao.cafe.common.config;
 
+import javax.sql.DataSource;
+
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -26,5 +30,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(loginCheckInterceptor)
 			.excludePathPatterns("/js/*", "/css/*", "/fonts/*", "/*.ico");
+	}
+
+	@Bean
+	public ApplicationRunner runner(DataSource dataSource) {
+		return args -> dataSource.getConnection().close();
 	}
 }

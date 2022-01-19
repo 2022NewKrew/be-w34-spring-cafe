@@ -14,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class ArticleRepositoryImpl implements ArticleRepository {
-	private final static String SAVE_QUERY = "INSERT INTO article(writer, title, contents) VALUES (?, ?, ?)";
-	private final static String FIND_ALL_QUERY = "SELECT * FROM article WHERE is_deleted = false";
-	private final static String FIND_BY_ID_QUERY = "SELECT * FROM article WHERE id = ? AND is_deleted = false";
-	private final static String UPDATE_QUERY = "UPDATE article SET title = ?, contents = ?, modify_time = CURRENT_TIME WHERE id = ?";
-	private final static String DELETE_QUERY = "UPDATE article SET is_deleted = true, modify_time = CURRENT_TIME WHERE id = ?";
+	private static final String SAVE_QUERY = "INSERT INTO article(writer, title, contents) VALUES (?, ?, ?)";
+	private static final String FIND_ALL_QUERY = "SELECT * FROM article WHERE is_deleted = false";
+	private static final String FIND_BY_ID_QUERY = "SELECT * FROM article WHERE id = ? AND is_deleted = false";
+	private static final String UPDATE_QUERY = "UPDATE article SET title = ?, contents = ?, modify_time = CURRENT_TIME WHERE id = ?";
+	private static final String DELETE_QUERY = "UPDATE article SET is_deleted = true, modify_time = CURRENT_TIME WHERE id = ?";
 
 	private final JdbcTemplate jdbcTemplate;
 	private final ArticleRowMapper articleRowMapper;
