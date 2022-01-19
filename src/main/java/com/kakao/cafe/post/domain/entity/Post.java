@@ -3,6 +3,7 @@ package com.kakao.cafe.post.domain.entity;
 import com.kakao.cafe.util.IdGenerator;
 import com.kakao.cafe.util.ValidationService;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -15,6 +16,7 @@ import java.util.Objects;
 
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Post {
     @NonNull
     private final Long id;

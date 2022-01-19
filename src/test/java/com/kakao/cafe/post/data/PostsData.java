@@ -33,6 +33,13 @@ public class PostsData {
         return getPostList().stream().map(Arguments::of);
     }
 
+    public static Stream<Arguments> getCommentStream(){
+        return getIdToComments().values().stream()
+                .flatMap(List::stream)
+                .map(Arguments::of)
+                .limit(5);
+    }
+
     public static List<Post> getPostList(){
         final Map<Long, List<Comment>> idToComments = getIdToComments();
 

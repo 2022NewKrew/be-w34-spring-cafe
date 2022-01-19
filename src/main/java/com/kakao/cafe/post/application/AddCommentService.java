@@ -13,7 +13,7 @@ public class AddCommentService {
 
     public void addComment(Long id, Comment comment){
         Post post = postRepository.getPost(id).orElseThrow(
-                () -> new IllegalArgumentException("해당 id의 게시글이 없습니다."));
+                () -> new IllegalStateException("해당 id의 게시글이 없습니다."));
 
         post.addComment(comment);
         postRepository.saveComment(id, comment);
