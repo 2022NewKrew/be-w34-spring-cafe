@@ -28,8 +28,10 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     public String login(String userId, String password, HttpSession session) {
+        System.out.println(userId);
+        System.out.println(password);
         UserDTO userDTO = userService.findById(userId);
         if (userDTO.getPassWord().equals(password)) {
             session.setAttribute("sessionedUser", userDTO);  // userDTO가 아니라 user가 돼야되나?
