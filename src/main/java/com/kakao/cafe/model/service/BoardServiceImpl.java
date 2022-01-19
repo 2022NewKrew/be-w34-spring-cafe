@@ -49,8 +49,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<ArticleDto> findArticlesByWriterId(String writer) {
-        return boardRepository.findArticlesByWriterId(writer).stream()
+    public List<ArticleDto> findArticlesByWriterId(String writerId) {
+        return boardRepository.findArticlesByWriterId(writerId).stream()
                 .map(article -> modelMapper.map(article, ArticleDto.class))
                 .collect(Collectors.toList());
     }
@@ -69,11 +69,18 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public CommentDto findComment(long articleId, long commentId) {
-        return boardRepository.findComment(articleId, commentId).stream()
+    public CommentDto findCommentByArticleIdAndCommentId(long articleId, long commentId) {
+        return boardRepository.findCommentByArticleIdAndCommentId(articleId, commentId).stream()
                 .map(comment -> modelMapper.map(comment, CommentDto.class))
                 .findFirst()
                 .orElseThrow(() -> new CommentNotFoundException("해당 댓글이 존재하지 않습니다."));
+    }
+
+    @Override
+    public List<CommentDto> findCommentByWriterId(String writerId) {
+        return boardRepository.findCommentsByWriterId(writerId).stream()
+                .map(comment -> modelMapper.map(comment, CommentDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -98,9 +105,16 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public void deleteCommentByArticleId(long articleId) {
+        if (!boardRepository.deleteCommentByArticleId(articleId)) {
+            throw new CommentNotFoundException("해당 게시글의 댓글이 존재하지 않습니다.");
+        }
+    }
+
+    @Override
     public void deleteComment(long articleId, long commentId) {
         if (!boardRepository.deleteComment(articleId, commentId)) {
-            throw new CommentNotFoundException("해당 뎃글이 존재하지 않습니다.");
+            throw new CommentNotFoundException("해당 댓글이 존재하지 않습니다.");
         }
     }
 
@@ -112,7 +126,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public boolean isSameCommentWriter(long articleId, long commentId, String writerId) {
-        return boardRepository.findComment(articleId, commentId)
+        return boardRepository.findCommentByArticleIdAndCommentId(articleId, commentId)
                 .stream().anyMatch(a -> a.getWriterId().equals(writerId));
     }
 }

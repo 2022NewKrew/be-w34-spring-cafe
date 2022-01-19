@@ -20,6 +20,7 @@ public class ArticleDto {
     private LocalDateTime createdDate;
     private Long hits;
     private int commentsCount;
+    boolean isDeleted;
 
     public String getFormattedCreatedDate() {
         return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));

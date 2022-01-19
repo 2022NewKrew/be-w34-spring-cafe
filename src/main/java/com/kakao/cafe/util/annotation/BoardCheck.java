@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface MineCheck {
+public @interface BoardCheck {
     Type type() default Type.ARTICLE;
 
     enum Type {

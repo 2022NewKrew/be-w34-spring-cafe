@@ -14,17 +14,21 @@ public interface BoardService {
 
     ArticleDto findArticleByArticleId(long articleId);
 
-    List<ArticleDto> findArticlesByWriterId(String writer);
+    List<ArticleDto> findArticlesByWriterId(String writerId);
 
     List<CommentDto> findCommentsByArticleId(long articleId);
 
-    CommentDto findComment(long articleId, long commentId);
+    CommentDto findCommentByArticleIdAndCommentId(long articleId, long commentId);
+
+    List<CommentDto> findCommentByWriterId(String writerId);
 
     void modifyArticle(ArticleDto articleDto);
 
     void modifyComment(long articleId, CommentDto commentDto);
 
     void deleteArticle(long articleId);
+
+    void deleteCommentByArticleId(long articleId);
 
     void deleteComment(long articleId, long commentId);
 
