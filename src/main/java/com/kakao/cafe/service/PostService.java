@@ -25,4 +25,12 @@ public class PostService {
     public Post getPostById(int id) {
         return postRepository.findByPostId(id);
     }
+
+    public void updatePost(Post post) {
+        postRepository.update(post);
+    }
+
+    public void deletePost(int postId) {
+        postRepository.delete(postId);
+    }
 }

@@ -61,4 +61,20 @@ public class JdbcPostRepository implements PostRepository {
             throw new PostNotFoundException("없는 게시글 입니다");
         }
     }
+
+    @Override
+    public void update(Post post) {
+        logger.info("[Jdbc] post update");
+        String sql = "update post set title = ?, content = ? where id = ?";
+
+        jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getId());
+    }
+
+    @Override
+    public void delete(int id) {
+        logger.info("[Jdbc] post delete");
+        String sql = "delete from post where id = ?";
+
+        jdbcTemplate.update(sql, id);
+    }
 }

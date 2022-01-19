@@ -35,7 +35,7 @@ class UserControllerTest {
     @Test
     @DisplayName("[성공] 유저 회원가입")
     void signUp() throws Exception {
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users/signup")
                         .param("userId", userId)
                         .param("password", password)
                         .param("name", name)
@@ -49,7 +49,7 @@ class UserControllerTest {
     @CsvSource(value = {"null, password, name, email@test", "userId, null, name, email@test",
             "userId, password, null, email@test", "userId, password, name, null"}, nullValues = {"null"})
     void signUp_FailedBy_Null(String userId, String password, String name, String email) throws Exception {
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users/signup")
                         .param("userId", userId)
                         .param("password", password)
                         .param("name", name)
@@ -63,7 +63,7 @@ class UserControllerTest {
     @CsvSource(value = {"'', password, name, email@test", "userId, '', name, email@test",
             "userId, password, '', email@test", "userId, password, name, ''"})
     void signUp_FailedBy_EmptyString(String userId, String password, String name, String email) throws Exception {
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users/signup")
                         .param("userId", userId)
                         .param("password", password)
                         .param("name", name)
@@ -76,7 +76,7 @@ class UserControllerTest {
     @ParameterizedTest(name = "email = {0}")
     @ValueSource(strings = {"test", "test@", "test@@"})
     void signUp_FailedBy_InvalidEmail(String invalidEmail) throws Exception {
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users/signup")
                         .param("userId", userId)
                         .param("password", password)
                         .param("name", name)
@@ -88,7 +88,7 @@ class UserControllerTest {
     @Test
     @DisplayName("[실패] 유저 회원가입 - 이미 있는 userID인 경우")
     void signUp_FailedBy_DuplicateUserId() throws Exception {
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users/signup")
                         .param("userId", userId)
                         .param("password", password)
                         .param("name", name)
@@ -96,7 +96,7 @@ class UserControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
 
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users/signup")
                         .param("userId", duplicateUserId)
                         .param("password", password)
                         .param("name", name)
@@ -108,7 +108,7 @@ class UserControllerTest {
     @Test
     @DisplayName("[성공] 회원 목록 조회")
     void userList() throws Exception {
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users/signup")
                         .param("userId", userId)
                         .param("password", password)
                         .param("name", name)
@@ -132,7 +132,7 @@ class UserControllerTest {
     @Test
     @DisplayName("[성공] 프로필 조회")
     void userProfile() throws Exception {
-        mockMvc.perform(post("/users/create")
+        mockMvc.perform(post("/users/signup")
                 .param("userId", userId)
                 .param("password", password)
                 .param("name", name)

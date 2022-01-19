@@ -15,16 +15,16 @@ class WritePostRequestTest {
     @Test
     @DisplayName("[성공] UserSignupRequest 객체를 생성한다")
     void WritePostRequest() {
-        new WritePostRequest(userId, title, content);
+        new WritePostRequest(title, content);
     }
 
     @Test
     @DisplayName("[성공] Entity로 올바르게 변환한다")
     void toEntity() {
-        WritePostRequest writePostRequest = new WritePostRequest(userId, title, content);
+        WritePostRequest writePostRequest = new WritePostRequest(title, content);
         Post post_Answer = new Post(INITIAL_ID, userId, title, content, new Date());
 
-        Post post = writePostRequest.toEntity();
+        Post post = writePostRequest.toEntity(userId);
 
         Assertions.assertEquals(post, post_Answer);
     }

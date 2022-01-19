@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>kakao Java Web Programming</title>
+    <title>☕️</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="../css/reset.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -36,6 +36,19 @@
                               {{post.content}}
                           </div>
                       </article>
+
+                      <ul class="nav navbar-nav navbar-right">
+                          {{#sessionUser}}
+                          <li><a class="black-component" href="/posts/{{post.id}}/update" role="button">수정</a></li>
+                          <li>
+                              <form action="/posts/{{post.id}}" method="post">
+                                  <input type="hidden" name="_method" value="delete"/>
+                                  <button class="black-component" type="submit">삭제</button>
+                              </form>
+                          </li>
+
+                          {{/sessionUser}}
+                      </ul>
 
                       <div class="post-comment">
                           <div class="post-comment-slipp">
