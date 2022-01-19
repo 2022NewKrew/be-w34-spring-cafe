@@ -11,12 +11,4 @@ public interface UserRepository {
     void delete(String userId);
     User search(String userId);
     List<User> getAllUser();
-
-    //default UserInfo getUserInfo(String userId) {
-    //    return new UserInfo(search(userId));
-    //}
-
-    //default UserProfileInfo getUserProfile(String userId) {
-    //    return new UserProfileInfo(search(userId));
-    //}
 }

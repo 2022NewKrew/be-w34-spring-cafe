@@ -7,13 +7,13 @@ import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.util.TimeStringParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Primary
@@ -43,12 +43,8 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
-    public Article retrieve(Long id) {
-        try {
-            return jdbcTemplate.queryForObject(RETRIEVE_SQL, articleRowMapper(), id);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+    public Optional<Article> retrieve(Long id) {
+        return Optional.ofNullable(jdbcTemplate.queryForObject(RETRIEVE_SQL, articleRowMapper(), id));
     }
 
     @Override

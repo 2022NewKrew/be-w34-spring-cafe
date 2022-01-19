@@ -1,8 +1,8 @@
 package com.kakao.cafe.dto.article;
 
 public class ArticleModifyCommand {
-    private String title;
-    private String contents;
+    private final String title;
+    private final String contents;
 
     public ArticleModifyCommand(String title, String contents) {
         this.title = title;

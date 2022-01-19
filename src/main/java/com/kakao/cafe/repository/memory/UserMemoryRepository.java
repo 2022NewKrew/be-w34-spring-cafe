@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository.memory;
 
 import com.kakao.cafe.dto.user.UserCreateCommand;
-import com.kakao.cafe.dto.user.UserListShow;
 import com.kakao.cafe.dto.user.UserModifyCommand;
 import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.repository.UserRepository;
@@ -12,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class UserMemoryRepository implements UserRepository {

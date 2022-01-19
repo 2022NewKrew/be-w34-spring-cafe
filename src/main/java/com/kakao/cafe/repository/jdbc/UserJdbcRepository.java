@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository.jdbc;
 
 import com.kakao.cafe.dto.user.UserCreateCommand;
-import com.kakao.cafe.dto.user.UserListShow;
 import com.kakao.cafe.dto.user.UserModifyCommand;
 import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.repository.UserRepository;

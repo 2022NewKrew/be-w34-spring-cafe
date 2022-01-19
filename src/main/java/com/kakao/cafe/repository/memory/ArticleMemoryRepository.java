@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ArticleMemoryRepository implements ArticleRepository {
@@ -31,9 +32,9 @@ public class ArticleMemoryRepository implements ArticleRepository {
     }
 
     @Override
-    public Article retrieve(Long id) {
+    public Optional<Article> retrieve(Long id) {
         long target = Long.sum(id, -1L);
-        return this.repository.get((int) target);
+        return Optional.ofNullable(this.repository.get((int) target));
     }
 
     @Override
