@@ -2,6 +2,7 @@ package com.kakao.cafe.aop;
 
 import com.kakao.cafe.domain.member.Member;
 import com.kakao.cafe.exception.ErrorMessages;
+import com.kakao.cafe.exception.UnauthenticatedException;
 import com.kakao.cafe.exception.UnauthorizedException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;
@@ -32,7 +33,7 @@ public class LoginCheckAop {
         HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
         HttpSession session = request.getSession();
         if (session.getAttribute("loginMember") == null) {
-            throw new UnauthorizedException(ErrorMessages.NOT_AUTHENTICATED_USER);
+            throw new UnauthenticatedException(ErrorMessages.NOT_AUTHENTICATED_USER);
         }
     }
 
@@ -42,7 +43,7 @@ public class LoginCheckAop {
         HttpSession session = request.getSession();
         Member loginMember = (Member) session.getAttribute("loginMember");
         if (loginMember == null) {
-            throw new UnauthorizedException(ErrorMessages.NOT_AUTHENTICATED_USER);
+            throw new UnauthenticatedException(ErrorMessages.NOT_AUTHENTICATED_USER);
         }
 
         String memberId = request.getParameter("memberId");
