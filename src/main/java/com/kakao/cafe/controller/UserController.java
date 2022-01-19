@@ -19,7 +19,7 @@ public class UserController {
     @PostMapping("/users")
     public String save(@ModelAttribute() UserSaveDto userSaveDto) {
         userService.save(userSaveDto);
-        return "redirect:/users";
+        return "redirect:/";
     }
 
     @PutMapping("/users/{id}")

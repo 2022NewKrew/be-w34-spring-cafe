@@ -25,7 +25,6 @@ public class QuestionController {
     @PostMapping("/questions")
     public String save(@RequestParam String title, @RequestParam String contents, HttpSession session) {
         User user = (User) session.getAttribute("sessionedUser");
-        System.out.println(user.getId());
         questionService.save(QuestionSaveDto.builder()
                 .userId(user.getId())
                 .writer(user.getName())
