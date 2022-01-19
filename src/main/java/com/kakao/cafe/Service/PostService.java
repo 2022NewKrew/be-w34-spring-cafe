@@ -1,8 +1,8 @@
 package com.kakao.cafe.Service;
 
 import com.kakao.cafe.Repository.PostDao;
-import com.kakao.cafe.model.Post.PostCreateRequestDto;
-import com.kakao.cafe.model.Post.PostResponseDto;
+import com.kakao.cafe.Dto.Post.PostCreateRequestDto;
+import com.kakao.cafe.Dto.Post.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.Service.UserService;
-import com.kakao.cafe.model.User.UserCreateRequestDto;
-import com.kakao.cafe.model.User.UserResponseDto;
+import com.kakao.cafe.Dto.User.UserCreateRequestDto;
+import com.kakao.cafe.Dto.User.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

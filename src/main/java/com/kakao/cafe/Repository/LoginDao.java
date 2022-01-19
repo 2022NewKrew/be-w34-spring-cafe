@@ -1,6 +1,6 @@
 package com.kakao.cafe.Repository;
 
-import com.kakao.cafe.model.Login.LoginAuthDto;
+import com.kakao.cafe.Dto.Login.LoginAuthDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

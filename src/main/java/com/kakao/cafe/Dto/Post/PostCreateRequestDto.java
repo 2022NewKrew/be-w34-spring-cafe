@@ -1,4 +1,4 @@
-package com.kakao.cafe.model.Post;
+package com.kakao.cafe.Dto.Post;
 
 import lombok.Getter;
 import lombok.ToString;

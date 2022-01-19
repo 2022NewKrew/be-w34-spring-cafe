@@ -1,7 +1,7 @@
 package com.kakao.cafe.Repository;
 
-import com.kakao.cafe.model.Post.PostCreateRequestDto;
-import com.kakao.cafe.model.Post.PostResponseDto;
+import com.kakao.cafe.Dto.Post.PostCreateRequestDto;
+import com.kakao.cafe.Dto.Post.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

@@ -1,8 +1,8 @@
 package com.kakao.cafe.Service;
 
 import com.kakao.cafe.Repository.LoginDao;
-import com.kakao.cafe.model.Login.LoginAuthDto;
-import com.kakao.cafe.model.Login.LoginRequestDto;
+import com.kakao.cafe.Dto.Login.LoginAuthDto;
+import com.kakao.cafe.Dto.Login.LoginRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

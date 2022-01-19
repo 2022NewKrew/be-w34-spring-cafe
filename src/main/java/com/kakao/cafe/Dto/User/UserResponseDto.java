@@ -1,4 +1,4 @@
-package com.kakao.cafe.model.User;
+package com.kakao.cafe.Dto.User;
 
 import lombok.RequiredArgsConstructor;
 

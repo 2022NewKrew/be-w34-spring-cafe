@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.Service.LoginService;
-import com.kakao.cafe.model.Login.LoginAuthDto;
-import com.kakao.cafe.model.Login.LoginRequestDto;
+import com.kakao.cafe.Dto.Login.LoginAuthDto;
+import com.kakao.cafe.Dto.Login.LoginRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
