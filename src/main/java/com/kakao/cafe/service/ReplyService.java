@@ -18,8 +18,8 @@ public class ReplyService {
         this.replyDao = replyDao;
     }
 
-    public List<Reply> getReplys(int articleId) {
-        return replyDao.getReplys(articleId);
+    public List<Reply> getReplies(int articleId) {
+        return replyDao.getReplies(articleId);
     }
 
     public void addReply(String writer, String contents, int articleId) {

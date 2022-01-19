@@ -26,7 +26,7 @@ public class ReplyDao {
         );
     }
 
-    public List<Reply> getReplys(int articleId) {
+    public List<Reply> getReplies(int articleId) {
         return jdbcTemplate.query("SELECT * FROM replys WHERE articleId = ? AND deleted = ?",
                 replyRowMapper(), articleId, false);
     }

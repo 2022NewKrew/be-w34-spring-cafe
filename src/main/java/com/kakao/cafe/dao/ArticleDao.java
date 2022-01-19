@@ -25,12 +25,12 @@ public class ArticleDao {
     }
 
     public void addArticle(Article article) {
-        jdbcTemplate.update("INSERT INTO articles(writer, title, contents) VALUES(?,?,?)",
-                article.getWriter(), article.getTitle(), article.getContents());
+        jdbcTemplate.update("INSERT INTO articles(writer, title, contents, deleted) VALUES(?,?,?,?)",
+                article.getWriter(), article.getTitle(), article.getContents(), false);
     }
 
     public List<Article> getArticles() {
-        return jdbcTemplate.query("SELECT * FROM articles", articleRowMapper());
+        return jdbcTemplate.query("SELECT * FROM articles WHERE deleted = ?", articleRowMapper(), false);
     }
 
     public Article getArticle(int index) {
@@ -41,6 +41,10 @@ public class ArticleDao {
     public void updateArticle(int index, Article article) {
         jdbcTemplate.update("UPDATE articles SET title=?,contents=? WHERE id=?",
                 article.getTitle(), article.getContents(), index);
+    }
+
+    public void deleteArticle(int index) {
+        jdbcTemplate.update("UPDATE articles SET deleted=? WHERE id=?", true, index);
     }
 
 }

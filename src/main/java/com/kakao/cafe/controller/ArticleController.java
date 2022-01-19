@@ -11,10 +11,7 @@ import com.kakao.cafe.vo.Reply;
 import com.kakao.cafe.vo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -44,7 +41,7 @@ public class ArticleController {
         sessionService.getLoginUser(session);
 
         Article article = articleService.getArticle(index);
-        List<Reply> replys = replyService.getReplys(index);
+        List<Reply> replys = replyService.getReplies(index);
         model.addAttribute("article", article);
         model.addAttribute("index", index);
         model.addAttribute("replys", replys);
@@ -81,6 +78,13 @@ public class ArticleController {
     public String editArticle(@PathVariable int index, Article article, HttpSession session) throws Exception {
         User loginUser = sessionService.getLoginUser(session);
         articleService.updateArticle(index, article, loginUser);
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/questions/{index}")
+    public String deleteAriticle(@PathVariable int index, HttpSession session) throws Exception {
+        User loginUser = sessionService.getLoginUser(session);
+        articleService.deleteArticle(index, loginUser);
         return "redirect:/";
     }
 
