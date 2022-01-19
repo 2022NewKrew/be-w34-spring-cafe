@@ -82,11 +82,11 @@
                             <!--                                    </ul>-->
                             <!--                                </div>-->
                             <!--                            </article>-->
-                            <form class="submit-write">
+                            <form class="submit-write" name="reply" method="post" action="/articles/{{id}}/reply">
                                 <div class="form-group" style="padding:14px;">
-                                    <textarea class="form-control" placeholder="Update your status"></textarea>
+                                    <textarea class="form-control" id="comment" name="comment" placeholder="Update your status"></textarea>
                                 </div>
-                                <button class="btn btn-success pull-right" type="button">답변하기</button>
+                                <button class="btn btn-success pull-right" type="submit">댓글달기</button>
                                 <div class="clearfix"/>
                             </form>
                         </div>
