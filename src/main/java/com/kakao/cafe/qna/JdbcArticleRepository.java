@@ -13,12 +13,12 @@ import java.util.List;
  * Time: 오후 2:18
  */
 @Repository
-public class H2ArticleRepository implements ArticleRepository{
+public class JdbcArticleRepository implements ArticleRepository{
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public H2ArticleRepository(DataSource dataSource) {
+    public JdbcArticleRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
