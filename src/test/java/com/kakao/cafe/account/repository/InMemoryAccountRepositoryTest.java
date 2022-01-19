@@ -14,8 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 
-class AccountRepositoryTest {
-    private final AccountRepository accountRepository = new AccountRepositoryImpl();
+class InMemoryAccountRepositoryTest {
+    private final AccountRepository accountRepository = new InMemoryAccountRepositoryImpl();
     private AccountDto accountDto;
 
     private AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);

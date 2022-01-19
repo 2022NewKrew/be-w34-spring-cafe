@@ -27,6 +27,8 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-core:2.13.1'
 	implementation 'org.mapstruct:mapstruct:1.5.0.Beta2'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.0.Beta2'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
 }
 
 test {

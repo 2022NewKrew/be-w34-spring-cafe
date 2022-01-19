@@ -1,5 +1,7 @@
-package com.kakao.cafe.exception;
+package com.kakao.cafe.exception.handler;
 
+import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
