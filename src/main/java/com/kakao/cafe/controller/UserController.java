@@ -40,7 +40,7 @@ public class UserController {
         try {
             userService.add(userDto, password);
         } catch (IllegalStateException e) {
-            return "redirect:/dupUserFound";
+            return "redirect:/dupIdFound";
         }
         logger.info("New User added: " + userDto.getId());
         return "redirect:/users";
