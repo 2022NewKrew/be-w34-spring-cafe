@@ -3,9 +3,11 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.exception.IncorrectUserException;
 import com.kakao.cafe.exception.NotLoginException;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.service.SessionService;
 import com.kakao.cafe.util.ErrorUtil;
 import com.kakao.cafe.vo.Article;
+import com.kakao.cafe.vo.Reply;
 import com.kakao.cafe.vo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,10 +24,12 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final SessionService sessionService;
+    private final ReplyService replyService;
 
-    public ArticleController(ArticleService articleService, SessionService sessionService) {
+    public ArticleController(ArticleService articleService, SessionService sessionService, ReplyService replyService) {
         this.articleService = articleService;
         this.sessionService = sessionService;
+        this.replyService = replyService;
     }
 
     @PostMapping("/article/create")
@@ -40,8 +44,10 @@ public class ArticleController {
         sessionService.getLoginUser(session);
 
         Article article = articleService.getArticle(index);
+        List<Reply> replys = replyService.getReplys(index);
         model.addAttribute("article", article);
         model.addAttribute("index", index);
+        model.addAttribute("replys", replys);
         return "/qna/show";
     }
 
