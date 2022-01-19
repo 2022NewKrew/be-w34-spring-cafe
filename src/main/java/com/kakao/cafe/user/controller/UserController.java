@@ -57,7 +57,9 @@ public class UserController {
     @PostMapping("/users/login")
     public String login(LoginDTO loginDTO, HttpSession session) {
         userService.login(loginDTO.getUserId(), loginDTO.getPassword(), session);
-        return "redirect:/";
+        String dest = (String) session.getAttribute("dest");
+        String redirect = (dest == null) ? "/" : dest;
+        return "redirect:" + redirect;
     }
 
     @GetMapping("/users/login")

@@ -46,7 +46,7 @@ public class UserService {
     }
 
     private void checkLoginStatus(HttpSession httpSession) {
-        if (httpSession.getAttribute("userId") != null) {
+        if (httpSession.getAttribute("sessionOfUser") != null) {
             throw new IllegalStateException("이미 로그인이 된 상태입니다.");
         }
     }

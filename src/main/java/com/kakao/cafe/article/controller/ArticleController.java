@@ -1,5 +1,6 @@
 package com.kakao.cafe.article.controller;
 
+import com.kakao.cafe.annotaion.LoginCheck;
 import com.kakao.cafe.article.dto.ArticleViewDTO;
 import com.kakao.cafe.article.dto.DetailArticleViewDTO;
 import com.kakao.cafe.article.dto.QuestionDTO;
@@ -23,6 +24,7 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String question(QuestionDTO questionDTO) {
+
         articleService.question(ArticleFactory.toArticle(questionDTO));
 
         return "redirect:/";
@@ -38,6 +40,7 @@ public class ArticleController {
         return "index";
     }
 
+    @LoginCheck
     @GetMapping("/articles/{index}")
     public String getArticleById(@PathVariable("index") Long id, Model model) {
         model.addAttribute("article", new DetailArticleViewDTO(articleService.findById(id)));
