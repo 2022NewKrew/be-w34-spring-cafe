@@ -2,7 +2,6 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ArticleRequestDTO;
-import com.kakao.cafe.dto.ArticleResponseDTO;
 
 import java.util.List;
 import java.util.Optional;

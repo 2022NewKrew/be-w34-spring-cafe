@@ -3,7 +3,6 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.controller.interceptor.ValidateLogin;
 import com.kakao.cafe.dto.ArticleRequestDTO;
 import com.kakao.cafe.dto.ArticleResponseDTO;
-import com.kakao.cafe.error.exception.ArticleNotFoundException;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
