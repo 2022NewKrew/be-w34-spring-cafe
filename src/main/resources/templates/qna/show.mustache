@@ -25,6 +25,12 @@
     .menu-button:hover {
         background-color: #eee;
     }
+    .disabled {
+        background-color: #eee;
+        color: white;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
 
 </style>
 
@@ -59,8 +65,31 @@
                 <span style="font-size: 16px">{{post.contents}}</span>
             </div>
             <div style="margin-top: 80px">
-                <span>댓글 0개</span>
-                <hr/>
+                <div style="padding-bottom: 16px; border-bottom: 1px solid #eee">
+                    <span style="font-weight: 400; font-size: 14px">댓글 {{post.replyListInfo.total}}개</span>
+                </div>
+
+                {{#post.replyListInfo.replyList}}
+                <div style="display:flex; position:relative; flex-direction: column; border-bottom: 1px solid #eee; padding-top: 24px; padding-bottom: 24px">
+                    <form method="post" action="/questions/{{post.id}}/answers/{{id}}">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button style="padding: 6px 8px; border: none; background-color: #000; color: #fff; position: absolute; right: 20px;">삭제</button>
+                    </form>
+                    <span style="font-size: 16px; font-weight: 500; margin-bottom: 4px">{{writer.name}}</span>
+                    <span style="margin-bottom: 4px; font-weight: normal; font-size: 16px; line-height: 32px; color: #666">{{content}}</span>
+                    <span style="font-size: 14px; color: #ccc">{{createdAt}}</span>
+                </div>
+                {{/post.replyListInfo.replyList}}
+
+                <div style="height: 163px; border: 1px solid #eee; padding: 20px; display: flex; flex-direction: column; margin-top: 24px">
+                    {{#sessionedUser}}
+                        <span style="font-weight: 400; font-size: 16px; margin-bottom: 10px">{{name}}</span>
+                    {{/sessionedUser}}
+                    <form style="display: flex; flex-direction: column;" method="POST" action="/questions/{{post.id}}/answers">
+                        <input autocomplete="off" name="contents" onkeyup="buttonStatus(this)" placeholder="내용을 입력하세요" style="width: 100%; outline: none; border: none; font-size: 16px; line-height: 32px;">
+                        <button id="registerButton" class="disabled post-button alt-color" style="align-self: end">등록</button>
+                    </form>
+                </div>
             </div>
             <button type="button" class="post-button">
                 <a href="/" class="alt-color" style="text-decoration: none; color: white">목록으로</a>
@@ -70,6 +99,14 @@
 </div>
 
 <script>
+    const button = document.getElementById('registerButton');
+
+    function buttonStatus(x) {
+        if (x.value.length !== 0)
+            button.classList.remove("disabled");
+        else
+            button.classList.add("disabled");
+    }
     function menu(x) {
         x.classList.toggle("change");
     }

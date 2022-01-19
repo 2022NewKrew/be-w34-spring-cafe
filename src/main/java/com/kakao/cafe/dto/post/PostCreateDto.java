@@ -1,4 +1,4 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.dto.post;
 
 public class PostCreateDto {
     private String title;

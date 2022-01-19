@@ -1,4 +1,4 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.dto.member;
 
 import com.kakao.cafe.domain.Member;
 

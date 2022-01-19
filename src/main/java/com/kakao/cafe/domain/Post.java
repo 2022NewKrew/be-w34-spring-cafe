@@ -1,18 +1,21 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.dto.PostCreateDto;
+import com.kakao.cafe.dto.post.PostCreateDto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Post {
-    // 다음 생성하는 row 의 id 값을 저장하고 있는 변수
-    private static int postSeq = 1;
     private int id;
     private String title;
     private String content;
     private LocalDate createdAt;
     private Member writer;
     private int viewCount;
+
+    // mappedBy post
+    private List<Reply> replyList = new ArrayList<>();
 
     public Post() {
     }
@@ -87,6 +90,14 @@ public class Post {
     }
 
     public void updateViewCount() {
-        this.viewCount ++;
+        this.viewCount++;
+    }
+
+    public List<Reply> getReplyList() {
+        return replyList;
+    }
+
+    public void setReplyList(List<Reply> replyList) {
+        this.replyList = replyList;
     }
 }

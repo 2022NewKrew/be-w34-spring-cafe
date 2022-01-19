@@ -20,3 +20,16 @@ CREATE TABLE IF NOT EXISTS Post
     foreign key(writerId) references Member(id),
     primary key(id)
 );
+
+CREATE TABLE IF NOT EXISTS Reply
+(
+    id integer NOT NULL auto_increment,
+    content varchar(255) NOT NULL,
+    postId integer NOT NULL,
+    writerId integer NOT NULL,
+    createdAt timestamp,
+    isRemoved bool NOT NULL DEFAULT false,
+    foreign key(writerId) references Member(id),
+    foreign key(postId) references Post(id),
+    primary key(id)
+);

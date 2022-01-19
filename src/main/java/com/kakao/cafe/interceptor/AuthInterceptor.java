@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.GenericFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,6 +19,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         urlPattern.add(new HttpRequest("GET", "/questions/{}"));
         urlPattern.add(new HttpRequest("POST", "/questions"));
         urlPattern.add(new HttpRequest("GET", "/qna/form"));
+        urlPattern.add(new HttpRequest("POST", "/questions/{}/answers"));
     }
 
     @Override

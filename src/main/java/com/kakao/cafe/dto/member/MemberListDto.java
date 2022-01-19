@@ -1,4 +1,4 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.dto.member;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ public class MemberListDto {
     private int total;
     private List<MemberDto> memberList;
 
-    public MemberListDto(int total, List<MemberDto> memberList){
+    public MemberListDto(int total, List<MemberDto> memberList) {
         this.total = total;
         this.memberList = memberList;
     }

@@ -1,8 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Member;
-import com.kakao.cafe.dto.MemberCreateDto;
-import com.kakao.cafe.dto.MemberDto;
+import com.kakao.cafe.dto.member.MemberCreateDto;
+import com.kakao.cafe.dto.member.MemberDto;
 import com.kakao.cafe.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

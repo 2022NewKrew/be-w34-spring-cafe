@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.PostListDto;
-import com.kakao.cafe.dto.PostListItemDto;
+import com.kakao.cafe.dto.post.PostListDto;
+import com.kakao.cafe.dto.post.PostListItemDto;
 import com.kakao.cafe.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

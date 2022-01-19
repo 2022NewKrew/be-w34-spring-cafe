@@ -1,13 +1,12 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.PostCreateDto;
-import com.kakao.cafe.dto.PostDetailDto;
-import com.kakao.cafe.dto.PostUpdateDto;
+import com.kakao.cafe.dto.post.PostCreateDto;
+import com.kakao.cafe.dto.post.PostDetailDto;
+import com.kakao.cafe.dto.post.PostUpdateDto;
 import com.kakao.cafe.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -46,7 +45,7 @@ public class PostController {
                                  PostUpdateDto postUpdateDto,
                                  HttpSession session) {
         postService.update(questionId, postUpdateDto, session);
-        return "redirect:/";
+        return "redirect:/questions/" + questionId;
     }
 
     @DeleteMapping("/questions/{questionId}")

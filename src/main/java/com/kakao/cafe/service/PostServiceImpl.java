@@ -1,13 +1,14 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.domain.Member;
-import com.kakao.cafe.dto.PostCreateDto;
-import com.kakao.cafe.dto.PostDetailDto;
-import com.kakao.cafe.dto.PostListItemDto;
-import com.kakao.cafe.dto.PostUpdateDto;
+import com.kakao.cafe.domain.Post;
+import com.kakao.cafe.domain.Reply;
+import com.kakao.cafe.dto.post.PostCreateDto;
+import com.kakao.cafe.dto.post.PostDetailDto;
+import com.kakao.cafe.dto.post.PostListItemDto;
+import com.kakao.cafe.dto.post.PostUpdateDto;
 import com.kakao.cafe.repository.PostRepository;
-import com.kakao.cafe.repository.MemberRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -20,18 +21,18 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
-    private final MemberRepository memberRepository;
+    private final ReplyRepository replyRepository;
 
     @Autowired
     public PostServiceImpl(@Qualifier("postRepositoryJDBC") PostRepository postRepository,
-                           @Qualifier("memberRepositoryJDBC") MemberRepository memberRepository) {
+                           ReplyRepository replyRepository) {
         this.postRepository = postRepository;
-        this.memberRepository = memberRepository;
+        this.replyRepository = replyRepository;
     }
 
     @Override
     public void create(PostCreateDto postCreateDto, HttpSession session) {
-        Member loginMember = (Member)session.getAttribute("sessionedUser");
+        Member loginMember = (Member) session.getAttribute("sessionedUser");
 
         Post post = Post.of(postCreateDto, loginMember);
         postRepository.save(post);
@@ -53,12 +54,13 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new IllegalArgumentException("post not found"));
         post.updateViewCount();
         postRepository.update(post);
+
         return PostDetailDto.of(post);
     }
 
     @Override
     public void delete(int questionId, HttpSession session) {
-        Member loginMember = (Member)session.getAttribute("sessionedUser");
+        Member loginMember = (Member) session.getAttribute("sessionedUser");
 
         Post post = postRepository.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("post not found"));
@@ -71,7 +73,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDetailDto getUpdate(int questionId, HttpSession session) {
-        Member loginMember = (Member)session.getAttribute("sessionedUser");
+        Member loginMember = (Member) session.getAttribute("sessionedUser");
 
         Post post = postRepository.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("post not found"));
@@ -84,7 +86,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void update(int questionId, PostUpdateDto postUpdateDto, HttpSession session) {
-        Member loginMember = (Member)session.getAttribute("sessionedUser");
+        Member loginMember = (Member) session.getAttribute("sessionedUser");
 
         Post post = postRepository.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("post not found"));

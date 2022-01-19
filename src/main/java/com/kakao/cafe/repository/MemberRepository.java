@@ -7,7 +7,10 @@ import java.util.Optional;
 
 public interface MemberRepository {
     int save(Member newMember);
+
     Optional<List<Member>> findAll();
+
     Member findByUserId(String userId);
+
     Member findByEmail(String email);
 }
