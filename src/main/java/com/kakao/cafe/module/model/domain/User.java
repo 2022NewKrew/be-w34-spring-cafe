@@ -13,10 +13,4 @@ public class User {
     private String password;
     private String name;
     private String email;
-
-    public void update(String password, String name, String email) {
-        this.password = password;
-        this.name = name;
-        this.email = email;
-    }
 }

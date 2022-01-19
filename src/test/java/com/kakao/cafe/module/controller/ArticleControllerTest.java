@@ -74,7 +74,7 @@ class ArticleControllerTest {
         mockMvc.perform(get("/articles/1")
                         .session(session))
                 .andExpect(status().isOk())
-                .andExpect(model().size(1))
+                .andExpect(model().size(2))
                 .andExpect(model().attributeExists("article"))
                 .andExpect(model().attribute("article", hasProperty("author", is("레인"))))
                 .andExpect(view().name("article/show"));

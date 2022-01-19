@@ -3,6 +3,7 @@ package com.kakao.cafe.infra.exception;
 import com.kakao.cafe.module.controller.UserController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -27,11 +28,14 @@ public class GlobalExceptionHandler {
         return "infra/error";
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public String handleIllegalArgumentException(final IllegalArgumentException e, Model model, HttpServletResponse response) {
+    @ExceptionHandler({
+            IllegalArgumentException.class,
+            DataIntegrityViolationException.class
+    })
+    public String handleIllegalArgumentException(final Exception e, Model model, HttpServletResponse response) {
         response.setStatus(ErrorCode.BAD_REQUEST.getValue());
-        model.addAttribute("msg", errorMsg("IllegalArgumentException", e.getMessage()));
-        logger.error("IllegalArgumentException");
+        model.addAttribute("msg", errorMsg(e.getClass().getSimpleName(), e.getMessage()));
+        logger.error(e.getClass().getSimpleName());
         return "infra/error";
     }
 
@@ -42,6 +46,7 @@ public class GlobalExceptionHandler {
         logger.error("HttpSessionRequiredException");
         return "user/login";
     }
+
     private String errorMsg(String name, String msg) {
         return name + " : " + msg;
     }

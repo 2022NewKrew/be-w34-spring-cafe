@@ -2,6 +2,7 @@ package com.kakao.cafe.module.controller;
 
 import com.kakao.cafe.module.service.ArticleService;
 import com.kakao.cafe.module.service.InfraService;
+import com.kakao.cafe.module.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ public class ArticleController {
 
     private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
     private final ArticleService articleService;
+    private final ReplyService replyService;
     private final InfraService infraService;
 
     @PostMapping
@@ -35,8 +37,8 @@ public class ArticleController {
     @GetMapping("/{id}")
     public String showArticle(@PathVariable Long id, Model model, HttpSession session) throws HttpSessionRequiredException {
         infraService.retrieveUserSession(session);
-        ArticleReadDto article = articleService.showArticle(id);
-        model.addAttribute("article", article);
+        model.addAttribute("article", articleService.showArticle(id));
+        model.addAttribute("reply", replyService.replyList(id));
         logger.info("Get Article : {}", id);
         return "article/show";
     }
