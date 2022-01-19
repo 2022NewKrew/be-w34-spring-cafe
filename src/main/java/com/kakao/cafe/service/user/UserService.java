@@ -43,7 +43,7 @@ public class UserService {
         if (!targetUser.getPassword().equals(signUpDto.getPassword())) {
             throw new PasswordMismatchException();
         }
-        this.userRepository.updateUser(signUpDto.toEntity());
+        this.userRepository.updateUser(signUpDto.getUserId(), signUpDto.getName(), signUpDto.getEmail());
     }
 
     public UserInfoDto login(LoginDto loginDto) throws NoSuchUserException, PasswordMismatchException {

@@ -34,8 +34,10 @@ public class UserRepository {
         throw new NoSuchUserException();
     }
 
-    public void updateUser(User user) {
-        users.replace(user.getUserId(), user);
+    public void updateUser(String userId, String name, String email) throws NoSuchUserException {
+        User targetUser = findUserByUserId(userId);
+        targetUser.setName(name);
+        targetUser.setEmail(email);
     }
 
 
