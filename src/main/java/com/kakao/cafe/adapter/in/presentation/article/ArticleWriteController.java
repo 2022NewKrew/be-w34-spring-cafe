@@ -2,9 +2,11 @@ package com.kakao.cafe.adapter.in.presentation.article;
 
 import com.kakao.cafe.application.article.dto.WriteRequest;
 import com.kakao.cafe.application.article.port.in.WriteArticleUseCase;
+import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -18,8 +20,10 @@ public class ArticleWriteController {
     }
 
     @PostMapping("/articles")
-    public String register(WriteRequest writeRequest)
+    public String register(WriteRequest writeRequest, HttpSession session)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException {
+        UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
+        writeRequest.setWriter(sessionedUser.getName());
         writeArticleUseCase.writeArticle(writeRequest);
         return "redirect:/";
     }

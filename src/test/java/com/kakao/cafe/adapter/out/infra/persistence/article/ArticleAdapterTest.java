@@ -34,7 +34,8 @@ class ArticleAdapterTest {
     @Test
     void postNormalArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest("champ", "kakao", "Hello Kakao!");
+        WriteRequest writeRequest = new WriteRequest("kakao", "Hello Kakao!");
+        writeRequest.setWriter("champ");
 
         // then
         assertThatNoException().isThrownBy(() -> articleAdapter.registerArticle(writeRequest));
@@ -44,7 +45,8 @@ class ArticleAdapterTest {
     @Test
     void postNullWriterArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest("", "kakao", "Hello Kakao!");
+        WriteRequest writeRequest = new WriteRequest("kakao", "Hello Kakao!");
+        writeRequest.setWriter("");
 
         // then
         assertThatExceptionOfType(IllegalWriterException.class).isThrownBy(() -> articleAdapter.registerArticle(
@@ -55,7 +57,8 @@ class ArticleAdapterTest {
     @Test
     void postBlankWriterArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest("cha mp", "kakao", "Hello Kakao!");
+        WriteRequest writeRequest = new WriteRequest("kakao", "Hello Kakao!");
+        writeRequest.setWriter("cha mp");
 
         // then
         assertThatExceptionOfType(IllegalWriterException.class).isThrownBy(() -> articleAdapter.registerArticle(
@@ -66,7 +69,8 @@ class ArticleAdapterTest {
     @Test
     void postNullTitleArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest("champ", "", "Hello Kakao!");
+        WriteRequest writeRequest = new WriteRequest("", "Hello Kakao!");
+        writeRequest.setWriter("champ");
 
         // then
         assertThatExceptionOfType(IllegalTitleException.class).isThrownBy(() -> articleAdapter.registerArticle(
