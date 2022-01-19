@@ -1,7 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.ArticleRequestDto;
-import com.kakao.cafe.dto.ArticleResponseDto;
+import com.kakao.cafe.controller.interceptor.ValidateLogin;
+import com.kakao.cafe.dto.ArticleRequestDTO;
+import com.kakao.cafe.dto.ArticleResponseDTO;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,7 +23,8 @@ public class ArticleController {
 
     @GetMapping()
     public String getArticleList(Model model) {
-        List<ArticleResponseDto> articles = articleService.readAll();
+        logger.info("index test");
+        List<ArticleResponseDTO> articles = articleService.readAll();
         if(articles.size() > 0) {
             logger.info("getArticleList: {}, {}", articles.get(0).getId(), articles.get(0).getAuthor());
         }
@@ -32,13 +34,14 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String getArticle(@PathVariable Long id, Model model) {
-        ArticleResponseDto article = articleService.read(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+        ArticleResponseDTO article = articleService.read(id);
         model.addAttribute("article", article);
         return "article/show";
     }
 
+    @ValidateLogin
     @PostMapping("/articles")
-    public String createArticle(ArticleRequestDto articleRequestDto) {
+    public String createArticle(ArticleRequestDTO articleRequestDto) {
         articleService.create(articleRequestDto);
         return "redirect:/";
     }

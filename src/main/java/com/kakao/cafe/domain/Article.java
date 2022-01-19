@@ -1,13 +1,22 @@
 package com.kakao.cafe.domain;
 
+import org.springframework.lang.Nullable;
+
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 public class Article {
+    @NotBlank
     private final Long id;
+    @NotBlank
     private final String author;
+    @NotBlank
     private String title;
+    @NotBlank
     private String content;
+    @NotBlank
     private final LocalDateTime createdAt;
+    @Nullable
     private LocalDateTime updatedAt;
 
     public static Article of(Long id, String author, String title, String content, LocalDateTime createdAt) {

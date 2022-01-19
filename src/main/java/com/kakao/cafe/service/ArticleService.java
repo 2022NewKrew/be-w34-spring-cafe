@@ -1,28 +1,38 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.ArticleRequestDto;
-import com.kakao.cafe.dto.ArticleResponseDto;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.dto.ArticleRequestDTO;
+import com.kakao.cafe.dto.ArticleResponseDTO;
+import com.kakao.cafe.error.exception.ArticleNotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    public void create(ArticleRequestDto articleRequestDto) {
+    @Transactional
+    public void create(ArticleRequestDTO articleRequestDto) {
         articleRepository.save(articleRequestDto);
     }
 
-    public Optional<ArticleResponseDto> read(Long id) {
-        return articleRepository.findById(id);
+    @Transactional(readOnly = true)
+    public ArticleResponseDTO read(Long id) {
+        Article article = articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
+        return ArticleResponseDTO.of(article.getId(), article.getAuthor(), article.getTitle(), article.getContent(), article.getCreatedAt());
     }
 
-    public List<ArticleResponseDto> readAll() {
-        return articleRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<ArticleResponseDTO> readAll() {
+        return articleRepository.findAll()
+                .stream()
+                .map(article -> ArticleResponseDTO.of(article.getId(), article.getAuthor(), article.getTitle(), article.getContent(), article.getCreatedAt()))
+                .collect(Collectors.toUnmodifiableList());
     }
 }

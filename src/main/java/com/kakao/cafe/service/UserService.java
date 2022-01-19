@@ -1,34 +1,56 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.UserResponseDto;
-import com.kakao.cafe.dto.UserRequestDto;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserResponseDTO;
+import com.kakao.cafe.dto.UserRequestDTO;
+import com.kakao.cafe.dto.UserUpdateDTO;
+import com.kakao.cafe.error.exception.InvalidPasswordException;
+import com.kakao.cafe.error.exception.UserAlreadyExistException;
+import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
-    public void create(UserRequestDto userRequestDto) {
+    @Transactional
+    public void create(UserRequestDTO userRequestDto) {
+        Optional<User> user = userRepository.findByUserId(userRequestDto.getUserId());
+        if(user.isPresent()) {
+            throw new UserAlreadyExistException();
+        }
         userRepository.save(userRequestDto);
     }
 
-    public void update(UserRequestDto userRequestDto) {
-        UserResponseDto userResponseDto = userRepository.findByUserId(userRequestDto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
-        userRepository.update(userResponseDto.getId(), userRequestDto);
+    @Transactional
+    public void update(UserUpdateDTO userUpdateDTO) {
+        if(!userUpdateDTO.getPassword().equals(userUpdateDTO.getPasswordCheck())) {
+            throw new InvalidPasswordException();
+        }
+        User user = userRepository.findByUserId(userUpdateDTO.getUserId())
+                .orElseThrow(UserNotFoundException::new);
+        userRepository.update(userUpdateDTO, user.getId());
     }
 
-    public Optional<UserResponseDto> read(String userId) {
-        return userRepository.findByUserId(userId);
+    @Transactional(readOnly = true)
+    public UserResponseDTO read(String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
+        return UserResponseDTO.of(user.getId(), user.getUserId(), user.getName(), user.getEmail(), user.getCreatedAt());
     }
 
-    public List<UserResponseDto> readAll() {
-        return userRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<UserResponseDTO> readAll() {
+        return userRepository.findAll()
+                .stream()
+                .map(user -> UserResponseDTO.of(user.getId(), user.getUserId(), user.getName(), user.getEmail(), user.getCreatedAt()))
+                .collect(Collectors.toUnmodifiableList());
     }
 }
