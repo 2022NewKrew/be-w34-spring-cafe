@@ -1,7 +1,8 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.controller.LoggingInterceptor;
-import com.kakao.cafe.controller.SessionUserArgumentResolver;
+import com.kakao.cafe.controller.interceptor.AuthenticatedInterceptor;
+import com.kakao.cafe.controller.interceptor.LoggingInterceptor;
+import com.kakao.cafe.controller.interceptor.SessionUserArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -29,5 +30,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoggingInterceptor());
+        registry.addInterceptor(new AuthenticatedInterceptor());
     }
 }

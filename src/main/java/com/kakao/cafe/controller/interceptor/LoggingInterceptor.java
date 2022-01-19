@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.controller.interceptor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
