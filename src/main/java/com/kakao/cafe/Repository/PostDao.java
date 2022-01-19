@@ -24,10 +24,10 @@ public class PostDao{
     }
 
     public void insert(PostCreateRequestDto post) {
-        String sql = "INSERT INTO POST VALUES (?, ?, ?)";
+        String sql = "INSERT INTO POST(TITLE, CONTENT) VALUES (?, ?)";
 
         jdbcTemplate.update(sql,
-                post.getId(), post.getTitle(), post.getContent());
+                post.getTitle(), post.getContent());
     }
 
     public PostResponseDto findById(Long id) {

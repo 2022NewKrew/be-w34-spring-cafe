@@ -24,10 +24,10 @@ public class UserDao {
     }
 
     public void insert(UserCreateRequestDto user) {
-        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO USERS(USERID, NICKNAME, EMAIL, PASSWORD) VALUES (?, ?, ?, ?)";
 
         jdbcTemplate.update(sql,
-                user.getId(), user.getUserId(), user.getNickname(), user.getEmail(), user.getPassword());
+                user.getUserId(), user.getNickname(), user.getEmail(), user.getPassword());
     }
 
     public UserResponseDto findById(Long id) {
