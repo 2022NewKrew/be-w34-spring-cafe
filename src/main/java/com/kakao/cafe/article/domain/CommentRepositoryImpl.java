@@ -15,7 +15,9 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public void save(Comment comment) {
+        final String sql = "insert into comments(body, author_id, article_id) values(?, ?, ?)";
 
+        jdbcTemplate.update(sql, comment.getBody(), comment.getAuthorId(), comment.getArticleId());
     }
 
     @Override
@@ -32,7 +34,8 @@ public class CommentRepositoryImpl implements CommentRepository {
             + "u.nickname "
             + "from comments as c "
             + "inner join users u "
-            + "on c.author_id = u.user_id where article_id = ?";
+            + "on c.author_id = u.user_id where article_id = ? "
+            + "order by c.created_at";
 
         return jdbcTemplate.query(
             sql,

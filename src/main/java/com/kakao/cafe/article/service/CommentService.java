@@ -1,5 +1,6 @@
 package com.kakao.cafe.article.service;
 
+import com.kakao.cafe.article.domain.Comment;
 import com.kakao.cafe.article.domain.CommentRepository;
 import com.kakao.cafe.article.dto.SingleComment;
 import java.util.List;
@@ -14,5 +15,9 @@ public class CommentService {
 
     public List<SingleComment> getAllComments(Long articleId) {
         return commentRepository.findAllByArticleId(articleId);
+    }
+
+    public void save(Comment comment) {
+        commentRepository.save(comment);
     }
 }

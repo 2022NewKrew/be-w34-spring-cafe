@@ -1,8 +1,10 @@
 package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.domain.Comment;
 import com.kakao.cafe.article.dto.ArticlePostRequest;
 import com.kakao.cafe.article.dto.ArticleUpdateRequest;
+import com.kakao.cafe.article.dto.CommentPostRequest;
 import com.kakao.cafe.article.dto.MultipleArticle;
 import com.kakao.cafe.article.dto.SingleArticle;
 import com.kakao.cafe.article.dto.SingleComment;
@@ -31,7 +33,7 @@ public class ArticleController {
     private final CommentService commentService;
 
     @PostMapping
-    public String post(@LoginUser SessionUser user, @Valid ArticlePostRequest request) {
+    public String postArticle(@LoginUser SessionUser user, @Valid ArticlePostRequest request) {
         Article article = request.toEntity(user.getId());
         articleService.post(article);
         return "redirect:/";
@@ -76,5 +78,13 @@ public class ArticleController {
     public String deleteArticle(@LoginUser SessionUser user, @PathVariable Long articleId) {
         articleService.delete(user.getId(), articleId);
         return "redirect:/";
+    }
+
+    @PostMapping("/{articleId}/comment")
+    public String postComment(@LoginUser SessionUser user, @PathVariable Long articleId,
+        @Valid CommentPostRequest request) {
+        Comment comment = request.toEntity(user.getId(), articleId);
+        commentService.save(comment);
+        return "redirect:/article/" + articleId;
     }
 }
