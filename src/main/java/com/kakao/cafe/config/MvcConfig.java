@@ -19,5 +19,8 @@ public class MvcConfig implements WebMvcConfigurer {
         // ArticleController
         registry.addViewController("/editArticleFailed").setViewName("articles/editFailed");
         registry.addViewController("/editArticleFailedNoPerm").setViewName("articles/editFailedNoPerm");
+
+        // CommentController
+        registry.addViewController("/editCommentFailedNoPerm").setViewName("comments/editFailedNoPerm");
     }
 }

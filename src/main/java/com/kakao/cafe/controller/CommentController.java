@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.controller.auth.AuthControl;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.CommentDto;
+import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.CommentService;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
@@ -15,16 +16,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Controller
 public class CommentController {
     private final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
+    private final ArticleService articleService;
     private final CommentService commentService;
     private final UserService userService;
 
-    CommentController(CommentService commentService, UserService userService) {
+    CommentController(ArticleService articleService, CommentService commentService, UserService userService) {
+        this.articleService = Objects.requireNonNull(articleService);
         this.commentService = Objects.requireNonNull(commentService);
         this.userService = Objects.requireNonNull(userService);
     }
@@ -69,31 +73,36 @@ public class CommentController {
         return "redirect:/editArticleFailed";
     }
 
-    @DeleteMapping("/comments/{idx}")
+    @DeleteMapping("/comments/{articleIdx}/{idx}")
     public String deleteArticle(
             final HttpServletRequest request,
+            @PathVariable("articleIdx") final long articleIdx,
             @PathVariable("idx") final long idx
     )
     {
-//        if (checkNotLogin(request)) {
-//            return getRedirectLoginWithMsg(request);
-//        }
-//
-//        String articleOwnerId;
-//        try {
-//            articleOwnerId = articleService.getDto(idx)
-//                    .getUserId();
-//        } catch (NoSuchElementException e) {
-//            return "error/404";
-//        }
-//
-//        if (checkNotOwner(request, articleOwnerId)) {
-//            return "redirect:/editArticleFailedNoPerm";
-//        }
-//
-//        if (articleService.delete(idx)) {
-//            return "redirect:/";
-//        }
+        if (checkNotLogin(request)) {
+            return getRedirectLoginWithMsg(request);
+        }
+
+        CommentDto commentDto;
+        try {
+            commentDto = commentService.getDto(idx);
+            articleService.getDto(articleIdx);
+        } catch (NoSuchElementException e) {
+            return "error/404";
+        }
+
+        if (commentDto.getArticleIdx() != articleIdx) {
+            return "error/404";
+        }
+
+        if (checkNotOwner(request, commentDto.getUserId())) {
+            return "redirect:/editCommentFailedNoPerm";
+        }
+
+        if (commentService.delete(idx)) {
+            return "redirect:/articles/" + articleIdx;
+        }
 
         return "error/500";
     }
