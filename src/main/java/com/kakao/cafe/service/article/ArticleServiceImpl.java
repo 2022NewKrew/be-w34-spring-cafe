@@ -17,7 +17,6 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void uploadArticle(ArticleDto articleDto) {
-        articleDto.setViews(articleDto.getViews() + 1);
         articleRepository.save(articleMapper.toArticleEntity(articleDto));
     }
 
@@ -31,7 +30,18 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleDto retrieveArticle(Long articleId) {
         ArticleEntity articleEntity = articleRepository.findOne(articleId);
+        articleRepository.updateViewsById(articleId, articleEntity.getViews() + 1);
 
         return articleMapper.toArticleDto(articleEntity);
+    }
+
+    @Override
+    public void deleteArticle(Long articleId) {
+        articleRepository.deleteById(articleId);
+    }
+
+    @Override
+    public void updateArticle(ArticleDto articleDto) {
+        articleRepository.updateTitleAndContentById(articleDto.getId(), articleDto.getTitle(), articleDto.getContent());
     }
 }
