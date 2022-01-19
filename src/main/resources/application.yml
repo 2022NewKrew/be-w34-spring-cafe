@@ -10,3 +10,8 @@ spring:
   h2:
     console:
       enabled: true
+  mvc:
+    static-path-pattern: /static/**
+    hiddenmethod:
+      filter:
+        enabled: true

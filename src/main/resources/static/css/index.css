@@ -39,6 +39,10 @@
     color: black;
 }
 
+.navbar-space{
+    justify-content: space-between;
+}
+
 .navbar-right {
     display: flex;
 }
@@ -133,3 +137,4 @@ td {
     color: black;
     cursor: pointer;
 }
+

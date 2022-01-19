@@ -20,9 +20,10 @@ public class PostRowMapper implements RowMapper<Post> {
         String content = rs.getString("content");
         String writerName = rs.getString("writerName");
         LocalDateTime timeWritten = rs.getTimestamp("timeWritten").toLocalDateTime();
+        boolean isHidden = rs.getBoolean("isHidden");
         List<Comment> comments = mapComments(rs, id);
 
-        return new Post(id, title, content, writerName, timeWritten, comments);
+        return new Post(id, title, content, writerName, timeWritten, isHidden, comments);
     }
 
     private List<Comment> mapComments(ResultSet rs, Long postId) throws SQLException{

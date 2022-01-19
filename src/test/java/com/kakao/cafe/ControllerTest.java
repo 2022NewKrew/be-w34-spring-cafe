@@ -1,9 +1,7 @@
 package com.kakao.cafe;
 
 import com.kakao.cafe.config.ControllerTestConfig;
-import com.kakao.cafe.post.application.AddCommentService;
-import com.kakao.cafe.post.application.SearchPostService;
-import com.kakao.cafe.post.application.WritePostService;
+import com.kakao.cafe.post.application.*;
 import com.kakao.cafe.post.presentation.PostController;
 import com.kakao.cafe.user.application.JoinService;
 import com.kakao.cafe.user.application.LoginService;
@@ -43,6 +41,12 @@ public abstract class ControllerTest {
 
     @MockBean
     protected WritePostService writePostService;
+
+    @MockBean
+    protected UpdatePostService updatePostService;
+
+    @MockBean
+    protected DeletePostService deletePostService;
 
     @MockBean
     protected AddCommentService commentService;

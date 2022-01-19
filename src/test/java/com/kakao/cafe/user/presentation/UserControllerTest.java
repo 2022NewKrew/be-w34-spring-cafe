@@ -49,7 +49,6 @@ class UserControllerTest extends ControllerTest{
                 ));
     }
 
-
     @ParameterizedTest
     @DisplayName("가입 성공")
     @MethodSource("com.kakao.cafe.user.data.UsersData#getJoinRequests")

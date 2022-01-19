@@ -32,6 +32,8 @@ public class Post {
 
     private final LocalDateTime timeWritten;
 
+    private boolean isHidden;
+
     private final List<Comment> comments;
 
     public Post(String title, String content, String writerName) {
@@ -40,16 +42,19 @@ public class Post {
         this.content = content;
         this.writerName = writerName;
         this.timeWritten = LocalDateTime.now();
+        isHidden = false;
         this.comments = new ArrayList<>();
         validate();
     }
 
-    public Post(@NonNull Long id, @NonNull String title, @NonNull String content, @NonNull String writerName, LocalDateTime timeWritten, List<Comment> comments) {
+    public Post(@NonNull Long id, @NonNull String title, @NonNull String content,
+                @NonNull String writerName, LocalDateTime timeWritten, boolean isHidden, List<Comment> comments) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writerName = writerName;
         this.timeWritten = timeWritten;
+        this.isHidden = isHidden;
         this.comments = new ArrayList<>(comments);
         validate();
     }

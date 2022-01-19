@@ -10,7 +10,8 @@ create table if not exists post(
     title varchar(40) not null,
     content varchar(200) not null,
     writerName varchar(10) not null,
-    timeWritten datetime not null
+    timeWritten datetime not null,
+    isHidden boolean default false
 );
 
 create table if not exists comment(
