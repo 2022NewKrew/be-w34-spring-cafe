@@ -1,7 +1,5 @@
 package com.kakao.cafe.domain.post;
 
-import org.springframework.stereotype.Repository;
-
 import java.util.*;
 
 public class MemoryPostRepository implements PostRepository {
@@ -10,7 +8,7 @@ public class MemoryPostRepository implements PostRepository {
     @Override
     public void save(Post post) {
         long insertId = postStore.size() + 1;
-        post.setId(insertId);;
+        post.setId(insertId);
         postStore.put(insertId, post);
     }
 
@@ -24,7 +22,19 @@ public class MemoryPostRepository implements PostRepository {
         return Optional.ofNullable(postStore.get(id));
     }
 
-    public void clear(){
+    @Override
+    public Post edit(Long id, Post post) {
+        postStore.put(id, post);
+
+        return post;
+    }
+
+    @Override
+    public void remove(Long id) {
+        postStore.remove(id);
+    }
+
+    public void clear() {
         postStore.clear();
     }
 }

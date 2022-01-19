@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -17,7 +16,8 @@ public class Post {
     private String content;
     private LocalDateTime regDateTime;
 
-    public Post(){}
+    public Post() {
+    }
 
     @Builder
     public Post(String writer, String title, String content) {

@@ -45,11 +45,11 @@ public class UserService {
         return new ShowUserDto(user);
     }
 
-    public ShowUserDto editProfile(String userId, UpdateUserDto userDto){
+    public ShowUserDto editProfile(String userId, UpdateUserDto userDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("등록되지 않은 사용자 입니다."));
 
-        if(!userDto.getPassword().equals(user.getPassword())){
+        if (!userDto.getPassword().equals(user.getPassword())) {
             throw new UnAuthorizedException("현재 비밀번호가 일치하지 않습니다.");
         }
 
@@ -72,11 +72,11 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public ShowUserDto login(LoginDto loginDto){
+    public ShowUserDto login(LoginDto loginDto) {
         User user = userRepository.findById(loginDto.getUserId())
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 아이디 입니다."));
 
-        if(!user.getPassword().equals(loginDto.getPassword())){
+        if (!user.getPassword().equals(loginDto.getPassword())) {
             throw new UnAuthorizedException("비밀번호가 일치하지 않습니다.");
         }
 

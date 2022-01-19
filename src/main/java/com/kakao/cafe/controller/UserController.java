@@ -4,8 +4,8 @@ import com.kakao.cafe.dto.user.CreateUserDto;
 import com.kakao.cafe.dto.user.LoginDto;
 import com.kakao.cafe.dto.user.ShowUserDto;
 import com.kakao.cafe.dto.user.UpdateUserDto;
-import com.kakao.cafe.util.exception.UnAuthorizedException;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.util.exception.ForbiddenException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,13 +28,13 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String getUserList(Model model){
+    public String getUserList(Model model) {
         model.addAttribute("users", userService.findAllUser());
         return "users/list";
     }
 
     @PostMapping("/users")
-    public String createUser(@ModelAttribute @Validated CreateUserDto createUserDto, RedirectAttributes attr){
+    public String createUser(@ModelAttribute @Validated CreateUserDto createUserDto, RedirectAttributes attr) {
         userService.join(createUserDto);
         log.info("Create User - {}", createUserDto);
         attr.addFlashAttribute("success", true);
@@ -43,18 +43,17 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    public String getUserProfile(@PathVariable String userId, Model model){
+    public String getUserProfile(@PathVariable String userId, Model model) {
         ShowUserDto profile = userService.findProfile(userId);
         model.addAttribute("user", profile);
         return "users/profile";
     }
 
     @GetMapping("/users/{userId}/form")
-    public String userUpdateForm(@PathVariable String userId, Model model, HttpSession session){
+    public String userUpdateForm(@PathVariable String userId, Model model, HttpSession session) {
         ShowUserDto sessionUser = (ShowUserDto) session.getAttribute("sessionUser");
-        if(sessionUser == null || !sessionUser.getUserId().equals(userId)){
-            // 401에러 반환하기
-            throw new UnAuthorizedException("로그인이 필요합니다.");
+        if (sessionUser == null || !sessionUser.getUserId().equals(userId)) {
+            throw new ForbiddenException("접근 권한이 없는 사용자 입니다.");
         }
 
         model.addAttribute("user", sessionUser);
@@ -62,14 +61,14 @@ public class UserController {
     }
 
     @PutMapping("/users/{userId}")
-    public String userUpdate(@PathVariable String userId, @ModelAttribute @Validated UpdateUserDto updateUserDto){
+    public String userUpdate(@PathVariable String userId, @ModelAttribute @Validated UpdateUserDto updateUserDto) {
         ShowUserDto editUser = userService.editProfile(userId, updateUserDto);
         log.info("Update User - {}", editUser);
         return "redirect:/users";
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginDto loginDto, HttpSession session){
+    public String login(@ModelAttribute LoginDto loginDto, HttpSession session) {
         ShowUserDto loginUser = userService.login(loginDto);
         session.setAttribute("sessionUser", loginUser);
 

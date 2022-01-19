@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class JdbcUserRepository implements UserRepository{
+public class JdbcUserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
@@ -30,12 +30,12 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     @Override
-    public Optional<User> findById(String userId){
+    public Optional<User> findById(String userId) {
         String sql = "SELECT userId, password, name, email FROM `USER` WHERE userId=?";
-        try{
+        try {
             User user = jdbcTemplate.queryForObject(sql, getUserRowMapper(), userId);
             return Optional.ofNullable(user);
-        } catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }

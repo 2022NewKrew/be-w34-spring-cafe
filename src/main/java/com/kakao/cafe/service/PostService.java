@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.post.PostRepository;
 import com.kakao.cafe.dto.post.CreatePostDto;
 import com.kakao.cafe.dto.post.ShowPostDto;
+import com.kakao.cafe.dto.post.UpdatePostDto;
 import com.kakao.cafe.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,5 +42,20 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+
+    public ShowPostDto updatePost(Long id, UpdatePostDto postDto){
+        Post post = Post.builder()
+                .title(postDto.getTitle())
+                .content(postDto.getContent())
+                .writer(postDto.getWriter())
+                .build();
+
+        post.setId(id);
+        return new ShowPostDto(postRepository.edit(id, post));
+    }
+
+    public void deletePost(Long id){
+        postRepository.remove(id);
+    }
 
 }
