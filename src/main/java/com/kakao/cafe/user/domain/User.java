@@ -10,4 +10,12 @@ public class User {
     private Password password;
     private Name name;
     private Email email;
+
+    public boolean equalId(UserId userId) {
+        return this.userId.equals(userId);
+    }
+
+    public boolean equalPassword(User user) {
+        return this.password.equals(user.password);
+    }
 }

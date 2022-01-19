@@ -38,6 +38,18 @@ public class UserJdbcRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByUserIdAndPassword(UserId userId, Password password) {
+        // TODO: optional 처리 스트림으로 변경
+        try {
+            String sql = "SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USERS WHERE USER_ID = ? AND PASSWORD = ?";
+            User user = jdbcTemplate.queryForObject(sql, new UserMapper(), userId.getUserId(), password.getPassword());
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException exception) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public List<User> findAll() {
         String sql = "SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USERS";
         return jdbcTemplate.query(sql, new UserMapper());
@@ -53,17 +65,6 @@ public class UserJdbcRepository implements UserRepository {
     public void update(User user) {
         String sql = "UPDATE USERS SET NAME = ?, EMAIL = ? WHERE USER_ID = ?";
         jdbcTemplate.update(sql, user.getName().getName(), user.getEmail().getEmail(), user.getUserId().getUserId());
-    }
-
-    @Override
-    public Optional<User> findByUserIdAndPassword(UserId userId, Password password) {
-        try {
-            String sql = "SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USERS WHERE USER_ID = ? AND PASSWORD = ?";
-            User user = jdbcTemplate.queryForObject(sql, new UserMapper(), userId.getUserId(), password.getPassword());
-            return Optional.ofNullable(user);
-        } catch (EmptyResultDataAccessException exception) {
-            return Optional.empty();
-        }
     }
 }
 

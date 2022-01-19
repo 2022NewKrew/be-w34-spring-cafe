@@ -1,5 +1,7 @@
-package com.kakao.cafe.exception;
+package com.kakao.cafe.util;
 
+import com.kakao.cafe.article.exception.ArticleException;
+import com.kakao.cafe.user.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,6 +25,16 @@ public class ExceptionController {
 
     @ExceptionHandler(LoginFailedException.class)
     public String handleLoginFailedException(LoginFailedException e) {
-        return "/user/login_failed";
+        return "redirect:/login/failed";
+    }
+
+    @ExceptionHandler(UpdateUserException.class)
+    public String handleUpdateUserException(RuntimeException e) {
+        return "redirect:/user/{userId}/form";
+    }
+
+    @ExceptionHandler({DuplicateUserException.class, NonExistUserException.class, ForbiddenUserException.class})
+    public ResponseEntity<ErrorResponse> handleExceptions(CustomException e) {
+        return ErrorResponse.createResponseEntity(e.getErrorCode());
     }
 }
