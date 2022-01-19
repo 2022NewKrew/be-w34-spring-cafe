@@ -12,6 +12,10 @@ import javax.sql.DataSource;
 
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
+
+    private static final String COMMON_DIRECTORY = "/common";
+    private static final String COMMON_VIEW_404_ERROR = COMMON_DIRECTORY+"/404error";
+
     private static final String USER_DIRECTORY = "/user";
     private static final String USER_VIEW_SIGN_IN_FAIL = USER_DIRECTORY+"/login_fail";
     private static final String USER_VIEW_SIGN_UP_FAIL = USER_DIRECTORY+"/form_fail";
@@ -31,6 +35,8 @@ public class MvcConfiguration implements WebMvcConfigurer {
         registry.addViewController("/users/profile/edit/fail").setViewName(USER_VIEW_PROFILE_EDIT_FAIL);
         registry.addViewController("/posts/write/fail").setViewName(POST_VIEW_WRITE_FAIL);
         registry.addViewController("/posts/edit/fail").setViewName(POST_VIEW_EDIT_FAIL);
+
+        registry.addViewController("/error").setViewName(COMMON_VIEW_404_ERROR);
 
         // 시작페이지 조정
         registry.addRedirectViewController("/", "/posts/list");

@@ -85,6 +85,8 @@
 - regex 에서 "." 는 줄바꿈 문자를 잡아내지 못함
   - 엔터가 들어간 데이터에 대해서는 검증 오류가 발생했음
   - [\s\S] 를 사용하여 모든 문자에 대해 허용하도록 수정
+- 스프링의 경우, 기본 에러페이지로 /error 를 사용
+  - 이를 활용하여,에러 화면을 만들고 configuration 에서 해당 경로를 사용하도록 연결
 
 # 배포 절차
 - 실패한 방법
@@ -140,3 +142,5 @@
   - http://daplus.net/java-spring-boot%EC%9D%98-application-properties%EC%97%90%EC%84%9C-env-%EB%B3%80%EC%88%98-%EC%82%AC%EC%9A%A9/
   - https://wordbe.tistory.com/entry/Springboot-%EC%99%B8%EB%B6%80%EC%84%A4%EC%A0%95-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC
   - https://github.com/paulschwarz/spring-dotenv
+- 404 error
+  - https://goddaehee.tistory.com/214

@@ -43,7 +43,7 @@ public class CafePostDaoImpl implements CafePostDao {
     @Override
     public List<Post> getPostList() {
         List<Post> postList = new ArrayList<>();
-        String sql = "SELECT postId, userId, title, content, SUBSTR(createdAt,1,10) AS createdAt FROM post\n"
+        String sql = "SELECT postId, userId, title, content, createdAt FROM post\n"
                 + "WHERE tombstone=false\n"
                 + "ORDER BY createdAt DESC\n";
 
@@ -55,11 +55,10 @@ public class CafePostDaoImpl implements CafePostDao {
                 String userId = rs.getString("userId");
                 String title = rs.getString("title");
                 String content = rs.getString("content");
-                String createdAt = rs.getString("createdAt");
+                String createdAt = rs.getString("createdAt").substring(0,10);
 
                 postList.add(new Post(postId,userId,title,content,createdAt));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

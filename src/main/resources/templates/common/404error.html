@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>kakao Java Web Programming</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link href="/css/reset.css" rel="stylesheet">
+  <!--[if lt IE 9]>
+  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="/css/index.css" rel="stylesheet">
+  <link href="/css/common/404error.css" rel="stylesheet">
+</head>
+<body>
+<div class="background">
+  <nav class="navbar navbar-fixed-top header">
+    <div class="col-md-12">
+      <div class="navbar-header">
+        <a href="/" class="navbar-brand">
+          <img src="/images/KakaoCI.png" />
+        </a>
+
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="/users/list">멤버 리스트</a></li>
+        {{^signInUser}}
+        <li><a class="black-component" href="/users/sign-in" role="button">로그인</a></li>
+        <li><a class="black-component" href="/users/sign-up" role="button">회원가입</a></li>
+        {{/signInUser}}
+        {{#signInUser}}
+        <li class="login-active"><a href="/users/profile/edit">{{userId}} ({{email}}) 님</a></li>
+        <li>
+          <form id="logout" method="post" action="/users/sign-out">
+            <a class="black-component" href="javascript:;" onclick="document.getElementById('logout').submit()" role="button">로그아웃</a>
+          </form>
+        </li>
+        {{/signInUser}}
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" id="main">
+    <header class="post-header">
+      <div class="title error-info">404 NOT FOUND</div>
+      <p class="title">찾으시는 주소를 정확히 모르겠습니다.</p>
+    </header>
+    <a href="/" class="btn">홈으로</a>
+  </div>
+</div>
+</body>
+</html>
