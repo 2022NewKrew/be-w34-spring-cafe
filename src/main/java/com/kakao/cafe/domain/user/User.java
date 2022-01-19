@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.user.exceptions.IllegalEmailException;
 import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
+import com.kakao.cafe.domain.user.exceptions.WrongPasswordException;
 
 public class User {
 
@@ -48,6 +49,12 @@ public class User {
     private static void checkEmail(String email) throws IllegalEmailException {
         if (checkLengthOfString(email) || checkBlankInString(email)) {
             throw new IllegalEmailException("잘못된 email 주소 입니다.");
+        }
+    }
+
+    public void checkPasswordMatching(String password) throws WrongPasswordException {
+        if (this.equalsPassword(password)) {
+            throw new WrongPasswordException("패스워드가 잘못 되었습니다.");
         }
     }
 

@@ -26,7 +26,7 @@ public class UpdateUserInfoService implements UpdateUserInfoUseCase {
     public void updateUserInfo(String userId, UpdateRequest updateRequest)
         throws UserNotExistException, IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException, WrongPasswordException {
         User user = getUserEntityPort.findUserByUserId(userId);
-        updateRequest.checkPassword(user);
+        user.checkPasswordMatching(updateRequest.getPassword());
         updateUserInfoPort.updateUser(userId, updateRequest);
     }
 }

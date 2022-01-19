@@ -18,6 +18,6 @@ public class LoginUserService implements LoginUserUseCase {
     @Override
     public void login(LoginRequest loginRequest) throws UserNotExistException, WrongPasswordException {
         User user = loginUserPort.login(loginRequest);
-        loginRequest.checkPassword(user);
+        user.checkPasswordMatching(loginRequest.getPassword());
     }
 }
