@@ -18,4 +18,6 @@ public interface ArticleService {
     void deleteArticle(Long articleId, Member loginMember);
 
     void deleteAllArticles();
+
+    void checkAuthorization(Long article, Member member);
 }

@@ -47,24 +47,26 @@ public class ArticleServiceV1 implements ArticleService {
 
     @Override
     public Article editArticle(Article article, Member member) {
-        Article existingArticle = articleRepository.findArticle(article.getArticleId());
-        if (!existingArticle.getAuthor().equals(member)) {
-            throw new UnauthorizedException(ErrorMessages.NOT_AUTHORIZED_USER);
-        }
+        checkAuthorization(article.getArticleId(), member);
         return articleRepository.editArticle(article);
     }
 
     @Override
     public void deleteArticle(Long articleId, Member loginMember) {
-        Article article = articleRepository.findArticle(articleId);
-        if (!article.getAuthor().equals(loginMember)) {
-            throw new UnauthorizedException(ErrorMessages.NOT_AUTHORIZED_USER);
-        }
+        checkAuthorization(articleId, loginMember);
         articleRepository.deleteArticle(articleId);
     }
 
     @Override
     public void deleteAllArticles() {
 
+    }
+
+    @Override
+    public void checkAuthorization(Long article, Member member) {
+        Article existingArticle = articleRepository.findArticle(article);
+        if (!existingArticle.getAuthor().equals(member)) {
+            throw new UnauthorizedException(ErrorMessages.NOT_AUTHORIZED_USER);
+        }
     }
 }

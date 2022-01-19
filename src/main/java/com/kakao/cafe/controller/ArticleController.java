@@ -7,8 +7,6 @@ import com.kakao.cafe.domain.member.Member;
 import com.kakao.cafe.dto.ArticleListDto;
 import com.kakao.cafe.dto.InquireArticleDto;
 import com.kakao.cafe.dto.PostArticleDto;
-import com.kakao.cafe.exception.ErrorMessages;
-import com.kakao.cafe.exception.UnauthorizedException;
 import com.kakao.cafe.service.article.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,9 +63,7 @@ public class ArticleController {
     @LoginCheckAnnotation
     public String getArticleEditForm(@PathVariable("articleId") Long articleId, Model model, HttpSession session) {
         Member loginMember = (Member) session.getAttribute("loginMember");
-        if (loginMember.getMemberId().equals(articleId)) {
-            throw new UnauthorizedException(ErrorMessages.NOT_AUTHORIZED_USER);
-        }
+        articleService.checkAuthorization(articleId, loginMember);
 
         InquireArticleDto articleDto = convertToInquireArticleDto(articleService.inquireOneArticle(articleId));
         model.addAttribute("article", articleDto);
