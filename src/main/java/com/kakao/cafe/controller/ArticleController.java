@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.controller.interceptor.ValidateLogin;
 import com.kakao.cafe.dto.ArticleRequestDTO;
 import com.kakao.cafe.dto.ArticleResponseDTO;
 import com.kakao.cafe.error.exception.ArticleNotFoundException;
@@ -39,6 +40,7 @@ public class ArticleController {
         return "article/show";
     }
 
+    @ValidateLogin
     @PostMapping("/articles")
     public String createArticle(ArticleRequestDTO articleRequestDto) {
         articleService.create(articleRequestDto);
