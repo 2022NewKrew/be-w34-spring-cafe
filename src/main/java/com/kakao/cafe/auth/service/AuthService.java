@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -31,5 +32,13 @@ public class AuthService {
         if(!userPassword.equals(requestPassword)){
             throw new IdPasswordMismatchException();
         }
+    }
+
+    public boolean isLogin(){
+        return Optional.ofNullable(session.getAttribute("LOGIN_USER_ID")).isPresent();
+    }
+
+    public String getLoginUserId(){
+        return (String) session.getAttribute("LOGIN_USER_ID");
     }
 }

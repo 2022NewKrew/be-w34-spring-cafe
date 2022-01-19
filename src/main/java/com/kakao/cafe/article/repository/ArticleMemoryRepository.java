@@ -30,4 +30,6 @@ public class ArticleMemoryRepository implements ArticleRepository{
                 .collect(Collectors.toList())
                 .get(0));
     }
+
+    public void updateOne(Article article){}
 }

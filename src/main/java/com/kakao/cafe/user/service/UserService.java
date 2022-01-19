@@ -2,6 +2,7 @@ package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.exception.UserAlreadyExistException;
 import com.kakao.cafe.user.exception.UserNotExistException;
+import com.kakao.cafe.user.exception.UserPasswordIncorrect;
 import com.kakao.cafe.user.model.User;
 import com.kakao.cafe.user.dto.UserDto;
 import com.kakao.cafe.user.dto.UserProfileDto;
@@ -38,7 +39,7 @@ public class UserService {
     }
 
     public UserProfileDto getUserProfile(String userId){
-        User user = userRepository.findOneByUserId(userId).orElseThrow(UserNotExistException::new);
+        User user = getUserByUserId(userId);
         return modelMapper.map(user, UserProfileDto.class);
     }
 
@@ -47,7 +48,18 @@ public class UserService {
     }
 
     public void updateUser(UserRequest userRequest){
-        User user = modelMapper.map(userRequest, User.class);
-        userRepository.updateOne(user);
+        userRepository.updateOne(validateUser(userRequest));
+    }
+
+    public User validateUser(UserRequest userRequest){
+        User user = getUserByUserId(userRequest.getUserId());
+        if(!userRequest.getPassword().equals(user.getPassword())){
+            throw new UserPasswordIncorrect();
+        }
+        return modelMapper.map(userRequest, User.class);
+    }
+
+    public User getUserByUserId(String userId){
+        return userRepository.findOneByUserId(userId).orElseThrow(UserNotExistException::new);
     }
 }
