@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
@@ -29,6 +30,19 @@ public class ArticleController {
     public ArticleController(ArticleService articleService, UserService userService) {
         this.articleService = articleService;
         this.userService = userService;
+    }
+
+    @GetMapping("/form")
+    public String mainPage(Model model, HttpSession session) {
+        String sessionUserId;
+
+        try {
+            sessionUserId = userService.getUserIdFromSession(session);
+        } catch (NoSuchElementException e) { return "redirect:/"; }
+
+        model.addAttribute("writer", sessionUserId);
+
+        return "/qna/form";
     }
 
     @PostMapping("/questions")

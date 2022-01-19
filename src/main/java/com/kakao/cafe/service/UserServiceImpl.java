@@ -72,13 +72,16 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean checkSessionUser(String userId, HttpSession session) {
+        return getUserIdFromSession(session).equals(userId);
+    }
+
+    public String getUserIdFromSession(HttpSession session) {
         Object value = session.getAttribute("sessionedUser");
 
         if (value == null)
-            return false;
+            throw new NoSuchElementException(String.format("Invalid session. (%s)", session));
 
         UserProfileDto user = (UserProfileDto) value;
-
-        return user.getUserId().equals(userId);  // user.getUserId() != null
+        return user.getUserId();
     }
 }
