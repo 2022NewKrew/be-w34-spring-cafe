@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.exception.user.NotAllowedUserException;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.util.annotation.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -49,12 +50,10 @@ public class UserController {
         return "redirect:";
     }
 
+    @Auth
     @GetMapping("/{userId}/update")
     public String updateView(@PathVariable String userId, HttpSession session, Model model) {
         UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
-        if (loginUser == null) {
-            return "redirect:/users/login";
-        }
         if (loginUser.getUserId().equals(userId)) {
             UserDto user = userService.filterUserById(userId);
             model.addAttribute("user", user);
@@ -63,6 +62,7 @@ public class UserController {
         throw new NotAllowedUserException();
     }
 
+    @Auth
     @PutMapping("/{userId}/update")
     public String update(UserDto user, String newPassword) {
         userService.updateUser(user, newPassword);

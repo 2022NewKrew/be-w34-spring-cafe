@@ -4,6 +4,7 @@ import com.kakao.cafe.exception.user.NotAllowedUserException;
 import com.kakao.cafe.model.dto.ArticleDto;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.util.annotation.Auth;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class ArticleController {
         return "index";
     }
 
+    @Auth
     @GetMapping("/articles/{index}")
     public String articleView(@PathVariable int index, Model model) {
         ArticleDto article = articleService.filterArticleByIndex(index);
@@ -34,15 +36,13 @@ public class ArticleController {
         return "qna/show";
     }
 
+    @Auth
     @GetMapping("/articles")
-    public String writeArticleView(HttpSession session) {
-        UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
-        if (loginUser == null) {
-            return "redirect:/users/login";
-        }
+    public String writeArticleView() {
         return "qna/form";
     }
 
+    @Auth
     @PostMapping("/articles")
     public String writeArticle(ArticleDto article, HttpSession session) {
         UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
