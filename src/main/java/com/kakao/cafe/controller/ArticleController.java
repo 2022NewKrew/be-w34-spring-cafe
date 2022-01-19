@@ -36,16 +36,20 @@ public class ArticleController {
 
     // 게시물 작성 - 로그인 필요
     @PostMapping("/article/post")
-    public String postArticle(PostArticleDto writeArticleDto, HttpSession session) throws WrongAccessException {
-        this.userService.isUserLoggedin(session);
+    public String postArticle(PostArticleDto writeArticleDto, HttpSession session) {
+        if (!this.userService.isUserLoggedin(session)) {
+            return "user/login";
+        }
         this.articleService.save(writeArticleDto);
         return "redirect:/articles";
     }
 
     // 게시물 상세 조회 - 로그인 필요
     @GetMapping("/articles/{id}")
-    public String showArticle(@PathVariable int id, HttpSession session, Model model) throws WrongAccessException {
-        this.userService.isUserLoggedin(session);
+    public String showArticle(@PathVariable int id, HttpSession session, Model model) {
+        if (!this.userService.isUserLoggedin(session)) {
+            return "user/login";
+        }
         model.addAttribute("article", this.articleService.findArticleById(id));
         return "article/show";
     }

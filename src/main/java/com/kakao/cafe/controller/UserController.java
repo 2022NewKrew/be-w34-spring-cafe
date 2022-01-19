@@ -46,10 +46,6 @@ public class UserController {
     // 회원 가입 요청
     @PostMapping("/user/signup")
     public String signUp(SignUpDto signUpDto) throws UserIdDuplicationException {
-        log.info("{}", signUpDto.getUserId());
-        log.info("{}", signUpDto.getPassword());
-        log.info("{}", signUpDto.getName());
-        log.info("{}", signUpDto.getEmail());
         this.userService.saveNewUser(signUpDto);
         return "redirect:/users";
     }
@@ -80,10 +76,14 @@ public class UserController {
     @PostMapping("/login")
     public String login(LoginDto loginDto, HttpSession session) throws PasswordMismatchException, NoSuchUserException {
         UserInfoDto userInfoDto = this.userService.login(loginDto);
-        log.info("{}", userInfoDto.getUserId());
-        log.info("{}", userInfoDto.getName());
-        log.info("{}", userInfoDto.getEmail());
         session.setAttribute("sessionedUser", userInfoDto);
+        return "redirect:/users";
+    }
+
+    // 로그아웃
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        this.userService.logout(session);
         return "redirect:/users";
     }
 }

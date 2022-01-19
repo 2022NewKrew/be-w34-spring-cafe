@@ -56,17 +56,18 @@ public class UserService {
         return new UserInfoDto(user);
     }
 
-    public boolean isUserLoggedin(HttpSession session) throws WrongAccessException {
-        if (session == null) {
-            throw new WrongAccessException();
+    public void logout(HttpSession session) {
+        session.invalidate();
+    }
+
+    public boolean isUserLoggedin(HttpSession session) {
+        if (session.getAttribute("sessionedUser") == null) {
+            return false;
         }
         return true;
     }
 
     public void userValidation(String userId, HttpSession session) throws WrongAccessException {
-        if (!isUserLoggedin(session)) {
-            throw new WrongAccessException();
-        }
         UserInfoDto sessionedUser = (UserInfoDto) session.getAttribute("sessionedUser");
         if (!userId.equals(sessionedUser.getUserId())) {
             throw new WrongAccessException();
