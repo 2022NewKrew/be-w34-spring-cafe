@@ -45,7 +45,7 @@ public class CommentController {
     }
 
     @PutMapping("/comments")
-    public String editArticle(
+    public String editComment(
             final HttpServletRequest request,
             @NonNull final ArticleDto articleDto
     )
@@ -74,7 +74,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/comments/{articleIdx}/{idx}")
-    public String deleteArticle(
+    public String deleteComment(
             final HttpServletRequest request,
             @PathVariable("articleIdx") final long articleIdx,
             @PathVariable("idx") final long idx
