@@ -2,11 +2,13 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Member;
 import com.kakao.cafe.domain.Post;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.dto.post.PostCreateDto;
 import com.kakao.cafe.dto.post.PostDetailDto;
 import com.kakao.cafe.dto.post.PostListItemDto;
 import com.kakao.cafe.dto.post.PostUpdateDto;
 import com.kakao.cafe.repository.PostRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,10 +21,13 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
+    private final ReplyRepository replyRepository;
 
     @Autowired
-    public PostServiceImpl(@Qualifier("postRepositoryJDBC") PostRepository postRepository) {
+    public PostServiceImpl(@Qualifier("postRepositoryJDBC") PostRepository postRepository,
+                           ReplyRepository replyRepository) {
         this.postRepository = postRepository;
+        this.replyRepository = replyRepository;
     }
 
     @Override
@@ -49,6 +54,7 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new IllegalArgumentException("post not found"));
         post.updateViewCount();
         postRepository.update(post);
+
         return PostDetailDto.of(post);
     }
 

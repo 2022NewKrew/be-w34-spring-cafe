@@ -15,13 +15,12 @@ public class Reply {
     public Reply() {
     }
 
-    public Reply(int id, Post post, Member writer, String content, LocalDateTime createdAt, boolean isRemoved) {
+    public Reply(int id, Post post, Member writer, String content, LocalDateTime createdAt) {
         this.id = id;
         this.post = post;
         this.writer = writer;
         this.content = content;
         this.createdAt = createdAt;
-        this.isRemoved = isRemoved;
     }
 
     public Reply(Post post, Member writer, String content, LocalDateTime createdAt, boolean isRemoved) {

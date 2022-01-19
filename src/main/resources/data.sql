@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS Post
     primary key(id)
 );
 
-CREATE TABLE IF NOT EXISTS Answer
+CREATE TABLE IF NOT EXISTS Reply
 (
     id integer NOT NULL auto_increment,
     content varchar(255) NOT NULL,

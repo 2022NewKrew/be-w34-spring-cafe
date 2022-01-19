@@ -3,6 +3,8 @@ package com.kakao.cafe.domain;
 import com.kakao.cafe.dto.post.PostCreateDto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Post {
     private int id;
@@ -11,6 +13,9 @@ public class Post {
     private LocalDate createdAt;
     private Member writer;
     private int viewCount;
+
+    // mappedBy post
+    private List<Reply> replyList = new ArrayList<>();
 
     public Post() {
     }
@@ -86,5 +91,13 @@ public class Post {
 
     public void updateViewCount() {
         this.viewCount++;
+    }
+
+    public List<Reply> getReplyList() {
+        return replyList;
+    }
+
+    public void setReplyList(List<Reply> replyList) {
+        this.replyList = replyList;
     }
 }

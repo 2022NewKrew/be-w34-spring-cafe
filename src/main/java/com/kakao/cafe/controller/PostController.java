@@ -45,7 +45,7 @@ public class PostController {
                                  PostUpdateDto postUpdateDto,
                                  HttpSession session) {
         postService.update(questionId, postUpdateDto, session);
-        return "redirect:/";
+        return "redirect:/questions/" + questionId;
     }
 
     @DeleteMapping("/questions/{questionId}")

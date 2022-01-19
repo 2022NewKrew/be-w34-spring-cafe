@@ -2,6 +2,7 @@ package com.kakao.cafe.dto.post;
 
 import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.dto.member.MemberDto;
+import com.kakao.cafe.dto.reply.ReplyListDto;
 
 import java.time.LocalDate;
 
@@ -14,16 +15,25 @@ public class PostDetailDto {
 
     private MemberDto writer;
 
+    private ReplyListDto replyListInfo;
+
     public PostDetailDto() {
     }
 
-    public PostDetailDto(int id, String title, String contents, LocalDate createdAt, int viewCount, MemberDto writer) {
+    public PostDetailDto(int id,
+                         String title,
+                         String contents,
+                         LocalDate createdAt,
+                         int viewCount,
+                         MemberDto writer,
+                         ReplyListDto replyListInfo) {
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.createdAt = createdAt;
         this.viewCount = viewCount;
         this.writer = writer;
+        this.replyListInfo = replyListInfo;
     }
 
     public static PostDetailDto of(Post post) {
@@ -32,7 +42,9 @@ public class PostDetailDto {
                 post.getContent(),
                 post.getCreatedAt(),
                 post.getViewCount(),
-                MemberDto.of(post.getWriter()));
+                MemberDto.of(post.getWriter()),
+                ReplyListDto.of(post.getReplyList())
+        );
     }
 
     public int getId() {
@@ -81,5 +93,13 @@ public class PostDetailDto {
 
     public void setWriter(MemberDto writer) {
         this.writer = writer;
+    }
+
+    public ReplyListDto getReplyListInfo() {
+        return replyListInfo;
+    }
+
+    public void setReplyListInfo(ReplyListDto replyListInfo) {
+        this.replyListInfo = replyListInfo;
     }
 }
