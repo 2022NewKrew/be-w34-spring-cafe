@@ -2,6 +2,7 @@ package com.example.kakaocafe.security.filter;
 
 import com.example.kakaocafe.core.meta.SessionData;
 import com.example.kakaocafe.core.meta.URLPath;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -18,18 +19,19 @@ import java.util.regex.Pattern;
 
 public class AuthenticationFilter extends OncePerRequestFilter {
 
-    private final List<String> noAuthUrlPatterns;
+    private final List<URLPath> noAuthUrlPatterns;
 
-    public AuthenticationFilter(List<String> noAuthUrlPatterns) {
+    public AuthenticationFilter(List<URLPath> noAuthUrlPatterns) {
         this.noAuthUrlPatterns = noAuthUrlPatterns;
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        final String path = request.getServletPath();
+        final HttpMethod method = HttpMethod.resolve(request.getMethod());
+        final String url = request.getServletPath();
 
         return noAuthUrlPatterns.stream()
-                .anyMatch(path::matches);
+                .anyMatch(urlPath -> urlPath.isSameUrlAndMethod(url, method));
     }
 
     @Override

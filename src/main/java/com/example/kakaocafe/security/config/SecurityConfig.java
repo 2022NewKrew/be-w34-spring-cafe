@@ -7,28 +7,29 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
 public class SecurityConfig {
 
-    private final List<String> noAuthUrlPatterns = new ArrayList<>();
+    private final List<URLPath> noAuthUrlPatterns = new ArrayList<>();
 
     @PostConstruct
     private void addNoAuthURL() {
-        noAuthUrlPatterns.add("/favicon.ico");
-        noAuthUrlPatterns.add("/css/(.*)");
-        noAuthUrlPatterns.add("/images/(.*)");
+        noAuthUrlPatterns.add(URLPath.META);
+        noAuthUrlPatterns.add(URLPath.CSS);
+        noAuthUrlPatterns.add(URLPath.IMAGE);
 
-        noAuthUrlPatterns.add("/error/(.*)");
+        noAuthUrlPatterns.add(URLPath.SHOW_ERROR_404);
 
-        noAuthUrlPatterns.add(URLPath.INDEX.getPath());
-        noAuthUrlPatterns.add(URLPath.SHOW_SIGN_UP_FORM.getPath());
-        noAuthUrlPatterns.add(URLPath.SHOW_SIGN_UP_SUCCESS.getPath());
-        noAuthUrlPatterns.add(URLPath.SIGN_UP.getPath());
-        noAuthUrlPatterns.add(URLPath.SHOW_LOGIN_FORM.getPath());
-        noAuthUrlPatterns.add(URLPath.LOGIN.getPath());
+        noAuthUrlPatterns.add(URLPath.INDEX);
+        noAuthUrlPatterns.add(URLPath.SHOW_SIGN_UP_FORM);
+        noAuthUrlPatterns.add(URLPath.SHOW_SIGN_UP_SUCCESS);
+        noAuthUrlPatterns.add(URLPath.SIGN_UP);
+        noAuthUrlPatterns.add(URLPath.SHOW_LOGIN_FORM);
+        noAuthUrlPatterns.add(URLPath.LOGIN);
     }
 
     @Bean
