@@ -35,7 +35,7 @@ public class QnaService {
     }
 
     public List<QnaDto.QnaResponse> findQnaList() {
-        return qnaRepository.findAll().stream()
+        return qnaRepository.findAllByDeleted(false).stream()
                 .map(QnaDto.QnaResponse::of)
                 .collect(Collectors.toList());
     }
@@ -83,9 +83,22 @@ public class QnaService {
                 .orElseThrow(() -> new QnaNotFoundException(index));
 
         if (!qna.isValidDeleteUser(userId)) {
-            throw new AccessDeniedException("삭제 권한이 없습니다");
+            throw new AccessDeniedException("해당 글을 삭제할 권한이 없습니다");
         }
 
-        qnaRepository.deleteByIndex(index);
+        List<Comment> comments = commentRepository.findByQnaIndexAndDeleted(index, false);
+
+        boolean isDeletedComments = comments.stream()
+                .allMatch(comment -> comment.isValidDeleteUser(userId));
+
+        if (!isDeletedComments) {
+            throw new AccessDeniedException("해당 글의 댓글을 삭제할 권한이 없습니다.");
+        }
+
+        comments.forEach(Comment::delete);
+        commentRepository.batchUpdate(comments);
+
+        qna.delete();
+        qnaRepository.save(qna);
     }
 }

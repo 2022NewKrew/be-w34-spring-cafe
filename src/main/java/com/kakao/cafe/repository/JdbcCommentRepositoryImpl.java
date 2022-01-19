@@ -3,9 +3,12 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -35,6 +38,29 @@ public class JdbcCommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
+    public void batchUpdate(List<Comment> comments) {
+        String sql = "UPDATE COMMENT " +
+                "SET writer = ?, contents = ?, qna_index = ?, created_at = ?, deleted = ? " +
+                "WHERE id = ?";
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setString(1, comments.get(i).getWriter());
+                ps.setString(2, comments.get(i).getContents());
+                ps.setInt(3, comments.get(i).getQnaIndex());
+                ps.setDate(4, Date.valueOf(comments.get(i).getCreatedAt().toLocalDate()));
+                ps.setBoolean(5, comments.get(i).getDeleted());
+                ps.setInt(6, comments.get(i).getId());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return comments.size();
+            }
+        });
+    }
+
+    @Override
     public List<Comment> findByQnaIndexAndDeleted(Integer qnaIndex, Boolean isDeleted) {
         return jdbcTemplate.query("SELECT id, writer, contents, qna_index, created_at " +
                 "FROM COMMENT " +
@@ -47,7 +73,6 @@ public class JdbcCommentRepositoryImpl implements CommentRepository {
             return Optional.of(jdbcTemplate.queryForObject("SELECT id, writer, contents, qna_index, created_at " +
                     "FROM COMMENT " +
                     "WHERE id = ?", this::commentMapRow, id));
-
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
             return Optional.empty();
         }

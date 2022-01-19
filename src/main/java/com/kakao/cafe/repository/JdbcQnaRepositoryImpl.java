@@ -26,17 +26,17 @@ public class JdbcQnaRepositoryImpl implements QnaRepository {
         try {
             jdbcTemplate.queryForObject("SELECT `index` FROM QNA WHERE `index` = ?", Integer.class, qna.getIndex());
             jdbcTemplate.update("UPDATE QNA " +
-                    "SET writer = ?, title = ?, contents = ?" +
-                    "WHERE `index` = ?", qna.getWriter(), qna.getTitle(), qna.getContents(), qna.getIndex());
+                    "SET writer = ?, title = ?, contents = ?, deleted = ? " +
+                    "WHERE `index` = ?", qna.getWriter(), qna.getTitle(), qna.getContents(), qna.getDeleted(), qna.getIndex());
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
-            jdbcTemplate.update("INSERT INTO QNA(writer, title, contents)" +
-                    "VALUES(?, ? ,?)", qna.getWriter(), qna.getTitle(), qna.getContents());
+            jdbcTemplate.update("INSERT INTO QNA(writer, title, contents, deleted) " +
+                    "VALUES(?, ? ,?, ?)", qna.getWriter(), qna.getTitle(), qna.getContents(), qna.getDeleted());
         }
     }
 
     @Override
-    public List<Qna> findAll() {
-        return jdbcTemplate.query("SELECT `index`, writer, title, contents FROM QNA", this::qnaMapRow);
+    public List<Qna> findAllByDeleted(Boolean deleted) {
+        return jdbcTemplate.query("SELECT `index`, writer, title, contents FROM QNA WHERE deleted = ?", this::qnaMapRow, deleted);
     }
 
     @Override
@@ -46,11 +46,6 @@ public class JdbcQnaRepositoryImpl implements QnaRepository {
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
             return Optional.empty();
         }
-    }
-
-    @Override
-    public void deleteByIndex(Integer index) {
-        jdbcTemplate.update("delete from QNA where `index` = ?", index);
     }
 
     private Qna qnaMapRow(ResultSet resultSet, int rowNum) throws SQLException {
