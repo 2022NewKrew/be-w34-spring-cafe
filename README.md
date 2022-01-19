@@ -1,6 +1,9 @@
 # be-w34-spring-cafe
 
-### 배포 : http://krane-test-leo.ay1.krane.9rum.cc:8080/
+### 배포 : http://krane-test-leo.ay1.krane.9rum.cc
+- using docker
+- d2hub 를 사용해서 krane 에 배포하기에는 음..
+- 간단히 로컬에서 이미지 빌드 및 저장한 다음 scp 로 빌드파일 krane에 전송하는 방식으로 배포
 
 ### Install
 ```
