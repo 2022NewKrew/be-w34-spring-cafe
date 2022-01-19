@@ -16,11 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 
+import static com.kakao.cafe.Constant.SESSION_USER;
+
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-    private static final String SESSION_USER = "sessionUser";
     private final AuthService authService;
 
     @PostMapping("/login")

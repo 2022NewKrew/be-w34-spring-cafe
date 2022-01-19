@@ -9,6 +9,8 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import static com.kakao.cafe.Constant.MESSAGE_NOT_BLANK;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
@@ -23,7 +25,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     public String bindingHandler(BindException e, Model model) {
         logger.error("bindingHandler {} {}", e.getClass().getName(), e.getMessage());
-        ErrorMessage errorMessage = ErrorMessage.from("입력 값은 공백일 수 없습니다.");
+        ErrorMessage errorMessage = ErrorMessage.from(MESSAGE_NOT_BLANK);
         model.addAttribute("error",errorMessage);
         return "error";
     }

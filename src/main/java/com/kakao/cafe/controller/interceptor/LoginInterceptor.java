@@ -9,10 +9,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.kakao.cafe.Constant.SESSION_USER;
+
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
-    private static final String SESSION_USER = "sessionUser";
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (!(handler instanceof HandlerMethod)) {

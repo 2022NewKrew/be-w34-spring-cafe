@@ -17,11 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static com.kakao.cafe.Constant.SESSION_USER;
+
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-    private static final String SESSION_USER = "sessionUser";
     private final UserService userService;
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 

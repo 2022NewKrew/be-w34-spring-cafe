@@ -1,9 +1,9 @@
 package com.kakao.cafe.error.exception;
 
-public class InvalidPasswordException extends RuntimeException{
-    private static final String MESSAGE = "비밀번호가 일치하지 않습니다.";
+import static com.kakao.cafe.Constant.MESSAGE_INVALID_PASSWORD;
 
+public class InvalidPasswordException extends RuntimeException{
     public InvalidPasswordException() {
-        super(MESSAGE);
+        super(MESSAGE_INVALID_PASSWORD);
     }
 }
