@@ -1,8 +1,10 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.PostCreateRequest;
+import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.PostService;
 import java.util.UUID;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,8 +32,8 @@ public class PostController {
     }
 
     @PostMapping
-    public String write(@Valid PostCreateRequest requestDto) {
-        postService.write(requestDto);
+    public String write(@Valid PostCreateRequest requestDto, HttpSession session) {
+        postService.write(requestDto, (User) session.getAttribute("sessionUser"));
         return "redirect:/";
     }
 
