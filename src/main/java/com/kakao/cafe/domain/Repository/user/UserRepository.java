@@ -1,50 +1,45 @@
 package com.kakao.cafe.domain.Repository.user;
 
 import com.kakao.cafe.domain.Entity.User;
-import com.kakao.cafe.exceptions.NoSuchUserException;
+import com.kakao.cafe.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
 public class UserRepository {
-    private static User user1 = new User("jaden.dev", "123", "허홍준", "jaden.dev@kakaocorp.com");
-    private static User user2 = new User("pride.chicken", "456", "심재익", "pride.chicken@kakaocorp.com");
-    private static final Map<String, User> users = new HashMap<>() {
-        {
-            put(user1.getUserId(), user1);
-            put(user2.getUserId(), user2);
-        }
-    };
 
-    public void saveUser(User user) {
-        users.put(user.getUserId(), user);
+    private final JdbcTemplate jdbcTemplate;
+    private final UserMapper userMapper;
+
+    public void save(User user) {
+        this.jdbcTemplate.update("INSERT INTO USERS (userId, password, name, email) VALUES (?, ?, ?, ?)",
+                user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+    }
+
+    public List<User> findAll() {
+        return this.jdbcTemplate.query("SELECT * FROM USERS", this.userMapper);
     }
 
     public boolean isUserIdExist(String userId) {
-        return users.containsKey(userId);
-    }
-
-    public List<User> findAllUsers() {
-        return new ArrayList<>(users.values());
-    }
-
-    public User findUserByUserId(String userId) throws NoSuchUserException {
-        if (isUserIdExist(userId)) {
-            return users.get(userId);
+        try {
+            this.jdbcTemplate.queryForObject("SELECT * FROM USERS WHERE userId = ?", this.userMapper, userId);
+        } catch (EmptyResultDataAccessException e) {
+            return false;
         }
-        throw new NoSuchUserException();
+        return true;
     }
 
-    public void updateUser(String userId, String name, String email) throws NoSuchUserException {
-        User targetUser = findUserByUserId(userId);
-        targetUser.setName(name);
-        targetUser.setEmail(email);
+    public User findById(String userId) {
+        return this.jdbcTemplate.queryForObject("SELECT * FROM USERS WHERE userId = ?", this.userMapper, userId);
+    }
+
+    public void update(String userId, String name, String email) {
+        this.jdbcTemplate.update("UPDATE USERS SET name=?, email=? WHERE userId =?", name, email, userId);
     }
 
 

@@ -1,4 +1,4 @@
-package com.kakao.cafe.mapper.article;
+package com.kakao.cafe.mapper;
 
 import com.kakao.cafe.domain.Entity.Article;
 import org.springframework.jdbc.core.RowMapper;

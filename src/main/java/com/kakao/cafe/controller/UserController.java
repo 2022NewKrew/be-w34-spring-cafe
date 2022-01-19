@@ -26,14 +26,14 @@ public class UserController {
     // 회원 목록 페이지
     @GetMapping("/users")
     public String showAllUsers(Model model) {
-        model.addAttribute("users", this.userService.getUserList());
+        model.addAttribute("users", this.userService.findAll());
         return "user/list";
     }
 
     // 회원 정보 페이지
     @GetMapping("/users/{userId}")
     public String showUser(@PathVariable String userId, Model model) throws NoSuchUserException {
-        model.addAttribute("user", this.userService.getUserByUserId(userId));
+        model.addAttribute("user", this.userService.findById(userId));
         return "user/profile";
     }
 
@@ -46,33 +46,23 @@ public class UserController {
     // 회원 가입 요청
     @PostMapping("/user/signup")
     public String signUp(SignUpDto signUpDto) throws UserIdDuplicationException {
-        log.info("{}", signUpDto.getUserId());
-        log.info("{}", signUpDto.getPassword());
-        log.info("{}", signUpDto.getName());
-        log.info("{}", signUpDto.getEmail());
-        this.userService.saveNewUser(signUpDto);
+        this.userService.save(signUpDto);
         return "redirect:/users";
     }
 
     // 회원정보 수정 페이지
     @GetMapping("users/{userId}/form")
     public String updateForm(@PathVariable String userId, Model model, HttpSession session) throws NoSuchUserException, WrongAccessException {
-        UserInfoDto sessionedUser = (UserInfoDto) session.getAttribute("sessionedUser");
-        if (!userId.equals(sessionedUser.getUserId())) {
-            throw new WrongAccessException();
-        }
-        model.addAttribute("user", this.userService.getUserByUserId(userId));
+        this.userService.userValidation(userId, session);
+        model.addAttribute("user", this.userService.findById(userId));
         return "user/updateForm";
     }
 
     // 회원정보 수정 요청
     @PatchMapping("users/{userId}/update")
     public String updateUserInfo(SignUpDto signUpDto, @PathVariable String userId, HttpSession session) throws PasswordMismatchException, NoSuchUserException, WrongAccessException {
-        UserInfoDto sessionedUser = (UserInfoDto) session.getAttribute("sessionedUser");
-        if (!userId.equals(sessionedUser.getUserId())) {
-            throw new WrongAccessException();
-        }
-        this.userService.updateUser(signUpDto);
+        this.userService.userValidation(userId, session);
+        this.userService.update(signUpDto);
         return "redirect:/users";
     }
 
@@ -86,10 +76,14 @@ public class UserController {
     @PostMapping("/login")
     public String login(LoginDto loginDto, HttpSession session) throws PasswordMismatchException, NoSuchUserException {
         UserInfoDto userInfoDto = this.userService.login(loginDto);
-        log.info("{}", userInfoDto.getUserId());
-        log.info("{}", userInfoDto.getName());
-        log.info("{}", userInfoDto.getEmail());
         session.setAttribute("sessionedUser", userInfoDto);
+        return "redirect:/users";
+    }
+
+    // 로그아웃
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        this.userService.logout(session);
         return "redirect:/users";
     }
 }
