@@ -2,11 +2,11 @@ package com.kakao.cafe.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.web.dto.UserDTO;
-import com.kakao.cafe.web.dto.UserListDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +38,7 @@ class UserServiceTest {
 
     @Test
     void getUserByUserId() {
-        when(userRepository.findByUserId("cih468")).thenReturn(User.newInstance(2, "cih468", "1234", "cih468@naver.com", "2022-01-19"));
+        when(userRepository.findByUserId("cih468")).thenReturn(Optional.of(User.newInstance(2, "cih468", "1234", "cih468@naver.com", "2022-01-19")));
         UserDTO userDTO = userService.getUserByUserId("cih468");
         assertEquals(userDTO.getId(), 2);
         assertEquals(userDTO.getUserId(), "cih468");

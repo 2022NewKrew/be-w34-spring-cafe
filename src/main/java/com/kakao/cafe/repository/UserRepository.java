@@ -5,6 +5,7 @@ import com.kakao.cafe.repository.dao.UserDAO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepository {
@@ -23,7 +24,7 @@ public class UserRepository {
         return userDAO.findAll();
     }
 
-    public User findByUserId(String userId) {
+    public Optional<User> findByUserId(String userId) {
         return userDAO.findByUserId(userId);
     }
 }

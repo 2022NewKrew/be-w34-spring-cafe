@@ -53,3 +53,4 @@
 - User와 Article의 고유 id index 값은 Service Layer에서 static 변수가 관리하도록 처리.
 - 생성자 대신 정적 팩토리 메소드를 이용.
 - Article,user의 id 값은 db의 auto increment 를 이용하여 생성한 값을 사용.
+- 아이디가 이미 존재 할 경우, Exception 을 이용하여 http 메세지로 이미 존재함을 알림.

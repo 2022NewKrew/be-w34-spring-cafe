@@ -2,12 +2,14 @@ package com.kakao.cafe.repository.dao;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.user.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserDAO {
@@ -23,9 +25,13 @@ public class UserDAO {
         jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getEmail(), user.getRegisterDate());
     }
 
-    public User findByUserId(String userId) {
+    public Optional<User> findByUserId(String userId) {
         String sql = "SELECT * FROM USERS WHERE USER_ID=?";
-        return jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper(), userId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     public List<User> findAll() {
