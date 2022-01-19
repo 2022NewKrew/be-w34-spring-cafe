@@ -3,6 +3,7 @@ package com.kakao.cafe.domain.article;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Objects;
 
@@ -23,7 +24,7 @@ public class Article {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, writer, title, contents, deleted);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     public void shiftIsDeleted() {

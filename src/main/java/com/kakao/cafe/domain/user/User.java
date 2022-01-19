@@ -3,8 +3,8 @@ package com.kakao.cafe.domain.user;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Objects;
 
 @Getter
 @AllArgsConstructor
@@ -22,6 +22,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, password, name, email);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }
