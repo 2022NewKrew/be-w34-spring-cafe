@@ -16,20 +16,20 @@ public class UserService {
     }
 
     public List<Users> getUsers() {
-        return jdbcTemplate.query(QueryConstants.userSelect, new UserMapper());
+        return jdbcTemplate.query(QueryConstants.USER_SELECT, new UserMapper());
     }
 
     public Users addUser(Users user) {
-        jdbcTemplate.update(QueryConstants.userInsert, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
-        return jdbcTemplate.queryForObject(QueryConstants.userSelectByUserId, new UserMapper(), user.getUserId());
+        jdbcTemplate.update(QueryConstants.USER_INSERT, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        return jdbcTemplate.queryForObject(QueryConstants.USER_SELECT_BY_USERID, new UserMapper(), user.getUserId());
     }
 
     public Users getByUserId(int id) {
-        return jdbcTemplate.queryForObject(QueryConstants.userSelectById, new UserMapper(), id);
+        return jdbcTemplate.queryForObject(QueryConstants.USER_SELECT_BY_ID, new UserMapper(), id);
     }
 
     public Users getByUserName(String userId) {
-        return jdbcTemplate.queryForObject(QueryConstants.userSelectByUserId, new UserMapper(), userId);
+        return jdbcTemplate.queryForObject(QueryConstants.USER_SELECT_BY_USERID, new UserMapper(), userId);
     }
 
     public void updateUser(int id, Users updateUser, String newPassword) {
@@ -37,7 +37,7 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         if (!newPassword.isBlank())
             updateUser.setPassword(newPassword);
-        jdbcTemplate.update(QueryConstants.userUpdate, updateUser.getPassword(), updateUser.getName(), updateUser.getEmail(), id);
+        jdbcTemplate.update(QueryConstants.USER_UPDATE, updateUser.getPassword(), updateUser.getName(), updateUser.getEmail(), id);
     }
 
 }

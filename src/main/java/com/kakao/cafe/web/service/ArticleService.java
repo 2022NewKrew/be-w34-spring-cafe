@@ -17,20 +17,20 @@ public class ArticleService {
     }
 
     public List<Article> getArticles() {
-        List<Article> articles = jdbcTemplate.query(QueryConstants.articleSelect, new ArticleMapper());
+        List<Article> articles = jdbcTemplate.query(QueryConstants.ARTICLE_SELECT, new ArticleMapper());
         for (Article a : articles) {
-            a.setAuthor(jdbcTemplate.queryForObject(QueryConstants.userSelectById, new UserMapper(), a.getAuthorId()));
+            a.setAuthor(jdbcTemplate.queryForObject(QueryConstants.USER_SELECT_BY_ID, new UserMapper(), a.getAuthorId()));
         }
         return articles;
     }
 
     public void addArticle(Article article) {
-        jdbcTemplate.update(QueryConstants.articleInsert, article.getAuthorId(), article.getTitle(), article.getContent());
+        jdbcTemplate.update(QueryConstants.ARTICLE_INSERT, article.getAuthorId(), article.getTitle(), article.getContent());
     }
 
     public Article getByArticleId(int id) {
-        Article article = jdbcTemplate.queryForObject(QueryConstants.articleSelectById, new ArticleMapper(), id);
-        article.setAuthor(jdbcTemplate.queryForObject(QueryConstants.userSelectById, new UserMapper(), article.getAuthorId()));
+        Article article = jdbcTemplate.queryForObject(QueryConstants.ARTICLE_SELECT_BY_ID, new ArticleMapper(), id);
+        article.setAuthor(jdbcTemplate.queryForObject(QueryConstants.USER_SELECT_BY_ID, new UserMapper(), article.getAuthorId()));
         return article;
     }
 
@@ -39,10 +39,10 @@ public class ArticleService {
             throw new IllegalArgumentException("제목이 빈 값일 수 없습니다.");
         if (updateArticle.getContent().isBlank())
             throw new IllegalArgumentException("내용이 빈 값일 수 없습니다.");
-        jdbcTemplate.update(QueryConstants.articleUpdate, updateArticle.getTitle(), updateArticle.getContent(), id);
+        jdbcTemplate.update(QueryConstants.ARTICLE_UPDATE, updateArticle.getTitle(), updateArticle.getContent(), id);
     }
 
     public void deleteArticle(int id) {
-        jdbcTemplate.update(QueryConstants.articleDelete, id);
+        jdbcTemplate.update(QueryConstants.ARTICLE_DELETE, id);
     }
 }
