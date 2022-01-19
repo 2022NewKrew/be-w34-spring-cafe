@@ -43,6 +43,13 @@ public class ArticleJdbcRepository implements ArticleRepository{
         return jdbcTemplate.query(sql, articleRowMapper(), id).stream().findAny();
     }
 
+    @Override
+    public void updateOne(Article article){
+        String sql = "UPDATE ARTICLE SET author=?, title=?, contents=?, uploadTime=? WHERE id=?";
+        jdbcTemplate.update(sql, article.getAuthor(), article.getTitle(),
+                article.getContents(), article.getUploadTime(), article.getId());
+    }
+
     public RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> new Article(
                 rs.getLong("id"),

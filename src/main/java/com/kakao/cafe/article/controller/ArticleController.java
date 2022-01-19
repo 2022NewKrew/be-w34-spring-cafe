@@ -51,4 +51,10 @@ public class ArticleController {
         }
         throw new ArticleAuthorMismatchException();
     }
+
+    @PutMapping("/update/{id}")
+    public String updateArticle(@PathVariable Long id, ArticleRequest articleRequest) {
+        articleService.updateArticle(id, articleRequest);
+        return "redirect:/";
+    }
 }

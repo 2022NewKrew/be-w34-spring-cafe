@@ -48,4 +48,12 @@ public class ArticleService {
     public Article getArticleById(Long id){
         return articleRepository.findOneById(id).orElseThrow(ArticleNotFoundException::new);
     }
+
+    public void updateArticle(Long id, ArticleRequest articleRequest){
+        Article article = modelMapper.map(articleRequest, Article.class);
+        article.setId(id);
+        article.setUploadTime(DateUtils.getCurrentDate());
+
+        articleRepository.updateOne(article);
+    }
 }
