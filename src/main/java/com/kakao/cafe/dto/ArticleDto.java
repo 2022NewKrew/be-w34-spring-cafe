@@ -33,4 +33,7 @@ public class ArticleDto {
         );
     }
 
+    public User getWriter() {
+        return writer;
+    }
 }

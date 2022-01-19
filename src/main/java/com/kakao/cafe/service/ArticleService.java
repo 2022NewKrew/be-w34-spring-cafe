@@ -39,4 +39,22 @@ public class ArticleService {
     public ArticleDto findById(String index) {
         return ArticleDto.entityToDto(articleRepository.findById(index));
     }
+
+    public ArticleDto updateById(String index, ArticleRequestDto articleRequestDto) {
+        Article article = articleRepository.findById(index);
+
+        article.setTitle(articleRequestDto.getTitle());
+        article.setContent(articleRequestDto.getContent());
+
+        return ArticleDto.entityToDto(articleRepository.update(article));
+    }
+
+    public boolean isUpdatable(ArticleDto articleDto, HttpSession httpSession) {
+        User sessionedUser = (User) httpSession.getAttribute("sessionedUser");
+        if(sessionedUser == null)
+            return false;
+        if(sessionedUser.getId() != articleDto.getWriter().getId())
+            return false;
+        return true;
+    }
 }

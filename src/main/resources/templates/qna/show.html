@@ -29,6 +29,9 @@
                         <div class="article-doc">
                             {{content}}
                         </div>
+                        {{#isUpdatable}}
+                            <button class="post-write-btn" type="button" onclick="location.href='/articles/update/{{id}}';">수정</button>
+                        {{/isUpdatable}}
                     </article>
                     <div class="post-comment">
                         <div class="post-comment-slipp">
@@ -54,6 +57,7 @@
                                                   placeholder="내용을 입력하세요"></textarea>
                                     </div>
                                     <input class="post-write-btn" type="submit" value="등록"/>
+
                                 </form>
                             </div>
                         </div>

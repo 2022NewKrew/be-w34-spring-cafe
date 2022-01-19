@@ -3,7 +3,6 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticleListDto;
 import com.kakao.cafe.dto.ArticleRequestDto;
-import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
@@ -13,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -48,9 +48,31 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{index}")
-    public String getArticleInfo(@PathVariable String index, Model model) {
+    public String getArticleInfo(@PathVariable String index, Model model, HttpSession httpSession) {
         ArticleDto article = articleService.findById(index);
         model.addAttribute("article", article);
+
+        boolean isUserEqualToWriter = articleService.isUpdatable(article, httpSession);
+        model.addAttribute("isUpdatable", isUserEqualToWriter);
+
         return "qna/show";
+    }
+
+    @GetMapping("/articles/update/{index}")
+    public String getArticleUpdateForm(@PathVariable String index, Model model, HttpSession httpSession) {
+        ArticleDto article = articleService.findById(index);
+        model.addAttribute("article", article);
+
+        if(!articleService.isUpdatable(article, httpSession))
+            return "qna/updateImpossible";
+
+        return "qna/update";
+    }
+
+    @PutMapping("/qna/update/{index}")
+    public String updateArticle(@PathVariable String index, ArticleRequestDto articleRequestDto, Model model) {
+        ArticleDto article = articleService.updateById(index, articleRequestDto);
+        model.addAttribute("article", article);
+        return "redirect:/articles/{index}";
     }
 }

@@ -77,6 +77,22 @@ public class ArticleRepositoryImpl implements ArticleRepository{
         return namedParameterJdbcTemplate.queryForObject(sql, param, articleRowMapper());
     }
 
+    @Override
+    public Article update(Article article) {
+        String sql = "UPDATE ARTICLE " +
+                "SET TITLE = :title, CONTENT = :content " +
+                "WHERE ARTICLE_ID = :articleId";
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("title", article.getTitle());
+        params.put("content", article.getContent());
+        params.put("articleId", article.getId());
+
+        this.namedParameterJdbcTemplate.update(sql, params);
+
+        return article;
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> new Article(
                 rs.getInt("ARTICLE_ID"),
