@@ -1,3 +1,6 @@
+delete from users;
+
+delete from articles;
 
 insert into users(user_id, password, username, email)
 values('a', 'a', 'james', 'aaa@google.com');

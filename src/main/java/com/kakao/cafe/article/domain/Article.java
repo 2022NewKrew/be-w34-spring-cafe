@@ -14,7 +14,6 @@ import static com.kakao.cafe.common.exception.ExceptionMessage.NON_NULL_EXCEPTIO
 @AllArgsConstructor
 public class Article {
 
-    @NonNull
     @Setter
     private int id;
 
