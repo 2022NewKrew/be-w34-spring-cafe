@@ -18,6 +18,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public void save(Article article) {
         final String sql = "insert into articles(title, body, author_id) values(?, ?, ?)";
+
         jdbcTemplate.update(sql, article.getTitle(), article.getBody(), article.getAuthorId());
     }
 
@@ -108,5 +109,12 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         final String sql = "update articles set title = ?, body = ? where article_id = ?";
 
         jdbcTemplate.update(sql, article.getTitle(), article.getBody(), article.getId());
+    }
+
+    @Override
+    public void delete(Article article) {
+        final String sql = "delete from articles where article_id = ?";
+
+        jdbcTemplate.update(sql, article.getId());
     }
 }

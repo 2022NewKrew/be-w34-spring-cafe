@@ -34,10 +34,20 @@ public class ArticleService {
 
     public void update(Long userId, Article article) {
         Article original = getArticle(article.getId());
-        if (!Objects.equals(userId, original.getAuthorId())) {
+        validateAuthor(userId, original);
+        articleRepository.update(article);
+    }
+
+    public void delete(Long authorId, Long articleId) {
+        Article article = getArticle(articleId);
+        validateAuthor(authorId, article);
+        articleRepository.delete(article);
+    }
+
+    private void validateAuthor(Long authorId, Article article) {
+        if (!article.isAuthor(authorId)) {
             throw new ForbiddenException();
         }
-        articleRepository.update(article);
     }
 
     private Article getArticle(Long id) {

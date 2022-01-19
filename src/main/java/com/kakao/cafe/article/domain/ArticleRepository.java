@@ -18,4 +18,6 @@ public interface ArticleRepository {
     void increaseViewCount(Long id);
 
     void update(Article article);
+
+    void delete(Article article);
 }
