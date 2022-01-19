@@ -31,8 +31,8 @@ public class UserMapper implements RowMapper<User> {
                 ).collect(Collectors.toList());
     }
 
-    public static UserProfileDto toUserProfileDto(User user) {
-        return new UserProfileDto(user.getName().getName(), user.getEmail().getEmail());
+    public static UserDetailDto toUserProfileDto(User user) {
+        return new UserDetailDto(user.getName().getName(), user.getEmail().getEmail());
     }
 
     public static UserDto toUserDto(User user) {

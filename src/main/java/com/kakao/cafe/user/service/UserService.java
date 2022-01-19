@@ -1,12 +1,11 @@
 package com.kakao.cafe.user.service;
 
-import com.kakao.cafe.exception.ErrorCode;
-import com.kakao.cafe.exception.LoginFailedException;
-import com.kakao.cafe.exception.UserException;
 import com.kakao.cafe.user.domain.Password;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserId;
+import com.kakao.cafe.user.exception.*;
 import com.kakao.cafe.user.repository.UserRepository;
+import com.kakao.cafe.util.ErrorCode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,50 +26,53 @@ public class UserService {
     }
 
     private void validateDuplicateUser(UserId userId) {
-        if (userRepository.findByUserId(userId).isPresent())
-            throw new UserException(ErrorCode.DUPLICATE_USER_ID);
-    }
-
-    public void updateUser(User updateUser) {
-        User user = findUserByUserId(updateUser.getUserId());
-        // TODO: UserId 변경된 경우 예외처리
-        if (!user.getPassword().equals(updateUser.getPassword())) {
-            throw new UserException(ErrorCode.WRONG_USER_PASSWORD);
+        boolean isExist = userRepository.findByUserId(userId).isPresent();
+        if (isExist) {
+            throw new DuplicateUserException(ErrorCode.DUPLICATE_USER_ID);
         }
-        userRepository.update(updateUser);
     }
 
     public User login(UserId userId, Password password) {
         Optional<User> user = userRepository.findByUserIdAndPassword(userId, password);
-        if (user.isEmpty()) {
-            throw new LoginFailedException(ErrorCode.FAILED_LOGIN);
-        }
-        return user.get();
+        return findExistUser(user, new LoginFailedException(ErrorCode.FAILED_LOGIN));
     }
 
-    public List<User> findUsers() {
+    public void updateUser(User updateUser, UserId originalUserId) {
+        boolean isChangedUserId = !updateUser.equalId(originalUserId);
+        if (isChangedUserId) {
+            throw new UpdateUserException(ErrorCode.CANNOT_CHANGE_USER_ID);
+        }
+
+        Optional<User> user = userRepository.findByUserId(updateUser.getUserId());
+        User originalUser = findExistUser(user, new UpdateUserException(ErrorCode.FAILED_LOGIN));
+        boolean isCorrectPassword = updateUser.equalPassword(originalUser);
+        if (!isCorrectPassword) {
+            throw new UpdateUserException(ErrorCode.WRONG_USER_PASSWORD);
+        }
+        userRepository.update(updateUser);
+    }
+
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public User findUserByUserId(UserId userId) {
-        Optional<User> user = userRepository.findByUserId(userId);
-        if (user.isEmpty()) {
-            throw new UserException(ErrorCode.USER_NOT_FOUND);
+    public User findByLoginUserId(UserId userId, UserId loginId) {
+        boolean isLoginUserId = loginId.equals(userId);
+        if (!isLoginUserId) {
+            throw new ForbiddenUserException(ErrorCode.FORBIDDEN_USER);
         }
-        return user.get();
+        return findByUserId(userId);
     }
 
-    public User findLoginUser(UserId userId, Optional<UserId> loginId) {
-        if (loginId.isEmpty()) {
-            //TODO: 로그인 안한 유저 예외처리 - 권한 없는 사용자, 로그인 화면
-            throw new UserException(ErrorCode.WRONG_USER_PASSWORD);
-        }
+    public User findByUserId(UserId userId) {
+        Optional<User> user = userRepository.findByUserId(userId);
+        return findExistUser(user, new NonExistUserException(ErrorCode.USER_NOT_FOUND));
+    }
 
-        boolean isSameUserId = loginId.get().equals(userId);
-        if (!isSameUserId) {
-            //TODO: 잘못된 접근, 권한 없음 에러 처리
-            throw new UserException(ErrorCode.USER_NOT_FOUND);
+    private User findExistUser(Optional<User> user, RuntimeException exception) {
+        if (user.isEmpty()) {
+            throw exception;
         }
-        return findUserByUserId(userId);
+        return user.get();
     }
 }

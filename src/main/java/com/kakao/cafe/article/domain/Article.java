@@ -1,8 +1,8 @@
 package com.kakao.cafe.article.domain;
 
-import com.kakao.cafe.exception.ArticleException;
-import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.article.exception.ArticleException;
 import com.kakao.cafe.user.domain.UserId;
+import com.kakao.cafe.util.ErrorCode;
 import lombok.Getter;
 
 import java.util.Date;

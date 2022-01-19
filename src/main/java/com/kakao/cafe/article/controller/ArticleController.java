@@ -42,7 +42,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{index}")
+    @GetMapping("/question/{index}")
     public String showArticle(@PathVariable Long index, Model module) {
         ArticleDto articles = articleMapper.toArticleDto(articleService.findArticleByArticleId(index));
         module.addAttribute("articles", articles);
