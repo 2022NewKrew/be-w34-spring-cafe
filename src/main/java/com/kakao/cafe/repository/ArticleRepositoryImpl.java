@@ -94,6 +94,17 @@ public class ArticleRepositoryImpl implements ArticleRepository{
         return article;
     }
 
+    @Override
+    public void delete(String index) {
+        String sql = "DELETE FROM ARTICLE " +
+                "WHERE ARTICLE_ID = :articleId";
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("articleId", index);
+
+        this.namedParameterJdbcTemplate.update(sql, params);
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> new Article(
                 rs.getInt("ARTICLE_ID"),

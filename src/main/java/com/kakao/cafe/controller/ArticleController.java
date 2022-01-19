@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -20,7 +17,7 @@ import java.util.List;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
@@ -51,10 +48,7 @@ public class ArticleController {
     public String getArticleInfo(@PathVariable String index, Model model, HttpSession httpSession) {
         ArticleDto article = articleService.findById(index);
         model.addAttribute("article", article);
-
-        boolean isUserEqualToWriter = articleService.isUpdatable(article, httpSession);
-        model.addAttribute("isUpdatable", isUserEqualToWriter);
-
+        model.addAttribute("writerName", article.getWriter().getName());
         return "qna/show";
     }
 
@@ -74,5 +68,16 @@ public class ArticleController {
         ArticleDto article = articleService.updateById(index, articleRequestDto);
         model.addAttribute("article", article);
         return "redirect:/articles/{index}";
+    }
+
+    @DeleteMapping("/qna/delete/{index}")
+    public String deleteArticle(@PathVariable String index, HttpSession httpSession) {
+        ArticleDto article = articleService.findById(index);
+
+        if(!articleService.isUpdatable(article, httpSession))
+            return "qna/updateImpossible";
+
+        articleService.deleteById(index);
+        return "redirect:/";
     }
 }

@@ -51,10 +51,11 @@ public class ArticleService {
 
     public boolean isUpdatable(ArticleDto articleDto, HttpSession httpSession) {
         User sessionedUser = (User) httpSession.getAttribute("sessionedUser");
-        if(sessionedUser == null)
-            return false;
-        if(sessionedUser.getId() != articleDto.getWriter().getId())
-            return false;
-        return true;
+        if(sessionedUser == null) return false;
+        return sessionedUser.getId() == articleDto.getWriter().getId();
+    }
+
+    public void deleteById(String index) {
+        articleRepository.delete(index);
     }
 }

@@ -19,19 +19,21 @@
                     <article class="article">
                         <div class="article-header">
                             <div class="article-header-text">
-                                <p class="article-content">멋진삼</p>
-                                <p class="article-content">
-                                    작성일자:2015-12-30 01:47
-                                </p>
-                                <p class="article-content">조회 4</p>
+                                <p class="article-content">{{writerName}}</p>
+                                <p class="article-content">작성일자 : {{createdTime}}</p>
+                                <p class="article-content">조회 {{views}}</p>
                             </div>
                         </div>
                         <div class="article-doc">
                             {{content}}
                         </div>
-                        {{#isUpdatable}}
+                        <div class="article-buttons">
+                            <form method="post" action="/qna/delete/{{id}}">
+                                <input class="post-write-btn" name="_method" type="hidden" value="DELETE"/>
+                                <input class="post-write-btn" type="submit" value="삭제"/>
+                            </form>
                             <button class="post-write-btn" type="button" onclick="location.href='/articles/update/{{id}}';">수정</button>
-                        {{/isUpdatable}}
+                        </div>
                     </article>
                     <div class="post-comment">
                         <div class="post-comment-slipp">
