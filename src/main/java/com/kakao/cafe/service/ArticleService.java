@@ -1,45 +1,47 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.article.ArticleCreateDTO;
-import com.kakao.cafe.dto.article.ArticleDTO;
-import com.kakao.cafe.dto.user.UserDTO;
-import com.kakao.cafe.repository.ArticleMemoryRepository;
-import com.kakao.cafe.repository.UserRepository;
-import java.util.*;
+import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.Content;
+import com.kakao.cafe.domain.article.Title;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserName;
+import com.kakao.cafe.dto.article.ArticleContentDto;
+import com.kakao.cafe.dto.article.ArticleDto;
+import com.kakao.cafe.dto.article.ArticleWriteDto;
+import com.kakao.cafe.exception.NoSuchArticleException;
+import com.kakao.cafe.repository.ArticleRepository;
+import java.util.List;
+import java.util.UUID;
 
-import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.kakao.cafe.utils.DtoConversion;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class ArticleService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ArticleService.class);
+    private final ArticleRepository articleRepository;
+    private final UserService userService;
 
-    private final ArticleMemoryRepository articleRepository;
-    private final UserRepository userRepository;
-
-    public Long create(ArticleCreateDTO articleCreateDTO) {
-        if(validateUserID(articleCreateDTO.getAuthorId())){
-            return Long.MIN_VALUE;
-        }
-
-        return articleRepository.save(articleCreateDTO).getId();
+    public ArticleService(ArticleRepository articleRepository, UserService userService) {
+        this.articleRepository = articleRepository;
+        this.userService = userService;
     }
 
-    private boolean validateUserID(String userId){
-        Optional<UserDTO> user = userRepository.findByUserId(userId);
-
-        return user.isEmpty();
+    public void registerArticle(ArticleWriteDto articleWriteDto) {
+        User user = userService.findUserByUserName(new UserName(articleWriteDto.getUserName()));
+        Article article = DtoConversion.articleWriteDtoToArticle(articleWriteDto, user);
+        articleRepository.save(article);
     }
 
-    public List<ArticleDTO> getAllArticles() {
-        return articleRepository.findAll();
+    public List<ArticleDto> getArticleList() {
+        return DtoConversion.articleListToArticleDtoList(articleRepository.findAll());
     }
 
-    public ArticleDTO getArticle(Long id) {
-        return articleRepository.findById(id).get();
+    public ArticleContentDto findArticleById(UUID articleId) {
+        Article article = articleRepository.findArticleById(articleId)
+                .orElseThrow(() -> new NoSuchArticleException("해당 게시글을 찾을 수 없습니다."));
+        article.increaseViewCount();
+        articleRepository.update(article);
+        return DtoConversion.articleToArticleContentDto(article);
     }
 }

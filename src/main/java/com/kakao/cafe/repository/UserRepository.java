@@ -1,19 +1,24 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.dto.user.SignUpDTO;
-import com.kakao.cafe.dto.user.UserDTO;
+import com.kakao.cafe.domain.user.Password;
+import com.kakao.cafe.domain.user.User;
 
+import com.kakao.cafe.domain.user.UserName;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UserRepository {
 
-    UserDTO save(SignUpDTO signUpDTO);
+    void save(User user);
 
-    Optional<UserDTO> findById(Long id);
+    List<User> findAll();
 
-    Optional<UserDTO> findByUserId(String userId);
+    Optional<User> findUserByName(UserName userName);
 
-    List<UserDTO> findAll();
+    Optional<User> findUserById(UUID id);
 
+    void update(User user);
+
+    Optional<User> findUserByUserNameAndPassword(UserName userName, Password password);
 }

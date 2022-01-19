@@ -1,38 +1,53 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.article.ArticleCreateDTO;
+import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserName;
+import com.kakao.cafe.dto.article.ArticleContentDto;
+import com.kakao.cafe.dto.article.ArticleDto;
+import com.kakao.cafe.dto.article.ArticleWriteDto;
+import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.service.ArticleService;
-import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.kakao.cafe.service.UserService;
+import java.util.List;
+import java.util.UUID;
+import javax.validation.Valid;
+
+import com.kakao.cafe.utils.DtoConversion;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequiredArgsConstructor
+@RequestMapping("articles")
 public class ArticleController {
-
-    private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     private final ArticleService articleService;
 
-    @PostMapping("/articles/create")
-    public String create(@ModelAttribute @Validated ArticleCreateDTO articleCreateDTO) {
-        articleService.create(articleCreateDTO);
-        return "redirect:/";
+    public ArticleController(ArticleService articleService, UserService userService) {
+        this.articleService = articleService;
     }
 
-    @GetMapping
-    public String getAllUsers(Model model) {
-        model.addAttribute("articles", articleService.getAllArticles());
-        return "index";
+    @GetMapping("")
+    public String requestArticleList(Model model) {
+        List<ArticleDto> articleList = articleService.getArticleList();
+        model.addAttribute("articles", articleList);
+        return "articles/list";
     }
 
-    @GetMapping("/articles/{index}")
-    public String read(@PathVariable("index") Long articleId, Model model) {
-        model.addAttribute("article", articleService.getArticle(articleId));
-        return "qna/show";
+    @PostMapping("")
+    public String requestArticleRegister(@Valid ArticleWriteDto articleWriteDto) {
+        articleService.registerArticle(articleWriteDto);
+        return "redirect:/articles";
+    }
+
+    @GetMapping("/{articleId}")
+    public String requestArticleDetail(@PathVariable UUID articleId, Model model) {
+        ArticleContentDto articleContent = articleService.findArticleById(articleId);
+        model.addAttribute("article", articleContent);
+        return "articles/detail";
     }
 }
