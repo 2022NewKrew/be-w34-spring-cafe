@@ -8,17 +8,14 @@ import com.kakao.cafe.util.Page;
 import com.kakao.cafe.util.Pageable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.function.Function;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Autowired
     private final UserRepository userRepository;
 
     @Override
