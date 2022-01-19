@@ -29,13 +29,13 @@ public class ArticleController {
     }
 
     // 게시물 작성 양식
-    @GetMapping("/article/post")
+    @GetMapping("/articles/post")
     public String articleForm() {
         return "article/form";
     }
 
     // 게시물 작성 - 로그인 필요
-    @PostMapping("/article/post")
+    @PostMapping("/articles/post")
     public String postArticle(PostArticleDto writeArticleDto, HttpSession session) {
         if (!this.userService.isUserLoggedin(session)) {
             return "user/login";
@@ -47,9 +47,9 @@ public class ArticleController {
     // 게시물 상세 조회 - 로그인 필요
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable int id, HttpSession session, Model model) {
-        if (!this.userService.isUserLoggedin(session)) {
-            return "user/login";
-        }
+//        if (!this.userService.isUserLoggedin(session)) {
+//            return "user/login";
+//        }
         model.addAttribute("article", this.articleService.findById(id));
         return "article/show";
     }
