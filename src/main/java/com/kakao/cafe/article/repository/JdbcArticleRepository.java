@@ -33,9 +33,11 @@ public class JdbcArticleRepository implements ArticleRepository {
             return ps;
         }, keyHolder);
 
-        Long id = (Long) keyHolder.getKey();
+        Number id = keyHolder.getKey();
 
-        article.setId(id);
+        if (id != null) {
+            article.setId(id.longValue());
+        }
         return article;
     }
 
@@ -59,7 +61,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE ARTICLE WHERE ID = ?";
+        String sql = "DELETE FROM ARTICLE WHERE ID = ?";
         jdbcTemplate.update(sql, id);
     }
 
