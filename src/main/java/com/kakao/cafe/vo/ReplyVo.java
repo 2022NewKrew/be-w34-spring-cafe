@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleVo {
-
-    private int articleId;
+public class ReplyVo {
+    private int replyId;
     private String writer;
-    private String title;
-    private String contents;
+    private String comment;
     private String date;
+    private int articleId;
     private String userId;
 }

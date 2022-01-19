@@ -11,12 +11,12 @@ import java.sql.SQLException;
 public class ArticleRowMapper implements RowMapper<ArticleVo> {
     @Override
     public ArticleVo mapRow(ResultSet rs, int rowNum) throws SQLException {
-        int id = rs.getInt("id");
+        int articleId = rs.getInt("articleId");
         String writer = rs.getString("writer");
         String title = rs.getString("title");
         String contents = rs.getString("contents");
         String date = rs.getString("date");
         String userId = rs.getString("userId");
-        return new ArticleVo(id, writer, title, contents, date, userId);
+        return new ArticleVo(articleId, writer, title, contents, date, userId);
     }
 }

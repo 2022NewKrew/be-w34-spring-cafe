@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class ArticleDto {
 
-    private int id;
+    private int articleId;
     private String writer;
     @NotBlank
     private String title;

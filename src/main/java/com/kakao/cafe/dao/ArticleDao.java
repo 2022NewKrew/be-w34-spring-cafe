@@ -24,28 +24,26 @@ public class ArticleDao {
         jdbcTemplate.update("INSERT INTO ARTICLE (writer, title, contents, date, userId) VALUES (?, ?, ?, ?, ?)", writer, title, contents, date, userId);
     }
 
-    public ArticleVo findById(int id) {
-        List<ArticleVo> resultList = jdbcTemplate.query("SELECT id, writer, title, contents, date, userId FROM ARTICLE WHERE id = ?", articleRowMapper, id);
+    public ArticleVo findByArticleId(int articleId) {
+        List<ArticleVo> resultList = jdbcTemplate.query("SELECT articleId, writer, title, contents, date, userId FROM ARTICLE WHERE articleId = ?", articleRowMapper, articleId);
         return resultList.stream()
                 .findFirst()
                 .orElse(null);
     }
 
     public List<ArticleVo> findAll() {
-        return jdbcTemplate.query("SELECT id, writer, title, contents, date, userId FROM article", articleRowMapper);
+        return jdbcTemplate.query("SELECT articleId, writer, title, contents, date, userId FROM article", articleRowMapper);
     }
 
     public void update(ArticleVo articleVo) {
-        int id = articleVo.getId();
+        int articleId = articleVo.getArticleId();
         String title = articleVo.getTitle();
         String contents = articleVo.getContents();
         String date = articleVo.getDate();
-        System.out.println(id);
-        System.out.println(title);
-        jdbcTemplate.update("UPDATE ARTICLE SET TITLE = ?, CONTENTS = ?, DATE = ? WHERE ID = ?",title,contents,date,id);
+        jdbcTemplate.update("UPDATE ARTICLE SET TITLE = ?, CONTENTS = ?, DATE = ? WHERE articleId = ?",title,contents,date,articleId);
     }
 
-    public void deleteById(int id) {
-        jdbcTemplate.update("DELETE FROM ARTICLE WHERE ID = ?",id);
+    public void deleteByArticleId(int articleId) {
+        jdbcTemplate.update("DELETE FROM ARTICLE WHERE articleId = ?",articleId);
     }
 }
