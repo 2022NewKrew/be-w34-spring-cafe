@@ -19,12 +19,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class ArticleService {
-    private final ArticleRepository articleRepository;
-    @Autowired
-    private ModelMapper modelMapper;
 
-    public ArticleService(@Qualifier("h2ArticleRepository") H2ArticleRepository articleRepository) {
+    private final ArticleRepository articleRepository;
+    private final ModelMapper modelMapper;
+
+    public ArticleService(@Qualifier("h2ArticleRepository") H2ArticleRepository articleRepository, ModelMapper modelMapper) {
         this.articleRepository = articleRepository;
+        this.modelMapper = modelMapper;
     }
 
     /*

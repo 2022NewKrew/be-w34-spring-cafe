@@ -21,12 +21,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class UserService {
-    private final UserRepository userRepository;
-    @Autowired
-    private ModelMapper modelMapper;
 
-    public UserService(@Qualifier("h2UserRepository") H2UserRepository userRepository) {
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
+
+    public UserService(@Qualifier("h2UserRepository") H2UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     /*
@@ -97,9 +98,7 @@ public class UserService {
     public SessionUser login(String userId, String password) {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
         validatePassword(user, password);
-
-        SessionUser result = modelMapper.map(user, SessionUser.class);
-        return result;
+        return modelMapper.map(user, SessionUser.class);
     }
 
     public void validatePassword(User user, String password) {
