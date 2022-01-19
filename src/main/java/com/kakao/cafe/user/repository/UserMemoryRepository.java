@@ -1,6 +1,8 @@
 package com.kakao.cafe.user.repository;
 
+import com.kakao.cafe.user.domain.Password;
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +15,19 @@ public class UserMemoryRepository implements UserRepository {
         users = new ArrayList<>();
     }
 
+    @Override
     public void save(User user) {
         users.add(user);
     }
 
-    public Optional<User> findByUserId(String userId) {
+    @Override
+    public Optional<User> findByUserId(UserId userId) {
         return users.stream()
                 .filter(e -> e.getUserId().equals(userId))
                 .findAny();
     }
 
+    @Override
     public List<User> findAll() {
         return users;
     }
@@ -35,5 +40,10 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public void update(User user) {
+    }
+
+    @Override
+    public Optional<User> findByUserIdAndPassword(UserId userId, Password password) {
+        return Optional.empty();
     }
 }

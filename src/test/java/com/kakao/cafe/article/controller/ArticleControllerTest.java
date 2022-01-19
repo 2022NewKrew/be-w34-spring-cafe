@@ -1,6 +1,5 @@
 package com.kakao.cafe.article.controller;
 
-import com.kakao.cafe.article.ArticleController;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.Contents;
 import com.kakao.cafe.article.domain.Title;

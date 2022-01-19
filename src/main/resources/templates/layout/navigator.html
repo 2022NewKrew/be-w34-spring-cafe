@@ -50,10 +50,13 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/">Posts</a></li>
-                <li><a href="/templates/user/login.html" role="button">로그인</a></li>
+                {{#if isLogin}}
+                <li><a href="/logout" role="button">로그아웃</a></li>
+                <li><a href="/users/{{loginUser.userId}}/form" role="button">개인정보수정</a></li>
+                {{else}}
+                <li><a href="/login/form" role="button">로그인</a></li>
                 <li><a href="/user/form" role="button">회원가입</a></li>
-                <li><a href="/templates/user/login_failed.html" role="button">로그아웃</a></li>
-                <li><a href="#" role="button">개인정보수정</a></li>
+                {{/if}}
             </ul>
         </div>
     </div>

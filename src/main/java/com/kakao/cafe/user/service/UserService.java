@@ -1,8 +1,11 @@
 package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.LoginFailedException;
 import com.kakao.cafe.exception.UserException;
+import com.kakao.cafe.user.domain.Password;
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserId;
 import com.kakao.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +22,17 @@ public class UserService {
     }
 
     public void joinUser(User user) {
-        validateDuplicateUser(user.getUserId().getUserId());
+        validateDuplicateUser(user.getUserId());
         userRepository.save(user);
     }
 
+    private void validateDuplicateUser(UserId userId) {
+        if (userRepository.findByUserId(userId).isPresent())
+            throw new UserException(ErrorCode.DUPLICATE_USER_ID);
+    }
+
     public void updateUser(User updateUser) {
-        User user = findUserByUserId(updateUser.getUserId().getUserId());
+        User user = findUserByUserId(updateUser.getUserId());
         // TODO: UserId 변경된 경우 예외처리
         if (!user.getPassword().equals(updateUser.getPassword())) {
             throw new UserException(ErrorCode.WRONG_USER_PASSWORD);
@@ -32,20 +40,37 @@ public class UserService {
         userRepository.update(updateUser);
     }
 
-    private void validateDuplicateUser(String userId) {
-        if (userRepository.findByUserId(userId).isPresent())
-            throw new UserException(ErrorCode.DUPLICATE_USER_ID);
+    public User login(UserId userId, Password password) {
+        Optional<User> user = userRepository.findByUserIdAndPassword(userId, password);
+        if (user.isEmpty()) {
+            throw new LoginFailedException(ErrorCode.FAILED_LOGIN);
+        }
+        return user.get();
     }
 
     public List<User> findUsers() {
         return userRepository.findAll();
     }
 
-    public User findUserByUserId(String userId) {
+    public User findUserByUserId(UserId userId) {
         Optional<User> user = userRepository.findByUserId(userId);
         if (user.isEmpty()) {
             throw new UserException(ErrorCode.USER_NOT_FOUND);
         }
         return user.get();
+    }
+
+    public User findLoginUser(UserId userId, Optional<UserId> loginId) {
+        if (loginId.isEmpty()) {
+            //TODO: 로그인 안한 유저 예외처리 - 권한 없는 사용자, 로그인 화면
+            throw new UserException(ErrorCode.WRONG_USER_PASSWORD);
+        }
+
+        boolean isSameUserId = loginId.get().equals(userId);
+        if (!isSameUserId) {
+            //TODO: 잘못된 접근, 권한 없음 에러 처리
+            throw new UserException(ErrorCode.USER_NOT_FOUND);
+        }
+        return findUserByUserId(userId);
     }
 }

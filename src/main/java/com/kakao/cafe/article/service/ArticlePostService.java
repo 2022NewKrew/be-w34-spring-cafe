@@ -4,6 +4,7 @@ import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import com.kakao.cafe.exception.ArticleException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.user.domain.UserId;
 import com.kakao.cafe.user.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class ArticlePostService {
     public Article postArticle(Article article) {
         validateNull(article);
         validateDuplicateArticle(article);
-        validateExistWriterId(article.getWriterId().getUserId());
+        validateExistWriterId(article.getWriterId());
         return articleRepository.save(article);
     }
 
@@ -38,7 +39,7 @@ public class ArticlePostService {
         }
     }
 
-    private void validateExistWriterId(String writerId) {
+    private void validateExistWriterId(UserId writerId) {
         userService.findUserByUserId(writerId);
     }
 }

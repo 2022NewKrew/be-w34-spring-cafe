@@ -1,4 +1,4 @@
-package com.kakao.cafe.article;
+package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.dto.ArticleDto;
@@ -28,9 +28,11 @@ public class ArticleController {
         this.articleMapper = articleMapper;
     }
 
-    @GetMapping("/question/form")
-    public String showArticleForm() {
-        return "qna/form";
+    @GetMapping("/")
+    public String showArticles(Model module) {
+        List<ArticleListDto> articles = articleMapper.toListArticleDto(articleService.findArticles());
+        module.addAttribute("articles", articles);
+        return "index";
     }
 
     @PostMapping("/question/create")
@@ -38,13 +40,6 @@ public class ArticleController {
         Article article = articleMapper.toArticle(articleFormDto);
         articlePostService.postArticle(article);
         return "redirect:/";
-    }
-
-    @GetMapping("/")
-    public String showArticles(Model module) {
-        List<ArticleListDto> articles = articleMapper.toListArticleDto(articleService.findArticles());
-        module.addAttribute("articles", articles);
-        return "index";
     }
 
     @GetMapping("/articles/{index}")
