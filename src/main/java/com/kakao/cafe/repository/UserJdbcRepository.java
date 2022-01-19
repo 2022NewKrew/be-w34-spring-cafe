@@ -5,8 +5,12 @@ import com.kakao.cafe.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +27,21 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public void save(User user) {
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String sql = "insert into users(userId, password, userName, email) values (?, ?, ?, ?)";
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection
+                    .prepareStatement(sql);
+            ps.setString(1, user.getUserId());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getUserName());
+            ps.setString(4, user.getEmail());
+            return ps;
+        }, keyHolder);
+
+        /*
         jdbcTemplate.update(
                 "insert into users(id, userId, password, userName, email) values (?, ?, ?, ?, ?)",
                 user.getId(),
@@ -30,7 +49,7 @@ public class UserJdbcRepository implements UserRepository {
                 user.getPassword(),
                 user.getUserName(),
                 user.getEmail()
-        );
+        );*/
     }
 
     @Override

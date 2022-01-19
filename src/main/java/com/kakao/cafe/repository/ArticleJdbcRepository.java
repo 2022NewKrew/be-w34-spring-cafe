@@ -5,8 +5,12 @@ import com.kakao.cafe.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +27,19 @@ public class ArticleJdbcRepository implements ArticleRepository{
     }
 
     public void save(Article article){
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String sql = "insert into article(writer, title, contents, createTime) values ( ?, ?, ?, ? )";
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection
+                    .prepareStatement(sql);
+            ps.setString(1, article.getUser().getUserName());
+            ps.setString(2, article.getTitle());
+            ps.setString(3,article.getContents());
+            ps.setObject(4, Timestamp.valueOf(article.getCreateTime()));
+            return ps;
+        }, keyHolder);
+        /*
         jdbcTemplate.update(
                 "insert into article(article_id, writer, title, contents, createTime) values ( ?, ?, ?, ?, ?)",
                 article.getId(),
@@ -30,7 +47,7 @@ public class ArticleJdbcRepository implements ArticleRepository{
                 article.getTitle(),
                 article.getContents(),
                 Timestamp.valueOf(article.getCreateTime())
-        );
+        );*/
     }
 
     @Override
