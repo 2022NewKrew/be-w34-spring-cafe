@@ -36,4 +36,10 @@ public class ControllerExceptionHandler {
         model.addAttribute("errorMessage", e.getMessage());
         return "error";
     }
+
+    @ExceptionHandler(Exception.class)
+    public String otherException(Exception e, Model model){
+        model.addAttribute("errorMessage", e.getMessage());
+        return "error";
+    }
 }

@@ -8,7 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class RequestArticleDto {
-    private String author;
     private String title;
     private String content;
 }

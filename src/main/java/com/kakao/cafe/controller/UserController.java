@@ -6,9 +6,11 @@ import com.kakao.cafe.dto.SessionUser;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpSession;
 
@@ -63,15 +65,13 @@ public class UserController {
      */
     @GetMapping("/users/{id}/update")
     public String showEditUserPage(@PathVariable long id, Model model, @LoginUser SessionUser user) {
+        log.info("GET /users/{}/update", id);
 
         if (user.getId() != id) {
-            //본인 정보만 수정할 수 있습니다.
-            return "redirect:/login.html";
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
         }
-
-        model.addAttribute("user", userService.findOne(user.getId()));
+        model.addAttribute("user", userService.findOne(id));
         return "user/updateForm";
-
     }
 
     /*
@@ -96,8 +96,8 @@ public class UserController {
      */
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession session) {
-        SessionUser userVo = userService.login(userId.trim(), password.trim());
-        session.setAttribute("sessionedUser", userVo);
+        SessionUser user = userService.login(userId.trim(), password.trim());
+        session.setAttribute("sessionedUser", user);
         return "redirect:/";
     }
 

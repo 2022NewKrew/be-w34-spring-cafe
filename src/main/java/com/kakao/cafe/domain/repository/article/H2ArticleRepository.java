@@ -27,17 +27,17 @@ public class H2ArticleRepository implements ArticleRepository {
     @Override
     public Article save(Article article) {
         if (article.getId() == 0) {
-            String sql = "INSERT INTO `ARTICLE`(AUTHOR, TITLE, CONTENT, VIEWS, CREATED_AT) VALUES(?,?,?,?,?)";
-            jdbcTemplate.update(sql, article.getAuthorId(), article.getContent(), article.getViews(), article.getContent(), article.getCreatedAt());
+            String sql = "INSERT INTO `ARTICLE`(author_id, title, content, views, created_at) VALUES(?,?,?,?,?)";
+            jdbcTemplate.update(sql, article.getAuthorId(), article.getTitle(), article.getContent(), article.getViews(), article.getCreatedAt());
             return article;
         }
 
         String sql = "UPDATE `ARTICLE` SET " +
-                "AUTHOR = ?, TITLE = ?, CONTENT = ?, VIEWS = ?, CREATED_AT = ?" +
+                "author_id = ?, title = ?, content = ?" +
                 "WHERE ID = ?";
 
         jdbcTemplate.update(sql,
-                article.getAuthorId(), article.getTitle(), article.getContent(), article.getViews(), article.getCreatedAt(),
+                article.getAuthorId(), article.getTitle(), article.getContent(),
                 article.getId());
 
         return article;
@@ -46,7 +46,7 @@ public class H2ArticleRepository implements ArticleRepository {
     @Override
     public Optional<Article> findById(Long id) {
         String sql = "SELECT " +
-                "a.id, u.name as author, a.title, a.content, a.views, a.created_at " +
+                "a.id, u.id as author_id, u.name as author, a.title, a.content, a.views, a.created_at " +
                 "FROM " +
                 "ARTICLE a join `USER` u " +
                 "ON a.author_id = u.id " +
@@ -59,7 +59,7 @@ public class H2ArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query("SELECT " +
-                "a.id, u.name as author, a.title, a.content, a.views, a.created_at " +
+                "a.id, u.id as author_id, u.name as author, a.title, a.content, a.views, a.created_at " +
                 "FROM " +
                 "ARTICLE a join `USER` u " +
                 "ON a.author_id = u.id ", articleRowMapper());
@@ -85,6 +85,7 @@ public class H2ArticleRepository implements ArticleRepository {
         return (rs, rowNum) -> {
             Article article = new Article();
             article.setId(rs.getLong("id"));
+            article.setAuthorId(rs.getLong("author_id"));
             article.setAuthor(rs.getString("author"));
             article.setTitle(rs.getString("title"));
             article.setContent(rs.getString("content"));

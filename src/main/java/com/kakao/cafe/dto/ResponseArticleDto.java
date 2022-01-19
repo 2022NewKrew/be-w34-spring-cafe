@@ -12,6 +12,7 @@ import java.util.Date;
 @ToString
 public class ResponseArticleDto {
     private long id;
+    private long author_id;
     private String author;
     private String title;
     private String content;
