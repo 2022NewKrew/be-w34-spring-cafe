@@ -30,9 +30,10 @@ public class ArticleService {
     public void deleteArticle(long articleId) { articleRepository.delete(articleId); }
 
     public ArticleContents getArticle(Long id) {
-        Article target = Optional.ofNullable(articleRepository.retrieve(id))
+        Article target = articleRepository.retrieve(id)
                 .orElseThrow(() -> new NoSuchElementException("Article not found"));
-        return new ArticleContents(target); }
+        return new ArticleContents(target);
+    }
 
     public List<ArticleListShow> getAllArticles() {
         return articleRepository.toList().stream()
