@@ -10,6 +10,7 @@ import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
 
+    @Transactional
     public void create(UserRequestDTO userRequestDto) {
         Optional<User> user = userRepository.findByUserId(userRequestDto.getUserId());
         if(user.isPresent()) {
@@ -28,6 +30,7 @@ public class UserService {
         userRepository.save(userRequestDto);
     }
 
+    @Transactional
     public void update(UserUpdateDTO userUpdateDTO) {
         if(!userUpdateDTO.getPassword().equals(userUpdateDTO.getPasswordCheck())) {
             throw new InvalidPasswordException();
@@ -37,11 +40,13 @@ public class UserService {
         userRepository.update(userUpdateDTO, user.getId());
     }
 
+    @Transactional(readOnly = true)
     public UserResponseDTO read(String userId) {
         User user = userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
         return UserResponseDTO.of(user.getId(), user.getUserId(), user.getName(), user.getEmail(), user.getCreatedAt());
     }
 
+    @Transactional(readOnly = true)
     public List<UserResponseDTO> readAll() {
         return userRepository.findAll()
                 .stream()

@@ -8,6 +8,7 @@ import com.kakao.cafe.error.exception.UserNotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class AuthService {
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public UserResponseDTO login(AuthDTO authDto) {
         Optional<User> userOptional = userRepository.findByUserId((authDto.getUserId()));
         User user = userOptional.orElseThrow(UserNotFoundException::new);
