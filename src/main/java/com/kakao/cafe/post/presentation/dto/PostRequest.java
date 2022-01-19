@@ -1,7 +1,10 @@
 package com.kakao.cafe.post.presentation.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+
 
 @RequiredArgsConstructor
 @Getter

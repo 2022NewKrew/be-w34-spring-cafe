@@ -3,20 +3,21 @@ package com.kakao.cafe.post.domain.entity;
 import com.kakao.cafe.util.IdGenerator;
 import com.kakao.cafe.util.ValidationService;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 
-import javax.annotation.PostConstruct;
 import javax.validation.constraints.Size;
 
 @AllArgsConstructor
 @Getter
+@EqualsAndHashCode(of = "id")
 public class Comment {
     @NonNull
     private final Long id;
 
     @NonNull
-    @Size(min = 3, max = 5)
+    @Size(min = 3, max = 10)
     private final String writerName;
 
     @NonNull
@@ -27,9 +28,9 @@ public class Comment {
         this.id = IdGenerator.createId();
         this.writerName = writerName;
         this.content = content;
+        validate();
     }
 
-    @PostConstruct
     protected void validate(){
         ValidationService.validate(this);
     }

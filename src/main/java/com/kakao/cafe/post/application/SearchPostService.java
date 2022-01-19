@@ -14,8 +14,7 @@ public class SearchPostService {
     private final PostRepository postRepository;
 
     public List<Post> getPosts(int page) {
-        List<Post> posts = postRepository.getPosts((page-1) * PAGE_SIZE, PAGE_SIZE);
-        return posts;
+        return postRepository.getPosts((page-1) * PAGE_SIZE, PAGE_SIZE);
     }
 
     public Post getPost(Long id) {

@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.persistence;
+package com.kakao.cafe.user.domain.repository;
 
 import com.kakao.cafe.JdbcRepositoryTest;
 import com.kakao.cafe.user.data.UsersData;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-class JdbcUserRepositoryTest extends JdbcRepositoryTest {
+class UserRepositoryTest extends JdbcRepositoryTest {
     @Test
     @DisplayName("Repository 생성 성공")
     void successCreateRepository(){

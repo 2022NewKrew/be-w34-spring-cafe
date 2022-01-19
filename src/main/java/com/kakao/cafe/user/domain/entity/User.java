@@ -10,7 +10,6 @@ import lombok.NonNull;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.Size;
 
-@AllArgsConstructor
 @Getter
 @EqualsAndHashCode
 public class User {
@@ -24,7 +23,13 @@ public class User {
 
     private UserInfo userInfo;
 
-    @PostConstruct
+    public User(@NonNull String userId, @NonNull String password, UserInfo userInfo) {
+        this.userId = userId;
+        this.password = password;
+        this.userInfo = userInfo;
+        validate();
+    }
+
     protected void validate(){
         ValidationService.validate(this);
     }

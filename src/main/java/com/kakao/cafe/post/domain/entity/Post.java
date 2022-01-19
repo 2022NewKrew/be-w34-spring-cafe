@@ -2,11 +2,10 @@ package com.kakao.cafe.post.domain.entity;
 
 import com.kakao.cafe.util.IdGenerator;
 import com.kakao.cafe.util.ValidationService;
-import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 
-import javax.annotation.PostConstruct;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Getter
-@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Post {
     @NonNull
     private final Long id;
@@ -28,7 +27,7 @@ public class Post {
     private String content;
 
     @NonNull
-    @Size(min=3, max = 5)
+    @Size(min=3, max = 10)
     private String writerName;
 
     private final LocalDateTime timeWritten;
@@ -42,9 +41,19 @@ public class Post {
         this.writerName = writerName;
         this.timeWritten = LocalDateTime.now();
         this.comments = new ArrayList<>();
+        validate();
     }
 
-    @PostConstruct
+    public Post(@NonNull Long id, @NonNull String title, @NonNull String content, @NonNull String writerName, LocalDateTime timeWritten, List<Comment> comments) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.writerName = writerName;
+        this.timeWritten = timeWritten;
+        this.comments = new ArrayList<>(comments);
+        validate();
+    }
+
     protected void validate(){
         ValidationService.validate(this);
     }

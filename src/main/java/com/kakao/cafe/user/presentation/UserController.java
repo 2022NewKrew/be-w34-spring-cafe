@@ -61,12 +61,10 @@ public class UserController {
     @GetMapping("")
     public String listUsers(Model model){
         logger.info("사용자 목록을 조회합니다.");
-        List<UserDto> users = searchUserService.getAllUsers()
-                .stream()
-                .map(user -> modelMapper.map(user, UserDto.class))
-                .collect(toList());
+        List<User> users = searchUserService.getAllUsers();
+        List<UserDto> userDtos = List.of(modelMapper.map(users, UserDto[].class));
 
-        model.addAttribute("users", users);
+        model.addAttribute("users", userDtos);
         return "user/list";
     }
 

@@ -22,4 +22,8 @@ public class LambdaMatcher<T> extends TypeSafeMatcher<T> {
     public void describeTo(Description description) {
 
     }
+
+    public static<T> LambdaMatcher<T> lambdaMatcher(Predicate<T> matcher){
+        return new LambdaMatcher<>(matcher);
+    }
 }

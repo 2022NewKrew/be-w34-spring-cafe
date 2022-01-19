@@ -29,15 +29,16 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public List<Post> getPosts(int start, int size) {
-        return myJdbcTemplate.query(selectQuery(""), postRowMapper);
+        String condition = String.format("order by timewritten desc limit %d offset %d", size, start);
+        return myJdbcTemplate.query(selectQuery(condition), postRowMapper);
     }
 
-    private String selectQuery(String whereCondition){
+    private String selectQuery(String condition){
         String query = "select *, comment.id as comment_id, comment.writerName as comment_writerName, comment.content as comment_content "
                 .concat("from post left join comment on post.id = comment.postId ");
 
-        if(whereCondition != null && !whereCondition.isEmpty()){
-            return query.concat(whereCondition);
+        if(condition != null && !condition.isEmpty()){
+            return query.concat(condition);
         }
 
         return query;
@@ -47,6 +48,13 @@ public class JdbcPostRepository implements PostRepository {
     public void savePost(Post post) {
         myJdbcTemplate.update("insert into post(id, title, content, writerName, timeWritten) values(?,?,?,?,?)",
                 post.getId(), post.getTitle(), post.getContent(), post.getWriterName(), post.getTimeWritten());
+    }
+
+    @Override
+    public void savePostAll(List<Post> posts) {
+        for(Post post : posts){
+            savePost(post);
+        }
     }
 
     @Override

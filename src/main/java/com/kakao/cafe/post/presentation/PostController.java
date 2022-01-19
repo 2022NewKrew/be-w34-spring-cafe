@@ -42,7 +42,9 @@ public class PostController {
 
     @GetMapping("/{id}")
     public String getPostDetail(@PathVariable Long id, Model model, HttpSession session){
-        PostDetailDto postDto = modelMapper.map(postInfoService.getPost(id), PostDetailDto.class);
+        Post post = postInfoService.getPost(id);
+        PostDetailDto postDto = modelMapper.map(post, PostDetailDto.class);
+
         String userId = getSessionUserId(session);
         logger.info("사용자 {}가 id가 {}인 게시글을 조회하였습니다.", userId, id);
 
