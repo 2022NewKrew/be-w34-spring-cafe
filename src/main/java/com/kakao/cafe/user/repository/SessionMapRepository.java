@@ -1,7 +1,7 @@
 package com.kakao.cafe.user.repository;
 
 import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.exception.CustomPasswordNotEqualsException;
+import com.kakao.cafe.user.exception.CustomInvalidedSessionException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -22,12 +22,17 @@ public class SessionMapRepository implements SessionRepository {
 
     private void validateUser(User user) {
         if (Objects.isNull(user)) {
-            throw new CustomPasswordNotEqualsException();
+            throw new CustomInvalidedSessionException();
         }
     }
 
     @Override
     public void save(UUID uuid, User user) {
         sessions.put(uuid, user);
+    }
+
+    @Override
+    public boolean exist(UUID sessionId) {
+        return Objects.nonNull(sessionId) && sessions.containsKey(sessionId);
     }
 }

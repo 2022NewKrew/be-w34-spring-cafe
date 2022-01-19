@@ -40,4 +40,9 @@ public class UserService {
         sessionRepository.save(uuid, user);
         return uuid;
     }
+
+    public String findUserIdBySessionId(UUID sessionId) {
+        User user = sessionRepository.findBySessionId(sessionId);
+        return user.getUserId();
+    }
 }
