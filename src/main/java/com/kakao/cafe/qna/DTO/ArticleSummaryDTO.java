@@ -10,4 +10,5 @@ public class ArticleSummaryDTO {
     private final String writer;
     private final String date;
     private final int point;
+    private final String index;
 }

@@ -8,6 +8,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class PackedArticleDTO {
-    private final WrittenThingDTO article;
-    private final List<WrittenThingDTO> replies;
+    private final ArticleDTO article;
+    private final List<ReplyDTO> replies;
+    private final int numReply;
 }

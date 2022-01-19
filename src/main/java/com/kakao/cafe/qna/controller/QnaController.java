@@ -19,7 +19,8 @@ public class QnaController {
 
     @PostMapping("/questions")
     public String submitArticle(@ModelAttribute QuestionDTO newQuestion) {
-        log.debug("Article submitted. Title : {}, Writer : {}", newQuestion.getTitle(), newQuestion.getWriter());
+        log.debug("Article submitted. Title : {}, Writer : {}, Content : {}", newQuestion.getTitle(),
+                newQuestion.getWriter(), newQuestion.getContents());
         questionService.submitArticle(newQuestion);
         return "redirect:/";
     }
@@ -33,7 +34,8 @@ public class QnaController {
 
     @GetMapping("/articles/{index}")
     public String getArticle(Model model, @PathVariable String index) {
-        model.addAttribute("article", questionService.getPackedArticle(index));
+        log.debug("Article List Request. Index : {}", index);
+        model.addAttribute("pack", questionService.getPackedArticle(index));
         return "qna/show";
     }
 }

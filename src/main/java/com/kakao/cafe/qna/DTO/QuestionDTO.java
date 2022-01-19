@@ -8,5 +8,5 @@ import lombok.Getter;
 public class QuestionDTO {
     private final String writer;
     private final String title;
-    private final String content;
+    private final String contents;
 }
