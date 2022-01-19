@@ -66,7 +66,7 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/users/signup")
             .flashAttr("user", user)
         ).andExpectAll(
-            status().isOk(),
+            status().isConflict(),
             view().name("error"),
             model().attribute("errorStatus", HttpStatus.CONFLICT),
             model().attribute("errorMessage", "이미 존재하는 아이디입니다.")
@@ -97,7 +97,7 @@ class UserControllerTest {
             .flashAttr("user", user)
             .param("newPassword", "2345")
         ).andExpectAll(
-            status().isOk(),
+            status().isBadRequest(),
             view().name("error"),
             model().attribute("errorStatus", HttpStatus.BAD_REQUEST),
             model().attribute("errorMessage", "잘못된 비밀번호입니다.")
@@ -130,7 +130,7 @@ class UserControllerTest {
             .param("userId", user.getUserId())
             .param("password", "2345")
         ).andExpectAll(
-            status().isOk(),
+            status().isBadRequest(),
             view().name("error"),
             model().attribute("errorStatus", HttpStatus.BAD_REQUEST),
             model().attribute("errorMessage", "잘못된 비밀번호입니다.")
@@ -147,7 +147,7 @@ class UserControllerTest {
             .param("userId", "test100")
             .param("password", "2345")
         ).andExpectAll(
-            status().isOk(),
+            status().isNotFound(),
             view().name("error"),
             model().attribute("errorStatus", HttpStatus.NOT_FOUND),
             model().attribute("errorMessage", "존재하지 않는 계정입니다.")
