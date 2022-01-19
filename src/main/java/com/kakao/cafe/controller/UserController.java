@@ -1,16 +1,14 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.auth.Auth;
+import com.kakao.cafe.annotation.UserAuthorized;
 import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.dto.user.UserCreateRequest;
 import com.kakao.cafe.dto.user.UserUpdateRequest;
-import com.kakao.cafe.exception.UnauthorizedAccessException;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -46,24 +44,18 @@ public class UserController {
         return "user/profile";
     }
 
+    @UserAuthorized
     @GetMapping("/{userId}/form")
-    public String updateForm(@PathVariable Long userId, Model model, HttpSession session) {
-        Auth auth = (Auth) session.getAttribute("auth");
-        if (!auth.validateById(userId)) {
-            throw new UnauthorizedAccessException("인가되지 않은 접근입니다.");
-        }
+    public String updateForm(@PathVariable Long userId, Model model) {
         UserDto user = userService.findById(userId);
         model.addAttribute("user", user);
 
         return "user/updateForm";
     }
 
+    @UserAuthorized
     @PutMapping("/{userId}")
-    public String updateUser(@PathVariable Long userId, UserUpdateRequest userUpdateRequest, HttpSession session) {
-        Auth auth = (Auth) session.getAttribute("auth");
-        if (!auth.validateById(userId)) {
-            throw new UnauthorizedAccessException("인가되지 않은 접근입니다.");
-        }
+    public String updateUser(@PathVariable Long userId, UserUpdateRequest userUpdateRequest) {
         userService.update(userId, userUpdateRequest);
 
         return "redirect:/";
