@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.exception.user.NotAllowedUserException;
 import com.kakao.cafe.model.dto.ArticleDto;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.ArticleService;
@@ -50,20 +51,34 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{index}/update")
-    public String updateArticleView(@PathVariable int index, Model model) {
+    public String updateArticleView(@PathVariable int index, HttpSession session, Model model) {
+        UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
         ArticleDto article = articleService.filterArticleByIndex(index);
+        if (loginUser == null || !loginUser.getUserId().equals(article.getWriter().getUserId())) {
+            throw new NotAllowedUserException();
+        }
         model.addAttribute("article", article);
         return "qna/updateForm";
     }
 
     @PutMapping("/articles/{index}/update")
-    public String updateArticle(@PathVariable int index, ArticleDto article) {
+    public String updateArticle(@PathVariable int index, ArticleDto article, HttpSession session) {
+        UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
+        ArticleDto oldArticle = articleService.filterArticleByIndex(index);
+        if (loginUser == null || !loginUser.getUserId().equals(oldArticle.getWriter().getUserId())) {
+            throw new NotAllowedUserException();
+        }
         articleService.updateArticle(index, article);
         return "redirect:";
     }
 
     @DeleteMapping("/articles/{index}/delete")
-    public String deleteArticle(@PathVariable int index) {
+    public String deleteArticle(@PathVariable int index, HttpSession session) {
+        UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
+        ArticleDto article = articleService.filterArticleByIndex(index);
+        if (loginUser == null || !loginUser.getUserId().equals(article.getWriter().getUserId())) {
+            throw new NotAllowedUserException();
+        }
         articleService.deleteArticle(index);
         return "redirect:/";
     }
