@@ -56,7 +56,7 @@ public class ArticleController {
         Optional<Article> optArticle = articleService.findOne(index);
 
         if(optArticle.isEmpty()){
-            logger.error("[ArticleController > datail] 등록되지 않은 게시글 Id로 접근했습니다.");
+            logger.error("[ArticleController > datail] 등록되지 않은 게시글 Id({})로 접근했습니다.", index);
             return "redirect:/";
         }
 
@@ -89,6 +89,6 @@ public class ArticleController {
     public String update(@PathVariable("index") int id, ArticleDTO articleDTO){
         articleDTO.setId(id);
         articleService.updateArticle(articleDTO);
-        return "redirect:/detail/{index}";
+        return "redirect:/";
     }
 }

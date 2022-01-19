@@ -47,7 +47,7 @@ public class UserController {
         try {
             userAccountService.join(userAccountDTO);
         } catch (IllegalStateException e) {
-            logger.error("[UserController > form] " + e.getMessage());
+            logger.error("[UserController > form] {}", e.getMessage());
             return "redirect:/user";
         }
 
@@ -66,7 +66,7 @@ public class UserController {
     @GetMapping("{userId}")
     public String profile(@PathVariable("userId") String userId, Model model){
         if(userAccountService.findOne(userId).isEmpty()){
-            logger.error("[UserController > profile] DB 에서 유저 계정에서 " + userId + "로 검색에 실패했습니다.");
+            logger.error("[UserController > profile] DB 에서 유저 계정에서 {}로 검색에 실패했습니다.", userId);
             return "redirect:/user";
         }
         UserAccount userAccount = userAccountService.findOne(userId).get();
@@ -88,11 +88,11 @@ public class UserController {
             Optional<UserAccount> userAccount = userAccountService.updateUserAccount(userAccountDTO, curPassword);
 
             if(userAccount.isEmpty()){
-                logger.error("[UserController > updateForm] 계정 프로필 업데이트 요청 중 기존 비밀번호와 입력한 비밀번호가 다릅니다.");
+                logger.error("[UserController > updateForm] {} 계정 프로필 업데이트 요청 중 기존 비밀번호와 입력한 비밀번호가 다릅니다.", userId);
                 return "redirect:/user";
             }
         } catch (InputMismatchException e) {
-            logger.error("[Controller > updateForm] " + e.getMessage());
+            logger.error("[Controller > updateForm] {}", e.getMessage());
         }
 
         return "redirect:/user";
@@ -108,14 +108,14 @@ public class UserController {
         Optional<UserAccount> findUserAccount = userAccountService.findOne(userId);
 
         if(findUserAccount.isEmpty()){
-            logger.error("[UserController > login] DB 에서 유저 계정에서 " + userId + "로 검색에 실패했습니다.");
+            logger.error("[UserController > login] DB 에서 유저 계정에서 {}로 검색에 실패했습니다.", userId);
             return "redirect:/user/login/failed";
         }
 
         UserAccount userAccount = findUserAccount.get();
 
         if(!userAccountService.isPasswordEqual(userAccount, password)){
-            logger.error("[UserController > login] 로그인 시 입력한 비밀번호가 DB와 일치하지 않습니다.");
+            logger.error("[UserController > login] {} 아이디로 로그인 시 입력한 비밀번호가 DB와 일치하지 않습니다.", userAccount.getUserId());
             return "redirect:/user/login/failed";
         }
 
