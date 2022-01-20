@@ -37,9 +37,9 @@ public class PostController {
         ShowUserDto sessionUser = (ShowUserDto) session.getAttribute("sessionUser");
         postDto.setWriter(sessionUser.getUserId());
 
-        postService.createPost(postDto);
+        ShowPostDto post = postService.createPost(postDto);
         log.info("Create Post - {}", postDto);
-        return "redirect:/";
+        return "redirect:/posts/" + post.getId();
     }
 
     @GetMapping("/posts/{postId}")
@@ -49,7 +49,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}/form")
-    public String updatePostForm(@PathVariable Long postId, Model model, HttpSession session){
+    public String updatePostForm(@PathVariable Long postId, Model model, HttpSession session) {
         userCheck(postId, session);
 
         ShowPostDto post = postService.findPost(postId);
@@ -59,7 +59,7 @@ public class PostController {
     }
 
     @PutMapping("/posts/{postId}")
-    public String updatePost(@PathVariable Long postId, @ModelAttribute UpdatePostDto postDto, HttpSession session){
+    public String updatePost(@PathVariable Long postId, @ModelAttribute UpdatePostDto postDto, HttpSession session) {
         userCheck(postId, session);
 
         postDto.setWriter(session.getId());
@@ -70,18 +70,18 @@ public class PostController {
     }
 
     @DeleteMapping("/posts/{postId}")
-    public String deletePost(@PathVariable Long postId, HttpSession session){
+    public String deletePost(@PathVariable Long postId, HttpSession session) {
         userCheck(postId, session);
 
         postService.deletePost(postId);
         return "redirect:/";
     }
 
-    private void userCheck(Long postId, HttpSession session){
+    private void userCheck(Long postId, HttpSession session) {
         ShowUserDto sessionUser = (ShowUserDto) session.getAttribute("sessionUser");
         ShowPostDto post = postService.findPost(postId);
 
-        if(!sessionUser.getUserId().equals(post.getWriter())){
+        if (!sessionUser.getUserId().equals(post.getWriter())) {
             throw new ForbiddenException("접근 권한이 없는 사용자 입니다.");
         }
     }

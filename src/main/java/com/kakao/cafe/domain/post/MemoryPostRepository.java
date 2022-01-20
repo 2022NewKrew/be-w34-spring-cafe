@@ -6,10 +6,12 @@ public class MemoryPostRepository implements PostRepository {
     private final Map<Long, Post> postStore = new HashMap<>();
 
     @Override
-    public void save(Post post) {
+    public Post save(Post post) {
         long insertId = postStore.size() + 1;
         post.setId(insertId);
         postStore.put(insertId, post);
+
+        return post;
     }
 
     @Override

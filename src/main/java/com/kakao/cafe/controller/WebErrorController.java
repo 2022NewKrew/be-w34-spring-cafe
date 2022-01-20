@@ -31,7 +31,7 @@ public class WebErrorController implements ErrorController {
     }
 
     @ExceptionHandler({UnAuthorizedException.class})
-    public String unAuthExceptionHandle(Exception e, Model model, HttpServletResponse response){
+    public String unAuthExceptionHandle(Exception e, Model model, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", e.getMessage());
 
@@ -40,7 +40,7 @@ public class WebErrorController implements ErrorController {
     }
 
     @ExceptionHandler({NotFoundException.class})
-    public String notFoundExceptionHandle(Exception e, Model model, HttpServletResponse response){
+    public String notFoundExceptionHandle(Exception e, Model model, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", e.getMessage());
 
@@ -49,7 +49,7 @@ public class WebErrorController implements ErrorController {
     }
 
     @ExceptionHandler({ForbiddenException.class})
-    public String forbiddenExceptionHandle(Exception e, Model model, HttpServletResponse response){
+    public String forbiddenExceptionHandle(Exception e, Model model, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", e.getMessage());
 
@@ -58,7 +58,7 @@ public class WebErrorController implements ErrorController {
     }
 
     @ExceptionHandler({Exception.class})
-    public String globalExceptionHandle(Exception e, Model model, HttpServletResponse response){
+    public String globalExceptionHandle(Exception e, Model model, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", "페이지를 찾을 수 없습니다.");
 
@@ -71,7 +71,6 @@ public class WebErrorController implements ErrorController {
         errors.getFieldErrors().forEach(err -> attr.addFlashAttribute(err.getField(), err.getDefaultMessage()));
         return "redirect:" + request.getHeader("Referer");
     }
-
 
 
     @RequestMapping("/error")

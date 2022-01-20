@@ -1,11 +1,17 @@
 package com.kakao.cafe.domain.post;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -15,9 +21,20 @@ public class JdbcPostRepository implements PostRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void save(Post post) {
+    public Post save(Post post) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO `POST` (title, content, writer, regDateTime) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getWriter(), post.getRegDateTime());
+        jdbcTemplate.update(conn -> {
+            PreparedStatement ps = conn.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, post.getTitle());
+            ps.setString(2, post.getContent());
+            ps.setString(3, post.getWriter());
+            ps.setTimestamp(4, Timestamp.valueOf(post.getRegDateTime()));
+            return ps;
+        }, keyHolder);
+        post.setId((Objects.requireNonNull(keyHolder.getKey())).longValue());
+
+        return post;
     }
 
     @Override
@@ -30,8 +47,12 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public Optional<Post> findById(Long id) {
         String sql = "SELECT id, title, content, writer, regDateTime FROM `POST` WHERE id=? AND isDeleted=0";
-        Post post = jdbcTemplate.queryForObject(sql, getPostRowMapper(), id);
-        return Optional.ofNullable(post);
+        try {
+            Post post = jdbcTemplate.queryForObject(sql, getPostRowMapper(), id);
+            return Optional.ofNullable(post);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

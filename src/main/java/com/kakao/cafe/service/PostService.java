@@ -21,12 +21,14 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public void createPost(CreatePostDto postDto) {
-        postRepository.save(Post.builder()
+    public ShowPostDto createPost(CreatePostDto postDto) {
+        Post savePost = postRepository.save(Post.builder()
                 .writer(postDto.getWriter())
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
                 .build());
+
+        return new ShowPostDto(savePost);
     }
 
     public ShowPostDto findPost(Long id) {
@@ -43,7 +45,7 @@ public class PostService {
     }
 
 
-    public ShowPostDto updatePost(Long id, UpdatePostDto postDto){
+    public ShowPostDto updatePost(Long id, UpdatePostDto postDto) {
         Post post = Post.builder()
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
@@ -54,7 +56,7 @@ public class PostService {
         return new ShowPostDto(postRepository.edit(id, post));
     }
 
-    public void deletePost(Long id){
+    public void deletePost(Long id) {
         postRepository.remove(id);
     }
 
