@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller.aop;
+package com.kakao.cafe.controller.interceptor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

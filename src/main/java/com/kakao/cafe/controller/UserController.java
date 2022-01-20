@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
-import com.kakao.cafe.controller.aop.AuthInfoCheck;
+import com.kakao.cafe.config.Constant;
+import com.kakao.cafe.controller.interceptor.AuthInfoCheck;
 import com.kakao.cafe.controller.session.AuthInfo;
-import com.kakao.cafe.controller.session.HttpSessionUtil;
 import com.kakao.cafe.controller.viewdto.UserControllerResponseMapper;
 import com.kakao.cafe.controller.viewdto.request.UserCreateRequest;
 import com.kakao.cafe.controller.viewdto.request.UserLoginRequest;
@@ -76,7 +77,7 @@ public class UserController {
         Long id = userService.validateUser(req.getStringId(), req.getPassword());
         UserProfileServiceResponse profile = userService.getUserProfile(req.getStringId());
         AuthInfo authInfo = AuthInfo.builder().id(id).stringId(profile.getStringId()).name(profile.getName()).build();
-        session.setAttribute("authInfo", authInfo);
+        session.setAttribute(Constant.authAttributeName, authInfo);
         return "redirect:/";
     }
 
@@ -106,9 +107,9 @@ public class UserController {
 
     @GetMapping("/update")
     @AuthInfoCheck
-    public String userUpdate(Model model, HttpSession session) {
+    public String userUpdate(Model model,
+                             @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("GET /user/update");
-        AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
         UserProfileServiceResponse res = userService.getUserProfile(authInfo.getStringId());
         model.addAttribute("stringId", res.getStringId());
         model.addAttribute("name", res.getName());
@@ -118,9 +119,9 @@ public class UserController {
 
     @GetMapping("/update/{stringId}")
     @AuthInfoCheck
-    public String userUpdateById(@PathVariable String stringId, Model model, HttpSession session) {
+    public String userUpdateById(@PathVariable String stringId, Model model,
+                                 @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("GET /user/update/{}", stringId);
-        AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
         if (!stringId.equals(authInfo.getStringId())) {
             throw new IllegalArgumentException("자신의 회원정보만 수정 가능합니다.");
         }

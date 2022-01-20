@@ -2,8 +2,6 @@ package com.kakao.cafe.controller;
 
 import java.time.format.DateTimeFormatter;
 
-import javax.servlet.http.HttpSession;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,12 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.article.service.dto.ArticleReadServiceResponse;
-import com.kakao.cafe.controller.aop.AuthInfoCheck;
+import com.kakao.cafe.config.Constant;
+import com.kakao.cafe.controller.interceptor.AuthInfoCheck;
 import com.kakao.cafe.controller.session.AuthInfo;
-import com.kakao.cafe.controller.session.HttpSessionUtil;
 import com.kakao.cafe.controller.viewdto.request.ArticleCreateRequest;
 import com.kakao.cafe.controller.viewdto.request.ArticleUpdateRequest;
 
@@ -34,32 +33,27 @@ public class ArticleController {
 
     @PostMapping("")
     @AuthInfoCheck
-    public String postArticle(@ModelAttribute ArticleCreateRequest req, HttpSession session) {
+    public String postArticle(@ModelAttribute ArticleCreateRequest req,
+                              @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("POST /article {}", req.getTitle());
-        AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
         articleService.createArticle(authInfo.getId(), req.getTitle(), req.getContents());
         return "redirect:/";
     }
 
     @PutMapping("")
     @AuthInfoCheck
-    public String updateArticle(@ModelAttribute ArticleUpdateRequest req, HttpSession session) {
+    public String updateArticle(@ModelAttribute ArticleUpdateRequest req,
+                                @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("PUT /article {}", req.getArticleId());
-        AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
-
         articleService.isAuthorOfArticle(Long.parseLong(req.getArticleId()), authInfo.getId());
-
         articleService.updateArticle(Long.parseLong(req.getArticleId()), req.getTitle(), req.getContents());
-
         return "redirect:/";
-
     }
 
     @GetMapping("/form")
     @AuthInfoCheck
-    public String getNewArticleForm(Model model, HttpSession session) {
+    public String getNewArticleForm(Model model, @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("Get /article/form");
-        AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
         model.addAttribute("stringId", authInfo.getStringId());
         model.addAttribute("title", "");
         model.addAttribute("contents", "");
@@ -80,9 +74,9 @@ public class ArticleController {
 
     @GetMapping("/update/{articleId}")
     @AuthInfoCheck
-    public String updateArticleFrom(@PathVariable String articleId, Model model, HttpSession session) {
+    public String updateArticleFrom(@PathVariable String articleId, Model model,
+                                    @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("GET /article/update/{}", articleId);
-        AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
         ArticleReadServiceResponse dto = articleService.getArticleReadViewDTO(Long.parseLong(articleId));
 
         if (!authInfo.getId().equals(dto.getAuthorId())) {
