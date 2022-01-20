@@ -4,7 +4,7 @@ function deleteCommentEvent(currentElement) {
     let articleId = splited[1];
     let commentId = splited[2];
 
-    axios.delete(`/board/delete/${articleId}/${commentId}`)
+    axios.delete(`/board/comment/delete/${articleId}/${commentId}`)
         .then(() => {
             rowElement.remove();
         })
