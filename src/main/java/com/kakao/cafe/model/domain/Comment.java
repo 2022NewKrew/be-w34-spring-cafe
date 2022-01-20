@@ -22,5 +22,8 @@ public class Comment {
     private LocalDateTime createdDate;
 
     @Setter
+    private String formattedCreatedDate;
+
+    @Setter
     private boolean isDeleted;
 }

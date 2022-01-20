@@ -8,7 +8,7 @@ import java.util.List;
 public interface BoardService {
     void writeArticle(ArticleDto articleDto);
 
-    void writeComment(long articleId, CommentDto commentDto);
+    CommentDto writeComment(long articleId, CommentDto commentDto);
 
     List<ArticleDto> findAllArticle();
 
