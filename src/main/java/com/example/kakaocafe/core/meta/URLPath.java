@@ -45,6 +45,6 @@ public enum URLPath {
     }
 
     public boolean isSameUrlAndMethod(String reqUrl, HttpMethod reqMethod) {
-        return path.matches(reqUrl) && (method.equals(reqMethod));
+        return reqUrl.matches(path) && reqMethod.equals(method);
     }
 }

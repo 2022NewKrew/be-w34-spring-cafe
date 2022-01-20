@@ -47,7 +47,7 @@ public class PostDAO {
     }
 
     public boolean isNotWriter(long postId, long writerId) {
-        final String sql = "SELECT NOT EXISTS(SELECT p.id FROM POST as p WHERE p.id=? and p.USER_ID=?)";
+        final String sql = "SELECT NOT EXISTS(SELECT p.ID FROM POST as p WHERE p.ID=? and p.USER_ID=?)";
 
         final Boolean isNotExist = jdbcTemplate.queryForObject(sql, Boolean.class, postId, writerId);
         Objects.requireNonNull(isNotExist);
@@ -73,7 +73,7 @@ public class PostDAO {
     }
 
     public void update(UpdatePostForm updatePostForm) {
-        final String sql = "UPDATE POST SET TITLE=?, CONTENTS=? WHERE POST.id=?";
+        final String sql = "UPDATE POST SET TITLE=?, CONTENTS=? WHERE POST.ID=?";
 
         final Object[] params = new Object[]{
                 updatePostForm.getTitle(),
@@ -85,14 +85,14 @@ public class PostDAO {
     }
 
     public List<PostOfTableRow> getAllPostOfTableRow() {
-        final String sql = "SELECT p.id, " +
-                "p.title, " +
-                "p.contents, " +
-                "p.view_count, " +
-                "FORMATDATETIME(p.created, 'yyyy-MM-dd') as created, " +
-                "u.name as writer " +
+        final String sql = "SELECT p.ID, " +
+                "p.TITLE, " +
+                "p.CONTENTS, " +
+                "p.VIEW_COUNT, " +
+                "DATE_FORMAT(p.CREATED,  '%y-%m-%d') as created, " +
+                "u.NAME as writer " +
                 "FROM POST as p " +
-                "JOIN USER as u on p.user_id=u.id " +
+                "JOIN USER as u on p.USER_ID=u.ID " +
                 "WHERE p.ISDELETED=false";
 
         return jdbcTemplate.query(sql, postOfTableRowMapper());
@@ -101,16 +101,15 @@ public class PostDAO {
     public void plusViewCount(long id) {
         final String sql = "UPDATE POST SET VIEW_COUNT = VIEW_COUNT+1 WHERE ID=?";
         jdbcTemplate.update(sql, id);
-
     }
 
     public Optional<Post> getPostById(long id) {
-        final String sql = "SELECT P.id                                    as p_id, " +
-                "       FORMATDATETIME(P.created, 'yyyy-MM-dd') as p_created, " +
-                "       P.title                                 as p_title, " +
-                "       P.contents                              as p_contents, " +
+        final String sql = "SELECT P.ID                                    as p_id, " +
+                "       DATE_FORMAT(P.created,  '%y-%m-%d') as p_created, " +
+                "       P.TITLE                                 as p_title, " +
+                "       P.CONTENTS                              as p_contents, " +
                 "       U.NAME                                  as p_writer, " +
-                "       P.view_count                            as view_count, " +
+                "       P.VIEW_COUNT                            as view_count, " +
                 "       C.ID                                    as c_id, " +
                 "       C.CREATED                               as c_created, " +
                 "       U2.NAME                                 as c_writer, " +
@@ -134,11 +133,11 @@ public class PostDAO {
     }
 
     public Optional<PostInfo> getPostInfo(long id) {
-        final String sql = "SELECT p.id                                    as p_id,  " +
-                "       p.title                                 as p_title,  " +
-                "       p.contents                              as p_contents " +
+        final String sql = "SELECT p.ID                                    as p_id,  " +
+                "       p.TITLE                                 as p_title,  " +
+                "       p.CONTENTS                              as p_contents " +
                 "FROM POST as p  " +
-                "WHERE p.id =? AND p.ISDELETED=false";
+                "WHERE p.ID =? AND p.ISDELETED=false";
 
         final List<PostInfo> postInfos = jdbcTemplate.query(sql, postInfoMapper(), id);
 

@@ -7,7 +7,6 @@ import com.example.kakaocafe.domain.post.dto.Post;
 import com.example.kakaocafe.domain.post.dto.PostInfo;
 import com.example.kakaocafe.domain.post.dto.UpdatePostForm;
 import com.example.kakaocafe.domain.post.dto.WritePostForm;
-import com.example.kakaocafe.domain.user.UserDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +41,7 @@ public class PostController {
                                        @SessionAttribute("userKey") Long writerId) {
         final PostInfo postInfo = postService.findPostInfoById(postId, writerId);
 
-        return new ModelAndView(ViewPath.UPDATE_POST_FROM)
+        return new ModelAndView(ViewPath.UPDATE_POST_FORM)
                 .addObject("post", postInfo);
     }
 
