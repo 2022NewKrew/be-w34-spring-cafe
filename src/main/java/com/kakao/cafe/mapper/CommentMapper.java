@@ -16,6 +16,7 @@ public class CommentMapper implements RowMapper<Comment> {
         String userId = resultSet.getString("userId");
         String writer = resultSet.getString("writer");
         String contents = resultSet.getString("contents");
-        return new Comment(commentId, articleId, userId, writer, contents);
+        boolean deleted = resultSet.getBoolean("deleted");
+        return new Comment(commentId, articleId, userId, writer, contents, deleted);
     }
 }

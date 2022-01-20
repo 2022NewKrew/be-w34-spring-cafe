@@ -15,6 +15,7 @@ create table articles (
     writer varchar(255) NOT NULL ,
     title varchar(255) NOT NULL ,
     contents varchar(255) NOT NULL ,
+    deleted boolean NOT NULL DEFAULT 0 ,
 
     PRIMARY KEY (id) ,
     FOREIGN KEY (userId) REFERENCES users (userId)
@@ -26,6 +27,7 @@ create table comments (
     userId varchar(255) NOT NULL ,
     writer varchar(255) NOT NULL ,
     contents varchar(255) NOT NULL ,
+    deleted boolean NOT NULL DEFAULT 0 ,
 
     PRIMARY KEY (id) ,
     FOREIGN KEY (articleId) REFERENCES articles (id) ,

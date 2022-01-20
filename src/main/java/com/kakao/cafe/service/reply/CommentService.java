@@ -21,4 +21,12 @@ public class CommentService {
         return this.commentRepository.findAll(articleId);
     }
 
+    public Comment findById(int commentId) {
+        return this.commentRepository.findById(commentId);
+    }
+
+    public void delete(int commentId) {
+        this.commentRepository.delete(commentId);
+    }
+
 }

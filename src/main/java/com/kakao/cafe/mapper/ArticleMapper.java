@@ -16,6 +16,7 @@ public class ArticleMapper implements RowMapper<Article> {
         String writer = resultSet.getString("writer");
         String title = resultSet.getString("title");
         String contents = resultSet.getString("contents");
-        return new Article(id, userId, writer, title, contents);
+        boolean deleted = resultSet.getBoolean("deleted");
+        return new Article(id, userId, writer, title, contents, deleted);
     }
 }

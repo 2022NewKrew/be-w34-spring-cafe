@@ -13,4 +13,5 @@ public class Comment {
     private final String userId;
     private final String writer;
     private final String contents;
+    private boolean deleted;
 }

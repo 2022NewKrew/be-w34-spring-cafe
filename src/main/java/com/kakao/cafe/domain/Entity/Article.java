@@ -13,4 +13,5 @@ public class Article {
     private String writer;
     private String title;
     private String contents;
+    private boolean deleted;
 }

@@ -21,7 +21,15 @@ public class CommentRepository {
     }
 
     public List<Comment> findAll(int articleId) {
-        return this.jdbcTemplate.query("SELECT * FROM COMMENTS WHERE articleId = ?", this.commentMapper, articleId);
+        return this.jdbcTemplate.query("SELECT * FROM COMMENTS WHERE articleId = ? AND deleted != 1", this.commentMapper, articleId);
+    }
+
+    public Comment findById(int commentId) {
+        return this.jdbcTemplate.queryForObject("SELECT * FROM COMMENTS WHERE id = ?", this.commentMapper, commentId);
+    }
+
+    public void delete(int commentId) {
+        this.jdbcTemplate.update("UPDATE COMMENTS SET deleted = 1 WHERE id = ?", commentId);
     }
 
 }
