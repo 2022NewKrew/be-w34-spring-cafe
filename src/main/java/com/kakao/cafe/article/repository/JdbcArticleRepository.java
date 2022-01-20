@@ -43,13 +43,13 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findOne(Long id) {
-        String sql = "SELECT ID, TITLE, CONTENT, CREATE_DATE, MEMBER_ID FROM ARTICLE WHERE ID = ?";
+        String sql = "SELECT ID, TITLE, CONTENT, CREATE_DATE, MEMBER_ID FROM ARTICLE WHERE ID = ? AND DELETED = FALSE";
         return jdbcTemplate.query(sql, articleRowMapper(), id).stream().findAny();
     }
 
     @Override
     public List<Article> findAll() {
-        String sql = "SELECT ID, TITLE, CONTENT, CREATE_DATE, MEMBER_ID FROM ARTICLE";
+        String sql = "SELECT ID, TITLE, CONTENT, CREATE_DATE, MEMBER_ID FROM ARTICLE WHERE DELETED = FALSE";
         return jdbcTemplate.query(sql, articleRowMapper());
     }
 
@@ -61,7 +61,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE FROM ARTICLE WHERE ID = ?";
+        String sql = "UPDATE ARTICLE SET DELETED = TRUE WHERE ID = ?";
         jdbcTemplate.update(sql, id);
     }
 

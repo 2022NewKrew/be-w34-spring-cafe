@@ -1,18 +1,18 @@
-package com.kakao.cafe.article.domain;
+package com.kakao.cafe.reply.domain;
 
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class Article {
+public class Reply {
 
     private Long id;
-    private String title;
     private String content;
-    private LocalDate createDate;
+    private LocalDateTime createDateTime;
+    private Long articleId;
     private Long memberId;
     private Boolean deleted;
 

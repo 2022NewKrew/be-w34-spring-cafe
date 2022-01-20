@@ -4,6 +4,8 @@ import com.kakao.cafe.article.dto.ArticleRequestDTO;
 import com.kakao.cafe.article.dto.ArticleResponseDTO;
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.member.dto.MemberResponseDTO;
+import com.kakao.cafe.reply.dto.ReplyResponseDTO;
+import com.kakao.cafe.reply.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ReplyService replyService;
     private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     @GetMapping("/")
@@ -47,6 +50,9 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String getArticle(@PathVariable Long id, Model model) {
         model.addAttribute("article", articleService.findOne(id));
+        List<ReplyResponseDTO> replies = replyService.findByArticle(id);
+        model.addAttribute("replies", replies);
+        model.addAttribute("repliesSize", replies.size());
         return "articles/show";
     }
 
