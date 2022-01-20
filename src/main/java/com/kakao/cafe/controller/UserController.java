@@ -29,9 +29,12 @@ public class UserController {
     public String login(String userId, String password, HttpSession session) {
         UserDTO userDTO = userService.findById(userId);
         if (userDTO.getPassWord().equals(password)) {
+            System.out.println("login success");
             session.setAttribute("sessionedUser", userDTO);  // userDTO가 아니라 user가 돼야되나? 수정해볼것...
+            return "redirect:/";
         }
-        return "redirect:/";
+        System.out.println("login failed");
+        return "redirect:/login_failed";
     }
 
     @GetMapping("/logout")
