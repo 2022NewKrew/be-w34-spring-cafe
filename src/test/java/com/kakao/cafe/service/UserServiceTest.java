@@ -1,12 +1,9 @@
-package com.kakao.cafe;
+package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.repository.UserDao;
 import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.service.UserServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

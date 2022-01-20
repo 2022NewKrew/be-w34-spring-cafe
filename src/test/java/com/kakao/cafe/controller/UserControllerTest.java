@@ -1,4 +1,4 @@
-package com.kakao.cafe;
+package com.kakao.cafe.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.controller.UserController;

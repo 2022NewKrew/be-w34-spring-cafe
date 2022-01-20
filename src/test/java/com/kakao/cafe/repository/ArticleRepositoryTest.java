@@ -1,9 +1,7 @@
-package com.kakao.cafe;
+package com.kakao.cafe.repository;
 
 import com.kakao.cafe.constants.ArticleDBConstants;
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.repository.ArticleDao;
-import com.kakao.cafe.repository.ArticleRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +15,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @JdbcTest
@@ -52,11 +51,10 @@ public class ArticleRepositoryTest {
 
     @DisplayName("게시글 저장 테스트")
     @Test
-    public void saveTest() {
+    public void saveTest() throws SQLException {
         Article article = new Article(0, "id0","newArticle", "contents");
-        try {
-            articleRepository.save(article);
-        } catch (SQLException e) { fail(); }
+
+        articleRepository.save(article);
 
         // ?
     }
@@ -71,16 +69,11 @@ public class ArticleRepositoryTest {
 
     @DisplayName("id로 게시글 찾기 테스트 - 존재하는 case")
     @Test
-    public void findByIdTest() {
+    public void findByIdTest() throws SQLException {
         // given
         Article newArticle = new Article(0, "id0","newArticle", "contents");
         int id;
-        try {
-            id = articleRepository.save(newArticle);
-        } catch (SQLException e) {
-            fail();
-            return;
-        }
+        id = articleRepository.save(newArticle);
 
         // when
         Article article = articleRepository.findById(id);
@@ -94,9 +87,8 @@ public class ArticleRepositoryTest {
     public void findByIdNotExistTest() {
         int id = -1;
 
-        try {
-            Article article = articleRepository.findById(id);
-            fail();
-        } catch (NoSuchElementException e) { } // 예외 정상 발생하면 성공
+        assertThrows(NoSuchElementException.class, () -> {
+            articleRepository.findById(id);
+        });
     }
 }

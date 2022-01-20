@@ -59,10 +59,10 @@ public class UserController {
             user = userService.findById(userId);
             model.addAttribute("user", user);
         } catch (NoSuchElementException e) {
-            logger.info("/users/{userId}, userId = {}. User does not exist.", userId, e);
+            logger.debug("/users/{userId}, userId = {}. User does not exist.", userId, e);
             return "redirect:/";
         }
-        logger.info("/users/{userId}, User(id = {}) founded.", userId);
+        logger.debug("/users/{userId}, User(id = {}) founded.", userId);
 
         return "user/profile";
     }
@@ -73,7 +73,7 @@ public class UserController {
         UserProfileDto user;
 
         if (!userService.checkSessionUser(userId, session)) {
-            logger.info("/users/{userId}/form, Invalid session.");
+            logger.debug("/users/{userId}/form, Invalid session.");
             return "redirect:/";
         }
 
@@ -81,7 +81,7 @@ public class UserController {
             user = userService.findById(userId);
             model.addAttribute("user", user);
         } catch (NoSuchElementException e) {
-            logger.info("/users/{userId}/form, userId = {}. User does not exist.", userId, e);
+            logger.debug("/users/{userId}/form, userId = {}. User does not exist.", userId, e);
             return "redirect:/";
         }
 
@@ -94,7 +94,7 @@ public class UserController {
         UserProfileDto newProfile = new UserProfileDto(userId, userUpdateDto.getEmail(), userUpdateDto.getName());
 
         if (!userService.checkSessionUser(userId, session)) {
-            logger.info("/users/{userId}/update, User(id = {}) failed to update profile. Invalid session.", userId);
+            logger.debug("/users/{userId}/update, User(id = {}) failed to update profile. Invalid session.", userId);
             return "redirect:/list";
         }
 
@@ -102,9 +102,9 @@ public class UserController {
             userService.updateUserProfile(newProfile, userUpdateDto.getPassword());
             logger.info("/users/{userId}/update, User(id = {}) updated profile.", userId);
         } catch (NoSuchElementException e) {
-            logger.info("/users/{userId}/update, User(id = {}) failed to update Profile. User does not exist.", userId, e);
+            logger.debug("/users/{userId}/update, User(id = {}) failed to update Profile. User does not exist.", userId, e);
         } catch (IllegalArgumentException e) {
-            logger.info("/users/{userId}/update, User(id = {}) failed to update Profile. Incorrect password.", userId, e);
+            logger.debug("/users/{userId}/update, User(id = {}) failed to update Profile. Incorrect password.", userId, e);
         }
 
         return "redirect:/list";
@@ -116,10 +116,10 @@ public class UserController {
             session.setAttribute("sessionedUser", userService.checkPassword(userId, password));
             logger.info("/users/login, User(id = {}) login.", userId);
         } catch (IllegalArgumentException e) {
-            logger.info("/users/login, User(id = {}) failed to login. Incorrect password.", userId, e);
+            logger.debug("/users/login, User(id = {}) failed to login. Incorrect password.", userId, e);
             return "/user/login_failed";
         } catch (NoSuchElementException e) {
-            logger.info("/users/login, User(id = {}) failed to login. User does not exist.", userId, e);
+            logger.debug("/users/login, User(id = {}) failed to login. User does not exist.", userId, e);
             return "/user/login_failed";
         }
 
