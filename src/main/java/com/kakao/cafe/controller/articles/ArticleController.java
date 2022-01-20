@@ -7,9 +7,11 @@ import com.kakao.cafe.common.exception.data.ErrorCode;
 import com.kakao.cafe.common.session.SessionKeys;
 import com.kakao.cafe.controller.articles.dto.request.ArticleUpdateRequest;
 import com.kakao.cafe.controller.articles.dto.request.ArticleWriteRequest;
+import com.kakao.cafe.controller.articles.dto.response.ReplyResponse;
 import com.kakao.cafe.controller.articles.mapper.ArticleViewMapper;
 import com.kakao.cafe.service.article.ArticleService;
 import com.kakao.cafe.service.article.dto.ArticleInfo;
+import com.kakao.cafe.service.article.dto.ReplyInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -28,7 +30,7 @@ public class ArticleController {
 
     @GetMapping("/")
     public String list(Model model) {
-        List<ArticleInfo> articles = articleService.getArticleAll();
+        List<ArticleInfo> articles = articleService.getAll();
         model.addAttribute("articles", articleViewMapper.toArticleItemResponseList(articles));
         return "qna/list";
     }
@@ -38,11 +40,11 @@ public class ArticleController {
     public String details(@PathVariable Long articleId,
                           Model model,
                           @SessionAttribute(name = SessionKeys.USER_IDENTIFICATION) UserIdentification loginInfo) {
-        ArticleInfo articleInfo = articleService.getArticleInfo(articleId);
-        Boolean hasAuthority = loginInfo.matchesUserId(articleInfo.getWriterId());
+        ArticleInfo articleInfo = articleService.get(articleId, loginInfo.getUserId());
         model.addAttribute("article", articleViewMapper.toArticleDetailResponse(articleInfo));
-        model.addAttribute("canUpdate", hasAuthority);
-        model.addAttribute("canDelete", hasAuthority);
+
+        List<ReplyInfo> replies = articleService.getReplies(articleId, loginInfo.getUserId());
+        model.addAttribute("replies", articleViewMapper.toReplyListResponse(replies));
         return "qna/show";
     }
 
@@ -74,7 +76,7 @@ public class ArticleController {
     public String showUpdateForm(@PathVariable Long articleId,
                                  Model model,
                                  @SessionAttribute(name = SessionKeys.USER_IDENTIFICATION) UserIdentification loginInfo) {
-        ArticleInfo articleInfo = articleService.getArticleInfo(articleId);
+        ArticleInfo articleInfo = articleService.get(articleId, loginInfo.getUserId());
         if(!loginInfo.matchesUserId(articleInfo.getWriterId())) {
             throw new UpdateFailedException(ErrorCode.ARTICLE_UPDATER_INCORRECT);
         }

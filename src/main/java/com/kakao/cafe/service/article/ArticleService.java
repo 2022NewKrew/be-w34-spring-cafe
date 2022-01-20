@@ -4,8 +4,11 @@ import com.kakao.cafe.common.exception.custom.DeleteFailedException;
 import com.kakao.cafe.common.exception.custom.UpdateFailedException;
 import com.kakao.cafe.common.exception.custom.UserNotFoundException;
 import com.kakao.cafe.common.exception.data.ErrorCode;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.reply.ReplyRepository;
 import com.kakao.cafe.repository.user.UserRepository;
+import com.kakao.cafe.service.article.dto.ReplyInfo;
 import com.kakao.cafe.service.article.mapper.ArticleDtoMapper;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.article.ArticleRepository;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,16 +26,22 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
+    private final ReplyRepository replyRepository;
     private final ArticleDtoMapper articleDtoMapper;
 
-    public List<ArticleInfo> getArticleAll() {
+    public List<ArticleInfo> getAll() {
         List<Article> articles = articleRepository.findAll();
-        return articleDtoMapper.toArticleInfoList(articles);
+        return articles.stream().map(articleDtoMapper::toArticleInfo).collect(Collectors.toList());
     }
 
-    public ArticleInfo getArticleInfo(Long articleId) {
+    public ArticleInfo get(Long articleId, String loginId) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-        return articleDtoMapper.toArticleInfo(article);
+        return articleDtoMapper.toArticleInfo(article, loginId);
+    }
+
+    public List<ReplyInfo> getReplies(Long articleId, String loginId) {
+        List<Reply> replies = replyRepository.findByArticleId(articleId);
+        return replies.stream().map(reply -> articleDtoMapper.toReplyInfo(reply, loginId)).collect(Collectors.toList());
     }
 
     public Long write(String writerId, String title, String contents) {

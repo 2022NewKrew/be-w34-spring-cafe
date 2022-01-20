@@ -1,11 +1,11 @@
 package com.kakao.cafe.controller.articles.mapper;
 
-import com.kakao.cafe.controller.articles.dto.response.ArticleDetailResponse;
-import com.kakao.cafe.controller.articles.dto.response.ArticleItemResponse;
-import com.kakao.cafe.controller.articles.dto.response.ArticleUpdateFormResponse;
+import com.kakao.cafe.controller.articles.dto.response.*;
 import com.kakao.cafe.service.article.dto.ArticleInfo;
+import com.kakao.cafe.service.article.dto.ReplyInfo;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +33,26 @@ public class ArticleViewMapper {
                 .writerName(articleInfo.getWriterName())
                 .title(articleInfo.getTitle())
                 .contents(articleInfo.getContents())
+                .canUpdate(articleInfo.getCanUpdate())
+                .build();
+    }
+
+    public ReplyListResponse toReplyListResponse(List<ReplyInfo> replies) {
+        return ReplyListResponse.builder()
+                .length(replies.size())
+                .replies(replies.stream().map(this::toReplyResponse).collect(Collectors.toList()))
+                .build();
+    }
+
+    private ReplyResponse toReplyResponse(ReplyInfo replyInfo) {
+        return ReplyResponse.builder()
+                .replyId(replyInfo.getReplyId())
+                .articleId(replyInfo.getArticleId())
+                .writerId(replyInfo.getWriterId())
+                .writerName(replyInfo.getWriterName())
+                .comment(replyInfo.getComment())
+                .createdTime(replyInfo.getCreatedTime())
+                .canUpdate(replyInfo.getCanUpdate())
                 .build();
     }
 

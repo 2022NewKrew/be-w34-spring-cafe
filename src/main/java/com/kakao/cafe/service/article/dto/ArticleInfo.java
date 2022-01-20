@@ -12,13 +12,15 @@ public class ArticleInfo {
     private final String writerName;
     private final String title;
     private final String contents;
+    private final Boolean canUpdate;
 
     @Builder
-    public ArticleInfo(Long id, String writerId, String writerName, String title, String contents) {
+    public ArticleInfo(Long id, String writerId, String writerName, String title, String contents, Boolean canUpdate) {
         this.id = id;
         this.writerId = writerId;
         this.writerName = writerName;
         this.title = title;
         this.contents = contents;
+        this.canUpdate = canUpdate;
     }
 }
