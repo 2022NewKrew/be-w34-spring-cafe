@@ -1,11 +1,10 @@
 package com.kakao.cafe.adapter.in.presentation.article;
 
 import com.kakao.cafe.application.article.port.in.DeleteArticleUseCase;
+import com.kakao.cafe.application.reply.dto.ReplyList;
 import com.kakao.cafe.application.reply.port.in.GetRepliesUseCase;
 import com.kakao.cafe.application.user.dto.UserInfo;
-import com.kakao.cafe.domain.article.Reply;
 import com.kakao.cafe.domain.user.exceptions.UnauthenticatedUserException;
-import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,11 +32,8 @@ public class ArticleDeleteController {
     }
 
     private boolean isPossibleDeleteArticle(int id, UserInfo sessionedUser) {
-        List<Reply> replyList = getRepliesUseCase.getListOfRepliesOfTheArticle(id).getValue();
-        if (replyList.size() == 0) {
-            return true;
-        }
+        ReplyList replyList = getRepliesUseCase.getListOfRepliesOfTheArticle(id);
 
-        return replyList.stream().allMatch(r -> r.getUserId().equals(sessionedUser.getUserId()));
+        return replyList.isEmpty() || replyList.containsReplyOf(sessionedUser.getUserId());
     }
 }

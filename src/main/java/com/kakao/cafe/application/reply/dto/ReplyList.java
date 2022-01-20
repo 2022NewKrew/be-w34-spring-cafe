@@ -18,4 +18,12 @@ public class ReplyList {
     public List<Reply> getValue() {
         return replyList;
     }
+
+    public boolean isEmpty() {
+        return replyList.isEmpty();
+    }
+
+    public boolean containsReplyOf(String userId) {
+        return replyList.stream().allMatch(r -> r.getUserId().equals(userId));
+    }
 }
