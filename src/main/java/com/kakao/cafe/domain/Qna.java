@@ -7,6 +7,7 @@ public class Qna {
     private long qnaId;
     private String title;
     private String content;
+    private String author;
     private LocalDateTime createDate;
 
     public int getViews() {
@@ -49,6 +50,14 @@ public class Qna {
         this.createDate = createDate;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     @Override
     public String toString() {
         return "Qna{" +
@@ -56,6 +65,7 @@ public class Qna {
                 ", qnaId=" + qnaId +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", author='" + author + '\'' +
                 ", createDate=" + createDate +
                 '}';
     }

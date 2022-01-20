@@ -23,8 +23,14 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li><a class="black-component" href="/">메인 페이지</a></li>
-            <li><a class="black-component" href="users/login" role="button">로그인</a></li>
-            <li><a class="black-component" href="users/form" role="button">회원가입</a></li>
+            {{^sessionedUser}}
+            <li><a class="black-component" href="/users/login" role="button">로그인</a></li>
+            <li><a class="black-component" href="/users/form" role="button">회원가입</a></li>
+            {{/sessionedUser}}
+            {{#sessionedUser}}
+            <li><a class="black-component" href="/users/login" role="button">개인정보수정</a></li>
+            <li><a class="black-component" href="/logout" role="button">로그아웃</a></li>
+            {{/sessionedUser}}
         </ul>
     </div>
 </nav>
