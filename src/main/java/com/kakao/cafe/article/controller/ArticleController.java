@@ -53,7 +53,7 @@ public class ArticleController {
     public String update(@PathVariable Long id, ArticleRegistrationDto dto, HttpSession session) {
         User author = (User) session.getAttribute("user");
         Article fetch = service.fetch(id);
-        if (!fetch.getAuthor().getId().equals(author.getId())) {
+        if (!fetch.getAuthor().equals(author)) {
             throw new AuthorNotMatchedException("해당 게시글의 작성자만 수정할 수 있습니다.");
         }
         service.update(fetch, dto);
