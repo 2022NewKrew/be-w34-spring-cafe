@@ -1,9 +1,6 @@
 package com.kakao.cafe.domain.article;
 
-import com.kakao.cafe.domain.article.dto.ArticleRepliesResponseDto;
-import com.kakao.cafe.domain.article.dto.ArticleRequestDto;
-import com.kakao.cafe.domain.article.dto.ArticleSimpleResponseDto;
-import com.kakao.cafe.domain.article.dto.ReplyRequestDto;
+import com.kakao.cafe.domain.article.dto.*;
 import com.kakao.cafe.domain.article.reply.Reply;
 import com.kakao.cafe.domain.article.reply.ReplyService;
 import org.springframework.stereotype.Service;
@@ -46,8 +43,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public Long createReply(ReplyRequestDto replyRequestDto, String currentUserId) {
-        Long articleId = replyRequestDto.getArticleId();
+    public Long createReply(Long articleId, ReplyRequestDto replyRequestDto, String currentUserId) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
         Reply reply = replyRequestDto.toReply(article);
         return replyService.createReply(reply, currentUserId);
@@ -76,6 +72,13 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public List<ArticleSimpleResponseDto> retrieveAllArticles() {
         return articleRepository.findAll().stream().map(ArticleSimpleResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public ReplyResponseDto retrieveReply(Long articleId, Long replyId) {
+        Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
+        Reply reply = replyService.findReplyByArticleAndId(article, replyId);
+        return new ReplyResponseDto(reply);
     }
 
     private Article findArticleWithReplies(Long articleId) {

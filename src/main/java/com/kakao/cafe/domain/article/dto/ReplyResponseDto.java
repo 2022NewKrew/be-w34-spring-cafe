@@ -20,4 +20,24 @@ public class ReplyResponseDto {
         this.comment = reply.getComment();
         this.createdAt = reply.getCreatedAt().format(formatter);
     }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public Long getArticleId() {
+        return articleId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public Long getReplyId() {
+        return replyId;
+    }
 }
