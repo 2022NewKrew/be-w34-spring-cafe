@@ -6,6 +6,7 @@ import com.kakao.cafe.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Service
@@ -25,5 +26,13 @@ public class ArticleService {
 
     public List<Article> getAllArticles() {
         return articleRepository.findAll();
+    }
+
+    public void deleteArticle(Long userFK, Long articleId) throws AccessDeniedException {
+        Article article = findById(articleId);
+        if (userFK != article.getUserFk()) {
+            throw new AccessDeniedException("해당 게시물을 삭제할 수 있는 권한이 없습니다.");
+        }
+        articleRepository.delete(articleId);
     }
 }

@@ -11,11 +11,13 @@ import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,8 +32,8 @@ public class ArticleController {
     public String question(QuestionDTO questionDTO, HttpSession session) {
         String userId = (String) session.getAttribute("sessionOfUser");
         User user = userService.findByUserId(userId);
-        articleService.question(ArticleFactory.toArticle(user.getName(), questionDTO));
 
+        articleService.question(ArticleFactory.toArticle(user.getId(), user.getName(), questionDTO));
         return "redirect:/";
     }
 
@@ -57,5 +59,15 @@ public class ArticleController {
     @GetMapping("/questions/form")
     public String getQuestionsForm() {
         return "qna/form";
+    }
+
+    @LoginCheck
+    @DeleteMapping("/questions/{id}")
+    public String deleteArticle(@PathVariable("id") Long id, HttpSession session) throws AccessDeniedException {
+        String userId = (String) session.getAttribute("sessionOfUser");
+        User user = userService.findByUserId(userId);
+
+        articleService.deleteArticle(user.getId(), id);
+        return "redirect:/";
     }
 }

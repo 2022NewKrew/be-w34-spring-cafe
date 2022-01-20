@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ArticleFactory {
 
-    public static Article toArticle(String name, QuestionDTO questionDTO) {
-        return new Article(name, questionDTO.getTitle(), questionDTO.getContents());
+    public static Article toArticle(Long userFK, String name, QuestionDTO questionDTO) {
+        return new Article(userFK, name, questionDTO.getTitle(), questionDTO.getContents());
     }
 }

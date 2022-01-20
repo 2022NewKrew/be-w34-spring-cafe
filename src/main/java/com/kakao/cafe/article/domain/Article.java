@@ -10,13 +10,15 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 public class Article {
     private Long id;
+    private Long userFk;
     private String writer;
     private String title;
     private String contents;
     private String writingTime;
     private Long countOfComment;
 
-    public Article(String writer, String title, String contents) {
+    public Article(Long userFK, String writer, String title, String contents) {
+        this.userFk = userFK;
         this.writer = writer;
         this.contents = contents;
         this.title = title;
@@ -25,8 +27,9 @@ public class Article {
         this.countOfComment = 0L;
     }
 
-    public Article(Long id, String writer, String title, String contents, String writingTime, Long countOfComment) {
+    public Article(Long id, Long userFk, String writer, String title, String contents, String writingTime, Long countOfComment) {
         this.id = id;
+        this.userFk = userFk;
         this.writer = writer;
         this.title = title;
         this.contents = contents;

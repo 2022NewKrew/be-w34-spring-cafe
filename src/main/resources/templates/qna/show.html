@@ -17,7 +17,7 @@
                       </div>
                       <div class="article-header-text">
                           <a href="/users/92/kimmunsu" class="article-author-name">{{writer}}</a>
-                          <a href="/questions/413" class="article-header-time" title="퍼머링크">
+                          <a href="/questions/{{id}}" class="article-header-time" title="퍼머링크">
                               {{writingTime}}
                               <i class="icon-link"></i>
                           </a>
@@ -32,7 +32,7 @@
                               <a class="link-modify-article" href="/questions/423/form">수정</a>
                           </li>
                           <li>
-                              <form class="form-delete" action="/questions/423" method="POST">
+                              <form class="form-delete" action="/questions/{{id}}" method="POST">
                                   <input type="hidden" name="_method" value="DELETE">
                                   <button class="link-delete-article" type="submit">삭제</button>
                               </form>

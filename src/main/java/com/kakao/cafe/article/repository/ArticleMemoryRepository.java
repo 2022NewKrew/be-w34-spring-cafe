@@ -31,4 +31,9 @@ public class ArticleMemoryRepository implements ArticleRepository {
     public List<Article> findAll() {
         return List.copyOf(articleMap.values());
     }
+
+    @Override
+    public void delete(Long id) {
+        articleMap.remove(id);
+    }
 }
