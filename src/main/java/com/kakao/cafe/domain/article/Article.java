@@ -6,13 +6,13 @@ import java.util.UUID;
 
 public class Article {
 
-    private UUID articleId;
-    private Title title;
-    private Content content;
+    private final UUID articleId;
+    private final Title title;
+    private final Content content;
     private final User writer;
-    private LocalDateTime createdAt;
-    private ViewCount viewCount;
-    private ArticleDeleted articleDeleted;
+    private final LocalDateTime createdAt;
+    private final ViewCount viewCount;
+    private final ArticleDeleted articleDeleted;
 
     public Article(UUID articleId, Title title, Content content, User writer, LocalDateTime createdAt, ViewCount viewCount, ArticleDeleted articleDeleted) {
         this.articleId = articleId;
@@ -60,35 +60,8 @@ public class Article {
         return articleDeleted;
     }
 
-    public void setArticleId(UUID id) {
-        this.articleId = id;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setViewCount(ViewCount viewCount) {
-        this.viewCount = viewCount;
-    }
-
-    public void setArticleDeleted(ArticleDeleted articleDeleted) {
-        this.articleDeleted = articleDeleted;
-    }
-
     public void increaseViewCount() {
         this.viewCount.increase();
-    }
-
-    public void update(Article article) {
-        if (this.articleId.equals(article.getArticleId())) {
-            title = article.getTitle();
-            content = article.getContent();
-        }
-    }
-
-    public void delete() {
-        this.articleDeleted = ArticleDeleted.from(true);
     }
 
     public boolean isWriter(User user) {

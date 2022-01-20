@@ -1,6 +1,7 @@
 package com.kakao.cafe.dto.article;
 
 public class ArticleUpdateFormResponseDto {
+
     private final String articleId;
     private final String title;
     private final String content;

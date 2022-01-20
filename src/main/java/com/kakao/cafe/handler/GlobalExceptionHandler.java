@@ -8,7 +8,6 @@ import com.kakao.cafe.exception.NoSuchUserException;
 import com.kakao.cafe.exception.UnauthenticatedArticleAccessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

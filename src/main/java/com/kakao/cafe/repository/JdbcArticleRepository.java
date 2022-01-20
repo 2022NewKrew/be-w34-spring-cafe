@@ -4,13 +4,11 @@ import com.kakao.cafe.domain.article.Article;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-@Primary
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
 
