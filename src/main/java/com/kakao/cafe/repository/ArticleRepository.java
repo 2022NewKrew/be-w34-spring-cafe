@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ArticleRepository {
     int save(Article article) throws SQLException;
+    void update(Article article);
     List<Article> findAll();
     Article findById(int i);
 }

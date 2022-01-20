@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public interface ArticleService {
-    void postOne(ArticlePostDto a) throws SQLException, NoSuchElementException;
+    void post(ArticlePostDto a) throws SQLException, NoSuchElementException;
+    void update(int id, ArticlePostDto modifiedArticle);
     List<ArticleDto> getArticleList();
     ArticleDto findById(int id) throws NoSuchElementException;
 }

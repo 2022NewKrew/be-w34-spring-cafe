@@ -45,6 +45,16 @@ public class ArticleDao implements ArticleRepository {
         return key;
     }
 
+    public void update(Article article) {
+        String sql = String.format("update %s set %s = ?, %s = ? where %s = ?",
+                ArticleDBConstants.TABLE_NAME,
+                ArticleDBConstants.COLUMN_TITLE,
+                ArticleDBConstants.COLUMN_CONTENTS,
+                ArticleDBConstants.COLUMN_ID);
+
+        jdbcTemplate.update(sql, article.getTitle(), article.getContents(), article.getId());
+    }
+
     public List<Article> findAll() {
         String sql = String.format("select * from %s", ArticleDBConstants.TABLE_NAME);
 

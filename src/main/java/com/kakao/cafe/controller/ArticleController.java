@@ -43,7 +43,7 @@ public class ArticleController {
     @PostMapping("/questions")
     public String postQuestion(ArticlePostDto article) {
         try {
-            articleService.postOne(article);
+            articleService.post(article);
         } catch (SQLException e) {
             logger.error("/articles/questions, failed to create article (article = {})", article, e);
             return "redirect:/";
@@ -73,8 +73,21 @@ public class ArticleController {
     }
 
     @PutMapping("/{id}")
-    public String modifyArticle(@PathVariable int id) {
-        return "/";
+    public String modifyArticle(@PathVariable int id, ArticlePostDto articlePostDto) {
+        // TODO
+        try {
+            articleService.update(id, articlePostDto);
+        } catch (NoSuchElementException e) {
+            return "redirect:/";
+        }
+
+        return String.format("redirect:/articles/%d", id);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteArticle(@PathVariable int id) {
+        // TODO
+        return "redirect:/";
     }
 
     @GetMapping("/{id}/form")
@@ -88,8 +101,8 @@ public class ArticleController {
         }
 
         model.addAttribute("writer", writer.getUserId());
+        model.addAttribute("modify", id);
 
         return "/qna/form";
     }
-
 }
