@@ -6,7 +6,6 @@ import javax.validation.constraints.NotBlank;
 
 @RequiredArgsConstructor
 @Getter
-@Setter
 public class ArticleSaveDTO {
 
     @NotBlank
@@ -17,5 +16,7 @@ public class ArticleSaveDTO {
 
     private String userId;
 
-
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }
