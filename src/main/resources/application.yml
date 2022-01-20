@@ -1,0 +1,26 @@
+spring.config.import: vault://secret/kina-spring-cafe/secret/kina/dev
+spring.cloud.vault:
+  authentication: APPROLE
+  host: vault-beta.daumkakao.io
+  port: 443
+  scheme: https
+  fail-fast: true
+  enabled: true
+
+# DB
+spring:
+  datasource:
+    url: ${url}
+    username: ${username}
+    password: ${password}
+    driver-class-name: ${driver-class-name}
+  mustache:
+    cache: false
+    expose-session-attributes: true
+  handlebars:
+    suffix: .html
+    cache: false
+  profiles:
+    active: mysql-secret
+
+logging.level.com.kakao.cafe: debug
