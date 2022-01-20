@@ -32,7 +32,7 @@ public class QuestionController {
     private final SessionLoginUser<UserDto> sessionLoginUser;
 
     @DeleteMapping("/{id}")
-    public String deleteQuestion(@PathVariable("id") Long id, Model model) throws BaseException {
+    public String deleteQuestion(@PathVariable("id") Long id) throws BaseException {
 
         Long memberId = getMemberId();
 
@@ -42,7 +42,7 @@ public class QuestionController {
     }
 
     @PostMapping("/create")
-    public String insertQuestion(@ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto, Model model) throws BaseException, SQLException {
+    public String insertQuestion(@ModelAttribute("question") @Valid QuestionCreateDto questionCreateDto) throws BaseException, SQLException {
 
         User user = modelMapper.map(sessionLoginUser.getLoginUser(), User.class);
         Question question = modelMapper.map(questionCreateDto, Question.class);
@@ -79,7 +79,7 @@ public class QuestionController {
     }
 
     @GetMapping("/create")
-    public String viewQuestionForm(Model model) {
+    public String viewQuestionForm() {
         return "qna/form";
     }
 

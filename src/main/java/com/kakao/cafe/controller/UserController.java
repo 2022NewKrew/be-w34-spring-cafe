@@ -119,7 +119,7 @@ public class UserController {
 
     @Auth(role = Role.ADMIN)
     @PutMapping("/{id}/update")
-    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) throws BaseException {
+    public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") @Valid UserUpdateDto userUpdateDto) throws BaseException {
 
         User user = new User(id, userUpdateDto.getName(), userUpdateDto.getEmail());
 
@@ -132,7 +132,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public String updateUser(@ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) throws BaseException {
+    public String updateUser(@ModelAttribute("user") @Valid UserUpdateDto userUpdateDto) throws BaseException {
 
         UserDto loginUser = sessionLoginUser.getLoginUser();
 
@@ -147,7 +147,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("user") @Valid UserLoginDto userLoginDto, Model model) throws BaseException {
+    public String login(@ModelAttribute("user") @Valid UserLoginDto userLoginDto) throws BaseException {
 
         User user = userService.loginCheck(userLoginDto.getUserId(), userLoginDto.getPassword());
 
