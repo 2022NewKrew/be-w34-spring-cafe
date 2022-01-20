@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -20,16 +21,15 @@ public class UserService {
     }
 
     public void updateUser(String prevPassword, User user) {
-        if (userRepository.validate(user.getId(), prevPassword)){
+        Optional<User> validatedUser = userRepository.validate(user.getId(), prevPassword);
+        if (validatedUser.isPresent()){
             userRepository.update(user);
         }
     }
 
-    public boolean loginUser(User user) {
-        if (userRepository.validate(user.getId(), user.getPassword())) {
-            return true;
-        }
-        return false;
+    public User loginUser(User user) {
+        Optional<User> validatedUser = userRepository.validate(user.getId(), user.getPassword());
+        return validatedUser.orElseThrow(() -> new IllegalArgumentException("올바르지 않은 USER!"));
     }
 
 
@@ -39,6 +39,10 @@ public class UserService {
 
     public User getUserById(String id) {
         return userRepository.findById(id).orElseThrow();
+    }
+
+    public User getUserBySeq(long seq) {
+        return userRepository.findBySeq(seq).orElseThrow();
     }
 
 }

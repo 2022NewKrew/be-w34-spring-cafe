@@ -9,7 +9,9 @@ public interface UserRepository {
 
     default void update(User user) {}
 
-    default boolean validate(String id, String password) {return false;}
+    default Optional<User> validate(String id, String password) {return Optional.empty();}
+
+    default Optional<User> findBySeq(long seq) {return Optional.empty();}
 
     Optional<User> findById(String id);
 
