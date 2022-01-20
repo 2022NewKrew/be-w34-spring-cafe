@@ -21,12 +21,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class MvcArticleConfig {
+public class ArticleConfig {
 
     public final DataSource dataSource;
 
     @Autowired
-    public MvcArticleConfig(DataSource dataSource) {
+    public ArticleConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 

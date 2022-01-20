@@ -18,12 +18,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class MvcReplyConfig {
+public class ReplyConfig {
 
     public final DataSource dataSource;
 
     @Autowired
-    public MvcReplyConfig(DataSource dataSource) {
+    public ReplyConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
