@@ -1,7 +1,8 @@
 package com.kakao.cafe.interfaces.config;
 
-import com.kakao.cafe.persistence.article.ArticleRowMapper;
-import com.kakao.cafe.persistence.article.h2.ArticleDaoH2Adaptor;
+import com.kakao.cafe.persistence.article.mysql.ArticleDaoMysqlAdaptor;
+import com.kakao.cafe.persistence.article.mysql.ArticleTableDtoRowMapper;
+import com.kakao.cafe.persistence.article.mysql.dto.ArticleEntityDtoMapper;
 import com.kakao.cafe.persistence.user.UserRowMapper;
 import com.kakao.cafe.persistence.user.h2.UserDaoH2Adaptor;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +18,8 @@ public class AdaptorBeanConfig {
     }
 
     @Bean
-    ArticleDaoH2Adaptor articleDaoPort(NamedParameterJdbcTemplate jdbcTemplate, ArticleRowMapper articleRowMapper) {
-        return new ArticleDaoH2Adaptor(jdbcTemplate, articleRowMapper);
+    ArticleDaoMysqlAdaptor articleDaoPort(NamedParameterJdbcTemplate jdbcTemplate, ArticleTableDtoRowMapper articleRowMapper, ArticleEntityDtoMapper articleEntityDtoMapper) {
+        return new ArticleDaoMysqlAdaptor(jdbcTemplate, articleRowMapper, articleEntityDtoMapper);
     }
 
 }

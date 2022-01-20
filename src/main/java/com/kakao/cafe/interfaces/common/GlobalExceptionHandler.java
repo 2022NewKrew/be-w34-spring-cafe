@@ -1,6 +1,6 @@
 package com.kakao.cafe.interfaces.common;
 
-import com.kakao.cafe.interfaces.user.exception.UnauthorizedUserException;
+import com.kakao.cafe.application.user.exception.UnauthorizedUserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;

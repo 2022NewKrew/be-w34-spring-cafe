@@ -1,6 +1,6 @@
 package com.kakao.cafe.application.user;
 
-import com.kakao.cafe.application.user.validation.NonExistsUserIdException;
+import com.kakao.cafe.application.user.exception.NonExistsUserIdException;
 import com.kakao.cafe.application.user.validation.UserErrorCode;
 import com.kakao.cafe.domain.user.FindUserPort;
 import com.kakao.cafe.domain.user.User;

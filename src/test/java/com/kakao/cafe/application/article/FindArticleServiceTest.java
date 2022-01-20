@@ -4,6 +4,7 @@ import com.kakao.cafe.application.article.validation.ArticleErrorCode;
 import com.kakao.cafe.application.article.validation.NonExistsArticleIdException;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.FindArticlePort;
+import com.kakao.cafe.domain.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,12 +31,21 @@ class FindArticleServiceTest {
     @Mock
     FindArticlePort findArticlePort;
 
+    private User createStaticUser() {
+        return User.builder()
+                .userId("483759")
+                .name("윤이진")
+                .password("password")
+                .email("483759@naver.com")
+                .build();
+    }
+
     @DisplayName("글 ID로 특정 글을 조회할 수 있다")
     @Test
     void checkFindArticleById() {
         // given
         int articleId = 123;
-        Article expectedArticle = new Article(articleId, "윤이진", LocalDateTime.of(2022, 1, 12, 17, 0), "Hello", "World");
+        Article expectedArticle = new Article(articleId, createStaticUser(), LocalDateTime.of(2022, 1, 12, 17, 0), "Hello", "World");
         given(findArticlePort.findById(articleId))
                 .willReturn(Optional.ofNullable(expectedArticle));
 
@@ -71,8 +81,8 @@ class FindArticleServiceTest {
     void checkFindAllArticleList() {
         // given
         List<Article> expectedArticles = List.of(
-                new Article(0, "윤이진", LocalDateTime.of(2022, 1, 12, 16, 30), "Hello", "World"),
-                new Article(1, "윤이진2", LocalDateTime.of(2022, 1, 12, 16, 30), "Hello2", "World2")
+                new Article(0, createStaticUser(), LocalDateTime.of(2022, 1, 12, 16, 30), "Hello", "World"),
+                new Article(1, createStaticUser(), LocalDateTime.of(2022, 1, 12, 16, 30), "Hello2", "World2")
         );
         given(findArticlePort.findAll())
                 .willReturn(expectedArticles);
@@ -82,10 +92,10 @@ class FindArticleServiceTest {
 
         //then
         assertThat(articleList)
-                .extracting("id", "writer", "title", "contents")
+                .extracting("id", "writer.name", "title", "contents")
                 .containsExactly(
                         tuple(0, "윤이진", "Hello", "World"),
-                        tuple(1, "윤이진2", "Hello2", "World2")
+                        tuple(1, "윤이진", "Hello2", "World2")
                 );
         verify(findArticlePort).findAll();
     }

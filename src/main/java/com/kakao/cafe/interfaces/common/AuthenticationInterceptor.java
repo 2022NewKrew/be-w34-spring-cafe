@@ -1,10 +1,10 @@
 package com.kakao.cafe.interfaces.common;
 
 import com.kakao.cafe.application.user.FindUserService;
-import com.kakao.cafe.application.user.validation.NonExistsUserIdException;
+import com.kakao.cafe.application.user.exception.NonExistsUserIdException;
+import com.kakao.cafe.application.user.exception.UnauthorizedUserException;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.interfaces.user.dto.response.LoginInfoDto;
-import com.kakao.cafe.interfaces.user.exception.UnauthorizedUserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
