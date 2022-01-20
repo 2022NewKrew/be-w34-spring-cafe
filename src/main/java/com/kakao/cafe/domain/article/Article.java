@@ -16,8 +16,4 @@ public class Article {
     private Long writerId;
     private Long view;
     private boolean deleted = false;
-
-    public void addView() {
-        this.view++;
-    }
 }

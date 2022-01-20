@@ -14,7 +14,9 @@ import java.util.Optional;
 @Slf4j
 public class JdbcArticleRepository implements ArticleRepositoryInterface {
     private static final String ALL_OF_ARTICLE = "`index`, title, content, date, u.name as writer," +
-            "a.writerid as writerid, view, deleted from articles as a join users as u where a.writerid = u.userid";
+            "a.writerid as writerid, view, deleted from articles as a join users as u " +
+            "where a.writerid = u.userid AND deleted=false";
+    private static final String ORDERED = " order by `index` desc";
     private final DataSource dataSource;
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
@@ -26,7 +28,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
     @Override
     public Article save(Article article) {
-        String sql = "insert into articles(title, content, date, writer, writerid, view) values(?, ?, ?, ?, ?, ?)";
+        String sql = "insert into articles(title, content, date, writerid, view, deleted) values(?, ?, ?, ?, ?, ?)";
         article.setDate(DateUtils.getLocalDateTimeNow());
         article.setView(0L);
 
@@ -36,9 +38,9 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
             preparedStatement.setString(1, article.getTitle());
             preparedStatement.setString(2, article.getContent());
             preparedStatement.setString(3, article.getDate());
-            preparedStatement.setString(4, article.getWriter());
-            preparedStatement.setLong(5, article.getWriterId());
-            preparedStatement.setLong(6, article.getView());
+            preparedStatement.setLong(4, article.getWriterId());
+            preparedStatement.setLong(5, article.getView());
+            preparedStatement.setBoolean(6, false);
 
             preparedStatement.executeUpdate();
 
@@ -60,7 +62,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
     @Override
     public Optional<Article> findById(Long index) {
-        String sql = "select " + ALL_OF_ARTICLE + " AND `index` = ?";
+        String sql = "select " + ALL_OF_ARTICLE + " AND `index` = ?" + ORDERED;
 
         try {
             connection = JdbcUtils.getConnection(dataSource);
@@ -82,7 +84,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
     @Override
     public Optional<Article> findByName(String title) {
-        String sql = "select " + ALL_OF_ARTICLE + " AND title = ?";
+        String sql = "select " + ALL_OF_ARTICLE + " AND title = ?" + ORDERED;
 
         try {
             connection = JdbcUtils.getConnection(dataSource);
@@ -104,7 +106,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select " + ALL_OF_ARTICLE;
+        String sql = "select " + ALL_OF_ARTICLE + ORDERED;
         try {
             connection = JdbcUtils.getConnection(dataSource);
             preparedStatement = connection.prepareStatement(sql);
@@ -146,7 +148,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
     @Override
     public void delete(Long id) {
-        String sql = "delete from articles where `index` = ?";
+        String sql = "update articles set deleted=true where `index` = ?";
         try {
             connection = JdbcUtils.getConnection(dataSource);
             preparedStatement = connection.prepareStatement(sql);
