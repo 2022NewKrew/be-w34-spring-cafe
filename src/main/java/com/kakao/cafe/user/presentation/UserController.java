@@ -2,10 +2,10 @@ package com.kakao.cafe.user.presentation;
 
 import com.kakao.cafe.user.application.UserService;
 import com.kakao.cafe.user.domain.SessionedUser;
-import com.kakao.cafe.user.dto.UserListResponse;
-import com.kakao.cafe.user.dto.UserProfileResponse;
-import com.kakao.cafe.user.dto.UserSaveRequest;
-import com.kakao.cafe.user.dto.UserUpdateRequest;
+import com.kakao.cafe.user.application.dto.UserListResponse;
+import com.kakao.cafe.user.application.dto.UserProfileResponse;
+import com.kakao.cafe.user.application.dto.UserSaveRequest;
+import com.kakao.cafe.user.application.dto.UserUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

@@ -2,10 +2,10 @@ package com.kakao.cafe.user.application;
 
 import com.kakao.cafe.common.exception.AuthenticationException;
 import com.kakao.cafe.common.exception.EntityNotFoundException;
+import com.kakao.cafe.user.application.dto.*;
 import com.kakao.cafe.user.domain.SessionedUser;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
-import com.kakao.cafe.user.dto.*;
 import com.kakao.cafe.user.infra.UserJdbcRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

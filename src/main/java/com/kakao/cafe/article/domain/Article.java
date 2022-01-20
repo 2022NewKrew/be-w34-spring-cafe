@@ -33,19 +33,18 @@ public class Article {
     @NonNull
     private User author;
 
-    private Article(User user, String title, String content, String createdAt) {
-        this.authorId = user.getUserId();
+    private Article(String userId, String title, String content, String createdAt) {
+        this.authorId = userId;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
-        this.author = user;
     }
 
-    public static Article valueOf(User user, String title, String content) {
+    public static Article valueOf(String userId, String title, String content) {
         validateLength(title, content);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String localDateTime = LocalDateTime.now().format(dateTimeFormatter);
-        return new Article(user, title, content, localDateTime);
+        return new Article(userId, title, content, localDateTime);
     }
 
     private static void validateLength(String title, String content) {

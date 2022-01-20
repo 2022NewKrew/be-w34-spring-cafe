@@ -1,4 +1,4 @@
-package com.kakao.cafe.article.dto;
+package com.kakao.cafe.article.application.dto;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.user.domain.User;
@@ -13,7 +13,7 @@ public class ArticleSaveRequest {
     public final String title;
     public final String contents;
 
-    public Article toArticle(User user) {
-        return Article.valueOf(user, title, contents);
+    public Article toArticle(String userId) {
+        return Article.valueOf(userId, title, contents);
     }
 }

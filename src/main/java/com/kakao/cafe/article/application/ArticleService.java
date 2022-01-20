@@ -2,10 +2,12 @@ package com.kakao.cafe.article.application;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleRepository;
-import com.kakao.cafe.article.dto.ArticleListResponse;
-import com.kakao.cafe.article.dto.ArticleSaveRequest;
-import com.kakao.cafe.article.dto.ArticleShowResponse;
+import com.kakao.cafe.article.application.dto.ArticleListResponse;
+import com.kakao.cafe.article.application.dto.ArticleSaveRequest;
+import com.kakao.cafe.article.application.dto.ArticleShowResponse;
 import com.kakao.cafe.article.infra.ArticleJdbcRepository;
+import com.kakao.cafe.comment.application.CommentService;
+import com.kakao.cafe.comment.application.dto.CommentListResponse;
 import com.kakao.cafe.common.exception.EntityNotFoundException;
 import com.kakao.cafe.user.domain.SessionedUser;
 import com.kakao.cafe.user.domain.User;
@@ -22,51 +24,48 @@ import java.util.stream.Collectors;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
+    private final CommentService commentService;
 
-    public ArticleService(ArticleJdbcRepository articleJdbcRepository, UserJdbcRepository userJdbcRepository) {
+    public ArticleService(
+            ArticleJdbcRepository articleJdbcRepository,
+            UserJdbcRepository userJdbcRepository,
+            CommentService commentService
+    ) {
         this.articleRepository = articleJdbcRepository;
         this.userRepository = userJdbcRepository;
+        this.commentService = commentService;
     }
 
     public void save(ArticleSaveRequest request) {
         log.info(this.getClass() + ": 게시글 작성");
         String authorId = request.writer;
-        User author = userRepository.findByIdOrNull(authorId);
-        if (author == null) {
-            EntityNotFoundException.throwNotExistsByField(User.class, "userId", authorId);
-        }
-        Article article = request.toArticle(author);
+        validateAuthorExists(authorId);
+
+        Article article = request.toArticle(authorId);
         articleRepository.save(article);
     }
 
     public List<ArticleListResponse> findAll() {
         log.info(this.getClass() + ": 게시글 목록");
         List<Article> articles = articleRepository.findAll();
+
         return articles.stream().map(ArticleListResponse::valueOf).collect(Collectors.toList());
     }
 
     public ArticleShowResponse findById(int articleId) {
         log.info(this.getClass() + ": 게시글 상세보기");
         Article article = articleRepository.findByIdOrNull(articleId);
-        if (article == null) {
-            EntityNotFoundException.throwNotExistsByField(Article.class, "id", articleId);
-        }
-        return ArticleShowResponse.valueOf(article);
+        validateArticleExists(article, articleId);
+
+        List<CommentListResponse> commentListResponses = commentService.findAllByArticleId(articleId);
+        return ArticleShowResponse.valueOf(article, commentListResponses);
     }
 
     public void updateById(int articleId, ArticleSaveRequest request, SessionedUser sessionedUser) {
         log.info(this.getClass() + ": 게시글 수정");
         sessionedUser.validateSession(request.writer);
-        String userId = sessionedUser.getUserId();
         Article article = articleRepository.findByIdOrNull(articleId);
-        if (article == null) {
-            EntityNotFoundException.throwNotExistsByField(Article.class, "articleId", articleId);
-        }
-
-        User user = article.getAuthor();
-        if (user == null) {
-            EntityNotFoundException.throwNotExistsByField(User.class, "userId", userId);
-        }
+        validateArticleExists(article, articleId);
 
         article.update(request.title, request.contents);
         articleRepository.update(article);
@@ -79,5 +78,18 @@ public class ArticleService {
         sessionedUser.validateSession(authorId);
 
         articleRepository.delete(article);
+    }
+
+    private void validateArticleExists(Article article, int articleId) throws EntityNotFoundException {
+        if (article == null) {
+            EntityNotFoundException.throwNotExistsByField(Article.class, "articleId", articleId);
+        }
+    }
+
+    private void validateAuthorExists(String authorId) throws EntityNotFoundException {
+        User author = userRepository.findByIdOrNull(authorId);
+        if (author == null) {
+            EntityNotFoundException.throwNotExistsByField(User.class, "userId", authorId);
+        }
     }
 }
