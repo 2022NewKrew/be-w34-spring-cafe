@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.annotation.UserAuthorized;
 import com.kakao.cafe.domain.auth.Auth;
 import com.kakao.cafe.dto.auth.AuthRequest;
 import com.kakao.cafe.service.AuthService;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+
+import static com.kakao.cafe.annotation.UserAuthorized.AuthCode.SESSION;
 
 @Controller
 @RequestMapping("/")
@@ -28,6 +31,7 @@ public class AuthController {
         return "redirect:/";
     }
 
+    @UserAuthorized(target = SESSION)
     @DeleteMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

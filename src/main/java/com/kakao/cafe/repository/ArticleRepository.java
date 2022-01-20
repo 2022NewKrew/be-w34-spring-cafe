@@ -50,6 +50,28 @@ public class ArticleRepository implements MyRepository<Article, Long> {
         return jdbcTemplate.query(sql, mapper);
     }
 
+    public Integer getTotalSize() {
+        String sql = "select count(*) " +
+                "from article " +
+                "where not deleted";
+
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    public List<Article> findAllByOffset(int offset, int limit) {
+        String sql = "select article.id, article.author_id, users.nickname, article.title, article.description, article.deleted " +
+                "from (" +
+                "   select * " +
+                "   from article " +
+                "   where not deleted " +
+                "   order by id desc " +
+                "   limit ?, ?) article join users " +
+                "on article.author_id = users.id " +
+                "order by article.id desc";
+
+        return jdbcTemplate.query(sql, mapper, offset, limit);
+    }
+
     @Override
     public void save(Article entity) {
         String sql = "insert into article (author_id, title, description, deleted) values ( ?, ?, ?, ? )";
