@@ -30,7 +30,11 @@ public class UserService {
 
 
     public void userCreate(UserCreateDTO userCreateDTO){
-        User user = new User(userCreateDTO);
+        User user = new User(userCreateDTO.getUserId(),
+                                userCreateDTO.getPassword(),
+                                userCreateDTO.getName(),
+                                userCreateDTO.getEmail(),
+                                0L);
         userRepository.addUser(user);
     }
 
@@ -46,7 +50,11 @@ public class UserService {
             return;
         }
 
-        User updatedUser = new User(userCreateDTO);
+        User updatedUser = new User(userCreateDTO.getUserId(),
+                userCreateDTO.getPassword(),
+                userCreateDTO.getName(),
+                userCreateDTO.getEmail(),
+                0L);
         userRepository.updateUser(updatedUser);
     }
 
