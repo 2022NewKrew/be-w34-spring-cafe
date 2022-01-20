@@ -31,7 +31,7 @@ public class ArticleController {
     /*
      * 게시글 작성 페이지 조회
      */
-    @GetMapping("/posts/form")
+    @GetMapping("/articles/form")
     public String showCreateArticlePage(@LoginUser SessionUser user) {
         log.info("GET /posts/form");
         return "post/form";
@@ -40,7 +40,7 @@ public class ArticleController {
     /*
      * 게시글 작성
      */
-    @PostMapping("/posts/form")
+    @PostMapping("/articles/form")
     public String addArticle(@ModelAttribute RequestArticleDto articleDto, @LoginUser SessionUser user) {
         log.info("POST /posts/form {}", articleDto);
 
