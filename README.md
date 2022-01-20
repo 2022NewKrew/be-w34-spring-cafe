@@ -114,8 +114,8 @@
 
 - [ ] 리뷰
   - [ ] controller 에서 dto 사용
-    - [ ] UserDto 및 Mapper 만들기
-    - [ ] ArticleDto 및 Mapper 만들기
+    - [x] UserDto 및 Mapper 만들기
+    - [ ] ArticleDto 및 Mapper 만들기 (과연 필요할까?)
     - [ ] RequestBody 를 이용해 controller 에서 dto 객체로 파라미터 받기
 
   - [ ] exception 처리
@@ -124,11 +124,11 @@
     - [ ] ExceptionCode Enum 만들기
     - [ ] ResponseEntity 로 예외 처리
 
-- [ ] h2 DB 설정
-  - [ ] 의존성 설정
-  - [ ] DB Connection 설정
-  - [ ] Configuration 클래스
-  - [ ] RepositoryImpl 구현
+- [x] h2 DB 설정
+  - [x] 의존성 설정
+  - [x] DB Connection 설정
+  - [x] Configuration 클래스
+  - [x] RepositoryImpl 구현
 
 - [ ] 배포하기
   - [ ] Krane 인스턴스 생성

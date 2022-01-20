@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
@@ -29,8 +29,8 @@ public class ArticleController {
 
     @PostMapping()
     public String postCreateArticle(String title, String writerUserId, String contents) {
-        final User writer = userService.getUserByUserId(writerUserId);
-        final Article article = articleService.createArticle(title, writer, contents);
+        final UserDto writerDto = userService.getUserByUserId(writerUserId);
+        final Article article = articleService.createArticle(title, writerDto, contents);
         LOGGER.info("POST request on createArticle -> {}", article);
         return "redirect:articles";
     }

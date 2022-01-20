@@ -1,9 +1,9 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.User.UserNoPassword;
+import com.kakao.cafe.domain.UserDto;
+import com.kakao.cafe.domain.UserDto.UserNoPassword;
 import com.kakao.cafe.service.UserService;
-import java.util.Collection;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -26,38 +26,39 @@ public class UserController {
 
     @PostMapping()
     public String postSignup(String userId, String password, String name, String email) {
-        final User user = new User(userId, password, name, email);
-        userService.signup(user);
-        LOGGER.info("POST request on Signup -> {}", user);
+        final UserDto userDto = new UserDto(userId, password, name, email);
+        userService.signup(userDto);
+        LOGGER.info("POST request on Signup -> {}", userDto);
         return "redirect:users";
     }
 
     @GetMapping()
     public String getUserList(Model model) {
-        final Collection<User> users = userService.getUsers();
+        final List<UserDto> users = userService.getUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String getUserProfile(@PathVariable("userId") String userId, Model model) {
-        final User user = userService.getUserByUserId(userId);
-        final UserNoPassword userNoPassword = user.userNoPassword();
+        final UserDto userDto = userService.getUserByUserId(userId);
+        final UserNoPassword userNoPassword = userDto.userNoPassword();
         model.addAttribute("user", userNoPassword);
         return "user/profile";
     }
 
     @GetMapping("/{userId}/form")
     public String getUserUpdate(@PathVariable("userId") String userId, Model model) {
-        final User user = userService.getUserByUserId(userId);
-        model.addAttribute("user", user);
+        final UserDto userDto = userService.getUserByUserId(userId);
+        model.addAttribute("user", userDto);
         return "user/updateForm";
     }
 
     @PostMapping("/{userId}/form")
     public String postUserUpdate(@PathVariable("userId") String userId, String password, String name, String email) {
-        final User user = userService.updateUser(userId, password, name, email);
-        LOGGER.info("POST request on UpdateUser -> {}", user);
+        final UserDto userDto = new UserDto(userId, password, name, email);
+        final UserDto updatedUserDto = userService.updateUser(userDto);
+        LOGGER.info("POST request on UpdateUser -> {}", updatedUserDto);
         return "redirect:/users/" + userId;
     }
 }

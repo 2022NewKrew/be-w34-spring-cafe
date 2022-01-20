@@ -3,16 +3,14 @@ package com.kakao.cafe.domain;
 import lombok.Getter;
 
 @Getter
-public class User {
+public class UserDto {
 
-    private final String uid;
     private final String userId;
     private String password;
     private String name;
     private String email;
 
-    public User(String uid, String userId, String password, String name, String email) {
-        this.uid = uid;
+    public UserDto(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -53,18 +51,16 @@ public class User {
     }
 
     public UserNoPassword userNoPassword() {
-        return new UserNoPassword(uid, userId, name, email);
+        return new UserNoPassword(userId, name, email);
     }
 
     public static class UserNoPassword {
 
-        private final String uid;
         private final String userId;
         private final String name;
         private final String email;
 
-        private UserNoPassword(String uid, String userId, String name, String email) {
-            this.uid = uid;
+        private UserNoPassword(String userId, String name, String email) {
             this.userId = userId;
             this.name = name;
             this.email = email;

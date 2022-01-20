@@ -21,17 +21,17 @@ public class ArticleRepositoryImplMemoryDB implements ArticleRepository{
     }
 
     @Override
-    public List<Article> readArticleList() {
+    public List<Article> findAllArticles() {
         return articleMemoryDB;
     }
 
     @Override
-    public boolean isIdUsed(Integer aid) {
+    public boolean isArticleIdUsed(Integer aid) {
         return articlesSize() >= aid;
     }
 
     @Override
-    public Article readArticle(Integer aid) {
+    public Article findArticleByArticleId(Integer aid) {
         return articleMemoryDB.get(aid - 1);
     }
 }

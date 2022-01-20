@@ -1,0 +1,83 @@
+package com.kakao.cafe.repository;
+
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserDto;
+import java.util.List;
+import javax.sql.DataSource;
+import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+@Primary
+@Repository
+public class UserRepositoryImpH2 implements UserRepository {
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public UserRepositoryImpH2(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    @Override
+    public void createUser(UserDto userDto) {
+        jdbcTemplate.update(
+            "INSERT INTO USERS (USER_ID, PASSWORD, NAME, EMAIL) VALUES ( ?, ?, ?, ? )",
+            userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail()
+        );
+    }
+
+    @Override
+    public boolean isUserIdUsed(String userId) {
+        List<User> result = jdbcTemplate.query(
+            "SELECT * FROM USERS WHERE USER_ID=?",
+            userRowMapper(), userId
+        );
+        return !result.isEmpty();
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return jdbcTemplate.query(
+            "SELECT * FROM USERS",
+            userRowMapper()
+        );
+    }
+
+    @Override
+    public User findUserByUserId(String userId) {
+        List<User> result = jdbcTemplate.query(
+            "SELECT * FROM USERS WHERE USER_ID=?",
+            userRowMapper(), userId
+        );
+        return result.get(0);
+    }
+
+    @Override
+    public User updateUser(User user) {
+        jdbcTemplate.update(
+            "UPDATE USERS SET NAME=?, EMAIL=? WHERE USER_ID=?",
+            user.getName(), user.getEmail(), user.getUserId()
+        );
+        return user;
+    }
+
+    @Override
+    public String findUidByUserId(String userId) {
+        List<User> result = jdbcTemplate.query(
+            "SELECT * FROM USERS WHERE USER_ID=?",
+            userRowMapper(), userId
+        );
+        return result.get(0).getUid();
+    }
+
+    private RowMapper<User> userRowMapper() {
+        return (rs, count) -> new User(
+            rs.getString("ID"),
+            rs.getString("USER_ID"),
+            rs.getString("PASSWORD"),
+            rs.getString("NAME"),
+            rs.getString("EMAIL")
+        );
+    }
+}

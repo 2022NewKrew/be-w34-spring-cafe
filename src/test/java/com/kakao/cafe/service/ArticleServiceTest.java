@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,16 +27,19 @@ class ArticleServiceTest {
     @Mock
     private ArticleRepository articleRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     private ArticleServiceTest() {}
 
     @Test
     @DisplayName("없는 게시글은 조회할 수 없다.")
     void testGetArticleWithUnusedArticleId() {
         // given
-        final Integer unusedArticleId = 1;
+        Integer unusedArticleId = 1;
 
         // when
-        Mockito.when(articleRepository.isIdUsed(unusedArticleId)).thenReturn(false);
+        Mockito.when(articleRepository.isArticleIdUsed(unusedArticleId)).thenReturn(false);
 
         // then
         assertThatThrownBy(() -> articleService.getArticleById(unusedArticleId))
@@ -56,12 +61,15 @@ class ArticleServiceTest {
     @DisplayName("게시글을 작성한다.")
     void testCreateArticle() {
         // given
+        String writerUserId = "test";
+        String writerUid = "1";
 
         // when
-        final User writer = new User("test", "123456", "test", "test@test.com");
+        UserDto writerDto = new UserDto(writerUserId, "123456", "test", "test@test.com");
+        Mockito.when(userRepository.findUidByUserId(writerUserId)).thenReturn(writerUid);
 
         // then
-        assertThat(articleService.createArticle("testTitle", writer, "testContents"))
+        assertThat(articleService.createArticle("testTitle", writerDto, "testContents"))
             .isExactlyInstanceOf(Article.class);
     }
 }

@@ -1,9 +1,9 @@
 package com.kakao.cafe.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class UserServiceTest {
         // given
 
         // when
-        User user = new User("test", password, "test", "test@test.com");
+        User user = new User("1", "test", password, "test", "test@test.com");
 
         // then
         assertThatThrownBy(user::validate)
@@ -48,11 +48,11 @@ class UserServiceTest {
         String usedUserId = "test";
 
         // when
-        User user = new User(usedUserId, "123456", "test", "test@test.com");
+        UserDto userDto = new UserDto(usedUserId, "123456", "test", "test@test.com");
         Mockito.when(userRepository.isUserIdUsed(usedUserId)).thenReturn(true);
 
         // then
-        assertThatThrownBy(() -> userService.signup(user))
+        assertThatThrownBy(() -> userService.signup(userDto))
             .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
@@ -76,14 +76,13 @@ class UserServiceTest {
     void testUpdateUserWithShortPassword(String password) {
         // given
         String userId = "test";
+        String uid = "1";
 
         // when
-        User user = new User(userId, "123456", "test", "test@test.com");
-        Mockito.when(userRepository.isUserIdUsed(userId)).thenReturn(true);
-        Mockito.when(userRepository.readByUserId(userId)).thenReturn(user);
+        UserDto userDto = new UserDto(userId, password, "test", "test@test.com");
 
         // then
-        assertThatThrownBy(() -> userService.updateUser(userId, password, "test", "test@test.com"))
+        assertThatThrownBy(() -> userService.updateUser(userDto))
             .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
@@ -94,23 +93,24 @@ class UserServiceTest {
         String unusedUserId = "test";
 
         // when
+        UserDto userDto = new UserDto(unusedUserId, "123456", "test", "test@test.com");
         Mockito.when(userRepository.isUserIdUsed(unusedUserId)).thenReturn(false);
 
         // then
-        assertThatThrownBy(() -> userService.updateUser(unusedUserId, "123456", "test", "test@test.com"))
+        assertThatThrownBy(() -> userService.updateUser(userDto))
             .isExactlyInstanceOf(ResponseStatusException.class);
     }
 
-    @Test
-    @DisplayName("UID는 고유한 값은 갖는다.")
-    void testNoDuplicationOnUid() {
-        // given
-
-        // when
-        User user1 = new User("user1", "123456", "test", "test@test.com");
-        User user2 = new User("user2", "123456", "test", "test@test.com");
-
-        // then
-        assertThat(user1.getUid()).isNotEqualTo(user2.getUid());
-    }
+//    @Test
+//    @DisplayName("UID는 고유한 값은 갖는다.")
+//    void testNoDuplicationOnUid() {
+//        // given
+//
+//        // when
+//        User user1 = new User("user1", "123456", "test", "test@test.com");
+//        User user2 = new User("user2", "123456", "test", "test@test.com");
+//
+//        // then
+//        assertThat(user1.getUid()).isNotEqualTo(user2.getUid());
+//    }
 }
