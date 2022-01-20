@@ -86,7 +86,7 @@ APP_NAME="Gradle"
 APP_BASE_NAME=${0##*/}
 
 # Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
-DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
+DEFAULT_JVM_OPTS="-Dhttp.proxyHost=proxy.daumkakao.io -Dhttp.proxyPort=3128 -Dhttps.proxyHost=proxy.daumkakao.io -Dhttps.proxyPort=3128 -Dhttp.nonProxyHosts=localhost,127.0.0.1,127.0.0.0/8,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,.daumkakao.io,.daumcorp.com,.daumtools.com,.daum.net,.kakao.com,.iwilab.com,.daumkakao.com,.dakao.io,.9rum.cc,daumkakao.io,daumcorp.com,daum.net,kakao.com,iwilab.com,daumkakao.com,daumtools.com,dakao.io,9rum.cc,.agit.in,.tistory.com,.melon.com,.kakaocorp.com,.onkakao.net"
 
 # Use the maximum available, or set MAX_FD != -1 to use that value.
 MAX_FD=maximum
