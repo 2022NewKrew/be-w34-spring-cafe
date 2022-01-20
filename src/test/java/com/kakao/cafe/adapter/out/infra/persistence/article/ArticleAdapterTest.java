@@ -36,9 +36,11 @@ class ArticleAdapterTest {
     @Test
     void postNormalArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest("kakao", "Hello Kakao!");
-        writeRequest.setWriter("champ");
-        writeRequest.setUserId("test");
+        WriteRequest writeRequest = new WriteRequest.Builder().userId("kakao")
+                                                              .writer("champ")
+                                                              .title("test")
+                                                              .contents("testing")
+                                                              .build();
 
         // then
         assertThatNoException().isThrownBy(() -> articleAdapter.registerArticle(writeRequest));
@@ -48,9 +50,11 @@ class ArticleAdapterTest {
     @Test
     void postNullWriterArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest("kakao", "Hello Kakao!");
-        writeRequest.setWriter("");
-        writeRequest.setUserId("test");
+        WriteRequest writeRequest = new WriteRequest.Builder().userId("kakao")
+                                                              .writer("")
+                                                              .title("test")
+                                                              .contents("testing")
+                                                              .build();
 
         // then
         assertThatExceptionOfType(IllegalWriterException.class)
@@ -61,9 +65,11 @@ class ArticleAdapterTest {
     @Test
     void postBlankWriterArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest("kakao", "Hello Kakao!");
-        writeRequest.setWriter("cha mp");
-        writeRequest.setUserId("test");
+        WriteRequest writeRequest = new WriteRequest.Builder().userId("kakao")
+                                                              .writer("cha mp")
+                                                              .title("test")
+                                                              .contents("testing")
+                                                              .build();
 
         // then
         assertThatExceptionOfType(IllegalWriterException.class)
@@ -74,9 +80,11 @@ class ArticleAdapterTest {
     @Test
     void postNullTitleArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest("", "Hello Kakao!");
-        writeRequest.setWriter("champ");
-        writeRequest.setUserId("test");
+        WriteRequest writeRequest = new WriteRequest.Builder().userId("kakao")
+                                                              .writer("champ")
+                                                              .title("")
+                                                              .contents("testing")
+                                                              .build();
 
         // then
         assertThatExceptionOfType(IllegalTitleException.class)
@@ -87,9 +95,11 @@ class ArticleAdapterTest {
     @Test
     void postNullUserIdArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest("kakao", "Hello Kakao!");
-        writeRequest.setWriter("champ");
-        writeRequest.setUserId("");
+        WriteRequest writeRequest = new WriteRequest.Builder().userId("")
+                                                              .writer("champ")
+                                                              .title("test")
+                                                              .contents("testing")
+                                                              .build();
 
         // then
         assertThatExceptionOfType(IllegalUserIdException.class)

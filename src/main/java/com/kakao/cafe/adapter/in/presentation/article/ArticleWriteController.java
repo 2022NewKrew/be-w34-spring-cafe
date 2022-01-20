@@ -21,11 +21,15 @@ public class ArticleWriteController {
     }
 
     @PostMapping("/articles")
-    public String registerArticle(WriteRequest writeRequest, HttpSession session)
+    public String registerArticle(String title, String contents, HttpSession session)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
         UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
-        writeRequest.setWriter(sessionedUser.getName());
-        writeRequest.setUserId(sessionedUser.getUserId());
+        WriteRequest writeRequest = new WriteRequest.Builder().userId(sessionedUser.getUserId())
+                                                              .writer(sessionedUser.getName())
+                                                              .title(title)
+                                                              .contents(contents)
+                                                              .build();
+
         writeArticleUseCase.writeArticle(writeRequest);
         return "redirect:/";
     }

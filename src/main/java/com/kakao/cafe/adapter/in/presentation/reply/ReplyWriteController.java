@@ -22,12 +22,15 @@ public class ReplyWriteController {
     }
 
     @PostMapping("/articles/{articleId}/replies")
-    public String registerReply(@PathVariable int articleId, WriteReplyRequest writeReplyRequest, HttpSession session)
+    public String registerReply(@PathVariable int articleId, String contents, HttpSession session)
         throws IllegalUserIdException, IllegalWriterException, IllegalTitleException, IllegalDateException {
         UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
-        writeReplyRequest.setArticleId(articleId);
-        writeReplyRequest.setUserId(sessionedUser.getUserId());
-        writeReplyRequest.setWriter(sessionedUser.getName());
+        WriteReplyRequest writeReplyRequest = new WriteReplyRequest.Builder().articleId(articleId)
+                                                                             .userId(sessionedUser.getUserId())
+                                                                             .writer(sessionedUser.getName())
+                                                                             .contents(contents)
+                                                                             .build();
+
         writeReplyUseCase.writeReply(writeReplyRequest);
         return "redirect:/articles/" + articleId;
     }
