@@ -29,7 +29,7 @@ public class ArticleController {
         User user = (User) session.getAttribute("sessionedUser");
 
         //로그인된 사용자가 아닌 다른 사용자를 글쓴이로 작성한경우
-        if(!user.getUserId().equals(articleCreateDTO.getUserId())){
+        if(!user.equalsUserId(articleCreateDTO.getUserId())){
             throw new ArticleNotMatchedUser("로그인된 사용자와 글쓴이가 다릅니다.");
         }
 
@@ -39,10 +39,8 @@ public class ArticleController {
 
 
     //글작성폼
-    @GetMapping(value = "/qna/form") //form으로 수정해야함
+    @GetMapping(value = "/qna/form")
     public String writeArticle(Model model, HttpSession session){
-        User user = (User) session.getAttribute("sessionedUser");
-
         return "/qna/form";
     }
 
@@ -67,14 +65,14 @@ public class ArticleController {
         model.addAttribute("article", articleViewDTO);
 
         //글 작성자인 경우
-        if(articleViewDTO.getUserId().equals(user.getUserId())){
+        if(user.equalsUserId(articleViewDTO.getUserId())){
             model.addAttribute("isWriterOfArticle", true);
         }
 
         List<ReplyViewDTO> replies = articleService.getReplies(sequence);
 
         //isWriterOfReply적용
-        replies.stream().forEach((reply) -> {reply.setWriterOfReply(reply.getUserId().equals(user.getUserId()));});
+        replies.stream().forEach((reply) -> {reply.setWriterOfReply(user.equalsUserId(reply.getUserId()));});
         model.addAttribute("replies", replies);
 
         return "/qna/show";
@@ -86,7 +84,7 @@ public class ArticleController {
         User user = (User) session.getAttribute("sessionedUser");
 
         Article article = articleService.getArticleBySequence(sequence);
-        if(!article.getUserId().equals(user.getUserId())){
+        if(!user.equalsUserId(article.getUserId())){
             throw new ArticleNotMatchedUser("로그인된 사용자가 작성한 글이 아닙니다.");
         }
 
@@ -104,7 +102,7 @@ public class ArticleController {
         User user = (User) session.getAttribute("sessionedUser");
         Article article = articleService.getArticleBySequence(articleUpdateDTO.getSequence());
 
-        if(user == null || !article.getUserId().equals(user.getUserId())){
+        if(!user.equalsUserId(article.getUserId())){
             throw new ArticleNotMatchedUser("다른 사람의 글을 수정할 수 없다.");
         }
 
@@ -119,13 +117,13 @@ public class ArticleController {
         User user = (User) session.getAttribute("sessionedUser");
 
 
-        if(!user.getUserId().equals(userId)){
+        if(!user.equalsUserId(userId)){
             throw new ArticleNotMatchedUser("로그인된 사용자가 작성한 글이 아닙니다.");
         }
 
         //클라이언트 개발자모드에서 session 에 저장된 user.getUserId() 와 같은 값을 href에서 다른사람이 쓴 글을 대상으로 조작한다면 여기까지 통과할 것이니 그것에 대한 예외처리도 추가해야함.
         Article article;
-        if( (article = articleService.getArticleBySequence(sequence)) == null || !article.getUserId().equals(user.getUserId()) ){
+        if( (article = articleService.getArticleBySequence(sequence)) == null || !user.equalsUserId(article.getUserId())){
             throw new ArticleNotMatchedUser("로그인된 사용자가 작성한 글이 아닙니다.");
         }
 
@@ -142,7 +140,7 @@ public class ArticleController {
         User user = (User) session.getAttribute("sessionedUser");
 
         //로그인된 사용자가 아닌 다른 사용자를 글쓴이로 작성한경우
-        if(!user.getUserId().equals(replyCreateDTO.getUserId())){
+        if(!user.equalsUserId(replyCreateDTO.getUserId())){
             throw new ArticleNotMatchedUser("로그인된 사용자와 글쓴이가 다릅니다.");
         }
 

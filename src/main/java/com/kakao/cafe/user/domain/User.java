@@ -46,4 +46,8 @@ public class User {
     public Long getSequence() {
         return sequence;
     }
+
+    public Boolean equalsUserId(String userId){
+        return this.userId.equals(userId);
+    }
 }
