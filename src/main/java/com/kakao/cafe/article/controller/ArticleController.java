@@ -4,17 +4,14 @@ import com.kakao.cafe.article.dto.request.ArticleReqDto;
 import com.kakao.cafe.article.dto.response.ArticleDetailResDto;
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.config.Authorized;
-import com.kakao.cafe.exception.SessionUserNotFoundException;
 import com.kakao.cafe.home.dto.SessionUser;
 import com.kakao.cafe.reply.dto.ReplyResDto;
 import com.kakao.cafe.reply.service.ReplyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
