@@ -1,4 +1,4 @@
-package com.kakao.cafe.qna;
+package com.kakao.cafe.qna.article;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,13 +24,12 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public Article save(Article article) {
-        String sql = "INSERT INTO ARTICLES (WRITER, TITLE, CONTENTS, REPLY_COUNT, IS_DELETED, CREATED_DATE, MODIFIED_DATE)" +
+        String sql = "INSERT INTO ARTICLES (WRITER, TITLE, CONTENTS, IS_DELETED, CREATED_DATE, MODIFIED_DATE)" +
                 " VALUES (?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 article.getWriter(),
                 article.getTitle(),
                 article.getContents(),
-                article.getReplyCount().toString(),
                 article.getIsDeleted() ? "Y" : "N",
                 article.getCreatedDate(),
                 article.getModifiedDate());
@@ -50,7 +49,7 @@ public class JdbcArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Article update(Article article) {
+    public Article updateContents(Article article) {
         String sql = "UPDATE ARTICLES SET" +
                 " TITLE=?, CONTENTS=?, IS_DELETED=?, MODIFIED_DATE=?" +
                 " WHERE ID = ?";
@@ -61,5 +60,11 @@ public class JdbcArticleRepository implements ArticleRepository{
                 article.getModifiedDate(),
                 article.getId());
         return article;
+    }
+
+    @Override
+    public Integer updateCommentsCount(Integer articleId, Integer commentsCount) {
+        String sql = "UPDATE ARTICLES SET COMMENTS_COUNT=? WHERE ID = ?";
+        return jdbcTemplate.update(sql, commentsCount, articleId);
     }
 }

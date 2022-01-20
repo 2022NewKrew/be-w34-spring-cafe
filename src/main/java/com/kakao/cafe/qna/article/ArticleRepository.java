@@ -1,4 +1,4 @@
-package com.kakao.cafe.qna;
+package com.kakao.cafe.qna.article;
 
 import java.util.List;
 
@@ -13,7 +13,9 @@ public interface ArticleRepository {
     Article findArticleById(Integer id);
     List<Article> findAll();
 
-    default Article update(Article article) {
+    default Article updateContents(Article article) {
         return null;
     }
+    default Integer updateCommentsCount(Integer articleId, Integer commentsCount) {
+        return null; }
 }

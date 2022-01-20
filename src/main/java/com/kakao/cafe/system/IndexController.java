@@ -1,7 +1,7 @@
 package com.kakao.cafe.system;
 
-import com.kakao.cafe.qna.ArticleDto;
-import com.kakao.cafe.qna.ArticleService;
+import com.kakao.cafe.qna.article.ArticleDto;
+import com.kakao.cafe.qna.article.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

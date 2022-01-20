@@ -1,5 +1,27 @@
 # be-w34-spring-cafe
 
+| URL                         | 기능                                    |
+|:----------------------------|:--------------------------------------|
+| GET /                       | 모든 article 불러오기(홈)                    |
+| GET /user/form              | 회원가입 form 불러오기                        |
+| POST /user/login            | 로그인 form 불러오기                       |
+| GET /user                   | 모든 회원 불러오기                          |
+| POST /user                  | 회원 가입 |
+| GET /user/{id}              | 회원 정보 불러오기                  |
+| PUT /user/{id}/             | 회원 정보 수정 |
+| GET /user/{id}/form         | 회원 정보 수정 form 불러오기 |
+| POST /login                 | 로그인 후 session 추가                      |
+| POST /logout                | 현재 세션에 로그인되어 있는 유저 로그아웃               |
+| GET /articles/form          | 게시글 작성 form 불러오기                |
+| POST /articles              | 새로운 article 게시(DB에 삽입)                |
+| GET /articles/{id}          | 특정 article 정보 가져오기                    |
+| PUT /articles/{id}          | 특정 article 수정                    |
+| DELETE /articles/{id}       | 특정 article 삭제                    |
+| GET /articles/{id}/edit     | 특정 article 편집 form 불러오기                    |
+| POST /articles/{articleIdx} | 특정 게시글에 댓글 달기 |
+| PUT /articles/{articleIdx}/comments/{commentIdx} | 특정 게시글에 단 댓글 수정 |
+| DELETE /articles/{articleIdx}/comments/{commentIdx} | 특정 게시글에 단 댓글 삭제 |
+
 ## 1주차
 
 ### 1일차 구현
@@ -74,3 +96,11 @@
 ### 3일차 구현
 
 - MySQL 프로필 추가
+- 댓글 기능 추가
+
+#### 코드 리뷰 및 자체 피드백
+
+- [x] 응답 결과를 반환할 때 Entity가 아닌 DTO를 반환
+- [ ] Entity에서는 외래키 ID를 필드로 갖는 것이 유리  
+
+### 4일차 구현

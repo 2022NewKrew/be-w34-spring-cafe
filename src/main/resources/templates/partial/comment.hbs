@@ -1,0 +1,34 @@
+{{#comments}}
+<article class="article" id="answer-1405">
+    <div class="article-header">
+        <div class="article-header-thumb">
+            <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
+        </div>
+        <div class="article-header-text">
+            <a href="/user/{{writerId}}" class="article-author-name">{{writer}}</a>
+            <a href="#" class="article-header-time" title="퍼머링크">
+                {{modifiedDate}}
+            </a>
+        </div>
+    </div>
+    <div class="article-doc comment-doc">
+        <p>{{contents}}</p>
+    </div>
+    <div class="article-util">
+        <ul class="article-util-list">
+            <li>
+                <form class="delete-answer-form" action="/articles/{{articleId}}/comments/{{id}}" method="POST">
+                    <input type="hidden" name="_method" value="PUT">
+                    <button type="submit" class="delete-answer-button">수정</button>
+                </form>
+            </li>
+            <li>
+                <form class="delete-answer-form" action="/articles/{{articleId}}/comments/{{id}}" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="delete-answer-button">삭제</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</article>
+{{/comments}}

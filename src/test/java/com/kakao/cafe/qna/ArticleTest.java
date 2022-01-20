@@ -1,5 +1,6 @@
 package com.kakao.cafe.qna;
 
+import com.kakao.cafe.qna.article.Article;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +42,7 @@ class ArticleTest {
         Article article = new Article(writer, title, contents);
 
         // when
-        article.deleteArticle();
+        article.deleteEntity();
 
         // then
         assertThat(article.getIsDeleted()).isTrue();

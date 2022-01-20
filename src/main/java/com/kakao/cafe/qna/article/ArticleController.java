@@ -1,4 +1,4 @@
-package com.kakao.cafe.qna;
+package com.kakao.cafe.qna.article;
 
 import com.kakao.cafe.user.User;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +15,13 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/articles")
 public class ArticleController {
 
     private final ArticleService articleService;
     private final HttpSession session;
 
-    @PostMapping("/questions")
+    @PostMapping
     public String question(ArticleDto articleDto) {
         User user = getSessionedUser();
         if (user == null) {
@@ -36,29 +37,25 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{id}")
+    @GetMapping("/{id}")
     public String articleView(Model model, @PathVariable("id") Integer id) {
         Article article = articleService.findArticleById(id);
         model.addAttribute("article", new ArticleDto(article));
         return "/qna/show";
     }
 
-    @GetMapping("/qna/form")
+    @GetMapping("/form")
     public String questionForm() {
-        Object value = session.getAttribute("sessionedUser");
-        if (value != null) {
-            return "/qna/form";
-        }
-        return "/user/login";
+        return "/qna/form";
     }
 
-    @GetMapping("/articles/{id}/edit")
+    @GetMapping("/{id}/edit")
     public String questionEditForm(Model model, @PathVariable("id") Integer id) {
         Article article = articleService.findArticleById(id);
 
         // 글 작성자 ID와 수정 요청자 ID가 일치해야 함
         User user = getSessionedUser();
-        if (user == null || !user.getUserId().equals(article.getWriter())) {
+        if (!user.getUserId().equals(article.getWriter())) {
             model.addAttribute("article", article);
             return "/qna/show_edit_failed";
         }
@@ -67,17 +64,17 @@ public class ArticleController {
         return "/qna/form_edit";
     }
 
-    @PutMapping("/articles/{id}")
+    @PutMapping("/{id}")
     public String questionEdit(ArticleDto articleDto, @PathVariable("id") Integer id) {
         User user = getSessionedUser();
         if (user == null) return "/user/login";
 
         articleService.updateArticle(id, articleDto.getTitle(), articleDto.getContents(), user.getUserId());
 
-        return "redirect:/articles/{id}";
+        return "redirect:/{id}";
     }
 
-    @DeleteMapping("/articles/{id}")
+    @DeleteMapping("/{id}")
     public String questionDelete(@PathVariable("id") Integer id) {
         User user = getSessionedUser();
         if (user == null) return "/user/login";
