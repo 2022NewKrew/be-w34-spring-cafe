@@ -16,9 +16,25 @@ CREATE TABLE users (
 
 CREATE TABLE articles (
   seq           bigint NOT NULL AUTO_INCREMENT,          --질문 PK
+  user_seq      bigint NOT NULL,                --질문 작성자 PK (users 테이블 참조)
   writer        varchar(10) NOT NULL,           --질문 작성자
-  title         varchar(100) NOT NULL,          --질문 작성자
+  title         varchar(100) NOT NULL,          --질문 제목
   content       varchar(1000) NOT NULL,         --질문 내용
+  deleted       bool DEFAULT FALSE,             --질문 제거 유무
   time     datetime NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  PRIMARY KEY (seq)
+  PRIMARY KEY (seq),
+  CONSTRAINT fk_articles_to_users FOREIGN KEY (user_seq) REFERENCES users (seq) ON DELETE RESTRICT ON UPDATE RESTRICT
+);
+
+CREATE TABLE replys (
+  seq           bigint NOT NULL AUTO_INCREMENT,          --댓글 PK
+  user_seq      bigint NOT NULL,                --댓글 작성자 PK (users 테이블 참조)
+  article_seq   bigint NOT NULL,                --댓글 작성자 PK (articles 테이블 참조)
+  writer        varchar(10) NOT NULL,           --댓글 작성자
+  content       varchar(1000) NOT NULL,         --댓글 내용
+  deleted       bool DEFAULT FALSE,             --댓글 제거 유무
+  time     datetime NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  PRIMARY KEY (seq),
+  CONSTRAINT fk_replys_to_users FOREIGN KEY (user_seq) REFERENCES users (seq) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT fk_replys_to_articles FOREIGN KEY (article_seq) REFERENCES articles (seq) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
