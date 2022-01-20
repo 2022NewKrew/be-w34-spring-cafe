@@ -1,8 +1,11 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.article.ArticleWithComment;
 import com.kakao.cafe.domain.article.dto.ArticleForm;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleService;
+import com.kakao.cafe.domain.article.dto.ArticleWithCommentResponseDto;
+import com.kakao.cafe.domain.comment.dto.CommentResponseDto;
 import com.kakao.cafe.domain.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,10 +53,16 @@ public class ArticleController {
 
     // article 자세히 보기
     @GetMapping("/{id}")
-    public String showArticle(@PathVariable Long id, Model model){
+    public String showArticle(@PathVariable Long id, @SessionAttribute("sessionedUser") User user,Model model){
         logger.info("GET /{id}");
-        Article article = articleService.getArticle(id);
-        model.addAttribute("article", article);
+        ArticleWithComment articleWithComment = articleService.getArticleWithComment(id);
+        ArticleWithCommentResponseDto dto = ArticleWithCommentResponseDto.from(articleWithComment);
+
+        if (user.getUserId().equals(dto.getWriterUserId())) { dto.setIsWriter(true); }
+        dto.getCommentResponseDtoList().stream()
+                        .forEach(comment -> comment.setIsWriter(user.getUserId()));
+
+        model.addAttribute("articleWithCommentResponseDto", dto);
         return "article/show";
     }
 
@@ -75,9 +84,9 @@ public class ArticleController {
     }
 
     // article 삭제
-    @DeleteMapping("/{id}")
-    public String deleteArticle(@PathVariable Long id, @SessionAttribute("sessionedUser") User user) {
-        articleService.deleteArticle(id, user);
+    @DeleteMapping("/{articleId}")
+    public String deleteArticle(@PathVariable Long articleId, @SessionAttribute("sessionedUser") User user) {
+        articleService.deleteArticle(articleId, user);
         return "redirect:/articles";
     }
 }

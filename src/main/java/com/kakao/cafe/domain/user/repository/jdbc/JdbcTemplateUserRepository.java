@@ -44,8 +44,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-        List<User> result = jdbcTemplate.query("select * from " + TableName.USER.getName() +" where id = ?", userRowMapper(), id);
-//        List<User> result = jdbcTemplate.query(new Query().SELECT_FROM(TableName.USER).WHERE("id", id.toString()).build(), userRowMapper(), id);
+        List<User> result = jdbcTemplate.query("select * from " + TableName.USER +" where id = ? and isDeleted=false", userRowMapper(), id);
         return result.stream().findAny();
     }
 
@@ -64,24 +63,31 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        List<User> result = jdbcTemplate.query("select * from " + TableName.USER.getName() +" where userId = ?", userRowMapper(), userId);
+        List<User> result = jdbcTemplate.query("select * from " + TableName.USER +" where userId = ? and isDeleted=false", userRowMapper(), userId);
         return result.stream().findAny();
     }
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from " + TableName.USER.getName(), userRowMapper());
+        return jdbcTemplate.query("select * from " + TableName.USER + " where isDeleted=false", userRowMapper());
     }
 
     @Override
     public Optional<User> findByName(String name) {
-        List<User> result = jdbcTemplate.query("select * from " + TableName.USER.getName() +" where name = ?", userRowMapper(), name);
+        List<User> result = jdbcTemplate.query("select * from " + TableName.USER +" where name = ? and isDeleted=false", userRowMapper(), name);
         return result.stream().findAny();
     }
 
     @Override
     public User update(User user) {
-        jdbcTemplate.update("update " + TableName.USER.getName() +" set name=?, email=? where id=?", user.getName(), user.getEmail(), user.getId());
+        jdbcTemplate.update("update " + TableName.USER +" set name=?, email=? where id=? and isDeleted=false", user.getName(), user.getEmail(), user.getId());
         return user;
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        final String sql = "update " + TableName.USER + " set isDeleted=true where id=?";
+        if (jdbcTemplate.update(sql, id) <= 0) { throw new RuntimeException("삭제에 실패하였습니다."); }
+        return true;
     }
 }

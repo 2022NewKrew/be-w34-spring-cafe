@@ -1,7 +1,8 @@
 package com.kakao.cafe.domain.article;
 
+import com.kakao.cafe.domain.article.dto.ArticleAndCommentRawDataDto;
 import com.kakao.cafe.domain.article.dto.ArticleRowDataDto;
-import com.kakao.cafe.domain.article.repository.ArticleRepository;
+import com.kakao.cafe.domain.article.repository.JdbcTemplateArticleRepository;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.repository.UserRepository;
 import com.kakao.cafe.global.error.exception.NoPermissionException;
@@ -19,13 +20,13 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleService {
 
-    private final ArticleRepository articleRepository;
+    private final JdbcTemplateArticleRepository articleRepository;
     private final UserRepository userRepository;
 
     Logger logger = LoggerFactory.getLogger(ArticleService.class);
 
     @Autowired
-    public ArticleService(ArticleRepository articleRepository, UserRepository userRepository) {
+    public ArticleService(JdbcTemplateArticleRepository articleRepository, UserRepository userRepository) {
         this.articleRepository = articleRepository;
         this.userRepository = userRepository;
     }
@@ -79,14 +80,25 @@ public class ArticleService {
         return findArticle;
     }
 
+    public ArticleWithComment getArticleWithComment(Long id) {
+        List<ArticleAndCommentRawDataDto> dtos = articleRepository.findWithCommentById(id);
+        if (dtos.size() == 0) { throw new NoSuchArticleException(); }
+
+        return ArticleWithComment.from(dtos);
+    }
+
     public Article updateArticle(Article updateArticle, User user) {
         checkUserPermission(updateArticle.getId(), user);
         ArticleRowDataDto articleRowDataDto = ArticleRowDataDto.from(updateArticle, user.getId());
         return articleOf(articleRepository.update(articleRowDataDto));
     }
 
-    public boolean deleteArticle(Long id, User user) {
-        checkUserPermission(id, user);
-        return articleRepository.deleteById(id);
+    public boolean deleteArticle(Long articleId, User user) {
+        checkArticleDeletePermission(articleId, user);
+        return articleRepository.deleteById(articleId);
+    }
+
+    private void checkArticleDeletePermission(Long articleId, User user) {
+        if (!articleRepository.checkCanDelete(articleId, user.getId())) { throw new NoPermissionException(); }
     }
 }

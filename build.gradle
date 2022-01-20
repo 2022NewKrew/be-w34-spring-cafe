@@ -22,7 +22,8 @@ dependencies {
 
 	// 데이터베이스
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
-	runtimeOnly group: 'com.h2database', name: 'h2', version: '2.0.206'
+//	runtimeOnly group: 'com.h2database', name: 'h2', version: '2.0.206'
+	runtimeOnly 'mysql:mysql-connector-java:8.0.16'
 
 	// 롬복
 	compileOnly 'org.projectlombok:lombok:1.18.12'
