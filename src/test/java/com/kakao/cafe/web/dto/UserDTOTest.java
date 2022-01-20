@@ -27,7 +27,7 @@ class UserDTOTest {
     @Test
     void getPassword() {
         newInstance();
-        assertEquals(userDTO.getPassword(), "1234");
+        assertEquals(userDTO.getPassword(), "");
     }
 
     @Test
