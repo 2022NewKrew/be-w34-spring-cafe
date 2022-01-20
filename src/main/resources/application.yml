@@ -10,20 +10,8 @@ spring:
     password: world
   sql:
     init:
-      mode: always
       schema-locations: classpath:mysql/schema.sql
       data-locations: classpath:mysql/data.sql
-
-#  h2:
-#    console:
-#      enabled: true
-#      path: /h2-console
-
-#  datasource:
-#    driver-class-name: org.h2.Driver
-#    username: sa
-#    password:
-#    url: jdbc:h2:mem:kakaodb
 
 server:
   servlet:

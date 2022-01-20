@@ -1,5 +1,6 @@
 package com.kakao.cafe.interfaces.common;
 
+import com.kakao.cafe.interfaces.user.exception.UnauthorizedUserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
@@ -16,6 +17,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = IllegalArgumentException.class)
     public ModelAndView handle(IllegalArgumentException e) {
+        logger.info("에러 원인: {}", e.getMessage());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", e.getMessage());
         modelAndView.setViewName("error");
@@ -30,6 +32,15 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "올바르지 않은 입력 값(" + String.join(", ", errorMessages) + ")");
+        modelAndView.setViewName("error");
+        return modelAndView;
+    }
+
+    @ExceptionHandler(value = UnauthorizedUserException.class)
+    public ModelAndView handle(UnauthorizedUserException e) {
+        logger.info("에러 원인: {}", e.getMessage());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("message", e.getMessage());
         modelAndView.setViewName("error");
         return modelAndView;
     }
