@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.LoginRequest;
+import com.kakao.cafe.controller.dto.LoginRequest;
 import com.kakao.cafe.service.LoginService;
 import com.kakao.cafe.web.meta.SessionConst;
 import lombok.RequiredArgsConstructor;

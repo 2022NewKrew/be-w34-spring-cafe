@@ -1,8 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.QuestionCreateRequest;
-import com.kakao.cafe.dto.QuestionDetailResponse;
-import com.kakao.cafe.dto.QuestionUpdateRequest;
+import com.kakao.cafe.controller.dto.*;
+import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.service.QuestionService;
 import com.kakao.cafe.web.meta.SessionConst;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequestMapping("questions")
@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 public class QuestionController {
 
     private final QuestionService questionService;
+    private final ReplyRepository replyRepository;
 
     @PostMapping("")
     public String createQuestion(@ModelAttribute QuestionCreateRequest question, HttpSession session){
@@ -28,6 +29,13 @@ public class QuestionController {
     @GetMapping("{id}")
     public String viewQuestionDetail(@PathVariable Long id, Model model){
         model.addAttribute("article", questionService.findOneQuestion(id));
+
+        List<ReplyListResponse> replyList = replyRepository.findAllByQuestionId(id);
+        model.addAttribute("numberOfReply", replyList.size());
+        model.addAttribute("replyList", replyList);
+
+        model.addAttribute("questionId", id);
+
         return "qna/show";
     }
     @GetMapping("")
@@ -53,6 +61,17 @@ public class QuestionController {
         Long userId = getUserId(session);
         questionService.deleteQuestion(id, userId);
         return "redirect:/questions";
+    }
+    @DeleteMapping("/{questionId}/reply/{replyId}")
+    public String deleteReply(@PathVariable Long questionId, @PathVariable Long replyId,
+                              HttpSession session){
+        questionService.deleteReply(questionId, replyId, getUserId(session));
+        return "redirect:/questions/" + questionId;
+    }
+    @PostMapping("/reply")
+    public String createReply(@ModelAttribute ReplyCreateRequest reply, HttpSession session){
+        questionService.saveReply(getUserId(session), reply);
+        return "redirect:/questions/" + reply.getQuestionId();
     }
 
     private Long getUserId(HttpSession session){

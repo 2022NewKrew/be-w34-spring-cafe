@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.UserCreateRequest;
-import com.kakao.cafe.dto.UserUpdateRequest;
+import com.kakao.cafe.controller.dto.UserCreateRequest;
+import com.kakao.cafe.controller.dto.UserUpdateRequest;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.meta.SessionConst;
 import lombok.RequiredArgsConstructor;
@@ -51,9 +51,5 @@ public class UserController {
         return "redirect:/users";
     }
 
-//    private boolean isLoginedUser(HttpSession session){
-//        if(session.getAttribute(SessionConst.LOGIN_USER) != null) return true;
-//        return false;
-//    }
 
 }

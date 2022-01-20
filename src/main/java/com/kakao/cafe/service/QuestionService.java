@@ -1,11 +1,10 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.dto.*;
 import com.kakao.cafe.domain.Question;
-import com.kakao.cafe.dto.QuestionCreateRequest;
-import com.kakao.cafe.dto.QuestionDetailResponse;
-import com.kakao.cafe.dto.QuestionListResponse;
-import com.kakao.cafe.dto.QuestionUpdateRequest;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.repository.QuestionRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository ;
+    private final ReplyRepository replyRepository;
 
     public void saveQuestion(Long userId, QuestionCreateRequest questionDTO, LocalDateTime dateTime) {
         Question question = questionDTO.toEntity(userId, dateTime);
@@ -43,5 +43,20 @@ public class QuestionService {
                         .id(id)
                         .writer(userId).build();
         questionRepository.updateIsDeleted(deleteQuestion);
+    }
+
+    public void deleteReply(Long questionId, Long replyId, Long userId){
+        Reply reply = Reply.builder()
+                .id(replyId)
+                .questionId(questionId)
+                .userId(userId)
+                .build();
+        replyRepository.updateIsDeleted(reply);
+
+    }
+
+    public void saveReply(Long userId, ReplyCreateRequest replyDTO){
+        Reply reply = replyDTO.toEntity(userId);
+        replyRepository.save(reply);
     }
 }

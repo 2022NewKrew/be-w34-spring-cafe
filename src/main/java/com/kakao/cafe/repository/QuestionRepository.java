@@ -1,8 +1,8 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Question;
-import com.kakao.cafe.dto.QuestionDetailResponse;
-import com.kakao.cafe.dto.QuestionListResponse;
+import com.kakao.cafe.controller.dto.QuestionDetailResponse;
+import com.kakao.cafe.controller.dto.QuestionListResponse;
 
 import java.util.List;
 import java.util.Optional;

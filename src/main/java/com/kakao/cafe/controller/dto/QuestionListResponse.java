@@ -1,4 +1,4 @@
-package com.kakao.cafe.dto;
+package com.kakao.cafe.controller.dto;
 
 import lombok.Builder;
 

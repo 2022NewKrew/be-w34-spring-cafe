@@ -1,9 +1,9 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserCreateRequest;
-import com.kakao.cafe.dto.UserProfileResponse;
-import com.kakao.cafe.dto.UserUpdateRequest;
+import com.kakao.cafe.controller.dto.UserCreateRequest;
+import com.kakao.cafe.controller.dto.UserProfileResponse;
+import com.kakao.cafe.controller.dto.UserUpdateRequest;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
