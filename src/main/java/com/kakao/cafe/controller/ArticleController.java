@@ -6,24 +6,20 @@ import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.Constant;
 import com.kakao.cafe.util.ErrorMessage;
-import com.kakao.cafe.util.UtilClass;
+import com.kakao.cafe.util.PageUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+@RequiredArgsConstructor
 @Slf4j
 @Controller
 public class ArticleController {
-    ArticleService articleService;
-
-    @Autowired
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
+    private final ArticleService articleService;
 
     @PostMapping("/questions")
     public String createQNA(Article article) {
@@ -43,7 +39,7 @@ public class ArticleController {
         Articles articles = new Articles();
         int numOfArticles = articleService.numOfArticles();
         articles.setTotalCount(numOfArticles);
-        articles.setPageList(UtilClass.makePageList(numOfArticles));
+        articles.setPageList(PageUtils.makePageList(numOfArticles));
         articles.setHasPrev(page != 1);
         articles.setHasNext(page != ((numOfArticles - 1) / 10) + 1);
         articles.setPrev(page - 1);

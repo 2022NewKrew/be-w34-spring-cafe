@@ -1,8 +1,8 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.reply.Reply;
+import com.kakao.cafe.util.DateUtils;
 import com.kakao.cafe.util.JdbcUtils;
-import com.kakao.cafe.util.UtilClass;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
@@ -27,7 +27,7 @@ public class JdbcReplyRepository implements RepositoryInterface<Reply> {
     @Override
     public Reply save(Reply reply) {
         String sql = "insert into replies(content, date, writer, writerid, articleid) values(?, ?, ?, ?, ?)";
-        reply.setDate(UtilClass.getLocalDateTimeNow());
+        reply.setDate(DateUtils.getLocalDateTimeNow());
         try {
             connection = JdbcUtils.getConnection(dataSource);
             preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
