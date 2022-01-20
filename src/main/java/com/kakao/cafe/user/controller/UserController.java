@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.controller;
 
+import com.kakao.cafe.home.dto.SessionUser;
 import com.kakao.cafe.user.dto.request.UserFormReqDto;
 import com.kakao.cafe.user.dto.response.UserResDto;
 import com.kakao.cafe.user.service.UserService;
@@ -56,8 +57,8 @@ public class UserController {
 
     @PostMapping("/signin")
     public String login(String userId, String password, HttpSession session) {
-        userService.login(userId, password);
-        session.setAttribute("sessionUserId", userId);
+        SessionUser sessionUser = userService.login(userId, password);
+        session.setAttribute("sessionUser", sessionUser);
         return "redirect:/";
     }
 

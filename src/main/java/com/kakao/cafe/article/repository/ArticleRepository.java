@@ -12,11 +12,12 @@ import java.util.*;
 @Repository
 @RequiredArgsConstructor
 public class ArticleRepository {
-    public static final String SELECT_ARTICLE_ALL = "SELECT * FROM TB_ARTICLE";
-    public static final String SELECT_ARTICLE_BY_ID = "SELECT * FROM TB_ARTICLE WHERE ID = ?";
+    public static final String SELECT_ARTICLE_ALL = "SELECT * FROM TB_ARTICLE WHERE DELETED = FALSE";
+    public static final String SELECT_ARTICLE_BY_ID = "SELECT * FROM TB_ARTICLE WHERE ID = ? AND DELETED = FALSE";
     public static final String INSERT_ARTICLE = "INSERT INTO TB_ARTICLE(WRITER, TITLE, CONTENTS) VALUES (?, ?, ?)";
     public static final String UPDATE_ARTICLE = "UPDATE TB_ARTICLE SET WRITER = ?, TITLE = ?, CONTENTS = ? WHERE ID = ?";
-    public static final String DELETE_ARTICLE_BY_ID = "DELETE FROM TB_ARTICLE WHERE ID = ?";
+    public static final String DELETE_ARTICLE_BY_ID_SOFT = "UPDATE TB_ARTICLE SET DELETED = TRUE WHERE ID = ?";
+    public static final String SELECT_ARTICLE_BY_ID_WRITER = "SELECT * FROM TB_ARTICLE WHERE ID = ? AND WRITER = ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -44,6 +45,14 @@ public class ArticleRepository {
         return jdbcTemplate.update(UPDATE_ARTICLE, articleEntity.getWriter(), articleEntity.getTitle(), articleEntity.getContents(), articleEntity.getId());
     }
 
+    public void delete(Long id) {
+        jdbcTemplate.update(DELETE_ARTICLE_BY_ID_SOFT, id);
+    }
+
+    public List<ArticleEntity> findByIdAndWriter(Long id, String username) {
+        return jdbcTemplate.query(SELECT_ARTICLE_BY_ID_WRITER, this::convertArticleEntity, id, username);
+    }
+
     private ArticleEntity convertArticleEntity(ResultSet rs, int rowNum) throws SQLException {
         return ArticleEntity.builder()
                 .id(rs.getLong("id"))
@@ -52,9 +61,5 @@ public class ArticleRepository {
                 .contents(rs.getString("contents"))
                 .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
                 .build();
-    }
-
-    public void delete(Long id) {
-        jdbcTemplate.update(DELETE_ARTICLE_BY_ID, id);
     }
 }

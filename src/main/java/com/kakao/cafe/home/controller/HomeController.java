@@ -5,6 +5,7 @@ import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -21,5 +22,10 @@ public class HomeController {
         List<ArticleResDto> articles = articleService.getAllArticles();
         model.addAttribute("articles", articles);
         return "/index";
+    }
+
+    @GetMapping("/error")
+    public String error() {
+        return "/error";
     }
 }
