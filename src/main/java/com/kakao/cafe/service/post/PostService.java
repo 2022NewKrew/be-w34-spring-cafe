@@ -5,9 +5,9 @@ import com.kakao.cafe.domain.post.PostRepository;
 import com.kakao.cafe.exception.NoAuthorizationException;
 import com.kakao.cafe.model.post.PostDto;
 import com.kakao.cafe.model.post.PostWriteRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +16,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class PostService {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
-
-    public PostService(@Qualifier("postJdbcRepositoryImpl") PostRepository postRepository, ModelMapper modelMapper) {
-        this.postRepository = postRepository;
-        this.modelMapper = modelMapper;
-    }
 
     public void writePost(PostWriteRequest post, long writerId) {
         try {

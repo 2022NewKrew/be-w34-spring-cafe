@@ -3,7 +3,6 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.model.comment.CommentDto;
 import com.kakao.cafe.model.post.PostDto;
 import com.kakao.cafe.model.post.PostWriteRequest;
-import com.kakao.cafe.model.user.UserDto;
 import com.kakao.cafe.service.comment.CommentService;
 import com.kakao.cafe.service.post.PostService;
 import com.kakao.cafe.utils.SessionUtils;
@@ -27,8 +26,8 @@ public class PostController {
 
     @PostMapping("/posts")
     public String uploadPost(@Valid PostWriteRequest post, HttpSession session, RedirectAttributes rttr) {
-        UserDto user = (UserDto) session.getAttribute("currentUser");
-        postService.writePost(post, user.getId());
+        long currentUserId = SessionUtils.getCurrentUserId(session);
+        postService.writePost(post, currentUserId);
         rttr.addFlashAttribute("msg", "게시글을 등록하였습니다.");
         return "redirect:/";
     }
