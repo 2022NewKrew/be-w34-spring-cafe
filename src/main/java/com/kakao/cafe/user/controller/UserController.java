@@ -7,12 +7,17 @@ import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.kakao.cafe.Util.SessionUtil.checkLoginStatus;
+import static com.kakao.cafe.Util.SessionUtil.getUserIdFromSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,24 +54,23 @@ public class UserController {
     }
 
     @PutMapping("/users/update")
-    public String updateUser(UpdateDTO updateDTO, HttpSession session) throws AccessDeniedException {
+    public String updateUser(UpdateDTO updateDTO, HttpSession session) {
         userService.updateUser(updateDTO, getUserIdFromSession(session));
         return "redirect:/users";
     }
 
     @PostMapping("/users/login")
     public String login(LoginDTO loginDTO, HttpSession session) {
-        userService.login(loginDTO.getUserId(), loginDTO.getPassword(), session);
-        return "redirect:/";
+        checkLoginStatus(session);
+        userService.login(loginDTO.getUserId(), loginDTO.getPassword());
+        String dest = (String) session.getAttribute("dest");
+        String redirect = (dest == null) ? "/" : dest;
+        return "redirect:" + redirect;
     }
 
     @GetMapping("/users/login")
     public String getLoginPage() {
         return "/user/login";
-    }
-
-    private String getUserIdFromSession(HttpSession session) {
-        return (String) session.getAttribute("sessionOfUser");
     }
 
 

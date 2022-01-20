@@ -18,6 +18,10 @@ public class ArticleMemoryRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
+        if (article.getId() != null) {
+            update(article);
+            return;
+        }
         article.setArticleId(articleMap.size() + 1L);
         articleMap.put(articleMap.size() + 1L, article);
     }
@@ -30,5 +34,14 @@ public class ArticleMemoryRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return List.copyOf(articleMap.values());
+    }
+
+    @Override
+    public void delete(Long id) {
+        articleMap.remove(id);
+    }
+
+    private void update(Article article) {
+        articleMap.put(article.getId(), article);
     }
 }

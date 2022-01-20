@@ -25,16 +25,21 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
+        if (article.getId() != null) {
+            update(article);
+            return;
+        }
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
-            PreparedStatement pstmt = con.prepareStatement("insert into ARTICLES (WRITER,TITLE,CONTENTS,WRITING_TIME,COUNT_COMMENT)" +
-                            "values (?,?,?,?,?)",
+            PreparedStatement pstmt = con.prepareStatement("insert into ARTICLES (USER_FK,WRITER,TITLE,CONTENTS,WRITING_TIME,COUNT_COMMENT)" +
+                            "values (?,?,?,?,?,?)",
                     new String[]{"ID"});
-            pstmt.setString(1, article.getWriter());
-            pstmt.setString(2, article.getTitle());
-            pstmt.setString(3, article.getContents());
-            pstmt.setString(4, article.getWritingTime());
-            pstmt.setLong(5, article.getCountOfComment());
+            pstmt.setLong(1, article.getUserFk());
+            pstmt.setString(2, article.getWriter());
+            pstmt.setString(3, article.getTitle());
+            pstmt.setString(4, article.getContents());
+            pstmt.setString(5, article.getWritingTime());
+            pstmt.setLong(6, article.getCountOfComment());
             return pstmt;
         }, keyHolder);
     }
@@ -53,9 +58,19 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                 articleRowMapper());
     }
 
+    @Override
+    public void delete(Long id) {
+        jdbcTemplate.update("delete from ARTICLES where ID = ?", id);
+    }
+
+    private void update(Article article) {
+        jdbcTemplate.update("update ARTICLES set TITLE=?,CONTENTS=?,WRITING_TIME=? where ID = ?", article.getTitle(), article.getContents(), article.getWritingTime(), article.getId());
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> new Article(
                 rs.getLong("ID"),
+                rs.getLong("USER_FK"),
                 rs.getString("WRITER"),
                 rs.getString("TITLE"),
                 rs.getString("CONTENTS"),

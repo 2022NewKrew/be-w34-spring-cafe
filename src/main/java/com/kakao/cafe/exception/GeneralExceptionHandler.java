@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 public class GeneralExceptionHandler {
@@ -19,7 +18,7 @@ public class GeneralExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     protected String handleAccessDeniedException(AccessDeniedException e, Model model) {
         log.error(e.getMessage());
-        model.addAttribute("ApiError",new ApiError(e, HttpStatus.FORBIDDEN));
+        model.addAttribute("ApiError", new ApiError(e, HttpStatus.FORBIDDEN));
         return "error/errorPage";
     }
 
@@ -31,19 +30,22 @@ public class GeneralExceptionHandler {
             IllegalStateException.class,
             IllegalArgumentException.class
     })
-    protected String handleIllegalStatementException(Exception e,Model model){
+    protected String handleIllegalStatementException(Exception e, Model model) {
         log.error(e.getMessage());
-        model.addAttribute("ApiError",new ApiError(e, HttpStatus.BAD_REQUEST));
+        model.addAttribute("ApiError", new ApiError(e, HttpStatus.BAD_REQUEST));
         return "error/errorPage";
     }
 
     /**
      * 비즈니스 로직 수행 도중, 객체를 찾을 수 없는 상태일 때 발생. 이 때 404 status code와 함께 반환한다.
      */
-    @ExceptionHandler(NotFoundException.class)
-    protected String handleNotFoundException(Exception e,Model model) {
+    @ExceptionHandler({
+            UserNotFoundException.class,
+            ArticleNotFoundException.class
+    })
+    protected String handleNotFoundException(Exception e, Model model) {
         log.error(e.getMessage());
-        model.addAttribute("ApiError",new ApiError(e, HttpStatus.NOT_FOUND));
+        model.addAttribute("ApiError", new ApiError(e, HttpStatus.NOT_FOUND));
         return "error/errorPage";
     }
 
@@ -51,9 +53,9 @@ public class GeneralExceptionHandler {
      * 여기서 작성하지 않은 다른 모든 예외에 대해 처리한다. 이 때 500 status code와 함께 반환한다.
      */
     @ExceptionHandler(Exception.class)
-    protected String handleException(Exception e,Model model) {
+    protected String handleException(Exception e, Model model) {
         e.printStackTrace();
-        model.addAttribute("ApiError",new ApiError(e, HttpStatus.INTERNAL_SERVER_ERROR));
+        model.addAttribute("ApiError", new ApiError(e, HttpStatus.INTERNAL_SERVER_ERROR));
         return "error/errorPage";
     }
 }
