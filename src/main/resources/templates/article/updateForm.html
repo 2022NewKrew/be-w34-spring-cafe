@@ -8,6 +8,7 @@
     </header>
     {{#article}}
       <form class="submit-write" method="POST" action="/articles/{{articleId}}">
+        <input type="hidden" name="_method" value="PUT" />
         <div class="text-box">
           <div class="comment-writer-container">
             <p class="post-title">글쓴이</p>

@@ -10,10 +10,7 @@ import com.kakao.cafe.service.article.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -64,7 +61,7 @@ public class ArticleController {
         return "article/updateForm";
     }
 
-    @PostMapping("/articles/{articleId}")
+    @PutMapping("/articles/{articleId}")
     public String updateArticle(@PathVariable Long articleId, String title, String contents, @LoginCheck SessionUser sessionUser){
         ArticleResDto articleResDto = articleService.findArticleById(articleId);
         if(!articleResDto.getWriter().equals(sessionUser.getUserId())){

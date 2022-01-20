@@ -55,7 +55,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @PostMapping("/{id}/update")
+    @PutMapping("/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute UserUpdateReqDto userUpdateReqDto) {
         userUpdateReqDto.setId(id);
         userService.updateUser(userUpdateReqDto);
