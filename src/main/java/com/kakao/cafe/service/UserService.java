@@ -25,7 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-    public UserService(@Qualifier("h2UserRepository") H2UserRepository userRepository, ModelMapper modelMapper) {
+    public UserService(@Qualifier("h2UserRepository") UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }

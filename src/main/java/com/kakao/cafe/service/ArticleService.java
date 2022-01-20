@@ -22,7 +22,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ModelMapper modelMapper;
 
-    public ArticleService(@Qualifier("h2ArticleRepository") H2ArticleRepository articleRepository, ModelMapper modelMapper) {
+    public ArticleService(@Qualifier("h2ArticleRepository") ArticleRepository articleRepository, ModelMapper modelMapper) {
         this.articleRepository = articleRepository;
         this.modelMapper = modelMapper;
     }
