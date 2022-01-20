@@ -96,6 +96,8 @@ public class ArticleController {
         return "articles/detail";
     }
 
+    // GET /editArticleFailedNoPerm -> articles/editFailedNoPerm
+
     @GetMapping("/articles/edit/{idx}")
     public String editArticle(
             final HttpServletRequest request,
@@ -152,6 +154,8 @@ public class ArticleController {
         return "error/500";
     }
 
+    // GET /delArticleFailedOthersCommentExist -> articles/delFailedOthersCommentExist
+
     @DeleteMapping("/articles/{idx}")
     public String deleteArticle(
             final HttpServletRequest request,
@@ -178,7 +182,7 @@ public class ArticleController {
             return "redirect:/";
         }
 
-        return "error/500";
+        return "redirect:/delArticleFailedOthersCommentExist";
     }
 
     private boolean checkNotLogin(final HttpServletRequest request) {

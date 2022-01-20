@@ -131,16 +131,25 @@ public class ArticleJdbc implements ArticleRepository {
     public boolean delete(final long idx) {
         final int result = jdbcTemplate.update(con -> {
             final PreparedStatement pstmt = con.prepareStatement(
-                    "UPDATE article SET deleted = true WHERE idx = ? AND deleted = false"
+                    "UPDATE article " +
+                            "SET deleted = true " +
+                            "WHERE idx = ? AND deleted = false AND " +
+                            "0 = (SELECT COUNT(c.user_id) " +
+                            "FROM comment c " +
+                            "JOIN (SELECT * FROM article WHERE idx = ? AND deleted = false LIMIT 1) a " +
+                            "ON c.article_idx = a.idx " +
+                            "WHERE c.user_id != a.user_id " +
+                            "LIMIT 1)"
             );
             pstmt.setLong(1, idx);
+            pstmt.setLong(2, idx);
             return pstmt;
         });
 
-        if (result != 1) {
+        if (result > 1) {
             throw new IllegalStateException("Affected record(s) is not 1 for delete article(" + idx + ")! - " + result);
         }
 
-        return true;
+        return (result == 1);
     }
 }
