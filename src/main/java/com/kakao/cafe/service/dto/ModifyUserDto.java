@@ -1,5 +1,7 @@
 package com.kakao.cafe.service.dto;
 
+import com.kakao.cafe.domain.entity.ModifyUser;
+
 public class ModifyUserDto {
 
     private final String password;
@@ -22,5 +24,9 @@ public class ModifyUserDto {
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public ModifyUser toEntity() {
+        return new ModifyUser(name, email);
     }
 }

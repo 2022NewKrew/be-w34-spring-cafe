@@ -1,5 +1,6 @@
 package com.kakao.cafe.app.data;
 
+import com.kakao.cafe.domain.entity.ModifyUser;
 import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.domain.repository.UserRepository;
@@ -11,11 +12,9 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -81,24 +80,18 @@ public class JdbcUserRepository implements UserRepository {
         }
     }
 
+    @Transactional
     @Override
-    public void updatePassword(long id, String password) {
-        String sql = "UPDATE users SET password = :password WHERE id = :id";
-        Map<String, ?> params = Map.of("password", password, "id", id);
-        jdbcTemplate.update(sql, params);
-    }
-
-    @Override
-    public void updateName(long id, String name) {
-        String sql = "UPDATE users SET name = :name WHERE id = :id";
-        Map<String, ?> params = Map.of("name", name, "id", id);
-        jdbcTemplate.update(sql, params);
-    }
-
-    @Override
-    public void updateEmail(long id, String email) {
-        String sql = "UPDATE users SET email = :email WHERE id = :id";
-        Map<String, ?> params = Map.of("email", email, "id", id);
-        jdbcTemplate.update(sql, params);
+    public User update(long targetId, ModifyUser modifyUser) {
+        String update = "UPDATE users SET name = :name, email = :email WHERE id = :id";
+        Map<String, Object> params = new HashMap<>(modifyUser.toMap());
+        params.put("id", targetId);
+        jdbcTemplate.update(update, params);
+        String get = "SELECT * FROM users WHERE id = :id";
+        return jdbcTemplate.queryForObject(
+                get,
+                Collections.singletonMap("id", targetId),
+                rowMapper
+        );
     }
 }

@@ -54,6 +54,13 @@ public class User {
         return Objects.hash(userId, name, password, email);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 
     public static class Builder {
 

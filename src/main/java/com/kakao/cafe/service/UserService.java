@@ -69,28 +69,7 @@ public class UserService {
         if (!actor.canModify(target, modifyUser.getPassword())) {
             throw new UnauthorizedException();
         }
-        modifyPassword(targetId, modifyUser.getPassword());
-        modifyName(targetId, modifyUser.getName());
-        modifyEmail(targetId, modifyUser.getEmail());
-        Optional<User> updated = userRepository.getById(targetId);
-        if (updated.isEmpty()) {
-            throw new IllegalStateException();
-        }
-        return updated.get().toDto();
-    }
-
-    private void modifyPassword(long id, String password) {
-        if (password.equals("")) {
-            return;
-        }
-        userRepository.updatePassword(id, password);
-    }
-
-    private void modifyName(long id, String name) {
-        userRepository.updateName(id, name);
-    }
-
-    private void modifyEmail(long id, String email) {
-        userRepository.updateEmail(id, email);
+        User updated = userRepository.update(targetId, modifyUser.toEntity());
+        return updated.toDto();
     }
 }

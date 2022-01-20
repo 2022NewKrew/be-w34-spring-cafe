@@ -61,13 +61,12 @@ class UserServiceTest {
                 .build();
         when(repository.getById(anyLong())).thenReturn(Optional.of(user));
         when(repository.getByUserId(anyString())).thenReturn(Optional.empty());
+        when(repository.update(anyLong(), any())).thenReturn(user);
         ModifyUserDto modifyUser = new ModifyUserDto("password", "name", "email");
 
         UserDto result = subject.modify(1L, 1L, modifyUser);
 
-        verify(repository).updateEmail(1L, "email");
-        verify(repository).updateName(1L, "name");
-        verify(repository).updatePassword(1L, "password");
+        verify(repository).update(eq(1L), any());
         assertEquals(user.toDto(), result);
     }
 
