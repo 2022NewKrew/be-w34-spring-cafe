@@ -37,7 +37,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void updateUser(int id, UserUpdateRequest request) {
+    public void update(Integer id, UserUpdateRequest request) {
         User user = userRepository
                 .findById(id)
                 .filter(u -> u.getPassword().equals(request.getPassword()))

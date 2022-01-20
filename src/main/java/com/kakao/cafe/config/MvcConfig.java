@@ -22,10 +22,14 @@ public class MvcConfig implements WebMvcConfigurer {
         add("/users/{id}/form");
         add("/articles/form");
         add("/articles");
+        add("/articles/{id}/form");
+        add("/articles/{id}");
     }};
     private final List<String> AUTHORIZATION_URL = new ArrayList<>(){{
         add("/users/{id}/form");
         add("/articles");
+        add("/articles/{id}/form");
+        add("/articles/{id}");
     }};
 
     @Override

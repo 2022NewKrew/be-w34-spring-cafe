@@ -58,13 +58,13 @@ public class UserController {
         log.info("start getUpdateForm()");
         User user = userService.findUser(id);
         model.addAttribute("userProfile", UserProfileResponse.from(user));
-        return "/users/updateForm";
+        return "/users/update-form";
     }
 
-    @PostMapping(value = "/users/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String updateUser(@PathVariable Integer id, UserUpdateRequest request, HttpSession session, Model model) {
-        log.info("start updateUser()");
-        userService.updateUser(id, request);
+    @PutMapping(value = "/users/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String update(@PathVariable Integer id, UserUpdateRequest request, HttpSession session, Model model) {
+        log.info("start update()");
+        userService.update(id, request);
         return "redirect:/users";
     }
 
