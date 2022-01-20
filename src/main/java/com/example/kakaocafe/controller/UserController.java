@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -61,7 +60,7 @@ public class UserController {
         final UserProfile userProfile = userDAO.getUserProfileById(userKey)
                 .orElseThrow();
 
-        return new ModelAndView(ViewPath.UPDATE_USER_FROM)
+        return new ModelAndView(ViewPath.UPDATE_USER_FORM)
                 .addObject("user", userProfile);
     }
 }

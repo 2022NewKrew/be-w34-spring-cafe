@@ -17,6 +17,7 @@ public enum URLPath {
     SIGN_UP("/users", HttpMethod.POST),
     UPDATE_USER("/users/updateForm", HttpMethod.PUT),
     GET_POST("/posts/", HttpMethod.GET),
+    GET_ALL_POSTS("/posts", HttpMethod.GET),
 
     SHOW_ERROR_404("/error/404", HttpMethod.GET),
 
@@ -45,6 +46,6 @@ public enum URLPath {
     }
 
     public boolean isSameUrlAndMethod(String reqUrl, HttpMethod reqMethod) {
-        return path.matches(reqUrl) && (method.equals(reqMethod));
+        return reqUrl.matches(path) && reqMethod.equals(method);
     }
 }

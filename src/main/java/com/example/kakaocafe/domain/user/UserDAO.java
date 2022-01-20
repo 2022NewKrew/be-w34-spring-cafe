@@ -38,7 +38,7 @@ public class UserDAO {
     }
 
     public Optional<UserProfile> getUserProfileById(long id) {
-        final String sql = "SELECT EMAIL, NAME, FORMATDATETIME(CREATED, 'yyyy-MM-dd') as `created` FROM USER WHERE ID=?";
+        final String sql = "SELECT EMAIL, NAME, DATE_FORMAT(CREATED, '%y-%m-%d') as `created` FROM USER WHERE ID=?";
 
         final List<UserProfile> result = jdbcTemplate.query(sql, userProfileMapper(), id);
 
@@ -54,7 +54,7 @@ public class UserDAO {
     }
 
     public List<UserProfileOfTableRow> getAllUserProfileOfTableRow() {
-        final String sql = "SELECT EMAIL, NAME, FORMATDATETIME(CREATED, 'yyyy-MM-dd') as `created` FROM USER";
+        final String sql = "SELECT EMAIL, NAME, DATE_FORMAT(CREATED, '%y-%m-%d') as `created` FROM USER";
 
         return jdbcTemplate.query(sql, userProfileOfTableRowRowMapper());
     }
