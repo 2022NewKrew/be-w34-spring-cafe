@@ -10,6 +10,10 @@ public class CommentDto {
     public static class CreateCommentRequest {
         private String contents;
 
+        public CreateCommentRequest() {
+
+        }
+
         public CreateCommentRequest(String contents) {
             this.contents = contents;
         }
