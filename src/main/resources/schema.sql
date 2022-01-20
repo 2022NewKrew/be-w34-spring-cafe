@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS posts
     content    TEXT         NOT NULL,
     created_at DATETIME,
     updated_at DATETIME,
+    deleted    BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (writer_id) REFERENCES users (id)
 );
 
@@ -30,6 +31,8 @@ CREATE TABLE IF NOT EXISTS comments
     writer_id  BIGINT NOT NULL,
     content    TEXT   NOT NULL,
     created_at DATETIME,
+    updated_at DATETIME,
+    deleted    BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE,
     FOREIGN KEY (writer_id) REFERENCES users (id)
 );
