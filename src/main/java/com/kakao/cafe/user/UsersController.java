@@ -1,5 +1,7 @@
 package com.kakao.cafe.user;
 
+import static com.kakao.cafe.qna.QnaController.SESSION_ID;
+
 import com.kakao.cafe.user.dto.request.UserRequest;
 import com.kakao.cafe.user.dto.response.UserResponse;
 import com.kakao.cafe.user.dto.response.UsersResponse;
@@ -45,13 +47,13 @@ public class UsersController {
     @PostMapping("/login")
     public String login(UserRequest userRequest, HttpSession httpSession) {
         UUID sessionId = userService.loginedUserSessionId(userRequest);
-        httpSession.setAttribute("sessionId", sessionId);
+        httpSession.setAttribute(SESSION_ID, sessionId);
         return "redirect:/";
     }
 
     @PostMapping("/logout")
     public String logout(HttpSession httpSession) {
-        UUID sessionId = (UUID) httpSession.getAttribute("sessionId");
+        UUID sessionId = (UUID) httpSession.getAttribute(SESSION_ID);
         userService.deleteSessionId(sessionId);
         httpSession.invalidate();
         return "redirect:/";

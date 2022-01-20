@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 @Controller
 public class QnaController {
 
+    public static final String SESSION_ID = "sessionId";
+
     private final QnaService qnaService;
     private final UserService userService;
 
@@ -27,7 +29,7 @@ public class QnaController {
 
     @PostMapping("/questions")
     public String createQna(QnaRequest qnaRequest, HttpSession httpSession) {
-        UUID sessionId = (UUID) httpSession.getAttribute("sessionId");
+        UUID sessionId = (UUID) httpSession.getAttribute(SESSION_ID);
         qnaRequest.setWriter(userService.findUserIdBySessionId(sessionId));
         qnaService.save(qnaRequest);
         return "redirect:/";
@@ -35,7 +37,7 @@ public class QnaController {
 
     @GetMapping("questions/form")
     public String createForm(HttpSession httpSession, Model model) {
-        UUID sessionId = (UUID) httpSession.getAttribute("sessionId");
+        UUID sessionId = (UUID) httpSession.getAttribute(SESSION_ID);
         String userName = userService.findUserIdBySessionId(sessionId);
         model.addAttribute("userName", userName);
         return "qna/form";
@@ -43,7 +45,7 @@ public class QnaController {
 
     @GetMapping("questions/form/{id}")
     public String updateForm(@PathVariable long id, HttpSession httpSession, Model model) {
-        UUID sessionId = (UUID) httpSession.getAttribute("sessionId");
+        UUID sessionId = (UUID) httpSession.getAttribute(SESSION_ID);
         String userId = userService.findUserIdBySessionId(sessionId);
         QnaResponse qnaResponse = qnaService.findById(id, userId);
         model.addAttribute("qna", qnaResponse);
@@ -52,7 +54,7 @@ public class QnaController {
 
     @PutMapping("questions/{id}")
     public String update(@PathVariable long id, QnaRequest qnaRequest, HttpSession httpSession) {
-        UUID sessionId = (UUID) httpSession.getAttribute("sessionId");
+        UUID sessionId = (UUID) httpSession.getAttribute(SESSION_ID);
         qnaRequest.setWriter(userService.findUserIdBySessionId(sessionId));
         qnaService.update(id, qnaRequest);
         return "redirect:/questions/" + id;
@@ -60,7 +62,7 @@ public class QnaController {
 
     @DeleteMapping("questions/{id}")
     public String delete(@PathVariable long id, HttpSession httpSession) {
-        UUID sessionId = (UUID) httpSession.getAttribute("sessionId");
+        UUID sessionId = (UUID) httpSession.getAttribute(SESSION_ID);
         String userId = userService.findUserIdBySessionId(sessionId);
         qnaService.delete(id, userId);
         return "redirect:/";
