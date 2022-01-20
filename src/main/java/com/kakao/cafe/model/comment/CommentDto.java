@@ -3,6 +3,7 @@ package com.kakao.cafe.model.comment;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @ToString
 @Getter
@@ -24,4 +25,9 @@ public class CommentDto {
         this.createdAt = createdAt;
         this.writerNickname = writerNickname;
     }
+
+    public String getFormattedCreatedAt() {
+        return createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
 }

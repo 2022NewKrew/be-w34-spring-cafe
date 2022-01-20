@@ -1,8 +1,10 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.model.comment.CommentDto;
 import com.kakao.cafe.model.post.PostDto;
 import com.kakao.cafe.model.post.PostWriteRequest;
 import com.kakao.cafe.model.user.UserDto;
+import com.kakao.cafe.service.comment.CommentService;
 import com.kakao.cafe.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import java.util.List;
 @Controller
 public class PostController {
     private final PostService postService;
+    private final CommentService commentService;
 
     @PostMapping("/posts")
     public String uploadPost(@Valid PostWriteRequest post, HttpSession session, RedirectAttributes rttr) {
@@ -43,6 +46,10 @@ public class PostController {
         PostDto post = postService.getPostById(id);
         model.addAttribute("post", post);
         model.addAttribute("hasAuthority", post.getWriterId().equals(currentUser.getId()));
+
+        List<CommentDto> comments = commentService.getCommentsByPostId(id);
+        model.addAttribute("comments", comments);
+        model.addAttribute("sizeOfComments", comments.size());
         return "post/show";
     }
 
