@@ -1,49 +1,53 @@
 package com.kakao.cafe.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
 public class UserRepository {
     private static final String INSERT_VALUES = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
     private static final String SELECT_BY_ID = "SELECT * FROM USERS WHERE ID = ?";
+    private static final String SELECT_BY_ID_AND_PASSWORD = "SELECT * FROM USERS WHERE ID = ? AND PASSWORD = ?";
     private static final String SELECT_ALL = "SELECT * FROM USERS";
+    private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    public void addUser(User user) throws SQLException {
-        jdbcTemplate.update(INSERT_VALUES, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+    public UserRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<User> getUserList() throws SQLException {
+    public void addUser(User user) throws DataAccessException, IllegalArgumentException {
+        if(user.getId().equals("form")) {
+            throw new IllegalArgumentException();
+        }
+        jdbcTemplate.update(INSERT_VALUES, user.getId(), user.getPassword(), user.getName(), user.getEmail());
+    }
+
+    public List<User> getUserList() throws DataAccessException {
         return jdbcTemplate.query(
                 SELECT_ALL,
-                new UserMapper()
+                new BeanPropertyRowMapper<>(User.class)
         );
     }
 
-    public User findUserWithId(String id) throws SQLException {
+    public User findUserWithId(String id) throws DataAccessException {
         return jdbcTemplate.queryForObject(
                 SELECT_BY_ID,
-                new UserMapper(),
+                new BeanPropertyRowMapper<>(User.class),
                 id
         );
     }
 
-    public static class UserMapper implements RowMapper<User> {
-        public User mapRow(ResultSet rs, int count) throws SQLException {
-            return new User(
-                    rs.getString("ID"),
-                    rs.getString("PASSWORD"),
-                    rs.getString("NAME"),
-                    rs.getString("EMAIL")
-            );
-        }
+    public User findUserWithIdAndPassword(String id, String password) throws DataAccessException {
+        return jdbcTemplate.queryForObject(
+                SELECT_BY_ID_AND_PASSWORD,
+                new BeanPropertyRowMapper<>(User.class),
+                id,
+                password
+        );
     }
 }
