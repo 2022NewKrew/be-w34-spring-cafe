@@ -45,7 +45,7 @@ public class UserController {
             return "user/form";
         }
 
-        User user = modelMapper.map(userCreateDto, User.class);
+        User user = UserCreateDto.toEntity(userCreateDto);
 
         userService.save(user);
 
