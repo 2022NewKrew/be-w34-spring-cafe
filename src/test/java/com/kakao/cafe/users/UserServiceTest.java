@@ -4,12 +4,10 @@ import com.kakao.cafe.CafeApplicationTests;
 import com.kakao.cafe.exceptions.BadCredentialException;
 import com.kakao.cafe.exceptions.NotFoundException;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -22,7 +20,7 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest extends CafeApplicationTests {
     @Mock
-    MemoryUserRepository userRepository;
+    JdbcUserRepository userRepository;
 
     @InjectMocks
     UserService userService;

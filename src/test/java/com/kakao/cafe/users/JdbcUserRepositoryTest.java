@@ -40,6 +40,20 @@ class JdbcUserRepositoryTest extends CafeApplicationTests {
     }
 
     @Test
+    void 유저찾기ID() {
+        User given = users.get(0);
+        jdbcUserRepository.save(given);
+
+        User actual = jdbcUserRepository.findById(given.getId()).get();
+
+        Assertions.assertThat(given.getName()).isEqualTo(actual.getName());
+        Assertions.assertThat(given.getUserId()).isEqualTo(actual.getUserId());
+        Assertions.assertThat(given.getId()).isEqualTo(actual.getId());
+        Assertions.assertThat(given.getPassword()).isEqualTo(actual.getPassword());
+        Assertions.assertThat(given.getEmail()).isEqualTo(actual.getEmail());
+    }
+
+    @Test
     void findAll() {
         jdbcUserRepository.save(users.get(0));
         jdbcUserRepository.save(users.get(1));

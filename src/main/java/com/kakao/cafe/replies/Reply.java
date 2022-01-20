@@ -9,8 +9,7 @@ public class Reply {
     private Long writerId;
     private boolean status;
 
-    public Reply(Long id, String content, Long articleId, Long writerId) {
-        this.id = id;
+    public Reply(String content, Long articleId, Long writerId) {
         this.content = content;
         this.articleId = articleId;
         this.writerId = writerId;
@@ -44,7 +43,7 @@ public class Reply {
     public boolean isStatus() {
         return status;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
