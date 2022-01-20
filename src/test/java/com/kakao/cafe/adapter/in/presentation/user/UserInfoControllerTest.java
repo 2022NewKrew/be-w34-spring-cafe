@@ -82,7 +82,7 @@ class UserInfoControllerTest {
         String email = "champ@kakao.com";
         UserInfo givenUserInfo = new UserInfo(userId, name, email);
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("sessionedUser", userId);
+        session.setAttribute("sessionedUser", givenUserInfo);
         String url = "/users/" + userId + "/form";
         given(getUserInfoUseCase.getUserProfile(userId)).willReturn(givenUserInfo);
 
@@ -101,8 +101,9 @@ class UserInfoControllerTest {
         String name = "HaChanho";
         String email = "champ@kakao.com";
         UserInfo givenUserInfo = new UserInfo(userId, name, email);
+        UserInfo sessionedUser = new UserInfo(sessionedUserId, name, email);
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("sessionedUser", sessionedUserId);
+        session.setAttribute("sessionedUser", sessionedUser);
         String url = "/users/" + userId + "/form";
         given(getUserInfoUseCase.getUserProfile(userId)).willReturn(givenUserInfo);
 

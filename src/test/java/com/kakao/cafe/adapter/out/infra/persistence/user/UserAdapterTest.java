@@ -16,7 +16,6 @@ import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
 import com.kakao.cafe.domain.user.exceptions.UserIdDuplicationException;
 import com.kakao.cafe.domain.user.exceptions.UserNotExistException;
-import com.kakao.cafe.domain.user.exceptions.WrongPasswordException;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -175,7 +174,7 @@ class UserAdapterTest {
         given(userInfoRepository.findByUserId(userId)).willReturn(Optional.of(givenUser));
 
         // when
-        UserInfo foundUser = userAdapter.findUserByUserId(userId);
+        UserInfo foundUser = UserInfo.from(userAdapter.findUserByUserId(userId));
 
         // then
         assertThat(foundUser).isEqualTo(UserInfo.from(givenUser));
@@ -339,24 +338,5 @@ class UserAdapterTest {
 
         // then
         assertThatExceptionOfType(UserNotExistException.class).isThrownBy(() -> userAdapter.login(loginRequest));
-    }
-
-    @DisplayName("패스워드 오류 로그인 테스트")
-    @Test
-    void loginPasswordMismatch()
-        throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, IllegalEmailException {
-        // given
-        String givenUserId = "champ";
-        String givenPassword = "test";
-        LoginRequest loginRequest = new LoginRequest(givenUserId, givenPassword);
-        User givenUser = new User.Builder().userId(givenUserId)
-                                           .password(givenPassword + "aaaa")
-                                           .name("champion")
-                                           .email("champ@kakao.com")
-                                           .build();
-        given(userInfoRepository.findByUserId(givenUserId)).willReturn(Optional.of(givenUser));
-
-        // then
-        assertThatExceptionOfType(WrongPasswordException.class).isThrownBy(() -> userAdapter.login(loginRequest));
     }
 }

@@ -1,14 +1,14 @@
 package com.kakao.cafe.adapter.in.presentation.article;
 
+import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
+import com.kakao.cafe.application.reply.dto.ReplyList;
+import com.kakao.cafe.application.reply.port.in.GetRepliesUseCase;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
-import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,33 +19,46 @@ public class ArticleInfoController {
 
     private static final String VIEWS_ARTICLE_LIST = "index";
     private static final String VIEWS_ARTICLE_DETAIL = "article/show";
+    private static final String VIEWS_ARTICLE_MODIFY_FORM = "article/modifyForm";
 
-    private static final Logger log = LoggerFactory.getLogger(ArticleInfoController.class);
+    private final GetArticleInfoUseCase getArticleInfoUseCase;
+    private final GetRepliesUseCase getRepliesUseCase;
 
-    GetArticleInfoUseCase getArticleInfoUseCase;
-
-    public ArticleInfoController(GetArticleInfoUseCase getArticleInfoUseCase) {
+    public ArticleInfoController(GetArticleInfoUseCase getArticleInfoUseCase, GetRepliesUseCase getRepliesUseCase) {
         this.getArticleInfoUseCase = getArticleInfoUseCase;
+        this.getRepliesUseCase = getRepliesUseCase;
     }
 
     @GetMapping("/")
-    public String displayArticleList(HttpServletRequest request, Model model) {
-        log.info("[{}]Article list required", request.getRequestURI());
+    public String displayArticleList(Model model) {
+        ArticleList articleList = getArticleInfoUseCase.getListOfAllArticles();
         model.addAttribute(
             "articles",
-            getArticleInfoUseCase.getListOfAllArticles().getArticleList()
+            articleList.getArticleList()
         );
-        log.info("[{}]Success show article list", request.getRequestURI());
         return VIEWS_ARTICLE_LIST;
     }
 
     @GetMapping("/articles/{id}")
-    public String displayArticleDetail(HttpServletRequest request, @PathVariable int id, Model model)
+    public String displayArticleDetail(@PathVariable int id, Model model)
         throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException {
-        log.info("[{}]Article {} is required opening", request.getRequestURI(), id);
         Article article = getArticleInfoUseCase.getArticleDetail(id);
-        log.info("[{}]Success {} is opened", request.getRequestURI(), article.getTitle());
+        ReplyList replyList = getRepliesUseCase.getListOfRepliesOfTheArticle(id);
+        int countOfReplies = replyList.getReplyList().size();
         model.addAttribute("article", article);
+        model.addAttribute("countOfReplies", countOfReplies);
+        model.addAttribute(
+            "replies",
+            replyList.getReplyList()
+        );
         return VIEWS_ARTICLE_DETAIL;
+    }
+
+    @GetMapping("/articles/{id}/form")
+    public String displayArticleModifyForm(@PathVariable int id, Model model)
+        throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException {
+        Article article = getArticleInfoUseCase.getArticleDetail(id);
+        model.addAttribute("article", article);
+        return VIEWS_ARTICLE_MODIFY_FORM;
     }
 }

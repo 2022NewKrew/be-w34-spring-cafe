@@ -1,18 +1,36 @@
+DROP TABLE IF EXISTS REPLY;
+DROP TABLE IF EXISTS ARTICLE;
 DROP TABLE IF EXISTS USER;
+
 CREATE TABLE USER
 (
-    id       VARCHAR(30) PRIMARY KEY,
-    password VARCHAR(30),
-    name     VARCHAR(30),
-    email    VARCHAR(30)
+    id       VARCHAR(32) PRIMARY KEY,
+    password VARCHAR(32),
+    name     VARCHAR(32),
+    email    VARCHAR(32)
 );
 
-DROP TABLE IF EXISTS ARTICLE;
 CREATE TABLE ARTICLE
 (
-    id        BIGINT PRIMARY KEY,
-    writer    VARCHAR(30),
-    title     VARCHAR(30),
+    id        BIGINT PRIMARY KEY auto_increment,
+    userId    VARCHAR(32),
+    writer    VARCHAR(32),
+    title     VARCHAR(32),
     contents  VARCHAR(1000),
-    createdAt VARCHAR(30)
-)
+    createdAt VARCHAR(32),
+    deleted   BOOLEAN default FALSE,
+    FOREIGN KEY (userId) REFERENCES USER (ID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE REPLY
+(
+    id        BIGINT PRIMARY KEY auto_increment,
+    articleId BIGINT,
+    userId    VARCHAR(32),
+    writer    VARCHAR(32),
+    contents  VARCHAR(300),
+    createdAt VARCHAR(32),
+    deleted   BOOLEAN default FALSE,
+    FOREIGN KEY (articleId) REFERENCES ARTICLE (ID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (userId) REFERENCES USER (ID) ON DELETE CASCADE ON UPDATE CASCADE
+);

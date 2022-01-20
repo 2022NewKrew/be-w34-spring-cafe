@@ -6,6 +6,9 @@ import static org.mockito.BDDMockito.given;
 import com.kakao.cafe.application.article.dto.ArticleInfo;
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
+import com.kakao.cafe.application.reply.dto.ReplyList;
+import com.kakao.cafe.application.reply.port.in.GetRepliesUseCase;
+import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.domain.article.Article;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -33,6 +37,9 @@ class ArticleInfoControllerTest {
     private GetArticleInfoUseCase getArticleInfoUseCase;
 
     @MockBean
+    private GetRepliesUseCase getRepliesUseCase;
+
+    @MockBean
     private DataSource dataSource;
 
     @DisplayName("게시글 목록 출력 테스트")
@@ -44,6 +51,7 @@ class ArticleInfoControllerTest {
         givenArticleList.add(new ArticleInfo(5, "kakao", "krew", "2022-01-10 20:00"));
         givenArticleList.add(new ArticleInfo(10, "HaChanho", "champ", "2022-01-11 21:00"));
         given(getArticleInfoUseCase.getListOfAllArticles()).willReturn(ArticleList.from(givenArticleList));
+        given(getRepliesUseCase.getListOfRepliesOfTheArticle(5)).willReturn(ReplyList.from(new ArrayList<>()));
 
         // when
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.TEXT_HTML))
@@ -64,20 +72,27 @@ class ArticleInfoControllerTest {
     void displayArticleDetail() throws Exception {
         // given
         int id = 5;
+        String userId = "kakao";
         String writer = "champ";
         String title = "HaChanho";
         String contents = "champ@kakao.com";
         String createdAt = "2022-01-10 15:23";
-        Article givenArticle = new Article.Builder().writer(writer)
+        Article givenArticle = new Article.Builder().userId(userId)
+                                                    .writer(writer)
                                                     .title(title)
                                                     .contents(contents)
                                                     .createdAt(createdAt)
+                                                    .deleted(false)
                                                     .build();
+        UserInfo sessionedUser = new UserInfo(userId, writer, "kakao@kakao.com");
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("sessionedUser", sessionedUser);
         String url = "/articles/" + id;
         given(getArticleInfoUseCase.getArticleDetail(id)).willReturn(givenArticle);
+        given(getRepliesUseCase.getListOfRepliesOfTheArticle(id)).willReturn(ReplyList.from(new ArrayList<>()));
 
         //when
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.TEXT_HTML))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(url).session(session).accept(MediaType.TEXT_HTML))
                                   .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                   .andReturn();
 

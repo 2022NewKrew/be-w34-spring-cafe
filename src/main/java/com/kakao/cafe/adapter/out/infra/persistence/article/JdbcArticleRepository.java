@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
+import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -18,7 +19,16 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 public class JdbcArticleRepository implements ArticleRepository {
 
-    private final static String SELECT_ALL = "select * from article";
+    private final static String ARTICLE_TABLE = "ARTICLE";
+    private final static String COLUMN_ID = "id";
+    private final static String COLUMN_USER_ID = "userId";
+    private final static String COLUMN_WRITER = "writer";
+    private final static String COLUMN_TITLE = "title";
+    private final static String COLUMN_CONTENTS = "contents";
+    private final static String COLUMN_CREATED_AT = "createdAt";
+    private final static String COLUMN_DELETED = "deleted";
+    private final static String SELECT_ALL = "select * from " + ARTICLE_TABLE;
+    private final static String NOT_DELETED = " where " + COLUMN_DELETED + "=false";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -29,25 +39,41 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public void save(Article article) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        simpleJdbcInsert.withTableName("user").usingGeneratedKeyColumns("id");
+        simpleJdbcInsert.withTableName(ARTICLE_TABLE).usingGeneratedKeyColumns(COLUMN_ID);
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("writer", article.getWriter());
-        parameters.put("title", article.getTitle());
-        parameters.put("contents", article.getContents());
-        parameters.put("createdAt", article.getCreatedAt());
+        parameters.put(COLUMN_USER_ID, article.getUserId());
+        parameters.put(COLUMN_WRITER, article.getWriter());
+        parameters.put(COLUMN_TITLE, article.getTitle());
+        parameters.put(COLUMN_CONTENTS, article.getContents());
+        parameters.put(COLUMN_CREATED_AT, article.getCreatedAt());
+        parameters.put(COLUMN_DELETED, article.isDeleted());
 
         simpleJdbcInsert.execute(parameters);
     }
 
     @Override
+    public void update(Article article) {
+        String sql = "update " + ARTICLE_TABLE + " set " + COLUMN_TITLE + "=?, " + COLUMN_CONTENTS + "=?, " +
+                     COLUMN_CREATED_AT + "=? where " + COLUMN_ID +
+                     "=?";
+        jdbcTemplate.update(sql, article.getTitle(), article.getContents(), article.getCreatedAt(), article.getId());
+    }
+
+    @Override
+    public void deleteById(int id) {
+        String sql = "update " + ARTICLE_TABLE + " set " + COLUMN_DELETED + "=true" + " where " + COLUMN_ID + "=?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    @Override
     public List<Article> getAllArticleList() {
-        return jdbcTemplate.query(SELECT_ALL, (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum));
+        return jdbcTemplate.query(SELECT_ALL + NOT_DELETED, (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum));
     }
 
     @Override
     public Optional<Article> findById(int id) {
-        String sql = SELECT_ALL + " where id = ?";
+        String sql = SELECT_ALL + " where " + COLUMN_ID + " = ?";
         try {
             Article article = jdbcTemplate.queryForObject(
                 sql,
@@ -65,15 +91,23 @@ public class JdbcArticleRepository implements ArticleRepository {
         @Override
         public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
             try {
-                Article article = new Article.Builder().writer(rs.getString("writer"))
-                                                       .title(rs.getString("title"))
-                                                       .contents(rs.getString("contents"))
-                                                       .createdAt(rs.getString("createdAt"))
+                Article article = new Article.Builder().userId(rs.getString(COLUMN_USER_ID))
+                                                       .writer(rs.getString(COLUMN_WRITER))
+                                                       .title(rs.getString(COLUMN_TITLE))
+                                                       .contents(rs.getString(COLUMN_CONTENTS))
+                                                       .createdAt(rs.getString(COLUMN_CREATED_AT))
+                                                       .deleted(false)
                                                        .build();
-                article.setId(rs.getInt("id"));
+                article.setId(rs.getInt(COLUMN_ID));
                 return article;
-            } catch (IllegalWriterException | IllegalTitleException | IllegalDateException e) {
-                throw new SQLException("DB에서 값을 읽어오지 못했습니다.");
+            } catch (IllegalWriterException e) {
+                throw new SQLException("DB에 저장된 writer가 잘못되었습니다.");
+            } catch (IllegalTitleException e) {
+                throw new SQLException("DB에 저장된 title이 잘못되었습니다.");
+            } catch (IllegalDateException e) {
+                throw new SQLException("DB에 저장된 createdAt 값이 잘못되었습니다.");
+            } catch (IllegalUserIdException e) {
+                throw new SQLException("DB에 저장된 userId 값이 잘못되었습니다.");
             }
         }
     }

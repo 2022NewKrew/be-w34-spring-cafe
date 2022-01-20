@@ -1,4 +1,4 @@
-package com.kakao.cafe.adapter.in.presentation;
+package com.kakao.cafe.adapter.in.presentation.common;
 
 import com.kakao.cafe.domain.user.exceptions.UnauthenticatedUserException;
 import com.kakao.cafe.view.ErrorMessage;

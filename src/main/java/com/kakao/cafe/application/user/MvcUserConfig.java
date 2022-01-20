@@ -7,7 +7,7 @@ import com.kakao.cafe.application.user.port.in.GetUserInfoUseCase;
 import com.kakao.cafe.application.user.port.in.LoginUserUseCase;
 import com.kakao.cafe.application.user.port.in.SignUpUserUseCase;
 import com.kakao.cafe.application.user.port.in.UpdateUserInfoUseCase;
-import com.kakao.cafe.application.user.port.out.GetUserInfoPort;
+import com.kakao.cafe.application.user.port.out.GetUserEntityPort;
 import com.kakao.cafe.application.user.port.out.LoginUserPort;
 import com.kakao.cafe.application.user.port.out.RegisterUserPort;
 import com.kakao.cafe.application.user.port.out.UpdateUserInfoPort;
@@ -16,6 +16,7 @@ import com.kakao.cafe.application.user.service.LoginUserService;
 import com.kakao.cafe.application.user.service.SignUpUserService;
 import com.kakao.cafe.application.user.service.UpdateUserInfoService;
 import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,6 +25,7 @@ public class MvcUserConfig {
 
     public final DataSource dataSource;
 
+    @Autowired
     public MvcUserConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -39,7 +41,7 @@ public class MvcUserConfig {
     }
 
     @Bean
-    public GetUserInfoPort getUserInfoPort() {
+    public GetUserEntityPort getUserEntityPort() {
         return new UserAdapter(userInfoRepository());
     }
 
@@ -60,7 +62,7 @@ public class MvcUserConfig {
 
     @Bean
     public GetUserInfoUseCase getUserInfoUseCase() {
-        return new GetUserInfoService(getUserInfoPort());
+        return new GetUserInfoService(getUserEntityPort());
     }
 
     @Bean
@@ -70,6 +72,6 @@ public class MvcUserConfig {
 
     @Bean
     public UpdateUserInfoUseCase updateUserInfoUseCase() {
-        return new UpdateUserInfoService(updateUserInfoPort());
+        return new UpdateUserInfoService(updateUserInfoPort(), getUserEntityPort());
     }
 }
