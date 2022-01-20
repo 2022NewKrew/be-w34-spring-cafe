@@ -1,6 +1,5 @@
 package com.kakao.cafe.article.service;
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
