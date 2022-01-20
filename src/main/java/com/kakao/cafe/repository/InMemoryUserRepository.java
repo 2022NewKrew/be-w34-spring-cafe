@@ -25,16 +25,16 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return users.getUsers();
+        return Collections.unmodifiableList(users.getUsers());
     }
 
     @Override
     public Optional<User> findById(UUID id) {
-        return users.findById(id);
+        return User.copyOptionalUser(users.findById(id));
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return users.findByUserId(userId);
+        return User.copyOptionalUser(users.findByUserId(userId));
     }
 }

@@ -25,12 +25,12 @@ public class InMemoryPostRepository implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        return posts.getPosts();
+        return Collections.unmodifiableList(posts.getPosts());
     }
 
     @Override
     public Optional<Post> findById(UUID id) {
-        return posts.findById(id);
+        return Post.copyOptionalPost(posts.findById(id));
     }
 
     @Override

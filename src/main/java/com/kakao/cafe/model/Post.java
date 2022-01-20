@@ -1,6 +1,7 @@
 package com.kakao.cafe.model;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 public class Post {
@@ -18,6 +19,19 @@ public class Post {
         this.title = builder.title;
         this.content = builder.content;
         this.createdAt = builder.createdAt;
+        this.deleted = builder.deleted;
+    }
+
+    public static Optional<Post> copyOptionalPost(Optional<Post> original) {
+        return original.map(post -> new Builder(
+                        post.getId(),
+                        post.getWriterId(),
+                        post.getTitle(),
+                        post.getContent(),
+                        post.getCreatedAt(),
+                        post.isDeleted())
+                        .build())
+                .or(Optional::empty);
     }
 
     public UUID getId() {
