@@ -1,8 +1,8 @@
 package com.kakao.cafe.aop;
 
-import com.kakao.cafe.model.service.BoardService;
+import com.kakao.cafe.application.service.BoardService;
 import com.kakao.cafe.util.annotation.LoginCheck;
-import com.kakao.cafe.util.annotation.MineCheck;
+import com.kakao.cafe.util.annotation.BoardCheck;
 import com.kakao.cafe.util.exception.NoAdminException;
 import com.kakao.cafe.util.exception.NotLoggedInException;
 import com.kakao.cafe.util.exception.NotMineException;
@@ -60,16 +60,16 @@ public class Aspects {
         }
     }
 
-    @Before("execution(* com.kakao.cafe.controller.BoardController.*(..)) && @annotation(com.kakao.cafe.util.annotation.MineCheck) && @annotation(mineCheck)")
-    public void boardMineCheckUsingAnnotation(JoinPoint joinPoint, MineCheck mineCheck) {
+    @Before("execution(* com.kakao.cafe.controller.BoardController.*(..)) && @annotation(com.kakao.cafe.util.annotation.BoardCheck) && @annotation(boardCheck)")
+    public void boardMineCheckUsingAnnotation(JoinPoint joinPoint, BoardCheck boardCheck) {
         HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest().getSession();
         String loggedInId = (String) session.getAttribute("USER_ID");
 
-        if (mineCheck.type().toString().equals("ARTICLE") && !(boardService.isSameArticleWriter((long) joinPoint.getArgs()[0], loggedInId))) {
+        if (boardCheck.type().toString().equals("ARTICLE") && !(boardService.isSameArticleWriter((long) joinPoint.getArgs()[0], loggedInId))) {
             throw new NotMineException("해당 게시글의 작성자가 아니므로 수정하거나 삭제할 수 없습니다.");
         }
 
-        if (mineCheck.type().toString().equals("COMMENT")
+        if (boardCheck.type().toString().equals("COMMENT")
                 && !(boardService.isSameCommentWriter((long) joinPoint.getArgs()[0], (long) joinPoint.getArgs()[1], loggedInId))) {
             throw new NotMineException("해당 댓글의 작성자가 아니므로 삭제할 수 없습니다.");
         }

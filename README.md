@@ -68,3 +68,54 @@
     <h4>< 댓글 삭제 실패 ></h4>
     <img src="img/step2_2_5_delete_comment_fail.gif" alt="step2_2_5_delete_comment_fail">
 </details>
+
+## 2-3단계 ([링크](https://lucas.codesquad.kr/2022-kakao/course/%EC%9B%B9%EB%B0%B1%EC%97%94%EB%93%9C/Kakao-Cafe-2/4%EB%8B%A8%EA%B3%84--User%EC%99%80-Question-%EA%B4%80%EA%B3%84-%EC%84%A4%EC%A0%95))
+### 기능 요구사항
+- 댓글 기능 구현
+  - 로그인한 사용자는 게시글 상세보기 화면에서 댓글들을 볼 수 있다.
+  - 로그인한 사용자는 댓글을 추가할 수 있다.
+  - 자신이 쓴 댓글을 삭제할 수 있다.
+- 배포 연습 (예정)
+  - 도커를 설치하고 도커를 사용해서 배포 연습을 한다.
+### 피드백 반영
+- 패키지 구성 변경
+  - 기존에 DTO와 도메인 패키지가 `model` 패키지 안에 함께 존재했으며 이를 분리
+  - 현재 구현된 서비스 객체들은 단순히 도메인 객체들을 사용하여 흐름을 제어하는 느낌이므로 Application Service에 가까움
+  - 위 내용을 반영하여 구성을 다음과 같이 변경
+  ```
+    ├── aop
+    ├── application
+    │   ├── dto
+    │   └── service
+    ├── config
+    ├── controller
+    ├── model
+    │   ├── domain
+    │   └── repository
+    └── util
+    ├── annotation
+    └── exception
+  ```
+### 상세 구현사항
+- MySQL로 DB 변경
+  - Krane 인스턴스에 MySQL 설치 후 외부에서 접근이 가능하도록 설정
+  - DB 구성 후 사용
+- Soft Delete 구현
+  - `ARTICLES`와 `COMMENTS` 테이블에 `IS_DELETE`라는 `BOOLEAN`형의 속성 추가
+  - 삭제 여부에 따라 가져오는 레코드들을 다르게 하기 위해 쿼리문 수정
+- 게시글 삭제 로직 변경
+  - 현재 로그인돼있는 계정이 작성한 글이면 바로 삭제가 가능했던 것을 다른 계정이 작성한 댓글이 존재할 경우 삭제 불가능하도록 변경
+### 실행 화면
+<details>
+    <summary>펼치기</summary>
+    <h4>< 다른 계정의 댓글로 인한 삭제 실패 ></h4>
+    <img src="img/step2_3_1_delete_article_failed.gif" alt="step2_3_1_delete_article_failed">
+    <h4>< 댓글 삭제 ></h4>
+    <img src="img/step2_3_2_delete_comment.gif" alt="step2_3_2_delete_comment">
+    <h4>< 게시글 삭제 ></h4>
+    <img src="img/step2_3_3_delete_article.gif" alt="step2_3_3_delete_article">
+    <h4>< 게시글 및 댓글 작성 후 삭제 ></h4>
+    <img src="img/step2_3_4_make_and_delete_all.gif" alt="step2_3_4_make_and_delete_all">
+    <h4>< Soft Delete 확인 ></h4>
+    <img src="img/step2_3_5_soft_delete.gif" alt="step2_3_5_soft_delete">
+</details>

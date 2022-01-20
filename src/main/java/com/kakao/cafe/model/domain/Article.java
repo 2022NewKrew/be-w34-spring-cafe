@@ -21,4 +21,7 @@ public class Article {
 
     @Setter
     private long commentsCount;
+
+    @Setter
+    private boolean isDeleted;
 }

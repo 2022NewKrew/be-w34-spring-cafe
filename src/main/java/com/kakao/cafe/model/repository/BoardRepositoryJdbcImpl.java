@@ -30,7 +30,8 @@ public class BoardRepositoryJdbcImpl implements BoardRepository {
                         .title(rs.getString("TITLE"))
                         .writerId(rs.getString("WRITER_ID"))
                         .content(rs.getString("CONTENT"))
-                        .createdDate(rs.getTimestamp("CREATED_DATE").toLocalDateTime()).build();
+                        .createdDate(rs.getTimestamp("CREATED_DATE").toLocalDateTime())
+                        .isDeleted(rs.getBoolean("IS_DELETED")).build();
     }
 
     private RowMapper<Comment> commentRowMapper() {
@@ -40,53 +41,60 @@ public class BoardRepositoryJdbcImpl implements BoardRepository {
                         .commentId(rs.getInt("COMMENT_ID"))
                         .writerId(rs.getString("WRITER_ID"))
                         .content(rs.getString("CONTENT"))
-                        .createdDate(rs.getTimestamp("CREATED_DATE").toLocalDateTime()).build();
+                        .createdDate(rs.getTimestamp("CREATED_DATE").toLocalDateTime())
+                        .isDeleted(rs.getBoolean("IS_DELETED")).build();
     }
 
     @Override
     public boolean saveArticle(Article article) {
-        jdbcTemplate.update("INSERT INTO ARTICLES (TITLE, WRITER_ID, CONTENT, CREATED_DATE) VALUES ( ?, ?, ?, ? )",
-                article.getTitle(), article.getWriterId(), article.getContent(), LocalDateTime.now());
+        jdbcTemplate.update("INSERT INTO ARTICLES (TITLE, WRITER_ID, CONTENT, CREATED_DATE, IS_DELETED) VALUES ( ?, ?, ?, ?, ?)",
+                article.getTitle(), article.getWriterId(), article.getContent(), LocalDateTime.now(), article.isDeleted());
         return true;
     }
 
     @Override
     public boolean saveComment(long articleId, Comment comment) {
-        jdbcTemplate.update("INSERT INTO COMMENTS (ARTICLE_ID, WRITER_ID, CONTENT, CREATED_DATE) VALUES ( ?, ?, ?, ? )",
-                articleId, comment.getWriterId(), comment.getContent(), LocalDateTime.now());
+        jdbcTemplate.update("INSERT INTO COMMENTS (ARTICLE_ID, WRITER_ID, CONTENT, CREATED_DATE, IS_DELETED) VALUES ( ?, ?, ?, ?, ?)",
+                articleId, comment.getWriterId(), comment.getContent(), LocalDateTime.now(), comment.isDeleted());
         return true;
     }
 
     @Override
     public List<Article> findAllArticle() {
-        return jdbcTemplate.query("SELECT ARTICLE_ID, TITLE, WRITER_ID, CONTENT, CREATED_DATE FROM ARTICLES",
+        return jdbcTemplate.query("SELECT ARTICLE_ID, TITLE, WRITER_ID, CONTENT, CREATED_DATE, IS_DELETED FROM ARTICLES WHERE IS_DELETED = FALSE",
                 articleRowMapper());
     }
 
     @Override
     public Optional<Article> findArticleByArticleId(long articleId) {
-        List<Article> result = jdbcTemplate.query("SELECT ARTICLE_ID, TITLE, WRITER_ID, CONTENT, CREATED_DATE FROM ARTICLES WHERE ARTICLE_ID = ?",
+        List<Article> result = jdbcTemplate.query("SELECT ARTICLE_ID, TITLE, WRITER_ID, CONTENT, CREATED_DATE, IS_DELETED FROM ARTICLES WHERE ARTICLE_ID = ? AND IS_DELETED = FALSE",
                 articleRowMapper(), articleId);
         return result.stream().findAny();
     }
 
     @Override
     public List<Article> findArticlesByWriterId(String writerId) {
-        return jdbcTemplate.query("SELECT ARTICLE_ID, TITLE, WRITER_ID, CONTENT, CREATED_DATE FROM ARTICLES WHERE WRITER_ID = ?",
+        return jdbcTemplate.query("SELECT ARTICLE_ID, TITLE, WRITER_ID, CONTENT, CREATED_DATE, IS_DELETED FROM ARTICLES WHERE WRITER_ID = ? AND IS_DELETED = FALSE",
                 articleRowMapper(), writerId);
     }
 
     @Override
     public List<Comment> findCommentsByArticleId(long articleId) {
-        return jdbcTemplate.query("SELECT ARTICLE_ID, COMMENT_ID, WRITER_ID, CONTENT, CREATED_DATE FROM COMMENTS WHERE ARTICLE_ID = ?",
+        return jdbcTemplate.query("SELECT ARTICLE_ID, COMMENT_ID, WRITER_ID, CONTENT, CREATED_DATE, IS_DELETED FROM COMMENTS WHERE ARTICLE_ID = ? AND IS_DELETED = FALSE",
                 commentRowMapper(), articleId);
     }
 
     @Override
-    public Optional<Comment> findComment(long articleId, long commentId) {
-        List<Comment> result = jdbcTemplate.query("SELECT ARTICLE_ID, COMMENT_ID, WRITER_ID, CONTENT, CREATED_DATE FROM COMMENTS WHERE ARTICLE_ID = ? AND COMMENT_ID = ?",
+    public Optional<Comment> findCommentByArticleIdAndCommentId(long articleId, long commentId) {
+        List<Comment> result = jdbcTemplate.query("SELECT ARTICLE_ID, COMMENT_ID, WRITER_ID, CONTENT, CREATED_DATE, IS_DELETED FROM COMMENTS WHERE ARTICLE_ID = ? AND COMMENT_ID = ? AND IS_DELETED = FALSE",
                 commentRowMapper(), articleId, commentId);
         return result.stream().findAny();
+    }
+
+    @Override
+    public List<Comment> findCommentsByWriterId(String writerId) {
+        return jdbcTemplate.query("SELECT ARTICLE_ID, COMMENT_ID, WRITER_ID, CONTENT, CREATED_DATE, IS_DELETED FROM COMMENTS WHERE WRITER_ID = ? AND IS_DELETED = FALSE",
+                commentRowMapper(), writerId);
     }
 
     @Override
@@ -105,13 +113,20 @@ public class BoardRepositoryJdbcImpl implements BoardRepository {
 
     @Override
     public boolean deleteArticle(long articleId) {
-        jdbcTemplate.update("DELETE FROM ARTICLES WHERE ARTICLE_ID = ?", articleId);
+        jdbcTemplate.update("UPDATE ARTICLES SET IS_DELETED = TRUE WHERE ARTICLE_ID = ?", articleId);
+        return true;
+    }
+
+    @Override
+    public boolean deleteCommentByArticleId(long articleId) {
+        jdbcTemplate.update("UPDATE COMMENTS SET IS_DELETED = TRUE WHERE ARTICLE_ID = ?", articleId);
         return true;
     }
 
     @Override
     public boolean deleteComment(long articleId, long commentId) {
-        jdbcTemplate.update("DELETE FROM COMMENTS WHERE ARTICLE_ID = ? AND COMMENT_ID = ?", articleId, commentId);
+        jdbcTemplate.update("UPDATE COMMENTS SET IS_DELETED = TRUE WHERE ARTICLE_ID = ? AND COMMENT_ID = ?", articleId, commentId);
         return true;
     }
 }
+

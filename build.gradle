@@ -37,7 +37,7 @@ dependencies {
 
 	// DB
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	implementation 'com.h2database:h2:1.4.200'
+	implementation 'mysql:mysql-connector-java:8.0.27'
 }
 
 test {

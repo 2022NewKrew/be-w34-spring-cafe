@@ -6,6 +6,7 @@
         <div class="mt-1 mb-1 float-end">
             <form action="/board/delete/{{articleId}}" method="post">
                 <input name="_method" type="hidden" value="delete"/>
+                <input name="writerId" type="hidden" value="{{writerId}}"/>
                 <button class="btn btn-dark" onclick="location.href='/board/modify/{{articleId}}'" type="button">수정
                 </button>
                 <button class="btn btn-dark" type="submit">삭제</button>
