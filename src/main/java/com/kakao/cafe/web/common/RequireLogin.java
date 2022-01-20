@@ -12,4 +12,6 @@ import java.lang.annotation.Target;
 @Documented
 public @interface RequireLogin {
 
+  boolean value() default true;
+
 }
