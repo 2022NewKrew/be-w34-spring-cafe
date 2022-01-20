@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Integer id) {
         Optional<User> user = jdbcUserRepository.readById(id);
-        return user.orElseThrow(() -> new RuntimeException("user 조회 null 검증"));
-//        return jdbcUserRepository.readUser(userId);
+        return user.orElseThrow(() -> new NullPointerException("유저 ID가 없습니다"));
     }
 }
