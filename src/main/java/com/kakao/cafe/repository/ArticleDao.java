@@ -24,18 +24,18 @@ public class ArticleDao {
     Logger logger = LoggerFactory.getLogger(ArticleDao.class);
 
     public List<ArticleVo> findAllArticle() {
-        String sql = "SELECT articles.id AS id, user_id, writer_id, name, title, contents FROM articles INNER JOIN USERS U on U.ID = ARTICLES.WRITER_ID";
+        String sql = "SELECT articles.id AS id, user_id, writer_id, name, title, contents FROM articles INNER JOIN USERS U on U.ID = ARTICLES.WRITER_ID WHERE deleted = false";
         return jdbcTemplate.query(sql, articleRowMapper());
     }
 
     public List<CommentVo> findAllComments(int index) {
-        String sql = "SELECT comments.id AS id, user_id, writer_id, name, contents FROM comments INNER JOIN USERS U on U.id = comments.writer_id WHERE article_id = ?";
+        String sql = "SELECT comments.id AS id, user_id, writer_id, name, contents FROM comments INNER JOIN USERS U on U.id = comments.writer_id WHERE article_id = ? AND deleted = false";
         return jdbcTemplate.query(sql, commentRowMapper(), index);
     }
 
     public ArticleVo filterArticleByIndex(int index) {
         try {
-            String sql = "SELECT articles.id AS id, user_id, writer_id, name, title, contents FROM articles INNER JOIN USERS U on U.ID = ARTICLES.WRITER_ID WHERE articles.id = ?";
+            String sql = "SELECT articles.id AS id, user_id, writer_id, name, title, contents FROM articles INNER JOIN USERS U on U.ID = ARTICLES.WRITER_ID WHERE articles.id = ? AND deleted = false";
             return jdbcTemplate.queryForObject(sql, articleRowMapper(), index);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -44,7 +44,7 @@ public class ArticleDao {
 
     public CommentVo filterCommentById(int commentId) {
         try {
-            String sql = "SELECT comments.id AS id, user_id, writer_id, name, contents FROM comments INNER JOIN USERS U on U.id = comments.writer_id WHERE comments.id = ?";
+            String sql = "SELECT comments.id AS id, user_id, writer_id, name, contents FROM comments INNER JOIN USERS U on U.id = comments.writer_id WHERE comments.id = ? AND deleted = false";
             return jdbcTemplate.queryForObject(sql, commentRowMapper(), commentId);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -62,8 +62,10 @@ public class ArticleDao {
     }
 
     public void deleteArticle(int index) {
-        String sql = "DELETE FROM articles WHERE id = ?";
+        String sql = "UPDATE articles SET deleted = true WHERE id = ?";
+        String sql2 = "UPDATE comments SET deleted = true WHERE article_id = ?";
         jdbcTemplate.update(sql, index);
+        jdbcTemplate.update(sql2, index);
     }
 
     public void writerComment(int index, CommentVo comment) {
@@ -72,7 +74,7 @@ public class ArticleDao {
     }
 
     public void deleteComment(int commentId) {
-        String sql = "DELETE FROM comments WHERE id = ?";
+        String sql = "UPDATE comments SET deleted = true WHERE id = ?";
         jdbcTemplate.update(sql, commentId);
     }
 

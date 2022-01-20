@@ -72,8 +72,9 @@ public class ArticleController {
 
     @MyArticle
     @DeleteMapping("/articles/{index}/delete")
-    public String deleteArticle(@PathVariable int index) {
-        articleService.deleteArticle(index);
+    public String deleteArticle(@PathVariable int index, HttpSession session) {
+        UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
+        articleService.deleteArticle(index, loginUser);
         return "redirect:/";
     }
 

@@ -9,6 +9,8 @@ import com.kakao.cafe.model.vo.ArticleVo;
 import com.kakao.cafe.model.vo.UserVo;
 import com.kakao.cafe.service.validation.ArticleValidation;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,6 +22,8 @@ public class ArticleService {
     private final ArticleDao articleDao;
     private final ArticleValidation articleValidation;
     private final ModelMapper modelMapper;
+
+    Logger logger = LoggerFactory.getLogger(ArticleService.class);
 
     public ArticleService(ArticleDao articleDao, ArticleValidation articleValidation, ModelMapper modelMapper) {
         this.articleDao = articleDao;
@@ -59,7 +63,9 @@ public class ArticleService {
         articleDao.updateArticle(index, modelMapper.map(article, ArticleVo.class));
     }
 
-    public void deleteArticle(int index) {
+    public void deleteArticle(int index, UserDto user) {
+        List<CommentVo> comments = articleDao.findAllComments(index);
+        articleValidation.validateDeleteArticle(comments, user);
         articleDao.deleteArticle(index);
     }
 
