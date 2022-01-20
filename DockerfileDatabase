@@ -1,3 +1,5 @@
 FROM mysql:5.7
-ARG SCHEMA_FILE=src/main/resources/mysql-sql/\*.sql
+ARG SCHEMA_FILE=src/main/resources/db/mysql-sql/\*.sql
 ADD ${SCHEMA_FILE} /docker-entrypoint-initdb.d
+ARG CONFIG_FILE=src/main/resources/db/my.cnf
+COPY ${CONFIG_FILE} /etc/mysql/conf.d/my.cnf
