@@ -1,4 +1,4 @@
-package com.kakao.cafe.article.model;
+package com.kakao.cafe.model.DTO;
 
 public class ArticleDTO {
     private String user;

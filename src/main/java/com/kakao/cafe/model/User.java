@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.model;
+package com.kakao.cafe.model;
 
 public class User {
     private String userId;

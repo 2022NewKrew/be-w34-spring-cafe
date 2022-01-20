@@ -1,7 +1,7 @@
-package com.kakao.cafe.article.service;
+package com.kakao.cafe.service;
 
-import com.kakao.cafe.article.model.Article;
-import com.kakao.cafe.article.model.ArticleDTO;
+import com.kakao.cafe.model.Article;
+import com.kakao.cafe.model.DTO.ArticleDTO;
 
 import java.util.List;
 

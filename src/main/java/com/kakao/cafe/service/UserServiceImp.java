@@ -1,6 +1,6 @@
-package com.kakao.cafe.user.service;
+package com.kakao.cafe.service;
 
-import com.kakao.cafe.user.model.User;
+import com.kakao.cafe.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;

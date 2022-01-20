@@ -1,8 +1,8 @@
-package com.kakao.cafe.user.controller;
+package com.kakao.cafe.controller;
 
-import com.kakao.cafe.user.model.User;
-import com.kakao.cafe.user.service.UserService;
-import com.kakao.cafe.user.service.UserServiceImp;
+import com.kakao.cafe.model.User;
+import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.service.UserServiceImp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
