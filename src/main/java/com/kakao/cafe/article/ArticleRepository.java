@@ -9,6 +9,10 @@ public interface ArticleRepository {
 
     void save(Article article);
 
+    default void update(Article article) {}
+
+    default void delete(Article article) {}
+
     default Optional<Article> findBySeq(long seq) { return Optional.empty(); }
 
     Optional<Article> findByTitle(String title);

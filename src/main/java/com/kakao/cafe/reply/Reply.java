@@ -1,4 +1,4 @@
-package com.kakao.cafe.article;
+package com.kakao.cafe.reply;
 
 import lombok.Builder;
 import org.jetbrains.annotations.NotNull;
@@ -6,16 +6,16 @@ import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
 
-public class Article {
+public class Reply {
 
     private long seq;
 
     private long userSeq;
 
+    private long articleSeq;
+
     @NonNull
     private String writer;
-    @NonNull
-    private String title;
     @NonNull
     private String content;
 
@@ -24,11 +24,11 @@ public class Article {
     private boolean deleted;
 
     @Builder
-    private Article(long seq, long userSeq, @NotNull String writer, @NotNull String title, @NotNull String content, LocalDateTime time, boolean deleted) {
+    private Reply(long seq, long userSeq, long articleSeq, @NotNull String writer, @NotNull String content, LocalDateTime time, boolean deleted) {
         this.seq = seq;
         this.userSeq = userSeq;
+        this.articleSeq = articleSeq;
         this.writer = writer;
-        this.title = title;
         this.content = content;
         this.time = time;
         this.deleted = deleted;
@@ -42,12 +42,12 @@ public class Article {
         return userSeq;
     }
 
-    public @NotNull String getWriter() {
-        return writer;
+    public long getArticleSeq() {
+        return articleSeq;
     }
 
-    public @NotNull String getTitle() {
-        return title;
+    public @NotNull String getWriter() {
+        return writer;
     }
 
     public @NotNull String getContent() {
@@ -60,10 +60,6 @@ public class Article {
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public void setTime(LocalDateTime time) {
-        this.time = time;
     }
 
 }

@@ -60,11 +60,9 @@ public class UserController {
                 .id(userRequest.getUserId())
                 .password(userRequest.getPassword())
                 .build();
-        if (userService.loginUser(user)) {
-            session.setAttribute("sessionedUser", new UserDto(user));
-            return "redirect:/index";
-        }
-        return "redirect:/user/login_failed";
+        User validatedUser = userService.loginUser(user);
+        session.setAttribute("sessionedUser", new UserDto(validatedUser));
+        return "redirect:/index";
     }
 
     @GetMapping(path = "/login_failed")
@@ -75,7 +73,7 @@ public class UserController {
 
     @GetMapping(path = "/logout")
     public String userLogout(HttpSession session) {
-        session.removeAttribute("sessionedUser");
+        session.invalidate();
         return "redirect:/index";
     }
 
