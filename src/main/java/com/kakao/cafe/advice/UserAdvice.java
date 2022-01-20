@@ -18,6 +18,7 @@ public class UserAdvice {
         log.info("start unauthenticatedException()");
         model.addAttribute("referer", request.getHeader("referer"));
         model.addAttribute("message", "로그인이 필요합니다.");
+        model.addAttribute("login", "/users/login");
         return "/error";
     }
 

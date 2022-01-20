@@ -78,4 +78,16 @@ public class UserRepository implements CrudRepository<User, Integer> {
 
         return jdbcTemplate.query(query.toString(), (rs, rowNum) -> new User(rs.getInt("id"), rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email")));
     }
+
+    @Override
+    public Boolean delete(User entity) {
+        StringBuilder query = new StringBuilder();
+        query.append("DELETE FROM users WHERE users.id = ?");
+        int delete = jdbcTemplate.update(query.toString(), entity.getId());
+        if (delete > 0) {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+    }
 }

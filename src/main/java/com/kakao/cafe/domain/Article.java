@@ -15,5 +15,11 @@ public class Article {
     private String writer;
     private String title;
     private String contents;
+    private Integer userPk;
+
+    public void update(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 
 }

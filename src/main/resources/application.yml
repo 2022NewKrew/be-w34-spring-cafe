@@ -21,6 +21,10 @@ spring:
       schema-locations: classpath:db/schema-mysql.sql
       data-locations: classpath:db/data-mysql.sql
       mode: always
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
 handlebars:
   suffix: .html
