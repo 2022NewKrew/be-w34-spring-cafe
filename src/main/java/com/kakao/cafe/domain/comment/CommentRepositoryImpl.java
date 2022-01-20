@@ -67,6 +67,8 @@ public class CommentRepositoryImpl implements CommentRepository {
                 .writerId(rs.getLong("writer_id"))
                 .content(rs.getString("content"))
                 .createdAt(getLocalDateTime(rs, "created_at"))
+                .updatedAt(getLocalDateTime(rs, "updated_at"))
+                .deleted(rs.getBoolean("deleted"))
                 .build();
     }
 
@@ -77,6 +79,8 @@ public class CommentRepositoryImpl implements CommentRepository {
                 .writerId(rs.getLong("writer_id"))
                 .content(rs.getString("content"))
                 .createdAt(getLocalDateTime(rs, "created_at"))
+                .updatedAt(getLocalDateTime(rs, "updated_at"))
+                .deleted(rs.getBoolean("deleted"))
                 .writerNickname(rs.getString("nickname"))
                 .build();
     }

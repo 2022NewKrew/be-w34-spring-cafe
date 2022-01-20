@@ -60,6 +60,7 @@ public class PostJdbcRepositoryImpl implements PostRepository {
                 .content(rs.getString("content"))
                 .createdAt(getLocalDateTime(rs, "created_at"))
                 .updatedAt(getLocalDateTime(rs, "updated_at"))
+                .deleted(rs.getBoolean("deleted"))
                 .writerNickname(rs.getString("nickname"))
                 .build();
     }
