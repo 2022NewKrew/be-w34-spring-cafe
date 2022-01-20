@@ -52,9 +52,9 @@ public class CafeUserServiceImpl implements CafeUserService {
     }
 
     @Override
-    public boolean editProfile(User user, String inputEmail) {
-        if(user != null && UserHelper.checkRegexOfEmail(inputEmail)) {
-            return cafeUserDao.editProfile(user, inputEmail);
+    public boolean editProfile(User user, User updateUser) {
+        if(user != null && UserHelper.checkRegexOfUpdate(updateUser)) {
+            return cafeUserDao.editProfile(user, updateUser);
         }
         return false;
     }

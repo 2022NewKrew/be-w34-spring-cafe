@@ -3,6 +3,8 @@ CREATE TABLE IF NOT EXISTS member (
     userId varchar(20) primary key,
     password varchar(20) not null,
     email varchar(40) not null unique,
+    name varchar(12) not null,
+    createdAt timestamp default now(),
     tombstone bool default false
 );
 

@@ -5,10 +5,18 @@ public class User {
     private String password;
     private String email;
     private String name;
+    private String createdAt;
 
+    public User() {
+    }
     public User(String userId, String email) {
         this.userId = userId;
         this.email = email;
+    }
+    public User(String userId, String email, String createdAt) {
+        this.userId = userId;
+        this.email = email;
+        this.createdAt = createdAt;
     }
 
     // getter

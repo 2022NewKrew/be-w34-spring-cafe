@@ -114,10 +114,11 @@ public class CafeUserController {
     }
 
     @PutMapping("/profile/edit")
-    String editProfile (HttpSession httpSession, String email) {
+    String editProfile (HttpSession httpSession, User updateUser) {
         User user = (User) httpSession.getAttribute("signInUser");
-        if(cafeUserService.editProfile(user, email)) {
-            user.setEmail(email);
+        if(cafeUserService.editProfile(user, updateUser)) {
+            user.setEmail(updateUser.getEmail());
+            user.setName(updateUser.getName());
             httpSession.setAttribute("signInUser", user);
             return USER_REDIRECT_PROFILE_EDIT;
         }

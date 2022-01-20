@@ -144,3 +144,5 @@
   - https://github.com/paulschwarz/spring-dotenv
 - 404 error
   - https://goddaehee.tistory.com/214
+- HTML 템플릿
+  - https://kyung-a.tistory.com/18

@@ -11,7 +11,7 @@ public interface CafeUserDao {
     User getUserProfile(String userId);
 
     boolean adminEditProfile (User user, String inputPassword);
-    boolean editProfile (User user, String inputEmail);
+    boolean editProfile (User user, User updateUser);
 
     boolean deleteProfile(String userId);
 }

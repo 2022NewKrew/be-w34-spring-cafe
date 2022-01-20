@@ -29,7 +29,7 @@
             <li><a class="black-component" href="/users/sign-up" role="button">회원가입</a></li>
             {{/signInUser}}
             {{#signInUser}}
-            <li class="login-active"><a href="/users/profile/{{userId}}">{{userId}} ({{email}}) 님</a></li>
+            <li class="login-active"><a href="/users/profile/{{userId}}">{{name}} ({{email}}) 님</a></li>
             <li>
                 <form id="logout" method="post" action="/users/sign-out">
                     <a class="black-component" href="javascript:;" onclick="document.getElementById('logout').submit()" role="button">로그아웃</a>
@@ -55,13 +55,13 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>닉네임</th> <th>이메일</th> <th>회원가입일</th><th></th>
+                    <th>이름</th> <th>이메일</th> <th>회원가입일</th><th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {{#userList}}
                 <tr>
-                    <td><a href="/users/profile/{{userId}}">{{userId}}</a></td> <td>{{email}}</td><td>2021-12-14</td>
+                    <td><a href="/users/profile/{{userId}}">{{userId}}</a></td> <td>{{email}}</td><td>{{createdAt}}</td>
                 </tr>
                 {{/userList}}
                 </tbody>

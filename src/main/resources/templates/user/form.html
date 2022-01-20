@@ -29,7 +29,7 @@
                 <li><a class="black-component" href="/users/sign-up" role="button">회원가입</a></li>
                 {{/signInUser}}
                 {{#signInUser}}
-                <li class="login-active"><a href="/users/profile/{{userId}}">{{userId}} ({{email}}) 님</a></li>
+                <li class="login-active"><a href="/users/profile/{{userId}}">{{name}} ({{email}}) 님</a></li>
                 <li>
                     <form id="logout" method="post" action="/users/sign-out">
                         <a class="black-component" href="javascript:;" onclick="document.getElementById('logout').submit()" role="button">로그아웃</a>
@@ -50,12 +50,16 @@
         {{^signInUser}}
         <form name="question" class="info-container" method="post" action="/users/sign-up">
             <div class="form-group">
-                <label for="email">이메일</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
-            </div>
-            <div class="form-group">
                 <label for="userId">닉네임</label>
                 <input class="form-control" id="userId" name="userId" placeholder="닉네임을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="userId">이름</label>
+                <input class="form-control" id="name" name="name" placeholder="이름을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
             </div>
             <div class="form-group">
                 <label for="password">비밀번호</label>

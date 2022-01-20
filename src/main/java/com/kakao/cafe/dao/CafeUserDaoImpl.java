@@ -22,13 +22,14 @@ public class CafeUserDaoImpl implements CafeUserDao {
 
     @Override
     public boolean signUp(User newUser) {
-        String sql = "INSERT INTO member (userId, password, email)\n"
-                + "VALUES (?,?,?)";
+        String sql = "INSERT INTO member (userId, password, email, name)\n"
+                + "VALUES (?,?,?,?)";
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,newUser.getUserId());
             pstmt.setString(2,newUser.getPassword());
             pstmt.setString(3,newUser.getEmail());
+            pstmt.setString(4,newUser.getName());
 
             int updateCnt = pstmt.executeUpdate();
             if( updateCnt == 1 ) {
@@ -42,7 +43,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
 
     @Override
     public boolean SignIn(User signInUser) {
-        String sql = "SELECT email, password FROM member\n"
+        String sql = "SELECT email, password, name FROM member\n"
                 + "WHERE userId=? and tombstone=false";
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -53,6 +54,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
 
                 if(signInUser.getPassword().equals(password)) {
                     signInUser.setEmail(rs.getString("email"));
+                    signInUser.setName(rs.getString("name"));
                     return true;
                 }
             }
@@ -65,7 +67,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
     @Override
     public List<User> getUserList() {
         List<User> userList = new ArrayList<>();
-        String sql = "SELECT userId, email FROM member\n"
+        String sql = "SELECT userId, email, createdAt FROM member\n"
                 + "WHERE tombstone=false";
 
         try (Connection conn = dataSource.getConnection()) {
@@ -74,7 +76,8 @@ public class CafeUserDaoImpl implements CafeUserDao {
             while(rs.next()) {
                 String userId = rs.getString("userId");
                 String email = rs.getString("email");
-                userList.add(new User(userId, email));
+                String createdAt = rs.getString("createdAt").substring(0,10);
+                userList.add(new User(userId, email, createdAt));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,7 +88,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
     @Override
     public User getUserProfile(String userId) {
         User selectedUser = null;
-        String sql = "SELECT email FROM member\n"
+        String sql = "SELECT email, name FROM member\n"
                 + "WHERE userId=? and tombstone=false";
 
         try (Connection conn = dataSource.getConnection()) {
@@ -94,7 +97,9 @@ public class CafeUserDaoImpl implements CafeUserDao {
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
                 String email = rs.getString("email");
+                String name = rs.getString("name");
                 selectedUser = new User(userId, email);
+                selectedUser.setName(name);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -122,14 +127,15 @@ public class CafeUserDaoImpl implements CafeUserDao {
     }
 
     @Override
-    public boolean editProfile(User user, String inputEmail) {
+    public boolean editProfile(User user, User updateUser) {
         String sql = "UPDATE member\n"
-                + "SET email=?\n"
+                + "SET name=?, email=?\n"
                 + "WHERE userId=? and tombstone=false";
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, inputEmail);
-            pstmt.setString(2, user.getUserId());
+            pstmt.setString(1, updateUser.getName());
+            pstmt.setString(2, updateUser.getEmail());
+            pstmt.setString(3, user.getUserId());
             int updateCnt = pstmt.executeUpdate();
             if( updateCnt > 0 ) {
                 return true;

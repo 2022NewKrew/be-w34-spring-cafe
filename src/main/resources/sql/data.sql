@@ -1,8 +1,8 @@
-INSERT INTO member (userId, password, email)
-VALUES ('1','1','1@email.com'),
-       ('2','2','2@email.com'),
-       ('3','3','3@email.com'),
-       ('4','4','4@email.com');
+INSERT INTO member (userId, password, email, name)
+VALUES ('1','1','1@email.com', '111'),
+       ('2','2','2@email.com', '222'),
+       ('3','3','3@email.com', '333'),
+       ('4','4','4@email.com', '444');
 
 INSERT INTO post (userId, title, content)
 VALUES ('1', '1번이 작성했어요', '1번이 작성한 내용이예요.'),
