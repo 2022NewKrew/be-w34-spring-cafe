@@ -37,6 +37,17 @@ public class Article {
         this.countOfComment = countOfComment;
     }
 
+    public Article(Long id, Long userFK, String writer, String title, String contents, Long countOfComment) {
+        this.id = id;
+        this.userFk = userFK;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.writingTime = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
+        this.countOfComment = countOfComment;
+    }
+
     public void setArticleId(Long id) {
         this.id = id;
     }

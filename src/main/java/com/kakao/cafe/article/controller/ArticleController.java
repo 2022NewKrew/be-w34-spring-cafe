@@ -1,6 +1,7 @@
 package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.annotaion.LoginCheck;
+import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.dto.ArticleViewDTO;
 import com.kakao.cafe.article.dto.DetailArticleViewDTO;
 import com.kakao.cafe.article.dto.QuestionDTO;
@@ -11,10 +12,7 @@ import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.nio.file.AccessDeniedException;
@@ -48,8 +46,8 @@ public class ArticleController {
     }
 
     @LoginCheck
-    @GetMapping("/articles/{index}")
-    public String getArticleById(@PathVariable("index") Long id, Model model) {
+    @GetMapping("/articles/{id}")
+    public String getArticleById(@PathVariable("id") Long id, Model model) {
         model.addAttribute("article", new DetailArticleViewDTO(articleService.findById(id)));
 
         return "qna/show";
@@ -70,4 +68,37 @@ public class ArticleController {
         articleService.deleteArticle(user.getId(), id);
         return "redirect:/";
     }
+
+    @LoginCheck
+    @GetMapping("/articles/{id}/form")
+    public String getUpdateArticleForm(@PathVariable("id") Long id, HttpSession session, Model model) throws AccessDeniedException {
+        String userId = (String) session.getAttribute("sessionOfUser");
+        User user = userService.findByUserId(userId);
+        Article article = articleService.findById(id);
+
+        if (user.getId() != article.getUserFk()) {
+            throw new AccessDeniedException("게시물 수정 권한이 없습니다.");
+        }
+
+        model.addAttribute("article", ArticleFactory.toDTO(article.getTitle(), article.getContents()));
+
+        return "/qna/updateForm";
+    }
+
+
+    @LoginCheck
+    @PutMapping("/articles/{id}")
+    public String updateArticle(@PathVariable("id") Long id, QuestionDTO nQuestionDTO, HttpSession session) throws AccessDeniedException {
+        String userId = (String) session.getAttribute("sessionOfUser");
+        User user = userService.findByUserId(userId);
+        Article article = articleService.findById(id);
+
+        articleService.updateArticle(user.getId(),
+                ArticleFactory.toArticle(article.getUserFk(), article.getWriter(), article.getId(), article.getCountOfComment(), nQuestionDTO)
+        );
+
+        return "redirect:/articles/" + id;
+    }
+
+
 }

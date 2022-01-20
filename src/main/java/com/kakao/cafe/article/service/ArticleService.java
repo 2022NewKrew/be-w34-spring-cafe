@@ -35,4 +35,12 @@ public class ArticleService {
         }
         articleRepository.delete(articleId);
     }
+
+    public void updateArticle(Long userFK, Article article) throws AccessDeniedException {
+        if (userFK != article.getUserFk()) {
+            throw new AccessDeniedException("해당 게시물을 수정할 수 있는 권한이 없습니다.");
+        }
+        articleRepository.save(article);
+    }
+
 }

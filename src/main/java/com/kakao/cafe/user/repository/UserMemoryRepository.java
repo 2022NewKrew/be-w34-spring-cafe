@@ -18,7 +18,7 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public void save(User user) {
         if (user.getId() != null) {
-            userMap.put(user.getId(), user);
+            update(user);
             return;
         }
         user.setId(userMap.size() + 1L);
@@ -35,5 +35,9 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return List.copyOf(userMap.values());
+    }
+
+    private void update(User user) {
+        userMap.put(user.getId(), user);
     }
 }

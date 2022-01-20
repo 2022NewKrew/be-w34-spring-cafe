@@ -25,6 +25,10 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
+        if (article.getId() != null) {
+            update(article);
+            return;
+        }
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement pstmt = con.prepareStatement("insert into ARTICLES (USER_FK,WRITER,TITLE,CONTENTS,WRITING_TIME,COUNT_COMMENT)" +
@@ -57,6 +61,10 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     @Override
     public void delete(Long id) {
         jdbcTemplate.update("delete from ARTICLES where ID = ?", id);
+    }
+
+    private void update(Article article) {
+        jdbcTemplate.update("update ARTICLES set TITLE=?,CONTENTS=?,WRITING_TIME=? where ID = ?", article.getTitle(), article.getContents(), article.getWritingTime(), article.getId());
     }
 
     private RowMapper<Article> articleRowMapper() {
