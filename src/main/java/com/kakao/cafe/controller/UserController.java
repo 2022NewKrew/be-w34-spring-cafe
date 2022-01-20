@@ -42,7 +42,7 @@ public class UserController {
         } catch (IllegalStateException e) {
             return "redirect:/dupIdFound";
         }
-        logger.info("New User added: " + userDto.getId());
+        logger.info("New User added - " + userDto.getId());
         return "redirect:/users";
     }
 

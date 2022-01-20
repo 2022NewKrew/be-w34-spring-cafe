@@ -67,7 +67,7 @@ public class ArticleController {
         }
 
         articleService.add(articleDto);
-        logger.info("New Article added: " + articleDto.getTitle());
+        logger.info("New Article added -  " + articleDto.getTitle());
         return "redirect:/";
     }
 
@@ -179,6 +179,7 @@ public class ArticleController {
         }
 
         if (articleService.delete(idx)) {
+            logger.info("Article deleted - " + idx);
             return "redirect:/";
         }
 

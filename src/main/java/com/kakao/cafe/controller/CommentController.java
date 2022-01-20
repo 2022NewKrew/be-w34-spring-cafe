@@ -44,7 +44,7 @@ public class CommentController {
         }
 
         commentService.add(commentDto);
-        logger.info("New Comment added");
+        logger.info("New Comment added by " + commentDto.getUserId());
         return "redirect:/articles/" + commentDto.getArticleIdx();
     }
 
@@ -109,6 +109,7 @@ public class CommentController {
         }
 
         if (commentService.delete(idx)) {
+            logger.info("Comment deleted " + idx);
             return "redirect:/articles/" + articleIdx;
         }
 
