@@ -42,6 +42,15 @@ public class ArticleDao {
         }
     }
 
+    public CommentVo filterCommentById(int commentId) {
+        try {
+            String sql = "SELECT comments.id AS id, user_id, writer_id, name, contents FROM comments INNER JOIN USERS U on U.id = comments.writer_id WHERE comments.id = ?";
+            return jdbcTemplate.queryForObject(sql, commentRowMapper(), commentId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     public void writeArticle(ArticleVo article) {
         String sql = "INSERT INTO articles (title, contents, writer_id) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, article.getTitle(), article.getContents(), article.getWriter().getId());

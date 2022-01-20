@@ -6,6 +6,7 @@ import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.annotation.Auth;
 import com.kakao.cafe.util.annotation.MyArticle;
+import com.kakao.cafe.util.annotation.MyComment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -84,7 +85,7 @@ public class ArticleController {
         return "redirect:";
     }
 
-    @Auth
+    @MyComment
     @DeleteMapping("/articles/{index}/comments/{commentId}")
     public String deleteComment(@PathVariable int index, @PathVariable int commentId) {
         articleService.deleteComment(commentId);

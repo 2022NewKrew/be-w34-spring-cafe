@@ -45,6 +45,11 @@ public class ArticleService {
         return modelMapper.map(articleVo, ArticleDto.class);
     }
 
+    public CommentDto filterCommentById(int commentId) {
+        CommentVo commentVo = articleDao.filterCommentById(commentId);
+        return modelMapper.map(commentVo, CommentDto.class);
+    }
+
     public void writeArticle(ArticleDto article, UserDto user) {
         article.setWriter(modelMapper.map(user, UserVo.class));
         articleDao.writeArticle(modelMapper.map(article, ArticleVo.class));
