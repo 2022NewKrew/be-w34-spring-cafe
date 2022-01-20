@@ -14,6 +14,7 @@ public class Article {
     private String content;
     private LocalDate createDate;
     private Long memberId;
+    private Boolean deleted;
 
     public void setId(Long id) {
         this.id = id;
