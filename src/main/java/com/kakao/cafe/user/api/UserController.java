@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.api;
 
+import com.kakao.cafe.global.util.SessionUtil;
 import com.kakao.cafe.user.dto.request.LoginReq;
 import com.kakao.cafe.user.dto.request.SignUpReq;
 import com.kakao.cafe.user.dto.request.UserUpdateReq;
@@ -52,24 +53,24 @@ public class UserController {
     public String login(@Valid LoginReq req, HttpSession session) {
         log.info("[POST] : /users/login - 로그인 요청");
         UserDto user = userService.getLoginUser(req);
-        session.setAttribute("user", user);
+        SessionUtil.saveUserSession(user, session);
         return "redirect:/";
     }
 
     @PutMapping("/update")
     public String updateUser(@Valid UserUpdateReq req, HttpSession session) {
-        UserDto user = (UserDto) session.getAttribute("user");
+        UserDto user = SessionUtil.getUserSession(session);
         log.info("[PUT] : /users/update - {} 유저 정보 수정", user.getUserId());
 
         UserDto newUser = userService.updateUser(user.getId(), req);
-        session.setAttribute("user", newUser);
+        SessionUtil.saveUserSession(newUser, session);
         return "redirect:/";
     }
 
     @DeleteMapping("/logout")
     public String logout(HttpSession session) {
         log.info("[DELETE] : /users/logout - 로그아웃 요청");
-        session.invalidate();
+        SessionUtil.removeSession(session);
         return "redirect:/";
     }
 
