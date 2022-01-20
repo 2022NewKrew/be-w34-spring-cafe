@@ -39,7 +39,7 @@
   - MvcConfig 이름으로 클래스를 생성해 구현
 
 ### 피드백
-- [ ] ControllerAdvice를 이용한 예외처리 및 에러 발생 시 보여주는 웹페이지 개발
+- [x] ControllerAdvice를 이용한 예외처리 및 에러 발생 시 보여주는 웹페이지 개발
 - [x] repository에 들어가는 List와 Long을 동기화가 가능한 타입으로 변경
   - 참고자료
     - [volatile](https://jyami.tistory.com/112)
