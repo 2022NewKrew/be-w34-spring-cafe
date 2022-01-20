@@ -1,5 +1,6 @@
 package com.kakao.cafe.service.post;
 
+import com.kakao.cafe.domain.comment.CommentRepository;
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.post.PostRepository;
 import com.kakao.cafe.exception.NoAuthorizationException;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
     private final ModelMapper modelMapper;
 
     public void writePost(PostWriteRequest post, long writerId) {
@@ -72,13 +75,24 @@ public class PostService {
         }
     }
 
+    @Transactional
     public void deletePost(long id, long writerId) {
         PostDto post = getPostById(id, writerId);
+        checkCanDeletePost(post.getId(), writerId);
+
         try {
-            postRepository.updateDeletedById(post.getId());
+            postRepository.updateDeletedById(id);
+            commentRepository.updateDeletedByPostId(post.getId());
         } catch (DataAccessException e) {
+            e.printStackTrace();
             throw new IllegalArgumentException("게시글 삭제에 실패하였습니다.");
         }
     }
 
+    private void checkCanDeletePost(long id, long writerId) {
+        long countOfComments = commentRepository.countByPostIdAndWriterIdNot(id, writerId);
+        if (countOfComments > 0) {
+            throw new IllegalArgumentException("다른 작성자가 작성한 댓글이 남아있기 때문에 게시글을 삭제할 수 없습니다.");
+        }
+    }
 }

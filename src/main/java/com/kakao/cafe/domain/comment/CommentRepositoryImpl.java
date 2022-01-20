@@ -40,12 +40,26 @@ public class CommentRepositoryImpl implements CommentRepository {
             "   updated_at = ? " +
             "WHERE " +
             "   id = ?";
+    private static final String SQL_FOR_UPDATE_DELETED_BY_POST_ID = "" +
+            "UPDATE " +
+            "   comments " +
+            "SET " +
+            "   deleted = 1, " +
+            "   updated_at = ? " +
+            "WHERE " +
+            "   post_id = ?";
     private static final String SQL_FOR_DELETE_BY_ID = "" +
             "DELETE FROM " +
             "   comments " +
             "WHERE " +
             "   id = ?";
-
+    private static final String SQL_FOR_COUNT_BY_POST_ID_AND_WRITER_ID_NOT = "" +
+            "SELECT " +
+            "   COUNT(*) " +
+            "FROM " +
+            "   comments " +
+            "WHERE " +
+            "   post_id = ? AND writer_id != ? AND deleted = 0";
     private final JdbcTemplate template;
 
     @Override
@@ -64,8 +78,19 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
+    public long countByPostIdAndWriterIdNot(long postId, long writerId) {
+        Long count = template.queryForObject(SQL_FOR_COUNT_BY_POST_ID_AND_WRITER_ID_NOT, Long.class, postId, writerId);
+        return count == null ? 0 : count;
+    }
+
+    @Override
     public void updateDeletedById(long id) {
         template.update(SQL_FOR_UPDATE_DELETED_BY_ID, LocalDateTime.now(), id);
+    }
+
+    @Override
+    public void updateDeletedByPostId(long postId) {
+        template.update(SQL_FOR_UPDATE_DELETED_BY_POST_ID, LocalDateTime.now(), postId);
     }
 
     @Override

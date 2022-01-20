@@ -8,5 +8,8 @@ public interface CommentRepository {
     Optional<Comment> findById(long id);
     List<Comment> findByPostId(long postId);
     void updateDeletedById(long id);
+    void updateDeletedByPostId(long postId);
     void deleteById(long id);
+
+    long countByPostIdAndWriterIdNot(long postId, long writerId);
 }
