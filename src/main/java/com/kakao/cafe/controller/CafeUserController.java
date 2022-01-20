@@ -44,6 +44,7 @@ public class CafeUserController {
     String userViewSignIn() {
         return USER_VIEW_SIGN_IN;
     }
+
     @PostMapping("/sign-in")
     String signIn(HttpSession httpSession, User signInUser) {
         if(httpSession.getAttribute("signInUser") == null && cafeUserService.SignIn(signInUser)) {
@@ -57,6 +58,7 @@ public class CafeUserController {
     String userViewSingUp() {
         return USER_VIEW_SIGN_UP;
     }
+
     @PostMapping("/sign-up")
     String signUp(HttpSession httpSession, User newUser){ // 회원가입
         if(httpSession.getAttribute("signInUser") == null && cafeUserService.signUp(newUser)) {
@@ -101,6 +103,7 @@ public class CafeUserController {
     String userViewProfile () {
         return USER_VIEW_PROFILE_EDIT_ADMIN;
     }
+
     @PostMapping("/profile/edit")
     String adminEditProfile (HttpSession httpSession, String password) {
         User user = (User) httpSession.getAttribute("signInUser");
@@ -109,6 +112,7 @@ public class CafeUserController {
         }
         return USER_REDIRECT_PROFILE_EDIT_ADMIN_FAIL;
     }
+
     @PutMapping("/profile/edit")
     String editProfile (HttpSession httpSession, String email) {
         User user = (User) httpSession.getAttribute("signInUser");

@@ -39,6 +39,7 @@ public class CafeReplyController {
         }
         return REPLY_REDIRECT_SUBMIT_FAIL;
     }
+
     @DeleteMapping("/{postId}/{replyId}")
     String deleteReply(HttpSession httpSession, @NonNull @PathVariable("postId") int postId, @NonNull @PathVariable("replyId") int replyId) {
         User user = (User) httpSession.getAttribute("signInUser");
@@ -50,5 +51,4 @@ public class CafeReplyController {
         }
         return REPLY_REDIRECT_DELETE_FAIL;
     }
-
 }

@@ -100,6 +100,7 @@ public class CafePostController {
         }
        return POST_REDIRECT_EDIT_FAIL;
     }
+
     @PostMapping("/edit/{postId}")
     String editPost (HttpSession httpSession, @NonNull @PathVariable("postId") int postId, @NonNull Post post) {
         User loginUser = (User) httpSession.getAttribute("signInUser");
@@ -111,6 +112,7 @@ public class CafePostController {
         }
         return POST_REDIRECT_EDIT_FAIL;
     }
+
     @DeleteMapping("/delete/{postId}")
     String deletePost(HttpSession httpSession, @NonNull @PathVariable("postId") int postId) {
         User loginUser = (User) httpSession.getAttribute("signInUser");
