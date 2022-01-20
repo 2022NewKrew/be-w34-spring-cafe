@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.model.Article;
-import com.kakao.cafe.domain.dto.ArticleSaveDTO;
+import com.kakao.cafe.domain.dto.ArticleSaveDto;
 import com.kakao.cafe.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository repository;
 
-    public void save(ArticleSaveDTO articleSaveDTO){
+    public void save(ArticleSaveDto articleSaveDTO){
         repository.save(articleSaveDTO);
     }
 

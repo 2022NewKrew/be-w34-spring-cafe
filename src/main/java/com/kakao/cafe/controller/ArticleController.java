@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.model.Article;
-import com.kakao.cafe.domain.dto.ArticleSaveDTO;
+import com.kakao.cafe.domain.dto.ArticleSaveDto;
 import com.kakao.cafe.domain.model.User;
 import com.kakao.cafe.exception.InvalidUserException;
 import com.kakao.cafe.service.ArticleService;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.security.auth.message.AuthException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Objects;
@@ -34,7 +33,7 @@ public class ArticleController {
     }
 
     @PostMapping("/post")
-    public String postArticle(@Valid ArticleSaveDTO articleSaveDTO, HttpSession session) throws Exception {
+    public String postArticle(@Valid ArticleSaveDto articleSaveDTO, HttpSession session) throws Exception {
 
         Object value = session.getAttribute("sessionedUser");
         if(Objects.isNull(value)){

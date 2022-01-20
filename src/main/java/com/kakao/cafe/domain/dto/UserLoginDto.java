@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 @AllArgsConstructor
 @Getter
-public class UserLoginDTO {
+public class UserLoginDto {
     @NotBlank
     private String userId;
 

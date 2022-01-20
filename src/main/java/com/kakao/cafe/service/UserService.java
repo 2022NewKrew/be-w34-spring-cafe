@@ -1,8 +1,8 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.dto.UserLoginDTO;
-import com.kakao.cafe.domain.dto.UserSignUpDTO;
-import com.kakao.cafe.domain.dto.UserViewDTO;
+import com.kakao.cafe.domain.dto.UserLoginDto;
+import com.kakao.cafe.domain.dto.UserSignUpDto;
+import com.kakao.cafe.domain.dto.UserViewDto;
 import com.kakao.cafe.domain.model.User;
 import com.kakao.cafe.exception.InvalidPasswordException;
 import com.kakao.cafe.repository.UserRepository;
@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountNotFoundException;
-import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -21,7 +19,7 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
 
-    public void signUp(UserSignUpDTO userSignUpDTO) {
+    public void signUp(UserSignUpDto userSignUpDTO) {
         User user = new User(userSignUpDTO.getUserId(),
                 userSignUpDTO.getPassword(),
                 userSignUpDTO.getName(),
@@ -29,19 +27,19 @@ public class UserService {
         userRepository.signUp(user);
     }
 
-    public List<UserViewDTO> findAllUsers() {
+    public List<UserViewDto> findAllUsers() {
         return userRepository.findAllUsers().stream()
-                .map(UserViewDTO::new)
+                .map(UserViewDto::new)
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public UserViewDTO findUserById(String userId) {
+    public UserViewDto findUserById(String userId) {
         User user =  userRepository.findUserByUserId(userId);
 
-        return new UserViewDTO(user);
+        return new UserViewDto(user);
     }
 
-    public User login(UserLoginDTO userLoginDTO) throws Exception {
+    public User login(UserLoginDto userLoginDTO) throws Exception {
         User user =  Optional.ofNullable(userRepository.findUserByUserId(userLoginDTO.getUserId()))
                 .orElseThrow(AccountNotFoundException::new);
 

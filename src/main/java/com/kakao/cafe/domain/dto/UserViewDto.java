@@ -3,17 +3,16 @@ package com.kakao.cafe.domain.dto;
 
 import com.kakao.cafe.domain.model.User;
 import lombok.Getter;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Objects;
 
 @Getter
-public class UserViewDTO {
+public class UserViewDto {
     private final String userId;
     private final String name;
     private final String email;
 
-    public UserViewDTO(User user){
+    public UserViewDto(User user){
         validateUser(user);
 
         this.userId = user.getUserId();

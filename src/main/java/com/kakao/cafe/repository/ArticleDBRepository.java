@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.dto.ArticleSaveDTO;
+import com.kakao.cafe.domain.dto.ArticleSaveDto;
 import com.kakao.cafe.domain.model.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -8,8 +8,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +22,7 @@ public class ArticleDBRepository implements ArticleRepository{
     }
 
     @Override
-    public void save(ArticleSaveDTO articleSaveDTO) {
+    public void save(ArticleSaveDto articleSaveDTO) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 
         simpleJdbcInsert.withTableName("ARTICLE_TABLE").usingGeneratedKeyColumns("ID", "CREATED_AT");

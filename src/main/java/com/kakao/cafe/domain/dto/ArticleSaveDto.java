@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 
 @RequiredArgsConstructor
 @Getter
-public class ArticleSaveDTO {
+public class ArticleSaveDto {
 
     @NotBlank
     private final String title;
