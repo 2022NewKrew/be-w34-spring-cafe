@@ -53,7 +53,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         String query = "SELECT ARTICLE.id, USERS.name, USERS.id, ARTICLE.title, ARTICLE.created, ARTICLE.comment_count" +
                 " FROM ARTICLE" +
                 " JOIN USERS" +
-                " ON ARTICLE.author_id = USERS.id";
+                " ON ARTICLE.author_id = USERS.id" +
+                " WHERE ARTICLE.status = TRUE";
         return jdbcTemplate.query(query, mapRowArticles());
     }
 
@@ -76,7 +77,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public void deleteArticle(Long id) {
-        jdbcTemplate.update("DELETE FROM ARTICLE WHERE id = ?", id);
+        jdbcTemplate.update("UPDATE ARTICLE SET comment_count = 0, status = false WHERE id = ?", id);
     }
 
     private RowMapper<ArticleListDto> mapRowArticles() {

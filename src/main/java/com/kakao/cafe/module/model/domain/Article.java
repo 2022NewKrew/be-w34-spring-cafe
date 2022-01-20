@@ -17,4 +17,5 @@ public class Article {
     private LocalDateTime created;
     private Integer viewCount;
     private Integer commentCount;
+    private boolean status;
 }

@@ -62,8 +62,8 @@ public class ArticleController {
 
     @DeleteMapping("/{id}")
     public String deleteArticle(@PathVariable Long id, HttpSession session) throws HttpSessionRequiredException {
-        infraService.validateSession(session, articleService.showArticle(id).getAuthorId());
-        articleService.deleteArticle(id);
+        Long authorId = infraService.validateSession(session, articleService.showArticle(id).getAuthorId());
+        articleService.deleteArticle(id, authorId);
         logger.info("Delete Article : {}", id);
         return "redirect:/";
     }

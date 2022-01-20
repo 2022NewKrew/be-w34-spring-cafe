@@ -18,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static com.kakao.cafe.module.model.dto.ReplyDtos.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -70,7 +71,7 @@ class ReplyControllerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 6})
+    @ValueSource(ints = {1, 4})
     void 댓글_삭제(int idx) throws Exception {
         mockMvc.perform(delete("/articles/1/reply/" + idx)
                         .session(session))
@@ -79,7 +80,7 @@ class ReplyControllerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {4, 5})
+    @ValueSource(ints = {2, 3})
     void 자신이_쓰지_않은_댓글_삭제(int idx) throws Exception {
         mockMvc.perform(delete("/articles/1/reply/" + idx)
                         .session(session))

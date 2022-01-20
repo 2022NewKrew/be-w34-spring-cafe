@@ -16,4 +16,5 @@ public class Reply {
     private Long authorId;
     private String comment;
     private LocalDateTime created;
+    private boolean status;
 }
