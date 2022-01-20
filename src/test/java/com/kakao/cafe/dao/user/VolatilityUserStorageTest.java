@@ -2,10 +2,8 @@ package com.kakao.cafe.dao.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.kakao.cafe.model.user.Email;
-import com.kakao.cafe.model.user.Name;
-import com.kakao.cafe.model.user.Password;
 import com.kakao.cafe.model.user.User;
+import com.kakao.cafe.model.user.UserFactory;
 import com.kakao.cafe.model.user.UserId;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -25,10 +23,7 @@ class VolatilityUserStorageTest {
         userDao = new VolatilityUserStorage();
         for (int i = 0; i < PRECONDITION_USER_NUMBER; i++) {
             userDao.addUser(
-                    new UserId("userId" + i),
-                    new Password("password" + i),
-                    new Name("name" + i),
-                    new Email("email" + i)
+                    UserFactory.getUser("userId" + i, "password" + i, "name" + i, "email" + i)
             );
         }
     }
@@ -57,17 +52,13 @@ class VolatilityUserStorageTest {
     @Test
     public void addUser() {
         //give
-        UserId userId = new UserId("userId");
-        Password password = new Password("password");
-        Name name = new Name("name");
-        Email email = new Email("email");
-
+        User newUser = UserFactory.getUser("userId", "password", "name", "email");
         //when
-        userDao.addUser(userId, password, name, email);
-        User user = userDao.findUserById(userId).orElseGet(null);
+        userDao.addUser(newUser);
+        User user = userDao.findUserById(newUser.getUserId()).orElseGet(null);
 
         //then
-        assertThat(user.getUserId()).isEqualTo(userId);
+        assertThat(user.getUserId().getValue()).isEqualTo("userId");
     }
 
     @DisplayName("설정된 초기 값이 존재할 때 findUserById 메서드를 실행하면 기다하는 값을 가져온다.")
@@ -98,15 +89,13 @@ class VolatilityUserStorageTest {
     @Test
     public void update() {
         //give
-        UserId userId = new UserId("userId" + 0);
-        Name name = new Name("newName");
-        Email email = new Email("newEmail");
+        User user = UserFactory.getUser("userId" + 0, "password" + 0, "newName", "newEmail");
         //when
-        userDao.update(userId, name, email);
-        User user = userDao.findUserById(userId).orElseGet(null);
+        userDao.update(user);
+        user = userDao.findUserById(new UserId("userId" + 0)).orElseGet(null);
 
         //then
-        assertThat(user.getName()).isEqualTo(name);
-        assertThat(user.getEmail()).isEqualTo(email);
+        assertThat(user.getName().getValue()).isEqualTo("newName");
+        assertThat(user.getEmail().getValue()).isEqualTo("newEmail");
     }
 }

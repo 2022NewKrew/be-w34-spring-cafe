@@ -38,9 +38,13 @@ public class JdbcArticleStorage implements ArticleDao {
     }
 
     @Override
-    public void addArticle(Title title, Writer writer, Contents contents) {
+    public void addArticle(Article article) {
         String query = "INSERT INTO ARTICLE(TITLE, WRITER, CONTENTS) VALUES (?, ?, ?)";
-        jdbcTemplate.update(query, title.getValue(), writer.getValue(), contents.getValue());
+        jdbcTemplate.update(
+                query,
+                article.getTitle().getValue(),
+                article.getWriter().getValue(),
+                article.getContents().getValue());
     }
 
     @Override
@@ -70,5 +74,21 @@ public class JdbcArticleStorage implements ArticleDao {
                 new Contents(resultSet.getString("CONTENTS")),
                 resultSet.getTimestamp("CREATE_DATE").toLocalDateTime()
         );
+    }
+
+    @Override
+    public void deleteArticle(int id) {
+        String query = "DELETE FROM ARTICLE WHERE ID = ?";
+        jdbcTemplate.update(query, id);
+    }
+
+    @Override
+    public void updateArticle(Article article) {
+        String query = "UPDATE ARTICLE SET TITLE = ?, CONTENTS = ? WHERE ID = ?";
+        jdbcTemplate.update(
+                query,
+                article.getTitle().getValue(),
+                article.getContents().getValue(),
+                article.getId());
     }
 }

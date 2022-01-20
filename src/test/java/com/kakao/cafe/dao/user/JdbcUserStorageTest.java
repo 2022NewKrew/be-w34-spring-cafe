@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kakao.cafe.model.user.Email;
 import com.kakao.cafe.model.user.Name;
-import com.kakao.cafe.model.user.Password;
 import com.kakao.cafe.model.user.User;
+import com.kakao.cafe.model.user.UserFactory;
 import com.kakao.cafe.model.user.UserId;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -61,17 +61,14 @@ class JdbcUserStorageTest {
     @Test
     public void addUser() {
         //give
-        UserId userId = new UserId("userId");
-        Password password = new Password("password");
-        Name name = new Name("name");
-        Email email = new Email("email");
+        User user = UserFactory.getUser("userId", "password", "name", "email");
 
         //when
-        userDao.addUser(userId, password, name, email);
-        User user = userDao.findUserById(userId).orElseGet(null);
+        userDao.addUser(user);
+        user = userDao.findUserById(user.getUserId()).orElseGet(null);
 
         //then
-        assertThat(user.getUserId()).isEqualTo(userId);
+        assertThat(user.getUserId()).isEqualTo(new UserId("userId"));
     }
 
     @DisplayName("설정된 초기 값이 존재할 때 findUserById 메서드를 실행하면 기대하는 값을 가져온다.")
@@ -102,16 +99,14 @@ class JdbcUserStorageTest {
     @Test
     public void update() {
         //give
-        UserId userId = new UserId("userId1");
-        Name name = new Name("newName");
-        Email email = new Email("newEmail");
+        User user = UserFactory.getUser("userId1", "password1", "newName", "newEmail");
 
         //when
-        userDao.update(userId, name, email);
-        User user = userDao.findUserById(userId).orElseGet(null);
+        userDao.update(user);
+        user = userDao.findUserById(user.getUserId()).orElseGet(null);
 
         //then
-        assertThat(user.getName()).isEqualTo(name);
-        assertThat(user.getEmail()).isEqualTo(email);
+        assertThat(user.getName()).isEqualTo(new Name("newName"));
+        assertThat(user.getEmail()).isEqualTo(new Email("newEmail"));
     }
 }

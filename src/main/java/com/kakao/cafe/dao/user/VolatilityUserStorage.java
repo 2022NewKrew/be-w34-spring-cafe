@@ -1,8 +1,5 @@
 package com.kakao.cafe.dao.user;
 
-import com.kakao.cafe.model.user.Email;
-import com.kakao.cafe.model.user.Name;
-import com.kakao.cafe.model.user.Password;
 import com.kakao.cafe.model.user.User;
 import com.kakao.cafe.model.user.UserId;
 import java.util.ArrayList;
@@ -26,10 +23,13 @@ public class VolatilityUserStorage implements UserDao {
     }
 
     @Override
-    public void addUser(UserId userId, Password password, Name name, Email email) {
-        checkExist(userId);
-
-        users.add(new User(userId, password, name, email));
+    public void addUser(User user) {
+        users.add(
+                new User(
+                        user.getUserId(),
+                        user.getPassword(),
+                        user.getName(),
+                        user.getEmail()));
     }
 
     @Override
@@ -46,22 +46,10 @@ public class VolatilityUserStorage implements UserDao {
     }
 
     @Override
-    public void update(UserId userId, Name name, Email email) {
-        User user = findUserById(userId).orElseThrow(
+    public void update(User newUser) {
+        User user = findUserById(newUser.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("찾는 사용자가 없습니다."));
-        user.setName(name);
-        user.setEmail(email);
-    }
-
-    private void checkExist(UserId userId) {
-        if (containUser(userId)) {
-            throw new IllegalArgumentException("이미 사용중인 아이디 입니다.");
-        }
-    }
-
-    private boolean containUser(UserId userId) {
-        return users
-                .stream()
-                .anyMatch(user -> user.isUserId(userId));
+        user.setName(newUser.getName());
+        user.setEmail(newUser.getEmail());
     }
 }

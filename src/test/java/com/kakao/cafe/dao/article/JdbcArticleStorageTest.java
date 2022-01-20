@@ -1,11 +1,14 @@
 package com.kakao.cafe.dao.article;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.kakao.cafe.model.article.Article;
+import com.kakao.cafe.model.article.ArticleFactory;
 import com.kakao.cafe.model.article.Contents;
 import com.kakao.cafe.model.article.Title;
-import com.kakao.cafe.model.article.Writer;
+import com.kakao.cafe.service.article.dto.ArticleCreateDto;
+import com.kakao.cafe.service.article.dto.ArticleUpdateDto;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,17 +67,16 @@ class JdbcArticleStorageTest {
     @Test
     public void addArticle() {
         //give
-        Title title = new Title("newTitle");
-        Writer writer = new Writer("writer");
-        Contents contents = new Contents("contents");
+        ArticleCreateDto articleCreateDto = new ArticleCreateDto("newArticle", "writer",
+                "contents");
         //when
-        articleDao.addArticle(title, writer, contents);
+        articleDao.addArticle(ArticleFactory.getArticle(articleCreateDto));
         Article article = articleDao
                 .findArticleById(PRECONDITION_ARTICLE_LENGTH + 1)
                 .orElseGet(null);
         //then
-        assertThat(article.getTitle())
-                .isEqualTo(title);
+        assertThat(article.getTitle().getValue())
+                .isEqualTo("newArticle");
     }
 
     @DisplayName("설정된 초기 값이 있을때 id로 Article을 찾으면 기대하는 값을 가져온다.")
@@ -98,5 +100,35 @@ class JdbcArticleStorageTest {
         int size = articleDao.getSize();
         //then
         assertThat(size).isEqualTo(PRECONDITION_ARTICLE_LENGTH);
+    }
+
+    @DisplayName("입력받은 id를 가지는 Article을 삭제한다.")
+    @Test
+    void deleteArticle() {
+        //give
+        int id = 1;
+        //when
+        articleDao.deleteArticle(id);
+        //then
+        assertThatThrownBy(
+                () -> articleDao.findArticleById(id).orElseThrow(IllegalArgumentException::new))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("입력받은 id와 articleUpdateDto를 통해서 기존의 Article을 수정한다.")
+    @Test
+    void updateArticle() {
+        //give
+        int id = 1;
+        ArticleUpdateDto articleUpdateDto = new ArticleUpdateDto("writer1", "newTitle", "newContents");
+        Article article = ArticleFactory.getArticle(1, articleUpdateDto);
+
+        //when
+        articleDao.updateArticle(article);
+        Article updatedArticle = articleDao.findArticleById(id).orElseThrow(()-> new IllegalArgumentException("exception"));
+
+        //then
+        assertThat(updatedArticle.getTitle()).isEqualTo(new Title("newTitle"));
+        assertThat(updatedArticle.getContents()).isEqualTo(new Contents("newContents"));
     }
 }

@@ -1,8 +1,5 @@
 package com.kakao.cafe.dao.user;
 
-import com.kakao.cafe.model.user.Email;
-import com.kakao.cafe.model.user.Name;
-import com.kakao.cafe.model.user.Password;
 import com.kakao.cafe.model.user.User;
 import com.kakao.cafe.model.user.UserId;
 import java.util.List;
@@ -12,11 +9,11 @@ public interface UserDao {
 
     List<User> getUsers();
 
-    void addUser(UserId userId, Password password, Name name, Email email);
+    void addUser(User user);
 
     Optional<User> findUserById(UserId userId);
 
     int getSize();
 
-    void update(UserId userId, Name name, Email email);
+    void update(User user);
 }
