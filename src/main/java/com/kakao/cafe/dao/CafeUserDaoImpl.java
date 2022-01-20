@@ -67,7 +67,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
     @Override
     public List<User> getUserList() {
         List<User> userList = new ArrayList<>();
-        String sql = "SELECT userId, email, createdAt FROM member\n"
+        String sql = "SELECT userId, email, createdAt, name FROM member\n"
                 + "WHERE tombstone=false";
 
         try (Connection conn = dataSource.getConnection()) {
@@ -76,8 +76,9 @@ public class CafeUserDaoImpl implements CafeUserDao {
             while(rs.next()) {
                 String userId = rs.getString("userId");
                 String email = rs.getString("email");
+                String name = rs.getString("name");
                 String createdAt = rs.getString("createdAt").substring(0,10);
-                userList.add(new User(userId, email, createdAt));
+                userList.add(new User(userId, email, name, createdAt));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,13 +109,13 @@ public class CafeUserDaoImpl implements CafeUserDao {
     }
 
     @Override
-    public boolean adminEditProfile(User user, String inputPassword) {
+    public boolean adminEditProfile(String loginUser, String inputPassword) {
         String sql = "SELECT password FROM member\n"
                 + "WHERE userId=? and tombstone=false";
 
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, user.getUserId());
+            pstmt.setString(1, loginUser);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
                 String password = rs.getString("password");
@@ -127,7 +128,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
     }
 
     @Override
-    public boolean editProfile(User user, User updateUser) {
+    public boolean editProfile(String loginUser, User updateUser) {
         String sql = "UPDATE member\n"
                 + "SET name=?, email=?\n"
                 + "WHERE userId=? and tombstone=false";
@@ -135,7 +136,7 @@ public class CafeUserDaoImpl implements CafeUserDao {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, updateUser.getName());
             pstmt.setString(2, updateUser.getEmail());
-            pstmt.setString(3, user.getUserId());
+            pstmt.setString(3, loginUser);
             int updateCnt = pstmt.executeUpdate();
             if( updateCnt > 0 ) {
                 return true;

@@ -1,5 +1,6 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.resolver.LoginUserArgumentResolver;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -7,10 +8,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
@@ -42,6 +45,16 @@ public class MvcConfiguration implements WebMvcConfigurer {
 
         // 시작페이지 조정
         registry.addRedirectViewController("/", "/posts/list");
+    }
+
+    @Bean
+    public LoginUserArgumentResolver loginUserArgumentResolver() {
+        return new LoginUserArgumentResolver();
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(loginUserArgumentResolver());
     }
 
     @Bean

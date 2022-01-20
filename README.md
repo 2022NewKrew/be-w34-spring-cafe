@@ -87,6 +87,9 @@
   - [\s\S] 를 사용하여 모든 문자에 대해 허용하도록 수정
 - 스프링의 경우, 기본 에러페이지로 /error 를 사용
   - 이를 활용하여,에러 화면을 만들고 configuration 에서 해당 경로를 사용하도록 연결
+- custom annotation 의 경우, annotation 용 인터페이스가 따로 존재 ( @interface )
+  - 해당 annotation 의 존재를 검사할 argumentResolver 를 생성
+  - resolver 를 configuration 에 등록
 
 # 배포 절차
 - 실패한 방법
@@ -146,3 +149,9 @@
   - https://goddaehee.tistory.com/214
 - HTML 템플릿
   - https://kyung-a.tistory.com/18
+- Spring annotation + methodhandler
+  - https://livenow14.tistory.com/51
+  - https://tram-devlog.tistory.com/entry/Spring-%EC%BB%A4%EC%8A%A4%ED%85%80-HandlerMethodArgumentResolver-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
+- lombok + logger
+  - https://howtodoinjava.com/spring-boot2/logging/logging-with-lombok/
+  - https://gthoya.tistory.com/entry/Spring-boot-gradle-lombok-cannot-find-symbol

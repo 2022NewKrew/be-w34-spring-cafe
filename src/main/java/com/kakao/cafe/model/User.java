@@ -13,9 +13,10 @@ public class User {
         this.userId = userId;
         this.email = email;
     }
-    public User(String userId, String email, String createdAt) {
+    public User(String userId, String email, String name, String createdAt) {
         this.userId = userId;
         this.email = email;
+        this.name=name;
         this.createdAt = createdAt;
     }
 

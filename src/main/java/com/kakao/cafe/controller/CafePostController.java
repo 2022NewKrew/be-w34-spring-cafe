@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.annotation.LoginUser;
 import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.Post;
 import com.kakao.cafe.model.Reply;
@@ -20,10 +21,13 @@ import java.util.List;
 public class CafePostController {
     final CafePostService cafePostService;
     final CafeReplyService cafeReplyService;
+
     public CafePostController(CafePostService cafePostService, CafeReplyService cafeReplyService) {
         this.cafePostService = cafePostService;
         this.cafeReplyService = cafeReplyService;
     }
+
+    private final static String SIGN_IN_USER = "signInUser";
 
     private static final String POST_DIRECTORY = "post";
     private static final String POST_VIEW_LIST = POST_DIRECTORY+"/list";
@@ -41,8 +45,8 @@ public class CafePostController {
     private static final String POST_REDIRECT_DELETE_FAIL = REDIRECT_PREFIX+"/posts/edit/fail";
 
     @GetMapping("/write")
-    String postViewWrite(HttpSession httpSession) {
-        if( httpSession.getAttribute("signInUser") == null) {
+    String postViewWrite(@LoginUser String loginUser) {
+        if(loginUser == null) {
             return POST_REDIRECT_NON_USER;
         }
         return POST_VIEW_WRITE;
@@ -50,12 +54,9 @@ public class CafePostController {
 
     @PostMapping("/write")
     @Transactional(readOnly = true)
-    String writePost (HttpSession httpSession, @NonNull Post newPost) {
-        Object signInUser = httpSession.getAttribute("signInUser");
-        if( signInUser != null ) {
-            String userId = ((User)signInUser).getUserId();
-            newPost.setUserId(userId);
-
+    String writePost (@LoginUser String loginUser, @NonNull Post newPost) {
+        if( loginUser != null ) {
+            newPost.setUserId(loginUser);
             if(cafePostService.writePost(newPost)) {
                 return POST_REDIRECT_LIST;
             }
@@ -72,13 +73,12 @@ public class CafePostController {
     }
 
     @GetMapping("/content/{postId}")
-    String getPostContent(Model model, HttpSession httpSession, @NonNull @PathVariable("postId") int postId) {
-        User loginUser = (User) httpSession.getAttribute("signInUser");
+    String getPostContent(Model model, @LoginUser String loginUser, @NonNull @PathVariable("postId") int postId) {
         if( loginUser != null ) {
             Post post = cafePostService.getPostContent(postId);
             model.addAttribute("post", post);
 
-            boolean canEdit = loginUser.getUserId().equals(post.getUserId());
+            boolean canEdit = loginUser.equals(post.getUserId());
             model.addAttribute("canEdit", canEdit);
 
             List<Reply> replyList = cafeReplyService.getReplyList(postId);
@@ -89,11 +89,10 @@ public class CafePostController {
     }
 
     @GetMapping("/edit/{postId}")
-    String postViewEdit(Model model, HttpSession httpSession, @PathVariable("postId") int postId) {
-        User loginUser = (User) httpSession.getAttribute("signInUser");
+    String postViewEdit(Model model, @LoginUser String loginUser, @PathVariable("postId") int postId) {
         if( loginUser != null ) {
             Post post = cafePostService.postViewEdit(postId);
-            if( post != null && loginUser.getUserId().equals(post.getUserId()) ) {
+            if( post != null && loginUser.equals(post.getUserId()) ) {
                 model.addAttribute("post", post);
                 return POST_VIEW_EDIT;
             }
@@ -102,25 +101,17 @@ public class CafePostController {
     }
 
     @PostMapping("/edit/{postId}")
-    String editPost (HttpSession httpSession, @NonNull @PathVariable("postId") int postId, @NonNull Post post) {
-        User loginUser = (User) httpSession.getAttribute("signInUser");
-        if( loginUser != null ) {
-            String userId = loginUser.getUserId();
-            if (cafePostService.editPost(userId, postId, post)) {
-                return POST_REDIRECT_EDIT_SUCCESS;
-            }
+    String editPost (@LoginUser String loginUser, @NonNull @PathVariable("postId") int postId, @NonNull Post post) {
+        if( loginUser != null && cafePostService.editPost(loginUser, postId, post)) {
+            return POST_REDIRECT_EDIT_SUCCESS;
         }
         return POST_REDIRECT_EDIT_FAIL;
     }
 
     @DeleteMapping("/delete/{postId}")
-    String deletePost(HttpSession httpSession, @NonNull @PathVariable("postId") int postId) {
-        User loginUser = (User) httpSession.getAttribute("signInUser");
-        if(loginUser != null) {
-            String userId = loginUser.getUserId();
-            if(cafePostService.deletePost(postId, userId)) {
-                return POST_REDIRECT_DELETE_SUCCESS;
-            }
+    String deletePost(@LoginUser String loginUser, @NonNull @PathVariable("postId") int postId) {
+        if(loginUser != null && cafePostService.deletePost(postId, loginUser)) {
+            return POST_REDIRECT_DELETE_SUCCESS;
         }
         return POST_REDIRECT_DELETE_FAIL;
     }

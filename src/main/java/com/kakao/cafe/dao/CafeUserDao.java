@@ -10,8 +10,8 @@ public interface CafeUserDao {
     List<User> getUserList();
     User getUserProfile(String userId);
 
-    boolean adminEditProfile (User user, String inputPassword);
-    boolean editProfile (User user, User updateUser);
+    boolean adminEditProfile (String loginUser, String inputPassword);
+    boolean editProfile (String loginUser, User updateUser);
 
     boolean deleteProfile(String userId);
 }
