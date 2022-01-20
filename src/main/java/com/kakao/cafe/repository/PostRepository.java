@@ -14,4 +14,6 @@ public interface PostRepository {
     Optional<Post> findById(UUID id);
 
     void update(Post post);
+
+    void delete(Post post);
 }

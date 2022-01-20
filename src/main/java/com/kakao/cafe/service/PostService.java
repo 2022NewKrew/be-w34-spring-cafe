@@ -86,4 +86,12 @@ public class PostService {
         validateWriter(post, sessionUserId);
         postRepository.update(requestDto.toEntity(post.getWriterId(), postId));
     }
+
+    @Transactional
+    public void delete(UUID postId, UUID sessionUserId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+        validateWriter(post, sessionUserId);
+        postRepository.delete(post);
+    }
 }

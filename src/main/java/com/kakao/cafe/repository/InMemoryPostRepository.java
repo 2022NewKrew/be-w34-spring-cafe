@@ -37,4 +37,9 @@ public class InMemoryPostRepository implements PostRepository {
     public void update(Post post) {
         posts.update(post);
     }
+
+    @Override
+    public void delete(Post post) {
+        posts.delete(post);
+    }
 }

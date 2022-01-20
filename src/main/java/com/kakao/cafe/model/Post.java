@@ -11,6 +11,7 @@ public class Post {
     private String title;
     private String content;
     private final Timestamp createdAt;
+    private boolean deleted;
 
     private Post(Builder builder) {
         this.id = builder.id;
@@ -40,17 +41,27 @@ public class Post {
         return createdAt;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public void update(Post modified) {
         this.title = modified.title;
         this.content = modified.content;
     }
 
+    public void delete() {
+        this.deleted = true;
+    }
+
     public static class Builder {
+
         private final UUID id;
         private final UUID writerId;
         private final String title;
         private final String content;
         private final Timestamp createdAt;
+        private final boolean deleted;
 
         public Builder(UUID writerId, String title, String content) {
             this.id = UUID.randomUUID();
@@ -58,6 +69,7 @@ public class Post {
             this.title = title;
             this.content = content;
             this.createdAt = Timestamp.valueOf(LocalDateTime.now());
+            this.deleted = false;
         }
 
         public Builder(UUID id, UUID writerId, String title, String content) {
@@ -66,14 +78,16 @@ public class Post {
             this.title = title;
             this.content = content;
             this.createdAt = Timestamp.valueOf(LocalDateTime.now());
+            this.deleted = false;
         }
 
-        public Builder(UUID id, UUID writerId, String title, String content, Timestamp createdAt) {
+        public Builder(UUID id, UUID writerId, String title, String content, Timestamp createdAt, boolean deleted) {
             this.id = id;
             this.writerId = writerId;
             this.title = title;
             this.content = content;
             this.createdAt = createdAt;
+            this.deleted = deleted;
         }
 
         public Post build() {
