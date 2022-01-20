@@ -23,6 +23,14 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    public void updateArticle(Article article) {
+        articleRepository.update(article);
+    }
+
+    public void deleteArticle(Article article) {
+        articleRepository.delete(article);
+    }
+
     public Article findBySeq(long seq) {
         return articleRepository.findBySeq(seq).orElseThrow();
     }
@@ -34,4 +42,5 @@ public class ArticleService {
     public List<Article> getAllArticles() {
         return articleRepository.findAll();
     }
+
 }
