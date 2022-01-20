@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 public class JdbcUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private static final RowMapper<User> userRowMapper = userRowMapper();
 
     @Autowired
     public JdbcUserRepository(DataSource dataSource) {
@@ -34,14 +35,14 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         final String sql = "SELECT id, userId, password, name, email, createdAt FROM USERS";
-        return jdbcTemplate.query(sql, userRowMapper());
+        return jdbcTemplate.query(sql, userRowMapper);
     }
 
     @Override
     public Optional<User> findById(UUID id) {
         final String sql = "SELECT id, userId, password, name, email, createdAt FROM USERS WHERE id = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper(), id));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper, id));
         } catch (DataAccessException e) {
             return Optional.empty();
         }
@@ -51,13 +52,13 @@ public class JdbcUserRepository implements UserRepository {
     public Optional<User> findByUserId(String userId) {
         final String sql = "SELECT id, userId, password, name, email, createdAt FROM USERS WHERE userId = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper(), userId));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper, userId));
         } catch (DataAccessException e) {
             return Optional.empty();
         }
     }
 
-    private RowMapper<User> userRowMapper() {
+    private static RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> new User.Builder(
                 rs.getObject("id", UUID.class),
                 rs.getString("userId"),
