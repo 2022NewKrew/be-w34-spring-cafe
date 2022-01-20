@@ -2,6 +2,8 @@ package com.kakao.cafe.web;
 
 import com.kakao.cafe.article.ArticleService;
 import com.kakao.cafe.article.Articles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +16,15 @@ import java.util.List;
 @Controller
 @RequestMapping("/articles")
 public class ArticleController {
-    private final ArticleService articleService = new ArticleService();
+    private final ArticleService articleService;
+
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
 
     @GetMapping
     public String getArticles(Model model) {
-        List<Articles> articleList = articleService.getArticleList();
+        List<Articles> articleList = articleService.getArticles();
         model.addAttribute("articleList", articleList);
         return "article/list";
     }
