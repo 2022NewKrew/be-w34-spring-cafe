@@ -2,7 +2,6 @@ package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.repository.ArticleRepository;
-import com.kakao.cafe.exception.AccessDeniedException;
 import com.kakao.cafe.exception.ArticleNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,18 +27,14 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public void deleteArticle(Long userFK, Long articleId)  {
+    public void deleteArticle(Long userFK, Long articleId) {
         Article article = findById(articleId);
-        if (userFK != article.getUserFk()) {
-            throw new AccessDeniedException("해당 게시물을 삭제할 수 있는 권한이 없습니다.");
-        }
+        article.validateAccessDeleteArticle(userFK);
         articleRepository.delete(articleId);
     }
 
     public void updateArticle(Long userFK, Article article) {
-        if (userFK != article.getUserFk()) {
-            throw new AccessDeniedException("해당 게시물을 수정할 수 있는 권한이 없습니다.");
-        }
+        article.validateAccessUpdateArticle(userFK);
         articleRepository.save(article);
     }
 

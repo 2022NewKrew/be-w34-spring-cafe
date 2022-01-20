@@ -1,5 +1,6 @@
 package com.kakao.cafe.article.domain;
 
+import com.kakao.cafe.exception.AccessDeniedException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -50,5 +51,17 @@ public class Article {
 
     public void setArticleId(Long id) {
         this.id = id;
+    }
+
+    public void validateAccessUpdateArticle(Long userFK) {
+        if (userFK != this.userFk) {
+            throw new AccessDeniedException("해당 게시물을 수정 할 수 있는 권한이 없습니다.");
+        }
+    }
+
+    public void validateAccessDeleteArticle(Long userFK) {
+        if (userFK != this.userFk) {
+            throw new AccessDeniedException("해당 게시물을 수정 할 수 있는 권한이 없습니다.");
+        }
     }
 }

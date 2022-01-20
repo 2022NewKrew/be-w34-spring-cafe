@@ -7,7 +7,6 @@ import com.kakao.cafe.article.dto.DetailArticleViewDTO;
 import com.kakao.cafe.article.dto.QuestionDTO;
 import com.kakao.cafe.article.factory.ArticleFactory;
 import com.kakao.cafe.article.service.ArticleService;
-import com.kakao.cafe.exception.AccessDeniedException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -61,7 +60,7 @@ public class ArticleController {
 
     @LoginCheck
     @DeleteMapping("/articles/{id}")
-    public String deleteArticle(@PathVariable("id") Long id, HttpSession session)  {
+    public String deleteArticle(@PathVariable("id") Long id, HttpSession session) {
         String userId = (String) session.getAttribute("sessionOfUser");
         User user = userService.findByUserId(userId);
 
@@ -71,15 +70,11 @@ public class ArticleController {
 
     @LoginCheck
     @GetMapping("/articles/{id}/form")
-    public String getUpdateArticleForm(@PathVariable("id") Long id, HttpSession session, Model model)  {
+    public String getUpdateArticleForm(@PathVariable("id") Long id, HttpSession session, Model model) {
         String userId = (String) session.getAttribute("sessionOfUser");
         User user = userService.findByUserId(userId);
         Article article = articleService.findById(id);
-
-        if (user.getId() != article.getUserFk()) {
-            throw new AccessDeniedException("게시물 수정 권한이 없습니다.");
-        }
-
+        article.validateAccessUpdateArticle(user.getId());
         model.addAttribute("article", ArticleFactory.toDTO(article.getTitle(), article.getContents()));
 
         return "/qna/updateForm";
