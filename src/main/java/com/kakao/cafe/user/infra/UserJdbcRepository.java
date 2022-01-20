@@ -50,11 +50,6 @@ public class UserJdbcRepository implements UserRepository {
     }
 
     @Override
-    public boolean existsById(String userId) {
-        return findByIdOrNull(userId) != null;
-    }
-
-    @Override
     public void delete(User user) {
         String userId = user.getUserId();
         String query = "delete from users where user_id = ?";

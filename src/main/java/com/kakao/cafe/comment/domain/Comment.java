@@ -29,12 +29,6 @@ public class Comment {
     @NonNull
     private String createdAt;
 
-//    @NonNull
-//    private User author;
-//
-//    @NonNull
-//    private Article article;
-
     private Comment(int articleId, String authorId, String content, String createdAt) {
         this.articleId = articleId;
         this.authorId = authorId;

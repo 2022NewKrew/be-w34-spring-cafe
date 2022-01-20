@@ -1,16 +1,15 @@
 package com.kakao.cafe.comment.application;
 
-import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.domain.ArticleRepository;
+import com.kakao.cafe.article.application.ArticleService;
 import com.kakao.cafe.comment.application.dto.CommentListResponse;
 import com.kakao.cafe.comment.application.dto.CommentSaveRequest;
 import com.kakao.cafe.comment.domain.Comment;
 import com.kakao.cafe.comment.domain.CommentRepository;
 import com.kakao.cafe.comment.infra.CommentJdbcRepository;
-import com.kakao.cafe.common.exception.EntityNotFoundException;
 import com.kakao.cafe.user.domain.SessionedUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,11 +18,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CommentService {
 
-    private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
+    private final ArticleService articleService;
 
-    public CommentService(ArticleRepository articleRepository, CommentJdbcRepository commentJdbcRepository) {
-        this.articleRepository = articleRepository;
+    public CommentService(ArticleService articleService, CommentJdbcRepository commentJdbcRepository) {
+        this.articleService = articleService;
         this.commentRepository = commentJdbcRepository;
     }
 
@@ -33,15 +32,17 @@ public class CommentService {
         return comments.stream().map(CommentListResponse::valueOf).collect(Collectors.toList());
     }
 
+    @Transactional
     public void save(int articleId, SessionedUser sessionedUser, CommentSaveRequest commentSaveRequest) {
         log.info(this.getClass() + ": 댓글 작성");
         String authorId = sessionedUser.getUserId();
-        validateArticleExists(articleId);
+        articleService.validateArticleExists(articleId);
         Comment comment = commentSaveRequest.toComment(articleId, authorId);
 
         commentRepository.save(comment);
     }
 
+    @Transactional
     public void deleteById(String commentId, SessionedUser sessionedUser) {
         log.info(this.getClass() + ": 댓글 삭제");
         Comment comment = commentRepository.findByIdOrNull(commentId);
@@ -49,12 +50,5 @@ public class CommentService {
         sessionedUser.validateSession(authorId);
 
         commentRepository.delete(comment);
-    }
-
-    private void validateArticleExists(int articleId) throws EntityNotFoundException {
-        Article article = articleRepository.findByIdOrNull(articleId);
-        if (article == null) {
-            EntityNotFoundException.throwNotExistsByField(Article.class, "articleId", articleId);
-        }
     }
 }

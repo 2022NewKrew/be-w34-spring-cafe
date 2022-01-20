@@ -32,11 +32,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean existsById(String userId) {
-        return currentUsers.stream().anyMatch(user -> user.isSameUserById(userId));
-    }
-
-    @Override
     public void delete(User user) {
         currentUsers.remove(user);
     }
