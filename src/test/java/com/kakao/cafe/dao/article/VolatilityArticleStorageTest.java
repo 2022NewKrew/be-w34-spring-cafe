@@ -1,6 +1,5 @@
 package com.kakao.cafe.dao.article;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -27,7 +26,7 @@ class VolatilityArticleStorageTest {
         articleDao = new VolatilityArticleStorage();
         for (int i = 1; i <= PRECONDITION_NUMBER_OF_ARTICLE_EXIST; i++) {
             articleDao.addArticle(
-                    ArticleFactory.getArticle("title" + i, "writer" + i, "contents" + i));
+                    ArticleFactory.getArticle("title" + i, "userId" + i, "contents" + i));
         }
     }
 
@@ -55,13 +54,12 @@ class VolatilityArticleStorageTest {
     @Test
     public void addArticle() {
         //give
-        ArticleCreateDto articleCreateDto = new ArticleCreateDto("newArticle", "writer",
+        ArticleCreateDto articleCreateDto = new ArticleCreateDto("newArticle", "userId",
                 "contents");
 
         //when
-        articleDao.addArticle(ArticleFactory.getArticle(articleCreateDto));
-        Article article = articleDao.findArticleById(PRECONDITION_NUMBER_OF_ARTICLE_EXIST + 1)
-                .orElseGet(null);
+
+        Article article = articleDao.addArticle(ArticleFactory.getArticle(articleCreateDto));
 
         //then
         assertThat(article.getTitle().getValue()).isEqualTo("newArticle");
@@ -112,12 +110,14 @@ class VolatilityArticleStorageTest {
     void updateArticle() {
         //give
         int id = 1;
-        ArticleUpdateDto articleUpdateDto = new ArticleUpdateDto("writer1", "newTitle", "newContents");
+        ArticleUpdateDto articleUpdateDto = new ArticleUpdateDto("userId1", "newTitle",
+                "newContents");
         Article article = ArticleFactory.getArticle(1, articleUpdateDto);
 
         //when
         articleDao.updateArticle(article);
-        Article updatedArticle = articleDao.findArticleById(id).orElseThrow(()-> new IllegalArgumentException("exception"));
+        Article updatedArticle = articleDao.findArticleById(id)
+                .orElseThrow(() -> new IllegalArgumentException("exception"));
 
         //then
         assertThat(updatedArticle.getTitle()).isEqualTo(new Title("newTitle"));

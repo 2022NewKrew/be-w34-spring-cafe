@@ -7,9 +7,12 @@ public enum RedirectUrl {
     LOGIN_REDIRECT_URL("POST", "/login", "redirect:/login/form"),
     REGISTER_REDIRECT_URL("POST", "/users", "redirect:/users/form"),
     USER_UPDATE_REDIRECT_URL("POST", "/users/update", "redirect:/users/update"),
+    ARTICLE_POST_PERMISSION_REDIRECT_URL("GET", "/articles/form", "redirect:/index"),
     ARTICLE_UPDATE_PERMISSION_REDIRECT_URL("GET", "/articles/update", "redirect:/articles"),
     ARTICLE_DELETE_PERMISSION_REDIRECT_URL("DELETE", "/articles/delete", "redirect:/articles"),
     ARTICLE_UPDATE_REDIRECT_URL("PUT", "/articles/update", "redirect:/articles/update"),
+    REPLY_CREATE_REDIRECT_URL("POST", "/replies", "redirect:/articles"),
+    REPLY_DELETE_REDIRECT_URL("DELETE", "/replies", "redirect:/articles"),
     DEFAULT_REDIRECT_URL("", "", "redirect:/");
 
     private final String method;

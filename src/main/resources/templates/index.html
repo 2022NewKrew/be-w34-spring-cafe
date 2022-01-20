@@ -1,6 +1,6 @@
 {{>header}}
-{{>errorMessage}}
 <div class="container" id="main">
+    {{>errorMessage}}
    <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
       <div class="panel panel-default qna-list">
           <ul class="list">
@@ -14,7 +14,7 @@
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
                               <span class="time">{{createDate}}</span>
-                              <a href="/users/{{writer}}" class="author">{{writer}}</a>
+                              <a href="/users/{{userId}}" class="author">{{userId}}</a>
                           </div>
                           <div class="reply" title="댓글">
                               <i class="icon-reply"></i>

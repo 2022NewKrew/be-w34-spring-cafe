@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,36 +19,48 @@ public class VolatilityArticleStorage implements ArticleDao {
 
     @Override
     public List<Article> getArticles(int pageNumber, int articlesPerPage) {
+        List<Article> filteredList = articles
+                .stream()
+                .filter(article -> !article.isDeleted())
+                .collect(Collectors.toList());
         int startIndex = (pageNumber - 1) * articlesPerPage;
         int finishIndex = articlesPerPage * pageNumber;
-        if (articles.size() < finishIndex) {
-            return new ArrayList<>(articles.subList(startIndex, articles.size()));
+        if (filteredList.size() < finishIndex) {
+            return new ArrayList<>(filteredList.subList(startIndex, filteredList.size()));
         }
-        return new ArrayList<>(articles.subList(startIndex, finishIndex));
+        return new ArrayList<>(filteredList.subList(startIndex, finishIndex));
     }
 
     @Override
-    public void addArticle(Article article) {
+    public Article addArticle(Article article) {
+
         articles.add(
                 FRONT_OF_LIST,
                 new Article(
                         nextArticleId.getAndIncrement(),
                         article.getTitle(),
-                        article.getWriter(),
+                        article.getUserId(),
                         article.getContents()));
+
+        return findArticleById(nextArticleId.get() - 1).orElseThrow(
+                () -> new RuntimeException("article을 생성하고 반환하는 과정에서 발생한 예외"));
     }
 
     @Override
     public Optional<Article> findArticleById(int id) {
         return articles
                 .stream()
+                .filter(article -> !article.isDeleted())
                 .filter(article -> article.getId() == id)
                 .findFirst();
     }
 
     @Override
     public int getSize() {
-        return articles.size();
+        return (int) articles
+                .stream()
+                .filter(article -> !article.isDeleted())
+                .count();
     }
 
     @Override
@@ -57,7 +70,7 @@ public class VolatilityArticleStorage implements ArticleDao {
                 .filter(article -> article.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("찾는 게시물이 없습니다."));
-        articles.remove(targetArticle);
+        targetArticle.setDeleted(true);
     }
 
     @Override

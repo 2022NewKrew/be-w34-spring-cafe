@@ -3,12 +3,12 @@ package com.kakao.cafe.service.article.dto;
 public class ArticleCreateDto {
 
     private final String title;
-    private final String writer;
+    private final String userId;
     private final String contents;
 
-    public ArticleCreateDto(String title, String writer, String contents) {
+    public ArticleCreateDto(String title, String userId, String contents) {
         this.title = title;
-        this.writer = writer;
+        this.userId = userId;
         this.contents = contents;
     }
 
@@ -16,8 +16,8 @@ public class ArticleCreateDto {
         return title;
     }
 
-    public String getWriter() {
-        return writer;
+    public String getUserId() {
+        return userId;
     }
 
     public String getContents() {

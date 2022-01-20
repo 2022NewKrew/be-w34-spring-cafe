@@ -35,18 +35,29 @@ class JdbcArticleStorageTest {
 
     @BeforeEach
     private void insertInitData() {
-        String sql = "INSERT INTO ARTICLE(TITLE, WRITER, CONTENTS) VALUES (?, ?, ?)";
+        String userSql = "INSERT INTO USER_DATA(USER_ID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?)";
         for (int i = 1; i <= 10; i++) {
-            jdbcTemplate.update(sql, "title" + i, "writer" + i, "contents" + i);
+            jdbcTemplate.update(userSql, "userId" + i, "password" + i, "name" + i, "email" + i);
+        }
+
+        String sql = "INSERT INTO ARTICLE(TITLE, USER_ID, CONTENTS) VALUES (?, ?, ?)";
+        for (int i = 1; i <= 10; i++) {
+            jdbcTemplate.update(sql, "title" + i, "userId" + i, "contents" + i);
         }
     }
 
     @AfterEach
     private void deleteInitData() {
-        String truncateSql = "TRUNCATE TABLE ARTICLE";
+        String preSql = "SET REFERENTIAL_INTEGRITY FALSE";
+        String postSql = "SET REFERENTIAL_INTEGRITY TRUE";
+        String truncateArticleSql = "TRUNCATE TABLE ARTICLE";
+        String truncateUserSql = "TRUNCATE TABLE USER_DATA";
         String initAutoIncrement = "ALTER TABLE ARTICLE ALTER COLUMN ID RESTART WITH 1";
-        jdbcTemplate.execute(truncateSql);
+        jdbcTemplate.execute(preSql);
+        jdbcTemplate.execute(truncateArticleSql);
+        jdbcTemplate.execute(truncateUserSql);
         jdbcTemplate.execute(initAutoIncrement);
+        jdbcTemplate.execute(postSql);
     }
 
     @DisplayName("설정된 초기값이 있을때 getArticles 메서드를 사용하면 기대하는 결과값을 반환한다.")
@@ -67,13 +78,11 @@ class JdbcArticleStorageTest {
     @Test
     public void addArticle() {
         //give
-        ArticleCreateDto articleCreateDto = new ArticleCreateDto("newArticle", "writer",
+        ArticleCreateDto articleCreateDto = new ArticleCreateDto("newArticle", "userId1",
                 "contents");
         //when
-        articleDao.addArticle(ArticleFactory.getArticle(articleCreateDto));
-        Article article = articleDao
-                .findArticleById(PRECONDITION_ARTICLE_LENGTH + 1)
-                .orElseGet(null);
+
+        Article article = articleDao.addArticle(ArticleFactory.getArticle(articleCreateDto));
         //then
         assertThat(article.getTitle().getValue())
                 .isEqualTo("newArticle");
@@ -120,12 +129,14 @@ class JdbcArticleStorageTest {
     void updateArticle() {
         //give
         int id = 1;
-        ArticleUpdateDto articleUpdateDto = new ArticleUpdateDto("writer1", "newTitle", "newContents");
+        ArticleUpdateDto articleUpdateDto = new ArticleUpdateDto("userId1", "newTitle",
+                "newContents");
         Article article = ArticleFactory.getArticle(1, articleUpdateDto);
 
         //when
         articleDao.updateArticle(article);
-        Article updatedArticle = articleDao.findArticleById(id).orElseThrow(()-> new IllegalArgumentException("exception"));
+        Article updatedArticle = articleDao.findArticleById(id)
+                .orElseThrow(() -> new IllegalArgumentException("exception"));
 
         //then
         assertThat(updatedArticle.getTitle()).isEqualTo(new Title("newTitle"));

@@ -36,17 +36,17 @@ class ContentsTest {
 
     private static List<String> getStringOverAllowedLength() {
         return List.of(
-                "a" .repeat(ALLOWED_LENGTH_CONTENTS + 1),
-                "b" .repeat(ALLOWED_LENGTH_CONTENTS + 2),
-                "c" .repeat(ALLOWED_LENGTH_CONTENTS + 3)
+                "a".repeat(ALLOWED_LENGTH_CONTENTS + 1),
+                "b".repeat(ALLOWED_LENGTH_CONTENTS + 2),
+                "c".repeat(ALLOWED_LENGTH_CONTENTS + 3)
         );
     }
 
     private static List<String> getStringUnderAllowedLength() {
         return List.of(
-                "a" .repeat(ALLOWED_LENGTH_CONTENTS),
-                "b" .repeat(ALLOWED_LENGTH_CONTENTS - 1),
-                "c" .repeat(ALLOWED_LENGTH_CONTENTS - 2)
+                "a".repeat(ALLOWED_LENGTH_CONTENTS),
+                "b".repeat(ALLOWED_LENGTH_CONTENTS - 1),
+                "c".repeat(ALLOWED_LENGTH_CONTENTS - 2)
         );
     }
 }

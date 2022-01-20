@@ -41,8 +41,12 @@ class JdbcUserStorageTest {
 
     @AfterEach
     private void deleteInitData() {
+        String preSql = "SET REFERENTIAL_INTEGRITY FALSE";
+        jdbcTemplate.execute(preSql);
         String sql = "TRUNCATE TABLE USER_DATA";
         jdbcTemplate.execute(sql);
+        String postSql = "SET REFERENTIAL_INTEGRITY TRUE";
+        jdbcTemplate.execute(postSql);
     }
 
     @DisplayName("설정된 초기 값이 존재할 때 getUsers 메서드를 실행하면 저장한 모든 User를 가져온다.")
