@@ -112,7 +112,7 @@ li {
 
 .post-content {
     margin-top: 20px;
-    margin-bottom: 80px;
+    margin-bottom : 20px;
     margin-left: 3%;
     font-weight: bold;
 }
@@ -173,8 +173,4 @@ li {
 
     display: flex;
     flex-direction: column;
-}
-
-.test {
-    margin-bottom: 20px;
 }

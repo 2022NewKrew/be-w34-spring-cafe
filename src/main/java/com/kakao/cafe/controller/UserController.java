@@ -47,6 +47,7 @@ public class UserController {
     public String showUpdateForm(@PathVariable Long id, Model model, @LoginCheck SessionUser sessionUser) {
 
         if(!sessionUser.getId().equals(id)){
+            // 에러 페이지로 이동하게 수정
             return "redirect:/users/login";
         }
 

@@ -32,6 +32,13 @@ public class JdbcArticleRepository implements ArticleRepository{
         return jdbcTemplate.query("SELECT * FROM articles", articleRowMapper());
     }
 
+    @Override
+    public void update(Article article) {
+        jdbcTemplate.update("UPDATE articles SET title=?, contents=? WHERE ID =?",
+                article.getTitle(), article.getContents(), article.getArticleId());
+
+    }
+
     private RowMapper<Article> articleRowMapper(){
         return (rs, rowNum) -> {
             return Article.builder()

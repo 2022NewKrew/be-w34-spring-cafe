@@ -3,6 +3,7 @@ package com.kakao.cafe.service.article;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.dto.article.ArticleReqDto;
 import com.kakao.cafe.dto.article.ArticleResDto;
+import com.kakao.cafe.dto.article.ArticleUpdateDto;
 import com.kakao.cafe.repository.article.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,5 +44,19 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleResDto findArticleById(Long articleId) {
         return new ArticleResDto(articleRepository.findByArticleId(articleId)
                 .orElseThrow(() -> new NullPointerException("존재하지 않는 게시글입니다.")));
+    }
+
+    @Override
+    public void updateArticle(ArticleUpdateDto articleUpdateDto) {
+        Article article = articleRepository.findByArticleId(articleUpdateDto.getArticleId())
+                .orElseThrow(() -> new NullPointerException("존재하지 않는 게시글입니다."));
+
+        articleRepository.update(Article.builder()
+                .articleId(article.getArticleId())
+                .writer(articleUpdateDto.getWriter())
+                .title(articleUpdateDto.getTitle())
+                .contents(articleUpdateDto.getContents())
+                .deleted(false)
+                .build());
     }
 }

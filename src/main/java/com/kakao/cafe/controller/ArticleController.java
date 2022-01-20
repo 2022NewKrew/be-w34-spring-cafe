@@ -3,6 +3,8 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.auth.LoginCheck;
 import com.kakao.cafe.dto.article.ArticleReqDto;
+import com.kakao.cafe.dto.article.ArticleResDto;
+import com.kakao.cafe.dto.article.ArticleUpdateDto;
 import com.kakao.cafe.dto.user.SessionUser;
 import com.kakao.cafe.service.article.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +49,38 @@ public class ArticleController {
     public String showArticle(@PathVariable Long articleId, Model model, @LoginCheck SessionUser sessionUser){
         model.addAttribute("article", articleService.findArticleById(articleId));
         return "article/show";
+    }
+
+    @GetMapping("/articles/{articleId}/form")
+    public String showArticleUpdateForm(@PathVariable Long articleId, Model model, @LoginCheck SessionUser sessionUser){
+
+        ArticleResDto articleResDto = articleService.findArticleById(articleId);
+        if(!sessionUser.getUserId().equals(articleResDto.getWriter())){
+            // 에러 페이지로 이동하게 수정
+            System.out.println("현재 유저: " + sessionUser.getUserId() + " 글쓴이 : " + articleResDto.getWriter());
+            return "redirect:/articles/{articleId}";
+        }
+        model.addAttribute("article",articleResDto);
+        return "article/updateForm";
+    }
+
+    @PostMapping("/articles/{articleId}")
+    public String updateArticle(@PathVariable Long articleId, String title, String contents, @LoginCheck SessionUser sessionUser){
+        ArticleResDto articleResDto = articleService.findArticleById(articleId);
+        if(!articleResDto.getWriter().equals(sessionUser.getUserId())){
+            //에러
+            System.out.println("현재 유저: " + sessionUser.getUserId() + " 글쓴이 : " + articleResDto.getWriter());
+            System.out.println("수정할 수 없습니다.");
+            return "redirect:/articles/{articleId}";
+        }
+
+        ArticleUpdateDto articleUpdateDto = ArticleUpdateDto.builder()
+                .articleId(articleId)
+                .writer(sessionUser.getUserId())
+                .title(title)
+                .contents(contents)
+                .build();
+        articleService.updateArticle(articleUpdateDto);
+        return "redirect:/articles/{articleId}";
     }
 }
