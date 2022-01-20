@@ -138,7 +138,7 @@ public class CafeApplicationTest {
     private MockHttpServletRequestBuilder createModifyUserRequest(long id) {
         return put("/users/" + id)
                 .queryParam("userId", "new_test_user" + id)
-                .queryParam("password", "new_test_pass")
+                .queryParam("password", "test_pass")
                 .queryParam("name", "new_test_name")
                 .queryParam("email", "email@example.com");
     }

@@ -1,5 +1,6 @@
 package com.kakao.cafe.app.data;
 
+import com.kakao.cafe.domain.entity.ModifyUser;
 import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;
 import org.junit.jupiter.api.AfterEach;
@@ -137,50 +138,12 @@ class JdbcUserRepositoryTest {
     }
 
     @Test
-    void updateUserId() {
-        subject.updateUserId(insertedId, "id1");
+    void update() {
+        subject.update(insertedId, new ModifyUser("name1", "email1"));
 
-        String userId = jdbcTemplate.queryForObject(
-                "SELECT user_id FROM users WHERE id = :id",
-                Collections.singletonMap("id", insertedId),
-                String.class
-        );
-        assertEquals("id1", userId);
-    }
+        User user = subject.getById(insertedId).orElseThrow();
 
-    @Test
-    void updatePassword() {
-        subject.updatePassword(insertedId, "password1");
-
-        String password = jdbcTemplate.queryForObject(
-                "SELECT password FROM users WHERE id = :id",
-                Collections.singletonMap("id", insertedId),
-                String.class
-        );
-        assertEquals("password1", password);
-    }
-
-    @Test
-    void updateName() {
-        subject.updateName(insertedId, "name1");
-
-        String name = jdbcTemplate.queryForObject(
-                "SELECT name FROM users WHERE id = :id",
-                Collections.singletonMap("id", insertedId),
-                String.class
-        );
-        assertEquals("name1", name);
-    }
-
-    @Test
-    void updateEmail() {
-        subject.updateEmail(insertedId, "email1");
-
-        String email = jdbcTemplate.queryForObject(
-                "SELECT email FROM users WHERE id = :id",
-                Collections.singletonMap("id", insertedId),
-                String.class
-        );
-        assertEquals("email1", email);
+        assertEquals("name1", user.getName());
+        assertEquals("email1", user.getEmail());
     }
 }

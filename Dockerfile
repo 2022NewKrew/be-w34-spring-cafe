@@ -1,7 +1,9 @@
-FROM openjdk:11-jre-slim
+FROM openjdk:11-jdk-slim AS build
+COPY . .
+RUN ./gradlew bootJar
 
-COPY ./build/libs/*.jar ./app.jar
-
+FROM openjdk:11-jre-slim AS run
+COPY --from=build ./build/libs/*.jar ./app.jar
 ENTRYPOINT [ \
     "java", \
     "-Dspring.datasource.url=${DB_URL}", \

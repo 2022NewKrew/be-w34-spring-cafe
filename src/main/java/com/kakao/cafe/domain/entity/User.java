@@ -28,6 +28,10 @@ public class User {
         return userId;
     }
 
+    public boolean canModify(User target, String password) {
+        return this.id == target.id && Objects.equals(password, target.password);
+    }
+
     public UserDto toDto() {
         return new UserDto.Builder()
                 .id(id)
@@ -50,6 +54,13 @@ public class User {
         return Objects.hash(userId, name, password, email);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 
     public static class Builder {
 

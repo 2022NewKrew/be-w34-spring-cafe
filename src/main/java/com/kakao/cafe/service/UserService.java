@@ -62,44 +62,14 @@ public class UserService {
 
     @Transactional
     public UserDto modify(long actorId, long targetId, ModifyUserDto modifyUser) {
-        if (actorId != targetId) {
+        User target = userRepository.getById(targetId)
+                .orElseThrow(NoSuchUserException::new);
+        User actor = userRepository.getById(actorId)
+                .orElseThrow(NoSuchUserException::new);
+        if (!actor.canModify(target, modifyUser.getPassword())) {
             throw new UnauthorizedException();
         }
-        Optional<User> found = userRepository.getById(targetId);
-        if (found.isEmpty()) {
-            throw new NoSuchUserException();
-        }
-        modifyUserId(targetId, modifyUser.getUserId());
-        modifyPassword(targetId, modifyUser.getPassword());
-        modifyName(targetId, modifyUser.getName());
-        modifyEmail(targetId, modifyUser.getEmail());
-        Optional<User> updated = userRepository.getById(targetId);
-        if (updated.isEmpty()) {
-            throw new IllegalStateException();
-        }
-        return updated.get().toDto();
-    }
-
-    private void modifyUserId(long id, String userId) {
-        Optional<User> found = userRepository.getByUserId(userId);
-        if (found.isPresent() && found.get().getId() != id) {
-            throw new DuplicateUserIdException();
-        }
-        userRepository.updateUserId(id, userId);
-    }
-
-    private void modifyPassword(long id, String password) {
-        if (password.equals("")) {
-            return;
-        }
-        userRepository.updatePassword(id, password);
-    }
-
-    private void modifyName(long id, String name) {
-        userRepository.updateName(id, name);
-    }
-
-    private void modifyEmail(long id, String email) {
-        userRepository.updateEmail(id, email);
+        User updated = userRepository.update(targetId, modifyUser.toEntity());
+        return updated.toDto();
     }
 }
