@@ -84,7 +84,7 @@ public class ArticleController {
     public String removeArticle(@PathVariable Long articleId, @LoginCheck SessionUser sessionUser){
         ArticleResDto articleResDto = articleService.findArticleById(articleId);
         if(sessionUser == null || !sessionUser.getUserId().equals(articleResDto.getWriter())){
-            log.error("Login Error : Different ID OR Need to Login";
+            log.error("Login Error : Different ID OR Need to Login");
             return "redirect:/users/login";
         }
 
