@@ -110,4 +110,9 @@ public class ArticleController {
 
         return "qna/form";
     }
+
+    @PostMapping("/reply")
+    public String reply() {
+        return "";
+    }
 }
