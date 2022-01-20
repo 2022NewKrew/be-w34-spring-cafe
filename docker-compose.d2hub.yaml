@@ -1,0 +1,4 @@
+version: "3.9"
+services:
+  app:
+    image: idock.daumkakao.io/private/onboarding-spring-cafe:latest
