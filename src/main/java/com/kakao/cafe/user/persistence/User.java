@@ -5,8 +5,7 @@ import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     private Long id;
@@ -14,10 +13,6 @@ public class User {
     private String password;
     private String name;
     private String email;
-
-    public static User of(Long id, String userId, String password, String name, String email) {
-        return new User(id, userId, password, name, email);
-    }
 
     public boolean validPassword(String password) {
         return this.password.equals(password);

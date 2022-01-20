@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.global.mapper.UserMapper;
 import com.kakao.cafe.user.dto.request.LoginReq;
 import com.kakao.cafe.user.dto.request.SignUpReq;
 import com.kakao.cafe.user.dto.request.UserUpdateReq;
