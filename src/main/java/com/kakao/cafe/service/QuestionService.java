@@ -6,6 +6,7 @@ import com.kakao.cafe.dto.mapper.QuestionMapper;
 import com.kakao.cafe.dto.question.QuestionResponseDto;
 import com.kakao.cafe.dto.question.QuestionSaveDto;
 import com.kakao.cafe.dto.question.QuestionUpdateDto;
+import com.kakao.cafe.dto.question.QuestionsResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class QuestionService {
         questionRepository.deleteById(id);
     }
 
-    public List<QuestionResponseDto> findAll(){
+    public List<QuestionsResponseDto> findAll(){
         return QuestionMapper.INSTANCE.toDtoList(questionRepository.findAll());
     }
 

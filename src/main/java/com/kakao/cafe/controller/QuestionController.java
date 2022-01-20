@@ -49,17 +49,17 @@ public class QuestionController {
     public String update(@PathVariable int id, @ModelAttribute() QuestionUpdateDto questionUpdateDto, HttpSession session) {
         SessionUser sessionUser = (SessionUser)session.getAttribute("sessionUser");
         if (sessionUser.getId() != id){
-            throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 게시글의 사용자 정보가 다릅니다.");
+            throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 게시글의 작성자 정보가 다릅니다.");
         }
         questionService.update(id, questionUpdateDto);
         return "redirect:/questions/"+id;
     }
 
     @DeleteMapping("/questions/{id}")
-    public String update(@PathVariable int id, HttpSession session) {
+    public String deleteById(@PathVariable int id, HttpSession session) {
         SessionUser sessionUser = (SessionUser)session.getAttribute("sessionUser");
         if (sessionUser.getId() != questionService.findById(id).getUserId()){
-            throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 게시글의 사용자 정보가 다릅니다.");
+            throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 게시글의 작성자 정보가 다릅니다.");
         }
         questionService.deleteById(id);
         return "redirect:/";
