@@ -27,11 +27,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             response.sendRedirect("/user/login");
             return false;
         }
-
         if (handler instanceof HandlerMethod) {
             handleUserAuthorization(request, handler, auth);
         }
-
         return true;
     }
 

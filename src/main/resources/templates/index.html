@@ -10,6 +10,7 @@
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link href="/css/index.css" rel="stylesheet">
+    <link href="/css/paging.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -21,10 +22,11 @@
         </div>
     </div>
 
-    <p class="total_num">전체 게시글 {{articles.size}}개</p>
+    <p class="total_num">전체 게시글 {{articlePage.totalArticleSize}}개</p>
 
     <div class="container" id="main">
         <div class="col-md-10 col-md-offset-1">
+            {{#articlePage}}
             <div class="panel panel-default">
                 <table class="table table-hover">
                     <thead>
@@ -49,6 +51,18 @@
                     </tbody>
                 </table>
             </div>
+            <br>
+            <div class="page_wrap">
+                <div class="page_nation">
+                    <a class="{{^hasPrev}}disabled{{/hasPrev}}" href="/?page={{prevPageNum}}"><<</a>
+                    {{#pages}}
+                    <a class="{{#isCurrentPage}}active{{/isCurrentPage}}" href="/?page={{pageNumber}}">{{pageNumber}}</a>
+                    {{/pages}}
+                    <a class="{{^hasNext}}disabled{{/hasNext}}" href="/?page={{nextPageNum}}">>></a>
+                </div>
+            </div>
+            <br>
+            {{/articlePage}}
         </div>
     </div>
     {{#auth}}
