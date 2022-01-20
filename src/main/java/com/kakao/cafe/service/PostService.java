@@ -5,7 +5,6 @@ import com.kakao.cafe.dto.PostDetailDto;
 import com.kakao.cafe.dto.PostUpdateRequest;
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
-import com.kakao.cafe.exception.ForbiddenException;
 import com.kakao.cafe.model.Post;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.repository.PostRepository;
@@ -33,7 +32,7 @@ public class PostService {
 
         for (Post post : postList) {
             User writer = userRepository.findById(post.getWriterId())
-                    .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_INPUT));
+                    .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_WRITER));
 
             postDetailDtoList.add(PostDetailDto.of(post, writer));
         }
@@ -49,7 +48,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
         User writer = userRepository.findById(post.getWriterId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_INPUT));
+                .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_WRITER));
 
         return PostDetailDto.of(post, writer);
     }
@@ -60,7 +59,7 @@ public class PostService {
 
     public void validateWriter(Post post, UUID sessionUserId) {
         if (!isWriter(post.getWriterId(), sessionUserId)) {
-            throw new ForbiddenException("수정/삭제는 게시글 작성자만 가능합니다.");
+            throw new CustomException(ErrorCode.FORBIDDEN_MODIFY_POST);
         }
     }
 

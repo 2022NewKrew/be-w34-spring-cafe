@@ -5,8 +5,6 @@ import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.dto.UserRegisterRequest;
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
-import com.kakao.cafe.exception.LoginUserNotFoundException;
-import com.kakao.cafe.exception.LoginWrongPasswordException;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
@@ -42,10 +40,10 @@ public class UserService {
 
     public User login(LoginRequest requestDto) {
         User user = userRepository.findByUserId(requestDto.getUserId())
-                .orElseThrow(() -> new LoginUserNotFoundException(requestDto.getUserId()));
+                .orElseThrow(() -> new CustomException(ErrorCode.LOGIN_USER_NOT_FOUND));
 
         if (!user.match(requestDto.getPassword())) {
-            throw new LoginWrongPasswordException();
+            throw new CustomException(ErrorCode.LOGIN_WRONG_PASSWORD);
         }
 
         return user;
