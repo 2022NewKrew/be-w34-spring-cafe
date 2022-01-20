@@ -43,7 +43,7 @@ public class UserService {
         User user =  Optional.ofNullable(userRepository.findUserByUserId(userLoginDTO.getUserId()))
                 .orElseThrow(AccountNotFoundException::new);
 
-        if(!user.getPassword().equals(userLoginDTO.getPassword())) {
+        if(!user.isValidPassword(userLoginDTO.getPassword())) {
             throw new InvalidPasswordException();
         }
         return user;
