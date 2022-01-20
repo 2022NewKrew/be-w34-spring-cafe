@@ -9,7 +9,7 @@
         <header class="post-header">
             <p class="title">로그인</p>
         </header>
-        <form name="question" class="info-container" method="post" action="/users/login">
+        <form name="question" class="info-container" method="post" action="/login">
             <div class="form-group">
                 <label for="email">이메일</label>
                 <input type="email" class="form-control" id="email" name="email"
@@ -27,9 +27,4 @@
     </div>
 </div>
 </body>
-<script>
-    {{#errorMsg}}
-    alert("{{errorMsg}}");
-    {{/errorMsg}}
-</script>
-</html>
+{{> layout/footer}}

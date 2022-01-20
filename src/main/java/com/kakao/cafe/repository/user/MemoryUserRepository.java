@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.User;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +60,7 @@ public class MemoryUserRepository implements UserRepository {
 
     private User update(User user) {
         int index = -1;
-        for (int i = 0 ; i < store.size(); i++) {
+        for (int i = 0; i < store.size(); i++) {
             if (store.get(i).getId() == user.getId()) {
                 index = i;
                 break;

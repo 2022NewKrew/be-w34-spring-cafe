@@ -40,7 +40,7 @@ public class UserService {
 
     public long update(Long id, UserCreationDTO dto) throws Exception {
         var user = userRepository.findById(id)
-                .orElseThrow(()-> new IllegalAccessException("아이디가 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalAccessException("아이디가 존재하지 않습니다."));
         validatePassword(dto.getPrevPassword(), user.getPassword());
 
         user.setNickname(dto.getNickname());
@@ -59,19 +59,23 @@ public class UserService {
     public UserDTO findById(long id) {
         return userRepository.findById(id)
                 .map(m -> modelMapper.map(m, UserDTO.class))
-                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 회원입니다"));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다"));
     }
 
     public UserDTO findByEmail(String userId) {
         return userRepository.findByEmail(userId)
                 .map(m -> modelMapper.map(m, UserDTO.class))
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
     }
 
     public void validatePassword(String inputRawPassword, String currentHashedPassword) {
         if (!passwordEncoder.matches(inputRawPassword, currentHashedPassword)) {
             throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
         }
+    }
+
+    public String getNicknameById(long id) {
+        return findById(id).getNickname();
     }
 
     private String encryptPassword(String password) {

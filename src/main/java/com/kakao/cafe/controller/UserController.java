@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.user.UserCreationDTO;
 import com.kakao.cafe.dto.user.UserDTO;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.dto.user.UserCreationDTO;
 import com.kakao.cafe.util.SessionIdRequired;
 import com.kakao.cafe.util.Url;
 import com.kakao.cafe.util.View;
@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -69,13 +71,14 @@ public class UserController {
     }
 
     @SessionIdRequired
-    @PostMapping("/users/{id}")
-    public String updateUserProfile(@PathVariable("id") Long id,
-                                    @Valid UserCreationDTO dto,
+    @PostMapping("/users/profile")
+    public String updateUserProfile(@Valid UserCreationDTO dto,
                                     Errors errors,
+                                    HttpSession session,
                                     RedirectAttributes attr) {
         try {
             validateParams(errors);
+            long id = (long) session.getAttribute("sessionedUserId");
             userService.update(id, dto);
         } catch (Exception e) {
             handleException(e, attr);
@@ -86,7 +89,7 @@ public class UserController {
     }
 
     @SessionIdRequired
-    @GetMapping("/users/form")
+    @GetMapping("/users/profile")
     public String getProfileUpdateForm(Model model,
                                        HttpSession session,
                                        RedirectAttributes attr) {
@@ -95,12 +98,12 @@ public class UserController {
         return View.USER_UPDATE_FORM;
     }
 
-    @GetMapping("/users/login")
+    @GetMapping("/login")
     public String getLoginPage() {
         return View.USER_LOGIN;
     }
 
-    @PostMapping("/users/login")
+    @PostMapping("/login")
     public String login(String email,
                         String password,
                         HttpSession session,
@@ -137,7 +140,7 @@ public class UserController {
     }
 
     private void handleException(Exception e, RedirectAttributes attr) {
-        e.printStackTrace();
+        log.error(e.getMessage(), e);
         attr.addFlashAttribute("errorMsg", e.getMessage());
     }
 }

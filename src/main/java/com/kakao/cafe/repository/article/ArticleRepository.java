@@ -7,6 +7,14 @@ import java.util.Optional;
 
 public interface ArticleRepository {
     Article save(Article article);
+
+    Long delete(Long id);
+
+    Article increaseViewCount(Article article);
+
     Optional<Article> findById(Long id);
+
+    Optional<Long> findUidById(Long id);
+
     List<Article> findAll();
 }

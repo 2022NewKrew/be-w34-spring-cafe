@@ -16,7 +16,7 @@
                       <article class="article">
                           <div class="article-header">
                               <div class="article-header-text">
-                                  <p class="article-content">멋진삼</p>
+                                  <p class="article-content">{{author}}</p>
                                   <p class="article-content">
                                       작성일자:{{formattedCreatedAt}}
                                   </p>
@@ -55,6 +55,13 @@
                                       </div>
                                       <input class="post-write-btn" type="submit" value="등록"/>
                                   </form>
+                                  {{#canEdit}}
+                                  <a href="/articles/form/{{article.id}}" class="post-write-btn">수정</a>
+                                  <form method="post" action="/articles/{{article.id}}">
+                                      <input type="hidden" name="_method" value="DELETE" />
+                                      <input class="post-write-btn" type="submit" value="삭제" />
+                                  </form>
+                                  {{/canEdit}}
                               </div>
                           </div>
                       </div>
@@ -63,4 +70,4 @@
             </div>
         </div>
 	</body>
-</html>
+{{> layout/footer}}

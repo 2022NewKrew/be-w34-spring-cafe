@@ -10,9 +10,12 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -20,11 +23,13 @@ public class JdbcUserRepository implements UserRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final JdbcTemplate jdbcTemplate;
+    private final KeyHolder keyHolder;
 
     @Autowired
     public JdbcUserRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate, JdbcTemplate jdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.jdbcTemplate = jdbcTemplate;
+        keyHolder = new GeneratedKeyHolder();
     }
 
     @Override
@@ -35,7 +40,8 @@ public class JdbcUserRepository implements UserRepository {
             return update(user, namedParameters);
         }
 
-        int id = namedParameterJdbcTemplate.update(Sql.INSERT_USER, namedParameters);
+        namedParameterJdbcTemplate.update(Sql.INSERT_USER, namedParameters, keyHolder, new String[]{"id"});
+        long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         user.setId(id);
         return user;
     }
