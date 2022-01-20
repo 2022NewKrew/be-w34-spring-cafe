@@ -20,6 +20,7 @@ public class UserDto {
     }
 
     public static UserDto entityToDto(User user) {
+        if (user == null) return null;
         return new UserDto(
                 user.getId(),
                 user.getPassword(),

@@ -23,6 +23,7 @@ public class ArticleDto {
     }
 
     public static ArticleDto entityToDto(Article article) {
+        if (article == null) return null;
         return new ArticleDto(
                 article.getId(),
                 article.getContent(),

@@ -47,6 +47,9 @@ public class ArticleController {
     @GetMapping("/articles/{index}")
     public String getArticleInfo(@PathVariable String index, Model model, HttpSession httpSession) {
         ArticleDto article = articleService.findById(index);
+        if (article == null) {
+            return "error/articleNotExist";
+        }
         model.addAttribute("article", article);
         model.addAttribute("writerName", article.getWriter().getName());
         return "qna/show";
@@ -55,6 +58,9 @@ public class ArticleController {
     @GetMapping("/articles/update/{index}")
     public String getArticleUpdateForm(@PathVariable String index, Model model, HttpSession httpSession) {
         ArticleDto article = articleService.findById(index);
+        if (article == null) {
+            return "error/articleNotExist";
+        }
         model.addAttribute("article", article);
 
         if(!articleService.isUpdatable(article, httpSession))
@@ -73,6 +79,9 @@ public class ArticleController {
     @DeleteMapping("/qna/delete/{index}")
     public String deleteArticle(@PathVariable String index, HttpSession httpSession) {
         ArticleDto article = articleService.findById(index);
+        if (article == null) {
+            return "error/articleNotExist";
+        }
 
         if(!articleService.isUpdatable(article, httpSession))
             return "qna/updateImpossible";
