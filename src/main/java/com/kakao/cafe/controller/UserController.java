@@ -79,6 +79,9 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logoutUser(HttpSession session, @LoginCheck SessionUser sessionUser) {
+        if(sessionUser == null){
+            return "redirect:/users/login";
+        }
         session.invalidate();
         return "redirect:/";
     }
