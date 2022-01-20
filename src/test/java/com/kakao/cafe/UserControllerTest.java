@@ -54,7 +54,7 @@ public class UserControllerTest {
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl( "/users/list"));
+                .andExpect(redirectedUrl( "list"));
     }
 
     @DisplayName("Get /list 유저 리스트 반환 테스트")
@@ -65,7 +65,7 @@ public class UserControllerTest {
         mockMvc.perform(get("/users/list"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("users"))
-                .andExpect(view().name("/user/list"));
+                .andExpect(view().name("user/list"));
     }
 
     @DisplayName("Get /{userId} 프로필 화면 표시 - 유저가 존재하는 case")
@@ -76,7 +76,7 @@ public class UserControllerTest {
         mockMvc.perform(get(testUrl))
                 .andExpect(model().attributeExists("user"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/user/profile"));
+                .andExpect(view().name("user/profile"));
     }
 
     @DisplayName("Get /{userId} 프로필 화면 표시 - 유저가 존재하지 않는 case")
@@ -86,7 +86,7 @@ public class UserControllerTest {
 
         mockMvc.perform(get(testUrl))
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrl(""));
     }
 
     @DisplayName("Get /{userId}/form 특정 사용자 정보 수정 화면으로 이동")
@@ -101,7 +101,7 @@ public class UserControllerTest {
                         .session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("user"))
-                .andExpect(view().name("/user/updateForm"));
+                .andExpect(view().name("user/updateForm"));
     }
 
     @DisplayName("Get /{userId}/form 특정 사용자 정보 수정 화면으로 이동 - 유저가 존재하지 않는 case")
@@ -111,6 +111,6 @@ public class UserControllerTest {
 
         mockMvc.perform(get(testUrl))
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrl(""));
     }
 }

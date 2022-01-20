@@ -4,18 +4,14 @@ import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticlePostDto;
 import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.ArticleServiceImpl;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.service.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
@@ -31,35 +27,87 @@ public class ArticleController {
         this.userService = userService;
     }
 
-    @PostMapping("/questions")
-    public String postQuestion(ArticlePostDto article) {
+    @GetMapping("/form")
+    public String mainPage(Model model, HttpSession session) {
+        String sessionUserId;
+
         try {
-            articleService.postOne(article);
-        } catch (SQLException e) {
-            logger.error("/articles/questions, failed to create article (article = {})", article, e);
-            return "redirect:/";
-        } catch (NoSuchElementException e) {
-            logger.info("/articles/questions, failed to create article. writer(id = {}) does not exist", article.getWriter(), e);
-            return "redirect:/";
-        }
-        return "redirect:/";
+            sessionUserId = userService.getUserIdFromSession(session);
+        } catch (NoSuchElementException e) { return "redirect:/"; }
+
+        model.addAttribute("writer", sessionUserId);
+
+        return "qna/form";
     }
 
-    @GetMapping("/{index}")
-    public String showArticle(@PathVariable int index, Model model) {
+    @PostMapping("/questions")
+    public String postArticles(ArticlePostDto article, HttpSession session) {
+        String writerId = userService.getUserIdFromSession(session);
+        article.setWriter(writerId);
+        try {
+            articleService.post(article);
+        } catch (SQLException e) {
+            logger.error("/articles/questions, failed to create article (article = {})", article, e);
+            return "redirect:";
+        } catch (NoSuchElementException e) {
+            logger.info("/articles/questions, failed to create article. writer(id = {}) does not exist", article.getWriter(), e);
+            return "redirect:";
+        }
+        return "redirect:";
+    }
+
+    @GetMapping("/{id}")
+    public String showArticle(@PathVariable int id, Model model) {
         ArticleDto article;
         UserProfileDto writer;
 
         try {
-            article = articleService.findById(index);
-            writer = userService.findByName(article.getWriter());
+            article = articleService.findById(id);
+            writer = userService.findById(article.getWriter());
             model.addAttribute("article", article);
             model.addAttribute("writer", writer);
         } catch (NoSuchElementException e) {
-            logger.error("/articles/index, article id = {}", index, e);
-            return "redirect:/";
+            logger.error("/articles/index, article id = {}", id, e);
+            return "redirect:";
         }
 
-        return "/qna/show";
+        return "qna/show";
+    }
+
+    @PutMapping("/{id}")
+    public String modifyArticle(@PathVariable int id, ArticlePostDto articlePostDto) {
+        try {
+            articleService.update(id, articlePostDto);
+        } catch (NoSuchElementException e) {
+            return "redirect:";
+        }
+
+        return String.format("redirect:articles/%d", id);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteArticle(@PathVariable int id) {
+        try {
+            articleService.delete(id);
+        } catch (NoSuchElementException e) {
+            return "redirect:";
+        }
+
+        return "redirect:";
+    }
+
+    @GetMapping("/{id}/form")
+    public String modifyForm(@PathVariable int id, Model model, HttpSession session) {
+        ArticleDto articleDto = articleService.findById(id);
+        String writerId = articleDto.getWriter();
+
+        if (!userService.checkSessionUser(writerId, session)) { // 다른 작성자의 글 수정 불가
+            return "redirect:";
+        }
+
+        model.addAttribute("writer", writerId);
+        model.addAttribute("modify", id);
+
+        return "qna/form";
     }
 }

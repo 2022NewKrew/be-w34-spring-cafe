@@ -20,10 +20,25 @@ public class ArticleServiceImpl implements ArticleService {
         this.userRepository = userRepository;
     }
 
-    public void postOne(ArticlePostDto article) throws SQLException, NoSuchElementException {
-        userRepository.findByName(article.getWriter());
+    public void post(ArticlePostDto article) throws SQLException, NoSuchElementException {
+        userRepository.findByUserId(article.getWriter());
 
         articleRepository.save(article.toEntity());
+    }
+
+    public void update(int id, ArticlePostDto modifiedArticle) throws NoSuchElementException {
+        Article modifiedArticleEntity = articleRepository.findById(id);
+
+        modifiedArticleEntity.setTitle(modifiedArticle.getTitle());
+        modifiedArticleEntity.setContents(modifiedArticle.getContents());
+
+        articleRepository.update(modifiedArticleEntity);
+    }
+
+    public void delete(int id) throws  NoSuchElementException {
+        articleRepository.findById(id); // id값을 갖는 article이 존재하는지 확인
+
+        articleRepository.delete(id);
     }
 
     public List<ArticleDto> getArticleList() {

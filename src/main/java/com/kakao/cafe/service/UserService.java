@@ -16,4 +16,5 @@ public interface UserService {
     void updateUserProfile(UserProfileDto u, String s) throws NoSuchElementException, IllegalArgumentException;
     UserProfileDto checkPassword(String userId, String password);
     boolean checkSessionUser(String userId, HttpSession session);
+    String getUserIdFromSession(HttpSession session);
 }
