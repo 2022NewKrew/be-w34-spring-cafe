@@ -36,7 +36,9 @@ public class Question {
      * 게시글 생성 시간 입니다.
      */
     private LocalDateTime createTime;
-
+    /**
+     * 게시글 상태
+     */
     private QuestionStatus status;
 
     /**

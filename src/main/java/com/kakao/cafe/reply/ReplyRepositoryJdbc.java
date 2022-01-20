@@ -79,11 +79,11 @@ public class ReplyRepositoryJdbc implements ReplyRepository {
     }
 
     @Override
-    public boolean deleteAsQuestionId(Long id) {
+    public boolean deleteAsQuestionId(Long questionId) {
 
         String sql = "UPDATE reply SET status=? WHERE question_id = ?";
 
-        int rs = jdbcTemplate.update(sql, QuestionStatus.DELETE.toString(), id);
+        int rs = jdbcTemplate.update(sql, QuestionStatus.DELETE.toString(), questionId);
 
         if (rs == FAIL) {
             log.error("USER TABLE DELETE FAIL ");

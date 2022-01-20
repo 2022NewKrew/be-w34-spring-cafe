@@ -66,6 +66,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private void checkReplyStatus(Long id, Long memberId) throws BaseException {
+
         List<Reply> replies = replyRepository.findAllAsQuestionId(id);
 
         for(Reply reply : replies) {
@@ -76,6 +77,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private void checkAuthQuestion(Long id, Long memberId) throws BaseException {
+
         Question origin = questionRepository.findOne(id);
 
         if (!origin.getMemberId().equals(memberId)) {
