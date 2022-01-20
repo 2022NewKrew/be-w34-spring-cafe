@@ -7,9 +7,11 @@ import com.kakao.cafe.util.Pageable;
 import java.util.Optional;
 
 public interface ArticleRepository {
-    public void save(Article entity);
+    void save(Article entity);
 
-    public Optional<Article> findById(Long articleId);
+    void update(Article entity);
 
-    public Page<Article> findAll(Pageable pageable);
+    Optional<Article> findById(Long articleId);
+
+    Page<Article> findAll(Pageable pageable);
 }

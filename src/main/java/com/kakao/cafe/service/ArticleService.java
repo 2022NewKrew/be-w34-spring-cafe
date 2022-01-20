@@ -1,6 +1,5 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.EditUserDto;
 import com.kakao.cafe.dto.PageRequestDto;
 import com.kakao.cafe.dto.PageResultDto;
 import com.kakao.cafe.dto.ArticleDto;

@@ -6,4 +6,8 @@ public class ArticleNotFoundException extends CafeException {
     public ArticleNotFoundException() {
         super();
     }
+
+    public ArticleNotFoundException(String message) {
+        super(message);
+    }
 }

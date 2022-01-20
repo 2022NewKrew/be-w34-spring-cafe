@@ -6,4 +6,8 @@ public class UserException extends CafeException {
     public UserException() {
         super();
     }
+
+    public UserException(String message) {
+        super(message);
+    }
 }
