@@ -33,11 +33,6 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public void delete(String userId) {
-        this.repository.remove(findByName(userId));
-    }
-
-    @Override
     public User search(String userId) {
         return this.repository.stream()
                 .filter(user -> user.getUserId().equals(userId))

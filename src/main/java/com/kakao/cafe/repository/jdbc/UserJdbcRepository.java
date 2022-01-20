@@ -20,8 +20,6 @@ public class UserJdbcRepository implements UserRepository {
             "INSERT INTO USERS(USER_ID, PASSWORD, NAME, EMAIL) VALUES(?, ?, ?, ?)";
     private static final String MODIFY_SQL =
             "UPDATE USERS SET PASSWORD=?, NAME=?, EMAIL=? WHERE USER_ID=?";
-    private static final String DELETE_SQL =
-            "DELETE FROM USERS WHERE USER_ID=?";
     private static final String SEARCH_SQL =
             "SELECT * FROM USERS WHERE USER_ID=?";
     private static final String TO_LIST_SQL =
@@ -46,11 +44,6 @@ public class UserJdbcRepository implements UserRepository {
                 umc.getName(),
                 umc.getEmail(),
                 userId);
-    }
-
-    @Override
-    public void delete(String userId) {
-        jdbcTemplate.update(DELETE_SQL, userId);
     }
 
     @Override
