@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ArticleCreateRequest {
-    private final String title;
-    private final String contents;
+public class ReplyCreateRequest {
+    private final String answer;
+    private final String articleId;
 }

@@ -7,11 +7,21 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+#  datasource:
+#    url:jdbc:h2:mem:kakaodb
+#    driverClassName: org.h2.Driver
+#    username: sa
+#    password:
+#    h2.console:
+#      enabled: true
+#      path: /h2-console
   datasource:
-      driverClassName: org.h2.Driver
-      username: sa
-      password:
-  h2.console:
-    enabled: true
-    path: /h2-console
-#    jdbc:h2:mem:kakaodb
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://10.202.176.208:3306/kakaocafe
+    username: aiden
+    password: Aidenjang!1
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+#          data-locations: classpath:sql/data.sql

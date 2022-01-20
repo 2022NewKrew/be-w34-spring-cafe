@@ -1,18 +1,20 @@
 package com.kakao.cafe.article.service.dto;
 
-import com.kakao.cafe.article.domain.Article;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import com.kakao.cafe.article.domain.Article;
 
 @Getter
 public class AllArticlesListServiceResponse {
 
     private ArrayList<OneArticleData> articles;
 
-    public AllArticlesListServiceResponse(ArrayList<Article> articles, ArrayList<String> authorStringIds) {
+    public AllArticlesListServiceResponse(List<Article> articles) {
         this.articles = new ArrayList<>();
         Article article;
         for (int i = 0; i < articles.size(); i++) {
@@ -20,7 +22,7 @@ public class AllArticlesListServiceResponse {
             this.articles.add(OneArticleData.builder()
                     .id(article.getId())
                     .title(article.getTitle())
-                    .authorStringId(authorStringIds.get(i))
+                    .authorStringId(article.getAuthorStringId())
                     .hits(article.getHits())
                     .writeTime(article.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                     .build());

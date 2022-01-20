@@ -1,20 +1,36 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.article.service.ArticleService;
-import com.kakao.cafe.article.service.dto.ArticleReadServiceResponse;
-import com.kakao.cafe.controller.aop.AuthInfoCheck;
-import com.kakao.cafe.controller.session.AuthInfo;
-import com.kakao.cafe.controller.session.HttpSessionUtil;
-import com.kakao.cafe.controller.viewdto.request.ArticleCreateRequest;
-import com.kakao.cafe.controller.viewdto.request.ArticleUpdateRequest;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
-import javax.servlet.http.HttpSession;
-import java.time.format.DateTimeFormatter;
+import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.article.service.dto.ArticleReadServiceResponse;
+import com.kakao.cafe.article.service.dto.CreateArticleServiceRequest;
+import com.kakao.cafe.config.Constant;
+import com.kakao.cafe.controller.interceptor.AuthInfoCheck;
+import com.kakao.cafe.controller.session.AuthInfo;
+import com.kakao.cafe.controller.viewdto.ArticleControllerResponseMapper;
+import com.kakao.cafe.controller.viewdto.request.ArticleCreateRequest;
+import com.kakao.cafe.controller.viewdto.request.ArticleUpdateRequest;
+import com.kakao.cafe.controller.viewdto.request.ReplyCreateRequest;
+import com.kakao.cafe.reply.service.ReplyService;
+import com.kakao.cafe.reply.service.ReplyServiceDTOMapper;
+import com.kakao.cafe.reply.service.dto.CreateReplyServiceRequest;
+import com.kakao.cafe.reply.service.dto.OneReplyServiceResponse;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,68 +39,111 @@ import java.time.format.DateTimeFormatter;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
     @PostMapping("")
     @AuthInfoCheck
-    public String postArticle(@ModelAttribute ArticleCreateRequest req, HttpSession session) {
+    public String postArticle(@ModelAttribute ArticleCreateRequest req,
+                              @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("POST /article {}", req.getTitle());
-        AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
-        articleService.createArticle(authInfo.getId(), req.getTitle(), req.getContents());
+        articleService.createArticle(createArticle(req, authInfo));
         return "redirect:/";
     }
 
     @PutMapping("")
     @AuthInfoCheck
-    public String updateArticle(@ModelAttribute ArticleUpdateRequest req, HttpSession session) {
+    public String updateArticle(@ModelAttribute ArticleUpdateRequest req,
+                                @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("PUT /article {}", req.getArticleId());
-        AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
-
-        articleService.isAuthorOfArticle(Long.parseLong(req.getArticleId()), authInfo.getId());
-
+        articleService.validateAuthor(Long.parseLong(req.getArticleId()), authInfo.getId());
         articleService.updateArticle(Long.parseLong(req.getArticleId()), req.getTitle(), req.getContents());
 
         return "redirect:/";
-
     }
 
     @GetMapping("/form")
     @AuthInfoCheck
-    public String getNewArticleForm(Model model, HttpSession session) {
+    public String getNewArticleForm(Model model, @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("Get /article/form");
-        AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
         model.addAttribute("stringId", authInfo.getStringId());
         model.addAttribute("title", "");
         model.addAttribute("contents", "");
+
         return "article/form";
     }
 
     @GetMapping("/{id}")
     public String getArticle(@PathVariable("id") String articleId, Model model) {
         log.info("Get /article/{}", articleId);
+
         ArticleReadServiceResponse dto = articleService.getArticleReadViewDTO(Long.parseLong(articleId));
         model.addAttribute("title", dto.getTitle());
         model.addAttribute("authorstringid", dto.getAuthorStringId());
         model.addAttribute("writedate", dto.getMakeTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         model.addAttribute("contents", dto.getContents());
         model.addAttribute("articleId", dto.getId());
+
+        List<OneReplyServiceResponse> findReplies = replyService.findReplyByArticle(Long.parseLong(articleId));
+        model.addAttribute("replyNum", findReplies.size());
+        model.addAttribute("replies", ArticleControllerResponseMapper.getReplyListResponse((findReplies)));
+
         return "article/show";
+    }
+
+    @DeleteMapping("/{id}")
+    @AuthInfoCheck
+    public String deleteArticle(@PathVariable String id,
+                                @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
+        log.info("DELETE /article {}", id);
+        articleService.validateAuthor(Long.parseLong(id), authInfo.getId());
+        articleService.deleteArticle(Long.parseLong(id));
+
+        return "redirect:/";
     }
 
     @GetMapping("/update/{articleId}")
     @AuthInfoCheck
-    public String updateArticleFrom(@PathVariable String articleId, Model model, HttpSession session) {
+    public String updateArticleFrom(@PathVariable String articleId, Model model,
+                                    @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("GET /article/update/{}", articleId);
-        AuthInfo authInfo = HttpSessionUtil.getAuthInfo(session);
+        articleService.validateAuthor(Long.parseLong(articleId), authInfo.getId());
         ArticleReadServiceResponse dto = articleService.getArticleReadViewDTO(Long.parseLong(articleId));
-
-        if (!authInfo.getId().equals(dto.getAuthorId())) {
-            throw new IllegalArgumentException("자신의 글만 수정 가능합니다.");
-        }
         model.addAttribute("stringId", authInfo.getStringId());
         model.addAttribute("title", dto.getTitle());
         model.addAttribute("contents", dto.getContents());
         model.addAttribute("articleId", articleId);
+
         return "article/update";
     }
 
+    @PostMapping("/reply")
+    @AuthInfoCheck
+    public String createReply(@ModelAttribute ReplyCreateRequest req,
+                              @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
+        log.info("{}", req.getAnswer());
+        CreateReplyServiceRequest request = ReplyServiceDTOMapper.convertToCreateReplyRequest(req, authInfo);
+        replyService.createReply(request);
+
+        return "redirect:/article/" + req.getArticleId();
+    }
+
+    @DeleteMapping("/{articleId}/reply/{replyId}")
+    @AuthInfoCheck
+    public String deleteReply(@PathVariable String articleId, @PathVariable String replyId,
+                              @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
+        log.info("DELETE /article/reply/{}", replyId);
+        replyService.validateAuthor(Long.parseLong(replyId), authInfo.getId());
+        replyService.deleteReply(Long.parseLong(replyId));
+
+        return "redirect:/article/" + articleId;
+    }
+
+    private CreateArticleServiceRequest createArticle(ArticleCreateRequest req, AuthInfo authInfo) {
+        return CreateArticleServiceRequest.builder()
+                                          .authorId(authInfo.getId())
+                                          .authorStringId(authInfo.getStringId())
+                                          .title(req.getTitle())
+                                          .contents(req.getContents())
+                                          .build();
+    }
 }

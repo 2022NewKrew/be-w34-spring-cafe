@@ -1,17 +1,19 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.article.service.ArticleService;
-import com.kakao.cafe.article.service.dto.AllArticlesListServiceResponse;
-import com.kakao.cafe.controller.viewdto.ArticleControllerResponseMapper;
+import java.util.List;
+import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-import java.util.Map;
+import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.article.service.dto.AllArticlesListServiceResponse;
+import com.kakao.cafe.controller.viewdto.ArticleControllerResponseMapper;
 
 @Controller
 @RequiredArgsConstructor
