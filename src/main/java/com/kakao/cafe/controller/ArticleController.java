@@ -46,43 +46,21 @@ public class ArticleController {
     }
 
     @GetMapping("/modify/{id}")
-    public String getModifyArticleView(@PathVariable String id, Model model, HttpSession session){
-
-        User user = (User) session.getAttribute("sessionedUser");
+    public String getModifyArticleView(@PathVariable String id, Model model){
         Article article = articleService.findArticleById(id);
-
-        if(!user.isSameUser(article.getUserId())){
-            throw new InvalidUserException();
-        }
-
         model.addAttribute("article", article);
         return "article/modify";
     }
 
     @PutMapping("/modify/{id}")
-    public String modifyArticle(@Valid ArticleModifyDto articleModifyDto, @PathVariable String id, HttpSession session){
-        User user = (User) session.getAttribute("sessionedUser");
-        Article article = articleService.findArticleById(id);
-
-        if(!user.isSameUser(article.getUserId())){
-            throw new InvalidUserException();
-        }
-
+    public String modifyArticle(@Valid ArticleModifyDto articleModifyDto, @PathVariable String id){;
         articleModifyDto.setId(Integer.parseInt(id.trim()));
-
         articleService.modifyArticle(articleModifyDto);
         return "redirect:/article/" + id;
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteArticle(@PathVariable String id, HttpSession session){
-        User user = (User) session.getAttribute("sessionedUser");
-        Article article = articleService.findArticleById(id);
-
-        if(!user.isSameUser(article.getUserId())){
-            throw new InvalidUserException();
-        }
-
+    public String deleteArticle(@PathVariable String id){
         articleService.deleteArticle(id);
         return "redirect:/";
     }
