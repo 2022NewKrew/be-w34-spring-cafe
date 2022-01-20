@@ -1,10 +1,10 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.article.PostArticleDto;
-import com.kakao.cafe.dto.article.ReferArticleDto;
 import com.kakao.cafe.dto.user.UserInfoDto;
 import com.kakao.cafe.exceptions.WrongAccessException;
 import com.kakao.cafe.service.article.ArticleService;
+import com.kakao.cafe.service.reply.CommentService;
 import com.kakao.cafe.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,7 @@ public class ArticleController {
 
     private ArticleService articleService;
     private UserService userService;
+    private CommentService commentService;
 
     // 게시물 목록 조회
     @GetMapping("/articles")
@@ -48,6 +49,7 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String showArticle(@PathVariable int id, Model model) {
         model.addAttribute("article", this.articleService.findById(id));
+        model.addAttribute("comments", this.commentService.findAll(id));
         return "article/show";
     }
 
