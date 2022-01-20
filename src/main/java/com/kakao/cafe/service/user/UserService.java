@@ -2,8 +2,6 @@ package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.user.UserInfo;
 import com.kakao.cafe.repository.user.DbUserRepository;
-import com.kakao.cafe.repository.user.MemoryUserRepository;
-import com.kakao.cafe.repository.user.UserDao;
 import com.kakao.cafe.repository.user.UserRepository;
 import com.kakao.cafe.web.dto.user.UserCreateRequestDto;
 import com.kakao.cafe.web.dto.user.UserResponseDto;
@@ -22,7 +20,12 @@ public class UserService {
     }
 
     public void userSingUp(UserCreateRequestDto userCreateRequestDto) {
-        userRepository.create(UserInfo.builder(userCreateRequestDto).build());
+        userRepository.create(UserInfo.builder()
+                .userId(userCreateRequestDto.getUserId())
+                .password(userCreateRequestDto.getPassword())
+                .name(userCreateRequestDto.getName())
+                .email(userCreateRequestDto.getEmail())
+                .build());
     }
 
     public List<UserResponseDto> findAll() {

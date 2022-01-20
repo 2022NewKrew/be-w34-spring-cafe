@@ -10,7 +10,6 @@ import java.util.Optional;
 public class DbArticleRepository implements ArticleRepository {
     private final ArticleDao articleDao;
 
-    private static Long lastIdNum = 0L;
 
     public DbArticleRepository(ArticleDao articleDao) {
         this.articleDao = articleDao;
@@ -18,7 +17,6 @@ public class DbArticleRepository implements ArticleRepository {
 
     @Override
     public void create(Article article) {
-        article.setId(++lastIdNum);
         articleDao.insert(article);
     }
 

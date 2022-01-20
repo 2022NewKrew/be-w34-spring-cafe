@@ -21,16 +21,10 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-
-    @GetMapping("article/form.html")
-    public String articlePage() {
-        return "article/form";
-    }
-
     @PostMapping("article/create")
     public String articleWrite(ArticleCreateRequestDto articleCreateRequestDto) {
         logger.info("article: {}", articleCreateRequestDto);
-        articleService.postArticle(new Article(articleCreateRequestDto.getTitle(), articleCreateRequestDto.getContent()));
+        articleService.postArticle(Article.fromPost(articleCreateRequestDto.getTitle(), articleCreateRequestDto.getContent()));
         return "redirect:/";
     }
 

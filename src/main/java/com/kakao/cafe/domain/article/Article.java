@@ -1,7 +1,7 @@
 package com.kakao.cafe.domain.article;
 
 import com.kakao.cafe.utils.TimeGenerator;
-import com.kakao.cafe.service.article.ArticleService;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -13,12 +13,14 @@ public class Article {
     private final String content;
     private final String date;
 
-    public Article(String title, String content) {
-        this.title = title;
-        this.content = content;
-        this.date = TimeGenerator.todayDate();
+    public static Article fromPost(String title, String content) {
+        return Article.builder()
+                .content(content)
+                .title(title)
+                .date(TimeGenerator.todayDate()).build();
     }
 
+    @Builder
     public Article(Long id, String title, String content, String date) {
         this.id = id;
         this.title = title;

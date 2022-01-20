@@ -24,19 +24,19 @@ public class ArticleList {
     }
 
     protected List<Article> getList() {
-        return List.copyOf(articleList);
+        return List.copyOf(this.articleList);
     }
 
     protected void addArticle(Article article) {
-        articleList.add(article);
+        this.articleList.add(article);
     }
 
     public int getSize() {
-        return articleList.size();
+        return this.articleList.size();
     }
 
     protected Optional<Article> findById(Long articleId) {
-        Optional<Article> target = articleList.stream().filter(article -> article.hasId(articleId)).findFirst();
+        Optional<Article> target = this.articleList.stream().filter(article -> article.hasId(articleId)).findFirst();
         Assert.notNull(target, "FIND Error: Null Article Id in List");
         return target;
     }

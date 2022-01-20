@@ -12,11 +12,11 @@ public class ArticleDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final RowMapper<Article> articleMapper = (rs, rowNum) -> new Article(
-            rs.getLong("id"),
-            rs.getString("title"),
-            rs.getString("content"),
-            rs.getString("date"));
+    private final RowMapper<Article> articleMapper = (rs, rowNum) -> Article.builder()
+            .id(rs.getLong("id"))
+            .title(rs.getString("title"))
+            .content(rs.getString("content"))
+            .date(rs.getString("date")).build();
 
     public ArticleDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -34,6 +34,6 @@ public class ArticleDao {
 
     public List<Article> selectAll() {
         String sql = "SELECT id,title,content,date FROM ARTICLES";
-        return jdbcTemplate.query(sql, articleMapper );
+        return jdbcTemplate.query(sql, articleMapper);
     }
 }
