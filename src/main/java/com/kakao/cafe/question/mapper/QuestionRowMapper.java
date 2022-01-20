@@ -1,6 +1,7 @@
 package com.kakao.cafe.question.mapper;
 
 import com.kakao.cafe.question.Question;
+import com.kakao.cafe.question.QuestionStatus;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -18,6 +19,7 @@ public class QuestionRowMapper implements RowMapper<Question> {
         question.setId(rs.getLong("id"));
         question.setMemberId(rs.getLong("member_id"));
         question.setCreateTime((LocalDateTime) rs.getTimestamp("create_time").toLocalDateTime());
+        question.setStatus(QuestionStatus.valueOf(rs.getString("status")));
 
         return question;
     }

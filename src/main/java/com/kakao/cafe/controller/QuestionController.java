@@ -7,6 +7,10 @@ import com.kakao.cafe.question.QuestionService;
 import com.kakao.cafe.question.dto.QuestionCreateDto;
 import com.kakao.cafe.question.dto.QuestionDto;
 import com.kakao.cafe.question.dto.QuestionUpdateDto;
+import com.kakao.cafe.reply.Reply;
+import com.kakao.cafe.reply.ReplyService;
+import com.kakao.cafe.reply.dto.ReplyCreateDto;
+import com.kakao.cafe.reply.dto.ReplyDto;
 import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -28,6 +33,7 @@ public class QuestionController {
 
     private static final Long NOT_FOUND_MEMBER_ID = -1L;
     private final QuestionService questionService;
+    private final ReplyService replyService;
     private final ModelMapper modelMapper;
     private final SessionLoginUser<UserDto> sessionLoginUser;
 
@@ -75,6 +81,24 @@ public class QuestionController {
 
         model.addAttribute("question", question);
 
+        List<Reply> replies = replyService.findAllAsQuestionId(id);
+
+        if (replies.size() != 0) {
+            List<ReplyDto> replyDtos = replies
+                    .stream().map(
+                            r -> {
+                                ReplyDto reply = modelMapper.map(r, ReplyDto.class);
+                                reply.setThisIsMine(memberId.equals(r.getMemberId()));
+                                return reply;
+                            }
+                    )
+                    .collect(Collectors.toList());
+
+            model.addAttribute("replySize", replies.size());
+            model.addAttribute("replies", replyDtos);
+        }
+
+
         return "qna/detail";
     }
 
@@ -111,10 +135,37 @@ public class QuestionController {
         return "qna/update_form";
     }
 
-    private Long getMemberId() {
+    @PostMapping("/{questionId}/answers")
+    public String insertReply(@PathVariable Long questionId, @ModelAttribute("reply") ReplyCreateDto replyCreateDto) throws SQLException {
 
-        UserDto loginUser = sessionLoginUser.getLoginUser();
+        Reply reply = new Reply();
 
-        return (loginUser == null) ? NOT_FOUND_MEMBER_ID : loginUser.getId();
+        reply.setComment(replyCreateDto.getComment());
+        reply.setQuestionId(questionId);
+        reply.setMemberId(getMemberId());
+        reply.setWriter(getUserId());
+
+        replyService.save(reply);
+
+        return String.format("redirect:/questions/%d", questionId);
     }
+
+    @DeleteMapping("/{questionId}/answers/{id}")
+    public String deleteReply(@PathVariable Long questionId, @PathVariable Long id, @ModelAttribute("reply") ReplyCreateDto replyCreateDto) throws BaseException {
+
+        replyService.deleteOne(id, getMemberId(), questionId);
+
+        return String.format("redirect:/questions/%d", questionId);
+    }
+
+    private Long getMemberId() {
+        UserDto loginUser = sessionLoginUser.getLoginUser();
+        return loginUser == null ? NOT_FOUND_MEMBER_ID : loginUser.getId();
+    }
+
+    private String getUserId() {
+        UserDto loginUser = sessionLoginUser.getLoginUser();
+        return loginUser.getUserId();
+    }
+
 }

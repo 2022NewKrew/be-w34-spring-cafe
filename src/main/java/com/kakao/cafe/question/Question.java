@@ -36,6 +36,10 @@ public class Question {
      * 게시글 생성 시간 입니다.
      */
     private LocalDateTime createTime;
+    /**
+     * 게시글 상태
+     */
+    private QuestionStatus status;
 
     /**
      * 시스템 시간으로 Question.createTime 을 업데이트합니다.

@@ -98,8 +98,7 @@ public class UserRepositoryH2 implements UserRepository {
         String sql = "SELECT id, user_id, password, name, email, role FROM member WHERE user_id=? AND password=?";
 
         try {
-            User user = jdbcTemplate.queryForObject(sql, new UserRowMapper(), userId, password);
-            return user;
+            return jdbcTemplate.queryForObject(sql, new UserRowMapper(), userId, password);
         } catch (Exception e) {
             log.info("findOne Error : {}", e.getMessage());
         }
