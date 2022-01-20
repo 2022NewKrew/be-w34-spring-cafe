@@ -58,7 +58,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/edit/{articleId}")
-    public ModelAndView updateView(Map<String, Object> model,
+    public ModelAndView editableRead(Map<String, Object> model,
         @PathVariable Long articleId) {
 
         Result resultDTO = articleService.readById(articleId);
