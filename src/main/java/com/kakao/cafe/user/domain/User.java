@@ -1,7 +1,6 @@
 package com.kakao.cafe.user.domain;
 
-import com.kakao.cafe.user.exception.CustomPasswordNotEqualsException;
-import java.util.UUID;
+import com.kakao.cafe.user.exception.CustomLoginFailException;
 
 public class User {
 
@@ -17,14 +16,9 @@ public class User {
         this.email = email;
     }
 
-    public UUID login(String inputPassword) {
-        validatePassword(inputPassword);
-        return UUID.randomUUID();
-    }
-
     public void validatePassword(String inputPassword) {
         if (!password.equals(inputPassword)) {
-            throw new CustomPasswordNotEqualsException();
+            throw new CustomLoginFailException();
         }
     }
 

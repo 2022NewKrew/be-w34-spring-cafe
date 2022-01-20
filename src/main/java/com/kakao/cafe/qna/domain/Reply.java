@@ -2,36 +2,36 @@ package com.kakao.cafe.qna.domain;
 
 import java.time.LocalDateTime;
 
-public class Qna {
+public class Reply {
 
-    private final Long id;
+    private final long id;
+    private final long qnaId;
     private final String writer;
-    private final String title;
     private final String contents;
     private final LocalDateTime createTime;
 
-    public Qna(String writer, String title, String contents) {
-        this(0L, writer, title, contents);
+    public Reply(long qnaId, String writer, String contents) {
+        this(0L, qnaId, writer, contents);
     }
 
-    public Qna(Long id, String writer, String title, String contents) {
+    public Reply(long id, long qnaId, String writer, String contents) {
         this.id = id;
+        this.qnaId = qnaId;
         this.writer = writer;
-        this.title = title;
         this.contents = contents;
         this.createTime = LocalDateTime.now();
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
+    }
+
+    public long getQnaId() {
+        return qnaId;
     }
 
     public String getWriter() {
         return writer;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public String getContents() {
@@ -41,5 +41,4 @@ public class Qna {
     public LocalDateTime getCreateTime() {
         return createTime;
     }
-
 }

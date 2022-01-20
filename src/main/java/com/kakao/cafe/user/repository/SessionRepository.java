@@ -10,4 +10,6 @@ public interface SessionRepository {
     void save(UUID uuid, User user);
 
     boolean exist(UUID sessionId);
+
+    void delete(UUID sessionId);
 }

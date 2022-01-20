@@ -13,3 +13,13 @@ CREATE TABLE IF NOT EXISTS qnas (
     create_time DATETIME NOT NULL,
     FOREIGN KEY (writer) REFERENCES users (user_id)
 );
+
+CREATE TABLE IF NOT EXISTS replies (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  qna_id BIGINT NOT NULL,
+  writer VARCHAR(30) NOT NULL,
+  contents TEXT NOT NULL,
+  create_time DATETIME NOT NULL,
+  FOREIGN KEY (writer) REFERENCES users (user_id),
+  FOREIGN KEY (qna_id) REFERENCES qnas (id)
+);
