@@ -4,17 +4,23 @@ import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.dto.article.ArticleContents;
 import com.kakao.cafe.dto.article.ArticleCreateCommand;
 import com.kakao.cafe.dto.article.ArticleModifyCommand;
+import com.kakao.cafe.dto.reply.ReplyContents;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @GetMapping("/")
@@ -27,6 +33,8 @@ public class ArticleController {
     public String getArticle(@PathVariable Long articleId, Model model) {
         ArticleContents articleContents = articleService.getArticle(articleId);
         model.addAttribute("article", articleContents);
+        List<ReplyContents> replyContentsList = replyService.getAllReplies(articleId);
+        model.addAttribute("replies", replyContentsList);
         return "qna/show";
     }
 
