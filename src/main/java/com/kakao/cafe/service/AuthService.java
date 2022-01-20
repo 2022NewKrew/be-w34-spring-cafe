@@ -7,7 +7,6 @@ import com.kakao.cafe.error.exception.AuthInvalidUidException;
 import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.persistence.model.User;
 import com.kakao.cafe.persistence.repository.UserRepository;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,17 +22,15 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public AuthInfo login(Login loginDTO) {
-        Optional<User> foundUser = userRepository.findUserByUid(loginDTO.getUid());
-        if (foundUser.isEmpty()) {
-            throw new AuthInvalidUidException(ErrorCode.NOT_FOUND, loginDTO.getUid());
-        }
-        if (!foundUser.get().matchPassword(loginDTO.getPassword())) {
+        User foundUser = userRepository.findUserByUid(loginDTO.getUid())
+            .orElseThrow(() -> new AuthInvalidUidException(ErrorCode.NOT_FOUND, loginDTO.getUid()));
+        if (!foundUser.matchPassword(loginDTO.getPassword())) {
             throw new AuthInvalidPasswordException(ErrorCode.AUTHENTICATION_INVALID,
                 loginDTO.getUid());
         }
 
-        logger.info("Log In for User [UID : {}]", loginDTO.getUid());
+        logger.info("Log In for User [UID : {}]", foundUser.getUid());
 
-        return AuthInfo.of(foundUser.get().getUid());
+        return AuthInfo.of(foundUser.getUid());
     }
 }

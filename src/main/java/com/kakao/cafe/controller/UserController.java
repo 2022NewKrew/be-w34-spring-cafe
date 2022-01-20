@@ -3,15 +3,12 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.UserDTO.Create;
 import com.kakao.cafe.dto.UserDTO.Result;
 import com.kakao.cafe.dto.UserDTO.Update;
-import com.kakao.cafe.error.ErrorCode;
 import com.kakao.cafe.error.exception.BindingException;
-import com.kakao.cafe.error.exception.ForbiddenAccessException;
 import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -51,11 +48,7 @@ public class UserController {
             throw new BindingException(bindingResult);
         }
 
-        HttpSession session = request.getSession();
-        AuthInfo authInfo = (AuthInfo) session.getAttribute("auth");
-        if (authInfo == null) {
-            throw new ForbiddenAccessException(ErrorCode.FORBIDDEN_ACCESS, "Edit User Profile");
-        }
+        AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("auth");
 
         userService.update(authInfo, updateDTO);
         return "redirect:/users";

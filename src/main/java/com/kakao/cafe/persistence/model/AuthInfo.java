@@ -16,4 +16,8 @@ public class AuthInfo {
     private AuthInfo(String uid) {
         this.uid = uid;
     }
+
+    public boolean matchUid(String uid) {
+        return this.uid.equals(uid);
+    }
 }

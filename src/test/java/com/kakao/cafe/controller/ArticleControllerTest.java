@@ -3,8 +3,10 @@ package com.kakao.cafe.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -127,7 +129,9 @@ class ArticleControllerTest {
             .willReturn(Optional.of(article));
 
         // When
-        ResultActions actions = mockMvc.perform(get("/articles/1"));
+        AuthInfo authInfo = AuthInfo.of("uid");
+        ResultActions actions = mockMvc.perform(get("/articles/1")
+            .sessionAttr("auth", authInfo));
 
         // Then
         Result resultDTO = (Result) actions.andReturn()
@@ -144,5 +148,100 @@ class ArticleControllerTest {
         assertThat(actions.andReturn().getModelAndView().getViewName())
             .isNotNull()
             .isEqualTo("qna/show");
+    }
+
+    @Test
+    @DisplayName("세션 인증 없이 게시글 조회 테스트")
+    void read2() throws Exception {
+        // Given
+        Article article = Article.builder().uid("uid").title("title").body("body")
+            .createdAt(LocalDateTime.now()).build();
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.of(article));
+
+        // When
+        ResultActions actions = mockMvc.perform(get("/articles/1"));
+
+        // Then
+        actions
+            .andExpect(redirectedUrl("/error"));
+    }
+
+    @Test
+    @DisplayName("게시글 수정 테스트")
+    void update() throws Exception {
+        // Given
+        Article article = Article.builder().uid("uid").title("title").body("body")
+            .createdAt(LocalDateTime.now()).build();
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.of(article));
+
+        // When
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("title", "new title");
+        requestParams.add("body", "new body");
+        ResultActions actions = mockMvc.perform(put("/articles/1")
+            .sessionAttr("auth", AuthInfo.of("uid"))
+            .params(requestParams));
+
+        // Then
+        actions
+            .andExpect(redirectedUrl("/articles/1"));
+    }
+
+    @Test
+    @DisplayName("인증 정보 없이 게시글 수정 테스트")
+    void update2() throws Exception {
+        // Given
+        Article article = Article.builder().uid("uid").title("title").body("body")
+            .createdAt(LocalDateTime.now()).build();
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.of(article));
+
+        // When
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("title", "new title");
+        requestParams.add("body", "new body");
+        ResultActions actions = mockMvc.perform(put("/articles/1")
+            .params(requestParams));
+
+        // Then
+        actions
+            .andExpect(redirectedUrl("/error"));
+    }
+
+    @Test
+    @DisplayName("게시글 삭제 테스트")
+    void deleteTest() throws Exception {
+        // Given
+        Article article = Article.builder().uid("uid").title("title").body("body")
+            .createdAt(LocalDateTime.now()).build();
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.of(article));
+
+        // When
+        ResultActions actions = mockMvc.perform(delete("/articles/1")
+            .sessionAttr("auth", AuthInfo.of("uid")));
+
+        // Then
+        actions
+            .andExpect(redirectedUrl("/"));
+    }
+
+    @Test
+    @DisplayName("인증 정보 없이 게시글 삭제 테스트")
+    void deleteTest2() throws Exception {
+        // Given
+        Article article = Article.builder().uid("uid").title("title").body("body")
+            .createdAt(LocalDateTime.now()).build();
+        given(articleRepository.findArticleById(any()))
+            .willReturn(Optional.of(article));
+
+        // When
+        ResultActions actions = mockMvc.perform(delete("/articles/1"));
+
+        // Then
+        actions
+            .andExpect(redirectedUrl("/error"));
     }
 }
