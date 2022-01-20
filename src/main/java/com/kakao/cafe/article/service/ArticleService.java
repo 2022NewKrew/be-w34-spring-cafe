@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,23 +21,6 @@ import com.kakao.cafe.article.service.dto.CreateArticleServiceRequest;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-
-    @PostConstruct
-    private void init() {
-        createArticle(CreateArticleServiceRequest.builder()
-                                                 .title("게시물 제목입니다.")
-                                                 .authorStringId("aiden.jang")
-                                                 .authorId(1L)
-                                                 .contents("이것은 게시물 입니다.")
-                                                 .build());
-        createArticle(CreateArticleServiceRequest.builder()
-                                                 .title("새로운 게시물입니다.")
-                                                 .authorStringId("wcts")
-                                                 .authorId(4L)
-                                                 .contents("이것도 게시물입니다.")
-                                                 .build());
-        log.info("Add basic article data: 게시물 제목입니다. 새로운 게시물입니다.");
-    }
 
     public void createArticle(CreateArticleServiceRequest req) {
         articleRepository.persist(makeArticle(req));

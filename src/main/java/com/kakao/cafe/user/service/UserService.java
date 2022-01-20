@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,15 +20,6 @@ import com.kakao.cafe.user.service.dto.UserProfileServiceResponse;
 public class UserService {
 
     private final UserRepository userRepository;
-
-    @PostConstruct
-    private void init() {
-        createUser("aiden.jang", "aiden@kakaocorp.com", "에이든", "1234");
-        createUser("javajigi", "javajigi@slipp.net", "자바지기", "1234");
-        createUser("sanjigi", "sanjigi@slipp.net", "산지기", "1234");
-        createUser("wcts", "wcts@kakao.com", "내이름", "1234");
-        log.info("Add basic user data: 에이든, 자바지기, 산지기");
-    }
 
     public Long createUser(String stringId, String email, String name, String password) {
         User user = makeUser(stringId, password, name, email);
