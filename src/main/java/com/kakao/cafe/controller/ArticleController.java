@@ -77,7 +77,25 @@ public class ArticleController {
                 .title(title)
                 .contents(contents)
                 .build();
-        articleService.updateArticle(articleUpdateDto);
+        articleService.updateArticle(articleUpdateDto, false);
         return "redirect:/articles/{articleId}";
+    }
+
+    @DeleteMapping("/articles/{articleId}")
+    public String removeArticle(@PathVariable Long articleId, @LoginCheck SessionUser sessionUser){
+        ArticleResDto articleResDto = articleService.findArticleById(articleId);
+        if(sessionUser == null || !sessionUser.getUserId().equals(articleResDto.getWriter())){
+            System.out.println("로그인 하지 않았거나, 권한이 없습니다.");
+            return "redirect:/users/login";
+        }
+
+        ArticleUpdateDto articleUpdateDto = ArticleUpdateDto.builder()
+                .articleId(articleId)
+                .writer(articleResDto.getWriter())
+                .title(articleResDto.getTitle())
+                .contents(articleResDto.getContents() + "삭제")
+                .build();
+        articleService.updateArticle(articleUpdateDto, true);
+        return "redirect:/";
     }
 }

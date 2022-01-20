@@ -10,5 +10,5 @@ public interface ArticleService {
     void addArticle(ArticleReqDto articleReqDto);
     List<ArticleResDto> findArticles();
     ArticleResDto findArticleById(Long articleId);
-    void updateArticle(ArticleUpdateDto articleUpdateDto);
+    void updateArticle(ArticleUpdateDto articleUpdateDto, Boolean removal);
 }

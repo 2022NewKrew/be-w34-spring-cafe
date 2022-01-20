@@ -27,7 +27,8 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         UserDto userDto = (UserDto) session.getAttribute("sessionedUser");
 
         if(userDto == null){
-            throw new IllegalAccessException("로그인 정보가 없습니다.");
+            return null;
+//            throw new IllegalAccessException("로그인 정보가 없습니다.");
         }
 
         return SessionUser.builder()

@@ -47,7 +47,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void updateArticle(ArticleUpdateDto articleUpdateDto) {
+    public void updateArticle(ArticleUpdateDto articleUpdateDto, Boolean removal) {
         Article article = articleRepository.findByArticleId(articleUpdateDto.getArticleId())
                 .orElseThrow(() -> new NullPointerException("존재하지 않는 게시글입니다."));
 
@@ -56,7 +56,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .writer(articleUpdateDto.getWriter())
                 .title(articleUpdateDto.getTitle())
                 .contents(articleUpdateDto.getContents())
-                .deleted(false)
+                .deleted(removal)
                 .build());
     }
 }
