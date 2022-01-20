@@ -46,10 +46,7 @@ public class ArticleController {
     @GetMapping(value = "articles/{id}")
     public String show(@PathVariable Long id, Model model) {
         ArticleDto articleDto = new ArticleDto(service.fetch(id));
-        model.addAttribute("title", articleDto.getTitle());
-        model.addAttribute("content", articleDto.getContent());
-        model.addAttribute("createdAt", articleDto.getCreatedAt());
-        model.addAttribute("author", articleDto.getAuthor());
+        model.addAttribute("article", articleDto);
         return "post/show";
     }
 }
