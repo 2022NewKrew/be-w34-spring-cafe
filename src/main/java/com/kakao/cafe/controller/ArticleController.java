@@ -3,8 +3,10 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticleListDto;
 import com.kakao.cafe.dto.ArticleRequestDto;
+import com.kakao.cafe.dto.ReplyDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,10 +19,12 @@ import java.util.List;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
+    private final ReplyService replyService;
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @PostMapping("/qna/create")
@@ -52,6 +56,14 @@ public class ArticleController {
         }
         model.addAttribute("article", article);
         model.addAttribute("writerName", article.getWriter().getName());
+
+        List<ReplyDto> replyList = replyService.getReplyList(index);
+        model.addAttribute("replyList", replyList);
+        model.addAttribute("numOfReply", replyList.size());
+
+        User currentUser = (User) httpSession.getAttribute("sessionedUser");
+        model.addAttribute("currentUser", currentUser.getName());
+
         return "qna/show";
     }
 
