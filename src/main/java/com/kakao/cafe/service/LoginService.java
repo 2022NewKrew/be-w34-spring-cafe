@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.LoginRequest;
-import com.kakao.cafe.repository.JdbcTemplateUserRepository;
+import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoginService {
 
-    private final JdbcTemplateUserRepository userRepository;
+    private final UserRepository userRepository;
 
     public User login(LoginRequest loginRequest){
         return userRepository

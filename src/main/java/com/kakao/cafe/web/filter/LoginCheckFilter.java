@@ -19,7 +19,6 @@ public class LoginCheckFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String requestStr = toStringHttpMethodAndURI(httpServletRequest);
-        log.info("login check filter : {}", requestStr);
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
         try{

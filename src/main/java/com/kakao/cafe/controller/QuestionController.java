@@ -3,7 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.QuestionCreateRequest;
 import com.kakao.cafe.dto.QuestionDetailResponse;
 import com.kakao.cafe.dto.QuestionUpdateRequest;
-import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.QuestionService;
 import com.kakao.cafe.web.meta.SessionConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,29 +16,29 @@ import java.time.LocalDateTime;
 @Controller
 @RequestMapping("questions")
 @RequiredArgsConstructor
-public class ArticleController {
+public class QuestionController {
 
-    private final ArticleService articleService ;
+    private final QuestionService questionService;
 
     @PostMapping("")
     public String createQuestion(@ModelAttribute QuestionCreateRequest question, HttpSession session){
         Long userId = (Long)session.getAttribute(SessionConst.LOGIN_USER);
-        articleService.saveQuestion(userId, question, LocalDateTime.now());
+        questionService.saveQuestion(userId, question, LocalDateTime.now());
         return "redirect:/";
     }
     @GetMapping("{id}")
-    public String viewArticle(@PathVariable Long id, Model model){
-        model.addAttribute("article", articleService.findOneQuestion(id));
+    public String viewQuestionDetail(@PathVariable Long id, Model model){
+        model.addAttribute("article", questionService.findOneQuestion(id));
         return "qna/show";
     }
     @GetMapping("")
-    public String viewArticleList(Model model){
-        model.addAttribute("questions", articleService.findAllQuestions());
+    public String viewQuestionList(Model model){
+        model.addAttribute("questions", questionService.findAllQuestions());
         return "index";
     }
     @GetMapping("/{id}/form")
     public String viewUpdateForm(@PathVariable Long id, Model model, HttpSession session){
-        QuestionDetailResponse article = articleService.findOneQuestion(id);
+        QuestionDetailResponse article = questionService.findOneQuestion(id);
         if(article.getUserId() != (Long)session.getAttribute(SessionConst.LOGIN_USER)){
             throw new IllegalStateException("글 작성자만 수정할 수 있습니다.");
         }
@@ -48,7 +48,7 @@ public class ArticleController {
     @PutMapping("")
     public String updateQuestion(@ModelAttribute QuestionUpdateRequest question, HttpSession session){
         Long userId = (Long) session.getAttribute(SessionConst.LOGIN_USER);
-        return "redirect:/questions/"+articleService.updateQuestion(userId, question);
+        return "redirect:/questions/" + questionService.updateQuestion(userId, question);
     }
 
 }

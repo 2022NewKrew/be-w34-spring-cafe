@@ -1,7 +1,6 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Question;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.QuestionCreateRequest;
 import com.kakao.cafe.dto.QuestionDetailResponse;
 import com.kakao.cafe.dto.QuestionListResponse;
@@ -17,7 +16,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ArticleService {
+public class QuestionService {
     private final QuestionRepository questionRepository ;
 
     public void saveQuestion(Long userId, QuestionCreateRequest questionDTO, LocalDateTime dateTime) {
