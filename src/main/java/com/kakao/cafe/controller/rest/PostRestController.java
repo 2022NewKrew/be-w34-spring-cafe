@@ -24,7 +24,7 @@ public class PostRestController {
 
     private final HttpSession session;
 
-    @PostMapping("/auth/posts/add")
+    @PostMapping("/posts")
     @LoginIdSessionNotNull
     public void addPost(AddPostDto addPostDto, HttpServletResponse response) throws IOException {
         Long writerId = SessionUtil.getLoginUserId(session);
@@ -33,7 +33,7 @@ public class PostRestController {
         response.sendRedirect(RedirectedURL.AFTER_WRITE_POST);
     }
 
-    @PutMapping("/auth/posts/update")
+    @PutMapping("/posts")
     @LoginIdSessionNotNull
     public void updatePost(UpdatePostDto updatePostDto, HttpServletResponse response) throws IOException {
         Long loginUserId = SessionUtil.getLoginUserId(session);
@@ -42,7 +42,7 @@ public class PostRestController {
         response.sendRedirect(RedirectedURL.AFTER_UPDATE_POST);
     }
 
-    @DeleteMapping("/auth/posts/delete")
+    @DeleteMapping("/posts")
     @LoginIdSessionNotNull
     public void deletePost(Long postId, HttpServletResponse response) throws IOException {
         Long loginUserId = SessionUtil.getLoginUserId(session);

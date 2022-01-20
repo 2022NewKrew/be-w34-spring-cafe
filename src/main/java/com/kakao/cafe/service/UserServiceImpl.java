@@ -1,6 +1,5 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.constant.OffsetId;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.user.ProfileDto;
 import com.kakao.cafe.dto.user.SimpleUserInfo;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,7 +73,7 @@ public class UserServiceImpl implements UserService {
                 .email(userJoinDto.getEmail())
                 .password(userJoinDto.getPassword())
                 .nickName(userJoinDto.getNickName())
-                .createdAt(OffsetDateTime.now(ZoneOffset.of(OffsetId.KR_ID)))
+                .createdAt(OffsetDateTime.now())
                 .build();
     }
 

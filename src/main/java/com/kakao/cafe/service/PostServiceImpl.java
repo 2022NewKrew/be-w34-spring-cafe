@@ -1,6 +1,5 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.constant.OffsetId;
 import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.dto.post.AddPostDto;
 import com.kakao.cafe.dto.post.PostViewDto;
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,7 +59,7 @@ public class PostServiceImpl implements PostService {
                 .title(addPostDto.getTitle())
                 .contents(addPostDto.getContents())
                 .userId(writerId)
-                .createdAt(OffsetDateTime.now(ZoneOffset.of(OffsetId.KR_ID)))
+                .createdAt(OffsetDateTime.now())
                 .build();
     }
 
