@@ -40,11 +40,12 @@ public class UserDAO {
     }
 
     private RowMapper<User> userRowMapper() {
-        return (rs, rowNum) -> User.newInstance(rs.getLong("id"),
-                rs.getString("user_id"),
-                rs.getString("password"),
-                rs.getString("email"),
-                rs.getString("register_date"));
+        return (rs, rowNum) -> User.builder()
+                .id(rs.getLong("id"))
+                .userId(rs.getString("user_id"))
+                .password(rs.getString("password"))
+                .email(rs.getString("email"))
+                .registerDate(rs.getString("register_date"))
+                .build();
     }
-
 }

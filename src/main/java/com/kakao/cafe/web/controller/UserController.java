@@ -28,18 +28,18 @@ public class UserController {
     @GetMapping(value = "/user/list")
     public String getUserList(Model model) {
         model.addAttribute("userListSize", userService.getUserListSize());
-        model.addAttribute("userList", userService.getUserList());
+        model.addAttribute("userList", userService.getUserDTOList());
         return "/user/list";
     }
 
     @PostMapping(value = "/user/create")
-    public String postSignUp(UserDTO userDTO) {
-        userService.createUser(userDTO);
-        log.info("userList:{}", userService.getUserList());
+    public String postSignUp(String userId,String password,String email) {
+        userService.createUser(UserDTO.newInstance(userId,password,email));
+        log.info("userList:{}", userService.getUserDTOList());
         return "redirect:/user/list";
     }
     @PostMapping(value="/user/login_check")
-    public String login(String email,String userId, String password, HttpSession session){
+    public String login(String userId, String password, HttpSession session){
         UserDTO userDTO;
         try {
             userDTO = userService.getUserByUserId(userId);
@@ -49,7 +49,7 @@ public class UserController {
         }
 
         if(userService.isPasswordMatching(userDTO,password)) {
-            UserDTO newUserDTO = UserDTO.newInstanceNonPasswordInfo(userDTO);
+            UserDTO newUserDTO = UserDTO.newInstanceNonePasswordInfo(userDTO);
             session.setAttribute("sessionUser", newUserDTO);
             return "redirect:/user/login_success";
         }
