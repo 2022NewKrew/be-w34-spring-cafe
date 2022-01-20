@@ -2,6 +2,7 @@ package com.kakao.cafe.comment.infra;
 
 import com.kakao.cafe.comment.domain.Comment;
 import com.kakao.cafe.comment.domain.CommentRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -34,6 +35,23 @@ public class CommentJdbcRepository implements CommentRepository {
                 comment.getContent(),
                 comment.getCreatedAt()
         );
+    }
+
+    @Override
+    public Comment findByIdOrNull(String commentId) {
+        String query = "select * from comments where id = ?";
+        try {
+            return jdbcTemplate.queryForObject(query, mapCommentRow(), commentId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void delete(Comment comment) {
+        int commentId = comment.getId();
+        String query = "delete from comments where id = ?";
+        jdbcTemplate.update(query, commentId);
     }
 
     private RowMapper<Comment> mapCommentRow() {

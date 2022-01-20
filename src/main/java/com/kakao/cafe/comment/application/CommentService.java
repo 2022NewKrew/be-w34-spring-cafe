@@ -34,11 +34,21 @@ public class CommentService {
     }
 
     public void save(int articleId, SessionedUser sessionedUser, CommentSaveRequest commentSaveRequest) {
+        log.info(this.getClass() + ": 댓글 작성");
         String authorId = sessionedUser.getUserId();
         validateArticleExists(articleId);
         Comment comment = commentSaveRequest.toComment(articleId, authorId);
 
         commentRepository.save(comment);
+    }
+
+    public void deleteById(String commentId, SessionedUser sessionedUser) {
+        log.info(this.getClass() + ": 댓글 삭제");
+        Comment comment = commentRepository.findByIdOrNull(commentId);
+        String authorId = comment.getAuthorId();
+        sessionedUser.validateSession(authorId);
+
+        commentRepository.delete(comment);
     }
 
     private void validateArticleExists(int articleId) throws EntityNotFoundException {

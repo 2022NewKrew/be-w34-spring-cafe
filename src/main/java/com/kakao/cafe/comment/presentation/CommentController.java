@@ -46,8 +46,19 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
-    public String deleteById(@PathVariable int articleId, @PathVariable String commentId) {
+    public String deleteById(
+            @PathVariable int articleId,
+            @PathVariable String commentId,
+            HttpSession session
+    ) {
         log.info(this.getClass() + ": 댓글 삭제");
-        return "redirect:/";
+        Object value = session.getAttribute("sessionedUser");
+        if (value == null) {
+            return "redirect:/auth/login";
+        }
+
+        SessionedUser user = (SessionedUser) value;
+        commentService.deleteById(commentId, user);
+        return "redirect:/articles/" + articleId;
     }
 }
