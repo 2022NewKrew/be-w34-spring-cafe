@@ -21,6 +21,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
 
 
     public void addInterceptors(InterceptorRegistry registry){
+        //로그인체크
         registry.addInterceptor(new loginCheckInterceptor())
                 .addPathPatterns("/qna/create")
                 .addPathPatterns("/qna/form")
@@ -29,7 +30,6 @@ public class MvcConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/qnas/delete/*")
                 .addPathPatterns("/qnas/reply/create")
                 .addPathPatterns("/user/update");
-
     }
 
 }
