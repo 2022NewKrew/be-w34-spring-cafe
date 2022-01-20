@@ -6,9 +6,9 @@ import com.kakao.cafe.entity.User;
 import javax.validation.constraints.NotBlank;
 
 public class ArticleRegistrationDto {
-    @NotBlank(message = "게시글 제목이 null 이거나 한개의 띄어쓰기만 있습니다")
+    @NotBlank(message = "제목을 입력해주세요")
     private final String title;
-    @NotBlank(message = "게시글 내용이 null 이거나 띄어쓰기만 있습니다")
+    @NotBlank(message = "본문 내용을 입력해주세요")
     private final String content;
 
     public ArticleRegistrationDto(String title, String content) {
