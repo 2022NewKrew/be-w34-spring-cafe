@@ -7,20 +7,19 @@ import com.kakao.cafe.user.entity.UserEntity;
 import com.kakao.cafe.user.dto.request.UserFormReqDto;
 import com.kakao.cafe.user.mapper.UserMapper;
 import com.kakao.cafe.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
 
     public void signup(UserFormReqDto userFormReqDto) {
         UserEntity userEntity = UserEntity.builder()
@@ -33,11 +32,13 @@ public class UserService {
         userRepository.save(userEntity);
     }
 
+    @Transactional(readOnly = true)
     public List<UserResDto> getUsers() {
         List<UserEntity> userEntityList = userRepository.findAll();
         return userMapper.toUserResDtoList(userEntityList);
     }
 
+    @Transactional(readOnly = true)
     public UserResDto getUser(String userId) {
         UserEntity userEntity = userRepository.findByUserId(userId)
                 .orElseThrow();
@@ -53,6 +54,7 @@ public class UserService {
         userRepository.save(userEntity);
     }
 
+    @Transactional(readOnly = true)
     public SessionUser login(String userId, String password) {
         UserEntity userEntity = userRepository.findByUserId(userId)
                 .orElseThrow();

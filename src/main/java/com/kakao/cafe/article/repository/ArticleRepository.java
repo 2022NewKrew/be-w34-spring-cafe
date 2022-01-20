@@ -57,4 +57,8 @@ public class ArticleRepository {
     public void delete(Long id) {
         jdbcTemplate.update(DELETE_ARTICLE_BY_ID, id);
     }
+
+    public List<ArticleEntity> findByIdAndWriter(Long id, String username) {
+        return jdbcTemplate.query("SELECT * FROM TB_ARTICLE WHERE ID = ? AND WRITER = ?", this::convertArticleEntity, id, username);
+    }
 }
