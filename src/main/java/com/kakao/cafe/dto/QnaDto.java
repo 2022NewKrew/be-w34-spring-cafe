@@ -1,8 +1,10 @@
 package com.kakao.cafe.dto;
 
+import com.kakao.cafe.domain.Comment;
 import com.kakao.cafe.domain.Qna;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QnaDto {
 
@@ -72,8 +74,12 @@ public class QnaDto {
             return new QnaResponse(qna.getId(), qna.getWriter(), qna.getTitle(), qna.getContents());
         }
 
-        public static QnaResponse of(Qna qna, List<CommentDto.ReadCommentResponse> comments) {
-            return new QnaResponse(qna.getId(), qna.getWriter(), qna.getTitle(), qna.getContents(), comments);
+        public static QnaResponse of(Qna qna, List<Comment> comments) {
+            List<CommentDto.ReadCommentResponse> commentResponses = comments.stream()
+                    .map(CommentDto.ReadCommentResponse::of)
+                    .collect(Collectors.toList());
+
+            return new QnaResponse(qna.getId(), qna.getWriter(), qna.getTitle(), qna.getContents(), commentResponses);
         }
     }
 

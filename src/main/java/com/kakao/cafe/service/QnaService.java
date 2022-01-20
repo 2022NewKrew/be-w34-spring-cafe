@@ -2,7 +2,6 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Comment;
 import com.kakao.cafe.domain.Qna;
-import com.kakao.cafe.dto.CommentDto;
 import com.kakao.cafe.dto.QnaDto;
 import com.kakao.cafe.exception.QnaNotFoundException;
 import com.kakao.cafe.repository.CommentRepository;
@@ -46,11 +45,7 @@ public class QnaService {
 
         List<Comment> comments = commentRepository.findByQnaIdAndDeleted(qnaId, false);
 
-        List<CommentDto.ReadCommentResponse> commentResponses = comments.stream()
-                .map(CommentDto.ReadCommentResponse::of)
-                .collect(Collectors.toList());
-
-        return QnaDto.QnaResponse.of(qna, commentResponses);
+        return QnaDto.QnaResponse.of(qna, comments);
     }
 
     public QnaDto.QnaForUpdateResponse findQnaForUpdate(Integer qnaId, String userId) throws AccessDeniedException {
