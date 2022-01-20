@@ -2,17 +2,16 @@ package com.kakao.cafe.domain.user.repositoryimpl;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
+@RequiredArgsConstructor
 @Repository("UserRepositoryJdbc")
 public class UserRepositoryJdbc implements UserRepository {
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public User save(User user) {
