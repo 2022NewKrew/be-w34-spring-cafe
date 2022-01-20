@@ -37,13 +37,13 @@ public class ArticleDBRepository implements ArticleRepository{
 
     @Override
     public Article findArticleById(int id) {
-        List<Article> articles = jdbcTemplate.query("SELECT ID, TITLE, CONTENT, CREATED_AT, USERID FROM ARTICLE_TABLE WHERE ID = ?", articleRowMapper(), id);
+        List<Article> articles = jdbcTemplate.query("SELECT ID, TITLE, CONTENT, CREATED_AT, AT.USERID, NAME FROM ARTICLE_TABLE AT JOIN USER_TABLE UT on UT.USERID = AT.USERID AND ID = ?", articleRowMapper(), id);
         return articles.stream().findAny().orElse(null);
     }
 
     @Override
     public List<Article> findAllArticles() {
-        return jdbcTemplate.query("SELECT ID, TITLE, CONTENT, CREATED_AT, USERID FROM ARTICLE_TABLE", articleRowMapper());
+        return jdbcTemplate.query("SELECT ID, TITLE, CONTENT, CREATED_AT, AT.USERID, NAME FROM ARTICLE_TABLE AT JOIN USER_TABLE UT on UT.USERID = AT.USERID", articleRowMapper());
     }
 
     private RowMapper<Article> articleRowMapper() {
@@ -52,6 +52,7 @@ public class ArticleDBRepository implements ArticleRepository{
                         rs.getString("TITLE"),
                         rs.getString("CONTENT"),
                         rs.getString("USERID"),
+                       rs.getString("NAME"),
                        rs.getTimestamp("CREATED_AT"));
     }
 }

@@ -23,6 +23,7 @@ public class ArticleController {
     @GetMapping("/{id}")
     public String findArticleById(@PathVariable String id, Model model){
         Article article = articleService.findArticleById(id);
+
         model.addAttribute("article", article);
         return "article/view";
     }
@@ -33,15 +34,12 @@ public class ArticleController {
     }
 
     @PostMapping("/post")
-    public String postArticle(@Valid ArticleSaveDto articleSaveDTO, HttpSession session) throws Exception {
+    public String postArticle(@Valid ArticleSaveDto articleSaveDTO, HttpSession session) {
+        User sessionedUser = (User) session.getAttribute("sessionedUser");
 
-        Object value = session.getAttribute("sessionedUser");
-        if(Objects.isNull(value)){
-            throw new InvalidUserException();
-        }
-        User user = (User) value;
-        articleSaveDTO.setUserId(user.getUserId());
+        articleSaveDTO.setUserId(sessionedUser.getUserId());
         articleService.save(articleSaveDTO);
+
         return "redirect:/";
     }
 }

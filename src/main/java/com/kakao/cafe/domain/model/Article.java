@@ -9,8 +9,9 @@ import java.sql.Timestamp;
 @Getter
 public class Article {
     private final int id;
-    private String title;
-    private String content;
-    private String userId;
-    private Timestamp createdAt;
+    private final String title;
+    private final String content;
+    private final String userId;
+    private final String name; // user name
+    private final Timestamp createdAt;
 }
