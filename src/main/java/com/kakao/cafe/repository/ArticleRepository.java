@@ -45,4 +45,8 @@ public class ArticleRepository {
         ArticleDao newArticleDao = new ArticleDao(articleDao.getNumber(), articleDao.getId(), articleDao.getName(), articlePostDto.getTitle(), articlePostDto.getContents(), articleDao.getTimestamp());
         articleMap.put(newArticleDao.getNumber(), newArticleDao);
     }
+
+    public void delete(Long id) {
+        articleMap.remove(id);
+    }
 }
