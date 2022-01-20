@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface CommentRepository {
     List<Comment> findAllByArticleId(int articleId);
+
+    int save(Comment comment);
 }

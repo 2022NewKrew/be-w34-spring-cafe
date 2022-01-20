@@ -23,6 +23,19 @@ public class CommentJdbcRepository implements CommentRepository {
         return jdbcTemplate.query(query, mapCommentRow(), articleId);
     }
 
+    @Override
+    public int save(Comment comment) {
+        String query = "insert into comments(article_id, author_id, content, created_at) values(?, ?, ?, ?)";
+
+        return jdbcTemplate.update(
+                query,
+                comment.getArticleId(),
+                comment.getAuthorId(),
+                comment.getContent(),
+                comment.getCreatedAt()
+        );
+    }
+
     private RowMapper<Comment> mapCommentRow() {
         return (rs, rowNum) ->
                 Comment.valueOf(

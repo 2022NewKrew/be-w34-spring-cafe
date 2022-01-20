@@ -4,7 +4,6 @@ import com.kakao.cafe.article.application.ArticleService;
 import com.kakao.cafe.article.application.dto.ArticleListResponse;
 import com.kakao.cafe.article.application.dto.ArticleSaveRequest;
 import com.kakao.cafe.article.application.dto.ArticleShowResponse;
-import com.kakao.cafe.comment.application.CommentService;
 import com.kakao.cafe.user.domain.SessionedUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
