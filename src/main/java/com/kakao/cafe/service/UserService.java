@@ -62,12 +62,12 @@ public class UserService {
 
     @Transactional
     public UserDto modify(long actorId, long targetId, ModifyUserDto modifyUser) {
-        if (actorId != targetId) {
+        User target = userRepository.getById(targetId)
+                .orElseThrow(NoSuchUserException::new);
+        User actor = userRepository.getById(actorId)
+                .orElseThrow(NoSuchUserException::new);
+        if (!actor.canModify(target, modifyUser.getPassword())) {
             throw new UnauthorizedException();
-        }
-        Optional<User> found = userRepository.getById(targetId);
-        if (found.isEmpty()) {
-            throw new NoSuchUserException();
         }
         modifyPassword(targetId, modifyUser.getPassword());
         modifyName(targetId, modifyUser.getName());

@@ -28,6 +28,10 @@ public class User {
         return userId;
     }
 
+    public boolean canModify(User target, String password) {
+        return this.id == target.id && Objects.equals(password, target.password);
+    }
+
     public UserDto toDto() {
         return new UserDto.Builder()
                 .id(id)
