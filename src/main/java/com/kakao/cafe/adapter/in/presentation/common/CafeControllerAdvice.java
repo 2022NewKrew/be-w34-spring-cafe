@@ -26,6 +26,6 @@ public class CafeControllerAdvice {
         String url = request.getRequestURI();
         String message = ErrorMessage.getErrorMessage(e);
         redirectAttributes.addFlashAttribute("message", message);
-        return "redirect:" + url + "/error";
+        return "redirect:" + url;
     }
 }

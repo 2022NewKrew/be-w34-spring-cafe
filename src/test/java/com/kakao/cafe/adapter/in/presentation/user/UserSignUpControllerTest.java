@@ -27,7 +27,7 @@ class UserSignUpControllerTest {
         String password = "test";
         String name = "champion";
         String email = "champ@kakao.com";
-        String url = "/users";
+        String url = "/users/form";
 
         // then
         mockMvc.perform(

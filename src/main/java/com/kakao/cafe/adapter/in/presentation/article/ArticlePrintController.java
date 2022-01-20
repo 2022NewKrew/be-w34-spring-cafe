@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ArticlePrintController {
 
     private static final String VIEWS_ARTICLE_LIST = "index";
+    private static final String VIEWS_ARTICLE_FORM = "article/form";
     private static final String VIEWS_ARTICLE_MODIFY_FORM = "article/modifyForm";
 
     private final GetArticleInfoUseCase getArticleInfoUseCase;
@@ -38,6 +39,11 @@ public class ArticlePrintController {
             articleList.getValue()
         );
         return VIEWS_ARTICLE_LIST;
+    }
+
+    @GetMapping("/articles/form")
+    public String displayArticleForm() {
+        return VIEWS_ARTICLE_FORM;
     }
 
     @GetMapping("/articles/{id}")

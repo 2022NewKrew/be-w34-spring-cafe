@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 @Controller
 public class UserInfoController {
 
+    private static final String VIEWS_LOGIN = "user/login";
+    private static final String VIEWS_SIGNUP_FORM = "user/form";
     private static final String VIEWS_USER_LIST = "user/list";
     private static final String VIEWS_USER_PROFILE = "user/profile";
     private static final String VIEWS_USER_UPDATE_FROM = "user/updateForm";
@@ -29,6 +31,16 @@ public class UserInfoController {
         return VIEWS_USER_LIST;
     }
 
+    @GetMapping("/user/login")
+    public String displayLoginPage() {
+        return VIEWS_LOGIN;
+    }
+
+    @GetMapping("/users/form")
+    public String displaySignUpForm() {
+        return VIEWS_SIGNUP_FORM;
+    }
+
     @GetMapping("/users/{userId}")
     public String displayUserProfile(@PathVariable String userId, Model model)
         throws UserNotExistException {
@@ -38,7 +50,7 @@ public class UserInfoController {
         return VIEWS_USER_PROFILE;
     }
 
-    @GetMapping(path = {"/users/{userId}/form", "/users/{userId}/form/error"})
+    @GetMapping("/users/{userId}/form")
     public String displayUserUpdateForm(@PathVariable String userId, Model model, @RequestAttribute UserInfo sessionedUser)
         throws UserNotExistException, UnauthenticatedUserException {
         if (!sessionedUser.getUserId().equals(userId)) {

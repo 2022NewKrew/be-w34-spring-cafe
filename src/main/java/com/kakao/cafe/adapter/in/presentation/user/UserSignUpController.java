@@ -19,7 +19,7 @@ public class UserSignUpController {
         this.signUpUserUseCase = signUpUserUseCase;
     }
 
-    @PostMapping("/users")
+    @PostMapping("/users/form")
     public String signUp(SignUpRequest signUpRequest)
         throws IllegalUserIdException, IllegalPasswordException, IllegalUserNameException, UserIdDuplicationException, IllegalEmailException {
         signUpUserUseCase.signUpUser(signUpRequest);

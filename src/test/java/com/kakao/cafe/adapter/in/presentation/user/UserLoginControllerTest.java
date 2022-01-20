@@ -25,7 +25,7 @@ class UserLoginControllerTest {
     void loginUserTest() throws Exception {
         String userId = "champ";
         String password = "test";
-        String url = "/login";
+        String url = "/user/login";
 
         // then
         mockMvc.perform(

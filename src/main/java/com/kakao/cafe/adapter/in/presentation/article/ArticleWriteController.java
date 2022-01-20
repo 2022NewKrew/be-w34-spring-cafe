@@ -20,7 +20,7 @@ public class ArticleWriteController {
         this.writeArticleUseCase = writeArticleUseCase;
     }
 
-    @PostMapping("/articles")
+    @PostMapping("/articles/form")
     public String registerArticle(String title, String contents, @RequestAttribute UserInfo sessionedUser)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
         WriteArticleRequest writeArticleRequest = new WriteArticleRequest.Builder().userId(sessionedUser.getUserId())
