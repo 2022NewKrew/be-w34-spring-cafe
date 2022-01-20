@@ -1,7 +1,15 @@
 package com.kakao.cafe.interceptor;
 
+import com.kakao.cafe.domain.model.Article;
 import com.kakao.cafe.domain.model.User;
+import com.kakao.cafe.exception.InvalidUserException;
+import com.kakao.cafe.service.ArticleService;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,17 +21,18 @@ import java.util.Objects;
 
 @Component
 public class SessionInterceptor implements HandlerInterceptor {
+
     public List<String> loginEssential =
             Arrays.asList("/user/profile/**", "/user/logout", "/article/**");
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Object value = request.getSession().getAttribute("sessionedUser");
 
-        if(!Objects.isNull(value)) return true;
+        if(Objects.isNull(value)) response.sendRedirect("/user/login");
 
-        response.sendRedirect("/user/login");
-        return false;
+        return true;
     }
 
     @Override

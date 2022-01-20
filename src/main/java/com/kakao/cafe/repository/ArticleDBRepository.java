@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository;
 
+import com.kakao.cafe.domain.dto.ArticleModifyDto;
 import com.kakao.cafe.domain.dto.ArticleSaveDto;
 import com.kakao.cafe.domain.model.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -44,6 +45,16 @@ public class ArticleDBRepository implements ArticleRepository{
     @Override
     public List<Article> findAllArticles() {
         return jdbcTemplate.query("SELECT ID, TITLE, CONTENT, CREATED_AT, AT.USERID, NAME FROM ARTICLE_TABLE AT JOIN USER_TABLE UT on UT.USERID = AT.USERID", articleRowMapper());
+    }
+
+    @Override
+    public void modifyArticle(ArticleModifyDto articleModifyDto) {
+        jdbcTemplate.update("UPDATE ARTICLE_TABLE SET TITLE = ?, CONTENT = ? WHERE ID = ?", articleModifyDto.getTitle(), articleModifyDto.getContent(), articleModifyDto.getId());
+    }
+
+    @Override
+    public void deleteArticle(int id) {
+        jdbcTemplate.update("DELETE FROM ARTICLE_TABLE WHERE ID = ?", id);
     }
 
     private RowMapper<Article> articleRowMapper() {

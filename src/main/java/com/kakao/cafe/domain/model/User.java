@@ -11,8 +11,12 @@ public class User {
     private String name;
     private String email;
 
-    public boolean isValidPassword(String password){
+    public boolean isValidPassword(String password) {
         return this.password.equals(password);
+    }
+
+    public boolean isSameUser(String userId) {
+        return this.userId.equals(userId);
     }
 }
 
