@@ -15,6 +15,7 @@ public class CommentDto {
     private String content;
     private LocalDateTime createdAt;
     private String writerNickname;
+    private boolean hasAuthority;
 
     @Builder
     public CommentDto(long id, long postId, long writerId, String content, LocalDateTime createdAt, String writerNickname) {

@@ -37,10 +37,15 @@ public class CommentService {
         }
     }
 
-    public List<CommentDto> getCommentsByPostId(long postId) {
+    public List<CommentDto> getCommentsByPostId(long postId, long currentUserId) {
         return commentRepository.findByPostId(postId).stream()
-                .map(comment -> modelMapper.map(comment, CommentDto.class))
+                .map(comment -> toCommentDto(comment, currentUserId))
                 .collect(Collectors.toList());
+    }
+
+    private CommentDto toCommentDto(Comment comment, long currentUserId) {
+        comment.checkAuthority(currentUserId);
+        return modelMapper.map(comment, CommentDto.class);
     }
 
     public void deleteById(long id, long postId, long writerId) {

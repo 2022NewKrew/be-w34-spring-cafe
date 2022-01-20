@@ -16,6 +16,8 @@ public class Comment {
 
     private String writerNickname;
 
+    private boolean hasAuthority;
+
     @Builder
     public Comment(long id, long postId, long writerId, String content, LocalDateTime createdAt, String writerNickname) {
         this.id = id;
@@ -25,4 +27,9 @@ public class Comment {
         this.createdAt = createdAt;
         this.writerNickname = writerNickname;
     }
+
+    public void checkAuthority(long currentId) {
+        hasAuthority = writerId == currentId;
+    }
+
 }

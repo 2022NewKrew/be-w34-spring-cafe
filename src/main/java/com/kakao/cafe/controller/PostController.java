@@ -46,9 +46,9 @@ public class PostController {
         long currentUserId = SessionUtils.getCurrentUserId(session);
         PostDto post = postService.getPostById(id);
         model.addAttribute("post", post);
-        model.addAttribute("hasAuthority", post.getWriterId().equals(currentUserId));
+        model.addAttribute("hasPostAuthority", post.getWriterId().equals(currentUserId));
 
-        List<CommentDto> comments = commentService.getCommentsByPostId(id);
+        List<CommentDto> comments = commentService.getCommentsByPostId(id, currentUserId);
         model.addAttribute("comments", comments);
         model.addAttribute("sizeOfComments", comments.size());
         return "post/show";

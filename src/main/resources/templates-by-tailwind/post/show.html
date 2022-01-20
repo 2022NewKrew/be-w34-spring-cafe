@@ -13,7 +13,7 @@
         <div class="w-full">
             <div class="flex items-center justify-between mb-8">
                 <h1 class="text-4xl font-medium tracking-wider">{{ post.title }}</h1>
-                {{#hasAuthority}}
+                {{#hasPostAuthority}}
                 <div class="flex space-x-2">
                     <a href="/posts/{{ post.id }}/update" class="bg-blue-500 text-white px-4 py-2 hover:bg-blue-700">수정</a>
                     <form action="/posts/{{ post.id }}" method="POST">
@@ -21,7 +21,7 @@
                         <input type="submit" value="삭제" class="bg-red-500 text-white px-4 py-2 hover:bg-red-700 cursor-pointer">
                     </form>
                 </div>
-                {{/hasAuthority}}
+                {{/hasPostAuthority}}
             </div>
             <div class="flex flex-col space-y-8">
                 <div class="flex p-4 border-t border-b">
@@ -36,7 +36,13 @@
                     <div class="flex flex-col py-4 border-b">
                         <span class="text-bold font-medium">{{ writerNickname }}</span>
                         <p class="my-1 whitespace-pre">{{ content }}</p>
-                        <span class="text-gray-400">{{ formattedCreatedAt }}</span>
+                        <form action="/posts/{{ post.id }}/comments/{{ id }}" method="POST" class="flex justify-between">
+                            <input type="hidden" name="_method" value="DELETE" />
+                            <span class="text-gray-400">{{ formattedCreatedAt }}</span>
+                            {{#hasAuthority}}
+                            <input type="submit" value="삭제" class="bg-red-500 text-white px-2 py-1 hover:bg-red-700 cursor-pointer comment" />
+                            {{/hasAuthority}}
+                        </form>
                     </div>
                     {{/comments}}
                 </details>
