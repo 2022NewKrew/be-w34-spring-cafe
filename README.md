@@ -63,5 +63,7 @@
 - [x] 댓글기능 구현
 
 # step10
-- [ ] mysql 도커로 실행
-- [ ] docker 파일 krane에서 배포
+- [x] mysql 도커로 krane 서버에서 실행
+
+# step11
+- [ ] docker compose 생성후 배포
