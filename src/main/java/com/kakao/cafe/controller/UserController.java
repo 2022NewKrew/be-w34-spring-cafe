@@ -22,7 +22,6 @@ import javax.validation.Valid;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.kakao.cafe.common.auth.Auth.Role;
 
@@ -68,10 +67,7 @@ public class UserController {
     @GetMapping
     public String viewUserList(Model model) {
 
-        List<UserDto> users = userService.findAll()
-                .stream()
-                .map(u -> modelMapper.map(u, UserDto.class))
-                .collect(Collectors.toList());
+        List<UserDto> users = UserDto.of(userService.findAll());
 
         model.addAttribute("users", users);
 
