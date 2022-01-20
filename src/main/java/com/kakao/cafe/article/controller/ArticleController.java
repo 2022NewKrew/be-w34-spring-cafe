@@ -5,6 +5,7 @@ import com.kakao.cafe.article.dto.ArticleRequest;
 import com.kakao.cafe.article.dto.CommentDto;
 import com.kakao.cafe.article.dto.CommentRequest;
 import com.kakao.cafe.article.exception.ArticleAuthorMismatchException;
+import com.kakao.cafe.article.exception.CommentAuthorMismatchException;
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.article.service.CommentService;
 import com.kakao.cafe.auth.service.AuthService;
@@ -68,8 +69,17 @@ public class ArticleController {
     public String addArticleComment(@PathVariable Long articleId, CommentRequest commentRequest) {
         log.info("Comment request : {}", commentRequest.toString());
         String author = authService.getLoginUserId();
+
         commentService.addComment(articleId, author, commentRequest);
         return "redirect:/article/show/" + articleId;
     }
 
+    @DeleteMapping("/{articleId}/comment/{id}")
+    public String deleteArticleComment(@PathVariable Long articleId, @PathVariable Long id) {
+        if (commentService.isAuthor(id, authService.getLoginUserId())) {
+            commentService.deleteComment(id);
+            return "redirect:/article/show/" + articleId;
+        }
+        throw new CommentAuthorMismatchException();
+    }
 }

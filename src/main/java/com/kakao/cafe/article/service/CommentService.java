@@ -2,6 +2,7 @@ package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.dto.CommentDto;
 import com.kakao.cafe.article.dto.CommentRequest;
+import com.kakao.cafe.article.model.Article;
 import com.kakao.cafe.article.model.Comment;
 import com.kakao.cafe.article.repository.CommentRepository;
 import lombok.AllArgsConstructor;
@@ -33,5 +34,18 @@ public class CommentService {
         return comments.stream()
                 .map(comment -> modelMapper.map(comment, CommentDto.class))
                 .collect(Collectors.toList());
+    }
+
+    public void deleteComment(Long id){
+        commentRepository.deleteCommentById(id);
+    }
+
+    public boolean isAuthor(Long id, String userId){
+        Comment comment = getCommentById(id);
+        return comment.getAuthor().equals(userId);
+    }
+
+    public Comment getCommentById(Long id) {
+        return commentRepository.findOneById(id).orElseThrow();
     }
 }

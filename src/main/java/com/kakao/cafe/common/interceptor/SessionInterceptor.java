@@ -15,18 +15,10 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String loginId = (String) request.getSession().getAttribute("LOGIN_USER_ID");
-        if(loginId != null){
-            return true;
-        } else{
-            String destUri = request.getRequestURI();
-            String destQuery = request.getQueryString();
-            String dest = (destQuery == null) ? destUri : destUri+"?"+destQuery;
-            log.info("dest = {}", dest);
-//            request.getSession().setAttribute("dest", dest);
-
+        if(request.getSession().getAttribute("LOGIN_USER_ID") == null){
             response.sendRedirect("/user/login");
-            return true;
+            return false;
         }
+        return true;
     }
 }

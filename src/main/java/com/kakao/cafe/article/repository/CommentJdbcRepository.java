@@ -32,6 +32,18 @@ public class CommentJdbcRepository implements CommentRepository {
         return jdbcTemplate.query(sql, commentRowMapper(), articleId);
     }
 
+    @Override
+    public void deleteCommentById(Long id) {
+        String sql = "UPDATE COMMENTS SET deleted=true WHERE id=?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    @Override
+    public Optional<Comment> findOneById(Long id) {
+        String sql = "SELECT * FROM COMMENTS WHERE id=?";
+        return jdbcTemplate.query(sql, commentRowMapper(), id).stream().findAny();
+    }
+
     public RowMapper<Comment> commentRowMapper() {
         return (rs, rowNum) -> new Comment(
                 rs.getLong("id"),
