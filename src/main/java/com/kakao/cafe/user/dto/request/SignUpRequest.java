@@ -14,7 +14,7 @@ public class SignUpRequest {
     @NotBlank
     private final String nickname;
 
-    @NotNull
+    @NotBlank
     private final String password;
 
     private SignUpRequest(String email, String nickname, String password) {

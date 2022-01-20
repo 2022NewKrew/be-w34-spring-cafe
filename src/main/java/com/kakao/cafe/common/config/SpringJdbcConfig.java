@@ -1,4 +1,4 @@
-package com.kakao.cafe.config;
+package com.kakao.cafe.common.config;
 
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
