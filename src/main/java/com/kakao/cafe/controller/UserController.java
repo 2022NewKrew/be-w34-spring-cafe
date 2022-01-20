@@ -88,9 +88,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(UserLoginDto userLoginDto, HttpSession session) throws LoginFailedException {
+    public String login(@Valid UserLoginDto userLoginDto, BindingResult bindingResult, HttpSession session) throws LoginFailedException, InputDataException {
+        if (bindingResult.hasErrors()) {
+            throw new InputDataException("입력이 올바르지 않습니다.");
+        }
         UserSessionDto sessiondUser = userService.login(userLoginDto);
-        session.setAttribute("sessionedUser",sessiondUser);
+        session.setAttribute("sessionedUser", sessiondUser);
         return "redirect:/";
     }
 
