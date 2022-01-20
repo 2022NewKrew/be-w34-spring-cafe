@@ -74,7 +74,7 @@
                 <tbody id="tbody">
                 {{#posts}}
                 <tr>
-                    <td><a href="/posts/{{questionPostId}}/detail">{{title}}</a></td>
+                    <td><a href="/posts/{{questionPostId}}/detail" ping="/api/posts/{{questionPostId}}/click">{{title}}</a></td>
                     <td>{{author}}</td>
                     <td>{{date}}</td>
                     <td>{{viewCount}}</td>
