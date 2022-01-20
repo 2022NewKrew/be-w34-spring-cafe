@@ -1,9 +1,6 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.model.User;
-import com.kakao.cafe.model.Users;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,7 +12,7 @@ public class InMemoryUserRepository implements UserRepository {
     private final Users users;
 
     public InMemoryUserRepository() {
-        this.users = new Users(Collections.synchronizedList(new ArrayList<>()));
+        this.users = new Users();
     }
 
     @Override
@@ -25,16 +22,16 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return Collections.unmodifiableList(users.getUsers());
+        return users.getUsers();
     }
 
     @Override
     public Optional<User> findById(UUID id) {
-        return User.copyOptionalUser(users.findById(id));
+        return users.findById(id);
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return User.copyOptionalUser(users.findByUserId(userId));
+        return users.findByUserId(userId);
     }
 }

@@ -1,9 +1,6 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.post;
 
 import com.kakao.cafe.model.Post;
-import com.kakao.cafe.model.Posts;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,7 +12,7 @@ public class InMemoryPostRepository implements PostRepository {
     private final Posts posts;
 
     public InMemoryPostRepository() {
-        this.posts = new Posts(Collections.synchronizedList(new ArrayList<>()));
+        this.posts = new Posts();
     }
 
     @Override
@@ -25,12 +22,12 @@ public class InMemoryPostRepository implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        return Collections.unmodifiableList(posts.getPosts());
+        return posts.getPosts();
     }
 
     @Override
     public Optional<Post> findById(UUID id) {
-        return Post.copyOptionalPost(posts.findById(id));
+        return posts.findById(id);
     }
 
     @Override

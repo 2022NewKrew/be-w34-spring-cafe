@@ -6,7 +6,7 @@ import com.kakao.cafe.dto.UserRegisterRequest;
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.model.User;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.user.UserRepository;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;

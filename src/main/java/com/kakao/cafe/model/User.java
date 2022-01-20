@@ -1,7 +1,6 @@
 package com.kakao.cafe.model;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 public class User {
@@ -13,7 +12,7 @@ public class User {
     private final String email;
     private final LocalDateTime createdAt;
 
-    public User(Builder builder) {
+    private User(Builder builder) {
         this.id = builder.id;
         this.userId = builder.userId;
         this.password = builder.password;
@@ -22,16 +21,15 @@ public class User {
         this.createdAt = builder.createdAt;
     }
 
-    public static Optional<User> copyOptionalUser(Optional<User> original) {
-        return original.map(user -> new Builder(
-                        user.getUserId(),
-                        user.getPassword(),
-                        user.getName(),
-                        user.getEmail())
-                        .id(user.getId())
-                        .createdAt(user.getCreatedAt())
-                        .build())
-                .or(Optional::empty);
+    public static User copy(User original) {
+        return new Builder(
+                original.getUserId(),
+                original.getPassword(),
+                original.getName(),
+                original.getEmail())
+                .id(original.getId())
+                .createdAt(original.getCreatedAt())
+                .build();
     }
 
     public UUID getId() {

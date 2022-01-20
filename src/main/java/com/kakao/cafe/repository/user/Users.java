@@ -1,18 +1,21 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.model.User;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-public class Users {
+class Users {
 
     private final List<User> users;
 
-    public Users(List<User> users) {
-        this.users = users;
+    public Users() {
+        this.users = Collections.synchronizedList(new ArrayList<>());
     }
 
     public void add(User user) {
@@ -28,18 +31,24 @@ public class Users {
     }
 
     public Optional<User> findById(UUID id) {
-        return users.stream()
+        Optional<User> result = users.stream()
                 .filter(user -> id.equals(user.getId()))
                 .findFirst();
+
+        return result.isPresent() ? Optional.of(User.copy(result.get())) : Optional.empty();
     }
 
     public Optional<User> findByUserId(String userId) {
-        return users.stream()
+        Optional<User> result = users.stream()
                 .filter(user -> userId.equals(user.getUserId()))
                 .findFirst();
+
+        return result.isPresent() ? Optional.of(User.copy(result.get())) : Optional.empty();
     }
 
     public List<User> getUsers() {
-        return Collections.unmodifiableList(users);
+        return users.stream()
+                .map(User::copy)
+                .collect(Collectors.toUnmodifiableList());
     }
 }
