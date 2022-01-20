@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -65,6 +65,7 @@ public class JdbcTemplatesArticle {
                     rs.getString("contents")
             );
             article.setId(rs.getLong("id"));
+            article.setTime(rs.getString("created_at"));
             return article;
         };
     }

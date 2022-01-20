@@ -1,10 +1,9 @@
-package com.kakao.cafe.domain.article;
+package com.kakao.cafe.domain;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
@@ -24,12 +23,9 @@ public class Article {
     }
 
     private String getCreatedTime() {
-        LocalDate nowDate = LocalDate.now();
-        LocalTime nowTime = LocalTime.now();
+        LocalDateTime nowDateTime = LocalDateTime.now();
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        return nowDate.format(dateFormatter) + " " + nowTime.format(timeFormatter);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return nowDateTime.format(dateFormatter);
     }
-
 }

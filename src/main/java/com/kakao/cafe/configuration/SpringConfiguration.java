@@ -1,8 +1,10 @@
 package com.kakao.cafe.configuration;
 
 import com.kakao.cafe.repository.JdbcTemplatesArticle;
+import com.kakao.cafe.repository.JdbcTemplatesComment;
 import com.kakao.cafe.repository.JdbcTemplatesUser;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.CommentService;
 import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,5 +30,8 @@ public class SpringConfiguration {
     public UserService userService() {
         return new UserService(new JdbcTemplatesUser(dataSource));
     }
+
+    @Bean
+    public CommentService commentService(){return new CommentService(new JdbcTemplatesComment(dataSource));}
 
 }

@@ -1,8 +1,10 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Comment;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.CommentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,12 @@ import java.util.List;
 public class ArticleController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private ArticleService articleService;
+    private CommentService commentService;
 
     @Autowired
-    public ArticleController(ArticleService articleService){
+    public ArticleController(ArticleService articleService, CommentService commentService){
         this.articleService = articleService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/articles")
@@ -51,7 +55,9 @@ public class ArticleController {
     public String getArticleByIndex(@PathVariable long id, Model model){
         logger.info("id 찾기 : {} ",id);
         Article article = articleService.findOneById(id);
+        List<Comment> comments = commentService.findAllByArticleId(id);
         model.addAttribute("article",  article);
+        model.addAttribute("comment",comments);
         return "/qna/show";
     }
 
