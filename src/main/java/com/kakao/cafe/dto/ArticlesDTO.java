@@ -11,7 +11,7 @@ public class ArticlesDTO {
 
     public ArticlesDTO(List<Article> articles) {
         this.articles = articles.stream()
-                                .map(ArticleDTO::new)
+                                .map(ArticleDTO::toDto)
                                 .collect(Collectors.toList());
     }
 

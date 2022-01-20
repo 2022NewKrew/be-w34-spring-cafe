@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +23,15 @@ public class ArticleRepository {
     }
 
     public void save(Article article) {
-        String query = "INSERT INTO Articles (title, content, articleIndex)"
-                       + String.format("VALUES ('%s', '%s', %d)", article.getTitle(), article.getContent(), article.getArticleIndex());
-        jdbcTemplate.execute(query);
+        jdbcTemplate.update(con -> {
+            PreparedStatement preparedStatement = con.prepareStatement(
+                    "INSERT INTO Articles (title, content, articleIndex) VALUES (?, ?, ?)");
+            preparedStatement.setString(1, article.getTitle());
+            preparedStatement.setString(2, article.getContent());
+            preparedStatement.setInt(3, Article.createArticleIndex());
+
+            return preparedStatement;
+        });
     }
 
     public List<Article> findAll() {
@@ -33,15 +40,24 @@ public class ArticleRepository {
         List<Map<String, Object>> result = jdbcTemplate.queryForList(query);
 
         for(Map<String, Object> articleInfo : result) {
-            articles.add(new Article((String) articleInfo.get("title"), (String) articleInfo.get("content")));
+            articles.add(
+                    Article.builder()
+                            .title((String) articleInfo.get("title"))
+                            .content((String) articleInfo.get("content"))
+                            .articleIndex(Integer.parseInt(String.valueOf(articleInfo.get("articleIndex"))))
+                            .build());
         }
 
         return articles;
     }
 
     public Article findByIndex(Integer articleIndex) {
-        String query = String.format("SELECT title, content, articleIndex FROM Articles WHERE articleIndex = '%s'", articleIndex);
+        String query = String.format("SELECT title, content, articleIndex FROM Articles WHERE articleIndex = %s", articleIndex);
         Map<String, Object> result = jdbcTemplate.queryForMap(query);
-        return new Article((String) result.get("title"), (String) result.get("content"));
+        return Article.builder()
+                .title((String) result.get("title"))
+                .content((String) result.get("content"))
+                .articleIndex(Integer.parseInt(String.valueOf(result.get("articleIndex"))))
+                .build();
     }
 }

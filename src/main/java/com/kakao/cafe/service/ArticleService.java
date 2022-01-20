@@ -17,10 +17,8 @@ public class ArticleService {
     }
 
     public void save(ArticleDTO articleDTO) {
-        Article article = new Article();
-        article.setTitle(articleDTO.getTitle());
-        article.setContent(articleDTO.getContent());
-
+        // DTO to Entity
+        Article article = ArticleDTO.toEntity(articleDTO);
         articleRepository.save(article);
     }
 
@@ -34,10 +32,10 @@ public class ArticleService {
         return new ArticlesDTO(articles);
     }
 
-    public ArticleDTO findById(Integer articleIndex) {
-        Article articleinfo = articleRepository.findByIndex(articleIndex);
-
-        return new ArticleDTO(articleinfo);
+    public ArticleDTO findById(Integer index) {
+        Article articleInfo = articleRepository.findByIndex(index);
+        // Entity to DTO
+        return ArticleDTO.toDto(articleInfo);
     }
 
 }

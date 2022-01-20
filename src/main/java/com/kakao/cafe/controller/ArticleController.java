@@ -23,7 +23,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/articles")
+    @GetMapping("/")
     public String listArticles(Model model) {
         model.addAttribute("articles", articleService.findAll().getArticles());
         return "index";

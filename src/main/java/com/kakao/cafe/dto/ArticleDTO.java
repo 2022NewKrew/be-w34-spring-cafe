@@ -1,42 +1,28 @@
 package com.kakao.cafe.dto;
 
 import com.kakao.cafe.domain.Article;
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@Builder
 public class ArticleDTO {
     private String title;
     private String content;
     private Integer articleIndex;
 
-    public ArticleDTO() {
+    public static Article toEntity(ArticleDTO articleDTO){
+        return Article.builder()
+                .title(articleDTO.getTitle())
+                .content(articleDTO.getContent())
+                .build();
     }
 
-    public ArticleDTO(Article article) {
-        this.title = article.getTitle();
-        this.content = article.getContent();
-        this.articleIndex = article.getArticleIndex();
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Integer getArticleIndex() {
-        return articleIndex;
-    }
-
-    public void setArticleIndex(Integer articleIndex) {
-        this.articleIndex = articleIndex;
+    public static ArticleDTO toDto(Article article){
+        return ArticleDTO.builder()
+                .title(article.getTitle())
+                .content(article.getContent())
+                .articleIndex(article.getArticleIndex())
+                .build();
     }
 }
