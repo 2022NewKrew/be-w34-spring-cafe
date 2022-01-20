@@ -61,12 +61,12 @@ public class JdbcUserRepository implements UserRepository {
 
     private static RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> new User.Builder(
-                rs.getObject("id", UUID.class),
                 rs.getString("userId"),
                 rs.getString("password"),
                 rs.getString("name"),
-                rs.getString("email"),
-                rs.getObject("createdAt", LocalDateTime.class))
+                rs.getString("email"))
+                .id(rs.getObject("id", UUID.class))
+                .createdAt(rs.getObject("createdAt", LocalDateTime.class))
                 .build();
     }
 }

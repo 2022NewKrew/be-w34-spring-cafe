@@ -65,12 +65,12 @@ public class JdbcPostRepository implements PostRepository {
 
     private static RowMapper<Post> postRowMapper() {
         return (rs, rowNum) -> new Post.Builder(
-                rs.getObject("id", UUID.class),
                 rs.getObject("writerId", UUID.class),
                 rs.getString("title"),
-                rs.getObject("content", String.class),
-                rs.getObject("createdAt", LocalDateTime.class),
-                rs.getBoolean("deleted"))
+                rs.getObject("content", String.class))
+                .id(rs.getObject("id", UUID.class))
+                .createdAt(rs.getObject("createdAt", LocalDateTime.class))
+                .deleted(rs.getBoolean("deleted"))
                 .build();
     }
 }

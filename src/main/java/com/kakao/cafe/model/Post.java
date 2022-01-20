@@ -24,12 +24,12 @@ public class Post {
 
     public static Optional<Post> copyOptionalPost(Optional<Post> original) {
         return original.map(post -> new Builder(
-                        post.getId(),
                         post.getWriterId(),
                         post.getTitle(),
-                        post.getContent(),
-                        post.getCreatedAt(),
-                        post.isDeleted())
+                        post.getContent())
+                        .id(post.getId())
+                        .createdAt(post.getCreatedAt())
+                        .deleted(post.isDeleted())
                         .build())
                 .or(Optional::empty);
     }
@@ -69,38 +69,32 @@ public class Post {
 
     public static class Builder {
 
-        private final UUID id;
+        private UUID id = UUID.randomUUID();
         private final UUID writerId;
         private final String title;
         private final String content;
-        private final LocalDateTime createdAt;
-        private final boolean deleted;
+        private LocalDateTime createdAt = LocalDateTime.now();
+        private boolean deleted = false;
 
         public Builder(UUID writerId, String title, String content) {
-            this.id = UUID.randomUUID();
             this.writerId = writerId;
             this.title = title;
             this.content = content;
-            this.createdAt = LocalDateTime.now();
-            this.deleted = false;
         }
 
-        public Builder(UUID id, UUID writerId, String title, String content) {
+        public Builder id(UUID id) {
             this.id = id;
-            this.writerId = writerId;
-            this.title = title;
-            this.content = content;
-            this.createdAt = LocalDateTime.now();
-            this.deleted = false;
+            return this;
         }
 
-        public Builder(UUID id, UUID writerId, String title, String content, LocalDateTime createdAt, boolean deleted) {
-            this.id = id;
-            this.writerId = writerId;
-            this.title = title;
-            this.content = content;
+        public Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder deleted(boolean deleted) {
             this.deleted = deleted;
+            return this;
         }
 
         public Post build() {

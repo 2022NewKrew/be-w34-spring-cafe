@@ -24,12 +24,12 @@ public class User {
 
     public static Optional<User> copyOptionalUser(Optional<User> original) {
         return original.map(user -> new Builder(
-                        user.getId(),
                         user.getUserId(),
                         user.getPassword(),
                         user.getName(),
-                        user.getEmail(),
-                        user.getCreatedAt())
+                        user.getEmail())
+                        .id(user.getId())
+                        .createdAt(user.getCreatedAt())
                         .build())
                 .or(Optional::empty);
     }
@@ -64,29 +64,28 @@ public class User {
 
     public static class Builder {
 
-        private final UUID id;
+        private UUID id = UUID.randomUUID();
         private final String userId;
         private final String password;
         private final String name;
         private final String email;
-        private final LocalDateTime createdAt;
+        private LocalDateTime createdAt = LocalDateTime.now();
 
         public Builder(String userId, String password, String name, String email) {
-            this.id = UUID.randomUUID();
             this.userId = userId;
             this.password = password;
             this.name = name;
             this.email = email;
-            this.createdAt = LocalDateTime.now();
         }
 
-        public Builder(UUID id, String userId, String password, String name, String email, LocalDateTime createdAt) {
+        public Builder id(UUID id) {
             this.id = id;
-            this.userId = userId;
-            this.password = password;
-            this.name = name;
-            this.email = email;
+            return this;
+        }
+
+        public Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
         }
 
         public User build() {
