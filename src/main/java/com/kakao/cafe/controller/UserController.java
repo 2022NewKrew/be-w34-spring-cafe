@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.UserCreateRequest;
 import com.kakao.cafe.dto.UserUpdateRequest;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.web.meta.SessionConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,28 +26,19 @@ public class UserController {
 
     @GetMapping("")
     public String viewUsersList(Model model, HttpSession session){
-        if(!isLoginedUser(session)){
-            return "user/login";
-        }
         model.addAttribute("users", userService.findAllUsers());
         return "user/list";
     }
 
     @GetMapping("/{id}")
     public String viewPersonalUser(@PathVariable Long id, Model model, HttpSession session){
-        if(!isLoginedUser(session)){
-            return "user/login";
-        }
         model.addAttribute("user", userService.findOneUser(id));
         return "user/profile";
     }
 
     @GetMapping("/{id}/form")
     public String viewUpdateForm(@PathVariable Long id, Model model, HttpSession session){
-        if(!isLoginedUser(session)){
-            return "user/login";
-        }
-        if((Long)session.getAttribute("loginUser") != id)
+        if((Long)session.getAttribute(SessionConst.LOGIN_USER) != id)
             throw new IllegalStateException("접근할 수 없는 페이지 입니다.");
 
         model.addAttribute("user", userService.findOneUser(id));
@@ -55,16 +47,13 @@ public class UserController {
 
     @PutMapping("")
     public String updateUser(@ModelAttribute UserUpdateRequest user, HttpSession session){
-        if(!isLoginedUser(session)){
-            return "user/login";
-        }
-        userService.updateUser(user, (Long)session.getAttribute("loginUser"));
+        userService.updateUser(user, (Long)session.getAttribute(SessionConst.LOGIN_USER));
         return "redirect:/users";
     }
 
-    private boolean isLoginedUser(HttpSession session){
-        if(session.getAttribute("loginUser") != null) return true;
-        return false;
-    }
+//    private boolean isLoginedUser(HttpSession session){
+//        if(session.getAttribute(SessionConst.LOGIN_USER) != null) return true;
+//        return false;
+//    }
 
 }

@@ -15,7 +15,6 @@ public class MainController {
 
     @GetMapping("/")
     public String home(Model model){
-        model.addAttribute("questions", articleService.findAllQuestions());
         return "redirect:/questions";
     }
 

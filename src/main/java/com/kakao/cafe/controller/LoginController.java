@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.LoginRequest;
 import com.kakao.cafe.service.LoginService;
+import com.kakao.cafe.web.meta.SessionConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@ModelAttribute LoginRequest loginRequest, HttpSession session) {
         User user = loginService.login(loginRequest);
-        session.setAttribute("loginUser", user.getId());
+        session.setAttribute(SessionConst.LOGIN_USER, user.getId());
 
         return "redirect:/";
     }
