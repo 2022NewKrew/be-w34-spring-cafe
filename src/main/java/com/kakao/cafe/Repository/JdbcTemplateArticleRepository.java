@@ -1,7 +1,6 @@
 package com.kakao.cafe.Repository;
 
 import com.kakao.cafe.Domain.Article;
-import com.kakao.cafe.Domain.Comment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -13,7 +12,6 @@ import java.util.Optional;
 public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     DateTimeFormatter articleTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    DateTimeFormatter commentTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -46,20 +44,22 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void saveComment(Comment comment) {
+    public void editArticle(Long articleId, Article article) {
         jdbcTemplate.update(
-                "insert into comments(author, content, articleId) values(?,?,?)",
-                comment.getAuthor(), comment.getContent(), comment.getArticleId());
+                "update articles set title= ?, content = ? where id = ?",
+                article.getTitle(), article.getContent(), articleId);
     }
 
     @Override
-    public List<Comment> findCommentsOf(Long articleId) {
-        return jdbcTemplate.query("select * from comments where articleId = ?", comment(), articleId);
+    public void deleteArticle(Long articleId) {
+        jdbcTemplate.update(
+                "delete from articles where id = ?", articleId);
     }
+
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
-            Article article =  new Article(
+            Article article = new Article(
                     rs.getString("title"),
                     rs.getString("content"));
             article.setId(rs.getLong("id"));
@@ -67,18 +67,6 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
             article.setCreated(rs.getTimestamp("created").toLocalDateTime().format(articleTimeFormatter));
             article.setViews(rs.getInt("views"));
             return article;
-        };
-    }
-
-    private RowMapper<Comment> comment() {
-        return (rs, rowNum) -> {
-            Comment comment = new Comment(
-                    rs.getString("content"),
-                    rs.getLong("articleId"));
-            comment.setId(rs.getLong("id"));
-            comment.setAuthor(rs.getString("author"));
-            comment.setCreated(rs.getTimestamp("created").toLocalDateTime().format(commentTimeFormatter));
-            return comment;
         };
     }
 }

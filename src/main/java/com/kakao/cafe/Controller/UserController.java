@@ -28,21 +28,21 @@ public class UserController {
     @PostMapping("/users")
     public String join(User user, Model model) {
         logger.info("POST /users", user.getNickName());
-        try{
+        try {
             userService.join(user);
             logger.info("{}(nickname) joined.", user.getNickName());
-            return "redirect:/joined/" + user.getNickName();
-        }catch (IllegalArgumentException e){
+            return "redirect:/joined/" + user.getId();
+        } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
             return "error/page";
         }
     }
 
-    @GetMapping("/joined/{userNickname}")
-    public String joinSuccess(@PathVariable("userNickname") String userNickname,
-                              Model model){
-        logger.info("GET /joined/{}", userNickname);
-        Optional<User> findUser = userService.findOneByNickname(userNickname);
+    @GetMapping("/joined/{userId}")
+    public String joinSuccess(@PathVariable("userId") Long userId,
+                              Model model) {
+        logger.info("GET /joined/{}", userId);
+        Optional<User> findUser = userService.findOneById(userId);
 
         model.addAttribute("user", findUser.get());
         return "user/join_success";
@@ -58,26 +58,25 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/users/{userNickname}")
-    public String getProfile(@PathVariable("userNickname") String userNickname,
+    @GetMapping("/users/{userId}")
+    public String getProfile(@PathVariable("userId") Long userId,
                              Model model) {
-
-        Optional<User> findUser = userService.findOneByNickname(userNickname);
-        logger.info("GET /user/{} : View user({}) profile", userNickname, userNickname);
+        logger.info("GET /user/{} : View user({}) profile", userId, userId);
+        Optional<User> findUser = userService.findOneById(userId);
 
         model.addAttribute("user", findUser.get());
         return "user/profile";
     }
 
     @PostMapping("login")
-    public String login(String email, String password, HttpSession session, Model model) throws IllegalAccessException{
+    public String login(String email, String password, HttpSession session, Model model) throws IllegalAccessException {
         logger.info("POST /login");
-        try{
+        try {
             User loginUser = userService.login(email, password);
             logger.info("{} logged in", email);
             session.setAttribute("sessionedUser", loginUser);
             return "redirect:/";
-        }catch (IllegalAccessException e){
+        } catch (IllegalAccessException e) {
             model.addAttribute("error", e.getMessage());
             return "error/page";
         }
@@ -86,23 +85,24 @@ public class UserController {
     @GetMapping("/edit-user")
     public String editUser(HttpSession session, Model model) throws IllegalAccessException {
         logger.info("GET /edit-user");
-        try{
-            User user = userService.getLoggedInUser(session);
+        try {
+            Object sessionedUser = session.getAttribute("sessionedUser");
+            User user = userService.getLoggedInUser(sessionedUser);
             model.addAttribute(user);
 
             return "user/edit_profile";
-        }catch(IllegalAccessException e){
+        } catch (IllegalAccessException e) {
             model.addAttribute("error", e.getMessage());
             return "error/page";
         }
     }
 
-    @PostMapping("/edit-user/{nickName}")
-    public String editPostUser(@PathVariable("nickName") String originNickname,
+    @PostMapping("/edit-user/{userId}")
+    public String editPostUser(@PathVariable("userId") Long userId,
                                String newEmail, String newNickName) {
-        logger.info("POST /edit-user/{}", originNickname);
-        userService.editUserInfo(originNickname, newEmail, newNickName);
-        logger.info("{} changed user information to {} - {}",originNickname, newNickName, newEmail);
+        logger.info("POST /edit-user/{}", userId);
+        userService.editUserInfo(userId, newEmail, newNickName);
+        logger.info("User Id({}) changed user information to {} - {}", userId, newNickName, newEmail);
         return "redirect:/";
     }
 
