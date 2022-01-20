@@ -37,7 +37,11 @@ public class ArticleJdbc implements ArticleRepository {
             return pstmt;
         });
 
-        return (result > 0);
+        if (result != 1) {
+            throw new IllegalStateException("Affected record(s) is not 1 for add article(user: " + article.getUserId() + ")! - " + result);
+        }
+
+        return true;
     }
 
     @Override
@@ -45,7 +49,7 @@ public class ArticleJdbc implements ArticleRepository {
         final List<ArticleDto> list = jdbcTemplate.query(
                 con -> {
                     final PreparedStatement pstmt = con.prepareStatement(
-                            "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at " +
+                            "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at, a.count_comments " +
                                     "FROM userlist AS u " +
                                     "JOIN (SELECT * FROM article WHERE idx = ? AND deleted = false LIMIT 1) AS a " +
                                     "ON u.id = a.user_id"
@@ -60,12 +64,16 @@ public class ArticleJdbc implements ArticleRepository {
                         rs.getString("title"),
                         rs.getString("body"),
                         rs.getLong("created_at"),
-                        rs.getLong("modified_at")
+                        rs.getLong("modified_at"),
+                        rs.getInt("count_comments")
                 )
         );
 
         if (list.size() == 0) {
             return null;
+        }
+        else if (list.size() > 1) {
+            throw new IllegalStateException("Selected record(s) is not 1 for get article(" + idx + ")! - " + list.size());
         }
 
         return list.get(0);
@@ -76,12 +84,12 @@ public class ArticleJdbc implements ArticleRepository {
         return Collections.unmodifiableList(
                 jdbcTemplate.query(
                         con -> con.prepareStatement(
-                                "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at " +
+                                "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at, a.count_comments " +
                                         "FROM userlist AS u " +
                                         "JOIN article AS a " +
                                         "ON u.id = a.user_id " +
-                                        "WHERE deleted = false " +
-                                        "ORDER BY created_at DESC"
+                                        "WHERE a.deleted = false " +
+                                        "ORDER BY a.created_at DESC"
                         ),
                         (rs, count) -> ArticleDto.from(
                                 rs.getLong("idx"),
@@ -90,7 +98,8 @@ public class ArticleJdbc implements ArticleRepository {
                                 rs.getString("title"),
                                 rs.getString("body"),
                                 rs.getLong("created_at"),
-                                rs.getLong("modified_at")
+                                rs.getLong("modified_at"),
+                                rs.getInt("count_comments")
                         )
                 )
         );
@@ -111,16 +120,33 @@ public class ArticleJdbc implements ArticleRepository {
             return pstmt;
         });
 
-        return (result > 0);
+        if (result != 1) {
+            throw new IllegalStateException("Affected record(s) is not 1 for update article(" + idx + ")! - " + result);
+        }
+
+        return true;
     }
 
     @Override
     public boolean delete(final long idx) {
         final int result = jdbcTemplate.update(con -> {
             final PreparedStatement pstmt = con.prepareStatement(
-                    "UPDATE article SET deleted = true WHERE idx = ? AND deleted = false"
+                    "UPDATE comment co " +
+                            "JOIN article ao " +
+                            "ON ao.idx = co.article_idx " +
+                            "SET ao.deleted = true, ao.count_comments = 0, co.deleted = true " +
+                            "WHERE ao.idx = ? AND ao.deleted = false AND " +
+                            "       co.article_idx = ? AND co.deleted = false AND " +
+                            "       0 = (SELECT cnt FROM (SELECT COUNT(c.user_id) cnt " +
+                            "           FROM comment c " +
+                            "           JOIN (SELECT * FROM article WHERE idx = ? AND deleted = false LIMIT 1) a " +
+                            "           ON c.article_idx = a.idx " +
+                            "           WHERE c.user_id != a.user_id " +
+                            "           LIMIT 1) tmp)"
             );
             pstmt.setLong(1, idx);
+            pstmt.setLong(2, idx);
+            pstmt.setLong(3, idx);
             return pstmt;
         });
 

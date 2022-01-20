@@ -6,44 +6,41 @@ import org.springframework.lang.NonNull;
 import java.time.ZoneId;
 import java.util.Locale;
 
-public class ArticleDto {
+public class CommentDto {
     private long idx;
     private String userId;
     private boolean isOwner;
     private String userName;
-    private String title;
+    private long articleIdx;
     private String body;
     private String createdAtPretty;
     private String modifiedAtPretty;
-    private int countComments;
 
-    static public ArticleDto from(
-            final long idx,
+    static public CommentDto from(
+            @NonNull final long idx,
             @NonNull final String userId,
             @NonNull final String userName,
-            @NonNull final String title,
+            @NonNull long articleIdx,
             @NonNull final String body,
-            final long createdAt,
-            final long modifiedAt,
-            final int countComments
+            @NonNull final long createdAt,
+            @NonNull final long modifiedAt
     )
     {
-        ArticleDto articleDto = new ArticleDto();
-        articleDto.setIdx(idx);
-        articleDto.setUserId(userId);
-        articleDto.setUserName(userName);
-        articleDto.setTitle(title);
-        articleDto.setBody(body);
-        articleDto.setCreatedAtPretty(
+        CommentDto commentDto = new CommentDto();
+        commentDto.setIdx(idx);
+        commentDto.setUserId(userId);
+        commentDto.setUserName(userName);
+        commentDto.setArticleIdx(articleIdx);
+        commentDto.setBody(body);
+        commentDto.setCreatedAtPretty(
                 Pretty.epochSecond(createdAt, Locale.KOREA, ZoneId.of("Asia/Seoul"))
         );
         if (modifiedAt != 0L) {
-            articleDto.setModifiedAtPretty(
+            commentDto.setModifiedAtPretty(
                     Pretty.epochSecond(modifiedAt, Locale.KOREA, ZoneId.of("Asia/Seoul"))
             );
         }
-        articleDto.setCountComments(countComments);
-        return articleDto;
+        return commentDto;
     }
 
     public long getIdx() {
@@ -78,12 +75,12 @@ public class ArticleDto {
         this.userName = userName;
     }
 
-    public String getTitle() {
-        return title;
+    public long getArticleIdx() {
+        return articleIdx;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setArticleIdx(long articleIdx) {
+        this.articleIdx = articleIdx;
     }
 
     public String getBody() {
@@ -108,13 +105,5 @@ public class ArticleDto {
 
     public void setModifiedAtPretty(String modifiedAtPretty) {
         this.modifiedAtPretty = modifiedAtPretty;
-    }
-
-    public int getCountComments() {
-        return countComments;
-    }
-
-    public void setCountComments(int countComments) {
-        this.countComments = countComments;
     }
 }

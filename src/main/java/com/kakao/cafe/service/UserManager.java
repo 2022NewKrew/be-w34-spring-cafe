@@ -6,9 +6,11 @@ import com.kakao.cafe.repo.UserRepository;
 import com.kakao.cafe.util.SecurePassword;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+@Transactional
 @Service
 public class UserManager implements UserService {
     private final UserRepository userRepository;
@@ -17,6 +19,7 @@ public class UserManager implements UserService {
         this.userRepository = Objects.requireNonNull(userRepository);
     }
 
+    @Transactional
     @Override
     public void add(
             @NonNull final UserDto userDto,
@@ -38,6 +41,7 @@ public class UserManager implements UserService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<UserDto> getList() {
         final List<UserDto> dtos = new ArrayList<>();
@@ -48,11 +52,13 @@ public class UserManager implements UserService {
         return Collections.unmodifiableList(dtos);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDto getDto(@NonNull final String id) throws NoSuchElementException {
         return UserDto.from(get(id));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User get(@NonNull final String id) throws NoSuchElementException {
         final User user = userRepository.findById(id);
@@ -62,6 +68,7 @@ public class UserManager implements UserService {
         return user;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean verifyPassword(@NonNull final String id, @NonNull final String rawPassword) {
         User user;
@@ -74,6 +81,7 @@ public class UserManager implements UserService {
         return SecurePassword.verify(user.getPassword(), rawPassword);
     }
 
+    @Transactional
     @Override
     public boolean update(
             @NonNull final UserDto userDto,

@@ -2,7 +2,9 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.auth.AuthControl;
 import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.dto.CommentDto;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.CommentService;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -20,10 +23,17 @@ public class ArticleController {
     private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     private final ArticleService articleService;
+    private final CommentService commentService;
     private final UserService userService;
 
-    ArticleController(ArticleService articleService, UserService userService) {
+    ArticleController(
+            ArticleService articleService,
+            CommentService commentService,
+            UserService userService
+    )
+    {
         this.articleService = Objects.requireNonNull(articleService);
+        this.commentService = Objects.requireNonNull(commentService);
         this.userService = Objects.requireNonNull(userService);
     }
 
@@ -52,8 +62,12 @@ public class ArticleController {
             return getRedirectLoginWithMsg(request);
         }
 
+        if (checkNotOwner(request, articleDto.getUserId())) {
+            return "error/400";
+        }
+
         articleService.add(articleDto);
-        logger.info("New Article added: " + articleDto.getTitle());
+        logger.info("New Article added -  " + articleDto.getTitle());
         return "redirect:/";
     }
 
@@ -68,13 +82,22 @@ public class ArticleController {
             return getRedirectLoginWithMsg(request);
         }
 
+        final String currentUserId = AuthControl.getLogonId(request);
         try {
-            final ArticleDto articleDto = articleService.getDto(idx);
+            final ArticleDto articleDto = articleService.getDto(idx, currentUserId);
             model.addAttribute("article", articleDto);
-        } catch (NoSuchElementException ignored) {}
+        } catch (NoSuchElementException e) {
+            return "articles/detail";
+        }
+
+        final List<CommentDto> comments = commentService.getDtoList(idx, currentUserId);
+        model.addAttribute("comments", comments);
+        model.addAttribute("totalComments", comments.size());
 
         return "articles/detail";
     }
+
+    // GET /editArticleFailedNoPerm -> articles/editFailedNoPerm
 
     @GetMapping("/articles/edit/{idx}")
     public String editArticle(
@@ -129,8 +152,10 @@ public class ArticleController {
             return "redirect:/articles/" + articleDto.getIdx();
         }
 
-        return "redirect:/editArticleFailed";
+        return "error/500";
     }
+
+    // GET /delArticleFailedOthersCommentExist -> articles/delFailedOthersCommentExist
 
     @DeleteMapping("/articles/{idx}")
     public String deleteArticle(
@@ -155,10 +180,11 @@ public class ArticleController {
         }
 
         if (articleService.delete(idx)) {
+            logger.info("Article deleted - " + idx);
             return "redirect:/";
         }
 
-        return "error/500";
+        return "redirect:/delArticleFailedOthersCommentExist";
     }
 
     private boolean checkNotLogin(final HttpServletRequest request) {

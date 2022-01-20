@@ -13,11 +13,14 @@ public class MvcConfig implements WebMvcConfigurer {
 
         // UserController
         registry.addViewController("/signup").setViewName("users/signup");
-        registry.addViewController("/dupUserFound").setViewName("users/dupIdFound");
+        registry.addViewController("/dupIdFound").setViewName("users/dupIdFound");
         registry.addViewController("/editUserFailed").setViewName("users/editFailed");
 
         // ArticleController
-        registry.addViewController("/editArticleFailed").setViewName("articles/editFailed");
         registry.addViewController("/editArticleFailedNoPerm").setViewName("articles/editFailedNoPerm");
+        registry.addViewController("/delArticleFailedOthersCommentExist").setViewName("articles/delFailedOthersCommentExist");
+
+        // CommentController
+        registry.addViewController("/editCommentFailedNoPerm").setViewName("comments/editFailedNoPerm");
     }
 }

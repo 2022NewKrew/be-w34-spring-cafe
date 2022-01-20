@@ -33,11 +33,10 @@
                           {{^modifiedAtPretty}}{{createdAtPretty}}{{/modifiedAtPretty}}
                       </div>
                   </div>
-                  <div class="article-doc">
-                      {{#bodyLines}}{{.}}<br>{{/bodyLines}}
-                  </div>
+                  <p class="article-doc" style="white-space: pre-wrap;">{{body}}</p>
                   <div class="article-util">
                       <ul class="article-util-list">
+                          {{#isOwner}}
                           <li>
                               <a class="link-modify-article" href="/articles/edit/{{idx}}">수정</a>
                           </li>
@@ -47,12 +46,77 @@
                                   <button class="link-delete-article" type="submit">삭제</button>
                               </form>
                           </li>
+                          {{/isOwner}}
                           <li>
                               <a class="link-modify-article" href="/">목록</a>
                           </li>
                       </ul>
                   </div>
               </article>
+
+              <div class="qna-comment">
+                  <div class="qna-comment-slipp">
+                      <p class="qna-comment-count">댓글 <strong>{{totalComments}}</strong>개</p>
+                      <div class="qna-comment-slipp-articles">
+
+                          {{#comments}}
+                          <article class="article">
+                              <div class="article-header">
+                                  <div class="article-header-thumb">
+                                      <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
+                                  </div>
+                                  <div class="article-header-text">
+                                      <a href="/users/{{userId}}" class="article-author-name">{{userName}}</a>
+                                      {{#modifiedAtPretty}}{{.}} 수정됨{{/modifiedAtPretty}}
+                                      {{^modifiedAtPretty}}{{createdAtPretty}}{{/modifiedAtPretty}}
+                                  </div>
+                              </div>
+                              <p class="article-doc comment-doc" style="white-space: pre-wrap;" id="origComment{{idx}}">{{body}}</p>
+
+                              {{#isOwner}}
+                              <form class="submit-write" id="editComment{{idx}}" style="display:none;" action="/comments" method="POST" onsubmit="return checkValidEditComment({{idx}})">
+                                  <input type="hidden" name="_method" value="PUT">
+                                  <input type="hidden" name="idx" value="{{idx}}">
+                                  <input type="hidden" name="userId" value="{{curUserId}}">
+                                  <input type="hidden" name="articleIdx" value="{{article.idx}}">
+                                  <div class="form-group" style="padding:14px;">
+                                      <label for="comment{{idx}}">댓글 수정</label>
+                                      <textarea class="form-control" id="comment{{idx}}" name="body" placeholder="댓글 내용"></textarea>
+                                  </div>
+                                  <button class="btn btn-success pull-right" type="submit">수정</button>
+                                  <a class="btn pull-right" onclick="closeEditComment({{idx}})">취소</a>
+                                  <div class="clearfix"></div>
+                              </form>
+                              <div class="article-util">
+                                  <ul class="article-util-list">
+                                      <li>
+                                          <button class="delete-answer-button" onclick="openEditComment({{idx}})">수정</button>
+                                      </li>
+                                      <li>
+                                          <form class="delete-answer-form" action="/comments/{{idx}}" method="POST" onsubmit="return confirm('정말로 삭제하시겠습니까?')">
+                                              <input type="hidden" name="_method" value="DELETE">
+                                              <input type="hidden" name="articleIdx" value="{{article.idx}}">
+                                              <button type="submit" class="delete-answer-button">삭제</button>
+                                          </form>
+                                      </li>
+                                  </ul>
+                              </div>
+                              {{/isOwner}}
+                          </article>
+                          {{/comments}}
+                          <form class="submit-write" action="/comments" method="POST" onsubmit="return checkValidNewComment()">
+                              <input type="hidden" name="userId" value="{{curUserId}}">
+                              <input type="hidden" name="articleIdx" value="{{article.idx}}">
+                              <div class="form-group" style="padding:14px;">
+                                  <label for="comment">새 댓글 작성</label>
+                                  <textarea class="form-control" id="comment" name="body" placeholder="댓글 내용"></textarea>
+                              </div>
+                              <button class="btn btn-success pull-right" type="submit">댓글 쓰기</button>
+                              <div class="clearfix"></div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
           </div>
         </div>
         {{/article}}
@@ -65,6 +129,8 @@
     </div>
 </div>
 
+<script src="/js/checker.js"></script>
+<script src="/js/comment-validator.js"></script>
 {{> partials/footer}}
 </body>
 </html>
