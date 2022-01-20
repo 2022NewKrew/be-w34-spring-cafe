@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 public class WebErrorController implements ErrorController {
     @ExceptionHandler({IllegalArgumentException.class})
     public String argsExceptionHandle(Exception e, Model model, HttpServletResponse response) {
-        log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
+        log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", e.getMessage());
 
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -31,8 +31,8 @@ public class WebErrorController implements ErrorController {
     }
 
     @ExceptionHandler({UnAuthorizedException.class})
-    public String authExceptionHandle(Exception e, Model model, HttpServletResponse response){
-        log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
+    public String unAuthExceptionHandle(Exception e, Model model, HttpServletResponse response){
+        log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", e.getMessage());
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -41,7 +41,7 @@ public class WebErrorController implements ErrorController {
 
     @ExceptionHandler({NotFoundException.class})
     public String notFoundExceptionHandle(Exception e, Model model, HttpServletResponse response){
-        log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
+        log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", e.getMessage());
 
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -50,7 +50,7 @@ public class WebErrorController implements ErrorController {
 
     @ExceptionHandler({ForbiddenException.class})
     public String forbiddenExceptionHandle(Exception e, Model model, HttpServletResponse response){
-        log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
+        log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", e.getMessage());
 
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -59,8 +59,8 @@ public class WebErrorController implements ErrorController {
 
     @ExceptionHandler({Exception.class})
     public String globalExceptionHandle(Exception e, Model model, HttpServletResponse response){
-        log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
-        model.addAttribute("errorMessage", "페이지를 표시할 수 없습니다.");
+        log.error(e.getMessage(), e);
+        model.addAttribute("errorMessage", "페이지를 찾을 수 없습니다.");
 
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return "error";
@@ -76,7 +76,7 @@ public class WebErrorController implements ErrorController {
 
     @RequestMapping("/error")
     public String errorPage(Model model, Exception e) {
-        log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
+        log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", "페이지를 찾을 수 없습니다.");
         return "error";
     }

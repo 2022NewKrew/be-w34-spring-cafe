@@ -49,13 +49,9 @@ public class UserController {
         return "users/profile";
     }
 
-    @GetMapping("/users/{userId}/form")
-    public String userUpdateForm(@PathVariable String userId, Model model, HttpSession session) {
+    @GetMapping("/users/me/form")
+    public String userUpdateForm(Model model, HttpSession session) {
         ShowUserDto sessionUser = (ShowUserDto) session.getAttribute("sessionUser");
-        if (sessionUser == null || !sessionUser.getUserId().equals(userId)) {
-            throw new ForbiddenException("접근 권한이 없는 사용자 입니다.");
-        }
-
         model.addAttribute("user", sessionUser);
         return "users/editForm";
     }
@@ -72,6 +68,12 @@ public class UserController {
         ShowUserDto loginUser = userService.login(loginDto);
         session.setAttribute("sessionUser", loginUser);
 
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
         return "redirect:/";
     }
 }
