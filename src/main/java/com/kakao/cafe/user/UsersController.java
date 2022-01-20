@@ -48,4 +48,12 @@ public class UsersController {
         httpSession.setAttribute("sessionId", sessionId);
         return "redirect:/";
     }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        UUID sessionId = (UUID) httpSession.getAttribute("sessionId");
+        userService.deleteSessionId(sessionId);
+        httpSession.invalidate();
+        return "redirect:/";
+    }
 }

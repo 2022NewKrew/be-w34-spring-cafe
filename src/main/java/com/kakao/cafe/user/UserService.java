@@ -45,4 +45,8 @@ public class UserService {
         User user = sessionRepository.findBySessionId(sessionId);
         return user.getUserId();
     }
+
+    public void deleteSessionId(UUID sessionId) {
+        sessionRepository.delete(sessionId);
+    }
 }

@@ -35,4 +35,9 @@ public class SessionMapRepository implements SessionRepository {
     public boolean exist(UUID sessionId) {
         return Objects.nonNull(sessionId) && sessions.containsKey(sessionId);
     }
+
+    @Override
+    public void delete(UUID sessionId) {
+        sessions.remove(sessionId);
+    }
 }
