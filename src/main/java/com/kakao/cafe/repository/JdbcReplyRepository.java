@@ -148,6 +148,23 @@ public class JdbcReplyRepository implements ReplyInterface {
         }
     }
 
+    @Override
+    public void deleteAllReplyOnArticle(Long articleId) {
+        String sql = "update replies set deleted=true where articleId=?";
+        try {
+            connection = JdbcUtils.getConnection(dataSource);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, articleId);
+
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            JdbcUtils.close(connection, preparedStatement, resultSet);
+        }
+
+    }
+
     private Reply getResult(ResultSet resultSet) {
         try {
             Reply reply = new Reply();

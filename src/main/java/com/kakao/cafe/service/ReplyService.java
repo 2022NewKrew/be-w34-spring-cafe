@@ -32,4 +32,8 @@ public class ReplyService {
     public void deleteReply(Long id) {
         replyRepository.delete(id);
     }
+
+    public void deleteAllRepliesOnArticle(Long articleId) {
+        replyRepository.deleteAllReplyOnArticle(articleId);
+    }
 }

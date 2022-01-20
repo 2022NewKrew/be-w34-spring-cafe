@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ReplyInterface extends RepositoryInterface<Reply> {
     List<Reply> findByArticleId(Long articleId);
+
+    void deleteAllReplyOnArticle(Long articleId);
 }

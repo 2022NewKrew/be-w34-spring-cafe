@@ -103,6 +103,7 @@ public class ArticleController {
             }
         }
         articleService.deleteArticle(index);
+        replyService.deleteAllRepliesOnArticle(index);
         return "redirect:/";
     }
 
