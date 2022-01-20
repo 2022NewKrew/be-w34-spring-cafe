@@ -3,15 +3,18 @@ package com.kakao.cafe.model.repository;
 import com.kakao.cafe.model.domain.Article;
 import com.kakao.cafe.model.domain.Comment;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Repository
@@ -31,6 +34,8 @@ public class BoardRepositoryJdbcImpl implements BoardRepository {
                         .writerId(rs.getString("WRITER_ID"))
                         .content(rs.getString("CONTENT"))
                         .createdDate(rs.getTimestamp("CREATED_DATE").toLocalDateTime())
+                        .formattedCreatedDate(rs.getTimestamp("CREATED_DATE").toLocalDateTime()
+                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                         .isDeleted(rs.getBoolean("IS_DELETED")).build();
     }
 
@@ -42,6 +47,8 @@ public class BoardRepositoryJdbcImpl implements BoardRepository {
                         .writerId(rs.getString("WRITER_ID"))
                         .content(rs.getString("CONTENT"))
                         .createdDate(rs.getTimestamp("CREATED_DATE").toLocalDateTime())
+                        .formattedCreatedDate(rs.getTimestamp("CREATED_DATE").toLocalDateTime()
+                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                         .isDeleted(rs.getBoolean("IS_DELETED")).build();
     }
 
@@ -53,10 +60,23 @@ public class BoardRepositoryJdbcImpl implements BoardRepository {
     }
 
     @Override
-    public boolean saveComment(long articleId, Comment comment) {
-        jdbcTemplate.update("INSERT INTO COMMENTS (ARTICLE_ID, WRITER_ID, CONTENT, CREATED_DATE, IS_DELETED) VALUES ( ?, ?, ?, ?, ?)",
-                articleId, comment.getWriterId(), comment.getContent(), LocalDateTime.now(), comment.isDeleted());
-        return true;
+    public Optional<Comment> saveComment(long articleId, Comment comment) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("COMMENTS").usingGeneratedKeyColumns("COMMENT_ID");
+        comment.setCreatedDate(LocalDateTime.now());
+        comment.setFormattedCreatedDate(comment.getCreatedDate()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("ARTICLE_ID", articleId);
+        parameters.put("WRITER_ID", comment.getWriterId());
+        parameters.put("CONTENT", comment.getContent());
+        parameters.put("CREATED_DATE", comment.getCreatedDate());
+        parameters.put("IS_DELETED", comment.isDeleted());
+
+        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+        comment.setCommentId(key.longValue());
+        return Optional.of(comment);
     }
 
     @Override

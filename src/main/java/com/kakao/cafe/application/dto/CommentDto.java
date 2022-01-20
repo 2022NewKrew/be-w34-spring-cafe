@@ -18,9 +18,6 @@ public class CommentDto {
     private String writerId;
     private String content;
     private LocalDateTime createdDate;
+    private String formattedCreatedDate;
     boolean isDeleted;
-
-    public String getFormattedCreatedDate() {
-        return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    }
 }

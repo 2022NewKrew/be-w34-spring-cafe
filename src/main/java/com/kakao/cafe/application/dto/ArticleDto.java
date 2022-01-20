@@ -18,12 +18,9 @@ public class ArticleDto {
     private String writerId;
     private String content;
     private LocalDateTime createdDate;
+    private String formattedCreatedDate;
     private Long hits;
     private int commentsCount;
     boolean isDeleted;
-
-    public String getFormattedCreatedDate() {
-        return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    }
 }
 

@@ -20,6 +20,9 @@ public class Article {
     private LocalDateTime createdDate;
 
     @Setter
+    private String formattedCreatedDate;
+
+    @Setter
     private long commentsCount;
 
     @Setter

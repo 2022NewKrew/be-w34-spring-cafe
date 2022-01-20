@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface BoardRepository {
     boolean saveArticle(Article article);
 
-    boolean saveComment(long articleId, Comment comment);
+    Optional<Comment> saveComment(long articleId, Comment comment);
 
     List<Article> findAllArticle();
 
