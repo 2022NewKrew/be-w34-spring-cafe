@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.repository.mapper;
+package com.kakao.cafe.global.mapper;
 
 import com.kakao.cafe.user.persistence.User;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,6 +17,6 @@ public class UserRowMapper implements RowMapper<User> {
         String password = rs.getString("password");
         String name = rs.getString("name");
         String email = rs.getString("email");
-        return User.of(id, userId, password, name, email);
+        return new User(id, userId, password, name, email);
     }
 }
