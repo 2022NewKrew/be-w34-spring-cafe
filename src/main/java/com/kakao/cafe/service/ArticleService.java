@@ -26,11 +26,9 @@ public class ArticleService {
         questionRepository.save(question);
     }
 
+    //TODO join해서 nickname 가져오기
     public List<QuestionListResponse> findAllQuestions(){
-        List<Question> questions = questionRepository.findAll();
-        return questions.stream().map(question -> {
-            return new QuestionListResponse(question, findWriterNickname(question));
-        }).collect(Collectors.toList());
+        return questionRepository.findAllAndWriterNickname();
     }
 
     public QuestionDetailResponse findOneQuestion(Long id) {
