@@ -13,6 +13,8 @@ import java.util.Optional;
 
 @Slf4j
 public class JdbcArticleRepository implements ArticleRepositoryInterface {
+    private static final String ALL_OF_ARTICLE = "`index`, title, content, date, u.name as writer," +
+            "a.writerid as writerid, view, deleted from articles as a join users as u where a.writerid = u.userid";
     private final DataSource dataSource;
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
@@ -58,7 +60,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
     @Override
     public Optional<Article> findById(Long index) {
-        String sql = "select * from articles where `index` = ?";
+        String sql = "select " + ALL_OF_ARTICLE + " AND `index` = ?";
 
         try {
             connection = JdbcUtils.getConnection(dataSource);
@@ -80,7 +82,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
     @Override
     public Optional<Article> findByName(String title) {
-        String sql = "select * from articles where title = ?";
+        String sql = "select " + ALL_OF_ARTICLE + " AND title = ?";
 
         try {
             connection = JdbcUtils.getConnection(dataSource);
@@ -102,7 +104,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select * from articles";
+        String sql = "select " + ALL_OF_ARTICLE;
         try {
             connection = JdbcUtils.getConnection(dataSource);
             preparedStatement = connection.prepareStatement(sql);

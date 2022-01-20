@@ -15,6 +15,7 @@ public class Article {
     private String writer;
     private Long writerId;
     private Long view;
+    private boolean deleted = false;
 
     public void addView() {
         this.view++;
