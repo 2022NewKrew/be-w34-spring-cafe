@@ -6,8 +6,8 @@ VALUES ('벤', 'ben', 'benlee73@naver.com', 'aa');
 SELECT ID, USERID, NICKNAME, EMAIL, PASSWORD
 FROM USERS;
 
-INSERT INTO POST(AUTHOR_ID, TITLE, CONTENT)
-VALUES (1, '오늘 날씨 어때요?', '집 밖에 안나가서 모르겠네요.');
+INSERT INTO POST(WRITER, TITLE, CONTENT)
+VALUES ('제이지', '오늘 날씨 어때요?', '집 밖에 안나가서 모르겠네요.');
 
-SELECT ID, AUTHOR_ID, TITLE, CONTENT
+SELECT ID, WRITER, TITLE, CONTENT
 FROM POST;
