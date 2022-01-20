@@ -2,14 +2,18 @@ package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.article.dto.ArticlePostDto;
 import com.kakao.cafe.article.dto.ArticleRequest;
+import com.kakao.cafe.article.dto.CommentRequest;
 import com.kakao.cafe.article.exception.ArticleAuthorMismatchException;
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.article.service.CommentService;
 import com.kakao.cafe.auth.service.AuthService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Controller
 @RequestMapping("/article")
 @AllArgsConstructor
@@ -17,6 +21,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final AuthService authService;
+    private final CommentService commentService;
 
     @GetMapping("/form")
     public String getArticleFormPage(){
@@ -51,4 +56,13 @@ public class ArticleController {
         articleService.updateArticle(id, articleRequest);
         return "redirect:/";
     }
+
+    @PostMapping("/comment/{articleId}")
+    public String addArticleComment(@PathVariable Long articleId, CommentRequest commentRequest) {
+        log.info("Comment request : {}", commentRequest.toString());
+        String author = authService.getLoginUserId();
+        commentService.addComment(articleId, author, commentRequest);
+        return "redirect:/article/show/" + articleId;
+    }
+
 }
