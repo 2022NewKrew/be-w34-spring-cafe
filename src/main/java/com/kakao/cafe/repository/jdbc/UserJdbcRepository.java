@@ -62,7 +62,6 @@ public class UserJdbcRepository implements UserRepository {
 
     public RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> new User(
-                rs.getLong("USER_INDEX"),
                 rs.getString("USER_ID"),
                 rs.getString("PASSWORD"),
                 rs.getString("NAME"),

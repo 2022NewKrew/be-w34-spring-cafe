@@ -22,13 +22,13 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public void store(UserCreateCommand ucc) {
-        User user = new User(nextIndex(), ucc.getUserId(), ucc.getPassword(), ucc.getName(), ucc.getEmail());
+        User user = new User(ucc.getUserId(), ucc.getPassword(), ucc.getName(), ucc.getEmail());
         this.repository.add(user);
     }
 
     @Override
     public void modify(String userId, UserModifyCommand umc) {
-        User user = new User(findByName(userId), userId, umc.getPassword(), umc.getName(), umc.getEmail());
+        User user = new User(userId, umc.getPassword(), umc.getName(), umc.getEmail());
         repository.set(findByName(user.getUserId()), user);
     }
 
@@ -51,6 +51,6 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     private Long nextIndex() {
-        return this.repository.get(this.repository.size() - 1).getUserIndex() + 1L;
+        return (long) this.repository.size() + 1;
     }
 }

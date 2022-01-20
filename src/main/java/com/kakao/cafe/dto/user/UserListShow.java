@@ -15,8 +15,8 @@ public class UserListShow {
         this.email = email;
     }
 
-    public UserListShow(User user) {
-        this.userIndex = user.getUserIndex();
+    public UserListShow(long userIndex, User user) {
+        this.userIndex = userIndex;
         this.userId = user.getUserId();
         this.name = user.getName();
         this.email = user.getEmail();
