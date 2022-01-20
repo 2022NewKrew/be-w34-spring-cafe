@@ -58,6 +58,10 @@ CREATE TABLE IF NOT EXISTS REPLIES
         BIGINT
         NOT NULL
         REFERENCES USERS (id),
+    article_id
+        BIGINT
+        NOT NULL
+        REFERENCES ARTICLES (id),
     content
         VARCHAR
         NOT NULL,
