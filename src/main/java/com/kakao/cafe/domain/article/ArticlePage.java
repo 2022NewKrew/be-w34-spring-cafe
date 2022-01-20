@@ -1,11 +1,14 @@
 package com.kakao.cafe.domain.article;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ArticlePage {
 
-    public static final int DEFAULT_PAGE_SIZE = 15;
-    public static final int DEFAULT_DISPLAY_PAGE_SIZE = 10;
+    public static final int DEFAULT_PAGE_SIZE = 5;
+    public static final int DEFAULT_DISPLAY_PAGE_SIZE = 5;
     public static final int DEFAULT_FIRST_PAGE = 1;
 
     private List<Article> articles;
@@ -27,11 +30,11 @@ public class ArticlePage {
     }
 
     public boolean hasPrev() {
-        return startPage() != DEFAULT_FIRST_PAGE;
+        return startPage() - 1 >= DEFAULT_FIRST_PAGE;
     }
 
     public boolean hasNext() {
-        return endPage() != totalPages();
+        return endPage() + 1 <= totalPages();
     }
 
     public int getPrevPageNum() {
@@ -47,12 +50,11 @@ public class ArticlePage {
     }
 
     public int startPage() {
-        return (currentPage - 1) / displayPageNum * displayPageNum + 1;
+        return currentPage - DEFAULT_PAGE_SIZE / 2;
     }
 
     public int endPage() {
-        int endPage = ((currentPage - 1) / displayPageNum + 1) * displayPageNum;
-        return Math.min(totalPages(), endPage);
+        return currentPage + DEFAULT_PAGE_SIZE / 2;
     }
 
     public int offset() {
@@ -63,11 +65,33 @@ public class ArticlePage {
         return articles;
     }
 
+    public List<Page> getPages() {
+        int minPageNum = Math.max(1, startPage());
+        int maxPageNum = Math.min(endPage(), totalPages());
+        return IntStream.rangeClosed(minPageNum, maxPageNum)
+                .mapToObj(i -> new Page(i, i == currentPage))
+                .collect(Collectors.toList());
+    }
+
     public int getTotalArticleSize() {
         return totalArticleSize;
     }
 
+    public int getDisplayPageNum() {
+        return displayPageNum;
+    }
+
     public int getCurrentPage() {
         return currentPage;
+    }
+
+    public static class Page {
+        private final int pageNumber;
+        private final boolean isCurrentPage;
+
+        public Page(int pageNumber, boolean isCurrentPage) {
+            this.pageNumber = pageNumber;
+            this.isCurrentPage = isCurrentPage;
+        }
     }
 }
