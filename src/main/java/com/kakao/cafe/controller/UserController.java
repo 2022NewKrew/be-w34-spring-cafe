@@ -32,9 +32,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/signup")
+    @PostMapping()
     public String signUp(@Valid UserSignupRequest userDto, BindingResult errors) {
-        logger.info("[POST] /signup 회원가입하기");
+        logger.info("[POST]  회원가입하기");
         if (errors.hasErrors()) {
             String errorMessage = errors.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)

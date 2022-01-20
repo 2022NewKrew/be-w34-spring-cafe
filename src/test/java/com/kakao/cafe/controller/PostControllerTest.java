@@ -36,7 +36,7 @@
 //        String name = "testName";
 //        String email = "testEmail@kakaocorp.com";
 //
-//        mockMvc.perform(post("/users/signup")
+//        mockMvc.perform(post("/users")
 //                        .param("userId", userId)
 //                        .param("password", password)
 //                        .param("name", name)
