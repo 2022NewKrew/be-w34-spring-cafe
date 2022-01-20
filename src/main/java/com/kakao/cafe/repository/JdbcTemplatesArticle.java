@@ -65,6 +65,7 @@ public class JdbcTemplatesArticle {
                     rs.getString("contents")
             );
             article.setId(rs.getLong("id"));
+            article.setTime(rs.getString("created_at"));
             return article;
         };
     }
