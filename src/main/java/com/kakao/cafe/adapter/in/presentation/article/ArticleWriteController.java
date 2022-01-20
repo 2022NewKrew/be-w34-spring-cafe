@@ -7,9 +7,9 @@ import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
-import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 
 @Controller
 public class ArticleWriteController {
@@ -21,9 +21,8 @@ public class ArticleWriteController {
     }
 
     @PostMapping("/articles")
-    public String registerArticle(String title, String contents, HttpSession session)
+    public String registerArticle(String title, String contents, @RequestAttribute UserInfo sessionedUser)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
-        UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
         WriteArticleRequest writeArticleRequest = new WriteArticleRequest.Builder().userId(sessionedUser.getUserId())
                                                                                    .writer(sessionedUser.getName())
                                                                                    .title(title)

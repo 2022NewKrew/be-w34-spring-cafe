@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -40,9 +41,8 @@ public class ArticlePrintController {
     }
 
     @GetMapping("/articles/{id}")
-    public String displayArticleDetail(@PathVariable int id, RedirectAttributes redirectAttributes, HttpSession session)
+    public String displayArticleDetail(@PathVariable int id, @RequestAttribute UserInfo sessionedUser, RedirectAttributes redirectAttributes)
         throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException, UnauthenticatedUserException {
-        UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
         Article article = getArticleInfoUseCase.getArticleDetail(id, sessionedUser.getUserId(), sessionedUser);
         redirectAttributes.addFlashAttribute("article", article);
 

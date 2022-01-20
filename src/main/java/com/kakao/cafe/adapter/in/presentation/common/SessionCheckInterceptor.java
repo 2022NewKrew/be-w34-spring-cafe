@@ -1,5 +1,6 @@
 package com.kakao.cafe.adapter.in.presentation.common;
 
+import com.kakao.cafe.application.user.dto.UserInfo;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,8 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         throws Exception {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("sessionedUser") != null) {
+            UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
+            request.setAttribute("sessionedUser", sessionedUser);
             return true;
         }
         response.sendRedirect(request.getContextPath() + "/user/login");
