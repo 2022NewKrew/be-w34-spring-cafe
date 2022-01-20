@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Question;
+import com.kakao.cafe.dto.QuestionDetailResponse;
 import com.kakao.cafe.dto.QuestionListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,6 +37,14 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
         List<Question> result = jdbcTemplate.query("select * from `question` where id = ?", questionRowMapper(), id);
         return result.stream().findAny();
     }
+    @Override
+    public Optional<QuestionDetailResponse> findDetailById(Long id){
+        final String sql = "select " +
+                "q.id as questionId, q.writer as userId, q.title as title, q.contents as contents, q.created_date_time as created_date_time, u.nickname as writer " +
+                "from `question` as q join `user` as u " +
+                "on q.writer = u.id";
+        return jdbcTemplate.query(sql, questionDetailResponseRowMapper()).stream().findAny();
+    }
 
     @Override
     public List<Question> findAll() {
@@ -45,17 +54,27 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
     @Override
     public List<QuestionListResponse> findAllAndWriterNickname(){
         final String sql = "select " +
-                "q.id as questionId, q.writer as userId, q.title as title, q.contents as contents, q.created_date_time as created_date_time, u.nickname as writer " +
+                "q.id as questionId, q.writer as userId, q.title as title, q.created_date_time as created_date_time, u.nickname as writer " +
                 "from `question` as q join `user` as u " +
                 "on q.writer = u.id";
         return jdbcTemplate.query(sql, questionListResponseRowMapper());
+    }
+    private RowMapper<QuestionDetailResponse> questionDetailResponseRowMapper(){
+        return (rs, rowNum) -> QuestionDetailResponse.builder()
+                .questionId(rs.getLong("questionId"))
+                .title(rs.getString("title"))
+                .contents(rs.getString("contents"))
+                .createdDateTime(rs.getTimestamp("created_date_time").toLocalDateTime().format(DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm")))
+                .writer(rs.getString("writer"))
+                .userId(rs.getLong("userId"))
+                .build();
     }
 
     private RowMapper<QuestionListResponse> questionListResponseRowMapper(){
         return (rs, rowNum) -> QuestionListResponse.builder()
                 .questionId(rs.getLong("questionId"))
                 .title(rs.getString("title"))
-                .createdDateTime(rs.getTimestamp("created_date_time").toLocalDateTime().format(DateTimeFormatter.ofPattern("YY-MM-DD HH:mm")))
+                .createdDateTime(rs.getTimestamp("created_date_time").toLocalDateTime().format(DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm")))
                 .writer(rs.getString("writer"))
                 .userId(rs.getLong("userId"))
                 .numberOfReply(99)

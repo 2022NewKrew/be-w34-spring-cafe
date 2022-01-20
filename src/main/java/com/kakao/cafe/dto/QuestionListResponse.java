@@ -1,10 +1,6 @@
 package com.kakao.cafe.dto;
 
-import com.kakao.cafe.domain.Question;
 import lombok.Builder;
-
-import java.time.format.DateTimeFormatter;
-
 
 public class QuestionListResponse {
     private Long questionId;
@@ -24,12 +20,4 @@ public class QuestionListResponse {
         this.numberOfReply = numberOfReply;
     }
 
-//    public QuestionListResponse(Question question, String writerNickname) {
-//        this.questionId = question.getId();
-//        this.title = question.getTitle();
-//        this.createdDateTime = question.getCreatedDateTime().format(DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm"));
-//        this.writer = writerNickname;
-//        this.userId = question.getWriter();
-//        this.numberOfReply = 99;
-//    }
 }

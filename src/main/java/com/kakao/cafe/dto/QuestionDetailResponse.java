@@ -1,8 +1,6 @@
 package com.kakao.cafe.dto;
 
-import com.kakao.cafe.domain.Question;
-
-import java.time.format.DateTimeFormatter;
+import lombok.Builder;
 
 public class QuestionDetailResponse {
     private Long userId;
@@ -12,12 +10,13 @@ public class QuestionDetailResponse {
     private String title;
     private String contents;
 
-    public QuestionDetailResponse(Question question, String writerNickname) {
-        this.userId = question.getWriter();
-        this.writer = writerNickname;
-        this.questionId = question.getId();
-        this.createdDateTime = question.getCreatedDateTime().format(DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm"));
-        this.title = question.getTitle();
-        this.contents = question.getContents();
+    @Builder
+    public QuestionDetailResponse(Long userId, String writer, Long questionId, String createdDateTime, String title, String contents) {
+        this.userId = userId;
+        this.writer = writer;
+        this.questionId = questionId;
+        this.createdDateTime = createdDateTime;
+        this.title = title;
+        this.contents = contents;
     }
 }

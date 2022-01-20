@@ -26,17 +26,12 @@ public class ArticleService {
         questionRepository.save(question);
     }
 
-    //TODO join해서 nickname 가져오기
     public List<QuestionListResponse> findAllQuestions(){
         return questionRepository.findAllAndWriterNickname();
     }
 
     public QuestionDetailResponse findOneQuestion(Long id) {
-        Question question = questionRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-        return new QuestionDetailResponse(question, findWriterNickname(question));
+        return questionRepository.findDetailById(id).orElseThrow(IllegalArgumentException::new);
     }
 
-    private String findWriterNickname(Question question){
-        return userRepository.findById(question.getWriter()).orElseThrow(IllegalArgumentException::new).getNickname();
-    }
 }
