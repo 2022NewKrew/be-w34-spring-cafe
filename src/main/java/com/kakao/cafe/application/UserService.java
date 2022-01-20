@@ -27,23 +27,25 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findById(long id) {
-        return userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    public User findByUserId(String userId) {
+        return userRepository.findByUserId(userId)
+                .stream()
+                .findAny()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public void signup(UserDto userDto) {
-        userRepository.add(userMapper.toEntity(userDto));
+        userRepository.save(userMapper.toEntity(userDto));
     }
 
     public void update(User user, UserDto userDto) {
-        user.setNickname(userDto.getNickname());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        userRepository.update(user);
+        user.update(userDto.getEmail(), userDto.getNickname());
     }
 
     public User login(UserDto userDto) {
         return userRepository.findByUserIdAndPassword(userDto.getUserId(), userDto.getPassword())
+                .stream()
+                .findAny()
                 .orElseThrow(NoSuchElementException::new);
     }
 }

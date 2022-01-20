@@ -3,6 +3,7 @@ package com.kakao.cafe.interfaces.user;
 import com.kakao.cafe.application.UserService;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.interfaces.common.UserDto;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,16 +15,13 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     /**
      * {@link User} 목록 조회
@@ -39,12 +37,12 @@ public class UserController {
     /**
      * {@link User} 프로필 조회
      *
-     * @param id    조회할 유저의 ID
+     * @param userId 조회할 유저의 ID
      * @param model
      */
-    @GetMapping("/{id}")
-    public String userProfile(@PathVariable long id, Model model) {
-        User user = userService.findById(id);
+    @GetMapping("/{userId}")
+    public String userProfile(@PathVariable String userId, Model model) {
+        User user = userService.findByUserId(userId);
         model.addAttribute("user", user);
         return "user_profile";
     }
@@ -64,11 +62,6 @@ public class UserController {
     @PutMapping("/update")
     public String update(UserDto userDto, HttpSession session, RedirectAttributes redirectAttrs) {
         User loginUser = (User)session.getAttribute("loginUser");
-        if (!userDto.getId().equals(loginUser.getId())) {
-            redirectAttrs.addFlashAttribute("flashMessage", "비정상 접근입니다");
-            return "redirect:/";
-        }
-
         if (!userDto.getPassword().equals(loginUser.getPassword())) {
             redirectAttrs.addFlashAttribute("flashMessage", "비밀번호가 일치하지 않습니다");
             return "redirect:/";

@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
-    public static final List<String> loginNeeded = List.of("/posts/**", "/write");
+    public static final List<String> loginNeeded = List.of("/posts/**", "/write", "/update");
     public static final List<String> loginNotNeeded = List.of("/posts");
 
     @Override
