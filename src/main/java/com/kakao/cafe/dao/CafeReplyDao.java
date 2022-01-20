@@ -7,5 +7,5 @@ import java.util.List;
 public interface CafeReplyDao {
     List<Reply> getReplyList(int postId);
     boolean submitReply(Reply reply);
-    boolean deleteReply(int replyId);
+    boolean deleteReply(String userId, int replyId);
 }

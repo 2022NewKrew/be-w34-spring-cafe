@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.dao.CafeReplyDao;
+import com.kakao.cafe.helper.ReplyHelper;
 import com.kakao.cafe.model.Reply;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,6 @@ import java.util.List;
 public class CafeReplyServiceImpl implements CafeReplyService {
 
     CafeReplyDao cafeCommentDao;
-
     public CafeReplyServiceImpl(CafeReplyDao cafeCommentDao) {
         this.cafeCommentDao = cafeCommentDao;
     }
@@ -22,11 +22,14 @@ public class CafeReplyServiceImpl implements CafeReplyService {
 
     @Override
     public boolean submitReply(Reply reply) {
-        return cafeCommentDao.submitReply(reply);
+        if(reply != null && ReplyHelper.checkRegexOfReply(reply)) {
+            return cafeCommentDao.submitReply(reply);
+        }
+        return false;
     }
 
     @Override
-    public boolean deleteReply(int replyId) {
-        return cafeCommentDao.deleteReply(replyId);
+    public boolean deleteReply(String userId, int replyId) {
+        return cafeCommentDao.deleteReply(userId, replyId);
     }
 }

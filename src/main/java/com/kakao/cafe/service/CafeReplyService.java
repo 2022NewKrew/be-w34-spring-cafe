@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface CafeReplyService {
     List<Reply> getReplyList(int postId);
-    boolean submitReply(Reply comment);
-    boolean deleteReply(int commentId);
+    boolean submitReply(Reply reply);
+    boolean deleteReply(String userId, int replyId);
 }

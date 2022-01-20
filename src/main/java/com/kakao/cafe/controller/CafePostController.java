@@ -8,6 +8,7 @@ import com.kakao.cafe.service.CafePostService;
 import com.kakao.cafe.service.CafeReplyService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,7 @@ public class CafePostController {
     }
 
     @PostMapping("/write")
+    @Transactional(readOnly = true)
     String writePost (HttpSession httpSession, @NonNull Post newPost) {
         Object signInUser = httpSession.getAttribute("signInUser");
         if( signInUser != null ) {
@@ -81,6 +83,7 @@ public class CafePostController {
 
             List<Reply> replyList = cafeReplyService.getReplyList(postId);
             model.addAttribute("replyList", replyList);
+            model.addAttribute("replyCnt", CollectionHelper.getItemNumberOfList(replyList));
         }
         return POST_VIEW_CONTENT;
     }

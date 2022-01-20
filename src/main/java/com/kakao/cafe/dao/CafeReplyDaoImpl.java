@@ -45,11 +45,26 @@ public class CafeReplyDaoImpl implements CafeReplyDao {
 
     @Override
     public boolean submitReply(Reply reply) {
-        return false;
+        int updateCnt = 0;
+        String sql = "INSERT INTO reply (postId, userId, content)\n"
+                + "VALUES (?,?,?)\n";
+
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,reply.getPostId());
+            pstmt.setString(2,reply.getUserId());
+            pstmt.setString(3,reply.getContent());
+
+            updateCnt = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return updateCnt > 0;
     }
 
     @Override
-    public boolean deleteReply(int replyId) {
+    public boolean deleteReply(String userId, int replyId) {
         return false;
     }
 }
