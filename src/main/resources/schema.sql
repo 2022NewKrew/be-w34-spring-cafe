@@ -19,5 +19,6 @@ CREATE TABLE IF NOT EXISTS ARTICLE
     title            VARCHAR(50) NOT NULL,
     write_date       DATETIME,
     content          TEXT,
-    hits             INT
+    hits             INT,
+    is_available     BOOLEAN
 );

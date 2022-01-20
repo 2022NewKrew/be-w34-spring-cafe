@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +47,7 @@ public class ArticleController {
     public String updateArticle(@ModelAttribute ArticleUpdateRequest req,
                                 @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("PUT /article {}", req.getArticleId());
-        articleService.isAuthorOfArticle(Long.parseLong(req.getArticleId()), authInfo.getId());
+        articleService.validateAuthor(Long.parseLong(req.getArticleId()), authInfo.getId());
         articleService.updateArticle(Long.parseLong(req.getArticleId()), req.getTitle(), req.getContents());
         return "redirect:/";
     }
@@ -73,16 +74,24 @@ public class ArticleController {
         return "article/show";
     }
 
+    @DeleteMapping("/{id}")
+    @AuthInfoCheck
+    public String deleteArticle(@PathVariable String id,
+                                @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
+        log.info("DELETE /article {}", id);
+        articleService.validateAuthor(Long.parseLong(id), authInfo.getId());
+        articleService.deleteArticle(Long.parseLong(id));
+        return "redirect:/";
+    }
+
+
     @GetMapping("/update/{articleId}")
     @AuthInfoCheck
     public String updateArticleFrom(@PathVariable String articleId, Model model,
                                     @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("GET /article/update/{}", articleId);
+        articleService.validateAuthor(Long.parseLong(articleId), authInfo.getId());
         ArticleReadServiceResponse dto = articleService.getArticleReadViewDTO(Long.parseLong(articleId));
-
-        if (!authInfo.getId().equals(dto.getAuthorId())) {
-            throw new IllegalArgumentException("자신의 글만 수정 가능합니다.");
-        }
         model.addAttribute("stringId", authInfo.getStringId());
         model.addAttribute("title", dto.getTitle());
         model.addAttribute("contents", dto.getContents());

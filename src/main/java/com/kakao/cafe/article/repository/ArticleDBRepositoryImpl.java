@@ -55,6 +55,10 @@ public class ArticleDBRepositoryImpl implements ArticleRepository {
         jdbcTemplate.update(SQL.UPDATE_ARTICLE.stmt, article.getTitle(), article.getContents(), article.getId());
     }
 
+    @Override
+    public void deleteArticle(Long id) {
+        jdbcTemplate.update(SQL.DELETE_ARTICLE.stmt, id);
+    }
 
     private PreparedStatement makePersistStatement(Connection conn, Article article) throws SQLException {
         PreparedStatement statement = conn.prepareStatement(SQL.CREATE.stmt, Statement.RETURN_GENERATED_KEYS);
@@ -64,6 +68,7 @@ public class ArticleDBRepositoryImpl implements ArticleRepository {
         statement.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
         statement.setString(5, article.getContents());
         statement.setInt(6, 0);
+        statement.setBoolean(7, true);
         return statement;
     }
 
@@ -80,11 +85,12 @@ public class ArticleDBRepositoryImpl implements ArticleRepository {
     }
 
     private enum SQL {
-        FIND_BY_DB_ID("SELECT id, title, author, author_string_id, write_date, hits, content FROM ARTICLE WHERE ID = ?"),
-        FIND_ALL("SELECT id, title, author, author_string_id, write_date, hits, content FROM ARTICLE"),
-        CREATE("INSERT INTO ARTICLE (author, author_string_id, title, write_date, content, hits) VALUES (?, ?, ?, ?, ?, ?)"),
+        FIND_BY_DB_ID("SELECT id, title, author, author_string_id, write_date, hits, content FROM ARTICLE WHERE ID = ? AND is_available = true"),
+        FIND_ALL("SELECT id, title, author, author_string_id, write_date, hits, content FROM ARTICLE WHERE is_available = true"),
+        CREATE("INSERT INTO ARTICLE (author, author_string_id, title, write_date, content, hits, is_available) VALUES (?, ?, ?, ?, ?, ?, ?)"),
         INCREASE_HITS("UPDATE ARTICLE SET hits = hits + 1 WHERE id = ?"),
-        UPDATE_ARTICLE("UPDATE ARTICLE SET title = ?, content = ? WHERE id = ?");
+        UPDATE_ARTICLE("UPDATE ARTICLE SET title = ?, content = ? WHERE id = ?"),
+        DELETE_ARTICLE("UPDATE ARTICLE SET is_available = 0 WHERE id = ?");
 
         public final String stmt;
 

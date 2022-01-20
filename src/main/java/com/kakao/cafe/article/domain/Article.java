@@ -14,9 +14,10 @@ public class Article {
     private LocalDateTime date;
     private Integer hits;
     private String contents;
+    private Boolean isAvailable;
 
     @Builder
-    private Article(Long id, String title, Long authorId, String authorStringId, LocalDateTime date, Integer hits, String contents) {
+    private Article(Long id, String title, Long authorId, String authorStringId, LocalDateTime date, Integer hits, String contents, Boolean isAvailable) {
         this.id = id;
         this.title = title;
         this.authorId = authorId;
@@ -24,6 +25,7 @@ public class Article {
         this.date = date;
         this.hits = hits;
         this.contents = contents;
+        this.isAvailable = isAvailable;
     }
 
     public void increaseHit() {

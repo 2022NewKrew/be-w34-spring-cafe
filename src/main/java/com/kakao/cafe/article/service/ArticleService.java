@@ -61,11 +61,11 @@ public class ArticleService {
     }
 
 
-    public void isAuthorOfArticle(Long articleId, Long authorId) {
+    public void validateAuthor(Long articleId, Long authorId) {
         Optional<Article> article = articleRepository.find(articleId);
         Long id = article.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다.")).getAuthorId();
         if (id != authorId) {
-            throw new IllegalArgumentException("작성자 본인만 수정 가능합니다.");
+            throw new IllegalArgumentException("작성자 본인에게만 수정/삭제 권한이 있습니다.");
         }
     }
 
@@ -94,6 +94,10 @@ public class ArticleService {
                       .hits(article.getHits())
                       .date(article.getDate())
                       .build();
+    }
+
+    public void deleteArticle(Long parseLong) {
+        articleRepository.deleteArticle(parseLong);
     }
 
     // 나중에 페이징 구현할 때 활용
