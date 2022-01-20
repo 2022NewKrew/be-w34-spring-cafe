@@ -8,6 +8,7 @@ import com.kakao.cafe.user.dto.UserProfileDTO;
 import com.kakao.cafe.user.repository.UserJdbcRepository;
 import com.kakao.cafe.user.repository.UserMemoryRepository;
 import com.kakao.cafe.user.repository.UserRepository;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private UserRepository userRepository;
+
+    private Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     public UserService(UserRepository userRepository){
@@ -51,7 +54,7 @@ public class UserService {
         User user = userRepository.getUserByCondition("userid", userLoginDTO.getUserId());
 
         if(user == null){
-            LoggerFactory.getLogger(UserService.class).error("존재하는 사용자 아이디가 없습니다. (" + (userLoginDTO.getUserId()) + ")");
+            logger.error("존재하는 사용자 아이디가 없습니다. (" + (userLoginDTO.getUserId()) + ")");
             return false;
         }
 
