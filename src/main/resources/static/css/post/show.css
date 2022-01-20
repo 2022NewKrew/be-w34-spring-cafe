@@ -168,6 +168,6 @@ li {
 /*}*/
 
 .container-right {
-    display:flex;
+    display: flex;
     justify-content: end;
 }
