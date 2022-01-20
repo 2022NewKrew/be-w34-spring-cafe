@@ -6,7 +6,7 @@ import java.util.*;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private static final Map<Long, User> store = new HashMap<>();
+    private static final Map<Long, User> store = new Hashtable<>();
     private static long sequence = 0L;
 
     @Override
@@ -32,11 +32,6 @@ public class MemoryUserRepository implements UserRepository {
         return new ArrayList<>(store.values());
     }
 
-//    @Override
-//    public User updateById(Long id, User user) {
-//        store.put(id, user);
-//        return user;
-//    }
 
     @Override
     public long countRecords() {
