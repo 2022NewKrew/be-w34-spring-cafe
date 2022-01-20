@@ -6,6 +6,7 @@ import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,8 +28,9 @@ public class UserService {
     }
 
     public List<UserListShow> getAllUsers() {
+        AtomicLong index = new AtomicLong(1);
         return userRepository.getAllUser().stream()
-                .map(UserListShow::new)
+                .map(user -> new UserListShow(index.getAndIncrement(), user))
                 .collect(Collectors.toUnmodifiableList());
     }
 

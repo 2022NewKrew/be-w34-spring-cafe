@@ -23,7 +23,6 @@ public class ArticleMemoryRepository implements ArticleRepository {
     @Override
     public void store(ArticleCreateCommand acc) {
         Article article = new Article(nextId(),
-                acc.getWriter(),
                 acc.getWriterId(),
                 acc.getTitle(),
                 acc.getContents(),
@@ -41,7 +40,6 @@ public class ArticleMemoryRepository implements ArticleRepository {
     public void modify(Long id, ArticleModifyCommand amc) {
         Article oldArticle = this.repository.get(id.intValue());
         Article article = new Article(id,
-                oldArticle.getWriter(),
                 oldArticle.getWriterId(),
                 amc.getTitle(),
                 amc.getContents(),

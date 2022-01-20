@@ -15,11 +15,11 @@ public class ArticleListShow {
         this.title = title;
     }
 
-    public ArticleListShow(Article article) {
-        this.articleId = article.getArticleId();
-        this.time = article.getTime();
-        this.writer = article.getWriter();
-        this.title = article.getTitle();
+    public ArticleListShow(ArticleWithWriterName articleWithWriterName) {
+        this.articleId = articleWithWriterName.getArticleId();
+        this.time = articleWithWriterName.getTime();
+        this.writer = articleWithWriterName.getWriter();
+        this.title = articleWithWriterName.getTitle();
     }
 
     public long getArticleId() {

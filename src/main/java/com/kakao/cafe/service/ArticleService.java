@@ -1,11 +1,9 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.entity.Article;
-import com.kakao.cafe.dto.article.ArticleContents;
-import com.kakao.cafe.dto.article.ArticleCreateCommand;
-import com.kakao.cafe.dto.article.ArticleListShow;
-import com.kakao.cafe.dto.article.ArticleModifyCommand;
+import com.kakao.cafe.dto.article.*;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +13,11 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository, UserRepository userRepository) {
         this.articleRepository = articleRepository;
+        this.userRepository = userRepository;
     }
 
     public void createArticle(ArticleCreateCommand acc) {
@@ -29,14 +29,15 @@ public class ArticleService {
     public void deleteArticle(long articleId) { articleRepository.delete(articleId); }
 
     public ArticleContents getArticle(Long id) {
-        Article target = articleRepository.retrieve(id)
+        Article article = articleRepository.retrieve(id)
                 .orElseThrow(() -> new NoSuchElementException("Article not found"));
+        ArticleWithWriterName target = new ArticleWithWriterName(article, userRepository);
         return new ArticleContents(target);
     }
 
     public List<ArticleListShow> getAllArticles() {
         return articleRepository.toList().stream()
-                .map(ArticleListShow::new)
+                .map(article -> new ArticleListShow(new ArticleWithWriterName(article, userRepository)))
                 .collect(Collectors.toUnmodifiableList());
     }
 }

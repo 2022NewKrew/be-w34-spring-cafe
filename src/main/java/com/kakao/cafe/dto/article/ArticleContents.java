@@ -1,7 +1,5 @@
 package com.kakao.cafe.dto.article;
 
-import com.kakao.cafe.domain.entity.Article;
-
 public class ArticleContents {
     private final long articleId;
     private final String time;
@@ -19,13 +17,13 @@ public class ArticleContents {
         this.contents = contents;
     }
 
-    public ArticleContents(Article article) {
-        this.articleId = article.getArticleId();
-        this.time = article.getTime();
-        this.writer = article.getWriter();
-        this.writerId = article.getWriterId();
-        this.title = article.getTitle();
-        this.contents = article.getContent();
+    public ArticleContents(ArticleWithWriterName articleWithWriterName) {
+        this.articleId = articleWithWriterName.getArticleId();
+        this.time = articleWithWriterName.getTime();
+        this.writer = articleWithWriterName.getWriter();
+        this.writerId = articleWithWriterName.getWriterId();
+        this.title = articleWithWriterName.getTitle();
+        this.contents = articleWithWriterName.getContent();
     }
 
     public long getArticleId() { return articleId; }
@@ -34,9 +32,7 @@ public class ArticleContents {
         return time;
     }
 
-    public String getWriter() {
-        return writer;
-    }
+    public String getWriter() { return writer; }
 
     public String getWriterId() { return writerId; }
 

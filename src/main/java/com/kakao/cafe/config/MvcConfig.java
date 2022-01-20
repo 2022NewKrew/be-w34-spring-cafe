@@ -24,7 +24,8 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/articles/**")
                 .addPathPatterns("/questions/**")
                 .addPathPatterns("/*/*/form")
-                .addPathPatterns("**/update");
+                .addPathPatterns("**/update")
+                .addPathPatterns("/questions/{questionId}/answers/**");
     }
 
     @Bean
