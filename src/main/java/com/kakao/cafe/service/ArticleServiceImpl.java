@@ -41,7 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .map(entity -> {
                     entity.changeTitle(dto.getTitle());
                     entity.changeContent(dto.getContent());
-//                    articleRepository.update(entity);
+                    articleRepository.update(entity);
                     return entity;
                 })
                 .orElseThrow(RuntimeException::new);

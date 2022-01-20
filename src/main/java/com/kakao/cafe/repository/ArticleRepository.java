@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface ArticleRepository {
     void save(Article entity);
 
+    void update(Article entity);
+
     Optional<Article> findById(Long articleId);
 
     Page<Article> findAll(Pageable pageable);

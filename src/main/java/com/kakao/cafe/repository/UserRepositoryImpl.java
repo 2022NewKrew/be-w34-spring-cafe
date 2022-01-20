@@ -18,11 +18,11 @@ import java.util.Optional;
 
 @Slf4j
 @Repository
-public class UserDbRepository implements UserRepository {
+public class UserRepositoryImpl implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper mapper;
 
-    public UserDbRepository(JdbcTemplate jdbcTemplate) {
+    public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.mapper = new UserMapper();
     }

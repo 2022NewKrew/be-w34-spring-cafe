@@ -2,7 +2,7 @@
 {{>layout/navbar}}
 <main class="">
     <section>
-        <form action="/articles/new" method="post">
+        <form action="/articles/{{article.articleId}}/edit" method="post">
             <div class="container border p-4">
                 <div class="row">
                     <div class="col mb-3">{{auth.username}}</div>
@@ -14,14 +14,15 @@
                     <div class="input-group input-group-lg">
                         <input name="title" type="text" class="form-control" placeholder="제목을 입력하세요."
                                aria-label="Sizing example input"
-                               aria-describedby="inputGroup-sizing-lg">
+                               aria-describedby="inputGroup-sizing-lg"
+                               value="{{article.title}}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <div class="input-group">
                         <textarea name="content" class="form-control" placeholder="내용을 입력하세요."
-                                  aria-label="With textarea"></textarea>
+                                  aria-label="With textarea">{{article.content}}</textarea>
                         </div>
                     </div>
                 </div>
@@ -31,7 +32,7 @@
                     <div class="col"></div>
                     <div class="col">
                         <div class="d-flex flex-column w-100 mt-5">
-                            <button type="submit" class="btn btn-dark p-3">등록</button>
+                            <button type="submit" class="btn btn-dark p-3">수정하기</button>
                         </div>
                     </div>
                 </div>

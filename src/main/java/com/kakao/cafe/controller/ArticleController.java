@@ -42,15 +42,15 @@ public class ArticleController {
     @GetMapping("/{articleId}/edit")
     public String editArticleForm(@PathVariable Long articleId, Model model) {
         log.debug("[Get] /articles/" + articleId + "/edit");
-//        articleService.register(articleDto);
-        return "redirect:/";
+        model.addAttribute("article", articleService.read(articleId));
+        return "article/edit";
     }
 
     @PostMapping("/{articleId}/edit")
     public String editArticle(@PathVariable Long articleId, ArticleDto articleDto) {
         log.debug("[Post] /articles/" + articleId + "/edit " + articleDto);
-//        articleService.register(articleDto);
-        return "redirect:/";
+        articleService.modify(articleDto);
+        return "redirect:/articles/" + articleId;
     }
 
     @GetMapping
