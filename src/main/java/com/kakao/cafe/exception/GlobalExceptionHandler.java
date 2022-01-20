@@ -28,6 +28,11 @@ public class GlobalExceptionHandler {
         return getPathOfRedirectionFromRequest(request);
     }
 
+    @ExceptionHandler(NoAuthenticationException.class)
+    public void handleNoAuthenticationException(HttpServletResponse response) throws IOException {
+        response.sendError(HttpStatus.UNAUTHORIZED.value());
+    }
+
     @ExceptionHandler(NoAuthorizationException.class)
     public void handleNoAuthorizationException(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.FORBIDDEN.value());

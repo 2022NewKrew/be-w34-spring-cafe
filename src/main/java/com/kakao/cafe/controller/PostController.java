@@ -6,6 +6,7 @@ import com.kakao.cafe.model.post.PostWriteRequest;
 import com.kakao.cafe.model.user.UserDto;
 import com.kakao.cafe.service.comment.CommentService;
 import com.kakao.cafe.service.post.PostService;
+import com.kakao.cafe.utils.SessionUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -42,10 +43,10 @@ public class PostController {
 
     @GetMapping("/posts/{id}")
     public String getPost(@PathVariable long id, HttpSession session, Model model) {
-        UserDto currentUser = getCurrentUserFromSession(session);
+        long currentUserId = SessionUtils.getCurrentUserId(session);
         PostDto post = postService.getPostById(id);
         model.addAttribute("post", post);
-        model.addAttribute("hasAuthority", post.getWriterId().equals(currentUser.getId()));
+        model.addAttribute("hasAuthority", post.getWriterId().equals(currentUserId));
 
         List<CommentDto> comments = commentService.getCommentsByPostId(id);
         model.addAttribute("comments", comments);
@@ -55,29 +56,25 @@ public class PostController {
 
     @GetMapping("/posts/{id}/update")
     public String getPostUpdateForm(@PathVariable long id, HttpSession session, Model model) {
-        UserDto currentUser = getCurrentUserFromSession(session);
-        model.addAttribute("post", postService.getPostById(id, currentUser.getId()));
+        long currentUserId = SessionUtils.getCurrentUserId(session);
+        model.addAttribute("post", postService.getPostById(id, currentUserId));
         return "post/updateForm";
     }
 
     @PutMapping("/posts/{id}")
     public String updatePost(@PathVariable long id, @Valid PostWriteRequest request, HttpSession session, RedirectAttributes rttr) {
-        UserDto currentUser = getCurrentUserFromSession(session);
-        postService.updatePost(id, currentUser.getId(), request);
+        long currentUserId = SessionUtils.getCurrentUserId(session);
+        postService.updatePost(id, currentUserId, request);
         rttr.addFlashAttribute("msg", "게시글을 수정하였습니다.");
         return "redirect:/posts/" + id;
     }
 
     @DeleteMapping("/posts/{id}")
     public String deletePost(@PathVariable long id, HttpSession session, RedirectAttributes rttr) {
-        UserDto currentUser = getCurrentUserFromSession(session);
-        postService.deletePost(id, currentUser.getId());
+        long currentUserId = SessionUtils.getCurrentUserId(session);
+        postService.deletePost(id, currentUserId);
         rttr.addFlashAttribute("msg", "게시글을 삭제하였습니다.");
         return "redirect:/";
-    }
-
-    private UserDto getCurrentUserFromSession(HttpSession session) {
-        return (UserDto) session.getAttribute("currentUser");
     }
 
 }
