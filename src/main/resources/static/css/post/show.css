@@ -56,6 +56,13 @@ li {
     line-height: 30px;
 }
 
+.article-buttons {
+    align-self: end;
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 20px;
+}
+
 .post-title {
     font-size: 32px;
     font-weight: 500;

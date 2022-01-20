@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    {{>layout/head}}
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/post/form.css" rel="stylesheet">
+</head>
+<body>
+<div class="background">
+    {{>layout/navbar}}
+    <div class="container" id="main">
+        <header class="post-header">
+            <p class="title">해당 글의 작성자가 아니므로 수정 불가능합니다!</p>
+        </header>
+        <div class="submit-write">
+            <button class="post-write-btn" type="button" onclick="history.go(-1)">돌아가기</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

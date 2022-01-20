@@ -38,16 +38,20 @@ public class UserController {
     @GetMapping("/{userId}")
     public String getUserInfo(@PathVariable("userId") String userId, Model model) {
         UserDto user = userService.findById(userId);
+        if (user == null) {
+            return "error/userNotExist";
+        }
         model.addAttribute("user", user);
         return "user/profile";
     }
 
     @PostMapping("/login")
-    public String login(UserRequestDto userRequestDto, HttpSession httpSession) {
+    public String login(UserRequestDto userRequestDto, HttpSession httpSession, Model model) {
         try{
             userService.login(userRequestDto, httpSession);
         }
         catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
             return "user/login";
         }
         return "redirect:/";

@@ -38,14 +38,14 @@ public class UserService {
     }
 
     public void login(UserRequestDto userRequestDto, HttpSession httpSession) throws IllegalArgumentException {
-        UserDto userRetrieved = UserDto.entityToDto(userRepository.findByMail(userRequestDto.getEmail()));
+        User retrievedUser = userRepository.findByMail(userRequestDto.getEmail());
 
-        if (userRetrieved == null)
+        if (retrievedUser == null)
             throw new IllegalArgumentException("올바른 메일을 입력해주세요");
-        if (!userRequestDto.getPassword().equals(userRetrieved.getPassword()))
+        if (!userRequestDto.getPassword().equals(retrievedUser.getPassword()))
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
 
-        httpSession.setAttribute("sessionedUser", userRetrieved);
+        httpSession.setAttribute("sessionedUser", retrievedUser);
     }
 
     public void logout(HttpSession httpSession) {

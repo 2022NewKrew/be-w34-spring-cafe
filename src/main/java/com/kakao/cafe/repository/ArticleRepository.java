@@ -10,4 +10,6 @@ public interface ArticleRepository {
     Article save(Article article);
     List<Article> findAll();
     Article findById(String articleId);
+    Article update(Article article);
+    void delete(String index);
 }

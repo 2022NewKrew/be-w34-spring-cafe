@@ -5,26 +5,25 @@ import com.kakao.cafe.entity.User;
 
 import java.time.LocalDate;
 
-public class ArticleDto {
+public class ArticleListDto {
     private int id;
     private String content;
     private String title;
     private LocalDate createdTime;
     private int views;
-    private User writer;
+    private String writerName;
 
-    public ArticleDto(int id, String content, String title, LocalDate createdTime, int views, User writer) {
+    public ArticleListDto(int id, String content, String title, LocalDate createdTime, int views, User writer) {
         this.id = id;
         this.content = content;
         this.title = title;
         this.createdTime = createdTime;
         this.views = views;
-        this.writer = writer;
+        this.writerName = writer.getName();
     }
 
-    public static ArticleDto entityToDto(Article article) {
-        if (article == null) return null;
-        return new ArticleDto(
+    public static ArticleListDto entityToDto(Article article) {
+        return new ArticleListDto(
                 article.getId(),
                 article.getContent(),
                 article.getTitle(),
@@ -34,7 +33,4 @@ public class ArticleDto {
         );
     }
 
-    public User getWriter() {
-        return writer;
-    }
 }
