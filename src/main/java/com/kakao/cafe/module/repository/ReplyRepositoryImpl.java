@@ -76,7 +76,8 @@ public class ReplyRepositoryImpl implements ReplyRepository {
                 rs.getLong("article_id"),
                 rs.getLong("author_id"),
                 rs.getString("comment"),
-                rs.getTimestamp("created").toLocalDateTime()
+                rs.getTimestamp("created").toLocalDateTime(),
+                rs.getBoolean("status")
         ));
     }
 }
