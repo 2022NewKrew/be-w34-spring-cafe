@@ -133,7 +133,7 @@ class ArticleControllerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 5})
+    @ValueSource(ints = {3, 5})
     void 게시물_삭제(int idx) throws Exception {
         mockMvc.perform(delete("/articles/" + idx)
                         .session(session))
@@ -147,6 +147,16 @@ class ArticleControllerTest {
         mockMvc.perform(delete("/articles/" + idx)
                         .session(session))
                 .andExpect(status().isForbidden())
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("msg"))
+                .andExpect(view().name("infra/error"));
+    }
+
+    @Test
+    void 댓글이_남아있는_글_삭제() throws Exception {
+        mockMvc.perform(delete("/articles/1")
+                        .session(session))
+                .andExpect(status().isBadRequest())
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("msg"))
                 .andExpect(view().name("infra/error"));

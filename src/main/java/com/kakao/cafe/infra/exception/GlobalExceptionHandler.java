@@ -19,7 +19,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             DuplicateUserException.class,
             NoSuchDataException.class,
-            ForbiddenException.class
+            ForbiddenException.class,
+            DeleteRuleException.class
     })
     public String handleRuntimeExceptions(final CustomRuntimeException e, Model model, HttpServletResponse response) {
         response.setStatus(e.getErrorCode().getValue());

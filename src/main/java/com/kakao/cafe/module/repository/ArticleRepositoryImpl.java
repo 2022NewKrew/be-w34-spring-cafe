@@ -77,7 +77,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public void deleteArticle(Long id) {
-        jdbcTemplate.update("DELETE FROM ARTICLE WHERE id = ?", id);
+        jdbcTemplate.update("UPDATE ARTICLE SET comment_count = 0, status = false WHERE id = ?", id);
     }
 
     private RowMapper<ArticleListDto> mapRowArticles() {

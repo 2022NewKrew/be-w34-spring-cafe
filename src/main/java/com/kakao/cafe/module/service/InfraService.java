@@ -13,11 +13,12 @@ import static com.kakao.cafe.module.model.dto.UserDtos.*;
 @Service
 public class InfraService {
 
-    public void validateSession(HttpSession session, Long id) throws HttpSessionRequiredException {
+    public Long validateSession(HttpSession session, Long id) throws HttpSessionRequiredException {
         UserDto sessionUser = retrieveUserSession(session);
         if (!id.equals(sessionUser.getId())) {
             throw new ForbiddenException("권한 없는 정보입니다.");
         }
+        return sessionUser.getId();
     }
 
     public UserDto retrieveUserSession(HttpSession session) throws HttpSessionRequiredException {

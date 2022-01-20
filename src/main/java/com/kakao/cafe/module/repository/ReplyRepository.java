@@ -15,4 +15,8 @@ public interface ReplyRepository {
     Reply findReplyById(Long id);
 
     void deleteReply(Long id);
+
+    void deleteRepliesByArticleId(Long id);
+
+    boolean isReplyExist(Long articleId, Long authorId);
 }

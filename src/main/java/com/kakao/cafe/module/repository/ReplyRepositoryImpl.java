@@ -57,7 +57,18 @@ public class ReplyRepositoryImpl implements ReplyRepository {
 
     @Override
     public void deleteReply(Long id) {
-        jdbcTemplate.update("DELETE FROM REPLY WHERE id = ?", id);
+        jdbcTemplate.update("UPDATE REPLY SET status = false WHERE id = ?", id);
+    }
+
+    @Override
+    public void deleteRepliesByArticleId(Long id) {
+        jdbcTemplate.update("UPDATE REPLY SET status = false WHERE article_id = ?", id);
+    }
+
+    @Override
+    public boolean isReplyExist(Long articleId, Long authorId) {
+        String query = "SELECT id FROM REPLY WHERE article_id = ? AND status = true AND author_id <> ?";
+        return !jdbcTemplate.query(query, (rs, rowNum) -> rs.getLong("id"), articleId, authorId).isEmpty();
     }
 
     private RowMapper<ReplyReadDto> mapRowReplies() {
