@@ -1,10 +1,12 @@
 package com.kakao.cafe.dto;
 
 import com.kakao.cafe.model.Article;
+import lombok.Getter;
 
 
 import java.time.format.DateTimeFormatter;
 
+@Getter
 public class ArticleShowDto {
     private Integer id;
     private String writer;

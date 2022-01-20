@@ -80,7 +80,7 @@ public class UserController {
             model.addAttribute("error", e.getMessage());
             return "/user/login_failed";
         }
-        return "index";
+        return "redirect:/";
     }
 
     @GetMapping("/logout")

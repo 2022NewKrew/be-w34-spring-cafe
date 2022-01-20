@@ -16,6 +16,7 @@ public class ArticleCreateDto {
     private final String title;
     @NotBlank(message = "내용을 입력해주세요")
     private final String contents;
+    private Integer id = 0;
 
     public ArticleCreateDto(String title, String contents) {
         this.title = title;
@@ -26,8 +27,10 @@ public class ArticleCreateDto {
         this.user = user;
     }
 
+    public void setId(Integer id) { this.id = id; }
+
     public Article toEntity() {
-        return Article.builder().id(0)
+        return Article.builder().id(id)
                 .user(User.builder()
                         .id(user.getId())
                         .userId(user.getUserId())

@@ -10,7 +10,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,15 +40,6 @@ public class UserJdbcRepository implements UserRepository {
             return ps;
         }, keyHolder);
 
-        /*
-        jdbcTemplate.update(
-                "insert into users(id, userId, password, userName, email) values (?, ?, ?, ?, ?)",
-                user.getId(),
-                user.getUserId(),
-                user.getPassword(),
-                user.getUserName(),
-                user.getEmail()
-        );*/
     }
 
     @Override

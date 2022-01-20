@@ -5,15 +5,13 @@ import com.kakao.cafe.dto.ArticleShowDto;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
+import org.h2.engine.Mode;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.stream.Collectors;
@@ -66,11 +64,28 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("questions/{id}")
+    @GetMapping("/questions/{id}")
+    public String getArticle(@PathVariable Integer id, Model model, HttpSession session) {
+        ArticleShowDto article = articleService.findOne(id);
+        User sessionUser = (User)session.getAttribute("sessionUser");
+        model.addAttribute("isWriter", sessionUser.getUserName().equals(article.getWriter()));
+        model.addAttribute("article", article);
+        return "qna/show";
+    }
+
+    @GetMapping("/questions/{id}/form")
     public String getArticle(@PathVariable Integer id, Model model) {
         ArticleShowDto article = articleService.findOne(id);
         model.addAttribute("article", article);
-        return "qna/show";
+        return "qna/updateForm";
+    }
+
+    @PutMapping("/questions/{id}/update")
+    public String UpdateArticle(@PathVariable Integer id, ArticleCreateDto articleCreateDto, HttpSession session){
+        articleCreateDto.setUser((User)session.getAttribute("sessionUser"));
+        articleCreateDto.setId(id);
+        articleService.update(articleCreateDto);
+        return "redirect:/";
     }
 
 }

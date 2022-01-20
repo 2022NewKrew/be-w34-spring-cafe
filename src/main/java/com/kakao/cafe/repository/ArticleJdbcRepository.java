@@ -10,7 +10,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -39,15 +38,6 @@ public class ArticleJdbcRepository implements ArticleRepository{
             ps.setObject(4, Timestamp.valueOf(article.getCreateTime()));
             return ps;
         }, keyHolder);
-        /*
-        jdbcTemplate.update(
-                "insert into article(article_id, writer, title, contents, createTime) values ( ?, ?, ?, ?, ?)",
-                article.getId(),
-                article.getUser().getUserName(),
-                article.getTitle(),
-                article.getContents(),
-                Timestamp.valueOf(article.getCreateTime())
-        );*/
     }
 
     @Override
@@ -65,6 +55,17 @@ public class ArticleJdbcRepository implements ArticleRepository{
                 mapper,
                 id
         ).stream().findAny();
+    }
+
+
+    public void update(Article article){
+        jdbcTemplate.update(
+                "update article set writer = ?, title = ?, contents = ? where article_id = ?",
+                article.getUser().getUserName(),
+                article.getTitle(),
+                article.getContents(),
+                article.getId()
+        );
     }
 
 

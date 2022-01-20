@@ -34,4 +34,8 @@ public class ArticleService {
     public ArticleShowDto findOne(Integer id){
         return new ArticleShowDto(articleRepository.findOne(id).orElseThrow());
     }
+
+    public void update(ArticleCreateDto articleCreateDto){
+        articleRepository.update(articleCreateDto.toEntity());
+    }
 }
