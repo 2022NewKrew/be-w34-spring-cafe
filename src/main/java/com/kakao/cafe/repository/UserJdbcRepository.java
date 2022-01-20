@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.dto.UserUpdateDto;
+import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -68,12 +68,12 @@ public class UserJdbcRepository implements UserRepository {
     }
 
 
-    public void update(Integer id, UserUpdateDto userUpdateDto){
+    public void update(Integer id, UserDto userDto) {
         jdbcTemplate.update(
                 "update users set password = ?, userName = ?, email = ? where id = ?",
-                userUpdateDto.getPassword(),
-                userUpdateDto.getUserName(),
-                userUpdateDto.getEmail(),
+                userDto.getPassword(),
+                userDto.getUserName(),
+                userDto.getEmail(),
                 id
         );
     }

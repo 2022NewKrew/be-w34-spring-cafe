@@ -1,7 +1,13 @@
 package com.kakao.cafe.model;
 
+import com.kakao.cafe.dto.UserDto;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+
+@Getter
+@Setter
 public class User {
     private Integer id;
     private String userId;
@@ -18,30 +24,12 @@ public class User {
         this.email = email;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() { return id; }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public boolean matchPassword(String password){
+    public boolean matchPassword(String password) {
         return this.password.equals(password);
+    }
+
+    public UserDto toDto() {
+        return new UserDto(id, userId, password, userName, email);
     }
 
     @Override
