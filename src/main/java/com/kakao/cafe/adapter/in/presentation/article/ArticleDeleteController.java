@@ -1,7 +1,6 @@
 package com.kakao.cafe.adapter.in.presentation.article;
 
 import com.kakao.cafe.application.article.port.in.DeleteArticleUseCase;
-import com.kakao.cafe.application.reply.port.in.DeleteReplyUseCase;
 import com.kakao.cafe.application.reply.port.in.GetRepliesUseCase;
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.domain.article.Reply;
@@ -13,15 +12,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-public class ArticleReplyDeleteController {
+public class ArticleDeleteController {
 
     private final DeleteArticleUseCase deleteArticleUseCase;
-    private final DeleteReplyUseCase deleteReplyUseCase;
     private final GetRepliesUseCase getRepliesUseCase;
 
-    public ArticleReplyDeleteController(DeleteArticleUseCase deleteArticleUseCase, DeleteReplyUseCase deleteReplyUseCase, GetRepliesUseCase getRepliesUseCase) {
+    public ArticleDeleteController(DeleteArticleUseCase deleteArticleUseCase, GetRepliesUseCase getRepliesUseCase) {
         this.deleteArticleUseCase = deleteArticleUseCase;
-        this.deleteReplyUseCase = deleteReplyUseCase;
         this.getRepliesUseCase = getRepliesUseCase;
     }
 
@@ -33,12 +30,6 @@ public class ArticleReplyDeleteController {
         }
         deleteArticleUseCase.delete(id);
         return "redirect:/";
-    }
-
-    @DeleteMapping("/articles/{articleId}/replies/{id}")
-    public String deleteReply(@PathVariable int articleId, @PathVariable int id) {
-        deleteReplyUseCase.delete(id);
-        return "redirect:/articles/" + articleId;
     }
 
     private boolean isPossibleDeleteArticle(int id, UserInfo sessionedUser) {

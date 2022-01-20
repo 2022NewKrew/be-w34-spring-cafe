@@ -1,8 +1,6 @@
-package com.kakao.cafe.adapter.in.presentation.article;
+package com.kakao.cafe.adapter.in.presentation.reply;
 
-import com.kakao.cafe.application.article.port.in.DeleteArticleUseCase;
 import com.kakao.cafe.application.reply.port.in.DeleteReplyUseCase;
-import com.kakao.cafe.application.reply.port.in.GetRepliesUseCase;
 import com.kakao.cafe.application.user.dto.UserInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,42 +14,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@WebMvcTest(ArticleReplyDeleteController.class)
-class ArticleReplyDeleteControllerTest {
+@WebMvcTest(ReplyDeleteController.class)
+class ReplyDeleteControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
-    DeleteArticleUseCase deleteArticleUseCase;
-
-    @MockBean
     DeleteReplyUseCase deleteReplyUseCase;
-
-    @MockBean
-    GetRepliesUseCase getRepliesUseCase;
-
-    @DisplayName("게시글 삭제 테스트")
-    @Test
-    void deleteArticleTest() throws Exception {
-        int id = 5;
-        String userId = "kakao";
-        String name = "champ";
-        String email = "champ@kakao.com";
-        UserInfo userInfo = new UserInfo(userId, name, email);
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("sessionedUser", userInfo);
-        String url = "/articles/" + id + "/delete";
-
-        // then
-        mockMvc.perform(
-                   MockMvcRequestBuilders.delete(url).session(session)
-                                         .param("userId", userId)
-                                         .accept(MediaType.TEXT_HTML)
-               )
-               .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-               .andDo(MockMvcResultHandlers.print());
-    }
 
     @DisplayName("댓글 삭제 테스트")
     @Test
