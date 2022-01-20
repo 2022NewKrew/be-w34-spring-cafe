@@ -14,9 +14,6 @@ public class ArticleSaveDTO {
     @NotBlank
     private final String content;
 
+    @Setter
     private String userId;
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }
