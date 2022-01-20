@@ -33,9 +33,7 @@
                           {{^modifiedAtPretty}}{{createdAtPretty}}{{/modifiedAtPretty}}
                       </div>
                   </div>
-                  <div class="article-doc">
-                      {{#bodyLines}}{{.}}<br>{{/bodyLines}}
-                  </div>
+                  <p class="article-doc" style="white-space: pre-wrap;">{{body}}</p>
                   <div class="article-util">
                       <ul class="article-util-list">
                           {{#isOwner}}
@@ -73,9 +71,7 @@
                                       {{^modifiedAtPretty}}{{createdAtPretty}}{{/modifiedAtPretty}}
                                   </div>
                               </div>
-                              <div class="article-doc comment-doc" id="origComment{{idx}}">
-                                  {{#bodyLines}}{{.}}<br>{{/bodyLines}}
-                              </div>
+                              <p class="article-doc comment-doc" style="white-space: pre-wrap;" id="origComment{{idx}}">{{body}}</p>
 
                               {{#isOwner}}
                               <form class="submit-write" id="editComment{{idx}}" style="display:none;" action="/comments" method="POST" onsubmit="return checkValidEditComment({{idx}})">
@@ -83,7 +79,6 @@
                                   <input type="hidden" name="idx" value="{{idx}}">
                                   <input type="hidden" name="userId" value="{{curUserId}}">
                                   <input type="hidden" name="articleIdx" value="{{article.idx}}">
-                                  <input type="hidden" id="backupComment{{idx}}" name="origBody" value="{{body}}" disabled>
                                   <div class="form-group" style="padding:14px;">
                                       <label for="comment{{idx}}">댓글 수정</label>
                                       <textarea class="form-control" id="comment{{idx}}" name="body" placeholder="댓글 내용"></textarea>

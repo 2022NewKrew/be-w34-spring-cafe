@@ -13,7 +13,6 @@ public class CommentDto {
     private String userName;
     private long articleIdx;
     private String body;
-    private String[] bodyLines;
     private String createdAtPretty;
     private String modifiedAtPretty;
 
@@ -33,9 +32,6 @@ public class CommentDto {
         commentDto.setUserName(userName);
         commentDto.setArticleIdx(articleIdx);
         commentDto.setBody(body);
-        commentDto.setBodyLines(
-                Pretty.splitByNewLine(body)
-        );
         commentDto.setCreatedAtPretty(
                 Pretty.epochSecond(createdAt, Locale.KOREA, ZoneId.of("Asia/Seoul"))
         );
@@ -93,14 +89,6 @@ public class CommentDto {
 
     public void setBody(String body) {
         this.body = body;
-    }
-
-    public String[] getBodyLines() {
-        return bodyLines;
-    }
-
-    public void setBodyLines(String[] bodyLines) {
-        this.bodyLines = bodyLines;
     }
 
     public String getCreatedAtPretty() {

@@ -19,6 +19,11 @@ public final class Pretty {
                 .format(Instant.ofEpochSecond(epoch));
     }
 
+    public static String replaceSpaceToHtmlCode(final String text) {
+        Objects.requireNonNull(text);
+        return text.replaceAll(" ", "&#160;");
+    }
+
     public static String[] splitByNewLine(final String text) {
         Objects.requireNonNull(text);
         return text.split("\r?\n");

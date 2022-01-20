@@ -13,7 +13,6 @@ public class ArticleDto {
     private String userName;
     private String title;
     private String body;
-    private String[] bodyLines;
     private String createdAtPretty;
     private String modifiedAtPretty;
     private int countComments;
@@ -35,9 +34,6 @@ public class ArticleDto {
         articleDto.setUserName(userName);
         articleDto.setTitle(title);
         articleDto.setBody(body);
-        articleDto.setBodyLines(
-                Pretty.splitByNewLine(body)
-        );
         articleDto.setCreatedAtPretty(
                 Pretty.epochSecond(createdAt, Locale.KOREA, ZoneId.of("Asia/Seoul"))
         );
@@ -96,14 +92,6 @@ public class ArticleDto {
 
     public void setBody(String body) {
         this.body = body;
-    }
-
-    public String[] getBodyLines() {
-        return bodyLines;
-    }
-
-    public void setBodyLines(String[] bodyLines) {
-        this.bodyLines = bodyLines;
     }
 
     public String getCreatedAtPretty() {

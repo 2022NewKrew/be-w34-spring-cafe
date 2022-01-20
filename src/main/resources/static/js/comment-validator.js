@@ -38,11 +38,8 @@ function openEditComment(idx) {
     EDIT_COMMENT.onchange = checkEditComment;
 
     if (EDIT_COMMENT.value === '') {
-        const BACKUP = document.getElementById("backupComment" + idx);
-        if (BACKUP !== null) {
-            EDIT_COMMENT.value = BACKUP.value;
-            checkBound(EDIT_COMMENT, COMMENT_MIN, COMMENT_MAX);
-        }
+        EDIT_COMMENT.value = ORIG_COMMENT.innerText;
+        checkBound(EDIT_COMMENT, COMMENT_MIN, COMMENT_MAX);
     }
 }
 
