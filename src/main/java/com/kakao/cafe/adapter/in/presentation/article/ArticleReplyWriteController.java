@@ -9,12 +9,10 @@ import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
 import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
 import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
 import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
-import com.kakao.cafe.domain.user.exceptions.UnauthenticatedUserException;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ArticleReplyWriteController {
@@ -28,7 +26,7 @@ public class ArticleReplyWriteController {
     }
 
     @PostMapping("/articles")
-    public String register(WriteRequest writeRequest, HttpSession session)
+    public String registerArticle(WriteRequest writeRequest, HttpSession session)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
         UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
         writeRequest.setWriter(sessionedUser.getName());
@@ -38,12 +36,9 @@ public class ArticleReplyWriteController {
     }
 
     @PostMapping("/articles/{articleId}/replies")
-    public String register(@PathVariable int articleId, @RequestParam String userId, WriteReplyRequest writeReplyRequest, HttpSession session)
-        throws UnauthenticatedUserException, IllegalUserIdException, IllegalWriterException, IllegalTitleException, IllegalDateException {
+    public String registerReply(@PathVariable int articleId, WriteReplyRequest writeReplyRequest, HttpSession session)
+        throws IllegalUserIdException, IllegalWriterException, IllegalTitleException, IllegalDateException {
         UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
-        if (!sessionedUser.getUserId().equals(userId)) {
-            throw new UnauthenticatedUserException("인증 오류");
-        }
         writeReplyRequest.setArticleId(articleId);
         writeReplyRequest.setUserId(sessionedUser.getUserId());
         writeReplyRequest.setWriter(sessionedUser.getName());

@@ -12,6 +12,7 @@ public class Reply {
     private final String writer;
     private final String contents;
     private final String createdAt;
+    private final boolean deleted;
     private int id;
 
     public Reply(Builder builder) {
@@ -20,6 +21,7 @@ public class Reply {
         this.writer = builder.writer;
         this.contents = builder.contents;
         this.createdAt = builder.createdAt;
+        this.deleted = builder.deleted;
     }
 
     private static boolean checkBlankInString(String str) {
@@ -46,6 +48,10 @@ public class Reply {
         if (checkLengthOfString(createdAt)) {
             throw new IllegalDateException("잘못된 날짜입니다.");
         }
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 
     public int getArticleId() {
@@ -83,6 +89,7 @@ public class Reply {
         private String writer;
         private String contents;
         private String createdAt;
+        private boolean deleted;
 
         public Reply build()
             throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
@@ -114,6 +121,11 @@ public class Reply {
 
         public Builder createdAt(String createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder deleted(boolean deleted) {
+            this.deleted = deleted;
             return this;
         }
     }

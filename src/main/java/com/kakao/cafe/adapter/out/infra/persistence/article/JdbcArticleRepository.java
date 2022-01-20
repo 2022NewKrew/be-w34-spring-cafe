@@ -26,8 +26,9 @@ public class JdbcArticleRepository implements ArticleRepository {
     private final static String COLUMN_TITLE = "title";
     private final static String COLUMN_CONTENTS = "contents";
     private final static String COLUMN_CREATED_AT = "createdAt";
+    private final static String COLUMN_DELETED = "deleted";
     private final static String SELECT_ALL = "select * from " + ARTICLE_TABLE;
-    private final static String DELETE_BY_ID = "delete from " + ARTICLE_TABLE + " where " + COLUMN_ID + "=?";
+    private final static String NOT_DELETED = " where " + COLUMN_DELETED + "=false";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -46,6 +47,7 @@ public class JdbcArticleRepository implements ArticleRepository {
         parameters.put(COLUMN_TITLE, article.getTitle());
         parameters.put(COLUMN_CONTENTS, article.getContents());
         parameters.put(COLUMN_CREATED_AT, article.getCreatedAt());
+        parameters.put(COLUMN_DELETED, article.isDeleted());
 
         simpleJdbcInsert.execute(parameters);
     }
@@ -60,12 +62,13 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void deleteById(int id) {
-        jdbcTemplate.update(DELETE_BY_ID, id);
+        String sql = "update " + ARTICLE_TABLE + " set " + COLUMN_DELETED + "=true" + " where " + COLUMN_ID + "=?";
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
     public List<Article> getAllArticleList() {
-        return jdbcTemplate.query(SELECT_ALL, (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum));
+        return jdbcTemplate.query(SELECT_ALL + NOT_DELETED, (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum));
     }
 
     @Override
@@ -93,6 +96,7 @@ public class JdbcArticleRepository implements ArticleRepository {
                                                        .title(rs.getString(COLUMN_TITLE))
                                                        .contents(rs.getString(COLUMN_CONTENTS))
                                                        .createdAt(rs.getString(COLUMN_CREATED_AT))
+                                                       .deleted(false)
                                                        .build();
                 article.setId(rs.getInt(COLUMN_ID));
                 return article;

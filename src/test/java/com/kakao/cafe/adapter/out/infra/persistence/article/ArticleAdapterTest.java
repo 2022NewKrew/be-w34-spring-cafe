@@ -112,6 +112,7 @@ class ArticleAdapterTest {
                                                                          DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
                                                                      )
                                                     )
+                                                    .deleted(false)
                                                     .build();
         givenArticle.setId(givenId);
         given(articleRepository.findById(givenId)).willReturn(Optional.of(givenArticle));
@@ -143,6 +144,7 @@ class ArticleAdapterTest {
                                                                          DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
                                                                      )
                                                     )
+                                                    .deleted(false)
                                                     .build();
         givenArticle.setId(givenId);
         given(articleRepository.findById(givenId)).willReturn(Optional.empty());

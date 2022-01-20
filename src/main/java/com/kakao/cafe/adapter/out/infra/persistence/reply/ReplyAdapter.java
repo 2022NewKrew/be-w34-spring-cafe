@@ -31,6 +31,7 @@ public class ReplyAdapter implements RegisterReplyPort, GetRepliesPort, DeleteRe
                                .writer(writeReplyRequest.getWriter())
                                .contents(writeReplyRequest.getContents())
                                .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                               .deleted(false)
                                .build()
         );
     }
@@ -45,5 +46,10 @@ public class ReplyAdapter implements RegisterReplyPort, GetRepliesPort, DeleteRe
     @Override
     public void delete(int id) {
         replyRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllRepliesInArticle(int articleId) {
+        replyRepository.deleteAllRepliesIn(articleId);
     }
 }

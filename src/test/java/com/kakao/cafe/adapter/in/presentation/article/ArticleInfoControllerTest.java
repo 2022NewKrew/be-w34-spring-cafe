@@ -82,6 +82,7 @@ class ArticleInfoControllerTest {
                                                     .title(title)
                                                     .contents(contents)
                                                     .createdAt(createdAt)
+                                                    .deleted(false)
                                                     .build();
         UserInfo sessionedUser = new UserInfo(userId, writer, "kakao@kakao.com");
         MockHttpSession session = new MockHttpSession();

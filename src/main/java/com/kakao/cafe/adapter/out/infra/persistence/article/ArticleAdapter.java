@@ -39,6 +39,7 @@ public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort, 
                 .title(writeRequest.getTitle())
                 .contents(writeRequest.getContents())
                 .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .deleted(false)
                 .build()
         );
     }
@@ -52,6 +53,7 @@ public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort, 
             .title(updateRequest.getTitle())
             .contents(updateRequest.getContents())
             .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+            .deleted(false)
             .build();
         article.setId(updateRequest.getId());
         articleRepository.update(article);

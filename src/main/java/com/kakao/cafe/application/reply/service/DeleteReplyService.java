@@ -15,4 +15,9 @@ public class DeleteReplyService implements DeleteReplyUseCase {
     public void delete(int id) {
         deleteReplyPort.delete(id);
     }
+
+    @Override
+    public void deleteAllRepliesInArticle(int articleId) {
+        deleteReplyPort.deleteAllRepliesInArticle(articleId);
+    }
 }

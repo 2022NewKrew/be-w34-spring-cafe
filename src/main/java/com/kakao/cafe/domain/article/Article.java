@@ -12,6 +12,7 @@ public class Article {
     private final String title;
     private final String contents;
     private final String createdAt;
+    private final boolean deleted;
     private int id;
 
     public Article(Builder builder) {
@@ -20,6 +21,7 @@ public class Article {
         this.title = builder.title;
         this.contents = builder.contents;
         this.createdAt = builder.createdAt;
+        this.deleted = builder.deleted;
     }
 
     private static boolean checkBlankInString(String str) {
@@ -52,6 +54,10 @@ public class Article {
         if (checkLengthOfString(createdAt)) {
             throw new IllegalDateException("잘못된 날짜입니다.");
         }
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 
     public String getUserId() {
@@ -89,6 +95,7 @@ public class Article {
         private String title;
         private String contents;
         private String createdAt;
+        private boolean deleted;
 
         public Builder userId(String userId) {
             this.userId = userId;
@@ -112,6 +119,11 @@ public class Article {
 
         public Builder createdAt(String createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder deleted(boolean deleted) {
+            this.deleted = deleted;
             return this;
         }
 

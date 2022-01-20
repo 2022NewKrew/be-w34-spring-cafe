@@ -10,4 +10,6 @@ public interface ReplyRepository {
     List<Reply> getAllReplyListByArticleId(int articleId);
 
     void deleteById(int id);
+
+    void deleteAllRepliesIn(int articleId);
 }

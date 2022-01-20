@@ -2,6 +2,7 @@ package com.kakao.cafe.adapter.in.presentation.article;
 
 import com.kakao.cafe.application.article.port.in.DeleteArticleUseCase;
 import com.kakao.cafe.application.reply.port.in.DeleteReplyUseCase;
+import com.kakao.cafe.application.reply.port.in.GetRepliesUseCase;
 import com.kakao.cafe.application.user.dto.UserInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,9 @@ class ArticleReplyDeleteControllerTest {
 
     @MockBean
     DeleteReplyUseCase deleteReplyUseCase;
+
+    @MockBean
+    GetRepliesUseCase getRepliesUseCase;
 
     @DisplayName("게시글 삭제 테스트")
     @Test
