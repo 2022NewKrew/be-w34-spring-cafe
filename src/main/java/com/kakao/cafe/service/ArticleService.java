@@ -37,14 +37,14 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public List<CommentDto> getCommentList(int index) {
-        return articleDao.findAllComments(index).stream()
+    public List<CommentDto> getCommentList(int articleId) {
+        return articleDao.findAllComments(articleId).stream()
                 .map(commentVo -> modelMapper.map(commentVo, CommentDto.class))
                 .collect(Collectors.toList());
     }
 
-    public ArticleDto filterArticleByIndex(int index) {
-        ArticleVo articleVo = articleDao.filterArticleByIndex(index);
+    public ArticleDto filterArticleById(int articleId) {
+        ArticleVo articleVo = articleDao.filterArticleById(articleId);
         articleValidation.validateArticle(articleVo);
         return modelMapper.map(articleVo, ArticleDto.class);
     }
@@ -59,19 +59,19 @@ public class ArticleService {
         articleDao.writeArticle(modelMapper.map(article, ArticleVo.class));
     }
 
-    public void updateArticle(int index, ArticleDto article) {
-        articleDao.updateArticle(index, modelMapper.map(article, ArticleVo.class));
+    public void updateArticle(int articleId, ArticleDto article) {
+        articleDao.updateArticle(articleId, modelMapper.map(article, ArticleVo.class));
     }
 
-    public void deleteArticle(int index, UserDto user) {
-        List<CommentVo> comments = articleDao.findAllComments(index);
+    public void deleteArticle(int articleId, UserDto user) {
+        List<CommentVo> comments = articleDao.findAllComments(articleId);
         articleValidation.validateDeleteArticle(comments, user);
-        articleDao.deleteArticle(index);
+        articleDao.deleteArticle(articleId);
     }
 
-    public void writerComment(int index, CommentDto comment, UserDto user) {
+    public void writerComment(int articleId, CommentDto comment, UserDto user) {
         comment.setWriter(modelMapper.map(user, UserVo.class));
-        articleDao.writerComment(index, modelMapper.map(comment, CommentVo.class));
+        articleDao.writerComment(articleId, modelMapper.map(comment, CommentVo.class));
     }
 
     public void deleteComment(int commentId) {

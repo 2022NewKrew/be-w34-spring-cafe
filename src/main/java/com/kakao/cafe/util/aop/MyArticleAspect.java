@@ -28,14 +28,14 @@ public class MyArticleAspect {
         this.session = session;
     }
 
-    @Before("@annotation(com.kakao.cafe.util.annotation.MyArticle) && args(index, ..)")
-    public void myArticleCheck(JoinPoint joinPoint, int index) throws Exception {
+    @Before("@annotation(com.kakao.cafe.util.annotation.MyArticle) && args(articleId, ..)")
+    public void myArticleCheck(JoinPoint joinPoint, int articleId) throws Exception {
         UserDto user = (UserDto) session.getAttribute("sessionedUser");
         if (user == null) {
             throw new UserUnauthorizedException();
         }
 
-        ArticleDto article = articleService.filterArticleByIndex(index);
+        ArticleDto article = articleService.filterArticleById(articleId);
         if (!user.getUserId().equals(article.getWriter().getUserId())) {
             throw new NotAllowedUserException();
         }

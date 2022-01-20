@@ -28,8 +28,8 @@ public class MyCommentAspect {
         this.session = session;
     }
 
-    @Before("@annotation(com.kakao.cafe.util.annotation.MyComment) && args(index, commentId, ..)")
-    public void myCommentCheck(JoinPoint joinPoint, int index, int commentId) {
+    @Before("@annotation(com.kakao.cafe.util.annotation.MyComment) && args(articleId, commentId, ..)")
+    public void myCommentCheck(JoinPoint joinPoint, int articleId, int commentId) {
         UserDto user = (UserDto) session.getAttribute("sessionedUser");
         if (user == null) {
             throw new UserUnauthorizedException();

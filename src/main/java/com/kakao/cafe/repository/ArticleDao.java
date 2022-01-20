@@ -28,15 +28,15 @@ public class ArticleDao {
         return jdbcTemplate.query(sql, articleRowMapper());
     }
 
-    public List<CommentVo> findAllComments(int index) {
+    public List<CommentVo> findAllComments(int articleId) {
         String sql = "SELECT comments.id AS id, user_id, writer_id, name, contents FROM comments INNER JOIN USERS U on U.id = comments.writer_id WHERE article_id = ? AND deleted = false";
-        return jdbcTemplate.query(sql, commentRowMapper(), index);
+        return jdbcTemplate.query(sql, commentRowMapper(), articleId);
     }
 
-    public ArticleVo filterArticleByIndex(int index) {
+    public ArticleVo filterArticleById(int articleId) {
         try {
             String sql = "SELECT articles.id AS id, user_id, writer_id, name, title, contents FROM articles INNER JOIN USERS U on U.ID = ARTICLES.WRITER_ID WHERE articles.id = ? AND deleted = false";
-            return jdbcTemplate.queryForObject(sql, articleRowMapper(), index);
+            return jdbcTemplate.queryForObject(sql, articleRowMapper(), articleId);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -56,21 +56,21 @@ public class ArticleDao {
         jdbcTemplate.update(sql, article.getTitle(), article.getContents(), article.getWriter().getId());
     }
 
-    public void updateArticle(int index, ArticleVo article) {
+    public void updateArticle(int articleId, ArticleVo article) {
         String sql = "UPDATE articles SET title = ?, contents = ? WHERE id = ?";
-        jdbcTemplate.update(sql, article.getTitle(), article.getContents(), index);
+        jdbcTemplate.update(sql, article.getTitle(), article.getContents(), articleId);
     }
 
-    public void deleteArticle(int index) {
+    public void deleteArticle(int articleId) {
         String sql = "UPDATE articles SET deleted = true WHERE id = ?";
         String sql2 = "UPDATE comments SET deleted = true WHERE article_id = ?";
-        jdbcTemplate.update(sql, index);
-        jdbcTemplate.update(sql2, index);
+        jdbcTemplate.update(sql, articleId);
+        jdbcTemplate.update(sql2, articleId);
     }
 
-    public void writerComment(int index, CommentVo comment) {
+    public void writerComment(int articleId, CommentVo comment) {
         String sql = "INSERT INTO comments (contents, writer_id, article_id) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, comment.getContents(), comment.getWriter().getId(), index);
+        jdbcTemplate.update(sql, comment.getContents(), comment.getWriter().getId(), articleId);
     }
 
     public void deleteComment(int commentId) {

@@ -27,14 +27,14 @@ public class ArticleController {
     public String articleListView(Model model) {
         List<ArticleDto> articleList = articleService.getArticleList();
         model.addAttribute("articles", articleList);
-        return "index";
+        return "articleId";
     }
 
     @Auth
-    @GetMapping("/articles/{index}")
-    public String articleView(@PathVariable int index, Model model) {
-        ArticleDto article = articleService.filterArticleByIndex(index);
-        List<CommentDto> comments = articleService.getCommentList(index);
+    @GetMapping("/articles/{articleId}")
+    public String articleView(@PathVariable int articleId, Model model) {
+        ArticleDto article = articleService.filterArticleById(articleId);
+        List<CommentDto> comments = articleService.getCommentList(articleId);
         model.addAttribute("article", article);
         model.addAttribute("comments", comments);
         model.addAttribute("commentsCount", comments.size());
@@ -56,40 +56,40 @@ public class ArticleController {
     }
 
     @MyArticle
-    @GetMapping("/articles/{index}/update")
-    public String updateArticleView(@PathVariable int index, Model model) {
-        ArticleDto article = articleService.filterArticleByIndex(index);
+    @GetMapping("/articles/{articleId}/update")
+    public String updateArticleView(@PathVariable int articleId, Model model) {
+        ArticleDto article = articleService.filterArticleById(articleId);
         model.addAttribute("article", article);
         return "qna/updateForm";
     }
 
     @MyArticle
-    @PutMapping("/articles/{index}/update")
-    public String updateArticle(@PathVariable int index, ArticleDto article) {
-        articleService.updateArticle(index, article);
+    @PutMapping("/articles/{articleId}/update")
+    public String updateArticle(@PathVariable int articleId, ArticleDto article) {
+        articleService.updateArticle(articleId, article);
         return "redirect:";
     }
 
     @MyArticle
-    @DeleteMapping("/articles/{index}/delete")
-    public String deleteArticle(@PathVariable int index, HttpSession session) {
+    @DeleteMapping("/articles/{articleId}/delete")
+    public String deleteArticle(@PathVariable int articleId, HttpSession session) {
         UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
-        articleService.deleteArticle(index, loginUser);
+        articleService.deleteArticle(articleId, loginUser);
         return "redirect:/";
     }
 
     @Auth
-    @PostMapping("/articles/{index}/comments")
-    public String writerComment(@PathVariable int index, CommentDto comment, HttpSession session) {
+    @PostMapping("/articles/{articleId}/comments")
+    public String writerComment(@PathVariable int articleId, CommentDto comment, HttpSession session) {
         UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
-        articleService.writerComment(index, comment, loginUser);
+        articleService.writerComment(articleId, comment, loginUser);
         return "redirect:";
     }
 
     @MyComment
-    @DeleteMapping("/articles/{index}/comments/{commentId}")
-    public String deleteComment(@PathVariable int index, @PathVariable int commentId) {
+    @DeleteMapping("/articles/{articleId}/comments/{commentId}")
+    public String deleteComment(@PathVariable int articleId, @PathVariable int commentId) {
         articleService.deleteComment(commentId);
-        return String.format("redirect:/articles/%d", index);
+        return String.format("redirect:/articles/%d", articleId);
     }
 }
