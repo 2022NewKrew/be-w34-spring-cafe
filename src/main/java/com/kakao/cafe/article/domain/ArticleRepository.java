@@ -15,7 +15,7 @@ public interface ArticleRepository {
 
     List<MultipleArticle> findAll();
 
-    void increaseViewCount(Long id);
+    boolean increaseViewCount(Long id);
 
     void update(Article article);
 

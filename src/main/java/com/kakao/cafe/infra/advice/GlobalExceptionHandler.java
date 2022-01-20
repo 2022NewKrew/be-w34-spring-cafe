@@ -5,7 +5,6 @@ import com.kakao.cafe.common.exception.BadRequestException;
 import com.kakao.cafe.common.exception.ForbiddenException;
 import com.kakao.cafe.common.exception.NotFoundException;
 import com.kakao.cafe.common.exception.UnauthorizedException;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -19,14 +18,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class GlobalExceptionHandler {
 
     private static final String ERROR_VIEW_NAME = "errors/error";
+    private static final String MESSAGE = "message";
     private final ModelAndView mv = new ModelAndView(ERROR_VIEW_NAME);
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView notFoundException(NotFoundException e) {
         log.error("[NotFoundException] - {}", e.getMessage());
-        Map<String, Object> model = mv.getModel();
-        model.put("message", ErrorResponse.of(e.getMessage()));
+        mv.addObject(MESSAGE, ErrorResponse.of(e.getMessage()));
         return mv;
     }
 
@@ -39,10 +38,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ModelAndView badRequestException(ForbiddenException e) {
+    public ModelAndView forbiddenException(ForbiddenException e) {
         log.error("[ForbiddenException] - {}", e.getMessage());
-        Map<String, Object> model = mv.getModel();
-        model.put("message", ErrorResponse.of(e.getMessage()));
+        mv.addObject(MESSAGE, ErrorResponse.of(e.getMessage()));
         return mv;
     }
 
@@ -50,8 +48,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView badRequestException(BadRequestException e) {
         log.error("[BadRequestException] - {}", e.getMessage());
-        Map<String, Object> model = mv.getModel();
-        model.put("message", ErrorResponse.of(e.getMessage()));
+        mv.addObject(MESSAGE, ErrorResponse.of(e.getMessage()));
         return mv;
     }
 
@@ -59,8 +56,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ModelAndView bindException(BindException e) {
         log.error("[BindException] - {}", e.getMessage());
-        Map<String, Object> model = mv.getModel();
-        model.put("message", ErrorResponse.of(e.getBindingResult()));
+        mv.addObject(MESSAGE, ErrorResponse.of(e.getMessage()));
         return mv;
     }
 }

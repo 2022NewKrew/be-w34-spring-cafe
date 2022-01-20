@@ -90,10 +90,10 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public void increaseViewCount(Long id) {
+    public boolean increaseViewCount(Long id) {
         final String sql = "update articles set view_count = view_count + 1 where article_id = ?";
 
-        jdbcTemplate.update(sql, id);
+        return jdbcTemplate.update(sql, id) > 0;
     }
 
     @Override
