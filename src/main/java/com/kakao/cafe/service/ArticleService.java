@@ -52,7 +52,7 @@ public class ArticleService implements Service<Article, ArticleDTO, Integer>{
         return articleRepository.findById(id);
     }
 
-    public List<ArticleDTO> findComments(int id){
+    private List<ArticleDTO> findComments(int id){
         Optional<Article> findArticle = articleRepository.findById(id);
 
         if(findArticle.isPresent()){
