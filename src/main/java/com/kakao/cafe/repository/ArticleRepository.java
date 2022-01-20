@@ -59,7 +59,15 @@ public class ArticleRepository implements MyRepository<Article, Long> {
     }
 
     public List<Article> findAllByOffset(int offset, int limit) {
-        String sql = "select article.id, article.author_id, users.nickname, article.title, article.description, article.deleted from (select * from article where not deleted order by id desc limit ?, ?) article join users on article.author_id = users.id order by article.id desc";
+        String sql = "select article.id, article.author_id, users.nickname, article.title, article.description, article.deleted " +
+                "from (" +
+                "   select * " +
+                "   from article " +
+                "   where not deleted " +
+                "   order by id desc " +
+                "   limit ?, ?) article join users " +
+                "on article.author_id = users.id " +
+                "order by article.id desc";
 
         return jdbcTemplate.query(sql, mapper, offset, limit);
     }

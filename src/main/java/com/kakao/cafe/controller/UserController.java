@@ -23,7 +23,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @UserAuthorized(target = SESSION)
     @GetMapping
     public String users(Model model) {
         List<UserDto> users = userService.getUsers();

@@ -3,7 +3,6 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.annotation.UserAuthorized;
 import com.kakao.cafe.domain.auth.Auth;
 import com.kakao.cafe.dto.article.ArticleDetailDto;
-import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.dto.article.ArticleRequest;
 import com.kakao.cafe.dto.article.ReplyRequest;
 import com.kakao.cafe.service.ArticleService;
@@ -55,7 +54,7 @@ public class ArticleController {
     @UserAuthorized(target = {SESSION, ARTICLE})
     @GetMapping("/{articleId}/form")
     public String updateForm(@PathVariable Long articleId, Model model) {
-        ArticleDto article = articleService.findArticleById(articleId);
+        ArticleDetailDto article = articleService.findArticleDetailById(articleId);
         model.addAttribute("article", article);
 
         return "article/updateForm";

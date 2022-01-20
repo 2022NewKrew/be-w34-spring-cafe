@@ -68,7 +68,7 @@ public class ArticleService {
         articleRepository.update(article);
     }
 
-    public void deleteArticle(Long AuthorId, Long articleId) {
+    public void deleteArticle(Long articleId, Long AuthorId) {
         List<Reply> replies = replyRepository.findAllByArticleId(articleId);
         replies.forEach(r -> {
                     if (!r.getAuthorId().equals(AuthorId)) {
