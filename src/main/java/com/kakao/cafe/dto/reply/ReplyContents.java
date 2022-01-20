@@ -6,27 +6,32 @@ import java.time.LocalDateTime;
 
 public class ReplyContents {
     private final long replyId;
+    private final String writer;
     private final String writerId;
     private final String contents;
     private final LocalDateTime time;
 
-    public ReplyContents(long replyId, String writerId, String contents, LocalDateTime time) {
+    public ReplyContents(long replyId, String writer, String writerId, String contents, LocalDateTime time) {
         this.replyId = replyId;
+        this.writer = writer;
         this.writerId = writerId;
         this.contents = contents;
         this.time = time;
     }
 
-    public ReplyContents(Reply reply) {
-        this.replyId = reply.getReplyId();
-        this.writerId = reply.getWriterId();
-        this.contents = reply.getContents();
-        this.time = reply.getTime();
+    public ReplyContents(ReplyWithWriterName replyWithWriterName) {
+        this.replyId = replyWithWriterName.getReplyId();
+        this.writer = replyWithWriterName.getWriter();
+        this.writerId = replyWithWriterName.getWriterId();
+        this.contents = replyWithWriterName.getContents();
+        this.time = replyWithWriterName.getTime();
     }
 
     public long getReplyId() {
         return replyId;
     }
+
+    public String getWriter() { return writer; }
 
     public String getWriterId() {
         return writerId;

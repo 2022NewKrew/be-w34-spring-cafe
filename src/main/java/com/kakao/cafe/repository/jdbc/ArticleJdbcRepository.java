@@ -68,7 +68,6 @@ public class ArticleJdbcRepository implements ArticleRepository {
     public RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> new Article(
                 rs.getLong("ARTICLE_ID"),
-                rs.getString("WRITER"),
                 rs.getString("WRITER_ID"),
                 rs.getString("TITLE"),
                 rs.getString("CONTENT"),
