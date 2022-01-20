@@ -3,20 +3,18 @@ package com.kakao.cafe.post.adapter.in.web;
 import com.kakao.cafe.comment.application.dto.command.GetRelatedPostCommentCommand;
 import com.kakao.cafe.comment.application.dto.result.GetRelatedPostCommentResult;
 import com.kakao.cafe.comment.application.port.in.GetCommentUseCase;
-import com.kakao.cafe.post.application.dto.command.QuestionPostClickCommand;
 import com.kakao.cafe.post.application.dto.command.QuestionPostDetailCommand;
+import com.kakao.cafe.post.application.dto.command.QuestionPostSameAuthorCommand;
 import com.kakao.cafe.post.application.dto.result.QuestionPostDetailResult;
 import com.kakao.cafe.post.application.port.in.GetQuestionPostUseCase;
-import com.kakao.cafe.post.application.port.in.UpdateQuestionPostUseCase;
+import com.kakao.cafe.post.application.port.in.SameAuthorQuestionPostUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpSession;
-import java.util.Objects;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 @RequestMapping("/posts")
@@ -25,9 +23,14 @@ public class QuestionPostController {
 
     private final GetQuestionPostUseCase getQuestionPostUseCase;
     private final GetCommentUseCase getCommentUseCase;
+    private final SameAuthorQuestionPostUseCase sameAuthorQuestionPostUseCase;
 
     @GetMapping("/{post-id}/detail")
-    public String postDetail(@PathVariable(name = "post-id") Long postId, Model model, HttpSession httpSession) {
+    public String postDetail(
+            @PathVariable(name = "post-id") Long postId,
+            Model model,
+            @SessionAttribute(name = "user-id") Long userAccountId) {
+
         QuestionPostDetailResult postDetail = getQuestionPostUseCase.getPostDetail(
                 new QuestionPostDetailCommand(postId));
 
@@ -37,7 +40,7 @@ public class QuestionPostController {
         model.addAttribute("post", postDetail);
         model.addAttribute("comment", relatedComment.getCommentResults());
 
-        if(Objects.equals(httpSession.getAttribute("user-id"), postDetail.getUserAccountId())) {
+        if(sameAuthorQuestionPostUseCase.isSameAuthor(new QuestionPostSameAuthorCommand(postId, userAccountId)).isSame()) {
             return "updateqnadetail";
         }
         return "qnadetail";

@@ -36,8 +36,7 @@ public class GetQuestionPostService implements GetQuestionPostUseCase {
                 questionPost.getContent(),
                 DateTimeFormatUtil.format(questionPost.getCreatedAt()),
                 questionPost.getViewCount(),
-                questionPost.getUserAccount().getUsername(),
-                questionPost.getUserAccount().getUserAccountId());
+                questionPost.getUserAccount().getUsername());
     }
 
     @Override
@@ -51,8 +50,7 @@ public class GetQuestionPostService implements GetQuestionPostUseCase {
                         post.getContent(),
                         DateTimeFormatUtil.format(post.getCreatedAt()),
                         post.getViewCount(),
-                        post.getUserAccount().getUsername(),
-                        post.getUserAccount().getUserAccountId())
+                        post.getUserAccount().getUsername())
                 )
                 .collect(Collectors.toList());
 

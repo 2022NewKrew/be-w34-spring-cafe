@@ -13,6 +13,5 @@ public class QuestionPostDetailResult {
     private final String date;
     private final int viewCount;
     private final String author;
-    private final Long userAccountId;
 
 }
