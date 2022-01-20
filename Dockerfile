@@ -1,6 +1,6 @@
 FROM openjdk:11-jdk-slim AS build
 COPY . .
-RUN ./gradlew build
+RUN ./gradlew bootJar
 
 FROM openjdk:11-jre-slim AS run
 COPY --from=build ./build/libs/*.jar ./app.jar
