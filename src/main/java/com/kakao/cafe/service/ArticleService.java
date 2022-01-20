@@ -2,7 +2,6 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.entity.Article;
 import com.kakao.cafe.domain.repository.article.ArticleRepository;
-import com.kakao.cafe.domain.repository.article.H2ArticleRepository;
 import com.kakao.cafe.dto.RequestArticleDto;
 import com.kakao.cafe.dto.ResponseArticleDto;
 import com.kakao.cafe.exception.ArticleNotFoundException;
@@ -34,7 +33,7 @@ public class ArticleService {
         Article article = modelMapper.map(articleDto, Article.class);
         article.setAuthorId(authorId);
         article.setCreatedAt(new Date());
-        article.setViews(0);
+        article.setViews(0L);
         articleRepository.save(article);
     }
 
@@ -51,7 +50,7 @@ public class ArticleService {
      * id로 게시글 조회
      */
     public ResponseArticleDto getArticleById(long id) {
-        Article article = articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException("해당 글이 존재하지 않습니다."));
+        Article article = articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException());
         return modelMapper.map(article, ResponseArticleDto.class);
     }
 
@@ -59,7 +58,7 @@ public class ArticleService {
      * id로 게시글 작성자 id 조회
      */
     public long getAuthorIdOfArticle(long articleId) {
-        Article article = articleRepository.findById(articleId).orElseThrow(() -> new ArticleNotFoundException("해당 글이 존재하지 않습니다."));
+        Article article = articleRepository.findById(articleId).orElseThrow(() -> new ArticleNotFoundException());
         return article.getAuthorId();
     }
 
@@ -67,7 +66,7 @@ public class ArticleService {
      * id로 게시글 수정
      */
     public void updateArticle(long id, RequestArticleDto articleDto) {
-        Article article = articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException("해당 글이 존재하지 않습니다."));
+        Article article = articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException());
         article.setTitle(articleDto.getTitle());
         article.setContent(articleDto.getContent());
         articleRepository.save(article);
@@ -84,7 +83,7 @@ public class ArticleService {
      * id로 조회수 1 증가
      */
     public void increaseView(long id) {
-        Article article = articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException("해당 글이 존재하지 않습니다."));
+        Article article = articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException());
         article.setViews(article.getViews() + 1);
         articleRepository.save(article);
     }

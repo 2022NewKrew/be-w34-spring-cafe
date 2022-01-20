@@ -1,15 +1,15 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.entity.User;
-import com.kakao.cafe.domain.repository.user.H2UserRepository;
 import com.kakao.cafe.domain.repository.user.UserRepository;
 import com.kakao.cafe.dto.RequestUserDto;
 import com.kakao.cafe.dto.ResponseUserDto;
 import com.kakao.cafe.dto.SessionUser;
+import com.kakao.cafe.exception.UserAlreadyExistException;
+import com.kakao.cafe.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,7 @@ public class UserService {
     public void join(RequestUserDto userDto) {
         Optional<User> result = userRepository.findByUserId(userDto.getUserId());
         result.ifPresent(u -> {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            throw new UserAlreadyExistException();
         });
         User user = modelMapper.map(userDto, User.class);
         String hashedPw = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
@@ -58,7 +58,7 @@ public class UserService {
      * id로 유저 조회
      */
     public ResponseUserDto getUserById(long id) {
-        User result = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
+        User result = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
         return modelMapper.map(result, ResponseUserDto.class);
     }
 
@@ -66,7 +66,7 @@ public class UserService {
      * userId로 유저 조회
      */
     public ResponseUserDto getUserByUserId(String userId) {
-        User result = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
+        User result = userRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException());
         return modelMapper.map(result, ResponseUserDto.class);
     }
 
@@ -81,7 +81,7 @@ public class UserService {
      * id로 유저 정보 수정
      */
     public void updateUser(long id, RequestUserDto userDto) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
 
         validatePassword(user, userDto.getPassword());
 
@@ -96,7 +96,7 @@ public class UserService {
      * 로그인
      */
     public SessionUser login(String userId, String password) {
-        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException("해당하는 회원이 존재하지 않습니다."));
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException());
         validatePassword(user, password);
         return modelMapper.map(user, SessionUser.class);
     }
