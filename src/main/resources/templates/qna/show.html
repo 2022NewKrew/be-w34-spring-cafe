@@ -53,9 +53,15 @@
                                           <div class="comment-content comment-doc">
                                               <p>{{contents}}</p>
                                           </div>
-                                          <p class="comment-content comment-time">
-                                          2016-01-12 14:06
-                                          </p>
+                                          <div style="display: flex; gap: 10px;">
+                                              <p class="comment-content comment-time">
+                                              2016-01-12 14:06
+                                              </p>
+                                              <form class="black-component" action="/articles/{{article.id}}/comments/{{id}}" method="post">
+                                                  <input type="hidden" name="_method" value="delete" >
+                                                  <input type="submit" style="all: unset;" value="삭제">
+                                              </form>
+                                          </div>
                                       </div>
                                   </article>
                                   {{/comments}}
@@ -81,5 +87,6 @@
                 </div>
             </div>
         </div>
-	</body>
+    </div>
+</body>
 </html>

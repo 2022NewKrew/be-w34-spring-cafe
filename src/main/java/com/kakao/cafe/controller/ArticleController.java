@@ -83,4 +83,11 @@ public class ArticleController {
         articleService.writerComment(index, comment, loginUser);
         return "redirect:";
     }
+
+    @Auth
+    @DeleteMapping("/articles/{index}/comments/{commentId}")
+    public String deleteComment(@PathVariable int index, @PathVariable int commentId) {
+        articleService.deleteComment(commentId);
+        return String.format("redirect:/articles/%d", index);
+    }
 }

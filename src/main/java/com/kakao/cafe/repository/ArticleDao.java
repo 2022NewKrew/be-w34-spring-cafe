@@ -62,6 +62,11 @@ public class ArticleDao {
         jdbcTemplate.update(sql, comment.getContents(), comment.getWriter().getId(), index);
     }
 
+    public void deleteComment(int commentId) {
+        String sql = "DELETE FROM comments WHERE id = ?";
+        jdbcTemplate.update(sql, commentId);
+    }
+
     private RowMapper<ArticleVo> articleRowMapper() {
         return (rs, rowNum) -> new ArticleVo(
                 rs.getInt("id"),

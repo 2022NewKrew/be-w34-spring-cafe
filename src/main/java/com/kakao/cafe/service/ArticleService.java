@@ -62,4 +62,8 @@ public class ArticleService {
         comment.setWriter(modelMapper.map(user, UserVo.class));
         articleDao.writerComment(index, modelMapper.map(comment, CommentVo.class));
     }
+
+    public void deleteComment(int commentId) {
+        articleDao.deleteComment(commentId);
+    }
 }
