@@ -1,8 +1,17 @@
 package com.kakao.cafe.web.dto.article;
 
 public class ArticleCreateRequestDto {
+    private String writer;
     private String title;
     private String content;
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
 
     public String getTitle() {
         return title;
