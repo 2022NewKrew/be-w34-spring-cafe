@@ -29,4 +29,8 @@ public class UserIdentification {
                 .build();
     }
 
+    public boolean matchesUserId(String userId){
+        return this.userId.equals(userId);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.kakao.cafe.service.article;
 
+import com.kakao.cafe.common.exception.custom.UpdateFailedException;
 import com.kakao.cafe.common.exception.custom.UserNotFoundException;
 import com.kakao.cafe.common.exception.data.ErrorCode;
 import com.kakao.cafe.domain.User;
@@ -35,7 +36,16 @@ public class ArticleService {
     public Long write(String writerId, String title, String contents) {
         User findUser = userRepository.findByUserId(writerId).orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
         Article article = Article.of(findUser, title, contents);
-        articleRepository.insert(article);
-        return article.getId();
+        return articleRepository.insert(article);
     }
+
+    public Long update(String updaterId, Long articleId, String title, String contents) {
+        Article updateArticle = articleRepository.findById(articleId).orElseThrow(() -> new UpdateFailedException(ErrorCode.ARTICLE_NOT_FOUND));
+        if(!updateArticle.isWriter(updaterId)) {
+            throw new UpdateFailedException(ErrorCode.ARTICLE_UPDATER_INCORRECT);
+        }
+        updateArticle.update(title, contents);
+        return articleRepository.update(updateArticle);
+    }
+
 }

@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-@Builder
 @Getter
 @ToString
 public class Article {
@@ -13,7 +12,25 @@ public class Article {
     private String title;
     private String contents;
 
+
+    @Builder
+    public Article(Long id, User writer, String title, String contents) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+    }
+
     public void updateId(Long id) { this.id = id; }
+
+    public void update(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
+
+    public Boolean isWriter(String userId) {
+        return writer.getUserId().equals(userId);
+    }
 
     public static Article of(User writer, String title, String contents) {
         return Article.builder()
@@ -21,4 +38,6 @@ public class Article {
                 .title(title)
                 .contents(contents).build();
     }
+
+
 }

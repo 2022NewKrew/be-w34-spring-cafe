@@ -2,6 +2,7 @@ package com.kakao.cafe.controller.articles.mapper;
 
 import com.kakao.cafe.controller.articles.dto.response.ArticleDetailResponse;
 import com.kakao.cafe.controller.articles.dto.response.ArticleItemResponse;
+import com.kakao.cafe.controller.articles.dto.response.ArticleUpdateFormResponse;
 import com.kakao.cafe.service.article.dto.ArticleInfo;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +28,19 @@ public class ArticleViewMapper {
 
     public ArticleDetailResponse toArticleDetailResponse(ArticleInfo articleInfo) {
         return ArticleDetailResponse.builder()
-                .writer(articleInfo.getWriterName())
+                .articleId(articleInfo.getId())
+                .writerId(articleInfo.getWriterId())
+                .writerName(articleInfo.getWriterName())
+                .title(articleInfo.getTitle())
+                .contents(articleInfo.getContents())
+                .build();
+    }
+
+    public ArticleUpdateFormResponse toArticleUpdateFormResponse(ArticleInfo articleInfo) {
+        return ArticleUpdateFormResponse.builder()
+                .articleId(articleInfo.getId())
+                .writerId(articleInfo.getWriterId())
+                .writerName(articleInfo.getWriterName())
                 .title(articleInfo.getTitle())
                 .contents(articleInfo.getContents())
                 .build();

@@ -4,10 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-
 @Getter
 @ToString
-public class ArticleDetailResponse {
+public class ArticleUpdateFormResponse {
     private final Long articleId;
     private final String writerId;
     private final String writerName;
@@ -15,7 +14,7 @@ public class ArticleDetailResponse {
     private final String contents;
 
     @Builder
-    public ArticleDetailResponse(Long articleId, String writerId, String writerName, String title, String contents) {
+    public ArticleUpdateFormResponse(Long articleId, String writerId, String writerName, String title, String contents) {
         this.articleId = articleId;
         this.writerId = writerId;
         this.writerName = writerName;

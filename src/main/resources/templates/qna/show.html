@@ -27,7 +27,7 @@
                           <img src="https://graph.facebook.com/v2.3/100000059371774/picture" class="article-author-thumb" alt="">
                       </div>
                       <div class="article-header-text">
-                          <a href="/users/92/kimmunsu" class="article-author-name">{{this.writer}}</a>
+                          <a href="/users/92/kimmunsu" class="article-author-name">{{this.writerName}}</a>
                           <a href="/questions/413" class="article-header-time" title="퍼머링크">
                               2015-12-30 01:47
                               <i class="icon-link"></i>
@@ -39,15 +39,19 @@
                   </div>
                   <div class="article-util">
                       <ul class="article-util-list">
+                          {{#canUpdate}}
                           <li>
-                              <a class="link-modify-article" href="/questions/423/form">수정</a>
+                              <a class="link-modify-article" href="/articles/{{this.articleId}}/form">수정</a>
                           </li>
+                          {{/canUpdate}}
+                          {{#canDelete}}
                           <li>
-                              <form class="form-delete" action="/questions/423" method="POST">
+                              <form class="form-delete" action="/articles/{{this.articleId}}" method="POST">
                                   <input type="hidden" name="_method" value="DELETE">
                                   <button class="link-delete-article" type="submit">삭제</button>
                               </form>
                           </li>
+                          {{/canDelete}}
                           <li>
                               <a class="link-modify-article" href="/index.html">목록</a>
                           </li>

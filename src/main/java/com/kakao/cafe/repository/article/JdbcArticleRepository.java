@@ -20,6 +20,7 @@ public class JdbcArticleRepository implements ArticleRepository{
     private final ArticleRowMapper articleRowMapper;
 
     private static final String INSERT_ARTICLE_QUERY = "INSERT INTO articles(user_id, title, contents) VALUES(?,?,?)";
+    private static final String UPDATE_ARTICLE_QUERY = "UPDATE articles SET title=?, contents=? WHERE id = ?";
     private static final String SELECT_ARTICLES_QUERY
             = "SELECT a.id as id, a.user_id as writer_id, u.user_name as writer_name, a.title as title, a.contents as contents FROM articles as a INNER JOIN users as u ON a.user_id = u.user_id";
     private static final String SELECT_ARTICLES_BY_ID_QUERY
@@ -36,6 +37,12 @@ public class JdbcArticleRepository implements ArticleRepository{
             return ps;
         }, keyHolder);
         article.updateId(keyHolder.getKey().longValue());
+        return article.getId();
+    }
+
+    @Override
+    public Long update(Article article) {
+        jdbcTemplate.update(UPDATE_ARTICLE_QUERY, article.getTitle(), article.getContents(), article.getId());
         return article.getId();
     }
 
