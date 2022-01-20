@@ -27,6 +27,7 @@ public class QuestionApiController {
     public ResponseEntity<List<ReplyDto>> saveReply(@RequestBody ReplyCreateDto replyCreateDto, @PathVariable Long questionId) {
 
         Reply reply = ReplyCreateDto.toEntity(replyCreateDto);
+        reply.setQuestionId(questionId);
         reply.setMemberId(sessionLoginUser.getMemberId());
         reply.setWriter(sessionLoginUser.getUserId());
 
