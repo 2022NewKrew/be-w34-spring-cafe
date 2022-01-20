@@ -29,7 +29,7 @@ public class QuestionController {
     private static final Long NOT_FOUND_MEMBER_ID = -1L;
     private final QuestionService questionService;
     private final ModelMapper modelMapper;
-    private final SessionLoginUser sessionLoginUser;
+    private final SessionLoginUser<UserDto> sessionLoginUser;
 
     @DeleteMapping("/{id}")
     public String deleteQuestion(@PathVariable("id") Long id, Model model) throws BaseException {
@@ -100,7 +100,7 @@ public class QuestionController {
 
         Question origin = questionService.findOne(id);
         QuestionUpdateDto question = modelMapper.map(origin, QuestionUpdateDto.class);
-        UserDto loginUser = (UserDto) sessionLoginUser.getLoginUser();
+        UserDto loginUser = sessionLoginUser.getLoginUser();
 
         if ((origin != null) && !origin.getMemberId().equals(loginUser.getId())) {
             throw new BaseException("게시글의 권한이 없는 사용자 입니다.");
@@ -113,7 +113,7 @@ public class QuestionController {
 
     private Long getMemberId() {
 
-        UserDto loginUser = (UserDto) sessionLoginUser.getLoginUser();
+        UserDto loginUser = sessionLoginUser.getLoginUser();
 
         return (loginUser == null) ? NOT_FOUND_MEMBER_ID : loginUser.getId();
     }

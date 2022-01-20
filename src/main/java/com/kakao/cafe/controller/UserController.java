@@ -34,7 +34,7 @@ public class UserController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final SessionLoginUser sessionLoginUser;
+    private final SessionLoginUser<UserDto> sessionLoginUser;
 
     // TODO : 저장할 때 단방향 해시 필요
     @PostMapping(value = "/create")
@@ -111,7 +111,7 @@ public class UserController {
     @PostMapping("/updateAuth")
     public String viewUserUpdateForm(Model model, @RequestParam String password) throws BaseException {
 
-        UserDto loginUser = (UserDto) sessionLoginUser.getLoginUser();
+        UserDto loginUser = sessionLoginUser.getLoginUser();
         User user = userService.loginCheck(loginUser.getUserId(), password);
 
         UserDto userDto = modelMapper.map(user, UserDto.class);
@@ -138,7 +138,7 @@ public class UserController {
     @PutMapping("/update")
     public String updateUser(@ModelAttribute("user") @Valid UserUpdateDto userUpdateDto, Model model) throws BaseException {
 
-        UserDto loginUser = (UserDto) sessionLoginUser.getLoginUser();
+        UserDto loginUser = sessionLoginUser.getLoginUser();
 
         User user = new User(loginUser.getId(), userUpdateDto.getName(), userUpdateDto.getEmail());
 

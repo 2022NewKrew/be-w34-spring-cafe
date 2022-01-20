@@ -9,16 +9,16 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class SessionLoginUser {
+public class SessionLoginUser<T> {
     private static final String SESSION_LOGIN_USER = "loginUser";
     private static final String ADMIN = "admin";
     private final HttpSession session;
 
-    public Object getLoginUser() {
-        return session.getAttribute(SESSION_LOGIN_USER);
+    public T getLoginUser() {
+        return (T) session.getAttribute(SESSION_LOGIN_USER);
     }
 
-    public void setLoginUser(Object o) {
+    public void setLoginUser(T o) {
         session.setAttribute(SESSION_LOGIN_USER, o);
     }
 
