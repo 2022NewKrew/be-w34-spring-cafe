@@ -47,21 +47,21 @@ public class QnaDto {
     }
 
     public static class QnaResponse {
-        private Integer index;
+        private Integer qnaId;
         private String writer;
         private String title;
         private String contents;
         private List<CommentDto.ReadCommentResponse> comments;
 
-        public QnaResponse(Integer index, String writer, String title, String contents) {
-            this.index = index;
+        public QnaResponse(Integer qnaId, String writer, String title, String contents) {
+            this.qnaId = qnaId;
             this.writer = writer;
             this.title = title;
             this.contents = contents;
         }
 
-        public QnaResponse(Integer index, String writer, String title, String contents, List<CommentDto.ReadCommentResponse> comments) {
-            this.index = index;
+        public QnaResponse(Integer qnaId, String writer, String title, String contents, List<CommentDto.ReadCommentResponse> comments) {
+            this.qnaId = qnaId;
             this.writer = writer;
             this.title = title;
             this.contents = contents;
@@ -69,29 +69,29 @@ public class QnaDto {
         }
 
         public static QnaResponse of(Qna qna) {
-            return new QnaResponse(qna.getIndex(), qna.getWriter(), qna.getTitle(), qna.getContents());
+            return new QnaResponse(qna.getId(), qna.getWriter(), qna.getTitle(), qna.getContents());
         }
 
         public static QnaResponse of(Qna qna, List<CommentDto.ReadCommentResponse> comments) {
-            return new QnaResponse(qna.getIndex(), qna.getWriter(), qna.getTitle(), qna.getContents(), comments);
+            return new QnaResponse(qna.getId(), qna.getWriter(), qna.getTitle(), qna.getContents(), comments);
         }
     }
 
     public static class QnaForUpdateResponse {
-        private Integer index;
+        private Integer qnaId;
         private String writer;
         private String title;
         private String contents;
 
-        public QnaForUpdateResponse(Integer index, String writer, String title, String contents) {
-            this.index = index;
+        public QnaForUpdateResponse(Integer qnaId, String writer, String title, String contents) {
+            this.qnaId = qnaId;
             this.writer = writer;
             this.title = title;
             this.contents = contents;
         }
 
         public static QnaForUpdateResponse of(Qna qna) {
-            return new QnaForUpdateResponse(qna.getIndex(), qna.getWriter(), qna.getTitle(), qna.getContents());
+            return new QnaForUpdateResponse(qna.getId(), qna.getWriter(), qna.getTitle(), qna.getContents());
         }
 
         public String getWriter() {

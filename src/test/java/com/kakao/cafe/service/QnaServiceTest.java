@@ -72,13 +72,13 @@ class QnaServiceTest {
     void findQna_ExistQna_QnaResponseNotNull() {
         // given
         Qna qna = new Qna(1, "test writer", "test title", "test contents");
-        when(jdbcQnaRepositoryImpl.findByIndex(1)).thenReturn(Optional.of(qna));
+        when(jdbcQnaRepositoryImpl.findById(1)).thenReturn(Optional.of(qna));
 
         List<Comment> comments = new ArrayList<>();
         Comment comment = new Comment(1, "lucas", "test", 1, LocalDateTime.now());
         comments.add(comment);
 
-        when(jdbcCommentRepositoryImpl.findByQnaIndexAndDeleted(1, false)).thenReturn(comments);
+        when(jdbcCommentRepositoryImpl.findByQnaIdAndDeleted(1, false)).thenReturn(comments);
 
         // when
         QnaDto.QnaResponse result = qnaService.findQna(1);
@@ -91,7 +91,7 @@ class QnaServiceTest {
     @Test
     void findQna_NotExistQna_ThrowQnaNotFoundException() {
         // given
-        when(jdbcQnaRepositoryImpl.findByIndex(1)).thenReturn(Optional.empty());
+        when(jdbcQnaRepositoryImpl.findById(1)).thenReturn(Optional.empty());
 
         // when // then
         Assertions.assertThrows(QnaNotFoundException.class, () -> {

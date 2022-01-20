@@ -29,25 +29,25 @@ public class JdbcCommentRepositoryImpl implements CommentRepository {
         try {
             jdbcTemplate.queryForObject("SELECT id FROM COMMENT WHERE id = ?", Integer.class, comment.getId());
             jdbcTemplate.update("UPDATE COMMENT " +
-                    "SET writer = ?, contents = ?, qna_index = ?, created_at = ?, deleted = ? " +
-                    "WHERE id = ?", comment.getWriter(), comment.getContents(), comment.getQnaIndex(), comment.getCreatedAt(), comment.getDeleted(), comment.getId());
+                    "SET writer = ?, contents = ?, qna_id = ?, created_at = ?, deleted = ? " +
+                    "WHERE id = ?", comment.getWriter(), comment.getContents(), comment.getQnaId(), comment.getCreatedAt(), comment.getDeleted(), comment.getId());
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
-            jdbcTemplate.update("INSERT INTO COMMENT(writer, contents, qna_index, created_at, deleted) " +
-                    "VALUES (?, ?, ?, ?, ?)", comment.getWriter(), comment.getContents(), comment.getQnaIndex(), comment.getCreatedAt(), comment.getDeleted());
+            jdbcTemplate.update("INSERT INTO COMMENT(writer, contents, qna_id, created_at, deleted) " +
+                    "VALUES (?, ?, ?, ?, ?)", comment.getWriter(), comment.getContents(), comment.getQnaId(), comment.getCreatedAt(), comment.getDeleted());
         }
     }
 
     @Override
     public void batchUpdate(List<Comment> comments) {
         String sql = "UPDATE COMMENT " +
-                "SET writer = ?, contents = ?, qna_index = ?, created_at = ?, deleted = ? " +
+                "SET writer = ?, contents = ?, qna_id = ?, created_at = ?, deleted = ? " +
                 "WHERE id = ?";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 ps.setString(1, comments.get(i).getWriter());
                 ps.setString(2, comments.get(i).getContents());
-                ps.setInt(3, comments.get(i).getQnaIndex());
+                ps.setInt(3, comments.get(i).getQnaId());
                 ps.setDate(4, Date.valueOf(comments.get(i).getCreatedAt().toLocalDate()));
                 ps.setBoolean(5, comments.get(i).getDeleted());
                 ps.setInt(6, comments.get(i).getId());
@@ -61,18 +61,18 @@ public class JdbcCommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> findByQnaIndexAndDeleted(Integer qnaIndex, Boolean isDeleted) {
-        return jdbcTemplate.query("SELECT id, writer, contents, qna_index, created_at " +
+    public List<Comment> findByQnaIdAndDeleted(Integer qnaId, Boolean isDeleted) {
+        return jdbcTemplate.query("SELECT id, writer, contents, qna_id, created_at " +
                 "FROM COMMENT " +
-                "WHERE qna_index = ? AND deleted = ? ", this::commentMapRow, qnaIndex, isDeleted);
+                "WHERE qna_id = ? AND deleted = ? ", this::commentMapRow, qnaId, isDeleted);
     }
 
     @Override
-    public Optional<Comment> findById(Integer id) {
+    public Optional<Comment> findById(Integer commentId) {
         try {
-            return Optional.of(jdbcTemplate.queryForObject("SELECT id, writer, contents, qna_index, created_at " +
+            return Optional.of(jdbcTemplate.queryForObject("SELECT id, writer, contents, qna_id, created_at " +
                     "FROM COMMENT " +
-                    "WHERE id = ?", this::commentMapRow, id));
+                    "WHERE id = ?", this::commentMapRow, commentId));
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
             return Optional.empty();
         }
@@ -80,7 +80,7 @@ public class JdbcCommentRepositoryImpl implements CommentRepository {
 
     private Comment commentMapRow(ResultSet resultSet, int rowNum) throws SQLException {
         return new Comment(resultSet.getInt("id"), resultSet.getString("writer"),
-                resultSet.getString("contents"), resultSet.getInt("qna_index"),
+                resultSet.getString("contents"), resultSet.getInt("qna_id"),
                 resultSet.getTimestamp("created_at").toLocalDateTime());
     }
 }

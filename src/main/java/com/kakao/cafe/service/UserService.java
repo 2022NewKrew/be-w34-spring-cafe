@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,8 +46,8 @@ public class UserService {
         return UserDto.UserProfileResponse.of(user);
     }
 
-    public UserDto.UserProfileForUpdateReponse readUserForUpdate(String userid) throws UserNotFoundException {
-        User user = userRepository.findByUserId(userid).orElseThrow(() -> new UserNotFoundException(userid));
+    public UserDto.UserProfileForUpdateReponse readUserForUpdate(String userId) throws UserNotFoundException {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException(userId));
         return UserDto.UserProfileForUpdateReponse.of(user);
     }
 

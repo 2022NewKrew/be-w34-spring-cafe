@@ -10,7 +10,7 @@ public interface CommentRepository {
 
     void batchUpdate(List<Comment> comments);
 
-    List<Comment> findByQnaIndexAndDeleted(Integer index, Boolean isDeleted);
+    List<Comment> findByQnaIdAndDeleted(Integer id, Boolean isDeleted);
 
     Optional<Comment> findById(Integer id);
 }

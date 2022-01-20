@@ -8,7 +8,7 @@
    <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
       <div class="panel panel-default content-main">
           {{#qna}}
-          <form name="question" method="post" action="/questions/{{index}}">
+          <form name="question" method="post" action="/questions/{{qnaId}}">
             <input type="hidden" name="_method" value="put" />
               {{#sessionedUser}}
               <div class="form-group">

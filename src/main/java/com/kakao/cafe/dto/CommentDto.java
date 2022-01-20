@@ -20,13 +20,13 @@ public class CommentDto {
     }
 
     public static class ReadCommentResponse {
-        private Integer id;
+        private Integer commentId;
         private String writer;
         private String contents;
         private String createdAt;
 
-        public ReadCommentResponse(Integer id, String writer, String contents, LocalDateTime createdAt) {
-            this.id = id;
+        public ReadCommentResponse(Integer commentId, String writer, String contents, LocalDateTime createdAt) {
+            this.commentId = commentId;
             this.writer = writer;
             this.contents = contents;
             this.createdAt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(createdAt);
@@ -50,20 +50,20 @@ public class CommentDto {
     }
 
     public static class ReadCommentForUpdateResponse {
-        private Integer id;
+        private Integer commentId;
         private String writer;
         private String contents;
-        private Integer qnaIndex;
+        private Integer qnaId;
 
-        public ReadCommentForUpdateResponse(Integer id,String writer, String contents, Integer qnaIndex) {
-            this.id = id;
+        public ReadCommentForUpdateResponse(Integer commentId, String writer, String contents, Integer qnaId) {
+            this.commentId = commentId;
             this.writer = writer;
             this.contents = contents;
-            this.qnaIndex = qnaIndex;
+            this.qnaId = qnaId;
         }
 
         public static ReadCommentForUpdateResponse of(Comment comment) {
-            return new ReadCommentForUpdateResponse(comment.getId(), comment.getWriter(), comment.getContents(), comment.getQnaIndex());
+            return new ReadCommentForUpdateResponse(comment.getId(), comment.getWriter(), comment.getContents(), comment.getQnaId());
         }
     }
 }

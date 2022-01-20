@@ -7,22 +7,22 @@ public class Comment {
     private Integer id;
     private String writer;
     private String contents;
-    private Integer qnaIndex;
+    private Integer qnaId;
     private LocalDateTime createdAt;
     private Boolean deleted = false;
 
-    public Comment(Integer qnaIndex, String writer, String contents) {
+    public Comment(Integer qnaId, String writer, String contents) {
         this.writer = writer;
-        this.qnaIndex = qnaIndex;
+        this.qnaId = qnaId;
         this.contents = contents;
         this.createdAt = LocalDateTime.now();
     }
 
-    public Comment(Integer id, String writer, String contents, Integer qnaIndex, LocalDateTime createdAt) {
+    public Comment(Integer id, String writer, String contents, Integer qnaId, LocalDateTime createdAt) {
         this.id = id;
         this.writer = writer;
         this.contents = contents;
-        this.qnaIndex = qnaIndex;
+        this.qnaId = qnaId;
         this.createdAt = createdAt;
     }
 
@@ -54,8 +54,8 @@ public class Comment {
         return contents;
     }
 
-    public Integer getQnaIndex() {
-        return qnaIndex;
+    public Integer getQnaId() {
+        return qnaId;
     }
 
     public LocalDateTime getCreatedAt() {
