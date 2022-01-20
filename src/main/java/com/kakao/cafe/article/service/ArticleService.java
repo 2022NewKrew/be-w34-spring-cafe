@@ -1,6 +1,7 @@
 package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.domain.ArticleFactory;
 import com.kakao.cafe.article.domain.Reply;
 import com.kakao.cafe.article.dto.ArticleCreateDTO;
 import com.kakao.cafe.article.dto.ArticleUpdateDTO;
@@ -23,12 +24,10 @@ public class ArticleService {
     }
 
     public void articleCreate(ArticleCreateDTO articleCreateDTO){
-        Article article = new Article(articleCreateDTO.getUserId(),
-                                        articleCreateDTO.getName(),
-                                        articleCreateDTO.getTitle(),
-                                        articleCreateDTO.getContents(),
-                                        new Timestamp(0L),
-                                        0L);
+        Article article = ArticleFactory.getArticle(articleCreateDTO.getUserId(),
+                                                    articleCreateDTO.getName(),
+                                                    articleCreateDTO.getTitle(),
+                                                    articleCreateDTO.getContents());
         articleRepository.addArticle(article);
     }
 
