@@ -2,14 +2,16 @@ package com.example.kakaocafe.domain.post;
 
 import com.example.kakaocafe.core.exception.PostBusinessException;
 import com.example.kakaocafe.core.exception.HasNotPermissionException;
+import com.example.kakaocafe.core.meta.PageConfig;
 import com.example.kakaocafe.domain.post.comment.CommentDAO;
-import com.example.kakaocafe.domain.post.dto.Post;
-import com.example.kakaocafe.domain.post.dto.PostInfo;
-import com.example.kakaocafe.domain.post.dto.UpdatePostForm;
-import com.example.kakaocafe.domain.post.dto.WritePostForm;
+import com.example.kakaocafe.domain.post.dto.*;
+import com.example.kakaocafe.domain.post.page.PageBtn;
+import com.example.kakaocafe.domain.post.page.PageBtnBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,12 @@ public class PostService {
 
         return postDAO.getPostById(id)
                 .orElseThrow();
+    }
+
+    public List<PostOfTableRow> findAll(int page) {
+        final int offset = (page - 1) * PageConfig.NUM_OF_POSTS_PER_PAGE;
+
+        return postDAO.getAllPostOfTableRow(offset, PageConfig.NUM_OF_POSTS_PER_PAGE);
     }
 
     @Transactional(readOnly = true)
@@ -55,6 +63,14 @@ public class PostService {
 
         commentDAO.deleteAllByPostId(postId);
         postDAO.delete(postId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PageBtn> makePageBtn(int page) {
+        return PageBtnBuilder.builder
+                .currentPage(page)
+                .getNumOfPostsFunction((offset, limit) -> postDAO.numOfRows(offset, limit).orElse(0))
+                .build();
     }
 
     private void checkIfCanNotDeleteThrowException(long postId, long writerId) {

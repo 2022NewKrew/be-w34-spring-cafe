@@ -29,6 +29,7 @@ public class SecurityConfig {
         noAuthUrlPatterns.add(URLPath.SHOW_SIGN_UP_SUCCESS);
         noAuthUrlPatterns.add(URLPath.SIGN_UP);
         noAuthUrlPatterns.add(URLPath.SHOW_LOGIN_FORM);
+        noAuthUrlPatterns.add(URLPath.GET_ALL_POSTS);
         noAuthUrlPatterns.add(URLPath.LOGIN);
     }
 

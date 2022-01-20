@@ -84,7 +84,7 @@ public class PostDAO {
         jdbcTemplate.update(sql, params);
     }
 
-    public List<PostOfTableRow> getAllPostOfTableRow() {
+    public List<PostOfTableRow> getAllPostOfTableRow(int offset, int size) {
         final String sql = "SELECT p.ID, " +
                 "p.TITLE, " +
                 "p.CONTENTS, " +
@@ -93,9 +93,29 @@ public class PostDAO {
                 "u.NAME as writer " +
                 "FROM POST as p " +
                 "JOIN USER as u on p.USER_ID=u.ID " +
-                "WHERE p.ISDELETED=false";
+                "WHERE p.ISDELETED=false " +
+                "ORDER BY p.CREATED DESC " +
+                "LIMIT ? OFFSET ?";
 
-        return jdbcTemplate.query(sql, postOfTableRowMapper());
+        return jdbcTemplate.query(sql, postOfTableRowMapper(), size, offset);
+    }
+
+    public Optional<Integer> numOfRows(int offset, int limit) {
+        final String sql = "SELECT count(temp.t) as cnt " +
+                "FROM (select 0 as t " +
+                "      FROM POST " +
+                "      WHERE ISDELETED = false " +
+                "      ORDER BY CREATED DESC " +
+                "      LIMIT ? OFFSET ? " +
+                "     ) as temp ";
+
+        final List<Integer> result = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("cnt"), limit, offset);
+
+        if (result.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.ofNullable(DataAccessUtils.singleResult(result));
     }
 
     public void plusViewCount(long id) {
