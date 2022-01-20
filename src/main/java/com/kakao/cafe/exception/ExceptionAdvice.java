@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ExceptionAdvice {
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String exception(Exception e) {
         log.info("에러 : {}", e.getClass().getName());
+        log.info("에러 내용 : {}", e.getMessage());
         return e.getMessage();
     }
 
