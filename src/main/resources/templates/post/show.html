@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>kakao Java Web Programming</title>
+    <title>Kafe</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="/css/reset.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -12,89 +12,98 @@
     <link href="/css/post/show.css" rel="stylesheet">
 </head>
 <body>
-    <div class="background">
-        <nav class="navbar navbar-fixed-top header">
-            <div class="col-md-12">
-                <div class="navbar-header">
-                    <a href="/" class="navbar-brand">
-                        <img src="/images/KakaoCI.png" />
-                    </a>
+<div class="background">
+    <nav class="navbar navbar-fixed-top header">
+        <div class="col-md-12">
+            <div class="navbar-header">
+                <a href="/articles" class="navbar-brand">
+                    <img src="/images/KakaoCI.png"/>
+                </a>
 
-                </div>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="/users">멤버 리스트</a></li>
-                    {{#sessionedUser}}
-                    <li><a class="black-component" href="/logout" role="button">로그아웃</a></li>
-                    <li><a class="black-component" href="/edit-user" role="button">개인정보 수정</a></li>
-                    {{/sessionedUser}}
-                    {{^sessionedUser}}
-                    <li><a class="black-component" href="/login-form" role="button">로그인</a></li>
-                    <li><a class="black-component" href="/join-form" role="button">회원가입</a></li>
-                    {{/sessionedUser}}
-                </ul>
             </div>
-        </nav>
-        {{#article}}
-        <div class="container" id="main">
-            <div class="col-md-12 col-sm-12 col-lg-12">
-                <div class="panel panel-default">
-                  <header class="post-header">
-                      <p class="post-title">{{title}}</p>
-                  </header>
-                  <div class="content-main">
-                      <article class="article">
-                          <div class="article-header">
-                              <div class="article-header-text">
-                                  <p class="article-content">{{author}}</p>
-                                  <p class="article-content">
-                                      작성일자:{{created}}
-                                  </p>
-                                  <p class="article-content">조회 {{views}}회</p>
-                              </div>
-                          </div>
-                          <div class="article-doc">
-                              <p>{{content}}</p>
-                          </div>
-                      </article>
-                      {{/article}}
-                      <div class="post-comment">
-                          <div class="post-comment-slipp">
-                              <p class="post-comment-count">댓글 {{commentsCount}}개</p>
-                              <div class="post-comment-slipp-articles">
-                                  <article class="comment">
-                                      <div class="article-text">
-                                          {{#comments}}
-                                          <p class="comment-content comment-author-name">{{author}}</p>
-                                          <div class="comment-content comment-doc">
-                                              <p>{{content}}</p>
-                                          </div>
-                                          <p class="comment-content comment-time">
-                                              {{created}}
-                                          </p>
-                                          {{/comments}}
-                                      </div>
-                                  </article>
-                              </div>
-                              <form class="submit-write" method="post" action="/comments/{{articleId}} ">
-                                  <div class="comment-writer-container">
-                                      {{#sessionedUser}}
-                                        <input class="comment-writer" id="author" name="author" value="{{nickName}}" readonly/>
-                                      {{/sessionedUser}}
-                                      {{^sessionedUser}}
-                                        <input class="comment-writer" id="unknownAuthor" name="author" value="익명" readonly/>
-                                      {{/sessionedUser}}
-                                  </div>
-                                  <div class="form-group">
-                                      <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
-                                  </div>
-                                  <input class="post-write-btn" type="submit" value="등록"/>
-                              </form>
-                          </div>
-                      </div>
-                  </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="/users">멤버 리스트</a></li>
+                {{#sessionedUser}}
+                <li><a class="black-component" href="/logout" role="button">로그아웃</a></li>
+                <li><a class="black-component" href="/edit-user" role="button">개인정보 수정</a></li>
+                {{/sessionedUser}}
+                {{^sessionedUser}}
+                <li><a class="black-component" href="/login-form" role="button">로그인</a></li>
+                <li><a class="black-component" href="/join-form" role="button">회원가입</a></li>
+                {{/sessionedUser}}
+            </ul>
+        </div>
+    </nav>
+    {{#article}}
+    <a class="black-component" href="/edit-article/{{id}}" role="button">수정</a>
+    <form class="black-component" action="/articles/{{id}}" method="post">
+        <input type="hidden" name="_method" value="DELETE"/>
+        <button class="link-delete-article" type="submit">삭제</button>
+    </form>
+    <div class="container" id="main">
+        <div class="col-md-12 col-sm-12 col-lg-12">
+            <div class="panel panel-default">
+                <header class="post-header">
+                    <p class="post-title">{{title}}</p>
+                </header>
+                <div class="content-main">
+                    <article class="article">
+                        <div class="article-header">
+                            <div class="article-header-text">
+                                <p class="article-content">{{author}}</p>
+                                <p class="article-content">
+                                    작성일자:{{created}}
+                                </p>
+                                <p class="article-content">조회 {{views}}회</p>
+                            </div>
+                        </div>
+                        <div class="article-doc">
+                            <p>{{content}}</p>
+                        </div>
+                    </article>
+                    {{/article}}
+                    <div class="post-comment">
+                        <div class="post-comment-slipp">
+                            <p class="post-comment-count">댓글 {{commentsCount}}개</p>
+                            <div class="post-comment-slipp-articles">
+                                <article class="comment">
+                                    <div class="article-text">
+                                        {{#comments}}
+                                        <p class="comment-content comment-author-name">{{author}}</p>
+                                        <a class="black-component" href="/edit-comment/{{articleId}}/comments/{{id}}" role="button">수정</a>
+                                        <form class="black-component" action="/articles/{{articleId}}/comments/{{id}}" method="post">
+                                            <input type="hidden" name="_method" value="DELETE"/>
+                                            <button class="link-delete-article" type="submit">삭제</button>
+                                        </form>
+                                        <div class="comment-content comment-doc">
+                                            <p>{{content}}</p>
+                                        </div>
+                                        <p class="comment-content comment-time">
+                                            {{created}}
+                                        </p>
+                                        {{/comments}}
+                                    </div>
+                                </article>
+                            </div>
+                            <form class="submit-write" method="post" action="/articles/{{articleId}}/comments ">
+                                <div class="comment-writer-container">
+                                    {{#sessionedUser}}
+                                    <input class="comment-writer" id="author" name="author" value="{{nickName}}"
+                                           readonly/>
+                                    {{/sessionedUser}}
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" id="content" name="content"
+                                              placeholder="내용을 입력하세요"></textarea>
+                                </div>
+                                <input class="post-write-btn" type="submit" value="등록"/>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-	</body>
+</div>
+</body>
 </html>

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class FormController {
-    Logger logger = LoggerFactory.getLogger(ArticleController.class);
+    Logger logger = LoggerFactory.getLogger(FormController.class);
 
     @GetMapping("/join-form")
     public String userJoinForm() {
@@ -26,4 +26,5 @@ public class FormController {
         logger.info("GET /post-form : Load article post form");
         return "post/form";
     }
+
 }

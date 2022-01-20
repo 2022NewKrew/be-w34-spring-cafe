@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 public class SpringJdbcConfig {
 
     @Bean
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("kakaodb")
