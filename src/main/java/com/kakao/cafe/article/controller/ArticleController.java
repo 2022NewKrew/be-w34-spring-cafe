@@ -20,6 +20,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/articles")
+@Authorized
 public class ArticleController {
     private final ArticleService articleService;
     private final ReplyService replyService;
@@ -31,7 +32,6 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    @Authorized
     public String showArticle(@PathVariable Long id, Model model) {
         ArticleDetailResDto article = articleService.getArticle(id);
         List<ReplyResDto> replyList = replyService.getReplyListByArticleId(id);
@@ -43,13 +43,11 @@ public class ArticleController {
     }
 
     @GetMapping("/form")
-    @Authorized
     public String showRegisterForm() {
         return "/qna/form";
     }
 
     @GetMapping("/{id}/form")
-    @Authorized
     public String showUpdateForm(@PathVariable Long id, Model model, @SessionAttribute SessionUser sessionUser) {
         ArticleDetailResDto article = articleService.getArticle(id);
         checkWriterSameAsSessionUser(sessionUser, article.getWriter());
@@ -58,29 +56,27 @@ public class ArticleController {
     }
 
     @PutMapping
-    @Authorized
     public String updateArticle(@ModelAttribute ArticleReqDto articleReqDto) {
         articleService.update(articleReqDto);
         return "redirect:/articles/" + articleReqDto.getId();
     }
 
     @DeleteMapping
-    @Authorized
     public String deleteArticle(@ModelAttribute ArticleReqDto articleReqDto, @SessionAttribute SessionUser sessionUser) {
         checkWriterSameAsSessionUser(sessionUser, articleReqDto.getWriter());
         articleService.delete(articleReqDto.getId());
         return "redirect:/";
     }
 
+    @DeleteMapping("/{articleId}/replies/{replyId}")
+    public String deleteReply(@PathVariable Long articleId, @PathVariable Long replyId) {
+        replyService.delete(articleId, replyId);
+        return "redirect:/articles/" + articleId;
+    }
+
     private void checkWriterSameAsSessionUser(SessionUser sessionUser, String writer) {
         if (!sessionUser.getName().equals(writer)) {
             throw new IllegalArgumentException("작성자만 글을 수정할 수 있습니다.");
-        }
-    }
-
-    private void checkSessionUser(HttpSession session) {
-        if (session.getAttribute("sessionUserId") == null) {
-            throw new SessionUserNotFoundException();
         }
     }
 }

@@ -35,4 +35,8 @@ public class ReplyRepository {
                 .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
                 .build();
     }
+
+    public void delete(Long articleId, Long replyId) {
+        jdbcTemplate.update("DELETE FROM TB_REPLY WHERE ID = ? AND ARTICLE_ID = ?", replyId, articleId);
+    }
 }

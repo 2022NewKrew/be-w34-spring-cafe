@@ -29,4 +29,8 @@ public class ReplyService {
 
         replyRepository.save(replyEntity);
     }
+
+    public void delete(Long articleId, Long replyId) {
+        replyRepository.delete(articleId, replyId);
+    }
 }

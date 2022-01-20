@@ -16,14 +16,17 @@ public class SessionUserInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        Authorized annotation = ((HandlerMethod) handler).getMethodAnnotation(Authorized.class);
-        if (annotation == null) {
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        Authorized typeAnnotation = handlerMethod.getBeanType().getAnnotation(Authorized.class);
+        Authorized methodAnnotation = handlerMethod.getMethod().getAnnotation(Authorized.class);
+
+        if (typeAnnotation == null && methodAnnotation == null) {
             return true;
         }
 
         HttpSession session = request.getSession();
         Object sessionUser = session.getAttribute("sessionUser");
-        if (sessionUser == null || !(sessionUser instanceof SessionUser)) {
+        if (!(sessionUser instanceof SessionUser)) {
             throw new SessionUserNotFoundException();
         }
         return true;
