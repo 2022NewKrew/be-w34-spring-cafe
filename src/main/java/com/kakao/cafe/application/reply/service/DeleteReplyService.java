@@ -2,6 +2,8 @@ package com.kakao.cafe.application.reply.service;
 
 import com.kakao.cafe.application.reply.port.in.DeleteReplyUseCase;
 import com.kakao.cafe.application.reply.port.out.DeleteReplyPort;
+import com.kakao.cafe.application.user.dto.UserInfo;
+import com.kakao.cafe.domain.user.exceptions.UnauthenticatedUserException;
 
 public class DeleteReplyService implements DeleteReplyUseCase {
 
@@ -12,7 +14,10 @@ public class DeleteReplyService implements DeleteReplyUseCase {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id, String userIdDeletingReply, UserInfo sessionedUser) throws UnauthenticatedUserException {
+        if (!sessionedUser.getUserId().equals(userIdDeletingReply)) {
+            throw new UnauthenticatedUserException("인증 오류");
+        }
         deleteReplyPort.delete(id);
     }
 

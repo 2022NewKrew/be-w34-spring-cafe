@@ -88,7 +88,8 @@ class ArticleInfoControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("sessionedUser", sessionedUser);
         String url = "/articles/" + id;
-        given(getArticleInfoUseCase.getArticleDetail(id)).willReturn(givenArticle);
+        given(getArticleInfoUseCase.getArticleDetail(id, sessionedUser.getUserId(), sessionedUser))
+            .willReturn(givenArticle);
         given(getRepliesUseCase.getListOfRepliesOfTheArticle(id)).willReturn(ReplyList.from(new ArrayList<>()));
 
         //when

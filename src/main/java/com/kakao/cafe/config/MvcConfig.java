@@ -1,6 +1,5 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.adapter.in.presentation.common.PermissionCheckInterceptor;
 import com.kakao.cafe.adapter.in.presentation.common.SessionCheckInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,19 +30,10 @@ public class MvcConfig implements WebMvcConfigurer {
         return new SessionCheckInterceptor();
     }
 
-    @Bean
-    public PermissionCheckInterceptor permissionCheckInterceptor() {
-        return new PermissionCheckInterceptor();
-    }
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionCheckInterceptor())
                 .addPathPatterns("/users/*/form")
                 .addPathPatterns("/articles/**");
-        registry.addInterceptor(permissionCheckInterceptor())
-                .addPathPatterns("/articles/*/delete")
-                .addPathPatterns("/articles/*/form")
-                .addPathPatterns("/articles/*/replies/*");
     }
 }

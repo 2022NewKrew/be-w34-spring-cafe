@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ArticleUpdateController {
@@ -24,7 +25,7 @@ public class ArticleUpdateController {
 
 
     @PutMapping("/articles/{id}/form")
-    public String update(@PathVariable int id, String title, String contents, HttpSession session)
+    public String update(@PathVariable int id, @RequestParam String userId, String title, String contents, HttpSession session)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException, UnauthenticatedUserException {
         UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
         UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest.Builder().id(id)
@@ -33,7 +34,7 @@ public class ArticleUpdateController {
                                                                                       .title(title)
                                                                                       .contents(contents)
                                                                                       .build();
-        updateArticleUseCase.updateArticle(updateArticleRequest);
+        updateArticleUseCase.updateArticle(updateArticleRequest, userId, sessionedUser);
         return "redirect:/";
     }
 }
