@@ -15,12 +15,11 @@ public class ArticleServiceTest {
     private ArticleService articleService;
     private ArticleRepository mockArticleRepository;
     private UserRepository mockUserRepository;
-    private ReplyRepository mockReplyRepository;
 
     public ArticleServiceTest() {
         mockArticleRepository = mock(ArticleDao.class);
         mockUserRepository = mock(UserDao.class);
-        articleService = new ArticleServiceImpl(mockArticleRepository, mockUserRepository, mockReplyRepository);
+        articleService = new ArticleServiceImpl(mockArticleRepository, mockUserRepository);
     }
 
 }

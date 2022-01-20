@@ -1,10 +1,7 @@
 package com.kakao.cafe.config;
 
 import com.kakao.cafe.repository.*;
-import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.ArticleServiceImpl;
-import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.service.UserServiceImpl;
+import com.kakao.cafe.service.*;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +21,11 @@ public class SpringConfig {
     }
 
     @Bean
+    public ReplyService replyService() { return new ReplyServiceImpl(replyDao()); }
+
+    @Bean
     public ArticleService articleService() {
-        return new ArticleServiceImpl(articleDao(), userDao(), replyDao());
+        return new ArticleServiceImpl(articleDao(), userDao());
     }
 
     @Bean

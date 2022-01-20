@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReplyDto {
+    private int id;
     private int aid;            // article - id
     private String writer;      // member - userId
     private String contents;

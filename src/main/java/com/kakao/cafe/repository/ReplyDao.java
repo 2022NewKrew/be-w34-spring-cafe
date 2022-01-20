@@ -1,9 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.constants.ReplyDBConstants;
-import com.kakao.cafe.constants.UserDBConstants;
 import com.kakao.cafe.domain.Reply;
-import com.kakao.cafe.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -50,6 +48,14 @@ public class ReplyDao implements ReplyRepository{
                 new ReplyMapper(),
                 aid
         );
+    }
+
+    public void delete(int id) {
+        String sql = String.format("delete from %s where %s = ?",
+                ReplyDBConstants.TABLE_NAME,
+                ReplyDBConstants.COLUMN_ID);
+
+        jdbcTemplate.update(sql, id);
     }
 
     public static class ReplyMapper implements RowMapper<Reply> {

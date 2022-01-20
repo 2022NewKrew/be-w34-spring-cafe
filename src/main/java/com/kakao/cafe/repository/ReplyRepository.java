@@ -8,4 +8,5 @@ import java.util.List;
 public interface ReplyRepository {
     int save(Reply reply) throws SQLException;
     List<Reply> findByAid(int aid);
+    void delete(int id);
 }

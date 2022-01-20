@@ -15,6 +15,4 @@ public interface ArticleService {
     void delete(int id) throws  NoSuchElementException;
     List<ArticleDto> getArticleList();
     ArticleDto findById(int id) throws NoSuchElementException;
-    void insertReply(int aid, String writer, ReplyContentsDto contentsDto) throws SQLException;
-    List<ReplyDto> getReplyListOfArticle(int aid);
 }
