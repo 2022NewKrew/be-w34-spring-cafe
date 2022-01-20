@@ -32,7 +32,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void shiftIsDeleted(Long id) {
-        articleMap.get(id).shiftIsDeleted();
+    public void shiftIsDeleted(Long id, String userId) {
+        Optional<Article> article = Optional.ofNullable(articleMap.get(id));
+        if (article.isPresent() && article.get().getWriter().equals(userId)) {
+            articleMap.get(id).shiftIsDeleted();
+        }
+        throw new RuntimeException("게시글을 삭제할 수 없습니다.");
     }
 }

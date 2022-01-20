@@ -9,5 +9,5 @@ public interface ArticleRepository {
     void create(ArticleCreateRequestDto requestDto);
     List<Article> findNotDeleted();
     Article findById(Long id);
-    void shiftIsDeleted(Long id);
+    void shiftIsDeleted(Long id, String userId);
 }

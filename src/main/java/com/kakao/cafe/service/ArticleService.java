@@ -34,8 +34,8 @@ public class ArticleService {
         return ArticleDetailResponseDto.from(articleRepository.findById(id));
     }
 
-    public void deleteArticle(Long id) {
-        articleRepository.shiftIsDeleted(id);
+    public void deleteArticle(Long id, String userId) {
+        articleRepository.shiftIsDeleted(id, userId);
     }
 
     public List<CommentResponseDto> getArticleComments(Long id) {

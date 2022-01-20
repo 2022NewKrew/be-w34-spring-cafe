@@ -41,8 +41,8 @@ public class ArticleController {
     }
 
     @DeleteMapping("/articles/{id}")
-    public String deleteArticle(@PathVariable Long id) {
-        articleService.deleteArticle(id);
+    public String deleteArticle(@PathVariable Long id, HttpSession session) {
+        articleService.deleteArticle(id, session.getAttribute("user").toString());
         return "redirect:/";
     }
 
@@ -50,6 +50,6 @@ public class ArticleController {
     public String postComment(@PathVariable Long id, String contents, HttpSession session) {
         String userId = session.getAttribute("user").toString();
         articleService.postComment(new CommentCreateRequestDto(id, userId, contents));
-        return "redirect:/articles/{id}";
+        return "redirect:/articles/" + id;
     }
 }

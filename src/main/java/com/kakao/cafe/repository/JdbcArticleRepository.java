@@ -44,8 +44,8 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void shiftIsDeleted(Long id) {
-        String sql = "UPDATE articles SET deleted = NOT deleted WHERE id = ?";
+    public void shiftIsDeleted(Long id, String userId) {
+        String sql = "UPDATE articles SET deleted = NOT deleted WHERE id = ? AND user_id = ?";
         try {
             jdbcTemplate.update(sql, id);
         } catch (DataAccessException e) {
