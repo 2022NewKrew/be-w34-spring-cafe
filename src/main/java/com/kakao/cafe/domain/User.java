@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.user;
+package com.kakao.cafe.domain;
 
 import lombok.Getter;
 import lombok.Setter;

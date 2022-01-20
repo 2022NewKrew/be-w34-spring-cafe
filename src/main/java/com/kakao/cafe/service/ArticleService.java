@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.JdbcTemplatesArticle;
 
 import java.util.List;

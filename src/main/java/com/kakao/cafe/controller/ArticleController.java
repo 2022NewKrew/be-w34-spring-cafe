@@ -1,7 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Comment;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
