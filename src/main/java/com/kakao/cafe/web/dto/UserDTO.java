@@ -26,14 +26,25 @@ public class UserDTO {
 
     private UserDTO(User user) {
         this.id = user.getId();
-        this.password = "";
+        this.password = user.getPassword();
         this.userId = user.getUserId();
         this.email = user.getEmail();
         this.registerDate = user.getRegisterDate();
+    }
+
+    private UserDTO(UserDTO userDTO){
+        this.id = userDTO.getId();
+        this.password = userDTO.getPassword();
+        this.userId = userDTO.getUserId();
+        this.email = userDTO.getEmail();
+        this.registerDate = userDTO.getRegisterDate();
     }
 
     public static UserDTO newInstance(User user) {
         return new UserDTO(user);
     }
 
+    public static UserDTO newInstanceNonPasswordInfo(UserDTO userDTO){
+        return new UserDTO(userDTO);
+    }
 }

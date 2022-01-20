@@ -11,11 +11,13 @@
         <header class="post-header">
             <p class="title">로그인이 완료되었습니다!</p>
         </header>
-        {{#user}}
-        <p class="user-info"> 이메일: {{email}}</p>
-        <p class="user-info"> 닉네임: {{userId}}</p>
-        {{/user}}
-        <a href="../index.html" class="btn">홈으로</a>
+
+        {{#sessionUser}}
+            <p class="user-info"> 이메일: {{email}}</p>
+            <p class="user-info"> 닉네임: {{userId}}</p>
+        {{/sessionUser}}
+
+        <a href="/index" class="btn">홈으로</a>
     </div>
 </div>
 </body>

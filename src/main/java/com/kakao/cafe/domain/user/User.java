@@ -35,4 +35,8 @@ public class User {
     public static User newInstance(long id, String userId, String password, String email, String registerDate) {
         return new User(id, userId, password, email, registerDate);
     }
+
+    public boolean isPasswordMatching(String password) {
+        return this.password.equals(password);
+    }
 }

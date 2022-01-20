@@ -18,7 +18,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void createUser(UserDTO userDTO) {
+    public void createUser(UserDTO userDTO){
 
         Optional<User> user = userRepository.findByUserId(userDTO.getUserId());
         if (user.isEmpty())
@@ -27,7 +27,7 @@ public class UserService {
             throw new IllegalUserInputException("이미 존재하는 아이디입니다.");
     }
 
-    public UserDTO getUserByUserId(String userId) {
+    public UserDTO getUserByUserId(String userId) throws IllegalUserInputException{
         Optional<User> user = userRepository.findByUserId(userId);
         if (user.isPresent())
             return UserDTO.newInstance(user.get());
@@ -41,5 +41,10 @@ public class UserService {
 
     public int getUserListSize() {
         return userRepository.getUserList().size();
+    }
+
+    public boolean isPasswordMatching(UserDTO userDTO,String checkPassword) {
+        User user = new User(userDTO);
+        return user.isPasswordMatching(checkPassword);
     }
 }
