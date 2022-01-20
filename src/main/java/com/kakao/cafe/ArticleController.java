@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
@@ -100,6 +101,7 @@ public class ArticleController {
         model.addAttribute("writer", selectedArticle.getWriter());
         model.addAttribute("title", selectedArticle.getTitle());
         model.addAttribute("contents", selectedArticle.getContents());
+        model.addAttribute("index", index);
         return "qna/show";
     }
 
@@ -126,5 +128,11 @@ public class ArticleController {
             return "/user/login";
         }
         return "/qna/form";
+    }
+
+    @GetMapping("/article/{index}/edit")
+    public String modifyArticle(@PathVariable String index) {
+        logger.info("GET /article/{}/edit", index);
+        return "qna/form";
     }
 }
