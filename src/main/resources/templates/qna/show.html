@@ -17,7 +17,7 @@
 
         <div class="container" id="main">
             <div class="col-md-12 col-sm-12 col-lg-12">
-                <div class="panel panel-default">
+                <div class="panel panel-default" style="width: 100%;">
                   <header class="post-header">
                       <p class="post-title">{{article.title}}</p>
                   </header>
@@ -43,32 +43,22 @@
                       </article>
 
                       <div class="post-comment">
+                          <p class="post-comment-count">댓글 {{commentsCount}}개</p>
                           <div class="post-comment-slipp">
                               <div class="post-comment-slipp-articles">
-
+                                  {{#comments}}
                                   <article class="comment">
                                       <div class="article-text">
-                                          <p class="comment-content comment-author-name">자바지기</p>
+                                          <p class="comment-content comment-author-name">{{writer.name}}</p>
                                           <div class="comment-content comment-doc">
-                                              <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
+                                              <p>{{contents}}</p>
                                           </div>
                                           <p class="comment-content comment-time">
-                                              2016-01-12 14:06
+                                          2016-01-12 14:06
                                           </p>
                                       </div>
                                   </article>
-
-                                  <article class="comment" id="answer-1405">
-                                      <div class="article-text">
-                                          <p class="comment-content comment-author-name">자바지기</p>
-                                          <div class="comment-content comment-doc">
-                                              <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
-                                          </div>
-                                          <p class="comment-content comment-time">
-                                              2016-01-12 14:06
-                                          </p>
-                                      </div>
-                                  </article>
+                                  {{/comments}}
 
                                   <form class="submit-write" method="post" action="/articles/{{article.id}}/comments">
                                       {{^sessionedUser}}
@@ -85,7 +75,6 @@
                                       {{/sessionedUser}}
                                   </form>
                               </div>
-                              <p class="post-comment-count">댓글 2개</p>
                           </div>
                       </div>
                   </div>

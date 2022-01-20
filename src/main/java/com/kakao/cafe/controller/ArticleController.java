@@ -33,7 +33,10 @@ public class ArticleController {
     @GetMapping("/articles/{index}")
     public String articleView(@PathVariable int index, Model model) {
         ArticleDto article = articleService.filterArticleByIndex(index);
+        List<CommentDto> comments = articleService.getCommentList(index);
         model.addAttribute("article", article);
+        model.addAttribute("comments", comments);
+        model.addAttribute("commentsCount", comments.size());
         return "qna/show";
     }
 

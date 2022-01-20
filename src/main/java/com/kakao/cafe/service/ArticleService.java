@@ -33,6 +33,12 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
+    public List<CommentDto> getCommentList(int index) {
+        return articleDao.findAllComments(index).stream()
+                .map(commentVo -> modelMapper.map(commentVo, CommentDto.class))
+                .collect(Collectors.toList());
+    }
+
     public ArticleDto filterArticleByIndex(int index) {
         ArticleVo articleVo = articleDao.filterArticleByIndex(index);
         articleValidation.validateArticle(articleVo);

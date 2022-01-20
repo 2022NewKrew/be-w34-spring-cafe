@@ -28,6 +28,11 @@ public class ArticleDao {
         return jdbcTemplate.query(sql, articleRowMapper());
     }
 
+    public List<CommentVo> findAllComments(int index) {
+        String sql = "SELECT comments.id AS id, user_id, writer_id, name, contents FROM comments INNER JOIN USERS U on U.id = comments.writer_id WHERE article_id = ?";
+        return jdbcTemplate.query(sql, commentRowMapper(), index);
+    }
+
     public ArticleVo filterArticleByIndex(int index) {
         try {
             String sql = "SELECT articles.id AS id, user_id, writer_id, name, title, contents FROM articles INNER JOIN USERS U on U.ID = ARTICLES.WRITER_ID WHERE articles.id = ?";
@@ -62,6 +67,14 @@ public class ArticleDao {
                 rs.getInt("id"),
                 new UserVo(rs.getInt("writer_id"), rs.getString("user_id"), rs.getString("name")),
                 rs.getString("title"),
+                rs.getString("contents")
+        );
+    }
+
+    private RowMapper<CommentVo> commentRowMapper() {
+        return (rs, rowNum) -> new CommentVo(
+                rs.getInt("id"),
+                new UserVo(rs.getInt("writer_id"), rs.getString("user_id"), rs.getString("name")),
                 rs.getString("contents")
         );
     }
