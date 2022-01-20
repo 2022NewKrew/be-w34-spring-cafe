@@ -1,5 +1,7 @@
 package com.kakao.cafe;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -10,11 +12,8 @@ import javax.sql.DataSource;
 @Configuration
 public class SpringJdbcConfig {
     @Bean
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource() {
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .setName("kakaodb")
-                .addScript("classpath:schema.sql")
-                .addScript("classpath:data.sql").build();
+        return DataSourceBuilder.create().build();
     }
 }
