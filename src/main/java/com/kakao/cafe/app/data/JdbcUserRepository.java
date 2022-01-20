@@ -82,13 +82,6 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public void updateUserId(long id, String userId) {
-        String sql = "UPDATE users SET user_id = :user_id WHERE id = :id";
-        Map<String, ?> params = Map.of("user_id", userId, "id", id);
-        jdbcTemplate.update(sql, params);
-    }
-
-    @Override
     public void updatePassword(long id, String password) {
         String sql = "UPDATE users SET password = :password WHERE id = :id";
         Map<String, ?> params = Map.of("password", password, "id", id);

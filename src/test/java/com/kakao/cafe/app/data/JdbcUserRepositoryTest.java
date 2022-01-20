@@ -137,18 +137,6 @@ class JdbcUserRepositoryTest {
     }
 
     @Test
-    void updateUserId() {
-        subject.updateUserId(insertedId, "id1");
-
-        String userId = jdbcTemplate.queryForObject(
-                "SELECT user_id FROM users WHERE id = :id",
-                Collections.singletonMap("id", insertedId),
-                String.class
-        );
-        assertEquals("id1", userId);
-    }
-
-    @Test
     void updatePassword() {
         subject.updatePassword(insertedId, "password1");
 

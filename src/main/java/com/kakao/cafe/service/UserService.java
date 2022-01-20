@@ -69,7 +69,6 @@ public class UserService {
         if (found.isEmpty()) {
             throw new NoSuchUserException();
         }
-        modifyUserId(targetId, modifyUser.getUserId());
         modifyPassword(targetId, modifyUser.getPassword());
         modifyName(targetId, modifyUser.getName());
         modifyEmail(targetId, modifyUser.getEmail());
@@ -78,14 +77,6 @@ public class UserService {
             throw new IllegalStateException();
         }
         return updated.get().toDto();
-    }
-
-    private void modifyUserId(long id, String userId) {
-        Optional<User> found = userRepository.getByUserId(userId);
-        if (found.isPresent() && found.get().getId() != id) {
-            throw new DuplicateUserIdException();
-        }
-        userRepository.updateUserId(id, userId);
     }
 
     private void modifyPassword(long id, String password) {

@@ -61,36 +61,23 @@ class UserServiceTest {
                 .build();
         when(repository.getById(anyLong())).thenReturn(Optional.of(user));
         when(repository.getByUserId(anyString())).thenReturn(Optional.empty());
-        ModifyUserDto modifyUser = new ModifyUserDto("userId", "password", "name", "email");
+        ModifyUserDto modifyUser = new ModifyUserDto("password", "name", "email");
 
         UserDto result = subject.modify(1L, 1L, modifyUser);
 
         verify(repository).updateEmail(1L, "email");
         verify(repository).updateName(1L, "name");
         verify(repository).updatePassword(1L, "password");
-        verify(repository).updateUserId(1L, "userId");
         assertEquals(user.toDto(), result);
     }
 
     @Test
     void modify_notTheUserHerself() {
-        ModifyUserDto modifyUser = new ModifyUserDto("userId", "password", "name", "email");
+        ModifyUserDto modifyUser = new ModifyUserDto("password", "name", "email");
 
         Executable body = () -> subject.modify(1L, 2L, modifyUser);
 
         assertThrowsExactly(UnauthorizedException.class, body);
-    }
-
-    @Test
-    void modify_duplicateUserId() {
-        User user = new User.Builder().build();
-        when(repository.getById(anyLong())).thenReturn(Optional.of(user));
-        when(repository.getByUserId(anyString())).thenReturn(Optional.of(user));
-        ModifyUserDto modifyUser = new ModifyUserDto("userId", "password", "name", "email");
-
-        Executable body = () -> subject.modify(1L, 1L, modifyUser);
-
-        assertThrowsExactly(DuplicateUserIdException.class, body);
     }
 
     @Test
@@ -103,7 +90,7 @@ class UserServiceTest {
                 .build();
         when(repository.getById(anyLong())).thenReturn(Optional.of(user));
         when(repository.getByUserId(anyString())).thenReturn(Optional.empty());
-        ModifyUserDto modifyUser = new ModifyUserDto("userId", "", "name", "email");
+        ModifyUserDto modifyUser = new ModifyUserDto("", "name", "email");
 
         subject.modify(1L, 1L, modifyUser);
 
