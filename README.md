@@ -155,3 +155,5 @@
 - lombok + logger
   - https://howtodoinjava.com/spring-boot2/logging/logging-with-lombok/
   - https://gthoya.tistory.com/entry/Spring-boot-gradle-lombok-cannot-find-symbol
+- Transactional annotation
+  - https://dpqk.me/3

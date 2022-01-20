@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS post (
     title varchar(30) not null,
     content varchar(500) not null,
     createdAt timestamp default now(),
+    view int default 0,
     tombstone bool default false,
     foreign key(userId) references member(userId)
 );

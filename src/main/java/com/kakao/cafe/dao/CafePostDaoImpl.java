@@ -2,6 +2,8 @@ package com.kakao.cafe.dao;
 
 import com.kakao.cafe.model.Post;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -43,7 +45,7 @@ public class CafePostDaoImpl implements CafePostDao {
     @Override
     public List<Post> getPostList() {
         List<Post> postList = new ArrayList<>();
-        String sql = "SELECT postId, userId, title, content, createdAt FROM post\n"
+        String sql = "SELECT postId, userId, title, content, view, createdAt FROM post\n"
                 + "WHERE tombstone=false\n"
                 + "ORDER BY createdAt DESC\n";
 
@@ -55,9 +57,10 @@ public class CafePostDaoImpl implements CafePostDao {
                 String userId = rs.getString("userId");
                 String title = rs.getString("title");
                 String content = rs.getString("content");
+                int view = rs.getInt("view");
                 String createdAt = rs.getString("createdAt").substring(0,10);
 
-                postList.add(new Post(postId,userId,title,content,createdAt));
+                postList.add(new Post(postId,userId,title,content,view,createdAt));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,25 +70,35 @@ public class CafePostDaoImpl implements CafePostDao {
     }
 
     @Override
+    @Transactional
     public Post getPostContent(int postId) {
         Post selectedPost = null;
-        String sql = "SELECT userId, title, content, SUBSTR(createdAt,1,19) AS createdAt FROM post\n"
+        String viewSql = "UPDATE post SET view=view+1\n"
+                + "WHERE postId=?";
+        String sql = "SELECT userId, title, content, view, SUBSTR(createdAt,1,19) AS createdAt FROM post\n"
                 + "WHERE postId=? and tombstone=false";
 
         try ( Connection conn = dataSource.getConnection() ) {
+            PreparedStatement viewPstmt = conn.prepareStatement(viewSql);
+            viewPstmt.setInt(1,postId);
+            int viewRs = viewPstmt.executeUpdate();
+
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, postId);
             ResultSet rs = pstmt.executeQuery();
-            if(rs.next()) {
+
+            if(rs.next() && viewRs > 0) {
                 String userId = rs.getString("userId");
                 String title = rs.getString("title");
                 String content = rs.getString("content");
+                int view = rs.getInt("view");
                 String createdAt = rs.getString("createdAt");
 
-                selectedPost = new Post(postId,userId,title,content,createdAt);
+                selectedPost = new Post(postId,userId,title,content,view,createdAt);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); // 수동 롤백
         }
         return selectedPost;
     }

@@ -53,7 +53,6 @@ public class CafePostController {
     }
 
     @PostMapping("/write")
-    @Transactional(readOnly = true)
     String writePost (@LoginUser String loginUser, @NonNull Post newPost) {
         if( loginUser != null ) {
             newPost.setUserId(loginUser);
