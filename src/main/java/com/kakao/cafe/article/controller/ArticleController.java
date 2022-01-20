@@ -64,7 +64,7 @@ public class ArticleController {
 
         model.addAttribute("article", articleViewDTO);
 
-        //글 작성자인 경우
+        //글 작성자인 경우만 수정, 삭제 옵션이 보이도록 구성.
         if(user.equalsUserId(articleViewDTO.getUserId())){
             model.addAttribute("isWriterOfArticle", true);
         }
@@ -84,14 +84,12 @@ public class ArticleController {
         User user = (User) session.getAttribute("sessionedUser");
 
         Article article = articleService.getArticleBySequence(sequence);
+
         if(!user.equalsUserId(article.getUserId())){
             throw new ArticleNotMatchedUser("로그인된 사용자가 작성한 글이 아닙니다.");
         }
 
-        model.addAttribute("userId", article.getUserId());
-        model.addAttribute("title", article.getTitle());
-        model.addAttribute("contents", article.getContents());
-        model.addAttribute("sequence", article.getSequence());
+        model.addAttribute("article", article);
 
         return "/qna/updateform";
     }
