@@ -2,14 +2,13 @@ package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.article.dto.ArticleDto;
 import com.kakao.cafe.article.dto.ArticleRegistrationDto;
+import com.kakao.cafe.article.exception.AuthorNotMatchedException;
+import com.kakao.cafe.article.model.Article;
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.user.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -48,5 +47,16 @@ public class ArticleController {
         ArticleDto articleDto = new ArticleDto(service.fetch(id));
         model.addAttribute("article", articleDto);
         return "post/show";
+    }
+
+    @PutMapping(value = "articles/{id}")
+    public String update(@PathVariable Long id, ArticleRegistrationDto dto, HttpSession session) {
+        User author = (User) session.getAttribute("user");
+        Article fetch = service.fetch(id);
+        if (!fetch.getAuthor().getId().equals(author.getId())) {
+            throw new AuthorNotMatchedException("해당 게시글의 작성자만 수정할 수 있습니다.");
+        }
+        service.update(fetch, dto);
+        return String.format("redirect:articles/%s", id);
     }
 }

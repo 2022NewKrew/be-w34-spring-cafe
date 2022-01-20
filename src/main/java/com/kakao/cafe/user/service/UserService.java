@@ -22,11 +22,11 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void create(@Valid User user) {
+    public long create(@Valid User user) {
         String hashedPassword = passwordEncoder.encode(user.getPlainPassword());
         user.setHashedPassword(hashedPassword);
         user.setPlainPassword(null);
-        repository.save(user);
+        return repository.save(user);
     }
 
     public void create(UserRegistrationDto dto) {
