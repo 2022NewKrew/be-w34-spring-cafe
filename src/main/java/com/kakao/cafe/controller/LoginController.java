@@ -22,7 +22,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(@Valid UserLoginRequest request, HttpSession session, RedirectAttributes rttr) {
-        session.setAttribute(ATTRIBUTE_NAME_OF_CURRENT_USER, loginService.login(request));
+        session.setAttribute(ATTRIBUTE_NAME_OF_CURRENT_USER, loginService.login(request.getEmail(), request.getPassword()));
         rttr.addFlashAttribute("msg", "로그인에 성공하였습니다.");
         return "redirect:/";
     }

@@ -3,7 +3,6 @@ package com.kakao.cafe.service.user;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.model.user.UserDto;
-import com.kakao.cafe.model.user.UserLoginRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,12 +45,10 @@ class LoginServiceTest {
     @DisplayName("로그인 정상 테스트 - 로그인한 사용자의 id는 일치해야 한다.")
     @Test
     void login() {
-        UserLoginRequest request = UserLoginRequest.builder()
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .build();
+        String email = user.getEmail();
+        String password = user.getPassword();
 
-        UserDto loginUser = loginService.login(request);
+        UserDto loginUser = loginService.login(email, password);
 
         assertThat(loginUser).isNotNull();
         assertThat(loginUser.getId()).isEqualTo(user.getId());
@@ -60,13 +57,11 @@ class LoginServiceTest {
     @DisplayName("로그인 실패 테스트 - 등록된 이메일이 아니라면 에러를 발생시켜야 한다.")
     @Test
     void login_emailNotExist() {
-        UserLoginRequest request = UserLoginRequest.builder()
-                .email("abc@abc.com")
-                .password("1234")
-                .build();
+        String email = "abc@abc.com";
+        String password = "1234";
 
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            UserDto loginUser = loginService.login(request);
+            UserDto loginUser = loginService.login(email, password);
         });
     }
 
@@ -74,13 +69,11 @@ class LoginServiceTest {
     @DisplayName("로그인 실패 테스트 - 비밀번호가 일치하지 않는다면 에러를 발생시켜야 한다.")
     @Test
     void login_passwordNotMatch() {
-        UserLoginRequest request = UserLoginRequest.builder()
-                .email(user.getPassword())
-                .password(user.getPassword() + "1234")
-                .build();
+        String email = user.getEmail();
+        String password = user.getPassword() + "1234";
 
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            UserDto loginUser = loginService.login(request);
+            UserDto loginUser = loginService.login(email, password);
         });
     }
 
