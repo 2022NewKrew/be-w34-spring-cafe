@@ -1,29 +1,29 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.repository.ArticleDao;
 import com.kakao.cafe.model.dto.ArticleDto;
+import com.kakao.cafe.model.dto.CommentDto;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.vo.ArticleVo;
+import com.kakao.cafe.model.vo.CommentVo;
 import com.kakao.cafe.model.vo.UserVo;
+import com.kakao.cafe.repository.ArticleDao;
 import com.kakao.cafe.service.validation.ArticleValidation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ArticleService {
 
     private final ArticleDao articleDao;
     private final ArticleValidation articleValidation;
     private final ModelMapper modelMapper;
-
-    public ArticleService(ArticleDao articleDao, ArticleValidation articleValidation, ModelMapper modelMapper) {
-        this.articleDao = articleDao;
-        this.articleValidation = articleValidation;
-        this.modelMapper = modelMapper;
-    }
 
     public List<ArticleDto> getArticleList() {
         return articleDao.findAllArticle().stream()
@@ -31,10 +31,21 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public ArticleDto filterArticleByIndex(int index) {
-        ArticleVo articleVo = articleDao.filterArticleByIndex(index);
+    public List<CommentDto> getCommentList(int articleId) {
+        return articleDao.findAllComments(articleId).stream()
+                .map(commentVo -> modelMapper.map(commentVo, CommentDto.class))
+                .collect(Collectors.toList());
+    }
+
+    public ArticleDto filterArticleById(int articleId) {
+        ArticleVo articleVo = articleDao.filterArticleById(articleId);
         articleValidation.validateArticle(articleVo);
         return modelMapper.map(articleVo, ArticleDto.class);
+    }
+
+    public CommentDto filterCommentById(int commentId) {
+        CommentVo commentVo = articleDao.filterCommentById(commentId);
+        return modelMapper.map(commentVo, CommentDto.class);
     }
 
     public void writeArticle(ArticleDto article, UserDto user) {
@@ -42,12 +53,22 @@ public class ArticleService {
         articleDao.writeArticle(modelMapper.map(article, ArticleVo.class));
     }
 
-    public void updateArticle(int index, ArticleDto article) {
-        articleDao.updateArticle(index, modelMapper.map(article, ArticleVo.class));
+    public void updateArticle(int articleId, ArticleDto article) {
+        articleDao.updateArticle(articleId, modelMapper.map(article, ArticleVo.class));
     }
 
-    public void deleteArticle(int index) {
-        articleDao.deleteArticle(index);
+    public void deleteArticle(int articleId, UserDto user) {
+        List<CommentVo> comments = articleDao.findAllComments(articleId);
+        articleValidation.validateDeleteArticle(comments, user);
+        articleDao.deleteArticle(articleId);
     }
 
+    public void writerComment(int articleId, CommentDto comment, UserDto user) {
+        comment.setWriter(modelMapper.map(user, UserVo.class));
+        articleDao.writerComment(articleId, modelMapper.map(comment, CommentVo.class));
+    }
+
+    public void deleteComment(int commentId) {
+        articleDao.deleteComment(commentId);
+    }
 }

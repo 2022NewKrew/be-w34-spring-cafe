@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS users, articles;
+DROP TABLE IF EXISTS users, articles, comments;
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -12,6 +12,14 @@ CREATE TABLE articles (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(100),
   contents TEXT,
-  writer_id INT REFERENCES users (id)
+  writer_id INT REFERENCES users (id),
+  deleted BOOLEAN DEFAULT FALSE
 );
 
+CREATE TABLE comments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  contents TEXT,
+  writer_id INT REFERENCES users(id),
+  article_id INT REFERENCES articles(id),
+  deleted BOOLEAN DEFAULT FALSE
+);

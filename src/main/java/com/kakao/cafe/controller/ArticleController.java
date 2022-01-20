@@ -1,26 +1,25 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.exception.user.NotAllowedUserException;
 import com.kakao.cafe.model.dto.ArticleDto;
+import com.kakao.cafe.model.dto.CommentDto;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.annotation.Auth;
-import com.kakao.cafe.util.annotation.AuthMyArticle;
+import com.kakao.cafe.util.annotation.MyArticle;
+import com.kakao.cafe.util.annotation.MyComment;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class ArticleController {
 
     private final ArticleService articleService;
-
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
 
     @GetMapping()
     public String articleListView(Model model) {
@@ -30,10 +29,13 @@ public class ArticleController {
     }
 
     @Auth
-    @GetMapping("/articles/{index}")
-    public String articleView(@PathVariable int index, Model model) {
-        ArticleDto article = articleService.filterArticleByIndex(index);
+    @GetMapping("/articles/{articleId}")
+    public String articleView(@PathVariable int articleId, Model model) {
+        ArticleDto article = articleService.filterArticleById(articleId);
+        List<CommentDto> comments = articleService.getCommentList(articleId);
         model.addAttribute("article", article);
+        model.addAttribute("comments", comments);
+        model.addAttribute("commentsCount", comments.size());
         return "qna/show";
     }
 
@@ -51,25 +53,41 @@ public class ArticleController {
         return "redirect:";
     }
 
-    @AuthMyArticle
-    @GetMapping("/articles/{index}/update")
-    public String updateArticleView(@PathVariable int index, HttpSession session, Model model) {
-        ArticleDto article = articleService.filterArticleByIndex(index);
+    @MyArticle
+    @GetMapping("/articles/{articleId}/update")
+    public String updateArticleView(@PathVariable int articleId, Model model) {
+        ArticleDto article = articleService.filterArticleById(articleId);
         model.addAttribute("article", article);
         return "qna/updateForm";
     }
 
-    @AuthMyArticle
-    @PutMapping("/articles/{index}/update")
-    public String updateArticle(@PathVariable int index, ArticleDto article, HttpSession session) {
-        articleService.updateArticle(index, article);
+    @MyArticle
+    @PutMapping("/articles/{articleId}/update")
+    public String updateArticle(@PathVariable int articleId, ArticleDto article) {
+        articleService.updateArticle(articleId, article);
         return "redirect:";
     }
 
-    @AuthMyArticle
-    @DeleteMapping("/articles/{index}/delete")
-    public String deleteArticle(@PathVariable int index, HttpSession session) {
-        articleService.deleteArticle(index);
+    @MyArticle
+    @DeleteMapping("/articles/{articleId}/delete")
+    public String deleteArticle(@PathVariable int articleId, HttpSession session) {
+        UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
+        articleService.deleteArticle(articleId, loginUser);
         return "redirect:/";
+    }
+
+    @Auth
+    @PostMapping("/articles/{articleId}/comments")
+    public String writerComment(@PathVariable int articleId, CommentDto comment, HttpSession session) {
+        UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
+        articleService.writerComment(articleId, comment, loginUser);
+        return "redirect:";
+    }
+
+    @MyComment
+    @DeleteMapping("/articles/{articleId}/comments/{commentId}")
+    public String deleteComment(@PathVariable int articleId, @PathVariable int commentId) {
+        articleService.deleteComment(commentId);
+        return String.format("redirect:/articles/%d", articleId);
     }
 }

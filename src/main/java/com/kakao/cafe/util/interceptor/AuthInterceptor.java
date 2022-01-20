@@ -1,7 +1,8 @@
-package com.kakao.cafe.util;
+package com.kakao.cafe.util.interceptor;
 
 import com.kakao.cafe.exception.user.NotAllowedUserException;
 import com.kakao.cafe.exception.user.UserNotFoundException;
+import com.kakao.cafe.exception.user.UserUnauthorizedException;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.vo.UserVo;
 import com.kakao.cafe.util.annotation.Auth;
@@ -21,7 +22,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
-                             Object handler) throws Exception {
+                             Object handler) {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
@@ -36,8 +37,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         UserDto user = (UserDto) session.getAttribute("sessionedUser");
         if (user == null) {
-            response.sendRedirect("/users/login");
-            return false;
+            throw new UserUnauthorizedException();
         }
 
         return true;

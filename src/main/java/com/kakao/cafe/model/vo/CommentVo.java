@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleVo {
+public class CommentVo {
 
     private int id;
     private UserVo writer;
-    private String title;
     private String contents;
 }

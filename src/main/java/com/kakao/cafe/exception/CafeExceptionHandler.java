@@ -1,10 +1,7 @@
 package com.kakao.cafe.exception;
 
 import com.kakao.cafe.exception.article.ArticleNotFoundException;
-import com.kakao.cafe.exception.user.DuplicateUserIdException;
-import com.kakao.cafe.exception.user.IncorrectPasswordException;
-import com.kakao.cafe.exception.user.NotAllowedUserException;
-import com.kakao.cafe.exception.user.UserNotFoundException;
+import com.kakao.cafe.exception.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -24,6 +21,11 @@ public class CafeExceptionHandler {
         model.addAttribute("errorStatus", e.getErrorCode().getHttpStatus());
         model.addAttribute("errorMessage", e.getMessage());
         return "error";
+    }
+
+    @ExceptionHandler(UserUnauthorizedException.class)
+    public String UnauthorizedException() {
+        return "redirect:/users/login";
     }
 
     @ExceptionHandler(NotAllowedUserException.class)

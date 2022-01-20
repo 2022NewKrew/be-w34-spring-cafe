@@ -1,5 +1,6 @@
 package com.kakao.cafe.model.dto;
 
+import com.kakao.cafe.model.vo.UserVo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +10,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class CommentDto {
 
     private int id;
-    private String userId;
-    private String password;
-    private String name;
-    private String email;
+    private UserVo writer;
+    private String contents;
 }

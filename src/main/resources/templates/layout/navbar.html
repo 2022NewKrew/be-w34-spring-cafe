@@ -14,7 +14,11 @@
           {{/sessionedUser}}
           {{#sessionedUser}}
           <li><a class="black-component" href="/users/{{userId}}/update" role="button">회원정보 수정</a></li>
-          <li><a class="black-component" href="/users/signup" role="button">로그아웃</a></li>
+          <li>
+              <form class="black-component" name="logout" action="/users/logout" method="post">
+                  <button type="submit" style="all: unset;">로그아웃</button>
+              </form>
+          </li>
           {{/sessionedUser}}
       </ul>
   </div>

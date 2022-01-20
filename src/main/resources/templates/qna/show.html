@@ -17,7 +17,7 @@
 
         <div class="container" id="main">
             <div class="col-md-12 col-sm-12 col-lg-12">
-                <div class="panel panel-default">
+                <div class="panel panel-default" style="width: 100%;">
                   <header class="post-header">
                       <p class="post-title">{{article.title}}</p>
                   </header>
@@ -43,42 +43,42 @@
                       </article>
 
                       <div class="post-comment">
+                          <p class="post-comment-count">댓글 {{commentsCount}}개</p>
                           <div class="post-comment-slipp">
-                              <p class="post-comment-count">댓글 2개</p>
                               <div class="post-comment-slipp-articles">
-
+                                  {{#comments}}
                                   <article class="comment">
                                       <div class="article-text">
-                                          <p class="comment-content comment-author-name">자바지기</p>
+                                          <p class="comment-content comment-author-name">{{writer.name}}</p>
                                           <div class="comment-content comment-doc">
-                                              <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
+                                              <p>{{contents}}</p>
                                           </div>
-                                          <p class="comment-content comment-time">
+                                          <div style="display: flex; gap: 10px;">
+                                              <p class="comment-content comment-time">
                                               2016-01-12 14:06
-                                          </p>
+                                              </p>
+                                              <form class="black-component" action="/articles/{{article.id}}/comments/{{id}}" method="post">
+                                                  <input type="hidden" name="_method" value="delete" >
+                                                  <input type="submit" style="all: unset;" value="삭제">
+                                              </form>
+                                          </div>
                                       </div>
                                   </article>
+                                  {{/comments}}
 
-                                  <article class="comment" id="answer-1405">
-                                      <div class="article-text">
-                                          <p class="comment-content comment-author-name">자바지기</p>
-                                          <div class="comment-content comment-doc">
-                                              <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
-                                          </div>
-                                          <p class="comment-content comment-time">
-                                              2016-01-12 14:06
-                                          </p>
-                                      </div>
-                                  </article>
-
-                                  <form class="submit-write" method="get" action="../index.html ">
-                                      <div class="comment-writer-container">
-                                          <input class="comment-writer" id="writer" name="writer" value="멋진상" readonly/>
-                                      </div>
+                                  <form class="submit-write" method="post" action="/articles/{{article.id}}/comments">
+                                      {{^sessionedUser}}
                                       <div class="form-group">
-                                          <textarea class="form-control" id="comment" name="comment" placeholder="내용을 입력하세요"></textarea>
+                                          <textarea class="form-control" readonly>로그인을 해야 댓글을 추가할 수 있습니다.</textarea>
+                                      </div>
+                                      <input class="post-write-btn" disabled type="submit" value="등록"/>
+                                      {{/sessionedUser}}
+                                      {{#sessionedUser}}
+                                      <div class="form-group">
+                                          <textarea class="form-control" id="contents" name="contents" placeholder="내용을 입력하세요"></textarea>
                                       </div>
                                       <input class="post-write-btn" type="submit" value="등록"/>
+                                      {{/sessionedUser}}
                                   </form>
                               </div>
                           </div>
@@ -87,5 +87,6 @@
                 </div>
             </div>
         </div>
-	</body>
+    </div>
+</body>
 </html>
