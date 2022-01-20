@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Spring Boot Profile ###
+**/src/main/resources/application-mysql.properties
