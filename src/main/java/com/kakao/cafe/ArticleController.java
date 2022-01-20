@@ -121,18 +121,61 @@ public class ArticleController {
     }
 
     @GetMapping("/qna/form")
-    public String qnaForm(HttpSession session) {
+    public String qnaForm(HttpSession session, Model model) {
         List<User> users = UserController.selectAllUsers(dataSource);
         Optional<String> validate = SessionController.checkSession(session, users);
         if(validate.isPresent()) {
             return "/user/login";
         }
+        model.addAttribute("action", "/questions");
+        model.addAttribute("title", "");
+        model.addAttribute("contents", "");
         return "/qna/form";
     }
 
     @GetMapping("/article/{index}/edit")
-    public String modifyArticle(@PathVariable String index) {
+    public String editArticle(@PathVariable String index, Model model, HttpSession session) {
         logger.info("GET /article/{}/edit", index);
-        return "qna/form";
+        int id = Integer.parseInt(index);
+        Article article = select1Article(id);
+        List<User> users = UserController.selectAllUsers(dataSource);
+        Optional<String> validate = SessionController.checkSession(session, users);
+        User user = (User) session.getAttribute("sessionedUser");
+        if(validate.isPresent()) {
+            return validate.get();
+        }
+        if(!article.getWriter().equals(user.getName())) {
+            session.setAttribute("errormsg", "다른 사람의 글을 수정할 수 없습니다.");
+            return "/user/error";
+        }
+        logger.info("current username = {}, writer = {}", user.getName(), article.getWriter());
+        model.addAttribute("action", "/article/" + index);
+        model.addAttribute("title", article.getTitle());
+        model.addAttribute("contents", article.getContents());
+        model.addAttribute("putmethod", "put");
+        return "/qna/form";
+    }
+
+    @PutMapping("/article/{index}")
+    public String modifyArticle(@PathVariable String index, String title, String contents) {
+        logger.info("PUT /article/{}", index);
+        int id = Integer.parseInt(index);
+        Article article = select1Article(id);
+        Article newArticle = new Article(article.getId(), article.getWriter(), title, contents);
+        updateArticle(newArticle);
+        return "redirect:/";
+    }
+
+    private void updateArticle(Article article) {
+        final String sql = "UPDATE ARTICLE SET title = ?, contents = ? WHERE id = ?";
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, article.getTitle());
+            stmt.setString(2, article.getContents());
+            stmt.setInt(3, article.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

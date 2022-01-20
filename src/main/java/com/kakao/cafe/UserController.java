@@ -31,7 +31,6 @@ public class UserController { Logger logger = LoggerFactory.getLogger(UserContro
             stmt.setString(3, user.getName());
             stmt.setString(4, user.getEmail());
             stmt.executeUpdate();
-            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,7 +123,6 @@ public class UserController { Logger logger = LoggerFactory.getLogger(UserContro
             stmt.setString(3, email);
             stmt.setString(4, userId);
             stmt.executeUpdate();
-            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
