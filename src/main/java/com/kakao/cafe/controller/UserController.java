@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.user.UserSaveDto;
 import com.kakao.cafe.dto.user.UserUpdateDto;
+import com.kakao.cafe.exception.NotAuthorizedException;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,7 @@ public class UserController {
     public String update(@PathVariable int id, @ModelAttribute() UserUpdateDto userUpdateDto, HttpSession session) {
         User user = (User)session.getAttribute("sessionUser");
         if (user.getId() != id){
-            throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 사용자 정보가 다릅니다.");
+            throw new NotAuthorizedException("로그인된 사용자 정보와 수정하려는 사용자 정보가 다릅니다.");
         }
         session.setAttribute("sessionUser", userService.update(id, userUpdateDto));
         return "redirect:/users";

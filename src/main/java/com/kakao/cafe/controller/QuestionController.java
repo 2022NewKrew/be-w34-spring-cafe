@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.question.QuestionSaveDto;
 import com.kakao.cafe.dto.question.QuestionUpdateDto;
 import com.kakao.cafe.dto.user.SessionUser;
+import com.kakao.cafe.exception.NotAuthorizedException;
 import com.kakao.cafe.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -49,7 +50,7 @@ public class QuestionController {
     public String update(@PathVariable int id, @ModelAttribute() QuestionUpdateDto questionUpdateDto, HttpSession session) {
         SessionUser sessionUser = (SessionUser)session.getAttribute("sessionUser");
         if (sessionUser.getId() != id){
-            throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 게시글의 작성자 정보가 다릅니다.");
+            throw new NotAuthorizedException("로그인된 사용자 정보와 수정하려는 질문글의 작성자 정보가 다릅니다.");
         }
         questionService.update(id, questionUpdateDto);
         return "redirect:/questions/"+id;
@@ -58,10 +59,11 @@ public class QuestionController {
     @DeleteMapping("/questions/{id}")
     public String deleteById(@PathVariable int id, HttpSession session) {
         SessionUser sessionUser = (SessionUser)session.getAttribute("sessionUser");
-        if (sessionUser.getId() != questionService.findById(id).getUserId()){
-            throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 게시글의 작성자 정보가 다릅니다.");
+        int userId =  questionService.findById(id).getUserId();
+        if (sessionUser.getId() != userId){
+            throw new NotAuthorizedException("로그인된 사용자 정보와 삭제하려는 질문글의 작성자 정보가 다릅니다.");
         }
-        questionService.deleteById(id);
+        questionService.deleteById(id, userId);
         return "redirect:/";
     }
 }

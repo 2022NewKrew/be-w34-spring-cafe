@@ -51,6 +51,6 @@ public class UserService {
         if(user!=null && user.getPassword().equals(password)){
             return UserMapper.INSTANCE.toSession(user);
         }
-        throw new IllegalArgumentException("로그인 비밀번호와 DB비밀번호가 불일치 합니다.");
+        throw new IllegalArgumentException("로그인 비밀번호와 저장된 비밀번호가 불일치 합니다.");
     }
 }

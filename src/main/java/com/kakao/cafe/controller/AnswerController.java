@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.answer.AnswerSaveDto;
 import com.kakao.cafe.dto.user.SessionUser;
+import com.kakao.cafe.exception.NotAuthorizedException;
 import com.kakao.cafe.service.AnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,7 @@ public class AnswerController {
     public String deleteById(@PathVariable int id, @PathVariable int questionId, HttpSession session) {
         SessionUser sessionUser = (SessionUser)session.getAttribute("sessionUser");
         if(sessionUser.getId() != answerService.findById(id).getUserId()){
-            throw new IllegalArgumentException("로그인된 사용자 정보와 삭제하려는 답변의 작성자 정보가 다릅니다.");
+            throw new NotAuthorizedException("로그인된 사용자 정보와 삭제하려는 답변의 작성자 정보가 다릅니다.");
         }
         answerService.deleteById(id);
         return "redirect:/questions/"+questionId;

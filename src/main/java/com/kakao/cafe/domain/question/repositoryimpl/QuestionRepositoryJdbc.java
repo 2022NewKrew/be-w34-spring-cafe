@@ -27,7 +27,7 @@ public class QuestionRepositoryJdbc implements QuestionRepository {
     public Question findById(int id) {
         String sql = "SELECT Q.ID, Q.USER_ID, Q.TITLE, U.NAME as WRITER, Q.CONTENTS, Q.CREATED_AT FROM `QUESTION` Q INNER JOIN `USER` U"
                 + " ON U.ID = Q.USER_ID"
-                + " WHERE U.ID = ? and IS_DELETED=FALSE";
+                + " WHERE Q.ID = ? and IS_DELETED=FALSE";
         try{
             return this.jdbcTemplate.queryForObject(sql,
                     (rs, rowNum) -> Question.builder()
