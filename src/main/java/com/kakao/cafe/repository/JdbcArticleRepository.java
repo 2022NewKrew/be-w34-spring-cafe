@@ -3,6 +3,7 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.util.DateUtils;
 import com.kakao.cafe.util.JdbcUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Slf4j
 public class JdbcArticleRepository implements RepositoryInterface<Article> {
     private static final String ALL_OF_ARTICLE = "`index`, title, content, date, u.name as writer," +
@@ -21,10 +23,6 @@ public class JdbcArticleRepository implements RepositoryInterface<Article> {
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
-
-    public JdbcArticleRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Override
     public Article save(Article article) {
@@ -48,10 +46,10 @@ public class JdbcArticleRepository implements RepositoryInterface<Article> {
 
             if (resultSet.next()) {
                 article.setIndex(resultSet.getLong(1));
-                log.info("OK");
+                log.info("article " + article.getIndex() + " saved");
                 return article;
             }
-            throw new SQLException("Index 조회 실패");
+            throw new SQLException("Article 생성 실패");
         } catch (Exception e) {
             log.info(article.toString());
             throw new IllegalStateException(e);
@@ -62,7 +60,7 @@ public class JdbcArticleRepository implements RepositoryInterface<Article> {
 
     @Override
     public Optional<Article> findById(Long index) {
-        String sql = "select " + ALL_OF_ARTICLE + " AND `index` = ?" + ORDERED;
+        String sql = "select " + ALL_OF_ARTICLE + " AND `index` = ?";
 
         try {
             connection = JdbcUtils.getConnection(dataSource);
@@ -172,6 +170,7 @@ public class JdbcArticleRepository implements RepositoryInterface<Article> {
             article.setWriter(resultSet.getString("writer"));
             article.setWriterId(resultSet.getLong("writerid"));
             article.setView(resultSet.getLong("view"));
+            article.setDeleted(resultSet.getBoolean("deleted"));
             return article;
         } catch (Exception e) {
             throw new IllegalStateException(e);

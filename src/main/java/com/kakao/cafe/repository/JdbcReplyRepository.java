@@ -3,49 +3,77 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.reply.Reply;
 import com.kakao.cafe.util.JdbcUtils;
 import com.kakao.cafe.util.DateUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Slf4j
-public class JdbcReplyRepository implements RepositoryInterface<Reply> {
+public class JdbcReplyRepository implements ReplyInterface {
+    private static final String ALL_OF_REPLY = "id, content, date, u.name as writer, " +
+            "r.writerid as writerid, articleid, deleted from replies as r join users as u " +
+            "where r.writerid = u.userid AND deleted=false";
+    private static final String ORDERED = " order by id desc";
     private final DataSource dataSource;
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
 
-    public JdbcReplyRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
     @Override
     public Reply save(Reply reply) {
-        String sql = "insert into replies(content, date, writer, writerid, articleid) values(?, ?, ?, ?, ?)";
+        String sql = "insert into replies(content, date, writerid, articleid) values(?, ?, ?, ?, ?)";
         reply.setDate(DateUtils.getLocalDateTimeNow());
         try {
             connection = JdbcUtils.getConnection(dataSource);
             preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, reply.getContent());
             preparedStatement.setString(2, reply.getDate());
-            preparedStatement.setString(3, reply.getWriter());
-            preparedStatement.setLong(4, reply.getWriterId());
-            preparedStatement.setLong(5, reply.getArticleId());
+            preparedStatement.setLong(3, reply.getWriterId());
+            preparedStatement.setLong(4, reply.getArticleId());
+            preparedStatement.setBoolean(5, false);
 
+            preparedStatement.executeUpdate();
+
+            resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                reply.setId(resultSet.getLong("id"));
+                log.info("reply " + reply.getId() + " saved");
+                return reply;
+            }
+            throw new SQLException("Reply 생성 실패");
         } catch (Exception e) {
+            log.info(reply.toString());
             throw new IllegalStateException(e);
+        } finally {
+            JdbcUtils.close(connection, preparedStatement, resultSet);
         }
-        return null;
     }
 
     @Override
     public Optional<Reply> findById(Long id) {
-        return Optional.empty();
+        String sql = "select " + ALL_OF_REPLY + " AND id=?";
+
+        try {
+            connection = JdbcUtils.getConnection(dataSource);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, id);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return Optional.of(getResult(resultSet));
+            }
+            return Optional.empty();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            JdbcUtils.close(connection, preparedStatement, resultSet);
+        }
     }
 
     @Override
@@ -55,7 +83,24 @@ public class JdbcReplyRepository implements RepositoryInterface<Reply> {
 
     @Override
     public List<Reply> findAll() {
-        return null;
+        String sql = "select " + ALL_OF_REPLY + ORDERED;
+
+        try {
+            connection = JdbcUtils.getConnection(dataSource);
+            preparedStatement = connection.prepareStatement(sql);
+
+            resultSet = preparedStatement.executeQuery();
+
+            List<Reply> replies = new ArrayList<>();
+            while (resultSet.next()) {
+                replies.add(getResult(resultSet));
+            }
+            return replies;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            JdbcUtils.close(connection, preparedStatement, resultSet);
+        }
     }
 
     @Override
@@ -65,6 +110,56 @@ public class JdbcReplyRepository implements RepositoryInterface<Reply> {
 
     @Override
     public void delete(Long id) {
+        String sql = "update replies set deleted=true where id = ?";
+        try {
+            connection = JdbcUtils.getConnection(dataSource);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, id);
 
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            JdbcUtils.close(connection, preparedStatement, resultSet);
+        }
+    }
+
+    @Override
+    public List<Reply> findByArticleId(Long articleId) {
+        String sql = "select " + ALL_OF_REPLY + " AND articleid = ?" + ORDERED;
+
+        try {
+            connection = JdbcUtils.getConnection(dataSource);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, articleId);
+
+            resultSet = preparedStatement.executeQuery();
+
+            List<Reply> replies = new ArrayList<>();
+            while (resultSet.next()) {
+                replies.add(getResult(resultSet));
+            }
+            return replies;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            JdbcUtils.close(connection, preparedStatement, resultSet);
+        }
+    }
+
+    private Reply getResult(ResultSet resultSet) {
+        try {
+            Reply reply = new Reply();
+            reply.setId(resultSet.getLong("id"));
+            reply.setContent(resultSet.getString("content"));
+            reply.setDate(resultSet.getString("date"));
+            reply.setWriter(resultSet.getString("writer"));
+            reply.setWriterId(resultSet.getLong("writerid"));
+            reply.setArticleId(resultSet.getLong("articleid"));
+            reply.setDeleted(resultSet.getBoolean("deleted"));
+            return reply;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
