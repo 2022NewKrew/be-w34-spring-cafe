@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.article.ArticlePage;
 import com.kakao.cafe.domain.article.Reply;
 import com.kakao.cafe.dto.article.*;
 import com.kakao.cafe.exception.ArticleNotFoundException;
@@ -30,10 +31,13 @@ public class ArticleService {
         replyRepository.save(request.toEntity(articleId, authorId));
     }
 
-    public List<ArticleDto> getArticles() {
-        return articleRepository.findAll().stream()
-                .map(ArticleDto::new)
-                .collect(Collectors.toList());
+    public ArticlePageDto getArticlePage(int page) {
+        Integer totalSize = articleRepository.getTotalSize();
+        ArticlePage articlePage = new ArticlePage(totalSize, page);
+        List<Article> articles = articleRepository.findAllByOffset(articlePage.offset(), ArticlePage.DEFAULT_PAGE_SIZE);
+        articlePage.setArticles(articles);
+
+        return new ArticlePageDto(articlePage);
     }
 
     public ArticleDto findArticleById(Long id) {
