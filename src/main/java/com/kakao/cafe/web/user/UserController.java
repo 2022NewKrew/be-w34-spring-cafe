@@ -1,7 +1,6 @@
 package com.kakao.cafe.web.user;
 
 import com.kakao.cafe.web.user.domain.User;
-import com.kakao.cafe.web.user.domain.Users;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,9 +15,7 @@ import javax.servlet.http.HttpSession;
 public class UserController {
     private final UserDao userDao;
 
-    Logger logger = (Logger) LoggerFactory.getLogger(UserController.class);
-
-    private Users users = new Users();
+    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserDao userDao) {
         this.userDao = userDao;
@@ -50,7 +47,7 @@ public class UserController {
     @GetMapping("/user/{userId}")
     public String getProfile(@PathVariable String userId, Model model) {
         logger.info("getProfile");
-        model.addAttribute("user", userDao.findUserById(Integer.valueOf(userId)));
+        model.addAttribute("user", userDao.findUserById(Integer.parseInt(userId)));
         return "user/profile";
     }
 
@@ -67,7 +64,7 @@ public class UserController {
         User user = userDao.findUserByEmail(email);
         if (user.getPassword().equals(password)) {
             session.setAttribute("sessionedUser", user);
-            return "index";
+            return "redirect:/";
         }
         return "user/login_failed";
     }
@@ -77,6 +74,6 @@ public class UserController {
     public String logout(HttpSession session) {
         logger.info("logout");
         session.invalidate();
-        return "index";
+        return "redirect:/";
     }
 }

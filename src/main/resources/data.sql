@@ -1,3 +1,4 @@
-INSERT INTO USERS (USERID, EMAIL, PASSWORD) VALUES ('hoho','hoho@hoho.com', 'haha');
+INSERT INTO USERS (USERID, NAME, EMAIL, PASSWORD) VALUES ('hoho', 'hoho', 'hoho@hoho.com', 'haha');
+INSERT INTO ARTICLE (TITLE, WRITER, CONTENT) VALUES ('제목이다', 'hoho', '내용이다');
 
 SELECT * FROM USERS;

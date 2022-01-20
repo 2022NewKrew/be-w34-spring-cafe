@@ -25,7 +25,17 @@ public class ArticleDao {
     }
 
     public Article findById(int id) {
-        String sql = "SELECT TITLE, WRITER, CONTENT, CREATE_DATE FROM ARTICLE WHERE ID = ?";
+        String sql = "SELECT ID, TITLE, WRITER, CONTENT, CREATE_DATE FROM ARTICLE WHERE ID = ?";
         return jdbcTemplate.queryForObject(sql, new ArticleMapper(), id);
+    }
+
+    public void updateArticle(Article article, int id) {
+        String sql = "UPDATE ARTICLE SET TITLE = ?, CONTENT = ? WHERE ID = ?";
+        jdbcTemplate.update(sql, article.getTitle(), article.getContent(), id);
+    }
+
+    public void deleteArticle(int id) {
+        String sql = "DELETE FROM ARTICLE WHERE ID = ?";
+        jdbcTemplate.update(sql, id);
     }
 }

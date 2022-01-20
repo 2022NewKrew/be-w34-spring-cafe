@@ -1,7 +1,6 @@
 package com.kakao.cafe.web.user;
 
 import com.kakao.cafe.web.user.domain.User;
-import com.kakao.cafe.web.user.domain.Users;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +35,7 @@ public class UserDao {
     }
 
     public void updateUser(User updatedUser, int id, String password) {
-        if (updatedUser.getPassword() != password)
+        if (!updatedUser.getPassword().equals(password))
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         String sql = "UPDATE USERS SET NAME = ?, EMAIL = ? WHERE ID = ?";
         jdbcTemplate.update(sql, updatedUser.getName(), updatedUser.getEmail(), updatedUser.getId());
