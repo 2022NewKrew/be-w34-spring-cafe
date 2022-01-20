@@ -3,25 +3,21 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.model.vo.ArticleVo;
 import com.kakao.cafe.model.vo.CommentVo;
 import com.kakao.cafe.model.vo.UserVo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
+@Slf4j
 public class ArticleDao {
 
     private final JdbcTemplate jdbcTemplate;
-
-    public ArticleDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    Logger logger = LoggerFactory.getLogger(ArticleDao.class);
 
     public List<ArticleVo> findAllArticle() {
         String sql = "SELECT articles.id AS id, user_id, writer_id, name, title, contents FROM articles INNER JOIN USERS U on U.ID = ARTICLES.WRITER_ID WHERE deleted = false";

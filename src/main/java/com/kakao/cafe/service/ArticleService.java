@@ -1,35 +1,29 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.model.dto.CommentDto;
-import com.kakao.cafe.model.vo.CommentVo;
-import com.kakao.cafe.repository.ArticleDao;
 import com.kakao.cafe.model.dto.ArticleDto;
+import com.kakao.cafe.model.dto.CommentDto;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.vo.ArticleVo;
+import com.kakao.cafe.model.vo.CommentVo;
 import com.kakao.cafe.model.vo.UserVo;
+import com.kakao.cafe.repository.ArticleDao;
 import com.kakao.cafe.service.validation.ArticleValidation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ArticleService {
 
     private final ArticleDao articleDao;
     private final ArticleValidation articleValidation;
     private final ModelMapper modelMapper;
-
-    Logger logger = LoggerFactory.getLogger(ArticleService.class);
-
-    public ArticleService(ArticleDao articleDao, ArticleValidation articleValidation, ModelMapper modelMapper) {
-        this.articleDao = articleDao;
-        this.articleValidation = articleValidation;
-        this.modelMapper = modelMapper;
-    }
 
     public List<ArticleDto> getArticleList() {
         return articleDao.findAllArticle().stream()

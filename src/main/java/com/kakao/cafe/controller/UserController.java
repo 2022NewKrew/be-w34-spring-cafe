@@ -4,26 +4,22 @@ import com.kakao.cafe.exception.user.NotAllowedUserException;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.util.annotation.Auth;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
+@RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
-
-    Logger logger = LoggerFactory.getLogger(UserController.class);
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping()
     public String userListView(Model model) {

@@ -1,25 +1,21 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.model.vo.UserVo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.List;
 
 @Repository
+@Slf4j
+@RequiredArgsConstructor
 public class UserDao {
 
     private final JdbcTemplate jdbcTemplate;
-
-    Logger logger = LoggerFactory.getLogger(UserDao.class);
-
-    public UserDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public List<UserVo> findAllUser() {
         String sql = "SELECT id, user_id, password, name, email FROM users";

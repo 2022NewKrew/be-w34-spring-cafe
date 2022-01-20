@@ -7,27 +7,25 @@ import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.annotation.Auth;
 import com.kakao.cafe.util.annotation.MyArticle;
 import com.kakao.cafe.util.annotation.MyComment;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class ArticleController {
 
     private final ArticleService articleService;
-
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
 
     @GetMapping()
     public String articleListView(Model model) {
         List<ArticleDto> articleList = articleService.getArticleList();
         model.addAttribute("articles", articleList);
-        return "articleId";
+        return "index";
     }
 
     @Auth

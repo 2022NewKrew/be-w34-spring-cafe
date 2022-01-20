@@ -1,27 +1,25 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.repository.UserDao;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.model.vo.UserVo;
+import com.kakao.cafe.repository.UserDao;
 import com.kakao.cafe.service.validation.UserValidation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserDao userDao;
     private final UserValidation userValidation;
     private final ModelMapper modelMapper;
-
-    public UserService(UserDao userDao, UserValidation userValidation, ModelMapper modelMapper) {
-        this.userDao = userDao;
-        this.userValidation = userValidation;
-        this.modelMapper = modelMapper;
-    }
 
     public UserDto filterUserById(String userId) {
         UserVo userVo = userDao.filterUserById(userId);

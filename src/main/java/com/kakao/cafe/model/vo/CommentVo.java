@@ -1,30 +1,17 @@
 package com.kakao.cafe.model.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentVo {
 
     private int id;
     private UserVo writer;
     private String contents;
-
-    public CommentVo() {
-
-    }
-
-    public CommentVo(int id, UserVo writer, String contents) {
-        this.id = id;
-        this.writer = writer;
-        this.contents = contents;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public UserVo getWriter() {
-        return writer;
-    }
-
-    public String getContents() {
-        return contents;
-    }
 }

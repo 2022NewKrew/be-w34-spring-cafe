@@ -13,14 +13,18 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-mustache'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-aop'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.4'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
-	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
-	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-mustache'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.4'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+    implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 }
 
 test {
