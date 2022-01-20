@@ -53,10 +53,16 @@ public class SpringJdbcUserRepository implements UserRepository {
     }
 
     private RowMapper<User> userRowMapper() {
-        return (rs, rowNum) -> new User(rs.getLong("id"), rs.getString("email"), rs.getString("username"),
-                                        rs.getString("password"), rs.getString("status"), rs.getString("display_name"),
-                                        rs.getTimestamp("created_at").toLocalDateTime(),
-                                        rs.getTimestamp("last_modified_at").toLocalDateTime());
+        return (rs, rowNum) -> User.builder()
+                                   .id(rs.getLong("id"))
+                                   .username(rs.getString("username"))
+                                   .password(rs.getString("password"))
+                                   .email(rs.getString("email"))
+                                   .displayName(rs.getString("display_name"))
+                                   .status(rs.getString("status"))
+                                   .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                                   .lastModifiedAt(rs.getTimestamp("last_modified_at").toLocalDateTime())
+                                   .build();
     }
 
     @Override

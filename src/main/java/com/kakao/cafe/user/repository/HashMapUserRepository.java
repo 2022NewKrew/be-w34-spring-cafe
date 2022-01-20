@@ -28,8 +28,16 @@ public class HashMapUserRepository implements UserRepository {
         }
 
         Long id = nextId.incrementAndGet();
-        users.put(id, new User(id, user.getEmail(), user.getUsername(), user.getPassword(), user.getStatus(),
-                               user.getDisplayName(), LocalDateTime.now(), LocalDateTime.now()));
+        users.put(id, User.builder()
+                          .id(id)
+                          .username(user.getUsername())
+                          .password(user.getPassword())
+                          .email(user.getEmail())
+                          .displayName(user.getDisplayName())
+                          .status(user.getStatus())
+                          .createdAt(LocalDateTime.now())
+                          .lastModifiedAt(LocalDateTime.now())
+                          .build());
         return id;
     }
 
@@ -55,9 +63,16 @@ public class HashMapUserRepository implements UserRepository {
             throw new NoSuchElementException("Primary key not found: " + user);
         }
 
-        users.put(user.getId(),
-                  new User(user.getId(), user.getEmail(), user.getUsername(), user.getPassword(), user.getStatus(),
-                           user.getDisplayName(), user.getCreatedAt(), LocalDateTime.now()));
+        users.put(user.getId(), User.builder()
+                                    .id(user.getId())
+                                    .username(user.getUsername())
+                                    .password(user.getPassword())
+                                    .email(user.getEmail())
+                                    .displayName(user.getDisplayName())
+                                    .status(user.getStatus())
+                                    .createdAt(LocalDateTime.now())
+                                    .lastModifiedAt(LocalDateTime.now())
+                                    .build());
     }
 
     @Override

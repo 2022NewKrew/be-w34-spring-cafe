@@ -27,11 +27,11 @@ public class UserService {
                            .email(userCreationForm.getEmail())
                            .displayName(userCreationForm.getDisplayName())
                            .build();
-        validateDuplicateUserName(newUser);
+        validateDuplicateUsername(newUser);
         return userRepository.add(newUser);
     }
 
-    private void validateDuplicateUserName(User user) {
+    private void validateDuplicateUsername(User user) {
         if (userRepository.get(user.getUsername()).isPresent()) {
             throw new UsernameDuplicatedException();
         }
@@ -41,7 +41,7 @@ public class UserService {
         User user = User.builder()
                         .id(id)
                         .email(userEditForm.getEmail())
-                        .displayName(userEditForm.getDisplayName())
+                        .displayName(userEditForm.getDisplayName()) 
                         .build();
         userRepository.update(user);
     }
