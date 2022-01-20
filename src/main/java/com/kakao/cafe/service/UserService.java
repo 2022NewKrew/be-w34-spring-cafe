@@ -5,15 +5,22 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserListDto;
 import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class UserService {
-    private final UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository;
     private final UserTransformation userTransformation = new UserTransformation();
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public List<UserListDto> getUserList() {
         List<UserDao> userDaoList = userRepository.selectAll();
         return userDaoList.stream().map(userTransformation::toUserListDto).collect(Collectors.toList());
@@ -38,6 +45,6 @@ public class UserService {
     }
 
     public void logout(HttpSession session) {
-        session.removeAttribute("sessionedUser");
+        session.invalidate();
     }
 }

@@ -15,10 +15,15 @@ public class ArticleView {
         model.addAttribute("articleList", sortedArticleList);
     }
 
-    public void getArticleIdView(Model model, ArticleDetailDto articleDetailDto) {
+    public void getArticleIdView(Model model, ArticleDetailDto articleDetailDto, Boolean isSameUser) {
         model.addAttribute("article", articleDetailDto);
+        model.addAttribute("isSameUser", isSameUser);
     }
 
     public void getQuestionsView(Model model) {
+    }
+
+    public void getArticleIdFormView(Model model, ArticleDetailDto articleDetailDto) {
+        model.addAttribute("number", articleDetailDto.getNumber());
     }
 }

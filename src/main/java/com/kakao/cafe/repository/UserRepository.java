@@ -6,24 +6,35 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserProfileDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class UserRepository {
     private static final Logger log = LoggerFactory.getLogger(UserRepository.class);
+    private final JdbcTemplate jdbcTemplate;
     Map<String, UserDao> userMap;
     long index;
 
-    public UserRepository() {
+    public UserRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
         userMap = new HashMap<>();
         index = 0;
         this.insert(new User("kane8282", "mungtange", "아이고난", "kane8282@daum.net"));
         this.insert(new User("kakaopasta", "ppasta", "lasagna", "kakaopasta@daum.net"));
         this.insert(new User("chicken123", "tiba2chicken", "Kim chicken", "chicken@gmail.com"));
         this.insert(new User("pizza82", "pizzapizza", "Mr.Pizza", "pizza@gmail.com"));
+        String query = "create table if not exists hello(" +
+                "id varchar(20) primary key," +
+                "name varchar(20)" +
+                ")";
+        jdbcTemplate.update(query);
     }
 
     private UserDao toDao(User user) {
