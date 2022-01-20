@@ -17,7 +17,7 @@
                           <img src="https://graph.facebook.com/v2.3/100000059371774/picture" class="article-author-thumb" alt="">
                       </div>
                       <div class="article-header-text">
-                          <a href="/user/{{writer}}" class="article-author-name">{{writer}}</a>
+                          <a href="/user/{{id}}" class="article-author-name">{{name}}</a>
                           <a href="/article/{{number}}" class="article-header-time" title="퍼머링크">
                               {{timestamp}}
                               <i class="icon-link"></i>
@@ -29,6 +29,7 @@
                   </div>
                   <div class="article-util">
                       <ul class="article-util-list">
+                          {{#isSameUser}}
                           <li>
                               <a class="link-modify-article" href="/article/{{number}}/form">수정</a>
                           </li>
@@ -38,6 +39,7 @@
                                   <button class="link-delete-article" type="submit">삭제</button>
                               </form>
                           </li>
+                          {{/isSameUser}}
                           <li>
                               <a class="link-modify-article" href="/index">목록</a>
                           </li>

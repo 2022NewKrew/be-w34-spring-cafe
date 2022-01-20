@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ArticleDetailDto;
 import com.kakao.cafe.dto.ArticleListDto;
+import com.kakao.cafe.dto.ArticlePostDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.view.ArticleView;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -37,9 +39,10 @@ public class ArticleController {
     }
 
     @GetMapping("/article/{id}")
-    public String getArticleId(Model model, @PathVariable("id") Long id) {
+    public String getArticleId(Model model, @PathVariable("id") Long id, HttpSession session) {
         ArticleDetailDto articleDetailDto = articleService.getArticleDetailDto(id);
-        articleView.getArticleIdView(model, articleDetailDto);
+        Boolean isSameUser = articleService.checkSameUser(articleDetailDto, session);
+        articleView.getArticleIdView(model, articleDetailDto, isSameUser);
         return "qna/show";
     }
 
@@ -50,7 +53,8 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String postQuestions(Model model, Article article) {
+    public String postQuestions(Model model, ArticlePostDto articlePostDto, HttpSession session) {
+        Article article = articleService.getArticle(articlePostDto, session);
         articleService.createArticle(article);
 
         return "redirect:/index";
