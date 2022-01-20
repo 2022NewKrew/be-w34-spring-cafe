@@ -5,9 +5,9 @@ import com.kakao.cafe.domain.repository.article.ArticleRepository;
 import com.kakao.cafe.dto.RequestArticleDto;
 import com.kakao.cafe.dto.ResponseArticleDto;
 import com.kakao.cafe.exception.ArticleNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -16,15 +16,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ArticleService {
 
+    private final ReplyService replyService;
     private final ArticleRepository articleRepository;
     private final ModelMapper modelMapper;
-
-    public ArticleService(@Qualifier("h2ArticleRepository") ArticleRepository articleRepository, ModelMapper modelMapper) {
-        this.articleRepository = articleRepository;
-        this.modelMapper = modelMapper;
-    }
 
     /*
      * 새 게시글 작성
@@ -50,15 +47,17 @@ public class ArticleService {
      * id로 게시글 조회
      */
     public ResponseArticleDto getArticleById(long id) {
-        Article article = articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException());
-        return modelMapper.map(article, ResponseArticleDto.class);
+        Article article = articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
+        ResponseArticleDto articleDto = modelMapper.map(article, ResponseArticleDto.class);
+        articleDto.setReply(replyService.getReplyOfArticle(id));
+        return articleDto;
     }
 
     /*
      * id로 게시글 작성자 id 조회
      */
     public long getAuthorIdOfArticle(long articleId) {
-        Article article = articleRepository.findById(articleId).orElseThrow(() -> new ArticleNotFoundException());
+        Article article = articleRepository.findById(articleId).orElseThrow(ArticleNotFoundException::new);
         return article.getAuthorId();
     }
 
@@ -66,7 +65,7 @@ public class ArticleService {
      * id로 게시글 수정
      */
     public void updateArticle(long id, RequestArticleDto articleDto) {
-        Article article = articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException());
+        Article article = articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
         article.setTitle(articleDto.getTitle());
         article.setContent(articleDto.getContent());
         articleRepository.save(article);
@@ -83,7 +82,7 @@ public class ArticleService {
      * id로 조회수 1 증가
      */
     public void increaseView(long id) {
-        Article article = articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException());
+        Article article = articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
         article.setViews(article.getViews() + 1);
         articleRepository.save(article);
     }

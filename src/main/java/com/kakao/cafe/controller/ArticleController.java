@@ -42,8 +42,6 @@ public class ArticleController {
      */
     @PostMapping("/articles/form")
     public String addArticle(@ModelAttribute RequestArticleDto articleDto, @LoginUser SessionUser user) {
-        log.info("POST /posts/form {}", articleDto);
-
         articleService.createArticle(user.getId(), articleDto);
         return "redirect:/";
     }

@@ -104,7 +104,6 @@ li {
 }
 
 .post-write-btn {
-    margin-top: 20px;
     align-items: center;
     align-self: end;
     display: flex;
@@ -116,8 +115,9 @@ li {
     font-size: 14px;
     background-color: black;
     color: white;
-    margin: 20px;
+    margin-left: 20px;
 }
+
 
 .post-btn-container {
     display: flex;
@@ -170,4 +170,19 @@ li {
 .container-right {
     display: flex;
     justify-content: end;
+}
+
+.comment-btn{
+    margin-left: 20px;
+    align-items: center;
+    align-self: end;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    width: 40px;
+    height: 20px;
+    font-size: 10px;
+    background-color: black;
+    color: white;
 }

@@ -7,6 +7,7 @@ import com.kakao.cafe.dto.ResponseUserDto;
 import com.kakao.cafe.dto.SessionUser;
 import com.kakao.cafe.exception.UserAlreadyExistException;
 import com.kakao.cafe.exception.UserNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
@@ -20,15 +21,11 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-
-    public UserService(@Qualifier("h2UserRepository") UserRepository userRepository, ModelMapper modelMapper) {
-        this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
-    }
 
     /*
      * 회원가입

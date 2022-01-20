@@ -12,4 +12,5 @@ import lombok.ToString;
 public class SessionUser {
     private long id;
     private String userId;
+    private String name;
 }
