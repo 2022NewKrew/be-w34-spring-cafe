@@ -37,4 +37,11 @@ public class QuestionService {
         return questionRepository.update(updateQuestion);
     }
 
+    public void deleteQuestion(Long id, Long userId) {
+        //TODO 삭제가능한지 확인 -> 작성자가 맞는지 ? (추후에는 댓글도 확인)
+        Question deleteQuestion = Question.builder()
+                        .id(id)
+                        .writer(userId).build();
+        questionRepository.updateIsDeleted(deleteQuestion);
+    }
 }

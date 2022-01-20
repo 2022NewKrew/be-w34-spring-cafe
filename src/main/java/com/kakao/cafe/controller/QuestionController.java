@@ -22,8 +22,7 @@ public class QuestionController {
 
     @PostMapping("")
     public String createQuestion(@ModelAttribute QuestionCreateRequest question, HttpSession session){
-        Long userId = (Long)session.getAttribute(SessionConst.LOGIN_USER);
-        questionService.saveQuestion(userId, question, LocalDateTime.now());
+        questionService.saveQuestion(getUserId(session), question, LocalDateTime.now());
         return "redirect:/";
     }
     @GetMapping("{id}")
@@ -39,7 +38,7 @@ public class QuestionController {
     @GetMapping("/{id}/form")
     public String viewUpdateForm(@PathVariable Long id, Model model, HttpSession session){
         QuestionDetailResponse article = questionService.findOneQuestion(id);
-        if(article.getUserId() != (Long)session.getAttribute(SessionConst.LOGIN_USER)){
+        if(article.getUserId() != getUserId(session)){
             throw new IllegalStateException("글 작성자만 수정할 수 있습니다.");
         }
         model.addAttribute("article", article);
@@ -47,8 +46,16 @@ public class QuestionController {
     }
     @PutMapping("")
     public String updateQuestion(@ModelAttribute QuestionUpdateRequest question, HttpSession session){
-        Long userId = (Long) session.getAttribute(SessionConst.LOGIN_USER);
-        return "redirect:/questions/" + questionService.updateQuestion(userId, question);
+        return "redirect:/questions/" + questionService.updateQuestion(getUserId(session), question);
+    }
+    @DeleteMapping("{id}")
+    public String deleteQuestion(@PathVariable Long id, HttpSession session){
+        Long userId = getUserId(session);
+        questionService.deleteQuestion(id, userId);
+        return "redirect:/questions";
     }
 
+    private Long getUserId(HttpSession session){
+        return (Long) session.getAttribute(SessionConst.LOGIN_USER);
+    }
 }

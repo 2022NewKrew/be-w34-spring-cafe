@@ -3,7 +3,7 @@ package com.kakao.cafe.domain;
 import lombok.*;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
     private Long id;
     private String nickname;

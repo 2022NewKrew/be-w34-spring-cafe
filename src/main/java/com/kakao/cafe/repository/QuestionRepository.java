@@ -14,4 +14,5 @@ public interface QuestionRepository {
     Optional<QuestionDetailResponse> findDetailById(Long id);
     List<Question> findAll();
     List<QuestionListResponse> findAllAndWriterNickname();
+    void updateIsDeleted(Question question);
 }

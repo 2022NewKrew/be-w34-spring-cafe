@@ -33,7 +33,7 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
     }
     @Override
     public Long update(Question question){
-        final String sql = "update `question` set `title`=? , `contents`=? where `id`=? and `writer`=?";
+        final String sql = "update `question` set `title`=? , `contents`=? where `id`=? and `writer`=? and `is_deleted` = false";
         Object[] parameters = {
                 question.getTitle(),
                 question.getContents(),
@@ -46,7 +46,7 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
 
     @Override
     public Optional<Question> findById(Long id) {
-        List<Question> result = jdbcTemplate.query("select * from `question` where id = ?", questionRowMapper(), id);
+        List<Question> result = jdbcTemplate.query("select * from `question` where id = ? and `is_deleted` = false", questionRowMapper(), id);
         return result.stream().findAny();
     }
     @Override
@@ -54,13 +54,14 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
         final String sql = "select " +
                 "q.id as questionId, q.writer as userId, q.title as title, q.contents as contents, q.created_date_time as created_date_time, u.nickname as writer " +
                 "from `question` as q join `user` as u " +
-                "on q.writer = u.id";
+                "on q.writer = u.id " +
+                "where q.is_deleted = false";
         return jdbcTemplate.query(sql, questionDetailResponseRowMapper()).stream().findAny();
     }
 
     @Override
     public List<Question> findAll() {
-        return jdbcTemplate.query("select * from `question`", questionRowMapper());
+        return jdbcTemplate.query("select * from `question` where `is_deleted` = false", questionRowMapper());
     }
 
     @Override
@@ -68,9 +69,21 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
         final String sql = "select " +
                 "q.id as questionId, q.writer as userId, q.title as title, q.created_date_time as created_date_time, u.nickname as writer " +
                 "from `question` as q join `user` as u " +
-                "on q.writer = u.id";
+                "on q.writer = u.id " +
+                "where q.is_deleted = false";
         return jdbcTemplate.query(sql, questionListResponseRowMapper());
     }
+
+    @Override
+    public void updateIsDeleted(Question question) {
+        final String sql = "update `question` set `is_deleted`=true where `id`=? and `writer`=?";
+        Object[] parameters = {
+                question.getId(),
+                question.getWriter(),
+        };
+        jdbcTemplate.update(sql, parameters);
+    }
+
     private RowMapper<QuestionDetailResponse> questionDetailResponseRowMapper(){
         return (rs, rowNum) -> QuestionDetailResponse.builder()
                 .questionId(rs.getLong("questionId"))
@@ -100,6 +113,7 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
                 .title(rs.getString("title"))
                 .contents(rs.getString("contents"))
                 .createdDateTime(rs.getTimestamp("created_date_time").toLocalDateTime())
+                .isDeleted(rs.getBoolean("is_deleted"))
                 .build();
 
     }
