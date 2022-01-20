@@ -10,12 +10,12 @@ import java.util.Date;
 @Setter
 @ToString
 public class Article {
-    private long id;
-    private long authorId;
+    private Long id;
+    private Long authorId;
     private String author;
     private String title;
     private String content;
-    private long views;
+    private Long views;
     private Date createdAt;
 
 }

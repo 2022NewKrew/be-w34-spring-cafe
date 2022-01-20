@@ -11,7 +11,7 @@ import java.util.Date;
 @Setter
 @ToString
 public class User {
-    private long id;
+    private Long id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date joinedAt;

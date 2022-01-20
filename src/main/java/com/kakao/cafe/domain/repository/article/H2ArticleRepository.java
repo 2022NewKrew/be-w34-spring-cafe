@@ -19,7 +19,7 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        if (article.getId() == 0) {
+        if (article.getId() == null) {
             insert(article);
             return;
         }
