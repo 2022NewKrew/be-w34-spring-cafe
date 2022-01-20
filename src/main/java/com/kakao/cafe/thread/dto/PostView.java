@@ -10,16 +10,16 @@ public class PostView {
     private final String title;
     private final String content;
     // private final CommentView commentView;
-    private final LocalDateTime created_at;
-    private final LocalDateTime last_modified_at;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime lastModifiedAt;
 
-    public PostView(Long id, UserView author, String title, String content, LocalDateTime created_at,
-                    LocalDateTime last_modified_at) {
+    public PostView(Long id, UserView author, String title, String content, LocalDateTime createdAt,
+                    LocalDateTime lastModifiedAt) {
         this.id = id;
         this.author = author;
         this.title = title;
         this.content = content;
-        this.created_at = created_at;
-        this.last_modified_at = last_modified_at;
+        this.createdAt = createdAt;
+        this.lastModifiedAt = lastModifiedAt;
     }
 }

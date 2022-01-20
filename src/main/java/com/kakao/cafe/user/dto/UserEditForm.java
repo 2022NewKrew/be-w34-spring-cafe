@@ -3,13 +3,7 @@ package com.kakao.cafe.user.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class UserCreationForm {
-
-    @NotBlank
-    private final String username;
-
-    @NotBlank
-    private final String password;
+public class UserEditForm {
 
     @Email
     private final String email;
@@ -17,19 +11,9 @@ public class UserCreationForm {
     @NotBlank
     private final String displayName;
 
-    public UserCreationForm(String username, String password, String email, String displayName) {
-        this.username = username;
-        this.password = password;
+    public UserEditForm(String email, String displayName) {
         this.email = email;
         this.displayName = displayName;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getEmail() {

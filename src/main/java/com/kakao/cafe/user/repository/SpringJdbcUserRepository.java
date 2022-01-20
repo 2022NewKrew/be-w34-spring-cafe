@@ -42,28 +42,40 @@ public class SpringJdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> get(String username) {
+    public Optional<User> getByUsername(String username) {
         return jdbcTemplate.query("SELECT * FROM user WHERE username = ?", userRowMapper(),
                                   username).stream().findAny();
     }
 
     @Override
-    public Optional<User> get(Long id) {
+    public Optional<User> getByEmail(String email) {
+        return jdbcTemplate.query("SELECT * FROM user WHERE email = ?", userRowMapper(),
+                                  email).stream().findAny();
+    }
+
+    @Override
+    public Optional<User> getById(Long id) {
         return jdbcTemplate.query("SELECT * FROM user WHERE id = ?", userRowMapper(), id).stream().findAny();
     }
 
     private RowMapper<User> userRowMapper() {
-        return (rs, rowNum) -> new User(rs.getLong("id"), rs.getString("email"), rs.getString("username"),
-                                        rs.getString("password"), rs.getString("status"), rs.getString("display_name"),
-                                        rs.getTimestamp("created_at").toLocalDateTime(),
-                                        rs.getTimestamp("last_modified_at").toLocalDateTime());
+        return (rs, rowNum) -> User.builder()
+                                   .id(rs.getLong("id"))
+                                   .username(rs.getString("username"))
+                                   .password(rs.getString("password"))
+                                   .email(rs.getString("email"))
+                                   .displayName(rs.getString("display_name"))
+                                   .status(rs.getString("status"))
+                                   .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                                   .lastModifiedAt(rs.getTimestamp("last_modified_at").toLocalDateTime())
+                                   .build();
     }
 
     @Override
     public void update(User user) {
         jdbcTemplate.update(
-                "UPDATE user SET email = ?, username = ?, password = ?, status = ?, display_name = ? WHERE id = ?;",
-                user.getEmail(), user.getUsername(), user.getPassword(), user.getStatus(), user.getDisplayName());
+                "UPDATE user SET email = ?, display_name = ? WHERE id = ?;",
+                user.getEmail(), user.getDisplayName(), user.getId());
     }
 
     @Override

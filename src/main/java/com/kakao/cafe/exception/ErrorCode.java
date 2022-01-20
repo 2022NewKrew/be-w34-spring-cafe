@@ -1,37 +1,30 @@
 package com.kakao.cafe.exception;
 
+import org.springframework.http.HttpStatus;
+
 public enum ErrorCode {
-    USER_NOT_FOUND(404,"User not found"),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "User not found"),
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "Post not found"),
+    INVALID_FORMAT(HttpStatus.UNPROCESSABLE_ENTITY, "All field should not be blank"),
+    INVALID_USERNAME_PASSWORD(HttpStatus.UNAUTHORIZED, "Invalid username/password"),
+    USERNAME_DUPLICATED(HttpStatus.CONFLICT, "Username duplicated"),
+    EMAIL_DUPLICATED(HttpStatus.CONFLICT, "Email duplicated"),
+    UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "Unauthorized access"),
+    SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Oops...");
 
-    // User registration(email, username, password, displayName)
-    // 0. Common
-    INVALID_FORMAT(409, "All field should not be blank"),
-    // 1. email
-    EMAIL_DUPLICATED(409,"Email duplicated"),
-    // 2. username
-    USERNAME_DUPLICATED(409,"Username duplicated"),
+    private final HttpStatus httpStatus;
+    private final String message;
 
-    // Posting(title, author, content)
-    // 0. Common
-    // INVALID_FORMAT(409, "All field should not be blank"),
-    // 1. author
-    // USER_NOT_FOUND(404,"User not found"),
+    ErrorCode(HttpStatus httpStatus, String message) {
+        this.httpStatus = httpStatus;
+        this.message = message;
+    }
 
-    SERVER_ERROR(500,"Oops...");
-
-    public int getStatus() {
-        return status;
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
 
     public String getMessage() {
         return message;
-    }
-
-    private int status;
-    private String message;
-
-    ErrorCode(int status, String message) {
-        this.status = status;
-        this.message = message;
     }
 }

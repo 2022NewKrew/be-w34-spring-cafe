@@ -10,9 +10,11 @@ public interface UserRepository {
 
     List<User> getAll();
 
-    Optional<User> get(String username);
+    Optional<User> getByUsername(String username);
 
-    Optional<User> get(Long id);
+    Optional<User> getByEmail(String email);
+
+    Optional<User> getById(Long id);
 
     void update(User user);
 
