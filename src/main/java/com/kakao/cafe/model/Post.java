@@ -1,6 +1,5 @@
 package com.kakao.cafe.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -10,7 +9,7 @@ public class Post {
     private final UUID writerId;
     private String title;
     private String content;
-    private final Timestamp createdAt;
+    private final LocalDateTime createdAt;
     private boolean deleted;
 
     private Post(Builder builder) {
@@ -37,7 +36,7 @@ public class Post {
         return content;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
@@ -60,7 +59,7 @@ public class Post {
         private final UUID writerId;
         private final String title;
         private final String content;
-        private final Timestamp createdAt;
+        private final LocalDateTime createdAt;
         private final boolean deleted;
 
         public Builder(UUID writerId, String title, String content) {
@@ -68,7 +67,7 @@ public class Post {
             this.writerId = writerId;
             this.title = title;
             this.content = content;
-            this.createdAt = Timestamp.valueOf(LocalDateTime.now());
+            this.createdAt = LocalDateTime.now();
             this.deleted = false;
         }
 
@@ -77,11 +76,11 @@ public class Post {
             this.writerId = writerId;
             this.title = title;
             this.content = content;
-            this.createdAt = Timestamp.valueOf(LocalDateTime.now());
+            this.createdAt = LocalDateTime.now();
             this.deleted = false;
         }
 
-        public Builder(UUID id, UUID writerId, String title, String content, Timestamp createdAt, boolean deleted) {
+        public Builder(UUID id, UUID writerId, String title, String content, LocalDateTime createdAt, boolean deleted) {
             this.id = id;
             this.writerId = writerId;
             this.title = title;

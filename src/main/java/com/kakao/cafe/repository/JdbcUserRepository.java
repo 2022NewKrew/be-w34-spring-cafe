@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.model.User;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -65,7 +66,7 @@ public class JdbcUserRepository implements UserRepository {
                 rs.getString("password"),
                 rs.getString("name"),
                 rs.getString("email"),
-                rs.getTimestamp("createdAt"))
+                rs.getObject("createdAt", LocalDateTime.class))
                 .build();
     }
 }

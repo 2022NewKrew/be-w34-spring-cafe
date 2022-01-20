@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.model.Post;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -68,7 +69,7 @@ public class JdbcPostRepository implements PostRepository {
                 rs.getObject("writerId", UUID.class),
                 rs.getString("title"),
                 rs.getObject("content", String.class),
-                rs.getTimestamp("createdAt"),
+                rs.getObject("createdAt", LocalDateTime.class),
                 rs.getBoolean("deleted"))
                 .build();
     }

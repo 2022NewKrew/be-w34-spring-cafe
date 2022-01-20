@@ -1,6 +1,5 @@
 package com.kakao.cafe.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -11,7 +10,7 @@ public class User {
     private final String password;
     private final String name;
     private final String email;
-    private final Timestamp createdAt;
+    private final LocalDateTime createdAt;
 
     public User(Builder builder) {
         this.id = builder.id;
@@ -42,7 +41,7 @@ public class User {
         return email;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
@@ -51,12 +50,13 @@ public class User {
     }
 
     public static class Builder {
+
         private final UUID id;
         private final String userId;
         private final String password;
         private final String name;
         private final String email;
-        private final Timestamp createdAt;
+        private final LocalDateTime createdAt;
 
         public Builder(String userId, String password, String name, String email) {
             this.id = UUID.randomUUID();
@@ -64,10 +64,10 @@ public class User {
             this.password = password;
             this.name = name;
             this.email = email;
-            this.createdAt = Timestamp.valueOf(LocalDateTime.now());
+            this.createdAt = LocalDateTime.now();
         }
 
-        public Builder(UUID id, String userId, String password, String name, String email, Timestamp createdAt) {
+        public Builder(UUID id, String userId, String password, String name, String email, LocalDateTime createdAt) {
             this.id = id;
             this.userId = userId;
             this.password = password;
