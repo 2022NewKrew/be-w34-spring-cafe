@@ -57,6 +57,8 @@ public class UserService {
     public void updateById(String userId, UserUpdateRequest userUpdateRequest, SessionedUser sessionedUser) {
         log.info(this.getClass() + ": 개인정보 수정");
         validateUpdateRequest(userId, userUpdateRequest, sessionedUser);
+        log.info(userId);
+        log.info(userUpdateRequest.password);
         User user = userRepository.findByIdOrNull(userId);
         if (user == null) {
             EntityNotFoundException.throwNotExistsByField(User.class, "userId", userId);
@@ -68,6 +70,8 @@ public class UserService {
 
     public SessionedUser loginById(UserLoginRequest userLoginRequest) {
         log.info(this.getClass() + ": 회원 로그인");
+        log.info(userLoginRequest.password);
+        log.info(userLoginRequest.userId);
         User user = userRepository.findByIdOrNull(userLoginRequest.userId);
         if (user == null) {
             AuthenticationException.throwAuthFailure(NO_SUCH_USER_EXCEPTION, userLoginRequest.userId);
@@ -80,7 +84,7 @@ public class UserService {
     private void validateUpdateRequest(String userId, UserUpdateRequest request, SessionedUser user)
             throws AuthenticationException {
         user.validateSession(userId);
-        if (user.matchesPassword(request.password)) {
+        if (!user.matchesPassword(request.password)) {
             AuthenticationException.throwAuthFailure(REQUIRED_RE_LOGIN_EXCEPTION);
         }
     }

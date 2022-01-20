@@ -1,12 +1,13 @@
 package com.kakao.cafe.article.domain;
 
 import com.kakao.cafe.user.domain.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
-import java.util.UUID;
 
 import static com.kakao.cafe.common.exception.ExceptionMessage.NON_NULL_EXCEPTION;
 
@@ -55,7 +56,7 @@ public class Article {
 
     /**
      * Use for JDBC mapper. This method calls All args constructor annotated above.
-     * */
+     */
     public static Article valueOf(int id, String authorId, String title, String content, String createdAt, User author) {
         return new Article(id, authorId, title, content, createdAt, author);
     }
