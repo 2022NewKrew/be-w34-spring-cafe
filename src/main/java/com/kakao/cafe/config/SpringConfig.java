@@ -1,23 +1,21 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.repository.*;
+import com.kakao.cafe.repository.JdbcArticleRepository;
+import com.kakao.cafe.repository.JdbcReplyRepository;
+import com.kakao.cafe.repository.JdbcUserRepository;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
+@RequiredArgsConstructor
 @Configuration
 public class SpringConfig {
     private final DataSource dataSource;
-
-    @Autowired
-    public SpringConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Bean
     public UserService userService() {

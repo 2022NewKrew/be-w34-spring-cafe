@@ -1,9 +1,8 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.exception.LoginException;
-import com.kakao.cafe.util.ErrorMessage;
 import com.kakao.cafe.util.JdbcUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
@@ -12,16 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Slf4j
 public class JdbcUserRepository implements RepositoryInterface<User> {
     private final DataSource dataSource;
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
-
-    public JdbcUserRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Override
     public User save(User user) {

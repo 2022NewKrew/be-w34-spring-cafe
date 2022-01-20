@@ -1,18 +1,16 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.repository.ArticleRepositoryInterface;
+import com.kakao.cafe.repository.RepositoryInterface;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 public class ArticleService {
-    private final ArticleRepositoryInterface articleRepository;
-
-    public ArticleService(ArticleRepositoryInterface articleRepository) {
-        this.articleRepository = articleRepository;
-    }
+    private final RepositoryInterface<Article> articleRepository;
 
     public void join(Article article) {
         articleRepository.save(article);

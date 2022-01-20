@@ -15,13 +15,13 @@ public class MvcConfig implements WebMvcConfigurer {
     };
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry){
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
     }
 
     @Override
-    public void addViewControllers(ViewControllerRegistry registry){
+    public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         registry.addViewController("/users/form").setViewName("users/form");

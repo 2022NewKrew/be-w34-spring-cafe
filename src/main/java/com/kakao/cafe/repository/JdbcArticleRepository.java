@@ -1,8 +1,9 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.util.DateUtils;
 import com.kakao.cafe.util.JdbcUtils;
-import com.kakao.cafe.util.UtilClass;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
@@ -11,21 +12,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Slf4j
-public class JdbcArticleRepository implements ArticleRepositoryInterface {
+public class JdbcArticleRepository implements RepositoryInterface<Article> {
+    private static final String ALL_OF_ARTICLE = "`index`, title, content, date, u.name as writer," +
+            "a.writerid as writerid, view, deleted from articles as a join users as u " +
+            "where a.writerid = u.userid AND deleted=false";
+    private static final String ORDERED = " order by `index` desc";
     private final DataSource dataSource;
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
 
-    public JdbcArticleRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
     @Override
     public Article save(Article article) {
-        String sql = "insert into articles(title, content, date, writer, writerid, view) values(?, ?, ?, ?, ?, ?)";
-        article.setDate(UtilClass.getLocalDateTimeNow());
+        String sql = "insert into articles(title, content, date, writerid, view, deleted) values(?, ?, ?, ?, ?, ?)";
+        article.setDate(DateUtils.getLocalDateTimeNow());
         article.setView(0L);
 
         try {
@@ -34,9 +36,9 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
             preparedStatement.setString(1, article.getTitle());
             preparedStatement.setString(2, article.getContent());
             preparedStatement.setString(3, article.getDate());
-            preparedStatement.setString(4, article.getWriter());
-            preparedStatement.setLong(5, article.getWriterId());
-            preparedStatement.setLong(6, article.getView());
+            preparedStatement.setLong(4, article.getWriterId());
+            preparedStatement.setLong(5, article.getView());
+            preparedStatement.setBoolean(6, false);
 
             preparedStatement.executeUpdate();
 
@@ -44,10 +46,10 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
             if (resultSet.next()) {
                 article.setIndex(resultSet.getLong(1));
-                log.info("OK");
+                log.info("article " + article.getIndex() + " saved");
                 return article;
             }
-            throw new SQLException("Index 조회 실패");
+            throw new SQLException("Article 생성 실패");
         } catch (Exception e) {
             log.info(article.toString());
             throw new IllegalStateException(e);
@@ -58,7 +60,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
     @Override
     public Optional<Article> findById(Long index) {
-        String sql = "select * from articles where `index` = ?";
+        String sql = "select " + ALL_OF_ARTICLE + " AND `index` = ?";
 
         try {
             connection = JdbcUtils.getConnection(dataSource);
@@ -80,7 +82,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
     @Override
     public Optional<Article> findByName(String title) {
-        String sql = "select * from articles where title = ?";
+        String sql = "select " + ALL_OF_ARTICLE + " AND title = ?" + ORDERED;
 
         try {
             connection = JdbcUtils.getConnection(dataSource);
@@ -102,7 +104,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select * from articles";
+        String sql = "select " + ALL_OF_ARTICLE + ORDERED;
         try {
             connection = JdbcUtils.getConnection(dataSource);
             preparedStatement = connection.prepareStatement(sql);
@@ -124,7 +126,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
     @Override
     public Article update(Article article) {
         String sql = "update articles set title = ?, content = ?, date = ? where `index` = ?";
-        article.setDate(UtilClass.getLocalDateTimeNow());
+        article.setDate(DateUtils.getLocalDateTimeNow());
         try {
             connection = JdbcUtils.getConnection(dataSource);
             preparedStatement = connection.prepareStatement(sql);
@@ -144,28 +146,11 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
 
     @Override
     public void delete(Long id) {
-        String sql = "delete from articles where `index` = ?";
+        String sql = "update articles set deleted=true where `index` = ?";
         try {
             connection = JdbcUtils.getConnection(dataSource);
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, id);
-
-            preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        } finally {
-            JdbcUtils.close(connection, preparedStatement, resultSet);
-        }
-    }
-
-    @Override
-    public void updateWriter(Long writerId, String writer) {
-        String sql = "update articles set writer=? where writerid=?";
-        try {
-            connection = JdbcUtils.getConnection(dataSource);
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, writer);
-            preparedStatement.setLong(2, writerId);
 
             preparedStatement.executeUpdate();
         } catch (Exception e) {
@@ -185,6 +170,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
             article.setWriter(resultSet.getString("writer"));
             article.setWriterId(resultSet.getLong("writerid"));
             article.setView(resultSet.getLong("view"));
+            article.setDeleted(resultSet.getBoolean("deleted"));
             return article;
         } catch (Exception e) {
             throw new IllegalStateException(e);

@@ -12,7 +12,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void join(User user){
+    public void join(User user) {
         validateDuplicateUser(user);
 
         userRepository.save(user);
@@ -30,16 +30,16 @@ public class UserService {
         userRepository.update(user);
     }
 
-    public List<User> findUsers(){
+    public List<User> findUsers() {
         return userRepository.findAll();
     }
 
-    public User findOne(Long userId){
+    public User findOne(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow();
     }
 
-    public User findEmail(String email){
+    public User findEmail(String email) {
         return userRepository.findByName(email)
                 .orElseThrow();
     }

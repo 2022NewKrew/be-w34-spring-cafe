@@ -5,10 +5,9 @@
         <div class="panel panel-default content-main">
             <form name="question" method="post" action="/questions">
                 <div class="form-group">
-                    <label for="writer">글쓴이</label>
+                    <label for="name">글쓴이</label>
                     {{#sessionedUser}}
                     <input class="form-control" id="name" name="bane" value="{{this.name}}" disabled/>
-                    <input type='hidden' id='writer' name='writer' value="{{this.name}}">
                     <input type="hidden" id="writerId" name="writerId" value="{{this.userId}}"/>
                     {{/sessionedUser}}
                 </div>

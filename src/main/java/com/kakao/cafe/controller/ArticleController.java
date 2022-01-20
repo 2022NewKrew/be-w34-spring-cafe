@@ -2,28 +2,28 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.Articles;
+import com.kakao.cafe.domain.reply.Reply;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.util.Constant;
 import com.kakao.cafe.util.ErrorMessage;
-import com.kakao.cafe.util.UtilClass;
+import com.kakao.cafe.util.PageUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
+@RequiredArgsConstructor
 @Slf4j
 @Controller
 public class ArticleController {
-    ArticleService articleService;
-
-    @Autowired
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
+    private final ArticleService articleService;
+    private final ReplyService replyService;
 
     @PostMapping("/questions")
     public String createQNA(Article article) {
@@ -43,7 +43,7 @@ public class ArticleController {
         Articles articles = new Articles();
         int numOfArticles = articleService.numOfArticles();
         articles.setTotalCount(numOfArticles);
-        articles.setPageList(UtilClass.makePageList(numOfArticles));
+        articles.setPageList(PageUtils.makePageList(numOfArticles));
         articles.setHasPrev(page != 1);
         articles.setHasNext(page != ((numOfArticles - 1) / 10) + 1);
         articles.setPrev(page - 1);
@@ -58,9 +58,11 @@ public class ArticleController {
     @GetMapping("/articles/{index}")
     public String show(@PathVariable Long index, Model model) {
         Article article = articleService.findOne(index);
+        List<Reply> replies = replyService.findReplyList(index);
         model.addAttribute("title", article.getTitle());
         model.addAttribute("writer", article.getWriter());
         model.addAttribute("content", article.getContent());
+        model.addAttribute("replies", replies);
 
         return "/qna/show";
     }
@@ -93,8 +95,15 @@ public class ArticleController {
 
     @DeleteMapping("/qna/deleteArticle/{index}")
     public String deleteArticle(@PathVariable Long index, HttpSession session) {
-        checkWriter(session, index);
+        Article article = checkWriter(session, index);
+        List<Reply> replies = replyService.findReplyList(index);
+        for (Reply reply : replies) {
+            if (!reply.getWriterId().equals(article.getWriterId())) {
+                throw new IllegalStateException(ErrorMessage.DELETE_NOT_MY_REPLY.getMsg());
+            }
+        }
         articleService.deleteArticle(index);
+        replyService.deleteAllRepliesOnArticle(index);
         return "redirect:/";
     }
 
