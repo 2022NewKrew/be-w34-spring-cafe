@@ -1,16 +1,16 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.repository.ArticleRepositoryInterface;
+import com.kakao.cafe.repository.RepositoryInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ArticleService {
-    private final ArticleRepositoryInterface articleRepository;
+    private final RepositoryInterface<Article> articleRepository;
 
-    public ArticleService(ArticleRepositoryInterface articleRepository) {
+    public ArticleService(RepositoryInterface<Article> articleRepository) {
         this.articleRepository = articleRepository;
     }
 

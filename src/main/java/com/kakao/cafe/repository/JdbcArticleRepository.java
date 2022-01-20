@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-public class JdbcArticleRepository implements ArticleRepositoryInterface {
+public class JdbcArticleRepository implements RepositoryInterface<Article> {
     private static final String ALL_OF_ARTICLE = "`index`, title, content, date, u.name as writer," +
             "a.writerid as writerid, view, deleted from articles as a join users as u " +
             "where a.writerid = u.userid AND deleted=false";
@@ -153,23 +153,6 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
             connection = JdbcUtils.getConnection(dataSource);
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, id);
-
-            preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        } finally {
-            JdbcUtils.close(connection, preparedStatement, resultSet);
-        }
-    }
-
-    @Override
-    public void updateWriter(Long writerId, String writer) {
-        String sql = "update articles set writer=? where writerid=?";
-        try {
-            connection = JdbcUtils.getConnection(dataSource);
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, writer);
-            preparedStatement.setLong(2, writerId);
 
             preparedStatement.executeUpdate();
         } catch (Exception e) {
