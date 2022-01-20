@@ -8,5 +8,7 @@ public interface UserRepository {
 
     Optional<User> findByUserId(String userId);
 
+    Optional<User> findById(Long id);
+    
     List<User> findAll();
 }

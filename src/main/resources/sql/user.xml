@@ -3,23 +3,31 @@
 <properties>
     <entry key="user.findAll">
         SELECT
-            id, user_id, password, name, email
+        id, user_id, password, name, email
         FROM
-            user
+        user
+    </entry>
+    <entry key="user.findById">
+        SELECT
+        id, user_id, password, name, email
+        FROM
+        user
+        WHERE
+        id = :id
     </entry>
     <entry key="user.findByUserId">
         SELECT
-            id, user_id, password, name, email
+        id, user_id, password, name, email
         FROM
-            user
+        user
         WHERE
-            user_id = :user_id
+        user_id = :user_id
     </entry>
     <entry key="user.save">
         INSERT INTO
-            user
-            (user_id, password, name, email)
+        user
+        (user_id, password, name, email)
         VALUES
-            (:user_id, :password, :name, :email)
+        (:user_id, :password, :name, :email)
     </entry>
 </properties>

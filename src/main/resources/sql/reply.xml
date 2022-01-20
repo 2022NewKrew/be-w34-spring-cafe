@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="reply.findById">
+        SELECT
+        id, content, article_id, writer_id, status
+        FROM
+        reply
+        WHERE
+        id = :id
+    </entry>
+    <entry key="reply.findAllByArticleIdAndStatus">
+        SELECT
+        id, content, article_id, writer_id, status
+        FROM
+        reply
+        WHERE
+        (article_id = :article_id
+        AND
+        status = :status)
+    </entry>
+    <entry key="reply.save">
+        INSERT INTO
+        reply
+        (content, article_id, writer_id, status)
+        VALUES
+        (:content, :article_id, :writer_id, :status)
+    </entry>
+    <entry key="reply.delete">
+        UPDATE
+        reply
+        SET
+        status = :status
+        WHERE
+        id = :id
+    </entry>
+</properties>

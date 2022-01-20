@@ -22,6 +22,8 @@ public class JdbcUserRepository implements UserRepository {
     private String FIND_BY_USER_ID_SQL;
     @Value("${user.findAll}")
     private String FIND_ALL_SQL;
+    @Value("${user.findById}")
+    private String FIND_BY_ID_SQL;
 
     private static final RowMapper<User> rowMapper = (resultSet, rowNum) -> new User(
             resultSet.getLong("id"),
@@ -47,6 +49,14 @@ public class JdbcUserRepository implements UserRepository {
         jdbcTemplate.update(SAVE_SQL, params);
 
         return user;
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+
+        return Optional.ofNullable(jdbcTemplate.queryForObject(FIND_BY_ID_SQL, params, rowMapper));
     }
 
     @Override
