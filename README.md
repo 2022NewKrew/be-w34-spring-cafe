@@ -64,4 +64,4 @@
 
 # step9
 - [ ] mysql 도커로 실행
-- [ ] docker 파일 krane에서 배포
+- [ ] docker 파일 krane에서 배포 
