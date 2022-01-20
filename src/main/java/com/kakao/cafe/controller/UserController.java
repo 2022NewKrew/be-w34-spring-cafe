@@ -80,4 +80,11 @@ public class UserController {
         session.setAttribute("sessionedUser", user);
         return "redirect:/";
     }
+
+    @Auth
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
 }
