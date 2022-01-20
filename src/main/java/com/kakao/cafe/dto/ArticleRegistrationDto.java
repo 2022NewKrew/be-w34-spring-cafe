@@ -1,7 +1,6 @@
 package com.kakao.cafe.dto;
 
 import com.kakao.cafe.entity.Article;
-import com.kakao.cafe.entity.User;
 
 import javax.validation.constraints.NotBlank;
 
