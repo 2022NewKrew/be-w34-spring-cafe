@@ -22,7 +22,7 @@ public class UrlLogger {
     }
 
     public void log(String message) {
-        log.info("uuid : {} requestURL : {} message : {}", uuid, requestURL, message);
+        log.debug("uuid : {} requestURL : {} message : {}", uuid, requestURL, message);
     }
 
     @PostConstruct
@@ -33,6 +33,6 @@ public class UrlLogger {
 
     @PreDestroy
     private void close() {
-        log.info("request 요청을 종료합니다. uuid = {}", uuid);
+        log.debug("request 요청을 종료합니다. uuid = {}", uuid);
     }
 }
