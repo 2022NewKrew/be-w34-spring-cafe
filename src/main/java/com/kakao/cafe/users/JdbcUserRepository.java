@@ -45,14 +45,24 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean validate(String id, String password) {
+    public Optional<User> validate(String id, String password) {
         List<User> results = jdbcTemplate.query(
                 "SELECT * FROM users WHERE id=? AND password=?",
                 mapper,
                 id,
                 password
         );
-        return !results.isEmpty();
+        return ofNullable(results.isEmpty() ? null : results.get(0));
+    }
+
+    @Override
+    public Optional<User> findBySeq(long seq) {
+        List<User> results = jdbcTemplate.query(
+                "SELECT * FROM users WHERE seq=?",
+                mapper,
+                seq
+        );
+        return ofNullable(results.isEmpty() ? null : results.get(0));
     }
 
     @Override
