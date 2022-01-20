@@ -1,5 +1,7 @@
 package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.common.exception.AuthException;
+import com.kakao.cafe.common.exception.ErrorCode;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.request.SignUpRequest;
 import com.kakao.cafe.user.dto.request.loginRequest;
@@ -11,10 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    private static final String DUPLICATED_EMAIL = "이미 존재하는 이메일입니다.";
-    private static final String INVALID_PASSWORD = "올바르지 않은 비밀번호입니다.";
-    private static final String USER_NOT_FOUNT_MESSAGE = "해당 회원정보를 찾을 수 없습니다.";
-
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -23,9 +21,9 @@ public class UserService {
 
     public UserResponse login(loginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail())
-            .orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUNT_MESSAGE));
+            .orElseThrow(() -> new AuthException(ErrorCode.USER_NOT_FOUND));
         if(!user.getPassword().equals(loginRequest.getPassword())){
-            throw new IllegalArgumentException(INVALID_PASSWORD);
+            throw new AuthException(ErrorCode.INVALID_PASSWORD);
         }
         return UserResponse.of(user);
     }
@@ -43,13 +41,13 @@ public class UserService {
     private void validateDuplicateEmail(User user) {
         userRepository.findByEmail(user.getEmail())
             .ifPresent(s -> {
-                throw new IllegalArgumentException(DUPLICATED_EMAIL);
+                throw new AuthException(ErrorCode.DUPLICATED_EMAIL);
             });
     }
 
     public UserResponse findById(Long id) {
         User user = userRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUNT_MESSAGE));
+            .orElseThrow(() -> new AuthException(ErrorCode.USER_NOT_FOUND));
         return UserResponse.of(user);
     }
 }
