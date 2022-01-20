@@ -37,20 +37,12 @@ public class UserService {
         userRepository.save(UserFactory.toUser(updateDTO));
     }
 
-    public void login(String userId, String password, HttpSession httpSession) {
-        checkLoginStatus(httpSession);
+    public void login(String userId, String password) {
         User user = findByUserId(userId);
         user.validateEqualsPassword(password);
-        httpSession.setAttribute("sessionOfUser", userId);
     }
 
-    private void checkLoginStatus(HttpSession httpSession) {
-        if (httpSession.getAttribute("sessionOfUser") != null) {
-            throw new IllegalStateException("이미 로그인이 된 상태입니다.");
-        }
-    }
-
-    private void checkLoginUserId(String updatedUserId, String sessionUserId) throws AccessDeniedException {
+    private void checkLoginUserId(String updatedUserId, String sessionUserId) {
         if (sessionUserId == null || !sessionUserId.equals(updatedUserId)) {
             throw new AccessDeniedException("해당 유저에 대한 수정권한이 없습니다.");
         }

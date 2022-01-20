@@ -16,6 +16,9 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.kakao.cafe.Util.SessionUtil.checkLoginStatus;
+import static com.kakao.cafe.Util.SessionUtil.getUserIdFromSession;
+
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -58,7 +61,8 @@ public class UserController {
 
     @PostMapping("/users/login")
     public String login(LoginDTO loginDTO, HttpSession session) {
-        userService.login(loginDTO.getUserId(), loginDTO.getPassword(), session);
+        checkLoginStatus(session);
+        userService.login(loginDTO.getUserId(), loginDTO.getPassword());
         String dest = (String) session.getAttribute("dest");
         String redirect = (dest == null) ? "/" : dest;
         return "redirect:" + redirect;
@@ -67,10 +71,6 @@ public class UserController {
     @GetMapping("/users/login")
     public String getLoginPage() {
         return "/user/login";
-    }
-
-    private String getUserIdFromSession(HttpSession session) {
-        return (String) session.getAttribute("sessionOfUser");
     }
 
 
