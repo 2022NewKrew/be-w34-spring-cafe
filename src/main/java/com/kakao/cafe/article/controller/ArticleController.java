@@ -43,7 +43,11 @@ public class ArticleController {
     }
 
     @GetMapping(value = "articles/{id}")
-    public String show(@PathVariable Long id, Model model) {
+    public String show(@PathVariable Long id, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            throw new AuthorNotMatchedException("게시글의 세부 내용은 로그인한 사용자만 볼 수 있습니다.");
+        }
         ArticleDto articleDto = new ArticleDto(service.fetch(id));
         model.addAttribute("article", articleDto);
         return "post/show";
