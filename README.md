@@ -17,3 +17,6 @@
     - PUT /questions/{id} : 질문 수정
     - DELETE /questions/{id} : 질문 삭제
     - GET /questions/{id}/form : 질문 등록 폼
+- Answer
+    - POST /questions/{questionId}/answers : 답변 등록
+    - DELETE /questions/{questionId}/answers/{id} : 답변 삭제
