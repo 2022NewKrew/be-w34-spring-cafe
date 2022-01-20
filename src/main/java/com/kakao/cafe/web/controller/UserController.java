@@ -5,7 +5,6 @@ import com.kakao.cafe.web.dto.user.UserCreateRequestDto;
 import com.kakao.cafe.web.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +24,9 @@ public class UserController {
 
     private final UserService userService;
 
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession session) {
@@ -45,11 +47,6 @@ public class UserController {
         // 세션 지우기
         session.invalidate();
         return "redirect:/";
-    }
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
     }
 
     @PostMapping("/users")
@@ -93,10 +90,12 @@ public class UserController {
 
     @GetMapping("/users/{userId}/form")
     public String updateForm(Model model, @PathVariable String userId, HttpSession session) {
+
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null || !userId.equals(sessionUser.getUserId())) {
+        if (!userId.equals(sessionUser.getUserId())) {
             return "error/401";
         }
+
         // userId 로 user 찾기
         Optional<User> user = userService.findUser(userId);
         // user 가 없으면 error 페이지로
@@ -111,10 +110,12 @@ public class UserController {
 
     @PutMapping("/users/{userId}/update")
     public String updateUser(User newUser, @PathVariable String userId, HttpSession session) {
+
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null || !userId.equals(sessionUser.getUserId())) {
+        if (!userId.equals(sessionUser.getUserId())) {
             return "error/401";
         }
+
         logger.info("PUT /users/{}/update: request {} and update", userId, newUser);
         // user 수정
         try {
