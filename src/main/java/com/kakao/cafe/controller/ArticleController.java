@@ -84,8 +84,8 @@ public class ArticleController {
     public String removeArticle(@PathVariable Long articleId, @LoginCheck SessionUser sessionUser){
         ArticleResDto articleResDto = articleService.findArticleById(articleId);
         if(sessionUser == null || !sessionUser.getUserId().equals(articleResDto.getWriter())){
-            System.out.println("로그인 하지 않았거나, 권한이 없습니다.");
-            return "redirect:/users/login";
+            throw new IllegalArgumentException("로그인 하지 않았거나, 권한이 없습니다.");
+//            return "redirect:/users/login";
         }
 
         ArticleUpdateDto articleUpdateDto = ArticleUpdateDto.builder()

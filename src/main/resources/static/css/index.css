@@ -126,3 +126,14 @@ td {
     background-color: #ffcd00;
     color: black;
 }
+
+.error {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 148px;
+    margin-top : 20px;
+    margin-bottom: 40px;
+    font-size : 24px;
+}
