@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static com.kakao.cafe.common.exception.ExceptionMessage.ARTICLE_TITLE_LENGTH_UPPERBOUND_EXCEPTION;
 import static com.kakao.cafe.common.exception.ExceptionMessage.VALUE_LENGTH_LOWERBOUND_EXCEPTION;
 
 @Getter
@@ -41,15 +42,29 @@ public class Article {
     }
 
     public static Article valueOf(String userId, String title, String content) {
-        validateTitleLength(title, content);
+        validate(title, content);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String localDateTime = LocalDateTime.now().format(dateTimeFormatter);
         return new Article(userId, title, content, localDateTime);
     }
 
-    private static void validateTitleLength(String title, String content) {
-        if (title.trim().length() == 0 || content.trim().length() == 0) {
-            throw new IllegalArgumentException(VALUE_LENGTH_LOWERBOUND_EXCEPTION);
+    private static void validate(String title, String content) {
+        validateTitle(title);
+        validateContent(content);
+    }
+
+    private static void validateTitle(String title) {
+        if (title.trim().length() == 0) {
+            throw new IllegalArgumentException(VALUE_LENGTH_LOWERBOUND_EXCEPTION + "\nreason: title");
+        }
+        if(title.length() > TITLE_LENGTH_UPPERBOUND) {
+            throw new IllegalArgumentException(ARTICLE_TITLE_LENGTH_UPPERBOUND_EXCEPTION);
+        }
+    }
+
+    private static void validateContent(String content) {
+        if (content.trim().length() == 0) {
+            throw new IllegalArgumentException(VALUE_LENGTH_LOWERBOUND_EXCEPTION + "\nreason: content");
         }
     }
 
@@ -68,4 +83,6 @@ public class Article {
         this.title = title;
         this.content = contents;
     }
+
+    private static final int TITLE_LENGTH_UPPERBOUND = 20;
 }

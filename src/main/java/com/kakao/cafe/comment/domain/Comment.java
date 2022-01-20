@@ -37,7 +37,7 @@ public class Comment {
     }
 
     public static Comment valueOf(int articleId, String authorId, String content) {
-        validateContentLength(content);
+        validate(content);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String localDateTime = LocalDateTime.now().format(dateTimeFormatter);
         return new Comment(articleId, authorId, content, localDateTime);
@@ -50,9 +50,9 @@ public class Comment {
         return new Comment(id, articleId, authorId, content, createdAt);
     }
 
-    private static void validateContentLength(String content) throws IllegalArgumentException {
+    private static void validate(String content) throws IllegalArgumentException {
         if (content.trim().length() == 0) {
-            throw new IllegalArgumentException(VALUE_LENGTH_LOWERBOUND_EXCEPTION);
+            throw new IllegalArgumentException(VALUE_LENGTH_LOWERBOUND_EXCEPTION + "\nreason: content");
         }
     }
 }

@@ -70,7 +70,7 @@ public class UserService {
         log.info(this.getClass() + ": 회원 로그인");
         User user = userRepository.findByIdOrNull(userLoginRequest.userId);
         validateUserExistsOrThrowAuthFailure(user, userLoginRequest.userId);
-        user.validatePassword(userLoginRequest.password);
+        user.verifyPassword(userLoginRequest.password);
 
         return SessionedUser.valueOf(user);
     }
