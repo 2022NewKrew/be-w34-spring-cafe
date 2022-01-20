@@ -13,7 +13,6 @@ import com.kakao.cafe.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +22,6 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    @Autowired
     public PostService(PostRepository jdbcPostRepository, UserRepository jdbcUserRepository) {
         this.postRepository = jdbcPostRepository;
         this.userRepository = jdbcUserRepository;
