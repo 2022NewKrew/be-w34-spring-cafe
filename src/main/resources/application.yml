@@ -13,7 +13,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: flip
     password: flip.chae
-    url: jdbc:mysql://localhost:3306/kakaodb
+    url: jdbc:mysql://mysql_database:3306/kakaodb?serverTimezone=UTC
+
+  sql:
+    init:
+      mode: always
 
 server:
   servlet:

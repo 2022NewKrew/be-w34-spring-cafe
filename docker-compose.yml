@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  mysql_database:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: kakaodb
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+
+  spring_application:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql_database
