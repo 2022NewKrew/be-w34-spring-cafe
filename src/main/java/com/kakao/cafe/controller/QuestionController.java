@@ -1,11 +1,10 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.*;
+import com.kakao.cafe.controller.dto.*;
 import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.service.QuestionService;
 import com.kakao.cafe.web.meta.SessionConst;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

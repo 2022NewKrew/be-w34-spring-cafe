@@ -1,9 +1,8 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Question;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.QuestionDetailResponse;
-import com.kakao.cafe.dto.QuestionListResponse;
+import com.kakao.cafe.controller.dto.QuestionDetailResponse;
+import com.kakao.cafe.controller.dto.QuestionListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -55,8 +54,8 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
                 "q.id as questionId, q.writer as userId, q.title as title, q.contents as contents, q.created_date_time as created_date_time, u.nickname as writer " +
                 "from `question` as q join `user` as u " +
                 "on q.writer = u.id " +
-                "where q.is_deleted = false";
-        return jdbcTemplate.query(sql, questionDetailResponseRowMapper()).stream().findAny();
+                "where q.is_deleted = false and q.id = ?";
+        return jdbcTemplate.query(sql, questionDetailResponseRowMapper(), id).stream().findAny();
     }
 
     @Override

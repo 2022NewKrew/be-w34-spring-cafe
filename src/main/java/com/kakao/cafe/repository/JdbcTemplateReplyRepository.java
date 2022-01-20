@@ -1,8 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Reply;
-import com.kakao.cafe.dto.QuestionDetailResponse;
-import com.kakao.cafe.dto.ReplyListResponse;
+import com.kakao.cafe.controller.dto.ReplyListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

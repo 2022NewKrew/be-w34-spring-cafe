@@ -1,8 +1,8 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.dto.*;
 import com.kakao.cafe.domain.Question;
 import com.kakao.cafe.domain.Reply;
-import com.kakao.cafe.dto.*;
 import com.kakao.cafe.repository.QuestionRepository;
 import com.kakao.cafe.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
