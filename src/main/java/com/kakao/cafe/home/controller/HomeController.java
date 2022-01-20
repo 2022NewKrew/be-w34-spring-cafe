@@ -23,4 +23,9 @@ public class HomeController {
         model.addAttribute("articles", articles);
         return "/index";
     }
+
+    @GetMapping("/error")
+    public String error() {
+        return "/error";
+    }
 }
