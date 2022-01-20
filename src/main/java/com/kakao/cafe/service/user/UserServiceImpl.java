@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService{
         userRepository.update(User.builder()
                 .id(user.getId())
                 .userId(user.getUserId())
-                .password(userUpdateReqDto.getNewPassword())
+                .password(passwordEncoder.encode(userUpdateReqDto.getNewPassword()))
                 .name(userUpdateReqDto.getName())
                 .email(userUpdateReqDto.getEmail())
                 .build());
