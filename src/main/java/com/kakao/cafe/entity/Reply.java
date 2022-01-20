@@ -5,7 +5,7 @@ import com.kakao.cafe.dto.ReplyRequestDto;
 import java.time.LocalDateTime;
 
 public class Reply {
-    private int id;
+    private int replyId;
     private User user;
     private LocalDateTime createdTime;
     private String content;
@@ -18,11 +18,16 @@ public class Reply {
         this.articleId = articleId;
     }
 
-    public Reply(User user, LocalDateTime createdTime, String content, int articleId) {
+    public Reply(int replyId, User user, LocalDateTime createdTime, String content, int articleId) {
+        this.replyId = replyId;
         this.user = user;
         this.createdTime = createdTime;
         this.content = content;
         this.articleId = articleId;
+    }
+
+    public int getReplyId() {
+        return replyId;
     }
 
     public User getUser() {

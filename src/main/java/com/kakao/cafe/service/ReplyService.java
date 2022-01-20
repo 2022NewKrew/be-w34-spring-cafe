@@ -7,6 +7,7 @@ import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.ReplyRepository;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,5 +29,16 @@ public class ReplyService {
                 .stream()
                 .map(ReplyDto::entityToDto)
                 .collect(Collectors.toList());
+    }
+
+    public boolean isDeletable(String replyId, HttpSession httpSession) {
+        User sessionedUser = (User) httpSession.getAttribute("sessionedUser");
+        if(sessionedUser == null) return false;
+        Reply reply = replyRepository.findById(replyId);
+        return sessionedUser.getId() == reply.getUser().getId();
+    }
+
+    public void deleteById(String index) {
+        replyRepository.deleteById(index);
     }
 }

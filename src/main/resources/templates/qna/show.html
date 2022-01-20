@@ -50,6 +50,10 @@
                                         <p class="comment-content comment-time">
                                             {{createdTime}}
                                         </p>
+                                        <form method="post" action="/articles/{{articleId}}/reply/{{replyId}}">
+                                            <input class="post-write-btn" name="_method" type="hidden" value="DELETE"/>
+                                            <input class="post-write-btn" type="submit" value="삭제"/>
+                                        </form>
                                     </div>
                                 </article>
                                 {{/replyList}}
@@ -64,7 +68,6 @@
                                                   placeholder="내용을 입력하세요"></textarea>
                                     </div>
                                     <input class="post-write-btn" type="submit" value="등록"/>
-
                                 </form>
                             </div>
                         </div>

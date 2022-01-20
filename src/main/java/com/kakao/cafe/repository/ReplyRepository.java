@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ReplyRepository {
     Reply save(Reply reply);
-
     List<Reply> findByArticleId(String articleId);
+    Reply findById(String replyId);
+    void deleteById(String index);
 }
