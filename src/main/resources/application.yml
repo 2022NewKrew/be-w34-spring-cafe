@@ -1,6 +1,8 @@
 spring.config.import: vault://secret/kina-spring-cafe/secret/kina/dev
 spring.cloud.vault:
   authentication: APPROLE
+  app-role.role-id: 481f6139-aa3a-7863-4cca-7ab76844b3de
+  app-role.secret-id: cf4a88b5-fa6e-f578-f602-fcbac4e340fb
   host: vault-beta.daumkakao.io
   port: 443
   scheme: https

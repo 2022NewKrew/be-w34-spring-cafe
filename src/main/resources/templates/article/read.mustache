@@ -18,6 +18,35 @@
                     {{article.content}}
                 </div>
             </div>
+            <div class="row p-3 m-3 replyList"></div>
+            {{#auth}}
+                <div class="row border p-3 m-3">
+                    <div class="row">
+                        <div class="col mb-3">{{auth.username}}</div>
+                        <input name="writerEmail" type="hidden" name="entry" value="{{auth.email}}" readonly>
+                        <input name="articleId" type="hidden" name="entry" value="{{article.articleId}}" readonly>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group">
+                        <textarea name="content" class="form-control" placeholder="댓글을 입력하세요."
+                                  aria-label="With textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col"></div>
+                        <div class="col"></div>
+                        <div class="col">
+                            <div class="d-flex flex-column w-100 mt-5">
+                                <button onclick="addReply()" class="btn btn-dark p-3">작성하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/auth}}
+
             {{#auth.email}}
                 <div class="row">
                     <div class="col"></div>
@@ -35,4 +64,40 @@
         </div>
     </section>
 </main>
+<script>
+    loadJSONData();
+
+    function loadJSONData() {
+        $.getJSON('/replies/article/{{articleId}}', function (arr) {
+            let str = "";
+            $.each(arr, function (idx, reply) {
+                str += '<div class="row p-2 m-2 ">' +
+                        '<div class="col-md-auto"><h4 class="m-auto">' + reply.writerUsername + '</h4></div>' +
+                        '<div class="col m-auto">' + reply.content + '</div>' +
+                        '</div>'
+            });
+            $(".replyList").html(str);
+        })
+    }
+
+    function addReply() {
+        const reply = {
+            "articleId": $('input[name="articleId"]').val(),
+            "writerEmail": $('input[name="writerEmail"]').val(),
+            "content": $('textarea[name="content"]').val()
+        }
+        $.ajax({
+            url: '/replies',
+            method: 'post',
+            data: JSON.stringify(reply),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'text',
+            success: function (data) {
+                alert("댓글이 등록되었습니다.");
+                loadJSONData();
+            }
+        })
+        $('textarea[name="content"]').val('');
+    }
+</script>
 {{>layout/footer}}
