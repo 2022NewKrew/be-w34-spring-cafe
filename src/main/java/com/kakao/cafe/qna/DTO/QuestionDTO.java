@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class QuestionDTO {
-    String writer;
-    String title;
-    String content;
+    private final String writer;
+    private final String title;
+    private final String content;
 }
