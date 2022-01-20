@@ -1,7 +1,7 @@
 package com.kakao.cafe.Repository;
 
-import com.kakao.cafe.model.Post.PostCreateRequestDto;
-import com.kakao.cafe.model.Post.PostResponseDto;
+import com.kakao.cafe.Dto.Post.PostRequestDto;
+import com.kakao.cafe.Dto.Post.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,37 +13,48 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class PostDao implements BaseDao<PostResponseDto, Long, PostCreateRequestDto>{
+public class PostDao {
     private final JdbcTemplate jdbcTemplate;
     private final PostMapper postMapper = new PostMapper();
 
-    @Override
     public List<PostResponseDto> findAll() {
-        String sql = "SELECT ID, TITLE, CONTENT FROM POST";
+        String sql = "SELECT ID, WRITER, TITLE, CONTENT FROM POST";
 
         return jdbcTemplate.query(sql, postMapper);
     }
 
-    @Override
-    public void save(PostCreateRequestDto post) {
-        String sql = "INSERT INTO POST VALUES (?, ?, ?)";
+    public void insert(PostRequestDto post) {
+        String sql = "INSERT INTO POST(WRITER, TITLE, CONTENT) VALUES (?, ?, ?)";
 
         jdbcTemplate.update(sql,
-                post.getId(), post.getTitle(), post.getContent());
+                post.getWriter(), post.getTitle(), post.getContent());
     }
 
-    @Override
-    public PostResponseDto findById(Long id) {
-        String sql = "SELECT ID, TITLE, CONTENT FROM POST WHERE ID = ?";
+    public PostResponseDto findById(int id) {
+        String sql = "SELECT ID, WRITER, TITLE, CONTENT FROM POST WHERE ID = ?";
 
         return jdbcTemplate.queryForObject(sql, postMapper, id);
+    }
+
+    public void update(int id, PostRequestDto post) {
+        String sql = "UPDATE POST SET TITLE=?, CONTENT=? WHERE ID=?";
+
+        jdbcTemplate.update(sql,
+                post.getTitle(), post.getContent(), id);
+    }
+
+    public void deleteById(int id) {
+        String sql = "DELETE FROM POST WHERE ID=?";
+
+        jdbcTemplate.update(sql, id);
     }
 
     private static class PostMapper implements RowMapper<PostResponseDto> {
         @Override
         public PostResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new PostResponseDto(
-                    rs.getLong("ID"),
+                    rs.getInt("ID"),
+                    rs.getString("WRITER"),
                     rs.getString("TITLE"),
                     rs.getString("CONTENT")
             );

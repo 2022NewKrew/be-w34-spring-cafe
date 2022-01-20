@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.Service.UserService;
-import com.kakao.cafe.model.User.UserCreateRequestDto;
-import com.kakao.cafe.model.User.UserResponseDto;
+import com.kakao.cafe.Dto.User.UserCreateRequestDto;
+import com.kakao.cafe.Dto.User.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     @GetMapping
@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String profile(@PathVariable Long id, Model model) {
+    public String profile(@PathVariable int id, Model model) {
         logger.info("[GET] 회원 프로필 페이지");
 
         UserResponseDto findUser = userService.findUserById(id);

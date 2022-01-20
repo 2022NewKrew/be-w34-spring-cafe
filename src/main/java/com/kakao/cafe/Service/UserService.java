@@ -1,8 +1,8 @@
 package com.kakao.cafe.Service;
 
 import com.kakao.cafe.Repository.UserDao;
-import com.kakao.cafe.model.User.UserCreateRequestDto;
-import com.kakao.cafe.model.User.UserResponseDto;
+import com.kakao.cafe.Dto.User.UserCreateRequestDto;
+import com.kakao.cafe.Dto.User.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +18,10 @@ public class UserService {
     }
 
     public void signUp(UserCreateRequestDto user) {
-        userDao.save(user);
+        userDao.insert(user);
     }
 
-    public UserResponseDto findUserById(Long id) {
+    public UserResponseDto findUserById(int id) {
         return userDao.findById(id);
     }
 }

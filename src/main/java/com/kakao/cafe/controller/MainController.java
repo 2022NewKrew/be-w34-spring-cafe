@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.Service.PostService;
-import com.kakao.cafe.model.Post.PostResponseDto;
+import com.kakao.cafe.Dto.Post.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
 
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final PostService postService;
 
     @GetMapping
