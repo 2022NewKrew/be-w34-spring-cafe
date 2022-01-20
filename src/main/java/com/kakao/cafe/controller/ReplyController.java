@@ -17,14 +17,15 @@ public class ReplyController {
 
     @PostMapping
     public String createReply(@PathVariable int articleId, @ModelAttribute ReplyDto replyDto, HttpSession httpSession) {
-        Object sessionId = httpSession.getAttribute("sessionId");
         replyService.create(replyDto);
         return String.format("redirect:/articles/%d", articleId);
     }
 
-    @DeleteMapping
-    public String deleteReply(@PathVariable int articleId) {
-        return "";
+    @DeleteMapping("{id}")
+    public String deleteReply(@PathVariable int articleId, @PathVariable int id, HttpSession httpSession) {
+        Object sessionId = httpSession.getAttribute("sessionId");
+        replyService.delete(id, String.valueOf(sessionId));
+        return String.format("redirect:/articles/%d", articleId);
     }
 
 

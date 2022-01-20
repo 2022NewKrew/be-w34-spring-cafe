@@ -9,6 +9,7 @@ CREATE TABLE article
     content varchar(255),
     writer varchar(255) not null,
     date timestamp,
+    deleted boolean,
     primary key(id)
 );
 
@@ -30,5 +31,5 @@ CREATE TABLE reply
     date timestamp,
     articleId integer not null,
     primary key(id),
-    foreign key(articleId) references article(id)
+    foreign key(articleId) references article(id) on delete cascade
 );

@@ -21,22 +21,23 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from article", articleRowMapper());
+        return jdbcTemplate.query("select * from article where deleted = ?", articleRowMapper(), false);
     }
 
     @Override
     public Optional<Article> findById(int id) {
-        List<Article> result = jdbcTemplate.query("select * from article where id = ?", articleRowMapper(), id);
+        List<Article> result = jdbcTemplate.query("select * from article where id = ? and deleted = ?", articleRowMapper(), id, false);
         return result.stream().findAny();
     }
 
     @Override
     public int save(Article article) {
-        return jdbcTemplate.update("insert into article (title, content, writer, date) values (?, ?, ?, ?)",
+        return jdbcTemplate.update("insert into article (title, content, writer, date, deleted) values (?, ?, ?, ?, ?)",
                 article.getTitle(),
                 article.getContent(),
                 article.getWriter(),
-                LocalDateTime.now());
+                article.getDate(),
+                article.isDeleted());
     }
 
     @Override
@@ -54,6 +55,12 @@ public class JdbcArticleRepository implements ArticleRepository {
                 article.getId());
     }
 
+    public void softDelete(int id) {
+        jdbcTemplate.update("update article set deleted = ? where id = ?",
+                true,
+                id);
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
             Article article = new Article(rs.getInt("id"),
@@ -61,7 +68,8 @@ public class JdbcArticleRepository implements ArticleRepository {
                     rs.getString("content"),
                     rs.getString("writer"),
                     rs.getObject("date", LocalDateTime.class),
-                    replyRepository.findByArticleId(rs.getInt("id"))
+                    replyRepository.findByArticleId(rs.getInt("id")),
+                    rs.getBoolean("deleted")
             );
             return article;
         };

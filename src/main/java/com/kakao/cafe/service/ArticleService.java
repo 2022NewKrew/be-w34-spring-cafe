@@ -1,8 +1,11 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.dto.ArticleDto;
+import com.kakao.cafe.controller.dto.ReplyDto;
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import java.util.stream.Collectors;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ReplyService replyService;
 
     public List<ArticleDto> findAll() {
         return articleRepository
@@ -53,7 +57,8 @@ public class ArticleService {
     public void delete(int id, String writer) {
         Article article = findByIdFromRepository(id);
         matchWriter(writer, article);
-        articleRepository.delete(article);
+        matchWriterOfReplies(writer, article);
+        articleRepository.softDelete(id);
     }
 
     private Article findByIdFromRepository(int id) {
@@ -63,9 +68,14 @@ public class ArticleService {
 
     private void matchWriter(String writer, Article article) {
         if ( !article.matchWriter(writer)) {
-            throw new IllegalArgumentException("다른 사람의 글을 수정할 수 없다.");
+            throw new IllegalArgumentException("게시물 접근 권한이 없습니다.");
         }
     }
 
+    private void matchWriterOfReplies(String writer, Article article) {
+        if (!article.matchWriterOfReplies(writer)) {
+            throw new IllegalArgumentException("댓글 접근 권한이 없습니다.");
+        }
+    }
 
 }

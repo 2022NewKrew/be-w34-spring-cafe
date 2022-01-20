@@ -1,7 +1,10 @@
 package com.kakao.cafe.domain;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
+@Getter
 public class Reply {
 
     private int id;
@@ -26,25 +29,6 @@ public class Reply {
         this.articleId = articleId;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public int getArticleId() {
-        return articleId;
-    }
 
     public void setContent(String content) {
         this.content = content;

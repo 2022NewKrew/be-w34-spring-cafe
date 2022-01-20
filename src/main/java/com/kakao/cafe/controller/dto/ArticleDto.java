@@ -18,26 +18,28 @@ public class ArticleDto {
     private String writer;
     private LocalDateTime date;
     private List<Reply> replies = new ArrayList<>();
+    private boolean deleted;
 
     private ArticleDto() {
     }
 
-    private ArticleDto(int id, String title, String content, String writer, LocalDateTime date, List<Reply> replies) {
+    private ArticleDto(int id, String title, String content, String writer, LocalDateTime date, List<Reply> replies, boolean deleted) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
         this.date = date;
         this.replies = replies;
+        this.deleted = deleted;
     }
 
     public Article toEntity() {
-        return new Article(title, content, writer);
+        return new Article(title, content, writer, LocalDateTime.now(), false);
     }
 
     public static ArticleDto from(Article article) {
         return new ArticleDto(article.getId(), article.getTitle(), article.getContent(),
-                article.getWriter(), article.getDate(), article.getReplies());
+                article.getWriter(), article.getDate(), article.getReplies(), article.isDeleted());
     }
 
     @Override
