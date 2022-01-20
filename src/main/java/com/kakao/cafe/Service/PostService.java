@@ -23,15 +23,15 @@ public class PostService {
         return postDao.findAll();
     }
 
-    public PostResponseDto findPostById(Long id) {
+    public PostResponseDto findPostById(int id) {
         return postDao.findById(id);
     }
 
-    public void editQuestion(Long id, PostRequestDto post) {
+    public void editQuestion(int id, PostRequestDto post) {
         postDao.update(id, post);
     }
 
-    public void deleteById(Long id, LoginAuthDto authDto) {
+    public void deleteById(int id, LoginAuthDto authDto) {
         if (!postDao.findById(id).getWriter().equals(authDto.getUserId())) {
             throw new NotAuthorizedException("게시글 삭제 권한이 없습니다.");
         }

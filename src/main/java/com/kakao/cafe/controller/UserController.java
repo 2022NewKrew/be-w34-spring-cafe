@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String profile(@PathVariable Long id, Model model) {
+    public String profile(@PathVariable int id, Model model) {
         logger.info("[GET] 회원 프로필 페이지");
 
         UserResponseDto findUser = userService.findUserById(id);

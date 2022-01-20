@@ -30,20 +30,20 @@ public class PostDao {
                 post.getWriter(), post.getTitle(), post.getContent());
     }
 
-    public PostResponseDto findById(Long id) {
+    public PostResponseDto findById(int id) {
         String sql = "SELECT ID, WRITER, TITLE, CONTENT FROM POST WHERE ID = ?";
 
         return jdbcTemplate.queryForObject(sql, postMapper, id);
     }
 
-    public void update(Long id, PostRequestDto post) {
+    public void update(int id, PostRequestDto post) {
         String sql = "UPDATE POST SET TITLE=?, CONTENT=? WHERE ID=?";
 
         jdbcTemplate.update(sql,
                 post.getTitle(), post.getContent(), id);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(int id) {
         String sql = "DELETE FROM POST WHERE ID=?";
 
         jdbcTemplate.update(sql, id);
@@ -53,7 +53,7 @@ public class PostDao {
         @Override
         public PostResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new PostResponseDto(
-                    rs.getLong("ID"),
+                    rs.getInt("ID"),
                     rs.getString("WRITER"),
                     rs.getString("TITLE"),
                     rs.getString("CONTENT")

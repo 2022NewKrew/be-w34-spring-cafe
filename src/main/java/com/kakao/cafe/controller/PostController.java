@@ -46,7 +46,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public String showQuestion(@PathVariable Long id, Model model, HttpSession session) {
+    public String showQuestion(@PathVariable int id, Model model, HttpSession session) {
         logger.info("[GET] 게시글 {} 상세보기 페이지", id);
 
         LoginAuthDto authInfo = (LoginAuthDto) session.getAttribute("authInfo");
@@ -63,7 +63,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}/form")
-    public String editForm(@PathVariable Long id, HttpSession session, Model model) {
+    public String editForm(@PathVariable int id, HttpSession session, Model model) {
         logger.info("[GET] 게시글 {} 수정 페이지", id);
 
         LoginAuthDto authInfo = (LoginAuthDto) session.getAttribute("authInfo");
@@ -79,7 +79,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public String editPost(@PathVariable Long id, String title, String content, HttpSession session) {
+    public String editPost(@PathVariable int id, String title, String content, HttpSession session) {
         logger.info("[PUT] 게시글 수정 / title:{} content:{}", title, content);
 
         LoginAuthDto authInfo = (LoginAuthDto) session.getAttribute("authInfo");
@@ -89,7 +89,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public String deletePost(@PathVariable Long id, HttpSession session) {
+    public String deletePost(@PathVariable int id, HttpSession session) {
         logger.info("[DELETE] 게시글 삭제");
 
         LoginAuthDto authDto = (LoginAuthDto) session.getAttribute("authInfo");

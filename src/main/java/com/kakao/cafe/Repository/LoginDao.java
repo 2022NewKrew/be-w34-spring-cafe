@@ -30,7 +30,7 @@ public class LoginDao {
         @Override
         public LoginAuthDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new LoginAuthDto(
-                    rs.getLong("ID"),
+                    rs.getInt("ID"),
                     rs.getString("USERID"),
                     rs.getString("EMAIL"),
                     rs.getString("PASSWORD")

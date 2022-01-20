@@ -21,7 +21,7 @@ public class UserService {
         userDao.insert(user);
     }
 
-    public UserResponseDto findUserById(Long id) {
+    public UserResponseDto findUserById(int id) {
         return userDao.findById(id);
     }
 }

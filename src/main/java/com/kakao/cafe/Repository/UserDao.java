@@ -30,7 +30,7 @@ public class UserDao {
                 user.getUserId(), user.getNickname(), user.getEmail(), user.getPassword());
     }
 
-    public UserResponseDto findById(Long id) {
+    public UserResponseDto findById(int id) {
         String sql = "SELECT ID, USERID, NICKNAME, EMAIL FROM USERS WHERE ID = ?";
 
         return jdbcTemplate.queryForObject(sql, userMapper, id);
@@ -40,7 +40,7 @@ public class UserDao {
         @Override
         public UserResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new UserResponseDto(
-                    rs.getLong("ID"),
+                    rs.getInt("ID"),
                     rs.getString("USERID"),
                     rs.getString("NICKNAME"),
                     rs.getString("EMAIL")
