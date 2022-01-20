@@ -1,6 +1,6 @@
 package com.kakao.cafe.dto;
 
-public class UserLoginResponse {
+public class UserLoginRequest {
     private String email;
     private String password;
 

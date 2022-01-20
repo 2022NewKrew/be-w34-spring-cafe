@@ -2,7 +2,8 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dao.UserDao;
-import com.kakao.cafe.dto.UserLoginResponse;
+import com.kakao.cafe.dto.UserLoginRequest;
+import com.kakao.cafe.exception.SaveFailException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,30 +12,29 @@ import java.util.List;
 public class UserService {
     private final UserDao userDao;
 
-    public UserService() {
-        userDao = UserDao.getInstance();
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
     }
 
-    public boolean createUser(User user) {
-        final boolean isDuplicateUser = userDao.checkDuplicateUser(user);
+    public void save(User user) {
+        final boolean isExistUser = userDao.existsByEmailOrNickname(user.getEmail(), user.getNickname());
 
-        if (isDuplicateUser) {
-            return false;
+        if (isExistUser) {
+            throw new SaveFailException();
         }
 
-        userDao.createUser(user);
-        return true;
+        userDao.save(user);
     }
 
-    public List<User> getUsers() {
-        return userDao.getUsers();
+    public List<User> findAll() {
+        return userDao.findAll();
     }
     
-    public User getUser(long userId) {
-        return userDao.getUser(userId);
+    public User findByUserId(long userId) {
+        return userDao.findByUserId(userId);
     }
 
-    public User loginUser(UserLoginResponse userLoginResponse) {
-        return userDao.loginUser(userLoginResponse.getEmail(), userLoginResponse.getPassword());
+    public User findByEmailAndPassword(UserLoginRequest userLoginRequest) {
+        return userDao.findByEmailAndPassword(userLoginRequest.getEmail(), userLoginRequest.getPassword());
     }
 }

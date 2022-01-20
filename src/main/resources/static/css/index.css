@@ -34,6 +34,10 @@
     color: white;
 }
 
+.qna-modify {
+    float: right;
+}
+
 .black-component:hover {
     background-color: #ffcd00;
     color: black;

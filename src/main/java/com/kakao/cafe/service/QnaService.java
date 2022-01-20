@@ -26,4 +26,12 @@ public class QnaService {
         qnaDao.updateViews(qnaId);
         return qnaDao.findByQnaId(qnaId);
     }
+
+    public void update(Qna qna) {
+        qnaDao.update(qna);
+    }
+
+    public void delete(long qnaId) {
+        qnaDao.deleteByQnaId(qnaId);
+    }
 }
