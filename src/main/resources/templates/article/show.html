@@ -11,13 +11,13 @@
 
         function deleteReply(replyID) {
             const deleteBtn = $('#reply-' + replyID + ' button');
-            const url = '{{article.id}}/reply/' + replyID
+            const url = '/api/articles/{{article.id}}/reply/' + replyID
             $.ajax({
                 type: 'delete',
                 url: url,
                 dataType: 'json',
                 error: function (xhr, status) {
-                    console.log("error");
+                    alert(xhr.responseText);
                 },
                 success: function (json) {
                     if (json.success) {
@@ -43,7 +43,7 @@
 
         $(function () {
             $.ajax({
-                url: "/articles/{{article.id}}/reply/",
+                url: "/api/articles/{{article.id}}/reply/",
                 method: "GET",
                 dataType: "json"
             }).done(function (json) {
@@ -57,14 +57,14 @@
                     location.reload();
                 }
             }).fail(function (xhr, status, errorThrown) {
-                alert("잠시후 다시 시도해주세요.");
+                alert(xhr.responseText);
                 location.reload();
             })
         })
 
         function createReply() {
             $.ajax({
-                url: "/articles/{{article.id}}/reply/",
+                url: "/api/articles/{{article.id}}/reply/",
                 data: $(".submit-write").serialize() + "&lastReplyId=" + lastReplyId,
                 method: "POST",
                 dataType: "json"
@@ -80,7 +80,7 @@
                     location.reload();
                 }
             }).fail(function (xhr, status, errorThrown) {
-                alert("잠시후 다시 시도해주세요.");
+                alert(xhr.responseText);
                 location.reload();
             })
         }

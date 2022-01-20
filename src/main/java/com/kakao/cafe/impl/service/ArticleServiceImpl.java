@@ -1,9 +1,6 @@
 package com.kakao.cafe.impl.service;
 
-import com.kakao.cafe.dto.ArticleDTO;
-import com.kakao.cafe.dto.ReplyDTO;
-import com.kakao.cafe.dto.ReplyRestResponseDTO;
-import com.kakao.cafe.dto.UserDTO;
+import com.kakao.cafe.dto.*;
 import com.kakao.cafe.exception.NoChangeException;
 import com.kakao.cafe.exception.NoModifyPermissionException;
 import com.kakao.cafe.exception.OtherUserReplyExistException;
@@ -11,6 +8,7 @@ import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -19,6 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Transactional
 @Service("articleService")
 public class ArticleServiceImpl implements ArticleService {
@@ -32,23 +31,34 @@ public class ArticleServiceImpl implements ArticleService {
     ReplyRepository replyRepository;
 
     @Override
-    public long insertArticle(ArticleDTO article) {
-        return articleRepository.insertArticle(article);
+    public void insertArticle(ArticleDTO article) {
+        if (articleRepository.insertArticle(article) < 1)
+            throw new NoChangeException(Constants.DEFAULT_ERROR_MESSAGE);
+        log.info("create Article -> Writer : {}, Title : {}", article.getWriterId(), article.getTitle());
     }
 
     @Override
-    public void insertReply(ReplyDTO reply, long userId) {
+    public RestResponseDTO insertReplyAndGetReplies(ReplyDTO reply, Long userId, long lastReplyId) {
         reply.setWriterID(userId);
         if (replyRepository.insertReply(reply) < 1) {
             throw new NoChangeException(Constants.DEFAULT_ERROR_MESSAGE);
         }
+
+        log.info("create Reply -> Article : {}, Writer : {}", reply.getArticleID(), userId);
+        return getArticleReplies(reply.getArticleID(), lastReplyId);
     }
 
-    @Override
-    public void validArticleOwnerShip(ArticleDTO article, UserDTO user) {
+    private void validArticleOwnerShip(ArticleDTO article, UserDTO user) {
         if (!Objects.equals(article.getWriterId(), user.getId())) {
             throw new NoModifyPermissionException(ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE);
         }
+    }
+
+    public void getArticleForm(long articleId, UserDTO user, Model model) {
+        ArticleDTO article = getArticleById(articleId);
+        validArticleOwnerShip(article, user);
+        model.addAttribute("article", article);
+        log.info("get Article(Form) -> UserID : {}, ArticleId : {}", user.getId(), article.getId());
     }
 
     @Override
@@ -68,6 +78,7 @@ public class ArticleServiceImpl implements ArticleService {
         model.addAttribute("isOwner", Objects.equals(article.getWriterId(), user.getId()));
         model.addAttribute("article", article);
         model.addAttribute("articleId", articleId);
+        log.info("get Article -> articleId : {}", articleId);
     }
 
     @Override
@@ -78,10 +89,13 @@ public class ArticleServiceImpl implements ArticleService {
         if (articleRepository.updateArticle(article.getId(), article) < 1) {
             throw new NoChangeException(NO_UPDATE_MESSAGE);
         }
+        log.info("update Article -> ID : {}, Writer : {}, Title : {}", id, article.getWriterId(), article.getTitle());
     }
 
     @Override
-    public void deleteArticle(long id, ArticleDTO article, UserDTO user) {
+    public void deleteArticle(long id, UserDTO user) {
+        ArticleDTO article = getArticleById(id);
+
         if (!Objects.equals(article.getWriterId(), user.getId())) {
             throw new NoModifyPermissionException(ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE);
         }
@@ -91,11 +105,12 @@ public class ArticleServiceImpl implements ArticleService {
         if (replyRepository.deleteAllReplies(id) < 0 || articleRepository.deleteArticle(id) <= 0) {
             throw new NoChangeException(NO_DELETE_MESSAGE);
         }
+        log.info("delete Article -> ID : {}, Writer : {}, Title : {}", id, article.getWriterId(), article.getTitle());
     }
 
 
     @Override
-    public void deleteReply(long userId, long replyId) {
+    public RestResponseDTO deleteReply(long userId, long articleId, long replyId) {
         ReplyDTO reply = replyRepository.getReplyById(replyId);
         if (reply.getWriterID() != userId) {
             throw new NoModifyPermissionException(ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE);
@@ -103,6 +118,9 @@ public class ArticleServiceImpl implements ArticleService {
         if (replyRepository.deleteReply(replyId) <= 0) {
             throw new NoChangeException(NO_DELETE_MESSAGE);
         }
+
+        log.info("delete Reply -> ID : {}, Article : {}, Writer : {}", replyId, articleId, userId);
+        return new RestResponseDTO(true);
     }
 
     @Override

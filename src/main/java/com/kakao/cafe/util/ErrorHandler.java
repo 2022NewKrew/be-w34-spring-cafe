@@ -1,5 +1,11 @@
 package com.kakao.cafe.util;
 
+import com.kakao.cafe.controller.ArticleController;
+import com.kakao.cafe.controller.UserController;
+import com.kakao.cafe.exception.NoChangeException;
+import com.kakao.cafe.exception.NoModifyPermissionException;
+import com.kakao.cafe.exception.OtherUserReplyExistException;
+import com.kakao.cafe.exception.WrongPasswordException;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -9,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Map;
 
-@ControllerAdvice
+@ControllerAdvice(assignableTypes = {ArticleController.class, UserController.class})
 public class ErrorHandler {
     private static final Map<String, String> fieldMap;
     private static final String FIELD_ERROR_MESSAGE_FORMAT = "%s의 내용이 올바르지 않습니다. (%s)";
@@ -49,6 +55,13 @@ public class ErrorHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public String handleBindException(HttpRequestMethodNotSupportedException exception, Model model) {
         model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, Constants.PAGE_NOT_FOUND_ERROR_MESSAGE);
+
+        return Constants.ERROR_PAGE_NAME;
+    }
+
+    @ExceptionHandler({NoChangeException.class, NoModifyPermissionException.class, OtherUserReplyExistException.class, WrongPasswordException.class})
+    public String handleControllableExceptions(Exception exception, Model model) {
+        model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, exception.getMessage());
 
         return Constants.ERROR_PAGE_NAME;
     }
