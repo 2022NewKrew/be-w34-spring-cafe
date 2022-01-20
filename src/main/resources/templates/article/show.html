@@ -6,11 +6,86 @@
     <link href="/css/post/show.css" rel="stylesheet">
 
     <script>
+        let replyCount = 0;
+        let lastReplyId = 0;
+
         function deleteReply(replyID) {
-            let form = document.getElementById("deleteReplyForm")
-            form.action = '{{article.id}}/reply/' + replyID
-            form.submit();
+            const deleteBtn = $('#reply-' + replyID + ' button');
+            const url = '/api/articles/{{article.id}}/reply/' + replyID
+            $.ajax({
+                type: 'delete',
+                url: url,
+                dataType: 'json',
+                error: function (xhr, status) {
+                    alert(xhr.responseText);
+                },
+                success: function (json) {
+                    if (json.success) {
+                        deleteBtn.closest("article").remove();
+                        replyCount--;
+                        $('#replyCount').text("댓글 " + replyCount + "개")
+                    } else {
+                        alert(json.message);
+                    }
+                }
+            });
         }
+
+        function addReplies(jsonList) {
+            const answerTemplate = $("#replyTemplate").html();
+            for (const i in jsonList) {
+                const reply = jsonList[i];
+                const template = answerTemplate.format(reply.id, reply.writerName, reply.contents, reply.time);
+                $(".submit-write").before(template)
+                //$('.submit-write').before(article)
+            }
+        }
+
+        $(function () {
+            $.ajax({
+                url: "/api/articles/{{article.id}}/reply/",
+                method: "GET",
+                dataType: "json"
+            }).done(function (json) {
+                if (json.success) {
+                    replyCount = json.replyList.length;
+                    $('#replyCount').text("댓글 " + replyCount + "개")
+                    lastReplyId = json.replyList[json.replyList.length - 1].id;
+                    addReplies(json.replyList);
+                } else {
+                    alert(json.message);
+                    location.reload();
+                }
+            }).fail(function (xhr, status, errorThrown) {
+                alert(xhr.responseText);
+                location.reload();
+            })
+        })
+
+        function createReply() {
+            $.ajax({
+                url: "/api/articles/{{article.id}}/reply/",
+                data: $(".submit-write").serialize() + "&lastReplyId=" + lastReplyId,
+                method: "POST",
+                dataType: "json"
+            }).done(function (json) {
+                if (json.success) {
+                    replyCount += json.replyList.length;
+                    $('#replyCount').text("댓글 " + replyCount + "개");
+                    lastReplyId = json.replyList[json.replyList.length - 1].id;
+                    addReplies(json.replyList);
+                    $('#contents').val('');
+                } else {
+                    alert(json.message);
+                    location.reload();
+                }
+            }).fail(function (xhr, status, errorThrown) {
+                alert(xhr.responseText);
+                location.reload();
+            })
+        }
+
+
     </script>
 </head>
 <body>
@@ -51,37 +126,20 @@
 
                 <div class="post-comment">
                     <div class="post-comment-slipp">
-                        <p class="post-comment-count">댓글 {{replies.length}}개</p>
+                        <p class="post-comment-count" id="replyCount">댓글 {{replies.length}}개</p>
                         <div class="post-comment-slipp-articles">
-                            {{#replies}}
-                            <article class="comment" id="answer-1405">
-                                <div class="article-text">
-                                    <p class="comment-content comment-author-name">{{writerName}}</p>
-                                    <div class="comment-content comment-doc">
-                                        <p>{{contents}}</p>
-                                        {{#isOwner}}
-                                        <button class="post-write-btn" onclick="deleteReply({{id}})"
-                                                style="float: right;background-color: red">삭제
-                                        </button>
-                                        {{/isOwner}}
-                                    </div>
-                                    <p class="comment-content comment-time">
-                                        {{time}}
-                                    </p>
-                                </div>
-                            </article>
-                            {{/replies}}
-                            <form action="/articles/{{article.id}}/reply/" class="submit-write" method="post">
+
+                            <form class="submit-write" onsubmit="return false">
                                 <div class="comment-writer-container">
                                     <input class="comment-writer" id="writer" name="writer" readonly
                                            value="{{sessionUser.userId}}"/>
                                 </div>
-                                <input name="articleID" readonly type="hidden" value="{{article.id}}"/>
+                                <input id="articleID" name="articleID" readonly type="hidden" value="{{article.id}}"/>
                                 <div class="form-group">
                                     <textarea class="form-control" id="contents" name="contents"
                                               placeholder="내용을 입력하세요"></textarea>
                                 </div>
-                                <input class="post-write-btn" type="submit" value="등록"/>
+                                <button class="post-write-btn" onclick="createReply()">등록</button>
                             </form>
                         </div>
                     </div>
@@ -94,6 +152,22 @@
     <input name="_method" type="hidden" value="DELETE"/>
 
 </form>
+<script id="replyTemplate" type="text/template">
+    <article class="comment" id="reply-{0}">
+        <div class="article-text">
+            <p class="comment-content comment-author-name">{1}</p>
+            <div class="comment-content comment-doc">
+                <p>{2}</p>
+                <button class="post-write-btn" onclick="deleteReply('{0}')"
+                        style="float: right;">삭제
+                </button>
+            </div>
+            <p class="comment-content comment-time">
+                {3}
+            </p>
+        </div>
+    </article>
+</script>
 
 {{>partial/footer}}
 

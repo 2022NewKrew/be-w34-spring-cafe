@@ -1,20 +1,18 @@
 package com.kakao.cafe.service;
 
 
-import com.kakao.cafe.dto.ArticleDTO;
-import com.kakao.cafe.dto.ReplyDTO;
-import com.kakao.cafe.dto.UserDTO;
+import com.kakao.cafe.dto.*;
 import org.springframework.ui.Model;
 
 import java.util.List;
 
 public interface ArticleService {
 
-    long insertArticle(ArticleDTO article);
+    void insertArticle(ArticleDTO article);
 
-    void insertReply(ReplyDTO reply, long userId);
+    RestResponseDTO insertReplyAndGetReplies(ReplyDTO reply, Long userId, long lastReplyId);
 
-    void validArticleOwnerShip(ArticleDTO article, UserDTO user);
+    void getArticleForm(long articleId, UserDTO user, Model model);
 
     List<ArticleDTO> getArticleList();
 
@@ -24,7 +22,10 @@ public interface ArticleService {
 
     void updateArticle(UserDTO user, long id, ArticleDTO article);
 
-    void deleteArticle(long id, ArticleDTO article, UserDTO user);
+    void deleteArticle(long id, UserDTO user);
 
-    void deleteReply(long userId, long replyId);
+    RestResponseDTO deleteReply(long userId, long articleId, long replyId);
+
+    // lastReplyId : 사용자에게 로딩된 마지막 댓글 다음의 내용을 리턴하기 위해 필요한 값
+    ReplyRestResponseDTO getArticleReplies(long articleId, long lastReplyId);
 }

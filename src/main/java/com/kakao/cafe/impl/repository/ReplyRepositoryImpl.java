@@ -34,17 +34,21 @@ public class ReplyRepositoryImpl implements ReplyRepository {
     }
 
     @Override
-    public List<ReplyDTO> getArticleReplies(long articleId, long userId) {
-        return jdbcTemplate.query("select R.id,writerID,userId writerName,articleID,contents,(writerID = ?) isOwner,date_format(R.time,'%Y-%m-%d %H:%i') time from Reply R join User U on R.writerID = U.id where articleID = ? and isDelete = FALSE order by R.id ",
-                getRowMapper(), userId, articleId
+    public List<ReplyDTO> getArticleReplies(long articleId, long lastReplyId) {
+        return jdbcTemplate.query("select R.id,writerID,userId writerName,articleID,contents,date_format(R.time,'%Y-%m-%d %H:%i') time from Reply R join User U on R.writerID = U.id where R.id > ? and articleID = ? and isDelete = FALSE order by R.id ",
+                getRowMapper(), lastReplyId, articleId
         );
     }
 
     @Override
-    public ReplyDTO getReplyById(long userId, long replyId) {
-        return jdbcTemplate.queryForObject("select R.id,writerID,userId writerName,articleID,contents,(writerID = ?) isOwner,date_format(R.time,'%Y-%m-%d %H:%i') time from Reply R join User U on R.writerID = U.id where R.id = ? and isDelete = FALSE order by R.id",
-                getRowMapper(), userId, replyId
+    public ReplyDTO getReplyById(long replyId) {
+        return jdbcTemplate.queryForObject("select R.id,writerID,userId writerName,articleID,contents,date_format(R.time,'%Y-%m-%d %H:%i') time from Reply R join User U on R.writerID = U.id where R.id = ? and isDelete = FALSE",
+                getRowMapper(), replyId
         );
+    }
+
+    public int getOtherUserRepliesCount(long articleId, long userId) {
+        return jdbcTemplate.queryForObject("select count(id) from Reply where isDelete = false and articleID = ? and writerID != ?", int.class, articleId, userId);
     }
 
     @Override
@@ -64,7 +68,6 @@ public class ReplyRepositoryImpl implements ReplyRepository {
                     rs.getString("writerName"),
                     rs.getLong("articleID"),
                     rs.getString("contents"),
-                    rs.getBoolean("isOwner"),
                     rs.getString("time")
             );
             reply.setWriterID(rs.getLong("writerID"));
@@ -72,8 +75,5 @@ public class ReplyRepositoryImpl implements ReplyRepository {
         };
     }
 
-    public int getOtherUserRepliesCount(long articleId, long userId) {
-        return jdbcTemplate.queryForObject("select count(id) from Reply where isDelete = false and articleID = ? and writerID != ?", int.class, articleId, userId);
-    }
 
 }

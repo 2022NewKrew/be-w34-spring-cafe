@@ -7,9 +7,9 @@ import java.util.List;
 public interface ReplyRepository {
     long insertReply(ReplyDTO reply);
 
-    List<ReplyDTO> getArticleReplies(long articleId, long userId);
+    List<ReplyDTO> getArticleReplies(long articleId, long lastReplyId);
 
-    ReplyDTO getReplyById(long userId, long replyId);
+    ReplyDTO getReplyById(long replyId);
 
     int deleteReply(long replyId);
 

@@ -18,9 +18,6 @@ public class ReplyDTO {
     @NotNull
     @Size(min = 1, max = 1000)
     private final String contents;
-    private final Boolean isOwner;
     private final String time;
     private Long writerID;
-
-
 }
