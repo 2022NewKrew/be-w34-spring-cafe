@@ -53,7 +53,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         String query = "SELECT ARTICLE.id, USERS.name, USERS.id, ARTICLE.title, ARTICLE.created, ARTICLE.comment_count" +
                 " FROM ARTICLE" +
                 " JOIN USERS" +
-                " ON ARTICLE.author_id = USERS.id";
+                " ON ARTICLE.author_id = USERS.id" +
+                " WHERE ARTICLE.status = TRUE";
         return jdbcTemplate.query(query, mapRowArticles());
     }
 
