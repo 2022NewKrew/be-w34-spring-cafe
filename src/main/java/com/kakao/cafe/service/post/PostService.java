@@ -43,7 +43,10 @@ public class PostService {
 
     public PostDto getPostById(long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 정보를 찾을 수 없습니다."));;
+                .orElseThrow(() -> new IllegalArgumentException("게시글 정보를 찾을 수 없습니다."));
+        if (post.getDeleted()) {
+            throw new IllegalArgumentException("삭제된 게시글 입니다.");
+        }
         return modelMapper.map(post, PostDto.class);
     }
 
@@ -72,7 +75,7 @@ public class PostService {
     public void deletePost(long id, long writerId) {
         PostDto post = getPostById(id, writerId);
         try {
-            postRepository.deleteById(post.getId());
+            postRepository.updateDeletedById(post.getId());
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("게시글 삭제에 실패하였습니다.");
         }

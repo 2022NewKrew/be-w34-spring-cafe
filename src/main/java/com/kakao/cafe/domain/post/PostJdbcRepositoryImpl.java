@@ -14,42 +14,49 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Repository
 public class PostJdbcRepositoryImpl implements PostRepository {
+    private static final String SQL_FOR_SAVE = "INSERT INTO posts(writer_id, title, content, created_at) VALUES(?, ?, ?, ?)";
+    private static final String SQL_FOR_FIND_ALL = "SELECT posts.*, users.nickname FROM posts INNER JOIN users ON posts.writer_Id = users.id WHERE posts.deleted = 0";
+    private static final String SQL_FOR_FIND_BY_ID = "SELECT posts.*, users.nickname FROM posts INNER JOIN users ON posts.writer_Id = users.id WHERE posts.id = ?";
+    private static final String SQL_FOR_UPDATE = "UPDATE posts SET title = ?, content = ?, updated_at = ? WHERE id = ?";
+    private static final String SQL_FOR_UPDATE_DELETED_BY_ID = "UPDATE posts SET deleted = 1, updated_at = ? WHERE id = ?";
+    private static final String SQL_FOR_DELETE_BY_ID = "DELETE FROM posts WHERE id = ?";
+    private static final String SQL_FOR_DELETE_ALL = "DELETE FROM posts";
+
     private final JdbcTemplate template;
 
     @Override
     public void save(Post post) {
-        String sql = "INSERT INTO posts(writer_id, title, content, created_at) VALUES(?, ?, ?, ?)";
-        template.update(sql, post.getWriterId(), post.getTitle(), post.getContent(), post.getCreatedAt());
+        template.update(SQL_FOR_SAVE, post.getWriterId(), post.getTitle(), post.getContent(), post.getCreatedAt());
     }
 
     @Override
     public List<Post> findAll() {
-        String sql = "SELECT posts.*, users.nickname FROM posts INNER JOIN users ON posts.writer_Id = users.id";
-        return template.query(sql, postRowMapper());
+        return template.query(SQL_FOR_FIND_ALL, postRowMapper());
     }
 
     @Override
     public Optional<Post> findById(long id) {
-        String sql = "SELECT posts.*, users.nickname FROM posts INNER JOIN users ON posts.writer_Id = users.id WHERE posts.id = ?";
-        return template.query(sql, postRowMapper(), id).stream().findFirst();
+        return template.query(SQL_FOR_FIND_BY_ID, postRowMapper(), id).stream().findFirst();
     }
 
     @Override
     public void update(Post post) {
-        String sql = "UPDATE posts SET title = ?, content = ?, updated_at = ? WHERE id = ?";
-        template.update(sql, post.getTitle(), post.getContent(), post.getUpdatedAt(), post.getId());
+        template.update(SQL_FOR_UPDATE, post.getTitle(), post.getContent(), post.getUpdatedAt(), post.getId());
+    }
+
+    @Override
+    public void updateDeletedById(long id) {
+        template.update(SQL_FOR_UPDATE_DELETED_BY_ID, LocalDateTime.now(), id);
     }
 
     @Override
     public void deleteById(long id) {
-        String sql = "DELETE FROM posts WHERE id = ?";
-        template.update(sql, id);
+        template.update(SQL_FOR_DELETE_BY_ID, id);
     }
 
     @Override
     public void deleteAll() {
-        String sql = "DELETE FROM posts";
-        template.update(sql);
+        template.update(SQL_FOR_DELETE_ALL);
     }
 
     private RowMapper<Post> postRowMapper() {

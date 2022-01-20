@@ -204,6 +204,10 @@ class PostServiceTest {
 
         assertThatNoException().isThrownBy(() -> {
             postService.deletePost(id, writerId);
+
+            Post deletedPost = postRepository.findById(id).orElse(null);
+            assertThat(deletedPost).isNotNull();
+            assertThat(deletedPost.getDeleted()).isTrue();
         });
     }
 
