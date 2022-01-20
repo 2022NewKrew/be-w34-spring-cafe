@@ -11,16 +11,17 @@
         <div class="panel panel-default qna-list">
             <ul class="list">
                 {{#articleList}}
+                                <a href="./qna/show.html">
                 <li>
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a href="./qna/show.html">{{title}}</a>
+                                    {{title}}
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time">2016-01-15 18:47</span>
-                                <a href="./user/profile.html" class="author">자바지기</a>
+                                <a href="./user/{{id}}" class="author">{{author}}</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
@@ -29,6 +30,7 @@
                         </div>
                     </div>
                 </li>
+                                </a>
                 {{/articleList}}
             </ul>
             <div class="row">
