@@ -39,26 +39,26 @@ public class QnaController {
         return "redirect:/";
     }
 
-    @GetMapping("/questions/{index}/updateform")
-    public String updateQnaForm(@PathVariable("index") Integer index, Model model, HttpSession session) throws AccessDeniedException {
+    @GetMapping("/questions/{qnaId}/updateform")
+    public String updateQnaForm(@PathVariable("qnaId") Integer qnaId, Model model, HttpSession session) throws AccessDeniedException {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        QnaDto.QnaForUpdateResponse qnaForUpdate = qnaService.findQnaForUpdate(index, sessionedUser.getUserId());
+        QnaDto.QnaForUpdateResponse qnaForUpdate = qnaService.findQnaForUpdate(qnaId, sessionedUser.getUserId());
 
         model.addAttribute("qna", qnaForUpdate);
         return "qna/updateForm";
     }
 
-    @PutMapping("/questions/{index}")
-    public String updateQna(@PathVariable("index") Integer index, @ModelAttribute QnaDto.UpdateQnaRequest updateQnaRequest, HttpSession session) throws AccessDeniedException {
+    @PutMapping("/questions/{qnaId}")
+    public String updateQna(@PathVariable("qnaId") Integer qnaId, @ModelAttribute QnaDto.UpdateQnaRequest updateQnaRequest, HttpSession session) throws AccessDeniedException {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        qnaService.updateQna(index, updateQnaRequest, sessionedUser.getUserId());
+        qnaService.updateQna(qnaId, updateQnaRequest, sessionedUser.getUserId());
         return "redirect:/";
     }
 
-    @DeleteMapping("/questions/{index}")
-    public String deleteQna(@PathVariable("index") Integer index, HttpSession session) throws AccessDeniedException {
+    @DeleteMapping("/questions/{qnaId}")
+    public String deleteQna(@PathVariable("qnaId") Integer qnaId, HttpSession session) throws AccessDeniedException {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        qnaService.deleteQna(index, sessionedUser.getUserId());
+        qnaService.deleteQna(qnaId, sessionedUser.getUserId());
         return "redirect:/";
     }
 
@@ -69,45 +69,45 @@ public class QnaController {
         return "qna/list";
     }
 
-    @GetMapping("/questions/{index}")
-    public String findQna(@PathVariable("index") Integer index, Model model) {
-        QnaDto.QnaResponse qna = qnaService.findQna(index);
+    @GetMapping("/questions/{qnaId}")
+    public String findQna(@PathVariable("qnaId") Integer qnaId, Model model) {
+        QnaDto.QnaResponse qna = qnaService.findQna(qnaId);
         model.addAttribute("qna", qna);
         return "qna/show";
     }
 
-    @PostMapping("/questions/{index}/comments")
-    public String makeComment(@PathVariable("index") Integer index, @ModelAttribute CommentDto.CreateCommentRequest createCommentRequest,
+    @PostMapping("/questions/{qnaId}/comments")
+    public String makeComment(@PathVariable("qnaId") Integer qnaId, @ModelAttribute CommentDto.CreateCommentRequest createCommentRequest,
                               HttpSession session) {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        commentService.createComment(index, sessionedUser.getUserId(), createCommentRequest.getContents());
+        commentService.createComment(qnaId, sessionedUser.getUserId(), createCommentRequest.getContents());
 
-        return "redirect:/questions/" + index;
+        return "redirect:/questions/" + qnaId;
     }
 
-    @GetMapping("/questions/{index}/comments/{id}/updateform")
-    public String updateCommentForm(@PathVariable("index") Integer index, @PathVariable Integer id, Model model, HttpSession session) throws AccessDeniedException {
+    @GetMapping("/questions/{qnaId}/comments/{commentId}/updateform")
+    public String updateCommentForm(@PathVariable("qnaId") Integer qnaId, @PathVariable("commentId") Integer commentId, Model model, HttpSession session) throws AccessDeniedException {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        CommentDto.ReadCommentForUpdateResponse comment = commentService.readCommentForUpdate(id, sessionedUser.getUserId());
+        CommentDto.ReadCommentForUpdateResponse comment = commentService.readCommentForUpdate(commentId, sessionedUser.getUserId());
 
         model.addAttribute("comment", comment);
         return "qna/commentUpdateForm";
     }
 
-    @PutMapping("/questions/{index}/comments/{id}")
-    public String updateComment(@PathVariable("index") Integer index, @PathVariable("id") Integer id, @ModelAttribute CommentDto.UpdateCommentRequest updateCommentRequest,
+    @PutMapping("/questions/{qnaId}/comments/{commentId}")
+    public String updateComment(@PathVariable("qnaId") Integer qnaId, @PathVariable("commentId") Integer commentId, @ModelAttribute CommentDto.UpdateCommentRequest updateCommentRequest,
                                 HttpSession session) throws AccessDeniedException {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        commentService.updateComment(id, updateCommentRequest.getContents(), sessionedUser.getUserId());
+        commentService.updateComment(commentId, updateCommentRequest.getContents(), sessionedUser.getUserId());
 
-        return "redirect:/questions/" + index;
+        return "redirect:/questions/" + qnaId;
     }
 
-    @DeleteMapping("/questions/{index}/comments/{id}")
-    public String deleteComment(@PathVariable("index") Integer index, @PathVariable("id") Integer id, HttpSession session) throws AccessDeniedException {
+    @DeleteMapping("/questions/{qnaId}/comments/{commentId}")
+    public String deleteComment(@PathVariable("qnaId") Integer qnaId, @PathVariable("commentId") Integer commentId, HttpSession session) throws AccessDeniedException {
         UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        commentService.deleteComment(id, sessionedUser.getUserId());
+        commentService.deleteComment(commentId, sessionedUser.getUserId());
 
-        return "redirect:/questions/" + index;
+        return "redirect:/questions/" + qnaId;
     }
 }

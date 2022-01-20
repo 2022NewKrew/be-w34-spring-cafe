@@ -29,7 +29,7 @@ public class LocalQnaRepositoryImpl implements QnaRepository {
     }
 
     @Override
-    public Optional<Qna> findByIndex(Integer index) {
-        return Optional.of(qnaList.findQnaByIndex(index));
+    public Optional<Qna> findById(Integer id) {
+        return Optional.of(qnaList.findQnaById(id));
     }
 }

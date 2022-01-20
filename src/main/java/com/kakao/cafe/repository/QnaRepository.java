@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface QnaRepository {
     void save(Qna qna);
 
-    Optional<Qna> findByIndex(Integer index);
+    Optional<Qna> findById(Integer id);
 
     List<Qna> findAllByDeleted(Boolean deleted);
 }

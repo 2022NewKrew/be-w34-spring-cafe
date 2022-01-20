@@ -22,14 +22,14 @@ public class CommentService {
     }
 
     @Transactional
-    public void createComment(Integer qnaIndex, String writer, String contents) {
-        Comment comment = new Comment(qnaIndex, writer, contents);
+    public void createComment(Integer qnaId, String writer, String contents) {
+        Comment comment = new Comment(qnaId, writer, contents);
         commentRepository.save(comment);
     }
 
     @Transactional
-    public void updateComment(Integer id, String contents, String userId) throws AccessDeniedException {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
+    public void updateComment(Integer commentId, String contents, String userId) throws AccessDeniedException {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException(commentId));
 
         if (!comment.isValidUpdateUser(userId)) {
             throw new AccessDeniedException("해당 댓글을 수정할 권한이 없습니다.");
@@ -40,8 +40,8 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentDto.ReadCommentForUpdateResponse readCommentForUpdate(Integer id, String userId) throws AccessDeniedException {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
+    public CommentDto.ReadCommentForUpdateResponse readCommentForUpdate(Integer commentId, String userId) throws AccessDeniedException {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException(commentId));
 
         if (!comment.isValidUpdateUser(userId)) {
             throw new AccessDeniedException("해당 댓글을 수정할 권한이 없습니다");
@@ -51,8 +51,8 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Integer id, String userId) throws AccessDeniedException {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
+    public void deleteComment(Integer commentId, String userId) throws AccessDeniedException {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException(commentId));
 
         if (!comment.isValidDeleteUser(userId)) {
             throw new AccessDeniedException("해당 댓글을 삭제할 권한이 없습니다");

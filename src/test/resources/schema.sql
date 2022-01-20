@@ -4,7 +4,7 @@ drop table COMMENT if exists;
 
 create table QNA
 (
-    `index`    int auto_increment
+    id    int auto_increment
         primary key,
     writer     varchar(30)          not null,
     title      varchar(40)          not null,
@@ -31,7 +31,7 @@ create table COMMENT
         primary key,
     writer     varchar(30)          not null,
     contents   varchar(255)         not null,
-    qna_index  int                  not null,
+    qna_id  int                  not null,
     created_at datetime             null,
     deleted    tinyint(1) default 0 not null
 );

@@ -32,10 +32,10 @@
                   <div class="article-util">
                       <ul class="article-util-list">
                           <li>
-                              <a class="link-modify-article" href="/questions/{{index}}/updateform">수정</a>
+                              <a class="link-modify-article" href="/questions/{{qnaId}}/updateform">수정</a>
                           </li>
                           <li>
-                              <form class="form-delete" action="/questions/{{index}}" method="POST">
+                              <form class="form-delete" action="/questions/{{qnaId}}" method="POST">
                                   <input type="hidden" name="_method" value="DELETE">
                                   <button class="link-delete-article" type="submit">삭제</button>
                               </form>
@@ -74,10 +74,10 @@
                                   <div class="article-util">
                                       <ul class="article-util-list">
                                           <li>
-                                              <a class="link-modify-article" href="/questions/{{index}}/comments/{{id}}/updateform">수정</a>
+                                              <a class="link-modify-article" href="/questions/{{qnaId}}/comments/{{commentId}}/updateform">수정</a>
                                           </li>
                                           <li>
-                                              <form class="delete-answer-form" action="/questions/{{index}}/comments/{{id}}" method="POST">
+                                              <form class="delete-answer-form" action="/questions/{{qnaId}}/comments/{{commentId}}" method="POST">
                                                   <input type="hidden" name="_method" value="DELETE">
                                                   <button type="submit" class="delete-answer-button">삭제</button>
                                               </form>
@@ -86,7 +86,7 @@
                                   </div>
                               </article>
                             {{/comments}}
-                          <form class="submit-write" action="/questions/{{index}}/comments" method="post">
+                          <form class="submit-write" action="/questions/{{qnaId}}/comments" method="post">
                               <div class="form-group" style="padding:14px;">
                                   <input type="text" class="form-control" name="contents" id="contents" placeholder="Update your status">
                               </div>

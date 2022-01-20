@@ -20,15 +20,15 @@ public class QnaList {
     }
 
     public void addQna(Qna qna) {
-        qna.setIndex(qnaList.size() + 1);
+        qna.setId(qnaList.size() + 1);
         qnaList.add(qna);
     }
 
-    public Qna findQnaByIndex(Integer index) {
-        return qnaList.get(index - 1);
+    public Qna findQnaById(Integer id) {
+        return qnaList.get(id - 1);
     }
 
-    public void deleteByIndex(Integer index) {
-        qnaList.removeIf(qna -> qna.getIndex().equals(index));
+    public void deleteById(Integer id) {
+        qnaList.removeIf(qna -> qna.getId().equals(id));
     }
 }

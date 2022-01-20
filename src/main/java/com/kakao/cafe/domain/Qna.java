@@ -2,23 +2,25 @@ package com.kakao.cafe.domain;
 
 public class Qna {
 
-    private Integer index;
+    private Integer id;
     private String writer;
     private String title;
     private String contents;
-    private Boolean deleted = false;
+    private Boolean deleted;
 
     public Qna(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.deleted = false;
     }
 
-    public Qna(Integer index, String writer, String title, String contents) {
-        this.index = index;
+    public Qna(Integer id, String writer, String title, String contents) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.deleted = false;
     }
 
     public void updateQna(String title, String contents) {
@@ -38,8 +40,8 @@ public class Qna {
         return writer.equals(userId);
     }
 
-    public Integer getIndex() {
-        return index;
+    public Integer getId() {
+        return id;
     }
 
     public String getWriter() {
@@ -58,7 +60,7 @@ public class Qna {
         return deleted;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

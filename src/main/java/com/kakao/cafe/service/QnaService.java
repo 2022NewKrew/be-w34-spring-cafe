@@ -2,7 +2,6 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Comment;
 import com.kakao.cafe.domain.Qna;
-import com.kakao.cafe.dto.CommentDto;
 import com.kakao.cafe.dto.QnaDto;
 import com.kakao.cafe.exception.QnaNotFoundException;
 import com.kakao.cafe.repository.CommentRepository;
@@ -40,22 +39,18 @@ public class QnaService {
                 .collect(Collectors.toList());
     }
 
-    public QnaDto.QnaResponse findQna(Integer index) {
-        Qna qna = qnaRepository.findByIndex(index)
-                .orElseThrow(() -> new QnaNotFoundException(index));
+    public QnaDto.QnaResponse findQna(Integer qnaId) {
+        Qna qna = qnaRepository.findById(qnaId)
+                .orElseThrow(() -> new QnaNotFoundException(qnaId));
 
-        List<Comment> comments = commentRepository.findByQnaIndexAndDeleted(index, false);
+        List<Comment> comments = commentRepository.findByQnaIdAndDeleted(qnaId, false);
 
-        List<CommentDto.ReadCommentResponse> commentResponses = comments.stream()
-                .map(CommentDto.ReadCommentResponse::of)
-                .collect(Collectors.toList());
-
-        return QnaDto.QnaResponse.of(qna, commentResponses);
+        return QnaDto.QnaResponse.of(qna, comments);
     }
 
-    public QnaDto.QnaForUpdateResponse findQnaForUpdate(Integer index, String userId) throws AccessDeniedException {
-        Qna qna = qnaRepository.findByIndex(index)
-                .orElseThrow(() -> new QnaNotFoundException(index));
+    public QnaDto.QnaForUpdateResponse findQnaForUpdate(Integer qnaId, String userId) throws AccessDeniedException {
+        Qna qna = qnaRepository.findById(qnaId)
+                .orElseThrow(() -> new QnaNotFoundException(qnaId));
 
         if (!qna.isValidUpdateUser(userId)) {
             throw new AccessDeniedException("수정 권한이 없습니다");
@@ -65,9 +60,9 @@ public class QnaService {
     }
 
     @Transactional
-    public void updateQna(Integer index, QnaDto.UpdateQnaRequest updateQnaRequest, String userId) throws AccessDeniedException {
-        Qna qna = qnaRepository.findByIndex(index)
-                .orElseThrow(() -> new QnaNotFoundException(index));
+    public void updateQna(Integer qnaId, QnaDto.UpdateQnaRequest updateQnaRequest, String userId) throws AccessDeniedException {
+        Qna qna = qnaRepository.findById(qnaId)
+                .orElseThrow(() -> new QnaNotFoundException(qnaId));
 
         if (!qna.isValidUpdateUser(userId)) {
             throw new AccessDeniedException("수정 권한이 없습니다");
@@ -78,20 +73,20 @@ public class QnaService {
     }
 
     @Transactional
-    public void deleteQna(Integer index, String userId) throws AccessDeniedException {
-        Qna qna = qnaRepository.findByIndex(index)
-                .orElseThrow(() -> new QnaNotFoundException(index));
+    public void deleteQna(Integer qnaId, String userId) throws AccessDeniedException {
+        Qna qna = qnaRepository.findById(qnaId)
+                .orElseThrow(() -> new QnaNotFoundException(qnaId));
 
         if (!qna.isValidDeleteUser(userId)) {
             throw new AccessDeniedException("해당 글을 삭제할 권한이 없습니다");
         }
 
-        List<Comment> comments = commentRepository.findByQnaIndexAndDeleted(index, false);
+        List<Comment> comments = commentRepository.findByQnaIdAndDeleted(qnaId, false);
 
-        boolean isDeletedComments = comments.stream()
+        boolean hasAuthForDeleteAllComments = comments.stream()
                 .allMatch(comment -> comment.isValidDeleteUser(userId));
 
-        if (!isDeletedComments) {
+        if (!hasAuthForDeleteAllComments) {
             throw new AccessDeniedException("해당 글의 댓글을 삭제할 권한이 없습니다.");
         }
 

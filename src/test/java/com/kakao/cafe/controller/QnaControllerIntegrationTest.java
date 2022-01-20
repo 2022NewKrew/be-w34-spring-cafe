@@ -81,28 +81,28 @@ class QnaControllerIntegrationTest {
                 .andDo(print());
     }
 
-    @DisplayName("findQna 테스트 - 올바른 index가 주어질때, attribute에 qna 반환")
+    @DisplayName("findQna 테스트 - 올바른 qnaId가 주어질때, attribute에 qna 반환")
     @Test
-    void findQna_CorrectIndex_attributeExistsQna() throws Exception {
+    void findQna_CorrectQnaId_attributeExistsQna() throws Exception {
         // given
-        Integer index = 1;
+        Integer qnaId = 1;
 
         // when // then
-        mock.perform(get("/questions/{index}", index))
+        mock.perform(get("/questions/{qnaId}", qnaId))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("qna"))
                 .andDo(print());
     }
 
-    @DisplayName("findQna 테스트 - 잘못된 인덱스 입력시 QnaNotFoundException Throw")
+    @DisplayName("findQna 테스트 - 잘못된 qnaId 입력시 QnaNotFoundException Throw")
     @Test
-    void findQna_IncorrectIndex_ThrowQnaNotFoundException() throws QnaNotFoundException {
+    void findQna_IncorrectQnaId_ThrowQnaNotFoundException() throws QnaNotFoundException {
         // given
-        Integer index = 3;
+        Integer qnaId = 3;
 
         // when // then
         assertThatThrownBy(() ->
-                mock.perform(get("/questions/{index}", index))
-        ).hasCause(new QnaNotFoundException(index));
+                mock.perform(get("/questions/{qnaId}", qnaId))
+        ).hasCause(new QnaNotFoundException(qnaId));
     }
 }
