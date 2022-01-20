@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.constants.ReplyDBConstants;
 import com.kakao.cafe.domain.Reply;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class ReplyDao implements ReplyRepository{
     private final JdbcTemplate jdbcTemplate;
@@ -38,6 +40,23 @@ public class ReplyDao implements ReplyRepository{
             throw new SQLException("Reply insertion fail.");
 
         return key;
+    }
+
+    public Reply findById(int id) throws NoSuchElementException {
+        Reply reply;
+        String sql = String.format("select * from %s where %s = ?", ReplyDBConstants.TABLE_NAME, ReplyDBConstants.COLUMN_ID);
+
+        try {
+            reply = jdbcTemplate.queryForObject(
+                    sql,
+                    new ReplyMapper(),
+                    id
+            );
+        } catch (DataAccessException e) {
+            throw new NoSuchElementException(String.format("id (%s) 를 갖는 REPLY가 없음", id));
+        }
+
+        return reply;
     }
 
     public List<Reply> findByAid(int aid) {

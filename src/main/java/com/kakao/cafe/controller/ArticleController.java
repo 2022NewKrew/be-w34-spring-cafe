@@ -127,9 +127,18 @@ public class ArticleController {
         return String.format("redirect:/articles/%d", aid);
     }
 
+    // ARTICLE(id={aid}) 에 작성되어 있는 REPLY(id={id}) 를 삭제
     @DeleteMapping("/{aid}/reply/{id}")
     public String deleteReply(@PathVariable int aid, @PathVariable int id, HttpSession session) {
-        replyService.deleteReply(id);
+        try {
+            String replyWriter = replyService.getWriterById(id);
+
+            if (replyWriter != null && replyWriter.equals(userService.getUserIdFromSession(session))) {
+                replyService.deleteReply(id);
+            }
+        } catch (NoSuchElementException e){
+            logger.info("DELETE /articles/{aid}/reply/{id} failed", e);
+        }
 
         return String.format("redirect:/articles/%d", aid);
     }

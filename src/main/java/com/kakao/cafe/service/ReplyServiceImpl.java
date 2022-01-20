@@ -8,6 +8,7 @@ import com.kakao.cafe.repository.ReplyRepository;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ReplyServiceImpl implements ReplyService {
     private final ReplyRepository replyRepository;
@@ -35,5 +36,11 @@ public class ReplyServiceImpl implements ReplyService {
 
     public void deleteReply(int id) {
         replyRepository.delete(id);
+    }
+
+    public String getWriterById(int id) throws NoSuchElementException {
+        Reply reply = replyRepository.findById(id);
+
+        return reply.getWriter();
     }
 }
