@@ -1,7 +1,5 @@
 package com.kakao.cafe.reply.service;
 
-import com.kakao.cafe.article.entity.ArticleEntity;
-import com.kakao.cafe.article.repository.ArticleRepository;
 import com.kakao.cafe.exception.UpdateException;
 import com.kakao.cafe.reply.dto.ReplyResDto;
 import com.kakao.cafe.reply.entity.ReplyEntity;
@@ -42,7 +40,7 @@ public class ReplyService {
     }
 
     private void checkUpdatable(Long replyId, String userName) {
-        List<ReplyEntity> sameWriter = replyRepository.findSameWriter(replyId, userName);
+        List<ReplyEntity> sameWriter = replyRepository.findByIdAndWriter(replyId, userName);
         if (sameWriter.isEmpty()) {
             throw new UpdateException("댓글 작성자만 댓글을 수정/삭제 할 수 있습니다.");
         }
