@@ -32,7 +32,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping("/posts/write")
+    @PostMapping("/posts")
     public String write(@Valid WritePostRequest postDto, BindingResult errors, HttpSession session) {
         logger.info("[POST] /posts 게시글 작성");
         if (errors.hasErrors()) {

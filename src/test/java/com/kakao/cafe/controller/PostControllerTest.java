@@ -54,7 +54,7 @@
 //    @Test
 //    @DisplayName("[성공] 게시글 작성")
 //    void write() throws Exception {
-//        mockMvc.perform(post("/posts/write")
+//        mockMvc.perform(post("/posts")
 //                        .param("title", title)
 //                        .param("content", content))
 //                .andExpect(status().is3xxRedirection())
@@ -65,7 +65,7 @@
 //    @ParameterizedTest(name = "{0}, {1}, {2}")
 //    @CsvSource(value = {"null, title, content", "userId, null, content", "userId, title, null"}, nullValues = {"null"})
 //    void write_FailedBy_Null(String userId, String title, String content) throws Exception {
-//        mockMvc.perform(post("/posts/write")
+//        mockMvc.perform(post("/posts")
 //                        .param("userId", userId)
 //                        .param("title", title)
 //                        .param("content", content))
@@ -77,7 +77,7 @@
 //    @ParameterizedTest(name = "{0}, {1}, {2}")
 //    @CsvSource(value = {"'', title, content", "userId, '', content", "userId, title, ''"}, nullValues = {"null"})
 //    void write_FailedBy_EmptyString(String userId, String title, String content) throws Exception {
-//        mockMvc.perform(post("/posts/write")
+//        mockMvc.perform(post("/posts")
 //                        .param("userId", userId)
 //                        .param("title", title)
 //                        .param("content", content))
@@ -88,7 +88,7 @@
 //    @Test
 //    @DisplayName("[성공] 게시글 목록")
 //    void postList() throws Exception {
-//        mockMvc.perform(post("/posts/write")
+//        mockMvc.perform(post("/posts")
 //                        .param("userId", userId)
 //                        .param("title", title)
 //                        .param("content", content))
@@ -113,7 +113,7 @@
 //    void postById() throws Exception {
 //        int postId = 1;
 //
-//        mockMvc.perform(post("/posts/write")
+//        mockMvc.perform(post("/posts")
 //                        .param("userId", userId)
 //                        .param("title", title)
 //                        .param("content", content))
@@ -129,7 +129,7 @@
 //    @ParameterizedTest(name = "id = {0}")
 //    @ValueSource(ints = {-1, 0, 2, 999})
 //    void postById_FailedBy_NotExistPostId(int invalidPostId) throws Exception {
-//        mockMvc.perform(post("/posts/write")
+//        mockMvc.perform(post("/posts")
 //                        .param("userId", userId)
 //                        .param("title", title)
 //                        .param("content", content))
