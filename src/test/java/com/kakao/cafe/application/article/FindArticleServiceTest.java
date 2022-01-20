@@ -3,7 +3,8 @@ package com.kakao.cafe.application.article;
 import com.kakao.cafe.application.article.validation.ArticleErrorCode;
 import com.kakao.cafe.application.article.validation.NonExistsArticleIdException;
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.ArticleDaoPort;
+import com.kakao.cafe.domain.article.FindArticlePort;
+import com.kakao.cafe.domain.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,15 +29,24 @@ class FindArticleServiceTest {
     FindArticleService findArticleService;
 
     @Mock
-    ArticleDaoPort articlePort;
+    FindArticlePort findArticlePort;
+
+    private User createStaticUser() {
+        return User.builder()
+                .userId("483759")
+                .name("윤이진")
+                .password("password")
+                .email("483759@naver.com")
+                .build();
+    }
 
     @DisplayName("글 ID로 특정 글을 조회할 수 있다")
     @Test
     void checkFindArticleById() {
         // given
         int articleId = 123;
-        Article expectedArticle = new Article(articleId, "윤이진", LocalDateTime.of(2022, 1, 12, 17, 0), "Hello", "World");
-        given(articlePort.findById(articleId))
+        Article expectedArticle = new Article(articleId, createStaticUser(), LocalDateTime.of(2022, 1, 12, 17, 0), "Hello", "World");
+        given(findArticlePort.findById(articleId))
                 .willReturn(Optional.ofNullable(expectedArticle));
 
         // when
@@ -46,7 +56,7 @@ class FindArticleServiceTest {
         assertThat(article)
                 .usingRecursiveComparison()
                 .isEqualTo(article);
-        verify(articlePort).findById(articleId);
+        verify(findArticlePort).findById(articleId);
     }
 
     @DisplayName("존재하지 않는 글 ID로 조회를 시도하면 에러가 발생한다")
@@ -54,7 +64,7 @@ class FindArticleServiceTest {
     void checkFindNonExistArticleByIdThrowsException() {
         // given
         int articleIdThatDoesNotExist = 123;
-        given(articlePort.findById(articleIdThatDoesNotExist))
+        given(findArticlePort.findById(articleIdThatDoesNotExist))
                 .willReturn(Optional.empty());
 
         // when
@@ -63,7 +73,7 @@ class FindArticleServiceTest {
         //then
         assertThat(exception.getMessage())
                 .isEqualTo(ArticleErrorCode.NON_EXISTS_ARTICLE_INDEX.getMessage());
-        verify(articlePort).findById(articleIdThatDoesNotExist);
+        verify(findArticlePort).findById(articleIdThatDoesNotExist);
     }
 
     @DisplayName("모든 글 목록을 확인할 수 있다")
@@ -71,10 +81,10 @@ class FindArticleServiceTest {
     void checkFindAllArticleList() {
         // given
         List<Article> expectedArticles = List.of(
-                new Article(0, "윤이진", LocalDateTime.of(2022, 1, 12, 16, 30), "Hello", "World"),
-                new Article(1, "윤이진2", LocalDateTime.of(2022, 1, 12, 16, 30), "Hello2", "World2")
+                new Article(0, createStaticUser(), LocalDateTime.of(2022, 1, 12, 16, 30), "Hello", "World"),
+                new Article(1, createStaticUser(), LocalDateTime.of(2022, 1, 12, 16, 30), "Hello2", "World2")
         );
-        given(articlePort.findAll())
+        given(findArticlePort.findAll())
                 .willReturn(expectedArticles);
 
         // when
@@ -82,12 +92,12 @@ class FindArticleServiceTest {
 
         //then
         assertThat(articleList)
-                .extracting("id", "writer", "title", "contents")
+                .extracting("id", "writer.name", "title", "contents")
                 .containsExactly(
                         tuple(0, "윤이진", "Hello", "World"),
-                        tuple(1, "윤이진2", "Hello2", "World2")
+                        tuple(1, "윤이진", "Hello2", "World2")
                 );
-        verify(articlePort).findAll();
+        verify(findArticlePort).findAll();
     }
 
 }

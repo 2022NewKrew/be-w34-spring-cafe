@@ -2,23 +2,23 @@ package com.kakao.cafe.application.article;
 
 import com.kakao.cafe.application.article.validation.NonExistsArticleIdException;
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.ArticleDaoPort;
+import com.kakao.cafe.domain.article.FindArticlePort;
 
 import java.util.List;
 
 public class FindArticleService {
-    private final ArticleDaoPort articleDao;
+    private final FindArticlePort findArticlePort;
 
-    public FindArticleService(ArticleDaoPort articleDao) {
-        this.articleDao = articleDao;
+    public FindArticleService(FindArticlePort findArticlePort) {
+        this.findArticlePort = findArticlePort;
     }
 
     public List<Article> findAll() {
-        return articleDao.findAll();
+        return findArticlePort.findAll();
     }
 
     public Article findById(int id) throws NonExistsArticleIdException {
-        return articleDao.findById(id)
+        return findArticlePort.findById(id)
                 .orElseThrow(() -> new NonExistsArticleIdException());
     }
 }

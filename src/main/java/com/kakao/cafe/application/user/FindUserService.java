@@ -1,30 +1,30 @@
 package com.kakao.cafe.application.user;
 
-import com.kakao.cafe.application.user.validation.NonExistsUserIdException;
+import com.kakao.cafe.application.user.exception.NonExistsUserIdException;
+import com.kakao.cafe.domain.user.FindUserPort;
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserDaoPort;
 
 import java.util.List;
 import java.util.Optional;
 
 public class FindUserService {
-    private final UserDaoPort userDao;
+    private final FindUserPort findUserPort;
 
-    public FindUserService(UserDaoPort userDao) {
-        this.userDao = userDao;
+    public FindUserService(FindUserPort findUserPort) {
+        this.findUserPort = findUserPort;
     }
 
     public User findByUserId(String userId) throws NonExistsUserIdException {
-        return userDao.findByUserId(userId)
+        return findUserPort.findByUserId(userId)
                 .orElseThrow(() -> new NonExistsUserIdException());
     }
 
     public List<User> findAllUser() {
-        return userDao.findAll();
+        return findUserPort.findAll();
     }
 
     public boolean checkPassWordMatch(String userId, String password) {
-        Optional<User> optionalUser = userDao.findByUserIdAndPassword(userId, password);
+        Optional<User> optionalUser = findUserPort.findByUserIdAndPassword(userId, password);
         return optionalUser.isPresent();
     }
 }

@@ -1,4 +1,6 @@
-package com.kakao.cafe.application.user.validation;
+package com.kakao.cafe.application.user.exception;
+
+import com.kakao.cafe.application.user.validation.UserErrorCode;
 
 public class NonExistsUserIdException extends IllegalArgumentException {
     public NonExistsUserIdException() {

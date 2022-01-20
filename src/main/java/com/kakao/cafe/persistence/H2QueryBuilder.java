@@ -22,6 +22,7 @@ public class H2QueryBuilder {
     public String selectOneByField(String field) {
         return String.valueOf(
                 new StringBuilder(selectAll())
+                        .append(" WHERE ")
                         .append(field)
                         .append(" = :")
                         .append(field)
@@ -31,10 +32,7 @@ public class H2QueryBuilder {
 
     public String selectOneByMultipleField(List<String> fields) {
         return String.valueOf(
-                new StringBuilder("SELECT ")
-                        .append(String.join(", ", fields))
-                        .append(" FROM ")
-                        .append(table)
+                new StringBuilder(selectAll())
                         .append(" WHERE ")
                         .append(String.join(" and ",
                                 fields.stream().map(e -> new StringBuilder(e).append(" = :").append(e))
@@ -66,6 +64,17 @@ public class H2QueryBuilder {
                 .append(" WHERE ")
                 .append(String.join(" and ",
                         whereFields.stream()
+                                .map(e -> new StringBuilder(e).append(" = :").append(e))
+                                .collect(Collectors.toList())))
+        );
+    }
+
+    public String deleteOne(List<String> fields) {
+        return String.valueOf(new StringBuilder("DELETE FROM ")
+                .append(table)
+                .append(" WHERE ")
+                .append(String.join(", ",
+                        fields.stream()
                                 .map(e -> new StringBuilder(e).append(" = :").append(e))
                                 .collect(Collectors.toList())))
         );

@@ -1,12 +1,19 @@
 package com.kakao.cafe.interfaces.config;
 
+import com.kakao.cafe.application.article.DeleteArticleService;
 import com.kakao.cafe.application.article.FindArticleService;
+import com.kakao.cafe.application.article.UpdateArticleService;
 import com.kakao.cafe.application.article.WriteArticleService;
 import com.kakao.cafe.application.user.FindUserService;
 import com.kakao.cafe.application.user.SignUpUserService;
 import com.kakao.cafe.application.user.UpdateUserService;
-import com.kakao.cafe.domain.article.ArticleDaoPort;
-import com.kakao.cafe.domain.user.UserDaoPort;
+import com.kakao.cafe.domain.article.DeleteArticlePort;
+import com.kakao.cafe.domain.article.FindArticlePort;
+import com.kakao.cafe.domain.article.UpdateArticlePort;
+import com.kakao.cafe.domain.article.WriteArticlePort;
+import com.kakao.cafe.domain.user.FindUserPort;
+import com.kakao.cafe.domain.user.SignUpUserPort;
+import com.kakao.cafe.domain.user.UpdateUserPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,28 +21,37 @@ import org.springframework.context.annotation.Configuration;
 public class ServiceBeanConfig {
 
     @Bean
-    FindUserService getFindUserServiceBean(UserDaoPort userDaoPort) {
-        return new FindUserService(userDaoPort);
+    FindUserService getFindUserServiceBean(FindUserPort findUserPort) {
+        return new FindUserService(findUserPort);
     }
 
     @Bean
-    SignUpUserService getSignUpUserServiceBean(UserDaoPort userDaoPort) {
-        return new SignUpUserService(userDaoPort);
+    SignUpUserService getSignUpUserServiceBean(FindUserPort findUserPort, SignUpUserPort signUpUserPort) {
+        return new SignUpUserService(signUpUserPort, findUserPort);
     }
 
     @Bean
-    UpdateUserService getUpdateUserServiceBean(UserDaoPort userDaoPort) {
-        return new UpdateUserService(userDaoPort);
+    UpdateUserService getUpdateUserServiceBean(FindUserPort findUserPort, UpdateUserPort updateUserPort) {
+        return new UpdateUserService(findUserPort, updateUserPort);
     }
 
     @Bean
-    FindArticleService getArticleServiceBean(ArticleDaoPort articleDaoPort) {
-        return new FindArticleService(articleDaoPort);
+    FindArticleService getArticleServiceBean(FindArticlePort findArticlePort) {
+        return new FindArticleService(findArticlePort);
     }
 
     @Bean
-    WriteArticleService getWriteArticleServiceBean(ArticleDaoPort articleDaoPort) {
-        return new WriteArticleService(articleDaoPort);
+    WriteArticleService getWriteArticleServiceBean(WriteArticlePort writeArticlePort) {
+        return new WriteArticleService(writeArticlePort);
     }
 
+    @Bean
+    UpdateArticleService updateArticleService(UpdateArticlePort updateArticlePort) {
+        return new UpdateArticleService(updateArticlePort);
+    }
+
+    @Bean
+    DeleteArticleService deleteArticleService(DeleteArticlePort deleteArticlePort) {
+        return new DeleteArticleService(deleteArticlePort);
+    }
 }

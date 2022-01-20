@@ -1,16 +1,18 @@
 package com.kakao.cafe.domain.article;
 
+import com.kakao.cafe.domain.user.User;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Article {
     private final int id;
-    private final String writer;
+    private final User writer;
     private final LocalDateTime createdAt;
     private final String title;
     private final String contents;
 
-    public Article(int id, String writer, LocalDateTime createdAt, String title, String contents) {
+    public Article(int id, User writer, LocalDateTime createdAt, String title, String contents) {
         this.id = id;
         this.writer = writer;
         this.createdAt = createdAt;
@@ -22,7 +24,7 @@ public class Article {
         return id;
     }
 
-    public String getWriter() {
+    public User getWriter() {
         return writer;
     }
 
@@ -68,19 +70,20 @@ public class Article {
 
     public static class Builder {
         private int id;
-        private String writer;
+        private User writer;
         private LocalDateTime createdAt;
         private String title;
         private String contents;
 
-        private Builder() {}
+        private Builder() {
+        }
 
         public Builder id(int id) {
             this.id = id;
             return this;
         }
 
-        public Builder writer(String writer) {
+        public Builder writer(User writer) {
             this.writer = writer;
             return this;
         }

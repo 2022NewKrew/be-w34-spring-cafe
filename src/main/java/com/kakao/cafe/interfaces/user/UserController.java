@@ -3,9 +3,10 @@ package com.kakao.cafe.interfaces.user;
 import com.kakao.cafe.application.user.FindUserService;
 import com.kakao.cafe.application.user.SignUpUserService;
 import com.kakao.cafe.application.user.UpdateUserService;
+import com.kakao.cafe.application.user.exception.NonExistsUserIdException;
+import com.kakao.cafe.application.user.exception.UnauthorizedUserException;
 import com.kakao.cafe.application.user.validation.DuplicatedUserIdException;
 import com.kakao.cafe.application.user.validation.IllegalPasswordException;
-import com.kakao.cafe.application.user.validation.NonExistsUserIdException;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserVo;
 import com.kakao.cafe.interfaces.user.dto.UserMapper;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -46,35 +48,32 @@ public class UserController {
     }
 
     @PostMapping("")
-    public String joinUser(@Valid JoinUserRequestDto joinUserRequestDto) {
+    public String joinUser(@Valid JoinUserRequestDto joinUserRequestDto) throws DuplicatedUserIdException {
         UserVo user = UserMapper.convertJoinUserDtoToVo(joinUserRequestDto);
 
-        try {
             signUpUserService.join(user);
-        } catch (DuplicatedUserIdException e) {
-            throw new DuplicatedUserIdException();
-        }
 
         return "redirect:/users";
     }
 
     @GetMapping("/{userId}")
-    public String getUserByUserId(@PathVariable String userId, Model model) {
-        try {
-            User user = findUserService.findByUserId(userId);
-            model.addAttribute("name", user.getName());
-            model.addAttribute("email", user.getEmail());
-        } catch (NonExistsUserIdException e) {
-            throw new NonExistsUserIdException();
-        }
+    public String getUserByUserId(@PathVariable String userId, Model model) throws NonExistsUserIdException {
+        User user = findUserService.findByUserId(userId);
+        model.addAttribute("name", user.getName());
+        model.addAttribute("email", user.getEmail());
+
         return "user/profile";
     }
 
     @GetMapping("/{id}/form")
-    public ModelAndView getUpdateUserFormInformation(@PathVariable String id, ModelAndView modelAndView) {
-        User user = findUserService.findByUserId(id);
-        UserResponseDto userResponseDto = UserMapper.convertEntityToDto(user);
+    public ModelAndView getUpdateUserFormInformation(@PathVariable String id, HttpServletRequest request, ModelAndView modelAndView) throws UnauthorizedUserException {
+        User user = (User) request.getAttribute("user");
 
+        if (!user.getUserId().equals(id)) {
+            throw new UnauthorizedUserException();
+        }
+
+        UserResponseDto userResponseDto = UserMapper.convertEntityToDto(user);
         modelAndView.addObject("user", userResponseDto);
         modelAndView.setViewName("user/updateForm");
 
@@ -82,7 +81,13 @@ public class UserController {
     }
 
     @PostMapping("/{id}/update")
-    public ModelAndView updateUser(@PathVariable String id, @Valid UpdateUserRequestDto updateUserRequestDto, ModelAndView modelAndView) {
+    public ModelAndView updateUser(@PathVariable String id, @Valid UpdateUserRequestDto updateUserRequestDto, HttpServletRequest request, ModelAndView modelAndView) throws UnauthorizedUserException, NonExistsUserIdException {
+        User user = (User) request.getAttribute("user");
+
+        if (!user.getUserId().equals(id)) {
+            throw new UnauthorizedUserException();
+        }
+
         boolean passwordMatch = findUserService.checkPassWordMatch(id, updateUserRequestDto.getPrePassword());
 
         if (!passwordMatch) {
@@ -90,11 +95,7 @@ public class UserController {
         }
 
         UserVo updateUserVo = UserMapper.convertUpdateUserDtoToVo(id, updateUserRequestDto);
-        try {
-            updateUserService.updateInformation(updateUserVo);
-        } catch (NonExistsUserIdException e) {
-            throw new NonExistsUserIdException();
-        }
+        updateUserService.updateInformation(updateUserVo);
 
         modelAndView.setViewName("redirect:/users");
         return modelAndView;
