@@ -7,6 +7,7 @@ import com.kakao.cafe.article.dto.DetailArticleViewDTO;
 import com.kakao.cafe.article.dto.QuestionDTO;
 import com.kakao.cafe.article.factory.ArticleFactory;
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.exception.AccessDeniedException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,8 +60,8 @@ public class ArticleController {
     }
 
     @LoginCheck
-    @DeleteMapping("/questions/{id}")
-    public String deleteArticle(@PathVariable("id") Long id, HttpSession session) throws AccessDeniedException {
+    @DeleteMapping("/articles/{id}")
+    public String deleteArticle(@PathVariable("id") Long id, HttpSession session)  {
         String userId = (String) session.getAttribute("sessionOfUser");
         User user = userService.findByUserId(userId);
 
@@ -71,7 +71,7 @@ public class ArticleController {
 
     @LoginCheck
     @GetMapping("/articles/{id}/form")
-    public String getUpdateArticleForm(@PathVariable("id") Long id, HttpSession session, Model model) throws AccessDeniedException {
+    public String getUpdateArticleForm(@PathVariable("id") Long id, HttpSession session, Model model)  {
         String userId = (String) session.getAttribute("sessionOfUser");
         User user = userService.findByUserId(userId);
         Article article = articleService.findById(id);
@@ -88,7 +88,7 @@ public class ArticleController {
 
     @LoginCheck
     @PutMapping("/articles/{id}")
-    public String updateArticle(@PathVariable("id") Long id, QuestionDTO nQuestionDTO, HttpSession session) throws AccessDeniedException {
+    public String updateArticle(@PathVariable("id") Long id, QuestionDTO nQuestionDTO, HttpSession session) {
         String userId = (String) session.getAttribute("sessionOfUser");
         User user = userService.findByUserId(userId);
         Article article = articleService.findById(id);

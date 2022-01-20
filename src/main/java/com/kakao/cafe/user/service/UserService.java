@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.service;
 
-import com.kakao.cafe.exception.NotFoundException;
+import com.kakao.cafe.exception.AccessDeniedException;
+import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UpdateDTO;
 import com.kakao.cafe.user.factory.UserFactory;
@@ -8,8 +9,6 @@ import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Service
@@ -28,10 +27,10 @@ public class UserService {
 
     public User findByUserId(String userId) {
         return userRepository.findByUserId(userId)
-                .orElseThrow(() -> new NotFoundException("유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new UserNotFoundException("유저가 존재하지 않습니다."));
     }
 
-    public void updateUser(UpdateDTO updateDTO, String sessionUserId) throws AccessDeniedException {
+    public void updateUser(UpdateDTO updateDTO, String sessionUserId) {
         checkLoginUserId(updateDTO.getUserId(), sessionUserId);
         User user = findByUserId(updateDTO.getUserId());
         user.validateEqualsPassword(updateDTO.getPassword());
