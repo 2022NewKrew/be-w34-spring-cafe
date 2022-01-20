@@ -14,15 +14,6 @@ public class Article {
     private Timestamp createdAt;
     private Long sequence;
 
-    public Article(ArticleCreateDTO articleCreateDTO) {
-        this.userId = articleCreateDTO.getUserId();
-        this.name = articleCreateDTO.getName();
-        this.title = articleCreateDTO.getTitle();
-        this.contents = articleCreateDTO.getContents();
-        this.sequence = Long.valueOf(0);
-    }
-
-    //for row mapper
     public Article(String userId, String name, String title, String contents, Timestamp createdAt, long sequence) {
         this.userId = userId;
         this.name = name;

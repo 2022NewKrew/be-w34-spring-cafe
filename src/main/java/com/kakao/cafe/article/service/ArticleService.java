@@ -10,6 +10,7 @@ import com.kakao.cafe.article.repository.ArticleJdbcRepository;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,12 +23,19 @@ public class ArticleService {
     }
 
     public void articleCreate(ArticleCreateDTO articleCreateDTO){
-        Article article = new Article(articleCreateDTO);
+        Article article = new Article(articleCreateDTO.getUserId(),
+                                        articleCreateDTO.getName(),
+                                        articleCreateDTO.getTitle(),
+                                        articleCreateDTO.getContents(),
+                                        new Timestamp(0L),
+                                        0L);
         articleRepository.addArticle(article);
     }
 
     public void articleUpdate(ArticleUpdateDTO articleUpdateDTO){
-        articleRepository.updateArticle(articleUpdateDTO.getSequence(), articleUpdateDTO.getTitle(), articleUpdateDTO.getContents());
+        articleRepository.updateArticle(articleUpdateDTO.getSequence(),
+                                        articleUpdateDTO.getTitle(),
+                                        articleUpdateDTO.getContents());
     }
 
     public void articleDelete(Long sequence){
@@ -50,7 +58,9 @@ public class ArticleService {
 
 
     public void replyCreate(ReplyCreateDTO replyCreateDTO){
-        articleRepository.addReply(replyCreateDTO.getUserId(), replyCreateDTO.getArticleSeq(), replyCreateDTO.getContents());
+        articleRepository.addReply(replyCreateDTO.getUserId(),
+                                    replyCreateDTO.getArticleSeq(),
+                                    replyCreateDTO.getContents());
     }
 
     public List<ReplyViewDTO> getReplies(Long articleSeq){
