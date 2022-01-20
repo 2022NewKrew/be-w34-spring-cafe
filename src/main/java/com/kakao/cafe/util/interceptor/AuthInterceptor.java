@@ -1,4 +1,4 @@
-package com.kakao.cafe.util;
+package com.kakao.cafe.util.interceptor;
 
 import com.kakao.cafe.exception.user.NotAllowedUserException;
 import com.kakao.cafe.exception.user.UserNotFoundException;

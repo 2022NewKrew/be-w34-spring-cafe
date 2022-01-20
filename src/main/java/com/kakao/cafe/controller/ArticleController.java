@@ -1,11 +1,9 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.exception.user.NotAllowedUserException;
 import com.kakao.cafe.model.dto.ArticleDto;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.annotation.Auth;
-import com.kakao.cafe.util.annotation.AuthMyArticle;
 import com.kakao.cafe.util.annotation.MyArticle;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
