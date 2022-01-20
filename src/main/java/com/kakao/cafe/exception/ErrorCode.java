@@ -7,6 +7,9 @@ public enum ErrorCode {
     // 400 Bad Request
     INCORRECT_PASSWORD(HttpStatus.BAD_REQUEST, "잘못된 비밀번호입니다."),
 
+    // 401 Unauthorized
+    USER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다"),
+
     // 403 Forbidden
     NOT_ALLOWED_USER(HttpStatus.FORBIDDEN, "접근할 수 없는 계정입니다."),
 
