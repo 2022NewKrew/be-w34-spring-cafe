@@ -2,6 +2,8 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticlePostDto;
+import com.kakao.cafe.dto.ReplyContentsDto;
+import com.kakao.cafe.dto.ReplyDto;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -13,4 +15,6 @@ public interface ArticleService {
     void delete(int id) throws  NoSuchElementException;
     List<ArticleDto> getArticleList();
     ArticleDto findById(int id) throws NoSuchElementException;
+    void insertReply(int aid, String writer, ReplyContentsDto contentsDto) throws SQLException;
+    List<ReplyDto> getReplyListOfArticle(int aid);
 }

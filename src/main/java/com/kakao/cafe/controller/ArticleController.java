@@ -1,8 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.ArticleDto;
-import com.kakao.cafe.dto.ArticlePostDto;
-import com.kakao.cafe.dto.UserProfileDto;
+import com.kakao.cafe.dto.*;
+import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -60,12 +60,15 @@ public class ArticleController {
     public String showArticle(@PathVariable int id, Model model) {
         ArticleDto article;
         UserProfileDto writer;
+        List<ReplyDto> replyDtoList;
 
         try {
             article = articleService.findById(id);
             writer = userService.findById(article.getWriter());
+            replyDtoList = articleService.getReplyListOfArticle(id);
             model.addAttribute("article", article);
             model.addAttribute("writer", writer);
+            model.addAttribute("reply", replyDtoList);
         } catch (NoSuchElementException e) {
             logger.error("/articles/index, article id = {}", id, e);
             return "redirect:/";
@@ -111,8 +114,13 @@ public class ArticleController {
         return "qna/form";
     }
 
-    @PostMapping("/reply")
-    public String reply() {
-        return "";
+    @PostMapping("/{id}/reply")
+    public String reply(@PathVariable int id, ReplyContentsDto replyContentsDto, HttpSession session) {
+        try {
+            articleService.insertReply(id, userService.getUserIdFromSession(session), replyContentsDto);
+        } catch (SQLException e) {
+
+        }
+        return String.format("/articles/%d", id);
     }
 }

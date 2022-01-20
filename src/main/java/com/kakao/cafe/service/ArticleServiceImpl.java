@@ -1,9 +1,13 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticlePostDto;
+import com.kakao.cafe.dto.ReplyContentsDto;
+import com.kakao.cafe.dto.ReplyDto;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.repository.UserRepository;
 
 import java.sql.SQLException;
@@ -14,10 +18,12 @@ import java.util.NoSuchElementException;
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
+    private final ReplyRepository replyRepository;
 
-    public ArticleServiceImpl(ArticleRepository articleRepository, UserRepository userRepository) {
+    public ArticleServiceImpl(ArticleRepository articleRepository, UserRepository userRepository, ReplyRepository replyRepository) {
         this.articleRepository = articleRepository;
         this.userRepository = userRepository;
+        this.replyRepository = replyRepository;
     }
 
     public void post(ArticlePostDto article) throws SQLException, NoSuchElementException {
@@ -60,5 +66,22 @@ public class ArticleServiceImpl implements ArticleService {
                 article.getTitle(),
                 article.getContents()
         );
+    }
+
+    public void insertReply(int aid, String writer, ReplyContentsDto contentsDto) throws SQLException {
+        Reply reply = new Reply(0, aid, writer, contentsDto.getContents());
+
+        replyRepository.save(reply);
+    }
+
+    // ARTICLE ID = aid 와 연결된 댓글들 리스트 반환
+    public List<ReplyDto> getReplyListOfArticle(int aid) {
+        List<ReplyDto> replyDtos = new ArrayList<>();
+
+        for (Reply reply : replyRepository.findByAid(aid)) {
+            replyDtos.add(new ReplyDto(reply.getAid(), reply.getWriter(), reply.getContents()));
+        }
+
+        return replyDtos;
     }
 }
