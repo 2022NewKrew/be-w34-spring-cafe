@@ -2,6 +2,7 @@ package com.kakao.cafe.impl.service;
 
 import com.kakao.cafe.dto.ArticleDTO;
 import com.kakao.cafe.dto.ReplyDTO;
+import com.kakao.cafe.dto.ReplyRestResponseDTO;
 import com.kakao.cafe.dto.UserDTO;
 import com.kakao.cafe.exception.NoChangeException;
 import com.kakao.cafe.exception.NoModifyPermissionException;
@@ -64,12 +65,9 @@ public class ArticleServiceImpl implements ArticleService {
     public void getArticle(long articleId, UserDTO user, Model model) {
         articleRepository.increaseViews(articleId);
         ArticleDTO article = articleRepository.getArticleById(articleId);
-        List<ReplyDTO> replies = replyRepository.getArticleReplies(articleId, user.getId());
         model.addAttribute("isOwner", Objects.equals(article.getWriterId(), user.getId()));
         model.addAttribute("article", article);
         model.addAttribute("articleId", articleId);
-        model.addAttribute("replies", replies);
-
     }
 
     @Override
@@ -98,12 +96,18 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void deleteReply(long userId, long replyId) {
-        ReplyDTO reply = replyRepository.getReplyById(userId, replyId);
-        if (!reply.getIsOwner()) {
+        ReplyDTO reply = replyRepository.getReplyById(replyId);
+        if (reply.getWriterID() != userId) {
             throw new NoModifyPermissionException(ARTICLE_UPDATE_NOT_ALLOWED_MESSAGE);
         }
         if (replyRepository.deleteReply(replyId) <= 0) {
             throw new NoChangeException(NO_DELETE_MESSAGE);
         }
+    }
+
+    @Override
+    public ReplyRestResponseDTO getArticleReplies(long articleId, long lastReplyId) {
+        List<ReplyDTO> replyList = replyRepository.getArticleReplies(articleId, lastReplyId);
+        return new ReplyRestResponseDTO(replyList);
     }
 }

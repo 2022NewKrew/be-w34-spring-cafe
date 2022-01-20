@@ -51,7 +51,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public ArticleDTO getArticleById(long id) {
         return jdbcTemplate
-                .queryForObject("select A.id, WRITERID, USERID as writer, title, contents,views,  date_format(A.time,'%Y-%m-%d %H:%i') time from User U join Article A on U.ID = A.WRITERID where A.ID = ? and isDelete = FALSE order by A.id desc ",
+                .queryForObject("select A.id, WRITERID, USERID as writer, title, contents,views,  date_format(A.time,'%Y-%m-%d %H:%i') time from User U join Article A on U.ID = A.WRITERID where A.ID = ? and isDelete = FALSE",
                         (rs, rowNum) -> new ArticleDTO(
                                 rs.getLong("id"),
                                 rs.getLong("writerId"),

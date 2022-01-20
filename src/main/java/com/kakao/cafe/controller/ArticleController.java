@@ -1,9 +1,8 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.annotation.RestResponseSessionCheck;
 import com.kakao.cafe.annotation.SessionCheck;
-import com.kakao.cafe.dto.ArticleDTO;
-import com.kakao.cafe.dto.ReplyDTO;
-import com.kakao.cafe.dto.UserDTO;
+import com.kakao.cafe.dto.*;
 import com.kakao.cafe.exception.NoChangeException;
 import com.kakao.cafe.exception.NoModifyPermissionException;
 import com.kakao.cafe.exception.OtherUserReplyExistException;
@@ -103,38 +102,45 @@ public class ArticleController {
         return "article/show";
     }
 
+    @GetMapping("/{articleId}/reply/")
+    @RestResponseSessionCheck
+    @ResponseBody
+    RestResponseDTO getReply(HttpSession session, @PathVariable long articleId) {
+        return articleService.getArticleReplies(articleId, 0);
+    }
+
     @PostMapping("/{articleId}/reply/")
-    @SessionCheck
-    String insertReply(HttpSession session, @PathVariable long articleId, @Valid ReplyDTO reply, Model model) {
+    @RestResponseSessionCheck
+    @ResponseBody
+    RestResponseDTO insertReply(HttpSession session, @PathVariable long articleId, @Valid ReplyDTO reply, long lastReplyId) {
         UserDTO user = (UserDTO) session.getAttribute("sessionUser");
         long userId = user.getId();
 
         try {
             articleService.insertReply(reply, userId);
         } catch (NoChangeException exception) {
-            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, exception.getMessage());
-            return Constants.ERROR_PAGE_NAME;
+            return new ErrorRestResponseDTO(exception.getMessage());
         }
 
         log.info("create Reply -> Article : {}, Writer : {}", articleId, userId);
-        return "redirect:/articles/" + articleId;
+        return articleService.getArticleReplies(articleId, lastReplyId);
     }
 
     @DeleteMapping("/{articleId}/reply/{replyId}")
-    @SessionCheck
-    String deleteReply(HttpSession session, @PathVariable long articleId, @PathVariable long replyId, Model model) {
+    @RestResponseSessionCheck
+    @ResponseBody
+    RestResponseDTO deleteReply(HttpSession session, @PathVariable long articleId, @PathVariable long replyId) {
         UserDTO sessionUser = (UserDTO) session.getAttribute("sessionUser");
         long userId = sessionUser.getId();
 
         try {
             articleService.deleteReply(userId, replyId);
         } catch (NoChangeException | NoModifyPermissionException exception) {
-            model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, exception.getMessage());
-            return Constants.ERROR_PAGE_NAME;
+            return new ErrorRestResponseDTO(exception.getMessage());
         }
 
         log.info("delete Reply -> ID : {}, Article : {}, Writer : {}", replyId, articleId, userId);
-        return "redirect:/articles/" + articleId;
+        return new RestResponseDTO(true);
     }
 
 

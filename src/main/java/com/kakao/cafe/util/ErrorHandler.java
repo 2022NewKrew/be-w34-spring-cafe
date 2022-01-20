@@ -3,6 +3,7 @@ package com.kakao.cafe.util;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -41,6 +42,13 @@ public class ErrorHandler {
         String field = error.getField();
         String message = String.format(FIELD_ERROR_MESSAGE_FORMAT, fieldMap.get(field), error.getDefaultMessage());
         model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, message);
+
+        return Constants.ERROR_PAGE_NAME;
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public String handleBindException(HttpRequestMethodNotSupportedException exception, Model model) {
+        model.addAttribute(Constants.ERROR_MESSAGE_ATTRIBUTE_NAME, Constants.PAGE_NOT_FOUND_ERROR_MESSAGE);
 
         return Constants.ERROR_PAGE_NAME;
     }

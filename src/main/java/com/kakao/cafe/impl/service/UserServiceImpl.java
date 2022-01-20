@@ -17,12 +17,11 @@ import java.util.Objects;
 @Transactional
 @Service("userService")
 public class UserServiceImpl implements UserService {
-    @Resource(name = "userRepository")
-    UserRepository userRepository;
     private static final String NO_UPDATE_MESSAGE = "수정할 내용이 없습니다.";
     private static final String WRONG_PASSWORD_MESSAGE = "잘못된 비밀번호입니다.";
     private static final String ACCESS_DENIED_MESSAGE = "다른유저의 정보에는 접근할 수 없습니다.";
-
+    @Resource(name = "userRepository")
+    UserRepository userRepository;
 
     @Override
     public long insertUser(UserDTO user) {

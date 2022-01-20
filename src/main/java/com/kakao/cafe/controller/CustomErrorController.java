@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @Controller
 public class CustomErrorController implements ErrorController {
-    private static final String PAGE_NOT_FOUND_ERROR_MESSAGE = "없는 페이지 입니다.";
 
     @RequestMapping(value = "/error")
     public String handleError(HttpServletRequest request, Model model) {
@@ -23,7 +22,7 @@ public class CustomErrorController implements ErrorController {
         if (status != null) {
             int statusCode = Integer.parseInt(status.toString());
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
-                message = PAGE_NOT_FOUND_ERROR_MESSAGE;
+                message = Constants.PAGE_NOT_FOUND_ERROR_MESSAGE;
             }
         }
         log.info(message);

@@ -29,6 +29,22 @@ public class SessionAspect {
         return joinPoint.proceed();
     }
 
+    @Around("@annotation(com.kakao.cafe.annotation.RestResponseSessionCheck)")
+    public Object RestResponseSessionCheck(ProceedingJoinPoint joinPoint) throws Throwable {
+        HttpSession session = null;
+        for (Object o : joinPoint.getArgs()) {
+            if (o instanceof HttpSession) {
+                session = (HttpSession) o;
+                break;
+            }
+        }
+        if (session.getAttribute("sessionUser") == null) {
+            return "로그인후 다시 시도해주세요.";
+        }
+
+        return joinPoint.proceed();
+    }
+
     @Around("@annotation(com.kakao.cafe.annotation.SessionUserInfoCheck)")
     public Object sessionUserInfoCheck(ProceedingJoinPoint joinPoint) throws Throwable {
         UserDTO user = null;
