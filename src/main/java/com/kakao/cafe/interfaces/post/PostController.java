@@ -2,12 +2,16 @@ package com.kakao.cafe.interfaces.post;
 
 import com.kakao.cafe.application.PostService;
 import com.kakao.cafe.domain.post.Post;
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.interfaces.common.PostDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/posts")
@@ -38,7 +42,14 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteById(@PathVariable long id) {
+    public String deleteById(@PathVariable long id, HttpSession session, RedirectAttributes redirectAttrs) {
+        Post post = postService.findById(id);
+        User user = (User)session.getAttribute("loginUser");
+        if (!post.getWriter().equals(user.getUserId())) {
+            redirectAttrs.addFlashAttribute("flashMessage", "내가 쓴 글만 삭제할 수 있습니다");
+            return "redirect:/posts";
+        }
+
         postService.deleteById(id);
         return "redirect:/posts";
     }

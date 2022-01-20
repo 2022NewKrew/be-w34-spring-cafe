@@ -32,7 +32,7 @@ public class PostService {
     }
 
     public void write(PostDto postDto) {
-        postRepository.add(postMapper.toEntity(postDto));
+        postRepository.save(postMapper.toEntity(postDto));
     }
 
     public void deleteById(long id) {

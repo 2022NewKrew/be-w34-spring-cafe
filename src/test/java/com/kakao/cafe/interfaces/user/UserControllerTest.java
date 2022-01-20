@@ -59,14 +59,12 @@ class UserControllerTest {
 
     private static Stream<List<User>> generateUsers() {
         User u1 = User.builder()
-                .id(1L)
                 .userId("userid1")
                 .password("password1")
                 .nickname("nickname1")
                 .email("email1")
                 .build();
         User u2 = User.builder()
-                .id(2L)
                 .userId("userid2")
                 .password("password2")
                 .nickname("nickname2")
