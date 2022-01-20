@@ -35,8 +35,10 @@ public class UserService {
     }
 
     public UUID loginedUserSessionId(UserRequest userRequest) {
-        User user = userRepository.findById(userRequest.getUserId());
-        UUID uuid = user.login(userRequest.getPassword());
+        User user = userRepository.findByIdAndPassword(
+            userRequest.getUserId(),
+            userRequest.getPassword());
+        UUID uuid = UUID.randomUUID();
         sessionRepository.save(uuid, user);
         return uuid;
     }

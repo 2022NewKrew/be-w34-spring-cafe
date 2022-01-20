@@ -10,4 +10,6 @@ public interface UserRepository {
     Users findAll();
 
     User findById(String userId);
+
+    User findByIdAndPassword(String userId, String password);
 }

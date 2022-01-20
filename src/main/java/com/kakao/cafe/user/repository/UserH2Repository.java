@@ -4,6 +4,7 @@ import com.kakao.cafe.exception.CustomEmptyDataAccessException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.Users;
 import com.kakao.cafe.user.exception.CustomDuplicateUserException;
+import com.kakao.cafe.user.exception.CustomLoginFailException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -46,6 +47,16 @@ public class UserH2Repository implements UserRepository {
             return jdbcTemplate.queryForObject(sql, userRowMapper, userId);
         } catch (EmptyResultDataAccessException e) {
             throw new CustomEmptyDataAccessException(e);
+        }
+    }
+
+    @Override
+    public User findByIdAndPassword(String userId, String password) {
+        String sql = "SELECT * FROM users WHERE user_id = ? AND password = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, userRowMapper, userId, password);
+        } catch (EmptyResultDataAccessException e) {
+            throw new CustomLoginFailException();
         }
     }
 

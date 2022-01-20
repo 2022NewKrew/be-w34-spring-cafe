@@ -2,7 +2,7 @@ package com.kakao.cafe.user;
 
 import com.kakao.cafe.user.exception.CustomDuplicateUserException;
 import com.kakao.cafe.user.exception.CustomInvalidedSessionException;
-import com.kakao.cafe.user.exception.CustomPasswordNotEqualsException;
+import com.kakao.cafe.user.exception.CustomLoginFailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,19 +18,19 @@ public class UserControllerAdvice {
     @ExceptionHandler(CustomDuplicateUserException.class)
     public ResponseEntity<String> handleCustomDuplicateUserException(
         CustomDuplicateUserException e) {
-        logger.info("[ERROR] 중복된 유저 아이디", e.getCause());
+        logger.info(e.getMessage(), e.getCause());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
-    @ExceptionHandler(CustomPasswordNotEqualsException.class)
-    public String handleCustomPasswordNotEqualsException() {
-        logger.info("[ERROR] 패스워드 불일치, 로그인 실패");
+    @ExceptionHandler(CustomLoginFailException.class)
+    public String handleCustomPasswordNotEqualsException( CustomLoginFailException e) {
+        logger.info(e.getMessage());
         return "user/login_failed";
     }
 
     @ExceptionHandler(CustomInvalidedSessionException.class)
-    public String handleCustomInvalidedSessionException() {
-        logger.info("[ERROR] 유효하지 않은 세션입니다.");
+    public String handleCustomInvalidedSessionException(CustomInvalidedSessionException e) {
+        logger.info(e.getMessage());
         return "user/login";
     }
 }
