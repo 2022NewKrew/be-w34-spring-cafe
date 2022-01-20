@@ -20,10 +20,7 @@ public class ArticleController {
 
     @GetMapping("/form")
     public String getArticleFormPage(){
-        if (authService.isLogin()) {
-            return "/qna/form";
-        }
-        return "/user/login";
+        return "/qna/form";
     }
 
     @PostMapping("/question")
@@ -35,12 +32,9 @@ public class ArticleController {
 
     @GetMapping("/show/{id}")
     public String getArticleShowPage(@PathVariable Long id, Model model){
-        if(authService.isLogin()){
-            ArticlePostDto article = articleService.getArticlePostDtoById(id);
-            model.addAttribute("article", article);
-            return "/qna/show";
-        }
-        return "/user/login";
+        ArticlePostDto article = articleService.getArticlePostDtoById(id);
+        model.addAttribute("article", article);
+        return "/qna/show";
     }
 
     @GetMapping("/update/{id}")

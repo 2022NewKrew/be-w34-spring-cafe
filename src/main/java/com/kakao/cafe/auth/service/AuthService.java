@@ -34,10 +34,6 @@ public class AuthService {
         }
     }
 
-    public boolean isLogin(){
-        return Optional.ofNullable(session.getAttribute("LOGIN_USER_ID")).isPresent();
-    }
-
     public String getLoginUserId(){
         return (String) session.getAttribute("LOGIN_USER_ID");
     }
