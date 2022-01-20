@@ -48,4 +48,8 @@ public class ArticleService {
     public void update(@Valid Article article) {
         repository.update(article);
     }
+
+    public void delete(Long id) {
+        repository.delete(id);
+    }
 }

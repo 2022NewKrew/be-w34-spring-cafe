@@ -7,17 +7,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ArticleServiceTest {
-    private final ArticleService articleService;
-    private final UserService userService;
-
     @Autowired
-    ArticleServiceTest(ArticleService articleService, UserService userService) {
-        this.articleService = articleService;
-        this.userService = userService;
-    }
+    ArticleService articleService;
+    @Autowired
+    UserService userService;
 
     @Test
     void update() {
@@ -39,5 +38,22 @@ class ArticleServiceTest {
         Article fetch = articleService.fetch(articleId);
         Assertions.assertEquals("test2", fetch.getTitle());
         Assertions.assertEquals("test456", fetch.getContent());
+    }
+
+    @Test
+    void delete() {
+        User user = new User("test123", "test1234", "One Test", "test1@test.com");
+        long userId = userService.create(user);
+        user.setId(userId);
+
+        Article article = new Article();
+        article.setTitle("test1");
+        article.setContent("test123");
+        article.setAuthor(user);
+        long articleId = articleService.create(article);
+
+        articleService.delete(articleId);
+
+        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> articleService.fetch(articleId));
     }
 }

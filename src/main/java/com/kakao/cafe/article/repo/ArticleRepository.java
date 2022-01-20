@@ -5,4 +5,6 @@ import com.kakao.cafe.common.CrRepository;
 
 public interface ArticleRepository extends CrRepository<Article> {
     void update(Article article);
+
+    void delete(Long id);
 }

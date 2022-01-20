@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -45,6 +46,15 @@ class ArticleControllerTest {
                         .sessionAttr("user", user)
                         .requestAttr("title", "test2")
                         .requestAttr("contents", "test456"))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    void delete() throws Exception {
+        when(articleService.fetch(article.getId())).thenReturn(article);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/articles/" + article.getId())
+                        .sessionAttr("user", user))
                 .andExpect(status().is3xxRedirection());
     }
 }

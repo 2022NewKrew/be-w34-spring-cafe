@@ -59,4 +59,15 @@ public class ArticleController {
         service.update(fetch, dto);
         return String.format("redirect:articles/%s", id);
     }
+
+    @DeleteMapping(value = "articles/{id}")
+    public String delete(@PathVariable Long id, HttpSession session) {
+        User author = (User) session.getAttribute("user");
+        Article fetch = service.fetch(id);
+        if (!fetch.getAuthor().equals(author)) {
+            throw new AuthorNotMatchedException("해당 게시글의 작성자만 삭제할 수 있습니다.");
+        }
+        service.delete(id);
+        return "redirect:/";
+    }
 }

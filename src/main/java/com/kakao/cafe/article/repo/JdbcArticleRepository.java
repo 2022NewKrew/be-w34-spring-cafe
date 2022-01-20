@@ -58,4 +58,10 @@ public class JdbcArticleRepository implements ArticleRepository {
         String query = "UPDATE `ARTICLE` SET UPDATED_AT=?, TITLE=?, CONTENT=? WHERE ID=?";
         jdbcTemplate.update(query, article.getUpdatedAt(), article.getTitle(), article.getContent(), article.getId());
     }
+
+    @Override
+    public void delete(Long id) {
+        String query = "DELETE FROM `ARTICLE` WHERE ID=?";
+        jdbcTemplate.update(query, id);
+    }
 }
