@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.common.auth.Auth;
 import com.kakao.cafe.common.exception.BaseException;
+import com.kakao.cafe.controller.common.LoginUser;
 import com.kakao.cafe.controller.common.SessionLoginUser;
 import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.UserService;
@@ -33,7 +34,7 @@ public class UserController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final SessionLoginUser<UserDto> sessionLoginUser;
+    private final SessionLoginUser sessionLoginUser;
 
     // TODO : 저장할 때 단방향 해시 필요
     @PostMapping(value = "/create")
@@ -107,7 +108,7 @@ public class UserController {
     @PostMapping("/updateAuth")
     public String viewUserUpdateForm(Model model, @RequestParam String password) throws BaseException {
 
-        UserDto loginUser = sessionLoginUser.getLoginUser();
+        LoginUser loginUser = sessionLoginUser.getLoginUser();
         User user = userService.loginCheck(loginUser.getUserId(), password);
 
         UserDto userDto = modelMapper.map(user, UserDto.class);
@@ -134,7 +135,7 @@ public class UserController {
     @PutMapping("/update")
     public String updateUser(@ModelAttribute("user") @Valid UserUpdateDto userUpdateDto) throws BaseException {
 
-        UserDto loginUser = sessionLoginUser.getLoginUser();
+        LoginUser loginUser = sessionLoginUser.getLoginUser();
 
         User user = new User(loginUser.getId(), userUpdateDto.getName(), userUpdateDto.getEmail());
 
@@ -165,7 +166,7 @@ public class UserController {
 
     private void setLoginUserSession(User user) {
 
-        UserDto userDto = modelMapper.map(user, UserDto.class);
+        LoginUser userDto = modelMapper.map(user, LoginUser.class);
 
         sessionLoginUser.setLoginUser(userDto);
 

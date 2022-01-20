@@ -9,17 +9,17 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class SessionLoginUser<T> {
-
+public class SessionLoginUser {
+    private static final Long NOT_FOUND_MEMBER_ID = -1L;
     private static final String SESSION_LOGIN_USER = "loginUser";
     private static final String ADMIN = "admin";
     private final HttpSession session;
 
-    public T getLoginUser() {
-        return (T) session.getAttribute(SESSION_LOGIN_USER);
+    public LoginUser getLoginUser() {
+        return (LoginUser) session.getAttribute(SESSION_LOGIN_USER);
     }
 
-    public void setLoginUser(T o) {
+    public void setLoginUser(LoginUser o) {
         session.setAttribute(SESSION_LOGIN_USER, o);
     }
 
@@ -31,5 +31,15 @@ public class SessionLoginUser<T> {
 
         session.invalidate();
         log.info("success invalidate session");
+    }
+
+    public Long getMemberId() {
+        LoginUser loginUser = getLoginUser();
+        return loginUser == null ? NOT_FOUND_MEMBER_ID : loginUser.getId();
+    }
+
+    public String getUserId() {
+        LoginUser loginUser = getLoginUser();
+        return loginUser.getUserId();
     }
 }
