@@ -21,6 +21,10 @@ public class CommentDto {
         public String getContents() {
             return contents;
         }
+
+        public void setContents(String contents) {
+            this.contents = contents;
+        }
     }
 
     public static class ReadCommentResponse {
