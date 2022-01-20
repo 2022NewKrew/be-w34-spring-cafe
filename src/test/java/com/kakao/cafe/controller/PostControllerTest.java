@@ -9,9 +9,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
 
 @SpringBootTest
@@ -24,11 +24,6 @@ public class PostControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-//    @BeforeEach
-//    void setUp() throws Exception {
-//        this.mockMvc.perform(get("/posts/deleteAll"));
-//        this.mockMvc.perform(get("/users/deleteAll"));
-//    }
 
     @Test
     @Transactional
@@ -81,7 +76,7 @@ public class PostControllerTest {
 
     @Test
     @Transactional
-    void postViewTest() throws Exception {
+    void postViewFailByNotExistsPostId() throws Exception {
         MockMvc mockMvc = getMethodSessionMvc();
 
         mockMvc.perform(post("/user/create")
@@ -219,6 +214,18 @@ public class PostControllerTest {
         mockMvc.perform(delete("/posts/1"))
                 .andExpect(view().name("redirect:/posts"));
 
+    }
+
+    @Test
+    @Transactional
+    void viewPostCommentTest() throws Exception {
+        MockMvc mockMvc = getMethodSessionMvc();
+        mockMvc.perform(post("/users/login")
+                .param("id", "javajigi")
+                .param("password", "test"));
+        mockMvc.perform(get("/post/1"))
+                .andExpect(model().attribute("comments", hasSize(1)
+                ));
     }
 
 

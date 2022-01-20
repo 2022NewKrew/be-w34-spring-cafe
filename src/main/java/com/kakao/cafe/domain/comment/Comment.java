@@ -21,6 +21,10 @@ public class Comment {
         this(builder.getId(), builder.getPost(), builder.getUser(), builder.getText());
     }
 
+    public boolean isUser(String userId) {
+        return user.isUserId(userId);
+    }
+
     public long getId() {
         return id;
     }

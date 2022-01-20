@@ -23,6 +23,12 @@ public class CommentDaoTest {
 
     @Test
     @Transactional
+    void find_all() {
+        assertThat(commentDao.findAll(1).size()).isEqualTo(1);
+    }
+
+    @Test
+    @Transactional
     void insert_test() {
         CommentDbDto commentDbDto = new CommentDbDto(3, 1, "sanjigi", "test");
         assertThat(commentDao.insert(commentDbDto)).isEqualTo(1);
@@ -43,12 +49,12 @@ public class CommentDaoTest {
 
     }
 
-
     @Test
     @Transactional
     void delete_test() {
         assertThat(commentDao.deleteById(1)).isEqualTo(1);
         assertThatThrownBy(() -> commentDao.findById(1)).isInstanceOf(EmptyResultDataAccessException.class);
     }
+
 
 }

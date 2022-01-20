@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class CommentDao {
@@ -29,6 +30,16 @@ public class CommentDao {
                 rs.getString("USER_ID"),
                 rs.getString("TEXT")
         ), id);
+    }
+
+    public List<CommentDbDto> findAll(long postId) {
+        String query = "SELECT * FROM COMMENTS WHERE POST_ID = ?";
+        return jdbcTemplate.query(query, (rs, count) -> new CommentDbDto(
+                rs.getLong("ID"),
+                rs.getLong("POST_ID"),
+                rs.getString("USER_ID"),
+                rs.getString("TEXT")
+        ), postId);
     }
 
 
