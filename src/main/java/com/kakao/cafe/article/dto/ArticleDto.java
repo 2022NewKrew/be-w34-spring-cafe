@@ -17,7 +17,7 @@ public class ArticleDto {
                 article.getTitle(),
                 article.getTitle(),
                 FORMATTER.format(article.getCreatedAt()),
-                article.getAuthor().getUserId());
+                article.getAuthor().getName());
     }
 
     public ArticleDto(Long id, String title, String content, String createdAt, String author) {

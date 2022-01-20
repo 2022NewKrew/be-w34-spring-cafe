@@ -19,8 +19,8 @@ public class ArticleService {
         this.repository = repository;
     }
 
-    public void create(@Valid Article article) {
-        repository.save(article);
+    public long create(@Valid Article article) {
+        return repository.save(article);
     }
 
     public void create(ArticleRegistrationDto dto, User author) {
@@ -37,5 +37,19 @@ public class ArticleService {
 
     public List<Article> fetchAll() {
         return repository.fetchAll();
+    }
+
+    public void update(Article article, ArticleRegistrationDto dto) {
+        article.setTitle(dto.getTitle());
+        article.setContent(dto.getContent());
+        update(article);
+    }
+
+    public void update(@Valid Article article) {
+        repository.update(article);
+    }
+
+    public void delete(Long id) {
+        repository.delete(id);
     }
 }
