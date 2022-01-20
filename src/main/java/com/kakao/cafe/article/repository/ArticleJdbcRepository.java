@@ -2,8 +2,9 @@ package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleRowMapper;
-import com.kakao.cafe.article.dto.ArticleUpdateDTO;
-import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.article.domain.Reply;
+import com.kakao.cafe.article.domain.ReplyViewRowMapper;
+import com.kakao.cafe.article.dto.ReplyViewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -53,5 +54,21 @@ public class ArticleJdbcRepository implements ArticleRepository{
     public Article getArticleByCondition(String key, String value) {
         String sql = String.format("SELECT * FROM articles WHERE %s = %s", key, value);
         return (Article) jdbcTemplate.query(sql, new ArticleRowMapper()).stream().findAny().orElse(null);
+    }
+
+    @Override
+    public void addReply(String userId, Long articleSeq, String contents) {
+        String sql = "INSERT INTO REPLY(userId,articleSeq,contents,createdAt) VALUES (?,?,?,CURRENT_TIMESTAMP())";
+        jdbcTemplate.update(sql,
+                userId,
+                articleSeq,
+                contents);
+    }
+
+    //이 부분을 join없이 List<Reply> 로만 얻고싶은데 다른방법이 없을까 고민중이다.
+    @Override
+    public List<ReplyViewDTO> getRepliesByArticleSeqWithUser(Long articleSeq) {
+        String sql = String.format("SELECT * FROM REPLY JOIN USERS ON REPLY.USERID = USERS.USERID WHERE REPLY.ARTICLESEQ=%d;", articleSeq);
+        return jdbcTemplate.query(sql, new ReplyViewRowMapper());
     }
 }

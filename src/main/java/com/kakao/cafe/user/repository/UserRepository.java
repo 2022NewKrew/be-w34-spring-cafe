@@ -16,5 +16,5 @@ public interface UserRepository {
     //회원가입처리
     public void addUser(User user);
 
-    void updateUser(User updateduser);
+    void updateUser(User updateUser);
 }

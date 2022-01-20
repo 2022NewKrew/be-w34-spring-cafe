@@ -2,18 +2,15 @@ package com.kakao.cafe.user.controller;
 
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.*;
+import com.kakao.cafe.user.exception.UserNotMatchedException;
 import com.kakao.cafe.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.Cookie;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -43,7 +40,12 @@ public class UserController {
 
     //회원정보수정
     @PutMapping(value = "/user/update")
-    public String userUpdate(UserCreateDTO userCreateDTO){
+    public String userUpdate(UserCreateDTO userCreateDTO, HttpSession session){
+        User user = (User) session.getAttribute("sessionedUser");
+        if(!user.equalsUserId(userCreateDTO.getUserId())){
+            throw new UserNotMatchedException("자신의 아이디만 수정이 가능합니다.");
+        }
+
         userService.userUpdate(userCreateDTO);
 
         return "redirect:/user/list";
@@ -63,8 +65,9 @@ public class UserController {
 
     //회원개인정보 수정
     @GetMapping(value = "/users/{userId}/form")
-    public String userUpdate(@PathVariable("userId") String userId, Model model){
+    public String userUpdate(@PathVariable("userId") String userId, Model model, HttpSession session){
         User user = userService.getUserByUserId(userId);
+
         UserUpdateDTO userUpdateDTO = new UserUpdateDTO(user);
         model.addAttribute("userid", userUpdateDTO.getUserId());
         model.addAttribute("name", userUpdateDTO.getName());

@@ -1,14 +1,19 @@
 package com.kakao.cafe.article.service;
 
 import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.domain.ArticleFactory;
+import com.kakao.cafe.article.domain.Reply;
 import com.kakao.cafe.article.dto.ArticleCreateDTO;
 import com.kakao.cafe.article.dto.ArticleUpdateDTO;
+import com.kakao.cafe.article.dto.ReplyCreateDTO;
+import com.kakao.cafe.article.dto.ReplyViewDTO;
 import com.kakao.cafe.article.repository.ArticleJdbcRepository;
-import com.kakao.cafe.article.repository.ArticleMemoryRepository;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -19,12 +24,17 @@ public class ArticleService {
     }
 
     public void articleCreate(ArticleCreateDTO articleCreateDTO){
-        Article article = new Article(articleCreateDTO);
+        Article article = ArticleFactory.getArticle(articleCreateDTO.getUserId(),
+                                                    articleCreateDTO.getName(),
+                                                    articleCreateDTO.getTitle(),
+                                                    articleCreateDTO.getContents());
         articleRepository.addArticle(article);
     }
 
     public void articleUpdate(ArticleUpdateDTO articleUpdateDTO){
-        articleRepository.updateArticle(articleUpdateDTO.getSequence(), articleUpdateDTO.getTitle(), articleUpdateDTO.getContents());
+        articleRepository.updateArticle(articleUpdateDTO.getSequence(),
+                                        articleUpdateDTO.getTitle(),
+                                        articleUpdateDTO.getContents());
     }
 
     public void articleDelete(Long sequence){
@@ -43,5 +53,17 @@ public class ArticleService {
 
     public List<Article> getAllArticles(){
         return articleRepository.getArticlesNotDeleted();
+    }
+
+
+    public void replyCreate(ReplyCreateDTO replyCreateDTO){
+        articleRepository.addReply(replyCreateDTO.getUserId(),
+                                    replyCreateDTO.getArticleSeq(),
+                                    replyCreateDTO.getContents());
+    }
+
+    public List<ReplyViewDTO> getReplies(Long articleSeq){
+        List<ReplyViewDTO> replies = articleRepository.getRepliesByArticleSeqWithUser(articleSeq);
+        return replies;
     }
 }

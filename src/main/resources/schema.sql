@@ -1,6 +1,6 @@
+DROP TABLE IF EXISTS REPLY;
 DROP TABLE IF EXISTS ARTICLES;
 DROP TABLE IF EXISTS USERS;
-
 
 CREATE TABLE USERS(
     sequence long PRIMARY KEY AUTO_INCREMENT,
@@ -19,4 +19,14 @@ CREATE TABLE ARTICLES(
     contents VARCHAR(2000),
     createdAt TIMESTAMP,
     isDeleted boolean DEFAULT false
+);
+
+
+CREATE TABLE REPLY(
+     sequence long PRIMARY KEY AUTO_INCREMENT,
+     userid VARCHAR(30) REFERENCES USERS(userid),
+     articleSeq long REFERENCES ARTICLES(sequence),
+     contents VARCHAR(2000),
+     isDeleted boolean DEFAULT false,
+     createdAt TIMESTAMP
 );

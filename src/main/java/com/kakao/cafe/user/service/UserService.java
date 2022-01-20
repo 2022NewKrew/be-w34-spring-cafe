@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserFactory;
 import com.kakao.cafe.user.dto.UserCreateDTO;
 import com.kakao.cafe.user.dto.UserListDTO;
 import com.kakao.cafe.user.dto.UserLoginDTO;
@@ -8,6 +9,7 @@ import com.kakao.cafe.user.dto.UserProfileDTO;
 import com.kakao.cafe.user.repository.UserJdbcRepository;
 import com.kakao.cafe.user.repository.UserMemoryRepository;
 import com.kakao.cafe.user.repository.UserRepository;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 public class UserService {
     private UserRepository userRepository;
 
+    private Logger logger = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
@@ -27,7 +31,10 @@ public class UserService {
 
 
     public void userCreate(UserCreateDTO userCreateDTO){
-        User user = new User(userCreateDTO);
+        User user = UserFactory.getUser(userCreateDTO.getUserId(),
+                                        userCreateDTO.getPassword(),
+                                        userCreateDTO.getName(),
+                                        userCreateDTO.getEmail());
         userRepository.addUser(user);
     }
 
@@ -38,12 +45,10 @@ public class UserService {
             throw new RuntimeException("유저 아이디에 해당하는 유저가 없습니다.");
         }
 
-        //비밀번호가 일치하지 않는경우 return
-        if(!user.getPassword().equals(userCreateDTO.getPassword())){
-            return;
-        }
-
-        User updatedUser = new User(userCreateDTO);
+        User updatedUser = UserFactory.getUser(userCreateDTO.getUserId(),
+                                        userCreateDTO.getPassword(),
+                                        userCreateDTO.getName(),
+                                        userCreateDTO.getEmail());
         userRepository.updateUser(updatedUser);
     }
 
@@ -51,7 +56,7 @@ public class UserService {
         User user = userRepository.getUserByCondition("userid", userLoginDTO.getUserId());
 
         if(user == null){
-            LoggerFactory.getLogger(UserService.class).error("존재하는 사용자 아이디가 없습니다. (" + (userLoginDTO.getUserId()) + ")");
+            logger.error("존재하는 사용자 아이디가 없습니다. (" + (userLoginDTO.getUserId()) + ")");
             return false;
         }
 
