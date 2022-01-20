@@ -2,10 +2,11 @@ package com.kakao.cafe.article.domain;
 
 import com.kakao.cafe.article.dto.MultipleArticle;
 import com.kakao.cafe.article.dto.SingleArticle;
+import com.kakao.cafe.article.exception.ArticleNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -49,7 +50,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                     .authorName(rs.getString("author_nickname"))
                     .build(),
                 id));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -60,7 +61,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, articleMapper, id));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -93,7 +94,11 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     public boolean increaseViewCount(Long id) {
         final String sql = "update articles set view_count = view_count + 1 where article_id = ?";
 
-        return jdbcTemplate.update(sql, id) > 0;
+        try {
+            return jdbcTemplate.update(sql, id) > 0;
+        } catch (EmptyResultDataAccessException e) {
+            throw new ArticleNotFoundException();
+        }
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.kakao.cafe.article.dto.SingleComment;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +28,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, commentMapper, id));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }

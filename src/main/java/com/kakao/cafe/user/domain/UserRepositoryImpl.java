@@ -3,7 +3,7 @@ package com.kakao.cafe.user.domain;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository {
         final String sql = "select * from users where user_id = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userMapper, id));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -35,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
         final String sql = "select * from users where email = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userMapper, email));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
