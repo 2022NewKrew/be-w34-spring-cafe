@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.interceptor.ValidateLogin;
+import com.kakao.cafe.controller.interceptor.LoginRequired;
 import com.kakao.cafe.dto.AuthDTO;
 import com.kakao.cafe.dto.UserResponseDTO;
 import com.kakao.cafe.service.AuthService;
@@ -37,7 +37,7 @@ public class AuthController {
         return "redirect:/";
     }
 
-    @ValidateLogin
+    @LoginRequired
     @DeleteMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

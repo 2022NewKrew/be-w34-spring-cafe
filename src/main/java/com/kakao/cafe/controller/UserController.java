@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.interceptor.ValidateLogin;
+import com.kakao.cafe.controller.interceptor.LoginRequired;
 import com.kakao.cafe.dto.UserRequestDTO;
 import com.kakao.cafe.dto.UserResponseDTO;
 import com.kakao.cafe.dto.UserUpdateDTO;
@@ -51,7 +51,7 @@ public class UserController {
         return "redirect:";
     }
 
-    @ValidateLogin
+    @LoginRequired
     @GetMapping("/{userId}/form")
     public String updateUser(@PathVariable String userId, Model model, HttpSession session) {
         logger.info("updateUser(GET): {} {}", userId, session.getAttribute(SESSION_USER));
@@ -64,7 +64,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @ValidateLogin
+    @LoginRequired
     @PutMapping("/{userId}")
     public String updateUser(@PathVariable String userId, @Validated UserUpdateDTO user) {
         logger.info("updateUser(PUT): {}, {}, {}, {}", userId, user.getPassword(), user.getPasswordCheck(), user.getName());

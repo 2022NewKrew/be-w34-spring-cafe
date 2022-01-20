@@ -19,7 +19,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        if (ObjectUtils.isEmpty(((HandlerMethod)handler).getMethodAnnotation(ValidateLogin.class))) {
+        if (ObjectUtils.isEmpty(((HandlerMethod)handler).getMethodAnnotation(LoginRequired.class))) {
             return true;
         }
 

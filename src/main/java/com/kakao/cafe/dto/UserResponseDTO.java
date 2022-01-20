@@ -18,14 +18,17 @@ public class UserResponseDTO {
     private final String email;
     @NotBlank
     private final LocalDateTime createdAt;
+    @NotBlank
+    private final LocalDateTime updatedAt;
 
     @Builder
-    public UserResponseDTO(Long id, String userId, String name, String email, LocalDateTime createdAt) {
+    public UserResponseDTO(Long id, String userId, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -46,5 +49,9 @@ public class UserResponseDTO {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

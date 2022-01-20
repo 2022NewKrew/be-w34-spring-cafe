@@ -1,7 +1,6 @@
 package com.kakao.cafe.domain;
 
 import lombok.Builder;
-import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -22,17 +21,18 @@ public class User {
     private String email;
     @NotBlank
     private final LocalDateTime createdAt;
-    @Nullable
+    @NotBlank
     private LocalDateTime updatedAt;
 
     @Builder
-    public User(Long id, String userId, String password, String name, String email, LocalDateTime createdAt) {
+    public User(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public boolean validatePassword(String password) {
@@ -73,6 +73,14 @@ public class User {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

@@ -16,14 +16,17 @@ public class ArticleResponseDTO {
     private final String content;
     @NotBlank
     private final LocalDateTime createdAt;
+    @NotBlank
+    private final LocalDateTime updatedAt;
 
     @Builder
-    public ArticleResponseDTO(Long id, String author, String title, String content, LocalDateTime createdAt) {
+    public ArticleResponseDTO(Long id, String author, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.author = author;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -44,5 +47,9 @@ public class ArticleResponseDTO {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }
