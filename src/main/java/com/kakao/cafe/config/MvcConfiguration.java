@@ -1,17 +1,26 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.resolver.LoginUserArgumentResolver;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
+
+    private static final String COMMON_DIRECTORY = "/common";
+    private static final String COMMON_VIEW_404_ERROR = COMMON_DIRECTORY+"/404error";
+
     private static final String USER_DIRECTORY = "/user";
     private static final String USER_VIEW_SIGN_IN_FAIL = USER_DIRECTORY+"/login_fail";
     private static final String USER_VIEW_SIGN_UP_FAIL = USER_DIRECTORY+"/form_fail";
@@ -32,23 +41,35 @@ public class MvcConfiguration implements WebMvcConfigurer {
         registry.addViewController("/posts/write/fail").setViewName(POST_VIEW_WRITE_FAIL);
         registry.addViewController("/posts/edit/fail").setViewName(POST_VIEW_EDIT_FAIL);
 
+        registry.addViewController("/error").setViewName(COMMON_VIEW_404_ERROR);
+
         // 시작페이지 조정
         registry.addRedirectViewController("/", "/posts/list");
     }
 
-//    @Bean
-//    public DataSource h2DataSource() {
-//        // jdbc:h2:tcp://localhost:3306/kakaodb
-//        return new EmbeddedDatabaseBuilder()
-//                .setType(EmbeddedDatabaseType.H2)
-//                .setName("kakaodb")
-//                .addScript("classpath:/sql/mysql_schema.sql")
-//                .addScript("classpath:/sql/data.sql").build();
-//    }
-
-    @ConfigurationProperties(prefix = "spring.datasource.hikari")
     @Bean
-    public DataSource mySqlDataSource() {
-        return DataSourceBuilder.create().build();
+    public LoginUserArgumentResolver loginUserArgumentResolver() {
+        return new LoginUserArgumentResolver();
     }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(loginUserArgumentResolver());
+    }
+
+    @Bean
+    public DataSource h2DataSource() {
+        // jdbc:h2:tcp://localhost:3306/kakaodb
+        return new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.H2)
+                .setName("kakaodb")
+                .addScript("classpath:/sql/schema.sql")
+                .addScript("classpath:/sql/data.sql").build();
+    }
+
+//    @ConfigurationProperties(prefix = "spring.datasource.hikari")
+//    @Bean
+//    public DataSource mySqlDataSource() {
+//        return DataSourceBuilder.create().build();
+//    }
 }

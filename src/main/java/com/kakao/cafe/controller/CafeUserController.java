@@ -1,9 +1,12 @@
 package com.kakao.cafe.controller;
 
 
+import com.kakao.cafe.annotation.LoginUser;
 import com.kakao.cafe.helper.CollectionHelper;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.CafeUserService;
+import lombok.extern.java.Log;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,14 +38,18 @@ public class CafeUserController {
     private static final String USER_REDIRECT_SIGN_OUT = REDIRECT_PREFIX+"/";
     private static final String USER_REDIRECT_PROFILE_EDIT_ADMIN_FAIL = REDIRECT_PREFIX+"/users/profile/edit/fail";
     private static final String USER_REDIRECT_PROFILE_EDIT = REDIRECT_PREFIX+"/users/list";
+    private static final String USER_REDIRECT_PROFILE_DELETE_SUCCESS = REDIRECT_PREFIX+"/";
+    private static final String USER_REDIRECT_PROFILE_DELETE_FAIL = REDIRECT_PREFIX+"/users/profile/edit/fail";
+
 
     @GetMapping("/sign-in")
     String userViewSignIn() {
         return USER_VIEW_SIGN_IN;
     }
+
     @PostMapping("/sign-in")
-    String signIn(HttpSession httpSession, User signInUser) {
-        if(httpSession.getAttribute("signInUser") == null && cafeUserService.SignIn(signInUser)) {
+    String signIn(@LoginUser String loginUser, HttpSession httpSession, User signInUser) {
+        if(loginUser == null && cafeUserService.SignIn(signInUser)) {
             httpSession.setAttribute("signInUser", signInUser);
             return USER_REDIRECT_SIGN_IN_SUCCESS;
         }
@@ -53,9 +60,10 @@ public class CafeUserController {
     String userViewSingUp() {
         return USER_VIEW_SIGN_UP;
     }
+
     @PostMapping("/sign-up")
-    String signUp(HttpSession httpSession, User newUser){ // 회원가입
-        if(httpSession.getAttribute("signInUser") == null && cafeUserService.signUp(newUser)) {
+    String signUp(@LoginUser String loginUser, User newUser){ // 회원가입
+        if(loginUser == null && cafeUserService.signUp(newUser)) {
             return USER_REDIRECT_LIST;
         }
         return USER_REDIRECT_SIGN_UP_FAIL;
@@ -70,31 +78,46 @@ public class CafeUserController {
     }
 
     @GetMapping("/profile/{userId}")
-    String getUserProfile (Model model, @PathVariable("userId") String userId) { // 유저 프로필
+    String getUserProfile (Model model, @LoginUser String loginUser, @PathVariable("userId") String userId) { // 유저 프로필
         User user = cafeUserService.getUserProfile(userId);
         if(user != null) {
             model.addAttribute("user", user);
+            if( loginUser != null ) {
+                boolean canEdit = loginUser.equals(user.getUserId());
+                model.addAttribute("canEdit", canEdit);
+            }
         }
         return USER_VIEW_PROFILE;
+    }
+
+    @DeleteMapping("/profile/{userId}")
+    String deleteProfile (@LoginUser String loginUser, HttpSession httpSession, @NonNull @PathVariable("userId") String userId) {
+        if(loginUser != null && loginUser.equals(userId) && cafeUserService.deleteProfile(userId)) {
+            httpSession.invalidate();
+            return USER_REDIRECT_PROFILE_DELETE_SUCCESS;
+        }
+        return USER_REDIRECT_PROFILE_DELETE_FAIL;
     }
 
     @GetMapping("/profile/edit")
     String userViewProfile () {
         return USER_VIEW_PROFILE_EDIT_ADMIN;
     }
+
     @PostMapping("/profile/edit")
-    String adminEditProfile (HttpSession httpSession, String password) {
-        User user = (User) httpSession.getAttribute("signInUser");
-        if(cafeUserService.adminEditProfile(user, password)) {
+    String adminEditProfile (@LoginUser String loginUser, String password) {
+        if(cafeUserService.adminEditProfile(loginUser, password)) {
             return USER_VIEW_PROFILE_EDIT_FORM;
         }
         return USER_REDIRECT_PROFILE_EDIT_ADMIN_FAIL;
     }
+
     @PutMapping("/profile/edit")
-    String editProfile (HttpSession httpSession, String email) {
-        User user = (User) httpSession.getAttribute("signInUser");
-        if(cafeUserService.editProfile(user, email)) {
-            user.setEmail(email);
+    String editProfile (@LoginUser String loginUser, HttpSession httpSession, User updateUser) {
+        if(cafeUserService.editProfile(loginUser, updateUser)) {
+            User user = (User) httpSession.getAttribute("signInUser");
+            user.setEmail(updateUser.getEmail());
+            user.setName(updateUser.getName());
             httpSession.setAttribute("signInUser", user);
             return USER_REDIRECT_PROFILE_EDIT;
         }

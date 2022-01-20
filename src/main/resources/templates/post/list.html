@@ -28,7 +28,7 @@
                 <li><a class="black-component" href="/users/sign-up" role="button">회원가입</a></li>
                 {{/signInUser}}
                 {{#signInUser}}
-                <li class="login-active"><a href="/users/profile/edit">{{userId}} ({{email}}) 님</a></li>
+                <li class="login-active"><a href="/users/profile/{{userId}}">{{name}} ({{email}}) 님</a></li>
                 <li>
                     <form id="logout" method="post" action="/users/sign-out">
                         <a class="black-component" href="javascript:;" onclick="document.getElementById('logout').submit()" role="button">로그아웃</a>
@@ -64,7 +64,7 @@
                             {{#signInUser}}<a href="/posts/content/{{postId}}">{{/signInUser}}
                                 {{title}}
                             {{#signInUser}}</a>{{/signInUser}}
-                        </td> <td>{{userId}}</td> <td>{{createdAt}}</td> <td>0</td>
+                        </td> <td>{{userId}}</td> <td>{{createdAt}}</td> <td>{{view}}</td>
                     </tr>
                     {{/postList}}
                     </tbody>

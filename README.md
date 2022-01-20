@@ -71,6 +71,25 @@
   - application.properties 에 "spring.mustache.expose-session-attributes=true" 설정이 필요
 - @Aspect 를 쓰기 위해선, spring-aop 가 아닌 spring-boot-starter-aop 가 필요
   - Get/Post Mapping 의 경우, annotation 기반으로 적용시켜서 되는데, execute 는 왜 실행이 안되는지 잘 파악을 못하겠음
+- mysql 과의 연동과정에서, application.properties 설정문제가 발생
+  - hikari 라는 도구가 스프링의 기본툴로 잡혀있음
+  - 그래서 인자 명칭에 hikari 라는 경로명이 추가되었으나, 에러가 발생
+    - HikariPool-1 - jdbcUrl is required with driverClassName.
+      - jdbc-url 에는 hikari 경로를 제거하니 일단은 해결됨
+      - 확인해보니, 하단에 정의된 h2 선언이 해당 내용을 덧씌워서 생긴 오류 ( h2 설정을 주석처리 )
+- 테이블이 존재해여 접근이 가능하므로, workbench 나 cli 로 테이블을 미리 생성해줘야함
+  - h2 랑 다르게 스크립트를 추가시켜 같이 실행시키는 기능은 따로 없는 것 같음
+- Dotenv 로 mysql 비밀번호를 좀 보호하려고 했는데, spring 환경에선 적용이 안되는 듯 하다.
+  - 관련 모듈을 발견했는데, 적용하긴 좀 껄끄러운 상태
+- sql를 사용하려면 먼저 server 를 켜야함 ( mysql.server start )
+- regex 에서 "." 는 줄바꿈 문자를 잡아내지 못함
+  - 엔터가 들어간 데이터에 대해서는 검증 오류가 발생했음
+  - [\s\S] 를 사용하여 모든 문자에 대해 허용하도록 수정
+- 스프링의 경우, 기본 에러페이지로 /error 를 사용
+  - 이를 활용하여,에러 화면을 만들고 configuration 에서 해당 경로를 사용하도록 연결
+- custom annotation 의 경우, annotation 용 인터페이스가 따로 존재 ( @interface )
+  - 해당 annotation 의 존재를 검사할 argumentResolver 를 생성
+  - resolver 를 configuration 에 등록
 
 # 배포 절차
 - 실패한 방법
@@ -88,16 +107,6 @@
   - 출력하는 .html 파일 경로에 /가 중첩으로 들어간 것을 확인 ( templates//path/~.html )
   - 아무래도, spring 이 template/ 까지를 기본 경로로 추가해줘서 생긴 문제 같음 (로컬에선 왜 돌아간건지 의문)
   - 각 View 경로의 앞에 "/" 를 제거해주고, 리빌딩하여 서버에서 작동시키니 정상동작함
-- mysql 과의 연동과정에서, application.properties 설정문제가 발생
-  - hikari 라는 도구가 스프링의 기본툴로 잡혀있음
-  - 그래서 인자 명칭에 hikari 라는 경로명이 추가되었으나, 에러가 발생
-  - HikariPool-1 - jdbcUrl is required with driverClassName.
-    - jdbc-url 에는 hikari 경로를 제거하니 일단은 해결됨
-    - 확인해보니, 하단에 정의된 h2 선언이 해당 내용을 덧씌워서 생긴 오류 ( h2 설정을 주석처리 )
-  - 테이블이 존재해여 접근이 가능하므로, workbench 나 cli 로 테이블을 미리 생성해줘야함
-    - h2 랑 다르게 스크립트를 추가시켜 같이 실행시키는 기능은 따로 없는 것 같음
-- Dotenv 로 mysql 비밀번호를 좀 보호하려고 했는데, spring 환경에선 적용이 안되는 듯 하다.
-  - 관련 모듈을 발견했는데, 적용하긴 좀 껄끄러운 상태
 
 # 참고 사이트
 - Collection 관련
@@ -108,6 +117,7 @@
   - https://doublesprogramming.tistory.com/165
 - regex 정규표현식
   - https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
+  - https://stackoverflow.com/questions/3222649/any-character-including-newline-java-regex/25071906
 - H2 데이터베이스
   - https://seungyooon.tistory.com/218
   - https://velog.io/@jwkim/spring-boot-datajpatest-error
@@ -130,7 +140,21 @@
   - https://deviscreen.tistory.com/85
   - https://engkimbs.tistory.com/794 ( 실패 )
   - https://m.blog.naver.com/jesang1/221993846056
+  - https://velog.io/@taelee/mysql-%EC%84%9C%EB%B2%84-%EC%8B%9C%EC%9E%91-%EB%98%90%EB%8A%94-%EC%9E%AC%EC%8B%9C%EC%9E%91-%ED%95%98%EA%B8%B0MAC
 - dotenv
   - http://daplus.net/java-spring-boot%EC%9D%98-application-properties%EC%97%90%EC%84%9C-env-%EB%B3%80%EC%88%98-%EC%82%AC%EC%9A%A9/
   - https://wordbe.tistory.com/entry/Springboot-%EC%99%B8%EB%B6%80%EC%84%A4%EC%A0%95-%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC
   - https://github.com/paulschwarz/spring-dotenv
+- 404 error
+  - https://goddaehee.tistory.com/214
+- HTML 템플릿
+  - https://kyung-a.tistory.com/18
+- Spring annotation + methodhandler
+  - https://livenow14.tistory.com/51
+  - https://tram-devlog.tistory.com/entry/Spring-%EC%BB%A4%EC%8A%A4%ED%85%80-HandlerMethodArgumentResolver-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
+- lombok + logger
+  - https://howtodoinjava.com/spring-boot2/logging/logging-with-lombok/
+  - https://gthoya.tistory.com/entry/Spring-boot-gradle-lombok-cannot-find-symbol
+- Transactional annotation
+  - https://dpqk.me/3
+  - https://n1tjrgns.tistory.com/266

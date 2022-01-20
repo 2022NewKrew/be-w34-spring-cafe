@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS member (
     userId varchar(20) primary key,
     password varchar(20) not null,
     email varchar(40) not null unique,
+    name varchar(20) not null,
     tombstone bool default false
 );
 
@@ -14,6 +15,18 @@ CREATE TABLE IF NOT EXISTS post (
     content varchar(500) not null,
     createdAt timestamp default now(),
     tombstone bool default false,
+    foreign key(userId) references member(userId)
+);
+
+DROP TABLE IF EXISTS reply;
+CREATE TABLE IF NOT EXISTS reply (
+    replyId int auto_increment primary key,
+    postId int not null,
+    userId varchar(20) not null,
+    content varchar(150) not null,
+    createdAt timestamp default now(),
+    tombstone bool default false,
+    foreign key(postId) references post(postId),
     foreign key(userId) references member(userId)
 );
 
