@@ -20,16 +20,24 @@ public class H2ArticleRepository implements ArticleRepository {
     @Override
     public void save(Article article) {
         if (article.getId() == 0) {
-            String sql = "INSERT INTO `ARTICLE`(author_id, title, content, views, created_at) VALUES(?,?,?,?,?)";
-            jdbcTemplate.update(sql, article.getAuthorId(), article.getTitle(), article.getContent(), article.getViews(), article.getCreatedAt());
+            insert(article);
+            return;
         }
+        update(article);
+    }
 
+    public void update(Article article) {
         String sql = "UPDATE `ARTICLE` SET " +
                 "author_id = ?, title = ?, content = ?, views = ? " +
                 "WHERE id = ?";
         jdbcTemplate.update(sql,
                 article.getAuthorId(), article.getTitle(), article.getContent(), article.getViews(),
                 article.getId());
+    }
+
+    public void insert(Article article) {
+        String sql = "INSERT INTO `ARTICLE`(author_id, title, content, views, created_at) VALUES(?,?,?,?,?)";
+        jdbcTemplate.update(sql, article.getAuthorId(), article.getTitle(), article.getContent(), article.getViews(), article.getCreatedAt());
     }
 
     @Override
