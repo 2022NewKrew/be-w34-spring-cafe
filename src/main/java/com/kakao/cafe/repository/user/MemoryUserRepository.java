@@ -2,7 +2,6 @@ package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.user.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class MemoryUserRepository implements UserRepository {
 
 	@Override
 	public User findById(int id) {
-		return users.stream().filter(user -> user.getId() == id).findAny().orElseThrow(IllegalArgumentException::new);
+		return users.stream().filter(user -> user.getId() == id).findAny().get();
 	}
 
 	@Override

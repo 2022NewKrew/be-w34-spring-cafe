@@ -11,4 +11,6 @@ public interface ArticleRepository {
 	List<Article> findAll();
 
 	Article findByIndex(int index);
+
+	void update(Article article);
 }

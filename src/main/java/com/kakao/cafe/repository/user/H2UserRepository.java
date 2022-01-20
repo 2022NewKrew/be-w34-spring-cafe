@@ -3,6 +3,7 @@ package com.kakao.cafe.repository.user;
 import com.kakao.cafe.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,29 +26,23 @@ public class H2UserRepository implements UserRepository {
 	@Override
 	public List<User> findAll() {
 		return jdbcTemplate.query(
-				"SELECT * FROM USER", (rs, rowNum) -> {
-					User user = new User();
-					user.setId(rs.getInt("ID"));
-					user.setAccId(rs.getString("ACCID"));
-					user.setAccPw(rs.getString("ACCPW"));
-					user.setName(rs.getString("NAME"));
-					user.setEmail(rs.getString("EMAIL"));
-					return user;
-				});
+				"SELECT * FROM USER", Mapper);
 	}
 
 	@Override
 	public User findById(int id) {
 		return jdbcTemplate.queryForObject(
-				"SELECT * FROM USER WHERE id = ?", (rs, rowNum) -> {
-					User user = new User();
-					user.setId(rs.getInt("ID"));
-					user.setAccId(rs.getString("ACCID"));
-					user.setAccPw(rs.getString("ACCPW"));
-					user.setName(rs.getString("NAME"));
-					user.setEmail(rs.getString("EMAIL"));
-					return user;
-				}, id);
+				"SELECT * FROM USER WHERE id = ?", Mapper, id);
+	}
+
+	public User findByAccId(String accId) {
+		return jdbcTemplate.queryForObject(
+				"SELECT * FROM USER WHERE accid = ?", Mapper, accId);
+	}
+
+	public User findByName(String name) {
+		return jdbcTemplate.queryForObject(
+				"SELECT * FROM USER WHERE name = ?", Mapper, name);
 	}
 
 	@Override
@@ -57,4 +52,14 @@ public class H2UserRepository implements UserRepository {
 				user.getAccPw(), user.getName(), user.getEmail(), user.getId()
 		);
 	}
+
+	private RowMapper<User> Mapper = (rs, rowNum) -> {
+		User user = new User();
+		user.setId(rs.getInt("ID"));
+		user.setAccId(rs.getString("ACCID"));
+		user.setAccPw(rs.getString("ACCPW"));
+		user.setName(rs.getString("NAME"));
+		user.setEmail(rs.getString("EMAIL"));
+		return user;
+	};
 }

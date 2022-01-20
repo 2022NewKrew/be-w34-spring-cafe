@@ -3,6 +3,7 @@ package com.kakao.cafe.repository.article;
 import com.kakao.cafe.domain.article.Article;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,29 +25,38 @@ public class H2ArticleRepository implements ArticleRepository {
 	@Override
 	public List<Article> findAll() {
 		return jdbcTemplate.query(
-				"SELECT * FROM ARTICLE", (rs, rowNum) -> {
-					Article article = new Article();
-					article.setIndex(rs.getInt("ID"));
-					article.setWriter(rs.getString("WRITER"));
-					article.setTitle(rs.getString("TITLE"));
-					article.setContents(rs.getString("CONTENTS"));
-					article.setCreatedDate(rs.getString("CREATEDDATE"));
-					article.setCreatedTime(rs.getString("CREATEDTIME"));
-					return article;
-				});
+				"SELECT * FROM ARTICLE", Mapper);
 	}
 
 	@Override
 	public Article findByIndex(int index) {
-		return jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE id = ?", (rs, rowNum) -> {
-			Article article = new Article();
-			article.setIndex(rs.getInt("ID"));
-			article.setWriter(rs.getString("WRITER"));
-			article.setTitle(rs.getString("TITLE"));
-			article.setContents(rs.getString("CONTENTS"));
-			article.setCreatedDate(rs.getString("CREATEDDATE"));
-			article.setCreatedTime(rs.getString("CREATEDTIME"));
-			return article;
-		}, index);
+		return jdbcTemplate.queryForObject(
+				"SELECT * FROM ARTICLE WHERE id = ?", Mapper,
+				index);
 	}
+
+	@Override
+	public void update(Article article) {
+		jdbcTemplate.update(
+				"UPDATE ARTICLE SET TITLE = ?, CONTENTS = ? WHERE id = ?",
+				article.getTitle(), article.getContents(), article.getIndex()
+		);
+	}
+
+	public void delete(int index) {
+		jdbcTemplate.update(
+				"DELETE FROM ARTICLE WHERE id = ?" , index
+		);
+	}
+
+	private RowMapper<Article> Mapper = (rs, rowNum) -> {
+		Article article = new Article();
+		article.setIndex(rs.getInt("ID"));
+		article.setWriter(rs.getString("WRITER"));
+		article.setTitle(rs.getString("TITLE"));
+		article.setContents(rs.getString("CONTENTS"));
+		article.setCreatedDate(rs.getString("CREATEDDATE"));
+		article.setCreatedTime(rs.getString("CREATEDTIME"));
+		return article;
+	};
 }
