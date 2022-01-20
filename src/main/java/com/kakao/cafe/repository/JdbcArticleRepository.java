@@ -1,8 +1,8 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.util.DateUtils;
 import com.kakao.cafe.util.JdbcUtils;
-import com.kakao.cafe.util.UtilClass;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
@@ -25,7 +25,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
     @Override
     public Article save(Article article) {
         String sql = "insert into articles(title, content, date, writer, writerid, view) values(?, ?, ?, ?, ?, ?)";
-        article.setDate(UtilClass.getLocalDateTimeNow());
+        article.setDate(DateUtils.getLocalDateTimeNow());
         article.setView(0L);
 
         try {
@@ -124,7 +124,7 @@ public class JdbcArticleRepository implements ArticleRepositoryInterface {
     @Override
     public Article update(Article article) {
         String sql = "update articles set title = ?, content = ?, date = ? where `index` = ?";
-        article.setDate(UtilClass.getLocalDateTimeNow());
+        article.setDate(DateUtils.getLocalDateTimeNow());
         try {
             connection = JdbcUtils.getConnection(dataSource);
             preparedStatement = connection.prepareStatement(sql);

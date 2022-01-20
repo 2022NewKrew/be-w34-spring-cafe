@@ -6,6 +6,7 @@ import com.kakao.cafe.exception.UpdateForbiddenException;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.util.Constant;
 import com.kakao.cafe.util.ErrorMessage;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,25 +16,21 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
 
+@RequiredArgsConstructor
 @Controller
 @Slf4j
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
     @PostMapping
-    public String signup(User user){
+    public String signup(User user) {
         userService.join(user);
         return "redirect:/users";
     }
 
     @GetMapping
-    public String viewUserList(Model model){
+    public String viewUserList(Model model) {
         log.info("viewUserList");
         model.addAttribute("users", userService.findUsers());
         return "/users/list";
@@ -43,11 +40,11 @@ public class UserController {
     public String updateForm(@PathVariable Long userId, Model model, HttpSession session) throws UpdateForbiddenException {
         User user = userService.findOne(userId);
         User sessionUser = (User) session.getAttribute(Constant.LOGIN_SESSION);
-        if(sessionUser == null){
+        if (sessionUser == null) {
             throw new UpdateForbiddenException(ErrorMessage.UPDATE_NON_LOGIN.getMsg());
         }
 
-        if(sessionUser.getUserId().equals(userId)) {
+        if (sessionUser.getUserId().equals(userId)) {
             model.addAttribute("userId", userId);
             model.addAttribute("name", user.getName());
             model.addAttribute("email", user.getEmail());
@@ -59,7 +56,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/updateForm")
-    public String updateProfile(@PathVariable Long userId, User user, HttpSession session){
+    public String updateProfile(@PathVariable Long userId, User user, HttpSession session) {
         log.info("update Profile");
         user.setUserId(userId);
         userService.updateUser(user);
@@ -72,7 +69,7 @@ public class UserController {
         log.info("login_logic");
         User user = userService.findEmail(email);
 
-        if(user.getPassword().equals(password)){
+        if (user.getPassword().equals(password)) {
             session.setAttribute(Constant.LOGIN_SESSION, user);
             return "redirect:/";
         }
@@ -80,13 +77,13 @@ public class UserController {
     }
 
     @GetMapping("/profile/{userId}")
-    public String profile(@PathVariable Long userId, Model model){
+    public String profile(@PathVariable Long userId, Model model) {
         model.addAttribute("user", userService.findOne(userId));
         return "/users/profile";
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.removeAttribute(Constant.LOGIN_SESSION);
         return "redirect:/";
     }
