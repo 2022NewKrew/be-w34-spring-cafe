@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleCreateRequest;
 import com.kakao.cafe.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @Slf4j
@@ -39,4 +42,11 @@ public class ArticleController {
         return "/articles/show";
     }
 
+    @GetMapping("/articles/form")
+    public String form(HttpServletRequest request, Model model) {
+        User sessionedUser = (User) request.getSession().getAttribute("sessionedUser");
+        model.addAttribute("name", sessionedUser.getName());
+        model.addAttribute("userPk", sessionedUser.getId());
+        return "/articles/form";
+    }
 }

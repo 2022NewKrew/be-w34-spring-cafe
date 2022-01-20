@@ -64,8 +64,6 @@ public class UserController {
     @PostMapping(value = "/users/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String updateUser(@PathVariable Integer id, UserUpdateRequest request, HttpSession session, Model model) {
         log.info("start updateUser()");
-        User sessionedUser = (User) session.getAttribute("sessionedUser");
-
         userService.updateUser(id, request);
         return "redirect:/users";
     }

@@ -19,9 +19,9 @@ public class ArticleRepository implements CrudRepository<Article, Integer> {
     @Override
     public Article save(Article entity) {
         StringBuilder query = new StringBuilder();
-        query.append("INSERT INTO article(writer, title, contents)");
-        query.append(" VALUES (?, ?, ?)");
-        int update = jdbcTemplate.update(query.toString(), entity.getWriter(), entity.getTitle(), entity.getContents());
+        query.append("INSERT INTO article(writer, title, contents, user_pk)");
+        query.append(" VALUES (?, ?, ?, ?)");
+        int update = jdbcTemplate.update(query.toString(), entity.getWriter(), entity.getTitle(), entity.getContents(), entity.getUserPk());
         if (update > 0) {
             return entity;
         }
@@ -47,7 +47,7 @@ public class ArticleRepository implements CrudRepository<Article, Integer> {
         query.append("SELECT *");
         query.append(" FROM article");
         query.append(" WHERE article.id = ?");
-        Article article = jdbcTemplate.queryForObject(query.toString(), (rs, rowNum) -> new Article(rs.getInt("id"), rs.getString("writer"), rs.getString("title"), rs.getString("contents")), id);
+        Article article = jdbcTemplate.queryForObject(query.toString(), (rs, rowNum) -> new Article(rs.getInt("id"), rs.getString("writer"), rs.getString("title"), rs.getString("contents"), rs.getInt("user_pk")), id);
         return Optional.ofNullable(article);
     }
 
@@ -56,6 +56,6 @@ public class ArticleRepository implements CrudRepository<Article, Integer> {
         StringBuilder query = new StringBuilder();
         query.append("SELECT *");
         query.append(" FROM article");
-        return jdbcTemplate.query(query.toString(), (rs, rowNum) -> new Article(rs.getInt("id"), rs.getString("writer"), rs.getString("title"), rs.getString("contents")));
+        return jdbcTemplate.query(query.toString(), (rs, rowNum) -> new Article(rs.getInt("id"), rs.getString("writer"), rs.getString("title"), rs.getString("contents"), rs.getInt("user_pk")));
     }
 }

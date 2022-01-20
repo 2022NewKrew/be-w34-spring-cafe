@@ -7,13 +7,14 @@ CREATE TABLE article
     id       INT PRIMARY KEY AUTO_INCREMENT,
     writer   VARCHAR NOT NULL,
     title    VARCHAR NOT NULL,
-    contents VARCHAR
+    contents VARCHAR,
+    user_pk  INT     NOT NULL
 );
 
 CREATE TABLE users
 (
     id       INT PRIMARY KEY AUTO_INCREMENT,
-    user_id  VARCHAR NOT NULL,
+    user_id  VARCHAR NOT NULL UNIQUE,
     password VARCHAR NOT NULL,
     name     VARCHAR NOT NULL,
     email    VARCHAR NOT NULL

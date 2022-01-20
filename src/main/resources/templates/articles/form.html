@@ -13,7 +13,7 @@
           <form name="question" method="post" action="/articles">
               <div class="form-group">
                   <label for="writer">글쓴이</label>
-                  <input class="form-control" id="writer" name="writer" placeholder="글쓴이"/>
+                  <input class="form-control" id="writer" name="writer" placeholder="글쓴이" value="{{name}}" readonly/>
               </div>
               <div class="form-group">
                   <label for="title">제목</label>
@@ -23,6 +23,7 @@
                   <label for="contents">내용</label>
                   <textarea name="contents" id="contents" rows="5" class="form-control"></textarea>
               </div>
+              <input type="hidden" name="userPk" value="{{userPk}}" />
               <button type="submit" class="btn btn-success clearfix pull-right">질문하기</button>
               <div class="clearfix" />
           </form>
