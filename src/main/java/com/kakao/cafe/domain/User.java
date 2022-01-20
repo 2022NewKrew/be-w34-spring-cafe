@@ -1,4 +1,4 @@
-package com.kakao.cafe.web;
+package com.kakao.cafe.domain;
 
 import com.kakao.cafe.dto.SampleUserForm;
 

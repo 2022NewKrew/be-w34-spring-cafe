@@ -1,18 +1,19 @@
-package com.kakao.cafe.web;
+package com.kakao.cafe.domain;
 
 import com.kakao.cafe.dto.SampleArticleForm;
-import com.kakao.cafe.dto.SampleUserForm;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Article {
 
-    private static Integer currentIdx = 0;
+    private static AtomicInteger currentIdx = new AtomicInteger();
     private Integer articleID;
     private String title;
     private String content;
 
     private Article(String title, String content) {
-        this.articleID = currentIdx;
-        currentIdx = currentIdx + 1;
+        this.articleID = currentIdx.get();
+        currentIdx.set(currentIdx.get() + 1);
         this.title = title;
         this.content = content;
     }
