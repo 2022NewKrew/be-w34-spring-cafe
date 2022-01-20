@@ -68,6 +68,13 @@ public class ArticleJdbcRepository implements ArticleRepository{
         );
     }
 
+    public void delete(Integer id){
+        jdbcTemplate.update(
+                "delete article where article_id = ?",
+                id
+        );
+    }
+
 
     private final RowMapper<Article> mapper = (rs, rowNum) -> Article.builder()
             .id(rs.getInt("article_id"))

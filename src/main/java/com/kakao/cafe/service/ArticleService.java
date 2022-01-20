@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,4 +37,9 @@ public class ArticleService {
     public void update(ArticleCreateDto articleCreateDto){
         articleRepository.update(articleCreateDto.toEntity());
     }
+
+    public void delete(Integer id){
+        articleRepository.delete(id);
+    }
+
 }

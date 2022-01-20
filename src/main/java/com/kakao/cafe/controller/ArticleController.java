@@ -81,11 +81,19 @@ public class ArticleController {
     }
 
     @PutMapping("/questions/{id}/update")
-    public String UpdateArticle(@PathVariable Integer id, ArticleCreateDto articleCreateDto, HttpSession session){
+    public String updateArticle(@PathVariable Integer id, ArticleCreateDto articleCreateDto, HttpSession session){
         articleCreateDto.setUser((User)session.getAttribute("sessionUser"));
         articleCreateDto.setId(id);
         articleService.update(articleCreateDto);
         return "redirect:/";
     }
+
+    @DeleteMapping("/questions/{id}")
+    public String deleteArticle(@PathVariable Integer id){
+        articleService.delete(id);
+        return "redirect:/";
+    }
+
+
 
 }
