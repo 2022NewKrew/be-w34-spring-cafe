@@ -1,4 +1,4 @@
-package com.kakao.cafe.auth;
+package com.kakao.cafe.util.auth;
 
 import com.kakao.cafe.dto.user.SessionUser;
 import com.kakao.cafe.dto.user.UserDto;

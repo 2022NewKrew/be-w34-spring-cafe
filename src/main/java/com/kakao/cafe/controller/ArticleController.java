@@ -1,19 +1,22 @@
 package com.kakao.cafe.controller;
 
 
-import com.kakao.cafe.auth.LoginCheck;
+import com.kakao.cafe.util.auth.LoginCheck;
 import com.kakao.cafe.dto.article.ArticleReqDto;
 import com.kakao.cafe.dto.article.ArticleResDto;
 import com.kakao.cafe.dto.article.ArticleUpdateDto;
 import com.kakao.cafe.dto.user.SessionUser;
 import com.kakao.cafe.service.article.ArticleService;
+import com.kakao.cafe.util.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
+@Slf4j
 @Controller
 public class ArticleController {
 
@@ -38,11 +41,17 @@ public class ArticleController {
 
     @GetMapping("/articles/form")
     public String showArticleForm(@LoginCheck SessionUser sessionUser){
+        if(sessionUser == null){
+            return "redirect:/users/login";
+        }
         return "article/form";
     }
 
     @GetMapping("/articles/{articleId}")
     public String showArticle(@PathVariable Long articleId, Model model, @LoginCheck SessionUser sessionUser){
+        if(sessionUser == null){
+            return "redirect:/users/login";
+        }
         model.addAttribute("article", articleService.findArticleById(articleId));
         return "article/show";
     }
@@ -51,10 +60,8 @@ public class ArticleController {
     public String showArticleUpdateForm(@PathVariable Long articleId, Model model, @LoginCheck SessionUser sessionUser){
 
         ArticleResDto articleResDto = articleService.findArticleById(articleId);
-        if(!sessionUser.getUserId().equals(articleResDto.getWriter())){
-            // 에러 페이지로 이동하게 수정
-            System.out.println("현재 유저: " + sessionUser.getUserId() + " 글쓴이 : " + articleResDto.getWriter());
-            return "redirect:/articles/{articleId}";
+        if(sessionUser == null || !sessionUser.getUserId().equals(articleResDto.getWriter())){
+            throw new UnauthorizedException("로그인하지 않았거나, 접근 권한이 없습니다.");
         }
         model.addAttribute("article",articleResDto);
         return "article/updateForm";
@@ -63,13 +70,6 @@ public class ArticleController {
     @PutMapping("/articles/{articleId}")
     public String updateArticle(@PathVariable Long articleId, String title, String contents, @LoginCheck SessionUser sessionUser){
         ArticleResDto articleResDto = articleService.findArticleById(articleId);
-        if(!articleResDto.getWriter().equals(sessionUser.getUserId())){
-            //에러
-            System.out.println("현재 유저: " + sessionUser.getUserId() + " 글쓴이 : " + articleResDto.getWriter());
-            System.out.println("수정할 수 없습니다.");
-            return "redirect:/articles/{articleId}";
-        }
-
         ArticleUpdateDto articleUpdateDto = ArticleUpdateDto.builder()
                 .articleId(articleId)
                 .writer(sessionUser.getUserId())
@@ -84,8 +84,8 @@ public class ArticleController {
     public String removeArticle(@PathVariable Long articleId, @LoginCheck SessionUser sessionUser){
         ArticleResDto articleResDto = articleService.findArticleById(articleId);
         if(sessionUser == null || !sessionUser.getUserId().equals(articleResDto.getWriter())){
-            throw new IllegalArgumentException("로그인 하지 않았거나, 권한이 없습니다.");
-//            return "redirect:/users/login";
+            log.error("Login Error : Different ID OR Need to Login";
+            return "redirect:/users/login";
         }
 
         ArticleUpdateDto articleUpdateDto = ArticleUpdateDto.builder()

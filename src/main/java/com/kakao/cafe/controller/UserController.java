@@ -1,11 +1,11 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.auth.LoginCheck;
+import com.kakao.cafe.util.auth.LoginCheck;
 import com.kakao.cafe.dto.user.SessionUser;
-import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.dto.user.UserReqDto;
 import com.kakao.cafe.dto.user.UserUpdateReqDto;
 import com.kakao.cafe.service.user.UserService;
+import com.kakao.cafe.util.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,9 +46,8 @@ public class UserController {
     @GetMapping("/{id}/form")
     public String showUpdateForm(@PathVariable Long id, Model model, @LoginCheck SessionUser sessionUser) {
 
-        if(!sessionUser.getId().equals(id)){
-            // 에러 페이지로 이동하게 수정
-            return "redirect:/users/login";
+        if(sessionUser == null || !sessionUser.getId().equals(id)){
+            throw new UnauthorizedException("로그인하지 않았거나, 수정 권한이 없습니다.");
         }
 
         model.addAttribute("user", userService.findUserById(id));

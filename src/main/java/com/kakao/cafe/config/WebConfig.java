@@ -1,6 +1,6 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.auth.LoginArgumentResolver;
+import com.kakao.cafe.util.auth.LoginArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

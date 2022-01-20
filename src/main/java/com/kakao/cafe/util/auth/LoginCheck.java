@@ -1,4 +1,4 @@
-package com.kakao.cafe.auth;
+package com.kakao.cafe.util.auth;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
