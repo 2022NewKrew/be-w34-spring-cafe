@@ -22,7 +22,7 @@
             <p class="title">회원 정보 수정</p>
         </header>
         {{#user}}
-        <form name="question" class="info-container" method="post" action="/users/{{id}}/update">
+        <form name="question" class="info-container" method="post" action="/users/me/update">
             <input type="hidden" name="_method" value="PUT"/>
             <div class="form-group">
                 <label for="userId">아이디</label>

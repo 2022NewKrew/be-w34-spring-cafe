@@ -49,46 +49,30 @@ public class UserController {
      */
     @GetMapping("/users/{id}")
     public String getUserProfile(@PathVariable long id, Model model, @LoginUser SessionUser user) {
-        log.info("GET /users/{}", id);
-
         if (id == user.getId()) {
             model.addAttribute("myId", user.getId());
         }
-
         model.addAttribute("user", userService.getUserById(id));
 
         return "user/profile";
     }
 
     /*
-     * 유저 상세 정보 수정 페이지 조회
+     * 내 정보 수정 페이지 조회
      */
-    @GetMapping("/users/{id}/update")
-    public String showEditUserPage(@PathVariable long id, Model model, @LoginUser SessionUser user) {
-        log.info("GET /users/{}/update", id);
-
-        if (user.getId() != id) {
-            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        }
-        model.addAttribute("user", userService.getUserById(id));
+    @GetMapping("/users/me/form")
+    public String showEditUserPage(Model model, @LoginUser SessionUser user) {
+        model.addAttribute("user", userService.getUserById(user.getId()));
         return "user/updateForm";
     }
 
     /*
-     * 유저 상세 정보 수정
+     * 내 정보 수정
      */
-    @PutMapping("/users/{id}/update")
-    public String editUser(@PathVariable long id, @ModelAttribute RequestUserDto userDto, @LoginUser SessionUser user) {
-        log.info("PUT /users/{}/update : {}", id, userDto);
-
-        if (user.getId() != id) {
-            //권한이 없음. 잘못된 접근
-            return "redirect:/login.html";
-        }
-
-        userService.updateUser(id, userDto);
+    @PutMapping("/users/me/form")
+    public String editUser(@ModelAttribute RequestUserDto userDto, @LoginUser SessionUser user) {
+        userService.updateUser(user.getId(), userDto);
         return "redirect:/users";
-
     }
 
     /*
