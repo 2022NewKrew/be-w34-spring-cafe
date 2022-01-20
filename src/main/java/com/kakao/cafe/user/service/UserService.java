@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.service;
 
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserFactory;
 import com.kakao.cafe.user.dto.UserCreateDTO;
 import com.kakao.cafe.user.dto.UserListDTO;
 import com.kakao.cafe.user.dto.UserLoginDTO;
@@ -30,11 +31,10 @@ public class UserService {
 
 
     public void userCreate(UserCreateDTO userCreateDTO){
-        User user = new User(userCreateDTO.getUserId(),
-                                userCreateDTO.getPassword(),
-                                userCreateDTO.getName(),
-                                userCreateDTO.getEmail(),
-                                0L);
+        User user = UserFactory.getUser(userCreateDTO.getUserId(),
+                                        userCreateDTO.getPassword(),
+                                        userCreateDTO.getName(),
+                                        userCreateDTO.getEmail());
         userRepository.addUser(user);
     }
 
@@ -45,11 +45,10 @@ public class UserService {
             throw new RuntimeException("유저 아이디에 해당하는 유저가 없습니다.");
         }
 
-        User updatedUser = new User(userCreateDTO.getUserId(),
-                                    userCreateDTO.getPassword(),
-                                    userCreateDTO.getName(),
-                                    userCreateDTO.getEmail(),
-                                    0L);
+        User updatedUser = UserFactory.getUser(userCreateDTO.getUserId(),
+                                        userCreateDTO.getPassword(),
+                                        userCreateDTO.getName(),
+                                        userCreateDTO.getEmail());
         userRepository.updateUser(updatedUser);
     }
 
