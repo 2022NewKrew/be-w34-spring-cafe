@@ -19,7 +19,13 @@ public class UserServiceImpl implements UserService {
     }
 
     public void signup(UserDto user) throws SQLException {
-        userRepository.save(user.toEntity());
+        try {
+            findById(user.getUserId());
+
+            throw new IllegalArgumentException(String.format("이미 존재하는 id 입니다. (id = %s)", user.getUserId()));
+        } catch (NoSuchElementException e) { // id 가 존재하지 않는 경우에만 가입
+            userRepository.save(user.toEntity());
+        }
     }
 
     public UserProfileDto findById(String userId) throws NoSuchElementException {

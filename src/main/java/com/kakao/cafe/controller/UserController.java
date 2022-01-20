@@ -34,11 +34,12 @@ public class UserController {
             userService.signup(user);
         } catch (SQLException e) {
             logger.error("/users/create, user signup failed. UserDto = {}", user, e);
-            return "redirect:/";
+        } catch (IllegalArgumentException e) {
+            logger.info("/users/create, id(={}) already exists.", user.getUserId(), e);
         }
         logger.info("/users/create, user created. id = {}", user.getUserId());
 
-        return "redirect:/users/list";
+        return "redirect:list";
     }
 
     // 모든 유저 리스트를 가져와서 표시
@@ -46,7 +47,7 @@ public class UserController {
     public String getUserList(Model model) {
         model.addAttribute("users", userService.getUserList());
 
-        return "/user/list";
+        return "user/list";
     }
 
     // 해당 id의 유저의 프로필을 찾아서 프로필 화면 표시
@@ -59,11 +60,11 @@ public class UserController {
             model.addAttribute("user", user);
         } catch (NoSuchElementException e) {
             logger.info("/users/{userId}, userId = {}. User does not exist.", userId, e);
-            return "redirect:/";
+            return "redirect:";
         }
         logger.info("/users/{userId}, User(id = {}) founded.", userId);
 
-        return "/user/profile";
+        return "user/profile";
     }
 
     // 사용자 리스트에서 수정 버튼을 누르면, 해당 사용자의 회원정보 수정 화면으로 이동
@@ -73,7 +74,7 @@ public class UserController {
 
         if (!userService.checkSessionUser(userId, session)) {
             logger.info("/users/{userId}/form, Invalid session.");
-            return "redirect:/";
+            return "redirect:";
         }
 
         try {
@@ -81,10 +82,10 @@ public class UserController {
             model.addAttribute("user", user);
         } catch (NoSuchElementException e) {
             logger.info("/users/{userId}/form, userId = {}. User does not exist.", userId, e);
-            return "redirect:/";
+            return "redirect:";
         }
 
-        return "/user/updateForm";
+        return "user/updateForm";
     }
 
     // 회원정보 수정하고, 수정 버튼을 눌렀을 때
@@ -94,7 +95,7 @@ public class UserController {
 
         if (!userService.checkSessionUser(userId, session)) {
             logger.info("/users/{userId}/update, User(id = {}) failed to update profile. Invalid session.", userId);
-            return "redirect:/users/list";
+            return "redirect:list";
         }
 
         try {
@@ -106,7 +107,7 @@ public class UserController {
             logger.info("/users/{userId}/update, User(id = {}) failed to update Profile. Incorrect password.", userId, e);
         }
 
-        return "redirect:/users/list";
+        return "redirect:list";
     }
 
     @PostMapping("/login")
@@ -122,13 +123,13 @@ public class UserController {
             return "/user/login_failed";
         }
 
-        return "redirect:/";
+        return "redirect:";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
 
-        return "redirect:/";
+        return "redirect:";
     }
 }
