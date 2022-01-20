@@ -13,7 +13,7 @@ public interface QnaRepository {
 
     void update(Qna qna);
 
-    void delete(long id, String userId);
+    void deleteByIdAndWriter(long id, String userId);
 
     Qna findByIdAndWriter(long id, String userName);
 }

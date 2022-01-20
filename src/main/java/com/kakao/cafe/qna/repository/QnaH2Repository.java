@@ -66,7 +66,7 @@ public class QnaH2Repository implements QnaRepository {
     }
 
     @Override
-    public void delete(long id, String userId) {
+    public void deleteByIdAndWriter(long id, String userId) {
         String sql = "DELETE FROM qnas WHERE id = ? AND writer = ?";
         jdbcTemplate.update(
             sql,

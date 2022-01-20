@@ -59,11 +59,15 @@ public class QnaService {
     }
 
     public void delete(long id, String userId) {
-        qnaRepository.delete(id, userId);
+        qnaRepository.deleteByIdAndWriter(id, userId);
     }
 
     public void createReply(ReplyRequest replyRequest) {
         Reply reply = replyRequest.toReply();
         replyRepository.create(reply);
+    }
+
+    public void deleteReply(long replyId, String userId) {
+        replyRepository.deleteByIdAndWriter(replyId, userId);
     }
 }

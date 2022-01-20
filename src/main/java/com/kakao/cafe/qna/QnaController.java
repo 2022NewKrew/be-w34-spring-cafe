@@ -95,4 +95,13 @@ public class QnaController {
         qnaService.createReply(replyRequest);
         return "redirect:/questions/" + qnaId;
     }
+
+    @DeleteMapping("/questions/{qnaId}/reply/{replyId}")
+    public String deleteReply(@PathVariable long qnaId, @PathVariable long replyId,
+        HttpSession httpSession) {
+        String userId = findUserId(httpSession);
+        qnaService.deleteReply(replyId, userId);
+        return "redirect:/questions/" + qnaId;
+    }
+
 }

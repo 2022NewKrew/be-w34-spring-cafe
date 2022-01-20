@@ -9,5 +9,5 @@ public interface ReplyRepository {
 
     void create(Reply reply);
 
-    void delete(long id, String userId);
+    void deleteByIdAndWriter(long id, String userId);
 }

@@ -35,8 +35,9 @@ public class ReplyH2Repository implements ReplyRepository {
     }
 
     @Override
-    public void delete(long id, String userId) {
-
+    public void deleteByIdAndWriter(long id, String userId) {
+        String sql = "DELETE FROM replies WHERE id = ? AND writer = ?";
+        jdbcTemplate.update(sql, id, userId);
     }
 
     private RowMapper<Reply> getReplyRowMapper() {
