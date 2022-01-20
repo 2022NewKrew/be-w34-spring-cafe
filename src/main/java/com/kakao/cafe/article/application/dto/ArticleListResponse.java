@@ -1,4 +1,4 @@
-package com.kakao.cafe.article.dto;
+package com.kakao.cafe.article.application.dto;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.user.domain.User;

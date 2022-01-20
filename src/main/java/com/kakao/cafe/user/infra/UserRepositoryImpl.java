@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+//@Repository
 public class UserRepositoryImpl implements UserRepository {
 
     public static final List<User> currentUsers = new ArrayList<>();
@@ -29,11 +29,6 @@ public class UserRepositoryImpl implements UserRepository {
         return currentUsers.stream()
                 .filter(user -> user.isSameUserById(userId))
                 .findFirst().orElse(null);
-    }
-
-    @Override
-    public boolean existsById(String userId) {
-        return currentUsers.stream().anyMatch(user -> user.isSameUserById(userId));
     }
 
     @Override

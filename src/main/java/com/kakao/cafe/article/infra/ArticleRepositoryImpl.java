@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+//@Repository
 public class ArticleRepositoryImpl implements ArticleRepository {
 
     public static final List<Article> currentArticles = new ArrayList<>();
