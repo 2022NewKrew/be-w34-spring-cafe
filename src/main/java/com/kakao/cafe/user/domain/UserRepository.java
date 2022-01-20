@@ -14,4 +14,5 @@ public interface UserRepository {
     List<User> findAll();
 
     void updateUserInfo(User user);
+
 }

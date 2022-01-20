@@ -3,7 +3,6 @@ package com.kakao.cafe.article.service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -16,6 +15,7 @@ import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleRepository;
 import com.kakao.cafe.article.service.dto.AllArticlesListServiceResponse;
 import com.kakao.cafe.article.service.dto.ArticleReadServiceResponse;
+import com.kakao.cafe.article.service.dto.CreateArticleServiceRequest;
 import com.kakao.cafe.user.domain.UserRepository;
 
 @Service
@@ -28,48 +28,38 @@ public class ArticleService {
 
     @PostConstruct
     private void init() {
-        createArticle(1L, "게시물 제목입니다.", "이것은 게시물 입니다.");
-        createArticle(4L, "새로운 게시물입니다.", "이것도 게시물 입니다.");
+        createArticle(CreateArticleServiceRequest.builder()
+                              .title("게시물 제목입니다.")
+                              .authorStringId("aiden.jang")
+                              .authorId(1L)
+                              .contents("이것은 게시물 입니다.")
+                              .build());
+        createArticle(CreateArticleServiceRequest.builder()
+                              .title("새로운 게시물입니다.")
+                              .authorStringId("wcts")
+                              .authorId(4L)
+                              .contents("이것도 게시물입니다.")
+                              .build());
         log.info("Add basic article data: 게시물 제목입니다. 새로운 게시물입니다.");
     }
 
-    public void createArticle(Long authorId, String title, String contents) {
-        articleRepository.persist(makeArticle(authorId, title, contents));
+    public void createArticle(CreateArticleServiceRequest req) {
+        articleRepository.persist(makeArticle(req));
     }
 
-    // 페이징 구현할 때 리펙토링 필요
     public AllArticlesListServiceResponse getAllArticleViewDTO(Long startIndex) {
         List<Article> allArticles = articleRepository.findAll();
-        List<Article> result = allArticles.subList(startIndex.intValue(), allArticles.size());
-        Collections.reverse(result);
-        List<String> authorList = result.stream()
-                                        .map(article -> userRepository.find(article.getAuthorId())
-                                                                      .orElseThrow(
-                                                                              () -> new IllegalArgumentException(
-                                                                                      "존재하지 않는 사용자입니다."))
-                                                                      .getStringId())
-                                        .collect(Collectors.toList());
-        return new AllArticlesListServiceResponse(result, authorList);
+        Collections.reverse(allArticles);
+        return new AllArticlesListServiceResponse(allArticles);
     }
 
     public ArticleReadServiceResponse getArticleReadViewDTO(Long id) {
         articleRepository.increaseHit(id);
         Article article = articleRepository.find(id)
                                            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글 입니다."));
-        String authorStringId = userRepository.find(article.getAuthorId())
-                                              .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."))
-                                              .getStringId();
-        return ArticleServiceDTOMapper.convertToArticleReadServiceResponse(article, authorStringId);
+        return ArticleServiceDTOMapper.convertToArticleReadServiceResponse(article);
     }
 
-    private Article makeArticle(Long authorId, String title, String contents) {
-        return Article.builder()
-                      .title(title)
-                      .authorId(authorId)
-                      .contents(contents)
-                      .hits(0)
-                      .build();
-    }
 
     public void isAuthorOfArticle(Long articleId, Long authorId) {
         Optional<Article> article = articleRepository.find(articleId);
@@ -84,6 +74,16 @@ public class ArticleService {
         Article article = findArticle.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
         articleRepository.updateArticle(makeUpdatingArticle(article, title, contents));
     }
+    private Article makeArticle(CreateArticleServiceRequest req) {
+        return Article.builder()
+                      .title(req.getTitle())
+                      .authorId(req.getAuthorId())
+                      .authorStringId(req.getAuthorStringId())
+                      .contents(req.getContents())
+                      .hits(0)
+                      .build();
+    }
+
 
     private Article makeUpdatingArticle(Article article, String title, String contents) {
         return Article.builder()

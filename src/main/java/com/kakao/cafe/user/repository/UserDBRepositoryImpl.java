@@ -57,6 +57,8 @@ public class UserDBRepositoryImpl implements UserRepository {
                             user.getStringId());
     }
 
+
+
     private User convertToUser(ResultSet rs, int rowNum) throws SQLException {
         User user = User.builder()
                         .id(rs.getLong("id"))

@@ -4,11 +4,11 @@ import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.service.dto.ArticleReadServiceResponse;
 
 public class ArticleServiceDTOMapper {
-    public static ArticleReadServiceResponse convertToArticleReadServiceResponse(Article article, String authorStringId) {
+    public static ArticleReadServiceResponse convertToArticleReadServiceResponse(Article article) {
         return ArticleReadServiceResponse.builder()
                 .id(article.getId())
                 .authorId(article.getAuthorId())
-                .authorStringId(authorStringId)
+                .authorStringId(article.getAuthorStringId())
                 .title(article.getTitle())
                 .contents(article.getContents())
                 .makeTime(article.getDate())

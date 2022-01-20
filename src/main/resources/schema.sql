@@ -13,10 +13,11 @@ CREATE TABLE IF NOT EXISTS USERS
 
 CREATE TABLE IF NOT EXISTS ARTICLE
 (
-    id         BIGINT  NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    author     BIGINT  NOT NULL,
-    title      VARCHAR(50) NOT NULL,
-    write_date DATETIME,
-    content    TEXT,
-    hits       INT
+    id               BIGINT      NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    author           BIGINT      NOT NULL,
+    author_string_id VARCHAR(20),
+    title            VARCHAR(50) NOT NULL,
+    write_date       DATETIME,
+    content          TEXT,
+    hits             INT
 );

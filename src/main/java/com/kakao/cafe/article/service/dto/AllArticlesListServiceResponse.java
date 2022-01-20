@@ -14,7 +14,7 @@ public class AllArticlesListServiceResponse {
 
     private ArrayList<OneArticleData> articles;
 
-    public AllArticlesListServiceResponse(List<Article> articles, List<String> authorStringIds) {
+    public AllArticlesListServiceResponse(List<Article> articles) {
         this.articles = new ArrayList<>();
         Article article;
         for (int i = 0; i < articles.size(); i++) {
@@ -22,7 +22,7 @@ public class AllArticlesListServiceResponse {
             this.articles.add(OneArticleData.builder()
                     .id(article.getId())
                     .title(article.getTitle())
-                    .authorStringId(authorStringIds.get(i))
+                    .authorStringId(article.getAuthorStringId())
                     .hits(article.getHits())
                     .writeTime(article.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                     .build());

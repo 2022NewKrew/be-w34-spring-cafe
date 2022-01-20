@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.article.service.dto.ArticleReadServiceResponse;
+import com.kakao.cafe.article.service.dto.CreateArticleServiceRequest;
 import com.kakao.cafe.config.Constant;
 import com.kakao.cafe.controller.interceptor.AuthInfoCheck;
 import com.kakao.cafe.controller.session.AuthInfo;
@@ -36,7 +37,7 @@ public class ArticleController {
     public String postArticle(@ModelAttribute ArticleCreateRequest req,
                               @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
         log.info("POST /article {}", req.getTitle());
-        articleService.createArticle(authInfo.getId(), req.getTitle(), req.getContents());
+        articleService.createArticle(createArticle(req, authInfo));
         return "redirect:/";
     }
 
@@ -89,4 +90,12 @@ public class ArticleController {
         return "article/update";
     }
 
+    private CreateArticleServiceRequest createArticle(ArticleCreateRequest req, AuthInfo authInfo) {
+        return CreateArticleServiceRequest.builder()
+                                          .authorId(authInfo.getId())
+                                          .authorStringId(authInfo.getStringId())
+                                          .title(req.getTitle())
+                                          .contents(req.getContents())
+                                          .build();
+    }
 }
