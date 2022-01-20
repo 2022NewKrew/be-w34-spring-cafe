@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS users, articles;
+DROP TABLE IF EXISTS users, articles, comments;
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -15,3 +15,9 @@ CREATE TABLE articles (
   writer_id INT REFERENCES users (id)
 );
 
+CREATE TABLE comments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  contents TEXT,
+  writer_id INT REFERENCES users(id),
+  article_id INT REFERENCES articles(id)
+);
