@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ControllerAdvice
+@ControllerAdvice(assignableTypes = SessionController.class)
 public class SessionExceptionController {
     private static final Logger logger = LoggerFactory.getLogger(SessionExceptionController.class);
 
