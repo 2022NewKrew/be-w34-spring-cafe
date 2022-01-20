@@ -32,13 +32,13 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        final String sql = "SELECT id, writerId, title, content, createdAt FROM POSTS";
+        final String sql = "SELECT id, writerId, title, content, createdAt, deleted FROM POSTS WHERE deleted = FALSE";
         return jdbcTemplate.query(sql, postRowMapper());
     }
 
     @Override
     public Optional<Post> findById(UUID id) {
-        final String sql = "SELECT id, writerId, title, content, createdAt FROM POSTS WHERE id = ?";
+        final String sql = "SELECT id, writerId, title, content, createdAt, deleted FROM POSTS WHERE id = ? AND deleted = FALSE";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, postRowMapper(), id));
         } catch (DataAccessException e) {
@@ -55,13 +55,20 @@ public class JdbcPostRepository implements PostRepository {
                 post.getId());
     }
 
+    @Override
+    public void delete(Post post) {
+        final String sql = "UPDATE POSTS SET deleted = TRUE WHERE id = ?";
+        jdbcTemplate.update(sql, post.getId());
+    }
+
     private RowMapper<Post> postRowMapper() {
         return (rs, rowNum) -> new Post.Builder(
                 rs.getObject("id", UUID.class),
                 rs.getObject("writerId", UUID.class),
                 rs.getString("title"),
                 rs.getObject("content", String.class),
-                rs.getTimestamp("createdAt"))
+                rs.getTimestamp("createdAt"),
+                rs.getBoolean("deleted"))
                 .build();
     }
 }

@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,8 +60,16 @@ public class PostController {
         return "redirect:/posts/" + id;
     }
 
+    @DeleteMapping("/{id}")
+    public String deletePost(@PathVariable("id") UUID id, HttpSession session) {
+        UUID sessionUserId = ((User) session.getAttribute("sessionUser")).getId();
+        postService.delete(id, sessionUserId);
+
+        return "redirect:/";
+    }
+
     @GetMapping("{id}/update")
-    public String getPostUpdateForm(@PathVariable("id") UUID id, Model model){
+    public String getPostUpdateForm(@PathVariable("id") UUID id, Model model) {
         PostDetailDto postDetailDto = postService.getPostDetailById(id);
         model.addAttribute("post", postDetailDto);
 

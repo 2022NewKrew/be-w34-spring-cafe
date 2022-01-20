@@ -1,9 +1,9 @@
 package com.kakao.cafe.model;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Posts {
 
@@ -20,16 +20,23 @@ public class Posts {
     public Optional<Post> findById(UUID id) {
         return posts.stream()
                 .filter(post -> id.equals(post.getId()))
+                .filter(post -> !post.isDeleted())
                 .findFirst();
     }
 
     public List<Post> getPosts() {
-        return Collections.unmodifiableList(posts);
+        return posts.stream()
+                .filter(post -> !post.isDeleted())
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public void update(Post modified) {
         posts.stream()
                 .filter((original) -> original.getId().equals(modified.getId()))
                 .forEach((original) -> original.update(modified));
+    }
+
+    public void delete(Post post) {
+        post.delete();
     }
 }
