@@ -6,6 +6,7 @@ import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.annotation.Auth;
 import com.kakao.cafe.util.annotation.AuthMyArticle;
+import com.kakao.cafe.util.annotation.MyArticle;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,7 @@ public class ArticleController {
         return "redirect:";
     }
 
-    @AuthMyArticle
+    @MyArticle
     @GetMapping("/articles/{index}/update")
     public String updateArticleView(@PathVariable int index, HttpSession session, Model model) {
         ArticleDto article = articleService.filterArticleByIndex(index);
@@ -59,14 +60,14 @@ public class ArticleController {
         return "qna/updateForm";
     }
 
-    @AuthMyArticle
+    @MyArticle
     @PutMapping("/articles/{index}/update")
     public String updateArticle(@PathVariable int index, ArticleDto article, HttpSession session) {
         articleService.updateArticle(index, article);
         return "redirect:";
     }
 
-    @AuthMyArticle
+    @MyArticle
     @DeleteMapping("/articles/{index}/delete")
     public String deleteArticle(@PathVariable int index, HttpSession session) {
         articleService.deleteArticle(index);
