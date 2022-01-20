@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +36,8 @@ class ArticleServiceTest {
         String writer = "testId";
         String title = "test title";
         String contents = "test contents";
-        Article article = new Article(1L, writer, title, contents);
+        LocalDateTime now = LocalDateTime.now();
+        Article article = new Article(1L, writer, title, contents, now, now);
 
         //when
         ArticleCreateRequestDto requestDto = new ArticleCreateRequestDto(writer, title, contents);
@@ -73,7 +75,7 @@ class ArticleServiceTest {
         String writer = "testId";
         String title = "test title";
         String contents = "test contents";
-        Article article = new Article(1L, writer, title, contents);
+        Article article = new Article(1L, writer, title, contents, LocalDateTime.now(), LocalDateTime.now());
         ArticleDetailResponseDto expectedDto = ArticleDetailResponseDto.from(article);
 
         ArticleCreateRequestDto requestDto = new ArticleCreateRequestDto(writer, title, contents);

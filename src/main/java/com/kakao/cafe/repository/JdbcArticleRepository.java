@@ -9,13 +9,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private static Long idNumber = 0L;
 
     public JdbcArticleRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -23,8 +23,8 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void create(ArticleCreateRequestDto requestDto) {
-        String sql = "INSERT INTO articles (writer, title, contents, deleted, created_at, modified_at) VALUES (?, ?, ?, false, now(), now())";
-        jdbcTemplate.update(sql, requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents());
+        String sql = "INSERT INTO articles (writer, title, contents, deleted, created_at, modified_at) VALUES (?, ?, ?, false, ?, ?)";
+        jdbcTemplate.update(sql, requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents(), requestDto.getCreatedAt(), requestDto.getModifiedAt());
     }
 
     @Override
@@ -54,6 +54,12 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> new Article(rs.getLong("id"), rs.getString("writer"), rs.getString("title"), rs.getString("contents"));
+        return (rs, rowNum) -> new Article(rs.getLong("id"),
+                rs.getString("writer"),
+                rs.getString("title"),
+                rs.getString("contents"),
+                rs.getTimestamp("created_at").toLocalDateTime().truncatedTo(ChronoUnit.SECONDS),
+                rs.getTimestamp("modified_at").toLocalDateTime().truncatedTo(ChronoUnit.SECONDS)
+        );
     }
 }

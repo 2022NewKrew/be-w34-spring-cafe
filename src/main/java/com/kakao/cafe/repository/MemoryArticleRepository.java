@@ -3,6 +3,7 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.web.dto.ArticleCreateRequestDto;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class MemoryArticleRepository implements ArticleRepository {
@@ -13,7 +14,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public void create(ArticleCreateRequestDto requestDto) {
         Long id = ++idNumber;
-        articleMap.put(id, new Article(id, requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents()));
+        articleMap.put(id, new Article(id, requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents(), LocalDateTime.now(), LocalDateTime.now()));
     }
 
     @Override

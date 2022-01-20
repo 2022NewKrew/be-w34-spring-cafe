@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
 
 @Getter
 @RequiredArgsConstructor
@@ -16,6 +16,8 @@ public class Article {
     private final String title;
     private final String contents;
     private boolean deleted = false;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime modifiedAt;
 
     @Override
     public boolean equals(Object o) {
