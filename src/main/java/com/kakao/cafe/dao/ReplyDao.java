@@ -21,14 +21,14 @@ public class ReplyDao {
         int articleId = replyVo.getArticleId();
         String date = replyVo.getDate();
         String userId = replyVo.getUserId();
-        jdbcTemplate.update("INSERT INTO REPLY (writer,comment,articleId,date,userId) VALUES ( ?,?,?,?,? )", writer, comment, articleId, date, userId);
+        jdbcTemplate.update("INSERT INTO reply (writer,comment,articleId,date,userId) VALUES ( ?,?,?,?,? )", writer, comment, articleId, date, userId);
     }
 
     public List<ReplyVo> findAllByArticleId(int articleId) {
-        return jdbcTemplate.query("SELECT * FROM REPLY WHERE articleId = ?",replyRowMapper,articleId);
+        return jdbcTemplate.query("SELECT * FROM reply WHERE articleId = ?",replyRowMapper,articleId);
     }
 
     public void deleteByReplyId(int replyId) {
-        jdbcTemplate.update("DELETE FROM REPLY WHERE replyId = ?",replyId);
+        jdbcTemplate.update("DELETE FROM reply WHERE replyId = ?",replyId);
     }
 }

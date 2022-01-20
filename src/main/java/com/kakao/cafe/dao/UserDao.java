@@ -20,11 +20,11 @@ public class UserDao {
         String password = userVo.getPassword();
         String name = userVo.getName();
         String email = userVo.getEmail();
-        jdbcTemplate.update("INSERT INTO QNA_USER VALUES (?,?,?,?)",userId,password,name,email);
+        jdbcTemplate.update("INSERT INTO qna_user VALUES (?,?,?,?)",userId,password,name,email);
     }
 
     public UserVo findByUserId(String userId) {
-        List<UserVo> resultList = jdbcTemplate.query("SELECT userid, password, name, email FROM QNA_USER WHERE userId = ?",userRowMapper,userId);
+        List<UserVo> resultList = jdbcTemplate.query("SELECT userid, password, name, email FROM qna_user WHERE userId = ?",userRowMapper,userId);
         return resultList.stream()
                 .findFirst()
                 .orElse(null);
@@ -35,10 +35,10 @@ public class UserDao {
         String password = userVo.getPassword();
         String name = userVo.getName();
         String email = userVo.getEmail();
-        jdbcTemplate.update("UPDATE QNA_USER SET password = ?, name = ?, email = ? WHERE userId = ?",password,name,email,userId);
+        jdbcTemplate.update("UPDATE qna_user SET password = ?, name = ?, email = ? WHERE userId = ?",password,name,email,userId);
     }
 
     public List<UserVo> findAll() {
-        return jdbcTemplate.query("SELECT userid, password, name, email FROM QNA_USER",userRowMapper);
+        return jdbcTemplate.query("SELECT userid, password, name, email FROM qna_user",userRowMapper);
     }
 }

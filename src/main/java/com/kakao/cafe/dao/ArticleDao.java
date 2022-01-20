@@ -21,11 +21,11 @@ public class ArticleDao {
         String contents = articleVo.getContents();
         String date = articleVo.getDate();
         String userId = articleVo.getUserId();
-        jdbcTemplate.update("INSERT INTO ARTICLE (writer, title, contents, date, userId) VALUES (?, ?, ?, ?, ?)", writer, title, contents, date, userId);
+        jdbcTemplate.update("INSERT INTO article (writer, title, contents, date, userId) VALUES (?, ?, ?, ?, ?)", writer, title, contents, date, userId);
     }
 
     public ArticleVo findByArticleId(int articleId) {
-        List<ArticleVo> resultList = jdbcTemplate.query("SELECT articleId, writer, title, contents, date, userId FROM ARTICLE WHERE articleId = ?", articleRowMapper, articleId);
+        List<ArticleVo> resultList = jdbcTemplate.query("SELECT articleId, writer, title, contents, date, userId FROM article WHERE articleId = ?", articleRowMapper, articleId);
         return resultList.stream()
                 .findFirst()
                 .orElse(null);
@@ -40,10 +40,10 @@ public class ArticleDao {
         String title = articleVo.getTitle();
         String contents = articleVo.getContents();
         String date = articleVo.getDate();
-        jdbcTemplate.update("UPDATE ARTICLE SET TITLE = ?, CONTENTS = ?, DATE = ? WHERE articleId = ?",title,contents,date,articleId);
+        jdbcTemplate.update("UPDATE article SET TITLE = ?, CONTENTS = ?, DATE = ? WHERE articleId = ?",title,contents,date,articleId);
     }
 
     public void deleteByArticleId(int articleId) {
-        jdbcTemplate.update("DELETE FROM ARTICLE WHERE articleId = ?",articleId);
+        jdbcTemplate.update("DELETE FROM article WHERE articleId = ?",articleId);
     }
 }

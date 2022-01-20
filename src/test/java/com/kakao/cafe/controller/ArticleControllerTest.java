@@ -4,7 +4,6 @@ import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.dto.user.UserSessionDto;
 import com.kakao.cafe.exception.ExceptionAdvice;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.vo.ArticleVo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ArticleControllerTest {

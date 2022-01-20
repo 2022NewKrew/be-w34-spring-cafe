@@ -127,7 +127,7 @@ class UserControllerTest {
         when(userService.login(any())).thenReturn(sessiondUser);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/user/login")
-                        .param("userid","david.dh")
+                        .param("userId","david.dh")
                         .param("password","1234")
         ).andExpect(
                 MockMvcResultMatchers.status().is3xxRedirection()
@@ -144,10 +144,10 @@ class UserControllerTest {
         when(userService.login(any())).thenThrow(LoginFailedException.class);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/user/login")
-                        .param("userid","david.dh")
+                        .param("userId","david.dh")
                         .param("password","123")
         ).andExpect(
-                MockMvcResultMatchers.status().isOk()
+                MockMvcResultMatchers.status().isBadRequest()
         ).andExpect(
                 MockMvcResultMatchers.forwardedUrl("./user/login_failed")
         ).andDo(MockMvcResultHandlers.print());
