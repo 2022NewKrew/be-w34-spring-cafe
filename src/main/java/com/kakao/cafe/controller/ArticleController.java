@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.article.Articles;
 import com.kakao.cafe.domain.reply.Reply;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.util.Constant;
 import com.kakao.cafe.util.ErrorMessage;
 import com.kakao.cafe.util.PageUtils;
@@ -22,6 +23,7 @@ import java.util.List;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
     @PostMapping("/questions")
     public String createQNA(Article article) {
@@ -56,9 +58,11 @@ public class ArticleController {
     @GetMapping("/articles/{index}")
     public String show(@PathVariable Long index, Model model) {
         Article article = articleService.findOne(index);
+        List<Reply> replies = replyService.findReplyList(index);
         model.addAttribute("title", article.getTitle());
         model.addAttribute("writer", article.getWriter());
         model.addAttribute("content", article.getContent());
+        model.addAttribute("replies", replies);
 
         return "/qna/show";
     }

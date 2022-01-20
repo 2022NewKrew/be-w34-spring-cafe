@@ -30,6 +30,25 @@
                 <button type="submit" class="btn btn-dark p-3">삭제하기</button>
             </div>
         </form>
+        <div>
+            {{#replies}}
+            <form action="/qna/{{index}}/replies/{{this.id}}" method="post">
+                <input type="hidden" name="_method" value="delete"/>
+                <div>
+                    <p>
+                        {{this.writer}}: {{this.content}} [{{this.date}}]
+                        <input type="submit" value="삭제하기">
+                    </p>
+                </div>
+            </form>
+            {{/replies}}
+        </div>
+        <form action="/qna/{{index}}/reply" method="post">
+            <div>
+                <textarea id="content" name="content" placeholder="댓글을 입력하세요."></textarea>
+            </div>
+            <input type="submit" value="등록">
+        </form>
     </section>
 </main>
 {{>layout/footer}}

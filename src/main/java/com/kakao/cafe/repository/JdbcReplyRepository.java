@@ -26,7 +26,7 @@ public class JdbcReplyRepository implements ReplyInterface {
 
     @Override
     public Reply save(Reply reply) {
-        String sql = "insert into replies(content, date, writerid, articleid) values(?, ?, ?, ?, ?)";
+        String sql = "insert into replies(content, date, writerid, articleid, deleted) values(?, ?, ?, ?, ?)";
         reply.setDate(DateUtils.getLocalDateTimeNow());
         try {
             connection = JdbcUtils.getConnection(dataSource);
@@ -35,14 +35,15 @@ public class JdbcReplyRepository implements ReplyInterface {
             preparedStatement.setString(2, reply.getDate());
             preparedStatement.setLong(3, reply.getWriterId());
             preparedStatement.setLong(4, reply.getArticleId());
-            preparedStatement.setBoolean(5, false);
+            preparedStatement.setBoolean(5, reply.getDeleted());
+
 
             preparedStatement.executeUpdate();
 
             resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
-                reply.setId(resultSet.getLong("id"));
-                log.info("reply " + reply.getId() + " saved");
+                reply.setId(resultSet.getLong(1));
+                log.info("reply " + reply + " saved");
                 return reply;
             }
             throw new SQLException("Reply 생성 실패");
