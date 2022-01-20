@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.entity.User;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -82,5 +83,25 @@ class ArticleControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @DisplayName("[성공] 게시글 전체 조회")
+    @Test
+    void select_Articles() throws Exception{
+        // given
+        User auth = new User(1, "chen", "1234", "chen.kim@kakaocorp.com");
+
+        mockMvc.perform((get("/articles"))
+                        .sessionAttr("auth", auth))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"));
+    }
+
+    @DisplayName("[실패] 로그인 권한이 없어 게시글 전체 조회 실패")
+    @Test
+    void select_Articles_Without_Authorization() throws Exception{
+
+        mockMvc.perform(get("/articles"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
+    }
 
 }

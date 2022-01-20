@@ -40,9 +40,9 @@ public class ArticleController {
         return "redirect:/articles";
     }
 
-    @GetMapping("/{articleId}")
-    public String article(@PathVariable Integer articleId, Model model) {
-        Article article = articleService.findByArticleId(articleId);
+    @GetMapping("/{id}")
+    public String article(@PathVariable Integer id, Model model) {
+        Article article = articleService.findByArticleId(id);
         model.addAttribute("article", article);
         return "post/show";
     }
