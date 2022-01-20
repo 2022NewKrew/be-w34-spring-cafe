@@ -33,7 +33,7 @@
                     <form id="logout-form" style="display:none" action="/logout" method="post">
                         <input type="hidden" name="_method" value="DELETE"/>
                     </form>
-                <li><a href="/users/{{sessionUser}}/form" role="button">개인정보수정</a></li>
+                <li><a href="/users/{{sessionUser.userId}}/form" role="button">개인정보수정</a></li>
                 {{/sessionUser}}
             </ul>
         </div>

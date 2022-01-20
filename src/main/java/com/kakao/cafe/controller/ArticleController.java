@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.controller.interceptor.LoginRequired;
 import com.kakao.cafe.dto.ArticleRequestDTO;
 import com.kakao.cafe.dto.ArticleResponseDTO;
+import com.kakao.cafe.dto.UserResponseDTO;
 import com.kakao.cafe.error.exception.AuthorizationException;
 import com.kakao.cafe.service.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,12 @@ import static com.kakao.cafe.Constant.SESSION_USER;
 public class ArticleController {
     private final ArticleService articleService;
     private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
+
+    @LoginRequired
+    @GetMapping("/articles/form")
+    public String createArticle() {
+        return "article/form";
+    }
 
     @GetMapping()
     public String getArticleList(Model model) {
@@ -46,7 +53,8 @@ public class ArticleController {
     @LoginRequired
     @GetMapping("/articles/{id}/form")
     public String updateArticleForm(@PathVariable Long id, @Validated ArticleRequestDTO articleRequestDTO, HttpSession session, Model model) {
-        if(!session.getAttribute(SESSION_USER).equals(articleRequestDTO.getAuthor())) {
+        UserResponseDTO user = (UserResponseDTO) session.getAttribute(SESSION_USER);
+        if(!user.getName().equals(articleRequestDTO.getAuthor())) {
             throw new AuthorizationException();
         }
         model.addAttribute("article", articleRequestDTO);
@@ -62,18 +70,13 @@ public class ArticleController {
 
     @LoginRequired
     @DeleteMapping("/articles/{id}")
-    public String deleteArticle(@PathVariable Long id, @Validated ArticleRequestDTO articleRequestDto, HttpSession session) {
-        if(!session.getAttribute(SESSION_USER).equals(articleRequestDto.getAuthor())) {
+    public String deleteArticle(@PathVariable Long id, @Validated ArticleRequestDTO articleRequestDTO, HttpSession session) {
+        UserResponseDTO user = (UserResponseDTO) session.getAttribute(SESSION_USER);
+        if(!user.getName().equals(articleRequestDTO.getAuthor())) {
             throw new AuthorizationException();
         }
         articleService.delete(id);
         return "redirect:/";
-    }
-
-    @LoginRequired
-    @GetMapping("/articles/form")
-    public String createArticle() {
-        return "article/form";
     }
 
     @LoginRequired

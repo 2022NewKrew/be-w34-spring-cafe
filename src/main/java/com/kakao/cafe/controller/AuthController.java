@@ -33,7 +33,7 @@ public class AuthController {
             return "redirect:/login-failed";
         }
         UserResponseDTO userResponseDTO = authService.login(authDto);
-        session.setAttribute(SESSION_USER, userResponseDTO.getUserId());
+        session.setAttribute(SESSION_USER, userResponseDTO);
         return "redirect:/";
     }
 

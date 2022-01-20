@@ -29,7 +29,7 @@ public class UserController {
     @GetMapping()
     public String getUserList(Model model) {
         List<UserResponseDTO> users = userService.readAll();
-        if(users.size() > 0) {
+        if(!users.isEmpty()) {
             logger.info("getUserList: {}, {}, {}", users.get(0).getId(), users.get(0).getUserId(), users.get(0).getName());
         }
         model.addAttribute("users", users);
@@ -55,10 +55,10 @@ public class UserController {
     @GetMapping("/{userId}/form")
     public String updateUser(@PathVariable String userId, Model model, HttpSession session) {
         logger.info("updateUser(GET): {} {}", userId, session.getAttribute(SESSION_USER));
-        if(!userId.equals(session.getAttribute(SESSION_USER))) {
+        UserResponseDTO user = (UserResponseDTO)session.getAttribute(SESSION_USER);
+        if(!userId.equals(user.getUserId())) {
             throw new AuthorizationException();
         }
-        UserResponseDTO user = userService.read(userId);
         model.addAttribute("user", user);
         logger.info("update {}, {}, {}", user.getUserId(), user.getName(), user.getEmail());
         return "user/updateForm";
