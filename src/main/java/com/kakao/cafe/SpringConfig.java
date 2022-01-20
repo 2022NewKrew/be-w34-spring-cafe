@@ -9,10 +9,10 @@ import com.kakao.cafe.article.application.port.out.LoadArticlePort;
 import com.kakao.cafe.article.application.port.out.SaveArticlePort;
 import com.kakao.cafe.user.adapter.out.JdbcTemplateUserRepository;
 import com.kakao.cafe.user.application.FindUserService;
-import com.kakao.cafe.user.application.SignInService;
+import com.kakao.cafe.user.application.LoginService;
 import com.kakao.cafe.user.application.SignUpService;
 import com.kakao.cafe.user.application.port.in.FindUserUseCase;
-import com.kakao.cafe.user.application.port.in.SignInUseCase;
+import com.kakao.cafe.user.application.port.in.LoginUseCase;
 import com.kakao.cafe.user.application.port.in.SignUpUseCase;
 import com.kakao.cafe.user.application.port.out.LoadUserPort;
 import com.kakao.cafe.user.application.port.out.SaveUserPort;
@@ -30,18 +30,18 @@ public class SpringConfig {
     }
 
     @Bean
-    public FindUserUseCase findUserService() {
+    public FindUserUseCase findUserUseCase() {
         return new FindUserService(loadUserPort());
     }
 
     @Bean
-    public SignUpUseCase signUpService() {
+    public SignUpUseCase signUpUseCase() {
         return new SignUpService(saveUserPort());
     }
 
     @Bean
-    public SignInUseCase signInUseCase() {
-        return new SignInService(loadUserPort());
+    public LoginUseCase signInUseCase() {
+        return new LoginService(loadUserPort());
     }
 
     @Bean
@@ -55,7 +55,7 @@ public class SpringConfig {
     }
 
     @Bean
-    public FindArticleUseCase findArticleQuery() {
+    public FindArticleUseCase findArticleUseCase() {
         return new FindArticleService(loadArticlePort());
     }
 

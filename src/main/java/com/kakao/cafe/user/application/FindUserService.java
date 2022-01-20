@@ -19,7 +19,7 @@ public class FindUserService implements FindUserUseCase {
 
     @Override
     public FoundUserDto find(UserId userId) {
-        Optional<User> loadedUser = this.loadUserPort.load(userId);
+        Optional<User> loadedUser = this.loadUserPort.loadById(userId);
         return loadedUser.map(user -> new FoundUserDto(
                 user.getUserId(),
                 user.getEmail(),

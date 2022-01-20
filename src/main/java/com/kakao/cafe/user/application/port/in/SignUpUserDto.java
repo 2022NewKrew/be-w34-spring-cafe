@@ -1,24 +1,26 @@
 package com.kakao.cafe.user.application.port.in;
 
 import com.kakao.cafe.user.application.port.out.CreateUserDto;
+import com.kakao.cafe.user.domain.Email;
+import com.kakao.cafe.user.domain.Password;
 
 public class SignUpUserDto {
 
-    private final String email;
+    private final Email email;
     private final String nickname;
-    private final String password;
+    private final Password password;
 
-    public SignUpUserDto(String email, String nickname, String password) {
+    public SignUpUserDto(Email email, String nickname, Password password) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
     }
 
     public CreateUserDto toCreateUserDto() {
-        return new CreateUserDto(email, nickname, password);
+        return new CreateUserDto(email.getValue(), nickname, password.getValue());
     }
 
-    public String getEmail() {
+    public Email getEmail() {
         return email;
     }
 
@@ -26,7 +28,7 @@ public class SignUpUserDto {
         return nickname;
     }
 
-    public String getPassword() {
+    public Password getPassword() {
         return password;
     }
 }

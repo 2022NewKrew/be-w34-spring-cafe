@@ -7,11 +7,11 @@
     <div>
       <span class="header_menu" onclick="location.href='/users'">멤버 리스트</span>
       {{^sessionedUser}}
-        <span class="header_btn" onclick="location.href='/user/logout'">로그인</span>
+        <span class="header_btn" onclick="location.href='/login'">로그인</span>
+        <span class="header_btn" onclick="location.href='/user/form'">회원가입</span>
       {{/sessionedUser}}
       {{#sessionedUser}}
-        <span class="header_btn" onclick="location.href='/user/login'">로그인</span>
-        <span class="header_btn" onclick="location.href='/user/form'">회원가입</span>
+        <span class="header_btn" onclick="location.href='/logout'">로그아웃</span>
       {{/sessionedUser}}
     </div>
   </div>

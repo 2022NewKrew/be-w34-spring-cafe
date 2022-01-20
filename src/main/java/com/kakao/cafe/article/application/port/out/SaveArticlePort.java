@@ -1,7 +1,8 @@
 package com.kakao.cafe.article.application.port.out;
 
+import com.kakao.cafe.article.domain.ArticleId;
+
 public interface SaveArticlePort {
 
-    void save(CreateArticleDto createArticleDto);
-
+    ArticleId save(CreateArticleDto createArticleDto);
 }

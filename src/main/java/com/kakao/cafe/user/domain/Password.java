@@ -15,11 +15,11 @@ public class Password {
         if (this == other) {
             return true;
         }
-        if (other == null || getClass() != other.getClass()) {
-            return false;
+        if (other instanceof Password) {
+            Password password = (Password) other;
+            return value.equals(password.value);
         }
-        Password password = (Password) other;
-        return value.equals(password.value);
+        return false;
     }
 
     @Override

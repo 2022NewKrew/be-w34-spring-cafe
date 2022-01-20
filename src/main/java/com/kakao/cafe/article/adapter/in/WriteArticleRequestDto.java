@@ -1,11 +1,11 @@
 package com.kakao.cafe.article.adapter.in;
 
-public class CreateArticleRequestDto {
+public class WriteArticleRequestDto {
 
     private final String title;
     private final String content;
 
-    public CreateArticleRequestDto(String title, String content) {
+    public WriteArticleRequestDto(String title, String content) {
         this.title = title;
         this.content = content;
     }

@@ -11,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/users")
 public class FindUserController {
 
     private final FindUserUseCase findUserUseCase;
@@ -22,7 +24,7 @@ public class FindUserController {
         this.findUserUseCase = findUserUseCase;
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public String showUser(@PathVariable long userId, Model model) {
         FoundUserDto foundUserDto = findUserUseCase.find(new UserId(userId));
         ViewUserDto viewUserDto = foundUserDto.toViewUserDto();
@@ -32,7 +34,7 @@ public class FindUserController {
         return "/user/profile";
     }
 
-    @GetMapping("/users")
+    @GetMapping()
     public String showAllUsers(Model model) {
         List<FoundUserDto> users = findUserUseCase.findAll();
         List<ViewUserDto> viewUserDtoList =
