@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.dto.PreviewArticleResponse;
 import com.kakao.cafe.mapper.ArticleMapper;
 import lombok.Builder;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -45,8 +46,23 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAll() {
-        return jdbcTemplate.query("select * from ARTICLE_TABLE", ArticleMapper.INSTANCE);
+    public List<PreviewArticleResponse> findAll() {
+        final String sql = "SELECT article.id, " +
+                "article.title," +
+                "article.writer," +
+                "article.time," +
+                "(SELECT count(*) FROM REPLY_TABLE as r WHERE r.article_id = article.id ) AS replyCount," +
+                "FROM ARTICLE_TABLE as article";
+        return jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> PreviewArticleResponse.builder()
+                        .id(rs.getLong("id"))
+                        .title(rs.getString("title"))
+                        .writer(rs.getString("writer"))
+                        .time(rs.getString("time"))
+                        .replyCount(rs.getString("replyCount"))
+                        .build()
+        );
     }
 
     @Override

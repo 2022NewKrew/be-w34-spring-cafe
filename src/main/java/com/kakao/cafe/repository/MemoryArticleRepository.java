@@ -1,11 +1,9 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
-import org.springframework.stereotype.Repository;
+import com.kakao.cafe.dto.PreviewArticleResponse;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -24,8 +22,9 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public List<Article> findAll() {
-        return store;
+    public List<PreviewArticleResponse> findAll() {
+        return new ArrayList<>();
+        //return store;
     }
 
     @Override
