@@ -1,6 +1,6 @@
 package com.kakao.cafe.exception;
 
-public class InvalidPasswordException extends Exception {
+public class InvalidPasswordException extends RuntimeException {
 
     public InvalidPasswordException() {
     }

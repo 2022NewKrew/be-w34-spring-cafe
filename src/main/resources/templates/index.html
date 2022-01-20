@@ -11,12 +11,12 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a href="user/login">{{title}}</a>
+                                <a href="article/{{id}}">{{title}}</a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time">{{createdAt}}</span>
-                                <a href="./user/profile.html" class="author">{{userId}}</a>
+                                <a href="user/profile/{{userId}}" class="author">{{name}}</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
@@ -41,7 +41,7 @@
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">
-                    <a href="user/login" class="btn btn-primary pull-right" role="button">글쓰기</a>
+                    <a href="article/post" class="btn btn-primary pull-right" role="button">글쓰기</a>
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time">{{createdAt}}</span>
-                                <a href="./user/profile.html" class="author">{{userId}}</a>
+                                <a href="user/profile/{{userId}}" class="author">{{name}}</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>

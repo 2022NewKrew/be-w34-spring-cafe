@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.dto.ArticleSaveDTO;
+import com.kakao.cafe.domain.dto.ArticleModifyDto;
+import com.kakao.cafe.domain.dto.ArticleSaveDto;
 import com.kakao.cafe.domain.model.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -8,8 +9,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ public class ArticleDBRepository implements ArticleRepository{
     }
 
     @Override
-    public void save(ArticleSaveDTO articleSaveDTO) {
+    public void save(ArticleSaveDto articleSaveDTO) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 
         simpleJdbcInsert.withTableName("ARTICLE_TABLE").usingGeneratedKeyColumns("ID", "CREATED_AT");
@@ -39,13 +38,23 @@ public class ArticleDBRepository implements ArticleRepository{
 
     @Override
     public Article findArticleById(int id) {
-        List<Article> articles = jdbcTemplate.query("SELECT ID, TITLE, CONTENT, CREATED_AT, USERID FROM ARTICLE_TABLE WHERE ID = ?", articleRowMapper(), id);
+        List<Article> articles = jdbcTemplate.query("SELECT ID, TITLE, CONTENT, CREATED_AT, AT.USERID, NAME FROM ARTICLE_TABLE AT JOIN USER_TABLE UT on UT.USERID = AT.USERID AND ID = ?", articleRowMapper(), id);
         return articles.stream().findAny().orElse(null);
     }
 
     @Override
     public List<Article> findAllArticles() {
-        return jdbcTemplate.query("SELECT ID, TITLE, CONTENT, CREATED_AT, USERID FROM ARTICLE_TABLE", articleRowMapper());
+        return jdbcTemplate.query("SELECT ID, TITLE, CONTENT, CREATED_AT, AT.USERID, NAME FROM ARTICLE_TABLE AT JOIN USER_TABLE UT on UT.USERID = AT.USERID", articleRowMapper());
+    }
+
+    @Override
+    public void modifyArticle(ArticleModifyDto articleModifyDto) {
+        jdbcTemplate.update("UPDATE ARTICLE_TABLE SET TITLE = ?, CONTENT = ? WHERE ID = ?", articleModifyDto.getTitle(), articleModifyDto.getContent(), articleModifyDto.getId());
+    }
+
+    @Override
+    public void deleteArticle(int id) {
+        jdbcTemplate.update("DELETE FROM ARTICLE_TABLE WHERE ID = ?", id);
     }
 
     private RowMapper<Article> articleRowMapper() {
@@ -54,6 +63,7 @@ public class ArticleDBRepository implements ArticleRepository{
                         rs.getString("TITLE"),
                         rs.getString("CONTENT"),
                         rs.getString("USERID"),
+                       rs.getString("NAME"),
                        rs.getTimestamp("CREATED_AT"));
     }
 }

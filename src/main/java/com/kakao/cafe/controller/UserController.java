@@ -1,17 +1,15 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.dto.UserLoginDTO;
-import com.kakao.cafe.domain.dto.UserSignUpDTO;
+import com.kakao.cafe.domain.dto.UserLoginDto;
+import com.kakao.cafe.domain.dto.UserSignUpDto;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.UsesSunMisc;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/user")
@@ -25,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/signUp")
-    public String signUpUser(@Valid UserSignUpDTO userSignUpDTO){
+    public String signUpUser(@Valid UserSignUpDto userSignUpDTO){
         userService.signUp(userSignUpDTO);
         return "redirect:/user/list";
     }
@@ -49,7 +47,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid UserLoginDTO userLoginDTO, HttpSession session) throws Exception {
+    public String login(@Valid UserLoginDto userLoginDTO, HttpSession session) throws Exception {
         session.setAttribute("sessionedUser", userService.login(userLoginDTO));
         return "redirect:/";
     }

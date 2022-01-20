@@ -1,7 +1,8 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.dto.ArticleModifyDto;
 import com.kakao.cafe.domain.model.Article;
-import com.kakao.cafe.domain.dto.ArticleSaveDTO;
+import com.kakao.cafe.domain.dto.ArticleSaveDto;
 import com.kakao.cafe.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,16 +15,27 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository repository;
 
-    public void save(ArticleSaveDTO articleSaveDTO){
+    public void save(ArticleSaveDto articleSaveDTO){
         repository.save(articleSaveDTO);
     }
 
     public Article findArticleById(String id){
-        int index = Integer.parseInt(id.trim());
-        return Optional.ofNullable(repository.findArticleById(index)).orElseThrow(IllegalArgumentException::new);
+        return Optional.ofNullable(repository.findArticleById(formatId(id))).orElseThrow(IllegalArgumentException::new);
     }
 
     public List<Article> findAllArticles(){
         return repository.findAllArticles();
+    }
+
+    public void modifyArticle(ArticleModifyDto articleModifyDto){
+        repository.modifyArticle(articleModifyDto);
+    }
+
+    public void deleteArticle(String id){
+        repository.deleteArticle(formatId(id));
+    }
+
+    private int formatId(String id){
+        return Integer.parseInt(id.trim());
     }
 }
