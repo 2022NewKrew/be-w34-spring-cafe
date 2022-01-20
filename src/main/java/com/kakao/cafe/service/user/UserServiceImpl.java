@@ -10,6 +10,7 @@ import com.kakao.cafe.util.exception.UserNotFoundException;
 import com.kakao.cafe.util.exception.WrongPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +20,12 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(@Qualifier("jdbcUserRepository") UserRepository userRepository){
+    public UserServiceImpl(@Qualifier("jdbcUserRepository") UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -30,7 +33,7 @@ public class UserServiceImpl implements UserService{
         validateDuplicateUser(userReqDto);
         User user = User.builder()
                 .userId(userReqDto.getUserId())
-                .password(userReqDto.getPassword())
+                .password(passwordEncoder.encode(userReqDto.getPassword()))
                 .email(userReqDto.getEmail())
                 .name(userReqDto.getName())
                 .build();
@@ -83,7 +86,7 @@ public class UserServiceImpl implements UserService{
     }
 
     private void validatePassword(String inputPassword, String dataPassword){
-        if(!inputPassword.equals(dataPassword)){
+        if(!passwordEncoder.matches(inputPassword, dataPassword)){
             throw new WrongPasswordException("잘못된 비밀번호 입니다.");
         }
     }

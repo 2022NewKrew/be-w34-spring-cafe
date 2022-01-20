@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,11 +18,12 @@ class UserServiceImplTest {
 
     MemoryUserRepository memoryUserRepository;
     UserService userService;
+    PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void beforeEach(){
         memoryUserRepository = new MemoryUserRepository();
-        userService = new UserServiceImpl(memoryUserRepository);
+        userService = new UserServiceImpl(memoryUserRepository, passwordEncoder);
     }
 
     @AfterEach
