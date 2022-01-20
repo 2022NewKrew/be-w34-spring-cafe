@@ -1,0 +1,18 @@
+{{>layout/header}}
+<div class="background">
+    {{^sessionedUser}}
+    {{>layout/userLoginNavbar}}
+    {{/sessionedUser}}
+    {{#sessionedUser}}
+    {{>layout/userLogoutNavbar}}
+    {{/sessionedUser}}
+    <p>{{e.message}}</p>
+    <p>{{e.timeStamp}}</p>
+    <p>{{e.code}}</p>
+    {{#e.customFieldErrors.customFieldErrors}}
+    <p>{{reason}}</p>
+    <p>{{field}}</p>
+    <p>{{value}}</p>
+    {{/e.customFieldErrors.customFieldErrors}}
+</div>
+{{>layout/footer}}

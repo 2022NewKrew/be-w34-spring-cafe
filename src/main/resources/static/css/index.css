@@ -375,3 +375,18 @@ td {
 label {
   width: 60px;
 }
+
+.warning-container {
+  background: #FFE1E1;
+  border: 1px solid #C12626;
+  box-sizing: border-box;
+  width: 40%;
+  text-align: left;
+  padding: 10px;
+}
+
+.warning-text {
+  margin: 5px;
+  color: #C12626;
+  font-size: 14px;
+}

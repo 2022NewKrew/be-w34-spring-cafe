@@ -25,6 +25,13 @@
                 <input type="password" class="signup-form-control" id="password" name="password"
                        placeholder="비밀번호를 입력하세요">
             </div>
+            {{#e.customFieldErrors}}
+            <div class="warning-container">
+            {{#customFieldErrors}}
+                <p class="warning-text"><i class="fas fa-exclamation-triangle"></i>{{reason}}</p>
+            {{/customFieldErrors}}
+            </div>
+            {{/e.customFieldErrors}}
             <input class="large-btn" type="submit" value="완료"/>
         </form>
     </div>
