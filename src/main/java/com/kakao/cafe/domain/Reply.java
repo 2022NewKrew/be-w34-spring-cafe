@@ -10,6 +10,14 @@ public class Reply {
     private LocalDateTime date;
     private int articleId;
 
+    public Reply(String writer, String content, LocalDateTime date, int articleId) {
+        this.id = id;
+        this.writer = writer;
+        this.content = content;
+        this.date = date;
+        this.articleId = articleId;
+    }
+
     public Reply(int id, String writer, String content, LocalDateTime date, int articleId) {
         this.id = id;
         this.writer = writer;

@@ -44,9 +44,9 @@
                   </div>
               </article>
 
+              {{#sessionId}}
               <div class="qna-comment">
                   <div class="qna-comment-slipp">
-                      <p class="qna-comment-count"><strong>?</strong>개의 의견</p>
                       <div class="qna-comment-slipp-articles">
                           {{#article.replies}}
                               <article class="article" id="answer-1405">
@@ -84,14 +84,17 @@
                           {{/article.replies}}
                           <form class="submit-write" action="/articles/{{article.id}}/replies" method="POST">
                               <div class="form-group" style="padding:14px;">
-                                  <textarea class="form-control" placeholder="Update your status"></textarea>
+                                  <textarea class="form-control" name="content" id="content" placeholder="Update your status"></textarea>
                               </div>
-                              <button class="btn btn-success pull-right" type="button">답변하기</button>
+                              <input type="hidden" name="writer" id="writer" value="{{sessionId}}">
+                              <input type="hidden" name="articleId" id="articleId" value="{{article.id}}">
+                              <button class="btn btn-success pull-right" type="submit">답변하기</button>
                               <div class="clearfix" />
                           </form>
                       </div>
                   </div>
               </div>
+              {{/sessionId}}
           </div>
         </div>
     </div>

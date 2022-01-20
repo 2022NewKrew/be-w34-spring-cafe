@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.UserAuthDto;
-import com.kakao.cafe.controller.UserDto;
+import com.kakao.cafe.controller.dto.UserAuthDto;
+import com.kakao.cafe.controller.dto.UserDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

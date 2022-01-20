@@ -1,8 +1,7 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.ArticleDto;
+import com.kakao.cafe.controller.dto.ArticleDto;
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.exception.InvalidSessionException;
 import com.kakao.cafe.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

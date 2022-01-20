@@ -14,9 +14,10 @@ import java.util.Optional;
 @Primary
 @Repository
 @RequiredArgsConstructor
-public class JdbcArticleRepository implements ArticleRepository{
+public class JdbcArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final ReplyRepository replyRepository;
 
     @Override
     public List<Article> findAll() {
@@ -59,7 +60,9 @@ public class JdbcArticleRepository implements ArticleRepository{
                     rs.getString("title"),
                     rs.getString("content"),
                     rs.getString("writer"),
-                    rs.getObject("date", LocalDateTime.class));
+                    rs.getObject("date", LocalDateTime.class),
+                    replyRepository.findByArticleId(rs.getInt("id"))
+            );
             return article;
         };
     }

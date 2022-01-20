@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.controller.dto;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.Reply;
@@ -19,10 +19,16 @@ public class ArticleDto {
     private LocalDateTime date;
     private List<Reply> replies = new ArrayList<>();
 
-    public ArticleDto(String title, String content, String writer) {
+    private ArticleDto() {
+    }
+
+    private ArticleDto(int id, String title, String content, String writer, LocalDateTime date, List<Reply> replies) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
+        this.date = date;
+        this.replies = replies;
     }
 
     public Article toEntity() {
@@ -30,20 +36,19 @@ public class ArticleDto {
     }
 
     public static ArticleDto from(Article article) {
-        ArticleDto articleDto = new ArticleDto(article.getTitle(), article.getContent(), article.getWriter());
-        articleDto.setId(article.getId());
-        articleDto.setDate(article.getDate());
-        return articleDto;
+        return new ArticleDto(article.getId(), article.getTitle(), article.getContent(),
+                article.getWriter(), article.getDate(), article.getReplies());
     }
 
     @Override
     public String toString() {
-        return "ArticleDto{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", writer='" + writer + '\'' +
-                ", date=" + date +
-                '}';
+        return String.format(
+                "ArticleDto{id=%d, title=%s, content=%s, writer=%s, date=%s}",
+                this.id,
+                this.title,
+                this.content,
+                this.writer,
+                this.date
+        );
     }
 }
