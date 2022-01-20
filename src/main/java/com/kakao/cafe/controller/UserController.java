@@ -39,7 +39,7 @@ public class UserController {
         }
         logger.info("/users/create, user created. id = {}", user.getUserId());
 
-        return "redirect:list";
+        return "redirect:/list";
     }
 
     // 모든 유저 리스트를 가져와서 표시
@@ -60,7 +60,7 @@ public class UserController {
             model.addAttribute("user", user);
         } catch (NoSuchElementException e) {
             logger.info("/users/{userId}, userId = {}. User does not exist.", userId, e);
-            return "redirect:";
+            return "redirect:/";
         }
         logger.info("/users/{userId}, User(id = {}) founded.", userId);
 
@@ -74,7 +74,7 @@ public class UserController {
 
         if (!userService.checkSessionUser(userId, session)) {
             logger.info("/users/{userId}/form, Invalid session.");
-            return "redirect:";
+            return "redirect:/";
         }
 
         try {
@@ -82,7 +82,7 @@ public class UserController {
             model.addAttribute("user", user);
         } catch (NoSuchElementException e) {
             logger.info("/users/{userId}/form, userId = {}. User does not exist.", userId, e);
-            return "redirect:";
+            return "redirect:/";
         }
 
         return "user/updateForm";
@@ -95,7 +95,7 @@ public class UserController {
 
         if (!userService.checkSessionUser(userId, session)) {
             logger.info("/users/{userId}/update, User(id = {}) failed to update profile. Invalid session.", userId);
-            return "redirect:list";
+            return "redirect:/list";
         }
 
         try {
@@ -107,7 +107,7 @@ public class UserController {
             logger.info("/users/{userId}/update, User(id = {}) failed to update Profile. Incorrect password.", userId, e);
         }
 
-        return "redirect:list";
+        return "redirect:/list";
     }
 
     @PostMapping("/login")
@@ -123,13 +123,13 @@ public class UserController {
             return "/user/login_failed";
         }
 
-        return "redirect:";
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
 
-        return "redirect:";
+        return "redirect:/";
     }
 }

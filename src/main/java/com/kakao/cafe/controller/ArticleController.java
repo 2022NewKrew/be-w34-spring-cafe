@@ -48,12 +48,12 @@ public class ArticleController {
             articleService.post(article);
         } catch (SQLException e) {
             logger.error("/articles/questions, failed to create article (article = {})", article, e);
-            return "redirect:";
+            return "redirect:/";
         } catch (NoSuchElementException e) {
             logger.info("/articles/questions, failed to create article. writer(id = {}) does not exist", article.getWriter(), e);
-            return "redirect:";
+            return "redirect:/";
         }
-        return "redirect:";
+        return "redirect:/";
     }
 
     @GetMapping("/{id}")
@@ -68,7 +68,7 @@ public class ArticleController {
             model.addAttribute("writer", writer);
         } catch (NoSuchElementException e) {
             logger.error("/articles/index, article id = {}", id, e);
-            return "redirect:";
+            return "redirect:/";
         }
 
         return "qna/show";
@@ -79,10 +79,10 @@ public class ArticleController {
         try {
             articleService.update(id, articlePostDto);
         } catch (NoSuchElementException e) {
-            return "redirect:";
+            return "redirect:/";
         }
 
-        return String.format("redirect:articles/%d", id);
+        return String.format("redirect:/articles/%d", id);
     }
 
     @DeleteMapping("/{id}")
@@ -90,10 +90,10 @@ public class ArticleController {
         try {
             articleService.delete(id);
         } catch (NoSuchElementException e) {
-            return "redirect:";
+            return "redirect:/";
         }
 
-        return "redirect:";
+        return "redirect:/";
     }
 
     @GetMapping("/{id}/form")
@@ -102,7 +102,7 @@ public class ArticleController {
         String writerId = articleDto.getWriter();
 
         if (!userService.checkSessionUser(writerId, session)) { // 다른 작성자의 글 수정 불가
-            return "redirect:";
+            return "redirect:/";
         }
 
         model.addAttribute("writer", writerId);
