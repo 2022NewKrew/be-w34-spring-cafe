@@ -37,14 +37,7 @@ public class PostService {
             User writer = userRepository.findById(post.getWriterId())
                     .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_INPUT));
 
-            postDetailDtoList.add(new PostDetailDto(
-                    post.getId(),
-                    post.getTitle(),
-                    writer.getId(),
-                    writer.getName(),
-                    post.getContent(),
-                    post.getCreatedAt())
-            );
+            postDetailDtoList.add(PostDetailDto.of(post, writer));
         }
 
         return postDetailDtoList;
@@ -60,13 +53,7 @@ public class PostService {
         User writer = userRepository.findById(post.getWriterId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NO_USER_MATCHED_INPUT));
 
-        return new PostDetailDto(
-                post.getId(),
-                post.getTitle(),
-                writer.getId(),
-                writer.getName(),
-                post.getContent(),
-                post.getCreatedAt());
+        return PostDetailDto.of(post, writer);
     }
 
     public boolean isWriter(UUID postWriterId, UUID sessionUserId) {

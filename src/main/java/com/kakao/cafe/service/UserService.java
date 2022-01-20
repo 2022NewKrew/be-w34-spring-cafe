@@ -39,10 +39,7 @@ public class UserService {
     public UserProfileDto getUserProfileById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-        return new UserProfileDto(
-                user.getId(),
-                user.getName(),
-                user.getEmail());
+        return UserProfileDto.of(user);
     }
 
     public User login(LoginRequest requestDto) {
