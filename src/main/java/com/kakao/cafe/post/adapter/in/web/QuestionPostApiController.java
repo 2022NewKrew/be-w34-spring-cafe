@@ -4,6 +4,7 @@ import com.kakao.cafe.post.adapter.in.web.dto.request.QuestionPostUpdateRequest;
 import com.kakao.cafe.post.adapter.in.web.dto.request.QuestionPostWriteRequest;
 import com.kakao.cafe.post.adapter.in.web.dto.response.QuestionPostResponse;
 import com.kakao.cafe.post.adapter.in.web.dto.response.QuestionPostWriteResponse;
+import com.kakao.cafe.post.application.dto.command.QuestionPostClickCommand;
 import com.kakao.cafe.post.application.dto.command.QuestionPostDeleteCommand;
 import com.kakao.cafe.post.application.dto.command.QuestionPostUpdateCommand;
 import com.kakao.cafe.post.application.dto.result.QuestionPostSaveResult;
@@ -44,6 +45,13 @@ public class QuestionPostApiController {
         return ResponseEntity
                 .created(uriComponents.toUri())
                 .body(result.toResponse());
+    }
+
+    @PostMapping("/{post-id}/click")
+    public ResponseEntity<Void> clickPost(@PathVariable(name = "post-id") Long postId) {
+        updateQuestionPostUseCase.clickPost(new QuestionPostClickCommand(postId));
+
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{post-id}")
