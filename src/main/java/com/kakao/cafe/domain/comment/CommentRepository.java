@@ -7,5 +7,6 @@ public interface CommentRepository {
     void save(Comment comment);
     Optional<Comment> findById(long id);
     List<Comment> findByPostId(long postId);
+    void updateDeletedById(long id);
     void deleteById(long id);
 }

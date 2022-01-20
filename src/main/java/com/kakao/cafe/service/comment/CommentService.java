@@ -54,7 +54,7 @@ public class CommentService {
         validateCommentWriterId(comment.getWriterId(), writerId);
 
         try {
-            commentRepository.deleteById(id);
+            commentRepository.updateDeletedById(id);
         } catch (DataAccessException e) {
             e.printStackTrace();
             throw new IllegalArgumentException("댓글을 삭제하는 과정에서 문제가 발생하였습니다.");
@@ -62,7 +62,11 @@ public class CommentService {
     }
 
     private Comment getCommentById(long id) {
-        return commentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
+        if (comment.getDeleted()) {
+            throw new IllegalArgumentException("삭제된 댓글 입니다.");
+        }
+        return comment;
     }
 
     private void validateCommentPostId(long commentPostId, long postId) {

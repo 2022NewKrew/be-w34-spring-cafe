@@ -31,7 +31,15 @@ public class CommentRepositoryImpl implements CommentRepository {
             "   comments " +
             "   INNER JOIN users ON comments.writer_id = users.id " +
             "WHERE " +
-            "   comments.post_id = ?";
+            "   comments.post_id = ? AND comments.deleted = 0";
+    private static final String SQL_FOR_UPDATE_DELETED_BY_ID = "" +
+            "UPDATE " +
+            "   comments " +
+            "SET " +
+            "   deleted = 1, " +
+            "   updated_at = ? " +
+            "WHERE " +
+            "   id = ?";
     private static final String SQL_FOR_DELETE_BY_ID = "" +
             "DELETE FROM " +
             "   comments " +
@@ -53,6 +61,11 @@ public class CommentRepositoryImpl implements CommentRepository {
     @Override
     public List<Comment> findByPostId(long postId) {
         return template.query(SQL_FOR_FIND_BY_POST_ID, commentUserRowMapper(), postId);
+    }
+
+    @Override
+    public void updateDeletedById(long id) {
+        template.update(SQL_FOR_UPDATE_DELETED_BY_ID, LocalDateTime.now(), id);
     }
 
     @Override
