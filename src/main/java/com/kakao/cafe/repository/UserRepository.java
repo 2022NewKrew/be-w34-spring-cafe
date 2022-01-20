@@ -10,5 +10,6 @@ public interface UserRepository {
     void update(User user);
     Optional<User> findById(Long id);
     Optional<User> findByNickname(String userId);
+    Optional<User> findByNicknameAndPassword(String nickname, String password);
     List<User> findAll();
 }

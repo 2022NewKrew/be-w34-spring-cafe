@@ -16,6 +16,7 @@ CREATE TABLE `question` (
     `writer` BIGINT NOT NULL,
     `title` VARCHAR(64) NOT NULL,
     `contents` TEXT NOT NULL,
+    `is_deleted` BOOLEAN DEFAULT FALSE,
     primary key(`id`),
     constraint `user_fk` foreign key(`writer`) references `user`(`id`)
 );

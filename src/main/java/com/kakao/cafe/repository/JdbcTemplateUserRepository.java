@@ -56,6 +56,7 @@ public class JdbcTemplateUserRepository implements UserRepository{
         return jdbcTemplate.query("select * from `user`", userRowMapper());
     }
 
+    @Override
     public Optional<User> findByNicknameAndPassword(String nickname, String password) {
         final String sql = "select * from `user` where `nickname` = ? and `password` = ?";
         List<User> result = jdbcTemplate.query(sql, userRowMapper(), nickname, password);

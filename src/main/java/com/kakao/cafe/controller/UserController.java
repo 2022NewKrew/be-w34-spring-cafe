@@ -3,9 +3,8 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.UserCreateRequest;
 import com.kakao.cafe.dto.UserUpdateRequest;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.web.meta.SessionConst;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,43 +16,29 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     @PostMapping("")
     public String signUp(@ModelAttribute UserCreateRequest user){
-        logger.info("POST:/users 회원가입 {}", user.getNickname());
         userService.signUp(user);
         return "redirect:/users";
     }
 
     @GetMapping("")
     public String viewUsersList(Model model, HttpSession session){
-        logger.info("GET:/users 유저목록조회");
-        if(!isLoginedUser(session)){
-            return "user/login";
-        }
         model.addAttribute("users", userService.findAllUsers());
         return "user/list";
     }
 
     @GetMapping("/{id}")
     public String viewPersonalUser(@PathVariable Long id, Model model, HttpSession session){
-        logger.info("GET:/users/{} 유저정보조회", id);
-        if(!isLoginedUser(session)){
-            return "user/login";
-        }
         model.addAttribute("user", userService.findOneUser(id));
         return "user/profile";
     }
 
     @GetMapping("/{id}/form")
     public String viewUpdateForm(@PathVariable Long id, Model model, HttpSession session){
-        logger.info("GET:/users/{}/form 회원정보수정", id);
-        if(!isLoginedUser(session)){
-            return "user/login";
-        }
-        if((Long)session.getAttribute("loginUser") != id)
+        if((Long)session.getAttribute(SessionConst.LOGIN_USER) != id)
             throw new IllegalStateException("접근할 수 없는 페이지 입니다.");
 
         model.addAttribute("user", userService.findOneUser(id));
@@ -62,17 +47,13 @@ public class UserController {
 
     @PutMapping("")
     public String updateUser(@ModelAttribute UserUpdateRequest user, HttpSession session){
-        logger.info("PUT:/users 회원정보수정 {}", user.getNickname());
-        if(!isLoginedUser(session)){
-            return "user/login";
-        }
-        userService.updateUser(user, (Long)session.getAttribute("loginUser"));
+        userService.updateUser(user, (Long)session.getAttribute(SessionConst.LOGIN_USER));
         return "redirect:/users";
     }
 
-    private boolean isLoginedUser(HttpSession session){
-        if(session.getAttribute("loginUser") != null) return true;
-        return false;
-    }
+//    private boolean isLoginedUser(HttpSession session){
+//        if(session.getAttribute(SessionConst.LOGIN_USER) != null) return true;
+//        return false;
+//    }
 
 }

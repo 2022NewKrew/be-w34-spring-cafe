@@ -4,19 +4,19 @@ import com.kakao.cafe.domain.Question;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
-public class QuestionCreateRequest {
-    private String title;
-    private String contents;
+public class QuestionUpdateRequest {
+    Long id;
+    String title;
+    String contents;
 
-    public Question toEntity(Long userId, LocalDateTime dateTime){
+    public Question toEntity(Long userId){
         return Question.builder()
+                .id(id)
                 .writer(userId)
                 .title(title)
                 .contents(contents)
-                .createdDateTime(dateTime).build();
+                .build();
     }
 }
