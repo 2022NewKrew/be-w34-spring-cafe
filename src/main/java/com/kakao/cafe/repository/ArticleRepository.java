@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dao.ArticleDao;
+import com.kakao.cafe.dto.ArticlePostDto;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -37,5 +38,11 @@ public class ArticleRepository {
 
     public ArticleDao select(Long id) {
         return articleMap.get(id);
+    }
+
+    public void update(Long id, ArticlePostDto articlePostDto) {
+        ArticleDao articleDao = select(id);
+        ArticleDao newArticleDao = new ArticleDao(articleDao.getNumber(), articleDao.getId(), articleDao.getName(), articlePostDto.getTitle(), articlePostDto.getContents(), articleDao.getTimestamp());
+        articleMap.put(newArticleDao.getNumber(), newArticleDao);
     }
 }

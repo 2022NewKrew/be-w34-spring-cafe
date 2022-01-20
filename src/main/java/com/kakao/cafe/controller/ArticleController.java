@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -60,4 +61,31 @@ public class ArticleController {
         return "redirect:/index";
     }
 
+    @GetMapping("/article/{id}/form")
+    public String getArticleIdForm(Model model, @PathVariable("id") Long id, HttpSession session) {
+        ArticleDetailDto articleDetailDto = articleService.getArticleDetailDto(id);
+        Boolean isSameUser = articleService.checkSameUser(articleDetailDto, session);
+        if (!isSameUser) {
+            return "redirect:/article/error";
+        }
+        articleView.getArticleIdFormView(model, articleDetailDto);
+        return "qna/form_change";
+    }
+
+    @PutMapping("/article/{id}/form")
+    public String putArticleIdForm(Model model, @PathVariable("id") Long id, HttpSession session, ArticlePostDto articlePostDto) {
+        ArticleDetailDto articleDetailDto = articleService.getArticleDetailDto(id);
+        Boolean isSameUser = articleService.checkSameUser(articleDetailDto, session);
+        if (!isSameUser) {
+            return "redirect:/article/error";
+        }
+        articleService.updateArticle(id, articlePostDto);
+        return "redirect:/index";
+    }
+
+    @GetMapping("/article/error")
+    public String getArticleError(Model model) {
+        articleView.getQuestionsView(model);
+        return "qna/form";
+    }
 }

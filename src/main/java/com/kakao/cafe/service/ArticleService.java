@@ -41,4 +41,8 @@ public class ArticleService {
         String sessionId = ((UserProfileDto) session.getAttribute("sessionedUser")).getId();
         return articleId.equals(sessionId);
     }
+
+    public void updateArticle(Long id, ArticlePostDto articlePostDto) {
+        articleRepository.update(id, articlePostDto);
+    }
 }

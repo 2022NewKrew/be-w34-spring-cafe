@@ -22,4 +22,8 @@ public class ArticleView {
 
     public void getQuestionsView(Model model) {
     }
+
+    public void getArticleIdFormView(Model model, ArticleDetailDto articleDetailDto) {
+        model.addAttribute("number", articleDetailDto.getNumber());
+    }
 }
