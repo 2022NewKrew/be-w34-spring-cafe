@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain.article;
 
+import com.kakao.cafe.domain.common.Deleted;
 import com.kakao.cafe.domain.user.User;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -12,16 +13,16 @@ public class Article {
     private final User writer;
     private final LocalDateTime createdAt;
     private final ViewCount viewCount;
-    private final ArticleDeleted articleDeleted;
+    private final Deleted deleted;
 
-    public Article(UUID articleId, Title title, Content content, User writer, LocalDateTime createdAt, ViewCount viewCount, ArticleDeleted articleDeleted) {
+    public Article(UUID articleId, Title title, Content content, User writer, LocalDateTime createdAt, ViewCount viewCount, Deleted deleted) {
         this.articleId = articleId;
         this.title = title;
         this.content = content;
         this.writer = writer;
         this.createdAt = createdAt;
         this.viewCount = viewCount;
-        this.articleDeleted = articleDeleted;
+        this.deleted = deleted;
     }
 
     public Article(Title title, Content content, User writer) {
@@ -56,8 +57,8 @@ public class Article {
         return viewCount;
     }
 
-    public ArticleDeleted getArticleDeleted() {
-        return articleDeleted;
+    public Deleted getDeleted() {
+        return deleted;
     }
 
     public void increaseViewCount() {
