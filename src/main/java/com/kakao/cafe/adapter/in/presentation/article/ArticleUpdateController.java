@@ -24,12 +24,15 @@ public class ArticleUpdateController {
 
 
     @PutMapping("/articles/{id}/form")
-    public String update(@PathVariable int id, UpdateArticleRequest updateArticleRequest, HttpSession session)
+    public String update(@PathVariable int id, String title, String contents, HttpSession session)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException, UnauthenticatedUserException {
         UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
-        updateArticleRequest.setId(id);
-        updateArticleRequest.setWriter(sessionedUser.getUserId());
-        updateArticleRequest.setWriter(sessionedUser.getName());
+        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest.Builder().id(id)
+                                                                                      .userId(sessionedUser.getUserId())
+                                                                                      .writer(sessionedUser.getName())
+                                                                                      .title(title)
+                                                                                      .contents(contents)
+                                                                                      .build();
         updateArticleUseCase.updateArticle(updateArticleRequest);
         return "redirect:/";
     }

@@ -169,10 +169,12 @@ class ArticleAdapterTest {
     void updateArticleSuccess() {
         // given
         int givenId = 1;
-        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest("kakao", "Hello Kakao");
-        updateArticleRequest.setId(givenId);
-        updateArticleRequest.setUserId("test");
-        updateArticleRequest.setWriter("champ");
+        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest.Builder().id(givenId)
+                                                                                      .userId("kakao")
+                                                                                      .writer("champ")
+                                                                                      .title("hello")
+                                                                                      .contents("hello kakao")
+                                                                                      .build();
 
         // then
         assertThatNoException().isThrownBy(() -> articleAdapter.updateArticle(updateArticleRequest));
@@ -183,10 +185,12 @@ class ArticleAdapterTest {
     void updateNullTitleArticleFail() {
         // given
         int givenId = 1;
-        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest("", "Hello Kakao");
-        updateArticleRequest.setId(givenId);
-        updateArticleRequest.setUserId("test");
-        updateArticleRequest.setWriter("champ");
+        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest.Builder().id(givenId)
+                                                                                      .userId("kakao")
+                                                                                      .writer("champ")
+                                                                                      .title("")
+                                                                                      .contents("hello kakao")
+                                                                                      .build();
 
         // then
         assertThatExceptionOfType(IllegalTitleException.class)
@@ -198,10 +202,12 @@ class ArticleAdapterTest {
     void updateNullUserIdArticleFail() {
         // given
         int givenId = 1;
-        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest("kakao", "Hello Kakao");
-        updateArticleRequest.setId(givenId);
-        updateArticleRequest.setUserId("");
-        updateArticleRequest.setWriter("champ");
+        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest.Builder().id(givenId)
+                                                                                      .userId("")
+                                                                                      .writer("champ")
+                                                                                      .title("hello")
+                                                                                      .contents("hello kakao")
+                                                                                      .build();
 
         // then
         assertThatExceptionOfType(IllegalUserIdException.class)
@@ -213,10 +219,12 @@ class ArticleAdapterTest {
     void updateNullWriterArticleFail() {
         // given
         int givenId = 1;
-        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest("kakao", "Hello Kakao");
-        updateArticleRequest.setId(givenId);
-        updateArticleRequest.setUserId("test");
-        updateArticleRequest.setWriter("");
+        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest.Builder().id(givenId)
+                                                                                      .userId("kakao")
+                                                                                      .writer("")
+                                                                                      .title("hello")
+                                                                                      .contents("hello kakao")
+                                                                                      .build();
 
         // then
         assertThatExceptionOfType(IllegalWriterException.class)
