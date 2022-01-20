@@ -1,5 +1,6 @@
 package com.kakao.cafe.service.article;
 
+import com.kakao.cafe.common.exception.custom.DeleteFailedException;
 import com.kakao.cafe.common.exception.custom.UpdateFailedException;
 import com.kakao.cafe.common.exception.custom.UserNotFoundException;
 import com.kakao.cafe.common.exception.data.ErrorCode;
@@ -48,4 +49,11 @@ public class ArticleService {
         return articleRepository.update(updateArticle);
     }
 
+    public void delete(Long articleId, String userId) {
+        Article deleteArticle = articleRepository.findById(articleId).orElseThrow(() -> new UpdateFailedException(ErrorCode.ARTICLE_NOT_FOUND));
+        if(!deleteArticle.isWriter(userId)) {
+            throw new DeleteFailedException(ErrorCode.ARTICLE_DELETER_INCORRECT);
+        }
+        articleRepository.delete(articleId);
+    }
 }

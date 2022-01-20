@@ -43,4 +43,12 @@ class JdbcArticleRepositoryTest {
         // then
         assertThat(articleId).isGreaterThan(0L);
     }
+
+    @Test
+    @DisplayName("유저가 게시글을 삭제한다.")
+    void delete() {
+        // given
+        // when
+        // then
+    }
 }

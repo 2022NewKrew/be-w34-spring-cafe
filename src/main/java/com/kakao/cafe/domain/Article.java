@@ -11,14 +11,15 @@ public class Article {
     private User writer;
     private String title;
     private String contents;
-
+    private Boolean isDeleted;
 
     @Builder
-    public Article(Long id, User writer, String title, String contents) {
+    public Article(Long id, User writer, String title, String contents, Boolean isDeleted) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.isDeleted = isDeleted;
     }
 
     public void updateId(Long id) { this.id = id; }

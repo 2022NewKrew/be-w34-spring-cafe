@@ -55,18 +55,18 @@ public class ArticleController {
     }
 
     @Auth
+    @GetMapping("/articles/form")
+    public String showWriteForm() {
+        return "qna/form";
+    }
+
+    @Auth
     @PutMapping("/articles/{articleId}")
     public String update(@PathVariable Long articleId,
                          ArticleUpdateRequest updateRequest,
                          @SessionAttribute(name = SessionKeys.USER_IDENTIFICATION) UserIdentification loginInfo) {
         articleService.update(loginInfo.getUserId(), articleId, updateRequest.getTitle(), updateRequest.getContents());
         return "redirect:/";
-    }
-
-    @Auth
-    @GetMapping("/articles/form")
-    public String showWriteForm() {
-        return "qna/form";
     }
 
     @Auth
@@ -80,5 +80,13 @@ public class ArticleController {
         }
         model.addAttribute("article", articleViewMapper.toArticleUpdateFormResponse(articleInfo));
         return "qna/update_form";
+    }
+
+    @Auth
+    @DeleteMapping("/articles/{articleId}")
+    public String delete(@PathVariable Long articleId,
+                         @SessionAttribute(name = SessionKeys.USER_IDENTIFICATION) UserIdentification loginInfo) {
+        articleService.delete(articleId, loginInfo.getUserId());
+        return "redirect:/";
     }
 }

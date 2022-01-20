@@ -3,6 +3,7 @@ package com.kakao.cafe.repository.article;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.article.mapper.ArticleRowMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class JdbcArticleRepository implements ArticleRepository{
 
     private final JdbcTemplate jdbcTemplate;
@@ -22,9 +24,10 @@ public class JdbcArticleRepository implements ArticleRepository{
     private static final String INSERT_ARTICLE_QUERY = "INSERT INTO articles(user_id, title, contents) VALUES(?,?,?)";
     private static final String UPDATE_ARTICLE_QUERY = "UPDATE articles SET title=?, contents=? WHERE id = ?";
     private static final String SELECT_ARTICLES_QUERY
-            = "SELECT a.id as id, a.user_id as writer_id, u.user_name as writer_name, a.title as title, a.contents as contents FROM articles as a INNER JOIN users as u ON a.user_id = u.user_id";
+            = "SELECT a.id as id, a.user_id as writer_id, u.user_name as writer_name, a.title as title, a.contents as contents FROM articles as a INNER JOIN users as u ON a.user_id = u.user_id WHERE a.is_deleted = false";
     private static final String SELECT_ARTICLES_BY_ID_QUERY
-            = "SELECT a.id as id, a.user_id as writer_id, u.user_name as writer_name, a.title as title, a.contents as contents FROM articles as a INNER JOIN users as u ON a.user_id = u.user_id WHERE a.id = ?";
+            = "SELECT a.id as id, a.user_id as writer_id, u.user_name as writer_name, a.title as title, a.contents as contents FROM articles as a INNER JOIN users as u ON a.user_id = u.user_id WHERE a.id = ? AND a.is_deleted = false";
+    private static final String DELETE_ARTICLE_QUERY = "UPDATE articles SET is_deleted=true WHERE id = ?";
 
     @Override
     public Long insert(Article article) {
@@ -55,5 +58,14 @@ public class JdbcArticleRepository implements ArticleRepository{
     public Optional<Article> findById(Long articleId) {
         List<Article> articles = jdbcTemplate.query(SELECT_ARTICLES_BY_ID_QUERY, articleRowMapper, articleId);
         return articles.stream().findFirst();
+    }
+
+    @Override
+    public void delete(Long articleId) {
+        try {
+            jdbcTemplate.update(DELETE_ARTICLE_QUERY, articleId);
+        } catch (Exception exception) {
+            log.info(exception.getMessage());
+        }
     }
 }

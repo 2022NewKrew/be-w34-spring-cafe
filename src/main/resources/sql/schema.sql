@@ -13,5 +13,6 @@ CREATE TABLE articles (
    user_id varchar(20) NOT NULL,
    title varchar(100) NOT NULL,
    contents varchar(1000) NOT NULL,
+   is_deleted boolean DEFAULT false NOT NULl,
    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
