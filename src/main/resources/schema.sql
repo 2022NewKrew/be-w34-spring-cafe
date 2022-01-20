@@ -1,14 +1,16 @@
+DROP TABLE IF EXISTS `REPLY`;
+DROP TABLE IF EXISTS `POST`;
 DROP TABLE IF EXISTS `USER`;
+
 CREATE TABLE IF NOT EXISTS `USER` (
-    id INT auto_increment,
     userId VARCHAR(32) NOT NULL,
     password VARCHAR(255) NOT NULL,
     name VARCHAR(32) NOT NULL,
     email VARCHAR(50) NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (userId)
 );
 
-DROP TABLE IF EXISTS `POST`;
+
 CREATE TABLE IF NOT EXISTS `POST` (
     id INT auto_increment,
     title VARCHAR(50) NOT NULL,
@@ -16,5 +18,18 @@ CREATE TABLE IF NOT EXISTS `POST` (
     writer VARCHAR(32) NOT NULL,
     regDateTime TIMESTAMP DEFAULT NOW(),
     isDeleted INT DEFAULT 0,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (writer) REFERENCES `USER`(userId)
+);
+
+CREATE TABLE IF NOT EXISTS `REPLY` (
+    id INT auto_increment,
+    postId INT NOT NULL,
+    comment VARCHAR(255) NOT NULL,
+    userId VARCHAR(32) NOT NULL,
+    regDateTime TIMESTAMP DEFAULT NOW(),
+    isDeleted INT DEFAULT 0,
+    PRIMARY KEY (id),
+    FOREIGN KEY (userId) REFERENCES `USER`(userId),
+    FOREIGN KEY (postId) REFERENCES `POST`(id)
 );

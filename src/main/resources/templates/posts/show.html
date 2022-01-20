@@ -9,7 +9,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="/css/post/show.css" rel="stylesheet">
+    <link href="/css/post/show.css?version=v1" rel="stylesheet">
     {{#success}}
     <script>alert("{{successMessage}}")</script>
     {{/success}}
@@ -43,27 +43,38 @@
 
                       <div class="post-comment">
                           <div class="post-comment-slipp">
-                              <p class="post-comment-count">댓글 2개</p>
+                              <p class="post-comment-count">댓글 {{replys.size}}</p>
                               <div class="post-comment-slipp-articles">
 
+                                  {{#replys}}
                                   <article class="comment">
                                       <div class="article-text">
-                                          <p class="comment-content comment-author-name">자바지기</p>
+                                          <p class="comment-content comment-author-name">{{userId}}</p>
+                                          <!--삭제 버튼 폼-->
+                                          <form action="/posts/{{post.id}}/reply/{{id}}" method="post">
+                                              <input type="hidden" name="_method" value="DELETE">
+                                              <input class="comment-content comment-time" type="submit" value="x">
+                                          </form>
+
                                           <div class="comment-content comment-doc">
-                                              <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
+                                              <p>{{comment}}</p>
                                           </div>
                                           <p class="comment-content comment-time">
-                                              2016-01-12 14:06
+                                              {{regDateTime}}
                                           </p>
                                       </div>
                                   </article>
+                                  {{/replys}}
 
-                                  <form class="submit-write" method="get" action="../index.html ">
+                                  <form class="submit-write" method="post" action="/posts/{{post.id}}/reply">
                                       <div class="comment-writer-container">
-                                          <input class="comment-writer" id="writer" name="writer" value="멋진상" readonly/>
+                                          <input class="comment-writer" id="writer" name="writer" value="{{sessionUser.userId}}" readonly/>
                                       </div>
                                       <div class="form-group">
                                           <textarea class="form-control" id="comment" name="comment" placeholder="내용을 입력하세요"></textarea>
+                                          {{#comment}}
+                                          <div style="color: red;">{{comment}}</div>
+                                          {{/comment}}
                                       </div>
                                       <input class="post-write-btn" type="submit" value="등록"/>
                                   </form>

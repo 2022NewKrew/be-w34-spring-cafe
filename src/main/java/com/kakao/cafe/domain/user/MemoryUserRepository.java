@@ -8,13 +8,11 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        user.setId((long) userStore.size() + 1);
         userStore.put(user.getUserId(), user);
     }
 
     @Override
     public User edit(String userId, User user) {
-        user.setId(userStore.get(userId).getId());
         userStore.put(userId, user);
         return user;
     }
