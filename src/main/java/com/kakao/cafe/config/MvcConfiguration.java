@@ -1,6 +1,6 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.article.Interceptor.ArticleInterceptor;
+import com.kakao.cafe.Interceptor.loginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -21,13 +21,14 @@ public class MvcConfiguration implements WebMvcConfigurer {
 
 
     public void addInterceptors(InterceptorRegistry registry){
-        registry.addInterceptor(new ArticleInterceptor())
+        registry.addInterceptor(new loginCheckInterceptor())
                 .addPathPatterns("/qna/create")
                 .addPathPatterns("/qna/form")
                 .addPathPatterns("/qnas/*")
                 .addPathPatterns("/qnas/update/*")
                 .addPathPatterns("/qnas/delete/*")
-                .addPathPatterns("/qnas/reply/create");
+                .addPathPatterns("/qnas/reply/create")
+                .addPathPatterns("/user/update");
 
     }
 

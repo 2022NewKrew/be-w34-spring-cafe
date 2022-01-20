@@ -45,16 +45,11 @@ public class UserService {
             throw new RuntimeException("유저 아이디에 해당하는 유저가 없습니다.");
         }
 
-        //비밀번호가 일치하지 않는경우 return
-        if(!user.getPassword().equals(userCreateDTO.getPassword())){
-            return;
-        }
-
         User updatedUser = new User(userCreateDTO.getUserId(),
-                userCreateDTO.getPassword(),
-                userCreateDTO.getName(),
-                userCreateDTO.getEmail(),
-                0L);
+                                    userCreateDTO.getPassword(),
+                                    userCreateDTO.getName(),
+                                    userCreateDTO.getEmail(),
+                                    0L);
         userRepository.updateUser(updatedUser);
     }
 

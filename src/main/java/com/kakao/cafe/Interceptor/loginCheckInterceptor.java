@@ -1,4 +1,4 @@
-package com.kakao.cafe.article.Interceptor;
+package com.kakao.cafe.Interceptor;
 
 import com.kakao.cafe.article.exception.ArticleNotLoggedInException;
 import com.kakao.cafe.user.domain.User;
@@ -7,7 +7,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ArticleInterceptor implements HandlerInterceptor {
+public class loginCheckInterceptor implements HandlerInterceptor {
 
     //로그인체크를 진행
     @Override
