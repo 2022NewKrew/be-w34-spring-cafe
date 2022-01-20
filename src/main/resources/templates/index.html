@@ -16,12 +16,22 @@
                   <div class="wrap">
                       <div class="main">
                           <strong class="subject">
+                              {{^user}}
+                              <a href="/user/login">{{title}}</a>
+                              {{/user}}
+                              {{#user}}
                               <a href="/articles/{{id}}">{{title}}</a>
+                              {{/user}}
                           </strong>
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
-                              <span class="time">2016-01-15 18:47</span>
-                              <a href="user/{{writer}}" class="author">{{writer}}</a>
+                              <span class="time">{{createdAt}}</span>
+                              {{^user}}
+                              <a href="/user/login" class="author">{{writer}}</a>
+                              {{/user}}
+                              {{#user}}
+                              <a href="/user/{{writer}}" class="author">{{writer}}</a>
+                              {{/user}}
                           </div>
                           <div class="reply" title="댓글">
                               <i class="icon-reply"></i>
@@ -46,7 +56,12 @@
                 </ul>
               </div>
               <div class="col-md-3 qna-write">
+                  {{^user}}
+                  <a href="/user/login" class="btn btn-primary pull-right" role="button">질문하기</a>
+                  {{/user}}
+                  {{#user}}
                   <a href="/qna/form" class="btn btn-primary pull-right" role="button">질문하기</a>
+                  {{/user}}
               </div>
           </div>
         </div>

@@ -6,8 +6,8 @@ import java.util.Objects;
 
 public class UserProfileResponseDto {
 
-    private String userId;
-    private String email;
+    private final String userId;
+    private final String email;
 
     private UserProfileResponseDto(String userId, String email) {
         this.userId = userId;
@@ -16,22 +16,6 @@ public class UserProfileResponseDto {
 
     public static UserProfileResponseDto from(User user) {
         return new UserProfileResponseDto(user.getUserId(), user.getEmail());
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     @Override

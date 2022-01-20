@@ -2,50 +2,33 @@ package com.kakao.cafe.web.dto;
 
 import com.kakao.cafe.domain.article.Article;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleResponseDto {
 
-    private Long id;
-    private String writer;
-    private String title;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    private ArticleResponseDto() {}
+    private final Long id;
+    private final String writer;
+    private final String title;
+    private final String createdAt;
+
+    private ArticleResponseDto(Long id, String writer, String title, LocalDateTime createdAt) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.createdAt = createdAt.format(FORMATTER);
+    }
 
     public static List<ArticleResponseDto> from(List<Article> articleList) {
         List<ArticleResponseDto> result = new ArrayList<>();
         for (Article article : articleList) {
-            ArticleResponseDto responseDto = new ArticleResponseDto();
-            responseDto.setId(article.getId());
-            responseDto.setWriter(article.getWriter());
-            responseDto.setTitle(article.getTitle());
+            ArticleResponseDto responseDto = new ArticleResponseDto(article.getId(), article.getWriter(), article.getTitle(), article.getCreatedAt());
             result.add(responseDto);
         }
         return result;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 }

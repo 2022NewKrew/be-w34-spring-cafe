@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.web.dto.UserCreateRequestDto;
+import com.kakao.cafe.web.dto.UserLoginRequestDto;
 import com.kakao.cafe.web.dto.UserProfileResponseDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +37,7 @@ class UserServiceTest {
         String password = "testPassword";
         String name = "tom";
         String email = "tom.test@kakaocorp.com";
-        User user = new User(1L, userId, password, name, email);
+        User user = new User(userId, password, name, email);
 
         //when
         UserCreateRequestDto requestDto = new UserCreateRequestDto(userId, password, name, email);
@@ -76,7 +77,7 @@ class UserServiceTest {
         String password = "testPassword";
         String name = "tom";
         String email = "tom.test@kakaocorp.com";
-        User user = new User(1L, userId, password, name, email);
+        User user = new User(userId, password, name, email);
         UserProfileResponseDto expectedDto = UserProfileResponseDto.from(user);
 
         UserCreateRequestDto requestDto = new UserCreateRequestDto(userId, password, name, email);
@@ -87,5 +88,26 @@ class UserServiceTest {
 
         //then
         assertThat(responseDto).isEqualTo(expectedDto);
+    }
+
+    @DisplayName("로그인이 잘 되는가")
+    @Test
+    void login() {
+
+        //given
+        String userId = "testId";
+        String password = "testPassword";
+        String name = "tom";
+        String email = "tom.test@kakaocorp.com";
+
+        userService.signUp(new UserCreateRequestDto(userId, password, name, email));
+
+        UserLoginRequestDto request = new UserLoginRequestDto(userId, password);
+
+        //when
+        boolean result = userService.login(request);
+
+        //then
+        assertThat(result).isEqualTo(true);
     }
 }

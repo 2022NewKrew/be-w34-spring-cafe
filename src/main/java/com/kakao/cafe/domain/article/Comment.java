@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 
 @Getter
 @RequiredArgsConstructor
-public class Article {
+public class Comment {
 
     private final Long id;
-    private final String writer;
-    private final String title;
+    private final Long articleId;
+    private final String commenter;
     private final String contents;
     private boolean deleted = false;
     private final LocalDateTime createdAt;

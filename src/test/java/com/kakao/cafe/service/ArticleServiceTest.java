@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.CommentRepository;
 import com.kakao.cafe.repository.MemoryArticleRepository;
 import com.kakao.cafe.web.dto.ArticleCreateRequestDto;
 import com.kakao.cafe.web.dto.ArticleDetailResponseDto;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,11 +22,13 @@ class ArticleServiceTest {
 
     ArticleService articleService;
     ArticleRepository articleRepository;
+    CommentRepository commentRepository;
 
     @BeforeEach
     void setUp() {
         articleRepository = new MemoryArticleRepository();
-        articleService = new ArticleService(articleRepository);
+        articleService = new ArticleService(articleRepository, commentRepository);
+
     }
 
     @DisplayName("게시글이 잘 등록되는가")
@@ -35,7 +39,8 @@ class ArticleServiceTest {
         String writer = "testId";
         String title = "test title";
         String contents = "test contents";
-        Article article = new Article(1L, writer, title, contents);
+        LocalDateTime now = LocalDateTime.now();
+        Article article = new Article(1L, writer, title, contents, now, now);
 
         //when
         ArticleCreateRequestDto requestDto = new ArticleCreateRequestDto(writer, title, contents);
@@ -73,7 +78,7 @@ class ArticleServiceTest {
         String writer = "testId";
         String title = "test title";
         String contents = "test contents";
-        Article article = new Article(1L, writer, title, contents);
+        Article article = new Article(1L, writer, title, contents, LocalDateTime.now(), LocalDateTime.now());
         ArticleDetailResponseDto expectedDto = ArticleDetailResponseDto.from(article);
 
         ArticleCreateRequestDto requestDto = new ArticleCreateRequestDto(writer, title, contents);

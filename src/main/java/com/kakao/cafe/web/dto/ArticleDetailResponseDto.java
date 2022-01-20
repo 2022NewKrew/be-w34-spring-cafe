@@ -1,69 +1,45 @@
 package com.kakao.cafe.web.dto;
 
 import com.kakao.cafe.domain.article.Article;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+@Getter
+@Setter
 public class ArticleDetailResponseDto {
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private Long id;
     private String writer;
     private String title;
     private String contents;
+    private String createdAt;
 
-    private ArticleDetailResponseDto(Long id, String writer, String title, String contents) {
+    private ArticleDetailResponseDto(Long id, String writer, String title, String contents, LocalDateTime createdAt) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.createdAt = createdAt.format(FORMATTER);
     }
 
     public static ArticleDetailResponseDto from(Article article) {
-        return new ArticleDetailResponseDto(article.getId(), article.getWriter(), article.getTitle(), article.getContents());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
+        return new ArticleDetailResponseDto(article.getId(), article.getWriter(), article.getTitle(), article.getContents(), article.getCreatedAt());
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ArticleDetailResponseDto that = (ArticleDetailResponseDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(writer, that.writer) && Objects.equals(title, that.title) && Objects.equals(contents, that.contents);
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, writer, title, contents);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

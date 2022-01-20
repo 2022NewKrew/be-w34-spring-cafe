@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class ArticleCreateRequestDto {
+public class CommentCreateRequestDto {
 
-    private final String writer;
-    private final String title;
+    private final Long articleId;
+    private final String commenter;
     private final String contents;
     private final LocalDateTime createdAt = LocalDateTime.now();
     private final LocalDateTime modifiedAt = LocalDateTime.now();

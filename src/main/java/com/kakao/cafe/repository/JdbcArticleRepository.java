@@ -1,41 +1,36 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.web.dto.ArticleCreateRequestDto;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private static Long idNumber = 0L;
 
     public JdbcArticleRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
-    public Long generateId() {
-        return ++idNumber;
+    public void create(ArticleCreateRequestDto requestDto) {
+        String sql = "INSERT INTO articles (writer, title, contents, deleted, created_at, modified_at) VALUES (?, ?, ?, false, ?, ?)";
+        jdbcTemplate.update(sql, requestDto.getWriter(), requestDto.getTitle(), requestDto.getContents(), requestDto.getCreatedAt(), requestDto.getModifiedAt());
     }
 
     @Override
-    public void create(Article article) {
-        String sql = "INSERT INTO articles VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, article.getId(), article.getWriter(), article.getTitle(), article.getContents());
-    }
-
-    @Override
-    public List<Article> findAll() {
-        String sql = "SELECT * FROM articles";
+    public List<Article> findNotDeleted() {
+        String sql = "SELECT * FROM articles WHERE deleted = FALSE";
         return jdbcTemplate.query(sql, articleRowMapper());
-
     }
 
     @Override
@@ -48,7 +43,23 @@ public class JdbcArticleRepository implements ArticleRepository {
         }
     }
 
+    @Override
+    public void shiftIsDeleted(Long id, String userId) {
+        String sql = "UPDATE articles SET deleted = NOT deleted WHERE id = ? AND user_id = ?";
+        try {
+            jdbcTemplate.update(sql, id);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("게시글 삭제에 실패했습니다.");
+        }
+    }
+
     private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> new Article(rs.getLong("id"), rs.getString("writer"), rs.getString("title"), rs.getString("contents"));
+        return (rs, rowNum) -> new Article(rs.getLong("id"),
+                rs.getString("writer"),
+                rs.getString("title"),
+                rs.getString("contents"),
+                rs.getTimestamp("created_at").toLocalDateTime().truncatedTo(ChronoUnit.SECONDS),
+                rs.getTimestamp("modified_at").toLocalDateTime().truncatedTo(ChronoUnit.SECONDS)
+        );
     }
 }
