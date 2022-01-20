@@ -1,6 +1,6 @@
 package com.kakao.cafe.adapter.in.presentation.article;
 
-import com.kakao.cafe.application.article.dto.UpdateRequest;
+import com.kakao.cafe.application.article.dto.UpdateArticleRequest;
 import com.kakao.cafe.application.article.port.in.UpdateArticleUseCase;
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
@@ -24,13 +24,13 @@ public class ArticleUpdateController {
 
 
     @PutMapping("/articles/{id}/form")
-    public String update(@PathVariable int id, UpdateRequest updateRequest, HttpSession session)
+    public String update(@PathVariable int id, UpdateArticleRequest updateArticleRequest, HttpSession session)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException, UnauthenticatedUserException {
         UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
-        updateRequest.setId(id);
-        updateRequest.setWriter(sessionedUser.getUserId());
-        updateRequest.setWriter(sessionedUser.getName());
-        updateArticleUseCase.updateArticle(updateRequest);
+        updateArticleRequest.setId(id);
+        updateArticleRequest.setWriter(sessionedUser.getUserId());
+        updateArticleRequest.setWriter(sessionedUser.getName());
+        updateArticleUseCase.updateArticle(updateArticleRequest);
         return "redirect:/";
     }
 }

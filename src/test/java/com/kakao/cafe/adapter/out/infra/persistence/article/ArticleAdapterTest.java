@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.BDDMockito.given;
 
-import com.kakao.cafe.application.article.dto.UpdateRequest;
-import com.kakao.cafe.application.article.dto.WriteRequest;
+import com.kakao.cafe.application.article.dto.UpdateArticleRequest;
+import com.kakao.cafe.application.article.dto.WriteArticleRequest;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
@@ -36,74 +36,74 @@ class ArticleAdapterTest {
     @Test
     void postNormalArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest.Builder().userId("kakao")
-                                                              .writer("champ")
-                                                              .title("test")
-                                                              .contents("testing")
-                                                              .build();
+        WriteArticleRequest writeArticleRequest = new WriteArticleRequest.Builder().userId("kakao")
+                                                                                   .writer("champ")
+                                                                                   .title("test")
+                                                                                   .contents("testing")
+                                                                                   .build();
 
         // then
-        assertThatNoException().isThrownBy(() -> articleAdapter.registerArticle(writeRequest));
+        assertThatNoException().isThrownBy(() -> articleAdapter.registerArticle(writeArticleRequest));
     }
 
     @DisplayName("작성자 이름 누락 article 테스트")
     @Test
     void postNullWriterArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest.Builder().userId("kakao")
-                                                              .writer("")
-                                                              .title("test")
-                                                              .contents("testing")
-                                                              .build();
+        WriteArticleRequest writeArticleRequest = new WriteArticleRequest.Builder().userId("kakao")
+                                                                                   .writer("")
+                                                                                   .title("test")
+                                                                                   .contents("testing")
+                                                                                   .build();
 
         // then
         assertThatExceptionOfType(IllegalWriterException.class)
-            .isThrownBy(() -> articleAdapter.registerArticle(writeRequest));
+            .isThrownBy(() -> articleAdapter.registerArticle(writeArticleRequest));
     }
 
     @DisplayName("작성자 이름 공백 article 테스트")
     @Test
     void postBlankWriterArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest.Builder().userId("kakao")
-                                                              .writer("cha mp")
-                                                              .title("test")
-                                                              .contents("testing")
-                                                              .build();
+        WriteArticleRequest writeArticleRequest = new WriteArticleRequest.Builder().userId("kakao")
+                                                                                   .writer("cha mp")
+                                                                                   .title("test")
+                                                                                   .contents("testing")
+                                                                                   .build();
 
         // then
         assertThatExceptionOfType(IllegalWriterException.class)
-            .isThrownBy(() -> articleAdapter.registerArticle(writeRequest));
+            .isThrownBy(() -> articleAdapter.registerArticle(writeArticleRequest));
     }
 
     @DisplayName("제목 누락 article 테스트")
     @Test
     void postNullTitleArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest.Builder().userId("kakao")
-                                                              .writer("champ")
-                                                              .title("")
-                                                              .contents("testing")
-                                                              .build();
+        WriteArticleRequest writeArticleRequest = new WriteArticleRequest.Builder().userId("kakao")
+                                                                                   .writer("champ")
+                                                                                   .title("")
+                                                                                   .contents("testing")
+                                                                                   .build();
 
         // then
         assertThatExceptionOfType(IllegalTitleException.class)
-            .isThrownBy(() -> articleAdapter.registerArticle(writeRequest));
+            .isThrownBy(() -> articleAdapter.registerArticle(writeArticleRequest));
     }
 
     @DisplayName("sessionId 누락 article 테스트")
     @Test
     void postNullUserIdArticle() {
         // given
-        WriteRequest writeRequest = new WriteRequest.Builder().userId("")
-                                                              .writer("champ")
-                                                              .title("test")
-                                                              .contents("testing")
-                                                              .build();
+        WriteArticleRequest writeArticleRequest = new WriteArticleRequest.Builder().userId("")
+                                                                                   .writer("champ")
+                                                                                   .title("test")
+                                                                                   .contents("testing")
+                                                                                   .build();
 
         // then
         assertThatExceptionOfType(IllegalUserIdException.class)
-            .isThrownBy(() -> articleAdapter.registerArticle(writeRequest));
+            .isThrownBy(() -> articleAdapter.registerArticle(writeArticleRequest));
     }
 
     @DisplayName("게시글 찾기 성공 테스트")
@@ -169,13 +169,13 @@ class ArticleAdapterTest {
     void updateArticleSuccess() {
         // given
         int givenId = 1;
-        UpdateRequest updateRequest = new UpdateRequest("kakao", "Hello Kakao");
-        updateRequest.setId(givenId);
-        updateRequest.setUserId("test");
-        updateRequest.setWriter("champ");
+        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest("kakao", "Hello Kakao");
+        updateArticleRequest.setId(givenId);
+        updateArticleRequest.setUserId("test");
+        updateArticleRequest.setWriter("champ");
 
         // then
-        assertThatNoException().isThrownBy(() -> articleAdapter.updateArticle(updateRequest));
+        assertThatNoException().isThrownBy(() -> articleAdapter.updateArticle(updateArticleRequest));
     }
 
     @DisplayName("제목 누락 게시글 수정 실패 테스트")
@@ -183,14 +183,14 @@ class ArticleAdapterTest {
     void updateNullTitleArticleFail() {
         // given
         int givenId = 1;
-        UpdateRequest updateRequest = new UpdateRequest("", "Hello Kakao");
-        updateRequest.setId(givenId);
-        updateRequest.setUserId("test");
-        updateRequest.setWriter("champ");
+        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest("", "Hello Kakao");
+        updateArticleRequest.setId(givenId);
+        updateArticleRequest.setUserId("test");
+        updateArticleRequest.setWriter("champ");
 
         // then
         assertThatExceptionOfType(IllegalTitleException.class)
-            .isThrownBy(() -> articleAdapter.updateArticle(updateRequest));
+            .isThrownBy(() -> articleAdapter.updateArticle(updateArticleRequest));
     }
 
     @DisplayName("userId 누락 게시글 수정 실패 테스트")
@@ -198,14 +198,14 @@ class ArticleAdapterTest {
     void updateNullUserIdArticleFail() {
         // given
         int givenId = 1;
-        UpdateRequest updateRequest = new UpdateRequest("kakao", "Hello Kakao");
-        updateRequest.setId(givenId);
-        updateRequest.setUserId("");
-        updateRequest.setWriter("champ");
+        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest("kakao", "Hello Kakao");
+        updateArticleRequest.setId(givenId);
+        updateArticleRequest.setUserId("");
+        updateArticleRequest.setWriter("champ");
 
         // then
         assertThatExceptionOfType(IllegalUserIdException.class)
-            .isThrownBy(() -> articleAdapter.updateArticle(updateRequest));
+            .isThrownBy(() -> articleAdapter.updateArticle(updateArticleRequest));
     }
 
     @DisplayName("작성자 누락 게시글 수정 실패 테스트")
@@ -213,14 +213,14 @@ class ArticleAdapterTest {
     void updateNullWriterArticleFail() {
         // given
         int givenId = 1;
-        UpdateRequest updateRequest = new UpdateRequest("kakao", "Hello Kakao");
-        updateRequest.setId(givenId);
-        updateRequest.setUserId("test");
-        updateRequest.setWriter("");
+        UpdateArticleRequest updateArticleRequest = new UpdateArticleRequest("kakao", "Hello Kakao");
+        updateArticleRequest.setId(givenId);
+        updateArticleRequest.setUserId("test");
+        updateArticleRequest.setWriter("");
 
         // then
         assertThatExceptionOfType(IllegalWriterException.class)
-            .isThrownBy(() -> articleAdapter.updateArticle(updateRequest));
+            .isThrownBy(() -> articleAdapter.updateArticle(updateArticleRequest));
     }
 
     @DisplayName("게시글 삭제 성공 테스트")

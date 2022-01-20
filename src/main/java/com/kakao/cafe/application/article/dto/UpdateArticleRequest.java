@@ -1,6 +1,6 @@
 package com.kakao.cafe.application.article.dto;
 
-public class UpdateRequest {
+public class UpdateArticleRequest {
 
     private final String title;
     private final String contents;
@@ -8,7 +8,7 @@ public class UpdateRequest {
     private String userId;
     private String writer;
 
-    public UpdateRequest(String title, String contents) {
+    public UpdateArticleRequest(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }

@@ -1,13 +1,13 @@
 package com.kakao.cafe.application.article.dto;
 
-public class WriteRequest {
+public class WriteArticleRequest {
 
     private final String userId;
     private final String writer;
     private final String title;
     private final String contents;
 
-    public WriteRequest(Builder builder) {
+    public WriteArticleRequest(Builder builder) {
         this.userId = builder.userId;
         this.writer = builder.writer;
         this.title = builder.title;
@@ -57,8 +57,8 @@ public class WriteRequest {
             return this;
         }
 
-        public WriteRequest build() {
-            return new WriteRequest(this);
+        public WriteArticleRequest build() {
+            return new WriteArticleRequest(this);
         }
     }
 }

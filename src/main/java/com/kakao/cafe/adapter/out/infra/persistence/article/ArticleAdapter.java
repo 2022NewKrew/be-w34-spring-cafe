@@ -2,8 +2,8 @@ package com.kakao.cafe.adapter.out.infra.persistence.article;
 
 import com.kakao.cafe.application.article.dto.ArticleInfo;
 import com.kakao.cafe.application.article.dto.ArticleList;
-import com.kakao.cafe.application.article.dto.UpdateRequest;
-import com.kakao.cafe.application.article.dto.WriteRequest;
+import com.kakao.cafe.application.article.dto.UpdateArticleRequest;
+import com.kakao.cafe.application.article.dto.WriteArticleRequest;
 import com.kakao.cafe.application.article.port.out.DeleteArticlePort;
 import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
 import com.kakao.cafe.application.article.port.out.RegisterArticlePort;
@@ -30,14 +30,14 @@ public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort, 
     }
 
     @Override
-    public void registerArticle(WriteRequest writeRequest)
+    public void registerArticle(WriteArticleRequest writeArticleRequest)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
         articleRepository.save(
             new Article.Builder()
-                .userId(writeRequest.getUserId())
-                .writer(writeRequest.getWriter())
-                .title(writeRequest.getTitle())
-                .contents(writeRequest.getContents())
+                .userId(writeArticleRequest.getUserId())
+                .writer(writeArticleRequest.getWriter())
+                .title(writeArticleRequest.getTitle())
+                .contents(writeArticleRequest.getContents())
                 .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .deleted(false)
                 .build()
@@ -45,17 +45,17 @@ public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort, 
     }
 
     @Override
-    public void updateArticle(UpdateRequest updateRequest)
+    public void updateArticle(UpdateArticleRequest updateArticleRequest)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
         Article article = new Article.Builder()
-            .userId(updateRequest.getUserId())
-            .writer(updateRequest.getWriter())
-            .title(updateRequest.getTitle())
-            .contents(updateRequest.getContents())
+            .userId(updateArticleRequest.getUserId())
+            .writer(updateArticleRequest.getWriter())
+            .title(updateArticleRequest.getTitle())
+            .contents(updateArticleRequest.getContents())
             .createdAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
             .deleted(false)
             .build();
-        article.setId(updateRequest.getId());
+        article.setId(updateArticleRequest.getId());
         articleRepository.update(article);
     }
 
