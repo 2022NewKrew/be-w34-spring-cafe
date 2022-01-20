@@ -1,18 +1,25 @@
 package com.kakao.cafe.article.repository;
 
-import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.domain.ArticleRepository;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.domain.ArticleRepository;
 
 @Repository
 @Primary
@@ -31,7 +38,7 @@ public class ArticleDBRepositoryImpl implements ArticleRepository {
     @Override
     public Optional<Article> find(Long id) {
         List<Article> result = jdbcTemplate.query(SQL.FIND_BY_DB_ID.stmt, this::convertToArticle, id);
-        return Optional.ofNullable((result.size() > 0) ? result.get(0) : null);
+        return result.stream().findFirst();
     }
 
     @Override
@@ -62,13 +69,13 @@ public class ArticleDBRepositoryImpl implements ArticleRepository {
 
     private Article convertToArticle(ResultSet rs, int rowNum) throws SQLException {
         Article article = Article.builder()
-                .id(rs.getLong("id"))
-                .title(rs.getString("title"))
-                .authorId(rs.getLong("author"))
-                .date(rs.getTimestamp("write_date").toLocalDateTime())
-                .hits(rs.getInt("hits"))
-                .contents(rs.getString("content"))
-                .build();
+                                 .id(rs.getLong("id"))
+                                 .title(rs.getString("title"))
+                                 .authorId(rs.getLong("author"))
+                                 .date(rs.getTimestamp("write_date").toLocalDateTime())
+                                 .hits(rs.getInt("hits"))
+                                 .contents(rs.getString("content"))
+                                 .build();
         return article;
     }
 

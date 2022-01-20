@@ -37,13 +37,13 @@ public class UserDBRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> find(Long id) {
         List<User> result = jdbcTemplate.query(SQL.FIND_BY_DB_ID.stmt, this::convertToUser, id);
-        return Optional.ofNullable((result.size() > 0) ? result.get(0) : null);
+        return result.stream().findFirst();
     }
 
     @Override
     public Optional<User> find(String stringId) {
         List<User> result = jdbcTemplate.query(SQL.FIND_BY_STRING_ID.stmt, this::convertToUser, stringId);
-        return Optional.ofNullable((result.size() > 0) ? result.get(0) : null);
+        return result.stream().findFirst();
     }
 
     @Override
