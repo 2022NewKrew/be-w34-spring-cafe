@@ -1,8 +1,10 @@
 package com.kakao.cafe.user.service;
 
+import com.kakao.cafe.exception.EmailDuplicatedException;
 import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.exception.UsernameDuplicatedException;
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserStatus;
 import com.kakao.cafe.user.dto.UserCreationForm;
 import com.kakao.cafe.user.dto.UserEditForm;
 import com.kakao.cafe.user.dto.UserView;
@@ -26,24 +28,33 @@ public class UserService {
                            .password(userCreationForm.getPassword())
                            .email(userCreationForm.getEmail())
                            .displayName(userCreationForm.getDisplayName())
+                           .status(UserStatus.ACTIVE.name())
                            .build();
         validateDuplicateUsername(newUser);
+        validateDuplicateEmail(newUser);
         return userRepository.add(newUser);
-    }
-
-    private void validateDuplicateUsername(User user) {
-        if (userRepository.get(user.getUsername()).isPresent()) {
-            throw new UsernameDuplicatedException();
-        }
     }
 
     public void updateUser(Long id, UserEditForm userEditForm) {
         User user = User.builder()
                         .id(id)
                         .email(userEditForm.getEmail())
-                        .displayName(userEditForm.getDisplayName()) 
+                        .displayName(userEditForm.getDisplayName())
                         .build();
+        validateDuplicateEmail(user);
         userRepository.update(user);
+    }
+
+    private void validateDuplicateUsername(User user) {
+        if (userRepository.getByUsername(user.getUsername()).isPresent()) {
+            throw new UsernameDuplicatedException();
+        }
+    }
+
+    private void validateDuplicateEmail(User user) {
+        if (userRepository.getByEmail(user.getEmail()).isPresent()) {
+            throw new EmailDuplicatedException();
+        }
     }
 
     public List<UserView> getAllUserView() {
@@ -53,7 +64,7 @@ public class UserService {
     }
 
     public UserView getUserViewByUsername(String username) {
-        User user = userRepository.get(username).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.getByUsername(username).orElseThrow(UserNotFoundException::new);
         return new UserView(user.getUsername(), user.getEmail(), user.getDisplayName());
     }
 }

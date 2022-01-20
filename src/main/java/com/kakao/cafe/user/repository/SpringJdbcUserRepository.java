@@ -42,13 +42,19 @@ public class SpringJdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> get(String username) {
+    public Optional<User> getByUsername(String username) {
         return jdbcTemplate.query("SELECT * FROM user WHERE username = ?", userRowMapper(),
                                   username).stream().findAny();
     }
 
     @Override
-    public Optional<User> get(Long id) {
+    public Optional<User> getByEmail(String email) {
+        return jdbcTemplate.query("SELECT * FROM user WHERE email = ?", userRowMapper(),
+                                  email).stream().findAny();
+    }
+
+    @Override
+    public Optional<User> getById(Long id) {
         return jdbcTemplate.query("SELECT * FROM user WHERE id = ?", userRowMapper(), id).stream().findAny();
     }
 

@@ -30,7 +30,7 @@ class UserServiceTest{
     public void givenDuplicateUserCreationForm_WhenAddingUser_ThenThrowUsernameDuplicatedException() {
         // Given
         UserCreationForm userCreationForm = new UserCreationForm("DuplicateUsername", "ValidPassword", "valid@email.com", "VALID!");
-        given(userRepository.get("DuplicateUsername")).willReturn(Optional.of(User.builder().build()));
+        given(userRepository.getByUsername("DuplicateUsername")).willReturn(Optional.of(User.builder().build()));
 
         // When Then
         assertThrows(UsernameDuplicatedException.class, () -> userService.addUser(userCreationForm));

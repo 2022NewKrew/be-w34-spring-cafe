@@ -38,7 +38,7 @@ class LoginServiceTest {
         String username = "username";
         String password = "password";
         UserLoginForm userLoginForm = new UserLoginForm(username, password);
-        given(userRepository.get(username)).willReturn(Optional.of(User.builder().id(1L).username(username).password(password).build()));
+        given(userRepository.getByUsername(username)).willReturn(Optional.of(User.builder().id(1L).username(username).password(password).build()));
 
         // When
         LoggedInUser loggedInUser = loginService.login(userLoginForm);
@@ -55,7 +55,7 @@ class LoginServiceTest {
         String username = "username";
         String password = "password";
         UserLoginForm userLoginForm = new UserLoginForm(username, password);
-        given(userRepository.get(username)).willReturn(Optional.empty());
+        given(userRepository.getByUsername(username)).willReturn(Optional.empty());
 
         // When Then
         assertThrows(InvalidUsernamePasswordException.class, () -> loginService.login(userLoginForm));
@@ -69,7 +69,7 @@ class LoginServiceTest {
         String input_password = "password";
         String actual_password = "password+a";
         UserLoginForm userLoginForm = new UserLoginForm(username, input_password);
-        given(userRepository.get(username)).willReturn(Optional.of(User.builder().id(1L).username(username).password(actual_password).build()));
+        given(userRepository.getByUsername(username)).willReturn(Optional.of(User.builder().id(1L).username(username).password(actual_password).build()));
 
         // When Then
         assertThrows(InvalidUsernamePasswordException.class, () -> loginService.login(userLoginForm));

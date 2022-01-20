@@ -47,13 +47,19 @@ public class HashMapUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> get(String username) {
+    public Optional<User> getByUsername(String username) {
         return users.entrySet().stream().filter(user -> user.getValue().getUsername().equals(username)).findAny().map(
                 Map.Entry::getValue);
     }
 
     @Override
-    public Optional<User> get(Long id) {
+    public Optional<User> getByEmail(String email) {
+        return users.entrySet().stream().filter(user -> user.getValue().getEmail().equals(email)).findAny().map(
+                Map.Entry::getValue);
+    }
+
+    @Override
+    public Optional<User> getById(Long id) {
         return Optional.of(users.get(id));
     }
 
