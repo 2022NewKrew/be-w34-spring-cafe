@@ -4,17 +4,12 @@ import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticlePostDto;
 import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.ArticleServiceImpl;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.service.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
@@ -59,21 +54,42 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/{index}")
-    public String showArticle(@PathVariable int index, Model model) {
+    @GetMapping("/{id}")
+    public String showArticle(@PathVariable int id, Model model) {
         ArticleDto article;
         UserProfileDto writer;
 
         try {
-            article = articleService.findById(index);
+            article = articleService.findById(id);
             writer = userService.findByName(article.getWriter());
             model.addAttribute("article", article);
             model.addAttribute("writer", writer);
         } catch (NoSuchElementException e) {
-            logger.error("/articles/index, article id = {}", index, e);
+            logger.error("/articles/index, article id = {}", id, e);
             return "redirect:/";
         }
 
         return "/qna/show";
     }
+
+    @PutMapping("/{id}")
+    public String modifyArticle(@PathVariable int id) {
+        return "/";
+    }
+
+    @GetMapping("/{id}/form")
+    public String modifyForm(@PathVariable int id, Model model, HttpSession session) {
+        ArticleDto articleDto = articleService.findById(id);
+        String writerName = articleDto.getWriter();
+        UserProfileDto writer = userService.findByName(writerName);
+
+        if (!userService.checkSessionUser(writer.getUserId(), session)) { // 다른 작성자의 글 수정 불가
+            return "redirect:/";
+        }
+
+        model.addAttribute("writer", writer.getUserId());
+
+        return "/qna/form";
+    }
+
 }
