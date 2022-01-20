@@ -1,5 +1,6 @@
 package com.kakao.cafe.qna.comment;
 
+import com.kakao.cafe.qna.comment.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +18,14 @@ public class CommentService {
     public Comment insertComment(Integer id, Integer articleIdx, String userId, String contents) {
         Comment comment = new Comment(id, articleIdx, userId, contents);
         return commentRepository.insert(comment);
+    }
+
+    public Comment findCommentById(Integer articleIdx, Integer commentIdx) {
+        return commentRepository.findCommentById(articleIdx, commentIdx);
+    }
+
+    public Comment deleteComment(Comment comment) {
+        comment.deleteComment();
+        return commentRepository.update(comment);
     }
 }

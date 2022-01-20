@@ -14,6 +14,7 @@ public class CommentDto {
 
     private Integer id;
     private Integer writerId;
+    private Integer articleId;
 
     private String writer;
     private String contents;
@@ -22,6 +23,7 @@ public class CommentDto {
     public CommentDto(Comment comment) {
         this.id = comment.getId();
         this.writerId = comment.getWriterId();
+        this.articleId = comment.getArticleId();
 
         this.writer = comment.getWriter();
         this.contents = comment.getContents();

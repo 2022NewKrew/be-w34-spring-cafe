@@ -1,4 +1,6 @@
-package com.kakao.cafe.qna.comment;
+package com.kakao.cafe.qna.comment.repository;
+
+import com.kakao.cafe.qna.comment.Comment;
 
 import java.util.List;
 
@@ -11,5 +13,7 @@ public interface CommentRepository {
 
     Comment insert(Comment comment);
     Comment update(Comment comment);
+
+    Comment findCommentById(Integer articleId, Integer commentId);
     List<Comment> findCommentsByArticleId(Integer articleId);
 }
