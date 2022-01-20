@@ -1,7 +1,9 @@
 package com.kakao.cafe.dto;
 
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class QuestionDetailResponse {
     private Long userId;
     private String writer;

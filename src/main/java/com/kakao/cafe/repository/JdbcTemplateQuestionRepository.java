@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Question;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.QuestionDetailResponse;
 import com.kakao.cafe.dto.QuestionListResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Question save(Question question) {
+    public void save(Question question) {
         final String sql = "insert into `question` (`writer`, `title`, `contents`, `created_date_time`) values(?,?,?,?)";
         Object[] parameters = {
                 question.getWriter(),
@@ -29,7 +30,18 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
                 Timestamp.valueOf(question.getCreatedDateTime()),
         };
         jdbcTemplate.update(sql, parameters);
-        return null;
+    }
+    @Override
+    public Long update(Question question){
+        final String sql = "update `question` set `title`=? , `contents`=? where `id`=? and `writer`=?";
+        Object[] parameters = {
+                question.getTitle(),
+                question.getContents(),
+                question.getId(),
+                question.getWriter(),
+        };
+        jdbcTemplate.update(sql, parameters);
+        return question.getId();
     }
 
     @Override
