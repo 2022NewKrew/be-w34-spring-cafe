@@ -14,7 +14,7 @@ public class ArticleList {
         return new ArticleList(articleList);
     }
 
-    public List<ArticleInfo> getArticleList() {
+    public List<ArticleInfo> getValue() {
         return articleList;
     }
 }

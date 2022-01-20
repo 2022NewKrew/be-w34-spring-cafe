@@ -42,7 +42,7 @@ public class ArticleReplyDeleteController {
     }
 
     private boolean isPossibleDeleteArticle(int id, UserInfo sessionedUser) {
-        List<Reply> replyList = getRepliesUseCase.getListOfRepliesOfTheArticle(id).getReplyList();
+        List<Reply> replyList = getRepliesUseCase.getListOfRepliesOfTheArticle(id).getValue();
         if (replyList.size() == 0) {
             return true;
         }

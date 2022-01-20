@@ -15,7 +15,7 @@ public class ReplyList {
         return new ReplyList(replyList);
     }
 
-    public List<Reply> getReplyList() {
+    public List<Reply> getValue() {
         return replyList;
     }
 }

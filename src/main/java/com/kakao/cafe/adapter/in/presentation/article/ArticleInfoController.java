@@ -34,7 +34,7 @@ public class ArticleInfoController {
         ArticleList articleList = getArticleInfoUseCase.getListOfAllArticles();
         model.addAttribute(
             "articles",
-            articleList.getArticleList()
+            articleList.getValue()
         );
         return VIEWS_ARTICLE_LIST;
     }
@@ -44,12 +44,12 @@ public class ArticleInfoController {
         throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException {
         Article article = getArticleInfoUseCase.getArticleDetail(id);
         ReplyList replyList = getRepliesUseCase.getListOfRepliesOfTheArticle(id);
-        int countOfReplies = replyList.getReplyList().size();
+        int countOfReplies = replyList.getValue().size();
         model.addAttribute("article", article);
         model.addAttribute("countOfReplies", countOfReplies);
         model.addAttribute(
             "replies",
-            replyList.getReplyList()
+            replyList.getValue()
         );
         return VIEWS_ARTICLE_DETAIL;
     }
