@@ -83,10 +83,10 @@ public class QnaService {
 
         List<Comment> comments = commentRepository.findByQnaIdAndDeleted(qnaId, false);
 
-        boolean isDeletedComments = comments.stream()
+        boolean hasAuthForDeleteAllComments = comments.stream()
                 .allMatch(comment -> comment.isValidDeleteUser(userId));
 
-        if (!isDeletedComments) {
+        if (!hasAuthForDeleteAllComments) {
             throw new AccessDeniedException("해당 글의 댓글을 삭제할 권한이 없습니다.");
         }
 
