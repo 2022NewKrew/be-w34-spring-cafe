@@ -2,6 +2,7 @@ package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.article.dto.ArticlePostDto;
 import com.kakao.cafe.article.dto.ArticleRequest;
+import com.kakao.cafe.article.dto.CommentDto;
 import com.kakao.cafe.article.dto.CommentRequest;
 import com.kakao.cafe.article.exception.ArticleAuthorMismatchException;
 import com.kakao.cafe.article.service.ArticleService;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -38,7 +41,11 @@ public class ArticleController {
     @GetMapping("/show/{id}")
     public String getArticleShowPage(@PathVariable Long id, Model model){
         ArticlePostDto article = articleService.getArticlePostDtoById(id);
+        List<CommentDto> comments = commentService.getCommentDto(id);
+
         model.addAttribute("article", article);
+        model.addAttribute("comments", comments);
+        model.addAttribute("numberOfComments", comments.size());
         return "/qna/show";
     }
 

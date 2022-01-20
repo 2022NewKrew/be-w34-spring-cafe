@@ -1,5 +1,6 @@
 package com.kakao.cafe.article.repository;
 
+import com.kakao.cafe.article.dto.CommentDto;
 import com.kakao.cafe.article.model.Article;
 import com.kakao.cafe.article.model.Comment;
 import com.kakao.cafe.common.utils.DateUtils;
@@ -25,13 +26,21 @@ public class CommentJdbcRepository implements CommentRepository {
                 comment.getContents(), DateUtils.getCurrentDate());
     }
 
-//    public RowMapper<Comment> commentRowMapper() {
-//        return (rs, rowNum) -> new Comment(
-//                rs.getLong("id"),
-//                rs.getString("author"),
-//                rs.getString("title"),
-//                rs.getString("contents"),
-//                rs.getString("uploadTime")
-//        );
-//    }
+    @Override
+    public List<Comment> findAllByArticleId(Long articleId) {
+        String sql = "SELECT * FROM COMMENTS WHERE articleId=? AND deleted=false";
+        return jdbcTemplate.query(sql, commentRowMapper(), articleId);
+    }
+
+    public RowMapper<Comment> commentRowMapper() {
+        return (rs, rowNum) -> new Comment(
+                rs.getLong("id"),
+                rs.getLong("articleId"),
+                rs.getString("author"),
+                rs.getString("contents"),
+                rs.getString("uploadTime"),
+                rs.getBoolean("deleted")
+        );
+    }
+
 }
