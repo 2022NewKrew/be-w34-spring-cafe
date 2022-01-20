@@ -10,7 +10,7 @@ import java.util.List;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    public static final List<String> includePatterns = List.of("/users/{id}");
+    public static final List<String> includePatterns = List.of("/users/{id}", "/articles/**");
 
 
     @Override
