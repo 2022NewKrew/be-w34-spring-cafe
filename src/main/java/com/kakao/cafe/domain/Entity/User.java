@@ -11,12 +11,4 @@ public class User {
     private String name;
     private String email;
 
-    public void updateName(String name) {
-        this.name = name;
-    }
-
-    public void updateEmail(String email) {
-        this.email = email;
-    }
-
 }

@@ -38,13 +38,13 @@ public class UserController {
     }
 
     // 회원가입 페이지
-    @GetMapping("/user/signup")
+    @GetMapping("/signup")
     public String signUpForm() {
         return "user/form";
     }
 
     // 회원 가입 요청
-    @PostMapping("/user/signup")
+    @PostMapping("/signup")
     public String signUp(SignUpDto signUpDto) throws UserIdDuplicationException {
         this.userService.save(signUpDto);
         return "redirect:/users";
@@ -67,7 +67,7 @@ public class UserController {
     }
 
     // 로그인 페이지
-    @GetMapping("/user/login")
+    @GetMapping("/login")
     public String loginForm() {
         return "user/login";
     }

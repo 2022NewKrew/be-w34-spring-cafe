@@ -18,20 +18,25 @@ public class ArticleService {
 
     // 게시물 저장
     public void save(PostArticleDto postArticleDto) {
-        this.articleRepository.save(postArticleDto.toEntity());
+        this.articleRepository.save(postArticleDto);
     }
 
     // 전체 게시물 찾기
     public List<ReferArticleDto> findAll() {
-        List<ReferArticleDto> articleList = this.articleRepository.findAll().stream()
+        List<ReferArticleDto> articles = this.articleRepository.findAll().stream()
                 .map(ReferArticleDto::new).collect(Collectors.toList());
-        return articleList;
+        return articles;
     }
 
     // id로 해당 게시물 찾기
     public ReferArticleDto findById(int id) {
         Article article = this.articleRepository.findById(id);
         return new ReferArticleDto(article);
+    }
+
+    public String getPostedUserById(int id) {
+        Article article = this.articleRepository.findById(id);
+        return article.getUserId();
     }
 
     // 게시물 수정
