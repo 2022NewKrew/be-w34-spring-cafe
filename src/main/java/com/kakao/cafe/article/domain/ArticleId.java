@@ -2,13 +2,13 @@ package com.kakao.cafe.article.domain;
 
 public class ArticleId {
 
-    private final int value;
+    private final long value;
 
-    public ArticleId(int value) {
+    public ArticleId(long value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public long getValue() {
         return value;
     }
 }

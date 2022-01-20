@@ -4,6 +4,7 @@ import com.kakao.cafe.article.application.port.in.WriteArticleDto;
 import com.kakao.cafe.article.application.port.in.WriteArticleUseCase;
 import com.kakao.cafe.article.application.port.out.CreateArticleDto;
 import com.kakao.cafe.article.application.port.out.SaveArticlePort;
+import com.kakao.cafe.article.domain.ArticleId;
 
 public class WriteArticleService implements WriteArticleUseCase {
 
@@ -15,11 +16,11 @@ public class WriteArticleService implements WriteArticleUseCase {
 
 
     @Override
-    public void write(WriteArticleDto writeArticleDto) {
+    public ArticleId write(WriteArticleDto writeArticleDto) {
         CreateArticleDto createArticleDto = new CreateArticleDto(
             writeArticleDto.getTitle(),
             writeArticleDto.getContent());
 
-        saveArticlePort.save(createArticleDto);
+        return saveArticlePort.save(createArticleDto);
     }
 }

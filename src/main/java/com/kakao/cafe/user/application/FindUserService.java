@@ -1,6 +1,6 @@
 package com.kakao.cafe.user.application;
 
-import com.kakao.cafe.user.application.port.in.FindUserQuery;
+import com.kakao.cafe.user.application.port.in.FindUserUseCase;
 import com.kakao.cafe.user.application.port.in.FoundUserDto;
 import com.kakao.cafe.user.application.port.out.LoadUserPort;
 import com.kakao.cafe.user.domain.User;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class FindUserService implements FindUserQuery {
+public class FindUserService implements FindUserUseCase {
 
     private final LoadUserPort loadUserPort;
 
@@ -19,7 +19,7 @@ public class FindUserService implements FindUserQuery {
 
     @Override
     public FoundUserDto find(UserId userId) {
-        Optional<User> loadedUser = this.loadUserPort.load(userId);
+        Optional<User> loadedUser = this.loadUserPort.loadById(userId);
         return loadedUser.map(user -> new FoundUserDto(
                 user.getUserId(),
                 user.getEmail(),

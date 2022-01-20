@@ -13,11 +13,11 @@
   {{#users}}
     <div class="user-row">
       <span class="user-text-box click-box"
-            onclick="location.href='/users/{{userId.uuid}}'">{{userId.uuid}}</span>
+            onclick="location.href='/users/{{userId.id}}'">{{userId.id}}</span>
       <span class="user-text-box click-box"
-            onclick="location.href='/users/{{userId.uuid}}'">{{email.value}}</span>
+            onclick="location.href='/users/{{userId.id}}'">{{email.value}}</span>
       <span class="user-text-box click-box"
-            onclick="location.href='/users/{{userId.uuid}}'">{{nickname}}</span>
+            onclick="location.href='/users/{{userId.id}}'">{{nickname}}</span>
     </div>
   {{/users}}
 </div>

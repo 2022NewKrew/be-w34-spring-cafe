@@ -1,9 +1,9 @@
 package com.kakao.cafe.user.application.port.out;
 
-import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserId;
 
 public interface SaveUserPort {
 
-    void save(User user);
+    UserId save(CreateUserDto createUserDto);
 
 }

@@ -4,6 +4,6 @@ import com.kakao.cafe.user.domain.UserId;
 
 public interface SignUpUseCase {
 
-    UserId signUp(CreateUserDto createUserDto);
+    UserId signUp(SignUpUserDto signUpUserDto);
 
 }

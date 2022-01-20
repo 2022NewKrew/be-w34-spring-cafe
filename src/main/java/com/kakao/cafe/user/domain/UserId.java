@@ -1,37 +1,27 @@
 package com.kakao.cafe.user.domain;
 
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class UserId {
 
-    private final UUID uuid;
+    private final long id;
 
-    public UserId(String userId) {
-        validateUserIdFormat(userId);
-        this.uuid = UUID.fromString(userId);
+    public UserId(String id) {
+        long longFormatId = Long.parseLong(id);
+        validateUserId(longFormatId);
+        this.id = longFormatId;
     }
 
-    public UserId(UUID userId) {
-        this.uuid = userId;
+    public UserId(long id) {
+        validateUserId(id);
+        this.id = id;
     }
 
-    public static UserId create() {
-        return new UserId(UUID.randomUUID());
-    }
-
-    private void validateUserIdFormat(String userId) {
-        final String UUID_REGEX = "^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$";
-        final Pattern UUID_PATTERN = Pattern.compile(UUID_REGEX);
-
-        Matcher matcher = UUID_PATTERN.matcher(userId);
-        if (!matcher.find()) {
-            throw new IllegalArgumentException("Wrong UserId Format");
+    private void validateUserId(long id) {
+        if (id < 0) {
+            throw new IllegalArgumentException("Invalid User ID format");
         }
     }
 
-    public UUID getUUID() {
-        return uuid;
+    public long getId() {
+        return id;
     }
 }
