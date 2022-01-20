@@ -95,7 +95,13 @@ public class ArticleController {
 
     @DeleteMapping("/qna/deleteArticle/{index}")
     public String deleteArticle(@PathVariable Long index, HttpSession session) {
-        checkWriter(session, index);
+        Article article = checkWriter(session, index);
+        List<Reply> replies = replyService.findReplyList(index);
+        for (Reply reply : replies) {
+            if (!reply.getWriterId().equals(article.getWriterId())) {
+                throw new IllegalStateException(ErrorMessage.DELETE_NOT_MY_REPLY.getMsg());
+            }
+        }
         articleService.deleteArticle(index);
         return "redirect:/";
     }
