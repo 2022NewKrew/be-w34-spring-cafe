@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,9 +41,9 @@ public class ArticleDBRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public ArrayList<Article> findAll() {
+    public List<Article> findAll() {
         List<Article> articles = jdbcTemplate.query(SQL.FIND_ALL.stmt, this::convertToArticle);
-        return new ArrayList<Article>(articles);
+        return articles;
     }
 
     @Override

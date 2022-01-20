@@ -1,7 +1,7 @@
 package com.kakao.cafe.article.service;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -39,18 +39,17 @@ public class ArticleService {
 
     // 페이징 구현할 때 리펙토링 필요
     public AllArticlesListServiceResponse getAllArticleViewDTO(Long startIndex) {
-        ArrayList<Article> articleList = articleRepository.findAll().stream()
-                                                          .skip(startIndex)
-                                                          .collect(Collectors.toCollection(ArrayList::new));
-        Collections.reverse(articleList);
-        ArrayList<String> authorList = articleList.stream()
-                                                  .map(article -> userRepository.find(article.getAuthorId())
-                                                                                .orElseThrow(
-                                                                                        () -> new IllegalArgumentException(
-                                                                                                "존재하지 않는 사용자입니다."))
-                                                                                .getStringId())
-                                                  .collect(Collectors.toCollection(ArrayList::new));
-        return new AllArticlesListServiceResponse(articleList, authorList);
+        List<Article> allArticles = articleRepository.findAll();
+        List<Article> result = allArticles.subList(startIndex.intValue(), allArticles.size());
+        Collections.reverse(result);
+        List<String> authorList = result.stream()
+                                        .map(article -> userRepository.find(article.getAuthorId())
+                                                                      .orElseThrow(
+                                                                              () -> new IllegalArgumentException(
+                                                                                      "존재하지 않는 사용자입니다."))
+                                                                      .getStringId())
+                                        .collect(Collectors.toList());
+        return new AllArticlesListServiceResponse(result, authorList);
     }
 
     public ArticleReadServiceResponse getArticleReadViewDTO(Long id) {

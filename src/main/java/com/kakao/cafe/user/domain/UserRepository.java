@@ -1,6 +1,6 @@
 package com.kakao.cafe.user.domain;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
@@ -11,7 +11,7 @@ public interface UserRepository {
 
     Optional<User> find(String stringId);
 
-    ArrayList<User> findAll();
+    List<User> findAll();
 
     void updateUserInfo(User user);
 }

@@ -1,6 +1,6 @@
 package com.kakao.cafe.article.domain;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public interface ArticleRepository {
@@ -9,7 +9,7 @@ public interface ArticleRepository {
 
     Optional<Article> find(Long id);
 
-    ArrayList<Article> findAll();
+    List<Article> findAll();
 
     void increaseHit(Long id);
 

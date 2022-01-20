@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,9 +46,9 @@ public class UserDBRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public ArrayList<User> findAll() {
+    public List<User> findAll() {
         List<User> users = jdbcTemplate.query(SQL.FIND_ALL.stmt, this::convertToUser);
-        return new ArrayList<User>(users);
+        return users;
     }
 
     @Override
