@@ -3,8 +3,8 @@ package com.kakao.cafe.post.adapter.in.web;
 import com.kakao.cafe.post.adapter.in.web.dto.request.QuestionPostUpdateRequest;
 import com.kakao.cafe.post.adapter.in.web.dto.request.QuestionPostWriteRequest;
 import com.kakao.cafe.post.adapter.in.web.dto.response.QuestionPostResponse;
-import com.kakao.cafe.post.adapter.in.web.dto.response.QuestionPostUpdateResponse;
 import com.kakao.cafe.post.adapter.in.web.dto.response.QuestionPostWriteResponse;
+import com.kakao.cafe.post.application.dto.command.QuestionPostClickCommand;
 import com.kakao.cafe.post.application.dto.command.QuestionPostDeleteCommand;
 import com.kakao.cafe.post.application.dto.command.QuestionPostUpdateCommand;
 import com.kakao.cafe.post.application.dto.result.QuestionPostSaveResult;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
@@ -34,17 +33,23 @@ public class QuestionPostApiController {
     @PostMapping("")
     public ResponseEntity<QuestionPostWriteResponse> write(
             @Valid @RequestBody QuestionPostWriteRequest request,
-            HttpSession httpSession) {
+            @SessionAttribute(name = "user-id") Long userAccountId) {
 
-        Long userAccountId = (Long) httpSession.getAttribute("user-id");
         QuestionPostSaveResult result = enrollQuestionPostUseCase.enroll(request.toCommand(userAccountId));
 
         UriComponents uriComponents = MvcUriComponentsBuilder
-                .fromMethodCall(on(QuestionPostApiController.class).write(request, httpSession))
+                .fromMethodCall(on(QuestionPostApiController.class).write(request, userAccountId))
                 .build();
         return ResponseEntity
                 .created(uriComponents.toUri())
                 .body(result.toResponse());
+    }
+
+    @PostMapping("/{post-id}/click")
+    public ResponseEntity<Void> clickPost(@PathVariable(name = "post-id") Long postId) {
+        updateQuestionPostUseCase.clickPost(new QuestionPostClickCommand(postId));
+
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{post-id}")

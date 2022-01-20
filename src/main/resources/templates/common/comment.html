@@ -1,0 +1,30 @@
+<div class="comment-container">
+    <br>
+    <div class="comment-input">
+        <form class="row g-3">
+            <div class="col">
+                <input type="text" class="form-control" id="comment-content" placeholder="댓글을 입력해주세요">
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary mb-3" id="btn-comment">등록</button>
+            </div>
+        </form>
+    </div>
+    <br>
+    <div class="comment-list">
+        <ol class="list-group list-group-numbered">
+            {{#comment}}
+            <br>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">작성자 : {{author}}</div>
+                    <div class="fw-bold">작성일 : {{createdAt}}</div>
+                    <h4>{{content}}</h4>
+                </div>
+                <br>
+                <button class="btn btn-primary" name="comment-delete" value="{{commentId}}">삭제</button>
+            </li>
+            {{/comment}}
+        </ol>
+    </div>
+</div>

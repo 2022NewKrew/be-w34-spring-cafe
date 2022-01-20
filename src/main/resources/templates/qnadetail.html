@@ -1,36 +1,4 @@
 {{>common/header}}
-{{^user-id}}
-{{>common/beforeloginbar}}
-<div class="container">
-    {{#post}}
-    <br>
-    <div>
-        <h1>{{title}}</h1>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col order-last">
-            작성자: {{author}}
-        </div>
-        <div class="col">
-            작성일자: {{date}}
-        </div>
-        <div class="col order-first">
-            조회: {{viewCount}}
-        </div>
-    </div>
-    <br>
-    <div>
-        <p class="lead">
-            {{content}}
-        </p>
-    </div>
-    {{/post}}
-    <br>
-    <button type="button" class="btn btn-primary" id="go-home">목록으로</button>
-</div>
-{{/user-id}}
-{{#user-id}}
 {{>common/afterloginbar}}
 <div class="container">
     {{#post}}
@@ -56,9 +24,15 @@
             {{content}}
         </p>
     </div>
-    {{/post}}
+    <form>
+        <div class="form-floating" hidden>
+            <label for="post-id">post-id</label>
+            <textarea class="form-control" id="post-id" style="height: 100px" >{{post-id}}</textarea>
+        </div>
+    </form>
     <br>
     <button type="button" class="btn btn-primary" id="go-home">목록으로</button>
+    {{>common/comment}}
+    {{/post}}
 </div>
-{{/user-id}}
 {{>common/footer}}

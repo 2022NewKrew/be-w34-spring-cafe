@@ -22,6 +22,44 @@ var main = {
         $('#qna-delete').on('click', function () {
             _this.qnaDelete();
         })
+        $('#btn-comment').on('click', function () {
+            _this.commentWrite();
+        })
+        $(document).on('click', 'button[name=comment-delete]',function (e) {
+            _this.commentDelete(e.target.value);
+        })
+    },
+    commentDelete: function (id) {
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/comments/'+id,
+            dataType: 'json',
+            accept: 'application/json',
+            contentType: 'application/json; charset-utf-8',
+        }).done(function (result) {
+            alert(result.message);
+            window.location.href = '/posts/'+$('#post-id').val()+'/detail';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    commentWrite : function () {
+        var data = {
+            content: $('#comment-content').val(),
+            questionPostId: $('#post-id').val()
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/api/comments',
+            dataType: 'json',
+            accept: 'application/json',
+            contentType: 'application/json; charset-utf-8',
+            data: JSON.stringify(data)
+        }).done(function () {
+            window.location.href = '/posts/'+$('#post-id').val()+'/detail';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
     },
     qnaUpdate : function () {
         var data = {

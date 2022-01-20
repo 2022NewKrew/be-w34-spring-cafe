@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @ToString
 @EqualsAndHashCode
@@ -40,6 +41,10 @@ public class QuestionPost {
 
     public void viewCountIncrease() {
         this.viewCount++;
+    }
+
+    public boolean isSameAuthor(Long userAccountId) {
+        return Objects.equals(this.userAccount.getUserAccountId(), userAccountId);
     }
 
 }
