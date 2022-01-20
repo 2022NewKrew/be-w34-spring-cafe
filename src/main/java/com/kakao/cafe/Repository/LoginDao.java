@@ -17,7 +17,7 @@ public class LoginDao {
     private final LoginMapper loginMapper = new LoginMapper();
 
     public LoginAuthDto findByEmail(String email) {
-        String sql = "SELECT ID, EMAIL, PASSWORD FROM USERS WHERE EMAIL = ?";
+        String sql = "SELECT ID, USERID, EMAIL, PASSWORD FROM USERS WHERE EMAIL = ?";
 
         try {
             return jdbcTemplate.queryForObject(sql, loginMapper, email);
@@ -31,6 +31,7 @@ public class LoginDao {
         public LoginAuthDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new LoginAuthDto(
                     rs.getLong("ID"),
+                    rs.getString("USERID"),
                     rs.getString("EMAIL"),
                     rs.getString("PASSWORD")
             );

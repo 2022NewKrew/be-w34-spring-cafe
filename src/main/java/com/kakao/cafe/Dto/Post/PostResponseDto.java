@@ -1,7 +1,9 @@
 package com.kakao.cafe.Dto.Post;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public class PostResponseDto {
     private final Long id;
