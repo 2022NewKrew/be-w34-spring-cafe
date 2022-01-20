@@ -15,7 +15,6 @@ public class ExceptionController {
     @ExceptionHandler(IllegalArgumentException.class)
     public String illegalArgumentException(Model model, IllegalArgumentException e) {
         log.info("ExceptionController : {}", e.getMessage());
-        log.info("{}", e.getStackTrace());
         HashMap<String, Object> temp = new HashMap<>();
         temp.put("message", e.getMessage());
         model.addAllAttributes(temp);

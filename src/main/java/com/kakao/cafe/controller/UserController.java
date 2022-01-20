@@ -115,7 +115,8 @@ public class UserController {
         return "user/update";
     }
 
-    @GetMapping("/update/{stringId}")
+    // 다른 사용자의 회원정보 수정 시도 및 차단을 시현하기 위하여 메서드 유지
+    @GetMapping("/update/{stringId}")  
     @AuthInfoCheck
     public String userUpdateById(@PathVariable String stringId, Model model,
                                  @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {

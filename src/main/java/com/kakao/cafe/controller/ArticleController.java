@@ -57,6 +57,7 @@ public class ArticleController {
         log.info("PUT /article {}", req.getArticleId());
         articleService.validateAuthor(Long.parseLong(req.getArticleId()), authInfo.getId());
         articleService.updateArticle(Long.parseLong(req.getArticleId()), req.getTitle(), req.getContents());
+
         return "redirect:/";
     }
 
@@ -67,6 +68,7 @@ public class ArticleController {
         model.addAttribute("stringId", authInfo.getStringId());
         model.addAttribute("title", "");
         model.addAttribute("contents", "");
+
         return "article/form";
     }
 
@@ -84,6 +86,7 @@ public class ArticleController {
         List<OneReplyServiceResponse> findReplies = replyService.findReplyByArticle(Long.parseLong(articleId));
         model.addAttribute("replyNum", findReplies.size());
         model.addAttribute("replies", ArticleControllerResponseMapper.getReplyListResponse((findReplies)));
+
         return "article/show";
     }
 
@@ -94,9 +97,9 @@ public class ArticleController {
         log.info("DELETE /article {}", id);
         articleService.validateAuthor(Long.parseLong(id), authInfo.getId());
         articleService.deleteArticle(Long.parseLong(id));
+
         return "redirect:/";
     }
-
 
     @GetMapping("/update/{articleId}")
     @AuthInfoCheck
@@ -109,6 +112,7 @@ public class ArticleController {
         model.addAttribute("title", dto.getTitle());
         model.addAttribute("contents", dto.getContents());
         model.addAttribute("articleId", articleId);
+
         return "article/update";
     }
 
@@ -119,7 +123,19 @@ public class ArticleController {
         log.info("{}", req.getAnswer());
         CreateReplyServiceRequest request = ReplyServiceDTOMapper.convertToCreateReplyRequest(req, authInfo);
         replyService.createReply(request);
+
         return "redirect:/article/" + req.getArticleId();
+    }
+
+    @DeleteMapping("/{articleId}/reply/{replyId}")
+    @AuthInfoCheck
+    public String deleteReply(@PathVariable String articleId, @PathVariable String replyId,
+                              @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
+        log.info("DELETE /article/reply/{}", replyId);
+        replyService.validateAuthor(Long.parseLong(replyId), authInfo.getId());
+        replyService.deleteReply(Long.parseLong(replyId));
+
+        return "redirect:/article/" + articleId;
     }
 
     private CreateArticleServiceRequest createArticle(ArticleCreateRequest req, AuthInfo authInfo) {

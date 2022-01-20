@@ -8,5 +8,4 @@ import lombok.RequiredArgsConstructor;
 public class ArticleCreateRequest {
     private final String title;
     private final String contents;
-
 }

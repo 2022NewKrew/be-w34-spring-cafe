@@ -1,6 +1,7 @@
 package com.kakao.cafe.reply.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +26,18 @@ public class ReplyService {
     public Long createReply(CreateReplyServiceRequest req) {
         Reply reply = makeReply(req);
         return replyRepository.persist(reply);
+    }
+
+    public void deleteReply(Long replyId) {
+        replyRepository.deleteReply(replyId);
+    }
+
+    public void validateAuthor(Long replyId, Long id) {
+        Optional<Reply> op = replyRepository.find(replyId);
+        Reply reply = op.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+        if (reply.getAuthorId() != id) {
+            throw new IllegalArgumentException("작성자에게만 삭제 권한이 있습니다.");
+        }
     }
 
     private Reply makeReply(CreateReplyServiceRequest req) {

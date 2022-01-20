@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +24,12 @@ import com.kakao.cafe.reply.domain.ReplyRepository;
 public class ReplyDBRepositoryImpl implements ReplyRepository {
 
     private final JdbcTemplate jdbcTemplate;
+
+    @Override
+    public Optional<Reply> find(Long id) {
+        List<Reply> reply = jdbcTemplate.query(SQL.FIND.stmt, this::convertToReply, id);
+        return reply.stream().findFirst();
+    }
 
     @Override
     public Long persist(Reply reply) {
@@ -67,6 +74,7 @@ public class ReplyDBRepositoryImpl implements ReplyRepository {
     }
 
     private enum SQL {
+        FIND("SELECT id, article_id, author_id, author_string_id, content, write_date, is_available FROM REPLY WHERE id = ?"),
         FIND_BY_ARTICLE_ID(
                 "SELECT id, article_id, author_id, author_string_id, content, write_date, is_available FROM REPLY WHERE article_id = ? AND is_available = true"),
         CREATE("INSERT INTO REPLY (article_id, author_id, author_string_id, content, write_date, is_available) VALUES (?, ?, ?, ?, ?, ?)"),

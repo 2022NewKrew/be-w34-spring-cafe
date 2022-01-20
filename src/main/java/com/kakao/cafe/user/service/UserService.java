@@ -32,7 +32,6 @@ public class UserService {
         log.info("Add basic user data: 에이든, 자바지기, 산지기");
     }
 
-
     public Long createUser(String stringId, String email, String name, String password) {
         User user = makeUser(stringId, password, name, email);
         return userRepository.persist(user);
@@ -77,33 +76,5 @@ public class UserService {
                    .email(email)
                    .build();
     }
-
-    // 세션 구현 후 활용 예정 메서드
-//    public UserProfileServiceResponse getSignUpResultViewData(Long userId) {
-//        Optional<User> op = userRepository.find(userId);
-//        User user = op.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
-//        return UserServiceDTOMapper.convertToUserProfileServiceResponse(user);
-//    }
-
-    // DB 페이진 구현 후 활용 예정 메서드
-//    public AllUserProfileServiceResponse getAllUserViewData(Long startIndex, Long endIndex) {
-//        ArrayList<User> userCollection = userRepository.findAll();
-//        if (startIndex < 0) {
-//            startIndex = 0L;
-//        }
-//        if (endIndex > userCollection.size()) {
-//            endIndex = userCollection.size() + 1L;
-//        }
-//        if (startIndex > userCollection.size() || startIndex >= endIndex) {
-//            return new AllUserProfileServiceResponse(new ArrayList<User>());
-//        }
-//        Stream<User> stream = userCollection.stream();
-//        if (startIndex > 0) {
-//            stream = stream.skip(startIndex);
-//        }
-//        ArrayList<User> users = stream.limit(endIndex - startIndex).collect(Collectors.toCollection(ArrayList::new));
-//        Collections.reverse(users);
-//        return new AllUserProfileServiceResponse(users);
-//    }
 
 }
