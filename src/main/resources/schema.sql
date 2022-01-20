@@ -10,6 +10,7 @@ create table users (
 
 create table articles (
     id int NOT NULL AUTO_INCREMENT,
+    userId varchar(255) NOT NULL ,
     writer varchar(255) NOT NULL ,
     title varchar(255) NOT NULL ,
     contents varchar(255) NOT NULL ,

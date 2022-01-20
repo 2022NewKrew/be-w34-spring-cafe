@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.Repository.article;
 
 import com.kakao.cafe.domain.Entity.Article;
+import com.kakao.cafe.dto.article.PostArticleDto;
 import com.kakao.cafe.mapper.ArticleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,9 +17,9 @@ public class ArticleRepository {
     private final ArticleMapper articleMapper;
 
     // 새로운 게시물 저장
-    public void save(Article article) {
-        this.jdbcTemplate.update("INSERT INTO ARTICLES (writer, title, contents) VALUES (?, ?, ?)",
-                article.getWriter(), article.getTitle(), article.getContents());
+    public void save(PostArticleDto postArticleDto) {
+        this.jdbcTemplate.update("INSERT INTO ARTICLES (userId, writer, title, contents) VALUES (?, ?, ?, ?)",
+                postArticleDto.getUserId(), postArticleDto.getWriter(), postArticleDto.getTitle(), postArticleDto.getContents());
     }
 
     // 전체 게시물

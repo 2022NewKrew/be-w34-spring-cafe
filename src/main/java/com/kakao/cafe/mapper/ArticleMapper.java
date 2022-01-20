@@ -12,9 +12,10 @@ public class ArticleMapper implements RowMapper<Article> {
     @Override
     public Article mapRow(ResultSet resultSet, int count) throws SQLException {
         int id = resultSet.getInt("id");
+        String userId = resultSet.getString("userId");
         String writer = resultSet.getString("writer");
         String title = resultSet.getString("title");
         String contents = resultSet.getString("contents");
-        return new Article(id, writer, title, contents);
+        return new Article(id, userId, writer, title, contents);
     }
 }

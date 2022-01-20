@@ -9,6 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Article {
     private int articleId;
+    private String userId;
     private String writer;
     private String title;
     private String contents;

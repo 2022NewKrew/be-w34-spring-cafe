@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class ReferArticleDto {
-    private Integer articleId;
+    private int articleId;
     private String writer;
     private String title;
     private String contents;
