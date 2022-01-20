@@ -23,8 +23,7 @@ public class ArticleCommonQueryController {
     @GetMapping("articles/{articleId}")
     public String showArticle(@PathVariable("articleId") Long articleId, Model model) {
         model.addAttribute("article", articleCommonQueryUserCase.findArticlePostInfo(articleId));
+        model.addAttribute("comments", articleCommonQueryUserCase.findCommentsByArticleId(articleId));
         return URLPath.SHOW_ARTICLE.getPath();
     }
-
-
 }
