@@ -1,7 +1,6 @@
 package com.kakao.cafe.domain.article;
 
 import com.kakao.cafe.domain.article.dto.ArticleSaveForm;
-import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.dto.ArticleUpdateForm;
 
 import java.util.List;
@@ -16,4 +15,6 @@ public interface ArticleRepository {
     public void incrementNumOfComment(Long articleId);
     public void decrementNumOfComment(Long articleId);
     public boolean canDeleteAndCheckAuthority(Long id, Long userId);
+
+    void updateAuthorName(Long id, String name);
 }

@@ -22,10 +22,6 @@ public class MainController {
     public String mainPage(Model model, @SessionAttribute(name = SessionConst.LOGIN_COOKIE, required = false) User user) {
         List<ArticleResponse> questionPostList = postService.findAll();
         model.addAttribute("questions", questionPostList);
-        if(user != null) {
-            model.addAttribute("user", user);
-        }
-
         return "index";
     }
 

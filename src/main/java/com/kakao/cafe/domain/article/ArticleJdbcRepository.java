@@ -82,6 +82,12 @@ public class ArticleJdbcRepository implements ArticleRepository {
         return result.get(0);
     }
 
+    @Override
+    public void updateAuthorName(Long id, String name) {
+        String sql = "update " + DBConst.ARTICLE_DB + " set author = ? where authorId = ?";
+        jdbcTemplate.update(sql, name, id);
+    }
+
     private RowMapper<Boolean> booleanMapper() {
         return (rs, rowNum) -> rs.getBoolean("result");
     }

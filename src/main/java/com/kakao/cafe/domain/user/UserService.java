@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain.user;
 
+import com.kakao.cafe.domain.article.ArticleRepository;
+import com.kakao.cafe.domain.article.ArticleService;
 import com.kakao.cafe.domain.user.dto.UserUpdateForm;
 import com.kakao.cafe.domain.user.dto.UserJoinForm;
 import com.kakao.cafe.domain.user.dto.UserListDto;
@@ -16,6 +18,7 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final ArticleRepository articleRepository;
     public String join(UserJoinForm dtoUser) {
         if(isAlreadyExist(dtoUser)) {
             throw new AlreadyExistId("이미 존재하는 아이디");
@@ -44,6 +47,7 @@ public class UserService {
         }
         user.updateEmailAndName(dto.getEmail(), dto.getName());
         userRepository.update(user);
+        articleRepository.updateAuthorName(user.getId(), user.getName());
     }
 
     private boolean isAlreadyExist(UserJoinForm dtoUser) {

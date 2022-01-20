@@ -16,8 +16,7 @@ public class LogFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpReq = (HttpServletRequest) request;
-        System.out.println(httpReq.getRequestURI());
-        log.debug(httpReq.getRequestURI());
+        log.info(httpReq.getRequestURI());
         chain.doFilter(request, response);
     }
 

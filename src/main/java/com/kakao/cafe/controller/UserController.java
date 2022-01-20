@@ -1,5 +1,7 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.controller.error.ErrorMessageBox;
+import com.kakao.cafe.core.exception.NoSuchUser;
 import com.kakao.cafe.domain.user.dto.UserUpdateForm;
 import com.kakao.cafe.domain.user.dto.UserResponse;
 import com.kakao.cafe.domain.user.dto.UserJoinForm;
@@ -37,6 +39,7 @@ public class UserController {
             userService.join(userDto);
             return "redirect:/";
         } catch (Exception e) {
+            model.addAttribute("messages", "사용자 id 중복");
             return "user/form";
         }
     }
@@ -50,14 +53,20 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String userProfile(@PathVariable("id") String userId, Model model) {
-        User user = userService.findUser(userId);
-        UserResponse dtoUser = UserResponse.from(user);
-        return "user/profile";
+        try{
+            User user = userService.findUser(userId);
+            UserResponse dtoUser = UserResponse.from(user);
+            model.addAttribute("user", dtoUser);
+            return "user/profile";
+        } catch (NoSuchUser e) {
+            return ErrorMessageBox.handling("사용자 없음.", model);
+        }
     }
 
     @GetMapping("/update")
     public String showForm(@SessionAttribute(name = SessionConst.LOGIN_COOKIE) User user, Model model) {
         UserResponse dtoUser = UserResponse.from(user);
+        model.addAttribute("user", dtoUser);
         return "user/updateForm";
     }
 
