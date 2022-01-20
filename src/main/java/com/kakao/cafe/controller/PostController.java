@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.Dto.Login.LoginAuthDto;
+import com.kakao.cafe.Exception.NotAuthorizedException;
 import com.kakao.cafe.Service.PostService;
 import com.kakao.cafe.Dto.Post.PostRequestDto;
 import com.kakao.cafe.Dto.Post.PostResponseDto;
@@ -70,7 +71,7 @@ public class PostController {
 
         if (!Objects.equals(post.getWriter(), authInfo.getUserId())) {
             logger.info("수정하려는 게시글의 작성자가 아닙니다.");
-            return "errors/notAuthorized";
+            throw new NotAuthorizedException("게시글 수정 권한이 없습니다.");
         }
 
         model.addAttribute("post", post);
@@ -83,6 +84,16 @@ public class PostController {
 
         LoginAuthDto authInfo = (LoginAuthDto) session.getAttribute("authInfo");
         postService.editQuestion(id, new PostRequestDto(authInfo.getUserId(), title, content));
+
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deletePost(@PathVariable Long id, HttpSession session) {
+        logger.info("[DELETE] 게시글 삭제");
+
+        LoginAuthDto authDto = (LoginAuthDto) session.getAttribute("authInfo");
+        postService.deleteById(id, authDto);
 
         return "redirect:/";
     }

@@ -1,5 +1,7 @@
 package com.kakao.cafe.Service;
 
+import com.kakao.cafe.Dto.Login.LoginAuthDto;
+import com.kakao.cafe.Exception.NotAuthorizedException;
 import com.kakao.cafe.Repository.PostDao;
 import com.kakao.cafe.Dto.Post.PostRequestDto;
 import com.kakao.cafe.Dto.Post.PostResponseDto;
@@ -27,5 +29,12 @@ public class PostService {
 
     public void editQuestion(Long id, PostRequestDto post) {
         postDao.update(id, post);
+    }
+
+    public void deleteById(Long id, LoginAuthDto authDto) {
+        if (!postDao.findById(id).getWriter().equals(authDto.getUserId())) {
+            throw new NotAuthorizedException("게시글 삭제 권한이 없습니다.");
+        }
+        postDao.deleteById(id);
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class PostDao{
+public class PostDao {
     private final JdbcTemplate jdbcTemplate;
     private final PostMapper postMapper = new PostMapper();
 
@@ -41,6 +41,12 @@ public class PostDao{
 
         jdbcTemplate.update(sql,
                 post.getTitle(), post.getContent(), id);
+    }
+
+    public void deleteById(Long id) {
+        String sql = "DELETE FROM POST WHERE ID=?";
+
+        jdbcTemplate.update(sql, id);
     }
 
     private static class PostMapper implements RowMapper<PostResponseDto> {
