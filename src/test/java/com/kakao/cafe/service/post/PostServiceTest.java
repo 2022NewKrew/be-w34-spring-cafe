@@ -2,6 +2,7 @@ package com.kakao.cafe.service.post;
 
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.post.PostRepository;
+import com.kakao.cafe.exception.NoAuthorizationException;
 import com.kakao.cafe.model.post.PostDto;
 import com.kakao.cafe.model.post.PostWriteRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -30,51 +31,52 @@ class PostServiceTest {
     @Qualifier("postJdbcRepositoryImpl")
     @Autowired
     private PostRepository postRepository;
+    private Post post;
     private final int size = 20;
+    private final long writerId = 1L;
 
     @BeforeEach
     void setup() {
         for (int i = 0; i < size; i++) {
             Post post = Post.builder()
-                    .writer("작성자")
+                    .writerId(writerId)
                     .title("게시글 제목" + i)
                     .content("게시글 내용 " + i)
                     .createdAt(LocalDateTime.now())
                     .build();
             postRepository.save(post);
         }
+        this.post = postRepository.findAll().stream().max((p1, p2) -> (int) (p1.getId() - p2.getId())).orElse(null);
     }
 
     @DisplayName("정상적으로 게시글을 저장할 때, 에러가 발생하지 않아야 한다.")
     @Test
     void writePost() {
-        String writer = "작성자";
         String title = "게시글 제목";
         String content = "게시글 내용";
         PostWriteRequest post = PostWriteRequest.builder()
-                .writer(writer)
                 .title(title)
                 .content(content)
                 .build();
+        long writerId = 1L;
 
         assertThatNoException().isThrownBy(() -> {
-            postService.writePost(post);
+            postService.writePost(post, writerId);
         });
     }
 
     @DisplayName("게시글을 저장하면, 작성일자가 null이 아니여야 한다.")
     @Test
     void writePostForCheckingCreatedAt() {
-        String writer = "작성자";
         String title = "게시글 제목";
         String content = "게시글 내용";
         PostWriteRequest post = PostWriteRequest.builder()
-                .writer(writer)
                 .title(title)
                 .content(content)
                 .build();
+        long writerId = 1L;
 
-        postService.writePost(post);
+        postService.writePost(post, writerId);
         List<Post> posts = postRepository.findAll();
         posts.forEach(p -> assertThat(p.getCreatedAt()).isNotNull());
     }
@@ -107,6 +109,127 @@ class PostServiceTest {
 
         assertThatIllegalArgumentException().isThrownBy(() -> {
             PostDto post = postService.getPostById(id);
+        });
+    }
+
+    @DisplayName("게시글 id와 작성자 id를 이용하여 게시글을 조회할 때, 작성자 id가 일치하면 에러가 발생하지 않는다.")
+    @Test
+    void getPostById_MatchWriterId() {
+        Post lastPost = postRepository.findAll().stream().max((p1, p2) -> (int) (p1.getId() - p2.getId())).orElse(null);
+        assertThat(lastPost).isNotNull();
+        long id = lastPost.getId();
+
+        assertThatNoException().isThrownBy(() -> {
+            PostDto post = postService.getPostById(id, writerId);
+            assertThat(post).isNotNull();
+            assertThat(post.getWriterId()).isEqualTo(writerId);
+        });
+    }
+
+    @DisplayName("게시글 id와 작성자 id를 이용하여 게시글을 조회할 때, 작성자 id가 일치하지 않으면 에러가 발생해야 한다.")
+    @Test
+    void getPostById_NotMatchWriterId() {
+        Post lastPost = postRepository.findAll().stream().max((p1, p2) -> (int) (p1.getId() - p2.getId())).orElse(null);
+        assertThat(lastPost).isNotNull();
+        long id = lastPost.getId();
+        long writerId = 2L;
+
+        assertThatExceptionOfType(NoAuthorizationException.class).isThrownBy(() -> {
+            PostDto post = postService.getPostById(id, writerId);
+        });
+    }
+
+    @DisplayName("게시글 수정하기 - 정상")
+    @Test
+    void updatePost() {
+        long id = post.getId();
+        long writerId = post.getWriterId();
+        String title = "게시글 제목 수정";
+        String content = "게시글 내용 수정 입니다.";
+        PostWriteRequest request = PostWriteRequest.builder()
+                .title(title)
+                .content(content)
+                .build();
+
+        assertThatNoException().isThrownBy(() -> {
+            postService.updatePost(id, writerId, request);
+
+            Post updatedPost = postRepository.findById(id).orElse(null);
+            assertThat(updatedPost).isNotNull();
+            assertThat(updatedPost.getId()).isEqualTo(id);
+            assertThat(updatedPost.getTitle()).isEqualTo(title);
+            assertThat(updatedPost.getContent()).isEqualTo(content);
+            assertThat(updatedPost.getUpdatedAt()).isNotNull();
+        });
+    }
+
+    @DisplayName("게시글 수정하기 - 게시글 id가 존재하지 않는 경우 에러가 발생해야 한다.")
+    @Test
+    void updatePost_idNotExist() {
+        long id = post.getId() + 1;
+        long writerId = post.getWriterId();
+        String title = "게시글 제목 수정";
+        String content = "게시글 내용 수정 입니다.";
+        PostWriteRequest request = PostWriteRequest.builder()
+                .title(title)
+                .content(content)
+                .build();
+
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            postService.updatePost(id, writerId, request);
+        });
+    }
+
+    @DisplayName("게시글 수정하기 - 게시글 작성자 id가 일치하지 않는 경우 에러가 발생해야 한다.")
+    @Test
+    void updatePost_writerIdNotMatch() {
+        long id = post.getId();
+        long writerId = post.getWriterId() + 1;
+        String title = "게시글 제목 수정";
+        String content = "게시글 내용 수정 입니다.";
+        PostWriteRequest request = PostWriteRequest.builder()
+                .title(title)
+                .content(content)
+                .build();
+        assertThatExceptionOfType(NoAuthorizationException.class).isThrownBy(() -> {
+            postService.updatePost(id, writerId, request);
+        });
+    }
+
+    @DisplayName("게시글 삭제하기 - 정상")
+    @Test
+    void deletePost() {
+        long id = post.getId();
+        long writerId = post.getWriterId();
+
+        assertThatNoException().isThrownBy(() -> {
+            postService.deletePost(id, writerId);
+
+            Post deletedPost = postRepository.findById(id).orElse(null);
+            assertThat(deletedPost).isNotNull();
+            assertThat(deletedPost.getDeleted()).isTrue();
+        });
+    }
+
+    @DisplayName("게시글 삭제하기 - 게시글 id가 존재하지 않는 경우 에러가 발생해야 한다.")
+    @Test
+    void deletePost_idNotExist() {
+        long id = post.getId() + 1;
+        long writerId = post.getWriterId();
+
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            postService.deletePost(id, writerId);
+        });
+    }
+
+    @DisplayName("게시글 삭제하기 - 게시글 작성자 id가 일치하지 않는 경우 에러가 발생해야 한다.")
+    @Test
+    void deletePost_writerIdNotMatch() {
+        long id = post.getId();
+        long writerId = post.getWriterId() + 1;
+
+        assertThatExceptionOfType(NoAuthorizationException.class).isThrownBy(() -> {
+            postService.deletePost(id, writerId);
         });
     }
 

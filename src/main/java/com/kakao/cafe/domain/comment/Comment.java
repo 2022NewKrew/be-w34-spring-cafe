@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.post;
+package com.kakao.cafe.domain.comment;
 
 import lombok.*;
 
@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 @ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
-    private Long id;
-    private Long writerId;
-    private String title;
+public class Comment {
+    private long id;
+    private long postId;
+    private long writerId;
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -18,15 +18,22 @@ public class Post {
 
     private String writerNickname;
 
+    private boolean hasAuthority;
+
     @Builder
-    public Post(Long id, Long writerId, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt, Boolean deleted, String writerNickname) {
+    public Comment(long id, long postId, long writerId, String content, LocalDateTime createdAt, LocalDateTime updatedAt, Boolean deleted, String writerNickname) {
         this.id = id;
+        this.postId = postId;
         this.writerId = writerId;
-        this.title = title;
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deleted = deleted;
         this.writerNickname = writerNickname;
     }
+
+    public void checkAuthority(long currentId) {
+        hasAuthority = writerId == currentId;
+    }
+
 }

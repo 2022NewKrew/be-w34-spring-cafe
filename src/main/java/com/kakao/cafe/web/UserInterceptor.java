@@ -1,6 +1,6 @@
 package com.kakao.cafe.web;
 
-import com.kakao.cafe.model.user.UserDto;
+import com.kakao.cafe.utils.SessionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,9 +17,9 @@ public class UserInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
-        UserDto user = (UserDto) session.getAttribute("currentUser");
+        long currentUserId = SessionUtils.getCurrentUserId(session);
         String id = getIdPathVariableFromRequest(request);
-        if (!id.equals(String.valueOf(user.getId()))) {
+        if (!id.equals(String.valueOf(currentUserId))) {
             response.sendError(HttpStatus.FORBIDDEN.value());
             return false;
         }

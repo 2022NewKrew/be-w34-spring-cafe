@@ -194,11 +194,4 @@ class UserJdbcRepositoryImplTest {
         assertThat(foundUser.getUpdatedAt()).isEqualTo(updatedAt);
     }
 
-    @DisplayName("회원 정보를 전체 삭제하면 등록된 회원 목록의 크기는 0 이어야 한다.")
-    @Test
-    void deleteAll() {
-        userRepository.deleteAll();
-        List<User> users = userRepository.findAll();
-        assertThat(users.size()).isEqualTo(0);
-    }
 }

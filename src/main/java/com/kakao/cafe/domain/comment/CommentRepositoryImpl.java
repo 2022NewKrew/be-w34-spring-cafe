@@ -1,0 +1,133 @@
+package com.kakao.cafe.domain.comment;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@RequiredArgsConstructor
+@Repository
+public class CommentRepositoryImpl implements CommentRepository {
+
+    private static final String SQL_FOR_SAVE = "INSERT INTO comments(post_id, writer_id, content, created_at) VALUES (?, ?, ?, ?)";
+    private static final String SQL_FOR_FIND_BY_ID = "" +
+            "SELECT " +
+            "   * " +
+            "FROM " +
+            "   comments " +
+            "WHERE " +
+            "   id = ?";
+    private static final String SQL_FOR_FIND_BY_POST_ID = "" +
+            "SELECT " +
+            "   comments.*, " +
+            "   users.nickname " +
+            "FROM " +
+            "   comments " +
+            "   INNER JOIN users ON comments.writer_id = users.id " +
+            "WHERE " +
+            "   comments.post_id = ? AND comments.deleted = 0";
+    private static final String SQL_FOR_UPDATE_DELETED_BY_ID = "" +
+            "UPDATE " +
+            "   comments " +
+            "SET " +
+            "   deleted = 1, " +
+            "   updated_at = ? " +
+            "WHERE " +
+            "   id = ?";
+    private static final String SQL_FOR_UPDATE_DELETED_BY_POST_ID = "" +
+            "UPDATE " +
+            "   comments " +
+            "SET " +
+            "   deleted = 1, " +
+            "   updated_at = ? " +
+            "WHERE " +
+            "   post_id = ?";
+    private static final String SQL_FOR_DELETE_BY_ID = "" +
+            "DELETE FROM " +
+            "   comments " +
+            "WHERE " +
+            "   id = ?";
+    private static final String SQL_FOR_COUNT_BY_POST_ID_AND_WRITER_ID_NOT = "" +
+            "SELECT " +
+            "   COUNT(*) " +
+            "FROM " +
+            "   comments " +
+            "WHERE " +
+            "   post_id = ? AND writer_id != ? AND deleted = 0";
+    private final JdbcTemplate template;
+
+    @Override
+    public void save(Comment comment) {
+        template.update(SQL_FOR_SAVE, comment.getPostId(), comment.getWriterId(), comment.getContent(), comment.getCreatedAt());
+    }
+
+    @Override
+    public Optional<Comment> findById(long id) {
+        return template.query(SQL_FOR_FIND_BY_ID, commentRowMapper(), id).stream().findFirst();
+    }
+
+    @Override
+    public List<Comment> findByPostId(long postId) {
+        return template.query(SQL_FOR_FIND_BY_POST_ID, commentUserRowMapper(), postId);
+    }
+
+    @Override
+    public long countByPostIdAndWriterIdNot(long postId, long writerId) {
+        Long count = template.queryForObject(SQL_FOR_COUNT_BY_POST_ID_AND_WRITER_ID_NOT, Long.class, postId, writerId);
+        return count == null ? 0 : count;
+    }
+
+    @Override
+    public void updateDeletedById(long id) {
+        template.update(SQL_FOR_UPDATE_DELETED_BY_ID, LocalDateTime.now(), id);
+    }
+
+    @Override
+    public void updateDeletedByPostId(long postId) {
+        template.update(SQL_FOR_UPDATE_DELETED_BY_POST_ID, LocalDateTime.now(), postId);
+    }
+
+    @Override
+    public void deleteById(long id) {
+        template.update(SQL_FOR_DELETE_BY_ID, id);
+    }
+
+    private RowMapper<Comment> commentRowMapper() {
+        return (rs, rowNum) -> Comment.builder()
+                .id(rs.getLong("id"))
+                .postId(rs.getLong("post_id"))
+                .writerId(rs.getLong("writer_id"))
+                .content(rs.getString("content"))
+                .createdAt(getLocalDateTime(rs, "created_at"))
+                .updatedAt(getLocalDateTime(rs, "updated_at"))
+                .deleted(rs.getBoolean("deleted"))
+                .build();
+    }
+
+    private RowMapper<Comment> commentUserRowMapper() {
+        return (rs, rowNum) -> Comment.builder()
+                .id(rs.getLong("id"))
+                .postId(rs.getLong("post_id"))
+                .writerId(rs.getLong("writer_id"))
+                .content(rs.getString("content"))
+                .createdAt(getLocalDateTime(rs, "created_at"))
+                .updatedAt(getLocalDateTime(rs, "updated_at"))
+                .deleted(rs.getBoolean("deleted"))
+                .writerNickname(rs.getString("nickname"))
+                .build();
+    }
+
+    private LocalDateTime getLocalDateTime(ResultSet rs, String columnLabel) throws SQLException {
+        if (rs.getTimestamp(columnLabel) == null) {
+            return null;
+        }
+        return rs.getTimestamp(columnLabel).toLocalDateTime();
+    }
+
+}
