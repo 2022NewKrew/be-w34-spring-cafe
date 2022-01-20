@@ -38,6 +38,13 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByUserId(String userId) {
+        return store.stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findAny();
+    }
+
+    @Override
     public Optional<User> findByUserIdAndPassword(String userId, String password) {
         return store.stream()
                 .filter(user -> user.getUserId().equals(userId))

@@ -36,13 +36,19 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(long id) {
-        return jdbcTemplate.query("SELECT id, userId, email, nickname, password FROM `USER` WHERE id=?", userMapper, id)
+        return jdbcTemplate.query("SELECT id, userId, email, nickname, password FROM `USER` WHERE id=? LIMIT 1", userMapper, id)
+                .stream().findAny();
+    }
+
+    @Override
+    public Optional<User> findByUserId(String userId) {
+        return jdbcTemplate.query("SELECT id, userId, email, nickname, password FROM `USER` WHERE userId=? LIMIT 1", userMapper, userId)
                 .stream().findAny();
     }
 
     @Override
     public Optional<User> findByUserIdAndPassword(String userId, String password) {
-        return jdbcTemplate.query("SELECT id, userId, email, nickname, password FROM `USER` WHERE userId=? AND password=?", userMapper, userId, password)
+        return jdbcTemplate.query("SELECT id, userId, email, nickname, password FROM `USER` WHERE userId=? AND password=? LIMIT 1", userMapper, userId, password)
                 .stream().findAny();
     }
 

@@ -62,31 +62,29 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public RedirectView update(UserDto userDto, HttpSession session, RedirectAttributes redirectAttributes) {
+    public RedirectView update(UserDto userDto, HttpSession session, RedirectAttributes redirectAttrs) {
         User loginUser = (User)session.getAttribute("loginUser");
         userService.update(loginUser, userDto);
 
         updateLoginSession(userDto, session);
-        redirectAttributes.addFlashAttribute("flashMessage", "유저 정보가 수정되었습니다");
+        redirectAttrs.addFlashAttribute("flashMessage", "유저 정보가 수정되었습니다");
         return new RedirectView("/", true);
     }
 
     @PostMapping("/login")
-    public RedirectView login(
+    public String login(
             UserDto userDto,
             HttpSession session,
-            RedirectAttributes redirectAttributes
+            RedirectAttributes redirectAttrs
     ) {
-        logger.info("[로그인 시도] {}", userDto);
-
         try {
             updateLoginSession(userDto, session);
-            redirectAttributes.addFlashAttribute("flashMessage", "로그인 되었습니다.");
-            return new RedirectView("/", true);
+            redirectAttrs.addFlashAttribute("flashMessage", "로그인 되었습니다.");
+            return "redirect:/";
         } catch (NoSuchElementException e) {
             logger.info("[로그인 실패] {}", userDto);
-            redirectAttributes.addFlashAttribute("flashMessage", "로그인에 실패했습니다");
-            return new RedirectView("/login", true);
+            redirectAttrs.addFlashAttribute("flashMessage", "로그인에 실패했습니다");
+            return "redirect:/login";
         }
     }
 
