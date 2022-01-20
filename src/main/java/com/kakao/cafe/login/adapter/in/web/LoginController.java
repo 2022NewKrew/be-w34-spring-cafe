@@ -4,7 +4,7 @@ import com.kakao.cafe.common.meta.SessionData;
 import com.kakao.cafe.common.meta.URLPath;
 import com.kakao.cafe.login.application.port.in.LoginForm;
 import com.kakao.cafe.login.application.port.in.LoginUseCase;
-import com.kakao.cafe.login.application.port.in.UserLoginCommand;
+import com.kakao.cafe.login.application.port.in.UserLoginResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -37,9 +37,9 @@ public class LoginController {
             return URLPath.LOGIN_FORM.getRedirectPath();
         }
         if (hasNotUserKey) {
-            final UserLoginCommand userLoginCommand = loginUseCase.login(loginForm);
-            session.setAttribute(SessionData.USER_KEY, userLoginCommand.getId());
-            session.setAttribute(SessionData.USER_NAME, userLoginCommand.getNickname());
+            final UserLoginResult userLoginResult = loginUseCase.login(loginForm);
+            session.setAttribute(SessionData.USER_KEY, userLoginResult.getId());
+            session.setAttribute(SessionData.USER_NAME, userLoginResult.getNickname());
         }
         return URLPath.INDEX.getRedirectPath();
     }
@@ -50,7 +50,7 @@ public class LoginController {
     }
 
     @GetMapping("/users/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.invalidate();
         return URLPath.INDEX.getRedirectPath();
     }

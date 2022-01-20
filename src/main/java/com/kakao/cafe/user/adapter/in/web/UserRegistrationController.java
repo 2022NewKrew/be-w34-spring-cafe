@@ -3,7 +3,6 @@ package com.kakao.cafe.user.adapter.in.web;
 import com.kakao.cafe.common.meta.URLPath;
 import com.kakao.cafe.user.application.port.in.UserRegistrationCommand;
 import com.kakao.cafe.user.application.port.in.UserSignUpUseCase;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;

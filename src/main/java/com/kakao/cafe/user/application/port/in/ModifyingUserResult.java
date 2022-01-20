@@ -4,7 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-public class ModifyingUserInfo {
+public class ModifyingUserResult {
     @NotEmpty(message = "아이디는 필수사항입니다.")
     @Size(min = 3, max = 15, message = "아이디는 3글자 이상 15글자 이하입니다.")
     private final String nickname;
@@ -20,7 +20,7 @@ public class ModifyingUserInfo {
     @Email(message = "이메일 형식에 맞춰주세요.")
     private final String email;
 
-    public ModifyingUserInfo(String nickname, String password, String name, String email) {
+    public ModifyingUserResult(String nickname, String password, String name, String email) {
         this.nickname = nickname;
         this.password = password;
         this.name = name;

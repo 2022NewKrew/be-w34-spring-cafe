@@ -26,11 +26,12 @@ public class ArticleRegistrationController {
     @PostMapping("qna/form")
     public String createQuestion(@Valid @ModelAttribute ArticleRegistrationCommand articleRegistrationCommand,
                                  @SessionAttribute("userName") String nickName,
+                                 @SessionAttribute("userKey") Long userKey,
                                  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return URLPath.SHOW_ARTICLE_FORM.getRedirectPath();
         }
-        articleRegistrationUseCase.registerArticle(articleRegistrationCommand, nickName);
+        articleRegistrationUseCase.registerArticle(articleRegistrationCommand, nickName, userKey);
         return URLPath.INDEX.getRedirectPath();
     }
 }

@@ -1,7 +1,9 @@
 package com.kakao.cafe.common.aop;
 
 import com.kakao.cafe.common.exception.ArticleUpdateException;
+import com.kakao.cafe.common.exception.DeletionException;
 import com.kakao.cafe.common.exception.SignUpException;
+import com.kakao.cafe.common.exception.UserUpdateException;
 import com.kakao.cafe.common.meta.URLPath;
 import com.kakao.cafe.user.application.port.in.UserRegistrationCommand;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -39,6 +41,16 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(ArticleUpdateException.class)
     public String articleUpdateExceptionHandle() {
+        return URLPath.INDEX.getRedirectPath();
+    }
+
+    @ExceptionHandler(DeletionException.class)
+    public String articleDeletionExceptionHandle() {
+        return URLPath.INDEX.getRedirectPath();
+    }
+
+    @ExceptionHandler(UserUpdateException.class)
+    public String userUpdateExceptionHandle() {
         return URLPath.INDEX.getRedirectPath();
     }
 }

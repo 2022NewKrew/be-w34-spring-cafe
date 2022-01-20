@@ -20,7 +20,7 @@ public class ArticleUpdate extends BaseEntity {
     }
 
     public void validateUpdateAuth(String nicknameByUserId) {
-        if (!writerName.equals(nicknameByUserId)){
+        if (!writerName.equals(nicknameByUserId)) {
             throw new ArticleUpdateException();
         }
     }

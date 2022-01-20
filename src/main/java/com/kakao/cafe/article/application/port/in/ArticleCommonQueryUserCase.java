@@ -6,4 +6,6 @@ public interface ArticleCommonQueryUserCase {
     List<ArticleInventoryInfo> getArticleInventoryInfoList();
 
     ArticlePostInfo findArticlePostInfo(Long articleId);
+
+    List<CommentResponse> findCommentsByArticleId(Long articleId);
 }

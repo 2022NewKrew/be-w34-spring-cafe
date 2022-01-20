@@ -1,26 +1,24 @@
 package com.kakao.cafe.article.application.service;
 
-import com.kakao.cafe.article.application.port.in.ArticleUpdateCommand;
+import com.kakao.cafe.article.application.port.in.ArticleUpdateForm;
 import com.kakao.cafe.article.application.port.in.ArticleUpdateUseCase;
 import com.kakao.cafe.article.application.port.out.LoadUpdateInfoPort;
 import com.kakao.cafe.article.domain.ArticleUpdate;
 import com.kakao.cafe.common.exception.ArticleUpdateException;
-import lombok.RequiredArgsConstructor;
 
-import java.util.Optional;
-
-@RequiredArgsConstructor
 public class ArticleUpdateService implements ArticleUpdateUseCase {
     private final LoadUpdateInfoPort loadUpdateInfoPort;
 
+    public ArticleUpdateService(LoadUpdateInfoPort loadUpdateInfoPort) {
+        this.loadUpdateInfoPort = loadUpdateInfoPort;
+    }
+
     @Override
-    public ArticleUpdateCommand updateArticle(Long articleId, Long userId) throws ArticleUpdateException {
-        Optional<String> nicknameByUserIdOptional = loadUpdateInfoPort.findUserNicknameByUserId(userId);
-        String nicknameByUserId = nicknameByUserIdOptional.orElseThrow(ArticleUpdateException::new);
-        Optional<ArticleUpdate> articleUpdateCommandOptional = loadUpdateInfoPort.findArticleUpdateByArticleId(articleId);
-        ArticleUpdate articleUpdate = articleUpdateCommandOptional.orElseThrow(ArticleUpdateException::new);
+    public ArticleUpdateForm findArticleUpdateForm(Long articleId, Long userId) throws ArticleUpdateException {
+        String nicknameByUserId = loadUpdateInfoPort.findUserIdByArticleId(articleId).orElseThrow(ArticleUpdateException::new);
+        ArticleUpdate articleUpdate = loadUpdateInfoPort.findArticleUpdateByArticleId(articleId).orElseThrow(ArticleUpdateException::new);
         articleUpdate.validateUpdateAuth(nicknameByUserId);
-        return new ArticleUpdateCommand(
+        return new ArticleUpdateForm(
                 articleUpdate.getId(),
                 articleUpdate.getWriterName(),
                 articleUpdate.getTitle(),
@@ -29,7 +27,7 @@ public class ArticleUpdateService implements ArticleUpdateUseCase {
     }
 
     @Override
-    public void putUpdatedArticle(Long articleId, String title, String writerName, String contents) {
+    public void updateArticle(Long articleId, String title, String writerName, String contents) {
         loadUpdateInfoPort.updateArticle(articleId, title, writerName, contents);
     }
 }
