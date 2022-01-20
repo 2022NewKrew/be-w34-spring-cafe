@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.dto;
 
+import com.kakao.cafe.user.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.validation.Errors;
@@ -35,6 +36,7 @@ public class UserCreateDto {
 
     /**
      * 회원가입시 DTO의 유효성검사의 에러메세지를 반환합니다.
+     *
      * @param errors
      * @return
      */
@@ -47,5 +49,15 @@ public class UserCreateDto {
         }
 
         return result;
+    }
+
+    public static User toEntity(UserCreateDto userCreateDto) {
+        User user = new User();
+
+        user.setUserId(userCreateDto.getUserId());
+        user.setName(userCreateDto.getName());
+        user.setPassword(userCreateDto.getPassword());
+        user.setEmail(userCreateDto.getEmail());
+        return user;
     }
 }

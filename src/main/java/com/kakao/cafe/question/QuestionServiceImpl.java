@@ -20,6 +20,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
@@ -53,7 +54,6 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    @Transactional
     public boolean deleteOne(Long id, Long memberId) throws BaseException {
 
         checkAuthQuestion(id, memberId);

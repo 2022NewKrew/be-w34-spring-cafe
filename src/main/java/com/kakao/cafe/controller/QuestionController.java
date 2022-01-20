@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -84,15 +83,7 @@ public class QuestionController {
         List<Reply> replies = replyService.findAllAsQuestionId(id);
 
         if (replies.size() != 0) {
-            List<ReplyDto> replyDtos = replies
-                    .stream().map(
-                            r -> {
-                                ReplyDto reply = modelMapper.map(r, ReplyDto.class);
-                                reply.setThisIsMine(memberId.equals(r.getMemberId()));
-                                return reply;
-                            }
-                    )
-                    .collect(Collectors.toList());
+            List<ReplyDto> replyDtos = ReplyDto.of(replies, memberId);
 
             model.addAttribute("replySize", replies.size());
             model.addAttribute("replies", replyDtos);

@@ -41,7 +41,7 @@ public class ReplyRepositoryJdbc implements ReplyRepository {
         }, keyHolder);
 
         if (rs == FAIL) {
-            throw new SQLException("Reply TABLE SAVE FAIL");
+            throw new SQLException("REPLY TABLE SAVE FAIL");
         }
 
         return (Long) Objects.requireNonNull(keyHolder.getKeys()).get("id");
@@ -55,7 +55,7 @@ public class ReplyRepositoryJdbc implements ReplyRepository {
         int rs = jdbcTemplate.update(sql, QuestionStatus.DELETE.toString(), id);
 
         if (rs == FAIL) {
-            log.error("USER TABLE DELETE FAIL ");
+            log.error("REPLY TABLE DELETE FAIL ");
             return false;
         }
 
@@ -86,7 +86,7 @@ public class ReplyRepositoryJdbc implements ReplyRepository {
         int rs = jdbcTemplate.update(sql, QuestionStatus.DELETE.toString(), questionId);
 
         if (rs == FAIL) {
-            log.error("USER TABLE DELETE FAIL ");
+            log.error("REPLY TABLE DELETE FAIL ");
             return false;
         }
 
