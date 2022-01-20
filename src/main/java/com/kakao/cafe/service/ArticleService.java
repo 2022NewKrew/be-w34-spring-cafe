@@ -1,9 +1,11 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.ArticleDto;
+import com.kakao.cafe.controller.dto.ArticleDto;
+import com.kakao.cafe.controller.dto.ReplyDto;
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.exception.InvalidSessionException;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ReplyService replyService;
 
     public List<ArticleDto> findAll() {
         return articleRepository
@@ -31,20 +34,9 @@ public class ArticleService {
         return ArticleDto.from(article);
     }
 
-    public int create(String writer, ArticleDto articleDto) {
+    public void create(String writer, ArticleDto articleDto) {
         Article article = articleDto.toEntity();
-        validateSession(writer);
-        return articleRepository.save(article);
-    }
-
-    public int update(String writer, int articleId, ArticleDto articleDto) {
-        Article article = findByIdFromRepository(articleId);
-        validateSession(writer);
-        matchWriter(writer, article);
-        article.setTitle(articleDto.getTitle());
-        article.setContent(articleDto.getContent());
-        article.setDate(LocalDateTime.now());
-        return articleRepository.update(article);
+        articleRepository.save(article);
     }
 
     public ArticleDto findByIdForWriter(int id, String writer) {
@@ -53,13 +45,20 @@ public class ArticleService {
         return ArticleDto.from(article);
     }
 
-
-    public ArticleDto delete(int id, String writer) {
-        Article article = findByIdFromRepository(id);
-        validateSession(writer);
+    public void update(String writer, int articleId, ArticleDto articleDto) {
+        Article article = findByIdFromRepository(articleId);
         matchWriter(writer, article);
-        articleRepository.delete(article);
-        return ArticleDto.from(article);
+        article.setTitle(articleDto.getTitle());
+        article.setContent(articleDto.getContent());
+        article.setDate(LocalDateTime.now());
+        articleRepository.update(article);
+    }
+    
+    public void delete(int id, String writer) {
+        Article article = findByIdFromRepository(id);
+        matchWriter(writer, article);
+        matchWriterOfReplies(writer, article);
+        articleRepository.softDelete(id);
     }
 
     private Article findByIdFromRepository(int id) {
@@ -69,13 +68,13 @@ public class ArticleService {
 
     private void matchWriter(String writer, Article article) {
         if ( !article.matchWriter(writer)) {
-            throw new IllegalArgumentException("다른 사람의 글을 수정할 수 없다.");
+            throw new IllegalArgumentException("게시물 접근 권한이 없습니다.");
         }
     }
 
-    private void validateSession(String writer) {
-        if (writer.equals("null")) {
-            throw new InvalidSessionException("로그인 하지 않은 사용자입니다.");
+    private void matchWriterOfReplies(String writer, Article article) {
+        if (!article.matchWriterOfReplies(writer)) {
+            throw new IllegalArgumentException("댓글 접근 권한이 없습니다.");
         }
     }
 

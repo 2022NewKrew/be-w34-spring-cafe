@@ -1,9 +1,8 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.controller.dto.UserAuthDto;
 import com.kakao.cafe.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("auth")
 public class UserAuthController {
 
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
 
@@ -31,14 +29,12 @@ public class UserAuthController {
             return "/user/login";
         }
         httpSession.setAttribute("sessionId", userAuthDto.getUserId());
-        logger.info("POST /users/login: {}", userAuthDto);
         return "redirect:/users";
     }
 
     @GetMapping("logout")
     public String logout(HttpSession httpSession) {
         httpSession.invalidate();
-        logger.info("GET /users/logout");
         return "redirect:/";
     }
 }

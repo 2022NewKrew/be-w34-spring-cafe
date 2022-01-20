@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.UserAuthDto;
-import com.kakao.cafe.controller.UserDto;
+import com.kakao.cafe.controller.dto.UserAuthDto;
+import com.kakao.cafe.controller.dto.UserDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,19 +27,18 @@ public class UserService {
         return UserDto.from(userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디")));
     }
 
-    public int update(String userId, UserDto userDto) {
+    public void update(String userId, UserDto userDto) {
         User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디"));
         validPassword(user, userDto.getPassword());
         user.setPassword(userDto.getPassword());
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
-        return userRepository.update(user);
+        userRepository.update(user);
     }
 
-    public int create(UserDto userDto) {
+    public void create(UserDto userDto) {
         User user = userDto.toEntity();
-        validDuplicateUser(user);
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public int login(UserAuthDto userAuthDto) {
@@ -54,9 +53,4 @@ public class UserService {
         }
     }
 
-    private void validDuplicateUser(User user) {
-        if (userRepository.findByUserId(user.getUserId()).isPresent()) {
-            throw new IllegalStateException("해당 아이디 이미 존재");
-        }
-    }
 }

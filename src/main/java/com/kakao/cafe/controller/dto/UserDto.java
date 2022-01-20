@@ -1,7 +1,6 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.controller.dto;
 
 import com.kakao.cafe.domain.User;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +13,7 @@ public class UserDto {
     private String name;
     private String email;
 
-    public UserDto(String userId, String password, String name, String email) {
+    private UserDto(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -33,12 +32,12 @@ public class UserDto {
 
     @Override
     public String toString() {
-        return "UserDto{" +
-                "id=" + id +
-                ", userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return String.format(
+                "UserDto{id=%d, userId=%s, password=%s, name=%s, email=%s}",
+                id,
+                userId,
+                password,
+                name,
+                email);
     }
 }

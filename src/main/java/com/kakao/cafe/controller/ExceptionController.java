@@ -12,12 +12,6 @@ public class ExceptionController {
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @ExceptionHandler(InvalidSessionException.class)
-    public String RedirectLogin(InvalidSessionException ex) {
-        logger.info("ERROR : 로그인 하지 않은 사용자");
-        return "redirect:/login";
-    }
-
     @ExceptionHandler
     public ResponseEntity<Object> BadRequestException(final RuntimeException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());

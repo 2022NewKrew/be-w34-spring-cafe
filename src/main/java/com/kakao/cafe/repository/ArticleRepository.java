@@ -14,5 +14,5 @@ public interface ArticleRepository {
     int save(Article article);
     int update(Article article);
     int delete(Article article);
-
+    void softDelete(int id);
 }

@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.controller.dto;
 
 
 public class UserAuthDto {
@@ -6,7 +6,7 @@ public class UserAuthDto {
     private String userId;
     private String password;
 
-    public UserAuthDto(String userId, String password) {
+    private UserAuthDto(String userId, String password) {
         this.userId = userId;
         this.password = password;
     }
@@ -21,9 +21,9 @@ public class UserAuthDto {
 
     @Override
     public String toString() {
-        return "UserAuthDto{" +
-                "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return String.format(
+                "UserAuthDto{userId=%s, password=%s}",
+                userId,
+                password);
     }
 }

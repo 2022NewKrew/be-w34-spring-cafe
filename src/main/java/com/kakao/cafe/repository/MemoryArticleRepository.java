@@ -3,6 +3,7 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +15,7 @@ public class MemoryArticleRepository implements ArticleRepository{
 
     MemoryArticleRepository() {
         articles = new ArrayList<>();
-        Article article = new Article("오늘 뭐먹지??", "뭐먹을지 너무 고민된다.", "wldus");
+        Article article = new Article("오늘 뭐먹지??", "뭐먹을지 너무 고민된다.", "wldus", LocalDateTime.now(), false);
         article.generateId(1);
         articles.add(article);
     }
@@ -47,5 +48,10 @@ public class MemoryArticleRepository implements ArticleRepository{
     @Override
     public int delete(Article article) {
         return 0;
+    }
+
+    @Override
+    public void softDelete(int id) {
+        
     }
 }
