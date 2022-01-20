@@ -1,7 +1,7 @@
 package com.kakao.cafe.util.exception;
 
-public class NotMineException extends KakaoCafeException {
-    public NotMineException(String message) {
+public class NotMyArticleException extends KakaoCafeException {
+    public NotMyArticleException(String message) {
         super(message);
     }
 }

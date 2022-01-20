@@ -1,6 +1,6 @@
-package com.kakao.cafe.controller.advice;
+package com.kakao.cafe.controller;
 
-import com.kakao.cafe.util.exception.KakaoCafeGlobalException;
+import com.kakao.cafe.util.exception.KakaoCafeException;
 import com.kakao.cafe.util.exception.NotMyCommentException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -16,8 +16,8 @@ public class GlobalExceptionAdvice {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
-    @ExceptionHandler(KakaoCafeGlobalException.class)
-    public String handleUserException(KakaoCafeGlobalException e, Model model) {
+    @ExceptionHandler(KakaoCafeException.class)
+    public String handleUserException(KakaoCafeException e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
         return "error/error";
     }

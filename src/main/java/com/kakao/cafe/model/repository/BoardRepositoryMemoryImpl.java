@@ -6,6 +6,7 @@ import com.kakao.cafe.model.domain.Article;
 import com.kakao.cafe.model.domain.Comment;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,14 +21,15 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
     public boolean saveArticle(Article article) {
         article.setArticleId(maxArticleId++);
         article.setCreatedDate(LocalDateTime.now());
+        article.setFormattedCreatedDate(article.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         storedArticles.put(article.getArticleId(), article);
         return true;
     }
 
     @Override
-    public boolean saveComment(long articleId, Comment comment) {
+    public Optional<Comment> saveComment(long articleId, Comment comment) {
         if (!storedArticles.containsKey(articleId)) {
-            return false;
+            return Optional.empty();
         }
 
         Article currArticle = storedArticles.get(articleId);
@@ -36,10 +38,11 @@ public class BoardRepositoryMemoryImpl implements BoardRepository {
         comment.setArticleId(articleId);
         comment.setCommentId(commentId);
         comment.setCreatedDate(LocalDateTime.now());
+        comment.setFormattedCreatedDate(comment.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         storedComments.put(articleId, commentId, comment);
         currArticle.setCommentsCount(++commentId);
-        return true;
+        return Optional.of(comment);
     }
 
     @Override

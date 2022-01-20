@@ -1,7 +1,7 @@
 package com.kakao.cafe.util.exception;
 
-public class KakaoCafeGlobalException extends RuntimeException {
-    public KakaoCafeGlobalException(String message) {
+public class KakaoCafeException extends RuntimeException {
+    public KakaoCafeException(String message) {
         super(message);
     }
 }
