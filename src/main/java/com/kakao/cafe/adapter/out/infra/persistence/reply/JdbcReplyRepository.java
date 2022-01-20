@@ -25,7 +25,7 @@ public class JdbcReplyRepository implements ReplyRepository {
     private final static String COLUMN_CONTENTS = "contents";
     private final static String COLUMN_CREATED_AT = "createdAt";
     private final static String COLUMN_DELETED = "deleted";
-    private final static String SELECT_ALL = "select * from " + REPLY_TABLE;
+    private final static String QUERY_SELECT_ALL = "select * from " + REPLY_TABLE;
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -51,7 +51,7 @@ public class JdbcReplyRepository implements ReplyRepository {
 
     @Override
     public List<Reply> getAllReplyListByArticleId(int articleId) {
-        String sql = SELECT_ALL + " where " + COLUMN_ARTICLE_ID + "=? AND " + COLUMN_DELETED + "=false";
+        String sql = QUERY_SELECT_ALL + " where " + COLUMN_ARTICLE_ID + "=? AND " + COLUMN_DELETED + "=false";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new ReplyMapper().mapRow(rs, rowNum), articleId);
     }
 

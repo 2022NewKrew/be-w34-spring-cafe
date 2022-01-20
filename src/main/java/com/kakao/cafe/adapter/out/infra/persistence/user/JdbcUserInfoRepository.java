@@ -24,7 +24,7 @@ public class JdbcUserInfoRepository implements UserInfoRepository {
     private static final String COLUMN_PASSWORD = "password";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_EMAIL = "email";
-    private static final String SELECT_ALL = "select * from " + USER_TABLE;
+    private static final String QUERY_SELECT_ALL = "select * from " + USER_TABLE;
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -55,12 +55,12 @@ public class JdbcUserInfoRepository implements UserInfoRepository {
 
     @Override
     public List<User> getAllUserList() {
-        return jdbcTemplate.query(SELECT_ALL, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
+        return jdbcTemplate.query(QUERY_SELECT_ALL, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        String sql = SELECT_ALL + " where " + COLUMN_ID + " = ?";
+        String sql = QUERY_SELECT_ALL + " where " + COLUMN_ID + " = ?";
         try {
             User user = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum), userId);
             return Optional.ofNullable(user);

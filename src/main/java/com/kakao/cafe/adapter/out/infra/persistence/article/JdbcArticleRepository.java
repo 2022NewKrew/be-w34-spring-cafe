@@ -27,8 +27,8 @@ public class JdbcArticleRepository implements ArticleRepository {
     private final static String COLUMN_CONTENTS = "contents";
     private final static String COLUMN_CREATED_AT = "createdAt";
     private final static String COLUMN_DELETED = "deleted";
-    private final static String SELECT_ALL = "select * from " + ARTICLE_TABLE;
-    private final static String NOT_DELETED = " where " + COLUMN_DELETED + "=false";
+    private final static String QUERY_SELECT_ALL = "select * from " + ARTICLE_TABLE;
+    private final static String QUERY_CONDITION_NOT_DELETED = " where " + COLUMN_DELETED + "=false";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -68,12 +68,15 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> getAllArticleList() {
-        return jdbcTemplate.query(SELECT_ALL + NOT_DELETED, (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum));
+        return jdbcTemplate.query(
+            QUERY_SELECT_ALL + QUERY_CONDITION_NOT_DELETED,
+            (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum)
+        );
     }
 
     @Override
     public Optional<Article> findById(int id) {
-        String sql = SELECT_ALL + " where " + COLUMN_ID + " = ?";
+        String sql = QUERY_SELECT_ALL + " where " + COLUMN_ID + " = ?";
         try {
             Article article = jdbcTemplate.queryForObject(
                 sql,
