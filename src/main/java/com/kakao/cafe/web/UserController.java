@@ -24,11 +24,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("user/form.html")
-    public String signUpPage() {
-        logger.info("signup form");
-        return "user/form";
+    @PostMapping("/login")
+    public String login(String userId, String password, HttpSession session) {
+        UserResponseDto target = userService.userLogin(userId, password);
+        if (target != null) {
+            session.setAttribute("sessionUser", target);
+            return "redirect:/";
+        }
+        return "redirect:/user/login.html";
     }
+
 
     @PostMapping("user/create")
     public String signUp(UserCreateRequestDto userCreateRequestDto) {

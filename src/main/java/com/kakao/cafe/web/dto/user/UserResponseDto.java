@@ -9,12 +9,14 @@ public class UserResponseDto {
     private final String signUpDate;
     private final String name;
     private final String email;
+    private final String password;
 
     @Builder
-    public UserResponseDto(String userId, String signUpDate, String name, String email) {
+    public UserResponseDto(String userId, String signUpDate, String name, String email, String password) {
         this.userId = userId;
         this.signUpDate = signUpDate;
         this.name = name;
         this.email = email;
+        this.password = password;
     }
 }

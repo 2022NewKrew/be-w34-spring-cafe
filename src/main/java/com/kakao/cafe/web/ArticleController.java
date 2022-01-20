@@ -30,7 +30,7 @@ public class ArticleController {
     @PostMapping("article/create")
     public String articleWrite(ArticleCreateRequestDto articleCreateRequestDto) {
         logger.info("article: {}", articleCreateRequestDto);
-        articleService.postArticle(new Article(articleCreateRequestDto.getTitle(),articleCreateRequestDto.getContent()));
+        articleService.postArticle(new Article(articleCreateRequestDto.getTitle(), articleCreateRequestDto.getContent()));
         return "redirect:/";
     }
 
@@ -44,7 +44,7 @@ public class ArticleController {
 
     @GetMapping("article/{articleIndex}")
     public String articleDetail(@PathVariable String articleIndex, Model model) {
-        logger.info("artile Detail:{}", model.addAttribute("article", articleService.findById(articleIndex)));
+        logger.info("article Detail:{}", model.addAttribute("article", articleService.findById(articleIndex)));
         return "/article/show";
     }
 
