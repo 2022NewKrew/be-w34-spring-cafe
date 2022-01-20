@@ -3,6 +3,8 @@ package com.kakao.cafe.user.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import com.kakao.cafe.common.SessionUser;
@@ -15,60 +17,58 @@ import com.kakao.cafe.user.dto.response.UserInfoResponseDTO;
 import com.kakao.cafe.user.entity.User;
 import com.kakao.cafe.user.repository.UserRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-	private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-	@Override
-	public void create(UserCreateRequestDTO userCreateRequestDto) {
-		userRepository.save(userCreateRequestDto.toEntity());
-	}
+    @Override
+    public void create(UserCreateRequestDTO userCreateRequestDto) {
+        userRepository.save(userCreateRequestDto.toEntity());
+    }
 
-	@Override
-	public List<UserFindResponseDTO> getAllUser() {
-		return userRepository.findAll().stream()
-			.map(UserFindResponseDTO::new)
-			.collect(Collectors.toList());
-	}
+    @Override
+    public List<UserFindResponseDTO> getAllUser() {
+        return userRepository.findAll().stream()
+                             .map(UserFindResponseDTO::new)
+                             .collect(Collectors.toList());
+    }
 
-	@Override
-	public UserFindResponseDTO getUserById(int id) {
-		User user = userRepository.findById(id).orElseThrow();
+    @Override
+    public UserFindResponseDTO getUserById(int id) {
+        User user = userRepository.findById(id).orElseThrow();
 
-		return new UserFindResponseDTO(user);
-	}
+        return new UserFindResponseDTO(user);
+    }
 
-	@Override
-	public UserInfoResponseDTO getUserInfoById(int id) {
-		User user = userRepository.findById(id).orElseThrow();
+    @Override
+    public UserInfoResponseDTO getUserInfoById(int id) {
+        User user = userRepository.findById(id).orElseThrow();
 
-		return new UserInfoResponseDTO(user);
-	}
+        return new UserInfoResponseDTO(user);
+    }
 
-	@Override
-	public void update(int id, UserUpdateRequestDTO userUpdateRequestDTO) {
-		User user = userRepository.findById(id).orElseThrow();
+    @Override
+    public void update(int id, UserUpdateRequestDTO userUpdateRequestDTO) {
+        User user = userRepository.findById(id).orElseThrow();
 
-		user.updateInfo(
-			userUpdateRequestDTO.getPassword(),
-			userUpdateRequestDTO.getName(),
-			userUpdateRequestDTO.getEmail()
-		);
+        user.updateInfo(
+                userUpdateRequestDTO.getPassword(),
+                userUpdateRequestDTO.getName(),
+                userUpdateRequestDTO.getEmail()
+        );
 
-		userRepository.update(id, user);
-	}
+        userRepository.update(id, user);
+    }
 
-	@Override
-	public SessionUser checkLogin(UserLoginRequestDTO userLoginRequestDTO) {
-		User user = userRepository.findByUserId(userLoginRequestDTO.getUserId()).orElseThrow();
+    @Override
+    public SessionUser checkLogin(UserLoginRequestDTO userLoginRequestDTO) {
+        User user = userRepository.findByUserId(userLoginRequestDTO.getUserId()).orElseThrow();
 
-		if (!user.getPassword().equals(userLoginRequestDTO.getPassword())) {
-			throw new IllegalLoginException("잘못된 id와 password 입니다.");
-		}
+        if (!user.getPassword().equals(userLoginRequestDTO.getPassword())) {
+            throw new IllegalLoginException("잘못된 id와 password 입니다.");
+        }
 
-		return new SessionUser(user);
-	}
+        return new SessionUser(user);
+    }
 }

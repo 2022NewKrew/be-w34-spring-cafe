@@ -6,13 +6,13 @@ import java.util.Optional;
 import com.kakao.cafe.user.entity.User;
 
 public interface UserRepository {
-	void save(User user);
+    void save(User user);
 
-	List<User> findAll();
+    List<User> findAll();
 
-	Optional<User> findById(int id);
+    Optional<User> findById(int id);
 
-	Optional<User> findByUserId(String userId);
+    Optional<User> findByUserId(String userId);
 
-	void update(int id, User user);
+    void update(int id, User user);
 }

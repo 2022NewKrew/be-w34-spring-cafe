@@ -6,13 +6,13 @@ import java.util.Optional;
 import com.kakao.cafe.article.entity.Article;
 
 public interface ArticleRepository {
-	void save(Article article);
+    void save(Article article);
 
-	List<Article> findAll();
+    List<Article> findAll();
 
-	Optional<Article> findById(int id);
+    Optional<Article> findById(int id);
 
-	void update(int id, Article article);
+    void update(int id, Article article);
 
-	void delete(int id);
+    void delete(int id);
 }
