@@ -11,5 +11,5 @@ public class ArticleDTO {
     private final String writtenTime;
     private final String content;
     private final String title;
-    private final String articleId;
+    private final int articleId;
 }

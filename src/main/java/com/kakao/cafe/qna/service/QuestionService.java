@@ -34,8 +34,8 @@ public class QuestionService {
                 article.getPoint(), String.valueOf(article.getId()));
     }
 
-    public PackedArticleDTO getPackedArticle(String idx) {
-        Article foundArticle = articleRepository.getArticleLst().get(Integer.parseInt(idx) - 1);
+    public PackedArticleDTO getPackedArticle(int idx) {
+        Article foundArticle = articleRepository.getArticleLst().get(idx - 1);
         ArticleDTO articleDTO = makeArticleDTOFromArticle(foundArticle,
                 getWriterProfileAddress(foundArticle));
 
@@ -57,7 +57,7 @@ public class QuestionService {
 
     private ArticleDTO makeArticleDTOFromArticle(Article article, String profileAddress) {
         return new ArticleDTO(article.getWriter(), profileAddress,
-                article.getWrittenTime(), article.getContent(), article.getTitle(), String.valueOf(article.getId()));
+                article.getWrittenTime(), article.getContent(), article.getTitle(), article.getId());
     }
 
     private PackedArticleDTO makePackedArticle(ArticleDTO article, List<ReplyDTO> replies) {

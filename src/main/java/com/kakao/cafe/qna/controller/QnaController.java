@@ -33,7 +33,7 @@ public class QnaController {
     }
 
     @GetMapping("/articles/{index}")
-    public String getArticle(Model model, @PathVariable String index) {
+    public String getArticle(Model model, @PathVariable int index) {
         log.debug("Article List Request. Index : {}", index);
         model.addAttribute("pack", questionService.getPackedArticle(index));
         return "qna/show";
