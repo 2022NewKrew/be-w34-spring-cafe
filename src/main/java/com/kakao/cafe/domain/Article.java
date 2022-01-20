@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class Article {
     private int id;
-    private String writer;
+    private String writer;  // FK references MEMBER.userId
     private String title;
     private String contents;
 }

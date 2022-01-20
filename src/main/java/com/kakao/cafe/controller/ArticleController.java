@@ -41,7 +41,9 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String postQuestion(ArticlePostDto article) {
+    public String postArticles(ArticlePostDto article, HttpSession session) {
+        String writerId = userService.getUserIdFromSession(session);
+        article.setWriter(writerId);
         try {
             articleService.post(article);
         } catch (SQLException e) {
@@ -61,7 +63,7 @@ public class ArticleController {
 
         try {
             article = articleService.findById(id);
-            writer = userService.findByName(article.getWriter());
+            writer = userService.findById(article.getWriter());
             model.addAttribute("article", article);
             model.addAttribute("writer", writer);
         } catch (NoSuchElementException e) {
@@ -74,7 +76,6 @@ public class ArticleController {
 
     @PutMapping("/{id}")
     public String modifyArticle(@PathVariable int id, ArticlePostDto articlePostDto) {
-        // TODO
         try {
             articleService.update(id, articlePostDto);
         } catch (NoSuchElementException e) {
@@ -86,21 +87,25 @@ public class ArticleController {
 
     @DeleteMapping("/{id}")
     public String deleteArticle(@PathVariable int id) {
-        // TODO
+        try {
+            articleService.delete(id);
+        } catch (NoSuchElementException e) {
+            return "redirect:/";
+        }
+
         return "redirect:/";
     }
 
     @GetMapping("/{id}/form")
     public String modifyForm(@PathVariable int id, Model model, HttpSession session) {
         ArticleDto articleDto = articleService.findById(id);
-        String writerName = articleDto.getWriter();
-        UserProfileDto writer = userService.findByName(writerName);
+        String writerId = articleDto.getWriter();
 
-        if (!userService.checkSessionUser(writer.getUserId(), session)) { // 다른 작성자의 글 수정 불가
+        if (!userService.checkSessionUser(writerId, session)) { // 다른 작성자의 글 수정 불가
             return "redirect:/";
         }
 
-        model.addAttribute("writer", writer.getUserId());
+        model.addAttribute("writer", writerId);
         model.addAttribute("modify", id);
 
         return "/qna/form";

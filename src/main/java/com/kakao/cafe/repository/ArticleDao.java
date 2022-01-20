@@ -55,6 +55,14 @@ public class ArticleDao implements ArticleRepository {
         jdbcTemplate.update(sql, article.getTitle(), article.getContents(), article.getId());
     }
 
+    public void delete(int id) {
+        String sql = String.format("delete from %s where %s = ?",
+                ArticleDBConstants.TABLE_NAME,
+                ArticleDBConstants.COLUMN_ID);
+
+        jdbcTemplate.update(sql, id);
+    }
+
     public List<Article> findAll() {
         String sql = String.format("select * from %s", ArticleDBConstants.TABLE_NAME);
 

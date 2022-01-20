@@ -9,7 +9,8 @@ import java.util.NoSuchElementException;
 
 public interface ArticleService {
     void post(ArticlePostDto a) throws SQLException, NoSuchElementException;
-    void update(int id, ArticlePostDto modifiedArticle);
+    void update(int id, ArticlePostDto modifiedArticle) throws NoSuchElementException;
+    void delete(int id) throws  NoSuchElementException;
     List<ArticleDto> getArticleList();
     ArticleDto findById(int id) throws NoSuchElementException;
 }
