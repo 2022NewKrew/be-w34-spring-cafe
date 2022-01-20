@@ -1,11 +1,14 @@
 package com.kakao.cafe.comment.domain;
 
-import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static com.kakao.cafe.common.exception.ExceptionMessage.VALUE_LENGTH_LOWERBOUND_EXCEPTION;
 
 @Getter
 @AllArgsConstructor
@@ -26,9 +29,36 @@ public class Comment {
     @NonNull
     private String createdAt;
 
-    @NonNull
-    private User author;
+//    @NonNull
+//    private User author;
+//
+//    @NonNull
+//    private Article article;
 
-    @NonNull
-    private Article article;
+    private Comment(int articleId, String authorId, String content, String createdAt) {
+        this.articleId = articleId;
+        this.authorId = authorId;
+        this.content = content;
+        this.createdAt = createdAt;
+    }
+
+    public static Comment valueOf(int articleId, String authorId, String content) {
+        validateContentLength(content);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String localDateTime = LocalDateTime.now().format(dateTimeFormatter);
+        return new Comment(articleId, authorId, content, localDateTime);
+    }
+
+    /**
+     * Use for JDBC mapper. This method calls All args constructor annotated above.
+     */
+    public static Comment valueOf(int id, int articleId, String authorId, String content, String createdAt) {
+        return new Comment(id, articleId, authorId, content, createdAt);
+    }
+
+    private static void validateContentLength(String content) throws IllegalArgumentException {
+        if (content.trim().length() == 0) {
+            throw new IllegalArgumentException(VALUE_LENGTH_LOWERBOUND_EXCEPTION);
+        }
+    }
 }

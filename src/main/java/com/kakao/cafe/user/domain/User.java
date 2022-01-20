@@ -1,7 +1,6 @@
 package com.kakao.cafe.user.domain;
 
 import com.kakao.cafe.common.exception.AuthenticationException;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -49,7 +48,7 @@ public class User {
 
     private static void validateLength(String userId, String password, String name) throws IllegalArgumentException {
         if (userId.trim().length() == 0 || password.trim().length() == 0 || name.trim().length() == 0) {
-            throw new IllegalArgumentException(NON_NULL_EXCEPTION);
+            throw new IllegalArgumentException(VALUE_LENGTH_LOWERBOUND_EXCEPTION);
         }
     }
 

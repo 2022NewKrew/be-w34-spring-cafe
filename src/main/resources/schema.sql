@@ -13,3 +13,13 @@ create table if not exists articles (
     created_at varchar(20) not null,
     foreign key(author_id) references users(user_id) on delete set null
 );
+
+create table if not exists comments (
+    id bigint not null primary key auto_increment,
+    article_id bigint,
+    author_id varchar(20),
+    content BLOB not null,
+    created_at varchar(20) not null,
+    foreign key(article_id) references articles(id) on delete set null,
+    foreign key(author_id) references users(user_id) on delete set null
+);

@@ -2,6 +2,8 @@ delete from users;
 
 delete from articles;
 
+delete from comments;
+
 insert into users(user_id, password, username, email)
 values('a', 'a', 'james', 'aaa@google.com');
 
@@ -37,3 +39,10 @@ values(15, 'foo', 'foo article title 2', 'foo article content 2', '2021-12-12 12
 
 insert into articles(id, author_id, title, content, created_at)
 values(16, 'bar', 'bar article title 1', 'bar article content 1', '2021-12-12 12:23');
+
+insert into comments(id, article_id, author_id, content, created_at)
+values(11, 10, 'foo', 'content1 content1 content1 content1', '2022-01-12 12:23');
+
+insert into comments(id, article_id, author_id, content, created_at)
+values(12, 10, 'a', 'waeivnoweiouwrnwbrunwrlfnjwelk', '2022-01-01 12:23');
+

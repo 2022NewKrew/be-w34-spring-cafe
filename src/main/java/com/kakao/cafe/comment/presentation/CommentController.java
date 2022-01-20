@@ -24,7 +24,6 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-
     @PostMapping
     public String save(@PathVariable String articleId) {
         log.info(this.getClass() + ": 댓글 작성");

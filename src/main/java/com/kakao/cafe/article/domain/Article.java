@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static com.kakao.cafe.common.exception.ExceptionMessage.NON_NULL_EXCEPTION;
+import static com.kakao.cafe.common.exception.ExceptionMessage.VALUE_LENGTH_LOWERBOUND_EXCEPTION;
 
 @Getter
 @AllArgsConstructor
@@ -41,15 +41,15 @@ public class Article {
     }
 
     public static Article valueOf(String userId, String title, String content) {
-        validateLength(title, content);
+        validateTitleLength(title, content);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String localDateTime = LocalDateTime.now().format(dateTimeFormatter);
         return new Article(userId, title, content, localDateTime);
     }
 
-    private static void validateLength(String title, String content) {
+    private static void validateTitleLength(String title, String content) {
         if (title.trim().length() == 0 || content.trim().length() == 0) {
-            throw new IllegalArgumentException(NON_NULL_EXCEPTION);
+            throw new IllegalArgumentException(VALUE_LENGTH_LOWERBOUND_EXCEPTION);
         }
     }
 
