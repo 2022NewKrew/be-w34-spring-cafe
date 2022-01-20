@@ -6,12 +6,13 @@ public class Qna {
     private String writer;
     private String title;
     private String contents;
-    private Boolean deleted = false;
+    private Boolean deleted;
 
     public Qna(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.deleted = false;
     }
 
     public Qna(Integer id, String writer, String title, String contents) {
@@ -19,6 +20,7 @@ public class Qna {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.deleted = false;
     }
 
     public void updateQna(String title, String contents) {

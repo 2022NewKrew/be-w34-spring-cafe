@@ -9,13 +9,14 @@ public class Comment {
     private String contents;
     private Integer qnaId;
     private LocalDateTime createdAt;
-    private Boolean deleted = false;
+    private Boolean deleted;
 
     public Comment(Integer qnaId, String writer, String contents) {
         this.writer = writer;
         this.qnaId = qnaId;
         this.contents = contents;
         this.createdAt = LocalDateTime.now();
+        this.deleted = false;
     }
 
     public Comment(Integer id, String writer, String contents, Integer qnaId, LocalDateTime createdAt) {
@@ -24,6 +25,7 @@ public class Comment {
         this.contents = contents;
         this.qnaId = qnaId;
         this.createdAt = createdAt;
+        this.deleted = false;
     }
 
     public Boolean isValidUpdateUser(String userId) {
