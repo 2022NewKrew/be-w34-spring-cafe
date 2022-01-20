@@ -9,13 +9,13 @@ import lombok.ToString;
 @ToString
 public class Article {
     private Long id;
-    private String writer;
+    private User writer;
     private String title;
     private String contents;
 
     public void updateId(Long id) { this.id = id; }
 
-    public static Article of(String writer, String title, String contents) {
+    public static Article of(User writer, String title, String contents) {
         return Article.builder()
                 .writer(writer)
                 .title(title)

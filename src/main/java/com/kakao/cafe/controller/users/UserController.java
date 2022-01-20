@@ -3,6 +3,7 @@ package com.kakao.cafe.controller.users;
 
 import com.kakao.cafe.common.exception.custom.UpdateFailedException;
 import com.kakao.cafe.common.exception.data.ErrorCode;
+import com.kakao.cafe.common.session.SessionKeys;
 import com.kakao.cafe.controller.users.dto.request.UserUpdateRequest;
 import com.kakao.cafe.controller.users.dto.request.UserSignUpRequest;
 import com.kakao.cafe.controller.users.mapper.UserViewMapper;
@@ -55,8 +56,9 @@ public class UserController {
 
 
     @GetMapping("{userId}/form")
-    public String showUpdateForm(@PathVariable String userId, Model model, HttpSession httpSession) {
-        UserIdentification loginInfo = UserIdentification.getIdFromSession(httpSession);
+    public String showUpdateForm(@PathVariable String userId,
+                                 Model model,
+                                 @SessionAttribute(name = SessionKeys.USER_IDENTIFICATION) UserIdentification loginInfo) {
         validateUpdateUserId(loginInfo, userId);
         UserInfo userInfo = userService.getUserInfo(userId);
         model.addAttribute("user", userViewMapper.toUserUpdateFormResponse(userInfo));
@@ -65,8 +67,9 @@ public class UserController {
 
 
     @PostMapping("{userId}/update")
-    public String updateUser(@PathVariable String userId, UserUpdateRequest userUpdateRequest, HttpSession httpSession) {
-        UserIdentification loginInfo = UserIdentification.getIdFromSession(httpSession);
+    public String updateUser(@PathVariable String userId,
+                             UserUpdateRequest userUpdateRequest,
+                             @SessionAttribute(name = SessionKeys.USER_IDENTIFICATION) UserIdentification loginInfo) {
         validateUpdateUserId(loginInfo, userId);
         UserUpdateForm userUpdateForm = userDtoMapper.toUserUpdateForm(userUpdateRequest);
         userService.update(userUpdateForm);

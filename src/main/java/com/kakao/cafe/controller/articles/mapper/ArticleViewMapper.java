@@ -21,13 +21,13 @@ public class ArticleViewMapper {
         return ArticleItemResponse.builder()
                 .id(articleInfo.getId())
                 .title(articleInfo.getTitle())
-                .writer(articleInfo.getWriter())
+                .writer(articleInfo.getWriterName())
                 .build();
     }
 
     public ArticleDetailResponse toArticleDetailResponse(ArticleInfo articleInfo) {
         return ArticleDetailResponse.builder()
-                .writer(articleInfo.getWriter())
+                .writer(articleInfo.getWriterName())
                 .title(articleInfo.getTitle())
                 .contents(articleInfo.getContents())
                 .build();

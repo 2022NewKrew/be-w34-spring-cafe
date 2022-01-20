@@ -2,6 +2,7 @@ package com.kakao.cafe.configuration;
 
 import com.kakao.cafe.repository.article.ArticleRepository;
 import com.kakao.cafe.repository.article.JdbcArticleRepository;
+import com.kakao.cafe.repository.article.mapper.ArticleRowMapper;
 import com.kakao.cafe.repository.user.JdbcUserRepository;
 import com.kakao.cafe.repository.user.UserRepository;
 
@@ -19,7 +20,7 @@ public class RepositoryConfig {
     }
 
     @Bean
-    public ArticleRepository articleRepository(JdbcTemplate jdbcTemplate) {
-        return new JdbcArticleRepository(jdbcTemplate);
+    public ArticleRepository articleRepository(JdbcTemplate jdbcTemplate, ArticleRowMapper articleRowMapper) {
+        return new JdbcArticleRepository(jdbcTemplate, articleRowMapper);
     }
 }

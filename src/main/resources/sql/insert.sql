@@ -3,5 +3,5 @@ INSERT INTO USERS (user_id, password, user_name, email) VALUES ('sanjigi', 'test
 INSERT INTO USERS (user_id, password, user_name, email) VALUES ('jeuslhg', '1234', '이희관', 'jeuslhg@gmail.com');
 
 
-INSERT INTO articles (writer, title, contents) VALUES ('이희관', '안녕하세요. 뉴크루', '이희관 입니다.');
-INSERT INTO articles (writer, title, contents) VALUES ('자바지기', '안녕하세요. 자바지기 입니다.', '자바지기 입니다.');
+INSERT INTO articles (user_id, title, contents) VALUES ('jeuslhg', '안녕하세요. 뉴크루', '이희관 입니다.');
+INSERT INTO articles (user_id, title, contents) VALUES ('javajigi', '안녕하세요. 자바지기 입니다.', '자바지기 입니다.');

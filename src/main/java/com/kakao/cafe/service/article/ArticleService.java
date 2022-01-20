@@ -1,5 +1,9 @@
 package com.kakao.cafe.service.article;
 
+import com.kakao.cafe.common.exception.custom.UserNotFoundException;
+import com.kakao.cafe.common.exception.data.ErrorCode;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.user.UserRepository;
 import com.kakao.cafe.service.article.mapper.ArticleDtoMapper;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.article.ArticleRepository;
@@ -8,12 +12,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
     private final ArticleDtoMapper articleDtoMapper;
 
     public List<ArticleInfo> getArticleAll() {
@@ -26,9 +32,10 @@ public class ArticleService {
         return articleDtoMapper.toArticleInfo(article);
     }
 
-    public Long writeArticle(String writer, String title, String contents) {
-        Article article = Article.of(writer, title, contents);
-        articleRepository.insertArticle(article);
+    public Long write(String writerId, String title, String contents) {
+        User findUser = userRepository.findByUserId(writerId).orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
+        Article article = Article.of(findUser, title, contents);
+        articleRepository.insert(article);
         return article.getId();
     }
 }

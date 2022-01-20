@@ -17,17 +17,20 @@ import java.util.Optional;
 public class JdbcArticleRepository implements ArticleRepository{
 
     private final JdbcTemplate jdbcTemplate;
+    private final ArticleRowMapper articleRowMapper;
 
-    private static final String INSERT_ARTICLE_QUERY = "INSERT INTO articles(writer, title, contents) VALUES(?,?,?)";
-    private static final String SELECT_ARTICLES_QUERY = "SELECT id, writer, title, contents FROM articles";
-    private static final String SELECT_ARTICLES_BY_ID_QUERY = "SELECT id, writer, title, contents FROM articles WHERE id = ?";
+    private static final String INSERT_ARTICLE_QUERY = "INSERT INTO articles(user_id, title, contents) VALUES(?,?,?)";
+    private static final String SELECT_ARTICLES_QUERY
+            = "SELECT a.id as id, a.user_id as writer_id, u.user_name as writer_name, a.title as title, a.contents as contents FROM articles as a INNER JOIN users as u ON a.user_id = u.user_id";
+    private static final String SELECT_ARTICLES_BY_ID_QUERY
+            = "SELECT a.id as id, a.user_id as writer_id, u.user_name as writer_name, a.title as title, a.contents as contents FROM articles as a INNER JOIN users as u ON a.user_id = u.user_id WHERE a.id = ?";
 
     @Override
-    public Long insertArticle(Article article) {
+    public Long insert(Article article) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(conn -> {
             PreparedStatement ps = conn.prepareStatement(INSERT_ARTICLE_QUERY, PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, article.getWriter());
+            ps.setString(1, article.getWriter().getUserId());
             ps.setString(2, article.getTitle());
             ps.setString(3, article.getContents());
             return ps;
@@ -38,11 +41,12 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query(SELECT_ARTICLES_QUERY, new ArticleRowMapper());
+        return jdbcTemplate.query(SELECT_ARTICLES_QUERY, articleRowMapper);
     }
 
     @Override
     public Optional<Article> findById(Long articleId) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_ARTICLES_BY_ID_QUERY, new ArticleRowMapper(), articleId));
+        List<Article> articles = jdbcTemplate.query(SELECT_ARTICLES_BY_ID_QUERY, articleRowMapper, articleId);
+        return articles.stream().findFirst();
     }
 }

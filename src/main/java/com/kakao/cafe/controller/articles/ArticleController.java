@@ -1,6 +1,10 @@
 package com.kakao.cafe.controller.articles;
 
 import com.kakao.cafe.common.authentification.Auth;
+import com.kakao.cafe.common.authentification.UserIdentification;
+import com.kakao.cafe.common.exception.custom.LoginFailedException;
+import com.kakao.cafe.common.exception.data.ErrorCode;
+import com.kakao.cafe.common.session.SessionKeys;
 import com.kakao.cafe.controller.articles.dto.request.ArticleWriteRequest;
 import com.kakao.cafe.controller.articles.mapper.ArticleViewMapper;
 import com.kakao.cafe.service.article.ArticleService;
@@ -9,10 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,8 +43,9 @@ public class ArticleController {
 
     @Auth
     @PostMapping("/articles")
-    public String write(ArticleWriteRequest articleWriteRequest) {
-        articleService.writeArticle(articleWriteRequest.getWriter(), articleWriteRequest.getTitle(), articleWriteRequest.getContents());
+    public String write(ArticleWriteRequest articleWriteRequest,
+                        @SessionAttribute(name = SessionKeys.USER_IDENTIFICATION) UserIdentification loginInfo) {
+        articleService.write(loginInfo.getUserId(), articleWriteRequest.getTitle(), articleWriteRequest.getContents());
         return "redirect:/";
     }
 
@@ -55,7 +58,6 @@ public class ArticleController {
     @Auth
     @PutMapping("/articles/{articleId}")
     public String update(ArticleWriteRequest articleWriteRequest) {
-        articleService.writeArticle(articleWriteRequest.getWriter(), articleWriteRequest.getTitle(), articleWriteRequest.getContents());
         return "redirect:/";
     }
 

@@ -10,7 +10,8 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS articles;
 CREATE TABLE articles (
    id long NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   writer varchar(20) NOT NULL,
+   user_id varchar(20) NOT NULL,
    title varchar(100) NOT NULL,
-   contents varchar(1000) NOT NULL
+   contents varchar(1000) NOT NULL,
+   FOREIGN KEY (user_id) REFERENCES users(user_id)
 );

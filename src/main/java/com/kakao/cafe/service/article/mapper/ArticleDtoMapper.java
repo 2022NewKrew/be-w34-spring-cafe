@@ -19,7 +19,8 @@ public class ArticleDtoMapper {
     public ArticleInfo toArticleInfo(Article article) {
         return ArticleInfo.builder()
                 .id(article.getId())
-                .writer(article.getWriter())
+                .writerId(article.getWriter().getUserId())
+                .writerName(article.getWriter().getUserName())
                 .title(article.getTitle())
                 .contents(article.getContents()).build();
     }
