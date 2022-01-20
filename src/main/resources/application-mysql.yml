@@ -11,7 +11,7 @@ spring:
     driver-class:name: com.mysql.cj.jdbc.Driver
     username: more
     password: erom
-    url: jdbc:mysql://localhost:3306/kakaodb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/kakaodb?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
   messages:
     basename: errors
   mvc:

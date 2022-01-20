@@ -1,10 +1,9 @@
-package com.kakao.cafe.qna;
+package com.kakao.cafe.qna.article;
 
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 /**
  * Created by melodist
@@ -19,9 +18,9 @@ public class ArticleMapper implements RowMapper<Article> {
                 rs.getString("WRITER"),
                 rs.getString("TITLE"),
                 rs.getString("CONTENTS"),
-                rs.getInt("REPLY_COUNT"),
+                rs.getInt("COMMENTS_COUNT"),
                 rs.getString("IS_DELETED").equals("Y") ? Boolean.TRUE : Boolean.FALSE,
-                Timestamp.valueOf(rs.getString("CREATED_DATE")).toLocalDateTime(),
-                Timestamp.valueOf(rs.getString("MODIFIED_DATE")).toLocalDateTime());
+                rs.getTimestamp("CREATED_DATE").toLocalDateTime(),
+                rs.getTimestamp("MODIFIED_DATE").toLocalDateTime());
     }
 }

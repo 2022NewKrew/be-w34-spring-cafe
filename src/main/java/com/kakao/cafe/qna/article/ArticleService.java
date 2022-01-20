@@ -1,6 +1,8 @@
-package com.kakao.cafe.qna;
+package com.kakao.cafe.qna.article;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kakao.cafe.qna.comment.Comment;
+import com.kakao.cafe.qna.comment.CommentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,21 +13,29 @@ import java.util.List;
  * Time: 오후 1:48
  */
 @Service
+@RequiredArgsConstructor
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-
-    @Autowired
-    public ArticleService(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
+    private final CommentRepository commentRepository;
 
     public Article saveArticle(Article article) {
         return articleRepository.save(article);
     }
 
     public Article findArticleById(Integer id) {
-        return articleRepository.findArticleById(id);
+        Article article = articleRepository.findArticleById(id);
+        List<Comment> comments = commentRepository.findCommentsByArticleId(id);
+        for (Comment comment: comments) {
+            article.addComments(comment);
+        }
+
+        // 글 ID가 존재하지 않을 경우 예외 발생
+        if (article == null) {
+            throw new IllegalArgumentException();
+        }
+
+        return article;
     }
 
     public List<Article> findAll() {
@@ -35,11 +45,6 @@ public class ArticleService {
     public Article updateArticle(Integer id, String title, String contents, String userId) {
         Article article = findArticleById(id);
 
-        // 글 ID가 존재하지 않을 경우 예외 발생
-        if (article == null) {
-            throw new IllegalArgumentException();
-        }
-
         // 글 작성자 ID와 수정 요청자 ID가 일치해야 함
         if (!userId.equals(article.getWriter())) {
             throw new IllegalArgumentException();
@@ -47,17 +52,11 @@ public class ArticleService {
 
         article.updateContents(title, contents);
 
-        return articleRepository.update(article);
+        return articleRepository.updateContents(article);
     }
 
     public Article deleteArticle(Integer id, String userId) {
-
         Article article = findArticleById(id);
-
-        // 글 ID가 존재하지 않을 경우 예외 발생
-        if (article == null) {
-            throw new IllegalArgumentException();
-        }
 
         // 글 작성자 ID와 삭제 요청자 ID가 일치해야 함
         if (!userId.equals(article.getWriter())) {
@@ -66,6 +65,10 @@ public class ArticleService {
 
         article.deleteArticle();
 
-        return articleRepository.update(article);
+        return articleRepository.updateContents(article);
+    }
+
+    public int updateCommentsCount(Integer id, Integer commentsCount) {
+        return articleRepository.updateCommentsCount(id, commentsCount);
     }
 }

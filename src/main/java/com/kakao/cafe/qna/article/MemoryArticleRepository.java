@@ -1,4 +1,4 @@
-package com.kakao.cafe.qna;
+package com.kakao.cafe.qna.article;
 
 import org.springframework.stereotype.Repository;
 

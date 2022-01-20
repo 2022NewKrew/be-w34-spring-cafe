@@ -15,11 +15,11 @@ import java.util.List;
  */
 @Slf4j
 @Repository
-public class H2UserRepository implements UserRepository{
+public class JdbcUserRepository implements UserRepository{
 
     private final JdbcTemplate jdbcTemplate;
 
-    public H2UserRepository(DataSource dataSource) {
+    public JdbcUserRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 

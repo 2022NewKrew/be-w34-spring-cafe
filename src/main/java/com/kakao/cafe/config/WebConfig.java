@@ -1,7 +1,9 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.system.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -18,5 +20,13 @@ public class WebConfig implements WebMvcConfigurer {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         registry.addViewController("/user/form").setViewName("/user/form");
         registry.addViewController("/user/login").setViewName("/user/login");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginCheckInterceptor())
+                .order(1)
+                .addPathPatterns("/**/form")
+                .excludePathPatterns("/user/form");
     }
 }
