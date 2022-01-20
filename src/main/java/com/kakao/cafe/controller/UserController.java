@@ -1,11 +1,8 @@
 package com.kakao.cafe.controller;
 
 
-import com.kakao.cafe.dto.UserCreateDto;
-import com.kakao.cafe.dto.UserLoginDto;
-import com.kakao.cafe.dto.UserShowDto;
+import com.kakao.cafe.dto.UserDto;
 
-import com.kakao.cafe.dto.UserUpdateDto;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.UserService;
 
@@ -38,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String addUser(@ModelAttribute @Validated UserCreateDto userCreateDto
+    public String addUser(@ModelAttribute @Validated UserDto userDto
             , BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult
@@ -48,7 +45,7 @@ public class UserController {
                     .collect(Collectors.toList()));
             return "user/form_failed";
         }
-        userService.save(userCreateDto);
+        userService.save(userDto);
         return "redirect:/login/form";
     }
 
@@ -60,7 +57,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String getUser(@PathVariable Integer id, Model model) {
-        UserShowDto user = userService.findOne(id);
+        UserDto user = userService.findOne(id);
         model.addAttribute("user", user);
         return "user/profile";
     }
@@ -71,16 +68,16 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(UserLoginDto userLoginDto, HttpSession session, Model model) {
-        logger.info("id = {}, pw = {}", userLoginDto.getUserId(), userLoginDto.getPassword());
+    public String login(UserDto userDto, HttpSession session, Model model) {
+        logger.info("id = {}, pw = {}", userDto.getUserId(), userDto.getPassword());
         try {
-            User user = userService.validate(userLoginDto);
+            User user = userService.validate(userDto);
             session.setAttribute("sessionUser", user);
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
             return "/user/login_failed";
         }
-        return "index";
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
@@ -101,8 +98,8 @@ public class UserController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable Integer id, UserUpdateDto userUpdateDto){
-        userService.update(id, userUpdateDto);
+    public String updateUser(@PathVariable Integer id, UserDto userDto){
+        userService.update(id, userDto);
         return "redirect:/";
     }
 

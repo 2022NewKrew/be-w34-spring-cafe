@@ -1,32 +1,30 @@
 package com.kakao.cafe.dto;
 
 import com.kakao.cafe.model.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class UserCreateDto {
+@Setter
+@AllArgsConstructor
+public class UserDto {
 
+    private Integer id;
     @NotBlank(message = "id를 입력해주세요")
-    private final String userId;
+    private String userId;
     @NotBlank(message = "비밀번호를 입력해주세요")
-    private final String password;
+    private String password;
     @NotBlank(message = "이름을 입력해주세요")
-    private final String userName;
+    private String userName;
     @NotBlank(message = "이메일을 입력해주세요")
-    private final String email;
-    private Integer userSequence = 0;
+    private String email;
 
-    public UserCreateDto(String userId, String password, String userName, String email) {
-        this.userId = userId;
-        this.password = password;
-        this.userName = userName;
-        this.email = email;
-    }
 
     public User toEntity() {
-        return User.builder().id(userSequence++)
+        return User.builder().id(0)
                 .userId(userId)
                 .password(password)
                 .userName(userName)

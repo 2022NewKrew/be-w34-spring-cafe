@@ -8,9 +8,10 @@
                 {{#errors}}
                 <div class="alert alert-danger" role="alert">{{.}}</div>
                 {{/errors}}
+                {{#user}}
                 <div class="form-group">
                     <label for="writer">글쓴이</label>
-                    <input class="form-control" id="writer" name="writer" placeholder="글쓴이"/>
+                    <input value = "{{userId}}" class="form-control" id="writer" name="writer" placeholder="글쓴이" disabled/>
                 </div>
                 <div class="form-group">
                     <label for="title">제목</label>
@@ -22,6 +23,7 @@
                 </div>
                 <button type="submit" class="btn btn-success clearfix pull-right">질문하기</button>
                 <div class="clearfix" />
+                {{/user}}
             </form>
         </div>
     </div>

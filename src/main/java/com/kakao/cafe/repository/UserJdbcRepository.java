@@ -1,12 +1,15 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.dto.UserUpdateDto;
+import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,14 +26,20 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        jdbcTemplate.update(
-                "insert into users(id, userId, password, userName, email) values (?, ?, ?, ?, ?)",
-                user.getId(),
-                user.getUserId(),
-                user.getPassword(),
-                user.getUserName(),
-                user.getEmail()
-        );
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String sql = "insert into users(userId, password, userName, email) values (?, ?, ?, ?)";
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection
+                    .prepareStatement(sql);
+            ps.setString(1, user.getUserId());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getUserName());
+            ps.setString(4, user.getEmail());
+            return ps;
+        }, keyHolder);
+
     }
 
     @Override
@@ -59,12 +68,12 @@ public class UserJdbcRepository implements UserRepository {
     }
 
 
-    public void update(Integer id, UserUpdateDto userUpdateDto){
+    public void update(Integer id, UserDto userDto) {
         jdbcTemplate.update(
                 "update users set password = ?, userName = ?, email = ? where id = ?",
-                userUpdateDto.getPassword(),
-                userUpdateDto.getUserName(),
-                userUpdateDto.getEmail(),
+                userDto.getPassword(),
+                userDto.getUserName(),
+                userDto.getEmail(),
                 id
         );
     }
