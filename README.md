@@ -63,5 +63,5 @@
 - [x] 댓글기능 구현
 
 # step9
-- [ ] mysql과 자바 도커로 실행
-- [ ] docker 파일 krane에서 실행
+- [ ] mysql 도커로 실행
+- [ ] docker 파일 krane에서 배포 
