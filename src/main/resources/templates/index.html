@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="kr">
-{{>/head}}
+{{>layout/head}}
 <body>
-{{>/navbar}}
+{{>layout/navbar}}
 
 <div class="container" id="main">
    <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
@@ -13,12 +13,12 @@
                   <div class="wrap">
                       <div class="main">
                           <strong class="subject">
-                              <a href="./qna/show/{{seq}}">{{title}}</a>
+                              <a href="/qna/show/{{seq}}">{{title}}</a>
                           </strong>
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
                               <span class="time">{{time}}</span>
-                              <a href="./user/profile/{{writer}}" class="author">{{writer}}</a>
+                              <a href="/user/profile/{{writer}}" class="author">{{writer}}</a>
                           </div>
                           <div class="reply" title="댓글">
                               <i class="icon-reply"></i>
