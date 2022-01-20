@@ -1,5 +1,7 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.model.dto.CommentDto;
+import com.kakao.cafe.model.vo.CommentVo;
 import com.kakao.cafe.repository.ArticleDao;
 import com.kakao.cafe.model.dto.ArticleDto;
 import com.kakao.cafe.model.dto.UserDto;
@@ -50,4 +52,8 @@ public class ArticleService {
         articleDao.deleteArticle(index);
     }
 
+    public void writerComment(int index, CommentDto comment, UserDto user) {
+        comment.setWriter(modelMapper.map(user, UserVo.class));
+        articleDao.writerComment(index, modelMapper.map(comment, CommentVo.class));
+    }
 }

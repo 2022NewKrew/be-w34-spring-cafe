@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.model.dto.ArticleDto;
+import com.kakao.cafe.model.dto.CommentDto;
 import com.kakao.cafe.model.dto.UserDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.annotation.Auth;
@@ -52,7 +53,7 @@ public class ArticleController {
 
     @MyArticle
     @GetMapping("/articles/{index}/update")
-    public String updateArticleView(@PathVariable int index, HttpSession session, Model model) {
+    public String updateArticleView(@PathVariable int index, Model model) {
         ArticleDto article = articleService.filterArticleByIndex(index);
         model.addAttribute("article", article);
         return "qna/updateForm";
@@ -60,15 +61,23 @@ public class ArticleController {
 
     @MyArticle
     @PutMapping("/articles/{index}/update")
-    public String updateArticle(@PathVariable int index, ArticleDto article, HttpSession session) {
+    public String updateArticle(@PathVariable int index, ArticleDto article) {
         articleService.updateArticle(index, article);
         return "redirect:";
     }
 
     @MyArticle
     @DeleteMapping("/articles/{index}/delete")
-    public String deleteArticle(@PathVariable int index, HttpSession session) {
+    public String deleteArticle(@PathVariable int index) {
         articleService.deleteArticle(index);
         return "redirect:/";
+    }
+
+    @Auth
+    @PostMapping("/articles/{index}/comments")
+    public String writerComment(@PathVariable int index, CommentDto comment, HttpSession session) {
+        UserDto loginUser = (UserDto) session.getAttribute("sessionedUser");
+        articleService.writerComment(index, comment, loginUser);
+        return "redirect:";
     }
 }

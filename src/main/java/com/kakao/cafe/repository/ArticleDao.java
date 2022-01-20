@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.model.vo.ArticleVo;
+import com.kakao.cafe.model.vo.CommentVo;
 import com.kakao.cafe.model.vo.UserVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +50,11 @@ public class ArticleDao {
     public void deleteArticle(int index) {
         String sql = "DELETE FROM articles WHERE id = ?";
         jdbcTemplate.update(sql, index);
+    }
+
+    public void writerComment(int index, CommentVo comment) {
+        String sql = "INSERT INTO comments (contents, writer_id, article_id) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, comment.getContents(), comment.getWriter().getId(), index);
     }
 
     private RowMapper<ArticleVo> articleRowMapper() {
