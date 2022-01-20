@@ -48,7 +48,10 @@ public class CommentJdbc implements CommentRepository {
         });
 
         if (resultInsert != 1 || resultUpdate != 1) {
-            throw new IllegalStateException("Affected record(s) is not 2 for add comment! insert - " + resultInsert + ", update - " + resultUpdate);
+            throw new IllegalStateException(
+                    "Affected record(s) is not 2 for add comment" +
+                            "(article: " + comment.getArticleIdx() + ", user: " + comment.getUserId() + ")!" +
+                            " insert - " + resultInsert + ", update - " + resultUpdate);
         }
 
         return true;
@@ -79,7 +82,7 @@ public class CommentJdbc implements CommentRepository {
         );
 
         if (list.size() != 1) {
-            throw new IllegalStateException("Selected record(s) is not 1 for get comment! - " + list.size());
+            throw new IllegalStateException("Selected record(s) is not 1 for get comment(" + idx + ")! - " + list.size());
         }
 
         return list.get(0);
@@ -128,7 +131,7 @@ public class CommentJdbc implements CommentRepository {
         });
 
         if (result != 1) {
-            throw new IllegalStateException("Affected record(s) is not 1 for update comment! - " + result);
+            throw new IllegalStateException("Affected record(s) is not 1 for update comment(" + idx + ")! - " + result);
         }
 
         return true;
@@ -147,7 +150,7 @@ public class CommentJdbc implements CommentRepository {
         });
 
         if (result != 2) {
-            throw new IllegalStateException("Affected record(s) is not 2 for delete comment! - " + result);
+            throw new IllegalStateException("Affected record(s) is not 2 for delete comment(" + idx + ")! - " + result);
         }
 
         return true;

@@ -37,7 +37,11 @@ public class ArticleJdbc implements ArticleRepository {
             return pstmt;
         });
 
-        return (result > 0);
+        if (result != 1) {
+            throw new IllegalStateException("Affected record(s) is not 1 for add article(user: " + article.getUserId() + ")! - " + result);
+        }
+
+        return true;
     }
 
     @Override
@@ -67,6 +71,9 @@ public class ArticleJdbc implements ArticleRepository {
 
         if (list.size() == 0) {
             return null;
+        }
+        else if (list.size() > 1) {
+            throw new IllegalStateException("Selected record(s) is not 1 for get article(" + idx + ")! - " + list.size());
         }
 
         return list.get(0);
@@ -113,7 +120,11 @@ public class ArticleJdbc implements ArticleRepository {
             return pstmt;
         });
 
-        return (result > 0);
+        if (result != 1) {
+            throw new IllegalStateException("Affected record(s) is not 1 for update article(" + idx + ")! - " + result);
+        }
+
+        return true;
     }
 
     @Override
@@ -126,6 +137,10 @@ public class ArticleJdbc implements ArticleRepository {
             return pstmt;
         });
 
-        return (result > 0);
+        if (result != 1) {
+            throw new IllegalStateException("Affected record(s) is not 1 for delete article(" + idx + ")! - " + result);
+        }
+
+        return true;
     }
 }

@@ -34,7 +34,12 @@ public class UserJdbc implements UserRepository {
             return pstmt;
         });
 
-        return (result > 0);
+
+        if (result != 1) {
+            throw new IllegalStateException("Affected record(s) is not 1 for add user(" + user.getId() + ")! - " + result);
+        }
+
+        return true;
     }
 
     @Override
@@ -50,7 +55,11 @@ public class UserJdbc implements UserRepository {
                 (rs, count) -> rs.getString("id")
         );
 
-        return (list.size() > 0);
+        if (list.size() > 1) {
+            throw new IllegalStateException("Selected record(s) is greater then 1 for check user by id(" + id + ")! - " + list.size());
+        }
+
+        return (list.size() == 1);
     }
 
     @Override
@@ -68,6 +77,9 @@ public class UserJdbc implements UserRepository {
 
         if (list.size() == 0) {
             return User.NONE;
+        }
+        else if (list.size() > 1) {
+            throw new IllegalStateException("Selected record(s) is not 1 for get user by id(" + id + ")! - " + list.size());
         }
 
         return list.get(0);
@@ -100,6 +112,10 @@ public class UserJdbc implements UserRepository {
             return pstmt;
         });
 
-        return (result > 0);
+        if (result != 1) {
+            throw new IllegalStateException("Affected record(s) is not 1 for update user(" + idx + ")! - " + result);
+        }
+
+        return true;
     }
 }
