@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.CommentRepository;
 import com.kakao.cafe.repository.MemoryArticleRepository;
 import com.kakao.cafe.web.dto.ArticleCreateRequestDto;
 import com.kakao.cafe.web.dto.ArticleDetailResponseDto;
@@ -21,11 +22,13 @@ class ArticleServiceTest {
 
     ArticleService articleService;
     ArticleRepository articleRepository;
+    CommentRepository commentRepository;
 
     @BeforeEach
     void setUp() {
         articleRepository = new MemoryArticleRepository();
-        articleService = new ArticleService(articleRepository);
+        articleService = new ArticleService(articleRepository, commentRepository);
+
     }
 
     @DisplayName("게시글이 잘 등록되는가")

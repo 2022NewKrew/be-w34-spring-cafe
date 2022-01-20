@@ -3,6 +3,8 @@ package com.kakao.cafe.web.dto;
 import com.kakao.cafe.domain.article.Article;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -2,6 +2,7 @@ package com.kakao.cafe.web;
 
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.web.dto.ArticleCreateRequestDto;
+import com.kakao.cafe.web.dto.CommentCreateRequestDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +36,7 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String getArticleDetail(@PathVariable Long id, Model model) {
         model.addAttribute("article", articleService.getArticleDetail(id));
+        model.addAttribute("comments", articleService.getArticleComments(id));
         return "qna/show";
     }
 
@@ -42,5 +44,12 @@ public class ArticleController {
     public String deleteArticle(@PathVariable Long id) {
         articleService.deleteArticle(id);
         return "redirect:/";
+    }
+
+    @PostMapping("/articles/{id}/comment")
+    public String postComment(@PathVariable Long id, String contents, HttpSession session) {
+        String userId = session.getAttribute("user").toString();
+        articleService.postComment(new CommentCreateRequestDto(id, userId, contents));
+        return "redirect:/articles/{id}";
     }
 }
