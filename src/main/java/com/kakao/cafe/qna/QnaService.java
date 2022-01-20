@@ -9,6 +9,7 @@ import com.kakao.cafe.qna.dto.response.QnasResponse;
 import com.kakao.cafe.qna.repository.QnaRepository;
 import com.kakao.cafe.qna.repository.ReplyRepository;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,17 +29,28 @@ public class QnaService {
 
     public QnasResponse findAll() {
         List<Qna> qnas = qnaRepository.findAll();
-        return QnasResponse.qnasToResponse(qnas);
+
+        return QnasResponse.qnasToResponse(
+            qnas,
+            qnas.stream()
+                .collect(
+                    Collectors.toMap(Qna::getId,
+                        qna -> replyRepository.findByQnaId(qna.getId())
+                    )
+                )
+        );
     }
 
     public QnaResponse findById(long id) {
         Qna qna = qnaRepository.findById(id);
-        return QnaResponse.qnaToResponse(qna);
+        return QnaResponse.qnaToResponse(
+            qna,
+            replyRepository.findByQnaId(qna.getId())
+        );
     }
 
-    public QnaResponse findById(long id, String userName) {
-        Qna qna = qnaRepository.findById(id);
-        qna.validateEqualsWriter(userName);
+    public QnaResponse findByIdAndWriter(long id, String userId) {
+        Qna qna = qnaRepository.findByIdAndWriter(id, userId);
         return QnaResponse.qnaToResponse(qna);
     }
 

@@ -23,7 +23,7 @@ public class UserControllerAdvice {
     }
 
     @ExceptionHandler(CustomLoginFailException.class)
-    public String handleCustomPasswordNotEqualsException( CustomLoginFailException e) {
+    public String handleCustomPasswordNotEqualsException(CustomLoginFailException e) {
         logger.info(e.getMessage());
         return "user/login_failed";
     }

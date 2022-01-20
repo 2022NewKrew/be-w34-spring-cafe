@@ -1,7 +1,6 @@
 package com.kakao.cafe.user.domain;
 
 import com.kakao.cafe.user.exception.CustomLoginFailException;
-import java.util.UUID;
 
 public class User {
 

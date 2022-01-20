@@ -1,6 +1,5 @@
 package com.kakao.cafe.qna.domain;
 
-import com.kakao.cafe.user.exception.CustomInvalidedSessionException;
 import java.time.LocalDateTime;
 
 public class Qna {
@@ -43,9 +42,4 @@ public class Qna {
         return createTime;
     }
 
-    public void validateEqualsWriter(String userName) {
-        if (!writer.equals(userName)) {
-            throw new CustomInvalidedSessionException();
-        }
-    }
 }

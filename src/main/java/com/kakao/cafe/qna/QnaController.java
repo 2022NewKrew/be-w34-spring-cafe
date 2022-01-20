@@ -47,7 +47,7 @@ public class QnaController {
     @GetMapping("/questions/form/{id}")
     public String updateForm(@PathVariable long id, HttpSession httpSession, Model model) {
         String userId = findUserId(httpSession);
-        QnaResponse qnaResponse = qnaService.findById(id, userId);
+        QnaResponse qnaResponse = qnaService.findByIdAndWriter(id, userId);
         model.addAttribute("qna", qnaResponse);
         return "qna/updateForm";
     }
@@ -87,7 +87,8 @@ public class QnaController {
     }
 
     @PostMapping("/questions/{qnaId}/reply")
-    public String createReply(@PathVariable long qnaId, ReplyRequest replyRequest, HttpSession httpSession) {
+    public String createReply(@PathVariable long qnaId, ReplyRequest replyRequest,
+        HttpSession httpSession) {
         String userId = findUserId(httpSession);
         replyRequest.setQnaId(qnaId);
         replyRequest.setWriter(userId);

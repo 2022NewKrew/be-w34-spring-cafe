@@ -3,11 +3,13 @@ package com.kakao.cafe.qna.repository;
 import com.kakao.cafe.qna.domain.Reply;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ReplyH2Repository implements ReplyRepository {
 
+    private final RowMapper<Reply> replyRowMapper = getReplyRowMapper();
     private final JdbcTemplate jdbcTemplate;
 
     public ReplyH2Repository(JdbcTemplate jdbcTemplate) {
@@ -16,7 +18,8 @@ public class ReplyH2Repository implements ReplyRepository {
 
     @Override
     public List<Reply> findByQnaId(long qnaId) {
-        return null;
+        String sql = "SELECT * FROM replies WHERE qna_id = ?";
+        return jdbcTemplate.query(sql, replyRowMapper, qnaId);
     }
 
     @Override
@@ -34,5 +37,14 @@ public class ReplyH2Repository implements ReplyRepository {
     @Override
     public void delete(long id, String userId) {
 
+    }
+
+    private RowMapper<Reply> getReplyRowMapper() {
+        return ((resultSet, rowNum) -> new Reply(
+            resultSet.getLong(1),
+            resultSet.getLong(2),
+            resultSet.getString(3),
+            resultSet.getString(4)
+        ));
     }
 }

@@ -44,6 +44,16 @@ public class QnaH2Repository implements QnaRepository {
     }
 
     @Override
+    public Qna findByIdAndWriter(long id, String userId) {
+        String sql = "SELECT * FROM qnas WHERE id = ? AND writer = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, qnaMapper, id, userId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new CustomEmptyDataAccessException(e);
+        }
+    }
+
+    @Override
     public void update(Qna qna) {
         String sql = "UPDATE qnas SET title = ?, contents = ? WHERE id = ? AND writer = ?";
         jdbcTemplate.update(
