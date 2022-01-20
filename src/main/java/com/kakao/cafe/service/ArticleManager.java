@@ -52,6 +52,14 @@ public class ArticleManager implements ArticleService {
         return optional.get();
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public ArticleDto getDto(final long idx, final String currentUserId) throws NoSuchElementException {
+        ArticleDto articleDto = getDto(idx);
+        articleDto.setOwner(articleDto.getUserId().equals(currentUserId));
+        return articleDto;
+    }
+
     @Transactional
     @Override
     public boolean update(@NonNull final ArticleDto articleDto) {

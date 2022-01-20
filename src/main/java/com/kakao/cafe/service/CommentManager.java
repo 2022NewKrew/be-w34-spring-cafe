@@ -37,8 +37,12 @@ public class CommentManager implements CommentService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<CommentDto> getDtoList(final long articleIdx) {
-        return commentRepository.getDtoList(articleIdx);
+    public List<CommentDto> getDtoList(final long articleIdx, final String currentUserId) {
+        final List<CommentDto> list = commentRepository.getDtoList(articleIdx);
+        for (CommentDto commentDto : list) {
+            commentDto.setOwner(commentDto.getUserId().equals(currentUserId));
+        }
+        return list;
     }
 
     @Transactional(readOnly = true)

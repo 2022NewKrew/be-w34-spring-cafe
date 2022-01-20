@@ -82,14 +82,15 @@ public class ArticleController {
             return getRedirectLoginWithMsg(request);
         }
 
+        final String currentUserId = AuthControl.getLogonId(request);
         try {
-            final ArticleDto articleDto = articleService.getDto(idx);
+            final ArticleDto articleDto = articleService.getDto(idx, currentUserId);
             model.addAttribute("article", articleDto);
         } catch (NoSuchElementException e) {
             return "articles/detail";
         }
 
-        final List<CommentDto> comments = commentService.getDtoList(idx);
+        final List<CommentDto> comments = commentService.getDtoList(idx, currentUserId);
         model.addAttribute("comments", comments);
         model.addAttribute("totalComments", comments.size());
 

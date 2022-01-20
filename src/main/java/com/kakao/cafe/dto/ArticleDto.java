@@ -9,6 +9,7 @@ import java.util.Locale;
 public class ArticleDto {
     private long idx;
     private String userId;
+    private boolean isOwner;
     private String userName;
     private String title;
     private String body;
@@ -63,6 +64,14 @@ public class ArticleDto {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    public void setOwner(boolean owner) {
+        isOwner = owner;
     }
 
     public String getUserName() {

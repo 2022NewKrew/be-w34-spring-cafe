@@ -10,6 +10,7 @@ public interface ArticleService {
     void add(@NonNull final ArticleDto articleDto);
     List<ArticleDto> getDtoList();
     ArticleDto getDto(final long idx) throws NoSuchElementException;
+    ArticleDto getDto(final long idx, final String currentUserId) throws NoSuchElementException;
     boolean update(@NonNull final ArticleDto articleDto);
     boolean delete(@NonNull final long idx);
 }

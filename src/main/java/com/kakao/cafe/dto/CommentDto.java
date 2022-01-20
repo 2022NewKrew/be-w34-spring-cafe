@@ -9,6 +9,7 @@ import java.util.Locale;
 public class CommentDto {
     private long idx;
     private String userId;
+    private boolean isOwner;
     private String userName;
     private long articleIdx;
     private String body;
@@ -60,6 +61,14 @@ public class CommentDto {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    public void setOwner(boolean owner) {
+        isOwner = owner;
     }
 
     public String getUserName() {
