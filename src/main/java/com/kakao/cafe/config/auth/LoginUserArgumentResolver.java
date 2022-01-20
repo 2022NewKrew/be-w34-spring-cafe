@@ -30,7 +30,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         Object value = session.getAttribute("sessionedUser");
-        if (value == null){
+        if (value == null) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
         }
         return value;

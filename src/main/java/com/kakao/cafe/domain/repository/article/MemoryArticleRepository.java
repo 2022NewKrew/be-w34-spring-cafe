@@ -6,14 +6,13 @@ import java.util.*;
 
 public class MemoryArticleRepository implements ArticleRepository {
 
-    private static Map<Long, Article> store = new HashMap<>();
+    private static final Map<Long, Article> store = new Hashtable<>();
     private static long sequence = 0L;
 
     @Override
-    public Article save(Article article) {
+    public void save(Article article) {
         article.setId(++sequence);
         store.put(article.getId(), article);
-        return article;
     }
 
     @Override
@@ -24,6 +23,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return new ArrayList<>(store.values());
+    }
+
+    @Override
+    public void delete(Long id) {
+        store.remove(id);
     }
 
     @Override

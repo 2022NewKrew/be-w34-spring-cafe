@@ -1,8 +1,8 @@
 <nav class="navbar navbar-fixed-top header">
     <div class="col-md-12">
         <div class="navbar-header">
-            <a href="/" class="navbar-brand">
-                <img src="/images/KakaoCI.png" />
+            <a class="navbar-brand" href="/">
+                <img src="/images/KakaoCI.png"/>
             </a>
 
         </div>
@@ -14,7 +14,7 @@
             {{/sessionedUser}}
             {{#sessionedUser}}
             <li><a class="black-component" href="/logout" role="button">로그아웃</a></li>
-            <li><a class="black-component" href="/users/{{sessionedUser.id}}/update" role="button">개인정보수정</a></li>
+            <li><a class="black-component" href="/users/me/update" role="button">개인정보수정</a></li>
             {{/sessionedUser}}
         </ul>
     </div>

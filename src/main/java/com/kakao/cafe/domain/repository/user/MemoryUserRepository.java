@@ -4,16 +4,15 @@ import com.kakao.cafe.domain.entity.User;
 
 import java.util.*;
 
-public class MemoryUserRepository implements UserRepository{
+public class MemoryUserRepository implements UserRepository {
 
-    private static Map<Long, User> store = new HashMap<>();
+    private static final Map<Long, User> store = new Hashtable<>();
     private static long sequence = 0L;
 
     @Override
-    public User save(User user) {
+    public void save(User user) {
         user.setId(++sequence);
         store.put(user.getId(), user);
-        return user;
     }
 
     @Override
@@ -33,14 +32,9 @@ public class MemoryUserRepository implements UserRepository{
         return new ArrayList<>(store.values());
     }
 
-//    @Override
-//    public User updateById(Long id, User user) {
-//        store.put(id, user);
-//        return user;
-//    }
 
     @Override
-    public long countRecords(){
+    public long countRecords() {
         return store.size();
     }
 }

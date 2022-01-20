@@ -16,16 +16,15 @@ public class MvcConfig implements WebMvcConfigurer {
     private final LoginUserArgumentResolver loginUserArgumentResolver;
 
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(loginUserArgumentResolver);
     }
 
     @Override
-    public void addViewControllers(ViewControllerRegistry registry){
+    public void addViewControllers(ViewControllerRegistry registry) {
 
         registry.addViewController("/users/form.html").setViewName("user/form");
         registry.addViewController("/login.html").setViewName("user/login");
-        registry.addViewController("/posts/form.html").setViewName("post/form");
 
     }
 }

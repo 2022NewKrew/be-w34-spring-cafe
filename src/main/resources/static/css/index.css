@@ -126,19 +126,8 @@ td {
     background-color: #ffcd00;
     color: black;
 }
-<<<<<<< HEAD
-=======
 
-.article-doc {
-    line-height: 30px;
+.container-center {
+    display: flex;
+    justify-content: center;
 }
-
-.article-content {
-    margin-right: 20px;
-    font-size: 14px;
-}
-
-.article-header {
-    margin-bottom: 50px;
-}
->>>>>>> step1

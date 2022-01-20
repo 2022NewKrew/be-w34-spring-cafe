@@ -1,12 +1,9 @@
 package com.kakao.cafe.domain.entity;
 
 import lombok.Getter;
-
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.text.SimpleDateFormat;
 
 import java.util.Date;
 
@@ -14,7 +11,7 @@ import java.util.Date;
 @Setter
 @ToString
 public class User {
-    private long id;
+    private Long id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date joinedAt;

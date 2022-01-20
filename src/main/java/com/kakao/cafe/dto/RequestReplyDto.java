@@ -2,12 +2,11 @@ package com.kakao.cafe.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+
+import java.util.Date;
 
 @Getter
 @Setter
-@ToString
-public class RequestArticleDto {
-    private String title;
+public class RequestReplyDto {
     private String content;
 }

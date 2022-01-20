@@ -2,21 +2,16 @@ package com.kakao.cafe.domain.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
-@ToString
-public class Article {
+public class Reply {
     private Long id;
     private Long authorId;
     private String author;
-    private String title;
+    private Long articleId;
     private String content;
-    private Long views;
     private Date createdAt;
-    private List<Reply> reply;
 }
