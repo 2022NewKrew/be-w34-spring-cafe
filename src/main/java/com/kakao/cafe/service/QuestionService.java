@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class QuestionService {
     @Autowired
-    @Qualifier("QuestionRepositoryList")
+    @Qualifier("QuestionRepositoryJdbc")
     private QuestionRepository questionRepository;
 
     public void save(QuestionSaveDto questionSaveDto){

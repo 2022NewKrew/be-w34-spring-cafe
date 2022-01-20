@@ -8,6 +8,5 @@ import lombok.Getter;
 public class QuestionSaveDto {
     private int userId;
     private String title;
-    private String writer;
     private String contents;
 }

@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.question.QuestionSaveDto;
 import com.kakao.cafe.dto.question.QuestionUpdateDto;
+import com.kakao.cafe.dto.user.SessionUser;
 import com.kakao.cafe.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -24,10 +24,9 @@ public class QuestionController {
 
     @PostMapping("/questions")
     public String save(@RequestParam String title, @RequestParam String contents, HttpSession session) {
-        User user = (User) session.getAttribute("sessionUser");
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
         questionService.save(QuestionSaveDto.builder()
-                .userId(user.getId())
-                .writer(user.getName())
+                .userId(sessionUser.getId())
                 .title(title)
                 .contents(contents)
                 .build());
@@ -48,8 +47,8 @@ public class QuestionController {
 
     @PutMapping("/questions/{id}")
     public String update(@PathVariable int id, @ModelAttribute() QuestionUpdateDto questionUpdateDto, HttpSession session) {
-        User user = (User)session.getAttribute("sessionUser");
-        if (user.getId() != id){
+        SessionUser sessionUser = (SessionUser)session.getAttribute("sessionUser");
+        if (sessionUser.getId() != id){
             throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 게시글의 사용자 정보가 다릅니다.");
         }
         questionService.update(id, questionUpdateDto);
@@ -58,8 +57,8 @@ public class QuestionController {
 
     @DeleteMapping("/questions/{id}")
     public String update(@PathVariable int id, HttpSession session) {
-        User user = (User)session.getAttribute("sessionUser");
-        if (user.getId() != questionService.findById(id).getUserId()){
+        SessionUser sessionUser = (SessionUser)session.getAttribute("sessionUser");
+        if (sessionUser.getId() != questionService.findById(id).getUserId()){
             throw new IllegalArgumentException("로그인된 사용자 정보와 수정하려는 게시글의 사용자 정보가 다릅니다.");
         }
         questionService.deleteById(id);
