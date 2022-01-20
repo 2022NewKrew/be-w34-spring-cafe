@@ -157,3 +157,4 @@
   - https://gthoya.tistory.com/entry/Spring-boot-gradle-lombok-cannot-find-symbol
 - Transactional annotation
   - https://dpqk.me/3
+  - https://n1tjrgns.tistory.com/266
