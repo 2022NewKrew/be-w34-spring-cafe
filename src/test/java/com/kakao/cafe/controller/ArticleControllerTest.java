@@ -104,4 +104,26 @@ class ArticleControllerTest {
                 .andExpect(redirectedUrl("/users"));
     }
 
+
+    @DisplayName("[성공] 게시글 단일 조회")
+    @Test
+    void select_Article() throws Exception{
+        // given
+        User auth = new User(1, "chen", "1234", "chen.kim@kakaocorp.com");
+
+        mockMvc.perform((get("/articles/1"))
+                        .sessionAttr("auth", auth))
+                .andExpect(status().isOk())
+                .andExpect(view().name("post/show"));
+    }
+
+    @DisplayName("[실패] 로그인 권한이 없어 게시글 단일 조회 실패")
+    @Test
+    void select_Article_Without_Authorization() throws Exception{
+
+        mockMvc.perform(get("/articles/1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
+    }
+
 }
