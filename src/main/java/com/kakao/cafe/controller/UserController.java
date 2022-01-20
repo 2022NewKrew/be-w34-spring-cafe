@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.kakao.cafe.annotation.UserAuthorized.AuthCode.*;
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -21,6 +23,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @UserAuthorized(target = SESSION)
     @GetMapping
     public String users(Model model) {
         List<UserDto> users = userService.getUsers();
@@ -36,6 +39,7 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @UserAuthorized(target = SESSION)
     @GetMapping("/{userId}")
     public String profile(@PathVariable Long userId, Model model) {
         UserDto user = userService.findById(userId);
@@ -44,7 +48,7 @@ public class UserController {
         return "user/profile";
     }
 
-    @UserAuthorized
+    @UserAuthorized(target = {SESSION, USER})
     @GetMapping("/{userId}/form")
     public String updateForm(@PathVariable Long userId, Model model) {
         UserDto user = userService.findById(userId);
@@ -53,7 +57,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @UserAuthorized
+    @UserAuthorized(target = {SESSION, USER})
     @PutMapping("/{userId}")
     public String updateUser(@PathVariable Long userId, UserUpdateRequest userUpdateRequest) {
         userService.update(userId, userUpdateRequest);

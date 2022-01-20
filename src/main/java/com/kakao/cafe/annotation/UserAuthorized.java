@@ -9,4 +9,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface UserAuthorized {
 
+    enum AuthCode {
+        SESSION, USER, ARTICLE, REPLY
+    }
+
+    AuthCode[] target();
+
 }

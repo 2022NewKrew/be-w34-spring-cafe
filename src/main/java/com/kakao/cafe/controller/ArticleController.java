@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+import static com.kakao.cafe.annotation.UserAuthorized.AuthCode.*;
+
 @Controller
 @RequestMapping("/articles")
 public class ArticleController {
@@ -23,6 +25,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    @UserAuthorized(target = SESSION)
     @PostMapping
     public String publish(ArticleRequest articleRequest, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
@@ -31,6 +34,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    @UserAuthorized(target = SESSION)
     @PostMapping("/{articleId}/reply")
     public String createReply(@PathVariable Long articleId, ReplyRequest replyRequest, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
@@ -39,6 +43,7 @@ public class ArticleController {
         return "redirect:/articles/{articleId}";
     }
 
+    @UserAuthorized(target = SESSION)
     @GetMapping("/{articleId}")
     public String getArticle(@PathVariable Long articleId, Model model) {
         ArticleDetailDto article = articleService.findArticleDetailById(articleId);
@@ -47,7 +52,7 @@ public class ArticleController {
         return "article/show";
     }
 
-    @UserAuthorized
+    @UserAuthorized(target = {SESSION, ARTICLE})
     @GetMapping("/{articleId}/form")
     public String updateForm(@PathVariable Long articleId, Model model) {
         ArticleDto article = articleService.findArticleById(articleId);
@@ -56,7 +61,7 @@ public class ArticleController {
         return "article/updateForm";
     }
 
-    @UserAuthorized
+    @UserAuthorized(target = {SESSION, ARTICLE})
     @PutMapping("/{articleId}")
     public String updateArticle(@PathVariable Long articleId, ArticleRequest articleRequest) {
         articleService.updateArticle(articleId, articleRequest);
@@ -64,7 +69,7 @@ public class ArticleController {
         return "redirect:/articles/{articleId}";
     }
 
-    @UserAuthorized
+    @UserAuthorized(target = {SESSION, ARTICLE})
     @DeleteMapping("/{articleId}")
     public String deleteArticle(@PathVariable Long articleId, HttpSession session) {
         Auth auth = (Auth) session.getAttribute("auth");
@@ -73,7 +78,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @UserAuthorized
+    @UserAuthorized(target = {SESSION, REPLY})
     @DeleteMapping("/{articleId}/reply/{replyId}")
     public String deleteReply(@PathVariable Long replyId) {
         articleService.deleteReply(replyId);

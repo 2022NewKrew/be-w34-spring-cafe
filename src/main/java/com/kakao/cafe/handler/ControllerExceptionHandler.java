@@ -9,6 +9,11 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
+    @ExceptionHandler(SessionNotFoundException.class)
+    protected ModelAndView handleSessionNotFoundException() {
+        return new ModelAndView("redirect:/user/login");
+    }
+
     @ExceptionHandler({
             UserNotFoundException.class,
             ArticleNotFoundException.class
@@ -26,7 +31,7 @@ public class ControllerExceptionHandler {
             IllegalArgumentException.class,
             IllegalStateException.class
     })
-    protected  ModelAndView handleInvalidPasswordException(RuntimeException e) {
+    protected ModelAndView handleInvalidPasswordException(RuntimeException e) {
         ModelAndView view = new ModelAndView("error");
         view.addObject("errorMessage", e.getMessage());
         view.setStatus(HttpStatus.BAD_REQUEST);
@@ -35,7 +40,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(UnauthorizedAccessException.class)
-    protected  ModelAndView handleUnauthorizedException(UnauthorizedAccessException e) {
+    protected ModelAndView handleUnauthorizedException(UnauthorizedAccessException e) {
         ModelAndView view = new ModelAndView("error");
         view.addObject("errorMessage", e.getMessage());
         view.setStatus(HttpStatus.UNAUTHORIZED);
