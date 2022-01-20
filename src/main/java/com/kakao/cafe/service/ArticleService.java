@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.ArticleCreateDto;
-import com.kakao.cafe.dto.ArticleShowDto;
+import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.model.Article;
 import com.kakao.cafe.repository.ArticleJdbcRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,26 +19,26 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void save(ArticleCreateDto articleCreateDto){
-        articleRepository.save(articleCreateDto.toEntity());
+    public void save(ArticleDto articleDto) {
+        articleRepository.save(articleDto.toEntity());
     }
 
-    public List<ArticleShowDto> findAll(){
+    public List<ArticleDto> findAll() {
         return articleRepository.findAll()
                 .stream()
-                .map(ArticleShowDto::new)
+                .map(Article::toDto)
                 .collect(Collectors.toList());
     }
 
-    public ArticleShowDto findOne(Integer id){
-        return new ArticleShowDto(articleRepository.findOne(id).orElseThrow());
+    public ArticleDto findOne(Integer id) {
+        return articleRepository.findOne(id).orElseThrow().toDto();
     }
 
-    public void update(ArticleCreateDto articleCreateDto){
-        articleRepository.update(articleCreateDto.toEntity());
+    public void update(ArticleDto articleDto) {
+        articleRepository.update(articleDto.toEntity());
     }
 
-    public void delete(Integer id){
+    public void delete(Integer id) {
         articleRepository.delete(id);
     }
 

@@ -1,11 +1,9 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.ArticleCreateDto;
-import com.kakao.cafe.dto.ArticleShowDto;
+import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
-import org.h2.engine.Mode;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,8 +37,14 @@ public class ArticleController {
     }
 
     @PostMapping("/questions/create")
-    public String addArticle(@ModelAttribute @Validated ArticleCreateDto articleCreateDto
+    public String addArticle(@ModelAttribute @Validated ArticleDto articleDto
             , BindingResult bindingResult, Model model, HttpSession session) {
+        Object value = session.getAttribute("sessionUser");
+        if (value != null) {
+            User sessionUser = (User)value;
+            articleDto.setUser(sessionUser);
+            model.addAttribute("user", sessionUser);
+        }
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult
                     .getFieldErrors()
@@ -49,12 +53,7 @@ public class ArticleController {
                     .collect(Collectors.toList()));
             return "qna/upload_failed";
         }
-        Object value = session.getAttribute("sessionUser");
-        if (value != null) {
-            User sessionUser = (User)value;
-            articleCreateDto.setUser(sessionUser);
-            articleService.save(articleCreateDto);
-        }
+        articleService.save(articleDto);
         return "redirect:/";
     }
 
@@ -66,25 +65,25 @@ public class ArticleController {
 
     @GetMapping("/questions/{id}")
     public String getArticle(@PathVariable Integer id, Model model, HttpSession session) {
-        ArticleShowDto article = articleService.findOne(id);
+        ArticleDto article = articleService.findOne(id);
         User sessionUser = (User)session.getAttribute("sessionUser");
-        model.addAttribute("isWriter", sessionUser.getUserName().equals(article.getWriter()));
+        model.addAttribute("isWriter", sessionUser.getUserId().equals(article.getUser().getUserId()));
         model.addAttribute("article", article);
         return "qna/show";
     }
 
     @GetMapping("/questions/{id}/form")
     public String getArticle(@PathVariable Integer id, Model model) {
-        ArticleShowDto article = articleService.findOne(id);
+        ArticleDto article = articleService.findOne(id);
         model.addAttribute("article", article);
         return "qna/updateForm";
     }
 
     @PutMapping("/questions/{id}/update")
-    public String updateArticle(@PathVariable Integer id, ArticleCreateDto articleCreateDto, HttpSession session){
-        articleCreateDto.setUser((User)session.getAttribute("sessionUser"));
-        articleCreateDto.setId(id);
-        articleService.update(articleCreateDto);
+    public String updateArticle(@PathVariable Integer id, ArticleDto articleDto, HttpSession session){
+        articleDto.setUser((User)session.getAttribute("sessionUser"));
+        articleDto.setId(id);
+        articleService.update(articleDto);
         return "redirect:/";
     }
 
@@ -93,7 +92,5 @@ public class ArticleController {
         articleService.delete(id);
         return "redirect:/";
     }
-
-
 
 }

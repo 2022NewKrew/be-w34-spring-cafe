@@ -2,32 +2,33 @@ package com.kakao.cafe.dto;
 
 import com.kakao.cafe.model.Article;
 import com.kakao.cafe.model.User;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 @Getter
-public class ArticleCreateDto {
+@Setter
+public class ArticleDto {
 
+    private Integer id = 0;
     private User user;
     @NotBlank(message = "제목을 입력해주세요")
-    private final String title;
+    private String title;
     @NotBlank(message = "내용을 입력해주세요")
-    private final String contents;
-    private Integer id = 0;
+    private String contents;
+    private String createTime;
 
-    public ArticleCreateDto(String title, String contents) {
+    public ArticleDto(@NotBlank(message = "제목을 입력해주세요")String title,
+                      @NotBlank(message = "내용을 입력해주세요")String contents) {
         this.title = title;
         this.contents = contents;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setId(Integer id) { this.id = id; }
 
     public Article toEntity() {
         return Article.builder().id(id)
@@ -44,12 +45,4 @@ public class ArticleCreateDto {
                 .build();
     }
 
-    @Override
-    public String toString() {
-        return "ArticleCreateDto{" +
-                "user=" + user +
-                ", title='" + title + '\'' +
-                ", contents='" + contents + '\'' +
-                '}';
-    }
 }

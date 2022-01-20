@@ -1,11 +1,12 @@
 package com.kakao.cafe.model;
 
+import com.kakao.cafe.dto.ArticleDto;
 import lombok.Builder;
 import lombok.Getter;
 
 
 import java.time.LocalDateTime;
-
+import java.time.format.DateTimeFormatter;
 
 
 @Getter
@@ -39,5 +40,13 @@ public class Article {
                 ", contents='" + contents + '\'' +
                 ", createTime=" + createTime +
                 '}';
+    }
+
+    public ArticleDto toDto(){
+        ArticleDto articleDto = new ArticleDto(title,contents);
+        articleDto.setId(id);
+        articleDto.setUser(user);
+        articleDto.setCreateTime(createTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        return articleDto;
     }
 }
