@@ -18,7 +18,7 @@ public class JdbcConfig {
     @Bean
     @Profile("local")
     public DataSource dataSource() {
-        logger.info("---------local----------");
+        logger.info("use h2 Database");
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("kakaodb")
@@ -30,7 +30,7 @@ public class JdbcConfig {
     @Bean
     @Profile("dev")
     public DataSource mysqlDataSource() {
-        logger.info("---------dev----------");
+        logger.info("use mysql database");
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
