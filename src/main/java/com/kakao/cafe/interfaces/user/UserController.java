@@ -13,6 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/users")
@@ -62,13 +63,17 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public RedirectView update(UserDto userDto, HttpSession session, RedirectAttributes redirectAttrs) {
+    public String update(UserDto userDto, HttpSession session, RedirectAttributes redirectAttrs) {
         User loginUser = (User)session.getAttribute("loginUser");
-        userService.update(loginUser, userDto);
+        if (Objects.equals(userDto.getId(), loginUser.getId())) {
+            redirectAttrs.addFlashAttribute("flashMessage", "비정상 접근입니다");
+            return "redirect:/";
+        }
 
+        userService.update(loginUser, userDto);
         updateLoginSession(userDto, session);
         redirectAttrs.addFlashAttribute("flashMessage", "유저 정보가 수정되었습니다");
-        return new RedirectView("/", true);
+        return "redirect:/";
     }
 
     @PostMapping("/login")
