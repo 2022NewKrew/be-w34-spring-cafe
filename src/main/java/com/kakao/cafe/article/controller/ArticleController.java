@@ -1,5 +1,7 @@
 package com.kakao.cafe.article.controller;
 
+import lombok.RequiredArgsConstructor;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,73 +20,74 @@ import com.kakao.cafe.common.SessionUser;
 import com.kakao.cafe.common.annotation.LoginCheck;
 import com.kakao.cafe.common.exception.UserAuthException;
 
-import lombok.RequiredArgsConstructor;
-
 @Controller
 @RequestMapping("/articles")
 @RequiredArgsConstructor
 public class ArticleController {
-	private final ArticleService articleService;
+    private final ArticleService articleService;
 
-	@LoginCheck
-	@GetMapping("/{id}")
-	public String getArticle(@PathVariable int id, Model model) {
-		ArticleFindResponseDTO article = articleService.getArticleById(id);
-		model.addAttribute("article", article);
+    @LoginCheck
+    @GetMapping("/{id}")
+    public String getArticle(@PathVariable int id, Model model) {
+        ArticleFindResponseDTO article = articleService.getArticleById(id);
+        model.addAttribute("article", article);
 
-		return "qna/show";
-	}
+        return "qna/show";
+    }
 
-	@LoginCheck
-	@GetMapping("/new/form")
-	public String getArticleForm() {
-		return "qna/form";
-	}
+    @LoginCheck
+    @GetMapping("/new/form")
+    public String getArticleForm() {
+        return "qna/form";
+    }
 
-	@LoginCheck
-	@GetMapping("/{id}/update/form")
-	public String getUpdateForm(@SessionAttribute(Constant.SESSION_USER) SessionUser sessionUser, @PathVariable int id, Model model) {
-		ArticleFindResponseDTO article = articleService.getArticleById(id);
+    @LoginCheck
+    @GetMapping("/{id}/update/form")
+    public String getUpdateForm(@SessionAttribute(Constant.SESSION_USER) SessionUser sessionUser, @PathVariable int id,
+                                Model model) {
+        ArticleFindResponseDTO article = articleService.getArticleById(id);
 
-		if (!StringUtils.equals(sessionUser.getUserId(), article.getWriter())) {
-			throw new UserAuthException("권한이 없습니다.");
-		}
+        if (!StringUtils.equals(sessionUser.getUserId(), article.getWriter())) {
+            throw new UserAuthException("권한이 없습니다.");
+        }
 
-		model.addAttribute("article", article);
-		return "qna/updateForm";
-	}
+        model.addAttribute("article", article);
+        return "qna/updateForm";
+    }
 
-	@LoginCheck
-	@PostMapping("/create")
-	public String createQna(ArticleCreateRequestDTO requestDTO) {
-		articleService.create(requestDTO);
+    @LoginCheck
+    @PostMapping("/create")
+    public String createQna(ArticleCreateRequestDTO requestDTO) {
+        articleService.create(requestDTO);
 
-		return "redirect:/";
-	}
+        return "redirect:/";
+    }
 
-	@LoginCheck
-	@PostMapping("/{id}/update")
-	public String updateArticle(@SessionAttribute(Constant.SESSION_USER) SessionUser sessionUser, @PathVariable int id, ArticleUpdateRequestDTO requestDTO) {
-		if (!StringUtils.equals(sessionUser.getUserId(), requestDTO.getWriter())) {
-			throw new UserAuthException("권한이 없습니다.");
-		}
+    @LoginCheck
+    @PostMapping("/{id}/update")
+    public String updateArticle(@SessionAttribute(Constant.SESSION_USER) SessionUser sessionUser, @PathVariable int id,
+                                ArticleUpdateRequestDTO requestDTO) {
+        if (!StringUtils.equals(sessionUser.getUserId(), requestDTO.getWriter())) {
+            throw new UserAuthException("권한이 없습니다.");
+        }
 
-		articleService.update(id, requestDTO);
+        articleService.update(id, requestDTO);
 
-		return "redirect:/";
-	}
+        return "redirect:/";
+    }
 
-	@LoginCheck
-	@PostMapping("/{id}/remove")
-	public String removeArticle(@SessionAttribute(Constant.SESSION_USER) SessionUser sessionUser, @PathVariable int id) {
-		ArticleFindResponseDTO article = articleService.getArticleById(id);
+    @LoginCheck
+    @PostMapping("/{id}/remove")
+    public String removeArticle(@SessionAttribute(Constant.SESSION_USER) SessionUser sessionUser,
+                                @PathVariable int id) {
+        ArticleFindResponseDTO article = articleService.getArticleById(id);
 
-		if (!StringUtils.equals(sessionUser.getUserId(), article.getWriter())) {
-			throw new UserAuthException("권한이 없습니다.");
-		}
+        if (!StringUtils.equals(sessionUser.getUserId(), article.getWriter())) {
+            throw new UserAuthException("권한이 없습니다.");
+        }
 
-		articleService.remove(id);
+        articleService.remove(id);
 
-		return "redirect:/";
-	}
+        return "redirect:/";
+    }
 }

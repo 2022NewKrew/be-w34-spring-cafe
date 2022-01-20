@@ -10,22 +10,22 @@ import lombok.Getter;
 @Builder
 @Getter
 public class Article {
-	private int id;
-	private String writer;
-	private String title;
-	private String contents;
-	private LocalDateTime createTime;
+    private int id;
+    private String writer;
+    private String title;
+    private String contents;
+    private LocalDateTime createTime;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setCreateTime(LocalDateTime createTime) {
-		this.createTime = createTime;
-	}
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
 
-	public void update(String title, String contents) {
-		this.title = title;
-		this.contents = contents;
-	}
+    public void update(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 }
