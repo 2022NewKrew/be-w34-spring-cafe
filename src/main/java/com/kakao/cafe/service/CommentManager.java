@@ -5,12 +5,14 @@ import com.kakao.cafe.dto.CommentDto;
 import com.kakao.cafe.repo.CommentRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
+@Transactional
 @Service
 public class CommentManager implements CommentService {
     private final CommentRepository commentRepository;
@@ -19,6 +21,7 @@ public class CommentManager implements CommentService {
         this.commentRepository = Objects.requireNonNull(commentRepository);
     }
 
+    @Transactional
     @Override
     public void add(@NonNull final CommentDto commentDto) {
         boolean result = commentRepository.add(new Comment(
@@ -32,11 +35,13 @@ public class CommentManager implements CommentService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<CommentDto> getDtoList(final long articleIdx) {
         return commentRepository.getDtoList(articleIdx);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public CommentDto getDto(final long idx) throws NoSuchElementException {
         final Optional<CommentDto> optional = Optional.ofNullable(commentRepository.getDto(idx));
@@ -47,6 +52,7 @@ public class CommentManager implements CommentService {
         return optional.get();
     }
 
+    @Transactional
     @Override
     public boolean update(@NonNull final CommentDto commentDto) {
         final long idx = commentDto.getIdx();
@@ -63,6 +69,7 @@ public class CommentManager implements CommentService {
         );
     }
 
+    @Transactional
     @Override
     public boolean delete(@NonNull final long idx) {
         try {

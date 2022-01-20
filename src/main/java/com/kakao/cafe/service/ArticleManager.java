@@ -5,12 +5,14 @@ import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.repo.ArticleRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
+@Transactional
 @Service
 public class ArticleManager implements ArticleService {
     private final ArticleRepository articleRepository;
@@ -19,6 +21,7 @@ public class ArticleManager implements ArticleService {
         this.articleRepository = Objects.requireNonNull(articleRepository);
     }
 
+    @Transactional
     @Override
     public void add(@NonNull final ArticleDto articleDto) {
         boolean result = articleRepository.add(new Article(
@@ -32,11 +35,13 @@ public class ArticleManager implements ArticleService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ArticleDto> getDtoList() {
         return articleRepository.getDtoList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ArticleDto getDto(final long idx) throws NoSuchElementException {
         final Optional<ArticleDto> optional = Optional.ofNullable(articleRepository.getDto(idx));
@@ -47,6 +52,7 @@ public class ArticleManager implements ArticleService {
         return optional.get();
     }
 
+    @Transactional
     @Override
     public boolean update(@NonNull final ArticleDto articleDto) {
         final long idx = articleDto.getIdx();
@@ -63,6 +69,7 @@ public class ArticleManager implements ArticleService {
         );
     }
 
+    @Transactional
     @Override
     public boolean delete(@NonNull final long idx) {
         try {
