@@ -2,8 +2,6 @@ package com.kakao.cafe.adapter.in.presentation.article;
 
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
-import com.kakao.cafe.application.reply.dto.ReplyList;
-import com.kakao.cafe.application.reply.port.in.GetRepliesUseCase;
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
@@ -17,20 +15,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-public class ArticleInfoController {
+public class ArticlePrintController {
 
     private static final String VIEWS_ARTICLE_LIST = "index";
-    private static final String VIEWS_ARTICLE_DETAIL = "article/show";
     private static final String VIEWS_ARTICLE_MODIFY_FORM = "article/modifyForm";
 
     private final GetArticleInfoUseCase getArticleInfoUseCase;
-    private final GetRepliesUseCase getRepliesUseCase;
 
-    public ArticleInfoController(GetArticleInfoUseCase getArticleInfoUseCase, GetRepliesUseCase getRepliesUseCase) {
+    public ArticlePrintController(GetArticleInfoUseCase getArticleInfoUseCase) {
         this.getArticleInfoUseCase = getArticleInfoUseCase;
-        this.getRepliesUseCase = getRepliesUseCase;
     }
 
     @GetMapping("/")
@@ -44,19 +40,13 @@ public class ArticleInfoController {
     }
 
     @GetMapping("/articles/{id}")
-    public String displayArticleDetail(@PathVariable int id, Model model, HttpSession session)
+    public String displayArticleDetail(@PathVariable int id, RedirectAttributes redirectAttributes, HttpSession session)
         throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException, UnauthenticatedUserException {
         UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
         Article article = getArticleInfoUseCase.getArticleDetail(id, sessionedUser.getUserId(), sessionedUser);
-        ReplyList replyList = getRepliesUseCase.getListOfRepliesOfTheArticle(id);
-        int countOfReplies = replyList.getValue().size();
-        model.addAttribute("article", article);
-        model.addAttribute("countOfReplies", countOfReplies);
-        model.addAttribute(
-            "replies",
-            replyList.getValue()
-        );
-        return VIEWS_ARTICLE_DETAIL;
+        redirectAttributes.addFlashAttribute("article", article);
+
+        return "redirect:/articles/" + id + "/replies";
     }
 
     @GetMapping("/articles/{id}/form")

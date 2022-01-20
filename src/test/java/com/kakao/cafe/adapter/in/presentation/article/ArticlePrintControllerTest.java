@@ -3,6 +3,7 @@ package com.kakao.cafe.adapter.in.presentation.article;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
+import com.kakao.cafe.adapter.in.presentation.reply.ReplyPrintController;
 import com.kakao.cafe.application.article.dto.ArticleInfo;
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
@@ -27,8 +28,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@WebMvcTest(ArticleInfoController.class)
-class ArticleInfoControllerTest {
+@WebMvcTest(value = {ArticlePrintController.class, ReplyPrintController.class})
+class ArticlePrintControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -51,7 +52,6 @@ class ArticleInfoControllerTest {
         givenArticleList.add(new ArticleInfo(5, "kakao", "krew", "2022-01-10 20:00"));
         givenArticleList.add(new ArticleInfo(10, "HaChanho", "champ", "2022-01-11 21:00"));
         given(getArticleInfoUseCase.getListOfAllArticles()).willReturn(ArticleList.from(givenArticleList));
-        given(getRepliesUseCase.getListOfRepliesOfTheArticle(5)).willReturn(ReplyList.from(new ArrayList<>()));
 
         // when
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.TEXT_HTML))
@@ -93,17 +93,9 @@ class ArticleInfoControllerTest {
         given(getRepliesUseCase.getListOfRepliesOfTheArticle(id)).willReturn(ReplyList.from(new ArrayList<>()));
 
         //when
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(url).session(session).accept(MediaType.TEXT_HTML))
-                                  .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
-                                  .andReturn();
-
-        Article article = (Article) Objects.requireNonNull(result.getModelAndView()).getModelMap().get("article");
-
-        //then
-        assertThat(article.getId()).isEqualTo(givenArticle.getId());
-        assertThat(article.getWriter()).isEqualTo(givenArticle.getWriter());
-        assertThat(article.getTitle()).isEqualTo(givenArticle.getTitle());
-        assertThat(article.getContents()).isEqualTo(givenArticle.getContents());
-        assertThat(article.getCreatedAt()).isEqualTo(givenArticle.getCreatedAt());
+        mockMvc.perform(MockMvcRequestBuilders.get(url).session(session).accept(MediaType.TEXT_HTML))
+               .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+               .andDo(MockMvcResultHandlers.print())
+               .andReturn();
     }
 }

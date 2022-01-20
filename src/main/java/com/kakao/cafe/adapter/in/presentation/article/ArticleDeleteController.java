@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ArticleDeleteController {
@@ -22,10 +23,11 @@ public class ArticleDeleteController {
     }
 
     @DeleteMapping("/articles/{id}/delete")
-    public String deleteArticle(@PathVariable int id, @RequestParam String userId, HttpSession session)
+    public String deleteArticle(@PathVariable int id, @RequestParam String userId, HttpSession session, RedirectAttributes redirectAttributes)
         throws UnauthenticatedUserException {
         UserInfo sessionedUser = (UserInfo) session.getAttribute("sessionedUser");
         deleteArticleUseCase.delete(id, userId, sessionedUser, getRepliesUseCase.getListOfRepliesOfTheArticle((id)));
-        return "redirect:/";
+        redirectAttributes.addAttribute("userId", userId);
+        return "redirect:/articles/" + id + "/replies/delete";
     }
 }
