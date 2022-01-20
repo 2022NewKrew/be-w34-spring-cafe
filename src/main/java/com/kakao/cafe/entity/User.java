@@ -1,5 +1,7 @@
 package com.kakao.cafe.entity;
 
+import java.util.Objects;
+
 public class User {
 
     private Integer id;
@@ -26,7 +28,9 @@ public class User {
 
     public String getEmail() { return email;}
 
-    public String getPassword() {
-        return password;
+    public String getPassword() { return password;}
+
+    public boolean isEqualPassword(String inputPassword) {
+        return Objects.equals(this.password, inputPassword);
     }
 }

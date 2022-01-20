@@ -18,7 +18,7 @@ public class AuthService {
         User user = jdbcUserRepository.readByUserId(userLoginDto.getUserId())
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 닉네임입니다."));
 
-        if (!Objects.equals(user.getPassword(), userLoginDto.getPassword())) {
+        if (!user.isEqualPassword(userLoginDto.getPassword())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
