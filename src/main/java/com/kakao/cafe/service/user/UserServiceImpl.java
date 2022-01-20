@@ -1,12 +1,16 @@
 package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.dto.user.UserResDto;
+import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.dto.user.UserUpdateReqDto;
 import com.kakao.cafe.repository.user.UserRepository;
 import com.kakao.cafe.dto.user.UserReqDto;
+import com.kakao.cafe.util.exception.DuplicatedUserException;
+import com.kakao.cafe.util.exception.UserNotFoundException;
+import com.kakao.cafe.util.exception.WrongPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +20,12 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(@Qualifier("jdbcUserRepository") UserRepository userRepository){
+    public UserServiceImpl(@Qualifier("jdbcUserRepository") UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -27,7 +33,7 @@ public class UserServiceImpl implements UserService{
         validateDuplicateUser(userReqDto);
         User user = User.builder()
                 .userId(userReqDto.getUserId())
-                .password(userReqDto.getPassword())
+                .password(passwordEncoder.encode(userReqDto.getPassword()))
                 .email(userReqDto.getEmail())
                 .name(userReqDto.getName())
                 .build();
@@ -37,51 +43,51 @@ public class UserServiceImpl implements UserService{
     private void validateDuplicateUser(UserReqDto userReqDto) {
         userRepository.findByUserId(userReqDto.getUserId())
                 .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                    throw new DuplicatedUserException("이미 존재하는 회원입니다.");
                 });
     }
 
     @Override
-    public List<UserResDto> findUsers(){
+    public List<UserDto> findUsers(){
         return userRepository.findAll().stream()
-                .map(UserResDto::new)
+                .map(UserDto::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UserResDto findUserById(Long id){
-        return new UserResDto(userRepository.findById(id)
-                .orElseThrow(() -> new NullPointerException("존재하지 않는 사용자입니다.")));
+    public UserDto findUserById(Long id){
+        return new UserDto(userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다.")));
     }
 
     @Override
     public void updateUser(UserUpdateReqDto userUpdateReqDto) {
         User user = userRepository.findById(userUpdateReqDto.getId())
-                .orElseThrow(() -> new NullPointerException("존재하지 않는 사용자입니다."));
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
 
         validatePassword(userUpdateReqDto.getPassword(), user.getPassword());
 
         userRepository.update(User.builder()
                 .id(user.getId())
                 .userId(user.getUserId())
-                .password(userUpdateReqDto.getNewPassword())
+                .password(passwordEncoder.encode(userUpdateReqDto.getNewPassword()))
                 .name(userUpdateReqDto.getName())
                 .email(userUpdateReqDto.getEmail())
                 .build());
     }
 
     @Override
-    public UserResDto login(UserReqDto userReqDto) {
+    public UserDto login(UserReqDto userReqDto) {
         User user = userRepository.findByUserId(userReqDto.getUserId())
-                .orElseThrow(() -> new NullPointerException("존재하지 않는 사용자입니다."));
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
         validatePassword(userReqDto.getPassword(), user.getPassword());
 
-        return new UserResDto(user);
+        return new UserDto(user);
     }
 
     private void validatePassword(String inputPassword, String dataPassword){
-        if(!inputPassword.equals(dataPassword)){
-            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
+        if(!passwordEncoder.matches(inputPassword, dataPassword)){
+            throw new WrongPasswordException("잘못된 비밀번호 입니다.");
         }
     }
 

@@ -27,4 +27,9 @@ public class MemoryArticleRepository implements ArticleRepository {
     public List<Article> findAll() {
         return new ArrayList<>(articleStore.values());
     }
+
+    // Jdbc로 변환하면서 추가된 메서드
+    @Override
+    public void update(Article article) {
+    }
 }

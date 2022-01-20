@@ -3,7 +3,9 @@ package com.kakao.cafe.service.article;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.dto.article.ArticleReqDto;
 import com.kakao.cafe.dto.article.ArticleResDto;
+import com.kakao.cafe.dto.article.ArticleUpdateDto;
 import com.kakao.cafe.repository.article.ArticleRepository;
+import com.kakao.cafe.util.exception.ArticleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .writer(articleReqDto.getWriter())
                 .title(articleReqDto.getTitle())
                 .contents(articleReqDto.getContents())
+                .deleted(false)
                 .build();
         articleRepository.save(article);
     }
@@ -41,6 +44,20 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleResDto findArticleById(Long articleId) {
         return new ArticleResDto(articleRepository.findByArticleId(articleId)
-                .orElseThrow(() -> new NullPointerException("존재하지 않는 게시글입니다.")));
+                .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다.")));
+    }
+
+    @Override
+    public void updateArticle(ArticleUpdateDto articleUpdateDto, Boolean removal) {
+        Article article = articleRepository.findByArticleId(articleUpdateDto.getArticleId())
+                .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
+
+        articleRepository.update(Article.builder()
+                .articleId(article.getArticleId())
+                .writer(articleUpdateDto.getWriter())
+                .title(articleUpdateDto.getTitle())
+                .contents(articleUpdateDto.getContents())
+                .deleted(removal)
+                .build());
     }
 }

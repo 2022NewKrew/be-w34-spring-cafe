@@ -112,12 +112,12 @@ li {
 
 .post-content {
     margin-top: 20px;
+    margin-bottom : 20px;
     margin-left: 3%;
     font-weight: bold;
 }
 
 .post-write-btn {
-    margin-top: 20px;
     align-items: center;
     align-self: end;
     display: flex;

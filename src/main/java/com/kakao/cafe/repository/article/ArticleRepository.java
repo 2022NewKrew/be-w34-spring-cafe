@@ -9,4 +9,5 @@ public interface ArticleRepository {
     void save(Article article);
     Optional<Article> findByArticleId(Long id);
     List<Article> findAll();
+    void update(Article article);
 }

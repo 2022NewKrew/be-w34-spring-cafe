@@ -1,13 +1,14 @@
 package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.dto.user.UserReqDto;
-import com.kakao.cafe.dto.user.UserResDto;
+import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.dto.user.UserUpdateReqDto;
 import com.kakao.cafe.repository.user.MemoryUserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,11 +18,12 @@ class UserServiceImplTest {
 
     MemoryUserRepository memoryUserRepository;
     UserService userService;
+    PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void beforeEach(){
         memoryUserRepository = new MemoryUserRepository();
-        userService = new UserServiceImpl(memoryUserRepository);
+        userService = new UserServiceImpl(memoryUserRepository, passwordEncoder);
     }
 
     @AfterEach
@@ -36,8 +38,8 @@ class UserServiceImplTest {
 
         userService.addUser(userReqDto);
 
-        UserResDto userResDto = userService.findUserById(1L);
-        assertThat(userReqDto.getName()).isEqualTo(userResDto.getName());
+        UserDto userDto = userService.findUserById(1L);
+        assertThat(userReqDto.getName()).isEqualTo(userDto.getName());
 
     }
 

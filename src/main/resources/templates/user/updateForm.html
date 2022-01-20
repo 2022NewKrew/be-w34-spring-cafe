@@ -7,7 +7,8 @@
     <p class="title">회원정보수정</p>
   </header>
   {{#user}}
-    <form name="question" class="info-container" method="POST" action="/users/{{id}}/update">
+    <form name="question" class="info-container" method="POST" action="/users/{{id}}">
+      <input type="hidden" name="_method" value="PUT" />
       <div class="form-group">
         <label for="userId">아이디</label>
         <p class="form-control" id="userId">{{userId}}</p>

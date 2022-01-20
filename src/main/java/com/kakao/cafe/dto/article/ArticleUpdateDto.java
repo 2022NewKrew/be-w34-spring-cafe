@@ -1,13 +1,14 @@
 package com.kakao.cafe.dto.article;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter
+@AllArgsConstructor
 @Builder
-@Setter
-public class ArticleReqDto {
+@Getter
+public class ArticleUpdateDto {
+    private Long articleId;
     private String writer;
     private String title;
     private String contents;

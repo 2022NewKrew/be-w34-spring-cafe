@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Repository
@@ -17,8 +18,8 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public void save(Article article) {
-        jdbcTemplate.update("INSERT INTO articles (writer, title, contents) VALUES (?, ?, ?)",
-                article.getWriter(), article.getTitle(), article.getContents());
+        jdbcTemplate.update("INSERT INTO articles (writer, title, contents, deleted) VALUES (?, ?, ?, ?)",
+                article.getWriter(), article.getTitle(), article.getContents(), article.getDeleted());
     }
 
     @Override
@@ -29,7 +30,16 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("SELECT * FROM articles", articleRowMapper());
+        return jdbcTemplate.query("SELECT * FROM articles", articleRowMapper()).stream()
+                .filter(article -> !article.getDeleted())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void update(Article article) {
+        jdbcTemplate.update("UPDATE articles SET title=?, contents=?, deleted=? WHERE ID =?",
+                article.getTitle(), article.getContents(), article.getDeleted(), article.getArticleId());
+
     }
 
     private RowMapper<Article> articleRowMapper(){
@@ -39,6 +49,7 @@ public class JdbcArticleRepository implements ArticleRepository{
                     .writer(rs.getString("writer"))
                     .title(rs.getString("title"))
                     .contents(rs.getString("contents"))
+                    .deleted(rs.getBoolean("deleted"))
                     .build();
         };
     }

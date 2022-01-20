@@ -18,6 +18,11 @@
                   작성일자:2015-12-30 01:47
                 </p>
                 <p class="article-content">조회 4</p>
+                <a href="/articles/{{articleId}}/form"  class="post-write-btn">수정</a>
+                <form method="POST" action="/articles/{{articleId}}" >
+                  <input type="hidden" name="_method" value="DELETE" />
+                  <input type="submit" class="post-write-btn" value="삭제" />
+                </form>
               </div>
             </div>
             <div class="article-doc">

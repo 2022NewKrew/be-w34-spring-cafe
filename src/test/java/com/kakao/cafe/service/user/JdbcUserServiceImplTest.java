@@ -1,7 +1,7 @@
 package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.dto.user.UserReqDto;
-import com.kakao.cafe.dto.user.UserResDto;
+import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.dto.user.UserUpdateReqDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,8 +26,8 @@ public class JdbcUserServiceImplTest {
 
         userService.addUser(userReqDto);
 
-        UserResDto userResDto = userService.findUserById(2L);
-        assertThat(userReqDto.getName()).isEqualTo(userResDto.getName());
+        UserDto userDto = userService.findUserById(2L);
+        assertThat(userReqDto.getName()).isEqualTo(userDto.getName());
 
     }
 
