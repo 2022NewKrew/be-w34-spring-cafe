@@ -16,13 +16,13 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>제목</th> <th>내용</th> <th>작성일자</th> <th>조회수</th>
+                        <th>제목</th> <th>글쓴이</th> <th>작성일자</th> <th>조회수</th>
                     </tr>
                     </thead>
                     <tbody>
                     {{#articles}}
                     <tr>
-                        <td><a href="/articles/{{id}}">{{title}}</a></td> <td>{{content}}</td> <td>2021-12-14</td> <td>0</td>
+                        <td><a href="/articles/{{id}}">{{title}}</a></td> <td>{{writer}}</td> <td>{{date}}</td> <td>0</td>
                     </tr>
                     {{/articles}}
                     </tbody>
@@ -31,6 +31,8 @@
         </div>
     </div>
     <div class="post-btn-container">
-      <a class="post-write-btn" href="/article/form" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{#sessionedUser}}
+        <a class="post-write-btn" href="/article/form" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{/sessionedUser}}
     </div>
 {{>layout/footer}}

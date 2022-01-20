@@ -11,16 +11,23 @@
                       <article class="article">
                           <div class="article-header">
                               <div class="article-header-text">
-                                  <p class="article-content">멋진삼</p>
+                                  <p class="article-content">{{article.writer}}</p>
                                   <p class="article-content">
-                                      작성일자:2015-12-30 01:47
+                                      {{article.date}}
                                   </p>
                                   <p class="article-content">조회 4</p>
                               </div>
                           </div>
+                          <form name="question" class="submit-write" method="post" action="/article/{{article.id}}/delete">
+                              <input type="hidden" name="_method" value="DELETE" />
                           <div class="article-doc">
                               {{article.content}}
                           </div>
+                              {{#sessionedUser}}
+                              <a class="black-component" href="/article/{{article.id}}/modify" role="button">수정</a>
+                              <input class="post-write-btn" type="submit" value="삭제"/>
+                              {{/sessionedUser}}
+                          </form>
                       </article>
 
                       <div class="post-comment">
