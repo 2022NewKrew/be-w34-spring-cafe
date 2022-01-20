@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = UnauthorizedUserException.class)
     public ModelAndView handle(UnauthorizedUserException e) {
-        logger.info("에러 원인: {}", e.getMessage());
+        logger.info("권한 예외 발생: {}", e.getMessage());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", e.getMessage());
         modelAndView.setViewName("error");
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public ModelAndView handle(Exception e) {
-        logger.info("에러 원인: {}", e.getMessage());
+        logger.info("예외 발생: {}", e.getStackTrace());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "에러 발생");
         modelAndView.setViewName("error");

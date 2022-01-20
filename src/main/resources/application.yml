@@ -12,6 +12,10 @@ spring:
     init:
       schema-locations: classpath:mysql/schema.sql
       data-locations: classpath:mysql/data.sql
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
 server:
   servlet:

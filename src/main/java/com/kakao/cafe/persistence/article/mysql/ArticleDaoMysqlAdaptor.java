@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ArticleDaoMysqlAdaptor implements FindArticlePort, WriteArticlePort, UpdateArticlePort {
+public class ArticleDaoMysqlAdaptor implements FindArticlePort, WriteArticlePort, UpdateArticlePort, DeleteArticlePort {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final ArticleTableDtoRowMapper articleTableDtoRowMapper;
     private final ArticleEntityDtoMapper articleEntityDtoMapper;
@@ -71,5 +71,13 @@ public class ArticleDaoMysqlAdaptor implements FindArticlePort, WriteArticlePort
         );
 
         jdbcTemplate.update(h2QueryBuilder.updateOne(List.of("article_title", "article_contents"), List.of("article_id")), parameters);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        Map<String, Object> parameters = Map.of(
+                "article_id", id);
+
+        jdbcTemplate.update(h2QueryBuilder.deleteOne(List.of("article_id")), parameters);
     }
 }

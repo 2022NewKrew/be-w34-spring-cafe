@@ -1,11 +1,13 @@
 package com.kakao.cafe.interfaces.config;
 
+import com.kakao.cafe.application.article.DeleteArticleService;
 import com.kakao.cafe.application.article.FindArticleService;
 import com.kakao.cafe.application.article.UpdateArticleService;
 import com.kakao.cafe.application.article.WriteArticleService;
 import com.kakao.cafe.application.user.FindUserService;
 import com.kakao.cafe.application.user.SignUpUserService;
 import com.kakao.cafe.application.user.UpdateUserService;
+import com.kakao.cafe.domain.article.DeleteArticlePort;
 import com.kakao.cafe.domain.article.FindArticlePort;
 import com.kakao.cafe.domain.article.UpdateArticlePort;
 import com.kakao.cafe.domain.article.WriteArticlePort;
@@ -46,5 +48,10 @@ public class ServiceBeanConfig {
     @Bean
     UpdateArticleService updateArticleService(UpdateArticlePort updateArticlePort) {
         return new UpdateArticleService(updateArticlePort);
+    }
+
+    @Bean
+    DeleteArticleService deleteArticleService(DeleteArticlePort deleteArticlePort) {
+        return new DeleteArticleService(deleteArticlePort);
     }
 }

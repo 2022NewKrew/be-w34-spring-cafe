@@ -68,4 +68,15 @@ public class H2QueryBuilder {
                                 .collect(Collectors.toList())))
         );
     }
+
+    public String deleteOne(List<String> fields) {
+        return String.valueOf(new StringBuilder("DELETE FROM ")
+                .append(table)
+                .append(" WHERE ")
+                .append(String.join(", ",
+                        fields.stream()
+                                .map(e -> new StringBuilder(e).append(" = :").append(e))
+                                .collect(Collectors.toList())))
+        );
+    }
 }

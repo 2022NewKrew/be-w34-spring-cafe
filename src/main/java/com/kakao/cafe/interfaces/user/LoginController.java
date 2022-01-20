@@ -23,6 +23,12 @@ public class LoginController {
         this.findUserService = findUserService;
     }
 
+    @GetMapping("/login")
+    public ModelAndView loginPage(ModelAndView modelAndView) {
+        modelAndView.setViewName("/user/login");
+        return modelAndView;
+    }
+
     @PostMapping("/login")
     public ModelAndView login(@Valid LoginRequestDto loginRequestDto, HttpServletRequest request, ModelAndView modelAndView) {
         boolean passwordMatch = findUserService.checkPassWordMatch(loginRequestDto.getUserId(), loginRequestDto.getPassword());

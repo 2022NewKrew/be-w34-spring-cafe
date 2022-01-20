@@ -1,10 +1,10 @@
 package com.kakao.cafe.interfaces.article;
 
+import com.kakao.cafe.application.article.DeleteArticleService;
 import com.kakao.cafe.application.article.FindArticleService;
 import com.kakao.cafe.application.article.UpdateArticleService;
 import com.kakao.cafe.application.article.WriteArticleService;
 import com.kakao.cafe.application.article.validation.NonExistsArticleIdException;
-import com.kakao.cafe.application.user.FindUserService;
 import com.kakao.cafe.application.user.exception.NonExistsUserIdException;
 import com.kakao.cafe.application.user.exception.UnauthorizedUserException;
 import com.kakao.cafe.domain.article.Article;
@@ -30,14 +30,14 @@ public class ArticleController {
 
     private final FindArticleService findArticleService;
     private final WriteArticleService writeArticleService;
-    private final FindUserService findUserService;
     private final UpdateArticleService updateArticleService;
+    private final DeleteArticleService deleteArticleService;
 
-    public ArticleController(FindArticleService findArticleService, WriteArticleService writeArticleService, FindUserService findUserService, UpdateArticleService updateArticleService) {
+    public ArticleController(FindArticleService findArticleService, WriteArticleService writeArticleService, UpdateArticleService updateArticleService, DeleteArticleService deleteArticleService) {
         this.findArticleService = findArticleService;
         this.writeArticleService = writeArticleService;
-        this.findUserService = findUserService;
         this.updateArticleService = updateArticleService;
+        this.deleteArticleService = deleteArticleService;
     }
 
     @GetMapping("/")
@@ -50,6 +50,7 @@ public class ArticleController {
 
         return modelAndView;
     }
+
     @GetMapping("/articles/{index}")
     public ModelAndView readArticleByIndex(@PathVariable int index, ModelAndView modelAndView) throws NonExistsArticleIdException {
         Article article = findArticleService.findById(index);
@@ -60,7 +61,7 @@ public class ArticleController {
         return modelAndView;
     }
 
-    @GetMapping("/question/form")
+    @GetMapping("/article/form")
     public ModelAndView createArticleForm(HttpServletRequest request, ModelAndView modelAndView) {
         User user = (User) request.getAttribute("user");
 
@@ -69,7 +70,17 @@ public class ArticleController {
         return modelAndView;
     }
 
-    @GetMapping("/question/{index}/form")
+    @PostMapping("/article/write")
+    public ModelAndView createArticle(@Valid WriteArticleRequestDto writeArticleRequestDto, HttpServletRequest request, ModelAndView modelAndView) throws NonExistsUserIdException {
+        User user = (User) request.getAttribute("user");
+        ArticleVo articleVo = ArticleMapper.convertWriteArticleDtoToVo(writeArticleRequestDto, user);
+        writeArticleService.write(articleVo);
+
+        modelAndView.setViewName("redirect:/");
+        return modelAndView;
+    }
+
+    @GetMapping("/article/{index}/form")
     public ModelAndView updateArticleForm(@PathVariable int index, HttpServletRequest request, ModelAndView modelAndView) throws UnauthorizedUserException {
         User user = (User) request.getAttribute("user");
         Article article = findArticleService.findById(index);
@@ -84,17 +95,7 @@ public class ArticleController {
         return modelAndView;
     }
 
-    @PostMapping("/questions")
-    public ModelAndView createArticle(@Valid WriteArticleRequestDto writeArticleRequestDto, HttpServletRequest request, ModelAndView modelAndView) throws NonExistsUserIdException {
-        User user = (User) request.getAttribute("user");
-        ArticleVo articleVo = ArticleMapper.convertWriteArticleDtoToVo(writeArticleRequestDto, user);
-        writeArticleService.write(articleVo);
-
-        modelAndView.setViewName("redirect:/");
-        return modelAndView;
-    }
-
-    @PostMapping("/questions/update")
+    @PostMapping("/article/{index}/update")
     public ModelAndView updateArticle(@Valid UpdateArticleRequestDto updateArticleRequestDto, HttpServletRequest request, ModelAndView modelAndView) {
         User user = (User) request.getAttribute("user");
 
@@ -103,11 +104,24 @@ public class ArticleController {
         }
 
         ArticleVo articleVo = ArticleMapper.convertUpdateArticleDtoToVo(updateArticleRequestDto, user);
-
         updateArticleService.update(articleVo);
 
-        modelAndView.setViewName("redirect:/articles/" + updateArticleRequestDto.getId());
+        modelAndView.setViewName("redirect:/" + updateArticleRequestDto.getId());
         return modelAndView;
     }
 
+    @PostMapping("/article/{index}/delete")
+    public ModelAndView deleteArticle(@PathVariable int index, HttpServletRequest request, ModelAndView modelAndView) throws NonExistsArticleIdException {
+        User user = (User) request.getAttribute("user");
+        Article article = findArticleService.findById(index);
+
+        if (!user.equals(article.getWriter())) {
+            throw new UnauthorizedUserException();
+        }
+
+        deleteArticleService.delete(index);
+
+        modelAndView.setViewName("redirect:/");
+        return modelAndView;
+    }
 }
