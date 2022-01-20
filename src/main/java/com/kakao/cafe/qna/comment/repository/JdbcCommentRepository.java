@@ -1,5 +1,7 @@
-package com.kakao.cafe.qna.comment;
+package com.kakao.cafe.qna.comment.repository;
 
+import com.kakao.cafe.qna.comment.Comment;
+import com.kakao.cafe.qna.comment.CommentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -40,7 +42,18 @@ public class JdbcCommentRepository implements CommentRepository {
 
     @Override
     public Comment update(Comment comment) {
-        return null;
+        String sql = "UPDATE COMMENTS SET IS_DELETED=?, MODIFIED_DATE=? WHERE ID=?";
+        jdbcTemplate.update(sql,
+                comment.getIsDeleted() ? "Y" : "N",
+                comment.getModifiedDate(),
+                comment.getId());
+        return comment;
+    }
+
+    @Override
+    public Comment findCommentById(Integer articleId, Integer commentId) {
+        String sql = "SELECT * FROM COMMENTS WHERE ID = ? AND ARTICLE_ID = ? AND IS_DELETED = 'N'";
+        return jdbcTemplate.queryForObject(sql, new CommentMapper(), commentId, articleId);
     }
 
     @Override

@@ -1,7 +1,8 @@
 package com.kakao.cafe.qna.article;
 
+import com.kakao.cafe.qna.article.repository.ArticleRepository;
 import com.kakao.cafe.qna.comment.Comment;
-import com.kakao.cafe.qna.comment.CommentRepository;
+import com.kakao.cafe.qna.comment.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

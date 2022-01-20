@@ -1,7 +1,7 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.qna.article.ArticleRepository;
-import com.kakao.cafe.qna.article.JdbcArticleRepository;
+import com.kakao.cafe.qna.article.repository.ArticleRepository;
+import com.kakao.cafe.qna.article.repository.JdbcArticleRepository;
 import com.kakao.cafe.user.JdbcUserRepository;
 import com.kakao.cafe.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -43,7 +43,24 @@ public class CommentController {
 
     @DeleteMapping("{articleIdx}/comments/{commentIdx}")
     public String deleteComment(@PathVariable Integer articleIdx, @PathVariable Integer commentIdx) {
-        return null;
+        User user = getSessionedUser();
+        if (user == null) {
+            return "/user/login";
+        }
+
+        Comment comment = commentService.findCommentById(articleIdx, commentIdx);
+
+        // 댓글 작성자 ID와 삭제 요청자 ID가 일치해야 함
+        if (!user.getUserId().equals(comment.getWriter())) {
+            return "/qna/show_edit_failed";
+        }
+
+        commentService.deleteComment(comment);
+
+        Integer commentsCount = articleService.findArticleById(articleIdx).getCommentsCount();
+        articleService.updateCommentsCount(articleIdx, commentsCount - 1);
+
+        return "redirect:/articles/{articleIdx}";
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

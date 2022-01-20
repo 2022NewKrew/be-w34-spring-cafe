@@ -1,4 +1,6 @@
-package com.kakao.cafe.qna.article;
+package com.kakao.cafe.qna.article.repository;
+
+import com.kakao.cafe.qna.article.Article;
 
 import java.util.List;
 
