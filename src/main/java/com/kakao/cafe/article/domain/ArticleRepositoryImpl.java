@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 public class ArticleRepositoryImpl implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final ArticleMapper articleMapper;
 
     @Override
     public void save(Article article) {
@@ -58,17 +59,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         final String sql = "select * from articles where article_id = ?";
 
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(
-                sql,
-                (rs, rowNum) -> Article.builder()
-                    .id(rs.getLong("article_id"))
-                    .title(rs.getString("title"))
-                    .body(rs.getString("body"))
-                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                    .viewCount(rs.getInt("view_count"))
-                    .authorId(rs.getLong("author_id"))
-                    .build(),
-                id));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, articleMapper, id));
         } catch (DataAccessException e) {
             return Optional.empty();
         }

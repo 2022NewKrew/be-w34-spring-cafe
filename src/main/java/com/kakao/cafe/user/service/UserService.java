@@ -9,6 +9,7 @@ import com.kakao.cafe.user.exception.DuplicatedEmailException;
 import com.kakao.cafe.user.exception.DuplicatedNicknameException;
 import com.kakao.cafe.user.exception.UserNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,12 +31,15 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<Profile> getAllUsers() {
-        return userRepository.findAll();
+    public List<Profile> getProfiles() {
+        return userRepository.findAll().stream()
+            .map(Profile::of)
+            .collect(Collectors.toList());
     }
 
     public Profile getProfileById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        return Profile.of(user);
     }
 
     public SessionUser login(LoginRequest request) {

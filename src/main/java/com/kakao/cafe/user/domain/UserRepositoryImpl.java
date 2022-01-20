@@ -1,6 +1,5 @@
 package com.kakao.cafe.user.domain;
 
-import com.kakao.cafe.user.dto.Profile;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Repository;
 public class UserRepositoryImpl implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final UserMapper userMapper;
 
     @Override
     public void save(User user) {
@@ -21,18 +21,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<Profile> findById(Long id) {
+    public Optional<User> findById(Long id) {
         final String sql = "select * from users where user_id = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(
-                sql,
-                (rs, rowNum) -> Profile.builder()
-                    .userId(rs.getLong("user_id"))
-                    .email(rs.getString("email"))
-                    .nickname(rs.getString("nickname"))
-                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                    .build(),
-                id));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userMapper, id));
         } catch (DataAccessException e) {
             return Optional.empty();
         }
@@ -42,16 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
     public Optional<User> findByEmail(String email) {
         final String sql = "select * from users where email = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(
-                sql,
-                (rs, rowNum) -> User.builder()
-                    .id(rs.getLong("user_id"))
-                    .email(rs.getString("email"))
-                    .password(rs.getString("password"))
-                    .nickname(rs.getString("nickname"))
-                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                    .build(),
-                email));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userMapper, email));
         } catch (DataAccessException e) {
             return Optional.empty();
         }
@@ -60,27 +43,22 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean existsByEmail(String email) {
         final String sql = "select exists "
-            + "(select user_id from users where email=? limit 1)"
-            + " as success";
+            + "(select user_id from users where email=? limit 1) "
+            + "as success";
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, email));
     }
 
     @Override
     public boolean existsByNickname(String nickname) {
         final String sql = "select exists "
-            + "(select user_id from users where nickname=? limit 1)"
-            + " as success";
+            + "(select user_id from users where nickname=? limit 1) "
+            + "as success";
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, nickname));
     }
 
     @Override
-    public List<Profile> findAll() {
+    public List<User> findAll() {
         final String sql = "select * from users";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> Profile.builder()
-            .userId(rs.getLong("user_id"))
-            .email(rs.getString("email"))
-            .nickname(rs.getString("nickname"))
-            .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-            .build());
+        return jdbcTemplate.query(sql, userMapper);
     }
 }
