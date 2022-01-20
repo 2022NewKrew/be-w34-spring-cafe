@@ -23,10 +23,10 @@ public class CommentJdbc implements CommentRepository {
 
     @Override
     public boolean add(@NonNull final Comment comment) {
-        final int result = jdbcTemplate.update(con -> {
+        final int resultInsert = jdbcTemplate.update(con -> {
             final PreparedStatement pstmt = con.prepareStatement(
                     "INSERT INTO comment (user_id, article_idx, body, created_at, modified_at) " +
-                            "values (?,?,?,?,?)"
+                            "VALUES (?,?,?,?,?)"
             );
 
             pstmt.setString(1, comment.getUserId());
@@ -37,7 +37,21 @@ public class CommentJdbc implements CommentRepository {
             return pstmt;
         });
 
-        return (result > 0);
+        final int resultUpdate = jdbcTemplate.update(con -> {
+            final PreparedStatement pstmt = con.prepareStatement(
+                    "UPDATE article SET count_comments = count_comments + 1 " +
+                            "WHERE idx = ?"
+            );
+
+            pstmt.setLong(1, comment.getArticleIdx());
+            return pstmt;
+        });
+
+        if (resultInsert != 1 || resultUpdate != 1) {
+            throw new IllegalStateException("Affected record(s) is not 2 for add comment! insert - " + resultInsert + ", update - " + resultUpdate);
+        }
+
+        return true;
     }
 
     @Override
@@ -64,8 +78,8 @@ public class CommentJdbc implements CommentRepository {
                 )
         );
 
-        if (list.size() == 0) {
-            return null;
+        if (list.size() != 1) {
+            throw new IllegalStateException("Selected record(s) is not 1 for get comment! - " + list.size());
         }
 
         return list.get(0);
@@ -113,19 +127,29 @@ public class CommentJdbc implements CommentRepository {
             return pstmt;
         });
 
-        return (result > 0);
+        if (result != 1) {
+            throw new IllegalStateException("Affected record(s) is not 1 for update comment! - " + result);
+        }
+
+        return true;
     }
 
     @Override
     public boolean delete(final long idx) {
         final int result = jdbcTemplate.update(con -> {
             final PreparedStatement pstmt = con.prepareStatement(
-                    "UPDATE comment SET deleted = true WHERE idx = ? AND deleted = false"
+                    "UPDATE comment, article " +
+                            "SET comment.deleted = true, article.count_comments = GREATEST(0, article.count_comments - 1) " +
+                            "WHERE comment.article_idx = article.idx AND comment.idx = ? AND comment.deleted = false"
             );
             pstmt.setLong(1, idx);
             return pstmt;
         });
 
-        return (result > 0);
+        if (result != 2) {
+            throw new IllegalStateException("Affected record(s) is not 2 for delete comment! - " + result);
+        }
+
+        return true;
     }
 }
