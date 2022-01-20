@@ -21,8 +21,11 @@
         <div class="description">
             <div class="container-center">
                 <header class="post-header">
-                    {{#errorMessage}}
+                    {{#errorTitle}}
                     <p class="desc-big">{{this}}</p>
+                    {{/errorTitle}}
+                    {{#errorMessage}}
+                    <p class="desc-small">{{this}}</p>
                     {{/errorMessage}}
                 </header>
             </div>

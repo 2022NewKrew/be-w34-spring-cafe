@@ -26,9 +26,6 @@ public class UserController {
      */
     @PostMapping("/users")
     public String join(@ModelAttribute RequestUserDto userDto) {
-
-        log.info("POST /users {}", userDto);
-
         userService.join(userDto);
         return "redirect:/users";
     }
@@ -38,7 +35,6 @@ public class UserController {
      */
     @GetMapping("/users")
     public String getAllUsers(Model model) {
-        log.info("GET /users");
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("countOfUser", userService.getCountOfUser());
         return "user/list";
