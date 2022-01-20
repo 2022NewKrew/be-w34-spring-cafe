@@ -1,5 +1,6 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.common.interceptor.ApiInterceptor;
 import com.kakao.cafe.common.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -15,5 +16,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/questions/**","/users/**/**")
                 .excludePathPatterns("/questions","/users/login","/users/create");
+
+        registry.addInterceptor(new ApiInterceptor())
+                .order(2)
+                .addPathPatterns("/api/questions/**/answer");
     }
 }

@@ -53,7 +53,7 @@
                     <em style="font-size: 18px; font-weight: bold; margin-right: 15px">댓글</em>
                     <span style="font-size: 16px">{{replySize}}개</span>
                 </div>
-                <ul style="margin-top: 15px;list-style: none;padding: 0 10px 14px;">
+                <ul id="replyComment" style="margin-top: 15px;list-style: none;padding: 0 10px 14px;">
                     {{#replies}}
                     <li style="margin: 15px 0; padding: 10px; background-color: #fff; border-radius: 8px; position:relative;">
                         <div>
@@ -74,15 +74,18 @@
             </div>
             {{/replySize}}
 
-            <form action="/questions/{{question.id}}/answers" method="post" name="reply" style="padding:10px 0 0;">
+            <form id="answer" onsubmit="return false" method="post" name="reply" style="padding:10px 0 0;">
                 <span style="font-size: 18px; color: #5e5e5e; font-weight: 700;">댓글 달기</span>
                 <div style="margin-top: 20px; display: flex; flex-direction: row;">
                     <label style="flex: 1 1 auto; height: 100%; margin:0; border: 1px solid #e0e0e0;">
                         <textarea style="border: 0; width: 100%;" name="comment"></textarea>
-                    </label><button type="submit">보내기</button>
+                    </label><button type="submit" onClick="addAnswer({{question.id}})">보내기</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<script>
+
+</script>
 {{>layout/footer}}

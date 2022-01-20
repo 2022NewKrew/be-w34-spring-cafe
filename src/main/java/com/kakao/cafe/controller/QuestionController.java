@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.common.exception.BaseException;
+import com.kakao.cafe.controller.common.LoginUser;
 import com.kakao.cafe.controller.common.SessionLoginUser;
 import com.kakao.cafe.question.Question;
 import com.kakao.cafe.question.QuestionService;
@@ -12,7 +13,6 @@ import com.kakao.cafe.reply.ReplyService;
 import com.kakao.cafe.reply.dto.ReplyCreateDto;
 import com.kakao.cafe.reply.dto.ReplyDto;
 import com.kakao.cafe.user.User;
-import com.kakao.cafe.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -30,16 +30,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionController {
 
-    private static final Long NOT_FOUND_MEMBER_ID = -1L;
     private final QuestionService questionService;
     private final ReplyService replyService;
     private final ModelMapper modelMapper;
-    private final SessionLoginUser<UserDto> sessionLoginUser;
+    private final SessionLoginUser sessionLoginUser;
 
     @DeleteMapping("/{id}")
     public String deleteQuestion(@PathVariable("id") Long id) throws BaseException {
 
-        Long memberId = getMemberId();
+        Long memberId = sessionLoginUser.getMemberId();
 
         questionService.deleteOne(id, memberId);
 
@@ -62,7 +61,7 @@ public class QuestionController {
     @PutMapping("/update/{id}")
     public String updateQuestion(@PathVariable("id") Long id, @Valid @ModelAttribute("question") QuestionUpdateDto questionUpdateDto, Model model) throws BaseException {
 
-        Long memberId = getMemberId();
+        Long memberId = sessionLoginUser.getMemberId();
         Question question = modelMapper.map(questionUpdateDto, Question.class);
 
         question.setId(id);
@@ -75,7 +74,7 @@ public class QuestionController {
     @GetMapping("/{id}")
     public String viewQuestionDetail(@PathVariable("id") Long id, Model model) {
 
-        Long memberId = getMemberId();
+        Long memberId = sessionLoginUser.getMemberId();
         QuestionDto question = QuestionDto.of(questionService.findOne(id), memberId);
 
         model.addAttribute("question", question);
@@ -101,7 +100,7 @@ public class QuestionController {
     @GetMapping
     public String viewQuestionList(Model model) {
 
-        Long memberId = getMemberId();
+        Long memberId = sessionLoginUser.getMemberId();
         List<QuestionDto> questions = QuestionDto.of(questionService.findAll(), memberId);
 
         model.addAttribute("questions", questions);
@@ -115,7 +114,7 @@ public class QuestionController {
 
         Question origin = questionService.findOne(id);
         QuestionUpdateDto question = modelMapper.map(origin, QuestionUpdateDto.class);
-        UserDto loginUser = sessionLoginUser.getLoginUser();
+        LoginUser loginUser = sessionLoginUser.getLoginUser();
 
         if ((origin != null) && !origin.getMemberId().equals(loginUser.getId())) {
             throw new BaseException("게시글의 권한이 없는 사용자 입니다.");
@@ -133,8 +132,8 @@ public class QuestionController {
 
         reply.setComment(replyCreateDto.getComment());
         reply.setQuestionId(questionId);
-        reply.setMemberId(getMemberId());
-        reply.setWriter(getUserId());
+        reply.setMemberId(sessionLoginUser.getMemberId());
+        reply.setWriter(sessionLoginUser.getUserId());
 
         replyService.save(reply);
 
@@ -144,19 +143,9 @@ public class QuestionController {
     @DeleteMapping("/{questionId}/answers/{id}")
     public String deleteReply(@PathVariable Long questionId, @PathVariable Long id, @ModelAttribute("reply") ReplyCreateDto replyCreateDto) throws BaseException {
 
-        replyService.deleteOne(id, getMemberId(), questionId);
+        replyService.deleteOne(id, sessionLoginUser.getMemberId(), questionId);
 
         return String.format("redirect:/questions/%d", questionId);
-    }
-
-    private Long getMemberId() {
-        UserDto loginUser = sessionLoginUser.getLoginUser();
-        return loginUser == null ? NOT_FOUND_MEMBER_ID : loginUser.getId();
-    }
-
-    private String getUserId() {
-        UserDto loginUser = sessionLoginUser.getLoginUser();
-        return loginUser.getUserId();
     }
 
 }
