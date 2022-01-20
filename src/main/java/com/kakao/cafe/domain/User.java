@@ -1,20 +1,23 @@
-package com.kakao.cafe.users;
+package com.kakao.cafe.domain;
 
 public class User {
-    private String ID;
+    private int userId;
     private String password;
     private String nickname;
     private String email;
 
-    public User(String ID, String password, String nickname, String email) {
-        this.ID = ID;
+    public User(){
+    }
+
+    public User(int ID, String password, String nickname, String email) {
+        this.userId = ID;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
     }
 
-    public String getID() {
-        return ID;
+    public int getUserId() {
+        return userId;
     }
 
     public String getPassword() {
@@ -29,8 +32,8 @@ public class User {
         return email;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setPassword(String password) {
