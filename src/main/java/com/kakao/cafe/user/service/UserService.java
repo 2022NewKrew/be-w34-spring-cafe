@@ -40,11 +40,6 @@ public class UserService {
 
     // 페이징 구현 시 리펙토링 필요
     public AllUserProfileServiceResponse getAllUserViewData(Long startIndex) {
-//        ArrayList<User> users = userRepository.findAll().stream()
-//                                              .skip(startIndex)
-//                                              .collect(Collectors.toCollection(ArrayList::new));
-//        userRepository.findAll().stream().skip(startIndex).collect(Collectors.toList());
-//        userRepository.findAll().subList(0,1);
         List<User> users = userRepository.findAll();
         List<User> result = users.subList(startIndex.intValue(), users.size());
         Collections.reverse(result);

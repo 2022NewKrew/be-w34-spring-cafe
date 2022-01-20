@@ -38,8 +38,6 @@ public class UserController {
     public String list(Model model) {
         log.info("GET /user access");
         AllUserProfileServiceResponse dto = userService.getAllUserViewData(0L);
-//
-//        model.addAllAttributes(new UserListResponse());
         model.addAttribute("users", UserControllerResponseMapper.getUserListResponse(dto));
         return "user/list";
     }

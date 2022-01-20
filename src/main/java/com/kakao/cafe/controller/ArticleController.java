@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,14 @@ import com.kakao.cafe.article.service.dto.CreateArticleServiceRequest;
 import com.kakao.cafe.config.Constant;
 import com.kakao.cafe.controller.interceptor.AuthInfoCheck;
 import com.kakao.cafe.controller.session.AuthInfo;
+import com.kakao.cafe.controller.viewdto.ArticleControllerResponseMapper;
 import com.kakao.cafe.controller.viewdto.request.ArticleCreateRequest;
 import com.kakao.cafe.controller.viewdto.request.ArticleUpdateRequest;
+import com.kakao.cafe.controller.viewdto.request.ReplyCreateRequest;
+import com.kakao.cafe.reply.service.ReplyService;
+import com.kakao.cafe.reply.service.ReplyServiceDTOMapper;
+import com.kakao.cafe.reply.service.dto.CreateReplyServiceRequest;
+import com.kakao.cafe.reply.service.dto.OneReplyServiceResponse;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,6 +39,7 @@ import com.kakao.cafe.controller.viewdto.request.ArticleUpdateRequest;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
     @PostMapping("")
     @AuthInfoCheck
@@ -65,12 +73,17 @@ public class ArticleController {
     @GetMapping("/{id}")
     public String getArticle(@PathVariable("id") String articleId, Model model) {
         log.info("Get /article/{}", articleId);
+
         ArticleReadServiceResponse dto = articleService.getArticleReadViewDTO(Long.parseLong(articleId));
         model.addAttribute("title", dto.getTitle());
         model.addAttribute("authorstringid", dto.getAuthorStringId());
         model.addAttribute("writedate", dto.getMakeTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         model.addAttribute("contents", dto.getContents());
         model.addAttribute("articleId", dto.getId());
+
+        List<OneReplyServiceResponse> findReplies = replyService.findReplyByArticle(Long.parseLong(articleId));
+        model.addAttribute("replyNum", findReplies.size());
+        model.addAttribute("replies", ArticleControllerResponseMapper.getReplyListResponse((findReplies)));
         return "article/show";
     }
 
@@ -97,6 +110,16 @@ public class ArticleController {
         model.addAttribute("contents", dto.getContents());
         model.addAttribute("articleId", articleId);
         return "article/update";
+    }
+
+    @PostMapping("/reply")
+    @AuthInfoCheck
+    public String createReply(@ModelAttribute ReplyCreateRequest req,
+                              @SessionAttribute(Constant.authAttributeName) AuthInfo authInfo) {
+        log.info("{}", req.getAnswer());
+        CreateReplyServiceRequest request = ReplyServiceDTOMapper.convertToCreateReplyRequest(req, authInfo);
+        replyService.createReply(request);
+        return "redirect:/article/" + req.getArticleId();
     }
 
     private CreateArticleServiceRequest createArticle(ArticleCreateRequest req, AuthInfo authInfo) {

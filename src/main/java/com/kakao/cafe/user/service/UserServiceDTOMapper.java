@@ -5,6 +5,7 @@ import com.kakao.cafe.user.service.dto.UserProfileServiceResponse;
 
 public class UserServiceDTOMapper {
 
+
     public static UserProfileServiceResponse convertToUserProfileServiceResponse(User user) {
         return UserProfileServiceResponse.builder()
                                          .name(user.getName())
@@ -12,4 +13,6 @@ public class UserServiceDTOMapper {
                                          .email(user.getEmail())
                                          .build();
     }
+
+
 }
