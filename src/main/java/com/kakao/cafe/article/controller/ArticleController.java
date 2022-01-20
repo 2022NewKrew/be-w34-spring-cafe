@@ -26,11 +26,7 @@ public class ArticleController {
     //새로운 질문 생성
     @PostMapping(value = "/qna/create")
     public String createArticle(ArticleCreateDTO articleCreateDTO, HttpSession session){
-        User user;
-        //로그인 상태가 아닌경우
-        if((user = (User) session.getAttribute("sessionedUser")) == null){
-            throw new ArticleNotLoggedInException("로그인 상태에서만 게시글을 작성할 수 있습니다.");
-        }
+        User user = (User) session.getAttribute("sessionedUser");
 
         //로그인된 사용자가 아닌 다른 사용자를 글쓴이로 작성한경우
         if(!user.getUserId().equals(articleCreateDTO.getUserId())){
@@ -45,11 +41,7 @@ public class ArticleController {
     //글작성폼
     @GetMapping(value = "/qna/form") //form으로 수정해야함
     public String writeArticle(Model model, HttpSession session){
-        User user;
-        //로그인 상태가 아닌경우
-        if((user = (User) session.getAttribute("sessionedUser")) == null){
-            throw new ArticleNotLoggedInException("로그인 상태에서만 게시글을 작성할 수 있습니다.");
-        }
+        User user = (User) session.getAttribute("sessionedUser");
 
         return "/qna/form";
     }
@@ -67,12 +59,7 @@ public class ArticleController {
     //상세 질문글 확인
     @GetMapping(value = "/qnas/{sequence}")
     public String showArticle(@PathVariable("sequence") Long sequence, Model model, HttpSession session){
-        User user;
-        //로그인 상태가 아닌경우
-        if((user = (User) session.getAttribute("sessionedUser")) == null){
-            throw new ArticleNotLoggedInException("로그인 상태에서만 상세글을 볼 수 있습니다.");
-        }
-
+        User user = (User) session.getAttribute("sessionedUser");
 
         Article article = articleService.getArticleBySequence(sequence);
         ArticleViewDTO articleViewDTO = new ArticleViewDTO(article);
@@ -96,11 +83,7 @@ public class ArticleController {
     //글 수정시 폼에 원본글 불러오기
     @GetMapping(value = "/qnas/update/{sequence}")
     public String updateArticleForm(@PathVariable("sequence") Long sequence, Model model, HttpSession session){
-        //로그인 상태가 아닌경우
-        User user;
-        if((user = (User) session.getAttribute("sessionedUser")) == null){
-            throw new ArticleNotLoggedInException("로그인 상태에서만 상세글을 볼 수 있습니다.");
-        }
+        User user = (User) session.getAttribute("sessionedUser");
 
         Article article = articleService.getArticleBySequence(sequence);
         if(!article.getUserId().equals(user.getUserId())){
@@ -133,11 +116,8 @@ public class ArticleController {
     //작성글 삭제
     @DeleteMapping(value = "/qnas/delete/{userId}/{sequence}")
     public String showArticle(@PathVariable("userId") String userId, @PathVariable("sequence") Long sequence, HttpSession session){
-        User user;
-        //로그인 상태가 아닌경우
-        if((user = (User) session.getAttribute("sessionedUser")) == null){
-            throw new ArticleNotLoggedInException("로그인 상태에서만 글 삭제가 가능합니다.");
-        }
+        User user = (User) session.getAttribute("sessionedUser");
+
 
         if(!user.getUserId().equals(userId)){
             throw new ArticleNotMatchedUser("로그인된 사용자가 작성한 글이 아닙니다.");
@@ -159,11 +139,7 @@ public class ArticleController {
     //새로운 댓글 생성
     @PostMapping(value = "/qnas/reply/create")
     public String createReply(ReplyCreateDTO replyCreateDTO, HttpSession session){
-        User user;
-        //로그인 상태가 아닌경우
-        if((user = (User) session.getAttribute("sessionedUser")) == null){
-            throw new ArticleNotLoggedInException("로그인 상태에서만 댓글을 작성할 수 있습니다.");
-        }
+        User user = (User) session.getAttribute("sessionedUser");
 
         //로그인된 사용자가 아닌 다른 사용자를 글쓴이로 작성한경우
         if(!user.getUserId().equals(replyCreateDTO.getUserId())){
