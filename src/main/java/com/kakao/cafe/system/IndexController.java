@@ -1,6 +1,6 @@
 package com.kakao.cafe.system;
 
-import com.kakao.cafe.qna.article.ArticleDto;
+import com.kakao.cafe.qna.article.ArticleViewDto;
 import com.kakao.cafe.qna.article.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,11 +27,11 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(Model model) {
-        List<ArticleDto> articleDtos = articleService.findAll()
+        List<ArticleViewDto> articleViewDtos = articleService.findAll()
                         .stream()
-                        .map(ArticleDto::new)
+                        .map(ArticleViewDto::new)
                         .collect(Collectors.toList());
-        model.addAttribute("articles", articleDtos);
+        model.addAttribute("articles", articleViewDtos);
         return "index";
     }
 }

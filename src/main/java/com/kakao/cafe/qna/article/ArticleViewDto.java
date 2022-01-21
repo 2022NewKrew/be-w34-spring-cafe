@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
  */
 @Data
 @NoArgsConstructor
-public class ArticleDto {
+public class ArticleViewDto {
 
-    public ArticleDto(Article article) {
+    public ArticleViewDto(Article article) {
         this.id = article.getId();
         this.writer = article.getWriter();
         this.title = article.getTitle();

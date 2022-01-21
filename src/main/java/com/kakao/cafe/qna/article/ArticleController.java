@@ -28,7 +28,7 @@ public class ArticleController {
     private final HttpSession session;
 
     @PostMapping
-    public String question(ArticleDto articleDto) {
+    public String question(ArticleViewDto articleViewDto) {
         User user = getSessionedUser();
         if (user == null) {
             return "/user/login";
@@ -36,8 +36,8 @@ public class ArticleController {
 
         Article article = new Article(
                 user.getUserId(),
-                articleDto.getTitle(),
-                articleDto.getContents());
+                articleViewDto.getTitle(),
+                articleViewDto.getContents());
         articleService.saveArticle(article);
 
         return "redirect:/";
@@ -46,7 +46,7 @@ public class ArticleController {
     @GetMapping("/{id}")
     public String articleView(Model model, @PathVariable("id") Integer id) {
         Article article = articleService.findArticleById(id);
-        model.addAttribute("article", new ArticleDto(article));
+        model.addAttribute("article", new ArticleViewDto(article));
         return "/qna/show";
     }
 
@@ -66,18 +66,19 @@ public class ArticleController {
             return "/qna/show_edit_failed";
         }
 
-        model.addAttribute("article", new ArticleDto(article));
+        model.addAttribute("article",
+                new ArticleEditDto(article.getId(), article.getTitle(), article.getContents()));
         return "/qna/form_edit";
     }
 
     @PutMapping("/{id}")
-    public String questionEdit(ArticleDto articleDto, @PathVariable("id") Integer id) {
+    public String questionEdit(ArticleViewDto articleViewDto, @PathVariable("id") Integer id) {
         User user = getSessionedUser();
         if (user == null) return "/user/login";
 
-        articleService.updateArticle(id, articleDto.getTitle(), articleDto.getContents(), user.getUserId());
+        articleService.updateArticle(id, articleViewDto.getTitle(), articleViewDto.getContents(), user.getUserId());
 
-        return "redirect:/{id}";
+        return "redirect:/articles/{id}";
     }
 
     @DeleteMapping("/{id}")
