@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 @JdbcTest
-@Sql({"classpath:jdbc/schema.sql", "classpath:jdbc/test-data.sql"})
+@Sql({"classpath:jdbc/schema.sql", "classpath:jdbc/article-test-data.sql"})
 class ArticleRepositoryTest {
 
     private ArticleRepository articleRepository;
