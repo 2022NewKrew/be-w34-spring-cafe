@@ -7,9 +7,17 @@
 
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="/user/">멤버 리스트</a></li>
-            <li><a class="black-component" href="/user/login" role="button">로그인</a></li>
-            <li><a class="black-component" href="/user/signup" role="button">회원가입</a></li>
+            {{#userKey}}
+            <li class="active">{{userName}}님</a></li>
+            <li><a class="black-component" href="/users/" role="button">멤버 리스트</a></li>
+            <li><a class="black-component" href="/logout" role="button">로그아웃</a></li>
+            <li><a class="black-component" href="/users/{{userKey}}/update" role="button">정보수정</a></li>
+            {{/userKey}}
+            {{^userKey}}
+            <li><a class="black-component" href="/users/" role="button">멤버 리스트</a></li>
+            <li><a class="black-component" href="/login" role="button">로그인</a></li>
+            <li><a class="black-component" href="/users/signup" role="button">회원가입</a></li>
+            {{/userKey}}
         </ul>
     </div>
 </nav>

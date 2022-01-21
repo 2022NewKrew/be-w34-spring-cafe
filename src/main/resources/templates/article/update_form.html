@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    {{>common/meta}}
+    <link href="/css/post/form.css" rel="stylesheet">
+</head>
+<body>
+<div class="background">
+    {{>common/header}}
+
+    <div class="container" id="main">
+        <header class="post-header">
+            <p class="title">글 수정</p>
+        </header>
+        <form class="submit-write" method="post" action="/articles/{{article.id}}">
+            <input type="hidden" name="_method" value="PUT"/>
+            <div class="text-box">
+                <div class="comment-writer-container">
+                    <p class="post-title">제목</p>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요">{{article.title}}</textarea>
+                </div>
+            </div>
+
+            <div class="text-box">
+                <div class="comment-writer-container">
+                    <p class="post-content">내용</p>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요">{{article.content}}</textarea>
+                </div>
+            </div>
+            <input class="post-write-btn" type="submit" value="완료"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>

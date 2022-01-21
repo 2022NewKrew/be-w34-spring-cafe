@@ -1,85 +1,34 @@
 package com.kakao.cafe.domain.article;
 
-import com.kakao.cafe.domain.user.User;
-import org.springframework.core.style.ToStringCreator;
+import com.kakao.cafe.domain.article.exception.AuthorNotMatchException;
+import com.kakao.cafe.domain.base.BaseEntity;
+import lombok.*;
 
-import java.time.LocalDate;
-import java.util.Objects;
+import java.time.LocalDateTime;
 
-public class Article {
-    private Long id;
-    private String author;
+@Getter @Setter
+@EqualsAndHashCode(callSuper = false)
+public class Article extends BaseEntity {
+    private Long userId;
     private String title;
     private String content;
-    private LocalDate createdAt;
+    private Long viewCount;
 
-    public Article(Long id, String author, String title, String content, LocalDate createdAt) {
-        this.id = id;
-        this.author = author;
+    @Builder
+    public Article(Long id, Long userId, String title, String content, Long viewCount, LocalDateTime createdAt, Boolean isDeleted) {
+        super(id, createdAt, isDeleted);
+        this.userId = userId;
         this.title = title;
         this.content = content;
-        this.createdAt = createdAt;
+        this.viewCount = viewCount;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void updateInfo(Article article) {
+        this.title = article.getTitle();
+        this.content = article.getContent();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Article article = (Article) o;
-        return Objects.equals(id, article.id);
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringCreator(this)
-                .append("author", this.getAuthor())
-                .append("title", this.getTitle())
-                .append("content", this.getContent())
-                .toString();
+    public void validateAuthor(Long userId) {
+        if (!getUserId().equals(userId)) throw new AuthorNotMatchException();
     }
 }

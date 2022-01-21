@@ -26,6 +26,10 @@ li {
     margin: 3px;
 }
 
+.panel-default {
+    width: 100%;
+}
+
 .black-component {
     display: flex;
     flex-direction: column;
@@ -71,6 +75,7 @@ li {
 .article-header-text {
     color: gray;
     display: flex;
+    align-items: center;
 }
 
 .article-content {
@@ -80,6 +85,14 @@ li {
 
 .article-header {
     margin-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.article-header-btn {
+    display: flex;
+    align-items: center;
 }
 
 .post-comment {
@@ -98,9 +111,16 @@ li {
     color: lightgray;
 }
 
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .comment-content {
     margin-top: 10px;
     margin-bottom: 10px;
+    display: block;
 }
 
 .post-write-btn {
@@ -117,6 +137,7 @@ li {
     background-color: black;
     color: white;
     margin: 20px;
+    box-shadow: none
 }
 
 .post-btn-container {
@@ -138,7 +159,7 @@ li {
     padding: 3%;
     width: 90%;
     height: 50px;
-    border:none;
+    border: none;
 }
 
 .form-control:focus {
