@@ -19,6 +19,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         AuthHandler authHandler = new AuthHandler();
         registry.addInterceptor(authHandler)
                 .addPathPatterns(includePatterns)
-                .excludePathPatterns();
+                .excludePathPatterns("/");
     }
 }
