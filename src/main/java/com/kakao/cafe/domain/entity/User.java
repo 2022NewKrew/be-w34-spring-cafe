@@ -32,6 +32,10 @@ public class User {
         return this.id == target.id && Objects.equals(password, target.password);
     }
 
+    public boolean canDelete(Reply target) {
+        return this.id == target.getAuthorId();
+    }
+
     public UserDto toDto() {
         return new UserDto.Builder()
                 .id(id)

@@ -17,9 +17,9 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @JdbcTest
 @Sql(scripts={"classpath:/db/sql/0_schema.sql"})
@@ -94,5 +94,32 @@ class JdbcReplyRepositoryTest {
         List<Reply> result = subject.list(-1);
 
         assertEquals(0, result.size());
+    }
+
+    @Test
+    void getById() {
+        Optional<Reply> result = subject.getById(insertedId);
+
+        assertTrue(result.isPresent());
+        assertEquals(insertedId, result.get().getId());
+    }
+
+    @Test
+    void getById_notFound() {
+        Optional<Reply> result = subject.getById(-1);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void delete() {
+        subject.delete(insertedId);
+
+        Integer count = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM replies WHERE id = :reply_id",
+                new MapSqlParameterSource(Collections.singletonMap("reply_id", insertedId)),
+                Integer.class
+        );
+        assertEquals(0, count);
     }
 }

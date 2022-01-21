@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.entity.Reply;
 import com.kakao.cafe.domain.entity.ReplyDraft;
 import com.kakao.cafe.domain.repository.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -12,10 +13,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class JdbcReplyRepository implements ReplyRepository {
@@ -52,5 +50,26 @@ public class JdbcReplyRepository implements ReplyRepository {
                 "WHERE replies.article_id = :target_id";
         SqlParameterSource params = new MapSqlParameterSource("target_id", targetId);
         return jdbcTemplate.query(sql, params, rowMapper);
+    }
+
+    @Override
+    public Optional<Reply> getById(long targetId) {
+        String sql = "SELECT * FROM replies " +
+                "INNER JOIN articles ON articles.ID = replies.article_id " +
+                "INNER JOIN users ON replies.author_id = users.id " +
+                "WHERE replies.id = :target_id";
+        SqlParameterSource params = new MapSqlParameterSource("target_id", targetId);
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, params, rowMapper));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public void delete(long id) {
+        String sql = "DELETE FROM replies WHERE id = :id";
+        SqlParameterSource params = new MapSqlParameterSource("id", id);
+        jdbcTemplate.update(sql, params);
     }
 }

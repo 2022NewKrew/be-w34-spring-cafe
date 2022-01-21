@@ -2,7 +2,7 @@ package com.kakao.cafe.app.advice;
 
 import com.kakao.cafe.domain.exception.CannotAuthenticateException;
 import com.kakao.cafe.domain.exception.DuplicateUserIdException;
-import com.kakao.cafe.domain.exception.NoSuchArticleException;
+import com.kakao.cafe.domain.exception.NoSuchObjectException;
 import com.kakao.cafe.domain.exception.NoSuchUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,9 +30,9 @@ public class ExceptionAdvice {
         return "error/noSuchUser";
     }
 
-    @ExceptionHandler(NoSuchArticleException.class)
+    @ExceptionHandler(NoSuchObjectException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleNoSuchArticleException() {
+    public String handleNoSuchObjectException() {
         return "error/404";
     }
 

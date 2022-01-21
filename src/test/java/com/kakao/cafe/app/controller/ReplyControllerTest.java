@@ -1,6 +1,6 @@
 package com.kakao.cafe.app.controller;
 
-import com.kakao.cafe.domain.exception.NoSuchArticleException;
+import com.kakao.cafe.domain.exception.NoSuchObjectException;
 import com.kakao.cafe.domain.exception.NoSuchUserException;
 import com.kakao.cafe.service.ReplyService;
 import org.junit.jupiter.api.Test;
@@ -93,7 +93,7 @@ class ReplyControllerTest {
                 .param("contents", "content")
                 .session(session);
         when(service.create(anyLong(), anyLong(), any())).thenAnswer(invocation -> {
-            throw new NoSuchArticleException();
+            throw new NoSuchObjectException();
         });
 
         mvc.perform(request)

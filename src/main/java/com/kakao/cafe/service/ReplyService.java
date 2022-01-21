@@ -4,8 +4,9 @@ import com.kakao.cafe.domain.entity.Article;
 import com.kakao.cafe.domain.entity.Reply;
 import com.kakao.cafe.domain.entity.ReplyDraft;
 import com.kakao.cafe.domain.entity.User;
-import com.kakao.cafe.domain.exception.NoSuchArticleException;
+import com.kakao.cafe.domain.exception.NoSuchObjectException;
 import com.kakao.cafe.domain.exception.NoSuchUserException;
+import com.kakao.cafe.domain.exception.UnauthorizedException;
 import com.kakao.cafe.domain.repository.ArticleRepository;
 import com.kakao.cafe.domain.repository.ReplyRepository;
 import com.kakao.cafe.domain.repository.UserRepository;
@@ -39,7 +40,7 @@ public class ReplyService {
         User author = userRepository.getById(authorId)
                 .orElseThrow(NoSuchUserException::new);
         Article target = articleRepository.getById(targetId)
-                .orElseThrow(NoSuchArticleException::new);
+                .orElseThrow(NoSuchObjectException::new);
         ReplyDraft entity = draft.toEntity(target, author);
         return repository.create(entity).toDto();
     }
@@ -49,5 +50,16 @@ public class ReplyService {
                 .stream()
                 .map(Reply::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public void delete(long targetId, long actorId) {
+        User actor = userRepository.getById(actorId)
+                .orElseThrow(NoSuchUserException::new);
+        Reply target = repository.getById(targetId)
+                .orElseThrow(NoSuchObjectException::new);
+        if (!actor.canDelete(target)) {
+            throw new UnauthorizedException();
+        }
+        repository.delete(targetId);
     }
 }

@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.entity.Article;
 import com.kakao.cafe.domain.entity.Draft;
 import com.kakao.cafe.domain.entity.Reply;
 import com.kakao.cafe.domain.entity.User;
-import com.kakao.cafe.domain.exception.NoSuchArticleException;
+import com.kakao.cafe.domain.exception.NoSuchObjectException;
 import com.kakao.cafe.domain.exception.NoSuchUserException;
 import com.kakao.cafe.domain.exception.UnauthorizedException;
 import com.kakao.cafe.domain.repository.ArticleRepository;
@@ -65,7 +65,7 @@ public class ArticleService {
             throw new NoSuchUserException();
         }
         if (article.isEmpty()) {
-            throw new NoSuchArticleException();
+            throw new NoSuchObjectException();
         }
         if (user.get().getId() != article.get().getAuthorId()) {
             throw new UnauthorizedException();
