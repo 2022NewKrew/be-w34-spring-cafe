@@ -34,6 +34,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({LoginUserNotFoundException.class, IncorrectLoginPasswordException.class})
     public void handleLoginException(Exception exception, HttpServletResponse response) throws IOException {
+        System.out.println(exception.getMessage());
         response.sendRedirect("/auth/login/failform");
     }
 
