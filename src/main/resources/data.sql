@@ -2,3 +2,4 @@ INSERT INTO MEMBER(USERID, password, email) values ('chen', '1234', 'chen.kim@ka
 INSERT INTO MEMBER(USERID, password, email) values ('chen2', '12342', 'chen2.kim@kakaocorp.com');
 
 INSERT INTO ARTICLE(title, content) values ('TITLE CHAN', 'TITLE CONTENT');
+INSERT INTO ARTICLE(title, content, USER_ID) values ('TITLE CHAN', 'TITLE CONTENT', 1);
