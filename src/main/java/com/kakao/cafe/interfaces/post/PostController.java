@@ -4,6 +4,8 @@ import com.kakao.cafe.application.PostService;
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.interfaces.common.PostDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -13,17 +15,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
+@RequiredArgsConstructor
+@Slf4j
 @Controller
 @RequestMapping("/posts")
 public class PostController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private final PostService postService;
-
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
 
     /**
      * {@link Post} 목록

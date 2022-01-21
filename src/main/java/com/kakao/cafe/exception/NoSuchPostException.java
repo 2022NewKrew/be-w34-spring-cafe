@@ -1,4 +1,4 @@
-package com.kakao.cafe.exception.handler;
+package com.kakao.cafe.exception;
 
 import java.util.NoSuchElementException;
 

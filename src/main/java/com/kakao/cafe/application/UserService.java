@@ -2,13 +2,12 @@ package com.kakao.cafe.application;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserMapper;
-import com.kakao.cafe.exception.handler.NoSuchUserException;
+import com.kakao.cafe.exception.NoSuchUserException;
 import com.kakao.cafe.interfaces.common.UserDto;
 import com.kakao.cafe.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -38,6 +37,7 @@ public class UserService {
 
     public void update(User user, UserDto userDto) {
         user.update(userDto.getEmail(), userDto.getNickname());
+        userRepository.save(user);
     }
 
     public User login(UserDto userDto) {

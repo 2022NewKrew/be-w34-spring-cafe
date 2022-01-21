@@ -1,5 +1,7 @@
 package com.kakao.cafe.exception.handler;
 
+import com.kakao.cafe.exception.NoSuchPostException;
+import com.kakao.cafe.exception.NoSuchUserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
