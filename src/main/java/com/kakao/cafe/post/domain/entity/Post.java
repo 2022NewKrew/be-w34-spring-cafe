@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Getter
 @EqualsAndHashCode(of = "id")
+@Getter
 public class Post {
     @NonNull
     private final Long id;
@@ -32,7 +32,7 @@ public class Post {
 
     private final LocalDateTime timeWritten;
 
-    private boolean isHidden;
+    private final Boolean isHidden;
 
     private final List<Comment> comments;
 

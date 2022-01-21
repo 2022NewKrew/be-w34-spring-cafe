@@ -24,6 +24,22 @@ class PostRepositoryTest extends JdbcRepositoryTest {
     }
 
     @Test
+    @DisplayName("Post 한 개 가져오기 성공")
+    void successGet(){
+        //given
+        final List<Post> posts = PostsData.getPostList();
+        final Post post = posts.get(0);
+        postRepository.savePostAll(posts);
+
+        //when
+        final Post postSaved = postRepository.getPost(post.getId()).orElseThrow();
+
+        //then
+        assertThat(postSaved).isEqualTo(post);
+        assertThat(postSaved.getComments()).isEqualTo(post.getComments());
+    }
+
+    @Test
     @DisplayName("Post 여러 개 가져오기 성공")
     void successGetAll() {
         //given
@@ -31,12 +47,12 @@ class PostRepositoryTest extends JdbcRepositoryTest {
         postRepository.savePostAll(posts);
 
         //when
-        final List<Post> actualPosts = postRepository.getPosts(0, 4);
+        final List<Post> postSaved = postRepository.getPosts(0, 4);
 
         //then
         posts.sort(comparing(Post::getTimeWritten).reversed());
-        assertThat(actualPosts.size()).isEqualTo(4);
-        assertThat(actualPosts).isEqualTo(posts.subList(0,4));
+        assertThat(postSaved.size()).isEqualTo(4);
+        assertThat(postSaved).isEqualTo(posts.subList(0,4));
     }
 
     @ParameterizedTest
@@ -98,11 +114,28 @@ class PostRepositoryTest extends JdbcRepositoryTest {
         //when
         postRepository.softDelete(deletedPost.getId());
         Optional<Post> actualDeleted = postRepository.getPost(deletedPost.getId());
-        List<Post> remainedPosts = postRepository.getPosts(0, posts.size());
+        List<Post> remainedPosts = postRepository.getPosts(0, posts.size()-1);
 
         //then
         assertThat(actualDeleted.isEmpty()).isEqualTo(true);
         assertThat(remainedPosts.size()).isEqualTo(posts.size()-1);
         assertThat(remainedPosts).doesNotContain(deletedPost);
+    }
+
+    @Test
+    @DisplayName("Comment 삭제 성공")
+    void successDeleteComment(){
+        //given
+        final Post post = PostsData.getPostList().get(0);
+        final Comment commentDeleted = post.getComments().get(0);
+        postRepository.savePost(post);
+
+        //when
+        postRepository.deleteComment(commentDeleted.getId());
+        final Post postUpdated = postRepository.getPost(post.getId()).orElseThrow();
+
+        //then
+        assertThat(postUpdated.getComments().size()).isEqualTo(post.getComments().size()-1);
+        assertThat(postUpdated.getComments()).doesNotContain(commentDeleted);
     }
 }
