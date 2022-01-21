@@ -1,6 +1,7 @@
 package com.kakao.cafe.web.repository.article;
 
 import com.kakao.cafe.web.domain.Article;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -47,7 +48,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     public Optional<Article> findById(Long id) {
         SqlParameterSource param = new MapSqlParameterSource("id", id);
         List<Article> result = jdbcTemplate.query("select * from articles where `id` = :id", param, articleRowMapper);
-        return result.stream().findAny();
+        return Optional.ofNullable(DataAccessUtils.singleResult(result));
     }
 
     @Override

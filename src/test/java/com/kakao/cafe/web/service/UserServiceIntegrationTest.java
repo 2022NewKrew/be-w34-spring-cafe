@@ -32,7 +32,7 @@ class UserServiceIntegrationTest {
         userService.join(user);
 
         //then
-        User findUser = userService.findUser(user.getUserId()).get();
+        User findUser = userService.findUser(user.getUserId());
         assertThat(user.getUserId()).isEqualTo(findUser.getUserId());
     }
 
