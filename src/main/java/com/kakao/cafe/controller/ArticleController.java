@@ -3,13 +3,16 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.constants.Constants;
 import com.kakao.cafe.controller.dto.request.ArticleRegisterRequestDto;
 import com.kakao.cafe.controller.dto.request.ArticleUpdateRequestDto;
+import com.kakao.cafe.controller.dto.request.ReplyRegisterRequestDto;
 import com.kakao.cafe.controller.dto.response.ArticleQueryDetailResponseDto;
 import com.kakao.cafe.controller.dto.response.ArticleUpdateFormResponseDto;
 import com.kakao.cafe.controller.dto.session.UserLoginSession;
 import com.kakao.cafe.controller.validator.OwnershipValidator;
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.dto.ArticleUpdateDto;
+import com.kakao.cafe.service.dto.ReplyRegisterDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -36,11 +39,28 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    @PostMapping("/{id}/replys")
+    public String registerReply(@PathVariable Long id, ReplyRegisterRequestDto replyRegisterRequestDto) {
+        articleService.registerReply(new ReplyRegisterDto(id, replyRegisterRequestDto));
+
+        return "redirect:/articles/" + id;
+    }
+
+    @DeleteMapping("/{articleId}/replys/{replyId}")
+    public String deleteReply(@PathVariable Long articleId, @PathVariable Long replyId,
+                              @SessionAttribute(name = Constants.loginUser) UserLoginSession userLoginSession) {
+        Reply reply = articleService.findReplyById(replyId);
+        ownershipValidator.validate(userLoginSession.getUserId(), reply.getWriterId());
+        articleService.deleteReplyById(replyId);
+
+        return "redirect:/articles/" + articleId;
+    }
+
     @GetMapping("/{id}")
     public String getArticle(@PathVariable("id") Long id, Model model) {
         Article article = articleService.findById(id);
         model.addAttribute("article", new ArticleQueryDetailResponseDto(article));
-        return "/article/show";
+        return "article/show";
     }
 
     @PutMapping("/{id}")

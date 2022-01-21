@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: ${DB_PASSWORD}
-    url: jdbc:mysql://leaf-qna-board.ay1.krane.9rum.cc:3306/kakaodb
+    url: jdbc:mysql://localhost:3306/kakaodb
   sql:
     init:
       schema-locations: classpath:script.sql

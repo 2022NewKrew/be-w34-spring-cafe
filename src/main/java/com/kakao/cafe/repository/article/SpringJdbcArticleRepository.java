@@ -29,7 +29,7 @@ public class SpringJdbcArticleRepository implements ArticleRepository {
     public Optional<Article> findById(Long id) {
         Article article = null;
         try {
-            article = jdbcTemplate.queryForObject("select * from ARTICLE a join USERS u on a.writer_id = u.user_id  where a.article_seq_id=?", articleMapper, id);
+            article = jdbcTemplate.queryForObject("select * from ARTICLE a join USERS u on a.writer_id = u.user_id where a.article_seq_id=?", articleMapper, id);
         } catch (EmptyResultDataAccessException exception){}
         return Optional.ofNullable(article);
     }
