@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.exception.CannotDeleteException;
 import com.kakao.cafe.web.dto.ArticleDTO;
 import java.sql.Timestamp;
 import java.util.List;
@@ -127,6 +128,24 @@ public class Article {
    */
   public void addReadCount() {
     readCount++;
+  }
+
+
+  /**
+   * 삭제 가능한지 조건을 체크하고 삭제 상태로 변경한다.
+   *
+   */
+  public void delete(Delete deleteLevel) {
+
+    if(isDeleted.ordinal() >= deleteLevel.ordinal()) {
+      throw new CannotDeleteException();
+    }
+
+    if(comments.isOtherUserExist(author)) {
+      throw new CannotDeleteException();
+    }
+
+    isDeleted = deleteLevel;
   }
 
 

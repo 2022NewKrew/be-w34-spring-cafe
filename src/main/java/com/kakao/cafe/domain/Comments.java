@@ -32,6 +32,12 @@ public class Comments implements Iterable<Comment> {
   }
 
 
+  public boolean isOtherUserExist(User exceptUser) {
+    return comments.stream()
+        .anyMatch(comment -> !comment.getAuthor().equals(exceptUser));
+  }
+
+
   @Override
   public Iterator<Comment> iterator() {
     return comments.iterator();
@@ -59,6 +65,11 @@ public class Comments implements Iterable<Comment> {
 
   public int size() {
     return comments.size();
+  }
+
+
+  public boolean isEmpty() {
+    return comments.isEmpty();
   }
 
 }

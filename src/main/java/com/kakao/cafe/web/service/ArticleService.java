@@ -122,13 +122,9 @@ public class ArticleService {
     Article article = findArticle(id);
 
     checkEditPermissions(article);
+    article.delete(Delete.SOFT_DELETED);
 
-    int deleteCount = articleRepository.softDeleteById(id, Delete.SOFT_DELETED);
-
-    if (deleteCount == 0) {
-      throw new NoArticleException();
-    }
-
+    articleRepository.save(article);
   }
 
 
