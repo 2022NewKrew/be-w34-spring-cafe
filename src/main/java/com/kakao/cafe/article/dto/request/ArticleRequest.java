@@ -4,12 +4,8 @@ import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.user.domain.User;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-public class WriteArticleRequest {
-
-    @NotNull
-    private final Long userId;
+public class ArticleRequest {
 
     @NotBlank
     private final String title;
@@ -17,8 +13,7 @@ public class WriteArticleRequest {
     @NotBlank
     private final String content;
 
-    private WriteArticleRequest(Long userId, String title, String content) {
-        this.userId = userId;
+    private ArticleRequest(String title, String content) {
         this.title = title;
         this.content = content;
     }
@@ -27,7 +22,7 @@ public class WriteArticleRequest {
         return new Article(null, this.title, this.content, user, 0L, LocalDateTime.now());
     }
 
-    public Long getUserId() {
-        return userId;
+    public Article toArticle(Long id) {
+        return new Article(id, this.title, this.content, null, null, null);
     }
 }

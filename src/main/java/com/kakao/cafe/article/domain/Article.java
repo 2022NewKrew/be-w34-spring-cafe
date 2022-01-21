@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class Article {
+
     @NotNull
     private final Long id;
 
@@ -33,7 +34,11 @@ public class Article {
         this.createdDate = createdDate;
     }
 
-    public void incrementViewNum(){
+    public Boolean validateAuth(Long userId) {
+        return user.validateAuth(userId);
+    }
+
+    public void incrementViewNum() {
         this.viewNum++;
     }
 

@@ -50,4 +50,8 @@ public class User {
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
+
+    public boolean validateAuth(Long userId) {
+        return this.id.equals(userId);
+    }
 }

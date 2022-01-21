@@ -28,4 +28,8 @@ public class UserResponse {
             ", createdDate='" + createdDate + '\'' +
             '}';
     }
+
+    public Long getId() {
+        return id;
+    }
 }
