@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.LoginRequest;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.UserSignupRequest;
+import com.kakao.cafe.exceptions.InvalidLoginRequestException;
 import com.kakao.cafe.exceptions.InvalidUserRequestException;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
@@ -69,8 +70,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(LoginRequest request, HttpSession session) {
+    public String login(@Valid LoginRequest request, HttpSession session, BindingResult errors) {
         logger.info("[POST] /login 로그인");
+        if (errors.hasErrors()) {
+            String errorMessage = errors.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining("\n"));
+
+            throw new InvalidLoginRequestException(errorMessage);
+        }
         session.setAttribute(SESSION, userService.login(request));
         return "redirect:/";
     }

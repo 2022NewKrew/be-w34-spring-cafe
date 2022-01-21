@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.kakao.cafe.domain.SessionUser;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,6 +16,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,6 +25,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class UserControllerTest {
 
+    private static final String SESSION = "sessionUser";
+    private static final int firstId = 1;
     private static final String userId = "testUserId";
     private static final String duplicateUserId = userId;
     private static final String notExistUserId = "notExistUserId";
@@ -133,10 +138,10 @@ class UserControllerTest {
     @DisplayName("[성공] 프로필 조회")
     void userProfile() throws Exception {
         mockMvc.perform(post("/users")
-                .param("userId", userId)
-                .param("password", password)
-                .param("name", name)
-                .param("email", email))
+                        .param("userId", userId)
+                        .param("password", password)
+                        .param("name", name)
+                        .param("email", email))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
 
@@ -151,5 +156,55 @@ class UserControllerTest {
         mockMvc.perform(get("/users/" + notExistUserId))
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("errors/error"));
+    }
+
+    @Test
+    @DisplayName("[성공] 로그인 성공")
+    void login() throws Exception {
+        mockMvc.perform(post("/users")
+                        .param("userId", userId)
+                        .param("password", password)
+                        .param("name", name)
+                        .param("email", email))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
+
+        MockHttpSession session = new MockHttpSession();
+        SessionUser sessionUser = new SessionUser(firstId);
+
+        mockMvc.perform(post("/users/login")
+                        .session(session)
+                        .param("userId", userId)
+                        .param("password", password))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+
+        SessionUser result = (SessionUser) session.getAttribute(SESSION);
+
+        Assertions.assertFalse(session.isInvalid());
+        Assertions.assertEquals(sessionUser.getId(), result.getId());
+    }
+
+    @Test
+    @DisplayName("[성공] 로그아웃 성공")
+    void logout() throws Exception {
+        mockMvc.perform(post("/users")
+                        .param("userId", userId)
+                        .param("password", password)
+                        .param("name", name)
+                        .param("email", email))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
+
+        MockHttpSession session = new MockHttpSession();
+        SessionUser sessionUser = new SessionUser(firstId);
+        session.setAttribute(SESSION, sessionUser);
+
+        mockMvc.perform(get("/users/logout")
+                        .session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+
+        Assertions.assertTrue(session.isInvalid());
     }
 }
