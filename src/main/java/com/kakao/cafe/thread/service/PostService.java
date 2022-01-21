@@ -39,7 +39,7 @@ public class PostService {
     }
 
     public List<PostView> getAll() {
-        return postRepository.getAll().stream().map(post -> toPostView(post)).collect(Collectors.toList());
+        return postRepository.getAll().stream().map(this::toPostView).collect(Collectors.toList());
     }
 
     public PostView get(Long id) {
