@@ -67,7 +67,7 @@ public class UserService {
         return user.isPasswordMatching(checkPassword);
     }
 
-    public Optional<UserDTO> getLSessionUserDTO(String userId, String password) {
+    public Optional<UserDTO> getSessionUserDTO(String userId, String password) {
 
         UserDTO userDTO;
         try {

@@ -42,13 +42,12 @@ public class UserController {
 
     @PostMapping(value = "/user/login_check")
     public String login(String userId, String password, HttpSession session) {
-        Optional<UserDTO> userDTO= userService.getLSessionUserDTO(userId,password);
+        Optional<UserDTO> userDTO = userService.getSessionUserDTO(userId, password);
 
-        if(userDTO.isPresent()) {
+        if (userDTO.isPresent()) {
             session.setAttribute("sessionUser", userDTO.get());
             return "redirect:/user/login_success";
-        }
-        else
+        } else
             return "redirect:/user/login_failed";
     }
 
