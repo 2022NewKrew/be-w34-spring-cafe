@@ -46,6 +46,7 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleRepository.findById(id).orElseThrow();
 
         article.update(articleUpdateRequestDTO.getTitle(), articleUpdateRequestDTO.getContents());
+
         articleRepository.update(id, article);
     }
 
