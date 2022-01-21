@@ -68,9 +68,8 @@ public class SpringJdbcPostRepository implements PostRepository {
     @Override
     public void update(Post post) {
         jdbcTemplate.update(
-                "UPDATE thread SET parent_id = ?, author_id = ?, title = ?, content = ?, status = ? WHERE id = ? AND type = ?;",
-                post.getParentId(), post.getAuthorId(), post.getTitle(), post.getContent(), post.getStatus(),
-                post.getId(), ThreadType.POST.name());
+                "UPDATE thread SET title = ?, content = ? WHERE id = ? AND type = ?;",
+                post.getTitle(), post.getContent(), post.getId(), ThreadType.POST.name());
     }
 
     @Override

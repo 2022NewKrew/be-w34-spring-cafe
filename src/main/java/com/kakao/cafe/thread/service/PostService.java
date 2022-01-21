@@ -1,6 +1,7 @@
 package com.kakao.cafe.thread.service;
 
 import com.kakao.cafe.exception.PostNotFoundException;
+import com.kakao.cafe.exception.UnauthorizedAccessException;
 import com.kakao.cafe.exception.UserNotFoundException;
 import com.kakao.cafe.thread.domain.Post;
 import com.kakao.cafe.thread.domain.ThreadStatus;
@@ -44,5 +45,16 @@ public class PostService {
 
     public PostView get(Long id) {
         return toPostView(postRepository.get(id).orElseThrow(PostNotFoundException::new));
+    }
+
+    public void updateFromForm(Long authorId, Long postId, PostCreationForm postCreationForm) {
+        if (!authorId.equals(postId)) {
+            throw new UnauthorizedAccessException();
+        }
+        postRepository.update(Post.builder()
+                                  .id(postId)
+                                  .title(postCreationForm.getTitle())
+                                  .content(postCreationForm.getContent())
+                                  .build());
     }
 }

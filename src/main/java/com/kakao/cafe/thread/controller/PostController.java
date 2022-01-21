@@ -42,4 +42,22 @@ public class PostController {
         model.addAttribute("post", postService.get(id));
         return "post/detail";
     }
+
+    @NeedLogin
+    @GetMapping("/{id:[0-9]+}/edit")
+    public String showPostEditor(@PathVariable Long id, Model model) {
+        model.addAttribute("post", postService.get(id));
+        return "post/edit-form";
+    }
+
+    @NeedLogin
+    @PutMapping("/{id:[0-9]+}")
+    public String editPost(@PathVariable Long id, @Validated PostCreationForm postCreationForm, BindingResult bindingResult,
+                           @RequestAttribute LoggedInUser loggedInUser) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidFormatException();
+        }
+        postService.updateFromForm(loggedInUser.getId(), id, postCreationForm);
+        return "redirect:/posts/" + id;
+    }
 }
