@@ -65,7 +65,7 @@ class PostServiceTest {
         CreatePostDto postDto = new CreatePostDto("test", "title", "content");
         ShowPostDto post = postService.createPost(postDto);
 
-        postService.deletePost(post.getId());
+        postService.deletePost(post.getId(), postDto.getWriter());
 
         assertThrows(NotFoundException.class, () -> postService.findPost(post.getId()));
     }

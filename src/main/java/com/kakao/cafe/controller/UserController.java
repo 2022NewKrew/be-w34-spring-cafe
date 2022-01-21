@@ -5,6 +5,7 @@ import com.kakao.cafe.dto.user.LoginDto;
 import com.kakao.cafe.dto.user.ShowUserDto;
 import com.kakao.cafe.dto.user.UpdateUserDto;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.util.consts.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,9 +50,8 @@ public class UserController {
     }
 
     @GetMapping("/users/me/form")
-    public String userUpdateForm(Model model, HttpSession session) {
-        ShowUserDto sessionUser = (ShowUserDto) session.getAttribute("sessionUser");
-        model.addAttribute("user", sessionUser);
+    public String userUpdateForm(Model model, @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) ShowUserDto loginUser) {
+        model.addAttribute("user", loginUser);
         return "users/editForm";
     }
 
@@ -65,7 +65,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(@ModelAttribute LoginDto loginDto, HttpSession session) {
         ShowUserDto loginUser = userService.login(loginDto);
-        session.setAttribute("sessionUser", loginUser);
+        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
         return "redirect:/";
     }

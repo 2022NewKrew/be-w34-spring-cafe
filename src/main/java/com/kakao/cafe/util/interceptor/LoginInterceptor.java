@@ -1,5 +1,6 @@
 package com.kakao.cafe.util.interceptor;
 
+import com.kakao.cafe.util.consts.SessionConst;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -18,7 +19,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        if (session == null || session.getAttribute("sessionUser") == null) {
+        if (session == null || session.getAttribute(SessionConst.LOGIN_USER) == null) {
             response.sendRedirect("/users/login?redirectURL=" + requestURI);
             return false;
         }

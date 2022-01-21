@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.reply.Reply;
 import com.kakao.cafe.domain.reply.ReplyRepository;
 import com.kakao.cafe.dto.reply.CreateReplyDto;
 import com.kakao.cafe.dto.reply.ShowReplyDto;
+import com.kakao.cafe.util.exception.ForbiddenException;
 import com.kakao.cafe.util.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +37,9 @@ public class ReplyService {
     }
 
     public void deleteReply(Long replyId){
-        replyRepository.remove(replyId);
+           replyRepository.remove(replyId);
     }
+
 
     private Reply parseReply(CreateReplyDto replyDto){
         return Reply.builder()
