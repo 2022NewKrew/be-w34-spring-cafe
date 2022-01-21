@@ -17,6 +17,7 @@ import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,10 @@ public class PostService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     private PostDetailView toPostDetailView(Post post) {
+
         User user = userRepository.getById(post.getAuthorId()).orElseThrow(UserNotFoundException::new);
         List<Comment> comments = commentRepository.getCommentsForPost(post.getId());
         return PostDetailView.builder()
@@ -37,8 +41,8 @@ public class PostService {
                              .content(post.getContent())
                              .commentCount(comments.size())
                              .comments(comments.stream().map(this::toCommentView).collect(Collectors.toList()))
-                             .createdAt(post.getCreatedAt())
-                             .lastModifiedAt(post.getLastModifiedAt())
+                             .createdAt(post.getCreatedAt().format(formatter))
+                             .lastModifiedAt(post.getLastModifiedAt().format(formatter))
                              .build();
     }
 
@@ -48,8 +52,8 @@ public class PostService {
                           .id(comment.getId())
                           .author(new UserView(user.getUsername(), user.getEmail(), user.getDisplayName()))
                           .content(comment.getContent())
-                          .createdAt(comment.getCreatedAt())
-                          .lastModifiedAt(comment.getLastModifiedAt())
+                          .createdAt(comment.getCreatedAt().format(formatter))
+                          .lastModifiedAt(comment.getLastModifiedAt().format(formatter))
                           .build();
     }
 

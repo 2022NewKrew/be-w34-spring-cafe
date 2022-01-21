@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RequiredArgsConstructor
 @Builder
@@ -16,6 +17,6 @@ public class CommentView {
     private final Long id;
     private final UserView author;
     private final String content;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime lastModifiedAt;
+    private final String createdAt;
+    private final String lastModifiedAt;
 }

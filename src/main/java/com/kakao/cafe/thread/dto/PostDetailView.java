@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,6 +20,6 @@ public class PostDetailView {
     private final String content;
     private final Integer commentCount;
     private final List<CommentView> comments;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime lastModifiedAt;
+    private final String createdAt;
+    private final String lastModifiedAt;
 }
