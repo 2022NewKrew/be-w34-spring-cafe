@@ -19,7 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UserController.class)
+@WebMvcTest(value = UserController.class,
+        properties = "spring.cloud.vault.fail-fast=false")
 class UserControllerTest {
 
     private static final long FIRST_USER_ID = 1L;

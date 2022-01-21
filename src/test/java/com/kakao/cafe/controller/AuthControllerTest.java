@@ -17,7 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(AuthController.class)
+@WebMvcTest(value = AuthController.class,
+        properties = "spring.cloud.vault.fail-fast=false")
 class AuthControllerTest {
 
     private static final long FIRST_SESSION_ID = 1L;
