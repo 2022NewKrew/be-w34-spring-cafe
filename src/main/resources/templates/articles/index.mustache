@@ -49,13 +49,17 @@
               <div class="col-md-3"></div>
               <div class="col-md-6 text-center">
                   <ul class="pagination center-block" style="display:inline-block;">
-                      <li><a href="#">«</a></li>
-                      <li><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#">»</a></li>
+                      {{#page_selector}}
+                      {{#hasPrev}}
+                      <li><a href="/pages/{{prevPage.page}}">«</a></li>
+                      {{/hasPrev}}
+                      {{#pageList}}
+                      <li {{#isSelected}}class="active"{{/isSelected}}><a href="/pages/{{page}}">{{page}}</a></li>
+                      {{/pageList}}
+                      {{#hasNext}}
+                      <li><a href="/pages/{{nextPage.page}}">»</a></li>
+                      {{/hasNext}}
+                      {{/page_selector}}
                 </ul>
               </div>
               <div class="col-md-3 qna-write">

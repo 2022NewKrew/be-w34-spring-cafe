@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.auth.AuthControl;
+import com.kakao.cafe.domain.PageSelector;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.CommentDto;
 import com.kakao.cafe.service.ArticleService;
@@ -37,16 +38,22 @@ public class ArticleController {
         this.userService = Objects.requireNonNull(userService);
     }
 
-    @GetMapping("/")
-    public String getArticles(final Model model) {
+    @GetMapping("/pages/{idx}")
+    public String getArticles(final Model model, @PathVariable("idx") final int idx) {
+        if (idx <= 0) {
+            return "redirect:/pages/1";
+        }
+        // get count and check idx and actualPage
+        // if actualPage < idx, redirect to actualPage
+        model.addAttribute("page_selector", new PageSelector(idx, 150));
+        // get only actualPage's articles
         model.addAttribute("articles", articleService.getDtoList());
+        // force update lastpage cookie value as idx
         return "articles/index";
     }
 
-    @GetMapping("/articles")
-    public String getArticlesExplicit(final Model model) {
-        return getArticles(model);
-    }
+    // / -> redirect:/pages/1
+    // /articles -> redirect:/pages/1
 
     @GetMapping("/articles/new")
     public String getArticles(final HttpServletRequest request) {
@@ -93,6 +100,7 @@ public class ArticleController {
         final List<CommentDto> comments = commentService.getDtoList(idx, currentUserId);
         model.addAttribute("comments", comments);
         model.addAttribute("totalComments", comments.size());
+        // check lastpage cookie and add lastpage model attr and return lastpage by click "목록" button
 
         return "articles/detail";
     }
