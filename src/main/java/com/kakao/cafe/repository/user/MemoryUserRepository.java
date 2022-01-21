@@ -50,6 +50,11 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<String> findNicknameById(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<User> findAll() {
         return store;
     }

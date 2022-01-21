@@ -40,33 +40,17 @@ public class UserController {
 
     @PostMapping("/users")
     public String createUser(@Valid UserCreationDTO userCreationDTO,
-                             Errors errors,
-                             RedirectAttributes attr) {
-        try {
-            validateParams(errors);
-            userService.join(userCreationDTO);
-        } catch (Exception e) {
-            handleException(e, attr);
-            attr.addFlashAttribute("email", userCreationDTO.getEmail());
-            attr.addFlashAttribute("nickname", userCreationDTO.getNickname());
-            return "redirect:" + Url.REGISTER_FORM;
-        }
-
+                             Errors errors) {
+        validateParams(errors);
+        userService.join(userCreationDTO);
         return "redirect:" + Url.USERS;
     }
 
     @SessionIdRequired
     @GetMapping("/users/{id}")
     public String getUserProfile(@PathVariable("id") Long id,
-                                 Model model,
-                                 RedirectAttributes attr) {
-        try {
-            model.addAttribute("user", getUserById(id));
-        } catch (IllegalArgumentException e) {
-            handleException(e, attr);
-            return "redirect:" + Url.USERS;
-        }
-
+                                 Model model) {
+        model.addAttribute("user", getUserById(id));
         return View.USER_PROFILE;
     }
 
@@ -74,17 +58,10 @@ public class UserController {
     @PostMapping("/users/profile")
     public String updateUserProfile(@Valid UserCreationDTO dto,
                                     Errors errors,
-                                    HttpSession session,
-                                    RedirectAttributes attr) {
-        try {
-            validateParams(errors);
-            long id = (long) session.getAttribute("sessionedUserId");
-            userService.update(id, dto);
-        } catch (Exception e) {
-            handleException(e, attr);
-            return "redirect:" + Url.USER_FORM;
-        }
-
+                                    HttpSession session) throws Exception {
+        validateParams(errors);
+        long id = (long) session.getAttribute("sessionedUserId");
+        userService.update(id, dto);
         return "redirect:" + Url.USERS;
     }
 
@@ -106,24 +83,16 @@ public class UserController {
     @PostMapping("/login")
     public String login(String email,
                         String password,
-                        HttpSession session,
-                        RedirectAttributes attr) {
-        try {
-            var user = userService.findByEmail(email);
-            userService.validatePassword(password, user.getPassword());
-            session.setAttribute("sessionedUserId", user.getId());
-        } catch (IllegalArgumentException e) {
-            handleException(e, attr);
-            return "redirect:" + Url.USER_LOGIN;
-        }
-
+                        HttpSession session) {
+        var user = userService.findByEmail(email);
+        userService.validatePassword(password, user.getPassword());
+        session.setAttribute("sessionedUserId", user.getId());
         return "redirect:" + Url.INDEX;
     }
 
     @SessionIdRequired
     @GetMapping("/users/logout")
-    public String logout(HttpSession session,
-                         RedirectAttributes attr) {
+    public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:" + Url.USER_LOGIN;
     }
@@ -137,10 +106,5 @@ public class UserController {
             errors.getAllErrors().forEach(e -> log.warn("{}", e.getDefaultMessage()));
             throw new IllegalArgumentException("입력값이 올바르지 않습니다");
         }
-    }
-
-    private void handleException(Exception e, RedirectAttributes attr) {
-        log.error(e.getMessage(), e);
-        attr.addFlashAttribute("errorMsg", e.getMessage());
     }
 }

@@ -74,6 +74,16 @@ public class JdbcUserRepository implements UserRepository {
         return jdbcTemplate.query(Sql.FIND_ALL_USER, new UserRowMapper());
     }
 
+    public Optional<String> findNicknameById(Long id) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
+        try {
+            return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(
+                    Sql.FIND_NICKNAME_BY_ID, namedParameters, String.class));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
     private Optional<User> selectUserWhereCondition(String sql, SqlParameterSource namedParameters) {
         try {
             return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(

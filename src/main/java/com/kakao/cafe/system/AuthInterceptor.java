@@ -1,4 +1,4 @@
-package com.kakao.cafe.interceptor;
+package com.kakao.cafe.system;
 
 import com.kakao.cafe.util.SessionIdRequired;
 import lombok.extern.slf4j.Slf4j;

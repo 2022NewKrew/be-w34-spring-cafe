@@ -74,8 +74,9 @@ public class UserService {
         }
     }
 
-    public String getNicknameById(long id) {
-        return findById(id).getNickname();
+    public String findNicknameById(long id) {
+        return userRepository.findNicknameById(id)
+                .orElse("탈퇴한 사용자");
     }
 
     private String encryptPassword(String password) {

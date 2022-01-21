@@ -1,4 +1,4 @@
-package com.kakao.cafe.aop;
+package com.kakao.cafe.system;
 
 import com.kakao.cafe.util.Url;
 import lombok.extern.slf4j.Slf4j;
