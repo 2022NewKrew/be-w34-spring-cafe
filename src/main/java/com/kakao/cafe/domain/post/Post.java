@@ -46,10 +46,10 @@ public class Post {
     }
 
     public static class Builder {
-        String title;
-        String writer;
-        String contents;
-        long id = -1;
+        private String title;
+        private String writer;
+        private String contents;
+        private long id = -1;
 
         public Builder title(String title) {
             this.title = title;

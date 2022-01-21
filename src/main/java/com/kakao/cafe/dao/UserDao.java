@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,39 +16,38 @@ import java.util.stream.Collectors;
 public class UserDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
-    private final DataSource dataSource;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public UserDao(DataSource dataSource) {
-        this.dataSource = dataSource;
-        jdbcTemplate = new JdbcTemplate(this.dataSource);
+    public UserDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
+
     public void insert(User user) {
-        String queryString = "insert into Users (ID, PASSWORD, EMAIL, NAME) values (?, ?, ?, ?);";
+        String queryString = "insert into USERS (ID, PASSWORD, EMAIL, NAME) values (?, ?, ?, ?);";
         jdbcTemplate.update(queryString, user.getId(), user.getPassword(), user.getEmail(), user.getName());
     }
 
     public User findById(String id) {
-        String queryString = "select id, password, email, name from users where ID = ?";
+        String queryString = "select id, password, email, name from USERS where ID = ?";
         Map<String, Object> res = jdbcTemplate.queryForMap(queryString, id);
         return mapToUser(res);
     }
 
     public Users findAll() {
-        String queryString = "select * from users;";
+        String queryString = "select * from USERS;";
         List<Map<String, Object>> res = jdbcTemplate.queryForList(queryString);
         return new Users(res.stream().map(this::mapToUser).collect(Collectors.toList()));
     }
 
     public int update(User user) {
-        String queryString = "update users set name = ?, email = ?, password = ? where id = ?;";
+        String queryString = "update USERS set name = ?, email = ?, password = ? where id = ?;";
         return jdbcTemplate.update(queryString, user.getName(), user.getEmail(), user.getPassword(), user.getId());
     }
 
     public void deleteAll() {
-        String queryString = "delete from users";
+        String queryString = "delete from USERS";
         jdbcTemplate.execute(queryString);
     }
 

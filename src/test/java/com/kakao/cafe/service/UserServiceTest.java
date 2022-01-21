@@ -1,15 +1,21 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.util.exception.*;
+import com.kakao.cafe.util.exception.throwable.InvalidPasswordException;
+import com.kakao.cafe.util.exception.throwable.UnauthorizedActionException;
+import com.kakao.cafe.util.exception.wrappable.LoginFailException;
+import com.kakao.cafe.util.exception.wrappable.UserDuplicateException;
+import com.kakao.cafe.util.exception.wrappable.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+@Transactional
 @SpringBootTest
 public class UserServiceTest {
 
@@ -154,8 +160,8 @@ public class UserServiceTest {
     }
 
     @Test
-    void can_update_fail() {
-        assertThatThrownBy(() -> userService.canUpdate("diff1", "diff2")).isInstanceOf(UnauthorizedAction.class);
+    void canUpdateFailByDifferentStrings() {
+        assertThatThrownBy(() -> userService.canUpdate("diff1", "diff2")).isInstanceOf(UnauthorizedActionException.class);
     }
 
 

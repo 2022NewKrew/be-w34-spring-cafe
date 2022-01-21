@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,45 +16,43 @@ import java.util.stream.Collectors;
 public class PostDao {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(PostDao.class);
-    private final DataSource dataSource;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public PostDao(DataSource dataSource) {
-        this.dataSource = dataSource;
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public PostDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public int insert(Post post) {
-        String queryString = "insert into Posts (title, writer, contents) values(?, ?, ?);";
+        String queryString = "insert into POSTS (title, writer, contents) values(?, ?, ?);";
         jdbcTemplate.update(queryString, post.getTitle(), post.getWriter(), post.getContents());
-        return jdbcTemplate.queryForObject("select max(id) from posts;", Integer.class);
+        return jdbcTemplate.queryForObject("select max(id) from POSTS;", Integer.class);
     }
 
     public Post findById(long id) {
-        String queryString = "select * from posts where id = ?;";
+        String queryString = "select * from POSTS where id = ?;";
         Map<String, Object> res = jdbcTemplate.queryForMap(queryString, id);
         return mapToPost(res);
     }
 
     public Posts findAll() {
-        String queryString = "select * from Posts";
+        String queryString = "select * from POSTS WHERE DELETED = FALSE";
         List<Map<String, Object>> res = jdbcTemplate.queryForList(queryString);
         return new Posts(res.stream().map(this::mapToPost).collect(Collectors.toList()));
     }
 
     public void deleteAll() {
-        String queryString = "delete from posts;";
+        String queryString = "delete from POSTS;";
         jdbcTemplate.update(queryString);
     }
 
     public int update(Post post) {
-        String queryString = "update posts set title = ?, contents = ? where writer = ?;";
+        String queryString = "update POSTS set title = ?, contents = ? where writer = ?;";
         return jdbcTemplate.update(queryString, post.getTitle(), post.getContents(), post.getWriter());
     }
 
     public int delete(long id) {
-        String queryString = "delete from posts where id = ?";
+        String queryString = "UPDATE POSTS SET DELETED = TRUE where id = ?";
         return jdbcTemplate.update(queryString, id);
     }
 

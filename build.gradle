@@ -1,15 +1,17 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.2'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.6.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
 group = 'com.kakao'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+targetCompatibility = '11'
+
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
@@ -19,11 +21,18 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
     implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
+    implementation 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "org.assertj:assertj-core:3.11.1"
 
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+bootJar {
+    archivesBaseName = 'app'
+    archiveFileName = 'app.jar'
+    archiveVersion = "0.0.1"
 }

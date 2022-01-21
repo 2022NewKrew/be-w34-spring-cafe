@@ -1,7 +1,6 @@
 package com.kakao.cafe.dao;
 
 import com.kakao.cafe.domain.post.Post;
-import com.kakao.cafe.domain.post.Posts;
 import com.kakao.cafe.dto.PostDto;
 import com.kakao.cafe.util.mapper.PostMapper;
 import org.junit.jupiter.api.Test;
@@ -41,24 +40,6 @@ public class PostDaoTest {
                 .isInstanceOf(EmptyResultDataAccessException.class);
     }
 
-    @Test
-    @Transactional
-    void findAllTest() {
-//        PostDto postDto = new PostDto("writer1", "hello", "world");
-//        Post post = PostMapper.toPost(postDto);
-//        PostDto postDto2 = new PostDto("writer1", "hello2", "myworld");
-//        Post post2 = PostMapper.toPost(postDto2);
-//        postDao.insert(post);
-//        postDao.insert(post2);
-        Posts result = postDao.findAll();
-        assertEquals(result.size(), 2);
-    }
-
-//    @Test
-//    @Transactional
-//    void findAllEmptyTest() {
-//        assertThat(postDao.findAll().size()).isEqualTo(0);
-//    }
 
     @Test
     @Transactional
@@ -83,5 +64,6 @@ public class PostDaoTest {
     void deleteFailTest() {
         assertEquals(postDao.delete(-1), 0);
     }
+
 
 }

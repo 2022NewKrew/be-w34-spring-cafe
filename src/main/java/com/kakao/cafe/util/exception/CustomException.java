@@ -1,18 +1,9 @@
 package com.kakao.cafe.util.exception;
 
-public class CustomException extends RuntimeException {
-    private Exception exception;
-
-    public CustomException(Exception exception, String message) {
+public abstract class CustomException extends RuntimeException implements StackTracePrintable {
+    public CustomException(String message) {
         super(message);
-        this.exception = exception;
     }
 
-    public String getDetail() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(exception.getMessage() + "\n");
-        for (StackTraceElement elem : exception.getStackTrace())
-            sb.append(elem.toString() + "\n");
-        return sb.toString();
-    }
+    abstract public String getDetail();
 }

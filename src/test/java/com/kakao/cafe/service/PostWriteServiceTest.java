@@ -2,14 +2,16 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.util.exception.UserNotFoundException;
+import com.kakao.cafe.util.exception.wrappable.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+@Transactional
 @SpringBootTest
 public class PostWriteServiceTest {
 

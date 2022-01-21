@@ -1,12 +1,16 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.comment.Comments;
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.post.Posts;
+import com.kakao.cafe.dto.CommentWebDto;
 import com.kakao.cafe.dto.PostDto;
+import com.kakao.cafe.service.CommentService;
 import com.kakao.cafe.service.PostService;
 import com.kakao.cafe.service.PostWriteService;
 import com.kakao.cafe.util.annotation.LoginCheck;
-import com.kakao.cafe.util.exception.UnauthorizedAction;
+import com.kakao.cafe.util.exception.throwable.UnauthorizedActionException;
+import com.kakao.cafe.util.mapper.CommentWebMapper;
 import com.kakao.cafe.util.mapper.PostMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +28,14 @@ public class PostController {
 
     private final PostService postService;
     private final PostWriteService postWriteService;
+    private final CommentService commentService;
     private static final Logger LOGGER = LoggerFactory.getLogger(PostController.class);
 
     @Autowired
-    public PostController(PostService postService, PostWriteService postWriteService) {
+    public PostController(PostService postService, PostWriteService postWriteService, CommentService commentService) {
         this.postService = postService;
         this.postWriteService = postWriteService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/")
@@ -90,7 +96,11 @@ public class PostController {
     @GetMapping("/post/{idx}")
     public String getPost(@PathVariable int idx, Model model) {
         PostDto postDto = PostMapper.toDto(postService.findById(idx));
+        Comments comments = commentService.findAll(idx);
+        List<CommentWebDto> commentWebDtos = comments.getComments().stream()
+                .map(CommentWebMapper::toDto).collect(Collectors.toList());
         model.addAttribute("post", postDto);
+        model.addAttribute("comments", commentWebDtos);
         return "qna/show";
     }
 
@@ -104,7 +114,7 @@ public class PostController {
     public String delete(@PathVariable long postId, HttpSession httpSession) {
         try {
             postService.delete((String) httpSession.getAttribute("sessionId"), postId);
-        } catch (UnauthorizedAction unauthorizedAction) {
+        } catch (UnauthorizedActionException unauthorizedActionException) {
             return "redirect:/users/login";
         }
         return "redirect:/posts";
