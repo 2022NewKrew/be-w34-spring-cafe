@@ -1,10 +1,7 @@
 package com.kakao.cafe.web;
 
 import com.kakao.cafe.domain.entity.User;
-import com.kakao.cafe.dto.user.UserCreateCommand;
-import com.kakao.cafe.dto.user.UserInfo;
-import com.kakao.cafe.dto.user.UserModifyCommand;
-import com.kakao.cafe.dto.user.UserProfileInfo;
+import com.kakao.cafe.dto.user.*;
 
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -13,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -24,7 +24,11 @@ public class UserController {
 
     @GetMapping("/users")
     public String listUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+        AtomicLong index = new AtomicLong(1);
+        List<UserListShow> userList = userService.getAllUsers().stream()
+                .map(user -> new UserListShow(index.getAndIncrement(), user))
+                .collect(Collectors.toUnmodifiableList());
+        model.addAttribute("users", userList);
         return "user/list";
     }
 
