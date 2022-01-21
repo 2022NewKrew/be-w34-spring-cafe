@@ -83,7 +83,7 @@ public class ArticleApiController {
             logger.info("Article API: 허용되지 않은 DELETE 메소드 접근");
             throw new IllegalArgumentException("글쓴이가 일치하지 않습니다.");
         }
-        articleService.deleteArticle(id);
+        articleService.deleteArticle(id, currentUser.getId());
         logger.info("Article API: 글 삭제");
         return "redirect:/";
     }
