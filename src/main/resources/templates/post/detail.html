@@ -114,12 +114,21 @@
                                     </ul>
                                 </div>
                             </article>
-                            <form class="submit-write">
+                            <form class="submit-write" action="/posts/{{post.id}}/comments" method="post">
+                                {{^loggedInUser}}
                                 <div class="form-group" style="padding:14px;">
-                                    <textarea class="form-control" placeholder="Update your status"></textarea>
+                                    <textarea class="form-control" placeholder="로그인하여 댓글 쓰기" readonly></textarea>
                                 </div>
-                                <button class="btn btn-success pull-right" type="button">답변하기</button>
+                                <a class="btn btn-success pull-right" href="/login" role="button">로그인</a>
                                 <div class="clearfix"/>
+                                {{/loggedInUser}}
+                                {{#loggedInUser}}
+                                <div class="form-group" style="padding:14px;">
+                                    <textarea class="form-control" placeholder="댓글"></textarea>
+                                </div>
+                                <button class="btn btn-success pull-right" type="submit">등록</button>
+                                <div class="clearfix"/>
+                                {{/loggedInUser}}
                             </form>
                         </div>
                     </div>

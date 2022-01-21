@@ -9,7 +9,6 @@ import com.kakao.cafe.user.service.LoginService;
 import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,8 +47,7 @@ public class LoginController {
 
     @NeedLogin
     @GetMapping("/user/edit")
-    public String showProfileEditor(@RequestAttribute LoggedInUser loggedInUser, Model model) {
-        model.addAttribute("user", userService.getUserViewByUsername(loggedInUser.getUsername()));
+    public String showProfileEditor() {
         return "user/edit-form";
     }
 
