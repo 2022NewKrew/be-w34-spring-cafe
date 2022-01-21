@@ -1,4 +1,4 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.post;
 
 import com.kakao.cafe.model.Post;
 import java.util.List;

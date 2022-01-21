@@ -1,6 +1,5 @@
 package com.kakao.cafe.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -10,7 +9,9 @@ public class Post {
     private final UUID writerId;
     private String title;
     private String content;
-    private final Timestamp createdAt;
+    private final LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
     private boolean deleted;
 
     private Post(Builder builder) {
@@ -19,6 +20,22 @@ public class Post {
         this.title = builder.title;
         this.content = builder.content;
         this.createdAt = builder.createdAt;
+        this.updatedAt = builder.updatedAt;
+        this.deletedAt = builder.deletedAt;
+        this.deleted = builder.deleted;
+    }
+
+    public static Post copy(Post original) {
+        return new Builder(
+                original.getWriterId(),
+                original.getTitle(),
+                original.getContent())
+                .id(original.getId())
+                .createdAt(original.getCreatedAt())
+                .updatedAt(original.getUpdatedAt())
+                .deletedAt(original.getDeletedAt())
+                .deleted(original.isDeleted())
+                .build();
     }
 
     public UUID getId() {
@@ -37,8 +54,16 @@ public class Post {
         return content;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
     }
 
     public boolean isDeleted() {
@@ -48,46 +73,54 @@ public class Post {
     public void update(Post modified) {
         this.title = modified.title;
         this.content = modified.content;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void delete() {
         this.deleted = true;
+        this.deletedAt = LocalDateTime.now();
     }
 
     public static class Builder {
 
-        private final UUID id;
+        private UUID id = UUID.randomUUID();
         private final UUID writerId;
         private final String title;
         private final String content;
-        private final Timestamp createdAt;
-        private final boolean deleted;
+        private LocalDateTime createdAt = LocalDateTime.now();
+        private LocalDateTime updatedAt = LocalDateTime.now();
+        private LocalDateTime deletedAt;
+        private boolean deleted = false;
 
         public Builder(UUID writerId, String title, String content) {
-            this.id = UUID.randomUUID();
             this.writerId = writerId;
             this.title = title;
             this.content = content;
-            this.createdAt = Timestamp.valueOf(LocalDateTime.now());
-            this.deleted = false;
         }
 
-        public Builder(UUID id, UUID writerId, String title, String content) {
+        public Builder id(UUID id) {
             this.id = id;
-            this.writerId = writerId;
-            this.title = title;
-            this.content = content;
-            this.createdAt = Timestamp.valueOf(LocalDateTime.now());
-            this.deleted = false;
+            return this;
         }
 
-        public Builder(UUID id, UUID writerId, String title, String content, Timestamp createdAt, boolean deleted) {
-            this.id = id;
-            this.writerId = writerId;
-            this.title = title;
-            this.content = content;
+        public Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder updatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public Builder deletedAt(LocalDateTime deletedAt) {
+            this.deletedAt = deletedAt;
+            return this;
+        }
+
+        public Builder deleted(boolean deleted) {
             this.deleted = deleted;
+            return this;
         }
 
         public Post build() {

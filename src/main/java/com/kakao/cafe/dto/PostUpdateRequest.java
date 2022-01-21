@@ -28,11 +28,9 @@ public class PostUpdateRequest {
         return content;
     }
 
-    public Post toEntity(UUID writerId) {
-        return new Post.Builder(writerId, title, content).build();
-    }
-
     public Post toEntity(UUID writerId, UUID id) {
-        return new Post.Builder(id, writerId, title, content).build();
+        return new Post.Builder(writerId, title, content)
+                .id(id)
+                .build();
     }
 }

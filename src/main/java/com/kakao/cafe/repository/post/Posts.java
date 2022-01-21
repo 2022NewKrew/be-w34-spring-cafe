@@ -1,16 +1,19 @@
-package com.kakao.cafe.model;
+package com.kakao.cafe.repository.post;
 
+import com.kakao.cafe.model.Post;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class Posts {
+class Posts {
 
     private final List<Post> posts;
 
-    public Posts(List<Post> posts) {
-        this.posts = posts;
+    public Posts() {
+        this.posts = Collections.synchronizedList(new ArrayList<>());
     }
 
     public void add(Post post) {
@@ -18,15 +21,18 @@ public class Posts {
     }
 
     public Optional<Post> findById(UUID id) {
-        return posts.stream()
+        Optional<Post> result = posts.stream()
                 .filter(post -> id.equals(post.getId()))
                 .filter(post -> !post.isDeleted())
                 .findFirst();
+
+        return result.isPresent() ? Optional.of(Post.copy(result.get())) : Optional.empty();
     }
 
     public List<Post> getPosts() {
         return posts.stream()
                 .filter(post -> !post.isDeleted())
+                .map(Post::copy)
                 .collect(Collectors.toUnmodifiableList());
     }
 

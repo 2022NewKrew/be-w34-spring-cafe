@@ -1,6 +1,5 @@
 package com.kakao.cafe.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -11,15 +10,26 @@ public class User {
     private final String password;
     private final String name;
     private final String email;
-    private final Timestamp createdAt;
+    private final LocalDateTime createdAt;
 
-    public User(Builder builder) {
+    private User(Builder builder) {
         this.id = builder.id;
         this.userId = builder.userId;
         this.password = builder.password;
         this.name = builder.name;
         this.email = builder.email;
         this.createdAt = builder.createdAt;
+    }
+
+    public static User copy(User original) {
+        return new Builder(
+                original.getUserId(),
+                original.getPassword(),
+                original.getName(),
+                original.getEmail())
+                .id(original.getId())
+                .createdAt(original.getCreatedAt())
+                .build();
     }
 
     public UUID getId() {
@@ -42,7 +52,7 @@ public class User {
         return email;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
@@ -51,29 +61,29 @@ public class User {
     }
 
     public static class Builder {
-        private final UUID id;
+
+        private UUID id = UUID.randomUUID();
         private final String userId;
         private final String password;
         private final String name;
         private final String email;
-        private final Timestamp createdAt;
+        private LocalDateTime createdAt = LocalDateTime.now();
 
         public Builder(String userId, String password, String name, String email) {
-            this.id = UUID.randomUUID();
             this.userId = userId;
             this.password = password;
             this.name = name;
             this.email = email;
-            this.createdAt = Timestamp.valueOf(LocalDateTime.now());
         }
 
-        public Builder(UUID id, String userId, String password, String name, String email, Timestamp createdAt) {
+        public Builder id(UUID id) {
             this.id = id;
-            this.userId = userId;
-            this.password = password;
-            this.name = name;
-            this.email = email;
+            return this;
+        }
+
+        public Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
         }
 
         public User build() {
