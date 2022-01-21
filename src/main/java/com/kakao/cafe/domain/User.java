@@ -47,11 +47,20 @@ public class User {
             return false;
         }
         User that = (User) o;
-        return Objects.equals(userId, that.userId);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId);
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "User id: " + id +
+                ", userId: " + userId +
+                ", password: " + password +
+                ", name: " + name +
+                ", email: " + email;
     }
 }
