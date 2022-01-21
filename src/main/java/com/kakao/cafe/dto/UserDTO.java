@@ -24,7 +24,6 @@ public class UserDTO {
     @Size(min = 1, max = 50)
     private final String email;
 
-
     private final String time;
 
 }

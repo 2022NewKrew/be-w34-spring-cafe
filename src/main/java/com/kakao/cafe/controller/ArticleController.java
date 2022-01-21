@@ -27,7 +27,6 @@ public class ArticleController {
     @SessionCheck
     String insertArticle(@Valid ArticleDTO article) {
         articleService.insertArticle(article);
-
         return "redirect:/";
     }
 
@@ -49,7 +48,6 @@ public class ArticleController {
     String updateArticle(@PathVariable long id, @Valid ArticleDTO article, SessionUserDTO sessionUser) {
         articleService.updateArticle(sessionUser, id, article);
         return "redirect:/";
-
     }
 
     @DeleteMapping("/{id}/delete")

@@ -74,6 +74,4 @@ public class ReplyRepositoryImpl implements ReplyRepository {
             return reply;
         };
     }
-
-
 }

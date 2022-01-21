@@ -25,7 +25,6 @@ public class UserController {
     String getUsers(Model model) {
         List<UserDTO> userList = userService.getUserList();
         model.addAttribute("users", userList);
-
         return "user/list";
     }
 
@@ -38,7 +37,6 @@ public class UserController {
     @GetMapping("/{id}/form")
     @SessionUserInfoCheck
     String getUserForm(@PathVariable Long id, Model model, SessionUserDTO sessionUser) {
-
         model.addAttribute("user", sessionUser);
         log.info("get User(Form) -> ID : {}, UserId : {}", id, sessionUser.getUserId());
         return "user/updateForm";
@@ -66,7 +64,6 @@ public class UserController {
     @GetMapping("/logout")
     String logout() {
         userService.logOut();
-
         return "redirect:/";
     }
 

@@ -9,18 +9,10 @@ import javax.sql.DataSource;
 
 @Configuration
 public class SpringJdbcConfig {
-    @ConfigurationProperties(prefix = "spring.datasource")
+
     @Bean
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
-   /* @Bean
-    public DataSource dataSource() {
-        DataBaseBui
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .setName("kakaodb")
-                .addScript("classpath:db/schema.sql")
-                .addScript("classpath:db/insert.sql").build();
-    }*/
 }
