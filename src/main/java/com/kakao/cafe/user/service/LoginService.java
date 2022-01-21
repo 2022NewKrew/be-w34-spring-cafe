@@ -16,7 +16,8 @@ public class LoginService {
     }
 
     public LoggedInUser login(UserLoginForm userLoginForm) {
-        User user = userRepository.getByUsername(userLoginForm.getUsername()).orElseThrow(InvalidUsernamePasswordException::new);
+        User user = userRepository.getByUsername(userLoginForm.getUsername()).orElseThrow(
+                InvalidUsernamePasswordException::new);
         if (user.isPasswordMatched(userLoginForm.getPassword())) {
             return new LoggedInUser(user.getId(), user.getUsername());
         }

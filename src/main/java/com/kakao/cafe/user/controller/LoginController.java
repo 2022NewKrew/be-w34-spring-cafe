@@ -58,7 +58,8 @@ public class LoginController {
 
     @NeedLogin
     @PostMapping("/user/edit")
-    public String editProfile(@Validated UserEditForm userEditForm, BindingResult bindingResult, @RequestAttribute LoggedInUser loggedInUser) {
+    public String editProfile(@Validated UserEditForm userEditForm, BindingResult bindingResult,
+                              @RequestAttribute LoggedInUser loggedInUser) {
         if (bindingResult.hasErrors()) {
             throw new InvalidFormatException();
         }
