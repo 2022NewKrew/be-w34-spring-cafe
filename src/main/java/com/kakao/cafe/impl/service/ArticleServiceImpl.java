@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 @Slf4j
 @Transactional
@@ -62,8 +64,23 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleDTO> getArticleList() {
-        return articleRepository.getAllArticle();
+    public void getArticleList(Long page, Model model) {
+        long articleCount = articleRepository.getArticleCount();
+        long maxPage = (articleCount - 1) / 15 + 1;
+        if (page == null) {
+            page = 1L;
+        }
+        if (page < 1 || page > maxPage) {
+            page = maxPage; // 마지막 인덱스를 구한다.
+        }
+        long firstIndex = (page < 3) ? 1 : page - 2;
+        long lastIndex = Math.min(firstIndex + 4, maxPage);
+        List<Long> indexes = LongStream.range(firstIndex, lastIndex + 1).boxed().collect(Collectors.toList());
+        model.addAttribute("articles", articleRepository.getAllArticle(page));
+        model.addAttribute("needToFirst", firstIndex > 1);
+        model.addAttribute("indexes", indexes);
+        model.addAttribute("needToLast", lastIndex != maxPage);
+        model.addAttribute("articleCount", articleCount);
     }
 
     @Override

@@ -9,7 +9,7 @@ public interface ArticleRepository {
 
     long insertArticle(ArticleDTO article);
 
-    List<ArticleDTO> getAllArticle();
+    List<ArticleDTO> getAllArticle(Long page);
 
     ArticleDTO getArticleById(long id);
 
@@ -18,4 +18,6 @@ public interface ArticleRepository {
     int updateArticle(long id, ArticleDTO article);
 
     int deleteArticle(long id);
+
+    Long getArticleCount();
 }

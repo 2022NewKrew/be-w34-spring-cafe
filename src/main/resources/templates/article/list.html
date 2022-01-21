@@ -3,6 +3,12 @@
 <head>
     {{>partial/header}}
     <link href="/css/index.css" rel="stylesheet">
+
+    <script>
+        function pageNation(page) {
+            location.href = "/articles?page=" + page
+        }
+    </script>
 </head>
 
 <body>
@@ -15,7 +21,7 @@
     </div>
 </div>
 
-<p class="total_num">전체 글 {{articles.length}}명</p>
+<p class="total_num">전체 글 {{articleCount}}개</p>
 
 <div class="container" id="main">
     <div class="col-md-10 col-md-offset-1">
@@ -44,11 +50,30 @@
     </div>
 </div>
 
-{{#sessionUser}}
-<div class="post-btn-container">
-    <a class="post-write-btn btn btn-primary pull-right" href="articles/form" role="button">글쓰기</a>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 text-center">
+        <ul class="pagination center-block" id="pagination" style="display:inline-block;">
+
+            {{#needToFirst}}
+            <li><a href="javascript:pageNation(1)">«</a></li>
+            {{/needToFirst}}
+            {{#indexes}}
+            <li><a href="javascript:pageNation({{this}})">{{this}}</a></li>
+            {{/indexes}}
+            {{#needToLast}}
+            <li><a href="javascript:pageNation(-1)">»</a></li>
+            {{/needToLast}}
+
+        </ul>
+    </div>
+    {{#sessionUser}}
+    <div class="post-btn-container">
+        <a class="post-write-btn btn btn-primary pull-right" href="articles/form" role="button">글쓰기</a>
+    </div>
+    {{/sessionUser}}
 </div>
-{{/sessionUser}}
+
 
 {{>partial/footer }}
 </body>

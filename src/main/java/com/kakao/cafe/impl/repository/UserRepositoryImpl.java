@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -46,13 +47,7 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             return jdbcTemplate
                     .queryForObject("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from User where id = ?",
-                            (rs, rowNum) -> new UserDTO(
-                                    rs.getLong("id"),
-                                    rs.getString("userid"),
-                                    rs.getString("password"),
-                                    rs.getString("email"),
-                                    rs.getString("time")
-                            ), id);
+                            getRowMapper(), id);
         } catch (EmptyResultDataAccessException exception) {
             return null;
         }
@@ -61,13 +56,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<UserDTO> getAllUser() {
         return jdbcTemplate.query("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from User",
-                (rs, rowNum) -> new UserDTO(
-                        rs.getLong("id"),
-                        rs.getString("userid"),
-                        rs.getString("password"),
-                        rs.getString("email"),
-                        rs.getString("time")
-                )
+                getRowMapper()
         );
     }
 
@@ -83,17 +72,20 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public UserDTO getUserByLoginData(LoginDTO login) {
         try {
-            return jdbcTemplate
-                    .queryForObject("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from User where email = ? and password = ?",
-                            (rs, rowNum) -> new UserDTO(
-                                    rs.getLong("id"),
-                                    rs.getString("userid"),
-                                    rs.getString("password"),
-                                    rs.getString("email"),
-                                    rs.getString("time")
-                            ), login.getEmail(), login.getPassword());
+            return jdbcTemplate.queryForObject("select id, userid, password, email, date_format(time,'%Y-%m-%d %H:%i') time from User where email = ? and password = ?",
+                    getRowMapper(), login.getEmail(), login.getPassword());
         } catch (EmptyResultDataAccessException exception) {
             return null;
         }
+    }
+
+    RowMapper<UserDTO> getRowMapper() {
+        return (rs, rowNum) -> new UserDTO(
+                rs.getLong("id"),
+                rs.getString("userid"),
+                rs.getString("password"),
+                rs.getString("email"),
+                rs.getString("time")
+        );
     }
 }

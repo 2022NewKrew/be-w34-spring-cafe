@@ -4,8 +4,6 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.dto.*;
 import org.springframework.ui.Model;
 
-import java.util.List;
-
 public interface ArticleService {
 
     void insertArticle(ArticleDTO article);
@@ -14,7 +12,7 @@ public interface ArticleService {
 
     void getArticleForm(long articleId, UserDTO user, Model model);
 
-    List<ArticleDTO> getArticleList();
+    void getArticleList(Long page, Model model);
 
     ArticleDTO getArticleById(long articleId);
 

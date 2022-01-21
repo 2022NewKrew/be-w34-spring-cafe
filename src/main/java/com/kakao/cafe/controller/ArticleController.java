@@ -18,8 +18,8 @@ public class ArticleController {
     private ArticleService articleService;
 
     @GetMapping
-    String articles(Model model) {
-        model.addAttribute("articles", articleService.getArticleList());
+    String articles(Long page, Model model) {
+        articleService.getArticleList(page, model);
         return "article/list";
     }
 
@@ -27,7 +27,6 @@ public class ArticleController {
     @SessionCheck
     String insertArticle(@Valid ArticleDTO article) {
         articleService.insertArticle(article);
-
         return "redirect:/";
     }
 
@@ -49,7 +48,6 @@ public class ArticleController {
     String updateArticle(@PathVariable long id, @Valid ArticleDTO article, SessionUserDTO sessionUser) {
         articleService.updateArticle(sessionUser, id, article);
         return "redirect:/";
-
     }
 
     @DeleteMapping("/{id}/delete")

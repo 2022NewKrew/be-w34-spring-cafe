@@ -2,8 +2,10 @@ package com.kakao.cafe.impl.repository;
 
 import com.kakao.cafe.dto.ArticleDTO;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.util.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -33,17 +35,14 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public List<ArticleDTO> getAllArticle() {
-        return jdbcTemplate.query("select A.id, WRITERID, USERID as writer, title, contents, views, date_format(A.time,'%Y-%m-%d %H:%i') time from User U join Article A on U.ID = A.WRITERID and isDelete = FALSE order by A.id desc ",
-                (rs, rowNum) -> new ArticleDTO(
-                        rs.getLong("id"),
-                        rs.getLong("writerId"),
-                        rs.getString("writer"),
-                        rs.getString("title"),
-                        rs.getString("contents"),
-                        rs.getLong("views"),
-                        rs.getString("time")
-                )
+    public Long getArticleCount() {
+        return jdbcTemplate.queryForObject("select count(id) from Article where isDelete = false", Long.class);
+    }
+
+    @Override
+    public List<ArticleDTO> getAllArticle(Long page) {
+        return jdbcTemplate.query("select A.id, WRITERID, USERID as writer, title, contents, views, date_format(A.time,'%Y-%m-%d %H:%i') time from User U join Article A on U.ID = A.WRITERID and isDelete = FALSE order by A.id desc limit ?,15",
+                getRowMapper(), (page - 1) * Constants.ARTICLE_PER_PAGE
         );
 
     }
@@ -52,15 +51,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     public ArticleDTO getArticleById(long id) {
         return jdbcTemplate
                 .queryForObject("select A.id, WRITERID, USERID as writer, title, contents,views,  date_format(A.time,'%Y-%m-%d %H:%i') time from User U join Article A on U.ID = A.WRITERID where A.ID = ? and isDelete = FALSE",
-                        (rs, rowNum) -> new ArticleDTO(
-                                rs.getLong("id"),
-                                rs.getLong("writerId"),
-                                rs.getString("writer"),
-                                rs.getString("title"),
-                                rs.getString("contents"),
-                                rs.getLong("views"),
-                                rs.getString("time")
-                        ), id);
+                        getRowMapper(), id);
     }
 
     @Override
@@ -77,5 +68,17 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public int deleteArticle(long id) {
         return jdbcTemplate.update("update Article set isDelete = TRUE where id = ?", id);
+    }
+
+    RowMapper<ArticleDTO> getRowMapper() {
+        return (rs, rowNum) -> new ArticleDTO(
+                rs.getLong("id"),
+                rs.getLong("writerId"),
+                rs.getString("writer"),
+                rs.getString("title"),
+                rs.getString("contents"),
+                rs.getLong("views"),
+                rs.getString("time")
+        );
     }
 }

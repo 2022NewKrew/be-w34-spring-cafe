@@ -50,7 +50,9 @@
                 if (json.success) {
                     replyCount = json.replyList.length;
                     $('#replyCount').text("댓글 " + replyCount + "개")
-                    lastReplyId = json.replyList[json.replyList.length - 1].id;
+                    if (replyCount > 0) {
+                        lastReplyId = json.replyList[replyCount - 1].id;
+                    }
                     addReplies(json.replyList);
                 } else {
                     alert(json.message);
@@ -115,10 +117,11 @@
                     </div>
                 </article>
                 {{#isOwner}}
+                <button class="post-write-btn" onClick="location.href='{{article.id}}/form'" style="float: right">
+                    수정
+                </button>
                 <form action="{{article.id}}/delete" method="post">
-                    <button class="post-write-btn" onClick="location.href='{{article.id}}/form'" style="float: right">
-                        수정
-                    </button>
+
                     <input name="_method" type="hidden" value="DELETE"/>
                     <input class="post-write-btn" style="float: right;background-color: red" type="submit" value="삭제"/>
                 </form>
