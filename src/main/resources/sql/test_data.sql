@@ -1,5 +1,5 @@
 -- An example user with id=1
-INSERT INTO user (username, password, email, display_name, status)
+INSERT INTO cafe_user (username, password, email, display_name, status)
 VALUES ('frank', 'password', 'frank@kakao.com', 'frank', 'ACTIVE');
 
 -- An example post with id=1 written by the example user

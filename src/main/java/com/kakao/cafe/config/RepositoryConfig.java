@@ -30,11 +30,11 @@ public class RepositoryConfig {
         return new SpringJdbcCommentRepository(dataSource);
     }
 
-    @Bean
-    public DataSource dataSource() {
-        return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
-                                            .addScript("classpath:sql/schema.sql")
-                                            .addScript("classpath:sql/test_data.sql")
-                                            .build();
-    }
+    // @Bean
+    // public DataSource dataSource() {
+    //     return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
+    //                                         .addScript("classpath:sql/schema.sql")
+    //                                         .addScript("classpath:sql/test_data.sql")
+    //                                         .build();
+    // }
 }
