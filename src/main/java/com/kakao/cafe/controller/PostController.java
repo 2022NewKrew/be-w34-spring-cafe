@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Post;
+import com.kakao.cafe.domain.SessionUser;
 import com.kakao.cafe.domain.UpdatePostRequest;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.WritePostRequest;
 import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.service.PostService;
@@ -41,8 +41,8 @@ public class PostController {
                     .reduce("", (total, element) -> total + element + "\n");
             throw new InvalidWritePostException(errorMessage);
         }
-        User user = (User) session.getAttribute(SESSION);
-        Post post = postDto.toEntity(user.getUserId());
+        SessionUser sessionUser = (SessionUser) session.getAttribute(SESSION);
+        Post post = postDto.toEntity(sessionUser.getId());
         postService.writePost(post);
         return "redirect:/";
     }
@@ -68,8 +68,8 @@ public class PostController {
     public String postById(@Valid UpdatePostRequest postDto, @PathVariable int postId, Model model,
             HttpSession session) {
         logger.info("[PUT] /posts/{postId} 게시글 수정");
-        User user = (User) session.getAttribute(SESSION);
-        Post post = postDto.toEntity(user.getUserId(), postId);
+        SessionUser sessionUser = (SessionUser) session.getAttribute(SESSION);
+        Post post = postDto.toEntity(sessionUser.getId(), postId);
         postService.updatePost(post);
 
         model.addAttribute("post", post);

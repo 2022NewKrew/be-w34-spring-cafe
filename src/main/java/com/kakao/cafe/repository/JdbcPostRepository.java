@@ -28,7 +28,7 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public Post save(Post post) {
         logger.info("[Jdbc] post save");
-        User user = userRepository.findByUserId(post.getUserId());
+        User user = userRepository.findById(post.getUserId());
         String sql = "insert into post(title, content, user_id) values(?, ?, ?)";
         jdbcTemplate.update(sql, post.getTitle(), post.getContent(), user.getId());
         return post;
@@ -39,7 +39,7 @@ public class JdbcPostRepository implements PostRepository {
         logger.info("[Jdbc] post findAll");
         String sql = "select * from post";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new Post(rs.getInt("id"),
-                userRepository.findById(rs.getInt("user_id")).getUserId(),
+                rs.getInt("user_id"),
                 rs.getString("title"),
                 rs.getString("content"),
                 rs.getDate("created_at")));
@@ -52,7 +52,7 @@ public class JdbcPostRepository implements PostRepository {
 
         try {
             return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Post(rs.getInt("id"),
-                            userRepository.findById(rs.getInt("user_id")).getUserId(),
+                            rs.getInt("user_id"),
                             rs.getString("title"),
                             rs.getString("content"),
                             rs.getDate("created_at")),

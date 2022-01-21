@@ -15,7 +15,7 @@ public class UpdatePostRequest {
         this.content = content;
     }
 
-    public Post toEntity(String userId, int postId) {
+    public Post toEntity(int userId, int postId) {
         return new Post(postId, userId, title, content, new Date());
     }
 }

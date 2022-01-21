@@ -16,7 +16,7 @@ public class WritePostRequest {
         this.content = content;
     }
 
-    public Post toEntity(String userId) {
+    public Post toEntity(int userId) {
         return new Post(INITIAL_ID, userId, title, content, new Date());
     }
 }
