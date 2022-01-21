@@ -22,7 +22,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findUser(Integer id) {
+    public User findUser(int id) {
         return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
     }
 
@@ -37,7 +37,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void update(Integer id, UserUpdateRequest request) {
+    public void update(int id, UserUpdateRequest request) {
         User user = userRepository
                 .findById(id)
                 .filter(u -> u.getPassword().equals(request.getPassword()))

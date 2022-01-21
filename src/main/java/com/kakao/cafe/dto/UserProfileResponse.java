@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserProfileResponse {
 
-    private Integer id;
+    private int id;
     private String userId;
     private String name;
     private String email;

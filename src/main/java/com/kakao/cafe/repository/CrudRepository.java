@@ -8,11 +8,15 @@ public interface CrudRepository<T, ID> {
 
     T save(T entity);
 
-    T update(T entity);
+    default T update(T entity) {
+        return null;
+    }
 
     Optional<T> findById(ID id);
 
-    Iterable<T> findAll();
+    default Iterable<T> findAll() {
+        return null;
+    }
 
-    Boolean delete(T entity);
+    boolean delete(T entity);
 }

@@ -2,7 +2,11 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleCreateRequest;
+import com.kakao.cafe.interceptor.AuthenticationSecured;
+import com.kakao.cafe.interceptor.PersonalAuthorizationSecured;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,15 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 public class ArticleController {
 
     private final ArticleService articleService;
-
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
+    private final ReplyService replyService;
 
     @PostMapping(value = "/articles", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @AuthenticationSecured
+    @PersonalAuthorizationSecured
     public String createArticle(ArticleCreateRequest request) {
         log.info("start createArticle()");
         articleService.createArticle(request);
@@ -44,10 +48,12 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String detail(@PathVariable int id, Model model) {
         model.addAttribute("article", articleService.detail(id));
+        model.addAttribute("replies", replyService.list(id));
         return "/articles/show";
     }
 
     @GetMapping("/articles/form")
+    @AuthenticationSecured
     public String form(HttpServletRequest request, Model model) {
         User sessionedUser = (User) request.getSession().getAttribute("sessionedUser");
         model.addAttribute("name", sessionedUser.getName());
@@ -56,7 +62,9 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}/form")
-    public String updateForm(HttpServletRequest request, @PathVariable Integer id, Model model) {
+    @AuthenticationSecured
+    @PersonalAuthorizationSecured
+    public String updateForm(HttpServletRequest request, @PathVariable int id, Model model) {
         User sessionedUser = (User) request.getSession().getAttribute("sessionedUser");
         model.addAttribute("article", articleService.detail(id));
         model.addAttribute("name", sessionedUser.getName());
@@ -65,17 +73,21 @@ public class ArticleController {
     }
 
     @PutMapping("/articles/{id}")
-    public String update(@PathVariable Integer id, ArticleCreateRequest request) {
+    @AuthenticationSecured
+    @PersonalAuthorizationSecured
+    public String update(@PathVariable int id, ArticleCreateRequest request) {
         log.info("start update()");
         articleService.update(id, request);
         return"redirect:/";
     }
 
     @DeleteMapping("/articles/{id}")
-    public String delete(@PathVariable Integer id) {
+    @AuthenticationSecured
+    @PersonalAuthorizationSecured
+    public String delete(@PathVariable int id) {
         log.info("start delete()");
         articleService.delete(id);
-        return"redirect:/";
+        return "redirect:/";
     }
 
 }

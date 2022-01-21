@@ -18,18 +18,18 @@ public class MvcConfig implements WebMvcConfigurer {
 
     private final AuthenticationInterceptor authenticationInterceptor;
     private final AuthorizationInterceptor authorizationInterceptor;
-    private final List<String> AUTHENTICATION_URL = new ArrayList<>(){{
-        add("/users/{id}/form");
-        add("/articles/form");
-        add("/articles");
-        add("/articles/{id}/form");
-        add("/articles/{id}");
+    private final List<String> AUTHENTICATION_URL = new ArrayList<>() {{
+        add("/**");
     }};
-    private final List<String> AUTHORIZATION_URL = new ArrayList<>(){{
-        add("/users/{id}/form");
-        add("/articles");
-        add("/articles/{id}/form");
-        add("/articles/{id}");
+    private final List<String> AUTHORIZATION_URL = new ArrayList<>() {{
+        add("/**");
+    }};
+    private final List<String> STATIC_URL = new ArrayList<>() {{
+        add("/css/**");
+        add("/fonts/**");
+        add("/images/**");
+        add("/js/**");
+        add("/favicon.ico");
     }};
 
     @Override
@@ -44,10 +44,10 @@ public class MvcConfig implements WebMvcConfigurer {
         WebMvcConfigurer.super.addInterceptors(registry);
         registry.addInterceptor(authenticationInterceptor)
                 .addPathPatterns(AUTHENTICATION_URL)
-                .excludePathPatterns();
+                .excludePathPatterns(STATIC_URL);
 
         registry.addInterceptor(authorizationInterceptor)
                 .addPathPatterns(AUTHORIZATION_URL)
-                .excludePathPatterns();
+                .excludePathPatterns(STATIC_URL);
     }
 }

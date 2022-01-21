@@ -80,7 +80,7 @@ public class UserRepository implements CrudRepository<User, Integer> {
     }
 
     @Override
-    public Boolean delete(User entity) {
+    public boolean delete(User entity) {
         StringBuilder query = new StringBuilder();
         query.append("DELETE FROM users WHERE users.id = ?");
         int delete = jdbcTemplate.update(query.toString(), entity.getId());
