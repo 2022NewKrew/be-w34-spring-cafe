@@ -12,5 +12,9 @@ public class Reply {
     private User writer;
     private String comment;
 
+    public String getWriterId() {
+        return writer.getUserId();
+    }
+
 
 }

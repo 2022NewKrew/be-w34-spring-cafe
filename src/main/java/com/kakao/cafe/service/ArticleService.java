@@ -43,8 +43,12 @@ public class ArticleService {
         replyRepository.save(reply);
     }
 
-    public List<Reply> findReplyByArticleId(Long articleId) {
+    public List<Reply> findReplysByArticleId(Long articleId) {
         return replyRepository.findByArticleId(articleId);
+    }
+
+    public Reply findReplyById(Long replyId) {
+        return replyRepository.findById(replyId).orElseThrow(() -> new IllegalArgumentException("댓글을 찾을수 없습니다."));
     }
 
 
@@ -71,10 +75,14 @@ public class ArticleService {
     }
 
     private Article addComments(Article article) {
-        List<Reply> replys = findReplyByArticleId(article.getId());
+        List<Reply> replys = findReplysByArticleId(article.getId());
         for (Reply reply : replys) {
             article.addReply(reply);
         }
         return article;
+    }
+
+    public void deleteReplyById(Long replyId) {
+        replyRepository.deleteById(replyId);
     }
 }

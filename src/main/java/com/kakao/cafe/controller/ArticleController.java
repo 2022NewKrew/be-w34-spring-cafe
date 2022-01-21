@@ -9,6 +9,7 @@ import com.kakao.cafe.controller.dto.response.ArticleUpdateFormResponseDto;
 import com.kakao.cafe.controller.dto.session.UserLoginSession;
 import com.kakao.cafe.controller.validator.OwnershipValidator;
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.dto.ArticleUpdateDto;
 import com.kakao.cafe.service.dto.ReplyRegisterDto;
@@ -43,6 +44,16 @@ public class ArticleController {
         articleService.registerReply(new ReplyRegisterDto(id, replyRegisterRequestDto));
 
         return "redirect:/articles/" + id;
+    }
+
+    @DeleteMapping("/{articleId}/replys/{replyId}")
+    public String deleteReply(@PathVariable Long articleId, @PathVariable Long replyId,
+                              @SessionAttribute(name = Constants.loginUser) UserLoginSession userLoginSession) {
+        Reply reply = articleService.findReplyById(replyId);
+        ownershipValidator.validate(userLoginSession.getUserId(), reply.getWriterId());
+        articleService.deleteReplyById(replyId);
+
+        return "redirect:/articles/" + articleId;
     }
 
     @GetMapping("/{id}")

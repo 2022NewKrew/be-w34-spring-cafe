@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,4 +31,11 @@ public class SpringJdbcReplyRepository implements ReplyRepository {
     public void deleteById(Long id) {
         jdbcTemplate.update("delete from REPLY where reply_seq_id = ?", id);
     }
+
+    @Override
+    public Optional<Reply> findById(Long id) {
+        List<Reply> replies = jdbcTemplate.query("select * from REPLY r join USERS u ON r.writer_id=u.user_id where r.reply_seq_id=?", replyMapper, id);
+        return replies.stream().findAny();
+    }
+
 }
