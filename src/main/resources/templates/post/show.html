@@ -45,86 +45,93 @@
         {{#signInUser}}
         <div class="container" id="main">
             <div class="content-container col-md-12 col-sm-12 col-lg-12">
-                {{^post}}
-                <p class="user-title">게시글 정보가 없습니다.</p>
-                {{/post}}
-                {{#post}}
                 <div class="panel panel-default">
-                  <header class="post-header">
-                      <p class="post-title">{{title}}</p>
-                  </header>
-                  <div class="content-main">
-                      <article class="article">
-                          <div class="article-header">
-                              <div class="article-header-text">
-                                  <p class="article-content">{{userId}}</p>
-                                  <p class="article-content">
-                                      작성일자:{{createdAt}}
-                                  </p>
-                                  <p class="article-content">조회 {{view}}</p>
-                              </div>
-                          </div>
-                          <div class="article-doc">
-                              <pre>{{content}}</pre>
-                          </div>
-                      </article>
+                    {{^postVo}}
+                    <p class="user-title">게시글 정보가 없습니다.</p>
+                    {{/postVo}}
+                    {{#postVo}}
+                    {{#post}}
+                    <header class="post-header"><p class="post-title">{{title}}</p></header>
+                    <div class="content-main">
+                        <article class="article">
+                            <div class="article-header">
+                                <div class="article-header-text">
+                                    <p class="article-content">{{userId}}</p>
+                                    <p class="article-content">작성일자:{{createdAt}}</p>
+                                    <p class="article-content">조회 {{view}}</p>
+                                </div>
+                            </div>
+                            <div class="article-doc">
+                                <pre>{{content}}</pre>
+                            </div>
+                        </article>
 
-                      <div class="post-comment">
-                          <div class="post-comment-slipp">
-                              <div class="post-comment-count">
-                                  <p>댓글 {{replyCnt}}개</p>
-                                  {{#canEdit}}
-                                  <script>
-                                      function deletePost(e) {
-                                          return confirm("정말 삭제할까요?")
-                                      }
-                                  </script>
-                                  <form class="post-action-box" method="post" action="/posts/delete/{{postId}}" onsubmit="return deletePost(this)">
-                                      <a class="post-edit-btn" href="/posts/edit/{{postId}}" class="btn btn-primary pull-right" role="button">게시글 수정</a>
-                                      <input type="hidden" name="_method" value="DELETE">
-                                      <button class="post-edit-btn" class="btn btn-primary pull-right" role="button">게시글 삭제</button>
-                                  </form>
-                                  {{/canEdit}}
-                              </div>
+                        <div class="post-comment">
+                            <div class="post-comment-slipp">
+                                <div class="post-comment-count">
+                                    <p>댓글 {{replyCnt}}개</p>
+                                    {{#canEdit}}
+                                    <script>
+                                        function deletePost(e) { return confirm("정말 삭제할까요?") }
+                                    </script>
+                                    <form class="post-action-box" method="post" action="/posts/delete/{{postId}}" onsubmit="return deletePost(this)">
+                                        <a class="post-edit-btn" href="/posts/edit/{{postId}}" class="btn btn-primary pull-right" role="button">게시글 수정</a>
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button class="post-edit-btn" class="btn btn-primary pull-right" role="button">게시글 삭제</button>
+                                    </form>
+                                    {{/canEdit}}
+                                </div>
 
-                              <div class="post-comment-slipp-articles">
+                                <div class="post-comment-slipp-articles">
+                                    {{#replies}}
+                                    <article class="comment">
+                                        {{#reply}}
+                                        <div class="article-text">
+                                            <p class="comment-content comment-author-name">{{userId}}</p>
+                                            <div class="comment-content comment-doc">
+                                                <pre>{{content}}</pre>
+                                            </div>
+                                            <div class="reply-footer">
+                                                <p class="comment-content comment-time">{{createdAt}}</p>
+                                                {{#canDelete}}
+                                                <script>
+                                                    const checkRemoveRely = () => confirm("덧글을 지울까요?")
+                                                </script>
+                                                <form method="post" action="/replies/{{postId}}/{{replyId}}" onsubmit="return checkRemoveRely()">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <button class="black-component"><p>덧글 삭제</p></button>
+                                                </form>
+                                                {{/canDelete}}
+                                            </div>
+                                        </div>
+                                        {{/reply}}
 
-                                  {{#replyList}}
-                                  <article class="comment">
-                                      <div class="article-text">
-                                          <p class="comment-content comment-author-name">{{userId}}</p>
-                                          <div class="comment-content comment-doc">
-                                              <pre>{{content}}</pre>
-                                          </div>
-                                          <p class="comment-content comment-time">{{createdAt}}</p>
-                                      </div>
-                                  </article>
-                                  {{/replyList}}
+                                    </article>
+                                    {{/replies}}
 
-                                  <script>
-                                      const submitRely = () => {
-                                          if(document.getElementById("reply-content").value){
-                                              return true;
-                                          }
-                                          alert("덧글 내용이 비어있습니다.")
-                                          return false;
-                                      }
-                                  </script>
-                                  <form class="submit-write" method="post" action="/replies/{{postId}}" onsubmit="return submitRely()">
-                                      <div class="comment-writer-container">
-                                          <div class="comment-writer" id="writer" name="writer"/>{{signInUser.userId}}</div>
-                                      </div>
-                                      <div class="form-group">
-                                          <textarea class="form-control" id="reply-content" name="content" placeholder="내용을 입력하세요"></textarea>
-                                      </div>
-                                      <input class="post-write-btn" type="submit" value="등록"/>
-                                  </form>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
+                                    <script>
+                                        const submitRely = () => {
+                                            if(document.getElementById("reply-content").value) return true;
+                                            alert("덧글 내용이 비어있습니다.")
+                                            return false
+                                        }
+                                    </script>
+                                    <form class="submit-write" method="post" action="/replies/{{postId}}" onsubmit="return submitRely()">
+                                        <div class="comment-writer-container">
+                                            <div class="comment-writer" id="writer" name="writer"/>{{signInUser.userId}}</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea class="form-control" id="reply-content" name="content" placeholder="내용을 입력하세요"></textarea>
+                                        </div>
+                                        <input class="post-write-btn" type="submit" value="등록"/>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/post}}
+                    {{/postVo}}
                 </div>
-                {{/post}}
             </div>
         </div>
         {{/signInUser}}

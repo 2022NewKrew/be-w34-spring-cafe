@@ -27,17 +27,17 @@ li {
     margin: 3px;
 }
 
-.black-component {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    justify-content: center;
-    width: 80px;
-    height: 30px;
-    font-size: 14px;
-    background-color: black;
-    color: white;
-}
+/*.black-component {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    text-align: center;*/
+/*    justify-content: center;*/
+/*    width: 80px;*/
+/*    height: 30px;*/
+/*    font-size: 14px;*/
+/*    background-color: black;*/
+/*    color: white;*/
+/*}*/
 
 .black-component:hover {
     background-color: #ffcd00;
@@ -191,4 +191,10 @@ li {
 
 .content-container {
     flex-direction: column;
+}
+
+.reply-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

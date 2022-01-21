@@ -1,5 +1,10 @@
 package com.kakao.cafe.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class User {
     private String userId;
     private String password;
@@ -18,33 +23,5 @@ public class User {
         this.email = email;
         this.name=name;
         this.createdAt = createdAt;
-    }
-
-    // getter
-    public String getUserId() {
-        return userId;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public String getName() {
-        return name;
-    }
-
-    // setter
-    public void setUserId(String userId) {
-            this.userId = userId;
-        }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
 }

@@ -158,3 +158,7 @@
 - Transactional annotation
   - https://dpqk.me/3
   - https://n1tjrgns.tistory.com/266
+  - https://interconnection.tistory.com/122
+  - http://wonwoo.ml/index.php/post/1542
+- 페이징
+  - https://jojoldu.tistory.com/528
