@@ -55,10 +55,9 @@ public class CommentRepository {
         + "user_id, "
         + "article_id, "
         + "content, "
-        + "like_count, "
         + "create_at, "
         + "modified_at "
-        + ") VALUES (?, ?, ?, ?, ?, ?)";
+        + ") VALUES (?, ?, ?, ?, ?)";
 
     jdbcTemplate.update(con -> {
       PreparedStatement ps = con.prepareStatement(query,
@@ -66,9 +65,8 @@ public class CommentRepository {
       ps.setLong(1, comment.getAuthor().getId());
       ps.setLong(2, comment.getArticleId());
       ps.setString(3, comment.getContents());
-      ps.setLong(4, comment.getLikeCount());
-      ps.setTimestamp(5, comment.getCreateAt());
-      ps.setTimestamp(6, comment.getModifiedAt());
+      ps.setTimestamp(4, comment.getCreateAt());
+      ps.setTimestamp(5, comment.getModifiedAt());
       return ps;
     }, keyHolder);
 
@@ -81,14 +79,12 @@ public class CommentRepository {
     String query = "UPDATE comment "
         + "SET "
         + "content = ?, "
-        + "like_count = ?, "
         + "is_deleted = ?, "
         + "modified_at = now() "
         + "WHERE id = ?";
 
     jdbcTemplate.update(query,
         comment.getContents(),
-        comment.getLikeCount(),
         comment.getIsDeleted().name(),
         comment.getId()
     );
@@ -103,7 +99,10 @@ public class CommentRepository {
         + "INNER JOIN users "
         + "ON comment.user_id = users.id "
         + "AND comment.id = ? "
-        + "AND comment.is_deleted <= ? ";
+        + "AND comment.is_deleted <= ? "
+        + "LEFT JOIN comment_like "
+        + "ON comment.id = comment_like.comment_id "
+        + "GROUP BY id";
 
     List<Comment> comments = jdbcTemplate.query(query, commentMapper,
         id,
@@ -123,7 +122,10 @@ public class CommentRepository {
         + "INNER JOIN users "
         + "ON comment.user_id = users.id "
         + "AND comment.article_id = ? "
-        + "AND comment.is_deleted <= ? ";
+        + "AND comment.is_deleted <= ? "
+        + "LEFT JOIN comment_like "
+        + "ON comment.id = comment_like.comment_id "
+        + "GROUP BY id";
 
     List<Comment> comments = jdbcTemplate.query(query, commentMapper,
         articleId,
@@ -142,7 +144,7 @@ public class CommentRepository {
             + "comment.id,"
             + "comment.article_id, "
             + "comment.content, "
-            + "comment.like_count, "
+            + "count(comment_like.prefix_id) as like_count, "
             + "comment.is_deleted, "
             + "comment.create_at, "
             + "comment.modified_at, "

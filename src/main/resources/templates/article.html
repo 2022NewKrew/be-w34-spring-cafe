@@ -76,7 +76,7 @@
               <span style="font-family: Hind">{{author.summary}} | {{author.email}}</span>
 
               <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">
-                <a href="javascript:void(0)" onclick="addLikeCount('{{id}}')" style="font-family: Hind"><i class="icofont-reply mr-2 text-muted"></i>좋아요[{{likeCount}}] |</a>
+                <a href="javascript:void(0)" onclick="addLikeCount('{{id}}', this)" style="font-family: Hind"><i class="icofont-reply mr-2 text-muted"></i>좋아요[{{likeCount}}] |</a>
                 <span class="date-comm">Posted {{createAt}}</span>
                 {{#isOwned}}
                 <a href="javascript:void(0)" onclick="deleteComment('{{id}}')" style="font-family: Hind; color: grey"><i class="icofont-reply mr-2 text-muted"></i>| 삭제</a>
@@ -236,7 +236,7 @@ Essential Scripts
       template.push('      <h5 class="mb-1" style="cursor: pointer" onClick="navigate(\' ' + comment.author.id + ' \')">' + comment.author.nickName + '</h5>');
       template.push('      <span style="font-family: Hind">' + comment.author.summary + ' | ' + comment.author.email.fullPath + '</span>')
       template.push('      <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">');
-      template.push('        <a href="javascript:void(0)" onclick="addLikeCount(\'' + comment.id + '\')" style="font-family: Hind"><i class="icofont-reply mr-2 text-muted"></i>좋아요[' + comment.likeCount + '] |</a>');
+      template.push('        <a href="javascript:void(0)" onclick="addLikeCount(\'' + comment.id + '\', this)" style="font-family: Hind"><i class="icofont-reply mr-2 text-muted"></i>좋아요[' + comment.likeCount + '] |</a>');
       template.push('        <span class="date-comm">Posted ' + dateFormat(comment.createAt) + '</span>')
       if(comment.owned) {
         template.push('        <a href="javascript:void(0)" onclick="deleteComment(\'' + comment.id + '\')" style="font-family: Hind; color: grey"><i class="icofont-reply mr-2 text-muted"></i>| 삭제</a>');
@@ -273,11 +273,27 @@ Essential Scripts
   }
 
 
-  async function addLikeCount(id) {
+  async function addLikeCount(id, context) {
 
     const response = await fetch('/api/comment/' + id + '/like', {
-
+      method: 'POST'
     });
+
+    if(response.ok) {
+      const data = await response.json();
+      context.innerHTML = '<i class="icofont-reply mr-2 text-muted"></i>좋아요[' + data.likeCount + '] |';
+      console.log(context);
+      console.log(data);
+      return;
+    }
+
+    const parsedResponse = await response.json();
+    if(parsedResponse.code === 'LC_001') {
+      alert('이미 좋아요를 누르셨습니다.');
+      return;
+    }
+
+    alert(parsedResponse.message + '(' + parsedResponse.code + ')');
 
   }
 

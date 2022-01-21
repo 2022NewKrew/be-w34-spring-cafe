@@ -38,3 +38,14 @@ CREATE TABLE comment (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (article_id) REFERENCES article(id)
 );
+
+ALTER TABLE comment DROP like_count;
+
+DROP TABLE IF EXISTS comment_like;
+CREATE TABLE comment_like (
+    prefix_id       VARCHAR(50) PRIMARY KEY,
+    comment_id      BIGINT NOT NULL,
+    user_id         BIGINT NOT NULL,
+    FOREIGN KEY (comment_id) REFERENCES comment(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);

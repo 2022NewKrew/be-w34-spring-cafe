@@ -10,10 +10,12 @@ import com.kakao.cafe.exception.NoCommentException;
 import com.kakao.cafe.utils.SessionUtils;
 import com.kakao.cafe.web.dto.CommentDTO;
 import com.kakao.cafe.web.repository.ArticleRepository;
+import com.kakao.cafe.web.repository.CommentLikeRepository;
 import com.kakao.cafe.web.repository.CommentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,10 +24,16 @@ public class CommentService {
   private static final Logger logger = LoggerFactory.getLogger(CommentService.class);
   private final CommentRepository commentRepository;
   private final ArticleRepository articleRepository;
+  private final CommentLikeRepository commentLikeRepository;
 
-  public CommentService(CommentRepository commentRepository, ArticleRepository articleRepository) {
+  public CommentService(
+      CommentRepository commentRepository,
+      ArticleRepository articleRepository,
+      CommentLikeRepository commentLikeRepository
+  ) {
     this.commentRepository = commentRepository;
     this.articleRepository = articleRepository;
+    this.commentLikeRepository = commentLikeRepository;
   }
 
 
@@ -83,15 +91,18 @@ public class CommentService {
    *
    * @param commentId 좋아요 추가할 댓글
    * @return 댓글
+   * @throws NoAuthorityException 로그인 사용자만 가능
+   * @throws NoCommentException 댓글이 없을 경우
    */
   public Comment addLike(Long commentId) {
 
-    Comment comment = commentRepository.findById(commentId, Delete.NOT_DELETED)
+    User user = SessionUtils.getLoginUser()
+            .orElseThrow(NoAuthorityException::new);
+
+    commentLikeRepository.save(commentId, user.getId());
+
+    return commentRepository.findById(commentId, Delete.NOT_DELETED)
         .orElseThrow(NoCommentException::new);
-
-    comment.addLike();
-
-    return commentRepository.save(comment);
   }
 
 
@@ -104,7 +115,7 @@ public class CommentService {
   public void hasEditPermissions(Comment comment) {
     User author = comment.getAuthor();
 
-    if(!SessionUtils.isLoginUser(author)) {
+    if (!SessionUtils.isLoginUser(author)) {
       throw new NoAuthorityException();
     }
   }

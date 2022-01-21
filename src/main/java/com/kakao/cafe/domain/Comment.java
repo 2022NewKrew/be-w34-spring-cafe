@@ -87,11 +87,6 @@ public class Comment {
   }
 
 
-  public void addLike() {
-    this.likeCount++;
-  }
-
-
   @Override
   public String toString() {
     return "Comment{" +
