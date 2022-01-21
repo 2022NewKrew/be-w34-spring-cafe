@@ -48,4 +48,10 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(403, accessDeniedException.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler({AlreadyDeletedCommentException.class, AlreadyDeletedQnaException.class})
+    public ResponseEntity<ErrorResponse> handleAlreadyDeletedException(RuntimeException runtimeException) {
+        ErrorResponse errorResponse = new ErrorResponse(409, runtimeException.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
 }

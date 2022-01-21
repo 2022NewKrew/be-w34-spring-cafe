@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.exception.AlreadyDeletedCommentException;
+
 import java.time.LocalDateTime;
 
 public class Comment {
@@ -37,7 +39,11 @@ public class Comment {
     }
 
     public void delete() {
-        this.deleted = true;
+        if (deleted) {
+            throw new AlreadyDeletedCommentException(id);
+        }
+
+        deleted = true;
     }
 
     public void updateContents(String contents) {

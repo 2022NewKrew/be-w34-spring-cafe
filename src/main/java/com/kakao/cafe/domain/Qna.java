@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.exception.AlreadyDeletedQnaException;
+
 public class Qna {
 
     private Integer id;
@@ -29,7 +31,11 @@ public class Qna {
     }
 
     public void delete() {
-        this.deleted = true;
+        if (deleted) {
+            throw new AlreadyDeletedQnaException(id);
+        }
+
+        deleted = true;
     }
 
     public Boolean isValidUpdateUser(String userId) {
