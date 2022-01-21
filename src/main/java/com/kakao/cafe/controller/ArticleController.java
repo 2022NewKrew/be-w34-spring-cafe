@@ -1,8 +1,10 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.PageNumberDto;
 import com.kakao.cafe.exception.IncorrectUserException;
 import com.kakao.cafe.exception.NotLoginException;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.PageService;
 import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.service.SessionService;
 import com.kakao.cafe.util.ErrorUtil;
@@ -22,11 +24,14 @@ public class ArticleController {
     private final ArticleService articleService;
     private final SessionService sessionService;
     private final ReplyService replyService;
+    private final PageService pageService;
 
-    public ArticleController(ArticleService articleService, SessionService sessionService, ReplyService replyService) {
+    public ArticleController(ArticleService articleService, SessionService sessionService,
+                             ReplyService replyService, PageService pageService) {
         this.articleService = articleService;
         this.sessionService = sessionService;
         this.replyService = replyService;
+        this.pageService = pageService;
     }
 
     @PostMapping("/article/create")
@@ -52,10 +57,10 @@ public class ArticleController {
     public String getArticles(Model model) {
         List<Article> articles = articleService.getArticles();
         model.addAttribute("articles", articles);
-        return "index";
+        return "redirect:/page/1/0";
     }
 
-    @GetMapping("questions/form")
+    @GetMapping("/questions/form")
     public String getQuestionForm(Model model, HttpSession session) throws NotLoginException {
         User loginUser = sessionService.getLoginUser(session);
 
@@ -86,6 +91,30 @@ public class ArticleController {
         User loginUser = sessionService.getLoginUser(session);
         articleService.deleteArticle(index, loginUser);
         return "redirect:/";
+    }
+
+    @GetMapping("/page/{pageNumber}/{pageIndex}")
+    public String getPage(@PathVariable int pageNumber, @PathVariable int pageIndex, Model model) {
+        List<Article> articles = articleService.getArticles();
+        List<Article> subarticles = pageService.getSubArticles(articles, pageNumber);
+        List<PageNumberDto> pageNumbers = pageService.getPageNumbers(articles, pageIndex);
+        model.addAttribute("articles", subarticles);
+        model.addAttribute("pageNumbers", pageNumbers);
+        model.addAttribute("hasLeftButton", pageService.hasLeftButton(pageIndex));
+        model.addAttribute("hasRightButton", pageService.hasRightButton(articles, pageIndex));
+        model.addAttribute("thisPageNumber", pageNumber);
+        model.addAttribute("pageIndex", pageIndex);
+        return "index";
+    }
+
+    @GetMapping("/page/left/{pageNumber}/{pageIndex}")
+    public String getLeftPage(@PathVariable int pageNumber, @PathVariable int pageIndex) {
+        return String.format("/page/%d/%d", pageNumber, pageIndex - 1);
+    }
+
+    @GetMapping("/page/right/{pageNumber}/{pageIndex}")
+    public String getRightPage(@PathVariable int pageNumber, @PathVariable int pageIndex) {
+        return String.format("/page/%d/%d", pageNumber, pageIndex + 1);
     }
 
 }

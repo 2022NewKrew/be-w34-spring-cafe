@@ -36,22 +36,26 @@
               <div class="col-md-3"></div>
               <div class="col-md-6 text-center">
                   <ul class="pagination center-block" style="display:inline-block;">
-                      <li><a href="#">«</a></li>
-                      <li><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#">»</a></li>
+                      {{#if hasLeftButton}}
+                      <li><a href="/page/left/{{pageNumber}}/{{pageIndex}}">«</a></li>
+                      {{/if}}
+                      {{#pageNumbers}}
+                      <li><a href="/page/{{pageNumber}}/{{pageIndex}}">{{pageNumber}}</a></li>
+                      {{/pageNumbers}}
+                      {{#if hasRightButton}}
+                      <li><a href="/page/right/{{pageNumber}}/{{pageIndex}}">»</a></li>
+                      {{/if}}
                 </ul>
               </div>
               <div class="col-md-3 qna-write">
-                  <a href="questions/form" class="btn btn-primary pull-right" role="button">질문하기</a>
+                  <a href="/questions/form" class="btn btn-primary pull-right" role="button">질문하기</a>
               </div>
           </div>
         </div>
     </div>
 </div>
+
+
 
 <!--login modal-->
 <!--

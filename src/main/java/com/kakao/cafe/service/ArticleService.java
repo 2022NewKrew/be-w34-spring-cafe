@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.dao.ArticleDao;
+import com.kakao.cafe.dto.PageNumberDto;
 import com.kakao.cafe.exception.IncorrectUserException;
 import com.kakao.cafe.exception.OtherWriterReplyExistException;
 import com.kakao.cafe.util.ErrorUtil;
@@ -9,6 +10,7 @@ import com.kakao.cafe.vo.Reply;
 import com.kakao.cafe.vo.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
