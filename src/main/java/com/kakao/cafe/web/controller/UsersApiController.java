@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,18 +25,7 @@ public class UsersApiController {
 
     @GetMapping
     public String getUsers(Model model) {
-        List<Map<String, String>> userList = new ArrayList<>();
-        List<Users> queriedUsers = userService.getUsers();
-        for (int i = 0; i < queriedUsers.size(); i++) {
-            Users user = queriedUsers.get(i);
-            userList.add(
-                    (Map.of("index", Integer.toString(i + 1),
-                            "id", Integer.toString(user.getId()),
-                            "userId", user.getUserId(),
-                            "name", user.getName(),
-                            "email", user.getEmail()))
-            );
-        }
+        List<Map<String, String>> userList = userService.getUsers();
         model.addAttribute("users", userList);
         logger.info("User API: 사용자 목록");
         return "users/list";

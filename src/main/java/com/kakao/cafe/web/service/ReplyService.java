@@ -1,6 +1,7 @@
 package com.kakao.cafe.web.service;
 
 import com.kakao.cafe.domain.Reply;
+import com.kakao.cafe.domain.Users;
 import com.kakao.cafe.web.repository.ReplyRepository;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,9 @@ public class ReplyService {
         return replyRepository.selectByReplyId(id);
     }
 
-    public void addReply(Reply reply) {
+    public void addReply(int id, Users author, Reply reply) {
+        reply.setAuthor(author);
+        reply.setArticleId(id);
         replyRepository.insertReply(reply);
     }
 

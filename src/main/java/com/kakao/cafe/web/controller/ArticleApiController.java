@@ -50,14 +50,10 @@ public class ArticleApiController {
 
     @GetMapping("/articles/{id}/update")
     String getUpdateForm(@PathVariable int id, Model model, HttpSession session) {
-        Article article = articleService.getByArticleId(id);
         Users user = (Users) session.getAttribute("sessionedUser");
         if (user == null)
             return "redirect:/users/login";
-        if (article.getAuthor().getId() != user.getId()) {
-            logger.info("Article API: 허용되지 않은 UPDATE 메소드 접근");
-            throw new IllegalArgumentException("글쓴이가 일치하지 않습니다.");
-        }
+        Article article = articleService.getArticleUpdateForm(id, user.getId());
         model.addAttribute("article", article);
         return "articles/updateForm";
     }
@@ -67,11 +63,7 @@ public class ArticleApiController {
         Users user = (Users) session.getAttribute("sessionedUser");
         if (user == null)
             return "redirect:/users/login";
-        if (articleService.getByArticleId(id).getAuthor().getId() != user.getId()) {
-            logger.info("Article API: 허용되지 않은 UPDATE 메소드 접근");
-            throw new IllegalArgumentException("글쓴이가 일치하지 않습니다.");
-        }
-        articleService.updateArticle(id, article);
+        articleService.updateArticle(id, user.getId(), article);
         logger.info("Article API: 글 수정");
         return "redirect:/articles/{id}";
     }
@@ -79,10 +71,6 @@ public class ArticleApiController {
     @DeleteMapping("/articles/{id}")
     String deleteArticle(@PathVariable int id, HttpSession session) {
         Users currentUser = (Users) session.getAttribute("sessionedUser");
-        if (articleService.getByArticleId(id).getAuthor().getId() != currentUser.getId()) {
-            logger.info("Article API: 허용되지 않은 DELETE 메소드 접근");
-            throw new IllegalArgumentException("글쓴이가 일치하지 않습니다.");
-        }
         articleService.deleteArticle(id, currentUser.getId());
         logger.info("Article API: 글 삭제");
         return "redirect:/";
@@ -90,11 +78,10 @@ public class ArticleApiController {
 
     @PostMapping("/articles")
     String createArticle(Article article, HttpSession session) {
-        Users user = (Users) session.getAttribute("sessionedUser");
-        if (user == null)
+        Users author = (Users) session.getAttribute("sessionedUser");
+        if (author == null)
             return "redirect:/users/login";
-        article.setAuthor(user);
-        articleService.addArticle(article);
+        articleService.addArticle(article, author);
         logger.info("Article API: 글 생성");
         return "redirect:/";
     }

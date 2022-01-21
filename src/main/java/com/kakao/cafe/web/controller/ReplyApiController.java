@@ -27,9 +27,7 @@ public class ReplyApiController {
         Users replier = (Users) session.getAttribute("sessionedUser");
         if (replier == null)
             return "redirect:/users/login";
-        reply.setAuthor(replier);
-        reply.setArticleId(id);
-        replyService.addReply(reply);
+        replyService.addReply(id, replier, reply);
         logger.info("Reply API: 답글이 등록됐습니다.");
         return "redirect:/articles/{id}";
     }
