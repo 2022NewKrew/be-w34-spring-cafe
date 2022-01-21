@@ -33,16 +33,17 @@ public class CafeReplyController {
         if(loginUser != null) {
             reply.setUserId(loginUser);
             if (cafeCommentService.submitReply(reply)) {
-                return REPLY_REDIRECT_SUBMIT_SUCCESS + postId;
+                return REPLY_REDIRECT_SUBMIT_FAIL;
             }
         }
-        return REPLY_REDIRECT_SUBMIT_FAIL;
+        return REPLY_REDIRECT_SUBMIT_SUCCESS + postId;
     }
 
     @DeleteMapping("/{postId}/{replyId}")
     String deleteReply(@LoginUser String loginUser, @NonNull @PathVariable("postId") int postId, @NonNull @PathVariable("replyId") int replyId) {
         if(loginUser != null && cafeCommentService.deleteReply(loginUser, replyId)) {
             return REPLY_REDIRECT_DELETE_SUCCESS + postId;
+//            return "redirect:/";
         }
         return REPLY_REDIRECT_DELETE_FAIL;
     }

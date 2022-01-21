@@ -13,7 +13,9 @@ public class Reply {
     String createdAt;
 
     public Reply() {}
-    public Reply(String userId, String content, String createdAt) {
+    public Reply(int replyId, int postId, String userId, String content, String createdAt) {
+        this.replyId = replyId;
+        this.postId = postId;
         this.userId = userId;
         this.content = content;
         this.createdAt = createdAt;

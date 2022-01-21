@@ -76,10 +76,12 @@ public class CafePostController {
     String getPostContent(Model model, @LoginUser String loginUser, @NonNull @PathVariable("postId") int postId) {
         if( loginUser != null ) {
             Post post = cafePostService.getPostContent(postId);
-            List<Reply> replyList = cafeReplyService.getReplyList(postId);
+            if( post != null ) {
+                List<Reply> replyList = cafeReplyService.getReplyList(postId);
 
-            PostVo postVo = new PostVo(post, replyList, loginUser);
-            model.addAttribute("postVo",postVo);
+                PostVo postVo = new PostVo(post, replyList, loginUser);
+                model.addAttribute("postVo", postVo);
+            }
         }
         return POST_VIEW_CONTENT;
     }
