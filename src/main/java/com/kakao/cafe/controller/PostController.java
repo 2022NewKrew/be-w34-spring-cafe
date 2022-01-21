@@ -51,6 +51,7 @@ public class PostController {
 
         DetailedPostResponseDto post = postService.findDetailedPostById(id);
         model.addAttribute("post", post);
+        model.addAttribute("userId", authInfo.getUserId());
 
         return "qna/show";
     }
