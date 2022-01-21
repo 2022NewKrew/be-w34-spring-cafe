@@ -17,8 +17,8 @@ public class CommentService {
         this.commentRepository.save(comment);
     }
 
-    public List<Comment> findAll(int articleId) {
-        return this.commentRepository.findAll(articleId);
+    public List<Comment> findAllByArticleIdAndNotDeleted(int articleId) {
+        return this.commentRepository.findAllByArticleIdAndNotDeleted(articleId);
     }
 
     public Comment findById(int commentId) {

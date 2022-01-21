@@ -23,8 +23,8 @@ public class ArticleRepository {
     }
 
     // 전체 게시물
-    public List<Article> findAll() {
-        return this.jdbcTemplate.query("SELECT * FROM ARTICLES", this.articleMapper);
+    public List<Article> findAllNotDeleted() {
+        return this.jdbcTemplate.query("SELECT * FROM ARTICLES WHERE deleted != 1", this.articleMapper);
     }
 
     // id로 게시물 찾기
@@ -39,7 +39,7 @@ public class ArticleRepository {
 
     // 게시물 삭제
     public void delete(int id) {
-        this.jdbcTemplate.update("DELETE FROM ARTICLES WHERE id = ?", id);
+        this.jdbcTemplate.update("UPDATE ARTICLES SET deleted = 1 WHERE id = ?", id);
     }
 
 }

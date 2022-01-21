@@ -1,7 +1,9 @@
 package com.kakao.cafe.service.article;
 
 import com.kakao.cafe.domain.Entity.Article;
+import com.kakao.cafe.domain.Entity.Comment;
 import com.kakao.cafe.domain.Repository.article.ArticleRepository;
+import com.kakao.cafe.domain.Repository.reply.CommentRepository;
 import com.kakao.cafe.dto.article.ReferArticleDto;
 import com.kakao.cafe.dto.article.PostArticleDto;
 import lombok.AllArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 public class ArticleService {
 
     private ArticleRepository articleRepository;
+    private CommentRepository commentRepository;
 
     // 게시물 저장
     public void save(PostArticleDto postArticleDto) {
@@ -22,8 +25,8 @@ public class ArticleService {
     }
 
     // 전체 게시물 찾기
-    public List<ReferArticleDto> findAll() {
-        List<ReferArticleDto> articles = this.articleRepository.findAll().stream()
+    public List<ReferArticleDto> findAllNotDeleted() {
+        List<ReferArticleDto> articles = this.articleRepository.findAllNotDeleted().stream()
                 .map(ReferArticleDto::new).collect(Collectors.toList());
         return articles;
     }
