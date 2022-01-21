@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.advice.LoginUserMethodArgumentResolver;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.exception.UserNotFoundException;
 import org.hamcrest.collection.IsCollectionWithSize;
@@ -37,7 +38,9 @@ class UserControllerIntegrationTest {
 
     @BeforeEach
     public void setUp() {
-        mock = MockMvcBuilders.standaloneSetup(userController).build();
+        mock = MockMvcBuilders.standaloneSetup(userController)
+                .setCustomArgumentResolvers(new LoginUserMethodArgumentResolver())
+                .build();
 
         UserDto.UserSessionDto userSessionDto = new UserDto.UserSessionDto("lucas", "test");
 

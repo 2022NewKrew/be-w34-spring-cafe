@@ -1,13 +1,14 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.advice.LoginUserMethodArgumentResolver;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.exception.QnaNotFoundException;
-import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
@@ -37,7 +38,9 @@ class QnaControllerIntegrationTest {
 
     @BeforeEach
     public void setUp() {
-        mock = MockMvcBuilders.standaloneSetup(qnaController).build();
+        mock = MockMvcBuilders.standaloneSetup(qnaController)
+                .setCustomArgumentResolvers(new LoginUserMethodArgumentResolver(), new PageableHandlerMethodArgumentResolver())
+                .build();
 
         UserDto.UserSessionDto userSessionDto = new UserDto.UserSessionDto("lucas", "test");
 
@@ -69,15 +72,16 @@ class QnaControllerIntegrationTest {
                 .andDo(print());
     }
 
-    @DisplayName("findQnaList 테스트 - qnaList의 사이즈가 2")
+    @DisplayName("findQnaList 테스트 - page가 0일 때, attribute에 qnaList 가 존재")
     @Test
-    void findQnaList_Nothing_QnaListSize2() throws Exception {
+    void findQnaList_Page0_HasAttributeQnaList() throws Exception {
         // given
 
         // when // then
-        mock.perform(get("/"))
+        mock.perform(get("/")
+                        .param("page", "0"))
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("qnaList", IsCollectionWithSize.hasSize(2)))
+                .andExpect(model().attributeExists("qnaList"))
                 .andDo(print());
     }
 

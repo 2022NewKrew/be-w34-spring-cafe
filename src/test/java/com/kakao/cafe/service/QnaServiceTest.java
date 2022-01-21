@@ -50,8 +50,8 @@ class QnaServiceTest {
     @Test
     void findQnaList_TwoQna_ListOfQnaResponseSize2() {
         // given
-        Qna qna1 = new Qna(1, "test writer1", "test title1", "test contents1");
-        Qna qna2 = new Qna(2, "test writer2", "test title2", "test contents2");
+        Qna qna1 = new Qna(1, "test writer1", "test title1", "test contents1", LocalDateTime.now());
+        Qna qna2 = new Qna(2, "test writer2", "test title2", "test contents2", LocalDateTime.now());
 
         List<Qna> qnaList = new ArrayList<>();
         qnaList.add(qna1);
@@ -71,7 +71,7 @@ class QnaServiceTest {
     @Test
     void findQna_ExistQna_QnaResponseNotNull() {
         // given
-        Qna qna = new Qna(1, "test writer", "test title", "test contents");
+        Qna qna = new Qna(1, "test writer", "test title", "test contents", LocalDateTime.now());
         when(jdbcQnaRepositoryImpl.findById(1)).thenReturn(Optional.of(qna));
 
         List<Comment> comments = new ArrayList<>();
