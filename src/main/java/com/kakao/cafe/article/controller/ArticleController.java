@@ -5,6 +5,7 @@ import com.kakao.cafe.article.dto.ArticleRequest;
 import com.kakao.cafe.article.dto.CommentDto;
 import com.kakao.cafe.article.dto.CommentRequest;
 import com.kakao.cafe.article.exception.ArticleAuthorMismatchException;
+import com.kakao.cafe.article.exception.ArticleCantDeleteException;
 import com.kakao.cafe.article.exception.CommentAuthorMismatchException;
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.article.service.CommentService;
@@ -39,6 +40,20 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    @DeleteMapping("/question/{id}")
+    public String deleteArticle(@PathVariable Long id){
+        String loginUserId = authService.getLoginUserId();
+        if (!articleService.isAuthor(id, loginUserId)) {
+            throw new ArticleAuthorMismatchException();
+        }
+
+        if(articleService.canDeleteArticle(id, loginUserId)){
+            articleService.deleteArticle(id);
+            return "redirect:/";
+        }
+        throw new ArticleCantDeleteException();
+    }
+
     @GetMapping("/show/{id}")
     public String getArticleShowPage(@PathVariable Long id, Model model){
         ArticlePostDto article = articleService.getArticlePostDtoById(id);
@@ -52,10 +67,12 @@ public class ArticleController {
 
     @GetMapping("/update/{id}")
     public String getUpdateArticlePage(@PathVariable Long id, Model model) {
-        if (articleService.isAuthor(id, authService.getLoginUserId())) {
+        String loginUserId = authService.getLoginUserId();
+        if (articleService.isAuthor(id, loginUserId)) {
             model.addAttribute("id", id);
             return "/qna/updateForm";
         }
+
         throw new ArticleAuthorMismatchException();
     }
 
@@ -76,7 +93,8 @@ public class ArticleController {
 
     @DeleteMapping("/{articleId}/comment/{id}")
     public String deleteArticleComment(@PathVariable Long articleId, @PathVariable Long id) {
-        if (commentService.isAuthor(id, authService.getLoginUserId())) {
+       String loginUserId = authService.getLoginUserId();
+        if (commentService.isAuthor(id, loginUserId)) {
             commentService.deleteComment(id);
             return "redirect:/article/show/" + articleId;
         }

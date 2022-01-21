@@ -16,4 +16,6 @@ public interface ArticleRepository {
     Optional<Article> findOneById(Long id);
 
     void updateOne(Article article);
+
+    void deleteById(Long id);
 }
