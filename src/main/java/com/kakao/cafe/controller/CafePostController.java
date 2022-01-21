@@ -7,6 +7,7 @@ import com.kakao.cafe.model.Reply;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.CafePostService;
 import com.kakao.cafe.service.CafeReplyService;
+import com.kakao.cafe.vo.PostVo;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,14 +76,12 @@ public class CafePostController {
     String getPostContent(Model model, @LoginUser String loginUser, @NonNull @PathVariable("postId") int postId) {
         if( loginUser != null ) {
             Post post = cafePostService.getPostContent(postId);
-            model.addAttribute("post", post);
+            if( post != null ) {
+                List<Reply> replyList = cafeReplyService.getReplyList(postId);
 
-            boolean canEdit = loginUser.equals(post.getUserId());
-            model.addAttribute("canEdit", canEdit);
-
-            List<Reply> replyList = cafeReplyService.getReplyList(postId);
-            model.addAttribute("replyList", replyList);
-            model.addAttribute("replyCnt", CollectionHelper.getItemNumberOfList(replyList));
+                PostVo postVo = new PostVo(post, replyList, loginUser);
+                model.addAttribute("postVo", postVo);
+            }
         }
         return POST_VIEW_CONTENT;
     }

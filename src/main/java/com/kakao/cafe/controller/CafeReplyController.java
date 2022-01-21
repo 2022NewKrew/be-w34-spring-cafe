@@ -33,10 +33,10 @@ public class CafeReplyController {
         if(loginUser != null) {
             reply.setUserId(loginUser);
             if (cafeCommentService.submitReply(reply)) {
-                return REPLY_REDIRECT_SUBMIT_SUCCESS + postId;
+                return REPLY_REDIRECT_SUBMIT_FAIL;
             }
         }
-        return REPLY_REDIRECT_SUBMIT_FAIL;
+        return REPLY_REDIRECT_SUBMIT_SUCCESS + postId;
     }
 
     @DeleteMapping("/{postId}/{replyId}")

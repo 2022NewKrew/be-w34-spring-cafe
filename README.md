@@ -90,6 +90,10 @@
 - custom annotation 의 경우, annotation 용 인터페이스가 따로 존재 ( @interface )
   - 해당 annotation 의 존재를 검사할 argumentResolver 를 생성
   - resolver 를 configuration 에 등록
+- docker 의 경우, 옵션 순서가 굉장히 중요
+  - run 옵션 중, -p 는 현재 컴퓨터의 포트와 컨테이너의 접속포트를 연결해줌
+  - ( 관련 페이지 : https://www.daleseo.com/docker-run/ )
+  - docker 이미지는 search 로 탐색이 가능하지만, 가능하면 공식 홈페이지의 빈 이미지를 사용하자
 
 # 배포 절차
 - 실패한 방법
@@ -158,3 +162,13 @@
 - Transactional annotation
   - https://dpqk.me/3
   - https://n1tjrgns.tistory.com/266
+  - https://interconnection.tistory.com/122
+  - http://wonwoo.ml/index.php/post/1542
+- 페이징
+  - https://jojoldu.tistory.com/528
+- docker
+  - https://galid1.tistory.com/428
+  - https://spring.io/guides/gs/spring-boot-docker/
+  - https://hub.docker.com/_/openjdk
+  - https://countryxide.tistory.com/86
+  - https://www.daleseo.com/docker-run/

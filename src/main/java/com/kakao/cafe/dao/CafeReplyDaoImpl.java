@@ -22,7 +22,7 @@ public class CafeReplyDaoImpl implements CafeReplyDao {
     @Override
     public List<Reply> getReplyList(int postId) {
         List<Reply> replyList = new ArrayList<>();
-        String sql = "SELECT userId, content, createdAt FROM reply\n"
+        String sql = "SELECT replyId, userId, content, createdAt FROM reply\n"
                 + "WHERE postId=? and tombstone=false\n"
                 + "ORDER BY createdAt\n";
         try (Connection conn = dataSource.getConnection()) {
@@ -31,11 +31,12 @@ public class CafeReplyDaoImpl implements CafeReplyDao {
 
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
+                int replyId = rs.getInt("replyId");
                 String userId = rs.getString("userId");
                 String content = rs.getString("content");
                 String createdAt = rs.getString("createdAt").substring(0,19);
 
-                replyList.add(new Reply(userId, content, createdAt));
+                replyList.add(new Reply(replyId, postId, userId, content, createdAt));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,6 +66,18 @@ public class CafeReplyDaoImpl implements CafeReplyDao {
 
     @Override
     public boolean deleteReply(String userId, int replyId) {
-        return false;
+        int updateCnt = 0;
+        String sql = "UPDATE reply SET tombstone=true\n"
+                + "WHERE replyId=? and userId=?";
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,replyId);
+            pstmt.setString(2,userId);
+
+            updateCnt = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return updateCnt > 0;
     }
 }

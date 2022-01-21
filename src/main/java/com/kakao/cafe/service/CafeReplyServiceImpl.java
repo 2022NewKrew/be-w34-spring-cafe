@@ -10,26 +10,26 @@ import java.util.List;
 @Service
 public class CafeReplyServiceImpl implements CafeReplyService {
 
-    CafeReplyDao cafeCommentDao;
-    public CafeReplyServiceImpl(CafeReplyDao cafeCommentDao) {
-        this.cafeCommentDao = cafeCommentDao;
+    CafeReplyDao cafeReplyDao;
+    public CafeReplyServiceImpl(CafeReplyDao cafeReplyDao) {
+        this.cafeReplyDao = cafeReplyDao;
     }
 
     @Override
     public List<Reply> getReplyList(int postId) {
-        return cafeCommentDao.getReplyList(postId);
+        return cafeReplyDao.getReplyList(postId);
     }
 
     @Override
     public boolean submitReply(Reply reply) {
         if(reply != null && ReplyHelper.checkRegexOfReply(reply)) {
-            return cafeCommentDao.submitReply(reply);
+            return cafeReplyDao.submitReply(reply);
         }
         return false;
     }
 
     @Override
     public boolean deleteReply(String userId, int replyId) {
-        return cafeCommentDao.deleteReply(userId, replyId);
+        return cafeReplyDao.deleteReply(userId, replyId);
     }
 }

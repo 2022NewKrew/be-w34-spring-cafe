@@ -1,5 +1,10 @@
 package com.kakao.cafe.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Post {
     int postId;
     String userId; // 작성자 이름
@@ -21,41 +26,6 @@ public class Post {
         this.title = title;
         this.content = content;
         this.view = view;
-        this.createdAt = createdAt;
-    }
-
-    public int getPostId() {
-        return postId;
-    }
-    public void setPostId(int postId) {
-        this.postId = postId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 }
