@@ -1,5 +1,6 @@
 package com.kakao.cafe;
 
+import com.kakao.cafe.interceptor.LoggingInterceptor;
 import com.kakao.cafe.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -12,11 +13,16 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginCheckInterceptor())
+        registry.addInterceptor(new LoggingInterceptor())
                 .order(1)
+                .addPathPatterns("/**");
+
+        registry.addInterceptor(new LoginCheckInterceptor())
+                .order(2)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/users/loginForm", "/users/login", "/users/signUpForm", "/css/**", "/fonts/**",
                         "/images/**", "/js/**", "/error", "/*.ico");
+
 
     }
 
