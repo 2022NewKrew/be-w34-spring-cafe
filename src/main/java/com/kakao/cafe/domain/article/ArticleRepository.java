@@ -17,4 +17,8 @@ public interface ArticleRepository {
     public boolean canDeleteAndCheckAuthority(Long id, Long userId);
 
     void updateAuthorName(Long id, String name);
+
+    List<Article> findByPage(int pageNum);
+
+    int getPageCnt();
 }

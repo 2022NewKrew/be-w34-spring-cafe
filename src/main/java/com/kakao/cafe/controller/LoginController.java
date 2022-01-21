@@ -6,6 +6,7 @@ import com.kakao.cafe.domain.login.LoginService;
 import com.kakao.cafe.core.SessionConst;
 import com.kakao.cafe.domain.login.dto.UserLogin;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 @RequestMapping("/users")
 public class LoginController {
 
+    @Autowired
     private final LoginService loginService;
 
     @GetMapping("/login")

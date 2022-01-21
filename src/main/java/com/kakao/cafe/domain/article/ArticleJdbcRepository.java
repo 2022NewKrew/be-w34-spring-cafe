@@ -88,6 +88,22 @@ public class ArticleJdbcRepository implements ArticleRepository {
         jdbcTemplate.update(sql, name, id);
     }
 
+    @Override
+    public List<Article> findByPage(int pageNum) {
+        String sql = "select * from " + DBConst.ARTICLE_DB + " LIMIT ? OFFSET ?";
+        return jdbcTemplate.query(sql, articleRowMapper(), DBConst.NUM_OF_ARTICLE_ON_PAGE, (pageNum - 1) * DBConst.NUM_OF_ARTICLE_ON_PAGE + 1);
+    }
+
+    @Override
+    public int getPageCnt() {
+        List<Integer> query = jdbcTemplate.query("select count(*) as cnt from article", cntRowMapper());
+        return query.stream().findAny().get();
+    }
+
+    private RowMapper<Integer> cntRowMapper() {
+        return (rs, rowNum) -> rs.getInt("cnnt");
+    }
+
     private RowMapper<Boolean> booleanMapper() {
         return (rs, rowNum) -> rs.getBoolean("result");
     }

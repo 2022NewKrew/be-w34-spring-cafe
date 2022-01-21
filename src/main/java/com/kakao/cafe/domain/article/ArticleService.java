@@ -5,6 +5,7 @@ import com.kakao.cafe.core.exception.IsNotAuthorOfThisArticle;
 import com.kakao.cafe.domain.article.dto.ArticleResponse;
 import com.kakao.cafe.domain.article.dto.ArticleSaveForm;
 import com.kakao.cafe.domain.article.dto.ArticleUpdateForm;
+import com.kakao.cafe.domain.article.dto.PageInfo;
 import com.kakao.cafe.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -61,5 +62,15 @@ public class ArticleService {
         if(!articleRepository.checkAuthor(id, userId)) {
             throw new IsNotAuthorOfThisArticle();
         }
+    }
+
+    public List<ArticleResponse> getListByPagenum(int pageNum) {
+        List<Article> byPage = articleRepository.findByPage(pageNum);
+        return byPage.stream().map(ArticleResponse::from).collect(Collectors.toList());
+    }
+
+    public PageInfo getPageInfo() {
+        articleRepository.getPageCnt();
+        return null;
     }
 }

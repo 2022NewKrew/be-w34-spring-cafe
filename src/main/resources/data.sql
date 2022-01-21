@@ -8,6 +8,8 @@ INSERT INTO ARTICLE (id, authorId, author, title, content, createdAt, numOfComme
                 VALUES (1000, 21, '산지기', '미션 안돼요', '모르겠고 그냥 안됨', current_timestamp, 0, 'N');
 INSERT INTO ARTICLE (id, authorId, author, title, content, createdAt, numOfComment, isDeleted)
                 VALUES (1001, 31, '테스터', '댓글까지~', 'ㅎㅇㅎㅇ', current_timestamp, 0, 'N');
+INSERT INTO ARTICLE (id, authorId, author, title, content, createdAt, numOfComment, isDeleted)
+                VALUES (1002, 31, '테스터', '테스터가', '작성한 글인데', current_timestamp, 0, 'N');
 
 INSERT INTO REPLY (articleId, replyerId, content) VALUES (999, 11, 'hihi');
 INSERT INTO REPLY (articleId, replyerId, content) VALUES (999, 11, '나만 작성함 댓글');
@@ -16,3 +18,5 @@ INSERT INTO REPLY (articleId, replyerId, content) VALUES (999, 11, '그러니 �
 INSERT INTO REPLY (articleId, replyerId, content) VALUES (1000, 21, '글 작성자의 댓글임');
 INSERT INTO REPLY (articleId, replyerId, content) VALUES (1000, 11, '다른 사람의 댓글');
 INSERT INTO REPLY (articleId, replyerId, content) VALUES (1000, 11, '삭제 불가능!');
+
+INSERT INTO REPLY (articleId, replyerId, content) VALUES (1002, 11, '댓글 자바지기가 달음');
