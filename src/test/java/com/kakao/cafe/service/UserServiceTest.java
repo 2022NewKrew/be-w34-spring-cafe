@@ -1,61 +1,46 @@
 package com.kakao.cafe.service;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.web.dto.UserDTO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class UserServiceTest {
 
-    @InjectMocks
+    @Autowired
     public UserService userService;
-
-    @Mock
-    UserRepository userRepository;
-
-    @BeforeEach
-    void setup() {
-        this.userService = new UserService(userRepository);
-    }
-
-    @Test
-    void createUser() {
-        userService.createUser(new UserDTO("cih468", "1234", "cih468@naver.com"));
-    }
 
     @Test
     void getUserByUserId() {
-        when(userRepository.findByUserId("cih468")).thenReturn(Optional.of(User.newInstance(2, "cih468", "1234", "cih468@naver.com", "2022-01-19")));
-        UserDTO userDTO = userService.getUserByUserId("cih468");
-        assertEquals(userDTO.getId(), 2);
-        assertEquals(userDTO.getUserId(), "cih468");
-        verify(userRepository, times(1)).findByUserId("cih468");
+        //when
+        UserDTO userDTO = userService.getUserByUserId("admin");
+
+        //then
+        assertEquals(userDTO.getUserId(),"admin");
+        assertEquals(userDTO.getEmail(),"admin@kakaocorp.com");
     }
 
     @Test
     void getUserList() {
-
+        assertEquals(userService.getUserDTOList().size(),2);
     }
 
     @Test
     void getUserListSize() {
-        List<User> userList = new ArrayList<>();
-        userList.add(User.newInstance(1, "admin", "1111", "admin@naver.com", "2022-01-09"));
-        userList.add(User.newInstance(2, "cih468", "1234", "cih468@naver.com", "2022-01-19"));
-        when(userRepository.getUserList()).thenReturn(userList);
-        assertEquals(userService.getUserListSize(), 2);
+        assertEquals(userService.getUserListSize(),2);
+    }
+
+    @Test
+    void getSessionUserDTO(){
+        //given
+        UserDTO userDTO = userService.getSessionUserDTO("test","1111").get();
+        //then
+        assertEquals(userDTO.getEmail(), "test@kakaocorp.com");
+        assertEquals(userService.getSessionUserDTO("test","1234"),Optional.empty());
+        assertEquals(userService.getSessionUserDTO("test1","1111"),Optional.empty());
     }
 }

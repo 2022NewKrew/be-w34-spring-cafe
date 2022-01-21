@@ -12,16 +12,13 @@ import static org.mockito.Mockito.when;
 class UserTest {
 
     @Mock
-    User user = new User(new UserDTO("cih468","1234","cih468@naver.com"));
-
-    @Test
-    void newInstance() {
-        User.newInstance(2,"cih468","1234","cih468@naver.com","2022-01-19");
-    }
+    User user = User.builder()
+            .userId("cih468")
+            .password("1234")
+            .email("cih468@naver.com").build();
 
     @Test
     void getId() {
-
     }
 
     @Test
