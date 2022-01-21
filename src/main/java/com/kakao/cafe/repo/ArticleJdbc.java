@@ -133,16 +133,19 @@ public class ArticleJdbc implements ArticleRepository {
             final PreparedStatement pstmt = con.prepareStatement(
                     "UPDATE comment co " +
                             "JOIN article ao " +
-                            "ON ao.idx = co.article_idx " +
+                            "ON ao.idx = ? AND ao.deleted = false AND " +
+                            "((ao.idx = co.article_idx AND co.deleted = false) OR " +
+                            "   0 = (SELECT t1.cnt FROM (SELECT COUNT(c1.idx) cnt " +
+                            "   FROM comment c1 " +
+                            "   WHERE c1.article_idx = ? " +
+                            "   LIMIT 1) t1)) " +
                             "SET ao.deleted = true, ao.count_comments = 0, co.deleted = true " +
-                            "WHERE ao.idx = ? AND ao.deleted = false AND " +
-                            "       co.article_idx = ? AND co.deleted = false AND " +
-                            "       0 = (SELECT cnt FROM (SELECT COUNT(c.user_id) cnt " +
-                            "           FROM comment c " +
-                            "           JOIN (SELECT * FROM article WHERE idx = ? AND deleted = false LIMIT 1) a " +
-                            "           ON c.article_idx = a.idx " +
-                            "           WHERE c.user_id != a.user_id " +
-                            "           LIMIT 1) tmp)"
+                            "WHERE 0 = (SELECT t2.cnt FROM (SELECT COUNT(c2.user_id) cnt " +
+                            "   FROM comment c2 " +
+                            "   JOIN (SELECT * FROM article WHERE idx = ? AND deleted = false LIMIT 1) a2 " +
+                            "   ON c2.article_idx = a2.idx " +
+                            "   WHERE c2.user_id != a2.user_id " +
+                            "   LIMIT 1) t2)"
             );
             pstmt.setLong(1, idx);
             pstmt.setLong(2, idx);
