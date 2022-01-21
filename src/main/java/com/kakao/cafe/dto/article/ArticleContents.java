@@ -17,15 +17,6 @@ public class ArticleContents {
         this.contents = contents;
     }
 
-    public ArticleContents(ArticleWithWriterName articleWithWriterName) {
-        this.articleId = articleWithWriterName.getArticleId();
-        this.time = articleWithWriterName.getTime();
-        this.writer = articleWithWriterName.getWriter();
-        this.writerId = articleWithWriterName.getWriterId();
-        this.title = articleWithWriterName.getTitle();
-        this.contents = articleWithWriterName.getContent();
-    }
-
     public long getArticleId() { return articleId; }
 
     public String getTime() {

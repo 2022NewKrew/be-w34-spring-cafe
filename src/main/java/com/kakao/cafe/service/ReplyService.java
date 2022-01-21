@@ -3,7 +3,6 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.entity.Reply;
 import com.kakao.cafe.dto.reply.ReplyContents;
 import com.kakao.cafe.dto.reply.ReplyCreateCommand;
-import com.kakao.cafe.dto.reply.ReplyWithWriterName;
 import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -33,13 +32,21 @@ public class ReplyService {
     public ReplyContents getReply(long replyId) {
         Reply reply = replyRepository.retrieve(replyId)
                 .orElseThrow(() -> new NoSuchElementException("Reply not found"));
-        ReplyWithWriterName target = new ReplyWithWriterName(reply, userRepository);
-        return new ReplyContents(target);
+        return new ReplyContents(reply.getReplyId(),
+                userRepository.search(reply.getWriterId()).getName(),
+                reply.getWriterId(),
+                reply.getContents(),
+                reply.getTime()
+        );
     }
 
     public List<ReplyContents> getAllReplies(long articleId) {
         return replyRepository.toList(articleId).stream()
-                .map(reply -> new ReplyContents(new ReplyWithWriterName(reply, userRepository)))
+                .map(reply -> new ReplyContents(reply.getReplyId(),
+                        userRepository.search(reply.getWriterId()).getName(),
+                        reply.getWriterId(),
+                        reply.getContents(),
+                        reply.getTime()))
                 .collect(Collectors.toUnmodifiableList());
     }
 }

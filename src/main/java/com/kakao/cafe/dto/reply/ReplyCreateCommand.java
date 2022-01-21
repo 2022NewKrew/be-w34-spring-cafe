@@ -1,7 +1,5 @@
 package com.kakao.cafe.dto.reply;
 
-import java.time.LocalDateTime;
-
 public class ReplyCreateCommand {
     private final long articleId;
     private final String writerId;

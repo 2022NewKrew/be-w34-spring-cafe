@@ -31,13 +31,20 @@ public class ArticleService {
     public ArticleContents getArticle(Long id) {
         Article article = articleRepository.retrieve(id)
                 .orElseThrow(() -> new NoSuchElementException("Article not found"));
-        ArticleWithWriterName target = new ArticleWithWriterName(article, userRepository);
-        return new ArticleContents(target);
+        return new ArticleContents(article.getArticleId(),
+                article.getTime(),
+                userRepository.search(article.getWriterId()).getName(),
+                article.getWriterId(),
+                article.getTitle(),
+                article.getContent());
     }
 
     public List<ArticleListShow> getAllArticles() {
         return articleRepository.toList().stream()
-                .map(article -> new ArticleListShow(new ArticleWithWriterName(article, userRepository)))
+                .map(article -> new ArticleListShow(article.getArticleId(),
+                        article.getTime(),
+                        userRepository.search(article.getWriterId()).getName(),
+                        article.getTitle()))
                 .collect(Collectors.toUnmodifiableList());
     }
 }
