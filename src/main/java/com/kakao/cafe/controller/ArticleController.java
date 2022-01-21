@@ -4,9 +4,9 @@ import com.kakao.cafe.dto.PageNumberDto;
 import com.kakao.cafe.exception.IncorrectUserException;
 import com.kakao.cafe.exception.NotLoginException;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.PageService;
 import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.service.SessionService;
-import com.kakao.cafe.util.ButtonUtil;
 import com.kakao.cafe.util.ErrorUtil;
 import com.kakao.cafe.vo.Article;
 import com.kakao.cafe.vo.Reply;
@@ -24,11 +24,14 @@ public class ArticleController {
     private final ArticleService articleService;
     private final SessionService sessionService;
     private final ReplyService replyService;
+    private final PageService pageService;
 
-    public ArticleController(ArticleService articleService, SessionService sessionService, ReplyService replyService) {
+    public ArticleController(ArticleService articleService, SessionService sessionService,
+                             ReplyService replyService, PageService pageService) {
         this.articleService = articleService;
         this.sessionService = sessionService;
         this.replyService = replyService;
+        this.pageService = pageService;
     }
 
     @PostMapping("/article/create")
@@ -93,12 +96,12 @@ public class ArticleController {
     @GetMapping("/page/{pageNumber}/{pageIndex}")
     public String getPage(@PathVariable int pageNumber, @PathVariable int pageIndex, Model model) {
         List<Article> articles = articleService.getArticles();
-        List<Article> subarticles = articleService.getSubArticles(articles, pageNumber);
-        List<PageNumberDto> pageNumbers = articleService.getPageNumbers(articles, pageIndex);
+        List<Article> subarticles = pageService.getSubArticles(articles, pageNumber);
+        List<PageNumberDto> pageNumbers = pageService.getPageNumbers(articles, pageIndex);
         model.addAttribute("articles", subarticles);
         model.addAttribute("pageNumbers", pageNumbers);
-        model.addAttribute("hasLeftButton", ButtonUtil.hasLeftButton(pageIndex));
-        model.addAttribute("hasRightButton", ButtonUtil.hasRightButton(articles, pageIndex));
+        model.addAttribute("hasLeftButton", pageService.hasLeftButton(pageIndex));
+        model.addAttribute("hasRightButton", pageService.hasRightButton(articles, pageIndex));
         model.addAttribute("thisPageNumber", pageNumber);
         model.addAttribute("pageIndex", pageIndex);
         return "index";

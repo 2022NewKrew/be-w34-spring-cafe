@@ -56,19 +56,4 @@ public class ArticleService {
         articleDao.deleteArticle(index);
     }
 
-    public List<Article> getSubArticles(List<Article> articles, int pageNumber) {
-        int startIndex = (pageNumber - 1) * 15;
-        int endIndex = Math.min(articles.size(), pageNumber * 15);
-        return new ArrayList<>(articles.subList(startIndex, endIndex));
-    }
-
-    public List<PageNumberDto> getPageNumbers(List<Article> articles, int pageIndex) {
-        List<PageNumberDto> pageNumbers = new ArrayList<>();
-        int startPageNumber = pageIndex * 5 + 1;
-        int endPageNumber = Math.min((pageIndex + 1) * 5, (articles.size() - 1) / 15 + 1);
-        for(int i = startPageNumber; i <= endPageNumber; i++)
-            pageNumbers.add(new PageNumberDto(i));
-        return pageNumbers;
-    }
-
 }
