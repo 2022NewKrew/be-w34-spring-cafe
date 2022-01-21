@@ -62,7 +62,9 @@ public class ArticleController {
         model.addAttribute("numOfReply", replyList.size());
 
         User currentUser = (User) httpSession.getAttribute("sessionedUser");
-        model.addAttribute("currentUser", currentUser.getName());
+        if (currentUser == null)
+            model.addAttribute("currentUser", "로그인 필요");
+        else model.addAttribute("currentUser", currentUser.getName());
 
         return "qna/show";
     }

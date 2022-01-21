@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-@Transactional(readOnly = true)
 public class UserRepositoryImpl implements UserRepository{
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -21,7 +20,6 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    @Transactional
     public User save(User user) {
         String sql = "INSERT INTO WRITER (PASSWORD, NAME, EMAIL, CREATED_TIME)"+
                     " VALUES (:password, :name, :email, :createdTime)";

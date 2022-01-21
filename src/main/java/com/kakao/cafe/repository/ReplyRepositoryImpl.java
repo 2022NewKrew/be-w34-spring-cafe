@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-@Transactional(readOnly = true)
 public class ReplyRepositoryImpl implements ReplyRepository{
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
