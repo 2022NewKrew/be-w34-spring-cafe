@@ -1,7 +1,11 @@
 package com.kakao.cafe.exception;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+@RequiredArgsConstructor
+@Getter
 public enum ErrorCode {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "User not found"),
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "Post not found"),
@@ -14,17 +18,4 @@ public enum ErrorCode {
 
     private final HttpStatus httpStatus;
     private final String message;
-
-    ErrorCode(HttpStatus httpStatus, String message) {
-        this.httpStatus = httpStatus;
-        this.message = message;
-    }
-
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }

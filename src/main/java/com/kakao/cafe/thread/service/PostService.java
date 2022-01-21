@@ -9,20 +9,17 @@ import com.kakao.cafe.thread.repository.PostRepository;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.dto.UserView;
 import com.kakao.cafe.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-    }
 
     private PostView toPostView(Post post) {
         User user = userRepository.getById(post.getAuthorId()).get();

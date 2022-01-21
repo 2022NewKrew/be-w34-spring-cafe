@@ -7,6 +7,7 @@ import com.kakao.cafe.user.dto.UserLoginForm;
 import com.kakao.cafe.user.interceptor.NeedLogin;
 import com.kakao.cafe.user.service.LoginService;
 import com.kakao.cafe.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,14 +20,10 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@RequiredArgsConstructor
 public class LoginController {
     private final UserService userService;
     private final LoginService loginService;
-
-    public LoginController(UserService userService, LoginService loginService) {
-        this.userService = userService;
-        this.loginService = loginService;
-    }
 
     @GetMapping("/login")
     public String showLogin() {

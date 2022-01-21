@@ -5,6 +5,7 @@ import com.kakao.cafe.thread.dto.PostCreationForm;
 import com.kakao.cafe.thread.service.PostService;
 import com.kakao.cafe.user.dto.LoggedInUser;
 import com.kakao.cafe.user.interceptor.NeedLogin;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,12 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/posts")
+@RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
 
     @NeedLogin
     @PostMapping

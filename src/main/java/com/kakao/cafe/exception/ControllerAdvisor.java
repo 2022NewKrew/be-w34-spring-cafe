@@ -1,32 +1,30 @@
 package com.kakao.cafe.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-
 @ControllerAdvice
+@Slf4j
 public class ControllerAdvisor {
-    private final Logger logger = LoggerFactory.getLogger(ControllerAdvisor.class);
 
     @ExceptionHandler(InvalidUsernamePasswordException.class)
     public ModelAndView retryOnLoginFailure(InvalidUsernamePasswordException exception) {
+        log.error(exception.getMessage());
         ModelAndView mv = new ModelAndView("user/login-failed");
         mv.setStatus(exception.getResponseStatus());
-        logger.info(exception.getMessage());
         return mv;
     }
 
     @ExceptionHandler(CustomException.class)
     public ModelAndView definedExceptionHandler(CustomException exception) {
+        log.error(exception.getMessage());
         ModelAndView mv = new ModelAndView("common/custom-error");
         mv.getModelMap().put("message", exception.getMessage());
         mv.setStatus(exception.getResponseStatus());
-        logger.info(exception.getMessage());
         return mv;
     }
 
-    // Exception other than custom class use Spring boot's default whitelabel page
+    // Exceptions other than CustomException is handled by Spring Boot with default whitelabel page
 }

@@ -1,17 +1,16 @@
 package com.kakao.cafe.config;
 
 import com.kakao.cafe.user.interceptor.LoginInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@RequiredArgsConstructor
 public class MvcConfig implements WebMvcConfigurer {
-
-    @Autowired
-    private LoginInterceptor loginInterceptor;
+    private final LoginInterceptor loginInterceptor;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
