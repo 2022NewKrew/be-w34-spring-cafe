@@ -20,7 +20,12 @@
                             <div class="article-header-text">
                                 <p class="article-content">{{article.author}}</p>
                                 <p class="article-content">작성일자: {{article.createdAt}}</p>
-                                <p class="article-content">조회 4</p>
+                                <p class="article-content">조회 {{article.viewCount}}</p>
+                                <a class="article-content" href="/articles/{{article.id}}/update">수정</a>
+                                <form action="/articles/{{article.id}}" method="POST">
+                                    <input type="hidden" name="_method" value="DELETE"/>
+                                    <input class="article-content" type="submit" value="삭제"/>
+                                </form>
                             </div>
                         </div>
                         <div class="article-doc">
@@ -28,46 +33,45 @@
                         </div>
                     </article>
 
+
                     <div class="post-comment">
                         <div class="post-comment-slipp">
-                            <p class="post-comment-count">댓글 2개</p>
+                            <p class="post-comment-count">댓글 {{comments.size}}개</p>
                             <div class="post-comment-slipp-articles">
-
+                                {{#comments}}
                                 <article class="comment">
-                                    <div class="article-text">
-                                        <p class="comment-content comment-author-name">자바지기</p>
+                                    <div class="comment-header">
+                                        <p class="comment-content comment-author-name">{{author}}</p>
                                         <div class="comment-content comment-doc">
-                                            <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
+                                            <p>{{content}}</p>
                                         </div>
-                                        <p class="comment-content comment-time">
-                                            2016-01-12 14:06
-                                        </p>
+                                        <div class="comment-content">
+                                            <p class="comment-content comment-time">
+                                                {{createdAt}}
+                                            </p>
+                                            <form action="/articles/{{article.id}}/comments/{{id}}" method="POST">
+                                                <input type="hidden" name="_method" value="DELETE"/>
+                                                <input class="comment-content" type="submit" value="삭제"/>
+                                            </form>
+                                        </div>
                                     </div>
                                 </article>
+                                {{/comments}}
 
-                                <article class="comment" id="answer-1405">
-                                    <div class="article-text">
-                                        <p class="comment-content comment-author-name">자바지기</p>
-                                        <div class="comment-content comment-doc">
-                                            <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
-                                        </div>
-                                        <p class="comment-content comment-time">
-                                            2016-01-12 14:06
-                                        </p>
-                                    </div>
-                                </article>
-
-                                <form class="submit-write" method="get" action="../../templates/index.html ">
+                                {{#userKey}}
+                                <form class="submit-write" method="post" action="/articles/{{article.id}}/comments">
                                     <div class="comment-writer-container">
-                                        <input class="comment-writer" id="writer" name="writer" value="멋진상" readonly/>
+                                        <input class="comment-writer" id="writer" name="writer" value={{userName}} readonly/>
                                     </div>
                                     <div class="form-group">
-                                        <textarea class="form-control" id="comment" name="comment" placeholder="내용을 입력하세요"></textarea>
+                                        <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
                                     </div>
                                     <input class="post-write-btn" type="submit" value="등록"/>
                                 </form>
+                                {{/userKey}}
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -75,3 +79,4 @@
     </div>
 </body>
 </html>
+

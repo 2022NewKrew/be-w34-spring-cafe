@@ -6,7 +6,7 @@ public class UserNotFoundException extends IllegalArgumentException {
         super(id + " 에 해당하는 사용자를 찾을 수 없습니다");
     }
 
-    public UserNotFoundException(String userId) {
-        super(userId + " 에 해당하는 사용자를 찾을 수 없습니다");
+    public UserNotFoundException(String email) {
+        super(email + " 에 해당하는 사용자를 찾을 수 없습니다");
     }
 }
