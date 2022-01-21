@@ -3,9 +3,7 @@ package com.kakao.cafe.article.repository;
 import com.kakao.cafe.article.domain.Article;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public class SimpleArticleRepository implements ArticleRepository {
 
     private final List<Article> articles = new ArrayList<>();

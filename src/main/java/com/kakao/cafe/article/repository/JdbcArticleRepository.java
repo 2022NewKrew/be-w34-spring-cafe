@@ -5,10 +5,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
-@Repository
 public class JdbcArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -26,8 +24,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Article findById(Long id) {
-        return jdbcTemplate.query(SELECT_QUERY, mapper,
-            id).get(0);
+        return jdbcTemplate.query(SELECT_QUERY, mapper, id).get(0);
     }
 
     @Override

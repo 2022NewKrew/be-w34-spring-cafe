@@ -4,6 +4,7 @@ import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.article.web.dto.ArticleModifyDto;
 import com.kakao.cafe.article.web.dto.ArticleSaveDto;
 import com.kakao.cafe.article.web.dto.ArticleShowDto;
+import com.kakao.cafe.reply.web.dto.ReplyShowDto;
 import com.kakao.cafe.user.domain.User;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -46,6 +47,10 @@ public class ArticleController {
     @GetMapping("/{index}")
     public String articleDetail(@PathVariable("index") Long index, Model model) {
         ArticleShowDto articleShowDto = articleService.findArticle(index);
+        log.info(articleShowDto.getReplies().size() + "개의 댓글 있음");
+        for (ReplyShowDto r : articleShowDto.getReplies()) {
+            log.info(r.getContents());
+        }
         model.addAttribute("article", articleShowDto);
         return "qna/show";
     }
@@ -56,7 +61,7 @@ public class ArticleController {
         // 수정 form 요청
         // 자신의 글이 맞는지 validate
         if (!validate(httpSession, index)) {
-            return "redirect:/";
+            return "redirect:/unauthorized";
         }
         ArticleShowDto articleShowDto = articleService.findArticle(index);
         model.addAttribute("article", articleShowDto);
@@ -73,7 +78,7 @@ public class ArticleController {
     @DeleteMapping("/{index}")
     public String questionRemove(@PathVariable("index") Long index, HttpSession httpSession) {
         if (!validate(httpSession, index)) {
-            return "redirect:/";
+            return "redirect:/unauthorized";
         }
         articleService.removeArticle(index);
         return "redirect:/";

@@ -5,6 +5,7 @@ import com.kakao.cafe.article.repository.ArticleRepository;
 import com.kakao.cafe.article.web.dto.ArticleModifyDto;
 import com.kakao.cafe.article.web.dto.ArticleSaveDto;
 import com.kakao.cafe.article.web.dto.ArticleShowDto;
+import com.kakao.cafe.reply.service.ReplyService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ReplyService replyService;
 
     public void addArticle(ArticleSaveDto articleSaveDto) {
         Article article = Article.builder()
@@ -44,6 +46,7 @@ public class ArticleService {
             .writer(article.getWriter())
             .title(article.getTitle())
             .contents(article.getContents())
+            .replies(replyService.findReplyByArticle(article.getId().intValue()))
             .build();
     }
 

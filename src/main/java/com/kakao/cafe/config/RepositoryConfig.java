@@ -2,6 +2,8 @@ package com.kakao.cafe.config;
 
 import com.kakao.cafe.article.repository.ArticleRepository;
 import com.kakao.cafe.article.repository.JdbcArticleRepository;
+import com.kakao.cafe.reply.repository.JdbcReplyRepository;
+import com.kakao.cafe.reply.repository.ReplyRepository;
 import com.kakao.cafe.user.repository.JdbcUserRepository;
 import com.kakao.cafe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +24,10 @@ public class RepositoryConfig {
     @Bean
     public ArticleRepository articleRepository(JdbcTemplate jdbcTemplate) {
         return new JdbcArticleRepository(jdbcTemplate);
+    }
+
+    @Bean
+    public ReplyRepository replyRepository(JdbcTemplate jdbcTemplate) {
+        return new JdbcReplyRepository(jdbcTemplate);
     }
 }
