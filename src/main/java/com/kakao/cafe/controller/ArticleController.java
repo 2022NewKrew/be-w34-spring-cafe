@@ -1,6 +1,8 @@
 package com.kakao.cafe.controller;
 
 
+import com.kakao.cafe.dto.reply.ReplyResponse;
+import com.kakao.cafe.service.reply.ReplyService;
 import com.kakao.cafe.util.auth.LoginCheck;
 import com.kakao.cafe.dto.article.ArticleRequest;
 import com.kakao.cafe.dto.article.ArticleResponse;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @Slf4j
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
     @PostMapping("/articles")
     public String createPost(String title, String contents, @LoginCheck SessionUser sessionUser){
@@ -52,6 +57,11 @@ public class ArticleController {
         if(sessionUser == null){
             return "redirect:/users/login";
         }
+        List<ReplyResponse> replies = replyService.findReplies(articleId);
+        if(replies != null){
+            model.addAttribute("replies", replyService.findReplies(articleId));
+        }
+
         model.addAttribute("article", articleService.findArticleById(articleId));
         return "article/show";
     }

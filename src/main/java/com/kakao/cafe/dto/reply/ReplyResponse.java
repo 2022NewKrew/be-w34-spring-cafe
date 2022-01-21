@@ -3,21 +3,23 @@ package com.kakao.cafe.dto.reply;
 import com.kakao.cafe.domain.reply.Reply;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 public class ReplyResponse {
     private Long id;
     private Long articleId;
-    private String writer;
-    private String contents;
-    private LocalDateTime createdAt;
+    private String replyWriter;
+    private String comments;
+    private String createdAt;
 
     public ReplyResponse(Reply reply){
         this.id = reply.getId();
         this.articleId = reply.getArticleId();
-        this.writer = reply.getWriter();
-        this.contents = reply.getContents();
-        this.createdAt = reply.getCreatedAt();
+        this.replyWriter = reply.getWriter();
+        this.comments = reply.getContents();
+        this.createdAt = reply.getCreatedAt().format(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        );
     }
 }
