@@ -69,7 +69,7 @@ public class PostService {
     public List<PageBtn> makePageBtn(int page) {
         return PageBtnBuilder.builder
                 .currentPage(page)
-                .getNumOfPostsFunction((offset, limit) -> postDAO.numOfRows(offset, limit).orElse(0))
+                .getNumOfPostsFunction((offset, limit) -> postDAO.numOfPosts(offset, limit).orElse(0))
                 .build();
     }
 

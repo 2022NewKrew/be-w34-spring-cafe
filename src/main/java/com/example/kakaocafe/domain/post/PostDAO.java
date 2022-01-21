@@ -100,7 +100,7 @@ public class PostDAO {
         return jdbcTemplate.query(sql, postOfTableRowMapper(), size, offset);
     }
 
-    public Optional<Integer> numOfRows(int offset, int limit) {
+    public Optional<Integer> numOfPosts(int offset, int limit) {
         final String sql = "SELECT count(temp.t) as cnt " +
                 "FROM (select 0 as t " +
                 "      FROM POST " +
