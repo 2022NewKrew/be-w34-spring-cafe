@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * Created by melodist
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * Time: 오후 7:00
  */
 @SpringBootTest
+@ActiveProfiles("mysql")
 class ArticleServiceTest {
 
     @Autowired
@@ -30,7 +32,7 @@ class ArticleServiceTest {
 
         // when
         articleService.saveArticle(article1);
-        Article article2 = articleService.findAll().get(0);
+        Article article2 = articleService.findAll().get(1);
 
         // then
         Assertions.assertThat(article2.getWriter()).isEqualTo(writer);
