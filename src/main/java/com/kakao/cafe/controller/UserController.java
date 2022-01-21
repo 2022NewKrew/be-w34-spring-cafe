@@ -1,16 +1,14 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.annotation.LoginRequired;
-import com.kakao.cafe.dto.user.ProfileResponseDto;
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.dto.user.ProfileResponseDto;
 import com.kakao.cafe.dto.user.SignupRequestDto;
 import com.kakao.cafe.dto.user.UserListResponseDto;
 import com.kakao.cafe.mapper.UserMapper;
-
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import java.util.UUID;
-
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,27 +1,28 @@
 package com.kakao.cafe.domain.article;
 
+import com.kakao.cafe.domain.common.Deleted;
 import com.kakao.cafe.domain.user.User;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Article {
 
-    private UUID articleId;
-    private Title title;
-    private Content content;
+    private final UUID articleId;
+    private final Title title;
+    private final Content content;
     private final User writer;
-    private LocalDateTime createdAt;
-    private ViewCount viewCount;
-    private ArticleDeleted articleDeleted;
+    private final LocalDateTime createdAt;
+    private final ViewCount viewCount;
+    private final Deleted deleted;
 
-    public Article(UUID articleId, Title title, Content content, User writer, LocalDateTime createdAt, ViewCount viewCount, ArticleDeleted articleDeleted) {
+    public Article(UUID articleId, Title title, Content content, User writer, LocalDateTime createdAt, ViewCount viewCount, Deleted deleted) {
         this.articleId = articleId;
         this.title = title;
         this.content = content;
         this.writer = writer;
         this.createdAt = createdAt;
         this.viewCount = viewCount;
-        this.articleDeleted = articleDeleted;
+        this.deleted = deleted;
     }
 
     public Article(Title title, Content content, User writer) {
@@ -56,39 +57,12 @@ public class Article {
         return viewCount;
     }
 
-    public ArticleDeleted getArticleDeleted() {
-        return articleDeleted;
-    }
-
-    public void setArticleId(UUID id) {
-        this.articleId = id;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setViewCount(ViewCount viewCount) {
-        this.viewCount = viewCount;
-    }
-
-    public void setArticleDeleted(ArticleDeleted articleDeleted) {
-        this.articleDeleted = articleDeleted;
+    public Deleted getDeleted() {
+        return deleted;
     }
 
     public void increaseViewCount() {
         this.viewCount.increase();
-    }
-
-    public void update(Article article) {
-        if (this.articleId.equals(article.getArticleId())) {
-            title = article.getTitle();
-            content = article.getContent();
-        }
-    }
-
-    public void delete() {
-        this.articleDeleted = ArticleDeleted.from(true);
     }
 
     public boolean isWriter(User user) {

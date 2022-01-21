@@ -2,14 +2,19 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.annotation.LoginRequired;
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.reply.Reply;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.article.ArticleDetailResponseDto;
 import com.kakao.cafe.dto.article.ArticleListResponseDto;
 import com.kakao.cafe.dto.article.ArticleRegisterRequestDto;
 import com.kakao.cafe.dto.article.ArticleUpdateFormResponseDto;
 import com.kakao.cafe.dto.article.ArticleUpdateRequestDto;
+import com.kakao.cafe.dto.reply.ReplyListResponseDto;
+import com.kakao.cafe.dto.reply.ReplyRegisterRequestDto;
 import com.kakao.cafe.mapper.ArticleMapper;
+import com.kakao.cafe.mapper.ReplyMapper;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpSession;
@@ -26,11 +31,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ReplyService replyService;
     private final ArticleMapper articleMapper;
+    private final ReplyMapper replyMapper;
 
-    public ArticleController(ArticleService articleService, ArticleMapper articleMapper) {
+    public ArticleController(ArticleService articleService, ReplyService replyService, ArticleMapper articleMapper, ReplyMapper replyMapper) {
         this.articleService = articleService;
+        this.replyService = replyService;
         this.articleMapper = articleMapper;
+        this.replyMapper = replyMapper;
     }
 
     @GetMapping("/articles")
@@ -62,6 +71,9 @@ public class ArticleController {
         Article article = articleService.findArticleById(articleId);
         ArticleDetailResponseDto dto = articleMapper.articleToArticleDetailResponseDto(article);
         model.addAttribute("article", dto);
+        List<Reply> replyList = replyService.getReplyListOfArticle(articleId);
+        List<ReplyListResponseDto> dtoList = replyMapper.replyListToReplyListResponseDtoList(replyList);
+        model.addAttribute("replies", dtoList);
         return "articles/detail";
     }
 
@@ -90,5 +102,25 @@ public class ArticleController {
         User user = (User) session.getAttribute("loggedInUser");
         articleService.deleteArticleByIdAndAuthor(articleId, user);
         return "redirect:/";
+    }
+
+    @LoginRequired
+    @PostMapping("/articles/{articleId}/replies")
+    public String requestReplyRegister(@PathVariable UUID articleId, @Valid ReplyRegisterRequestDto dto, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        Reply reply = replyMapper.replyRegisterRequestDtoToReply(dto, articleId, user);
+        replyService.registerReply(reply);
+        return String.format("redirect:/articles/%s", articleId.toString());
+    }
+
+    @LoginRequired
+    @DeleteMapping("/articles/{articleId}/replies/{replyId}")
+    public String requestReplyDelete(@PathVariable UUID articleId, @PathVariable String replyId, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        System.out.println(replyId);
+        UUID replyUuid = UUID.fromString(replyId);
+        System.out.println(replyUuid);
+        replyService.deleteReplyByIdAndAuthor(replyUuid, user);
+        return String.format("redirect:/articles/%s", articleId.toString());
     }
 }

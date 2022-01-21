@@ -4,11 +4,11 @@ import java.util.UUID;
 
 public class User {
 
-    private UUID id;
+    private final UUID id;
     private final UserName userName;
     private final Password password;
-    private Name name;
-    private Email email;
+    private final Name name;
+    private final Email email;
 
     public User(UUID id, UserName userName, Password password, Name name, Email email) {
         this.id = id;
@@ -40,17 +40,6 @@ public class User {
 
     public Email getEmail() {
         return email;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public void update(User user) {
-        if (isUserSame(user)) {
-            name = user.getName();
-            email = user.getEmail();
-        }
     }
 
     public boolean isUserSame(User user) {

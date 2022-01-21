@@ -1,25 +1,25 @@
-package com.kakao.cafe.domain.article;
+package com.kakao.cafe.domain.common;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ArticleDeleted {
+public class Deleted {
 
-    private static final Map<Boolean, ArticleDeleted> ARTICLE_DELETED_CACHE = new HashMap<>();
+    private static final Map<Boolean, Deleted> ARTICLE_DELETED_CACHE = new HashMap<>();
 
     static {
-        ARTICLE_DELETED_CACHE.put(true, new ArticleDeleted(true));
-        ARTICLE_DELETED_CACHE.put(false, new ArticleDeleted(false));
+        ARTICLE_DELETED_CACHE.put(true, new Deleted(true));
+        ARTICLE_DELETED_CACHE.put(false, new Deleted(false));
     }
 
     private final boolean value;
 
-    private ArticleDeleted(boolean value) {
+    private Deleted(boolean value) {
         this.value = value;
     }
 
-    public static ArticleDeleted from(boolean value) {
+    public static Deleted from(boolean value) {
         return ARTICLE_DELETED_CACHE.get(value);
     }
 
@@ -35,7 +35,7 @@ public class ArticleDeleted {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ArticleDeleted that = (ArticleDeleted) o;
+        Deleted that = (Deleted) o;
         return value == that.getValue();
     }
 
