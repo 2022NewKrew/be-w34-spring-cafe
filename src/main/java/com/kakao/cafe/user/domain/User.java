@@ -1,10 +1,14 @@
 package com.kakao.cafe.user.domain;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Builder
+@Getter
+@ToString(exclude = {"password"})
 public class User {
     private final Long id;
     private final String username;
@@ -14,47 +18,6 @@ public class User {
     private final String status;
     private final LocalDateTime createdAt;
     private final LocalDateTime lastModifiedAt;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", status='" + status + '\'' +
-                ", createdAt=" + createdAt +
-                ", lastModifiedAt=" + lastModifiedAt +
-                '}';
-    }
 
     public boolean isPasswordMatched(String password) {
         return this.password.equals(password);

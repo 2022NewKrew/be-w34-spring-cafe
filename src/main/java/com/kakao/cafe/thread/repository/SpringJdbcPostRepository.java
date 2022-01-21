@@ -50,10 +50,16 @@ public class SpringJdbcPostRepository implements PostRepository {
     }
 
     private RowMapper<Post> postRowMapper() {
-        return (rs, rowNum) -> new Post(rs.getLong("id"), rs.getLong("parent_id"), rs.getLong("author_id"),
-                                        rs.getString("title"), rs.getString("content"), rs.getString("status"),
-                                        rs.getTimestamp("created_at").toLocalDateTime(),
-                                        rs.getTimestamp("last_modified_at").toLocalDateTime());
+        return (rs, rowNum) -> Post.builder()
+                                   .id(rs.getLong("id"))
+                                   .parentId(rs.getLong("parent_id"))
+                                   .authorId(rs.getLong("author_id"))
+                                   .title(rs.getString("title"))
+                                   .content(rs.getString("content"))
+                                   .status(rs.getString("status"))
+                                   .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                                   .lastModifiedAt(rs.getTimestamp("last_modified_at").toLocalDateTime())
+                                   .build();
     }
 
     @Override

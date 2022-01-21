@@ -1,7 +1,14 @@
 package com.kakao.cafe.user.dto;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
 import javax.validation.constraints.NotBlank;
 
+@RequiredArgsConstructor
+@Getter
+@ToString
 public class UserLoginForm {
 
     @NotBlank
@@ -9,17 +16,4 @@ public class UserLoginForm {
 
     @NotBlank
     private final String password;
-
-    public UserLoginForm(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 }
