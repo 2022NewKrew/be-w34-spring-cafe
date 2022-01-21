@@ -86,10 +86,11 @@ public class PostController {
     }
 
     @DeleteMapping("/posts/{postId}")
-    public String deletePost(@PathVariable int postId) {
+    public String deletePost(@PathVariable int postId, HttpSession session) {
         logger.info("[DELETE] /posts/{postId} 게시글 삭제");
 
-        postService.deletePost(postId);
+        SessionUser sessionUser = (SessionUser) session.getAttribute(SESSION);
+        postService.deletePost(postId, sessionUser.getId());
 
         return "redirect:/";
     }
