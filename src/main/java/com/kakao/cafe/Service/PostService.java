@@ -2,6 +2,7 @@ package com.kakao.cafe.Service;
 
 import com.kakao.cafe.Dto.Login.LoginAuthDto;
 import com.kakao.cafe.Exception.NotAuthorizedException;
+import com.kakao.cafe.Exception.NotLoginException;
 import com.kakao.cafe.Repository.PostDao;
 import com.kakao.cafe.Dto.Post.PostRequestDto;
 import com.kakao.cafe.Dto.Post.PostResponseDto;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,18 @@ public class PostService {
 
     public void editQuestion(int id, PostRequestDto post) {
         postDao.update(id, post);
+    }
+
+    public void chkLogin(LoginAuthDto authInfo) {
+        if (authInfo == null) {
+            throw new NotLoginException("로그인이 필요합니다.");
+        }
+    }
+
+    public void chkAuth(LoginAuthDto authInfo, PostResponseDto post) {
+        if (!Objects.equals(post.getWriter(), authInfo.getUserId())) {
+            throw new NotAuthorizedException("게시글 수정 권한이 없습니다.");
+        }
     }
 
     public void deleteById(int id, LoginAuthDto authDto) {
