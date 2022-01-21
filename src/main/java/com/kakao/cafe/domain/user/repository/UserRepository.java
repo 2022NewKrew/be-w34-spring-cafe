@@ -18,4 +18,6 @@ public interface UserRepository {
     Optional<User> findByName(String name);
 
     User update(User user);
+
+    boolean deleteById(Long id);
 }

@@ -1,12 +1,10 @@
 package com.kakao.cafe.global.security.filter;
 
-import com.kakao.cafe.global.error.exception.NoSessionException;
 import com.kakao.cafe.global.meta.RequestPath;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;

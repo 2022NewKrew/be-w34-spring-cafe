@@ -25,10 +25,10 @@ public class Article {
                 .build();
     }
 
-    public static Article of(ArticleRowDataDto articleRowDataDto, String writerUserId) {
+    public static Article of(ArticleRowDataDto articleRowDataDto) {
         return new Builder()
                 .id(articleRowDataDto.getId())
-                .writerUserId(writerUserId)
+                .writerUserId(articleRowDataDto.getWriterUserId())
                 .title(articleRowDataDto.getTitle())
                 .contents(articleRowDataDto.getContents())
                 .registerDateTime(articleRowDataDto.getRegisterDateTime())

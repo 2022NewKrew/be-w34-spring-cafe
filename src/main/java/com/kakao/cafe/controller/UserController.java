@@ -4,10 +4,10 @@ import com.kakao.cafe.domain.user.LoginService;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserService;
 import com.kakao.cafe.domain.user.dto.UserForm;
-import com.kakao.cafe.global.error.exception.NoSessionException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,6 @@ public class UserController {
 
     private final UserService userService;
     private final LoginService loginService;
-
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 

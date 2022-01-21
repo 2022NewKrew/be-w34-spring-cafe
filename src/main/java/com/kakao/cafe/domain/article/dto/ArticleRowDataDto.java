@@ -9,22 +9,24 @@ public class ArticleRowDataDto {
 
     private Long id;
     private Long writerId;
+    private String writerUserId;
     private String title;
     private String contents;
     private LocalDateTime registerDateTime;
 
     public ArticleRowDataDto() {}
 
-    public ArticleRowDataDto(Long id, Long writerId, String title, String contents, LocalDateTime registerDateTime) {
+    public ArticleRowDataDto(Long id, Long writerId, String writerUserId, String title, String contents, LocalDateTime registerDateTime) {
         this.id = id;
         this.writerId = writerId;
+        this.writerUserId = writerUserId;
         this.title = title;
         this.contents = contents;
         this.registerDateTime = registerDateTime;
     }
 
     public static ArticleRowDataDto from(Article article, Long writerId) {
-        return new ArticleRowDataDto(article.getId(), writerId, article.getTitle(), article.getContents(), article.getRegisterDateTime());
+        return new ArticleRowDataDto(article.getId(), writerId, article.getWriterUserId(), article.getTitle(), article.getContents(), article.getRegisterDateTime());
     }
 
     public Long getId() {
@@ -65,5 +67,13 @@ public class ArticleRowDataDto {
 
     public void setRegisterDateTime(LocalDateTime registerDateTime) {
         this.registerDateTime = registerDateTime;
+    }
+
+    public String getWriterUserId() {
+        return writerUserId;
+    }
+
+    public void setWriterUserId(String writerUserId) {
+        this.writerUserId = writerUserId;
     }
 }
