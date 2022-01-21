@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class WritePostRequestTest {
 
     private static final int INITIAL_ID = 0;
-    private static final String userId = "userId";
+    private static final int userId = 1;
     private final String title = "title";
     private final String content = "content";
 

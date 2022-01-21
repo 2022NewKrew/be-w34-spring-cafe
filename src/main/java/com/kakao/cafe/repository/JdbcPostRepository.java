@@ -27,8 +27,8 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Post save(Post post) {
-        logger.info("[Jdbc] post save");
-        User user = userRepository.findByUserId(post.getUserId());
+        logger.debug("[Jdbc] post save: {}", post);
+        User user = userRepository.findById(post.getUserId());
         String sql = "insert into post(title, content, user_id) values(?, ?, ?)";
         jdbcTemplate.update(sql, post.getTitle(), post.getContent(), user.getId());
         return post;
@@ -36,10 +36,10 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        logger.info("[Jdbc] post findAll");
+        logger.debug("[Jdbc] post findAll");
         String sql = "select * from post";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new Post(rs.getInt("id"),
-                userRepository.findById(rs.getInt("user_id")).getUserId(),
+                rs.getInt("user_id"),
                 rs.getString("title"),
                 rs.getString("content"),
                 rs.getDate("created_at")));
@@ -47,12 +47,12 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Post findByPostId(int id) {
-        logger.info("[Jdbc] post findByPostId");
+        logger.debug("[Jdbc] post findByPostId id : {}", id);
         String sql = "select * from post where id = ?";
 
         try {
             return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Post(rs.getInt("id"),
-                            userRepository.findById(rs.getInt("user_id")).getUserId(),
+                            rs.getInt("user_id"),
                             rs.getString("title"),
                             rs.getString("content"),
                             rs.getDate("created_at")),
@@ -64,7 +64,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public void update(Post post) {
-        logger.info("[Jdbc] post update");
+        logger.debug("[Jdbc] post update : {}", post);
         String sql = "update post set title = ?, content = ? where id = ?";
 
         jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getId());
@@ -72,7 +72,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public void delete(int id) {
-        logger.info("[Jdbc] post delete");
+        logger.debug("[Jdbc] post delete id: {}", id);
         String sql = "delete from post where id = ?";
 
         jdbcTemplate.update(sql, id);

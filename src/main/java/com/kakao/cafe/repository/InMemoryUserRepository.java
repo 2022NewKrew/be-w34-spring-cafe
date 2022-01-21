@@ -29,7 +29,7 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        logger.info("[InMemory] user save");
+        logger.debug("[InMemory] user save");
         if (isDuplicate(user)) {
             throw new DuplicateUserException("사용자가 이미 존재합니다");
         }
@@ -39,13 +39,13 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        logger.info("[InMemory] user findAll");
+        logger.debug("[InMemory] user findAll");
         return userList;
     }
 
     @Override
     public User findByUserId(String userId) {
-        logger.info("[InMemory] user findByUserId");
+        logger.debug("[InMemory] user findByUserId");
         User findUser = userList.stream()
                 .filter(user -> Objects.equals(user.getUserId(), userId))
                 .findAny()
@@ -56,7 +56,7 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public User findById(int id) {
-        logger.info("[InMemory] user findByUuid");
+        logger.debug("[InMemory] user findByUuid");
         User findUser = userList.stream()
                 .filter(user -> Objects.equals(user.getId(), id))
                 .findAny()

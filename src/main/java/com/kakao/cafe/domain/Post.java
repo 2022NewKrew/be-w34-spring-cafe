@@ -6,12 +6,12 @@ import java.util.Objects;
 public class Post {
 
     private int id;
-    private final String userId;
+    private final int userId;
     private final String title;
     private final String content;
     private final Date createdAt;
 
-    public Post( int id, String userId, String title, String content, Date createdAt) {
+    public Post(int id, int userId, String title, String content, Date createdAt) {
         this.id = id;
         this.userId = userId;
         this.title = title;
@@ -27,7 +27,7 @@ public class Post {
         return id;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -54,5 +54,14 @@ public class Post {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Post id: " + id +
+                ", userId: " + userId +
+                ", title: " + title +
+                ", content: " + content +
+                ", createdAt: " + createdAt;
     }
 }

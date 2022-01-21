@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class PostTest {
 
     private static final int INITIAL_ID = 0;
-    private static final String userId = "testUserId";
+    private static final int userId = 1;
     private static final String title = "testTitle";
     private static final String content = "testUserId";
 

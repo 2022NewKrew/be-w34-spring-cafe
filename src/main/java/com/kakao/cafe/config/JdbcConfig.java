@@ -18,19 +18,19 @@ public class JdbcConfig {
     @Bean
     @Profile("local")
     public DataSource dataSource() {
-        logger.info("---------local----------");
+        logger.debug("use h2 Database");
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .setName("kakaodb")
-                .addScript("classpath:/h2-sql/settings.sql")
-                .addScript("classpath:/h2-sql/tables.sql")
+                .addScript("classpath:/db/h2-sql/settings.sql")
+                .addScript("classpath:/db/h2-sql/tables.sql")
                 .build();
     }
 
     @Bean
     @Profile("dev")
     public DataSource mysqlDataSource() {
-        logger.info("---------dev----------");
+        logger.debug("use mysql database");
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");

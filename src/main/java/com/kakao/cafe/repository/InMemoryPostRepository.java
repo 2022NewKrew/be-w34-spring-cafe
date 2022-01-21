@@ -28,7 +28,7 @@ public class InMemoryPostRepository implements PostRepository {
 
     @Override
     public Post save(Post post) {
-        logger.info("[InMemory] post save");
+        logger.debug("[InMemory] post save");
         post.setId(nextId());
         postList.add(post);
         return post;
@@ -36,13 +36,13 @@ public class InMemoryPostRepository implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        logger.info("[InMemory] post findAll");
+        logger.debug("[InMemory] post findAll");
         return postList;
     }
 
     @Override
     public Post findByPostId(int id) {
-        logger.info("[InMemory] post findByPostId");
+        logger.debug("[InMemory] post findByPostId");
         if (id <= 0 || postList.size() < id)
             throw new PostNotFoundException("없는 게시글 입니다");
         return postList.get(id - 1);

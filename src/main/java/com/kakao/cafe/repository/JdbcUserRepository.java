@@ -26,7 +26,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        logger.info("[Jdbc] user save");
+        logger.debug("[Jdbc] user save {}", user);
         String sql = "insert into users(user_id, password, name, email) values(?, ?, ?, ?)";
         try {
             jdbcTemplate.update(sql,
@@ -39,7 +39,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        logger.info("[Jdbc] user findAll");
+        logger.debug("[Jdbc] user findAll");
         String sql = "select * from users";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> new User(rs.getInt("id"),
@@ -51,7 +51,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User findByUserId(String userId) {
-        logger.info("[Jdbc] user findByUserId");
+        logger.debug("[Jdbc] user findByUserId userId: {}", userId);
         String sql = "select * from users where user_id = ?";
 
         try {
@@ -68,7 +68,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User findById(int id) {
-        logger.info("[Jdbc] user findByUuid");
+        logger.debug("[Jdbc] user findByid id: {}", id);
         String sql = "select * from users where id = ?";
 
         try {

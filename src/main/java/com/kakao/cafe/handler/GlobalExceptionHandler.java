@@ -2,9 +2,11 @@ package com.kakao.cafe.handler;
 
 import com.kakao.cafe.controller.PostController;
 import com.kakao.cafe.exceptions.DuplicateUserException;
+import com.kakao.cafe.exceptions.InvalidLoginRequestException;
 import com.kakao.cafe.exceptions.InvalidUserRequestException;
 import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.exceptions.PostNotFoundException;
+import com.kakao.cafe.exceptions.UnauthenticatedArticleAccessException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
 import com.kakao.cafe.exceptions.WrongPasswordException;
 import java.util.Map;
@@ -56,6 +58,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(WrongPasswordException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView postNotFound(WrongPasswordException exception) {
+        return errorModelAndView(exception);
+    }
+
+    @ExceptionHandler(InvalidLoginRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView loginValidationFailed(InvalidLoginRequestException exception) {
+        return errorModelAndView(exception);
+    }
+
+    @ExceptionHandler(UnauthenticatedArticleAccessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView unauthenticatedArticleAccess(UnauthenticatedArticleAccessException exception) {
         return errorModelAndView(exception);
     }
 
