@@ -1,10 +1,12 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.PageNumberDto;
 import com.kakao.cafe.exception.IncorrectUserException;
 import com.kakao.cafe.exception.NotLoginException;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.service.SessionService;
+import com.kakao.cafe.util.ButtonUtil;
 import com.kakao.cafe.util.ErrorUtil;
 import com.kakao.cafe.vo.Article;
 import com.kakao.cafe.vo.Reply;
@@ -52,10 +54,10 @@ public class ArticleController {
     public String getArticles(Model model) {
         List<Article> articles = articleService.getArticles();
         model.addAttribute("articles", articles);
-        return "index";
+        return "redirect:/page/1/0";
     }
 
-    @GetMapping("questions/form")
+    @GetMapping("/questions/form")
     public String getQuestionForm(Model model, HttpSession session) throws NotLoginException {
         User loginUser = sessionService.getLoginUser(session);
 
@@ -87,5 +89,42 @@ public class ArticleController {
         articleService.deleteArticle(index, loginUser);
         return "redirect:/";
     }
+
+    @GetMapping("/page/{pageNumber}/{pageIndex}")
+    public String getPage(@PathVariable int pageNumber, @PathVariable int pageIndex, Model model) {
+        List<Article> articles = articleService.getArticles();
+        List<Article> subarticles = articleService.getSubArticles(articles, pageNumber);
+        List<PageNumberDto> pageNumbers = articleService.getPageNumbers(articles, pageIndex);
+        model.addAttribute("articles", subarticles);
+        model.addAttribute("pageNumbers", pageNumbers);
+        model.addAttribute("hasLeftButton", ButtonUtil.hasLeftButton(pageIndex));
+        model.addAttribute("hasRightButton", ButtonUtil.hasRightButton(articles, pageIndex));
+        model.addAttribute("thisPageNumber", pageNumber);
+        model.addAttribute("pageIndex", pageIndex);
+        return "index";
+    }
+
+    @GetMapping("/page/left/{pageNumber}/{pageIndex}")
+    public String getLeftPage(@PathVariable int pageNumber, @PathVariable int pageIndex) {
+        return String.format("/page/%d/%d", pageNumber, pageIndex - 1);
+    }
+
+    @GetMapping("/page/right/{pageNumber}/{pageIndex}")
+    public String getRightPage(@PathVariable int pageNumber, @PathVariable int pageIndex) {
+        return String.format("/page/%d/%d", pageNumber, pageIndex + 1);
+    }
+
+    @GetMapping("/test/page")
+    public String testPage(HttpSession session) throws Exception {
+        User loginUser = sessionService.getLoginUser(session);
+        Article article = new Article("picosw", "test", "tests");
+        for(int i = 0; i < 15 * 17; i++)
+            articleService.addArticle(article, loginUser);
+        return "redirect:/";
+    }
+
+
+
+
 
 }
