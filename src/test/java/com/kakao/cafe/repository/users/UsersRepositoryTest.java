@@ -1,4 +1,4 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.users;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.user.JdbcUserRepository;
@@ -12,7 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.assertj.core.api.Assertions.*;
 
 @JdbcTest
-@Sql(scripts = {"classpath:/sql/schema.sql"})
+@Sql(scripts = {"classpath:/sql/schema.sql", "classpath:/sql/insert.sql"})
 class UsersRepositoryTest {
 
     private JdbcTemplate jdbcTemplate;

@@ -29,16 +29,8 @@ public class UserIdentification {
                 .build();
     }
 
-    public static UserIdentification getIdFromSession(HttpSession httpSession) {
-        Object value = httpSession.getAttribute("sessionedUser");
-        validateSignIn(value);
-        return (UserIdentification) value;
-    }
-
-    private static void validateSignIn(Object value) {
-        if(!(value instanceof UserIdentification)) {
-            throw new IllegalArgumentException("로그인이 필요합니다.");
-        }
+    public boolean matchesUserId(String userId){
+        return this.userId.equals(userId);
     }
 
 }

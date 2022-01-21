@@ -6,12 +6,12 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class ArticleWriteRequest {
+public class ArticleUpdateRequest {
     private final String title;
     private final String contents;
 
     @Builder
-    public ArticleWriteRequest(String title, String contents) {
+    public ArticleUpdateRequest(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }
