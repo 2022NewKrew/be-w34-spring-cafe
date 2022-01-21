@@ -25,8 +25,8 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
             PreparedStatement pstmt = con.prepareStatement("insert into REPLIES (USER_FK,ARTICLE_FK,WRITER,CONTENTS,WRITING_TIME)" +
                             "values (?,?,?,?,?)",
                     new String[]{"ID"});
-            pstmt.setLong(1, reply.getUserPK());
-            pstmt.setLong(2, reply.getArticlePK());
+            pstmt.setLong(1, reply.getUserFK());
+            pstmt.setLong(2, reply.getArticleFK());
             pstmt.setString(3, reply.getWriter());
             pstmt.setString(4, reply.getContents());
             pstmt.setString(5, reply.getWritingTime());
@@ -49,6 +49,11 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
     @Override
     public List<Reply> findAll() {
         return jdbcTemplate.query("select * from REPLIES", replyRowMapper());
+    }
+
+    @Override
+    public void delete(Long id) {
+        jdbcTemplate.update("delete from REPLIES where ID = ?", id);
     }
 
     private RowMapper<Reply> replyRowMapper() {

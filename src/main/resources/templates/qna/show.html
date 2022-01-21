@@ -75,7 +75,8 @@
                                                href="/questions/413/answers/1405/form">수정</a>
                                         </li>
                                         <li>
-                                            <form class="delete-answer-form" action="/questions/413/answers/1405"
+                                            <form class="delete-answer-form"
+                                                  action="/articles/{{article.id}}/replies/{{id}}"
                                                   method="POST">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="delete-answer-button">삭제</button>
@@ -85,9 +86,10 @@
                                 </div>
                             </article>
                             {{/reply}}
-                            <form class="submit-write" action="/reply/{{id}}" method="POST">
+                            <form class="submit-write" action="/replies/{{id}}" method="POST">
                                 <div class="form-group" style="padding:14px;">
-                                    <textarea name="replyContents" id="replyContents" class="form-control" placeholder="Update your status"></textarea>
+                                    <textarea name="replyContents" id="replyContents" class="form-control"
+                                              placeholder="Update your status"></textarea>
                                 </div>
                                 <button class="btn btn-success pull-right" type="submit">답변하기</button>
                                 <div class="clearfix"/>
