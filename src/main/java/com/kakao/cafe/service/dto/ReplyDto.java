@@ -1,31 +1,20 @@
 package com.kakao.cafe.service.dto;
 
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
-public class ArticleDto {
+public class ReplyDto {
 
     private long id;
     private final UserDto author;
-    private final String title;
+    private final ArticleDto target;
     private final String content;
     private final Date createdAt;
-    private final List<ReplyDto> replies;
 
-    private ArticleDto(
-            long id,
-            UserDto author,
-            String title,
-            String content,
-            List<ReplyDto> replies,
-            Date createdAt
-    ) {
+    private ReplyDto(long id, UserDto author, ArticleDto target, String content, Date createdAt) {
         this.id = id;
         this.author = author;
-        this.title = title;
+        this.target = target;
         this.content = content;
-        this.replies = replies;
         this.createdAt = createdAt;
     }
 
@@ -33,10 +22,9 @@ public class ArticleDto {
 
         private long id;
         private UserDto author;
-        private String title;
+        private ArticleDto target;
         private String content;
         private Date createdAt;
-        private List<ReplyDto> replies;
 
         public Builder id(long id) {
             this.id = id;
@@ -48,8 +36,8 @@ public class ArticleDto {
             return this;
         }
 
-        public Builder title(String title) {
-            this.title = title;
+        public Builder ArticleDto(ArticleDto target) {
+            this.target = target;
             return this;
         }
 
@@ -63,13 +51,13 @@ public class ArticleDto {
             return this;
         }
 
-        public Builder replies(List<ReplyDto> replies) {
-            this.replies = Collections.unmodifiableList(replies);
+        public Builder target(ArticleDto target) {
+            this.target = target;
             return this;
         }
 
-        public ArticleDto build() {
-            return new ArticleDto(id, author, title, content, replies, createdAt);
+        public ReplyDto build() {
+            return new ReplyDto(id, author, target, content, createdAt);
         }
     }
 }

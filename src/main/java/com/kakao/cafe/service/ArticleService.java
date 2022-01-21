@@ -2,11 +2,13 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.entity.Article;
 import com.kakao.cafe.domain.entity.Draft;
+import com.kakao.cafe.domain.entity.Reply;
 import com.kakao.cafe.domain.entity.User;
-import com.kakao.cafe.domain.exception.NoSuchArticleException;
+import com.kakao.cafe.domain.exception.NoSuchObjectException;
 import com.kakao.cafe.domain.exception.NoSuchUserException;
 import com.kakao.cafe.domain.exception.UnauthorizedException;
 import com.kakao.cafe.domain.repository.ArticleRepository;
+import com.kakao.cafe.domain.repository.ReplyRepository;
 import com.kakao.cafe.domain.repository.UserRepository;
 import com.kakao.cafe.service.dto.ArticleDto;
 import com.kakao.cafe.service.dto.DraftDto;
@@ -22,11 +24,17 @@ public class ArticleService {
 
     private final ArticleRepository repository;
     private final UserRepository userRepository;
+    private final ReplyRepository replyRepository;
 
     @Autowired
-    public ArticleService(ArticleRepository repository, UserRepository userRepository) {
+    public ArticleService(
+            ArticleRepository repository,
+            UserRepository userRepository,
+            ReplyRepository replyRepository
+    ) {
         this.repository = repository;
         this.userRepository = userRepository;
+        this.replyRepository = replyRepository;
     }
 
     public ArticleDto create(long authorId, DraftDto draft) {
@@ -46,7 +54,8 @@ public class ArticleService {
     }
 
     public Optional<ArticleDto> getById(long id) {
-        return repository.getById(id).map(Article::toDto);
+        List<Reply> replies = replyRepository.list(id);
+        return repository.getById(id).map(x -> x.toDto(replies));
     }
 
     public ArticleDto getEditableById(long userId, long id) {
@@ -56,7 +65,7 @@ public class ArticleService {
             throw new NoSuchUserException();
         }
         if (article.isEmpty()) {
-            throw new NoSuchArticleException();
+            throw new NoSuchObjectException();
         }
         if (user.get().getId() != article.get().getAuthorId()) {
             throw new UnauthorizedException();

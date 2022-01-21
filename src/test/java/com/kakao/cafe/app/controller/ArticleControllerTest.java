@@ -3,6 +3,7 @@ package com.kakao.cafe.app.controller;
 import com.kakao.cafe.domain.exception.NoSuchUserException;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.dto.ArticleDto;
+import com.kakao.cafe.service.dto.ReplyDto;
 import com.kakao.cafe.service.dto.UserDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,6 +146,22 @@ class ArticleControllerTest {
                 .title("title1")
                 .content("content1")
                 .createdAt(new Date())
+                .replies(
+                        List.of(
+                                new ReplyDto.Builder()
+                                        .id(1L)
+                                        .author(author)
+                                        .content("reply1")
+                                        .createdAt(new Date())
+                                        .build(),
+                                new ReplyDto.Builder()
+                                        .id(2L)
+                                        .author(author)
+                                        .content("reply2")
+                                        .createdAt(new Date())
+                                        .build()
+                        )
+                )
                 .build();
         when(service.getById(id)).thenReturn(Optional.of(article));
         MockHttpSession session = new MockHttpSession();
@@ -155,7 +172,9 @@ class ArticleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("author1")))
                 .andExpect(content().string(containsString("title1")))
-                .andExpect(content().string(containsString("content1")));
+                .andExpect(content().string(containsString("content1")))
+                .andExpect(content().string(containsString("reply1")))
+                .andExpect(content().string(containsString("reply2")));
     }
 
     @Test
