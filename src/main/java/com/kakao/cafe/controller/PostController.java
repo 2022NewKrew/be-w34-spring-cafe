@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/qna")
 public class PostController {
 
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(PostController.class);
     private final PostService postService;
 
     @PostMapping

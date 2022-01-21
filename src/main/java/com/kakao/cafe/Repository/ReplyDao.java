@@ -1,5 +1,6 @@
 package com.kakao.cafe.Repository;
 
+import com.kakao.cafe.Dto.Reply.ReplyRequestDto;
 import com.kakao.cafe.Dto.Reply.ReplyResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,8 +17,15 @@ public class ReplyDao {
     private final JdbcTemplate jdbcTemplate;
     private final ReplyMapper replyMapper = new ReplyMapper();
 
+    public void insert(ReplyRequestDto reply) {
+        String sql = "INSERT INTO REPLY(COMMENT, WRITER, POST_ID) VALUES (?, ?, ?)";
+
+        jdbcTemplate.update(sql,
+                reply.getComment(), reply.getWriter(), reply.getPostId());
+    }
+
     public List<ReplyResponseDto> findByPostId(int postId) {
-        String sql = "SELECT CONTENT, WRITER FROM REPLIES WHERE POST_ID = ?";
+        String sql = "SELECT COMMENT, WRITER FROM REPLY WHERE POST_ID = ?";
 
         return jdbcTemplate.query(sql, replyMapper, postId);
     }
@@ -26,7 +34,7 @@ public class ReplyDao {
         @Override
         public ReplyResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new ReplyResponseDto(
-                    rs.getString("CONTENT"),
+                    rs.getString("COMMENT"),
                     rs.getString("WRITER")
             );
         }
