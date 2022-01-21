@@ -9,17 +9,15 @@ public class User {
     private final String password;
     private final String email;
 
-//    public User(String userId, String password, String email) {
-//        this.userId = userId;
-//        this.password = password;
-//        this.email = email;
-//    }
-
     public User(Integer id, String userId, String password, String email) {
         this.id = id;
         this.userId = userId;
         this.password = password;
         this.email = email;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getUserId() {
