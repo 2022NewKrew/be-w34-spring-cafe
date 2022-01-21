@@ -1,0 +1,16 @@
+{{> layout/header}}
+<body>
+{{> layout/navbar}}
+
+<div class="container">
+    {{#errorMessage}}
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Sorry !</h4>
+            <p>{{.}}</p>
+        </div>
+    {{/errorMessage}}
+</div>
+
+{{> layout/footer}}
+</body>
+</html>

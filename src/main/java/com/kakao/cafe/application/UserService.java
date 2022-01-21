@@ -2,19 +2,16 @@ package com.kakao.cafe.application;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserMapper;
+import com.kakao.cafe.exception.NoSuchUserException;
 import com.kakao.cafe.interfaces.common.UserDto;
 import com.kakao.cafe.domain.user.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -31,7 +28,7 @@ public class UserService {
         return userRepository.findByUserId(userId)
                 .stream()
                 .findAny()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(NoSuchUserException::new);
     }
 
     public void signup(UserDto userDto) {
@@ -40,12 +37,13 @@ public class UserService {
 
     public void update(User user, UserDto userDto) {
         user.update(userDto.getEmail(), userDto.getNickname());
+        userRepository.save(user);
     }
 
     public User login(UserDto userDto) {
         return userRepository.findByUserIdAndPassword(userDto.getUserId(), userDto.getPassword())
                 .stream()
                 .findAny()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(NoSuchUserException::new);
     }
 }

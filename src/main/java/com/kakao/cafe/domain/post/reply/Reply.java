@@ -1,26 +1,24 @@
-package com.kakao.cafe.domain.post;
+package com.kakao.cafe.domain.post.reply;
 
-import com.kakao.cafe.domain.post.reply.Reply;
+import com.kakao.cafe.domain.post.Post;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class Post {
+public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String writer;
-    private String title;
     private String body;
 
     @Column(insertable = false)
@@ -30,17 +28,14 @@ public class Post {
     @Column(insertable = false)
     private Boolean isRemoved = false;
 
-    @OneToMany(mappedBy = "post")
-    private List<Reply> replies = new ArrayList<>();
+    @ManyToOne
+//    @Setter
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @Builder
-    public Post(String writer, String title, String body) {
+    public Reply(String writer, String body) {
         this.writer = writer;
-        this.title = title;
         this.body = body;
-    }
-
-    public void addReply(Reply reply) {
-        replies.add(reply);
     }
 }
