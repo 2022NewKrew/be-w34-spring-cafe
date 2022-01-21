@@ -26,5 +26,13 @@ public class ControllerAdvisor {
         return mv;
     }
 
-    // Exceptions other than CustomException is handled by Spring Boot with default whitelabel page
+    @ExceptionHandler(Exception.class)
+    public ModelAndView undefinedExceptionHandler(Exception exception) {
+        log.error(exception.getMessage());
+        ModelAndView mv = new ModelAndView("common/custom-error");
+        ServerError serverError = new ServerError();
+        mv.getModelMap().put("message", serverError.getMessage());
+        mv.setStatus(serverError.getResponseStatus());
+        return mv;
+    }
 }
