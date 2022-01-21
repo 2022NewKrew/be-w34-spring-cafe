@@ -1,6 +1,8 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.thread.repository.CommentRepository;
 import com.kakao.cafe.thread.repository.PostRepository;
+import com.kakao.cafe.thread.repository.SpringJdbcCommentRepository;
 import com.kakao.cafe.thread.repository.SpringJdbcPostRepository;
 import com.kakao.cafe.user.repository.SpringJdbcUserRepository;
 import com.kakao.cafe.user.repository.UserRepository;
@@ -21,6 +23,11 @@ public class RepositoryConfig {
     @Bean
     public PostRepository postRepository(DataSource dataSource) {
         return new SpringJdbcPostRepository(dataSource);
+    }
+
+    @Bean
+    public CommentRepository commentRepository(DataSource dataSource) {
+        return new SpringJdbcCommentRepository(dataSource);
     }
 
     @Bean

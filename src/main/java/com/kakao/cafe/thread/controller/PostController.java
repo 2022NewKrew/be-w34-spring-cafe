@@ -1,6 +1,7 @@
 package com.kakao.cafe.thread.controller;
 
 import com.kakao.cafe.exception.InvalidFormatException;
+import com.kakao.cafe.thread.dto.CommentCreationForm;
 import com.kakao.cafe.thread.dto.PostCreationForm;
 import com.kakao.cafe.thread.service.PostService;
 import com.kakao.cafe.user.dto.LoggedInUser;
@@ -47,7 +48,7 @@ public class PostController {
     @GetMapping("/{id:[0-9]+}/edit")
     public String showPostEditor(@PathVariable Long id, Model model) {
         model.addAttribute("post", postService.get(id));
-        return "post/edit-form";
+        return "post/post-edit-form";
     }
 
     @NeedLogin
@@ -66,5 +67,34 @@ public class PostController {
     public String deletePost(@PathVariable Long id, @RequestAttribute LoggedInUser loggedInUser) {
         postService.softDelete(loggedInUser.getId(), id);
         return "redirect:/posts";
+    }
+
+    @NeedLogin
+    @PostMapping("/{id:[0-9]+}/comments")
+    public String addComment(@PathVariable Long id, @Validated CommentCreationForm commentCreationForm, BindingResult bindingResult,
+                             @RequestAttribute LoggedInUser loggedInUser) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidFormatException();
+        }
+        postService.addCommentToPost(loggedInUser.getId(), id, commentCreationForm);
+        return "redirect:/posts/" + id;
+    }
+
+    @NeedLogin
+    @PutMapping("/{postId:[0-9]+}/comments/{commentId:[0-9]+}")
+    public String editComment(@PathVariable Long postId, @PathVariable Long commentId, @Validated CommentCreationForm commentCreationForm, BindingResult bindingResult,
+                             @RequestAttribute LoggedInUser loggedInUser) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidFormatException();
+        }
+        postService.updateComment(loggedInUser.getId(), commentId, commentCreationForm);
+        return "redirect:/posts/" + postId;
+    }
+
+    @NeedLogin
+    @DeleteMapping("/{postId:[0-9]+}/comments/{commentId:[0-9]+}")
+    public String editComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestAttribute LoggedInUser loggedInUser) {
+        postService.softDeleteComment(loggedInUser.getId(), commentId);
+        return "redirect:/posts/" + postId;
     }
 }
