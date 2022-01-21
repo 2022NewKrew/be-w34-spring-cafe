@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.exception.CannotDeleteException;
 import com.kakao.cafe.web.dto.ArticleDTO;
 import java.sql.Timestamp;
 import java.util.List;
@@ -18,9 +19,9 @@ public class Article {
   private final User author;
   private String title;
   private String content;
+  private Comments comments;
   private Long readCount;
   private Delete isDeleted;
-  private List<Comment> comments;
   private Timestamp createAt;
   private Timestamp modifiedAt;
 
@@ -37,12 +38,9 @@ public class Article {
         User.create(articleDTO.getAuthor()),
         articleDTO.getTitle(),
         articleDTO.getContent(),
+        Comments.create(articleDTO.getComments()),
         articleDTO.getReadCount(),
         articleDTO.getIsDeleted(),
-        articleDTO.getComments()
-            .stream()
-            .map(Comment::of)
-            .collect(Collectors.toList()),
         articleDTO.getCreateAt(),
         articleDTO.getModifiedAt()
     );
@@ -62,9 +60,9 @@ public class Article {
         article.author,
         article.getTitle(),
         article.getContent(),
+        article.getComments(),
         article.getReadCount(),
         article.getIsDeleted(),
-        article.getComments(),
         article.getCreateAt(),
         article.getModifiedAt()
     );
@@ -84,9 +82,9 @@ public class Article {
         article.getAuthor(),
         articleDTO.getTitle(),
         articleDTO.getContent(),
+        article.getComments(),
         article.getReadCount(),
         article.getIsDeleted(),
-        article.getComments(),
         article.getCreateAt(),
         article.getModifiedAt()
     );
@@ -102,24 +100,23 @@ public class Article {
    * @param content    내용
    * @param readCount  조회수
    * @param isDeleted  삭제 상태
-   * @param comments   댓글
    * @param createAt   생성일
    * @param modifiedAt 변경일
    * @return Article
    */
   public static Article create(
       Long id, User author, String title,
-      String content, Long readCount, Delete isDeleted,
-      List<Comment> comments, Timestamp createAt, Timestamp modifiedAt
+      String content, Comments comments, Long readCount,
+      Delete isDeleted, Timestamp createAt, Timestamp modifiedAt
   ) {
     return new Article(
         id,
         author,
         title,
         content,
+        comments,
         readCount,
         isDeleted,
-        comments,
         createAt,
         modifiedAt
     );
@@ -131,6 +128,24 @@ public class Article {
    */
   public void addReadCount() {
     readCount++;
+  }
+
+
+  /**
+   * 삭제 가능한지 조건을 체크하고 삭제 상태로 변경한다.
+   *
+   */
+  public void delete(Delete deleteLevel) {
+
+    if(isDeleted.ordinal() >= deleteLevel.ordinal()) {
+      throw new CannotDeleteException();
+    }
+
+    if(comments.isOtherUserExist(author)) {
+      throw new CannotDeleteException();
+    }
+
+    isDeleted = deleteLevel;
   }
 
 
@@ -148,7 +163,6 @@ public class Article {
         ", content='" + content + '\'' +
         ", readCount=" + readCount +
         ", isDeleted=" + isDeleted +
-        ", comments=" + comments +
         ", createAt=" + createAt +
         ", modifiedAt=" + modifiedAt +
         '}';

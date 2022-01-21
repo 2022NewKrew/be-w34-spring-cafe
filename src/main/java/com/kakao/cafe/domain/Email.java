@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 @Getter
 public class Email {
 
-  private final String regex = "^(.+)@(.+)$";
+  private static final String regex = "^(.+)@(.+)$";
   private String fullPath;
 
   private Email(String fullPath) {

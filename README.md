@@ -3,7 +3,7 @@
 ### 배포 : http://krane-test-leo.ay1.krane.9rum.cc
 - using docker
 - d2hub 를 사용해서 krane 에 배포하기에는 음..
-- 간단히 로컬에서 이미지 빌드 및 저장한 다음 scp 로 빌드파일 krane에 전송하는 방식으로 배포
+- 첨에 이미지를 scp로 옮겨서 배포했으나 jm 의 공유로 d2hub 에서 push, pull 하여 배포
 
 ### Install
 ```
@@ -17,7 +17,17 @@ $./gradlew bootRun
 # pw : 1234
 ```
 
-### Step4 구현 사항
+### Step2-3, 2-4 구현 사항
+- 로그인 시 Referer 값으로 리다이렉트하여 이전 화면으로 이동
+- Comment 도메인 추가 및 조회, 신규 API 개발
+- 게시글 + 댓글 OneToMany 단방향 객체 매핑.. 불완전
+	- 게시글 select 시에만 댓글 객체 불러오고, save 시에는 저장x
+- Join 활용하여 게시글 조회시 댓글에 대한 N+1문제 방지하고자 하나 이게 맞게 한건지..
+- jdbcTemplate 으로 온전히 객체지향적인 매핑을 구현하기가 쉽지 않았습니다.
+- Jpa 공부를 해보면서 부족한 부분을 나중에 채워나가야 할듯.
+
+
+### Step2-1, 2-2, 2-5 구현 사항
 - null 처리 Optional 로 변경 및 domain 생성 및 null 처리에 대한 원칙 재정의
 - Bcrypt 패스워드 해싱 적용
 - put 로직 개선 - update 를 없애고(일부 조회수 쿼리 등에 한정적으로 사용) save 함수를 개선하여 업데이트

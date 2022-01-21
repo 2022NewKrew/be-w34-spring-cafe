@@ -9,6 +9,7 @@ import com.kakao.cafe.web.dto.SignUpDTO;
 import com.kakao.cafe.web.dto.UserDTO;
 import com.kakao.cafe.web.dto.UserModifyDTO;
 import com.kakao.cafe.web.service.UserService;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -64,18 +65,20 @@ public class UserApiController {
 
 
   /**
-   * 로그인 후 결과 반환
+   * 로그인 후 결과 반환, Referer 를 기준으로 리다이렉트 한다.
    *
    * @param loginDTO 로그인 요청
    * @return redirect to index page
    */
   @PostMapping("/login")
-  public ResponseEntity<ResponseDTO> login(@RequestBody LoginDTO loginDTO) {
+  public ResponseEntity<ResponseDTO> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request) {
 
     userService.login(loginDTO);
 
+    String referer = request.getHeader(HttpHeaders.REFERER);
+
     return ResponseEntity.status(HttpStatus.FOUND)
-        .header(HttpHeaders.LOCATION, "/")
+        .header(HttpHeaders.LOCATION, referer)
         .body(ResponseDTO.createSuccess());
   }
 

@@ -1,3 +1,4 @@
+
 /**
  * custom alert using bootstrap
  */
@@ -23,4 +24,15 @@ async function logout() {
 
   const parsedResponse = await response.json();
   alert(parsedResponse.message + '(' + parsedResponse.code + ')');
+}
+
+/**
+ * 날짜 포매팅
+ */
+function dateFormat(dateStr) {
+
+  const date = new Date(dateStr);
+
+  return moment(dateStr).format('YYYY-MM-DD hh:mm:ss.S');
+
 }

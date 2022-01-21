@@ -25,9 +25,6 @@ public class SessionAspectManager {
   public void enableSession() {
   }
 
-  @Pointcut("@annotation(com.kakao.cafe.web.common.RequireLogin)")
-  public void requireLogin() {
-  }
 
   @Around("enableSession()")
   public Object setSessionAttribute(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -48,6 +45,7 @@ public class SessionAspectManager {
     return controllerResult;
   }
 
+
   private Optional<Model> findModel(JoinPoint joinPoint) {
     return Arrays.stream(joinPoint.getArgs())
         .filter(arg -> arg instanceof Model)
@@ -56,19 +54,27 @@ public class SessionAspectManager {
   }
 
 
-  @Around("requireLogin()")
-  public Object checkLogin(ProceedingJoinPoint joinPoint) throws Throwable {
+  @Around(value = "@annotation(requireLogin)")
+  public Object checkLogin(ProceedingJoinPoint joinPoint, RequireLogin requireLogin) throws Throwable {
 
     logger.debug("requireLogin Aspect Start-----------------------------------------------");
 
-    Object controllerResult = "/login";
-    if (SessionUtils.isLogin()) {
+    Object controllerResult = requireLogin.value() ? "/login" : "/";
+    if (matchRequireLogin(requireLogin)) {
       controllerResult = joinPoint.proceed();
     }
 
     logger.debug("requireLogin Aspect End-------------------------------------------------");
 
     return controllerResult;
+  }
+
+
+  private boolean matchRequireLogin(RequireLogin requireLogin) {
+    if(requireLogin.value()) {
+      return SessionUtils.isLogin();
+    }
+    return !SessionUtils.isLogin();
   }
 
 }

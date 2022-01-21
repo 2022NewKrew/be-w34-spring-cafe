@@ -63,7 +63,74 @@
         </div>
       </div>
 
+
+      <div class="comment-area card border-0 p-5">
+        <h4 class="mb-4" id="comment_count">{{numberOfComment}} Comments</h4>
+        <ul id="commentHolder" class="comment-tree list-unstyled">
+          {{#comments}}
+          <li class="mb-5">
+            <div class="comment-area-box">
+              <img alt="" src="{{author.profile}}" class="img-fluid float-left mr-3 mt-2" width="40px" height="40px">
+
+              <h5 class="mb-1" style="cursor: pointer" onclick="navigate('{{author.id}}')">{{author.nickName}}</h5>
+              <span style="font-family: Hind">{{author.summary}} | {{author.email}}</span>
+
+              <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">
+                <a href="javascript:void(0)" onclick="addLikeCount('{{id}}', this)" style="font-family: Hind"><i class="icofont-reply mr-2 text-muted"></i>좋아요[{{likeCount}}] |</a>
+                <span class="date-comm">Posted {{createAt}}</span>
+                {{#isOwned}}
+                <a href="javascript:void(0)" onclick="deleteComment('{{id}}')" style="font-family: Hind; color: grey"><i class="icofont-reply mr-2 text-muted"></i>| 삭제</a>
+                {{/isOwned}}
+              </div>
+
+              <div class="comment-content mt-3" style="font-family: Hind">
+                <p>{{contents}}</p>
+              </div>
+            </div>
+          </li>
+          {{/comments}}
+
+<!--          <li>-->
+<!--            <div class="comment-area-box">-->
+<!--              <img alt="" src="../images/blog/test2.jpg" class="mt-2 img-fluid float-left mr-3">-->
+
+<!--              <h5 class="mb-1">Philip W</h5>-->
+<!--              <span>United Kingdom</span>-->
+
+<!--              <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">-->
+<!--                <a href="#"><i class="icofont-reply mr-2 text-muted"></i>Reply |</a>-->
+<!--                <span class="date-comm">Posted October 7, 2018</span>-->
+<!--              </div>-->
+
+<!--              <div class="comment-content mt-3">-->
+<!--                <p>Some consultants are employed indirectly by the client via a consultancy staffing company, a company that provides consultants on an agency basis. </p>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </li>-->
+        </ul>
+        <form class="contact-form bg-white rounded p-5" id="comment-form">
+          <h4 class="mb-4">Write a comment</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" type="text" name="name" id="comment_name" value="{{session.nickName}}" style="background-color: #ffffff00" readonly>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <input class="form-control" type="text" name="mail" id="comment_mail" value="{{session.email}}" style="background-color: #ffffff00" readonly>
+              </div>
+            </div>
+          </div>
+
+          <textarea class="form-control mb-3" name="comment" id="comment_contents" cols="30" rows="4" placeholder="Comment" style="font-family: Hind"></textarea>
+
+          <input class="btn btn-main btn-round-full" type="button" name="submit-contact" id="submit_contact" value="Submit Message" onclick="submitComment()">
+        </form>
+      </div>
+
     </div>
+
   </section>
   {{/article}}
   <!-- Section About End -->
@@ -103,6 +170,136 @@ Essential Scripts
     const parsedResponse = await response.json();
     alert(parsedResponse.message + '(' + parsedResponse.code + ')');
 
+  }
+
+  async function submitComment() {
+
+    const userId = '{{session.id}}';
+    const articleId = '{{id}}';
+    const contents = document.getElementById('comment_contents').value;
+
+    const response = await fetch('/api/comment', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({userId, articleId, contents})
+    })
+
+    if(response.ok) {
+      // updateComments
+      document.getElementById('comment_contents').value = '';
+      await updateComments();
+      return;
+    }
+
+    const parsedResponse = await response.json();
+    alert(parsedResponse.message + '(' + parsedResponse.code + ')');
+
+  }
+
+
+  async function updateComments() {
+    // update all comments and redraw
+
+    const articleId = '{{id}}';
+    const response = await fetch('/api/comments/' + articleId, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json'
+      }
+    });
+
+    if(response.ok) {
+      //render
+      const data = await response.json();
+      renderComments(data.comments);
+    }
+
+    const parsedResponse = await response.json();
+    alert('댓글 갱신에 실패하였습니다.\n 사유 : ' + parsedResponse.message + '(' + parsedResponse.code + ')');
+
+  }
+
+
+  function renderComments(comments) {
+
+    // for debug
+    const commentHolder = document.getElementById('commentHolder');
+    const commentCount = document.getElementById('comment_count');
+    const template = [];
+    comments.forEach(comment => {
+      console.log(comment);
+      template.push('<li class="mb-5">');
+      template.push('  <div class="comment-area-box">')
+      template.push('    <img alt="" src="' + comment.author.profile + '" class="img-fluid float-left mr-3 mt-2" width="40px" height="40px">');
+      template.push('      <h5 class="mb-1" style="cursor: pointer" onClick="navigate(\' ' + comment.author.id + ' \')">' + comment.author.nickName + '</h5>');
+      template.push('      <span style="font-family: Hind">' + comment.author.summary + ' | ' + comment.author.email.fullPath + '</span>')
+      template.push('      <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">');
+      template.push('        <a href="javascript:void(0)" onclick="addLikeCount(\'' + comment.id + '\', this)" style="font-family: Hind"><i class="icofont-reply mr-2 text-muted"></i>좋아요[' + comment.likeCount + '] |</a>');
+      template.push('        <span class="date-comm">Posted ' + dateFormat(comment.createAt) + '</span>')
+      if(comment.owned) {
+        template.push('        <a href="javascript:void(0)" onclick="deleteComment(\'' + comment.id + '\')" style="font-family: Hind; color: grey"><i class="icofont-reply mr-2 text-muted"></i>| 삭제</a>');
+      }
+      template.push('      </div>')
+      template.push('      <div class="comment-content mt-3" style="font-family: Hind">')
+      template.push('        <p>' + comment.contents + '</p>')
+      template.push('      </div>');
+      template.push('  </div>');
+      template.push('</li>');
+    })
+
+    commentHolder.innerHTML = template.join('\n');
+    commentCount.innerHTML = comments.length + ' Comments';
+
+  }
+
+
+  async function deleteComment(id) {
+
+    const response = await fetch('/api/comment/' + id, {
+      method: 'DELETE'
+    });
+
+    if(response.ok) {
+      //render
+      await updateComments();
+      return;
+    }
+
+    const parsedResponse = await response.json();
+    alert('댓글 삭제에 실패하였습니다.\n 사유 : ' + parsedResponse.message + '(' + parsedResponse.code + ')');
+
+  }
+
+
+  async function addLikeCount(id, context) {
+
+    const response = await fetch('/api/comment/' + id + '/like', {
+      method: 'POST'
+    });
+
+    if(response.ok) {
+      const data = await response.json();
+      context.innerHTML = '<i class="icofont-reply mr-2 text-muted"></i>좋아요[' + data.likeCount + '] |';
+      console.log(context);
+      console.log(data);
+      return
+    }
+
+    const parsedResponse = await response.json();
+    if(parsedResponse.code === 'LC_001') {
+      alert('이미 좋아요를 누르셨습니다.');
+      return;
+    }
+
+    alert(parsedResponse.message + '(' + parsedResponse.code + ')');
+
+  }
+
+
+  function navigate(userId) {
+    window.open('/users/' + userId);
   }
 
 </script>

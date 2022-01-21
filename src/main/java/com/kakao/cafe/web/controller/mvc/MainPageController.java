@@ -1,6 +1,7 @@
 package com.kakao.cafe.web.controller.mvc;
 
 import com.kakao.cafe.web.common.EnableSession;
+import com.kakao.cafe.web.common.RequireLogin;
 import com.kakao.cafe.web.controller.KakaoCafePageController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,7 @@ public class MainPageController {
    * @param model MVC
    * @return form.html
    */
+  @RequireLogin(value = false)
   @GetMapping("/signup")
   public String signUp(Model model) {
     return "form";
@@ -48,6 +50,7 @@ public class MainPageController {
    * @param model MVC
    * @return login.html
    */
+  @RequireLogin(value = false)
   @GetMapping("/login")
   public String login(Model model) {
     return "login";

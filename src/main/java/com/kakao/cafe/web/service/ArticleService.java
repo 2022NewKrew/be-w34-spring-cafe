@@ -101,9 +101,7 @@ public class ArticleService {
     Article origin = articleRepository.findById(articleDTO.getId(), Delete.NOT_DELETED)
         .orElseThrow(NoArticleException::new);
 
-    if (!hasEditPermissions(origin)) {
-      throw new NoAuthorityException();
-    }
+    checkEditPermissions(origin);
 
     Article modified = Article.create(origin, articleDTO);
     articleRepository.save(modified);
@@ -123,16 +121,10 @@ public class ArticleService {
 
     Article article = findArticle(id);
 
-    if (!hasEditPermissions(article)) {
-      throw new NoAuthorityException();
-    }
+    checkEditPermissions(article);
+    article.delete(Delete.SOFT_DELETED);
 
-    int deleteCount = articleRepository.softDeleteById(id, Delete.SOFT_DELETED);
-
-    if (deleteCount == 0) {
-      throw new NoArticleException();
-    }
-
+    articleRepository.save(article);
   }
 
 
@@ -140,11 +132,14 @@ public class ArticleService {
    * 현재 로그인 유저가 해당 게시물에 대한 수정 권한이 있는지 판단
    *
    * @param article 수정할 게시물
-   * @return 수정 권한 여부
+   * @throws NoAuthorityException 권한 없음
    */
-  public boolean hasEditPermissions(Article article) {
+  public void checkEditPermissions(Article article) {
     User author = article.getAuthor();
-    return SessionUtils.isLoginUser(author);
+
+    if(!SessionUtils.isLoginUser(author)) {
+      throw new NoAuthorityException();
+    }
   }
 
 }
