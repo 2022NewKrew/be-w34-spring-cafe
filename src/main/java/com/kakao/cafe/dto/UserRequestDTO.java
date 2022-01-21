@@ -14,10 +14,6 @@ public class UserRequestDTO {
     @Pattern(regexp = "^(.+)@(.+)$")
     private final String email;
 
-    public static UserRequestDTO of(String userId, String password, String name, String email) {
-        return new UserRequestDTO(userId, password, name, email);
-    }
-
     public UserRequestDTO(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;

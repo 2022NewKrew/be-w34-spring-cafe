@@ -22,17 +22,41 @@ public class ArticleService {
         articleRepository.save(articleRequestDto);
     }
 
+    @Transactional
+    public void update(Long id, ArticleRequestDTO articleRequestDTO) {
+        Article article = articleRepository.findById(id)
+                        .orElseThrow(ArticleNotFoundException::new);
+        articleRepository.update(id, articleRequestDTO);
+    }
+
     @Transactional(readOnly = true)
     public ArticleResponseDTO read(Long id) {
         Article article = articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
-        return ArticleResponseDTO.of(article.getId(), article.getAuthor(), article.getTitle(), article.getContent(), article.getCreatedAt());
+        return mapper(article);
     }
 
     @Transactional(readOnly = true)
     public List<ArticleResponseDTO> readAll() {
         return articleRepository.findAll()
                 .stream()
-                .map(article -> ArticleResponseDTO.of(article.getId(), article.getAuthor(), article.getTitle(), article.getContent(), article.getCreatedAt()))
+                .map(this::mapper)
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
+        articleRepository.delete(id);
+    }
+
+    private ArticleResponseDTO mapper(Article article) {
+        return ArticleResponseDTO.builder()
+                .id(article.getId())
+                .author(article.getAuthor())
+                .title(article.getTitle())
+                .content(article.getContent())
+                .createdAt(article.getCreatedAt())
+                .updatedAt(article.getUpdatedAt())
+                .build();
     }
 }

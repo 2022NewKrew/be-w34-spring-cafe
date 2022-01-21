@@ -43,14 +43,25 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponseDTO read(String userId) {
         User user = userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
-        return UserResponseDTO.of(user.getId(), user.getUserId(), user.getName(), user.getEmail(), user.getCreatedAt());
+        return mapper(user);
     }
 
     @Transactional(readOnly = true)
     public List<UserResponseDTO> readAll() {
         return userRepository.findAll()
                 .stream()
-                .map(user -> UserResponseDTO.of(user.getId(), user.getUserId(), user.getName(), user.getEmail(), user.getCreatedAt()))
+                .map(this::mapper)
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    private UserResponseDTO mapper(User user) {
+        return UserResponseDTO.builder()
+                .id(user.getId())
+                .userId(user.getUserId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .build();
     }
 }

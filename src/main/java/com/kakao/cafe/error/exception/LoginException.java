@@ -1,9 +1,9 @@
 package com.kakao.cafe.error.exception;
 
-public class LoginException extends RuntimeException{
-    private static final String MESSAGE = "로그인이 필요합니다.";
+import static com.kakao.cafe.Constant.MESSAGE_LOGIN_REQUIRED;
 
+public class LoginException extends RuntimeException{
     public LoginException() {
-        super(MESSAGE);
+        super(MESSAGE_LOGIN_REQUIRED);
     }
 }

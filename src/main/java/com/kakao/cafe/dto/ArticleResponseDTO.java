@@ -1,5 +1,7 @@
 package com.kakao.cafe.dto;
 
+import lombok.Builder;
+
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
@@ -14,17 +16,17 @@ public class ArticleResponseDTO {
     private final String content;
     @NotBlank
     private final LocalDateTime createdAt;
+    @NotBlank
+    private final LocalDateTime updatedAt;
 
-    public static ArticleResponseDTO of(Long id, String author, String title, String content, LocalDateTime createdAt) {
-        return new ArticleResponseDTO(id, author, title, content, createdAt);
-    }
-
-    private ArticleResponseDTO(Long id, String author, String title, String content, LocalDateTime createdAt) {
+    @Builder
+    public ArticleResponseDTO(Long id, String author, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.author = author;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -45,5 +47,9 @@ public class ArticleResponseDTO {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

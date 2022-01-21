@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.interceptor.ValidateLogin;
+import com.kakao.cafe.controller.interceptor.LoginRequired;
 import com.kakao.cafe.dto.AuthDTO;
 import com.kakao.cafe.dto.UserResponseDTO;
 import com.kakao.cafe.service.AuthService;
@@ -16,27 +16,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 
+import static com.kakao.cafe.Constant.SESSION_USER;
+
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-    private static final String SESSION_USER = "sessionUser";
     private final AuthService authService;
 
     @PostMapping("/login")
     public String login(@ModelAttribute @Validated AuthDTO authDto, BindingResult bindingResult, HttpSession session) {
-        logger.error("login {} {}", authDto.getUserId(), authDto.getPassword());
+        logger.info("login {} {}", authDto.getUserId(), authDto.getPassword());
         if (bindingResult.hasErrors()) {
             bindingResult.getFieldErrors()
                     .forEach(fieldError -> logger.error("Field : {}, Message : {}", fieldError.getField(), fieldError.getDefaultMessage()));
             return "redirect:/login-failed";
         }
         UserResponseDTO userResponseDTO = authService.login(authDto);
-        session.setAttribute(SESSION_USER, userResponseDTO.getUserId());
+        session.setAttribute(SESSION_USER, userResponseDTO);
         return "redirect:/";
     }
 
-    @ValidateLogin
+    @LoginRequired
     @DeleteMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

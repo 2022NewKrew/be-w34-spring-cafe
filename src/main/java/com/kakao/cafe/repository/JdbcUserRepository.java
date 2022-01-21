@@ -23,15 +23,15 @@ public class JdbcUserRepository implements UserRepository{
 
     @Override
     public void save(UserRequestDTO user) {
-        String sql = "INSERT INTO USERS (userId, password, name, email, createdAt) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail(), LocalDateTime.now());
+        String sql = "INSERT INTO USERS (userId, password, name, email, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail(), LocalDateTime.now(), LocalDateTime.now());
     }
 
     @Override
     public void update(UserUpdateDTO user, Long id) {
         logger.info("update Repository {} {} {} {} {}", user.getUserId(), user.getPassword(), user.getName(), user.getEmail(), id);
-        String sql = "UPDATE USERS SET name = ?, password = ?, email = ? WHERE id = ?";
-        jdbcTemplate.update(sql, user.getName(), user.getPassword(), user.getEmail(), id);
+        String sql = "UPDATE USERS SET name = ?, password = ?, email = ?, updatedAt = ? WHERE id = ?";
+        jdbcTemplate.update(sql, user.getName(), user.getPassword(), user.getEmail(), LocalDateTime.now(), id);
     }
 
     @Override
@@ -50,11 +50,14 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     private User userRowMapper(ResultSet rs, int rowNum) throws SQLException {
-        return User.of(rs.getLong("id"),
-                rs.getString("userId"),
-                rs.getString("password"),
-                rs.getString("name"),
-                rs.getString("email"),
-                rs.getTimestamp("createdAt").toLocalDateTime());
+        return User.builder()
+                .id(rs.getLong("id"))
+                .userId(rs.getString("userId"))
+                .password(rs.getString("password"))
+                .name(rs.getString("name"))
+                .email(rs.getString("email"))
+                .createdAt(rs.getTimestamp("createdAt").toLocalDateTime())
+                .updatedAt(rs.getTimestamp("updatedAt").toLocalDateTime())
+                .build();
     }
 }
