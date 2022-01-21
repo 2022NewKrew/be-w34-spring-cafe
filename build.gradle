@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.projectlombok:lombok:1.18.22'
@@ -21,6 +22,7 @@ dependencies {
 	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
 //	testImplementation 'org.mockito:mockito-core:3.11.2'
 //	testImplementation 'org.mockito:mockito-junit-jupiter:3.11.2'
+
 
 	compileOnly 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
