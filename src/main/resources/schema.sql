@@ -8,7 +8,8 @@ CREATE TABLE article
     writer   VARCHAR NOT NULL,
     title    VARCHAR NOT NULL,
     contents VARCHAR,
-    user_pk  INT     NOT NULL
+    user_pk  INT     NOT NULL,
+    deleted  BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE users

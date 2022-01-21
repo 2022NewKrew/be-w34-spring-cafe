@@ -4,6 +4,8 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserProfileResponse;
 import com.kakao.cafe.dto.UserSignUpRequest;
 import com.kakao.cafe.dto.UserUpdateRequest;
+import com.kakao.cafe.interceptor.AuthenticationSecured;
+import com.kakao.cafe.interceptor.PersonalAuthorizationSecured;
 import com.kakao.cafe.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -46,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public String profile(@PathVariable Integer id, Model model) {
+    public String profile(@PathVariable int id, Model model) {
         log.info("start profile()");
         User user = userService.findUser(id);
         model.addAttribute("userProfile", UserProfileResponse.from(user));
@@ -54,7 +56,9 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/form")
-    public String getUpdateForm(@PathVariable Integer id, Model model) {
+    @AuthenticationSecured
+    @PersonalAuthorizationSecured
+    public String getUpdateForm(@PathVariable int id, Model model) {
         log.info("start getUpdateForm()");
         User user = userService.findUser(id);
         model.addAttribute("userProfile", UserProfileResponse.from(user));
@@ -62,7 +66,9 @@ public class UserController {
     }
 
     @PutMapping(value = "/users/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String update(@PathVariable Integer id, UserUpdateRequest request, HttpSession session, Model model) {
+    @AuthenticationSecured
+    @PersonalAuthorizationSecured
+    public String update(@PathVariable int id, UserUpdateRequest request, HttpSession session, Model model) {
         log.info("start update()");
         userService.update(id, request);
         return "redirect:/users";

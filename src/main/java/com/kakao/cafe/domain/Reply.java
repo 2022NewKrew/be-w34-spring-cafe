@@ -9,21 +9,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Article {
+public class Reply {
 
     private int id;
+    private int articleId;
     private String writer;
-    private String title;
     private String contents;
     private int userPk;
     private boolean deleted;
 
-    public void updateArticle(String title, String contents) {
-        this.title = title;
-        this.contents = contents;
-    }
-
-    public void deleteArticle() {
+    public void deleteReply() {
         this.deleted = true;
     }
 

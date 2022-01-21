@@ -6,7 +6,6 @@ import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ArticleService {
@@ -29,16 +28,16 @@ public class ArticleService {
         return articleRepository.findById(id).get();
     }
 
-    public void update(Integer id, ArticleCreateRequest request) {
+    public void update(int id, ArticleCreateRequest request) {
         Article article = articleRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 글이 없습니다."));
 
-        article.update(request.getTitle(), request.getContents());
+        article.updateArticle(request.getTitle(), request.getContents());
         articleRepository.update(article);
     }
 
-    public void delete(Integer id) {
+    public void delete(int id) {
         Article article = articleRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 글이 없습니다."));

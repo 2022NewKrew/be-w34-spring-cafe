@@ -12,7 +12,7 @@ public class ArticleCreateRequest {
     private String writer;
     private String title;
     private String contents;
-    private Integer userPk;
+    private int userPk;
 
     public static Article getArticleFromNoDbIndex(ArticleCreateRequest articleCreateRequest) {
         return ModelMapperUtils.getModelMapper()
