@@ -1,18 +1,17 @@
 package com.kakao.cafe.dto.user;
 
 import com.kakao.cafe.domain.user.User;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class UserDto {
+public class UserResponse {
     private Long id;
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    public UserDto(User user){
+    public UserResponse(User user){
         this.id = user.getId();
         this.userId = user.getUserId();
         this.password = user.getPassword();

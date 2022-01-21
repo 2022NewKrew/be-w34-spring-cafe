@@ -1,10 +1,10 @@
 package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.dto.user.UserDto;
+import com.kakao.cafe.dto.user.UserResponse;
 import com.kakao.cafe.dto.user.UserUpdateReqDto;
 import com.kakao.cafe.repository.user.UserRepository;
-import com.kakao.cafe.dto.user.UserReqDto;
+import com.kakao.cafe.dto.user.UserRequest;
 import com.kakao.cafe.util.exception.DuplicatedUserException;
 import com.kakao.cafe.util.exception.UserNotFoundException;
 import com.kakao.cafe.util.exception.WrongPasswordException;
@@ -29,39 +29,39 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void addUser(UserReqDto userReqDto){
-        validateDuplicateUser(userReqDto);
+    public void addUser(UserRequest userRequest){
+        validateDuplicateUser(userRequest);
         User user = User.builder()
-                .userId(userReqDto.getUserId())
-                .password(passwordEncoder.encode(userReqDto.getPassword()))
-                .email(userReqDto.getEmail())
-                .name(userReqDto.getName())
+                .userId(userRequest.getUserId())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .email(userRequest.getEmail())
+                .name(userRequest.getName())
                 .build();
         userRepository.save(user);
     }
 
-    private void validateDuplicateUser(UserReqDto userReqDto) {
-        userRepository.findByUserId(userReqDto.getUserId())
+    private void validateDuplicateUser(UserRequest userRequest) {
+        userRepository.findByUserId(userRequest.getUserId())
                 .ifPresent(m -> {
                     throw new DuplicatedUserException("이미 존재하는 회원입니다.");
                 });
     }
 
     @Override
-    public List<UserDto> findUsers(){
+    public List<UserResponse> findUsers(){
         return userRepository.findAll().stream()
-                .map(UserDto::new)
+                .map(UserResponse::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UserDto findUserById(Long id){
-        return new UserDto(userRepository.findById(id)
+    public UserResponse findUserById(Long id){
+        return new UserResponse(userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다.")));
     }
 
     @Override
-    public void updateUser(UserUpdateReqDto userUpdateReqDto) {
+    public void modifyUser(UserUpdateReqDto userUpdateReqDto) {
         User user = userRepository.findById(userUpdateReqDto.getId())
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
 
@@ -77,12 +77,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserDto login(UserReqDto userReqDto) {
-        User user = userRepository.findByUserId(userReqDto.getUserId())
+    public UserResponse login(UserRequest userRequest) {
+        User user = userRepository.findByUserId(userRequest.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
-        validatePassword(userReqDto.getPassword(), user.getPassword());
+        validatePassword(userRequest.getPassword(), user.getPassword());
 
-        return new UserDto(user);
+        return new UserResponse(user);
     }
 
     private void validatePassword(String inputPassword, String dataPassword){

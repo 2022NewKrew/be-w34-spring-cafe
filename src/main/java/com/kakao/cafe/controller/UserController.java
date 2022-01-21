@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.util.auth.LoginCheck;
 import com.kakao.cafe.dto.user.SessionUser;
-import com.kakao.cafe.dto.user.UserReqDto;
+import com.kakao.cafe.dto.user.UserRequest;
 import com.kakao.cafe.dto.user.UserUpdateReqDto;
 import com.kakao.cafe.service.user.UserService;
 import com.kakao.cafe.util.exception.UnauthorizedException;
@@ -27,8 +27,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String createUser(@ModelAttribute UserReqDto userReqDto) {
-        userService.addUser(userReqDto);
+    public String createUser(@ModelAttribute UserRequest userRequest) {
+        userService.addUser(userRequest);
         return "redirect:/users";
     }
 
@@ -57,7 +57,7 @@ public class UserController {
     @PutMapping("/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute UserUpdateReqDto userUpdateReqDto) {
         userUpdateReqDto.setId(id);
-        userService.updateUser(userUpdateReqDto);
+        userService.modifyUser(userUpdateReqDto);
         return "redirect:/users";
     }
 
@@ -68,11 +68,11 @@ public class UserController {
 
     @PostMapping("/login")
     public String loginUser(String userId, String password, HttpSession session) {
-        UserReqDto userReqDto = UserReqDto.builder()
+        UserRequest userRequest = UserRequest.builder()
                 .userId(userId)
                 .password(password)
                 .build();
-        session.setAttribute("sessionedUser", userService.login(userReqDto));
+        session.setAttribute("sessionedUser", userService.login(userRequest));
         return "redirect:/users";
     }
 

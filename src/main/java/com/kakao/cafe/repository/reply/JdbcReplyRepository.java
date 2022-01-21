@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -32,21 +33,27 @@ public class JdbcReplyRepository implements ReplyRepository {
     }
 
     @Override
+    public Optional<Reply> selectByReplyId(Long replyId) {
+        List<Reply> result = jdbcTemplate.query("SELECT * FROM replies WHERE id = ?", replyRowMapper(), replyId);
+        return result.stream().findAny();
+    }
+
+    @Override
     public void update(Reply reply) {
         jdbcTemplate.update("UPDATE replies SET contents=?, deleted=? WHERE id=?",
                 reply.getContents(), reply.getDeleted(), reply.getId());
     }
 
-    private RowMapper<Reply> replyRowMapper(){
+    private RowMapper<Reply> replyRowMapper() {
         return (rs, rowNum) -> {
-          return Reply.builder()
-                  .id(rs.getLong("id"))
-                  .articleId(rs.getLong("articleId"))
-                  .writer(rs.getString("writer"))
-                  .contents(rs.getString("contents"))
-                  .createdAt(rs.getTimestamp("createdAt").toLocalDateTime())
-                  .deleted(rs.getBoolean("deleted"))
-                  .build();
+            return Reply.builder()
+                    .id(rs.getLong("id"))
+                    .articleId(rs.getLong("articleId"))
+                    .writer(rs.getString("writer"))
+                    .contents(rs.getString("contents"))
+                    .createdAt(rs.getTimestamp("createdAt").toLocalDateTime())
+                    .deleted(rs.getBoolean("deleted"))
+                    .build();
         };
     }
 

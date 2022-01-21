@@ -1,7 +1,7 @@
 package com.kakao.cafe.util.auth;
 
 import com.kakao.cafe.dto.user.SessionUser;
-import com.kakao.cafe.dto.user.UserDto;
+import com.kakao.cafe.dto.user.UserResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -24,16 +24,16 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest().getSession();
-        UserDto userDto = (UserDto) session.getAttribute("sessionedUser");
+        UserResponse userResponse = (UserResponse) session.getAttribute("sessionedUser");
 
-        if(userDto == null){
+        if(userResponse == null){
             return null;
 //            throw new IllegalAccessException("로그인 정보가 없습니다.");
         }
 
         return SessionUser.builder()
-                .id(userDto.getId())
-                .userId(userDto.getUserId())
+                .id(userResponse.getId())
+                .userId(userResponse.getUserId())
                 .build();
     }
 }
