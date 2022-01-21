@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,16 @@ public class ReplyController {
 
         LoginAuthDto authInfo = (LoginAuthDto) session.getAttribute("authInfo");
         replyService.createReply(postId, comment, authInfo);
+
+        return "redirect:/qna/{postId}";
+    }
+
+    @DeleteMapping("/{postId}/reply/{replyId}")
+    public String deleteReply(@PathVariable int replyId, HttpSession session) {
+        logger.info("[DELETE] 댓글 삭제");
+
+        LoginAuthDto authInfo = (LoginAuthDto) session.getAttribute("authInfo");
+        replyService.deleteById(replyId, authInfo);
 
         return "redirect:/qna/{postId}";
     }

@@ -24,16 +24,29 @@ public class ReplyDao {
                 reply.getComment(), reply.getWriter(), reply.getPostId());
     }
 
+    public ReplyResponseDto findById(int id) {
+        String sql = "SELECT ID, COMMENT, WRITER FROM REPLY WHERE ID = ?";
+
+        return jdbcTemplate.queryForObject(sql, replyMapper, id);
+    }
+
     public List<ReplyResponseDto> findByPostId(int postId) {
-        String sql = "SELECT COMMENT, WRITER FROM REPLY WHERE POST_ID = ?";
+        String sql = "SELECT ID, COMMENT, WRITER FROM REPLY WHERE POST_ID = ?";
 
         return jdbcTemplate.query(sql, replyMapper, postId);
+    }
+
+    public void deleteById(int id) {
+        String sql = "DELETE FROM REPLY WHERE ID = ?";
+
+        jdbcTemplate.update(sql, id);
     }
 
     private static class ReplyMapper implements RowMapper<ReplyResponseDto> {
         @Override
         public ReplyResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new ReplyResponseDto(
+                    rs.getInt("ID"),
                     rs.getString("COMMENT"),
                     rs.getString("WRITER")
             );
