@@ -3,6 +3,8 @@ package com.kakao.cafe.dto;
 import com.kakao.cafe.domain.Comment;
 import com.kakao.cafe.domain.Qna;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,25 +55,28 @@ public class QnaDto {
         private String writer;
         private String title;
         private String contents;
+        private String createdAt;
         private List<CommentDto.ReadCommentResponse> comments;
 
-        public QnaResponse(Integer qnaId, String writer, String title, String contents) {
+        public QnaResponse(Integer qnaId, String writer, String title, String contents, LocalDateTime createdAt) {
             this.qnaId = qnaId;
             this.writer = writer;
             this.title = title;
             this.contents = contents;
+            this.createdAt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(createdAt);
         }
 
-        public QnaResponse(Integer qnaId, String writer, String title, String contents, List<CommentDto.ReadCommentResponse> comments) {
+        public QnaResponse(Integer qnaId, String writer, String title, String contents, LocalDateTime createdAt, List<CommentDto.ReadCommentResponse> comments) {
             this.qnaId = qnaId;
             this.writer = writer;
             this.title = title;
             this.contents = contents;
+            this.createdAt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(createdAt);
             this.comments = comments;
         }
 
         public static QnaResponse of(Qna qna) {
-            return new QnaResponse(qna.getId(), qna.getWriter(), qna.getTitle(), qna.getContents());
+            return new QnaResponse(qna.getId(), qna.getWriter(), qna.getTitle(), qna.getContents(), qna.getCreatedAt());
         }
 
         public static QnaResponse of(Qna qna, List<Comment> comments) {
@@ -79,7 +84,7 @@ public class QnaDto {
                     .map(CommentDto.ReadCommentResponse::of)
                     .collect(Collectors.toList());
 
-            return new QnaResponse(qna.getId(), qna.getWriter(), qna.getTitle(), qna.getContents(), commentResponses);
+            return new QnaResponse(qna.getId(), qna.getWriter(), qna.getTitle(), qna.getContents(), qna.getCreatedAt(), commentResponses);
         }
     }
 

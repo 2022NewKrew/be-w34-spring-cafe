@@ -7,6 +7,8 @@ import com.kakao.cafe.exception.QnaNotFoundException;
 import com.kakao.cafe.repository.CommentRepository;
 import com.kakao.cafe.repository.QnaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +39,11 @@ public class QnaService {
         return qnaRepository.findAllByDeleted(false).stream()
                 .map(QnaDto.QnaResponse::of)
                 .collect(Collectors.toList());
+    }
+
+    public Page<QnaDto.QnaResponse> findQnaListWithPaging(Pageable page) {
+        return qnaRepository.findAllByDeleted(false, page)
+                .map(QnaDto.QnaResponse::of);
     }
 
     public QnaDto.QnaResponse findQna(Integer qnaId) {

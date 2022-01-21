@@ -2,6 +2,8 @@ package com.kakao.cafe.domain;
 
 import com.kakao.cafe.exception.AlreadyDeletedQnaException;
 
+import java.time.LocalDateTime;
+
 public class Qna {
 
     private Integer id;
@@ -9,20 +11,23 @@ public class Qna {
     private String title;
     private String contents;
     private Boolean deleted;
+    private LocalDateTime createdAt;
 
     public Qna(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.deleted = false;
+        this.createdAt = LocalDateTime.now();
     }
 
-    public Qna(Integer id, String writer, String title, String contents) {
+    public Qna(Integer id, String writer, String title, String contents, LocalDateTime createdAt) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.deleted = false;
+        this.createdAt = createdAt;
     }
 
     public void updateQna(String title, String contents) {
@@ -64,6 +69,10 @@ public class Qna {
 
     public Boolean getDeleted() {
         return deleted;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public void setId(Integer id) {
