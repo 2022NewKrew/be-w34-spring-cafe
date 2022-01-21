@@ -12,5 +12,8 @@ CREATE TABLE `ARTICLE`
 (
     id    BIGINT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255),
-    content TEXT
+    content TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id BIGINT,
+    FOREIGN KEY (user_id) REFERENCES `MEMBER` (id) ON DELETE CASCADE
 );
