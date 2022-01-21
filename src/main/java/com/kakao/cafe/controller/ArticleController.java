@@ -114,17 +114,4 @@ public class ArticleController {
         return String.format("/page/%d/%d", pageNumber, pageIndex + 1);
     }
 
-    @GetMapping("/test/page")
-    public String testPage(HttpSession session) throws Exception {
-        User loginUser = sessionService.getLoginUser(session);
-        Article article = new Article("picosw", "test", "tests");
-        for(int i = 0; i < 15 * 17; i++)
-            articleService.addArticle(article, loginUser);
-        return "redirect:/";
-    }
-
-
-
-
-
 }
