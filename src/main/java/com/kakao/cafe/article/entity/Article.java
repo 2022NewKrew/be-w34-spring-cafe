@@ -16,14 +16,6 @@ public class Article {
     private String contents;
     private LocalDateTime createTime;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
     public void update(String title, String contents) {
         this.title = title;
         this.contents = contents;

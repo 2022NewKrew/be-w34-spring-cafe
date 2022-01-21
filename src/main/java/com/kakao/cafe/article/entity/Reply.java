@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 @Getter
-public class ArticleReply {
+public class Reply {
     private int id;
     private int articleId;
     private String writer;

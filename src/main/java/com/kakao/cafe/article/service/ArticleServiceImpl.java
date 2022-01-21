@@ -17,6 +17,7 @@ import com.kakao.cafe.article.repository.ArticleRepository;
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
+    private final ReplyService replyService;
 
     @Override
     public void create(ArticleCreateRequestDTO articleCreateRequestDTO) {
@@ -34,7 +35,10 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleFindResponseDTO getArticleById(int id) {
         Article article = articleRepository.findById(id).orElseThrow();
 
-        return new ArticleFindResponseDTO(article);
+        ArticleFindResponseDTO articleFindResponseDTO = new ArticleFindResponseDTO(article);
+        articleFindResponseDTO.setReplyList(replyService.getAllReplyByArticleId(id));
+
+        return articleFindResponseDTO;
     }
 
     @Override
@@ -42,7 +46,6 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleRepository.findById(id).orElseThrow();
 
         article.update(articleUpdateRequestDTO.getTitle(), articleUpdateRequestDTO.getContents());
-
         articleRepository.update(id, article);
     }
 

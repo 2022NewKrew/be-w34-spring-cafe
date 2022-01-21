@@ -7,29 +7,37 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import com.kakao.cafe.article.dto.request.ArticleReplyCreateRequestDTO;
-import com.kakao.cafe.article.dto.response.ArticleReplyFindResponseDTO;
-import com.kakao.cafe.article.repository.ArticleReplyRepository;
+import com.kakao.cafe.article.dto.request.ReplyCreateRequestDTO;
+import com.kakao.cafe.article.dto.response.ReplyFindResponseDTO;
+import com.kakao.cafe.article.entity.Reply;
+import com.kakao.cafe.article.repository.ReplyRepository;
 
 @Service
 @RequiredArgsConstructor
-public class ArticleReplyServiceImpl implements ArticleReplyService {
-    private final ArticleReplyRepository articleReplyRepository;
+public class ReplyServiceImpl implements ReplyService {
+    private final ReplyRepository replyRepository;
 
     @Override
-    public void create(ArticleReplyCreateRequestDTO articleReplyCreateRequestDTO) {
-        articleReplyRepository.save(articleReplyCreateRequestDTO.toEntity());
+    public void create(ReplyCreateRequestDTO replyCreateRequestDTO) {
+        replyRepository.save(replyCreateRequestDTO.toEntity());
     }
 
     @Override
-    public List<ArticleReplyFindResponseDTO> getAllArticleReplyByArticleId(int articleId) {
-        return articleReplyRepository.findAllByArticleId(articleId).stream()
-                                     .map(ArticleReplyFindResponseDTO::new)
-                                     .collect(Collectors.toList());
+    public ReplyFindResponseDTO getReplyById(int id) {
+        Reply reply = replyRepository.findById(id).orElseThrow();
+
+        return new ReplyFindResponseDTO(reply);
+    }
+
+    @Override
+    public List<ReplyFindResponseDTO> getAllReplyByArticleId(int articleId) {
+        return replyRepository.findAllByArticleId(articleId).stream()
+                              .map(ReplyFindResponseDTO::new)
+                              .collect(Collectors.toList());
     }
 
     @Override
     public void remove(int id) {
-        articleReplyRepository.delete(id);
+        replyRepository.delete(id);
     }
 }
