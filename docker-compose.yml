@@ -1,0 +1,17 @@
+version: "3"
+services:
+  db:
+    image: mysql:8
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
