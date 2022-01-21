@@ -48,8 +48,8 @@ public class PostService {
     }
 
     public void updateFromForm(Long authorId, Long postId, PostCreationForm postCreationForm) {
-        validateUserPermissionOnPost(authorId, postId);
         Post post = postRepository.get(postId).orElseThrow(PostNotFoundException::new);
+        validateUserPermissionOnPost(authorId, post);
         postRepository.update(Post.builder()
                                   .id(postId)
                                   .title(postCreationForm.getTitle())
@@ -59,8 +59,8 @@ public class PostService {
     }
 
     public void softDelete(Long authorId, Long postId) {
-        validateUserPermissionOnPost(authorId, postId);
         Post post = postRepository.get(postId).orElseThrow(PostNotFoundException::new);
+        validateUserPermissionOnPost(authorId, post);
         postRepository.update(Post.builder()
                                   .id(postId)
                                   .title(post.getTitle())
@@ -69,8 +69,10 @@ public class PostService {
                                   .build());
     }
 
-    private void validateUserPermissionOnPost(Long authorId, Long postId) {
-        if (!authorId.equals(postId)) {
+    private void validateUserPermissionOnPost(Long authorId, Post post) {
+        // The permission check is done here not part of Post domain
+        // More complicated permission would require more knowledge than Post has access to
+        if (!post.getAuthorId().equals(authorId)) {
             throw new UnauthorizedAccessException();
         }
     }
