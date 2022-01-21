@@ -69,8 +69,8 @@ public class QuestionServiceImpl implements QuestionService {
 
         List<Reply> replies = replyRepository.findAllAsQuestionId(id);
 
-        for(Reply reply : replies) {
-            if(!reply.getMemberId().equals(memberId)) {
+        for (Reply reply : replies) {
+            if (!reply.getMemberId().equals(memberId)) {
                 throw new BaseException("현재 게시글에 댓글이 달려 있습니다.");
             }
         }
@@ -96,5 +96,46 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         return questionRepository.updateOne(question);
+    }
+
+    @Override
+    public List<Question> findPage(int currentPage, int pageSize) throws BaseException {
+
+        int questionAllCount = questionRepository.totalCount();
+
+        validationFindPage(currentPage, pageSize, questionAllCount);
+
+        return questionRepository.findPage(currentPage, pageSize);
+    }
+
+    @Override
+    public int findEndPage(int pageSize) {
+
+        int questionAllCount = questionRepository.totalCount();
+
+        return (questionAllCount - 1) / pageSize + 1;
+    }
+
+    private void validationFindPage(int currentPage, int pageSize, int questionAllCount) throws BaseException {
+        int endPage = questionAllCount / pageSize + 1;
+        validationCurrentPage(currentPage, endPage);
+        validationPageSize(pageSize);
+    }
+
+    private void validationPageSize(int pageSize) throws BaseException {
+        if (pageSize < 15 || pageSize > 100) {
+            throw new BaseException("pageSize는 15미만 100초과 할 수 없습니다.");
+        }
+    }
+
+    private void validationCurrentPage(int currentPage, int endPage) throws BaseException {
+        if (currentPage < 1) {
+            throw new BaseException("currentPage는 1이상이여야 합니다.");
+        }
+
+        if (currentPage > endPage) {
+            throw new BaseException(String.format("currentPage는 %d 를 초과 할 수 없습니다.", endPage));
+        }
+
     }
 }

@@ -30,6 +30,12 @@ public interface QuestionRepository {
     List<Question> findAll();
 
     /**
+     * currentPage를 반환해줍니다. pageSize (하나의 페이지에 보요줄 게시글 수) 만큼 반환해줍니다.
+     * @return 데이터베이스에서 ((currentPage - 1) * pageSize + 1) ~ ((currentPage - 1) * pageSize + 16) 번째 데이터
+     */
+    List<Question> findPage(int currentPage, int pageSize);
+
+    /**
      * key값 하나로 테이블을 삭제한다.
      * @param id 삭제하고 싶은 table key
      * @return 삭제 성공 여부
@@ -42,4 +48,10 @@ public interface QuestionRepository {
      * @return 삭제 성공 여부
      */
     boolean updateOne(Question question);
+
+    /**
+     * Question 테이블의 상태가 DELETE가 아닌 데이터의 수를 반환합니다.
+     * @return 데이터의 총 수
+     */
+    int totalCount();
 }

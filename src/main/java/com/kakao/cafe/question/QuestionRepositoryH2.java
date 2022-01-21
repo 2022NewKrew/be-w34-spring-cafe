@@ -4,11 +4,13 @@ import com.kakao.cafe.question.mapper.QuestionRowMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -67,6 +69,15 @@ public class QuestionRepositoryH2 implements QuestionRepository {
     }
 
     @Override
+    public List<Question> findPage(int currentPage, int pageSize) {
+
+        String sql = "SELECT Q.id, Q.member_id, Q.writer, Q.title, Q.contents, Q.create_time, Q.status FROM (SELECT id, member_id, writer, title, contents, create_time, status FROM question WHERE status != 'delete' ORDER BY id DESC) Q LIMIT ?,?";
+
+        return jdbcTemplate.query(sql, new QuestionRowMapper(), ((currentPage - 1) * pageSize), pageSize);
+    }
+
+
+    @Override
     public boolean deleteOne(Long id) {
 
         String sql = "UPDATE question SET status=? WHERE id = ?";
@@ -98,5 +109,13 @@ public class QuestionRepositoryH2 implements QuestionRepository {
         }
 
         return true;
+    }
+
+    @Override
+    public int totalCount() {
+
+        String sql = "SELECT count(id) as cnt FROM question WHERE status != 'delete'";
+
+        return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 }

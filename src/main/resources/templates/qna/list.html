@@ -15,7 +15,6 @@
             </header>
             <div class="content-main">
                 <div class="qna-comment">
-                    <em class="qna-comment-count">total:<strong>{{size}}</strong></em>
                     <div class="qna-comment-slipp">
                         <ul class="qna-comment-slipp-articles">
                             {{#questions}}
@@ -44,6 +43,11 @@
                             </li>
                             {{/questions}}
                         </ul>
+                    </div>
+                    <div class="kakao-page-list">
+                        {{#pageList}}
+                        <a href="/questions?currentPage={{pageNumber}}" class="{{className}}"><span>{{buttonName}}</span></a>
+                        {{/pageList}}
                     </div>
                 </div>
             </div>
