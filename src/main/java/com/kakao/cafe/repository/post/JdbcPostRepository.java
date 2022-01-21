@@ -32,13 +32,13 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        final String sql = "SELECT id, writerId, title, content, createdAt, deleted FROM POSTS WHERE deleted = FALSE";
+        final String sql = "SELECT id, writerId, title, content, createdAt, updatedAt, deletedAt, deleted FROM POSTS WHERE deleted = FALSE";
         return jdbcTemplate.query(sql, postRowMapper);
     }
 
     @Override
     public Optional<Post> findById(UUID id) {
-        final String sql = "SELECT id, writerId, title, content, createdAt, deleted FROM POSTS WHERE id = ? AND deleted = FALSE";
+        final String sql = "SELECT id, writerId, title, content, createdAt, updatedAt, deletedAt, deleted FROM POSTS WHERE id = ? AND deleted = FALSE";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, postRowMapper, id));
         } catch (DataAccessException e) {
@@ -48,7 +48,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public void update(Post post) {
-        final String sql = "UPDATE POSTS SET title = ?, content = ? WHERE id = ?";
+        final String sql = "UPDATE POSTS SET title = ?, content = ?, updatedAt = CURRENT_TIMESTAMP WHERE id = ?";
         jdbcTemplate.update(sql,
                 post.getTitle(),
                 post.getContent(),
@@ -57,7 +57,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public void delete(Post post) {
-        final String sql = "UPDATE POSTS SET deleted = TRUE WHERE id = ?";
+        final String sql = "UPDATE POSTS SET deleted = TRUE, deletedAt = CURRENT_TIMESTAMP WHERE id = ?";
         jdbcTemplate.update(sql, post.getId());
     }
 
@@ -68,6 +68,8 @@ public class JdbcPostRepository implements PostRepository {
                 rs.getObject("content", String.class))
                 .id(rs.getObject("id", UUID.class))
                 .createdAt(rs.getObject("createdAt", LocalDateTime.class))
+                .updatedAt(rs.getObject("updatedAt", LocalDateTime.class))
+                .deletedAt(rs.getObject("deletedAt", LocalDateTime.class))
                 .deleted(rs.getBoolean("deleted"))
                 .build();
     }

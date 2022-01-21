@@ -10,6 +10,8 @@ public class Post {
     private String title;
     private String content;
     private final LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
     private boolean deleted;
 
     private Post(Builder builder) {
@@ -18,6 +20,8 @@ public class Post {
         this.title = builder.title;
         this.content = builder.content;
         this.createdAt = builder.createdAt;
+        this.updatedAt = builder.updatedAt;
+        this.deletedAt = builder.deletedAt;
         this.deleted = builder.deleted;
     }
 
@@ -28,6 +32,8 @@ public class Post {
                 original.getContent())
                 .id(original.getId())
                 .createdAt(original.getCreatedAt())
+                .updatedAt(original.getUpdatedAt())
+                .deletedAt(original.getDeletedAt())
                 .deleted(original.isDeleted())
                 .build();
     }
@@ -52,6 +58,14 @@ public class Post {
         return createdAt;
     }
 
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
     public boolean isDeleted() {
         return deleted;
     }
@@ -59,10 +73,12 @@ public class Post {
     public void update(Post modified) {
         this.title = modified.title;
         this.content = modified.content;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void delete() {
         this.deleted = true;
+        this.deletedAt = LocalDateTime.now();
     }
 
     public static class Builder {
@@ -72,6 +88,8 @@ public class Post {
         private final String title;
         private final String content;
         private LocalDateTime createdAt = LocalDateTime.now();
+        private LocalDateTime updatedAt = LocalDateTime.now();
+        private LocalDateTime deletedAt;
         private boolean deleted = false;
 
         public Builder(UUID writerId, String title, String content) {
@@ -87,6 +105,16 @@ public class Post {
 
         public Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder updatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public Builder deletedAt(LocalDateTime deletedAt) {
+            this.deletedAt = deletedAt;
             return this;
         }
 
