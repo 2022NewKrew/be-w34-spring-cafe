@@ -1,10 +1,12 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.entity.Article;
+import com.kakao.cafe.domain.entity.Reply;
 import com.kakao.cafe.domain.entity.User;
 import com.kakao.cafe.domain.exception.NoSuchUserException;
 import com.kakao.cafe.domain.exception.UnauthorizedException;
 import com.kakao.cafe.domain.repository.ArticleRepository;
+import com.kakao.cafe.domain.repository.ReplyRepository;
 import com.kakao.cafe.domain.repository.UserRepository;
 import com.kakao.cafe.service.dto.ArticleDto;
 import com.kakao.cafe.service.dto.DraftDto;
@@ -12,10 +14,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -24,13 +27,15 @@ class ArticleServiceTest {
 
     private UserRepository userRepository;
     private ArticleRepository repository;
+    private ReplyRepository replyRepository;
     private ArticleService subject;
 
     @BeforeEach
     void setUp() {
         userRepository = mock(UserRepository.class);
         repository = mock(ArticleRepository.class);
-        subject = new ArticleService(repository, userRepository);
+        replyRepository = mock(ReplyRepository.class);
+        subject = new ArticleService(repository, userRepository, replyRepository);
     }
 
     @Test
@@ -54,6 +59,17 @@ class ArticleServiceTest {
         Executable body = () -> subject.create(1L, draft);
 
         assertThrowsExactly(NoSuchUserException.class, body);
+    }
+
+    @Test
+    void getById() {
+        List<Reply> replies = Collections.emptyList();
+        when(repository.getById(anyLong())).thenReturn(Optional.of(new Article.Builder().build()));
+        when(replyRepository.list(anyLong())).thenReturn(replies);
+
+        Optional<ArticleDto> result = subject.getById(1L);
+
+        assertTrue(result.isPresent());
     }
 
     @Test

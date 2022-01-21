@@ -1,5 +1,6 @@
 package com.kakao.cafe.app.data;
 
+import com.kakao.cafe.app.data.mapper.ArticleRowMapper;
 import com.kakao.cafe.domain.entity.Article;
 import com.kakao.cafe.domain.entity.Draft;
 import com.kakao.cafe.domain.repository.ArticleRepository;

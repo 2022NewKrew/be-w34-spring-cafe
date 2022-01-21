@@ -5,30 +5,29 @@ package com.kakao.cafe.domain.entity;
 // 게터가 필요하다는 문제가 생김
 
 import com.kakao.cafe.service.dto.ArticleDto;
+import com.kakao.cafe.service.dto.ReplyDto;
 import com.kakao.cafe.service.dto.UserDto;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class Article {
+public class Reply {
 
     private final long id;
     private final User author;
-    private final String title;
+    private final Article target;
     private final String content;
     private final Date createdAt;
 
-    private Article(
+    private Reply(
             long id,
             User author,
-            String title,
+            Article target,
             String content,
             Date createdAt
     ) {
         this.id = id;
         this.author = author;
-        this.title = title;
+        this.target = target;
         this.content = content;
         this.createdAt = createdAt;
     }
@@ -37,30 +36,22 @@ public class Article {
         return id;
     }
 
-    public ArticleDto toDto() {
-        return toDtoBuilder() .build();
-    }
-
-    public ArticleDto toDto(List<Reply> replies) {
-        return toDtoBuilder()
-                .replies(
-                        replies.stream()
-                                .map(Reply::toDto)
-                                .collect(Collectors.toList())
-                )
-                .build();
-    }
-
-    private ArticleDto.Builder toDtoBuilder() {UserDto authorDto = null;
+    public ReplyDto toDto() {
+        UserDto authorDto = null;
         if (author != null) {
             authorDto = author.toDto();
         }
-        return new ArticleDto.Builder()
+        ArticleDto targetDto = null;
+        if (target != null) {
+            targetDto = target.toDto();
+        }
+        return new ReplyDto.Builder()
                 .id(id)
                 .author(authorDto)
-                .title(title)
+                .target(targetDto)
                 .content(content)
-                .createdAt(createdAt);
+                .createdAt(createdAt)
+                .build();
     }
 
     public long getAuthorId() {
@@ -71,7 +62,7 @@ public class Article {
 
         private long id;
         private User author;
-        private String title;
+        private Article target;
         private String content;
         private Date createdAt;
 
@@ -85,8 +76,8 @@ public class Article {
             return this;
         }
 
-        public Builder title(String title) {
-            this.title = title;
+        public Builder target(Article target) {
+            this.target = target;
             return this;
         }
 
@@ -100,8 +91,8 @@ public class Article {
             return this;
         }
 
-        public Article build() {
-            return new Article(id, author, title, content, createdAt);
+        public Reply build() {
+            return new Reply(id, author, target, content, createdAt);
         }
     }
 }

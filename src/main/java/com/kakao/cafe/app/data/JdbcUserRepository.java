@@ -1,5 +1,6 @@
 package com.kakao.cafe.app.data;
 
+import com.kakao.cafe.app.data.mapper.UserRowMapper;
 import com.kakao.cafe.domain.entity.ModifyUser;
 import com.kakao.cafe.domain.entity.SignUp;
 import com.kakao.cafe.domain.entity.User;

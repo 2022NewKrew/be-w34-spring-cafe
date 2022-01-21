@@ -1,4 +1,4 @@
-package com.kakao.cafe.app.data;
+package com.kakao.cafe.app.data.mapper;
 
 import com.kakao.cafe.domain.entity.User;
 import org.springframework.jdbc.core.RowMapper;
