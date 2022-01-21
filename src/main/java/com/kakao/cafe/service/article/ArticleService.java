@@ -69,10 +69,11 @@ public class ArticleService {
         articleRepository.delete(articleId);
     }
 
-    public Long writeReply(Long articleId, String writerId, String comment) {
+    public ReplyInfo writeReply(Long articleId, String writerId, String comment) {
         User findUser = userRepository.findByUserId(writerId).orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
         Reply reply = Reply.of(articleId, findUser, comment);
-        return replyRepository.insert(reply);
+        replyRepository.insert(reply);
+        return articleDtoMapper.toReplyInfo(reply, writerId);
     }
 
     public void deleteReply(Long replyId, String loginId) {

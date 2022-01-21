@@ -6,9 +6,7 @@
     <title>SLiPP Java Web Programming</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <script src="/js/scripts.js"></script>
     <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
@@ -59,7 +57,7 @@
                   {{#replies}}
                   <div class="qna-comment">
                       <div class="qna-comment-slipp">
-                          <p class="qna-comment-count"><strong>{{this.length}}</strong>개의 의견</p>
+                          <p class="qna-comment-count" id="qna-comment-count"><strong>{{this.length}}</strong>개의 의견</p>
                           <div class="qna-comment-slipp-articles">
                               {{#this.replies}}
                               <article class="article" id="answer-1405">
@@ -68,7 +66,9 @@
                                           <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
                                       </div>
                                       <div class="article-header-text">
-                                          <a href="/users/1/자바지기" class="article-author-name">{{this.writerName}}</a>
+                                          <a href="/users/1/자바지기" class="article-author-name">
+                                              {{this.writerName}}
+                                          </a>
                                           <a href="#answer-1434" class="article-header-time" title="퍼머링크">
                                               {{this.createdTime}}
                                           </a>

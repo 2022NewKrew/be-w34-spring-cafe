@@ -44,7 +44,7 @@ public class ArticleViewMapper {
                 .build();
     }
 
-    private ReplyResponse toReplyResponse(ReplyInfo replyInfo) {
+    public ReplyResponse toReplyResponse(ReplyInfo replyInfo) {
         return ReplyResponse.builder()
                 .replyId(replyInfo.getReplyId())
                 .articleId(replyInfo.getArticleId())
