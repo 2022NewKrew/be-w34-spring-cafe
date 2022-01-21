@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller.api;
 
+import com.kakao.cafe.annotation.LoginUser;
 import com.kakao.cafe.dto.CommentDto;
 import com.kakao.cafe.dto.SuccessResponse;
 import com.kakao.cafe.dto.UserDto;
@@ -21,18 +22,18 @@ public class CommentApiController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponse> makeComment(@PathVariable("qnaId") Integer qnaId, @RequestBody CommentDto.CreateCommentRequest createCommentRequest, HttpSession session) {
-        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        commentService.createComment(qnaId, sessionedUser.getUserId(), createCommentRequest.getContents());
+    public ResponseEntity<SuccessResponse> makeComment(@PathVariable("qnaId") Integer qnaId, @RequestBody CommentDto.CreateCommentRequest createCommentRequest,
+                                                       @LoginUser UserDto.UserSessionDto loginUser) {
+        commentService.createComment(qnaId, loginUser.getUserId(), createCommentRequest.getContents());
 
         return ResponseEntity.ok()
                 .body(new SuccessResponse(200, true));
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<SuccessResponse> makeComment(@PathVariable("qnaId") Integer qnaId, @PathVariable("commentId") Integer commentId, HttpSession session) throws Exception {
-        UserDto.UserSessionDto sessionedUser = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        commentService.deleteComment(commentId, sessionedUser.getUserId());
+    public ResponseEntity<SuccessResponse> makeComment(@PathVariable("qnaId") Integer qnaId, @PathVariable("commentId") Integer commentId,
+                                                       @LoginUser UserDto.UserSessionDto loginUser) throws Exception {
+        commentService.deleteComment(commentId, loginUser.getUserId());
 
         return ResponseEntity.ok()
                 .body(new SuccessResponse(200, true));

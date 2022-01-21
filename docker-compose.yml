@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:latest
+    container_name: spring_cafe
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/conf.d:/etc/mysql/conf.d
+    environment:
+      MYSQL_DATABASE: spring_cafe
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root123
+      MYSQL_ROOT_PASSWORD: root123
+
+    restart: always
+  spring-boot:
+    build: .
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL:jdbc:mysql://10.202.174.226:3306/spring_cafe
+      - SPRING_DATASOURCE_USER_NAME:root
+      - SRPING_DATASOURCE_PASSWORD:root123
+    depends_on:
+      - db

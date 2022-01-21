@@ -1,6 +1,9 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.exception.AlreadyDeletedCommentException;
+
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class Comment {
 
@@ -15,7 +18,7 @@ public class Comment {
         this.writer = writer;
         this.qnaId = qnaId;
         this.contents = contents;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         this.deleted = false;
     }
 
@@ -37,7 +40,11 @@ public class Comment {
     }
 
     public void delete() {
-        this.deleted = true;
+        if (deleted) {
+            throw new AlreadyDeletedCommentException(id);
+        }
+
+        deleted = true;
     }
 
     public void updateContents(String contents) {

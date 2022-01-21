@@ -34,6 +34,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({LoginUserNotFoundException.class, IncorrectLoginPasswordException.class})
     public void handleLoginException(Exception exception, HttpServletResponse response) throws IOException {
+        System.out.println(exception.getMessage());
         response.sendRedirect("/auth/login/failform");
     }
 
@@ -47,5 +48,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException accessDeniedException) {
         ErrorResponse errorResponse = new ErrorResponse(403, accessDeniedException.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler({AlreadyDeletedCommentException.class, AlreadyDeletedQnaException.class})
+    public ResponseEntity<ErrorResponse> handleAlreadyDeletedException(RuntimeException runtimeException) {
+        ErrorResponse errorResponse = new ErrorResponse(409, runtimeException.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 }
