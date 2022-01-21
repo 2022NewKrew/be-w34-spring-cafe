@@ -1,7 +1,5 @@
 package com.kakao.cafe.dto.reply;
 
-import com.kakao.cafe.domain.entity.Reply;
-
 import java.time.LocalDateTime;
 
 public class ReplyContents {
@@ -17,14 +15,6 @@ public class ReplyContents {
         this.writerId = writerId;
         this.contents = contents;
         this.time = time;
-    }
-
-    public ReplyContents(ReplyWithWriterName replyWithWriterName) {
-        this.replyId = replyWithWriterName.getReplyId();
-        this.writer = replyWithWriterName.getWriter();
-        this.writerId = replyWithWriterName.getWriterId();
-        this.contents = replyWithWriterName.getContents();
-        this.time = replyWithWriterName.getTime();
     }
 
     public long getReplyId() {
