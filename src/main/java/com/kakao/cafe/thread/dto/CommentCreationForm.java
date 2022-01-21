@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.dto;
+package com.kakao.cafe.thread.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,11 +9,8 @@ import javax.validation.constraints.NotBlank;
 @RequiredArgsConstructor
 @Getter
 @ToString
-public class UserLoginForm {
+public class CommentCreationForm {
 
     @NotBlank
-    private final String username;
-
-    @NotBlank
-    private final String password;
+    private final String content;
 }

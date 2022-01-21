@@ -74,14 +74,4 @@ class LoginServiceTest {
         // When Then
         assertThrows(InvalidUsernamePasswordException.class, () -> loginService.login(userLoginForm));
     }
-
-    @Test
-    @DisplayName("로그인하지 않는 환경에서 로그인한 유저 정보 획득 시도 시 에러 발생해야 함")
-    public void givenNoLoggedInUser_WhenAccessLoggedInUser_ThenThrowUnauthorizedAccessException() {
-        // Given
-        given(session.getAttribute("loggedInUser")).willReturn(null);
-
-        // When Then
-        assertThrows(UnauthorizedAccessException.class, () -> loginService.getLoggedInUser(session));
-    }
 }

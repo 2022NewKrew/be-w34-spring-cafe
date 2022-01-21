@@ -1,7 +1,7 @@
 -- 게시판 데이터베이스 스키마 예시
 -- http://blog.sodhanalibrary.com/2015/11/simple-reddit-database-design.html#.YeA-Zn1Bz0o
 
-CREATE TABLE IF NOT EXISTS user
+CREATE TABLE IF NOT EXISTS cafe_user
 (
     id               BIGINT AUTO_INCREMENT,
     username         VARCHAR(255) NOT NULL UNIQUE,
@@ -30,5 +30,5 @@ CREATE TABLE IF NOT EXISTS thread
 
     PRIMARY KEY (id),
     FOREIGN KEY (parent_id) REFERENCES thread (id),
-    FOREIGN KEY (author_id) REFERENCES user (id)
+    FOREIGN KEY (author_id) REFERENCES cafe_user (id)
 );
