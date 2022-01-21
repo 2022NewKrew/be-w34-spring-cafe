@@ -1,6 +1,6 @@
 package com.kakao.cafe.repo;
 
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.entity.Article;
 import com.kakao.cafe.dto.ArticleDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.lang.NonNull;

@@ -1,6 +1,6 @@
 package com.kakao.cafe.repo;
 
-import com.kakao.cafe.domain.Comment;
+import com.kakao.cafe.entity.Comment;
 import com.kakao.cafe.dto.CommentDto;
 import org.springframework.lang.NonNull;
 

@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.entity;
 
 import com.kakao.cafe.util.Checker;
 import com.kakao.cafe.util.SecurePassword;

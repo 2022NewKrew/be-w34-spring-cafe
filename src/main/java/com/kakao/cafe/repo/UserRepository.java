@@ -1,6 +1,6 @@
 package com.kakao.cafe.repo;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.entity.User;
 import org.springframework.lang.NonNull;
 
 import java.util.List;

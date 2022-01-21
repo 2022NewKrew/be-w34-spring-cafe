@@ -1,6 +1,6 @@
 package com.kakao.cafe.repo;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.entity.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
