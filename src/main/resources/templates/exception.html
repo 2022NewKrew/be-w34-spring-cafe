@@ -1,11 +1,12 @@
 {{>layout/header}}
 <div class="background">
-    {{^sessionedUser}}
+    {{^sessionUser}}
     {{>layout/userLoginNavbar}}
-    {{/sessionedUser}}
-    {{#sessionedUser}}
+    {{/sessionUser}}
+    {{#sessionUser}}
     {{>layout/userLogoutNavbar}}
-    {{/sessionedUser}}
+    {{/sessionUser}}
+    <p>~~~(^ㅁ^)~~~시간관계상 꾸미지 않은 에러페이지~~~(^ㅁ^)~~~</p>
     <p>{{e.message}}</p>
     <p>{{e.timeStamp}}</p>
     <p>{{e.code}}</p>
