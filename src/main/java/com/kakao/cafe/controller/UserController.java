@@ -43,7 +43,6 @@ public class UserController {
         }
 
         User user = userDto.toEntity();
-        logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getUserName());
         userService.register(user);
 
         return "redirect:/users";
@@ -64,7 +63,6 @@ public class UserController {
         logger.info("[GET] /{userId} 프로필 조회");
 
         User user = userService.getUserById(userId);
-        logger.info("사용자 정보] 아이디 {}, 이름 {}", user.getUserId(), user.getUserName());
         model.addAttribute("user", user);
 
         return "user/profile";

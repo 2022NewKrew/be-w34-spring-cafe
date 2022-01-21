@@ -26,7 +26,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        logger.info("[Jdbc] user save");
+        logger.info("[Jdbc] user save {}", user);
         String sql = "insert into users(user_id, password, name, email) values(?, ?, ?, ?)";
         try {
             jdbcTemplate.update(sql,
@@ -51,7 +51,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User findByUserId(String userId) {
-        logger.info("[Jdbc] user findByUserId");
+        logger.info("[Jdbc] user findByUserId userId: {}", userId);
         String sql = "select * from users where user_id = ?";
 
         try {
@@ -68,7 +68,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User findById(int id) {
-        logger.info("[Jdbc] user findByUuid");
+        logger.info("[Jdbc] user findByid id: {}", id);
         String sql = "select * from users where id = ?";
 
         try {

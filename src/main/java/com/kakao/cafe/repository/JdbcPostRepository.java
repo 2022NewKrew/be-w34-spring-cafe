@@ -27,7 +27,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Post save(Post post) {
-        logger.info("[Jdbc] post save");
+        logger.info("[Jdbc] post save: {}", post);
         User user = userRepository.findById(post.getUserId());
         String sql = "insert into post(title, content, user_id) values(?, ?, ?)";
         jdbcTemplate.update(sql, post.getTitle(), post.getContent(), user.getId());
@@ -47,7 +47,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Post findByPostId(int id) {
-        logger.info("[Jdbc] post findByPostId");
+        logger.info("[Jdbc] post findByPostId id : {}", id);
         String sql = "select * from post where id = ?";
 
         try {
@@ -64,7 +64,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public void update(Post post) {
-        logger.info("[Jdbc] post update");
+        logger.info("[Jdbc] post update : {}", post);
         String sql = "update post set title = ?, content = ? where id = ?";
 
         jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getId());
@@ -72,7 +72,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public void delete(int id) {
-        logger.info("[Jdbc] post delete");
+        logger.info("[Jdbc] post delete id: {}", id);
         String sql = "delete from post where id = ?";
 
         jdbcTemplate.update(sql, id);

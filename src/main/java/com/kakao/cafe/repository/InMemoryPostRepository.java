@@ -28,7 +28,7 @@ public class InMemoryPostRepository implements PostRepository {
 
     @Override
     public Post save(Post post) {
-        logger.debug("[InMemory] post save");
+        logger.info("[InMemory] post save");
         post.setId(nextId());
         postList.add(post);
         return post;
