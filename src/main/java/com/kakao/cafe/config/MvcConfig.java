@@ -21,11 +21,11 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor())
-                .addPathPatterns("/articles/**")
-                .addPathPatterns("/questions/**")
-                .addPathPatterns("/*/*/form")
-                .addPathPatterns("**/update")
-                .addPathPatterns("/questions/{questionId}/answers/**");
+                .addPathPatterns("/**")
+                .excludePathPatterns("/")
+                .excludePathPatterns("/users")
+                .excludePathPatterns("/users/*")
+                .excludePathPatterns("/login");
     }
 
     @Bean
