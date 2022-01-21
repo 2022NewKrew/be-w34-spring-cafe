@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 @Controller
 @AllArgsConstructor
+@RequestMapping("/articles")
 public class ArticleController {
 
     private ArticleService articleService;
@@ -24,20 +25,20 @@ public class ArticleController {
     private CommentService commentService;
 
     // 게시물 목록 조회
-    @GetMapping("/articles")
+    @GetMapping("")
     public String showArticles(Model model) {
         model.addAttribute("articles", this.articleService.findAll());
         return "article/list";
     }
 
     // 게시물 작성 양식 - 로그인 필요
-    @GetMapping("/articles/post")
+    @GetMapping("/post")
     public String articleForm() {
         return "article/form";
     }
 
     // 게시물 작성 - 로그인 필요
-    @PostMapping("/articles/post")
+    @PostMapping("/post")
     public String postArticle(String title, String contents, HttpSession session) {
         UserInfoDto user = (UserInfoDto) session.getAttribute("sessionedUser");
         PostArticleDto postArticleDto = new PostArticleDto(user.getUserId(), user.getName(), title, contents);
@@ -46,7 +47,7 @@ public class ArticleController {
     }
 
     // 게시물 상세 조회 - 로그인 필요
-    @GetMapping("/articles/{id}")
+    @GetMapping("/{id}")
     public String showArticle(@PathVariable int id, Model model) {
         model.addAttribute("article", this.articleService.findById(id));
         model.addAttribute("comments", this.commentService.findAll(id));
@@ -54,7 +55,7 @@ public class ArticleController {
     }
 
     // 게시물 수정 양식
-    @GetMapping("/articles/{id}/update")
+    @GetMapping("/{id}/update")
     public String updateForm(@PathVariable int id, HttpSession session, Model model) throws WrongAccessException {
         this.userService.userValidation(this.articleService.getPostedUserById(id), session);
         model.addAttribute("article", this.articleService.findById(id));
@@ -62,7 +63,7 @@ public class ArticleController {
     }
 
     // 게시물 수정 - 로그인 필요, 회원 검사 필요
-    @PatchMapping("/articles/{id}/update")
+    @PatchMapping("/{id}/update")
     public String updateArticle(PostArticleDto postArticleDto, @PathVariable int id, HttpSession session) throws WrongAccessException {
         this.userService.userValidation(this.articleService.getPostedUserById(id), session);
         this.articleService.update(postArticleDto, id);
@@ -70,7 +71,7 @@ public class ArticleController {
     }
 
     // 게시물 삭제 - 로그인 필요, 회원 검사 필요
-    @DeleteMapping("/articles/{id}/delete")
+    @DeleteMapping("/{id}/delete")
     public String deleteArticle(@PathVariable int id, HttpSession session) throws WrongAccessException {
         this.userService.userValidation(this.articleService.getPostedUserById(id), session);
         this.articleService.delete(id);
