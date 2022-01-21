@@ -31,8 +31,8 @@ public class ArticleDao {
                 .orElse(null);
     }
 
-    public List<ArticleVo> findAll() {
-        return jdbcTemplate.query("SELECT articleId, writer, title, contents, date, userId FROM article", articleRowMapper);
+    public List<ArticleVo> findAllByPage(int offset, int limit) {
+        return jdbcTemplate.query("SELECT articleId, writer, title, contents, date, userId FROM article ORDER BY articleId DESC LIMIT ? OFFSET ?", articleRowMapper, limit,offset);
     }
 
     public void update(ArticleVo articleVo) {
@@ -45,5 +45,9 @@ public class ArticleDao {
 
     public void deleteByArticleId(int articleId) {
         jdbcTemplate.update("DELETE FROM article WHERE articleId = ?",articleId);
+    }
+
+    public int count() {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM article",Integer.class);
     }
 }
