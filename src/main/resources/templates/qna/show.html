@@ -44,10 +44,10 @@
           <div class="article-util">
             <ul class="article-util-list">
               <li>
-                <a class="link-modify-article" href="/articles/{{id}}/update/form">수정</a>
+                <a class="link-modify-article" href="/articles/{{article.id}}/update/form">수정</a>
               </li>
               <li>
-                <form class="form-delete" action="/articles/{{id}}/remove" method="POST">
+                <form class="form-delete" action="/articles/{{article.id}}/remove" method="POST">
                   <input type="hidden" name="_method" value="DELETE">
                   <button class="link-delete-article" type="submit">삭제</button>
                 </form>
@@ -61,7 +61,7 @@
 
         <div class="qna-comment">
           <div class="qna-comment-slipp">
-            <p class="qna-comment-count"><strong>0</strong>개의 의견</p>
+            <p class="qna-comment-count"><strong>{{article.replyList.size}}</strong>개의 의견</p>
             <div class="qna-comment-slipp-articles">
 
               {{#article.replyList}}
