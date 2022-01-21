@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.CommentDto;
 import com.kakao.cafe.exception.CommentNotFoundException;
+import com.kakao.cafe.fake.repository.FakeCommentRepository;
 import com.kakao.cafe.repository.CommentRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,7 @@ class CommentServiceTest {
 
     @BeforeEach
     public void setUp() {
-        commentRepository = new CommentRepository.FakeCommentRepository();
+        commentRepository = new FakeCommentRepository();
         commentService = new CommentService(commentRepository);
 
     }
