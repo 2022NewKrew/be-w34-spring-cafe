@@ -51,7 +51,6 @@ public class CommentRepository {
   private Comment persist(Comment comment) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
-    //TODO
     String query = "INSERT INTO comment ("
         + "user_id, "
         + "article_id, "
@@ -81,10 +80,9 @@ public class CommentRepository {
   private Comment merge(Comment comment) {
     String query = "UPDATE comment "
         + "SET "
-        + "contents = ?, "
+        + "content = ?, "
         + "like_count = ?, "
-        + "isDeleted = ?, "
-        + "create_at = ?, "
+        + "is_deleted = ?, "
         + "modified_at = now() "
         + "WHERE id = ?";
 
@@ -92,7 +90,6 @@ public class CommentRepository {
         comment.getContents(),
         comment.getLikeCount(),
         comment.getIsDeleted().name(),
-        comment.getCreateAt(),
         comment.getId()
     );
 

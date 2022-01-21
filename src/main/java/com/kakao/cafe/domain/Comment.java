@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.exception.CannotDeleteException;
 import com.kakao.cafe.exception.NoRequiredValueException;
 import com.kakao.cafe.web.dto.CommentDTO;
 import java.sql.Timestamp;
@@ -73,6 +74,21 @@ public class Comment {
         createAt,
         modifiedAt
     );
+  }
+
+
+  public void delete(Delete deleteLevel) {
+
+    if(isDeleted.ordinal() >= deleteLevel.ordinal()) {
+      throw new CannotDeleteException();
+    }
+
+    isDeleted = deleteLevel;
+  }
+
+
+  public void addLike() {
+    this.likeCount++;
   }
 
 

@@ -2,6 +2,7 @@ package com.kakao.cafe.web.dto;
 
 import com.kakao.cafe.domain.Comment;
 import com.kakao.cafe.domain.Delete;
+import com.kakao.cafe.utils.SessionUtils;
 import java.sql.Time;
 import java.sql.Timestamp;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class CommentDTO {
   private Delete isDeleted;
   private Timestamp createAt;
   private Timestamp modifiedAt;
+  private boolean isOwned;
 
 
   public CommentDTO(Comment comment) {
@@ -30,6 +32,7 @@ public class CommentDTO {
     this.isDeleted = comment.getIsDeleted();
     this.createAt = comment.getCreateAt();
     this.modifiedAt = comment.getModifiedAt();
+    this.isOwned = SessionUtils.isLoginUser(comment.getAuthor());
   }
 
 

@@ -76,8 +76,11 @@
               <span style="font-family: Hind">{{author.summary}} | {{author.email}}</span>
 
               <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">
-                <a href="#" style="font-family: Hind"><i class="icofont-reply mr-2 text-muted"></i>좋아요[{{likeCount}}] |</a>
-                <span class="date-comm">Posted {{createAt}} </span>
+                <a href="javascript:void(0)" onclick="addLikeCount('{{id}}')" style="font-family: Hind"><i class="icofont-reply mr-2 text-muted"></i>좋아요[{{likeCount}}] |</a>
+                <span class="date-comm">Posted {{createAt}}</span>
+                {{#isOwned}}
+                <a href="javascript:void(0)" onclick="deleteComment('{{id}}')" style="font-family: Hind; color: grey"><i class="icofont-reply mr-2 text-muted"></i>| 삭제</a>
+                {{/isOwned}}
               </div>
 
               <div class="comment-content mt-3" style="font-family: Hind">
@@ -233,8 +236,11 @@ Essential Scripts
       template.push('      <h5 class="mb-1" style="cursor: pointer" onClick="navigate(\' ' + comment.author.id + ' \')">' + comment.author.nickName + '</h5>');
       template.push('      <span style="font-family: Hind">' + comment.author.summary + ' | ' + comment.author.email.fullPath + '</span>')
       template.push('      <div class="comment-meta mt-4 mt-lg-0 mt-md-0 float-lg-right float-md-right">');
-      template.push('        <a href="#" style="font-family: Hind"><i class="icofont-reply mr-2 text-muted"></i>좋아요[' + comment.likeCount + '] |</a>');
-      template.push('        <span class="date-comm">Posted ' + dateFormat(comment.createAt) + ' </span>')
+      template.push('        <a href="javascript:void(0)" onclick="addLikeCount(\'' + comment.id + '\')" style="font-family: Hind"><i class="icofont-reply mr-2 text-muted"></i>좋아요[' + comment.likeCount + '] |</a>');
+      template.push('        <span class="date-comm">Posted ' + dateFormat(comment.createAt) + '</span>')
+      if(comment.owned) {
+        template.push('        <a href="javascript:void(0)" onclick="deleteComment(\'' + comment.id + '\')" style="font-family: Hind; color: grey"><i class="icofont-reply mr-2 text-muted"></i>| 삭제</a>');
+      }
       template.push('      </div>')
       template.push('      <div class="comment-content mt-3" style="font-family: Hind">')
       template.push('        <p>' + comment.contents + '</p>')
@@ -245,6 +251,33 @@ Essential Scripts
 
     commentHolder.innerHTML = template.join('\n');
     commentCount.innerHTML = comments.length + ' Comments';
+
+  }
+
+
+  async function deleteComment(id) {
+
+    const response = await fetch('/api/comment/' + id, {
+      method: 'DELETE'
+    });
+
+    if(response.ok) {
+      //render
+      await updateComments();
+      return;
+    }
+
+    const parsedResponse = await response.json();
+    alert('댓글 삭제에 실패하였습니다.\n 사유 : ' + parsedResponse.message + '(' + parsedResponse.code + ')');
+
+  }
+
+
+  async function addLikeCount(id) {
+
+    const response = await fetch('/api/comment/' + id + '/like', {
+
+    });
 
   }
 

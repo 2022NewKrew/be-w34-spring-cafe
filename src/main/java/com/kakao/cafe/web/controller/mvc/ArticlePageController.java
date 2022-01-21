@@ -59,7 +59,14 @@ public class ArticlePageController {
   public String showArticle(Model model, @PathVariable Long id) {
 
     Article article = articleService.viewArticle(id);
-    boolean editPermissions = articleService.hasEditPermissions(article);
+
+    boolean editPermissions = true;
+
+    try{
+      articleService.checkEditPermissions(article);
+    }catch(NoAuthorityException e) {
+      editPermissions = false;
+    }
 
     model.addAttribute("article", new ArticleDTO(article));
     model.addAttribute("editPermissions", editPermissions);
@@ -94,9 +101,7 @@ public class ArticlePageController {
 
     Article article = articleService.findArticle(id);
 
-    if (!articleService.hasEditPermissions(article)) {
-      throw new NoAuthorityException();
-    }
+    articleService.checkEditPermissions(article);
 
     model.addAttribute("article", new ArticleDTO(article));
 

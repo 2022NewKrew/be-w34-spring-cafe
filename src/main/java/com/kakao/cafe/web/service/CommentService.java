@@ -3,7 +3,11 @@ package com.kakao.cafe.web.service;
 import com.kakao.cafe.domain.Comment;
 import com.kakao.cafe.domain.Comments;
 import com.kakao.cafe.domain.Delete;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.NoArticleException;
+import com.kakao.cafe.exception.NoAuthorityException;
+import com.kakao.cafe.exception.NoCommentException;
+import com.kakao.cafe.utils.SessionUtils;
 import com.kakao.cafe.web.dto.CommentDTO;
 import com.kakao.cafe.web.repository.ArticleRepository;
 import com.kakao.cafe.web.repository.CommentRepository;
@@ -30,6 +34,7 @@ public class CommentService {
    *
    * @param commentDTO 새 입력 댓글
    * @return 생성 댓글
+   * @throws DataIntegrityViolationException 유저 또는 게시글 번호 유효하지 않음.
    */
   public Comment createComment(CommentDTO commentDTO) {
 
@@ -51,6 +56,57 @@ public class CommentService {
         .orElseThrow(NoArticleException::new);
 
     return commentRepository.findByArticleId(articleId, Delete.NOT_DELETED);
+  }
+
+
+  /**
+   * 댓글 번호에 해당하는 댓글 조회 후 삭제 상태를 업데이트 한다.
+   *
+   * @param commentId 삭제할 댓글
+   */
+  public void deleteCommentById(Long commentId) {
+
+    Comment comment = commentRepository.findById(commentId, Delete.NOT_DELETED)
+        .orElseThrow(NoCommentException::new);
+
+    hasEditPermissions(comment);
+
+    comment.delete(Delete.SOFT_DELETED);
+
+    commentRepository.save(comment);
+
+  }
+
+
+  /**
+   * 현재 댓글의 좋아요 개수를 추가하고 댓글 반환
+   *
+   * @param commentId 좋아요 추가할 댓글
+   * @return 댓글
+   */
+  public Comment addLike(Long commentId) {
+
+    Comment comment = commentRepository.findById(commentId, Delete.NOT_DELETED)
+        .orElseThrow(NoCommentException::new);
+
+    comment.addLike();
+
+    return commentRepository.save(comment);
+  }
+
+
+  /**
+   * 현재 로그인 유저가 해당 댓글에 대한 수정 권한이 있는지 판단
+   *
+   * @param comment 수정할 댓글
+   * @throws NoAuthorityException 권한 없음
+   */
+  public void hasEditPermissions(Comment comment) {
+    User author = comment.getAuthor();
+
+    if(!SessionUtils.isLoginUser(author)) {
+      throw new NoAuthorityException();
+    }
   }
 
 }
