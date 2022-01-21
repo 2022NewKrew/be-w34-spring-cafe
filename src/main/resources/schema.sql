@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS replies;
 DROP TABLE IF EXISTS articles;
 DROP TABLE IF EXISTS users;
 CREATE TABLE users
@@ -16,4 +17,13 @@ CREATE TABLE articles
     contents longtext    not null,
     deleted  boolean     not null default false,
     foreign key (writer) references users (userId) on update cascade
+);
+CREATE TABLE replies
+(
+    id       int auto_increment primary key,
+    writer   varchar(20) not null,
+    article  int         not null,
+    contents varchar(50) not null,
+    foreign key (writer) references users (userId) on update cascade,
+    foreign key (article) references articles (id) on update cascade
 );
