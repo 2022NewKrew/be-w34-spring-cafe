@@ -54,7 +54,7 @@ public class ArticleApiController {
         Users user = (Users) session.getAttribute("sessionedUser");
         if (user == null)
             return "redirect:/users/login";
-        if (article.getAuthorId() != user.getId()) {
+        if (article.getAuthor().getId() != user.getId()) {
             logger.info("Article API: 허용되지 않은 UPDATE 메소드 접근");
             throw new IllegalArgumentException("글쓴이가 일치하지 않습니다.");
         }
@@ -67,7 +67,7 @@ public class ArticleApiController {
         Users user = (Users) session.getAttribute("sessionedUser");
         if (user == null)
             return "redirect:/users/login";
-        if (articleService.getByArticleId(id).getAuthorId() != user.getId()) {
+        if (articleService.getByArticleId(id).getAuthor().getId() != user.getId()) {
             logger.info("Article API: 허용되지 않은 UPDATE 메소드 접근");
             throw new IllegalArgumentException("글쓴이가 일치하지 않습니다.");
         }
@@ -79,7 +79,7 @@ public class ArticleApiController {
     @DeleteMapping("/articles/{id}")
     String deleteArticle(@PathVariable int id, HttpSession session) {
         Users currentUser = (Users) session.getAttribute("sessionedUser");
-        if (articleService.getByArticleId(id).getAuthorId() != currentUser.getId()) {
+        if (articleService.getByArticleId(id).getAuthor().getId() != currentUser.getId()) {
             logger.info("Article API: 허용되지 않은 DELETE 메소드 접근");
             throw new IllegalArgumentException("글쓴이가 일치하지 않습니다.");
         }
@@ -93,7 +93,7 @@ public class ArticleApiController {
         Users user = (Users) session.getAttribute("sessionedUser");
         if (user == null)
             return "redirect:/users/login";
-        article.setAuthorId(user.getId());
+        article.setAuthor(user);
         articleService.addArticle(article);
         logger.info("Article API: 글 생성");
         return "redirect:/";
