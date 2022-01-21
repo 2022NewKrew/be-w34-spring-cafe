@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.common.exception.BaseException;
 import com.kakao.cafe.controller.common.LoginUser;
+import com.kakao.cafe.controller.common.Page;
 import com.kakao.cafe.controller.common.SessionLoginUser;
 import com.kakao.cafe.question.Question;
 import com.kakao.cafe.question.QuestionService;
@@ -29,7 +30,7 @@ import java.util.List;
 @RequestMapping("/questions")
 @RequiredArgsConstructor
 public class QuestionController {
-
+    private static final int VIEW_SIZE = 5;
     private final QuestionService questionService;
     private final ReplyService replyService;
     private final ModelMapper modelMapper;
@@ -98,13 +99,20 @@ public class QuestionController {
     }
 
     @GetMapping
-    public String viewQuestionList(Model model) {
+    public String viewQuestionList(
+            @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+            @RequestParam(value = "pageSize", defaultValue = "15") int pageSize,
+            Model model) throws BaseException {
 
         Long memberId = sessionLoginUser.getMemberId();
-        List<QuestionDto> questions = QuestionDto.of(questionService.findAll(), memberId);
+        List<QuestionDto> questions = QuestionDto.of(questionService.findPage(currentPage, pageSize), memberId);
+
+        int endPage = questionService.findEndPage(pageSize);
+        List<Page> pageList = Page.getPageList(currentPage, endPage, VIEW_SIZE);
 
         model.addAttribute("questions", questions);
-        model.addAttribute("size", questions.size());
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("pageList", pageList);
 
         return "qna/list";
     }
@@ -147,5 +155,4 @@ public class QuestionController {
 
         return String.format("redirect:/questions/%d", questionId);
     }
-
 }

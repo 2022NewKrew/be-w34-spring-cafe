@@ -49,8 +49,22 @@ public interface QuestionService {
     /**
      * Question에 담긴 정보를 기준으로 수정합니다.
      * @param question 수정한 Question
-     * @return 삭제 성공 여부
+     * @return 삭제 성공 여부findPage
      */
     boolean updateOne(Question question) throws BaseException;
+
+    /**
+     *
+     * @param currentPage 조회할 페이지
+     * @param pageSize 하나의 페이지에 보일 수
+     * @return 하나의 페이지에 질문글
+     */
+    List<Question> findPage(int currentPage, int pageSize) throws BaseException;
+
+    /**
+     * pageSize의 크기로 endPage의 값을 계산합니다.
+     * @return
+     */
+    int findEndPage(int pageSize);
 
 }

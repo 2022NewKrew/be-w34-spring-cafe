@@ -2,6 +2,7 @@ package com.kakao.cafe.common.aop;
 
 import com.kakao.cafe.common.auth.Auth;
 import com.kakao.cafe.common.exception.BaseException;
+import com.kakao.cafe.controller.common.LoginUser;
 import com.kakao.cafe.user.UserStatus;
 import com.kakao.cafe.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class AuthAspect {
             Auth auth = getAuth(joinPoint);
 
             if (auth.role() == Auth.Role.ADMIN) {
-                UserDto user = getLoginUser();
+                LoginUser user = getLoginUser();
 
                 if (user == null || user.getRole() != UserStatus.ADMIN) {
                     throw new BaseException("권한 없는 사용자가 접근했습니다.");
@@ -53,12 +54,12 @@ public class AuthAspect {
         return null;
     }
 
-    private UserDto getLoginUser() {
+    private LoginUser getLoginUser() {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
 
-        return (UserDto) session.getAttribute("loginUser");
+        return (LoginUser) session.getAttribute("loginUser");
     }
 
     private Auth getAuth(ProceedingJoinPoint joinPoint) {
