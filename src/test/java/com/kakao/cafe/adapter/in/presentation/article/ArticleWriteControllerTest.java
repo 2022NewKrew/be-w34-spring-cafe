@@ -1,6 +1,6 @@
-package com.kakao.cafe.adapter.in.presentation.user;
+package com.kakao.cafe.adapter.in.presentation.article;
 
-import com.kakao.cafe.application.user.port.in.LoginUserUseCase;
+import com.kakao.cafe.application.article.port.in.WriteArticleUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,26 +12,29 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@WebMvcTest(UserLoginController.class)
-class UserLoginControllerTest {
+@WebMvcTest(ArticleWriteController.class)
+class ArticleWriteControllerTest {
+
+    @Autowired
+    MockMvc mockMvc;
 
     @MockBean
-    LoginUserUseCase loginUserUseCase;
-    @Autowired
-    private MockMvc mockMvc;
+    WriteArticleUseCase writeArticleUseCase;
 
-    @DisplayName("로그인 테스트")
+    @DisplayName("게시글 작성 테스트")
     @Test
-    void loginUserTest() throws Exception {
-        String userId = "champ";
-        String password = "test";
-        String url = "/user/login";
+    void writeArticleTest() throws Exception {
+        String writer = "champ";
+        String title = "kakao";
+        String contents = "kakao krew";
+        String url = "/articles";
 
         // then
         mockMvc.perform(
                    MockMvcRequestBuilders.post(url)
-                                         .param("userId", userId)
-                                         .param("password", password)
+                                         .param("writer", writer)
+                                         .param("title", title)
+                                         .param("contents", contents)
                                          .accept(MediaType.TEXT_HTML)
                )
                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())

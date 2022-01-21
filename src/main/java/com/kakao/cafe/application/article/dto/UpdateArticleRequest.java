@@ -1,48 +1,51 @@
-package com.kakao.cafe.application.reply.dto;
+package com.kakao.cafe.application.article.dto;
 
-public class WriteReplyRequest {
+public class UpdateArticleRequest {
 
-    private final int articleId;
+    private final int id;
     private final String userId;
     private final String writer;
+    private final String title;
     private final String contents;
 
-    public WriteReplyRequest(Builder builder) {
-        this.articleId = builder.articleId;
+    public UpdateArticleRequest(Builder builder) {
+        this.id = builder.id;
         this.userId = builder.userId;
         this.writer = builder.writer;
+        this.title = builder.title;
         this.contents = builder.contents;
-    }
-
-    public int getArticleId() {
-        return articleId;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public String getWriter() {
-        return writer;
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public String getContents() {
         return contents;
     }
 
+    public String getWriter() {
+        return writer;
+    }
+
     public static class Builder {
 
-        private int articleId;
+        private int id;
         private String userId;
         private String writer;
+        private String title;
         private String contents;
 
-        public WriteReplyRequest build() {
-            return new WriteReplyRequest(this);
-        }
-
-        public Builder articleId(int articleId) {
-            this.articleId = articleId;
+        public Builder id(int id) {
+            this.id = id;
             return this;
         }
 
@@ -56,9 +59,18 @@ public class WriteReplyRequest {
             return this;
         }
 
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
         public Builder contents(String contents) {
             this.contents = contents;
             return this;
+        }
+
+        public UpdateArticleRequest build() {
+            return new UpdateArticleRequest(this);
         }
     }
 }

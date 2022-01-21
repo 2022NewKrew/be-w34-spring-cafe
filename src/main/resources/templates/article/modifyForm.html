@@ -8,7 +8,7 @@
       <div class="alert alert-danger" role="alert">{{message}} 다시 입력해주세요.</div>
       {{/message}}
       {{#article}}
-      <form action="/articles/{{userId}}/{{id}}/form" method="post" name="question">
+      <form action="/articles/{{id}}/form?userId={{userId}}" method="post" name="question">
         <input name="_method" type="hidden" value="PUT"/>
         <div class="form-group">
           <label for="title">제목</label>

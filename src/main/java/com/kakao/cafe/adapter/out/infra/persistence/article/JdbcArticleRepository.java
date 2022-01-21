@@ -1,12 +1,6 @@
 package com.kakao.cafe.adapter.out.infra.persistence.article;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
-import com.kakao.cafe.domain.article.exceptions.IllegalTitleException;
-import com.kakao.cafe.domain.article.exceptions.IllegalWriterException;
-import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,21 +13,23 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 public class JdbcArticleRepository implements ArticleRepository {
 
+    final static String COLUMN_ID = "id";
+    final static String COLUMN_USER_ID = "userId";
+    final static String COLUMN_WRITER = "writer";
+    final static String COLUMN_TITLE = "title";
+    final static String COLUMN_CONTENTS = "contents";
+    final static String COLUMN_CREATED_AT = "createdAt";
+    final static String COLUMN_DELETED = "deleted";
     private final static String ARTICLE_TABLE = "ARTICLE";
-    private final static String COLUMN_ID = "id";
-    private final static String COLUMN_USER_ID = "userId";
-    private final static String COLUMN_WRITER = "writer";
-    private final static String COLUMN_TITLE = "title";
-    private final static String COLUMN_CONTENTS = "contents";
-    private final static String COLUMN_CREATED_AT = "createdAt";
-    private final static String COLUMN_DELETED = "deleted";
-    private final static String SELECT_ALL = "select * from " + ARTICLE_TABLE;
-    private final static String NOT_DELETED = " where " + COLUMN_DELETED + "=false";
+    private final static String QUERY_SELECT_ALL = "select * from " + ARTICLE_TABLE;
+    private final static String QUERY_CONDITION_NOT_DELETED = " where " + COLUMN_DELETED + "=false";
 
     private final JdbcTemplate jdbcTemplate;
+    private final RowMapper<Article> articleMapper;
 
-    public JdbcArticleRepository(DataSource dataSource) {
+    public JdbcArticleRepository(DataSource dataSource, RowMapper<Article> articleMapper) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.articleMapper = articleMapper;
     }
 
     @Override
@@ -68,47 +64,17 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> getAllArticleList() {
-        return jdbcTemplate.query(SELECT_ALL + NOT_DELETED, (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum));
+        return jdbcTemplate.query(QUERY_SELECT_ALL + QUERY_CONDITION_NOT_DELETED, articleMapper);
     }
 
     @Override
     public Optional<Article> findById(int id) {
-        String sql = SELECT_ALL + " where " + COLUMN_ID + " = ?";
+        String sql = QUERY_SELECT_ALL + " where " + COLUMN_ID + " = ?";
         try {
-            Article article = jdbcTemplate.queryForObject(
-                sql,
-                (rs, rowNum) -> new ArticleMapper().mapRow(rs, rowNum),
-                id
-            );
+            Article article = jdbcTemplate.queryForObject(sql, articleMapper, id);
             return Optional.ofNullable(article);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
-        }
-    }
-
-    private static final class ArticleMapper implements RowMapper<Article> {
-
-        @Override
-        public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
-            try {
-                Article article = new Article.Builder().userId(rs.getString(COLUMN_USER_ID))
-                                                       .writer(rs.getString(COLUMN_WRITER))
-                                                       .title(rs.getString(COLUMN_TITLE))
-                                                       .contents(rs.getString(COLUMN_CONTENTS))
-                                                       .createdAt(rs.getString(COLUMN_CREATED_AT))
-                                                       .deleted(false)
-                                                       .build();
-                article.setId(rs.getInt(COLUMN_ID));
-                return article;
-            } catch (IllegalWriterException e) {
-                throw new SQLException("DB에 저장된 writer가 잘못되었습니다.");
-            } catch (IllegalTitleException e) {
-                throw new SQLException("DB에 저장된 title이 잘못되었습니다.");
-            } catch (IllegalDateException e) {
-                throw new SQLException("DB에 저장된 createdAt 값이 잘못되었습니다.");
-            } catch (IllegalUserIdException e) {
-                throw new SQLException("DB에 저장된 userId 값이 잘못되었습니다.");
-            }
         }
     }
 }

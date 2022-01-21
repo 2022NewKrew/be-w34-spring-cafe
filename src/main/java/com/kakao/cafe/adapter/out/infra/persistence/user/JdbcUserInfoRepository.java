@@ -1,12 +1,6 @@
 package com.kakao.cafe.adapter.out.infra.persistence.user;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.exceptions.IllegalEmailException;
-import com.kakao.cafe.domain.user.exceptions.IllegalPasswordException;
-import com.kakao.cafe.domain.user.exceptions.IllegalUserIdException;
-import com.kakao.cafe.domain.user.exceptions.IllegalUserNameException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,17 +13,19 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 public class JdbcUserInfoRepository implements UserInfoRepository {
 
+    static final String COLUMN_ID = "id";
+    static final String COLUMN_PASSWORD = "password";
+    static final String COLUMN_NAME = "name";
+    static final String COLUMN_EMAIL = "email";
     private static final String USER_TABLE = "USER";
-    private static final String COLUMN_ID = "id";
-    private static final String COLUMN_PASSWORD = "password";
-    private static final String COLUMN_NAME = "name";
-    private static final String COLUMN_EMAIL = "email";
-    private static final String SELECT_ALL = "select * from " + USER_TABLE;
+    private static final String QUERY_SELECT_ALL = "select * from " + USER_TABLE;
 
     private final JdbcTemplate jdbcTemplate;
+    private final RowMapper<User> userMapper;
 
-    public JdbcUserInfoRepository(DataSource dataSource) {
+    public JdbcUserInfoRepository(DataSource dataSource, RowMapper<User> userMapper) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -55,39 +51,17 @@ public class JdbcUserInfoRepository implements UserInfoRepository {
 
     @Override
     public List<User> getAllUserList() {
-        return jdbcTemplate.query(SELECT_ALL, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum));
+        return jdbcTemplate.query(QUERY_SELECT_ALL, userMapper);
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        String sql = SELECT_ALL + " where " + COLUMN_ID + " = ?";
+        String sql = QUERY_SELECT_ALL + " where " + COLUMN_ID + " = ?";
         try {
-            User user = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new UserMapper().mapRow(rs, rowNum), userId);
+            User user = jdbcTemplate.queryForObject(sql, userMapper, userId);
             return Optional.ofNullable(user);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
-        }
-    }
-
-    private static final class UserMapper implements RowMapper<User> {
-
-        @Override
-        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            try {
-                return new User.Builder().userId(rs.getString(COLUMN_ID))
-                                         .password(rs.getString(COLUMN_PASSWORD))
-                                         .name(rs.getString(COLUMN_NAME))
-                                         .email(rs.getString(COLUMN_EMAIL))
-                                         .build();
-            } catch (IllegalUserIdException e) {
-                throw new SQLException("DB에 저장된 userID가 잘못되었습니다.");
-            } catch (IllegalPasswordException e) {
-                throw new SQLException("DB에 저장된 password가 잘못되었습니다.");
-            } catch (IllegalUserNameException e) {
-                throw new SQLException("DB에 저장된 userName이 잘못되었습니다.");
-            } catch (IllegalEmailException e) {
-                throw new SQLException("DB에 저장된 email이 잘못되었습니다.");
-            }
         }
     }
 }

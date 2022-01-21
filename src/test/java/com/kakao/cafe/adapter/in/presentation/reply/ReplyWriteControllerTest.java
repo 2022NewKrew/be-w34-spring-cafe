@@ -1,41 +1,46 @@
-package com.kakao.cafe.adapter.in.presentation.user;
+package com.kakao.cafe.adapter.in.presentation.reply;
 
-import com.kakao.cafe.application.user.port.in.SignUpUserUseCase;
+import com.kakao.cafe.application.reply.port.in.WriteReplyUseCase;
+import com.kakao.cafe.application.user.dto.UserInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@WebMvcTest(UserSignUpController.class)
-class UserSignUpControllerTest {
+@WebMvcTest(ReplyWriteController.class)
+class ReplyWriteControllerTest {
+
+    @Autowired
+    MockMvc mockMvc;
 
     @MockBean
-    SignUpUserUseCase signUpUserUseCase;
-    @Autowired
-    private MockMvc mockMvc;
+    WriteReplyUseCase writeReplyUseCase;
 
-    @DisplayName("user 회원가입 테스트")
+    @DisplayName("댓글 작성 테스트")
     @Test
-    void loginUserTest() throws Exception {
-        String userId = "champ";
-        String password = "test";
-        String name = "champion";
+    void writeReplyTest() throws Exception {
+        int articleId = 5;
+        String userId = "kakao";
+        String name = "champ";
         String email = "champ@kakao.com";
-        String url = "/users/form";
+        String contents = "kakao krew";
+        String url = "/articles/" + articleId + "/replies";
+        UserInfo userInfo = new UserInfo(userId, name, email);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("sessionedUser", userInfo);
 
         // then
         mockMvc.perform(
-                   MockMvcRequestBuilders.post(url)
+                   MockMvcRequestBuilders.post(url).session(session)
                                          .param("userId", userId)
-                                         .param("password", password)
-                                         .param("name", name)
-                                         .param("email", email)
+                                         .param("contents", contents)
                                          .accept(MediaType.TEXT_HTML)
                )
                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())

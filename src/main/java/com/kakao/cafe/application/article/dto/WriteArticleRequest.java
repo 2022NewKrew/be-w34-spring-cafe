@@ -1,21 +1,17 @@
-package com.kakao.cafe.application.reply.dto;
+package com.kakao.cafe.application.article.dto;
 
-public class WriteReplyRequest {
+public class WriteArticleRequest {
 
-    private final int articleId;
     private final String userId;
     private final String writer;
+    private final String title;
     private final String contents;
 
-    public WriteReplyRequest(Builder builder) {
-        this.articleId = builder.articleId;
+    public WriteArticleRequest(Builder builder) {
         this.userId = builder.userId;
         this.writer = builder.writer;
+        this.title = builder.title;
         this.contents = builder.contents;
-    }
-
-    public int getArticleId() {
-        return articleId;
     }
 
     public String getUserId() {
@@ -26,25 +22,20 @@ public class WriteReplyRequest {
         return writer;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public String getContents() {
         return contents;
     }
 
     public static class Builder {
 
-        private int articleId;
         private String userId;
         private String writer;
+        private String title;
         private String contents;
-
-        public WriteReplyRequest build() {
-            return new WriteReplyRequest(this);
-        }
-
-        public Builder articleId(int articleId) {
-            this.articleId = articleId;
-            return this;
-        }
 
         public Builder userId(String userId) {
             this.userId = userId;
@@ -56,9 +47,18 @@ public class WriteReplyRequest {
             return this;
         }
 
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
         public Builder contents(String contents) {
             this.contents = contents;
             return this;
+        }
+
+        public WriteArticleRequest build() {
+            return new WriteArticleRequest(this);
         }
     }
 }

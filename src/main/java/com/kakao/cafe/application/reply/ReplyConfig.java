@@ -2,6 +2,7 @@ package com.kakao.cafe.application.reply;
 
 import com.kakao.cafe.adapter.out.infra.persistence.reply.JdbcReplyRepository;
 import com.kakao.cafe.adapter.out.infra.persistence.reply.ReplyAdapter;
+import com.kakao.cafe.adapter.out.infra.persistence.reply.ReplyMapper;
 import com.kakao.cafe.adapter.out.infra.persistence.reply.ReplyRepository;
 import com.kakao.cafe.application.reply.port.in.DeleteReplyUseCase;
 import com.kakao.cafe.application.reply.port.in.GetRepliesUseCase;
@@ -12,24 +13,31 @@ import com.kakao.cafe.application.reply.port.out.RegisterReplyPort;
 import com.kakao.cafe.application.reply.service.DeleteReplyService;
 import com.kakao.cafe.application.reply.service.GetRepliesService;
 import com.kakao.cafe.application.reply.service.WriteReplyService;
+import com.kakao.cafe.domain.article.Reply;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.RowMapper;
 
 @Configuration
-public class MvcReplyConfig {
+public class ReplyConfig {
 
     public final DataSource dataSource;
 
     @Autowired
-    public MvcReplyConfig(DataSource dataSource) {
+    public ReplyConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Bean
+    public RowMapper<Reply> replyMapper() {
+        return new ReplyMapper();
+    }
+
+    @Bean
     public ReplyRepository replyRepository() {
-        return new JdbcReplyRepository(dataSource);
+        return new JdbcReplyRepository(dataSource, replyMapper());
     }
 
     @Bean

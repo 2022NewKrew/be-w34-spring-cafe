@@ -18,7 +18,7 @@ public class UserLoginController {
         this.loginUserUseCase = loginUserUseCase;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     public String login(LoginRequest loginRequest, HttpSession session)
         throws UserNotExistException, WrongPasswordException {
         UserInfo userInfo = loginUserUseCase.login(loginRequest);

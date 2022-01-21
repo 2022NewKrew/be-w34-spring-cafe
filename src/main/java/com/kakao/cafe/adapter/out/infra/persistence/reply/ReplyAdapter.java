@@ -1,6 +1,6 @@
 package com.kakao.cafe.adapter.out.infra.persistence.reply;
 
-import com.kakao.cafe.application.reply.dto.ReplyList;
+import com.kakao.cafe.application.reply.dto.Replies;
 import com.kakao.cafe.application.reply.dto.WriteReplyRequest;
 import com.kakao.cafe.application.reply.port.out.DeleteReplyPort;
 import com.kakao.cafe.application.reply.port.out.GetRepliesPort;
@@ -37,10 +37,10 @@ public class ReplyAdapter implements RegisterReplyPort, GetRepliesPort, DeleteRe
     }
 
     @Override
-    public ReplyList getListOfRepliesTheArticle(int articleId) {
+    public Replies getListOfRepliesTheArticle(int articleId) {
         List<Reply> replyList = replyRepository.getAllReplyListByArticleId(articleId);
 
-        return ReplyList.from(replyList);
+        return Replies.from(replyList);
     }
 
     @Override

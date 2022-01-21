@@ -26,10 +26,11 @@ class ReplyAdapterTest {
     @Test
     void postNormalReply() {
         // given
-        WriteReplyRequest writeReplyRequest = new WriteReplyRequest("Hello Kakao!");
-        writeReplyRequest.setArticleId(5);
-        writeReplyRequest.setUserId("kakao");
-        writeReplyRequest.setWriter("champ");
+        WriteReplyRequest writeReplyRequest = new WriteReplyRequest.Builder().articleId(5)
+                                                                             .userId("kakao")
+                                                                             .writer("champ")
+                                                                             .contents("Hello Kakao!")
+                                                                             .build();
 
         // then
         assertThatNoException().isThrownBy(() -> replyAdapter.registerReply(writeReplyRequest));
@@ -39,10 +40,11 @@ class ReplyAdapterTest {
     @Test
     void postNullUserIdArticle() {
         // given
-        WriteReplyRequest writeReplyRequest = new WriteReplyRequest("Hello Kakao!");
-        writeReplyRequest.setArticleId(5);
-        writeReplyRequest.setUserId("");
-        writeReplyRequest.setWriter("champ");
+        WriteReplyRequest writeReplyRequest = new WriteReplyRequest.Builder().articleId(5)
+                                                                             .userId("")
+                                                                             .writer("champ")
+                                                                             .contents("Hello Kakao!")
+                                                                             .build();
 
         // then
         assertThatExceptionOfType(IllegalUserIdException.class)
@@ -53,10 +55,11 @@ class ReplyAdapterTest {
     @Test
     void postNullNameReply() {
         // given
-        WriteReplyRequest writeReplyRequest = new WriteReplyRequest("Hello Kakao!");
-        writeReplyRequest.setArticleId(5);
-        writeReplyRequest.setUserId("kakao");
-        writeReplyRequest.setWriter("");
+        WriteReplyRequest writeReplyRequest = new WriteReplyRequest.Builder().articleId(5)
+                                                                             .userId("kakao")
+                                                                             .writer("")
+                                                                             .contents("Hello Kakao!")
+                                                                             .build();
 
         // then
         assertThatExceptionOfType(IllegalWriterException.class)

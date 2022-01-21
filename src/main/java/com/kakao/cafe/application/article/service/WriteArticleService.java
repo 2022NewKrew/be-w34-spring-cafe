@@ -1,6 +1,6 @@
 package com.kakao.cafe.application.article.service;
 
-import com.kakao.cafe.application.article.dto.WriteRequest;
+import com.kakao.cafe.application.article.dto.WriteArticleRequest;
 import com.kakao.cafe.application.article.port.in.WriteArticleUseCase;
 import com.kakao.cafe.application.article.port.out.RegisterArticlePort;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
@@ -17,8 +17,8 @@ public class WriteArticleService implements WriteArticleUseCase {
     }
 
     @Override
-    public void writeArticle(WriteRequest writeRequest)
+    public void writeArticle(WriteArticleRequest writeArticleRequest)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException, IllegalUserIdException {
-        registerArticlePort.registerArticle(writeRequest);
+        registerArticlePort.registerArticle(writeArticleRequest);
     }
 }
