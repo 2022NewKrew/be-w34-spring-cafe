@@ -78,7 +78,7 @@ public class ArticleController {
     }
 
     @PutMapping("/articles/{articleId}")
-    public String updateArticle(@PathVariable Long articleId, String title, String contents, @LoginCheck SessionUser sessionUser){
+    public String amendArticle(@PathVariable Long articleId, String title, String contents, @LoginCheck SessionUser sessionUser){
         ArticleResponse articleResponse = articleService.findArticleById(articleId);
         ArticleUpdateDto articleUpdateDto = ArticleUpdateDto.builder()
                 .articleId(articleId)

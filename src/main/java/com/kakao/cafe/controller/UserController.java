@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute UserUpdateReqDto userUpdateReqDto, HttpSession session) {
+    public String amendUser(@PathVariable Long id, @ModelAttribute UserUpdateReqDto userUpdateReqDto, HttpSession session) {
         userUpdateReqDto.setId(id);
         userService.modifyUser(userUpdateReqDto);
         session.setAttribute("sessionedUser", userService.findUserById(id));

@@ -17,7 +17,7 @@ public class JdbcUserRepository implements UserRepository{
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void save(User user) {
+    public void insert(User user) {
         jdbcTemplate.update("INSERT INTO users (USERID, PASSWORD, NAME, EMAIL) VALUES ( ?, ?, ?, ?)",
                 user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
@@ -29,19 +29,19 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<User> selectById(Long id) {
         List<User> result =  jdbcTemplate.query("SELECT * FROM users WHERE id = ?", userRowMapper(), id);
         return result.stream().findAny();
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
+    public Optional<User> selectByUserId(String userId) {
         List<User> result =  jdbcTemplate.query("SELECT * FROM users WHERE userId = ?", userRowMapper(), userId);
         return result.stream().findAny();
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> selectAll() {
         return jdbcTemplate.query("SELECT * FROM users", userRowMapper());
     }
 

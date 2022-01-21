@@ -37,11 +37,11 @@ public class UserServiceImpl implements UserService{
                 .email(userRequest.getEmail())
                 .name(userRequest.getName())
                 .build();
-        userRepository.save(user);
+        userRepository.insert(user);
     }
 
     private void validateDuplicateUser(UserRequest userRequest) {
-        userRepository.findByUserId(userRequest.getUserId())
+        userRepository.selectByUserId(userRequest.getUserId())
                 .ifPresent(m -> {
                     throw new DuplicatedUserException("이미 존재하는 회원입니다.");
                 });
@@ -49,20 +49,20 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<UserResponse> findUsers(){
-        return userRepository.findAll().stream()
+        return userRepository.selectAll().stream()
                 .map(UserResponse::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     public UserResponse findUserById(Long id){
-        return new UserResponse(userRepository.findById(id)
+        return new UserResponse(userRepository.selectById(id)
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다.")));
     }
 
     @Override
     public void modifyUser(UserUpdateReqDto userUpdateReqDto) {
-        User user = userRepository.findById(userUpdateReqDto.getId())
+        User user = userRepository.selectById(userUpdateReqDto.getId())
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
 
         validatePassword(userUpdateReqDto.getPassword(), user.getPassword());
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserResponse login(UserRequest userRequest) {
-        User user = userRepository.findByUserId(userRequest.getUserId())
+        User user = userRepository.selectByUserId(userRequest.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
         validatePassword(userRequest.getPassword(), user.getPassword());
 
