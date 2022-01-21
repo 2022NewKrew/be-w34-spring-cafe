@@ -61,7 +61,7 @@ public class Article {
 
     public void validateAccessDeleteArticle(Long userFK) {
         if (userFK != this.userFk) {
-            throw new AccessDeniedException("해당 게시물을 수정 할 수 있는 권한이 없습니다.");
+            throw new AccessDeniedException("해당 게시물을 삭제 할 수 있는 권한이 없습니다.");
         }
     }
 }

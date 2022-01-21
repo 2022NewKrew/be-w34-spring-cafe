@@ -63,6 +63,7 @@ public class UserController {
     public String login(LoginDTO loginDTO, HttpSession session) {
         checkLoginStatus(session);
         userService.login(loginDTO.getUserId(), loginDTO.getPassword());
+        session.setAttribute("sessionOfUser", loginDTO.getUserId());
         String dest = (String) session.getAttribute("dest");
         String redirect = (dest == null) ? "/" : dest;
         return "redirect:" + redirect;
