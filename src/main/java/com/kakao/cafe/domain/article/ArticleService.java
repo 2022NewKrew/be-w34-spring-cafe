@@ -39,12 +39,6 @@ public class ArticleService {
         return article;
     }
 
-    // ArticleRowDataDto 를 Article로 변환
-    private Article articleOf(ArticleRowDataDto articleRowDataDto) {
-        String writerUserId = getWriterUserIdFromLongID(articleRowDataDto.getWriterId());
-        return Article.of(articleRowDataDto, writerUserId);
-    }
-
     // param: userId(string)
     // return: user의 pk id(Long)
     private Long getWriterLongIdFromUserId(String userId){
@@ -53,44 +47,44 @@ public class ArticleService {
 
     // param: user의 pk id(Long)
     // return: userId(string)
-    private String getWriterUserIdFromLongID(Long id){
-        return userRepository.findById(id).orElseThrow(() -> {throw new NoSuchElementException("해당 아이디의 유저가 없습니다.");}).getUserId();
+    private String getWriterUserIdFromLongID(Long userLongid){
+        return userRepository.findById(userLongid).orElseThrow(() -> {throw new NoSuchElementException("해당 아이디의 유저가 없습니다.");}).getUserId();
     }
-
 
     public List<Article> getAllArticle(){
         return articleRepository.findAll().stream()
-                .map(this::articleOf)
+                .map(Article::of)
                 .collect(Collectors.toList());
     }
 
-    public Article getArticle(Long id){
-        return articleOf(articleRepository.findById(id).orElseThrow(NoSuchArticleException::new));
+    public Article getArticle(Long articleId){
+        return Article.of(articleRepository.findById(articleId).orElseThrow(NoSuchArticleException::new));
     }
 
-    public Article getArticle(Long id, User user) {
-        Article findArticle = checkUserPermission(id, user);
+    public Article getArticle(Long articleId, User user) {
+        Article findArticle = checkUserPermission(articleId, user);
         return findArticle;
     }
 
     // Article id 와 session의 user로 article의 작성자인지 확인 후 Article 객체를 반환
-    private Article checkUserPermission(Long id, User user) {
-        Article findArticle = articleOf(articleRepository.findById(id).orElseThrow(NoSuchArticleException::new));
-        if (!user.getUserId().equals(findArticle.getWriterUserId())) { throw new NoPermissionException(); }
-        return findArticle;
+    private Article checkUserPermission(Long articleId, User user) {
+        ArticleRowDataDto findArticleDto = articleRepository.findById(articleId).orElseThrow(NoSuchArticleException::new);
+        if (!user.getId().equals(findArticleDto.getWriterId())) { throw new NoPermissionException(); }
+        return Article.of(findArticleDto);
     }
 
+    // Repository에서 join 한 row 들을 담는 DTO
     public ArticleWithComment getArticleWithComment(Long id) {
         List<ArticleAndCommentRawDataDto> dtos = articleRepository.findWithCommentById(id);
         if (dtos.size() == 0) { throw new NoSuchArticleException(); }
-
         return ArticleWithComment.from(dtos);
     }
 
-    public Article updateArticle(Article updateArticle, User user) {
+    public boolean updateArticle(Article updateArticle, User user) {
         checkUserPermission(updateArticle.getId(), user);
         ArticleRowDataDto articleRowDataDto = ArticleRowDataDto.from(updateArticle, user.getId());
-        return articleOf(articleRepository.update(articleRowDataDto));
+        if (articleRepository.update(articleRowDataDto) <= 0) { throw new RuntimeException("업데이트에 실패했습니다."); }
+        return true;
     }
 
     public boolean deleteArticle(Long articleId, User user) {

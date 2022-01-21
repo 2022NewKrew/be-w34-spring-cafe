@@ -11,11 +11,9 @@ public interface ArticleRepository {
 
     Optional<ArticleRowDataDto> findById(Long id);
 
-    Optional<ArticleRowDataDto> findByWriter(String writer);
-
     List<ArticleRowDataDto> findAll();
 
-    ArticleRowDataDto update(ArticleRowDataDto article);
+    int update(ArticleRowDataDto article);
 
     boolean deleteById(Long id);
 

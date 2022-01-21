@@ -23,8 +23,6 @@ public class CommentService {
 
     private void checkUserPermission(Long commentId, User user) {
         CommentRawDataDto findCommentRawDataDto = commentRepository.findById(commentId).orElseThrow(NoSuchCommentException::new);
-        System.out.println("findCommentRawDataDto.getWriterLongId(): " + findCommentRawDataDto.getWriterLongId());
-        System.out.println("user.getId(): " + user.getId());
         if (!user.getId().equals(findCommentRawDataDto.getWriterLongId())) { throw new NoPermissionException(); }
     }
 }

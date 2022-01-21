@@ -53,14 +53,12 @@ public class ArticleController {
 
     // article 자세히 보기
     @GetMapping("/{id}")
-    public String showArticle(@PathVariable Long id, @SessionAttribute("sessionedUser") User user,Model model){
+    public String showArticle(@PathVariable Long id, @SessionAttribute("sessionedUser") User user, Model model){
         logger.info("GET /{id}");
+        // article 과 List<Comment> 를 모두 가지고 있는 ArticleWithComment 객체
         ArticleWithComment articleWithComment = articleService.getArticleWithComment(id);
-        ArticleWithCommentResponseDto dto = ArticleWithCommentResponseDto.from(articleWithComment);
-
-        if (user.getUserId().equals(dto.getWriterUserId())) { dto.setIsWriter(true); }
-        dto.getCommentResponseDtoList().stream()
-                        .forEach(comment -> comment.setIsWriter(user.getUserId()));
+        // article 과 각 comment 에 isWriter 값을 가지도록 한 ReponseDto(view에서 수정, 삭제 버튼 노출을 위해)
+        ArticleWithCommentResponseDto dto = ArticleWithCommentResponseDto.from(articleWithComment, user);
 
         model.addAttribute("articleWithCommentResponseDto", dto);
         return "article/show";
@@ -79,7 +77,7 @@ public class ArticleController {
     public String updateArticle(@PathVariable Long id, @SessionAttribute("sessionedUser") User user, ArticleForm articleForm) {
         Article updateArticle = Article.of(articleForm);
         updateArticle.setId(id);
-        updateArticle = articleService.updateArticle(updateArticle, user);
+        articleService.updateArticle(updateArticle, user);
         return "redirect:/articles/{id}";
     }
 

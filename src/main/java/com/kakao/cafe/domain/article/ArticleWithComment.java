@@ -2,13 +2,12 @@ package com.kakao.cafe.domain.article;
 
 import com.kakao.cafe.domain.article.dto.ArticleAndCommentRawDataDto;
 import com.kakao.cafe.domain.comment.Comment;
-import com.kakao.cafe.domain.comment.dto.CommentRawDataDto;
-import lombok.Builder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// article 과 List<Comment> 를 모두 가지고 있는 ArticleWithComment 객체
 public class ArticleWithComment extends Article{
 
     public ArticleWithComment() {

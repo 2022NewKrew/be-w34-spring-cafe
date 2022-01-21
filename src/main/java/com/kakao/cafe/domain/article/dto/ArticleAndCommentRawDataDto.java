@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+// Repository에서 join 한 row 들을 담는 DTO
 @Getter
 @Setter
 public class ArticleAndCommentRawDataDto {

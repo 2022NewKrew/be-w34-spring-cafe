@@ -4,9 +4,9 @@ import com.kakao.cafe.domain.comment.Comment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
 
+// 각 comment 에 isWriter 값을 가지도록 한 ReponseDto(view에서 수정, 삭제 버튼 노출을 위해)
 @Getter
 @Setter
 public class CommentResponseDto {
