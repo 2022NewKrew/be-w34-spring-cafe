@@ -44,7 +44,7 @@ public class SpringJdbcPostRepository implements PostRepository {
 
     @Override
     public List<Post> getAll() {
-        return jdbcTemplate.query("SELECT * FROM thread WHERE status = ? AND type = ?", postRowMapper(), ThreadStatus.VALID.name(), ThreadType.POST.name());
+        return jdbcTemplate.query("SELECT * FROM thread WHERE status = ? AND type = ? ORDER BY created_at DESC", postRowMapper(), ThreadStatus.VALID.name(), ThreadType.POST.name());
     }
 
     @Override
