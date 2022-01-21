@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-@Transactional(readOnly = true)
 public class ArticleRepositoryImpl implements ArticleRepository{
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -22,7 +21,6 @@ public class ArticleRepositoryImpl implements ArticleRepository{
     }
 
     @Override
-    @Transactional
     public Article save(Article article) {
         String sql = "INSERT INTO ARTICLE (TITLE, CONTENT, CREATED_TIME, VIEWS, WRITER)" +
                     "VALUES (:title, :content, :createdTime, :views, :writer)";
@@ -41,7 +39,7 @@ public class ArticleRepositoryImpl implements ArticleRepository{
 
     @Override
     public List<Article> findAll() {
-        String sql = "SELECT A.ARTICLE_ID AS ID, " +
+        String sql = "SELECT A.ARTICLE_ID AS ARTICLE_ID, " +
                 "A.TITLE AS TITLE, " +
                 "A.CONTENT AS CONTENT, " +
                 "A.CREATED_TIME AS CREATED_TIME," +
@@ -59,7 +57,7 @@ public class ArticleRepositoryImpl implements ArticleRepository{
 
     @Override
     public Article findById(String articleId) {
-        String sql = "SELECT A.ARTICLE_ID AS ID, " +
+        String sql = "SELECT A.ARTICLE_ID AS ARTICLE_ID, " +
                 "A.TITLE AS TITLE, " +
                 "A.CONTENT AS CONTENT, " +
                 "A.CREATED_TIME AS CREATED_TIME," +
