@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,18 +15,19 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@Disabled
 class PostControllerTest {
 
     private static final String userId = "testUserId";
     private static final String title = "testTitle";
     private static final String content = "testUserId";
+    MockHttpSession session = new MockHttpSession();
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,6 +47,7 @@ class PostControllerTest {
                 .andExpect(redirectedUrl("/users"));
 
         mockMvc.perform(post("/users/login")
+                        .session(session)
                         .param("userId", userId)
                         .param("password", password))
                 .andExpect(status().is3xxRedirection())
@@ -57,6 +58,7 @@ class PostControllerTest {
     @DisplayName("[성공] 게시글 작성")
     void write() throws Exception {
         mockMvc.perform(post("/posts")
+                        .session(session)
                         .param("title", title)
                         .param("content", content))
                 .andExpect(status().is3xxRedirection())
@@ -64,11 +66,11 @@ class PostControllerTest {
     }
 
     @DisplayName("[실패] 게시글 작성 - Null 입력")
-    @ParameterizedTest(name = "{0}, {1}, {2}")
-    @CsvSource(value = {"null, title, content", "userId, null, content", "userId, title, null"}, nullValues = {"null"})
-    void write_FailedBy_Null(String userId, String title, String content) throws Exception {
+    @ParameterizedTest(name = "{0}, {1}")
+    @CsvSource(value = {"null, content", "title, null", "null, null"}, nullValues = {"null"})
+    void write_FailedBy_Null(String title, String content) throws Exception {
         mockMvc.perform(post("/posts")
-                        .param("userId", userId)
+                        .session(session)
                         .param("title", title)
                         .param("content", content))
                 .andExpect(status().isBadRequest())
@@ -76,11 +78,11 @@ class PostControllerTest {
     }
 
     @DisplayName("[실패] 게시글 작성 - 빈 문자열")
-    @ParameterizedTest(name = "{0}, {1}, {2}")
-    @CsvSource(value = {"'', title, content", "userId, '', content", "userId, title, ''"}, nullValues = {"null"})
-    void write_FailedBy_EmptyString(String userId, String title, String content) throws Exception {
+    @ParameterizedTest(name = "{0}, {1}")
+    @CsvSource(value = {"'', content", "title, ''", "'', ''"}, nullValues = {"null"})
+    void write_FailedBy_EmptyString(String title, String content) throws Exception {
         mockMvc.perform(post("/posts")
-                        .param("userId", userId)
+                        .session(session)
                         .param("title", title)
                         .param("content", content))
                 .andExpect(status().isBadRequest())
@@ -91,7 +93,7 @@ class PostControllerTest {
     @DisplayName("[성공] 게시글 목록")
     void postList() throws Exception {
         mockMvc.perform(post("/posts")
-                        .param("userId", userId)
+                        .session(session)
                         .param("title", title)
                         .param("content", content))
                 .andExpect(status().is3xxRedirection())
@@ -116,13 +118,14 @@ class PostControllerTest {
         int postId = 1;
 
         mockMvc.perform(post("/posts")
-                        .param("userId", userId)
+                        .session(session)
                         .param("title", title)
                         .param("content", content))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
 
-        mockMvc.perform(get("/posts/" + postId))
+        mockMvc.perform(get("/posts/" + postId)
+                        .session(session))
                 .andExpect(status().isOk())
                 .andExpect(view().name("post/show"));
     }
@@ -132,13 +135,14 @@ class PostControllerTest {
     @ValueSource(ints = {-1, 0, 2, 999})
     void postById_FailedBy_NotExistPostId(int invalidPostId) throws Exception {
         mockMvc.perform(post("/posts")
-                        .param("userId", userId)
+                        .session(session)
                         .param("title", title)
                         .param("content", content))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
 
-        mockMvc.perform(get("/posts/" + invalidPostId))
+        mockMvc.perform(get("/posts/" + invalidPostId)
+                        .session(session))
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("errors/error"));
     }
