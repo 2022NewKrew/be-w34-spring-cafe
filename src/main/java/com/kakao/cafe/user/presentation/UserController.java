@@ -1,11 +1,11 @@
 package com.kakao.cafe.user.presentation;
 
 import com.kakao.cafe.user.application.UserService;
-import com.kakao.cafe.user.domain.SessionedUser;
 import com.kakao.cafe.user.application.dto.UserListResponse;
 import com.kakao.cafe.user.application.dto.UserProfileResponse;
 import com.kakao.cafe.user.application.dto.UserSaveRequest;
 import com.kakao.cafe.user.application.dto.UserUpdateRequest;
+import com.kakao.cafe.user.domain.SessionedUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -57,8 +57,8 @@ public class UserController {
     public ModelAndView findFormById(
             @PathVariable String userId,
             Map<String, Object> model,
-            HttpSession session)
-    {
+            HttpSession session
+    ) {
         log.info(this.getClass() + ": 개인정보 수정 폼");
         Object value = session.getAttribute("sessionedUser");
         if (value == null) {

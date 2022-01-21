@@ -6,8 +6,10 @@ import com.kakao.cafe.article.application.dto.ArticleShowResponse;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleRepository;
 import com.kakao.cafe.article.infra.ArticleJdbcRepository;
-import com.kakao.cafe.comment.application.CommentService;
 import com.kakao.cafe.comment.application.dto.CommentListResponse;
+import com.kakao.cafe.comment.domain.Comment;
+import com.kakao.cafe.comment.domain.CommentRepository;
+import com.kakao.cafe.comment.infra.CommentJdbcRepository;
 import com.kakao.cafe.common.exception.EntityNotFoundException;
 import com.kakao.cafe.user.application.UserService;
 import com.kakao.cafe.user.domain.SessionedUser;
@@ -22,17 +24,18 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ArticleService {
     private final ArticleRepository articleRepository;
+    private final CommentRepository commentRepository;
+
     private final UserService userService;
-    private final CommentService commentService;
 
     public ArticleService(
             ArticleJdbcRepository articleJdbcRepository,
             UserService userService,
-            CommentService commentService
+            CommentJdbcRepository commentJdbcRepository
     ) {
         this.articleRepository = articleJdbcRepository;
+        this.commentRepository = commentJdbcRepository;
         this.userService = userService;
-        this.commentService = commentService;
     }
 
     @Transactional
@@ -50,7 +53,13 @@ public class ArticleService {
         log.info(this.getClass() + ": 게시글 목록");
         List<Article> articles = articleRepository.findAll();
 
-        return articles.stream().map(ArticleListResponse::valueOf).collect(Collectors.toList());
+        return articles.stream()
+                .map(article -> {
+                    int articleId = article.getId();
+                    List<Comment> comments = commentRepository.findAllByArticleId(articleId);
+                    return ArticleListResponse.valueOf(article, comments.size());
+                })
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -59,7 +68,10 @@ public class ArticleService {
         Article article = articleRepository.findByIdOrNull(articleId);
         validateArticleExists(article, articleId);
 
-        List<CommentListResponse> commentListResponses = commentService.findAllByArticleId(articleId);
+        List<CommentListResponse> commentListResponses = commentRepository.findAllByArticleId(articleId).stream()
+                .map(CommentListResponse::valueOf)
+                .collect(Collectors.toList());
+
         return ArticleShowResponse.valueOf(article, commentListResponses);
     }
 

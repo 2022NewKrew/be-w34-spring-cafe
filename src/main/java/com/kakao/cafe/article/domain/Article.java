@@ -57,7 +57,7 @@ public class Article {
         if (title.trim().length() == 0) {
             throw new IllegalArgumentException(VALUE_LENGTH_LOWERBOUND_EXCEPTION + "\nreason: title");
         }
-        if(title.length() > TITLE_LENGTH_UPPERBOUND) {
+        if (title.length() > TITLE_LENGTH_UPPERBOUND) {
             throw new IllegalArgumentException(ARTICLE_TITLE_LENGTH_UPPERBOUND_EXCEPTION);
         }
     }
