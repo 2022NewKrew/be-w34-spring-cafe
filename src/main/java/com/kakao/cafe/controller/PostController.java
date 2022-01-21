@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.Dto.Login.LoginAuthDto;
+import com.kakao.cafe.Dto.Post.DetailedPostResponseDto;
 import com.kakao.cafe.Service.PostService;
 import com.kakao.cafe.Dto.Post.PostRequestDto;
 import com.kakao.cafe.Dto.Post.PostResponseDto;
@@ -48,7 +49,7 @@ public class PostController {
         LoginAuthDto authInfo = (LoginAuthDto) session.getAttribute("authInfo");
         postService.chkLogin(authInfo);
 
-        PostResponseDto post = postService.findPostById(id);
+        DetailedPostResponseDto post = postService.findDetailedPostById(id);
         model.addAttribute("post", post);
 
         return "qna/show";

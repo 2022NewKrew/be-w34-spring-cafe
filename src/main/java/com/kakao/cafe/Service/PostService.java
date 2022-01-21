@@ -1,11 +1,14 @@
 package com.kakao.cafe.Service;
 
 import com.kakao.cafe.Dto.Login.LoginAuthDto;
+import com.kakao.cafe.Dto.Post.DetailedPostResponseDto;
+import com.kakao.cafe.Dto.Reply.ReplyResponseDto;
 import com.kakao.cafe.Exception.NotAuthorizedException;
 import com.kakao.cafe.Exception.NotLoginException;
 import com.kakao.cafe.Repository.PostDao;
 import com.kakao.cafe.Dto.Post.PostRequestDto;
 import com.kakao.cafe.Dto.Post.PostResponseDto;
+import com.kakao.cafe.Repository.ReplyDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class PostService {
     private final PostDao postDao;
+    private final ReplyDao replyDao;
 
     public void createQuestion(PostRequestDto post) {
         postDao.insert(post);
@@ -27,6 +31,12 @@ public class PostService {
 
     public PostResponseDto findPostById(int id) {
         return postDao.findById(id);
+    }
+
+    public DetailedPostResponseDto findDetailedPostById(int id) {
+        PostResponseDto post = postDao.findById(id);
+        List<ReplyResponseDto> replyList = replyDao.findByPostId(id);
+        return new DetailedPostResponseDto(post, replyList);
     }
 
     public void editQuestion(int id, PostRequestDto post) {
