@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
+    private final Validator validator;
 
     @PostMapping("")
     public String createUser(@Valid @ModelAttribute UserJoinForm userDto, BindingResult bindingResult, Model model) {
