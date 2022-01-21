@@ -22,13 +22,13 @@ public class ArticleRowMapper implements RowMapper<Article> {
 
     @Override
     public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
-        UUID id = rs.getObject("articles_id", UUID.class);
+        UUID id = UUID.fromString(rs.getString("articles_id"));
         Title title = new Title(rs.getString("title"));
         Content content = new Content(rs.getString("content"));
         LocalDateTime createdAt = rs.getObject("created_at", LocalDateTime.class);
         ViewCount viewCount = new ViewCount(rs.getInt("view_count"));
         Deleted deleted = Deleted.from(rs.getBoolean("deleted"));
-        UUID users_id = rs.getObject("users_id", UUID.class);
+        UUID users_id = UUID.fromString(rs.getString("users_id"));
         UserName userName = new UserName(rs.getString("username"));
         Password password = new Password(rs.getString("password"));
         Name name = new Name(rs.getString("name"));

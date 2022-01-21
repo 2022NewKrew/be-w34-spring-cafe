@@ -22,7 +22,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        jdbcTemplate.update("INSERT INTO articles (title, content, users_id) VALUES (?, ?, ?)",
+        jdbcTemplate.update("INSERT INTO articles (title, content, users_id) VALUES (?, ?, UUID_TO_BIN(?))",
                 article.getTitle().getValue(),
                 article.getContent().getValue(),
                 article.getWriter().getId().toString());
@@ -30,17 +30,39 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("SELECT * FROM "
-                + "articles INNER JOIN users USING(users_id) "
+        return jdbcTemplate.query("SELECT " +
+                "BIN_TO_UUID(articles_id) as articles_id, " +
+                "title, " +
+                "content, " +
+                "created_at, " +
+                "view_count, " +
+                "deleted, " +
+                "BIN_TO_UUID(users_id) as users_id, " +
+                "username, " +
+                "password, " +
+                "name, " +
+                "email " +
+                "FROM articles INNER JOIN users USING(users_id) "
                 + "WHERE deleted = FALSE", rowMapper);
     }
 
     @Override
     public Optional<Article> findArticleById(UUID id) {
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM "
-                    + "articles INNER JOIN users USING(users_id) "
-                    + "WHERE articles_id = ? AND deleted = FALSE", rowMapper, id.toString()));
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT " +
+                    "BIN_TO_UUID(articles_id) as articles_id, " +
+                    "title, " +
+                    "content, " +
+                    "created_at, " +
+                    "view_count, " +
+                    "deleted, " +
+                    "BIN_TO_UUID(users_id) as users_id, " +
+                    "username, " +
+                    "password, " +
+                    "name, " +
+                    "email " +
+                    "FROM articles INNER JOIN users USING(users_id) "
+                    + "WHERE articles_id = UUID_TO_BIN(?) AND deleted = FALSE", rowMapper, id.toString()));
         } catch (EmptyResultDataAccessException exception) {
             return Optional.empty();
         }
@@ -49,14 +71,14 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public void increaseViewCount(Article article) {
         jdbcTemplate.update("UPDATE articles SET view_count = view_count + 1 "
-                        + "WHERE articles_id = ?",
+                        + "WHERE articles_id = UUID_TO_BIN(?)",
                 article.getArticleId().toString());
     }
 
     @Override
     public void update(Article article) {
         jdbcTemplate.update("UPDATE articles SET title = ?, content = ? "
-                + "WHERE articles_id = ?",
+                + "WHERE articles_id = UUID_TO_BIN(?)",
                 article.getTitle().getValue(),
                 article.getContent().getValue(),
                 article.getArticleId().toString());
@@ -65,7 +87,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public void delete(Article article) {
         jdbcTemplate.update("UPDATE articles SET deleted = TRUE "
-                        + "WHERE articles_id = ?",
+                        + "WHERE articles_id = UUID_TO_BIN(?)",
                 article.getArticleId().toString());
     }
 }

@@ -40,14 +40,24 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("SELECT * FROM users", rowMapper);
+        return jdbcTemplate.query("SELECT " +
+                "BIN_TO_UUID(users_id) as users_id, " +
+                "username, " +
+                "password, " +
+                "name, " +
+                "email FROM users", rowMapper);
     }
 
     @Override
     public Optional<User> findUserById(UUID id) {
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * "
-                    + "FROM users WHERE users_id = ?", rowMapper, id.toString()));
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT " +
+                    "BIN_TO_UUID(users_id) as users_id, " +
+                    "username, " +
+                    "password, " +
+                    "name, " +
+                    "email FROM users " +
+                    "WHERE users_id = UUID_TO_BIN(?)", rowMapper, id.toString()));
         } catch (EmptyResultDataAccessException exception) {
             return Optional.empty();
         }
@@ -56,7 +66,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public void update(User user) {
         jdbcTemplate.update("UPDATE users SET name = ?, email = ? "
-                        + "WHERE users_id = ?",
+                        + "WHERE users_id = UUID_TO_BIN(?)",
                 user.getName().getValue(),
                 user.getEmail().getValue(),
                 user.getId().toString());
@@ -65,9 +75,13 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public Optional<User> findUserByUserNameAndPassword(UserName userName, Password password) {
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * "
-                    + "FROM users "
-                    + "WHERE username = ? AND password = ?", rowMapper, userName.getValue(), password.getValue()));
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT " +
+                    "BIN_TO_UUID(users_id) as users_id, " +
+                    "username, " +
+                    "password, " +
+                    "name, " +
+                    "email FROM users " +
+                    "WHERE username = ? AND password = ?", rowMapper, userName.getValue(), password.getValue()));
         } catch (EmptyResultDataAccessException exception) {
             return Optional.empty();
         }

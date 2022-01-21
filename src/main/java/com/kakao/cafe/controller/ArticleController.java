@@ -115,9 +115,12 @@ public class ArticleController {
 
     @LoginRequired
     @DeleteMapping("/articles/{articleId}/replies/{replyId}")
-    public String requestReplyDelete(@PathVariable UUID articleId, @PathVariable UUID replyId, HttpSession session) {
+    public String requestReplyDelete(@PathVariable UUID articleId, @PathVariable String replyId, HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
-        replyService.deleteReplyByIdAndAuthor(replyId, user);
+        System.out.println(replyId);
+        UUID replyUuid = UUID.fromString(replyId);
+        System.out.println(replyUuid);
+        replyService.deleteReplyByIdAndAuthor(replyUuid, user);
         return String.format("redirect:/articles/%s", articleId.toString());
     }
 }

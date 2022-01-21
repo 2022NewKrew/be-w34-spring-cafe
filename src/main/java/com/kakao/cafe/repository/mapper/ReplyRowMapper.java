@@ -20,12 +20,12 @@ public class ReplyRowMapper implements RowMapper<Reply> {
 
     @Override
     public Reply mapRow(ResultSet rs, int rowNum) throws SQLException {
-        UUID replyId = rs.getObject("replies_id", UUID.class);
+        UUID replyId = UUID.fromString(rs.getString("replies_id"));
         Comment comment = new Comment(rs.getString("comment"));
         LocalDateTime createdAt = rs.getObject("created_at", LocalDateTime.class);
         Deleted deleted = Deleted.from(rs.getBoolean("deleted"));
-        UUID articleId = rs.getObject("articles_id", UUID.class);
-        UUID users_id = rs.getObject("users_id", UUID.class);
+        UUID articleId = UUID.fromString(rs.getString("articles_id"));
+        UUID users_id = UUID.fromString(rs.getString("users_id"));
         UserName userName = new UserName(rs.getString("username"));
         Password password = new Password(rs.getString("password"));
         Name name = new Name(rs.getString("name"));
