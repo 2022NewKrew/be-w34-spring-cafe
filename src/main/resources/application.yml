@@ -1,12 +1,11 @@
 spring:
+  config:
+    import: vault://secret/2022-kakao-newkrew-tech-onboarding-test/test/datasource
+
   mustache:
     suffix: .html
     cache: false
     expose-session-attributes: true
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cafe
 
   h2:
     console:
@@ -21,6 +20,26 @@ spring:
       mode: always
       schema-locations: classpath:sql/schema.sql
       data-locations: classpath:sql/data.sql
+  cloud:
+    vault:
+      host: vault-beta.daumkakao.io
+      port: 443
+      authentication: approle
+      app-role:
+        role-id: foo #credentials
+        secret-id: bar #credentials
+      fail-fast: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${url}
+    username: ${username}
+    password: ${password}
+
+management:
+  health:
+    refresh:
+      enabled: false
 
 server:
   servlet:
