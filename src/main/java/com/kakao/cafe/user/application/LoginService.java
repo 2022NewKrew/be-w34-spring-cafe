@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class LoginService {
     private final UserRepository userRepository;
 
-    public void login(String userId, String password){
+    public User login(String userId, String password){
         User user = userRepository.getUser(userId).orElseThrow(
                 () -> new IllegalArgumentException("해당하는 유저가 없습니다.")
         );
@@ -18,5 +18,7 @@ public class LoginService {
         if(!user.match(password)){
             throw new IllegalArgumentException("패스워드가 맞지 않습니다.");
         }
+
+        return user;
     }
 }

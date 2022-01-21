@@ -114,7 +114,7 @@ class PostRepositoryTest extends JdbcRepositoryTest {
         //when
         postRepository.softDelete(deletedPost.getId());
         Optional<Post> actualDeleted = postRepository.getPost(deletedPost.getId());
-        List<Post> remainedPosts = postRepository.getPosts(0, posts.size());
+        List<Post> remainedPosts = postRepository.getPosts(0, posts.size()-1);
 
         //then
         assertThat(actualDeleted.isEmpty()).isEqualTo(true);

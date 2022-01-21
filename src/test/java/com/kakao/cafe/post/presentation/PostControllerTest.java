@@ -1,6 +1,7 @@
 package com.kakao.cafe.post.presentation;
 
 import com.kakao.cafe.ControllerTest;
+import com.kakao.cafe.post.domain.entity.Comment;
 import com.kakao.cafe.post.domain.entity.Post;
 import com.kakao.cafe.post.presentation.dto.CommentRequest;
 import com.kakao.cafe.post.presentation.dto.PostDetailDto;
@@ -24,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PostControllerTest extends ControllerTest {
-
     @ParameterizedTest
     @DisplayName("하나의 게시글 상세 정보 가져오기 성공")
     @MethodSource("com.kakao.cafe.post.data.PostsData#getPostStream")
@@ -123,10 +123,32 @@ class PostControllerTest extends ControllerTest {
                 .session(session)
         );
 
+        //then
         actions.andExpect(status().is3xxRedirection());
         verify(deletePostService, times(1))
                 .softDelete(eq(post.getId()), any());
     }
+
+    @ParameterizedTest
+    @DisplayName("댓글 삭제 성공")
+    @MethodSource("com.kakao.cafe.post.data.PostsData#getPostStream")
+    void successDeleteComment(Post post) throws Exception {
+        //given
+        final MockHttpSession session = createMockSession("userId");
+        final Comment comment = post.getComments().get(0);
+
+        //when
+        final String url = String.format("/posts/%d/comment/%d", post.getId(), comment.getId());
+        final ResultActions actions = mockMvc.perform(delete(url)
+                .session(session)
+        );
+
+        //then
+        actions.andExpect(status().is3xxRedirection());
+        verify(deleteCommentService, times(1))
+                .deleteComment(eq(comment.getId()));
+    }
+
 
     private static User getUser(){
         return new User("userId", "pwd12345", new UserInfo("name", "email@naver.com"));

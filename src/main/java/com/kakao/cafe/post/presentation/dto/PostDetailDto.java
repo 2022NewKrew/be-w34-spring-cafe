@@ -14,5 +14,5 @@ public class PostDetailDto {
     private final String title;
     private final String content;
     private final String writerName;
-    private final List<String> comments;
+    private final List<CommentDto> comments;
 }

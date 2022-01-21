@@ -51,6 +51,9 @@ public abstract class ControllerTest {
     @MockBean
     protected AddCommentService commentService;
 
+    @MockBean
+    protected DeleteCommentService deleteCommentService;
+
     @Autowired
     protected ModelMapper modelMapper;
 }

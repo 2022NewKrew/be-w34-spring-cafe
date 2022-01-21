@@ -15,3 +15,4 @@ insert into comment(id, postId, writerName, content)
 values(20004,10002,'writer1','LGTM!');
 
 -- delete from COMMENT where ID=20004;
+-- delete from COMMENT where ID<0;
