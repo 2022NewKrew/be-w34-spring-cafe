@@ -131,15 +131,19 @@
                                     </ul>
                                 </div>
                             </article>
-                            <form class="submit-write">
+                            {{#article}}
+                            <a href="/articles/{{id}}/replies">답변 보기</a>
+                            <form name="question" method="post" action="/articles/{{id}}/replies">
                                 <div class="form-group" style="padding:14px;">
-                                    <textarea class="form-control"
+                                    <textarea class="form-control" id="body" name="body"
                                               placeholder="Update your status"></textarea>
                                 </div>
-                                <button class="btn btn-success pull-right" type="button">답변하기
+                                <button type="submit" class="btn btn-success clearfix pull-right">
+                                    답변하기
                                 </button>
                                 <div class="clearfix"/>
                             </form>
+                            {{/article}}
                         </div>
                     </div>
                 </div>

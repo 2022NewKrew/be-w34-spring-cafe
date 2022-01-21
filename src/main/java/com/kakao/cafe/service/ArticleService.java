@@ -56,6 +56,8 @@ public class ArticleService {
         }
 
         articleRepository.update(articleId, updateDTO.getTitle(), updateDTO.getBody());
+        logger.info("Update Article [ID : {}] :: Title {} Body {}", articleId, updateDTO.getTitle(),
+            updateDTO.getBody());
     }
 
     @Transactional(readOnly = true)
@@ -86,5 +88,6 @@ public class ArticleService {
         }
 
         articleRepository.delete(articleId);
+        logger.info("Delete Article [ID : {}]", articleId);
     }
 }

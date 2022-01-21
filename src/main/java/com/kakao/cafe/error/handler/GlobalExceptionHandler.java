@@ -6,6 +6,7 @@ import com.kakao.cafe.error.exception.AuthInvalidPasswordException;
 import com.kakao.cafe.error.exception.AuthInvalidUidException;
 import com.kakao.cafe.error.exception.BindingException;
 import com.kakao.cafe.error.exception.ForbiddenAccessException;
+import com.kakao.cafe.error.exception.ReplyNotFoundException;
 import com.kakao.cafe.error.exception.UserAlreadyExistsException;
 import com.kakao.cafe.error.exception.UserInvalidAuthInfoException;
 import com.kakao.cafe.error.exception.UserNotFoundException;
@@ -29,7 +30,8 @@ public class GlobalExceptionHandler {
         AuthInvalidUidException.class,
         AuthInvalidPasswordException.class,
         UserInvalidAuthInfoException.class,
-        ForbiddenAccessException.class})
+        ForbiddenAccessException.class,
+        ReplyNotFoundException.class})
     public ModelAndView handleGlobalException(RuntimeException e) {
         logger.error("{} {}", e.getClass().getName(), e.getMessage());
 
