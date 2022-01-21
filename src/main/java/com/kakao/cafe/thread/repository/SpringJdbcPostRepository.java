@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
+import static java.sql.Types.NULL;
+
 public class SpringJdbcPostRepository implements PostRepository {
     private final JdbcTemplate jdbcTemplate;
 
@@ -26,7 +28,8 @@ public class SpringJdbcPostRepository implements PostRepository {
             PreparedStatement ps = connection.prepareStatement(
                     "INSERT INTO thread (parent_id, author_id, title, content, status, type) VALUES (?, ?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setLong(1, post.getParentId());
+            // Post's parentId is set to null explicitly
+            ps.setNull(1, NULL);
             ps.setLong(2, post.getAuthorId());
             ps.setString(3, post.getTitle());
             ps.setString(4, post.getContent());
