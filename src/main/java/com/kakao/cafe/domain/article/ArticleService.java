@@ -3,6 +3,8 @@ package com.kakao.cafe.domain.article;
 import com.kakao.cafe.domain.article.dto.*;
 import com.kakao.cafe.domain.article.reply.Reply;
 import com.kakao.cafe.domain.article.reply.ReplyService;
+import com.kakao.cafe.util.Paging;
+import com.kakao.cafe.util.PagingRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,6 +74,13 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public List<ArticleSimpleResponseDto> retrieveAllArticles() {
         return articleRepository.findAll().stream().map(ArticleSimpleResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Paging<ArticleSimpleResponseDto> retrievePagingOfArticles(PagingRequest pagingRequest) {
+        Paging<Article> articles = articleRepository.findByPageRequest(pagingRequest);
+        List<ArticleSimpleResponseDto> responses = articles.getPagingList().stream().map(ArticleSimpleResponseDto::new).collect(Collectors.toList());
+        return new Paging<>(responses, articles.getLimit(), articles.getOffset(), articles.getTotal());
     }
 
     @Transactional(readOnly = true)

@@ -6,13 +6,15 @@ import com.kakao.cafe.domain.article.dto.ArticleSimpleResponseDto;
 import com.kakao.cafe.domain.user.UserService;
 import com.kakao.cafe.domain.user.dto.UserLoginRequestDto;
 import com.kakao.cafe.domain.user.dto.UserResponseDto;
+import com.kakao.cafe.util.Page;
+import com.kakao.cafe.util.Paging;
+import com.kakao.cafe.util.PagingRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 public class IndexController {
@@ -26,9 +28,9 @@ public class IndexController {
     }
 
     @GetMapping("/")
-    public String index(Model model) {
-        List<ArticleSimpleResponseDto> articles = articleService.retrieveAllArticles();
-        model.addAttribute("articles", articles);
+    public String index(Model model, @Page PagingRequest pagingRequest) {
+        Paging<ArticleSimpleResponseDto> pagingOfArticles = articleService.retrievePagingOfArticles(pagingRequest);
+        model.addAttribute("articles", pagingOfArticles);
         return "index";
     }
 

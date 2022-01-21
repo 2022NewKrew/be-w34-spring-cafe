@@ -3,6 +3,7 @@ package com.kakao.cafe.config;
 import com.kakao.cafe.controller.interceptor.AuthenticatedInterceptor;
 import com.kakao.cafe.controller.interceptor.LoggingInterceptor;
 import com.kakao.cafe.controller.interceptor.SessionUserArgumentResolver;
+import com.kakao.cafe.util.PageArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -25,6 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new SessionUserArgumentResolver());
+        resolvers.add(new PageArgumentResolver());
     }
 
     @Override

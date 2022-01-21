@@ -3,6 +3,8 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleRepository;
 import com.kakao.cafe.repository.mapper.ArticleMapper;
+import com.kakao.cafe.util.Paging;
+import com.kakao.cafe.util.PagingRequest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -37,6 +39,13 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query("SELECT * FROM ARTICLE WHERE is_deleted IS FALSE", rowMapper);
+    }
+
+    @Override
+    public Paging<Article> findByPageRequest(PagingRequest pagingRequest) {
+        int total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM ARTICLE WHERE is_deleted IS FALSE", Integer.class);
+        List<Article> articles = jdbcTemplate.query("SELECT * FROM ARTICLE WHERE is_deleted IS FALSE ORDER BY CREATED_AT DESC LIMIT ? OFFSET ?", rowMapper, pagingRequest.getLimit(), pagingRequest.getOffset());
+        return new Paging<>(articles, pagingRequest.getLimit(), pagingRequest.getOffset(), total);
     }
 
     @Override
