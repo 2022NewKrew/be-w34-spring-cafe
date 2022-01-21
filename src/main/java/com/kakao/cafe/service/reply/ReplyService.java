@@ -9,5 +9,6 @@ import java.util.List;
 public interface ReplyService {
     void addReply(ReplyRequest replyRequest);
     List<ReplyResponse> findReplies(Long articleId);
+    ReplyResponse findReplyById(Long replyId);
     void modifyReply(ReplyUpdateRequest replyUpdateRequest, Boolean removal);
 }

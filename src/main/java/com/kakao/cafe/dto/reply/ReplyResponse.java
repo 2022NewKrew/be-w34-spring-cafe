@@ -7,14 +7,14 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 public class ReplyResponse {
-    private Long id;
+    private Long replyId;
     private Long articleId;
     private String replyWriter;
     private String comments;
     private String createdAt;
 
     public ReplyResponse(Reply reply){
-        this.id = reply.getId();
+        this.replyId = reply.getId();
         this.articleId = reply.getArticleId();
         this.replyWriter = reply.getWriter();
         this.comments = reply.getContents();

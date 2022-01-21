@@ -5,6 +5,7 @@ import com.kakao.cafe.dto.reply.ReplyRequest;
 import com.kakao.cafe.dto.reply.ReplyResponse;
 import com.kakao.cafe.dto.reply.ReplyUpdateRequest;
 import com.kakao.cafe.repository.reply.ReplyRepository;
+import com.kakao.cafe.util.exception.ReplyNotFoundException;
 import com.kakao.cafe.util.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,16 +44,22 @@ public class ReplyServiceImpl implements ReplyService{
     }
 
     @Override
+    public ReplyResponse findReplyById(Long replyId) {
+        return new ReplyResponse(replyRepository.selectByReplyId(replyId)
+                .orElseThrow(() -> new ReplyNotFoundException("존재하지 않는 댓글입니다.")));
+    }
+
+    @Override
     public void modifyReply(ReplyUpdateRequest replyUpdateRequest, Boolean removal) {
         Reply reply = replyRepository.selectByReplyId(replyUpdateRequest.getId())
-                .orElseThrow(()-> new UserNotFoundException("존재하지 않는 댓글입니다."));
+                .orElseThrow(()-> new ReplyNotFoundException("존재하지 않는 댓글입니다."));
 
         replyRepository.update(Reply.builder()
                 .id(replyUpdateRequest.getId())
                 .articleId(replyUpdateRequest.getArticleId())
                 .writer(replyUpdateRequest.getWriter())
-                .contents(replyUpdateRequest.getContents())
-                .createdAt(replyUpdateRequest.getCreatedAt())
+                .contents(reply.getContents())
+                .createdAt(reply.getCreatedAt())
                 .deleted(removal)
                 .build());
 

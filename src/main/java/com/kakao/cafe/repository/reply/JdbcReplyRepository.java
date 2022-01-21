@@ -29,6 +29,7 @@ public class JdbcReplyRepository implements ReplyRepository {
     public List<Reply> selectAll(Long articleId) {
         return jdbcTemplate.query("SELECT * FROM replies", replyRowMapper()).stream()
                 .filter(reply -> reply.getArticleId().equals(articleId))
+                .filter(reply -> !reply.getDeleted())
                 .collect(Collectors.toList());
     }
 

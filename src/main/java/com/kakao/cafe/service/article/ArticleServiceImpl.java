@@ -31,25 +31,25 @@ public class ArticleServiceImpl implements ArticleService {
                 .contents(articleRequest.getContents())
                 .deleted(false)
                 .build();
-        articleRepository.save(article);
+        articleRepository.insert(article);
     }
 
     @Override
     public List<ArticleResponse> findArticles() {
-        return articleRepository.findAll().stream()
+        return articleRepository.selectAll().stream()
                 .map(ArticleResponse::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ArticleResponse findArticleById(Long articleId) {
-        return new ArticleResponse(articleRepository.findByArticleId(articleId)
+        return new ArticleResponse(articleRepository.selectByArticleId(articleId)
                 .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다.")));
     }
 
     @Override
     public void modifyArticle(ArticleUpdateDto articleUpdateDto, Boolean removal) {
-        Article article = articleRepository.findByArticleId(articleUpdateDto.getArticleId())
+        Article article = articleRepository.selectByArticleId(articleUpdateDto.getArticleId())
                 .orElseThrow(() -> new ArticleNotFoundException("존재하지 않는 게시글입니다."));
 
         articleRepository.update(Article.builder()
