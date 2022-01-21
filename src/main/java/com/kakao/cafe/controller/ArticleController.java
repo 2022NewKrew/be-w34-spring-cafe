@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.constants.Constants;
 import com.kakao.cafe.controller.dto.request.ArticleRegisterRequestDto;
 import com.kakao.cafe.controller.dto.request.ArticleUpdateRequestDto;
+import com.kakao.cafe.controller.dto.request.ReplyRegisterRequestDto;
 import com.kakao.cafe.controller.dto.response.ArticleQueryDetailResponseDto;
 import com.kakao.cafe.controller.dto.response.ArticleUpdateFormResponseDto;
 import com.kakao.cafe.controller.dto.session.UserLoginSession;
@@ -10,6 +11,7 @@ import com.kakao.cafe.controller.validator.OwnershipValidator;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.dto.ArticleUpdateDto;
+import com.kakao.cafe.service.dto.ReplyRegisterDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,13 @@ public class ArticleController {
         }
         articleService.register(articleRegisterRequestDto);
         return "redirect:/";
+    }
+
+    @PostMapping("/{id}/replys")
+    public String registerReply(@PathVariable Long id, ReplyRegisterRequestDto replyRegisterRequestDto) {
+        articleService.registerReply(new ReplyRegisterDto(id, replyRegisterRequestDto));
+
+        return "redirect:/articles/" + id;
     }
 
     @GetMapping("/{id}")
