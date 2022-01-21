@@ -7,6 +7,7 @@ import com.kakao.cafe.common.exception.data.ErrorCode;
 import com.kakao.cafe.common.session.SessionKeys;
 import com.kakao.cafe.controller.articles.dto.request.ArticleUpdateRequest;
 import com.kakao.cafe.controller.articles.dto.request.ArticleWriteRequest;
+import com.kakao.cafe.controller.articles.dto.request.ReplyWriteRequest;
 import com.kakao.cafe.controller.articles.dto.response.ReplyResponse;
 import com.kakao.cafe.controller.articles.mapper.ArticleViewMapper;
 import com.kakao.cafe.service.article.ArticleService;
@@ -90,5 +91,14 @@ public class ArticleController {
                          @SessionAttribute(name = SessionKeys.USER_IDENTIFICATION) UserIdentification loginInfo) {
         articleService.delete(articleId, loginInfo.getUserId());
         return "redirect:/";
+    }
+
+    @Auth
+    @PostMapping("/articles/{articleId}/replies")
+    public String writeReply(@PathVariable Long articleId,
+                             @RequestParam(value="comment") String comment,
+                             @SessionAttribute(name = SessionKeys.USER_IDENTIFICATION) UserIdentification loginInfo){
+        articleService.writeReply(articleId, loginInfo.getUserId(), comment);
+        return "redirect:/articles/" + articleId;
     }
 }

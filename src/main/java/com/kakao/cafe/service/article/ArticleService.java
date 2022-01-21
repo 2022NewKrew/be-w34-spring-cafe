@@ -14,6 +14,7 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.article.ArticleRepository;
 import com.kakao.cafe.service.article.dto.ArticleInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ArticleService {
 
@@ -65,5 +67,15 @@ public class ArticleService {
             throw new DeleteFailedException(ErrorCode.ARTICLE_DELETER_INCORRECT);
         }
         articleRepository.delete(articleId);
+    }
+
+    public Long writeReply(Long articleId, String writerId, String comment) {
+        User findUser = userRepository.findByUserId(writerId).orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
+        Reply reply = Reply.of(articleId, findUser, comment);
+        return replyRepository.insert(reply);
+    }
+
+    public void deleteReply(Long replyId) {
+        replyRepository.delete(replyId);
     }
 }

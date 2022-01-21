@@ -31,4 +31,17 @@ public class Reply {
     public Boolean isWriter(String userId) {
         return writer.getUserId().equals(userId);
     }
+
+    public void updateId(Long id) {
+        this.id = id;
+    }
+
+    public static Reply of(Long articleId, User writer, String comment) {
+        return Reply.builder()
+                .articleId(articleId)
+                .writer(writer)
+                .comment(comment)
+                .createdTime(LocalDateTime.now())
+                .build();
+    }
 }

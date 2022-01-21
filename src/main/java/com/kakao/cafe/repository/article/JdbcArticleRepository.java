@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.article.mapper.ArticleRowMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -31,15 +32,20 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public Long insert(Article article) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(conn -> {
-            PreparedStatement ps = conn.prepareStatement(INSERT_ARTICLE_QUERY, PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, article.getWriter().getUserId());
-            ps.setString(2, article.getTitle());
-            ps.setString(3, article.getContents());
-            return ps;
-        }, keyHolder);
-        article.updateId(keyHolder.getKey().longValue());
+        try {
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(conn -> {
+                PreparedStatement ps = conn.prepareStatement(INSERT_ARTICLE_QUERY, PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setString(1, article.getWriter().getUserId());
+                ps.setString(2, article.getTitle());
+                ps.setString(3, article.getContents());
+                return ps;
+            }, keyHolder);
+            article.updateId(keyHolder.getKey().longValue());
+        } catch (DataAccessException ex) {
+            log.warn(ex.getMessage());
+            throw ex;
+        }
         return article.getId();
     }
 
@@ -64,8 +70,9 @@ public class JdbcArticleRepository implements ArticleRepository{
     public void delete(Long articleId) {
         try {
             jdbcTemplate.update(DELETE_ARTICLE_QUERY, articleId);
-        } catch (Exception exception) {
-            log.info(exception.getMessage());
+        } catch (DataAccessException ex) {
+            log.warn(ex.getMessage());
+            throw ex;
         }
     }
 }
