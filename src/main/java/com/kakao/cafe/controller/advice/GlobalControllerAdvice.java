@@ -1,5 +1,7 @@
 package com.kakao.cafe.controller.advice;
 
+import static com.kakao.cafe.controller.Constant.UNEXPECTED_EXCEPTION_MESSAGE;
+
 import javax.naming.NoPermissionException;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -11,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @ControllerAdvice(basePackages = "com.kakao.cafe.controller")
 public class GlobalControllerAdvice {
 
-    Logger logger = LoggerFactory.getLogger(GlobalControllerAdvice.class);
+    private final Logger logger = LoggerFactory.getLogger(GlobalControllerAdvice.class);
 
     @ExceptionHandler(IllegalArgumentException.class)
     public String handleIllegalArgumentException(HttpServletRequest request,
@@ -30,8 +32,9 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(NoPermissionException.class)
     public String handlePermissionException(HttpServletRequest request,
             NoPermissionException exception, RedirectAttributes redirectAttributes) {
-        logger.info("permission exception, method : {}, url : {}", request.getMethod(),
-                request.getRequestURI());
+        logger.info("permission exception, method : {}, url : {}, exceptionMsg : {}",
+                request.getMethod(),
+                request.getRequestURI(), exception.getMessage());
 
         addCommonAttribute(request, exception, redirectAttributes);
 
@@ -43,8 +46,9 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(Exception.class)
     public String handleUnexpectedException(HttpServletRequest request, Exception exception,
             RedirectAttributes redirectAttributes) {
-        logger.info("unexpected Exception, method : {}, url : {}", request.getMethod(),
-                request.getRequestURI());
+        logger.info("unexpected Exception, method : {}, url : {}, exceptionMsg : {}",
+                request.getMethod(),
+                request.getRequestURI(), UNEXPECTED_EXCEPTION_MESSAGE);
 
         addCommonAttribute(request, exception, redirectAttributes);
 

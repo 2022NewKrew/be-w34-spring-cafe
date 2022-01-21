@@ -7,15 +7,15 @@ public class ArticleDto {
 
     private final int id;
     private final String title;
-    private final String writer;
+    private final String userId;
     private final String contents;
     private final LocalDateTime createDate;
 
-    public ArticleDto(int id, String title, String writer, String contents,
+    public ArticleDto(int id, String title, String userId, String contents,
             LocalDateTime createDate) {
         this.id = id;
         this.title = title;
-        this.writer = writer;
+        this.userId = userId;
         this.contents = contents;
         this.createDate = createDate;
     }
@@ -24,13 +24,13 @@ public class ArticleDto {
         this(
                 article.getId(),
                 article.getTitle().getValue(),
-                article.getWriter().getValue(),
+                article.getUserId().getValue(),
                 article.getContents().getValue(),
                 article.getCreateDate()
         );
     }
 
-    public String getWriter() {
-        return writer;
+    public String getUserId() {
+        return userId;
     }
 }

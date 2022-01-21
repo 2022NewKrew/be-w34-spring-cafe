@@ -1,13 +1,22 @@
 package com.kakao.cafe.controller.article;
 
+import static com.kakao.cafe.controller.Constant.INDEX_OF_FIRST_ARTICLE;
+import static com.kakao.cafe.controller.Constant.MAX_ARTICLES;
+import static com.kakao.cafe.controller.Constant.PERMISSION_EXCEPTION_MESSAGE_DELETE_ONLY_WRITER;
+import static com.kakao.cafe.controller.Constant.PERMISSION_EXCEPTION_MESSAGE_ONLY_LOGIN_USER;
+import static com.kakao.cafe.controller.Constant.PERMISSION_EXCEPTION_MESSAGE_UPDATE_ONLY_WRITER;
+import static com.kakao.cafe.controller.Constant.PERMISSION_EXCEPTION_OTHER_USER_REPLY_EXIST;
+import static com.kakao.cafe.controller.Constant.SESSION_USER_ID;
+
 import com.kakao.cafe.service.article.ArticleService;
 import com.kakao.cafe.service.article.dto.ArticleCreateDto;
 import com.kakao.cafe.service.article.dto.ArticleDto;
 import com.kakao.cafe.service.article.dto.ArticleUpdateDto;
+import com.kakao.cafe.service.reply.ReplyService;
+import com.kakao.cafe.service.reply.dto.ReplyDto;
+import java.util.List;
 import javax.naming.NoPermissionException;
 import javax.servlet.http.HttpSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,13 +28,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 @Controller
 public class ArticleController {
 
-    private static final int MAX_ARTICLES = 1;
-    private static final int INDEX_OF_FIRST_ARTICLE = 1;
-
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @GetMapping("/index")
@@ -45,7 +53,6 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String postArticle(ArticleCreateDto articleCreateDto) {
-        Logger logger = LoggerFactory.getLogger(ArticleController.class);
         articleService.createArticle(articleCreateDto);
         return "redirect:/";
     }
@@ -53,15 +60,16 @@ public class ArticleController {
     @GetMapping("/articles")
     public String getArticleDetail(int id, Model model) {
         ArticleDto articleDto = articleService.findArticleById(id);
+        List<ReplyDto> replyDtos = replyService.getReplies(id);
         model.addAttribute("article", articleDto);
+        model.addAttribute("numberOfReplies", replyDtos.size());
+        model.addAttribute("replies", replyDtos);
         return "qna/show";
     }
 
     @GetMapping("/articles/form")
-    public String showArticleForm(HttpSession session) {
-        if (session.isNew()) {
-            return "redirect:/login/form";
-        }
+    public String showArticleForm(HttpSession session) throws NoPermissionException {
+        checkLogin(session, PERMISSION_EXCEPTION_MESSAGE_ONLY_LOGIN_USER);
         return "qna/form";
     }
 
@@ -70,14 +78,16 @@ public class ArticleController {
             throws NoPermissionException {
         ArticleDto articleDto = articleService.findArticleById(id);
 
-        checkPermission(articleDto, session);
+        checkLogin(session, PERMISSION_EXCEPTION_MESSAGE_ONLY_LOGIN_USER);
+        checkUserId(session, articleDto.getUserId(),
+                PERMISSION_EXCEPTION_MESSAGE_UPDATE_ONLY_WRITER);
 
         model.addAttribute("article", articleDto);
         return "qna/updateForm";
     }
 
     @PutMapping("/articles/update")
-    public String articleUpdate(int id, ArticleUpdateDto articleUpdateDto, HttpSession session) {
+    public String updateArticle(int id, ArticleUpdateDto articleUpdateDto, HttpSession session) {
         articleService.updateArticle(id, articleUpdateDto);
         return "redirect:/articles?id=" + id;
     }
@@ -86,21 +96,39 @@ public class ArticleController {
     public String deleteArticle(int id, HttpSession session) throws NoPermissionException {
         ArticleDto articleDto = articleService.findArticleById(id);
 
-        checkPermission(articleDto, session);
+        checkLogin(session, PERMISSION_EXCEPTION_MESSAGE_ONLY_LOGIN_USER);
+        checkUserId(session, articleDto.getUserId(),
+                PERMISSION_EXCEPTION_MESSAGE_DELETE_ONLY_WRITER);
 
-        articleService.deleteArticle(id);
+        String userId = (String) session.getAttribute(SESSION_USER_ID);
+        if (replyService.isArticleHasOnlyUserIdReply(id, userId)) {
+            articleService.deleteArticle(id);
+            List<ReplyDto> replyDtos = replyService.getReplies(id);
+            deleteAllReply(replyDtos);
+            return "redirect:/";
+        }
 
-        return "redirect:/";
+        throw new NoPermissionException(PERMISSION_EXCEPTION_OTHER_USER_REPLY_EXIST);
     }
 
-    private void checkPermission(ArticleDto articleDto, HttpSession session)
-            throws NoPermissionException {
-        if (session.isNew()) {
-            throw new NoPermissionException("로그인한 사용자만 게시글을 수정할 수 있습니다.");
+    private void checkLogin(HttpSession session, String errorMessage) throws NoPermissionException {
+        String loginUserId = (String) session.getAttribute(SESSION_USER_ID);
+        if (loginUserId == null) {
+            throw new NoPermissionException(errorMessage);
         }
-        String loginUserId = (String) session.getAttribute("loginUserId");
-        if (!loginUserId.equals(articleDto.getWriter())) {
-            throw new NoPermissionException("작성자만 게시글을 수정할 수 있습니다.");
+    }
+
+    private void checkUserId(HttpSession session, String userId, String errorMessage)
+            throws NoPermissionException {
+        String loginUserId = (String) session.getAttribute(SESSION_USER_ID);
+        if (!userId.equals(loginUserId)) {
+            throw new NoPermissionException(errorMessage);
+        }
+    }
+
+    private void deleteAllReply(List<ReplyDto> replyDtos) {
+        for (ReplyDto replyDto : replyDtos) {
+            replyService.deleteReply(replyDto.getId());
         }
     }
 }

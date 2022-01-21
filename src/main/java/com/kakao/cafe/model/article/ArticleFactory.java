@@ -1,5 +1,6 @@
 package com.kakao.cafe.model.article;
 
+import com.kakao.cafe.model.user.UserId;
 import com.kakao.cafe.service.article.dto.ArticleCreateDto;
 import com.kakao.cafe.service.article.dto.ArticleUpdateDto;
 
@@ -9,15 +10,15 @@ public class ArticleFactory {
         return new Article(
                 0,
                 new Title(articleCreateDto.getTitle()),
-                new Writer(articleCreateDto.getWriter()),
+                new UserId(articleCreateDto.getUserId()),
                 new Contents(articleCreateDto.getContents()));
     }
 
-    public static Article getArticle(String title, String writer, String contents) {
+    public static Article getArticle(String title, String userId, String contents) {
         return new Article(
                 0,
                 new Title(title),
-                new Writer(writer),
+                new UserId(userId),
                 new Contents(contents));
     }
 
@@ -25,7 +26,7 @@ public class ArticleFactory {
         return new Article(
                 id,
                 new Title(articleUpdateDto.getTitle()),
-                new Writer(articleUpdateDto.getWriter()),
+                new UserId(articleUpdateDto.getUserId()),
                 new Contents(articleUpdateDto.getContents()));
     }
 }

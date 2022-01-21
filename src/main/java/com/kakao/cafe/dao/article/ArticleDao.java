@@ -8,7 +8,7 @@ public interface ArticleDao {
 
     List<Article> getArticles(int pageNumber, int articlesPerPage);
 
-    void addArticle(Article article);
+    Article addArticle(Article article);
 
     Optional<Article> findArticleById(int id);
 

@@ -11,15 +11,15 @@ values
        ('userId9', 'password9', 'name9', 'email9'),
        ('userId10', 'password10', 'name10', 'email10');
 
-INSERT INTO ARTICLE (TITLE, WRITER, CONTENTS)
+INSERT INTO ARTICLE (TITLE, USER_ID, CONTENTS)
 VALUES
-       ('title1', 'writer1', 'content1'),
-       ('title2', 'writer2', 'content2'),
-       ('title3', 'writer3', 'content3'),
-       ('title4', 'writer4', 'content4'),
-       ('title5', 'writer5', 'content5'),
-       ('title6', 'writer6', 'content6'),
-       ('title7', 'writer7', 'content7'),
-       ('title8', 'writer8', 'content8'),
-       ('title9', 'writer9', 'content9'),
-       ('title10', 'writer10', 'content10');
+       ('title1', 'userId1', 'content1'),
+       ('title2', 'userId2', 'content2'),
+       ('title3', 'userId3', 'content3'),
+       ('title4', 'userId4', 'content4'),
+       ('title5', 'userId5', 'content5'),
+       ('title6', 'userId6', 'content6'),
+       ('title7', 'userId7', 'content7'),
+       ('title8', 'userId8', 'content8'),
+       ('title9', 'userId9', 'content9'),
+       ('title10', 'userId10', 'content10');

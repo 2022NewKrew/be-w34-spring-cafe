@@ -16,6 +16,8 @@ import com.kakao.cafe.service.article.ArticleService;
 import com.kakao.cafe.service.article.dto.ArticleCreateDto;
 import com.kakao.cafe.service.article.dto.ArticleDto;
 import com.kakao.cafe.service.article.dto.ArticleUpdateDto;
+import com.kakao.cafe.service.reply.ReplyService;
+import com.kakao.cafe.service.reply.dto.ReplyDto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,7 @@ class ArticleControllerTest {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private ArticleService articleService;
+    private ReplyService replyService;
     private ArticleController articleController;
     private MockMvc mockMvc;
     private MockHttpSession session;
@@ -41,7 +44,8 @@ class ArticleControllerTest {
     @BeforeEach
     private void before() {
         articleService = mock(ArticleService.class);
-        articleController = new ArticleController(articleService);
+        replyService = mock(ReplyService.class);
+        articleController = new ArticleController(articleService, replyService);
         session = new MockHttpSession();
 
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -83,7 +87,7 @@ class ArticleControllerTest {
     @Test
     public void postArticle() throws Exception {
         String content = objectMapper.writeValueAsString(
-                new ArticleCreateDto("title", "writer", "contents"));
+                new ArticleCreateDto("title", "userId", "contents"));
 
         mockMvc.perform(
                         post("/articles")
@@ -103,7 +107,7 @@ class ArticleControllerTest {
                         new ArticleDto(
                                 1,
                                 "title",
-                                "writer",
+                                "userId",
                                 "contents",
                                 LocalDateTime.now()));
 
@@ -117,13 +121,13 @@ class ArticleControllerTest {
     @Test
     public void showArticleUpdateForm() throws Exception {
         int id = 1;
-        session.setAttribute("loginUserId", "writer");
+        session.setAttribute("loginUserId", "userId");
         when(articleService.findArticleById(id))
                 .thenReturn(
                         new ArticleDto(
                                 1,
                                 "title",
-                                "writer",
+                                "userId",
                                 "contents",
                                 LocalDateTime.now()));
 
@@ -137,7 +141,7 @@ class ArticleControllerTest {
     @DisplayName("PUT /articles/update")
     @Test
     public void articleUpdate() throws Exception {
-        ArticleUpdateDto articleUpdateDto = new ArticleUpdateDto("title", "writer", "contents");
+        ArticleUpdateDto articleUpdateDto = new ArticleUpdateDto("title", "userId", "contents");
         int id = 1;
         String content = objectMapper.writeValueAsString(articleUpdateDto);
         String query = "?id=" + id;
@@ -155,14 +159,18 @@ class ArticleControllerTest {
         ArticleDto articleDto = new ArticleDto(
                 1,
                 "title",
-                "writer",
+                "userId",
                 "contents",
                 LocalDateTime.now()
         );
         String query = "?id=" + 1;
-        session.setAttribute("loginUserId", "writer");
+        session.setAttribute("loginUserId", "userId");
         when(articleService.findArticleById(1))
                 .thenReturn(articleDto);
+        when(replyService.isArticleHasOnlyUserIdReply(1, "userId"))
+                .thenReturn(true);
+        when(replyService.getReplies(1))
+                .thenReturn(new ArrayList<ReplyDto>());
 
         mockMvc.perform(delete("/articles/delete" + query)
                         .session(session))
@@ -177,7 +185,7 @@ class ArticleControllerTest {
                     new ArticleDto(
                             i,
                             "title" + i,
-                            "writer" + i,
+                            "userId" + i,
                             "contents" + i,
                             LocalDateTime.now()));
         }

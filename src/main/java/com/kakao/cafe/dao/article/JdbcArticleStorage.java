@@ -3,7 +3,7 @@ package com.kakao.cafe.dao.article;
 import com.kakao.cafe.model.article.Article;
 import com.kakao.cafe.model.article.Contents;
 import com.kakao.cafe.model.article.Title;
-import com.kakao.cafe.model.article.Writer;
+import com.kakao.cafe.model.user.UserId;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -28,8 +30,7 @@ public class JdbcArticleStorage implements ArticleDao {
         int startIndex = (pageNumber - 1) * articlesPerPage;
         int finishIndex = articlesPerPage * (pageNumber);
 
-        String query = "SELECT ID, TITLE, WRITER, CONTENTS, CREATE_DATE FROM ARTICLE ORDER BY ID DESC";
-        List<Article> articles = queryToArticles(query);
+        List<Article> articles = queryToArticles(ArticleSql.getAllArticleNotDeleted());
 
         if (articles.size() < finishIndex) {
             return new ArrayList<>(articles.subList(startIndex, articles.size()));
@@ -38,28 +39,39 @@ public class JdbcArticleStorage implements ArticleDao {
     }
 
     @Override
-    public void addArticle(Article article) {
-        String query = "INSERT INTO ARTICLE(TITLE, WRITER, CONTENTS) VALUES (?, ?, ?)";
+    public Article addArticle(Article article) {
+        String query = ArticleSql.insert(article);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
         jdbcTemplate.update(
-                query,
-                article.getTitle().getValue(),
-                article.getWriter().getValue(),
-                article.getContents().getValue());
+                connection -> connection.prepareStatement(query, new String[]{"id"}), keyHolder);
+
+        return findArticleById(keyHolder.getKey().intValue()).orElseThrow(
+                () -> new RuntimeException("Article 생성 후 반환시 발생한 예외"));
     }
 
     @Override
     public Optional<Article> findArticleById(int id) {
-        String query = String.format(
-                "SELECT ID, TITLE, WRITER, CONTENTS, CREATE_DATE FROM ARTICLE WHERE ID = %s", id);
         return jdbcTemplate
-                .query(query, (rs, rowNum) -> toArticle(rs))
+                .query(ArticleSql.findArticleById(id), (rs, rowNum) -> toArticle(rs))
                 .stream()
                 .findAny();
     }
 
     @Override
     public int getSize() {
-        return jdbcTemplate.queryForObject("select count(*) from ARTICLE", Integer.class);
+        return jdbcTemplate.queryForObject(ArticleSql.count(), Integer.class);
+    }
+
+    @Override
+    public void deleteArticle(int id) {
+        jdbcTemplate.update(ArticleSql.delete(id));
+    }
+
+    @Override
+    public void updateArticle(Article article) {
+        jdbcTemplate.update(ArticleSql.update(article));
     }
 
     private List<Article> queryToArticles(String query) {
@@ -70,25 +82,10 @@ public class JdbcArticleStorage implements ArticleDao {
         return new Article(
                 resultSet.getInt("ID"),
                 new Title(resultSet.getString("TITLE")),
-                new Writer(resultSet.getString("WRITER")),
+                new UserId(resultSet.getString("USER_ID")),
                 new Contents(resultSet.getString("CONTENTS")),
-                resultSet.getTimestamp("CREATE_DATE").toLocalDateTime()
+                resultSet.getTimestamp("CREATE_DATE").toLocalDateTime(),
+                resultSet.getBoolean("DELETED")
         );
-    }
-
-    @Override
-    public void deleteArticle(int id) {
-        String query = "DELETE FROM ARTICLE WHERE ID = ?";
-        jdbcTemplate.update(query, id);
-    }
-
-    @Override
-    public void updateArticle(Article article) {
-        String query = "UPDATE ARTICLE SET TITLE = ?, CONTENTS = ? WHERE ID = ?";
-        jdbcTemplate.update(
-                query,
-                article.getTitle().getValue(),
-                article.getContents().getValue(),
-                article.getId());
     }
 }

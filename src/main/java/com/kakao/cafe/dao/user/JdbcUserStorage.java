@@ -25,46 +25,30 @@ public class JdbcUserStorage implements UserDao {
 
     @Override
     public List<User> getUsers() {
-        String query = "SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USER_DATA";
-        return jdbcTemplate.query(query, (rs, rowNum) -> toUser(rs));
+        return jdbcTemplate.query(UserSql.getAllUser(), (rs, rowNum) -> toUser(rs));
     }
 
     @Override
     public void addUser(User user) {
-        String query = "INSERT INTO USER_DATA(USER_ID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(
-                query,
-                user.getUserId().getValue(),
-                user.getPassword().getValue(),
-                user.getName().getValue(),
-                user.getEmail().getValue());
+        jdbcTemplate.update(UserSql.insert(user));
     }
 
     @Override
     public Optional<User> findUserById(UserId userId) {
-        String query = String.format(
-                "SELECT USER_ID, PASSWORD, NAME, EMAIL FROM USER_DATA WHERE USER_ID = '%s'",
-                userId.getValue()
-        );
         return jdbcTemplate
-                .query(query, (rs, rowNum) -> toUser(rs))
+                .query(UserSql.findUserById(userId.getValue()), (rs, rowNum) -> toUser(rs))
                 .stream()
                 .findFirst();
     }
 
     @Override
     public int getSize() {
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM USER_DATA", Integer.class);
+        return jdbcTemplate.queryForObject(UserSql.count(), Integer.class);
     }
 
     @Override
     public void update(User user) {
-        String query = "UPDATE USER_DATA SET NAME = ?, EMAIL = ? WHERE USER_ID = ?";
-        jdbcTemplate.update(
-                query,
-                user.getName().getValue(),
-                user.getEmail().getValue(),
-                user.getUserId().getValue());
+        jdbcTemplate.update(UserSql.update(user));
     }
 
     private User toUser(ResultSet resultSet) throws SQLException {
