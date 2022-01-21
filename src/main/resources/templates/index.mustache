@@ -7,7 +7,7 @@
    <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
       <div class="panel panel-default qna-list">
           <ul class="list">
-              {{#articles}}
+              {{#articles.getPagingList}}
                   <li>
                       <div class="wrap">
                           <div class="main">
@@ -26,20 +26,26 @@
                           </div>
                       </div>
                   </li>
-              {{/articles}}
+              {{/articles.getPagingList}}
           </ul>
           <div class="row">
               <div class="col-md-3"></div>
               <div class="col-md-6 text-center">
                   <ul class="pagination center-block" style="display:inline-block;">
-                      <li><a href="#">«</a></li>
-                      <li><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#">»</a></li>
-                </ul>
+                      {{#articles.hasPrevious}}
+                      <li>
+                          <a href="?offset={{articles.getPreviousRangeEndOffset}}">«</a>
+                      </li>
+                      {{/articles.hasPrevious}}
+                      {{#articles.getRange}}
+                          <li><a href="?offset={{offset}}">{{index}}</a></li>
+                      {{/articles.getRange}}
+                      {{#articles.hasNext}}
+                      <li>
+                          <a href="?offset={{articles.getNextRangeStartOffset}}">»</a>
+                      </li>
+                      {{/articles.hasNext}}
+                  </ul>
               </div>
               <div class="col-md-3 qna-write">
                   <a href="/articles/form" class="btn btn-primary pull-right" role="button">질문하기</a>
