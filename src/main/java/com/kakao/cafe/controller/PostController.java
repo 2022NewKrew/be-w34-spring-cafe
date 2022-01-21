@@ -9,7 +9,7 @@ import com.kakao.cafe.service.CommentService;
 import com.kakao.cafe.service.PostService;
 import com.kakao.cafe.service.PostWriteService;
 import com.kakao.cafe.util.annotation.LoginCheck;
-import com.kakao.cafe.util.exception.UnauthorizedAction;
+import com.kakao.cafe.util.exception.throwable.UnauthorizedActionException;
 import com.kakao.cafe.util.mapper.CommentWebMapper;
 import com.kakao.cafe.util.mapper.PostMapper;
 import org.slf4j.Logger;
@@ -114,7 +114,7 @@ public class PostController {
     public String delete(@PathVariable long postId, HttpSession httpSession) {
         try {
             postService.delete((String) httpSession.getAttribute("sessionId"), postId);
-        } catch (UnauthorizedAction unauthorizedAction) {
+        } catch (UnauthorizedActionException unauthorizedActionException) {
             return "redirect:/users/login";
         }
         return "redirect:/posts";

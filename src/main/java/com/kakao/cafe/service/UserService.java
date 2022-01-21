@@ -3,7 +3,11 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.Users;
 import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.util.exception.*;
+import com.kakao.cafe.util.exception.throwable.InvalidPasswordException;
+import com.kakao.cafe.util.exception.throwable.UnauthorizedActionException;
+import com.kakao.cafe.util.exception.wrappable.LoginFailException;
+import com.kakao.cafe.util.exception.wrappable.UserDuplicateException;
+import com.kakao.cafe.util.exception.wrappable.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +71,7 @@ public class UserService {
 
     public void canUpdate(String user1, String user2) {
         if (!user1.equals(user2))
-            throw new UnauthorizedAction(new RuntimeException(), String.format("'%s', '%s'", user1, user2));
+            throw new UnauthorizedActionException(String.format("'%s', '%s'", user1, user2));
     }
 
     public Users findAll() {

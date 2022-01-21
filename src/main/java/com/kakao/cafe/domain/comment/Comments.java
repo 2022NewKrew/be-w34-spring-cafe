@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.comment;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Comments {
 
@@ -17,4 +18,12 @@ public class Comments {
     public List<Comment> getComments() {
         return comments;
     }
+
+    public Comments filterExceptUserId(String userId) {
+        return new Comments(
+                comments.stream()
+                        .filter(c -> !c.isUser(userId))
+                        .collect(Collectors.toList()));
+    }
+
 }

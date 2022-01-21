@@ -204,6 +204,19 @@ public class PostControllerTest {
 
     }
 
+
+    @Test
+    @Transactional
+    void deleteFailByCommentsOfOthers() throws Exception {
+        MockMvc mockMvc = getMethodSessionMvc();
+        mockMvc.perform(post("/users/login")
+                .param("id", "javajigi")
+                .param("password", "test"));
+        mockMvc.perform(delete("/posts/1"))
+                .andExpect(status().isBadRequest());
+
+    }
+
     @Test
     @Transactional
     void deleteSuccess() throws Exception {
@@ -211,10 +224,10 @@ public class PostControllerTest {
         mockMvc.perform(post("/users/login")
                 .param("id", "javajigi")
                 .param("password", "test"));
-        mockMvc.perform(delete("/posts/1"))
-                .andExpect(view().name("redirect:/posts"));
-
+        mockMvc.perform(delete("/posts/3"))
+                .andExpect(status().is3xxRedirection());
     }
+
 
     @Test
     @Transactional

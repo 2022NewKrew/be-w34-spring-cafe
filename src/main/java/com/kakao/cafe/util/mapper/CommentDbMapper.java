@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.comment.Comment;
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.dto.CommentDbDto;
+import com.kakao.cafe.dto.CommentPostUserDbDto;
 
 public class CommentDbMapper {
 
@@ -17,12 +18,26 @@ public class CommentDbMapper {
     }
 
 
-    public static Comment toComment(CommentDbDto commentDbDto, Post post, User user) {
+    public static Comment toComment(CommentPostUserDbDto commentPostUserDbDto) {
+        Post post = new Post.Builder()
+                .id(commentPostUserDbDto.getPostId())
+                .contents(commentPostUserDbDto.getContents())
+                .title(commentPostUserDbDto.getTitle())
+                .writer(commentPostUserDbDto.getUserId())
+                .build();
+
+        User user = new User.Builder()
+                .name(commentPostUserDbDto.getName())
+                .id(commentPostUserDbDto.getUserId())
+                .password(commentPostUserDbDto.getPassword())
+                .email(commentPostUserDbDto.getEmail())
+                .build();
+
         return new Comment.Builder()
                 .post(post)
                 .user(user)
-                .id(commentDbDto.getId())
-                .text(commentDbDto.getText())
+                .id(commentPostUserDbDto.getId())
+                .text(commentPostUserDbDto.getText())
                 .build();
     }
 }

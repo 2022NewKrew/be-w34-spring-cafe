@@ -29,7 +29,7 @@ public class CommentRepositoryTest {
 
     @Test
     @Transactional
-    void find_by_id_test() {
+    void findByIdTest() {
         Comment comment = commentRepository.findById(1);
         assertThat(
                 (comment.getId() == 1) &&
@@ -40,14 +40,14 @@ public class CommentRepositoryTest {
 
     @Test
     @Transactional
-    void find_all_test() {
+    void findAllTest() {
         Comments comments = commentRepository.findAll(1);
         assertThat(comments.size()).isEqualTo(1);
     }
 
     @Test
     @Transactional
-    void insert_test() {
+    void insertSuccess() {
         Post post = postRepository.findById(1);
         User user = userRepository.findById("javajigi");
         Comment comment = new Comment.Builder()
@@ -63,7 +63,7 @@ public class CommentRepositoryTest {
 
     @Test
     @Transactional
-    void update_test() {
+    void updateSccuess() {
         Comment comment = commentRepository.findById(1);
         Comment newComment = new Comment.Builder()
                 .post(comment.getPost())
@@ -78,10 +78,17 @@ public class CommentRepositoryTest {
 
     @Test
     @Transactional
-    void delete_test() {
+    void deleteSuccess() {
         commentRepository.delete(1);
         assertThatThrownBy(() -> commentRepository.findById(1))
                 .isInstanceOf(EmptyResultDataAccessException.class);
+    }
+
+    @Test
+    @Transactional
+    void deleteAllSuccess() {
+        int commentSize = commentRepository.findAll(1).size();
+        assertThat(commentRepository.deleteAll(1)).isEqualTo(commentSize);
     }
 
 

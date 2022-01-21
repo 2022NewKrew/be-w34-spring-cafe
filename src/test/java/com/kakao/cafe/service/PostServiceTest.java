@@ -1,8 +1,10 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.post.Post;
-import com.kakao.cafe.util.exception.PostNotFoundException;
-import com.kakao.cafe.util.exception.UnauthorizedAction;
+import com.kakao.cafe.repository.CommentRepository;
+import com.kakao.cafe.util.exception.throwable.UnauthorizedActionException;
+import com.kakao.cafe.util.exception.throwable.UnavailableActionException;
+import com.kakao.cafe.util.exception.wrappable.PostNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,12 +17,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 public class PostServiceTest {
 
     private final PostService postService;
+    private final CommentRepository commentRepository;
 
     @Autowired
-    public PostServiceTest(PostService postService) {
+    public PostServiceTest(PostService postService, CommentRepository commentRepository) {
         this.postService = postService;
+        this.commentRepository = commentRepository;
     }
-
 
     @Test
     @Transactional
@@ -71,7 +74,7 @@ public class PostServiceTest {
         String curUserId = "wrongGuy";
 
         assertThatThrownBy(() -> postService.update(post, curUserId))
-                .isInstanceOf(UnauthorizedAction.class);
+                .isInstanceOf(UnauthorizedActionException.class);
     }
 
     @Test
@@ -90,29 +93,38 @@ public class PostServiceTest {
     @Transactional
     void deleteFailByPostNotExists() {
         String curId = "javajigi";
-        assertThatThrownBy(() -> postService.delete(curId, -1)).isInstanceOf(PostNotFoundException.class);
-
+        assertThatThrownBy(() -> postService.delete(curId, -1))
+                .isInstanceOf(PostNotFoundException.class);
     }
 
     @Test
     @Transactional
     void deleteFailByNoLogin() {
-        assertThatThrownBy(() -> postService.delete(null, 1)).isInstanceOf(UnauthorizedAction.class);
-
+        assertThatThrownBy(() -> postService.delete(null, 1))
+                .isInstanceOf(UnauthorizedActionException.class);
     }
 
 
     @Test
     @Transactional
     void deleteFailByNotWriter() {
-        assertThatThrownBy(() -> postService.delete("wrongGuy", 1)).isInstanceOf(UnauthorizedAction.class);
+        assertThatThrownBy(() -> postService.delete("wrongGuy", 1))
+                .isInstanceOf(UnauthorizedActionException.class);
+    }
 
+    @Test
+    @Transactional
+    void deleteFailedByComment() {
+        String curId = "javajigi";
+        assertThatThrownBy(() -> postService.delete(curId, 1))
+                .isInstanceOf(UnavailableActionException.class);
     }
 
     @Test
     @Transactional
     void deleteSuccess() {
         String curId = "javajigi";
+        commentRepository.delete(1);
         postService.delete(curId, 1);
     }
 }

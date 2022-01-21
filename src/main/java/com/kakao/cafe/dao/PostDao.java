@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,13 +16,11 @@ import java.util.stream.Collectors;
 public class PostDao {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(PostDao.class);
-    private final DataSource dataSource;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public PostDao(DataSource dataSource) {
-        this.dataSource = dataSource;
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public PostDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public int insert(Post post) {
@@ -39,7 +36,7 @@ public class PostDao {
     }
 
     public Posts findAll() {
-        String queryString = "select * from POSTS";
+        String queryString = "select * from POSTS WHERE DELETED = FALSE";
         List<Map<String, Object>> res = jdbcTemplate.queryForList(queryString);
         return new Posts(res.stream().map(this::mapToPost).collect(Collectors.toList()));
     }
@@ -55,7 +52,7 @@ public class PostDao {
     }
 
     public int delete(long id) {
-        String queryString = "delete from POSTS where id = ?";
+        String queryString = "UPDATE POSTS SET DELETED = TRUE where id = ?";
         return jdbcTemplate.update(queryString, id);
     }
 

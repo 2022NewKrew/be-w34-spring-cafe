@@ -3,8 +3,8 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.comment.Comment;
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.util.exception.CommentNotFoundException;
-import com.kakao.cafe.util.exception.UnauthorizedAction;
+import com.kakao.cafe.util.exception.throwable.UnauthorizedActionException;
+import com.kakao.cafe.util.exception.wrappable.CommentNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -66,7 +66,7 @@ public class CommentServiceTest {
     void deleteFailByWrongUser() {
         Comment comment = commentService.findById(1);
         assertThatThrownBy(() -> commentService.delete(comment, "anyone"))
-                .isInstanceOf(UnauthorizedAction.class);
+                .isInstanceOf(UnauthorizedActionException.class);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class CommentServiceTest {
     void updateFailByWrongUser() {
         Comment comment = commentService.findById(1);
         assertThatThrownBy(() -> commentService.update(comment, "wrongGuy"))
-                .isInstanceOf(UnauthorizedAction.class);
+                .isInstanceOf(UnauthorizedActionException.class);
     }
 
 

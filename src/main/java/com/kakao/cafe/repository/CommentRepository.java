@@ -5,9 +5,7 @@ import com.kakao.cafe.dao.PostDao;
 import com.kakao.cafe.dao.UserDao;
 import com.kakao.cafe.domain.comment.Comment;
 import com.kakao.cafe.domain.comment.Comments;
-import com.kakao.cafe.domain.post.Post;
-import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.dto.CommentDbDto;
+import com.kakao.cafe.dto.CommentPostUserDbDto;
 import com.kakao.cafe.util.mapper.CommentDbMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,19 +28,16 @@ public class CommentRepository {
     }
 
     public Comments findAll(long postId) {
-        List<CommentDbDto> commentDtos = commentDao.findAll(postId);
-        Post post = postDao.findById(postId);
-        List<Comment> comments = commentDtos.stream()
-                .map((commentDto) -> CommentDbMapper.toComment(commentDto, post, userDao.findById(commentDto.getUserId())))
+        List<CommentPostUserDbDto> commentPostUserDbDtos = commentDao.findAll(postId);
+        List<Comment> comments = commentPostUserDbDtos.stream()
+                .map(CommentDbMapper::toComment)
                 .collect(Collectors.toList());
         return new Comments(comments);
     }
 
     public Comment findById(long id) {
-        CommentDbDto commentDbDto = commentDao.findById(id);
-        Post post = postDao.findById(commentDbDto.getPostId());
-        User user = userDao.findById(commentDbDto.getUserId());
-        return CommentDbMapper.toComment(commentDbDto, post, user);
+        CommentPostUserDbDto commentPostUserDbDto = commentDao.findById(id);
+        return CommentDbMapper.toComment(commentPostUserDbDto);
     }
 
     public int insert(Comment comment) {
@@ -55,6 +50,10 @@ public class CommentRepository {
 
     public int delete(long id) {
         return commentDao.deleteById(id);
+    }
+
+    public int deleteAll(long id) {
+        return commentDao.deleteAll(id);
     }
 
 }
