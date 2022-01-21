@@ -31,7 +31,6 @@ public class PostService {
 
     public Long addFromForm(Long authorId, PostCreationForm postCreationForm) {
         return postRepository.add(Post.builder()
-                                      .parentId(1L)
                                       .authorId(authorId)
                                       .title(postCreationForm.getTitle())
                                       .content(postCreationForm.getContent())

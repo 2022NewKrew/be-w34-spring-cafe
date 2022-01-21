@@ -27,7 +27,6 @@ public class RepositoryConfig {
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
                                             .addScript("classpath:sql/schema.sql")
-                                            .addScript("classpath:sql/initial_data.sql")
                                             .addScript("classpath:sql/test_data.sql")
                                             .build();
     }
