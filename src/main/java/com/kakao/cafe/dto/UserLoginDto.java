@@ -3,9 +3,9 @@ package com.kakao.cafe.dto;
 import javax.validation.constraints.NotBlank;
 
 public class UserLoginDto {
-    @NotBlank(message = "유저 닉네임이 null 이거나 한개의 띄어쓰기만 있습니다")
+    @NotBlank(message = "닉네임을 입력해주세요")
     private final String userId;
-    @NotBlank(message = "유저 패스워드가 null 이거나 한개의 띄어쓰기만 있습니다")
+    @NotBlank(message = "패스워드를 입력해주세요")
     private final String password;
 
     public UserLoginDto(String userId, String password) {

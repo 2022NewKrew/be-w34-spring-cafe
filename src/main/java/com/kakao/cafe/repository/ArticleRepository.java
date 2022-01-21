@@ -12,8 +12,8 @@ public class ArticleRepository {
     private final List<Article> articles = Collections.synchronizedList(new ArrayList<>());
 
     public void createArticle(ArticleRegistrationDto articleRequestDto) {
-        Article article = new Article(articles.size()+1, articleRequestDto.getTitle(), articleRequestDto.getContent());
-        articles.add(article);
+//        Article article = new Article(articles.size()+1, articleRequestDto.getTitle(), articleRequestDto.getContent());
+//        articles.add(article);
     }
 
     public List<Article> readArticles() {

@@ -5,6 +5,7 @@ public class Article {
     private final String title;
     private final String content;
 
+
     public Article(Integer id, String title, String content) {
         this.id = id;
         this.title = title;
@@ -22,4 +23,5 @@ public class Article {
     public String getContent() {
         return content;
     }
+
 }

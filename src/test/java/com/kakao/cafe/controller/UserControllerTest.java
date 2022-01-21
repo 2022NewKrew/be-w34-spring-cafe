@@ -87,7 +87,13 @@ class UserControllerTest {
     @DisplayName("[성공] 로그인 되있어서 상세보기")
     void user() throws Exception{
         // given
+        User auth = new User(1, "chen", "1234", "chen.kim@kakaocorp.com");
 
+        // when & then
+        mockMvc.perform(get("/users/1")
+                        .sessionAttr("auth", auth))
+                .andExpect(status().isOk())
+                .andExpect(view().name("user/profile"));
     }
 
     @Test
@@ -96,6 +102,5 @@ class UserControllerTest {
         mockMvc.perform(get("/users/1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
-
     }
 }

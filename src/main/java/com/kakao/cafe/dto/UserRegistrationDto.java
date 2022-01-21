@@ -6,11 +6,11 @@ import javax.validation.constraints.NotBlank;
 
 
 public class UserRegistrationDto {
-    @NotBlank(message = "유저 닉네임이 null 이거나 한개의 띄어쓰기만 있습니다")
+    @NotBlank(message = "닉네임을 입력해주세요")
     private final String userId;
-    @NotBlank(message = "유저 패스워드가 null 이거나 한개의 띄어쓰기만 있습니다")
+    @NotBlank(message = "패스워드를 입력해주세요")
     private final String password;
-    @NotBlank(message = "유저 이메일이 null 이거나 한개의 띄어쓰기만 있습니다")
+    @NotBlank(message = "이메일을 입력해주세요")
     private final String email;
 //    private final String profileImage;
 

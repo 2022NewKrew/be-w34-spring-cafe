@@ -43,11 +43,6 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String user(@PathVariable Integer id, Model model, HttpSession httpSession) {
-        Object auth = httpSession.getAttribute("auth");
-        if (auth == null) {
-            return "redirect:/users";
-        }
-
         User user = userService.findById(id);
         model.addAttribute("user", user);
         return "user/profile";
