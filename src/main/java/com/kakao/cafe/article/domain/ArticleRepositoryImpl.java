@@ -78,7 +78,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             + "u.nickname as author_nickname "
             + "from articles as a inner join users u "
             + "on a.author_id = u.user_id "
-            + "order by a.created_at";
+            + "order by a.created_at desc";
 
         return jdbcTemplate.query(
             sql,
