@@ -44,27 +44,4 @@ public class LoginController {
         session.invalidate();
         return "redirect:/";
     }
-
-    @NeedLogin
-    @GetMapping("/user/edit")
-    public String showProfileEditor() {
-        return "user/edit-form";
-    }
-
-    @NeedLogin
-    @PostMapping("/user/edit")
-    public String editProfile(@Validated UserEditForm userEditForm, BindingResult bindingResult,
-                              @RequestAttribute LoggedInUser loggedInUser) {
-        if (bindingResult.hasErrors()) {
-            throw new InvalidFormatException();
-        }
-        userService.updateUser(loggedInUser.getId(), userEditForm);
-        return "redirect:/user";
-    }
-
-    @NeedLogin
-    @GetMapping("/user")
-    public String showLoggedInUserProfile(@RequestAttribute LoggedInUser loggedInUser) {
-        return "redirect:/users/" + loggedInUser.getUsername();
-    }
 }
