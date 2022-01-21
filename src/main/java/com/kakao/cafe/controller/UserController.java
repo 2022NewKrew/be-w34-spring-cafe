@@ -32,7 +32,7 @@ public class UserController {
     public String viewUserList(Model model) {
         log.info("viewUserList");
         model.addAttribute("users", userService.findUsers());
-        return "/users/list";
+        return "users/list";
     }
 
     @GetMapping("/{userId}/updateForm")
@@ -40,7 +40,7 @@ public class UserController {
         User user = userService.findOne(userId);
         User sessionUser = (User) session.getAttribute(Constant.LOGIN_SESSION);
         if (sessionUser == null) {
-            throw new UpdateForbiddenException(ErrorMessage.UPDATE_NON_LOGIN.getMsg());
+            throw new UpdateForbiddenException(ErrorMessage.NO_AUTH.getMsg());
         }
 
         if (sessionUser.getUserId().equals(userId)) {
@@ -49,9 +49,9 @@ public class UserController {
             model.addAttribute("email", user.getEmail());
             model.addAttribute("password", user.getPassword());
 
-            return "/users/updateForm";
+            return "users/updateForm";
         }
-        throw new UpdateForbiddenException(ErrorMessage.UPDATE_FORBIDDEN.getMsg());
+        throw new UpdateForbiddenException(ErrorMessage.USER_PROFILE_UPDATE_FORBIDDEN.getMsg());
     }
 
     @PutMapping("/{userId}/updateForm")
@@ -78,7 +78,7 @@ public class UserController {
     @GetMapping("/profile/{userId}")
     public String profile(@PathVariable Long userId, Model model) {
         model.addAttribute("user", userService.findOne(userId));
-        return "/users/profile";
+        return "users/profile";
     }
 
     @GetMapping("/logout")

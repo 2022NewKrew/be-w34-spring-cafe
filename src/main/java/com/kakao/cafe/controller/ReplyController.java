@@ -36,7 +36,7 @@ public class ReplyController {
         Long writerId = loginCheck(session);
         Reply reply = replyService.findOne(id);
         if (!writerId.equals(reply.getWriterId())) {
-            throw new IllegalStateException(ErrorMessage.DELETE_FORBIDDEN.getMsg());
+            throw new IllegalStateException(ErrorMessage.ARTICLE_DELETE_FORBIDDEN.getMsg());
         }
         replyService.deleteReply(id);
         return "redirect:/articles/" + articleId;
@@ -45,7 +45,7 @@ public class ReplyController {
     private Long loginCheck(HttpSession session) {
         User user = (User) session.getAttribute(Constant.LOGIN_SESSION);
         if (user == null) {
-            throw new IllegalStateException(ErrorMessage.UPDATE_NON_LOGIN.getMsg());
+            throw new IllegalStateException(ErrorMessage.NO_AUTH.getMsg());
         }
         return user.getUserId();
     }

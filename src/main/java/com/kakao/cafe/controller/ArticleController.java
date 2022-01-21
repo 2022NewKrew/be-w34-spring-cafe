@@ -64,7 +64,7 @@ public class ArticleController {
         model.addAttribute("content", article.getContent());
         model.addAttribute("replies", replies);
 
-        return "/qna/show";
+        return "qna/show";
     }
 
     @GetMapping("/qna/form")
@@ -73,7 +73,7 @@ public class ArticleController {
         if (user == null) {
             return "redirect:/users/login";
         }
-        return "/qna/form";
+        return "qna/form";
     }
 
     @PostMapping("/qna/update/{index}")
@@ -82,7 +82,7 @@ public class ArticleController {
         model.addAttribute("index", index);
         model.addAttribute("title", article.getTitle());
         model.addAttribute("content", article.getContent());
-        return "/qna/updateForm";
+        return "qna/updateForm";
     }
 
     @PutMapping("/qna/updateArticle/{index}")
@@ -99,7 +99,7 @@ public class ArticleController {
         List<Reply> replies = replyService.findReplyList(index);
         for (Reply reply : replies) {
             if (!reply.getWriterId().equals(article.getWriterId())) {
-                throw new IllegalStateException(ErrorMessage.DELETE_NOT_MY_REPLY.getMsg());
+                throw new IllegalStateException(ErrorMessage.ARTICLE_DELETE_NOT_MY_REPLY.getMsg());
             }
         }
         articleService.deleteArticle(index);
@@ -110,13 +110,13 @@ public class ArticleController {
     private Article checkWriter(HttpSession session, Long index) {
         User user = (User) session.getAttribute(Constant.LOGIN_SESSION);
         if (user == null) {
-            throw new IllegalStateException(ErrorMessage.UPDATE_NON_LOGIN.getMsg());
+            throw new IllegalStateException(ErrorMessage.NO_AUTH.getMsg());
         }
 
         Article article = articleService.findOne(index);
 
         if (!user.getUserId().equals(article.getWriterId())) {
-            throw new IllegalStateException(ErrorMessage.UPDATE_FORBIDDEN.getMsg());
+            throw new IllegalStateException(ErrorMessage.USER_PROFILE_UPDATE_FORBIDDEN.getMsg());
         }
 
         article.setWriterId(user.getUserId());
