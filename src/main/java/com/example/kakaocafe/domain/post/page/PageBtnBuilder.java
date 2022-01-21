@@ -24,6 +24,7 @@ public class PageBtnBuilder {
     }
 
     public List<PageBtn> build() {
+        // 전체 단위는 오프셋 당 페이지가 존재하고, 페이지당 게시글이 존재함.
         final int startingPageOfCurOffset = calcStartingPage(currentPage);
 
         final int numOfPosts = getNumOfPosts(startingPageOfCurOffset);
@@ -31,11 +32,11 @@ public class PageBtnBuilder {
 
         final int endingPageOfCurOffset = calcEndingPage(startingPageOfCurOffset, numOfPages);
 
-        final int startingPageOfPreOffset = calcPreOffset(startingPageOfCurOffset);
+        final int startingPageOfPrevOffset = calcPreOffset(startingPageOfCurOffset);
         final int startingPageOfNextOffset = calcNextOffset(numOfPosts, endingPageOfCurOffset);
 
         final List<PageBtn> pageBtnList = new ArrayList<>();
-        pageBtnList.add(PageBtn.generatePreBtn(startingPageOfPreOffset + 1));
+        pageBtnList.add(PageBtn.generatePrevBtn(startingPageOfPrevOffset + 1));
         IntStream.rangeClosed(startingPageOfCurOffset, endingPageOfCurOffset)
                 .forEach(i -> pageBtnList.add(PageBtn.generateOrderBtn(i + 1, currentPage)));
         pageBtnList.add(PageBtn.generateNextBtn(startingPageOfNextOffset + 1));
@@ -51,7 +52,7 @@ public class PageBtnBuilder {
 
     private int calcNumOfPages(int numOfPages) {
         // 게시글 수로 페이지를 계산
-        return (calcNumOfPostsLessThenMax(numOfPages) / PageConfig.NUM_OF_POSTS_PER_PAGE) + (calcNumOfPostsLessThenMax(numOfPages) % PageConfig.NUM_OF_POSTS_PER_PAGE);
+        return (calcNumOfPostsLessThenMax(numOfPages) / PageConfig.NUM_OF_POSTS_PER_PAGE) + (calcNumOfPostsLessThenMax(numOfPages) % PageConfig.NUM_OF_POSTS_PER_PAGE > 0 ? 1 : 0);
     }
 
     private int calcNumOfPostsLessThenMax(int numOfPosts) {

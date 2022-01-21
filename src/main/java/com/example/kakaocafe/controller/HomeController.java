@@ -18,7 +18,7 @@ public class HomeController {
     public ModelAndView home(Model model) {
 
         if (!model.containsAttribute("posts")) {
-            return new ModelAndView(URLPath.GET_ALL_POSTS.getRedirectPath() + "?page=1");
+            return new ModelAndView(URLPath.GET_ALL_POSTS.getPath() + "?page=1");
         }
 
         return new ModelAndView(ViewPath.INDEX)

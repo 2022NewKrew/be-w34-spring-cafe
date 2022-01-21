@@ -11,8 +11,8 @@ public class PageBtn {
     private String link;
     private boolean isSelected;
 
-    public static PageBtn generatePreBtn(int pageIndex) {
-        return new PageBtn(PageConfig.pre, "/posts?page=" + pageIndex, false);
+    public static PageBtn generatePrevBtn(int pageIndex) {
+        return new PageBtn(PageConfig.prev, "/posts?page=" + pageIndex, false);
     }
 
     public static PageBtn generateOrderBtn(int pageIndex, int selectedIndex) {
