@@ -60,4 +60,11 @@ public class PostController {
         postService.updateFromForm(loggedInUser.getId(), id, postCreationForm);
         return "redirect:/posts/" + id;
     }
+
+    @NeedLogin
+    @DeleteMapping("/{id:[0-9]+}")
+    public String deletePost(@PathVariable Long id, @RequestAttribute LoggedInUser loggedInUser) {
+        postService.softDelete(loggedInUser.getId(), id);
+        return "redirect:/posts";
+    }
 }

@@ -48,13 +48,30 @@ public class PostService {
     }
 
     public void updateFromForm(Long authorId, Long postId, PostCreationForm postCreationForm) {
-        if (!authorId.equals(postId)) {
-            throw new UnauthorizedAccessException();
-        }
+        validateUserPermissionOnPost(authorId, postId);
+        Post post = postRepository.get(postId).orElseThrow(PostNotFoundException::new);
         postRepository.update(Post.builder()
                                   .id(postId)
                                   .title(postCreationForm.getTitle())
                                   .content(postCreationForm.getContent())
+                                  .status(post.getStatus())
                                   .build());
+    }
+
+    public void softDelete(Long authorId, Long postId) {
+        validateUserPermissionOnPost(authorId, postId);
+        Post post = postRepository.get(postId).orElseThrow(PostNotFoundException::new);
+        postRepository.update(Post.builder()
+                                  .id(postId)
+                                  .title(post.getTitle())
+                                  .content(post.getContent())
+                                  .status(ThreadStatus.DELETED.name())
+                                  .build());
+    }
+
+    private void validateUserPermissionOnPost(Long authorId, Long postId) {
+        if (!authorId.equals(postId)) {
+            throw new UnauthorizedAccessException();
+        }
     }
 }

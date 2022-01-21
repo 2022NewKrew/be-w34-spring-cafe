@@ -1,6 +1,7 @@
 package com.kakao.cafe.thread.repository;
 
 import com.kakao.cafe.thread.domain.Post;
+import com.kakao.cafe.thread.domain.ThreadStatus;
 import com.kakao.cafe.thread.domain.ThreadType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -43,13 +44,13 @@ public class SpringJdbcPostRepository implements PostRepository {
 
     @Override
     public List<Post> getAll() {
-        return jdbcTemplate.query("SELECT * FROM thread WHERE type = ?", postRowMapper(), ThreadType.POST.name());
+        return jdbcTemplate.query("SELECT * FROM thread WHERE status = ? AND type = ?", postRowMapper(), ThreadStatus.VALID.name(), ThreadType.POST.name());
     }
 
     @Override
     public Optional<Post> get(Long id) {
-        return jdbcTemplate.query("SELECT * FROM thread WHERE id = ? AND type = ?", postRowMapper(), id,
-                                  ThreadType.POST.name()).stream().findAny();
+        return jdbcTemplate.query("SELECT * FROM thread WHERE id = ? AND status = ? AND type = ?", postRowMapper(), id,
+                                  ThreadStatus.VALID.name(), ThreadType.POST.name()).stream().findAny();
     }
 
     private RowMapper<Post> postRowMapper() {
@@ -68,8 +69,8 @@ public class SpringJdbcPostRepository implements PostRepository {
     @Override
     public void update(Post post) {
         jdbcTemplate.update(
-                "UPDATE thread SET title = ?, content = ? WHERE id = ? AND type = ?;",
-                post.getTitle(), post.getContent(), post.getId(), ThreadType.POST.name());
+                "UPDATE thread SET title = ?, content = ?, status = ? WHERE id = ? AND type = ?;",
+                post.getTitle(), post.getContent(), post.getStatus(), post.getId(), ThreadType.POST.name());
     }
 
     @Override
