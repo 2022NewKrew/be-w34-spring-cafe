@@ -117,10 +117,11 @@
                     </div>
                 </article>
                 {{#isOwner}}
+                <button class="post-write-btn" onClick="location.href='{{article.id}}/form'" style="float: right">
+                    수정
+                </button>
                 <form action="{{article.id}}/delete" method="post">
-                    <button class="post-write-btn" onClick="location.href='{{article.id}}/form'" style="float: right">
-                        수정
-                    </button>
+
                     <input name="_method" type="hidden" value="DELETE"/>
                     <input class="post-write-btn" style="float: right;background-color: red" type="submit" value="삭제"/>
                 </form>
