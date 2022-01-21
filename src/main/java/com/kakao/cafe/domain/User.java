@@ -5,18 +5,18 @@ import lombok.Getter;
 @Getter
 public class User {
 
-    private final String uid;
-    private final String userId;
+    private final String id;
+    private final String username;
     private String password;
     private String name;
     private String email;
 
-    public User(String uid, String userId, String password, String name, String email) {
-        this.uid = uid;
-        this.userId = userId;
+    public User(String id, String username, String password, String name, String email) {
+        this.id       = id;
+        this.username = username;
         this.password = password;
-        this.name = name;
-        this.email = email;
+        this.name     = name;
+        this.email    = email;
     }
 
     public void validate() {
@@ -31,6 +31,10 @@ public class User {
 
     public void validateAndSetPassword(String password) {
         validatePassword(password);
+        setPassword(password);
+    }
+
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -45,29 +49,11 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-            "userId='" + userId + '\'' +
+            "id='" + id + '\'' +
+            ", username='" + username + '\'' +
             ", password='" + password + '\'' +
             ", name='" + name + '\'' +
             ", email='" + email + '\'' +
             '}';
-    }
-
-    public UserNoPassword userNoPassword() {
-        return new UserNoPassword(uid, userId, name, email);
-    }
-
-    public static class UserNoPassword {
-
-        private final String uid;
-        private final String userId;
-        private final String name;
-        private final String email;
-
-        private UserNoPassword(String uid, String userId, String name, String email) {
-            this.uid = uid;
-            this.userId = userId;
-            this.name = name;
-            this.email = email;
-        }
     }
 }

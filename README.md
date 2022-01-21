@@ -115,8 +115,8 @@
 - [ ] 리뷰
   - [ ] controller 에서 dto 사용
     - [x] UserDto 및 Mapper 만들기
-    - [ ] ArticleDto 및 Mapper 만들기 (과연 필요할까?)
-    - [ ] RequestBody 를 이용해 controller 에서 dto 객체로 파라미터 받기
+    - [ ] ArticleDto 및 Mapper 만들기 (지금 시점에 과연 필요할까?)
+    - [x] RequestBody 를 이용해 controller 에서 dto 객체로 파라미터 받기
 
   - [ ] exception 처리
     - [x] UncheckedException 처리

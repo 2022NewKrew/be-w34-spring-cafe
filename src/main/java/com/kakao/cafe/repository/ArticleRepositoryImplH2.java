@@ -4,13 +4,9 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import java.util.List;
 import javax.sql.DataSource;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
 
-@Primary
-@Repository
 public class ArticleRepositoryImplH2 implements ArticleRepository{
 
     private final JdbcTemplate jdbcTemplate;
@@ -26,7 +22,7 @@ public class ArticleRepositoryImplH2 implements ArticleRepository{
         final User writer = article.getWriter();
         jdbcTemplate.update(
             "INSERT INTO ARTICLES (TITLE, WRITER, CONTENTS) VALUES ( ?, ?, ? )",
-            article.getTitle(), writer.getUserId(), article.getContents()
+            article.getTitle(), writer.getUsername(), article.getContents()
         );
     }
 
@@ -63,7 +59,7 @@ public class ArticleRepositoryImplH2 implements ArticleRepository{
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, count) -> {
-            User writer = userRepository.findUserByUserId(rs.getString("writer"));
+            User writer = userRepository.findByUsername(rs.getString("writer"));
             return new Article(
                 rs.getInt("id"),
                 rs.getString("title"),

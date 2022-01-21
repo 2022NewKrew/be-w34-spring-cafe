@@ -3,7 +3,6 @@ package com.kakao.cafe.service;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,30 +42,30 @@ class UserServiceTest {
 
     @Test
     @DisplayName("중복된 ID는 가입할 수 없다.")
-    void testCreateUserWithDuplicatedUserId() {
+    void testCreateUserWithDuplicatedUsername() {
         // given
-        String usedUserId = "test";
+        String usedUsername = "test";
 
         // when
-        UserDto userDto = new UserDto(usedUserId, "123456", "test", "test@test.com");
-        Mockito.when(userRepository.isUserIdUsed(usedUserId)).thenReturn(true);
+        User user = new User("1", usedUsername, "123456", "test", "test@test.com");
+        Mockito.when(userRepository.isUsernameUsed(usedUsername)).thenReturn(true);
 
         // then
-        assertThatThrownBy(() -> userService.signup(userDto))
+        assertThatThrownBy(() -> userService.signup(user))
             .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("가입되지 않은 회원의 프로필은 조회할 수 없다.")
-    void testReadUserWithUnusedUserId() {
+    void testReadUserWithUnusedUsername() {
         // given
-        String unusedUserId = "test";
+        String unusedUsername = "test";
 
         // when
-        Mockito.when(userRepository.isUserIdUsed(unusedUserId)).thenReturn(false);
+        Mockito.when(userRepository.isUsernameUsed(unusedUsername)).thenReturn(false);
 
         // then
-        assertThatThrownBy(() -> userService.getUserByUserId(unusedUserId))
+        assertThatThrownBy(() -> userService.getUserByUsername(unusedUsername))
             .isExactlyInstanceOf(ResponseStatusException.class);
     }
 
@@ -75,29 +74,28 @@ class UserServiceTest {
     @DisplayName("개인정보 변경에서도 비밀번호는 6자 이상이어야 한다.")
     void testUpdateUserWithShortPassword(String password) {
         // given
-        String userId = "test";
-        String uid = "1";
+        String username = "test";
 
         // when
-        UserDto userDto = new UserDto(userId, password, "test", "test@test.com");
+        User user = new User("1", username, password, "test", "test@test.com");
 
         // then
-        assertThatThrownBy(() -> userService.updateUser(userDto))
+        assertThatThrownBy(() -> userService.updateUser(username, user))
             .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("가입되지 않은 회원의 정보는 변경할 수 없다.")
-    void testUpdateUserWithUnusedUserId() {
+    void testUpdateUserWithUnusedUsername() {
         // given
-        String unusedUserId = "test";
+        String unusedUsername = "test";
 
         // when
-        UserDto userDto = new UserDto(unusedUserId, "123456", "test", "test@test.com");
-        Mockito.when(userRepository.isUserIdUsed(unusedUserId)).thenReturn(false);
+        User user = new User("1", unusedUsername, "123456", "test", "test@test.com");
+        Mockito.when(userRepository.isUsernameUsed(unusedUsername)).thenReturn(false);
 
         // then
-        assertThatThrownBy(() -> userService.updateUser(userDto))
+        assertThatThrownBy(() -> userService.updateUser(unusedUsername, user))
             .isExactlyInstanceOf(ResponseStatusException.class);
     }
 

@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserDto;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
@@ -65,11 +64,10 @@ class ArticleServiceTest {
         String writerUid = "1";
 
         // when
-        UserDto writerDto = new UserDto(writerUserId, "123456", "test", "test@test.com");
-        Mockito.when(userRepository.findUidByUserId(writerUserId)).thenReturn(writerUid);
+        User writer = new User(writerUid, writerUserId, "123456", "test", "test@test.com");
 
         // then
-        assertThat(articleService.createArticle("testTitle", writerDto, "testContents"))
+        assertThat(articleService.createArticle("testTitle", writer, "testContents"))
             .isExactlyInstanceOf(Article.class);
     }
 }

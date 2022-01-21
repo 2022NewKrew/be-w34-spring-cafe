@@ -1,16 +1,11 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserDto;
 import java.util.List;
 import javax.sql.DataSource;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
 
-@Primary
-@Repository
 public class UserRepositoryImpH2 implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -20,18 +15,18 @@ public class UserRepositoryImpH2 implements UserRepository {
     }
 
     @Override
-    public void createUser(UserDto userDto) {
+    public void createUser(User user) {
         jdbcTemplate.update(
             "INSERT INTO USERS (USER_ID, PASSWORD, NAME, EMAIL) VALUES ( ?, ?, ?, ? )",
-            userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail()
+            user.getUsername(), user.getPassword(), user.getName(), user.getEmail()
         );
     }
 
     @Override
-    public boolean isUserIdUsed(String userId) {
+    public boolean isUsernameUsed(String username) {
         List<User> result = jdbcTemplate.query(
             "SELECT * FROM USERS WHERE USER_ID=?",
-            userRowMapper(), userId
+            userRowMapper(), username
         );
         return !result.isEmpty();
     }
@@ -45,10 +40,10 @@ public class UserRepositoryImpH2 implements UserRepository {
     }
 
     @Override
-    public User findUserByUserId(String userId) {
+    public User findByUsername(String username) {
         List<User> result = jdbcTemplate.query(
             "SELECT * FROM USERS WHERE USER_ID=?",
-            userRowMapper(), userId
+            userRowMapper(), username
         );
         return result.get(0);
     }
@@ -57,18 +52,18 @@ public class UserRepositoryImpH2 implements UserRepository {
     public User updateUser(User user) {
         jdbcTemplate.update(
             "UPDATE USERS SET NAME=?, EMAIL=? WHERE USER_ID=?",
-            user.getName(), user.getEmail(), user.getUserId()
+            user.getName(), user.getEmail(), user.getUsername()
         );
         return user;
     }
 
     @Override
-    public String findUidByUserId(String userId) {
+    public String findIdByUsername(String username) {
         List<User> result = jdbcTemplate.query(
             "SELECT * FROM USERS WHERE USER_ID=?",
-            userRowMapper(), userId
+            userRowMapper(), username
         );
-        return result.get(0).getUid();
+        return result.get(0).getId();
     }
 
     private RowMapper<User> userRowMapper() {

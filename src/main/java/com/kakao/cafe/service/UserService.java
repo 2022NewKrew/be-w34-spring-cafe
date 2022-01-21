@@ -1,59 +1,50 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserDto;
-import com.kakao.cafe.domain.UserMapper;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-@Service
 public class UserService {
 
     private final UserRepository userRepository;
-    private static final UserMapper MAPPER = UserMapper.INSTANCE;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public void signup(UserDto userDto) throws IllegalArgumentException {
-        userDto.validate();
-        validateDuplicatedUserId(userDto.getUserId());
-        userRepository.createUser(userDto);
+    public void signup(User user) throws IllegalArgumentException {
+        user.validate();
+        validateDuplicatedUsername(user.getUsername());
+        userRepository.createUser(user);
     }
 
-    private void validateDuplicatedUserId(String userId) {
-        if (userRepository.isUserIdUsed(userId)) {
+    private void validateDuplicatedUsername(String username) {
+        if (userRepository.isUsernameUsed(username)) {
             throw new IllegalArgumentException("[ERROR] 이미 사용중인 아이디입니다.");
         }
     }
 
-    public List<UserDto> getUsers() {
-        return userRepository.findAllUsers().stream()
-            .map(MAPPER::toUserDto)
-            .collect(Collectors.toList());
+    public List<User> getUsers() {
+        return userRepository.findAllUsers();
     }
 
-    public UserDto getUserByUserId(String userId) {
-        if (!userRepository.isUserIdUsed(userId)) {
+    public User getUserByUsername(String username) {
+        if (!userRepository.isUsernameUsed(username)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "[ERROR] 사용자를 찾을 수 없습니다.");
         }
-        User user = userRepository.findUserByUserId(userId);
-        return MAPPER.toUserDto(user);
+        return userRepository.findByUsername(username);
     }
 
-    public UserDto updateUser(UserDto userDto) {
-        userDto.validate();
-        if (!userRepository.isUserIdUsed(userDto.getUserId())) {
+    public User updateUser(String username, User user) {
+        user.validate();
+        if (!username.equals(user.getUsername())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "[ERROR] 본인의 정보만 수정할 수 있습니다.");
+        }
+        if (!userRepository.isUsernameUsed(user.getUsername())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "[ERROR] 사용자를 찾을 수 없습니다.");
         }
-        String uid = userRepository.findUidByUserId(userDto.getUserId());
-        User user = MAPPER.toUserEntity(userDto, uid);
-        User updatedUser = userRepository.updateUser(user);
-        return MAPPER.toUserDto(updatedUser);
+        return userRepository.updateUser(user);
     }
 }

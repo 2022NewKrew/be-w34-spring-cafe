@@ -19,9 +19,9 @@
               <tbody>
                 {{# articles}}
                 <tr>
-                  <th scope="row">{{aid}}</th>
-                  <td><a href="/articles/{{aid}}">{{title}}</a></td>
-                  <td><a href="/users/{{writer.userId}}">{{writer.userId}}</a></td>
+                  <th scope="row">{{id}}</th>
+                  <td><a href="/articles/{{id}}">{{title}}</a></td>
+                  <td><a href="/users/{{writer.username}}">{{writer.username}}</a></td>
                   <td>{{contents}}</td>
                   <td>{{createdAt}}</td>
                   <td>{{updatedAt}}</td>
