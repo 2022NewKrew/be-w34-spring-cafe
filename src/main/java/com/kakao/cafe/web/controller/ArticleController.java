@@ -2,6 +2,7 @@ package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.web.dto.ArticleDTO;
+import com.kakao.cafe.web.dto.ArticleResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,8 +35,8 @@ public class ArticleController {
 
     @GetMapping(value = "/articles/{index}")
     public String getArticleShow(@PathVariable int index, Model model) {
-        ArticleDTO articleDTO = articleService.getArticleByIndex(index);
-        model.addAttribute("article", articleDTO);
+        ArticleResponseDTO articleResponseDTO = articleService.getArticleByIndex(index);
+        model.addAttribute("article", articleResponseDTO);
         return "/article/show";
     }
 }
