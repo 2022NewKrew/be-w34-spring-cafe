@@ -25,28 +25,12 @@ public class UserDTO {
         this.registerDate = registerDate;
     }
 
-    private UserDTO(UserDTO userDTO) {
-        this.id = userDTO.getId();
-        this.password = userDTO.getPassword();
-        this.userId = userDTO.getUserId();
-        this.email = userDTO.getEmail();
-        this.registerDate = userDTO.getRegisterDate();
-    }
-
     public static UserDTO newInstance(String userId, String password, String email) {
         return UserDTO.builder()
                 .userId(userId)
                 .password(password)
                 .email(email)
                 .registerDate(LocalDate.now().toString())
-                .build();
-    }
-
-    public static UserDTO newInstanceNonePasswordInfo(UserDTO userDTO) {
-        return UserDTO.builder()
-                .userId(userDTO.getUserId())
-                .email(userDTO.getEmail())
-                .registerDate(userDTO.getRegisterDate())
                 .build();
     }
 }

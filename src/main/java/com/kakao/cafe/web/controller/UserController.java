@@ -4,6 +4,7 @@ import com.kakao.cafe.exception.IllegalUserInputException;
 import com.kakao.cafe.exception.IllegalLoginInputException;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.dto.UserDTO;
+import com.kakao.cafe.web.dto.UserResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,10 +43,10 @@ public class UserController {
 
     @PostMapping(value = "/user/login_check")
     public String login(String userId, String password, HttpSession session) {
-        Optional<UserDTO> userDTO = userService.getSessionUserDTO(userId, password);
+        Optional<UserResponseDTO> userResponseDTO = userService.getSessionUserDTO(userId, password);
 
-        if (userDTO.isPresent()) {
-            session.setAttribute("sessionUser", userDTO.get());
+        if (userResponseDTO.isPresent()) {
+            session.setAttribute("sessionUser", userResponseDTO.get());
             return "redirect:/user/login_success";
         } else
             return "redirect:/user/login_failed";
@@ -59,9 +60,9 @@ public class UserController {
 
     @GetMapping(value = "user/profile/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model) {
-        UserDTO userDTO = userService.getUserByUserId(userId);
-        log.info("userDTO:{}", userDTO);
-        model.addAttribute("user", userDTO);
+        UserResponseDTO userResponseDTO = userService.getUserByUserId(userId);
+        log.info("userDTO:{}", userResponseDTO);
+        model.addAttribute("user", userResponseDTO);
         return "/user/profile";
     }
 
