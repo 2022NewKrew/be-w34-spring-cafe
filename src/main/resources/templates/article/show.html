@@ -50,7 +50,9 @@
                 if (json.success) {
                     replyCount = json.replyList.length;
                     $('#replyCount').text("댓글 " + replyCount + "개")
-                    lastReplyId = json.replyList[json.replyList.length - 1].id;
+                    if (replyCount > 0) {
+                        lastReplyId = json.replyList[replyCount - 1].id;
+                    }
                     addReplies(json.replyList);
                 } else {
                     alert(json.message);

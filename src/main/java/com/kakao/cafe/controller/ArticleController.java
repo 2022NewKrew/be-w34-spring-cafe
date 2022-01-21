@@ -18,8 +18,8 @@ public class ArticleController {
     private ArticleService articleService;
 
     @GetMapping
-    String articles(Model model) {
-        model.addAttribute("articles", articleService.getArticleList());
+    String articles(Long page, Model model) {
+        articleService.getArticleList(page, model);
         return "article/list";
     }
 
