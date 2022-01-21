@@ -24,6 +24,7 @@ public class PageBtnBuilder {
     }
 
     public List<PageBtn> build() {
+        // 전체 단위는 오프셋 당 페이지가 존재하고, 페이지당 게시글이 존재함.
         final int startingPageOfCurOffset = calcStartingPage(currentPage);
 
         final int numOfPosts = getNumOfPosts(startingPageOfCurOffset);
