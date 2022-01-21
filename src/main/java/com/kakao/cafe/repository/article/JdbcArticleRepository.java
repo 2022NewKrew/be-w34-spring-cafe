@@ -17,19 +17,19 @@ public class JdbcArticleRepository implements ArticleRepository{
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void save(Article article) {
+    public void insert(Article article) {
         jdbcTemplate.update("INSERT INTO articles (writer, title, contents, deleted) VALUES (?, ?, ?, ?)",
                 article.getWriter(), article.getTitle(), article.getContents(), article.getDeleted());
     }
 
     @Override
-    public Optional<Article> findByArticleId(Long id) {
+    public Optional<Article> selectByArticleId(Long id) {
         List<Article> result =  jdbcTemplate.query("SELECT * FROM articles WHERE id = ?", articleRowMapper(), id);
         return result.stream().findAny();
     }
 
     @Override
-    public List<Article> findAll() {
+    public List<Article> selectAll() {
         return jdbcTemplate.query("SELECT * FROM articles", articleRowMapper()).stream()
                 .filter(article -> !article.getDeleted())
                 .collect(Collectors.toList());

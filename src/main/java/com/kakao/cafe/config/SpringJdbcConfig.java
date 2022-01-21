@@ -15,7 +15,7 @@ public class SpringJdbcConfig {
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
-                .setName("kakaodb")
+                .setName("kakaodb;MODE=MYSQL")
                 .addScript("classpath:schema.sql")
                 .addScript("classpath:data.sql")
                 .build();

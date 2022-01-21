@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Builder
 @Setter
-public class ArticleReqDto {
+public class ArticleRequest {
     private String writer;
     private String title;
     private String contents;

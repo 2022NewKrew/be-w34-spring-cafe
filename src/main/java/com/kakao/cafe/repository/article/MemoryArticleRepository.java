@@ -13,18 +13,18 @@ public class MemoryArticleRepository implements ArticleRepository {
 
 
     @Override
-    public void save(Article article) {
+    public void insert(Article article) {
         article.setArticleId(++sequence);
         articleStore.put(article.getArticleId(), article);
     }
 
     @Override
-    public Optional<Article> findByArticleId(Long id) {
+    public Optional<Article> selectByArticleId(Long id) {
         return Optional.ofNullable(articleStore.get(id));
     }
 
     @Override
-    public List<Article> findAll() {
+    public List<Article> selectAll() {
         return new ArrayList<>(articleStore.values());
     }
 

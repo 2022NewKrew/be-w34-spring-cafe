@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ArticleRepository {
-    void save(Article article);
-    Optional<Article> findByArticleId(Long id);
-    List<Article> findAll();
+    void insert(Article article);
+    Optional<Article> selectByArticleId(Long id);
+    List<Article> selectAll();
     void update(Article article);
 }

@@ -13,7 +13,7 @@ public class MemoryUserRepository implements UserRepository{
 
 
     @Override
-    public void save(User user) {
+    public void insert(User user) {
         user.setId(++sequence);
         update(user);
     }
@@ -24,19 +24,19 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<User> selectById(Long id) {
         return Optional.ofNullable(userStore.get(id));
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
+    public Optional<User> selectByUserId(String userId) {
         return userStore.values().stream()
                 .filter(user -> user.getUserId().equals(userId))
                 .findAny();
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> selectAll() {
         return new ArrayList<>(userStore.values());
     }
 
