@@ -106,11 +106,11 @@
                                     </ul>
                                 </div>
                             </article>
-                            <form class="submit-write">
-                                <div class="form-group" style="padding:14px;">
-                                    <textarea class="form-control" placeholder="Update your status"></textarea>
+                            <form class="submit-write" action="reply/{{article.id}}" method="post">
+                                <div class="form-group" style="padding:14px;" >
+                                    <textarea class="form-control" name="content" placeholder="Update your status"></textarea>
                                 </div>
-                                <button class="btn btn-success pull-right" type="button">답변하기</button>
+                                <button class="btn btn-success pull-right" type="submit">답변하기</button>
                                 <div class="clearfix" />
                             </form>
                         </div>

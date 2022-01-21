@@ -27,7 +27,7 @@ import java.util.Objects;
 public class SessionInterceptor implements HandlerInterceptor {
 
     public final List<String> loginEssential =
-            Arrays.asList("/user/profile/**", "/user/logout",  "/article/*", "/article/**");
+            Arrays.asList("/user/profile/**", "/user/logout",  "/article/*", "/article/**", "/reply/*");
 
     private final String[] sameUserEssential = {"/article/modify/*", "/article/delete/*"};
 
