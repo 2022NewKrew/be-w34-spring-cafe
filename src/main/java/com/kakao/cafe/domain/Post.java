@@ -5,22 +5,18 @@ import java.util.Objects;
 
 public class Post {
 
-    private int id;
+    private final int id;
     private final int userId;
     private final String title;
     private final String content;
     private final Date createdAt;
 
-    public Post( int id, int userId, String title, String content, Date createdAt) {
+    public Post(int id, int userId, String title, String content, Date createdAt) {
         this.id = id;
         this.userId = userId;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getId() {
@@ -54,5 +50,14 @@ public class Post {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Post id: " + id +
+                ", userId: " + userId +
+                ", title: " + title +
+                ", content: " + content +
+                ", createdAt: " + createdAt;
     }
 }
