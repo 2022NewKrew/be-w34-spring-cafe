@@ -23,7 +23,7 @@ public class ArticleRepository {
     }
 
     // 전체 게시물
-    public List<Article> findAll() {
+    public List<Article> findAllNotDeleted() {
         return this.jdbcTemplate.query("SELECT * FROM ARTICLES", this.articleMapper);
     }
 

@@ -20,7 +20,7 @@ public class CommentRepository {
                 comment.getArticleId(), comment.getUserId(), comment.getWriter(), comment.getContents());
     }
 
-    public List<Comment> findAll(int articleId) {
+    public List<Comment> findAllByArticleIdAndNotDeleted(int articleId) {
         return this.jdbcTemplate.query("SELECT * FROM COMMENTS WHERE articleId = ? AND deleted != 1", this.commentMapper, articleId);
     }
 

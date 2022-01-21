@@ -22,8 +22,8 @@ public class ArticleService {
     }
 
     // 전체 게시물 찾기
-    public List<ReferArticleDto> findAll() {
-        List<ReferArticleDto> articles = this.articleRepository.findAll().stream()
+    public List<ReferArticleDto> findAllNotDeleted() {
+        List<ReferArticleDto> articles = this.articleRepository.findAllNotDeleted().stream()
                 .map(ReferArticleDto::new).collect(Collectors.toList());
         return articles;
     }

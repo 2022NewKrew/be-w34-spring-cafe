@@ -31,7 +31,7 @@ public class ArticleController {
     // 게시물 목록 조회
     @GetMapping("")
     public String showArticles(Model model) {
-        model.addAttribute("articles", this.articleService.findAll());
+        model.addAttribute("articles", this.articleService.findAllNotDeleted());
         return "article/list";
     }
 
@@ -54,7 +54,7 @@ public class ArticleController {
     @GetMapping("/{id}")
     public String showArticle(@PathVariable int id, Model model) {
         model.addAttribute("article", this.articleService.findById(id));
-        List<ShowCommentDto> comments = this.commentService.findAll(id).stream()
+        List<ShowCommentDto> comments = this.commentService.findAllByArticleIdAndNotDeleted(id).stream()
                         .map(ShowCommentDto::new).collect(Collectors.toList());
         model.addAttribute("comments", comments);
         model.addAttribute("numOfComments", comments.size());
