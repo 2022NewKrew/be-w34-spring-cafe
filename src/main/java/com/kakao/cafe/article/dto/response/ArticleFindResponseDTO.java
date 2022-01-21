@@ -1,6 +1,7 @@
 package com.kakao.cafe.article.dto.response;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import lombok.Getter;
 
@@ -13,6 +14,7 @@ public class ArticleFindResponseDTO {
     private final String title;
     private final String contents;
     private final String createTime;
+    private List<ReplyFindResponseDTO> replyList;
 
     public ArticleFindResponseDTO(Article article) {
         this.id = article.getId();
@@ -20,5 +22,9 @@ public class ArticleFindResponseDTO {
         this.title = article.getTitle();
         this.contents = article.getContents();
         this.createTime = article.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    }
+
+    public void setReplyList(List<ReplyFindResponseDTO> replyList) {
+        this.replyList = replyList;
     }
 }

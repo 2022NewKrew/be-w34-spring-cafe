@@ -2,14 +2,15 @@ package com.kakao.cafe.article.service;
 
 import java.util.List;
 
-import com.kakao.cafe.article.dto.request.ArticleReplyCreateRequestDTO;
-import com.kakao.cafe.article.dto.response.ArticleFindResponseDTO;
-import com.kakao.cafe.article.dto.response.ArticleReplyFindResponseDTO;
+import com.kakao.cafe.article.dto.request.ReplyCreateRequestDTO;
+import com.kakao.cafe.article.dto.response.ReplyFindResponseDTO;
 
-public interface ArticleReplyService {
-    void create(ArticleReplyCreateRequestDTO articleReplyCreateRequestDTO);
+public interface ReplyService {
+    void create(ReplyCreateRequestDTO replyCreateRequestDTO);
 
-    List<ArticleReplyFindResponseDTO> getAllArticleReplyByArticleId(int articleId);
+    ReplyFindResponseDTO getReplyById(int id);
+
+    List<ReplyFindResponseDTO> getAllReplyByArticleId(int articleId);
 
     void remove(int id);
 }
