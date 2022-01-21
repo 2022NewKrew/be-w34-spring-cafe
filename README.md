@@ -66,4 +66,5 @@
 - [x] mysql 도커로 krane 서버에서 실행
 
 # step11
+- [x] DockerFile로 자바만 실행
 - [ ] docker compose 생성후 배포
