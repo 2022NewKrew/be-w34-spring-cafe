@@ -3,18 +3,15 @@ package com.kakao.cafe.application;
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.post.PostMapper;
 import com.kakao.cafe.domain.post.PostRepository;
+import com.kakao.cafe.exception.handler.NoSuchPostException;
 import com.kakao.cafe.interfaces.common.PostDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class PostService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final PostRepository postRepository;
     private final PostMapper postMapper;
 
@@ -28,7 +25,7 @@ public class PostService {
     }
 
     public Post findById(long id) {
-        return postRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return postRepository.findById(id).orElseThrow(NoSuchPostException::new);
     }
 
     public void write(PostDto postDto) {
