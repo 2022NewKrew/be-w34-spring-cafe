@@ -108,7 +108,7 @@
   - 비밀번호가 일치하는 경우에만 수정 가능
 ### 피드백
 - [x] HttpSession을 이용한 공통 로직을 Spring Interceptor혹은 aop를 사용해 제거
-- [ ] 롬복 사용 시 주의사항을 참고하며 Builder 적용해보기
+- [x] 롬복 사용 시 주의사항을 참고하며 Builder 적용해보기
   - [참고자료](https://cheese10yun.github.io/lombok/)
 
 ## 2-2단계
