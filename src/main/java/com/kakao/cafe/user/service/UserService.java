@@ -3,9 +3,9 @@ package com.kakao.cafe.user.service;
 import com.kakao.cafe.user.domain.Password;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserId;
-import com.kakao.cafe.user.exception.*;
 import com.kakao.cafe.user.repository.UserRepository;
 import com.kakao.cafe.util.ErrorCode;
+import com.kakao.cafe.util.exception.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

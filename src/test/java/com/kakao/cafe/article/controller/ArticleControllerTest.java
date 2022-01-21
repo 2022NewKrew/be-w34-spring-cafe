@@ -5,13 +5,13 @@ import com.kakao.cafe.article.domain.Contents;
 import com.kakao.cafe.article.domain.Title;
 import com.kakao.cafe.article.dto.ArticleFormDto;
 import com.kakao.cafe.article.dto.ArticleMapper;
-import com.kakao.cafe.article.exception.ArticleException;
 import com.kakao.cafe.article.service.ArticlePostService;
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.user.domain.UserId;
-import com.kakao.cafe.user.exception.UserException;
 import com.kakao.cafe.util.ErrorCode;
 import com.kakao.cafe.util.ExceptionController;
+import com.kakao.cafe.util.exception.ArticleException;
+import com.kakao.cafe.util.exception.UserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -134,7 +134,7 @@ public class ArticleControllerTest {
     @Test
     @DisplayName("ArticleId가 존재하지 않는 경우 에러가 발생한다.")
     void invalidArticleId() throws Exception {
-        when(articleService.findArticleByArticleId(0L))
+        when(articleService.findByArticleId(0L))
                 .thenThrow(new UserException(ErrorCode.ARTICLE_NOT_FOUND));
 
         mockMvc.perform(get("/articles/0")).andExpect(status().isNotFound());
@@ -143,7 +143,7 @@ public class ArticleControllerTest {
     @Test
     @DisplayName("ArticleId가 존재하는 경우 정상적인 결과가 출력된다.")
     void validArticleId() throws Exception {
-        when(articleService.findArticleByArticleId(1L))
+        when(articleService.findByArticleId(1L))
                 .thenReturn(articleContainId);
 
         mockMvc.perform(get("/articles/1")).andExpect(status().isOk());

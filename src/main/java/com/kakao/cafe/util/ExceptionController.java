@@ -1,7 +1,6 @@
 package com.kakao.cafe.util;
 
-import com.kakao.cafe.article.exception.ArticleException;
-import com.kakao.cafe.user.exception.*;
+import com.kakao.cafe.util.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

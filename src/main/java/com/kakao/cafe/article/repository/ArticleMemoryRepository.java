@@ -30,4 +30,14 @@ public class ArticleMemoryRepository implements ArticleRepository {
     public List<Article> findAll() {
         return articles;
     }
+
+    @Override
+    public void update(Article article) {
+
+    }
+
+    @Override
+    public void delete(Long articleId) {
+
+    }
 }

@@ -8,6 +8,7 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 public class ArticleListDto {
+    private Long articleId;
     private String writer;
     private Date time;
     private String title;

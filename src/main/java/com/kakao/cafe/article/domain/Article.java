@@ -1,8 +1,8 @@
 package com.kakao.cafe.article.domain;
 
-import com.kakao.cafe.article.exception.ArticleException;
 import com.kakao.cafe.user.domain.UserId;
 import com.kakao.cafe.util.ErrorCode;
+import com.kakao.cafe.util.exception.ArticleException;
 import lombok.Getter;
 
 import java.util.Date;
@@ -66,5 +66,9 @@ public class Article {
     @Override
     public int hashCode() {
         return Objects.hash(articleId, writerId, writeTime, title, contents);
+    }
+
+    public boolean equalWriterId(UserId loginId) {
+        return this.writerId.equals(loginId);
     }
 }

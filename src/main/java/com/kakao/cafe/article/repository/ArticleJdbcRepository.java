@@ -42,4 +42,16 @@ public class ArticleJdbcRepository implements ArticleRepository {
         String sql = "SELECT ARTICLE_ID, WRITER_ID, WRITE_TIME, TITLE, CONTENTS FROM ARTICLES";
         return jdbcTemplate.query(sql, new ArticleMapper());
     }
+
+    @Override
+    public void update(Article article) {
+        String sql = "UPDATE ARTICLES SET TITLE = ?, CONTENTS = ? WHERE ARTICLE_ID = ?";
+        jdbcTemplate.update(sql, article.getTitle().getTitle(), article.getContents().getContents(), article.getArticleId());
+    }
+
+    @Override
+    public void delete(Long articleId) {
+        String sql = "DELETE ARTICLES WHERE ARTICLE_ID = ?";
+        jdbcTemplate.update(sql, articleId);
+    }
 }
