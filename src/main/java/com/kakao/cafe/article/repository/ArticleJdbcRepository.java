@@ -33,7 +33,7 @@ public class ArticleJdbcRepository implements ArticleRepository{
 
     @Override
     public List<Article> findAll(){
-        String sql = "SELECT * FROM ARTICLE";
+        String sql = "SELECT * FROM ARTICLE WHERE deleted=false";
         return jdbcTemplate.query(sql, articleRowMapper());
     }
 
@@ -50,13 +50,20 @@ public class ArticleJdbcRepository implements ArticleRepository{
                 article.getContents(), article.getUploadTime(), article.getId());
     }
 
+    @Override
+    public void deleteById(Long id) {
+        String sql = "UPDATE ARTICLE SET deleted=true WHERE id=?";
+        jdbcTemplate.update(sql, id);
+    }
+
     public RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> new Article(
                 rs.getLong("id"),
                 rs.getString("author"),
                 rs.getString("title"),
                 rs.getString("contents"),
-                rs.getString("uploadTime")
+                rs.getString("uploadTime"),
+                rs.getBoolean("deleted")
         );
     }
 }

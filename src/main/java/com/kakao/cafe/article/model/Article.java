@@ -16,4 +16,5 @@ public class Article {
     private String contents;
     @Setter
     private String uploadTime;
+    private Boolean deleted;
 }

@@ -13,5 +13,7 @@ public interface CommentRepository {
 
     void deleteCommentById(Long id);
 
+    void deleteByArticleId(Long articleId);
+
     Optional<Comment> findOneById(Long id);
 }

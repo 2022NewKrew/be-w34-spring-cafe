@@ -32,4 +32,7 @@ public class ArticleMemoryRepository implements ArticleRepository{
     }
 
     public void updateOne(Article article){}
+
+    @Override
+    public void deleteById(Long id) {}
 }
