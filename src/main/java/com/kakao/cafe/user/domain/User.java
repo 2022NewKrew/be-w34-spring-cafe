@@ -57,4 +57,8 @@ public class User {
                 ", lastModifiedAt=" + lastModifiedAt +
                 '}';
     }
+
+    public boolean isPasswordMatched(String password) {
+        return this.password.equals(password);
+    }
 }
