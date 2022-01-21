@@ -3,7 +3,6 @@ package com.kakao.cafe.post.persistence;
 import com.kakao.cafe.post.domain.entity.Comment;
 import com.kakao.cafe.post.domain.entity.Post;
 import com.kakao.cafe.post.domain.repository.PostRepository;
-import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
@@ -54,6 +53,11 @@ public class InMemoryPostRepository implements PostRepository {
 
     @Override
     public void softDelete(Long postId) {
+
+    }
+
+    @Override
+    public void deleteComment(Long commentId) {
 
     }
 }

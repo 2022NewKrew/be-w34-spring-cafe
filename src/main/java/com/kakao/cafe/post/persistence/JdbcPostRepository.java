@@ -82,6 +82,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public void deleteComment(Long commentId) {
-
+        final String queryString = String.format("delete from COMMENT where ID=%d", commentId);
+        myJdbcTemplate.update(queryString);
     }
 }
