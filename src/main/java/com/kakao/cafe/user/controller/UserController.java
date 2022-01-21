@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
     private static final int LOGIN_TIME = 1800;
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -30,15 +31,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(HttpSession session, @Valid loginRequest loginRequest){
+    public String login(HttpSession session, @Valid loginRequest loginRequest) {
         UserResponse userResponse = userService.login(loginRequest);
         session.setMaxInactiveInterval(LOGIN_TIME);
-        session.setAttribute("sessionedUser",userResponse);
-        return "redirect:/";
+        session.setAttribute("sessionUser", userResponse);
+
+        String destUrl = (String) session.getAttribute("destUrl");
+        String redirect = (destUrl == null) ? "/" : destUrl;
+        return "redirect:" + redirect;
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
     }
@@ -55,7 +59,7 @@ public class UserController {
     public String signUpAccount(@Valid SignUpRequest signUpRequest) {
         UserResponse userResponse = userService.save(signUpRequest);
         logger.info("회원 가입: {}", userResponse);
-        return "redirect:users";
+        return "redirect:/users";
     }
 
     @GetMapping("/{id}")
