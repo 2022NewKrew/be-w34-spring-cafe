@@ -1,6 +1,7 @@
 package com.kakao.cafe.article.domain;
 
 import com.kakao.cafe.article.dto.SingleComment;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,8 @@ public class CommentRepositoryImpl implements CommentRepository {
             (rs, rowNum) -> SingleComment.builder()
                 .commentId(rs.getLong("comment_id"))
                 .body(rs.getString("body"))
-                .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                .createdAt(rs.getTimestamp("created_at").toLocalDateTime()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")))
                 .authorId(rs.getLong("author_id"))
                 .authorName(rs.getString("nickname"))
                 .build(),

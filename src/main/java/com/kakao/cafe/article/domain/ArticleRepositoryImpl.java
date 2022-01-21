@@ -3,6 +3,7 @@ package com.kakao.cafe.article.domain;
 import com.kakao.cafe.article.dto.MultipleArticle;
 import com.kakao.cafe.article.dto.SingleArticle;
 import com.kakao.cafe.article.exception.ArticleNotFoundException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                     .articleId(rs.getLong("article_id"))
                     .title(rs.getString("title"))
                     .body(rs.getString("body"))
-                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")))
                     .viewCount(rs.getInt("view_count"))
                     .authorId(rs.getLong("author_id"))
                     .authorName(rs.getString("author_nickname"))
@@ -83,7 +85,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             (rs, rowNum) -> MultipleArticle.builder()
                 .articleId(rs.getLong("article_id"))
                 .title(rs.getString("title"))
-                .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                .createdAt(rs.getTimestamp("created_at").toLocalDateTime()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .viewCount(rs.getInt("view_count"))
                 .authorId(rs.getLong("author_id"))
                 .authorName(rs.getString("author_nickname"))
