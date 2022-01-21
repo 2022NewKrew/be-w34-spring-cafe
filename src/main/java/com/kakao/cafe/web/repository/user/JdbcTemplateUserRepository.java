@@ -1,6 +1,7 @@
 package com.kakao.cafe.web.repository.user;
 
 import com.kakao.cafe.web.domain.User;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -40,14 +41,14 @@ public class JdbcTemplateUserRepository implements UserRepository {
     public Optional<User> findById(Long id) {
         SqlParameterSource param = new MapSqlParameterSource("id", id);
         List<User> result = jdbcTemplate.query("select * from users where `id` = :id", param, userRowMapper);
-        return result.stream().findAny();
+        return Optional.ofNullable(DataAccessUtils.singleResult(result));
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
         SqlParameterSource param = new MapSqlParameterSource("userId", userId);
         List<User> result = jdbcTemplate.query("select * from users where `user_id` = :userId", param, userRowMapper);
-        return result.stream().findAny();
+        return Optional.ofNullable(DataAccessUtils.singleResult(result));
     }
 
     @Override

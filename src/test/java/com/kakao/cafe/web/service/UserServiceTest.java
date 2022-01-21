@@ -35,7 +35,7 @@ class UserServiceTest {
         userService.join(user);
 
         //then
-        User findUser = userService.findUser(user.getUserId()).get();
+        User findUser = userService.findUser(user.getUserId());
         assertThat(user).isEqualTo(findUser);
     }
 

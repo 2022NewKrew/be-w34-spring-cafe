@@ -16,3 +16,12 @@ CREATE TABLE articles
     content VARCHAR(1000),
     writer  VARCHAR(32) NOT NULL
 );
+
+DROP TABLE IF EXISTS comments;
+CREATE TABLE comments
+(
+    id      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    article_id BIGINT,
+    content VARCHAR(1000),
+    writer  VARCHAR(32) NOT NULL
+);

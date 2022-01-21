@@ -1,14 +1,13 @@
 package com.kakao.cafe.web.service;
 
 import com.kakao.cafe.web.domain.User;
+import com.kakao.cafe.web.exception.NotFoundException;
 import com.kakao.cafe.web.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -33,35 +32,29 @@ public class UserService {
     }
 
     public User authenticate(String userId, String password) {
-        Optional<User> user = userRepository.findByUserId(userId);
-        if (user.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 아이디입니다.");
-        }
-        User loginUser = user.get();
-        if (!Objects.equals(loginUser.getPassword(), password)) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
+
+        if (!Objects.equals(user.getPassword(), password)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        return loginUser;
+        return user;
     }
 
     @Transactional
     public void update(User newUser, String userId) {
-        Optional<User> user = userRepository.findByUserId(userId);
-        if (user.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 아이디입니다.");
-        }
-        User updateUser = user.get();
-        updateUser.setEmail(newUser.getEmail());
-        updateUser.setName(newUser.getName());
-        updateUser.setPassword(newUser.getPassword());
-        userRepository.update(updateUser);
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("존재하지 않는 아이디입니다."));
+
+        user.setEmail(newUser.getEmail());
+        user.setName(newUser.getName());
+        user.setPassword(newUser.getPassword());
+        userRepository.update(user);
     }
 
     public List<User> findUsers() {
         return userRepository.findAll();
     }
 
-    public Optional<User> findUser(String userId) {
-        return userRepository.findByUserId(userId);
+    public User findUser(String userId) {
+        return userRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("존재하지 않는 아이디입니다."));
     }
 }
