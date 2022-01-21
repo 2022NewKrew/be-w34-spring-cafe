@@ -2,9 +2,9 @@ package com.kakao.cafe.application;
 
 import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.post.PostRepository;
-import com.kakao.cafe.domain.reply.Reply;
-import com.kakao.cafe.domain.reply.ReplyMapper;
-import com.kakao.cafe.domain.reply.ReplyRepository;
+import com.kakao.cafe.domain.post.reply.Reply;
+import com.kakao.cafe.domain.post.reply.ReplyMapper;
+import com.kakao.cafe.domain.post.reply.ReplyRepository;
 import com.kakao.cafe.interfaces.common.ReplyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

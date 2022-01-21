@@ -1,6 +1,6 @@
 package com.kakao.cafe.domain.post;
 
-import com.kakao.cafe.domain.reply.Reply;
+import com.kakao.cafe.domain.post.reply.Reply;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

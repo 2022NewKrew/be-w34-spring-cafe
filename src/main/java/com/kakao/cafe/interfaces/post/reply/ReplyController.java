@@ -1,7 +1,7 @@
-package com.kakao.cafe.interfaces.reply;
+package com.kakao.cafe.interfaces.post.reply;
 
 import com.kakao.cafe.application.ReplyService;
-import com.kakao.cafe.domain.reply.Reply;
+import com.kakao.cafe.domain.post.reply.Reply;
 import com.kakao.cafe.interfaces.common.ReplyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.reply;
+package com.kakao.cafe.domain.post.reply;
 
 import com.kakao.cafe.domain.post.Post;
 import lombok.Builder;
