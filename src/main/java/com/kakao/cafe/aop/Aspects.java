@@ -5,7 +5,8 @@ import com.kakao.cafe.util.annotation.LoginCheck;
 import com.kakao.cafe.util.annotation.BoardCheck;
 import com.kakao.cafe.util.exception.NoAdminException;
 import com.kakao.cafe.util.exception.NotLoggedInException;
-import com.kakao.cafe.util.exception.NotMineException;
+import com.kakao.cafe.util.exception.NotMyArticleException;
+import com.kakao.cafe.util.exception.NotMyCommentException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -66,12 +67,12 @@ public class Aspects {
         String loggedInId = (String) session.getAttribute("USER_ID");
 
         if (boardCheck.type().toString().equals("ARTICLE") && !(boardService.isSameArticleWriter((long) joinPoint.getArgs()[0], loggedInId))) {
-            throw new NotMineException("해당 게시글의 작성자가 아니므로 수정하거나 삭제할 수 없습니다.");
+            throw new NotMyArticleException("해당 게시글의 작성자가 아니므로 수정하거나 삭제할 수 없습니다.");
         }
 
         if (boardCheck.type().toString().equals("COMMENT")
                 && !(boardService.isSameCommentWriter((long) joinPoint.getArgs()[0], (long) joinPoint.getArgs()[1], loggedInId))) {
-            throw new NotMineException("해당 댓글의 작성자가 아니므로 삭제할 수 없습니다.");
+            throw new NotMyCommentException("해당 댓글의 작성자가 아니므로 삭제할 수 없습니다.");
         }
     }
 }

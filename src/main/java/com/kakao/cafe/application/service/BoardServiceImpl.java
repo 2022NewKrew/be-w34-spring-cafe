@@ -27,10 +27,11 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void writeComment(long articleId, CommentDto commentDto) {
-        if (!boardRepository.saveComment(articleId, modelMapper.map(commentDto, Comment.class))) {
-            throw new ArticleNotFoundException("해당 게시글이 존재하지 않습니다.");
-        }
+    public CommentDto writeComment(long articleId, CommentDto commentDto) {
+        return boardRepository.saveComment(articleId, modelMapper.map(commentDto, Comment.class)).stream()
+                .map(comment -> modelMapper.map(comment, CommentDto.class))
+                .findFirst()
+                .orElseThrow(() -> new ArticleNotFoundException("해당 게시글이 존재하지 않습니다."));
     }
 
     @Override

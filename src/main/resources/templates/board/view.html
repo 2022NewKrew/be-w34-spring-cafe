@@ -4,10 +4,10 @@
         <h2 class="card-title m-3 text-center">글 조회</h2>
         {{#article}}
         <div class="mt-1 mb-1 float-end">
-            <form action="/board/delete/{{articleId}}" method="post">
+            <form action="/board/article/delete/{{articleId}}" method="post">
                 <input name="_method" type="hidden" value="delete"/>
                 <input name="writerId" type="hidden" value="{{writerId}}"/>
-                <button class="btn btn-dark" onclick="location.href='/board/modify/{{articleId}}'" type="button">수정
+                <button class="btn btn-dark" onclick="location.href='/board/article/modify/{{articleId}}'" type="button">수정
                 </button>
                 <button class="btn btn-dark" type="submit">삭제</button>
             </form>
@@ -47,43 +47,43 @@
             </tr>
         </table>
         <div class="mt-1">
-            <form action="/board/write/comment" method="post">
-                <input name="articleId" type="hidden" value="{{articleId}}">
+            <form>
+                <input id="commentWriteArticleId" name="articleId" type="hidden" value="{{articleId}}">
                 <div class="form-group row">
                     <div class="col-sm-2">
-                        <input class="form-control" name="writerId" readonly type="text" value="{{USER_ID}}">
+                        <input class="form-control" id="commentWriteUserId" name="writerId" readonly type="text" value="{{USER_ID}}">
                     </div>
                     <div class="col-sm-8">
-                        <input class="form-control" name="content" placeholder="댓글을 입력해주세요" required type="text">
+                        <input class="form-control" id="commentWriteContent" name="content" placeholder="댓글을 입력해주세요" required type="text">
                     </div>
                     <div class="col-sm-2">
-                        <button class="btn btn-dark" type="submit">작성</button>
+                        <button class="btn btn-dark" id="commentWriteButton" type="button">작성</button>
                     </div>
                 </div>
             </form>
         </div>
         <table class="table table-borderless align-middle mt-1">
-            {{#comments}}
-            <tr>
-                <th class="text-end" style="width: 130px">
-                    {{writerId}}
-                </th>
-                <td>
-                    {{content}}
-                </td>
-                <td style="width: 250px">
-                    {{formattedCreatedDate}}
-                </td>
-                <td style="width: 70px">
-                    <form action="/board/delete/{{articleId}}/{{commentId}}" method="post">
-                        <input name="_method" type="hidden" value="delete"/>
-                        <button class="btn btn-dark" type="submit">삭제</button>
-                    </form>
-                </td>
-            </tr>
-            {{/comments}}
+            <tbody id="commentsTableBody">
+                {{#comments}}
+                <tr id="comment-{{articleId}}-{{commentId}}">
+                    <th class="text-end" style="width: 130px">
+                        {{writerId}}
+                    </th>
+                    <td>
+                        {{content}}
+                    </td>
+                    <td style="width: 250px">
+                        {{formattedCreatedDate}}
+                    </td>
+                    <td style="width: 70px">
+                        <button class="btn btn-dark commentDeleteButton" type="button">삭제</button>
+                    </td>
+                </tr>
+                {{/comments}}
+            </tbody>
         </table>
         {{/article}}
     </article>
 </div>
+<script src="/assets/js/board/view.js"></script>
 {{>template/footer}}

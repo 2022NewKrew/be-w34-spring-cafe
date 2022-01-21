@@ -119,3 +119,23 @@
     <h4>< Soft Delete 확인 ></h4>
     <img src="img/step2_3_5_soft_delete.gif" alt="step2_3_5_soft_delete">
 </details>
+
+## 2-4단계 ([링크](https://lucas.codesquad.kr/2022-kakao/course/%EC%9B%B9%EB%B0%B1%EC%97%94%EB%93%9C/Kakao-Cafe-2/5%EB%8B%A8%EA%B3%84---%EB%8C%93%EA%B8%80-%EA%B5%AC%ED%98%84))
+### 기능 요구사항
+- RestController와 Web API로 댓글 구현하기
+  - 기존에 댓글을 구현한 방식은 매 번 새로고침을 통해 추가, 삭제
+  - 비동기 통신을 통해 댓글 추가 및 삭제 구현
+### 상세 구현사항
+- 댓글 부분에서 비동기 통신을 하기 위해 `axios` 활용 및 JavaScript 구현
+- `BoardController`에서 댓글 관련 메소드에 `@ResponseBody` 어노테이션을 붙여 부분적으로 REST API를 구현
+- 댓글 부분에서만 우선적으로 REST API와 비동기 통신을 구현하기 때문에 예외를 따로 정의하고 Advice에서 따로 처리
+### 실행 화면
+<details>
+    <summary>펼치기</summary>
+    <h4>< 댓글 추가 및 삭제, 뒤로가기 앞으로 가기를 통해 비동기 통신 확인 ></h4>
+    <img src="img/step2_4_1_comment_async.gif" alt="step2_4_1_comment_async">
+    <h4>< 댓글 삭제 실패 ></h4>
+    <img src="img/step2_4_2_delete_failed_alert.gif" alt="step2_4_2_delete_failed_alert">
+    <h4>< 다른 아이디로 들어와 댓글 삭제 성공 ></h4>
+    <img src="img/step2_4_3_delete_success.gif" alt="step2_4_3_delete_success">
+</details>
