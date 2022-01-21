@@ -17,7 +17,7 @@ public class UserDTO {
     private final String registerDate;
 
     @Builder
-    private UserDTO(long id,String userId, String password, String email,String registerDate) {
+    private UserDTO(long id, String userId, String password, String email, String registerDate) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -25,7 +25,7 @@ public class UserDTO {
         this.registerDate = registerDate;
     }
 
-    private UserDTO(UserDTO userDTO){
+    private UserDTO(UserDTO userDTO) {
         this.id = userDTO.getId();
         this.password = userDTO.getPassword();
         this.userId = userDTO.getUserId();
@@ -33,7 +33,7 @@ public class UserDTO {
         this.registerDate = userDTO.getRegisterDate();
     }
 
-    public static UserDTO newInstance(String userId, String password, String email){
+    public static UserDTO newInstance(String userId, String password, String email) {
         return UserDTO.builder()
                 .userId(userId)
                 .password(password)
@@ -42,7 +42,7 @@ public class UserDTO {
                 .build();
     }
 
-    public static UserDTO newInstanceNonePasswordInfo(UserDTO userDTO){
+    public static UserDTO newInstanceNonePasswordInfo(UserDTO userDTO) {
         return UserDTO.builder()
                 .userId(userDTO.getUserId())
                 .email(userDTO.getEmail())

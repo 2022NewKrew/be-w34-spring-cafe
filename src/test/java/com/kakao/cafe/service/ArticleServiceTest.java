@@ -40,6 +40,8 @@ class ArticleServiceTest {
     void getArticleByIndex() {
         when(articleRepository.findById(1)).thenReturn(Article.newInstance(1, "Mock 이란?", "Mock 으로 테스트 하는 법이 궁금합니다.", "unknown", "2022-01-19", 0));
         ArticleDTO article = articleService.getArticleByIndex(1);
+
+        //then
         assertEquals(article.getId(), 1);
         assertEquals(article.getTitle(), "Mock 이란?");
         verify(articleRepository, times(1)).findById(1);
@@ -51,10 +53,15 @@ class ArticleServiceTest {
 
     @Test
     void getArticleListSize() {
+        //given
         List<Article> articleList = new ArrayList<>();
         articleList.add(Article.newInstance(1, "Mock 이란?", "Mock 으로 테스트 하는 법이 궁금합니다.", "unknown", "2022-01-18", 0));
         articleList.add(Article.newInstance(2, "Spring 이란?", "Spring이 궁금합니다.", "unknown", "2022-01-19", 0));
+
+        //when
         when(articleRepository.getArticleList()).thenReturn(articleList);
+
+        //then
         assertEquals(articleService.getArticleListSize(), 2);
     }
 }

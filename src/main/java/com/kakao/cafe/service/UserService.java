@@ -18,7 +18,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User userFromUserDTO(UserDTO userDTO){
+    public User userFromUserDTO(UserDTO userDTO) {
         return User.builder()
                 .userId(userDTO.getUserId())
                 .password(userDTO.getPassword())
@@ -27,7 +27,7 @@ public class UserService {
                 .build();
     }
 
-    public UserDTO userDTOFromUser(User user){
+    public UserDTO userDTOFromUser(User user) {
         return UserDTO.builder()
                 .id(user.getId())
                 .userId(user.getUserId())
@@ -37,7 +37,7 @@ public class UserService {
                 .build();
     }
 
-    public void createUser(UserDTO userDTO){
+    public void createUser(UserDTO userDTO) {
         Optional<User> user = userRepository.findByUserId(userDTO.getUserId());
         if (user.isEmpty())
             userRepository.create(userFromUserDTO(userDTO));
@@ -45,7 +45,7 @@ public class UserService {
             throw new IllegalUserInputException("이미 존재하는 아이디입니다.");
     }
 
-    public UserDTO getUserByUserId(String userId) throws IllegalUserInputException{
+    public UserDTO getUserByUserId(String userId) throws IllegalUserInputException {
         Optional<User> userOptional = userRepository.findByUserId(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -62,8 +62,24 @@ public class UserService {
         return userRepository.getUserList().size();
     }
 
-    public boolean isPasswordMatching(UserDTO userDTO,String checkPassword) {
+    private boolean isPasswordMatching(UserDTO userDTO, String checkPassword) {
         User user = User.builder().password(userDTO.getPassword()).build();
         return user.isPasswordMatching(checkPassword);
+    }
+
+    public Optional<UserDTO> getLSessionUserDTO(String userId, String password) {
+
+        UserDTO userDTO;
+        try {
+            userDTO = this.getUserByUserId(userId);
+        } catch (IllegalUserInputException e) {
+            return Optional.empty();
+        }
+
+        if (this.isPasswordMatching(userDTO, password)) {
+            return Optional.of(UserDTO.newInstanceNonePasswordInfo(userDTO));
+        } else
+            return Optional.empty();
+
     }
 }

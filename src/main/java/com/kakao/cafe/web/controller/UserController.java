@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -33,32 +34,26 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/create")
-    public String postSignUp(String userId,String password,String email) {
-        userService.createUser(UserDTO.newInstance(userId,password,email));
+    public String postSignUp(String userId, String password, String email) {
+        userService.createUser(UserDTO.newInstance(userId, password, email));
         log.info("userList:{}", userService.getUserDTOList());
         return "redirect:/user/list";
     }
-    @PostMapping(value="/user/login_check")
-    public String login(String userId, String password, HttpSession session){
-        UserDTO userDTO;
-        try {
-            userDTO = userService.getUserByUserId(userId);
-        }
-        catch (IllegalUserInputException e){
-            return "redirect:/user/login_failed";
-        }
 
-        if(userService.isPasswordMatching(userDTO,password)) {
-            UserDTO newUserDTO = UserDTO.newInstanceNonePasswordInfo(userDTO);
-            session.setAttribute("sessionUser", newUserDTO);
+    @PostMapping(value = "/user/login_check")
+    public String login(String userId, String password, HttpSession session) {
+        Optional<UserDTO> userDTO= userService.getLSessionUserDTO(userId,password);
+
+        if(userDTO.isPresent()) {
+            session.setAttribute("sessionUser", userDTO.get());
             return "redirect:/user/login_success";
         }
         else
             return "redirect:/user/login_failed";
     }
 
-    @GetMapping(value="/user/logout")
-    public String logout(HttpSession session){
+    @GetMapping(value = "/user/logout")
+    public String logout(HttpSession session) {
         session.removeAttribute("sessionUser");
         return "redirect:/index";
     }
