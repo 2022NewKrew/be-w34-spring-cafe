@@ -53,7 +53,6 @@ public class ArticleController {
         List<SingleComment> comments = commentService.getAllComments(articleId);
         model.addAttribute("article", singleArticle);
         model.addAttribute("comments", comments);
-        model.addAttribute("user", user);
         return "article/show";
     }
 
