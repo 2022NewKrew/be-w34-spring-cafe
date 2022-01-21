@@ -2,8 +2,10 @@ package com.kakao.cafe.web.repository;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.ArticlePage;
+import com.kakao.cafe.domain.Comments;
 import com.kakao.cafe.domain.Delete;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.web.repository.CommentRepository.CommentMapper;
 import com.kakao.cafe.web.repository.UserRepository.UserMapper;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -102,7 +104,8 @@ public class ArticleRepository {
 
 
   public Integer totalSize(Delete deleteLevel) {
-    String query = "SELECT COUNT(*) FROM ARTICLE "
+    String query = "SELECT COUNT(*) "
+        + "FROM ARTICLE "
         + "WHERE is_deleted <= ?";
     return jdbcTemplate.queryForObject(query, Integer.class, deleteLevel.ordinal());
   }
@@ -132,12 +135,11 @@ public class ArticleRepository {
 
   public Optional<Article> findById(Long id, Delete deleteLevel) {
     String query = ArticleMapper.SELECT_ALL_COLUMNS
-        + "FROM ("
-        + "   SELECT * FROM article "
-        + "   WHERE id = ? "
-        + "   AND is_deleted <= ?) article "
-        + "INNER JOIN USERS "
-        + "ON article.user_id = users.id";
+        + "FROM article "
+        + "INNER JOIN users "
+        + "ON article.user_id = users.id "
+        + "AND article.id = ? "
+        + "AND article.is_deleted <= ? ";
 
     List<Article> articles = jdbcTemplate.query(query, articleMapper,
         id,
@@ -192,20 +194,15 @@ public class ArticleRepository {
             + "article.is_deleted, "
             + "article.create_at, "
             + "article.modified_at, "
-            + "users.id as user_id, "
-            + "users.email as user_email, "
-            + "users.nick_name as user_nick_name, "
-            + "users.summary as user_summary, "
-            + "users.profile as user_profile, "
-            + "users.create_at as user_create_at, "
-            + "users.modified_at as user_modified_at, "
-            + "users.last_login_at as user_last_login_at ";
+            + UserMapper.SELECT_ALL_COLUMNS_EXTERNAL;
+    ;
 
     private final UserMapper userMapper;
+    private final CommentRepository commentRepository;
 
-
-    public ArticleMapper(UserMapper userMapper) {
+    public ArticleMapper(UserMapper userMapper, CommentRepository commentRepository) {
       this.userMapper = userMapper;
+      this.commentRepository = commentRepository;
     }
 
 
@@ -223,15 +220,16 @@ public class ArticleRepository {
 
       // user mapping
       User author = userMapper.mapRowExternal(rs, rowNum);
+      Comments comments = commentRepository.findByArticleId(id, isDeleted);
 
       return Article.create(
           id,
           author,
           title,
           content,
+          comments,
           readCount,
           isDeleted,
-          new ArrayList<>(),
           createAt,
           modifiedAt
       );

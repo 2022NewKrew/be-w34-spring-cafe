@@ -69,6 +69,7 @@ public class SessionAspectManager {
     return controllerResult;
   }
 
+
   private boolean matchRequireLogin(RequireLogin requireLogin) {
     if(requireLogin.value()) {
       return SessionUtils.isLogin();

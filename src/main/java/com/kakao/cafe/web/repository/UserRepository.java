@@ -162,6 +162,16 @@ public class UserRepository {
             + "modified_at, "
             + "last_login_at ";
 
+    public static final String SELECT_ALL_COLUMNS_EXTERNAL =
+        " users.id as user_id, "
+            + "users.email as user_email, "
+            + "users.nick_name as user_nick_name, "
+            + "users.summary as user_summary, "
+            + "users.profile as user_profile, "
+            + "users.create_at as user_create_at, "
+            + "users.modified_at as user_modified_at, "
+            + "users.last_login_at as user_last_login_at ";
+
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 
