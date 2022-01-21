@@ -1,5 +1,7 @@
 package com.kakao.cafe.adapter.out.infra.persistence.article;
 
+import com.kakao.cafe.adapter.out.infra.persistence.reply.ReplyRepository;
+import com.kakao.cafe.application.article.dto.ArticleDetail;
 import com.kakao.cafe.application.article.dto.ArticleInfo;
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.dto.UpdateArticleRequest;
@@ -8,6 +10,7 @@ import com.kakao.cafe.application.article.port.out.DeleteArticlePort;
 import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
 import com.kakao.cafe.application.article.port.out.RegisterArticlePort;
 import com.kakao.cafe.application.article.port.out.UpdateArticlePort;
+import com.kakao.cafe.application.reply.dto.Replies;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.exceptions.ArticleNotExistException;
 import com.kakao.cafe.domain.article.exceptions.IllegalDateException;
@@ -24,9 +27,11 @@ import org.springframework.stereotype.Repository;
 public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort, UpdateArticlePort, DeleteArticlePort {
 
     private final ArticleRepository articleRepository;
+    private final ReplyRepository replyRepository;
 
-    public ArticleAdapter(ArticleRepository articleRepository) {
+    public ArticleAdapter(ArticleRepository articleRepository, ReplyRepository replyRepository) {
         this.articleRepository = articleRepository;
+        this.replyRepository = replyRepository;
     }
 
     @Override
@@ -79,5 +84,21 @@ public class ArticleAdapter implements RegisterArticlePort, GetArticleInfoPort, 
         return articleRepository.findById(id).orElseThrow(
             () -> new ArticleNotExistException("존재하지 않는 게시글입니다.")
         );
+    }
+
+    @Override
+    public ArticleDetail findArticleDetailById(int id) throws ArticleNotExistException {
+        Article article = findArticleById(id);
+        Replies replies = Replies.from(replyRepository.getAllReplyListByArticleId(id));
+
+        return new ArticleDetail.Builder().id(id)
+                                          .userId(article.getUserId())
+                                          .writer(article.getWriter())
+                                          .title(article.getTitle())
+                                          .contents(article.getContents())
+                                          .createdAt(article.getCreatedAt())
+                                          .replyList(replies)
+                                          .countOfReplies(replies.getCountOfReplies())
+                                          .build();
     }
 }

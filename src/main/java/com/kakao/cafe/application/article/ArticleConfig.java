@@ -4,6 +4,7 @@ import com.kakao.cafe.adapter.out.infra.persistence.article.ArticleAdapter;
 import com.kakao.cafe.adapter.out.infra.persistence.article.ArticleMapper;
 import com.kakao.cafe.adapter.out.infra.persistence.article.ArticleRepository;
 import com.kakao.cafe.adapter.out.infra.persistence.article.JdbcArticleRepository;
+import com.kakao.cafe.adapter.out.infra.persistence.reply.ReplyRepository;
 import com.kakao.cafe.application.article.port.in.DeleteArticleUseCase;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
 import com.kakao.cafe.application.article.port.in.UpdateArticleUseCase;
@@ -27,10 +28,12 @@ import org.springframework.jdbc.core.RowMapper;
 public class ArticleConfig {
 
     public final DataSource dataSource;
+    public final ReplyRepository replyRepository;
 
     @Autowired
-    public ArticleConfig(DataSource dataSource) {
+    public ArticleConfig(DataSource dataSource, ReplyRepository replyRepository) {
         this.dataSource = dataSource;
+        this.replyRepository = replyRepository;
     }
 
     @Bean
@@ -45,22 +48,22 @@ public class ArticleConfig {
 
     @Bean
     public RegisterArticlePort registerArticlePort() {
-        return new ArticleAdapter(articleRepository());
+        return new ArticleAdapter(articleRepository(), replyRepository);
     }
 
     @Bean
     public GetArticleInfoPort getArticleInfoPort() {
-        return new ArticleAdapter(articleRepository());
+        return new ArticleAdapter(articleRepository(), replyRepository);
     }
 
     @Bean
     public UpdateArticlePort updateArticlePort() {
-        return new ArticleAdapter(articleRepository());
+        return new ArticleAdapter(articleRepository(), replyRepository);
     }
 
     @Bean
     public DeleteArticlePort deleteArticlePort() {
-        return new ArticleAdapter(articleRepository());
+        return new ArticleAdapter(articleRepository(), replyRepository);
     }
 
     @Bean
@@ -80,6 +83,6 @@ public class ArticleConfig {
 
     @Bean
     public DeleteArticleUseCase deleteArticleUseCase() {
-        return new DeleteArticleService(deleteArticlePort());
+        return new DeleteArticleService(deleteArticlePort(), getArticleInfoPort());
     }
 }

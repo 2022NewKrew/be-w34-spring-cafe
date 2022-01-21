@@ -3,16 +3,16 @@ package com.kakao.cafe.application.reply.dto;
 import com.kakao.cafe.domain.article.Reply;
 import java.util.List;
 
-public class ReplyList {
+public class Replies {
 
     private final List<Reply> replyList;
 
-    public ReplyList(List<Reply> replyList) {
+    public Replies(List<Reply> replyList) {
         this.replyList = replyList;
     }
 
-    public static ReplyList from(List<Reply> replyList) {
-        return new ReplyList(replyList);
+    public static Replies from(List<Reply> replyList) {
+        return new Replies(replyList);
     }
 
     public List<Reply> getValue() {
@@ -25,5 +25,9 @@ public class ReplyList {
 
     public boolean containsReplyOf(String userId) {
         return replyList.stream().allMatch(r -> r.getUserId().equals(userId));
+    }
+
+    public int getCountOfReplies() {
+        return replyList.size();
     }
 }

@@ -3,12 +3,9 @@ package com.kakao.cafe.adapter.in.presentation.article;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-import com.kakao.cafe.adapter.in.presentation.reply.ReplyPrintController;
 import com.kakao.cafe.application.article.dto.ArticleInfo;
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
-import com.kakao.cafe.application.reply.dto.ReplyList;
-import com.kakao.cafe.application.reply.port.in.GetRepliesUseCase;
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.domain.article.Article;
 import java.util.ArrayList;
@@ -28,7 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@WebMvcTest(value = {ArticlePrintController.class, ReplyPrintController.class})
+@WebMvcTest(ArticlePrintController.class)
 class ArticlePrintControllerTest {
 
     @Autowired
@@ -36,9 +33,6 @@ class ArticlePrintControllerTest {
 
     @MockBean
     private GetArticleInfoUseCase getArticleInfoUseCase;
-
-    @MockBean
-    private GetRepliesUseCase getRepliesUseCase;
 
     @MockBean
     private DataSource dataSource;
@@ -88,13 +82,12 @@ class ArticlePrintControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("sessionedUser", sessionedUser);
         String url = "/articles/" + id;
-        given(getArticleInfoUseCase.getArticleDetail(id, sessionedUser.getUserId(), sessionedUser))
+        given(getArticleInfoUseCase.getArticleForUpdate(id, sessionedUser.getUserId(), sessionedUser))
             .willReturn(givenArticle);
-        given(getRepliesUseCase.getListOfRepliesOfTheArticle(id)).willReturn(ReplyList.from(new ArrayList<>()));
 
         //when
         mockMvc.perform(MockMvcRequestBuilders.get(url).session(session).accept(MediaType.TEXT_HTML))
-               .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+               .andExpect(MockMvcResultMatchers.status().isOk())
                .andDo(MockMvcResultHandlers.print())
                .andReturn();
     }

@@ -1,6 +1,6 @@
 package com.kakao.cafe.application.reply.service;
 
-import com.kakao.cafe.application.reply.dto.ReplyList;
+import com.kakao.cafe.application.reply.dto.Replies;
 import com.kakao.cafe.application.reply.port.in.GetRepliesUseCase;
 import com.kakao.cafe.application.reply.port.out.GetRepliesPort;
 
@@ -13,7 +13,7 @@ public class GetRepliesService implements GetRepliesUseCase {
     }
 
     @Override
-    public ReplyList getListOfRepliesOfTheArticle(int articleId) {
+    public Replies getListOfRepliesOfTheArticle(int articleId) {
         return getRepliesPort.getListOfRepliesTheArticle(articleId);
     }
 }

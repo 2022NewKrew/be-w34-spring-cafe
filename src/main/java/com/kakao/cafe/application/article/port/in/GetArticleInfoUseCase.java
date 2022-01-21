@@ -1,5 +1,6 @@
 package com.kakao.cafe.application.article.port.in;
 
+import com.kakao.cafe.application.article.dto.ArticleDetail;
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.user.dto.UserInfo;
 import com.kakao.cafe.domain.article.Article;
@@ -13,6 +14,8 @@ public interface GetArticleInfoUseCase {
 
     ArticleList getListOfAllArticles();
 
-    Article getArticleDetail(int id, String userIdViewingArticle, UserInfo sessionedUser)
+    Article getArticleForUpdate(int id, String userIdViewingArticle, UserInfo sessionedUser)
         throws IllegalWriterException, IllegalTitleException, IllegalDateException, ArticleNotExistException, UnauthenticatedUserException;
+
+    ArticleDetail getArticleDetail(int id) throws ArticleNotExistException;
 }

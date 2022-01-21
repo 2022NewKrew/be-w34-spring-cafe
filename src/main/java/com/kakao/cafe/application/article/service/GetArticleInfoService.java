@@ -1,5 +1,6 @@
 package com.kakao.cafe.application.article.service;
 
+import com.kakao.cafe.application.article.dto.ArticleDetail;
 import com.kakao.cafe.application.article.dto.ArticleList;
 import com.kakao.cafe.application.article.port.in.GetArticleInfoUseCase;
 import com.kakao.cafe.application.article.port.out.GetArticleInfoPort;
@@ -25,11 +26,16 @@ public class GetArticleInfoService implements GetArticleInfoUseCase {
     }
 
     @Override
-    public Article getArticleDetail(int id, String userIdViewingForm, UserInfo sessionedUser)
+    public Article getArticleForUpdate(int id, String userIdViewingForm, UserInfo sessionedUser)
         throws ArticleNotExistException, IllegalWriterException, IllegalTitleException, IllegalDateException, UnauthenticatedUserException {
         if (!sessionedUser.getUserId().equals(userIdViewingForm)) {
             throw new UnauthenticatedUserException("인증 오류");
         }
         return getArticleInfoPort.findArticleById(id);
+    }
+
+    @Override
+    public ArticleDetail getArticleDetail(int id) throws ArticleNotExistException {
+        return getArticleInfoPort.findArticleDetailById(id);
     }
 }
