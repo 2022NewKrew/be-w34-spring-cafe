@@ -33,6 +33,6 @@ function dateFormat(dateStr) {
 
   const date = new Date(dateStr);
 
-  return moment(dateStr).format('YYYY-MM-DD hh:mm:ss.S')
+  return moment(dateStr).format('YYYY-MM-DD hh:mm:ss.S');
 
 }
