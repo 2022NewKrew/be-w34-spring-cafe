@@ -7,6 +7,7 @@ import com.kakao.cafe.user.controller.UserController;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,11 +33,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     protected ModelAndView handleBusinessException(BusinessException e) {
-        ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode);
         logger.warn(e.getErrorCode().getMessage());
 
         ModelAndView mv = new ModelAndView("exception");
         mv.addObject("e",errorResponse);
+        mv.addObject("status", HttpStatus.valueOf(errorCode.getStatus()));
         return mv;
     }
 }
