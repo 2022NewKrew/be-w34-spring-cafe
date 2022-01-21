@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Entity.Comment;
 import com.kakao.cafe.dto.article.PostArticleDto;
+import com.kakao.cafe.dto.reply.DeleteCommentDto;
 import com.kakao.cafe.dto.reply.ShowCommentDto;
 import com.kakao.cafe.dto.user.UserInfoDto;
 import com.kakao.cafe.exceptions.WrongAccessException;
@@ -81,6 +82,14 @@ public class ArticleController {
     @DeleteMapping("/{id}/delete")
     public String deleteArticle(@PathVariable int id, HttpSession session) throws WrongAccessException {
         this.userService.userValidation(this.articleService.getPostedUserById(id), session);
+        List<DeleteCommentDto> comments = this.commentService.findAllByArticleIdAndNotDeleted(id).stream()
+                .map(DeleteCommentDto::new).collect(Collectors.toList());
+        for (DeleteCommentDto comment : comments) {
+            this.userService.userValidation(comment.getUserId(), session);
+        }
+        for (DeleteCommentDto comment : comments) {
+            this.commentService.delete(comment.getCommentId());
+        }
         this.articleService.delete(id);
         return "redirect:/articles";
     }

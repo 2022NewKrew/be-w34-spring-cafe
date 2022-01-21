@@ -47,7 +47,7 @@ public class UserController {
     @PostMapping("/signup")
     public String signUp(SignUpDto signUpDto) throws UserIdDuplicationException {
         this.userService.save(signUpDto);
-        return "redirect:/users";
+        return "redirect:/articles";
     }
 
     // 회원정보 수정 페이지
@@ -63,7 +63,7 @@ public class UserController {
     public String updateUserInfo(SignUpDto signUpDto, @PathVariable String userId, HttpSession session) throws PasswordMismatchException, NoSuchUserException, WrongAccessException {
         this.userService.userValidation(userId, session);
         this.userService.update(signUpDto);
-        return "redirect:/users";
+        return "redirect:/articles";
     }
 
     // 로그인 페이지
@@ -77,7 +77,7 @@ public class UserController {
     public String login(LoginDto loginDto, HttpSession session) throws PasswordMismatchException, NoSuchUserException {
         UserInfoDto userInfoDto = this.userService.login(loginDto);
         session.setAttribute("sessionedUser", userInfoDto);
-        return "redirect:/users";
+        return "redirect:/articles";
     }
 
     // 로그아웃

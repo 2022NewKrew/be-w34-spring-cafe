@@ -1,7 +1,9 @@
 package com.kakao.cafe.service.article;
 
 import com.kakao.cafe.domain.Entity.Article;
+import com.kakao.cafe.domain.Entity.Comment;
 import com.kakao.cafe.domain.Repository.article.ArticleRepository;
+import com.kakao.cafe.domain.Repository.reply.CommentRepository;
 import com.kakao.cafe.dto.article.ReferArticleDto;
 import com.kakao.cafe.dto.article.PostArticleDto;
 import lombok.AllArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 public class ArticleService {
 
     private ArticleRepository articleRepository;
+    private CommentRepository commentRepository;
 
     // 게시물 저장
     public void save(PostArticleDto postArticleDto) {
