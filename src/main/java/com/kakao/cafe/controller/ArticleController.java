@@ -3,9 +3,11 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.ArticleDTO.Create;
 import com.kakao.cafe.dto.ArticleDTO.Result;
 import com.kakao.cafe.dto.ArticleDTO.Update;
+import com.kakao.cafe.dto.ReplyDTO;
 import com.kakao.cafe.error.exception.BindingException;
 import com.kakao.cafe.persistence.model.AuthInfo;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +60,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/edit/{articleId}")
-    public ModelAndView updateView(Map<String, Object> model,
+    public ModelAndView editableRead(Map<String, Object> model,
         @PathVariable Long articleId) {
 
         Result resultDTO = articleService.readById(articleId);
