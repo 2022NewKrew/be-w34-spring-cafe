@@ -2,7 +2,10 @@ package com.kakao.cafe.article.dto.response;
 
 import com.kakao.cafe.article.domain.Article;
 import java.time.format.DateTimeFormatter;
+import lombok.Builder;
+import lombok.ToString;
 
+@ToString
 public class ArticleDetailResponse {
 
     private static final String CREATED_DATE_PATTERN = "YYYY-MM-dd HH:mm";
@@ -15,6 +18,7 @@ public class ArticleDetailResponse {
     private final String content;
     private final Boolean isWriter;
 
+    @Builder
     public ArticleDetailResponse(Long id, String title, String nickname, String createdDate, Long viewNum,
         String content, Boolean isWriter) {
         this.id = id;
@@ -27,23 +31,15 @@ public class ArticleDetailResponse {
     }
 
     public static ArticleDetailResponse of(Article article, Long userId) {
-        return new ArticleDetailResponse(article.getId(),
-            article.getTitle(),
-            article.getUser().getNickname(),
-            article.getCreatedDate().format(DateTimeFormatter.ofPattern(CREATED_DATE_PATTERN)),
-            article.getViewNum(), article.getContent(), article.validateAuth(userId));
-    }
-
-    @Override
-    public String toString() {
-        return "ArticleDetailResponse{" +
-            "id=" + id +
-            ", title='" + title + '\'' +
-            ", nickname='" + nickname + '\'' +
-            ", createdDate='" + createdDate + '\'' +
-            ", viewNum=" + viewNum +
-            ", content='" + content + '\'' +
-            ", isWriter=" + isWriter +
-            '}';
+        String createdDate = article.getCreatedDate().format(DateTimeFormatter.ofPattern(CREATED_DATE_PATTERN));
+        return ArticleDetailResponse.builder()
+            .id(article.getId())
+            .title(article.getTitle())
+            .nickname(article.getUser().getNickname())
+            .createdDate(createdDate)
+            .viewNum(article.getViewNum())
+            .content(article.getContent())
+            .isWriter(article.validateAuth(userId))
+            .build();
     }
 }

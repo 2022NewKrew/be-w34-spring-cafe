@@ -1,7 +1,9 @@
 package com.kakao.cafe.common.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public enum ErrorCode {
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST.value(), "S_001", "올바르지 않은 요청 값입니다."),
 
@@ -21,17 +23,5 @@ public enum ErrorCode {
         this.status = status;
         this.code = code;
         this.message = message;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
     }
 }

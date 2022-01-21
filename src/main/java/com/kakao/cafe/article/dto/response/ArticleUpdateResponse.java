@@ -1,7 +1,10 @@
 package com.kakao.cafe.article.dto.response;
 
 import com.kakao.cafe.article.domain.Article;
+import lombok.Builder;
+import lombok.ToString;
 
+@ToString
 public class ArticleUpdateResponse {
 
     private final Long id;
@@ -9,6 +12,7 @@ public class ArticleUpdateResponse {
     private final String nickname;
     private final String content;
 
+    @Builder
     private ArticleUpdateResponse(Long id, String title, String nickname, String content) {
         this.id = id;
         this.title = title;
@@ -17,19 +21,11 @@ public class ArticleUpdateResponse {
     }
 
     public static ArticleUpdateResponse of(Article article) {
-        return new ArticleUpdateResponse(article.getId(),
-            article.getTitle(),
-            article.getUser().getNickname(),
-            article.getContent());
-    }
-
-    @Override
-    public String toString() {
-        return "ArticleUpdateResponse{" +
-            "id=" + id +
-            ", title='" + title + '\'' +
-            ", nickname='" + nickname + '\'' +
-            ", content='" + content + '\'' +
-            '}';
+        return ArticleUpdateResponse.builder()
+            .id(article.getId())
+            .title(article.getTitle())
+            .nickname(article.getUser().getNickname())
+            .content(article.getContent())
+            .build();
     }
 }

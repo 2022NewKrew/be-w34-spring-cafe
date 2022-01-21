@@ -19,10 +19,20 @@ public class ArticleRequest {
     }
 
     public Article toArticle(User user) {
-        return new Article(null, this.title, this.content, user, 0L, LocalDateTime.now());
+        return Article.builder()
+            .title(this.title)
+            .content(this.content)
+            .user(user)
+            .viewNum(0L)
+            .createdDate(LocalDateTime.now())
+            .build();
     }
 
     public Article toArticle(Long id) {
-        return new Article(id, this.title, this.content, null, null, null);
+        return Article.builder()
+            .id(id)
+            .title(this.title)
+            .content(this.content)
+            .build();
     }
 }
