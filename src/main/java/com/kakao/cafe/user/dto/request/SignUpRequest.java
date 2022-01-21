@@ -4,7 +4,6 @@ import com.kakao.cafe.user.domain.User;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class SignUpRequest {
     @Email
@@ -14,7 +13,7 @@ public class SignUpRequest {
     @NotBlank
     private final String nickname;
 
-    @NotNull
+    @NotBlank
     private final String password;
 
     private SignUpRequest(String email, String nickname, String password) {
@@ -24,6 +23,11 @@ public class SignUpRequest {
     }
 
     public User toUser() {
-        return new User(null, this.email, this.nickname, this.password, LocalDateTime.now());
+        return User.builder()
+            .email(this.email)
+            .nickname(this.nickname)
+            .password(this.password)
+            .createdDate(LocalDateTime.now())
+            .build();
     }
 }

@@ -13,4 +13,8 @@ public interface ArticleRepository {
     Optional<Article> findById(Long id);
 
     void updateViewNum(Long id);
+
+    void update(Article updateArticle);
+
+    void delete(Long id);
 }

@@ -17,7 +17,7 @@
   flex-direction: column;
   text-align: center;
   justify-content: center;
-  width: 80px;
+  width: auto;
   height: 30px;
   font-size: 14px;
 }
@@ -30,6 +30,7 @@
   width: 80px;
   height: 30px;
   font-size: 14px;
+  padding: 0 10px;
   background-color: black;
   color: white;
 }
@@ -133,7 +134,7 @@ td {
 .large-btn {
   margin-top: 20px;
   text-align: center;
-  width: 25%;
+  width: 25vw;
   max-width: 230px;
   min-width: auto;
   height: 43px;
@@ -151,7 +152,7 @@ td {
 .small-btn {
   margin-top: 20px;
   text-align: center;
-  width: 10%;
+  width: 10vw;
   max-width: 78px;
   min-width: auto;
   height: 43px;
@@ -374,4 +375,19 @@ td {
 
 label {
   width: 60px;
+}
+
+.warning-container {
+  background: #FFE1E1;
+  border: 1px solid #C12626;
+  box-sizing: border-box;
+  width: 40%;
+  text-align: left;
+  padding: 10px;
+}
+
+.warning-text {
+  margin: 5px;
+  color: #C12626;
+  font-size: 14px;
 }

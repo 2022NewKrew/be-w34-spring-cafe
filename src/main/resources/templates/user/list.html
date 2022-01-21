@@ -1,11 +1,11 @@
 {{>layout/header}}
 <div class="background">
-    {{^sessionedUser}}
+    {{^sessionUser}}
     {{>layout/mainLoginNavbar}}
-    {{/sessionedUser}}
-    {{#sessionedUser}}
+    {{/sessionUser}}
+    {{#sessionUser}}
     {{>layout/mainLogoutNavbar}}
-    {{/sessionedUser}}
+    {{/sessionUser}}
 
     <div class="description">
         <div class="desc-container">

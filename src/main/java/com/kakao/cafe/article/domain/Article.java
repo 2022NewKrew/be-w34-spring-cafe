@@ -4,8 +4,12 @@ import com.kakao.cafe.user.domain.User;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class Article {
+
     @NotNull
     private final Long id;
 
@@ -24,6 +28,7 @@ public class Article {
     @NotNull
     private final LocalDateTime createdDate;
 
+    @Builder
     public Article(Long id, String title, String content, User user, Long viewNum, LocalDateTime createdDate) {
         this.id = id;
         this.title = title;
@@ -33,31 +38,11 @@ public class Article {
         this.createdDate = createdDate;
     }
 
-    public void incrementViewNum(){
+    public Boolean validateAuth(Long userId) {
+        return user.validateAuth(userId);
+    }
+
+    public void incrementViewNum() {
         this.viewNum++;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public Long getViewNum() {
-        return viewNum;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
     }
 }

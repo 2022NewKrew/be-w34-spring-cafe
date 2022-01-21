@@ -1,13 +1,18 @@
 package com.kakao.cafe.user.dto.response;
 
 import com.kakao.cafe.user.domain.User;
+import lombok.Builder;
+import lombok.ToString;
 
+@ToString
 public class UserResponse {
+
     private final Long id;
     private final String email;
     private final String nickname;
     private final String createdDate;
 
+    @Builder
     private UserResponse(Long id, String email, String nickname, String createdDate) {
         this.id = id;
         this.email = email;
@@ -16,16 +21,15 @@ public class UserResponse {
     }
 
     public static UserResponse of(User user) {
-        return new UserResponse(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedDate().toLocalDate().toString());
+        return UserResponse.builder()
+            .id(user.getId())
+            .email(user.getEmail())
+            .nickname(user.getNickname())
+            .createdDate(user.getCreatedDate().toLocalDate().toString())
+            .build();
     }
 
-    @Override
-    public String toString() {
-        return "UserResponse{" +
-            "id=" + id +
-            ", email='" + email + '\'' +
-            ", nickname='" + nickname + '\'' +
-            ", createdDate='" + createdDate + '\'' +
-            '}';
+    public Long getId() {
+        return id;
     }
 }

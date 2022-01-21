@@ -1,0 +1,20 @@
+{{>layout/header}}
+<div class="background">
+    {{^sessionUser}}
+    {{>layout/userLoginNavbar}}
+    {{/sessionUser}}
+    {{#sessionUser}}
+    {{>layout/userLogoutNavbar}}
+    {{/sessionUser}}
+    <p>~~~(^ㅁ^)~~~시간관계상 꾸미지 않은 에러페이지~~~(^ㅁ^)~~~</p>
+    <p>{{status}}</p>
+    <p>{{e.message}}</p>
+    <p>{{e.timeStamp}}</p>
+    <p>{{e.code}}</p>
+    {{#e.customFieldErrors.customFieldErrors}}
+    <p>{{reason}}</p>
+    <p>{{field}}</p>
+    <p>{{value}}</p>
+    {{/e.customFieldErrors.customFieldErrors}}
+</div>
+{{>layout/footer}}

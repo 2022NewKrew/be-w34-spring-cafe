@@ -4,7 +4,10 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class User {
 
     @NotNull
@@ -23,6 +26,7 @@ public class User {
     @NotNull
     private final LocalDateTime createdDate;
 
+    @Builder
     public User(Long id, String email, String nickname, String password, LocalDateTime createdDate) {
         this.id = id;
         this.email = email;
@@ -31,23 +35,7 @@ public class User {
         this.createdDate = createdDate;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public boolean validateAuth(Long userId) {
+        return this.id.equals(userId);
     }
 }
