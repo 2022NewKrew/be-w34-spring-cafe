@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.NoPermissionException;
 import java.util.List;
 
 @Controller
@@ -38,42 +39,69 @@ public class ArticleController {
         return "qna/show";
     }
 
-    @GetMapping("/articles/form")
-    public String writeForm(@SessionAttribute("sessionedUser") User user, Model model) {
+    @RequestMapping(value = "/articles/form", method = RequestMethod.GET)
+    public String writeForm(@RequestAttribute("sessionedUser") User user, Model model) {
         model.addAttribute("writer", user.getName());
         return "qna/form";
     }
 
-    @GetMapping("/articles/{articleId}/form")
+    @RequestMapping(value = "/articles/{articleId}/form", method = RequestMethod.GET)
     public String updateForm(@PathVariable long articleId,
-                             @SessionAttribute("sessionedUser") User user,
+                             @RequestAttribute("sessionedUser") User user,
                              Model model) {
-        ArticleContents articleContents = articleService.getArticle(articleId);
-        model.addAttribute("articleContents", articleContents);
-        return "qna/updateForm";
+        try {
+            ArticleContents articleContents = checkPermission(user, articleId);
+            model.addAttribute("articleContents", articleContents);
+            return "qna/updateForm";
+        } catch (NoPermissionException e) {
+            return "redirect:/nopermission";
+        }
     }
 
     @PostMapping("/questions")
     public String addArticle(String title,
                              String contents,
                              @SessionAttribute("sessionedUser") User user) {
-        articleService.createArticle(new ArticleCreateCommand(user.getName(), user.getUserId(), title, contents));
+        articleService.createArticle(new ArticleCreateCommand(
+                user.getName(),
+                user.getUserId(),
+                title,
+                contents));
         return "redirect:/";
     }
 
-    @PutMapping("/questions/{articleId}/update")
+    @RequestMapping(value = "/questions/{articleId}/update", method = RequestMethod.PUT)
     public String updateArticle(@PathVariable long articleId,
+                                @RequestAttribute("sessionedUser") User user,
                                 String title,
                                 String contents) {
-        articleService.modifyArticle(articleId, new ArticleModifyCommand(title, contents));
-        return "redirect:/articles/{articleId}";
+        try {
+            checkPermission(user, articleId);
+            articleService.modifyArticle(articleId, new ArticleModifyCommand(title, contents));
+            return "redirect:/articles/{articleId}";
+        } catch (NoPermissionException e) {
+            return "redirect:/nopermission";
+        }
     }
 
-    @DeleteMapping("questions/{articleId}")
+    @RequestMapping(value = "questions/{articleId}", method = RequestMethod.DELETE)
     public String deleteArticle(@PathVariable long articleId,
-                                @SessionAttribute("sessionedUser") User user) {
-        articleService.deleteArticle(articleId);
-        return "redirect:/";
+                                @RequestAttribute("sessionedUser") User user) {
+        try {
+            checkPermission(user, articleId);
+            articleService.deleteArticle(articleId);
+            return "redirect:/";
+        } catch (NoPermissionException e) {
+            return "redirect:/nopermission";
+        }
+    }
+
+    private ArticleContents checkPermission(User user, long articleId) throws NoPermissionException{
+        ArticleContents articleContents = articleService.getArticle(articleId);
+        if (userNotPermitted(user, articleContents)) {
+            throw new NoPermissionException("User has no permission to this article");
+        }
+        return articleContents;
     }
 
     private boolean userNotPermitted(User user, ArticleContents articleContents) {
