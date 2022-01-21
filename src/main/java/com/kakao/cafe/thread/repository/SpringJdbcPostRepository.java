@@ -72,9 +72,4 @@ public class SpringJdbcPostRepository implements PostRepository {
                 "UPDATE thread SET title = ?, content = ?, status = ? WHERE id = ? AND type = ?;",
                 post.getTitle(), post.getContent(), post.getStatus(), post.getId(), ThreadType.POST.name());
     }
-
-    @Override
-    public void remove(Long id) {
-        jdbcTemplate.update("DELETE FROM thread WHERE id = ? AND type = ?", id, ThreadType.POST.name());
-    }
 }

@@ -13,6 +13,4 @@ public interface PostRepository {
     Optional<Post> get(Long id);
 
     void update(Post post);
-
-    void remove(Long id);
 }
