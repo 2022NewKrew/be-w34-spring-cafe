@@ -51,6 +51,8 @@ public class JdbcPostRepository implements PostRepository {
         final String queryString = "insert into post(id, title, content, writerName, timeWritten) values(?,?,?,?,?)";
         myJdbcTemplate.update(queryString, post.getId(), post.getTitle(),
                 post.getContent(), post.getWriterName(), post.getTimeWritten());
+
+        post.getComments().forEach(comment -> saveComment(post.getId(), comment));
     }
 
     @Override
@@ -76,5 +78,10 @@ public class JdbcPostRepository implements PostRepository {
     public void softDelete(Long postId) {
         final String queryString = String.format("update post set isHidden = 'true' where id = %d", postId);
         myJdbcTemplate.update(queryString);
+    }
+
+    @Override
+    public void deleteComment(Long commentId) {
+
     }
 }
