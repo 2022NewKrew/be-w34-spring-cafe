@@ -41,7 +41,7 @@ public class JdbcUserRepository implements UserRepository {
     public Optional<User> findById(UUID id) {
         final String sql = "SELECT id, userId, password, name, email, createdAt FROM USERS WHERE id = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper, id));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper, id.toString()));
         } catch (DataAccessException e) {
             return Optional.empty();
         }
@@ -63,7 +63,7 @@ public class JdbcUserRepository implements UserRepository {
                 rs.getString("password"),
                 rs.getString("name"),
                 rs.getString("email"))
-                .id(rs.getObject("id", UUID.class))
+                .id(UUID.fromString(rs.getString("id")))
                 .createdAt(rs.getObject("createdAt", LocalDateTime.class))
                 .build();
     }
