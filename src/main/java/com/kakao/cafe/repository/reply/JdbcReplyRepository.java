@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,12 +25,20 @@ public class JdbcReplyRepository implements ReplyRepository{
 
     private static final String SELECT_BY_ARTICLE_ID_QUERY
             = "SELECT r.id as id, article_id, writer_id, u.user_name as writer_name, comment, created_time, updated_time FROM replies as r INNER JOIN users as u ON r.writer_id = u.user_id WHERE article_id = ? AND is_deleted=false";
+    private static final String SELECT_BY_ID_QUERY
+            = "SELECT r.id as id, article_id, writer_id, u.user_name as writer_name, comment, created_time, updated_time FROM replies as r INNER JOIN users as u ON r.writer_id = u.user_id WHERE r.id = ? AND is_deleted=false";
     private static final String INSERT_REPLY_QUERY = "INSERT INTO replies (article_id, writer_id, comment, created_time) VALUES (?, ?, ?, ?)";
     private static final String DELETE_REPLY_QUERY = "UPDATE replies SET is_deleted=true WHERE id = ?";
 
     @Override
     public List<Reply> findByArticleId(Long articleId) {
         return jdbcTemplate.query(SELECT_BY_ARTICLE_ID_QUERY, replyRowMapper, articleId);
+    }
+
+    @Override
+    public Optional<Reply> findById(Long replyId) {
+        List<Reply> replies = jdbcTemplate.query(SELECT_BY_ID_QUERY, replyRowMapper, replyId);
+        return replies.stream().findFirst();
     }
 
     @Override

@@ -96,9 +96,18 @@ public class ArticleController {
     @Auth
     @PostMapping("/articles/{articleId}/replies")
     public String writeReply(@PathVariable Long articleId,
-                             @RequestParam(value="comment") String comment,
+                             String comment,
                              @SessionAttribute(name = SessionKeys.USER_IDENTIFICATION) UserIdentification loginInfo){
         articleService.writeReply(articleId, loginInfo.getUserId(), comment);
+        return "redirect:/articles/" + articleId;
+    }
+
+    @Auth
+    @DeleteMapping("/articles/{articleId}/replies/{replyId}")
+    public String deleteReply(@PathVariable Long articleId,
+                         @PathVariable Long replyId,
+                         @SessionAttribute(name = SessionKeys.USER_IDENTIFICATION) UserIdentification loginInfo) {
+        articleService.deleteReply(replyId, loginInfo.getUserId());
         return "redirect:/articles/" + articleId;
     }
 }

@@ -75,7 +75,11 @@ public class ArticleService {
         return replyRepository.insert(reply);
     }
 
-    public void deleteReply(Long replyId) {
+    public void deleteReply(Long replyId, String loginId) {
+        Reply deleteReply = replyRepository.findById(replyId).orElseThrow(() -> new DeleteFailedException(ErrorCode.REPLY_NOT_FOUND));
+        if(!deleteReply.isWriter(loginId)) {
+            throw new DeleteFailedException(ErrorCode.REPLY_DELETER_INCORRECT);
+        }
         replyRepository.delete(replyId);
     }
 }
