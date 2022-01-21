@@ -1,7 +1,5 @@
 package com.kakao.cafe.article.repository;
 
-import com.kakao.cafe.article.dto.CommentDto;
-import com.kakao.cafe.article.model.Article;
 import com.kakao.cafe.article.model.Comment;
 import com.kakao.cafe.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +34,12 @@ public class CommentJdbcRepository implements CommentRepository {
     public void deleteCommentById(Long id) {
         String sql = "UPDATE COMMENTS SET deleted=true WHERE id=?";
         jdbcTemplate.update(sql, id);
+    }
+
+    @Override
+    public void deleteByArticleId(Long articleId) {
+        String sql = "UPDATE COMMENTS SET deleted=true WHERE articleId=?";
+        jdbcTemplate.update(sql, articleId);
     }
 
     @Override
