@@ -60,7 +60,7 @@ public class ArticleController {
     public String getArticle(@PathVariable("id") Long id, Model model) {
         Article article = articleService.findById(id);
         model.addAttribute("article", new ArticleQueryDetailResponseDto(article));
-        return "/article/show";
+        return "article/show";
     }
 
     @PutMapping("/{id}")
