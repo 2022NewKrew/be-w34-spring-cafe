@@ -160,7 +160,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void can_update_fail() {
+    void canUpdateFailByDifferentStrings() {
         assertThatThrownBy(() -> userService.canUpdate("diff1", "diff2")).isInstanceOf(UnauthorizedActionException.class);
     }
 
