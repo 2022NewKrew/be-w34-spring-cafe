@@ -81,7 +81,7 @@ public class UserPageController {
 
     User user = userService.findUserById(id);
 
-    if (userService.hasEditPermission(user)) {
+    if (!userService.hasEditPermission(user)) {
       throw new NoAuthorityException();
     }
 
