@@ -7,6 +7,8 @@ import com.kakao.cafe.article.dto.DetailArticleViewDTO;
 import com.kakao.cafe.article.dto.QuestionDTO;
 import com.kakao.cafe.article.factory.ArticleFactory;
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.reply.factory.ReplyFactory;
+import com.kakao.cafe.reply.service.ReplyService;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final UserService userService;
+    private final ReplyService replyService;
 
     @PostMapping("/questions")
     public String question(QuestionDTO questionDTO, HttpSession session) {
@@ -48,7 +51,7 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String getArticleById(@PathVariable("id") Long id, Model model) {
         model.addAttribute("article", new DetailArticleViewDTO(articleService.findById(id)));
-
+        model.addAttribute("reply", ReplyFactory.toDTO(replyService.findReplyByArticleId(id)));
         return "qna/show";
     }
 
