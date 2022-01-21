@@ -1,6 +1,8 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.Entity.Comment;
 import com.kakao.cafe.dto.article.PostArticleDto;
+import com.kakao.cafe.dto.reply.ShowCommentDto;
 import com.kakao.cafe.dto.user.UserInfoDto;
 import com.kakao.cafe.exceptions.WrongAccessException;
 import com.kakao.cafe.service.article.ArticleService;
@@ -13,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -50,7 +54,10 @@ public class ArticleController {
     @GetMapping("/{id}")
     public String showArticle(@PathVariable int id, Model model) {
         model.addAttribute("article", this.articleService.findById(id));
-        model.addAttribute("comments", this.commentService.findAll(id));
+        List<ShowCommentDto> comments = this.commentService.findAll(id).stream()
+                        .map(ShowCommentDto::new).collect(Collectors.toList());
+        model.addAttribute("comments", comments);
+        model.addAttribute("numOfComments", comments.size());
         return "article/show";
     }
 
