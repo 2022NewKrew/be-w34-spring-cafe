@@ -1,10 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.reply.Reply;
-import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.util.AuthUtils;
-import com.kakao.cafe.util.Constant;
 import com.kakao.cafe.util.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

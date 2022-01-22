@@ -2,7 +2,6 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.exception.LoginException;
-import com.kakao.cafe.exception.UpdateForbiddenException;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.util.Constant;
 import com.kakao.cafe.util.ErrorMessage;
