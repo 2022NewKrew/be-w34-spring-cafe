@@ -8,18 +8,18 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class CommonExceptionHandler {
     @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})
-    public ModelAndView handleArithmeticException(Exception e){
+    public ModelAndView handleArithmeticException(Exception e) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("errorMessage",e.getMessage());
-        mav.setViewName("/error/error");
+        mav.addObject("errorMessage", e.getMessage());
+        mav.setViewName("error/error");
         return mav;
     }
 
     @ExceptionHandler(NotSessionInfo.class)
-    public ModelAndView NotSessionInfoException(Exception e){
+    public ModelAndView NotSessionInfoException(Exception e) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("errorMessage",e.getMessage());
-        mav.setViewName("/user/login");
+        mav.addObject("errorMessage", e.getMessage());
+        mav.setViewName("user/login");
         return mav;
     }
 }
