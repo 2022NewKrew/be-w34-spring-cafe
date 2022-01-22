@@ -2,6 +2,7 @@
 
 
 ## 초기설정
+
 - [x] 프로젝트 생성
   - [x] java 11 gradle 로 생성하기
   - [x] .gitignore 설정하기
@@ -10,6 +11,7 @@
 
 
 ## Spring Cafe 1-1
+
 - [x] Spring Layered Architecture 적용
   
   - [x] Domain
@@ -112,10 +114,10 @@
 
 ## Spring Cafe 1-3
 
-- [ ] 리뷰
-  - [ ] controller 에서 dto 사용
+- [x] 리뷰
+  - [x] controller 에서 dto 사용
     - [x] UserDto 및 Mapper 만들기
-    - [ ] ArticleDto 및 Mapper 만들기 (지금 시점에 과연 필요할까?)
+    - [x] ArticleDto 및 Mapper 만들기
     - [x] RequestBody 를 이용해 controller 에서 dto 객체로 파라미터 받기
 
   - [ ] exception 처리
@@ -130,7 +132,7 @@
   - [x] Configuration 클래스
   - [x] RepositoryImpl 구현
 
-- [ ] 배포하기
-  - [ ] Krane 인스턴스 생성
-  - [ ] Krane 인스턴스에 jar 파일 복붙
-  - [ ] Krane 인스턴스에서 jar 파일 실행 및 정상 작동 확인
+- [x] 배포하기 (http://root-spring-cafe.ay1.krane.9rum.cc:8080/)
+  - [x] Krane 인스턴스 생성
+  - [x] Krane 인스턴스에 jar 파일 복붙
+  - [x] Krane 인스턴스에서 jar 파일 실행 및 정상 작동 확인

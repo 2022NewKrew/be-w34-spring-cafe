@@ -1,7 +1,6 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.ArticleRepository;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -15,9 +14,7 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Article createArticle(String title, User writer, String contents) {
-        final Integer aid = articleRepository.articlesSize() + 1;
-        final Article article = new Article(aid, title, writer, contents);
+    public Article createArticle(Article article) {
         articleRepository.createArticle(article);
         return article;
     }

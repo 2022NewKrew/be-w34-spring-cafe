@@ -1,10 +1,10 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.dto;
 
 import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class Article {
+public class ArticleViewDto {
 
     private final Integer id;
     private final String title;
@@ -13,7 +13,7 @@ public class Article {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public Article(Integer id, String title, String writer, String contents,
+    public ArticleViewDto(Integer id, String title, String writer, String contents,
         LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
@@ -25,10 +25,10 @@ public class Article {
 
     @Override
     public String toString() {
-        return "Article{" +
+        return "ArticleViewDto{" +
             "id=" + id +
             ", title='" + title + '\'' +
-            ", writer=" + writer +
+            ", writer='" + writer + '\'' +
             ", contents='" + contents + '\'' +
             ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +

@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,25 +9,17 @@ import org.springframework.jdbc.core.RowMapper;
 public class ArticleRepositoryImplH2 implements ArticleRepository{
 
     private final JdbcTemplate jdbcTemplate;
-    private final UserRepository userRepository;
 
-    public ArticleRepositoryImplH2(DataSource dataSource, UserRepository userRepository) {
+    public ArticleRepositoryImplH2(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
-        this.userRepository = userRepository;
     }
 
     @Override
     public void createArticle(Article article) {
-        final User writer = article.getWriter();
         jdbcTemplate.update(
             "INSERT INTO ARTICLES (TITLE, WRITER, CONTENTS) VALUES ( ?, ?, ? )",
-            article.getTitle(), writer.getUsername(), article.getContents()
+            article.getTitle(), article.getWriter(), article.getContents()
         );
-    }
-
-    @Override
-    public Integer articlesSize(){
-        return findAllArticles().size();
     }
 
     @Override
@@ -58,14 +49,12 @@ public class ArticleRepositoryImplH2 implements ArticleRepository{
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return (rs, count) -> {
-            User writer = userRepository.findByUsername(rs.getString("writer"));
-            return new Article(
-                rs.getInt("id"),
-                rs.getString("title"),
-                writer,
-                rs.getString("contents")
-            );
-        };
+        return (rs, count) -> new Article(
+            rs.getInt("ID"),
+            rs.getString("TITLE"),
+            rs.getString("WRITER"),
+            rs.getString("CONTENTS"),
+            rs.getTimestamp("CREATED_AT").toLocalDateTime(),
+            rs.getTimestamp("UPDATED_AT").toLocalDateTime());
     }
 }

@@ -40,7 +40,7 @@ public class SpringConfig {
 
     @Bean
     public ArticleRepository articleRepository() {
-        return new ArticleRepositoryImplH2(dataSource, userRepository());
+        return new ArticleRepositoryImplH2(dataSource);
     }
 
     @Bean
@@ -50,6 +50,6 @@ public class SpringConfig {
 
     @Bean
     public ArticleController articleController() {
-        return new ArticleController(articleService(), userService());
+        return new ArticleController(articleService());
     }
 }

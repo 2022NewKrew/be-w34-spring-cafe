@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserFormDto;
-import com.kakao.cafe.dto.UserNoPwdDto;
+import com.kakao.cafe.dto.UserViewDto;
 import com.kakao.cafe.mapper.UserMapper;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
@@ -21,6 +21,7 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private static final UserMapper USER_MAPPER = UserMapper.INSTANCE;
+
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -38,34 +39,34 @@ public class UserController {
     @GetMapping()
     public String getUserList(Model model) {
         final List<User> users = userService.getUsers();
-        final List<UserNoPwdDto> userNoPwdDtoList = users.stream()
-            .map(USER_MAPPER::convertToUserNoPwdDto)
+        final List<UserViewDto> userViewDtoList = users.stream()
+            .map(USER_MAPPER::convertToUserViewDto)
             .collect(Collectors.toList());
-        model.addAttribute("users", userNoPwdDtoList);
+        model.addAttribute("users", userViewDtoList);
         return "user/list";
     }
 
     @GetMapping("/{username}")
     public String getUserProfile(@PathVariable("username") String username, Model model) {
         final User user = userService.getUserByUsername(username);
-        final UserNoPwdDto userNoPwdDto = USER_MAPPER.convertToUserNoPwdDto(user);
-        model.addAttribute("user", userNoPwdDto);
+        final UserViewDto userViewDto = USER_MAPPER.convertToUserViewDto(user);
+        model.addAttribute("user", userViewDto);
         return "user/profile";
     }
 
     @GetMapping("/{username}/form")
     public String getUserUpdate(@PathVariable("username") String username, Model model) {
         final User user = userService.getUserByUsername(username);
-        final UserNoPwdDto userNoPwdDto = USER_MAPPER.convertToUserNoPwdDto(user);
-        model.addAttribute("user", userNoPwdDto);
+        final UserViewDto userViewDto = USER_MAPPER.convertToUserViewDto(user);
+        model.addAttribute("user", userViewDto);
         return "user/updateForm";
     }
 
     @PostMapping("/{username}/form")
     public String postUserUpdate(@PathVariable("username") String username, @ModelAttribute UserFormDto userFormDto) {
         final User user = USER_MAPPER.convertToEntity(userFormDto);
-        final User updatedUserDto = userService.updateUser(username, user);
-        LOGGER.info("POST request on UpdateUser -> {}", updatedUserDto);
+        final User updatedUser = userService.updateUser(username, user);
+        LOGGER.info("POST request on UpdateUser -> {}", updatedUser);
         return "redirect:/users/" + user.getUsername();
     }
 }

@@ -10,5 +10,4 @@ public interface UserRepository {
     List<User> findAllUsers();
     User findByUsername(String username);
     User updateUser(User user);
-    String findIdByUsername(String username);
 }

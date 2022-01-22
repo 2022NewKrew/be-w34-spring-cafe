@@ -57,15 +57,6 @@ public class UserRepositoryImpH2 implements UserRepository {
         return user;
     }
 
-    @Override
-    public String findIdByUsername(String username) {
-        List<User> result = jdbcTemplate.query(
-            "SELECT * FROM USERS WHERE USER_ID=?",
-            userRowMapper(), username
-        );
-        return result.get(0).getId();
-    }
-
     private RowMapper<User> userRowMapper() {
         return (rs, count) -> new User(
             rs.getString("ID"),

@@ -1,14 +1,17 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.ArticleFormDto;
+import com.kakao.cafe.dto.ArticleViewDto;
+import com.kakao.cafe.mapper.ArticleMapper;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.UserService;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,33 +20,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ArticleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleController.class);
-    private final ArticleService articleService;
-    private final UserService userService;
+    private static final ArticleMapper ARTICLE_MAPPER = ArticleMapper.INSTANCE;
 
-    public ArticleController(ArticleService articleService, UserService userService) {
+    private final ArticleService articleService;
+
+    public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
-        this.userService = userService;
     }
 
     @PostMapping()
-    public String postCreateArticle(String title, String writerUsername, String contents) {
-        final User writer = userService.getUserByUsername(writerUsername);
-        final Article article = articleService.createArticle(title, writer, contents);
-        LOGGER.info("POST request on createArticle -> {}", article);
+    public String postCreateArticle(@ModelAttribute ArticleFormDto articleFormDto) {
+        final Article article = ARTICLE_MAPPER.convertToEntity(articleFormDto);
+        final Article createdArticle = articleService.createArticle(article);
+        LOGGER.info("POST request on createArticle -> {}", createdArticle);
         return "redirect:articles";
     }
 
     @GetMapping()
     public String getArticleList(Model model) {
-        final List<Article> articles = articleService.getArticles();
-        model.addAttribute("articles", articles);
+        final List<ArticleViewDto> articleViewDtoList = articleService.getArticles().stream()
+            .map(ARTICLE_MAPPER::convertToArticleViewDto)
+            .collect(Collectors.toList());
+        model.addAttribute("articles", articleViewDtoList);
         return "article/list";
     }
 
     @GetMapping("/{aid}")
     public String getArticleDetail(@PathVariable("aid") Integer aid, Model model) {
         final Article article = articleService.getArticleById(aid);
-        model.addAttribute("article", article);
+        final ArticleViewDto articleViewDto = ARTICLE_MAPPER.convertToArticleViewDto(article);
+        model.addAttribute("article", articleViewDto);
         return "article/show";
     }
 }

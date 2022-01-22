@@ -5,8 +5,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.ArticleFormDto;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +37,7 @@ class ArticleServiceTest {
     @DisplayName("없는 게시글은 조회할 수 없다.")
     void testGetArticleWithUnusedArticleId() {
         // given
-        Integer unusedArticleId = 1;
+        final Integer unusedArticleId = 1;
 
         // when
         Mockito.when(articleRepository.isArticleIdUsed(unusedArticleId)).thenReturn(false);
@@ -60,14 +62,13 @@ class ArticleServiceTest {
     @DisplayName("게시글을 작성한다.")
     void testCreateArticle() {
         // given
-        String writerUserId = "test";
-        String writerUid = "1";
+        LocalDateTime now = LocalDateTime.now();
 
         // when
-        User writer = new User(writerUid, writerUserId, "123456", "test", "test@test.com");
+        final Article article = new Article(1, "testTitle", "testWriter", "testContents", now, now);
 
         // then
-        assertThat(articleService.createArticle("testTitle", writer, "testContents"))
+        assertThat(articleService.createArticle(article))
             .isExactlyInstanceOf(Article.class);
     }
 }
