@@ -1,6 +1,7 @@
 package com.kakao.cafe.util;
 
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class DateUtils {
     private DateUtils() {
@@ -8,7 +9,8 @@ public class DateUtils {
     }
 
     public static String getLocalDateTimeNow() {
-        return LocalDateTime.now().toString();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
+        return simpleDateFormat.format(Calendar.getInstance().getTime());
     }
 
 }

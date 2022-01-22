@@ -95,6 +95,7 @@ public class ArticleController {
         Long userId = AuthUtils.checkLogin(session);
 
         article.setIndex(index);
+        article.setWriterId(userId);
         articleService.checkWriterByLoginUserid(article, userId);
         articleService.updateArticle(article);
         return "redirect:/articles/" + index;
