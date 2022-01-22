@@ -65,8 +65,7 @@ public class ArticleController {
         model.addAttribute("content", article.getContent());
         model.addAttribute("replies", replies);
 
-        return "" +
-                "qna/show";
+        return "qna/show";
     }
 
     @GetMapping("/qna/form")
