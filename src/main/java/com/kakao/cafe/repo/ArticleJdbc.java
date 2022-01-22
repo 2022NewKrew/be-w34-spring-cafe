@@ -132,15 +132,10 @@ public class ArticleJdbc implements ArticleRepository {
         final int result = jdbcTemplate.update(con -> {
             final PreparedStatement pstmt = con.prepareStatement(
                     "UPDATE comment co " +
-                            "JOIN article ao " +
-                            "ON ao.idx = ? AND ao.deleted = false AND " +
-                            "((ao.idx = co.article_idx AND co.deleted = false) OR " +
-                            "   0 = (SELECT t1.cnt FROM (SELECT COUNT(c1.idx) cnt " +
-                            "   FROM comment c1 " +
-                            "   WHERE c1.article_idx = ? " +
-                            "   LIMIT 1) t1)) " +
+                            "RIGHT JOIN article ao " +
+                            "ON ao.idx = ? AND ao.idx = co.article_idx AND co.deleted = false " +
                             "SET ao.deleted = true, ao.count_comments = 0, co.deleted = true " +
-                            "WHERE 0 = (SELECT t2.cnt FROM (SELECT COUNT(c2.user_id) cnt " +
+                            "WHERE ao.idx = ? AND ao.deleted = false AND 0 = (SELECT t2.cnt FROM (SELECT COUNT(c2.idx) cnt " +
                             "   FROM comment c2 " +
                             "   JOIN (SELECT * FROM article WHERE idx = ? AND deleted = false LIMIT 1) a2 " +
                             "   ON c2.article_idx = a2.idx " +
