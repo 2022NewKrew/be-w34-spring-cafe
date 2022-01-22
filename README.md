@@ -67,4 +67,7 @@
 
 # step11
 - [x] DockerFile로 자바만 실행
+- [x]자바, 디비 분리 배포
+
+# step12
 - [ ] docker compose 생성후 배포
