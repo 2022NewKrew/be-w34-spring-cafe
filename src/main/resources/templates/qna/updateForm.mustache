@@ -7,7 +7,7 @@
         <div class="jumbotron-kakao bg-none">
             <div class="display-large">글쓰기</div>
         </div>
-        <form action="/articles/{{article.id}}" method="post">
+        <form action="/articles/{{articleId}}" method="post">
             <input type="hidden" name="_method" value="PUT" />
             <div class="textarea-kakao-group">
                 <div class="textarea-kakao-box"></div>
@@ -21,6 +21,7 @@
                 <textarea class="textarea-kakao" style="height: 200px;" id="content"
                           name="content" placeholder="내용을 입력하세요">{{article.content}}</textarea>
             </div>
+            {{> layout/errorMessage}}
             <button type="submit" class="btn-kakao pull-right">등록</button>
         </form>
     </div>

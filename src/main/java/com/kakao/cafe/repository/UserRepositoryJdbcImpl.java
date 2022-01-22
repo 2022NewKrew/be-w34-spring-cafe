@@ -1,9 +1,7 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.exception.NotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -11,19 +9,19 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepositoryJdbcImpl implements UserRepository {
-    private final Logger logger = LoggerFactory.getLogger(UserRepositoryJdbcImpl.class);
     private final JdbcTemplate jdbcTemplate;
     private static final RowMapper<User> userMapper = (rs, rowNum) -> {
-        User user = new User(
-                rs.getString("email"),
-                rs.getString("name"),
-                rs.getString("password")
-        );
+        User user = new User();
         user.setId(rs.getLong("id"));
+        user.setEmail(rs.getString("email"));
+        user.setName(rs.getString("name"));
+        user.setPassword(rs.getString("password"));
         user.setCreationTime(rs.getTimestamp("creation_time"));
         return user;
     };
@@ -43,15 +41,15 @@ public class UserRepositoryJdbcImpl implements UserRepository {
     }
 
     private void insert(User user) {
-        String INSERT_USER = "INSERT INTO USER_INFO (EMAIL, NAME, PASSWORD) " +
-                "VALUES (?, ?, ?);";
+        String INSERT_USER = "INSERT INTO user_info (email, name, password) " +
+                "VALUES (?, ?, ?)";
         jdbcTemplate.update(INSERT_USER, user.getEmail(), user.getName(), user.getPassword());
     }
 
     private void update(User user) {
-        String UPDATE_USER = "UPDATE USER_INFO " +
-                "SET EMAIL=?, NAME=?, PASSWORD=? " +
-                "WHERE ID=?";
+        String UPDATE_USER = "UPDATE user_info " +
+                "SET email=?, name=?, password=? " +
+                "WHERE id=?";
         try {
             jdbcTemplate.update(UPDATE_USER, user.getEmail(), user.getName(), user.getPassword(), user.getId());
         } catch (DuplicateKeyException e) {
@@ -61,31 +59,26 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        String SELECT_USERS = "SELECT ID, EMAIL, NAME, PASSWORD, CREATION_TIME FROM USER_INFO";
+        String SELECT_USERS = "SELECT id, email, name, password, creation_time " +
+                "FROM user_info";
         return jdbcTemplate.query(SELECT_USERS, userMapper);
     }
 
     @Override
-    public User findById(Long id) throws NotFoundException {
-        String SELECT_USER = "SELECT ID, EMAIL, NAME, PASSWORD, CREATION_TIME " +
-                "FROM USER_INFO " +
-                "WHERE ID=?";
-        try {
-            return jdbcTemplate.queryForObject(SELECT_USER, userMapper, id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new NotFoundException("해당 아이디의 사용자가 없습니다.");
-        }
+    public Optional<User> findById(Long id) {
+        String SELECT_USER = "SELECT id, email, name, password, creation_time " +
+                "FROM user_info " +
+                "WHERE id=?";
+        return jdbcTemplate.query(SELECT_USER, userMapper, id)
+                .stream().findFirst();
     }
 
     @Override
-    public User findByEmail(String email) throws NotFoundException {
-        String SELECT_USER = "SELECT ID, EMAIL, NAME, PASSWORD, CREATION_TIME " +
-                "FROM USER_INFO " +
-                "WHERE EMAIL=?";
-        try {
-            return jdbcTemplate.queryForObject(SELECT_USER, userMapper, email);
-        } catch (EmptyResultDataAccessException e) {
-            throw new NotFoundException("해당 이메일의 사용자가 없습니다.");
-        }
+    public Optional<User> findByEmail(String email) {
+        String SELECT_USER = "SELECT id, email, name, password, creation_time " +
+                "FROM user_info " +
+                "WHERE email=?";
+        return jdbcTemplate.query(SELECT_USER, userMapper, email)
+                .stream().findFirst();
     }
 }

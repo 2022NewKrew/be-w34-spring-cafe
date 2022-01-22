@@ -1,14 +1,11 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.exception.NotFoundException;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository {
+public interface UserRepository extends BaseRepository<User> {
 
-    void save(User user);
-    List<User> findAll();
-    User findById(Long id) throws NotFoundException;
-    User findByEmail(String email) throws NotFoundException;
+    Optional<User> findByEmail(String email);
 }

@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.domain.auth;
 
 public class Auth {
     private final Long id;

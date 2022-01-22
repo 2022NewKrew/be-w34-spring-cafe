@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.domain.user;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -10,10 +10,8 @@ public class User {
     private String password;
     private LocalDateTime creationTime;
 
-    public User(String email, String name, String password) {
-        this.email = email;
-        this.name = name;
-        this.password = password;
+    public boolean authenticate(String password) {
+        return this.password.equals(password);
     }
 
     public void setId(Long id) {
@@ -58,9 +56,5 @@ public class User {
 
     public LocalDateTime getCreationTime() {
         return creationTime;
-    }
-
-    public Boolean authenticate(String password) {
-        return this.password.equals(password);
     }
 }

@@ -14,12 +14,42 @@
         <div class="article-body-kakao">
             {{article.content}}
         </div>
-        <a href="/articles" class="btn-kakao pull-right" role="button">목록으로</a>
-        <a href="/articles/{{article.id}}/edit" class="btn-kakao pull-right" role="button">수정</a>
-        <form action="/articles/{{article.id}}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            <button type="submit" class="btn-kakao pull-right">삭제</button>
+        <div class="list-info font-small">댓글 {{replies.size}}개</div>
+        <ul class="list-group">
+        {{#replies}}
+            <li class="list-group-item">
+                <div>
+                    <span>{{writer}}</span>
+                    <form class="pull-right" action="/articles/{{article.id}}/replies/{{id}}" method="post">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button type="submit" class="btn-link">삭제</button>
+                    </form>
+                </div>
+                <div>{{content}}</div>
+                <div class="font-small color-C">{{creationTime}}</div>
+            </li>
+        {{/replies}}
+        </ul>
+        <form action="/articles/{{article.id}}/replies" method="post">
+            <div class="textarea-kakao-group">
+                <div class="textarea-kakao-box"></div>
+                <label class="textarea-kakao-group-addon font-normal" for="title">
+                    {{sessionUser.name}}
+                </label>
+                <textarea class="textarea-kakao" style="height: 120px;"
+                          id="content" name="content" placeholder="내용을 입력하세요"></textarea>
+            </div>
+            <button type="submit" class="btn-kakao pull-right">등록</button>
         </form>
+        {{> layout/errorMessage}}
+        <div>
+            <a href="/articles" class="btn-kakao pull-right" role="button">목록으로</a>
+            <a href="/articles/{{article.id}}/edit" class="btn-kakao pull-right" role="button">수정</a>
+            <form action="/articles/{{article.id}}" method="post">
+                <input type="hidden" name="_method" value="DELETE" />
+                <button type="submit" class="btn-kakao pull-right">삭제</button>
+            </form>
+        </div>
     </div>
     {{> layout/scripts}}
 </body>

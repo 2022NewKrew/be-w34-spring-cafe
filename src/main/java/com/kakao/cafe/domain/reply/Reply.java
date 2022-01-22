@@ -1,27 +1,25 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.domain.reply;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public class Article {
+public class Reply {
     private Long id;
-    private final String writer;
-    private String title;
+    private Long userId;
+    private Long articleId;
     private String content;
     private LocalDateTime creationTime;
-
-    public Article(String writer, String title, String content) {
-        this.writer = writer;
-        this.title = title;
-        this.content = content;
-    }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 
     public void setContent(String content) {
@@ -40,12 +38,12 @@ public class Article {
         return id;
     }
 
-    public String getWriter() {
-        return writer;
+    public Long getUserId() {
+        return userId;
     }
 
-    public String getTitle() {
-        return title;
+    public Long getArticleId() {
+        return articleId;
     }
 
     public String getContent() {

@@ -1,8 +1,8 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.dtos.UserResponseDto;
-import com.kakao.cafe.domain.dtos.UserSaveDto;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserResponseDto;
+import com.kakao.cafe.domain.user.UserSaveDto;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,11 @@ public class UserService {
     }
 
     public void save(UserSaveDto dto) {
-        User newUser = new User(dto.getEmail(), dto.getName(), dto.getPassword());
-        userRepository.save(newUser);
+        User user = new User();
+        user.setEmail(dto.getEmail());
+        user.setName(dto.getName());
+        user.setPassword(dto.getPassword());
+        userRepository.save(user);
     }
 
     public List<UserResponseDto> findAll() {
@@ -33,12 +36,17 @@ public class UserService {
     }
 
     public UserResponseDto findById(Long id) {
-        User user = userRepository.findById(id);
+        User user = getUserById(id);
         return new UserResponseDto(user);
     }
 
+    private User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 아이디의 사용자가 없습니다."));
+    }
+
     public void update(Long id, UserSaveDto dto) {
-        User user = userRepository.findById(id);
+        User user = getUserById(id);
         user.setEmail(dto.getEmail());
         user.setName(dto.getName());
         user.setPassword(dto.getPassword());
