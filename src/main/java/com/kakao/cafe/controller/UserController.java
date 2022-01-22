@@ -1,55 +1,72 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserFormDto;
+import com.kakao.cafe.dto.UserViewDto;
+import com.kakao.cafe.mapper.UserMapper;
 import com.kakao.cafe.service.UserService;
-import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.server.ResponseStatusException;
 
-@Controller
 @RequestMapping("/users")
 public class UserController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static final UserMapper USER_MAPPER = UserMapper.INSTANCE;
+
     private final UserService userService;
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping()
-    public String postSignup(String userId, String password, String name, String email) {
-        User user = new User(userId, password, name, email);
+    public String postSignup(@ModelAttribute UserFormDto userFormDto) {
+        final User user = USER_MAPPER.convertToEntity(userFormDto);
         userService.signup(user);
-        logger.info("POST request on Signup -> {}", user);
+        LOGGER.info("POST request on Signup -> {}", user);
         return "redirect:users";
     }
 
     @GetMapping()
     public String getUserList(Model model) {
-        Collection<User> users = userService.getUsers();
-        model.addAttribute("users", users);
+        final List<User> users = userService.getUsers();
+        final List<UserViewDto> userViewDtoList = users.stream()
+            .map(USER_MAPPER::convertToUserViewDto)
+            .collect(Collectors.toList());
+        model.addAttribute("users", userViewDtoList);
         return "user/list";
     }
 
-    @GetMapping("/{targetUserId}")
-    public String getUserProfile(@PathVariable("targetUserId") String targetUserId, Model model) {
-        try {
-            User user = userService.getUserFromUserId(targetUserId);
-            model.addAttribute("userId", user.getUserId());
-            model.addAttribute("usename", user.getName());
-            model.addAttribute("email", user.getEmail());
-            return "user/profile";
-        } catch (ResponseStatusException e) {
-            logger.warn("[ERROR] 사용자를 찾을 수 없습니다.");
-            return "redirect:/error/no-page";
-        }
+    @GetMapping("/{username}")
+    public String getUserProfile(@PathVariable("username") String username, Model model) {
+        final User user = userService.getUserByUsername(username);
+        final UserViewDto userViewDto = USER_MAPPER.convertToUserViewDto(user);
+        model.addAttribute("user", userViewDto);
+        return "user/profile";
+    }
+
+    @GetMapping("/{username}/form")
+    public String getUserUpdate(@PathVariable("username") String username, Model model) {
+        final User user = userService.getUserByUsername(username);
+        final UserViewDto userViewDto = USER_MAPPER.convertToUserViewDto(user);
+        model.addAttribute("user", userViewDto);
+        return "user/updateForm";
+    }
+
+    @PostMapping("/{username}/form")
+    public String postUserUpdate(@PathVariable("username") String username, @ModelAttribute UserFormDto userFormDto) {
+        final User user = USER_MAPPER.convertToEntity(userFormDto);
+        final User updatedUser = userService.updateUser(username, user);
+        LOGGER.info("POST request on UpdateUser -> {}", updatedUser);
+        return "redirect:/users/" + user.getUsername();
     }
 }

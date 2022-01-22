@@ -1,13 +1,9 @@
 package com.kakao.cafe.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.kakao.cafe.user.controller.UserController;
-import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.repository.UserRepository;
-import com.kakao.cafe.user.repository.UserRepositoryImplMemoryDB;
-import com.kakao.cafe.user.service.UserService;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +33,7 @@ class UserServiceTest {
         // given
 
         // when
-        User user = new User("test", password, "test", "test@test.com");
+        User user = new User("1", "test", password, "test", "test@test.com");
 
         // then
         assertThatThrownBy(user::validate)
@@ -46,13 +42,13 @@ class UserServiceTest {
 
     @Test
     @DisplayName("중복된 ID는 가입할 수 없다.")
-    void testCreateUserWithDuplicatedUserId() {
+    void testCreateUserWithDuplicatedUsername() {
         // given
-        String usedUserId = "test";
+        String usedUsername = "test";
 
         // when
-        User user = new User(usedUserId, "123456", "test", "test@test.com");
-        Mockito.when(userRepository.isUserIdUsed(usedUserId)).thenReturn(true);
+        User user = new User("1", usedUsername, "123456", "test", "test@test.com");
+        Mockito.when(userRepository.isUsernameUsed(usedUsername)).thenReturn(true);
 
         // then
         assertThatThrownBy(() -> userService.signup(user))
@@ -61,15 +57,15 @@ class UserServiceTest {
 
     @Test
     @DisplayName("가입되지 않은 회원의 프로필은 조회할 수 없다.")
-    void testReadUserWithUnusedUserId() {
+    void testReadUserWithUnusedUsername() {
         // given
-        String unusedUserId = "test";
+        String unusedUsername = "test";
 
         // when
-        Mockito.when(userRepository.isUserIdUsed(unusedUserId)).thenReturn(false);
+        Mockito.when(userRepository.isUsernameUsed(unusedUsername)).thenReturn(false);
 
         // then
-        assertThatThrownBy(() -> userService.getUserByUserId(unusedUserId))
+        assertThatThrownBy(() -> userService.getUserByUsername(unusedUsername))
             .isExactlyInstanceOf(ResponseStatusException.class);
     }
 
@@ -78,42 +74,41 @@ class UserServiceTest {
     @DisplayName("개인정보 변경에서도 비밀번호는 6자 이상이어야 한다.")
     void testUpdateUserWithShortPassword(String password) {
         // given
-        String userId = "test";
+        String username = "test";
 
         // when
-        User user = new User(userId, "123456", "test", "test@test.com");
-        Mockito.when(userRepository.isUserIdUsed(userId)).thenReturn(true);
-        Mockito.when(userRepository.readByUserId(userId)).thenReturn(user);
+        User user = new User("1", username, password, "test", "test@test.com");
 
         // then
-        assertThatThrownBy(() -> userService.updateUser(userId, password, "test", "test@test.com"))
+        assertThatThrownBy(() -> userService.updateUser(username, user))
             .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("가입되지 않은 회원의 정보는 변경할 수 없다.")
-    void testUpdateUserWithUnusedUserId() {
+    void testUpdateUserWithUnusedUsername() {
         // given
-        String unusedUserId = "test";
+        String unusedUsername = "test";
 
         // when
-        Mockito.when(userRepository.isUserIdUsed(unusedUserId)).thenReturn(false);
+        User user = new User("1", unusedUsername, "123456", "test", "test@test.com");
+        Mockito.when(userRepository.isUsernameUsed(unusedUsername)).thenReturn(false);
 
         // then
-        assertThatThrownBy(() -> userService.updateUser(unusedUserId, "123456", "test", "test@test.com"))
+        assertThatThrownBy(() -> userService.updateUser(unusedUsername, user))
             .isExactlyInstanceOf(ResponseStatusException.class);
     }
 
-    @Test
-    @DisplayName("UID는 고유한 값은 갖는다.")
-    void testNoDuplicationOnUid() {
-        // given
-
-        // when
-        User user1 = new User("user1", "123456", "test", "test@test.com");
-        User user2 = new User("user2", "123456", "test", "test@test.com");
-
-        // then
-        assertThat(user1.getUid()).isNotEqualTo(user2.getUid());
-    }
+//    @Test
+//    @DisplayName("UID는 고유한 값은 갖는다.")
+//    void testNoDuplicationOnUid() {
+//        // given
+//
+//        // when
+//        User user1 = new User("user1", "123456", "test", "test@test.com");
+//        User user2 = new User("user2", "123456", "test", "test@test.com");
+//
+//        // then
+//        assertThat(user1.getUid()).isNotEqualTo(user2.getUid());
+//    }
 }

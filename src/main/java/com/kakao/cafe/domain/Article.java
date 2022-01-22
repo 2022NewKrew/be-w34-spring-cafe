@@ -1,22 +1,21 @@
-package com.kakao.cafe.article.domain;
+package com.kakao.cafe.domain;
 
-import com.kakao.cafe.user.domain.User;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
 public class Article {
 
-    private final Integer aid;
+    private final Integer id;
     private final String title;
-    private final User writer;
+    private final String writer;
     private final String contents;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public Article(Integer aid, String title, User writer, String contents, LocalDateTime createdAt,
-        LocalDateTime updatedAt) {
-        this.aid = aid;
+    public Article(Integer id, String title, String writer, String contents,
+        LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.title = title;
         this.writer = writer;
         this.contents = contents;
@@ -27,8 +26,11 @@ public class Article {
     @Override
     public String toString() {
         return "Article{" +
-            "title='" + title + '\'' +
-            ", author=" + writer +
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", writer=" + writer +
+            ", contents='" + contents + '\'' +
+            ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +
             '}';
     }

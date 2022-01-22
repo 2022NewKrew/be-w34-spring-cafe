@@ -2,6 +2,7 @@
 
 
 ## 초기설정
+
 - [x] 프로젝트 생성
   - [x] java 11 gradle 로 생성하기
   - [x] .gitignore 설정하기
@@ -10,11 +11,12 @@
 
 
 ## Spring Cafe 1-1
-- [ ] Spring Layered Architecture 적용
+
+- [x] Spring Layered Architecture 적용
   
   - [x] Domain
     - [x] UserEntity
-    - [ ] UserDto
+    - [x] UserDto (1-3에서)
   
   - [x] Service
     - [x] 회원가입
@@ -56,7 +58,7 @@
 
 ## Spring Cafe 1-2
 
-- [ ] qna 게시글
+- [x] qna 게시글
 
   - [x] 게시글 쓰기
     - [x] view 만들기 (form)
@@ -74,7 +76,7 @@
     - [x] articleId 를 ArrayList.size() + 1 로 사용하기
     - [x] 기능 구현하기
 
-  - [ ] ArticleDto 사용하기
+  - [x] ArticleDto 사용하기 (1-3에서)
 
 - [x] 회원정보 수정
   - [x] view 만들기 (updateForm)
@@ -108,3 +110,29 @@
   - [x] 동시성 보장을 위한 자료구조
     - [x] UserRepositoryImplMemoryDB -> ConcurrentHashMap
     - [x] ArticleRepositoryImplMemoryDB -> CopyOnWriteArrayList
+
+
+## Spring Cafe 1-3
+
+- [x] 리뷰
+  - [x] controller 에서 dto 사용
+    - [x] UserDto 및 Mapper 만들기
+    - [x] ArticleDto 및 Mapper 만들기
+    - [x] RequestBody 를 이용해 controller 에서 dto 객체로 파라미터 받기
+
+  - [ ] exception 처리
+    - [x] UncheckedException 처리
+    - [ ] CustomException 만들기
+    - [ ] ExceptionCode Enum 만들기
+    - [ ] ResponseEntity 로 예외 처리
+
+- [x] h2 DB 설정
+  - [x] 의존성 설정
+  - [x] DB Connection 설정
+  - [x] Configuration 클래스
+  - [x] RepositoryImpl 구현
+
+- [x] 배포하기 (http://root-spring-cafe.ay1.krane.9rum.cc:8080/)
+  - [x] Krane 인스턴스 생성
+  - [x] Krane 인스턴스에 jar 파일 복붙
+  - [x] Krane 인스턴스에서 jar 파일 실행 및 정상 작동 확인

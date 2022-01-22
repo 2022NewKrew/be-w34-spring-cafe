@@ -15,15 +15,15 @@
                 </tr>
               </thead>
               <tbody>
-                {{#users}}
+                {{# users}}
                 <tr>
-                  <th scope="row">{{uid}}</th>
-                  <td><a href="/users/{{userId}}">{{userId}}</a></td>
+                  <td>{{id}}</td>
+                  <td><a href="/users/{{username}}">{{username}}</a></td>
                   <td>{{name}}</td>
                   <td>{{email}}</td>
-                  <td><a href="/users/{{userId}}/form" class="btn btn-success" role="button">수정</a></td>
+                  <td><a href="/users/{{username}}/form" class="btn btn-success" role="button">수정</a></td>
                 </tr>
-                {{/users}}
+                {{/ users}}
               </tbody>
           </table>
         </div>
