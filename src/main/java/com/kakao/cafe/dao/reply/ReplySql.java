@@ -14,7 +14,7 @@ public class ReplySql {
 
     public static String update(Reply reply) {
         return String.format(
-                "UPDATE REPLY SET COMMENT = '%s' WHERE ID = '%s'",
+                "UPDATE REPLY SET COMMENT = '%s' WHERE ID = '%s' AND DELETED = FALSE",
                 reply.getComment().getValue(),
                 reply.getId());
     }
@@ -27,7 +27,7 @@ public class ReplySql {
 
     public static String delete(int id) {
         return String.format(
-                "UPDATE REPLY SET DELETED = TRUE WHERE ID = '%s'",
+                "UPDATE REPLY SET DELETED = TRUE WHERE ID = '%s' AND DELETED = FALSE",
                 id);
     }
 
