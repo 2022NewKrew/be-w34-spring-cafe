@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class JdbcReplyRepository implements ReplyInterface {
-    private static final String ALL_OF_REPLY = "id, content, date, u.name as writer, " +
+    private static final String ALL_OF_REPLY = "select id, content, date, u.name as writer, " +
             "r.writerid as writerid, articleid, deleted from replies as r join users as u " +
             "where r.writerid = u.userid AND deleted=false";
     private static final String ORDERED = " order by id desc";
@@ -57,7 +57,7 @@ public class JdbcReplyRepository implements ReplyInterface {
 
     @Override
     public Optional<Reply> findById(Long id) {
-        String sql = "select " + ALL_OF_REPLY + " AND id=?";
+        String sql = ALL_OF_REPLY + " AND id=?";
 
         try {
             connection = JdbcUtils.getConnection(dataSource);
@@ -84,7 +84,7 @@ public class JdbcReplyRepository implements ReplyInterface {
 
     @Override
     public List<Reply> findAll() {
-        String sql = "select " + ALL_OF_REPLY + ORDERED;
+        String sql = ALL_OF_REPLY + ORDERED;
 
         try {
             connection = JdbcUtils.getConnection(dataSource);
@@ -127,7 +127,7 @@ public class JdbcReplyRepository implements ReplyInterface {
 
     @Override
     public List<Reply> findByArticleId(Long articleId) {
-        String sql = "select " + ALL_OF_REPLY + " AND articleid = ?" + ORDERED;
+        String sql = ALL_OF_REPLY + " AND articleid = ?" + ORDERED;
 
         try {
             connection = JdbcUtils.getConnection(dataSource);

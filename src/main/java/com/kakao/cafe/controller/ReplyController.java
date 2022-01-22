@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.reply.Reply;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.ReplyService;
+import com.kakao.cafe.util.AuthUtils;
 import com.kakao.cafe.util.Constant;
 import com.kakao.cafe.util.ErrorMessage;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class ReplyController {
 
     @PostMapping("/qna/{articleId}/reply")
     public String writeReply(@PathVariable Long articleId, Reply reply, HttpSession session) {
-        Long writerId = loginCheck(session);
+        Long writerId = AuthUtils.checkLogin(session);
         reply.setWriterId(writerId);
         reply.setArticleId(articleId);
         reply.setDeleted(false);
@@ -33,20 +34,12 @@ public class ReplyController {
 
     @DeleteMapping("/qna/{articleId}/replies/{id}")
     public String deleteReply(@PathVariable Long articleId, @PathVariable Long id, Model model, HttpSession session) {
-        Long writerId = loginCheck(session);
+        Long writerId = AuthUtils.checkLogin(session);
         Reply reply = replyService.findOne(id);
         if (!writerId.equals(reply.getWriterId())) {
-            throw new IllegalStateException(ErrorMessage.ARTICLE_DELETE_FORBIDDEN.getMsg());
+            throw new IllegalStateException(ErrorMessage.ARTICLE_FORBIDDEN.getMsg());
         }
         replyService.deleteReply(id);
         return "redirect:/articles/" + articleId;
-    }
-
-    private Long loginCheck(HttpSession session) {
-        User user = (User) session.getAttribute(Constant.LOGIN_SESSION);
-        if (user == null) {
-            throw new IllegalStateException(ErrorMessage.NO_AUTH.getMsg());
-        }
-        return user.getUserId();
     }
 }

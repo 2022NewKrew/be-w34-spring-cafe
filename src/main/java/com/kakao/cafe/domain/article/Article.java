@@ -1,12 +1,8 @@
 package com.kakao.cafe.domain.article;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
+@Data
 public class Article {
     private Long index;
     private String title;

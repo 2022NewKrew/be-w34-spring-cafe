@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class JdbcArticleRepository implements RepositoryInterface<Article> {
-    private static final String ALL_OF_ARTICLE = "`index`, title, content, date, u.name as writer," +
+    private static final String ALL_OF_ARTICLE = "select `index`, title, content, date, u.name as writer," +
             "a.writerid as writerid, view, deleted from articles as a join users as u " +
             "where a.writerid = u.userid AND deleted=false";
     private static final String ORDERED = " order by `index` desc";
@@ -60,7 +60,7 @@ public class JdbcArticleRepository implements RepositoryInterface<Article> {
 
     @Override
     public Optional<Article> findById(Long index) {
-        String sql = "select " + ALL_OF_ARTICLE + " AND `index` = ?";
+        String sql = ALL_OF_ARTICLE + " AND `index` = ?";
 
         try {
             connection = JdbcUtils.getConnection(dataSource);
@@ -82,7 +82,7 @@ public class JdbcArticleRepository implements RepositoryInterface<Article> {
 
     @Override
     public Optional<Article> findByName(String title) {
-        String sql = "select " + ALL_OF_ARTICLE + " AND title = ?" + ORDERED;
+        String sql = ALL_OF_ARTICLE + " AND title = ?" + ORDERED;
 
         try {
             connection = JdbcUtils.getConnection(dataSource);
@@ -104,7 +104,7 @@ public class JdbcArticleRepository implements RepositoryInterface<Article> {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select " + ALL_OF_ARTICLE + ORDERED;
+        String sql = ALL_OF_ARTICLE + ORDERED;
         try {
             connection = JdbcUtils.getConnection(dataSource);
             preparedStatement = connection.prepareStatement(sql);

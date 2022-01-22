@@ -1,12 +1,9 @@
 package com.kakao.cafe.domain.reply;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
+
+@Data
 public class Reply {
     private Long id;
     private String content;

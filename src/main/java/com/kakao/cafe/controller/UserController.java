@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpSession;
 
 
@@ -36,11 +37,11 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/updateForm")
-    public String updateForm(@PathVariable Long userId, Model model, HttpSession session) throws UpdateForbiddenException {
+    public String updateForm(@PathVariable Long userId, Model model, HttpSession session) throws AuthenticationException {
         User user = userService.findOne(userId);
         User sessionUser = (User) session.getAttribute(Constant.LOGIN_SESSION);
         if (sessionUser == null) {
-            throw new UpdateForbiddenException(ErrorMessage.NO_AUTH.getMsg());
+            throw new AuthenticationException(ErrorMessage.NO_AUTH.getMsg());
         }
 
         if (sessionUser.getUserId().equals(userId)) {
@@ -51,7 +52,7 @@ public class UserController {
 
             return "users/updateForm";
         }
-        throw new UpdateForbiddenException(ErrorMessage.USER_PROFILE_UPDATE_FORBIDDEN.getMsg());
+        throw new AuthenticationException(ErrorMessage.USER_PROFILE_UPDATE_FORBIDDEN.getMsg());
     }
 
     @PutMapping("/{userId}/updateForm")

@@ -1,14 +1,10 @@
 package com.kakao.cafe.domain.article;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
+@Data
 public class Articles {
     private int totalCount;
     private List<Article> articleList;
