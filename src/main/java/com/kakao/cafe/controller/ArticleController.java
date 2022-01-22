@@ -46,7 +46,7 @@ public class ArticleController {
         articles.setTotalCount(numOfArticles);
         articles.setPageList(PageUtils.makePageList(numOfArticles));
         articles.setHasPrev(page != 1);
-        articles.setHasNext(page != ((numOfArticles - 1) / 10) + 1);
+        articles.setHasNext(page != ((numOfArticles - 1) / Constant.ARTICLE_PER_PAGE) + 1);
         articles.setPrev(page - 1);
         articles.setNext(page + 1);
 
