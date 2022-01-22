@@ -6,7 +6,7 @@ public class MemoryPostRepository implements PostRepository {
     private final Map<Long, Post> postStore = new HashMap<>();
 
     @Override
-    public Post save(Post post) {
+    public Post insert(Post post) {
         long insertId = postStore.size() + 1;
         post.setId(insertId);
         postStore.put(insertId, post);
@@ -25,7 +25,7 @@ public class MemoryPostRepository implements PostRepository {
     }
 
     @Override
-    public Post edit(Long id, Post post) {
+    public Post update(Long id, Post post) {
         postStore.put(id, post);
 
         return post;

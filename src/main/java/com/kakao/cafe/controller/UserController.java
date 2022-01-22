@@ -50,14 +50,14 @@ public class UserController {
     }
 
     @GetMapping("/users/me/form")
-    public String userUpdateForm(Model model, @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) ShowUserDto loginUser) {
+    public String updateUserForm(Model model, @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) ShowUserDto loginUser) {
         model.addAttribute("user", loginUser);
         return "users/editForm";
     }
 
     @PutMapping("/users/{userId}")
-    public String userUpdate(@PathVariable String userId, @ModelAttribute @Validated UpdateUserDto updateUserDto) {
-        ShowUserDto editUser = userService.editProfile(userId, updateUserDto);
+    public String updateUser(@PathVariable String userId, @ModelAttribute @Validated UpdateUserDto updateUserDto) {
+        ShowUserDto editUser = userService.updateProfile(userId, updateUserDto);
         log.info("Update User - {}", editUser);
         return "redirect:/users";
     }

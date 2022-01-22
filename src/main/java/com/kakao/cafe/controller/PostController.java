@@ -40,8 +40,7 @@ public class PostController {
 
     @PostMapping("/posts")
     public String addPost(@ModelAttribute @Validated CreatePostDto postDto, @SessionAttribute(name = SessionConst.LOGIN_USER) ShowUserDto loginUser) {
-        postDto.setWriter(loginUser.getUserId());
-        ShowPostDto post = postService.createPost(postDto);
+        ShowPostDto post = postService.createPost(postDto, loginUser.getUserId());
         log.info("Create Post - {}", postDto);
         return "redirect:/posts/" + post.getId();
     }
@@ -64,7 +63,6 @@ public class PostController {
     @PutMapping("/posts/{postId}")
     public String updatePost(@PathVariable Long postId, @ModelAttribute UpdatePostDto postDto, @SessionAttribute(name = SessionConst.LOGIN_USER) ShowUserDto loginUser) {
         checkPostUser(postId, loginUser.getUserId());
-        postDto.setWriter(loginUser.getUserId());
         ShowPostDto showPostDto = postService.updatePost(postId, postDto);
         log.info("Update Post - {}", showPostDto);
 
@@ -80,10 +78,7 @@ public class PostController {
 
     @PostMapping("/posts/{postId}/reply")
     public String addReply(@PathVariable Long postId, @Valid @ModelAttribute CreateReplyDto replyDto, @SessionAttribute(name = SessionConst.LOGIN_USER) ShowUserDto loginUser){
-        replyDto.setPostId(postId);
-        replyDto.setUserId(loginUser.getUserId());
-
-        replyService.createReply(replyDto);
+        replyService.createReply(replyDto, postId, loginUser.getUserId());
         log.info("Create Reply - {}", replyDto);
         return "redirect:/posts/" + postId;
     }

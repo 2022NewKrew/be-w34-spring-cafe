@@ -76,7 +76,7 @@ class UserServiceTest {
                 .email("test2@test.com")
                 .build();
 
-        ShowUserDto user = userService.editProfile(userDto.getUserId(), updateUserDto);
+        ShowUserDto user = userService.updateProfile(userDto.getUserId(), updateUserDto);
         assertThat(user.getName()).isEqualTo(updateUserDto.getName());
         assertThat(user.getEmail()).isEqualTo(updateUserDto.getEmail());
     }
@@ -92,7 +92,7 @@ class UserServiceTest {
                 .email("test2@test.com")
                 .build();
 
-        assertThrows(UnAuthorizedException.class, () -> userService.editProfile(userDto.getUserId(), updateUserDto));
+        assertThrows(UnAuthorizedException.class, () -> userService.updateProfile(userDto.getUserId(), updateUserDto));
     }
 
     @Test

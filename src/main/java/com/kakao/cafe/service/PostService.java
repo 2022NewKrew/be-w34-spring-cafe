@@ -20,9 +20,9 @@ public class PostService {
     private final PostRepository postRepository;
     private final ReplyRepository replyRepository;
 
-    public ShowPostDto createPost(CreatePostDto postDto) {
-        Post savePost = postRepository.save(Post.builder()
-                .writer(postDto.getWriter())
+    public ShowPostDto createPost(CreatePostDto postDto, String userId) {
+        Post savePost = postRepository.insert(Post.builder()
+                .writer(userId)
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
                 .build());
@@ -48,11 +48,10 @@ public class PostService {
         Post post = Post.builder()
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
-                .writer(postDto.getWriter())
                 .build();
 
         post.setId(id);
-        return new ShowPostDto(postRepository.edit(id, post));
+        return new ShowPostDto(postRepository.update(id, post));
     }
 
     public void deletePost(Long id, String userId) {

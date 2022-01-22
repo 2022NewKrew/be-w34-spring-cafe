@@ -19,8 +19,14 @@ public class ReplyService {
         this.replyRepository = replyRepository;
     }
 
-    public void createReply(CreateReplyDto replyDto){
-        replyRepository.save(parseReply(replyDto));
+    public void createReply(CreateReplyDto replyDto, Long postId, String userId){
+        Reply reply = Reply.builder()
+                .comment(replyDto.getComment())
+                .userId(userId)
+                .postId(postId)
+                .build();
+
+        replyRepository.insert(reply);
     }
 
     public List<ShowReplyDto> findAllReply(Long postId){
@@ -37,15 +43,7 @@ public class ReplyService {
     }
 
     public void deleteReply(Long replyId){
-           replyRepository.remove(replyId);
+           replyRepository.delete(replyId);
     }
 
-
-    private Reply parseReply(CreateReplyDto replyDto){
-        return Reply.builder()
-                .comment(replyDto.getComment())
-                .userId(replyDto.getUserId())
-                .postId(replyDto.getPostId())
-                .build();
-    }
 }

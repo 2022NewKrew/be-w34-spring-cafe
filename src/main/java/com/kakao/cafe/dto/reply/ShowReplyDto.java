@@ -1,13 +1,13 @@
 package com.kakao.cafe.dto.reply;
 
 import com.kakao.cafe.domain.reply.Reply;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.format.DateTimeFormatter;
 
-@Getter
-@Setter
+@Data
 public class ShowReplyDto {
     private Long id;
     private String comment;

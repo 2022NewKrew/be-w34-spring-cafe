@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @Slf4j
 public class WebErrorController implements ErrorController {
-    @ExceptionHandler({IllegalArgumentException.class})
+    @ExceptionHandler(IllegalArgumentException.class)
     public String argsExceptionHandle(Exception e, Model model, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", e.getMessage());
@@ -30,7 +30,7 @@ public class WebErrorController implements ErrorController {
         return "error";
     }
 
-    @ExceptionHandler({UnAuthorizedException.class})
+    @ExceptionHandler(UnAuthorizedException.class)
     public String unAuthExceptionHandle(Exception e, Model model, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", e.getMessage());
@@ -39,7 +39,7 @@ public class WebErrorController implements ErrorController {
         return "error";
     }
 
-    @ExceptionHandler({NotFoundException.class})
+    @ExceptionHandler(NotFoundException.class)
     public String notFoundExceptionHandle(Exception e, Model model, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", e.getMessage());
@@ -48,7 +48,7 @@ public class WebErrorController implements ErrorController {
         return "error";
     }
 
-    @ExceptionHandler({ForbiddenException.class})
+    @ExceptionHandler(ForbiddenException.class)
     public String forbiddenExceptionHandle(Exception e, Model model, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", e.getMessage());
@@ -57,7 +57,7 @@ public class WebErrorController implements ErrorController {
         return "error";
     }
 
-    @ExceptionHandler({Exception.class})
+    @ExceptionHandler(Exception.class)
     public String globalExceptionHandle(Exception e, Model model, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         model.addAttribute("errorMessage", "페이지를 찾을 수 없습니다.");
@@ -66,7 +66,7 @@ public class WebErrorController implements ErrorController {
         return "error";
     }
 
-    @ExceptionHandler({BindException.class})
+    @ExceptionHandler(BindException.class)
     public String validateException(Errors errors, RedirectAttributes attr, HttpServletRequest request) {
         errors.getFieldErrors().forEach(err -> attr.addFlashAttribute(err.getField(), err.getDefaultMessage()));
         return "redirect:" + request.getHeader("Referer");

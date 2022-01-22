@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReplyRepository {
-    void save(Reply reply);
+    void insert(Reply reply);
     List<Reply> findAll(Long postId);
     Optional<Reply> findById(Long replyId);
-    void remove(Long id);
+    void delete(Long id);
 }

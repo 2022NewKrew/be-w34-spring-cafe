@@ -16,7 +16,7 @@ public class JdbcReplyRepository implements ReplyRepository{
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void save(Reply reply) {
+    public void insert(Reply reply) {
         String sql = "INSERT INTO `REPLY` (comment, userId, regDateTime, postId) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, reply.getComment(), reply.getUserId(), reply.getRegDateTime(), reply.getPostId());
     }
@@ -39,7 +39,7 @@ public class JdbcReplyRepository implements ReplyRepository{
     }
 
     @Override
-    public void remove(Long id) {
+    public void delete(Long id) {
         String sql = "UPDATE `REPLY` SET isDeleted=1 WHERE id=?";
         jdbcTemplate.update(sql, id);
     }

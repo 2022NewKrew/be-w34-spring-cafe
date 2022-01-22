@@ -21,7 +21,7 @@ public class JdbcPostRepository implements PostRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Post save(Post post) {
+    public Post insert(Post post) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO `POST` (title, content, writer, regDateTime) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(conn -> {
@@ -56,7 +56,7 @@ public class JdbcPostRepository implements PostRepository {
     }
 
     @Override
-    public Post edit(Long id, Post post) {
+    public Post update(Long id, Post post) {
         String sql = "UPDATE `POST` SET title=?, content=? WHERE id=?";
         jdbcTemplate.update(sql, post.getTitle(), post.getContent(), id);
 

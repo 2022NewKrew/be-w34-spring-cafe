@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
-    void save(User user);
+    void insert(User user);
 
-    User edit(String userId, User user);
+    User update(String userId, User user);
 
     Optional<User> findById(String userId);
 
