@@ -53,7 +53,6 @@ public class ArticleController {
     }
 
     // / -> redirect:/pages/1
-    // /articles -> redirect:/pages/1
 
     @GetMapping("/articles/new")
     public String getArticles(final HttpServletRequest request) {
