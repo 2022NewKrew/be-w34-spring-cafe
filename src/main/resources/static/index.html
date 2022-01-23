@@ -64,7 +64,12 @@
         </div>
     </div>
     <div class="post-btn-container">
-      <a class="post-write-btn" href="/questions" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{^sessionUserName}}
+        <a class="post-write-btn" href="/questions/write-page" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{/sessionUserName}}
+        {{#sessionUserName}}
+        <a class="post-write-btn" href="/questions/write-page?writer={{sessionUserName}}" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{/sessionUserName}}
     </div>
 </div>
 
