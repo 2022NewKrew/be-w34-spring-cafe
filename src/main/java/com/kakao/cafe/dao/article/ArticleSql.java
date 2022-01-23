@@ -23,17 +23,19 @@ public class ArticleSql {
     }
 
     public static String delete(int id) {
-        return String.format("UPDATE ARTICLE SET DELETED = TRUE WHERE ID = %s", id);
+        return String.format("UPDATE ARTICLE SET DELETED = TRUE WHERE ID = %s AND DELETED = FALSE",
+                id);
     }
 
     public static String update(Article article) {
-        return String.format("UPDATE ARTICLE SET TITLE = '%s', CONTENTS = '%s' WHERE ID = '%s'",
+        return String.format(
+                "UPDATE ARTICLE SET TITLE = '%s', CONTENTS = '%s' WHERE ID = '%s' AND DELETED = FALSE",
                 article.getTitle().getValue(),
                 article.getContents().getValue(),
                 article.getId());
     }
 
     public static String count() {
-        return "SELECT COUNT(*) FROM ARTICLE WHERE DELETED = FALSE";
+        return "SELECT COUNT(ID) FROM ARTICLE WHERE DELETED = FALSE";
     }
 }

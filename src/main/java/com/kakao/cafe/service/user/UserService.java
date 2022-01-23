@@ -5,6 +5,7 @@ import com.kakao.cafe.model.user.Password;
 import com.kakao.cafe.model.user.User;
 import com.kakao.cafe.model.user.UserFactory;
 import com.kakao.cafe.model.user.UserId;
+import com.kakao.cafe.service.Constant;
 import com.kakao.cafe.service.user.dto.UserElementDto;
 import com.kakao.cafe.service.user.dto.UserInformationDto;
 import com.kakao.cafe.service.user.dto.UserLoginDto;
@@ -58,19 +59,19 @@ public class UserService {
     private User findUser(UserId userId) {
         return userDao
                 .findUserById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("찾는 사용자가 없습니다!"));
+                .orElseThrow(() -> new IllegalArgumentException(Constant.USER_IS_NOT_EXIST));
     }
 
     private void checkPassword(UserId userId, Password Password) {
         User user = findUser(userId);
         if (!user.isPassword(Password)) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new IllegalArgumentException(Constant.NOT_MATCH_PASSWORD);
         }
     }
 
     private void checkDuplicated(UserId userId) {
         if (userDao.findUserById(userId).isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+            throw new IllegalArgumentException(Constant.ALREADY_EXIST_USER);
         }
     }
 }

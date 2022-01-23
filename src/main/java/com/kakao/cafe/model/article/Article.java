@@ -1,7 +1,10 @@
 package com.kakao.cafe.model.article;
 
+import com.kakao.cafe.model.reply.Reply;
 import com.kakao.cafe.model.user.UserId;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Article {
 
@@ -11,19 +14,21 @@ public class Article {
     private Contents contents;
     private final LocalDateTime createDate;
     private boolean deleted;
+    private List<Reply> replies;
 
     public Article(int id, Title title, UserId userId, Contents contents,
-            LocalDateTime createDate, boolean deleted) {
+            LocalDateTime createDate, boolean deleted, List<Reply> replies) {
         this.id = id;
         this.title = title;
         this.userId = userId;
         this.contents = contents;
         this.createDate = createDate;
         this.deleted = deleted;
+        this.replies = replies;
     }
 
     public Article(int id, Title title, UserId userId, Contents contents) {
-        this(id, title, userId, contents, LocalDateTime.now(), false);
+        this(id, title, userId, contents, LocalDateTime.now(), false, new ArrayList<>());
     }
 
     public int getId() {
@@ -50,6 +55,10 @@ public class Article {
         return deleted;
     }
 
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
     public void setTitle(Title title) {
         this.title = title;
     }
@@ -60,5 +69,9 @@ public class Article {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = new ArrayList<>(replies);
     }
 }

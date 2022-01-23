@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kakao.cafe.controller.Constant;
 import com.kakao.cafe.service.article.ArticleService;
 import com.kakao.cafe.service.article.dto.ArticleCreateDto;
 import com.kakao.cafe.service.article.dto.ArticleDto;
@@ -36,7 +37,6 @@ class ArticleControllerTest {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private ArticleService articleService;
-    private ReplyService replyService;
     private ArticleController articleController;
     private MockMvc mockMvc;
     private MockHttpSession session;
@@ -44,8 +44,7 @@ class ArticleControllerTest {
     @BeforeEach
     private void before() {
         articleService = mock(ArticleService.class);
-        replyService = mock(ReplyService.class);
-        articleController = new ArticleController(articleService, replyService);
+        articleController = new ArticleController(articleService);
         session = new MockHttpSession();
 
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -57,30 +56,25 @@ class ArticleControllerTest {
                 .build();
     }
 
-    @DisplayName("GET /index 테스트")
-    @Test
-    public void getIndex() throws Exception {
-        //give
-        mockMvc.perform(get("/index"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("index"))
-                .andExpect(model().attributeExists("articles"))
-                .andExpect(model().attributeExists("pages"));
-    }
-
     @DisplayName("GET /index/{page} 테스트")
     @Test
     public void getIndexByPage() throws Exception {
-        int page = 1;
-        int articlesPerPage = 5;
+        int page = 4;
+        int articlesPerPage = Constant.MAX_ARTICLES;
+        int pageLimit = 5;
         when(articleService.getPartOfArticles(page, articlesPerPage))
                 .thenReturn(getArticles(articlesPerPage));
-        System.out.println(articleService.findArticleById(1));
+        when(articleService.getPages(articlesPerPage, pageLimit, page))
+                .thenReturn(List.of(1, 2, 3, 4, 5));
+        when(articleService.getLastPageNumber(articlesPerPage))
+                .thenReturn(5);
         mockMvc.perform(get("/index/" + page))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
                 .andExpect(model().attributeExists("articles"))
-                .andExpect(model().attributeExists("pages"));
+                .andExpect(model().attributeExists("pages"))
+                .andExpect(model().attributeExists("previousPage"))
+                .andExpect(model().attributeExists("nextPage"));
     }
 
     @DisplayName("POST /articles 테스트")
@@ -165,12 +159,6 @@ class ArticleControllerTest {
         );
         String query = "?id=" + 1;
         session.setAttribute("loginUserId", "userId");
-        when(articleService.findArticleById(1))
-                .thenReturn(articleDto);
-        when(replyService.isArticleHasOnlyUserIdReply(1, "userId"))
-                .thenReturn(true);
-        when(replyService.getReplies(1))
-                .thenReturn(new ArrayList<ReplyDto>());
 
         mockMvc.perform(delete("/articles/delete" + query)
                         .session(session))

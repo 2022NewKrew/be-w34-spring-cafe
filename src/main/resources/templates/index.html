@@ -29,12 +29,15 @@
               <div class="col-md-3"></div>
               <div class="col-md-6 text-center">
                   <ul class="pagination center-block" style="display:inline-block;">
+                      {{#previousPage}}
+                      <li><a href="/index/{{.}}"><</a></li>
+                      {{/previousPage}}
                       {{#pages}}
                       <li><a href="/index/{{.}}">{{.}}</a></li>
                       {{/pages}}
-                      {{^pages}}
-                      <li>1</li>
-                      {{/pages}}
+                      {{#nextPage}}
+                      <li><a href="/index/{{.}}">></a></li>
+                      {{/nextPage}}
                 </ul>
               </div>
               <div class="col-md-3 qna-write">

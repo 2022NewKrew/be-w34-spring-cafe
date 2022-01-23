@@ -59,45 +59,4 @@ class ReplyServiceTest {
         assertThatThrownBy(() -> replyService.checkPermission(replyId, userId))
                 .isInstanceOf(NoPermissionException.class);
     }
-
-    @Test
-    void ArticleHasOnlyUserIdReply() {
-        //give
-        int articleId = 1;
-        String userId = "userId";
-        when(replyDao.getReplies(articleId))
-                .thenReturn(List.of(
-                        new Reply(1, articleId, new UserId(userId), new Comment("comment")),
-                        new Reply(2, articleId, new UserId(userId), new Comment("comment")),
-                        new Reply(3, articleId, new UserId(userId), new Comment("comment")),
-                        new Reply(4, articleId, new UserId(userId), new Comment("comment")),
-                        new Reply(5, articleId, new UserId(userId), new Comment("comment"))));
-
-        //when
-        boolean result = replyService.isArticleHasOnlyUserIdReply(articleId, userId);
-
-        //then
-        assertThat(result).isTrue();
-    }
-
-    @Test
-    void ArticleNotHasOnlyUserIdReply() {
-        //give
-        int articleId = 1;
-        String userId = "userId";
-        String otherUserId = "otherUserId";
-        when(replyDao.getReplies(articleId))
-                .thenReturn(List.of(
-                        new Reply(1, articleId, new UserId(userId), new Comment("comment")),
-                        new Reply(2, articleId, new UserId(otherUserId), new Comment("comment")),
-                        new Reply(3, articleId, new UserId(userId), new Comment("comment")),
-                        new Reply(4, articleId, new UserId(otherUserId), new Comment("comment")),
-                        new Reply(5, articleId, new UserId(userId), new Comment("comment"))));
-
-        //when
-        boolean result = replyService.isArticleHasOnlyUserIdReply(articleId, userId);
-
-        //then
-        assertThat(result).isFalse();
-    }
 }

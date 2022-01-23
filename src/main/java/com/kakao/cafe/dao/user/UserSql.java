@@ -33,6 +33,6 @@ public class UserSql {
     }
 
     public static String count() {
-        return "SELECT COUNT(*) FROM USER_DATA";
+        return "SELECT COUNT(USER_ID) FROM USER_DATA";
     }
 }

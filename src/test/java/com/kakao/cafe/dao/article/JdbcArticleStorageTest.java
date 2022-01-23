@@ -2,7 +2,10 @@ package com.kakao.cafe.dao.article;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 
+import com.kakao.cafe.dao.reply.JdbcReplyStorage;
+import com.kakao.cafe.dao.reply.ReplyDao;
 import com.kakao.cafe.model.article.Article;
 import com.kakao.cafe.model.article.ArticleFactory;
 import com.kakao.cafe.model.article.Contents;
@@ -25,12 +28,14 @@ class JdbcArticleStorageTest {
     private static final int PRECONDITION_ARTICLE_LENGTH = 10;
 
     private final ArticleDao articleDao;
+    private final ReplyDao replyDao;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     private JdbcArticleStorageTest(JdbcTemplate jdbcTemplate) {
-        this.articleDao = new JdbcArticleStorage(jdbcTemplate);
         this.jdbcTemplate = jdbcTemplate;
+        this.replyDao = new JdbcReplyStorage(jdbcTemplate);
+        this.articleDao = new JdbcArticleStorage(jdbcTemplate, replyDao);
     }
 
     @BeforeEach
