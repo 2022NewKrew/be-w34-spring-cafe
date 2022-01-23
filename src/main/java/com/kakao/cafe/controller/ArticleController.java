@@ -1,7 +1,9 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.dto.ReplyDto;
 import com.kakao.cafe.service.article.ArticleService;
+import com.kakao.cafe.service.reply.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticleController {
     private final ArticleService articleService;
+    private final ReplyService replyService;
     Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     @PostMapping("/questions")
@@ -28,11 +31,9 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/questions")
-    public String writeArticle(HttpSession httpSession) {
-        if(httpSession.getAttribute("sessionUserId") == null) {
-            return "/user/login";
-        }
+    @GetMapping("/questions/write-page")
+    public String writeArticle(@RequestParam("writer") String writer, Model model) {
+        model.addAttribute("writer", writer);
 
         return "/post/form";
     }
@@ -47,15 +48,19 @@ public class ArticleController {
         return "/index";
     }
 
-    @GetMapping("questions/{id}")
+    @GetMapping("/questions/{id}")
     public String retrieveArticle(@PathVariable("id") Long articleId, Model model) {
         ArticleDto articleDto = articleService.retrieveArticle(articleId);
+        List<ReplyDto> replyDtos = replyService.repliesByArticle(articleId);
+
         model.addAttribute("article", articleDto);
+        model.addAttribute("replies", replyDtos);
+        model.addAttribute("count", replyDtos.size());
 
         return "/post/show";
     }
 
-    @DeleteMapping("/questions/delete/{id}")
+    @DeleteMapping("/questions/{id}")
     public String deleteArticle(@PathVariable("id") Long articleId, ArticleDto articleDto, HttpSession httpSession) {
         String nickName = (String) httpSession.getAttribute("sessionUserName");
         if(nickName == null || !nickName.equals(articleDto.getWriter())) {
@@ -67,10 +72,8 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/questions/update/{id}")
+    @GetMapping("/questions/update-page/{id}")
     public String updatePage(@PathVariable("id") Long articleId, @RequestParam("writer") String writer, Model model, HttpSession httpSession) {
-        logger.info("updatepage check id : {}, writer : {}", articleId, writer);
-
         String nickName = (String) httpSession.getAttribute("sessionUserName");
         if(nickName == null || !nickName.equals(writer)) {
             return "error/permission_fail";
@@ -82,7 +85,7 @@ public class ArticleController {
         return "post/update";
     }
 
-    @PutMapping("/questions/update")
+    @PutMapping("/questions/{id}")
     public String updateArticle(ArticleDto articleDto) {
         articleService.updateArticle(articleDto);
 

@@ -1,5 +1,6 @@
 drop table if exists users;
 drop table if exists article;
+drop table if exists reply;
 
 create table users
 (
@@ -26,4 +27,19 @@ create table article
     user_id bigint,
     primary key(id),
     foreign key(user_id) references users(id)
+);
+
+create table reply
+(
+    id   bigint auto_increment,
+    content varchar(255),
+    writer varchar(255),
+    write_date timestamp,
+    created_date timestamp,
+    updated_date timestamp,
+    user_id bigint,
+    article_id bigint,
+    primary key(id),
+    foreign key(user_id) references users(id),
+    foreign key(article_id) references article(id)
 );
