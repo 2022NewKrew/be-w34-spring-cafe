@@ -1,44 +1,40 @@
 package com.kakao.cafe.dto;
 
 import lombok.Builder;
-import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.List;
 
-public class ArticleResponseDTO {
+public class ReplyResponseDTO {
     @NotBlank
     private final Long id;
+    @NotBlank
+    private final Long articleId;
     @NotBlank
     private final String author;
     @NotBlank
     private final String authorName;
     @NotBlank
-    private final String title;
-    @NotBlank
     private final String content;
-    @Nullable
-    private final List<ReplyResponseDTO> replies;
     @NotBlank
     private final LocalDateTime createdAt;
-    @NotBlank
-    private final LocalDateTime updatedAt;
-
+    
     @Builder
-    public ArticleResponseDTO(Long id, String author, String authorName, String title, String content, List<ReplyResponseDTO> replies, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ReplyResponseDTO(Long id, Long articleId, String author, String authorName, String content, LocalDateTime createdAt) {
         this.id = id;
+        this.articleId = articleId;
         this.author = author;
         this.authorName = authorName;
-        this.title = title;
         this.content = content;
-        this.replies = replies;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public Long getArticleId() {
+        return articleId;
     }
 
     public String getAuthor() {
@@ -49,24 +45,11 @@ public class ArticleResponseDTO {
         return authorName;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public String getContent() {
         return content;
     }
 
-    @Nullable
-    public List<ReplyResponseDTO> getReplies() {
-        return replies;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Article {
     @NotBlank
@@ -17,6 +18,8 @@ public class Article {
     private String title;
     @NotBlank
     private String content;
+    @Nullable
+    private List<Reply> replies;
     @NotBlank
     private final LocalDateTime createdAt;
     @Nullable
@@ -63,6 +66,15 @@ public class Article {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Nullable
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(@Nullable List<Reply> replies) {
+        this.replies = replies;
     }
 
     public LocalDateTime getCreatedAt() {

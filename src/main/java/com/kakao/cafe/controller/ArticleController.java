@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.controller.interceptor.LoginRequired;
 import com.kakao.cafe.dto.ArticleRequestDTO;
 import com.kakao.cafe.dto.ArticleResponseDTO;
+import com.kakao.cafe.dto.ReplyRequestDTO;
 import com.kakao.cafe.dto.UserResponseDTO;
 import com.kakao.cafe.error.exception.AuthorizationException;
 import com.kakao.cafe.service.ArticleService;
@@ -29,6 +30,21 @@ public class ArticleController {
     @GetMapping("/articles/form")
     public String createArticle() {
         return "article/form";
+    }
+
+    @LoginRequired
+    @PostMapping("/articles")
+    public String createArticle(@Validated ArticleRequestDTO articleRequestDto) {
+        articleService.create(articleRequestDto);
+        return "redirect:/";
+    }
+
+    @LoginRequired
+    @PostMapping("/articles/{articleId}/reply")
+    public String createReply(@PathVariable Long articleId, @Validated ReplyRequestDTO replyRequestDTO) {
+        logger.info("createReply: {}, {}, {}, {}", articleId, replyRequestDTO.getArticleId(), replyRequestDTO.getAuthor(), replyRequestDTO.getContent());
+        articleService.create(replyRequestDTO);
+        return "redirect:/articles/" + articleId;
     }
 
     @GetMapping()
@@ -81,9 +97,13 @@ public class ArticleController {
     }
 
     @LoginRequired
-    @PostMapping("/articles")
-    public String createArticle(@Validated ArticleRequestDTO articleRequestDto) {
-        articleService.create(articleRequestDto);
-        return "redirect:/";
+    @DeleteMapping("/articles/{articleId}/{replyId}")
+    public String deleteReply(@PathVariable Long articleId, @PathVariable Long replyId, @Validated ReplyRequestDTO replyRequestDTO, HttpSession session) {
+        UserResponseDTO user = (UserResponseDTO) session.getAttribute(SESSION_USER);
+        if(!user.getUserId().equals(replyRequestDTO.getAuthor())) {
+            throw new AuthorizationException();
+        }
+        articleService.deleteReply(replyId);
+        return "redirect:/articles/" + articleId;
     }
 }

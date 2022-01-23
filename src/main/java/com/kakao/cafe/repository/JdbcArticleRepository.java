@@ -19,7 +19,7 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public void save(ArticleRequestDTO article) {
-        String sql = "INSERT INTO ARTICLE (author, title, content, deleted, createdAt, updatedAt) VALUES (?, ?, ?, 0, ?, ?)";
+        String sql = "INSERT INTO ARTICLE (author, title, content, createdAt, updatedAt, deleted) VALUES (?, ?, ?, ?, ?, 0)";
         jdbcTemplate.update(sql, article.getAuthor(), article.getTitle(), article.getContent(), LocalDateTime.now(), LocalDateTime.now());
     }
 
