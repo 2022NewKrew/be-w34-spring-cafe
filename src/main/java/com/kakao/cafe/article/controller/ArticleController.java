@@ -61,7 +61,6 @@ public class ArticleController {
         Model model) {
         SingleArticle singleArticle = articleService.getSingleArticle(articleId);
         model.addAttribute("article", singleArticle);
-        model.addAttribute("user", user);
         return "article/update-form";
     }
 

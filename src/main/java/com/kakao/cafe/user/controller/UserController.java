@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public String getUserById(@PathVariable Long userId, Model model) {
+    public String getUserById(@LoginUser SessionUser user, @PathVariable Long userId, Model model) {
         model.addAttribute("user", userService.getProfileById(userId));
         return "user/profile";
     }

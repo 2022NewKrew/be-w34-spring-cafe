@@ -47,8 +47,7 @@
                     <p class="comment-content comment-time">
                       {{createdAt}}
                     </p>
-                    <form action="/article/{{article.articleId}}/comment/{{commentId}}"
-                          method="post">
+                    <form action="/article/{{article.articleId}}/comment/{{commentId}}" method="post">
                       <input type="hidden" name="_method" value="delete"/>
                       <button class="black-component" type="submit">삭제</button>
                     </form>
