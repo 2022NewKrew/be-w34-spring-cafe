@@ -2,8 +2,6 @@ package com.kakao.cafe.dto.reply;
 
 import com.kakao.cafe.domain.reply.Reply;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.format.DateTimeFormatter;
 
@@ -15,7 +13,7 @@ public class ShowReplyDto {
     private Long postId;
     private String regDateTime;
 
-    public ShowReplyDto(Reply reply){
+    public ShowReplyDto(Reply reply) {
         id = reply.getId();
         comment = reply.getComment();
         userId = reply.getUserId();

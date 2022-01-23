@@ -15,7 +15,7 @@ public class MemoryPostRepository implements PostRepository {
     }
 
     @Override
-    public List<Post> findAll() {
+    public List<Post> findAll(int pageNumber) {
         return new ArrayList<>(postStore.values());
     }
 
@@ -38,5 +38,9 @@ public class MemoryPostRepository implements PostRepository {
 
     public void clear() {
         postStore.clear();
+    }
+
+    public int count() {
+        return postStore.size();
     }
 }

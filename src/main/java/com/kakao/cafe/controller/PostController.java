@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.post.CreatePostDto;
+import com.kakao.cafe.dto.post.PageDto;
 import com.kakao.cafe.dto.post.ShowPostDto;
 import com.kakao.cafe.dto.post.UpdatePostDto;
 import com.kakao.cafe.dto.reply.CreateReplyDto;
@@ -17,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -30,10 +30,13 @@ public class PostController {
     private final ReplyService replyService;
 
     @GetMapping("/")
-    public String postHome(Model model) {
-        List<ShowPostDto> posts = postService.findAllPost();
+    public String postHome(Model model, @RequestParam(required = false, defaultValue = "1") int pageNumber) {
+        PageDto page = postService.getPage(pageNumber);
+
+        List<ShowPostDto> posts = postService.findAllPost(pageNumber);
         model.addAttribute("posts", posts);
         model.addAttribute("postSize", posts.size());
+        model.addAttribute("page", page);
 
         return "index";
     }
@@ -77,30 +80,30 @@ public class PostController {
     }
 
     @PostMapping("/posts/{postId}/reply")
-    public String addReply(@PathVariable Long postId, @Valid @ModelAttribute CreateReplyDto replyDto, @SessionAttribute(name = SessionConst.LOGIN_USER) ShowUserDto loginUser){
+    public String addReply(@PathVariable Long postId, @Valid @ModelAttribute CreateReplyDto replyDto, @SessionAttribute(name = SessionConst.LOGIN_USER) ShowUserDto loginUser) {
         replyService.createReply(replyDto, postId, loginUser.getUserId());
         log.info("Create Reply - {}", replyDto);
         return "redirect:/posts/" + postId;
     }
 
     @DeleteMapping("/posts/{postId}/reply/{replyId}")
-    public String deleteReply(@PathVariable Long postId, @PathVariable Long replyId, @SessionAttribute(name = SessionConst.LOGIN_USER) ShowUserDto loginUser){
+    public String deleteReply(@PathVariable Long postId, @PathVariable Long replyId, @SessionAttribute(name = SessionConst.LOGIN_USER) ShowUserDto loginUser) {
         checkReplyUser(replyId, loginUser.getUserId());
 
         replyService.deleteReply(replyId);
         return "redirect:/posts/" + postId;
     }
 
-    private void checkPostUser(Long postId, String loginUser){
+    private void checkPostUser(Long postId, String loginUser) {
         ShowPostDto post = postService.findPost(postId);
-        if(!post.getWriter().equals(loginUser)){
+        if (!post.getWriter().equals(loginUser)) {
             throw new ForbiddenException("접근 권한이 없는 사용자 입니다.");
         }
     }
 
-    private void checkReplyUser(Long replyId, String loginUser){
+    private void checkReplyUser(Long replyId, String loginUser) {
         ShowReplyDto reply = replyService.findOneReply(replyId);
-        if(!reply.getUserId().equals(loginUser)){
+        if (!reply.getUserId().equals(loginUser)) {
             throw new ForbiddenException("접근 권한이 없는 사용자 입니다.");
         }
     }

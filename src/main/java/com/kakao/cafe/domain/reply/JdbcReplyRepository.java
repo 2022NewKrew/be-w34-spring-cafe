@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class JdbcReplyRepository implements ReplyRepository{
+public class JdbcReplyRepository implements ReplyRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -30,10 +30,10 @@ public class JdbcReplyRepository implements ReplyRepository{
     @Override
     public Optional<Reply> findById(Long replyId) {
         String sql = "SELECT id, comment, userId, regDateTime, postId FROM `REPLY` WHERE id=? AND isDeleted=0";
-        try{
+        try {
             Reply reply = jdbcTemplate.queryForObject(sql, getReplyRowMapper(), replyId);
             return Optional.ofNullable(reply);
-        } catch(EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }

@@ -135,3 +135,38 @@ td {
 .alert-inner{
     color: rgb(185,74,72);
 }
+
+.page_wrap {
+    text-align:center;
+    font-size:0;
+    margin: 30px;
+}
+.page_nation {
+    display:inline-block;
+}
+.page_nation .none {
+    display:none;
+}
+.page_nation a {
+    display:block;
+    margin:0 3px;
+    float:left;
+    border:1px solid #e6e6e6;
+    width:28px;
+    height:28px;
+    line-height:28px;
+    text-align:center;
+    background-color:#fff;
+    font-size:13px;
+    color:#999999;
+    text-decoration:none;
+}
+.page_nation .arrow {
+    border:1px solid #ccc;
+}
+
+.page_nation a.active {
+    background-color:#42454c;
+    color:#fff;
+    border:1px solid #42454c;
+}

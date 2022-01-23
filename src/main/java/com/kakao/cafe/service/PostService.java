@@ -4,11 +4,12 @@ import com.kakao.cafe.domain.post.Post;
 import com.kakao.cafe.domain.post.PostRepository;
 import com.kakao.cafe.domain.reply.ReplyRepository;
 import com.kakao.cafe.dto.post.CreatePostDto;
+import com.kakao.cafe.dto.post.PageDto;
 import com.kakao.cafe.dto.post.ShowPostDto;
 import com.kakao.cafe.dto.post.UpdatePostDto;
+import com.kakao.cafe.util.consts.CafeConst;
 import com.kakao.cafe.util.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,10 +38,20 @@ public class PostService {
         return new ShowPostDto(post);
     }
 
-    public List<ShowPostDto> findAllPost() {
-        return postRepository.findAll().stream()
+    public List<ShowPostDto> findAllPost(int pageNumber) {
+        return postRepository.findAll(pageNumber).stream()
                 .map(ShowPostDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public PageDto getPage(int pageNumber) {
+        int totalPageNumber = postRepository.count() / CafeConst.DEFAULT_PAGE_SIZE + 1;
+
+        if (pageNumber > totalPageNumber) {
+            throw new NotFoundException("페이지를 찾을 수 없습니다.");
+        }
+
+        return new PageDto(pageNumber, totalPageNumber);
     }
 
 
@@ -56,7 +67,7 @@ public class PostService {
 
     public void deletePost(Long id, String userId) {
         replyRepository.findAll(id).forEach(reply -> {
-            if(!reply.getUserId().equals(userId)){
+            if (!reply.getUserId().equals(userId)) {
                 throw new IllegalArgumentException("다른 사용자의 댓글이 있으면 삭제할 수 없습니다.");
             }
         });

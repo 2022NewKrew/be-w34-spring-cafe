@@ -2,8 +2,6 @@ package com.kakao.cafe.dto.user;
 
 import com.kakao.cafe.domain.user.User;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class ShowUserDto {

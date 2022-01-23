@@ -47,13 +47,14 @@ class PostServiceTest {
     @DisplayName("게시글 전체 조회")
     void showAllPost() {
         int size = 5;
+        int defaultPageNum = 1;
         List<CreatePostDto> createPostList = IntStream.range(1, size).boxed()
                 .map(num -> new CreatePostDto("title" + num, "content" + num))
                 .collect(Collectors.toList());
 
         createPostList.forEach(post -> postService.createPost(post, testUser));
 
-        List<ShowPostDto> allPost = postService.findAllPost();
+        List<ShowPostDto> allPost = postService.findAllPost(defaultPageNum);
         assertThat(createPostList.size()).isEqualTo(allPost.size());
     }
 

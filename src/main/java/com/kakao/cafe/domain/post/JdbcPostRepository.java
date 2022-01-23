@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain.post;
 
+import com.kakao.cafe.util.consts.CafeConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class JdbcPostRepository implements PostRepository {
+
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -38,9 +40,10 @@ public class JdbcPostRepository implements PostRepository {
     }
 
     @Override
-    public List<Post> findAll() {
-        String sql = "SELECT id, title, content, writer, regDateTime FROM `POST` WHERE isDeleted=0";
-        return jdbcTemplate.query(sql, getPostRowMapper());
+    public List<Post> findAll(int pageNumber) {
+        String sql = "SELECT id, title, content, writer, regDateTime FROM `POST` WHERE isDeleted=0 ORDER BY regDateTime DESC LIMIT ? OFFSET ?";
+        int offset = (pageNumber - 1) * CafeConst.DEFAULT_PAGE_SIZE;
+        return jdbcTemplate.query(sql, getPostRowMapper(), CafeConst.DEFAULT_PAGE_SIZE, offset);
     }
 
 
@@ -69,6 +72,17 @@ public class JdbcPostRepository implements PostRepository {
         jdbcTemplate.update(sql, id);
     }
 
+    @Override
+    public int count() {
+        String sql = "SELECT COUNT(id) AS count FROM `POST` WHERE isDeleted=0";
+        try {
+            Integer count = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> rs.getInt("count"));
+            return (count == null) ? 0 : count;
+        } catch (EmptyResultDataAccessException e) {
+            return 0;
+        }
+
+    }
 
     private RowMapper<Post> getPostRowMapper() {
         return (rs, rowNum) -> {
