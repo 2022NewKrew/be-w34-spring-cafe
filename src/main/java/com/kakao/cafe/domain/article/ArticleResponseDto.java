@@ -1,6 +1,6 @@
-package com.kakao.cafe.domain.dtos;
+package com.kakao.cafe.domain.article;
 
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.user.User;
 
 import java.time.format.DateTimeFormatter;
 
@@ -11,9 +11,9 @@ public class ArticleResponseDto {
     private final String content;
     private final String creationTime;
 
-    public ArticleResponseDto(Article article) {
+    public ArticleResponseDto(Article article, User user) {
         this.id = article.getId();
-        this.writer = article.getWriter();
+        this.writer = user == null ? "삭제된 유저" : user.getName();
         this.title = article.getTitle();
         this.content = article.getContent();
         this.creationTime = article.getCreationTime().format(DateTimeFormatter.ISO_DATE);

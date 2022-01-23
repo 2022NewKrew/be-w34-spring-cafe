@@ -24,6 +24,14 @@ body {
     line-height: 20px;
 }
 
+.font-normal {
+    font-weight: 400;
+}
+
+.font-bold {
+    font-weight: 500;
+}
+
 .display-large {
     //styleName: DisplayLarge;
     font-size: 32px;
@@ -121,12 +129,27 @@ body {
     opacity: 32%;
 }
 
+.list-group-item {
+    border-left: none;
+    border-right: none;
+    padding: 24px 0;
+}
+
 .jumbotron-kakao {
     padding: 48px 0;
 }
 
 .mr-32 {
     margin-right: 32px;
+}
+
+.list-info {
+    color: #666666;
+    margin-bottom: 16px;
+}
+
+.color-C {
+    color: #CCCCCC;
 }
 
 .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {

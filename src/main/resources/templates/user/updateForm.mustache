@@ -7,7 +7,7 @@
         <div class="jumbotron bg-none">
             <div class="display-large text-center">회원정보 수정</div>
         </div>
-        <form action="/users/{{user.id}}" method="post">
+        <form action="/users/{{userId}}" method="post">
             <input type="hidden" name="_method" value="PUT" />
             <div class="input-kakao-group">
                 <label class="input-kakao-group-addon" for="email">이메일</label>
@@ -24,6 +24,7 @@
                 <input class="input-kakao" type="password"
                        id="password" name="password" placeholder="패스워드를 입력해주세요" />
             </div>
+            {{> layout/errorMessage}}
             <button type="submit" class="btn-kakao">완료</button>
         </form>
     </div>

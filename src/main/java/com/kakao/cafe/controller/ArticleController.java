@@ -1,10 +1,13 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.annotation.CheckAuth;
-import com.kakao.cafe.domain.Auth;
-import com.kakao.cafe.domain.dtos.ArticleResponseDto;
-import com.kakao.cafe.domain.dtos.ArticleSaveDto;
+import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.auth.Auth;
+import com.kakao.cafe.domain.article.ArticleResponseDto;
+import com.kakao.cafe.domain.article.ArticleSaveDto;
+import com.kakao.cafe.domain.reply.ReplySaveDto;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.utils.SessionName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +21,12 @@ import javax.validation.Valid;
 @RequestMapping("/articles")
 public class ArticleController {
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
     @Autowired
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @GetMapping("/post")
@@ -41,12 +46,13 @@ public class ArticleController {
     public String createArticle(
             @Valid @ModelAttribute ArticleSaveDto dto,
             BindingResult bindingResult,
+            Model model,
             @SessionAttribute(SessionName.AUTH) Auth auth
     ) {
-        if (bindingResult.hasErrors()) {
-            return "redirect:/articles/post";
+        if (!Utils.isValidBindingResult(bindingResult, model)) {
+            return "qna/form";
         }
-        dto.setWriter(auth.getName());
+        dto.setUserId(auth.getId());
         articleService.save(dto);
         return "redirect:/articles";
     }
@@ -55,6 +61,7 @@ public class ArticleController {
     @CheckAuth
     public String articlePage(@PathVariable Long id, Model model) {
         model.addAttribute("article", articleService.findById(id));
+        model.addAttribute("replies", replyService.findAllByArticle(id));
         return "qna/show";
     }
 
@@ -62,10 +69,13 @@ public class ArticleController {
     public String updateArticle(
             @Valid @ModelAttribute ArticleSaveDto dto,
             BindingResult bindingResult,
+            Model model,
             @PathVariable Long id
     ) {
-        if (bindingResult.hasErrors()) {
-            return "redirect:/articles/{id}/edit";
+        if (!Utils.isValidBindingResult(bindingResult, model)) {
+            model.addAttribute("articleId", id);
+            model.addAttribute("article", dto);
+            return "qna/updateForm";
         }
         articleService.update(id, dto);
         return "redirect:/articles/{id}";
@@ -77,11 +87,7 @@ public class ArticleController {
             @PathVariable Long id,
             @SessionAttribute(SessionName.AUTH) Auth auth
     ) {
-        ArticleResponseDto article = articleService.findById(id);
-        if (!article.getWriter().equals(auth.getName())) {
-            return "redirect:/login";
-        }
-        articleService.deleteById(id);
+        articleService.validateUserAndDeleteById(id, auth.getId());
         return "redirect:/articles";
     }
 
@@ -92,11 +98,39 @@ public class ArticleController {
             Model model,
             @SessionAttribute(SessionName.AUTH) Auth auth
     ) {
-        ArticleResponseDto article = articleService.findById(id);
-        if (!article.getWriter().equals(auth.getName())) {
-            return "qna/permissionError";
-        }
+        ArticleResponseDto article = articleService.validateUserAndGetById(id, auth.getId());
+        model.addAttribute("articleId", id);
         model.addAttribute("article", article);
         return "qna/updateForm";
+    }
+
+    @PostMapping("/{id}/replies")
+    @CheckAuth
+    public String createReply(
+            @PathVariable Long id,
+            @Valid @ModelAttribute ReplySaveDto dto,
+            BindingResult bindingResult,
+            Model model,
+            @SessionAttribute(SessionName.AUTH) Auth auth
+    ) {
+        if (!Utils.isValidBindingResult(bindingResult, model)) {
+            model.addAttribute("article", articleService.findById(id));
+            model.addAttribute("replies", replyService.findAllByArticle(id));
+            return "qna/show";
+        }
+        dto.setUserId(auth.getId());
+        dto.setArticleId(id);
+        replyService.save(dto);
+        return "redirect:/articles/{id}";
+    }
+
+    @DeleteMapping("/{id}/replies/{replyId}")
+    @CheckAuth
+    public String deleteReply(
+            @PathVariable Long replyId,
+            @SessionAttribute(SessionName.AUTH) Auth auth
+    ) {
+        replyService.validateUserAndDeleteById(replyId, auth.getId());
+        return "redirect:/articles/{id}";
     }
 }

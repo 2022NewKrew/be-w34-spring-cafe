@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.exception.ForbiddenException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.exception.UnauthorizedException;
 import org.slf4j.Logger;
@@ -36,9 +37,16 @@ public class ExceptionController {
         return new ModelAndView("user/loginForm");
     }
 
+    @ExceptionHandler(ForbiddenException.class)
+    public ModelAndView handleForbiddenException(HttpServletRequest req, ForbiddenException e) {
+        logger.error("Request " + req.getRequestURL() + " raised " + e);
+        return createExceptionView(req.getRequestURL(), e, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(Exception.class)
     public ModelAndView handleError(HttpServletRequest req, Exception e) {
+        e.printStackTrace();
         logger.error("Request " + req.getRequestURL() + " raised " + e);
-        return createExceptionView(req.getRequestURL(), e, HttpStatus.NOT_FOUND);
+        return createExceptionView(req.getRequestURL(), e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

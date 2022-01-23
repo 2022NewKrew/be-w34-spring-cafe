@@ -1,6 +1,4 @@
-package com.kakao.cafe.domain.dtos;
-
-import com.kakao.cafe.domain.User;
+package com.kakao.cafe.domain.user;
 
 import java.time.format.DateTimeFormatter;
 

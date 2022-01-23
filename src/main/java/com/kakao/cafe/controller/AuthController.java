@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.Auth;
-import com.kakao.cafe.domain.dtos.AuthLoginDto;
+import com.kakao.cafe.domain.auth.Auth;
+import com.kakao.cafe.domain.auth.AuthLoginDto;
 import com.kakao.cafe.service.AuthService;
 import com.kakao.cafe.utils.SessionName;
 import org.springframework.beans.factory.annotation.Autowired;

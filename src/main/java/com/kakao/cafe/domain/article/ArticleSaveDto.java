@@ -1,12 +1,12 @@
-package com.kakao.cafe.domain.dtos;
+package com.kakao.cafe.domain.article;
 
 import javax.validation.constraints.NotBlank;
 
 public class ArticleSaveDto {
-    private String writer;
-    @NotBlank
+    private Long userId;
+    @NotBlank(message = "제목은 공백일 수 없습니다.")
     private final String title;
-    @NotBlank
+    @NotBlank(message = "내용은 공백일 수 없습니다.")
     private final String content;
 
     public ArticleSaveDto(String title, String content) {
@@ -14,12 +14,12 @@ public class ArticleSaveDto {
         this.content = content;
     }
 
-    public void setWriter(String writer) {
-        this.writer = writer;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public String getWriter() {
-        return writer;
+    public Long getUserId() {
+        return userId;
     }
 
     public String getTitle() {
