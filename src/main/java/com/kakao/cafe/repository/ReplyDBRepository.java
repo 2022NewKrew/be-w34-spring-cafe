@@ -1,12 +1,15 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.dto.ReplyWriteDto;
+import com.kakao.cafe.domain.model.Reply;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -29,5 +32,20 @@ public class ReplyDBRepository implements ReplyRepository{
         parameters.put("CONTENT", replyWriteDto.getContent());
 
         simpleJdbcInsert.execute(parameters);
+    }
+
+    @Override
+    public List<Reply> findAllReplies(String articleId) {
+        return jdbcTemplate.query("SELECT RT.ID, RT.USERID, RT.ARTICLEID, RT.CONTENT, RT.CREATED_AT, UT.NAME FROM REPLY_TABLE RT JOIN ARTICLE_TABLE AT ON RT.ARTICLEID = AT.ID JOIN USER_TABLE UT on RT.USERID = UT.USERID and ARTICLEID = ? ", replyRowMapper() ,articleId);
+    }
+
+    private RowMapper<Reply> replyRowMapper(){
+        return (rs, rowNum) ->
+            new Reply(rs.getInt("ID"),
+                    rs.getString("USERID"),
+                    rs.getString("NAME"),
+                    rs.getInt("ARTICLEID"),
+                    rs.getString("CONTENT"),
+                    rs.getTimestamp("CREATED_AT"));
     }
 }
