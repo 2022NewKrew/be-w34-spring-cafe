@@ -139,3 +139,58 @@
     <h4>< 다른 아이디로 들어와 댓글 삭제 성공 ></h4>
     <img src="img/step2_4_3_delete_success.gif" alt="step2_4_3_delete_success">
 </details>
+
+## 2-5단계 ([링크](https://lucas.codesquad.kr/2022-kakao/course/%EC%9B%B9%EB%B0%B1%EC%97%94%EB%93%9C/Kakao-Cafe-2/6%EB%8B%A8%EA%B3%84---%ED%8E%98%EC%9D%B4%EC%A7%95-%EA%B5%AC%ED%98%84))
+### 피드백 반영
+- Repository 관련 수정
+  - 각 도메인 별로 Repository 클래스가 존재해야 하므로 `BoardRepository`를 `ArticleRepository`와 `CommentRepository`로 분할
+  - `BoardService`에서 두 Repository 객체를 주입받아서 사용
+- API 디자인 수정
+  - UserController
+    - |요청 주소|기능|
+      |-------|---|
+      |`GET /user/register`|회원가입 Form|
+      |`GET /user/login`|로그인 Form|
+      |`GET /user/logout`|로그아웃|
+      |`GET /user/list`|회원목록|
+      |`GET /user/{userId}`|해당 회원 정보 열람|
+      |`GET /user/{userId}/edit`|해당 회원 정보 수정 Form|
+      |`POST /user/register`|회원가입|
+      |`POST /user/login`|로그인|
+      |`PUT /user/{userId}/edit`|해당 회원 정보 수정|
+  - BoardController
+    - |요청 주소|기능|
+      |-------|---|
+      |`GET /board/articles`|게시글 목록|
+      |`GET /articles/pagination`|페이징을 위한 정보|
+      |`GET /board/articles/form`|게시글 작성 Form|
+      |`GET /board/articles/{articleId}`|해당 게시글 열람|
+      |`GET /board/articles/{articleId}/edit`|해당 게시글 수정 Form|
+      |`POST /board/articles`|게시글 작성|
+      |`POST /board/articles/{articleId}/comments`|해당 게시글에 댓글 작성|
+      |`PUT /board/articles/{articleId}`|해당 게시글 수정|
+      |`DELETE /board/article/{articleId}`|해당 게시글 삭제|
+      |`DELETE /board/articles/{articleId}/comments/{commentId}`|해당 게시글의 해당 댓글 삭제|
+### 기능 & 프로그래밍 요구사항
+- 질문을 한 페이지에 15개씩 가져오도록 구현한다.
+- 질문 목록은 생성일 기준 내림차순으로 구현한다.
+- 시작 번호, 끝 번호 등을 구하고, 동적으로 html을 생성하는 로직 구현을 TDD로 구현해야 한다.
+### 상세 구현사항
+- 테스트 코드 먼저 작성하여 확인
+  - `ArticleRepositoryJdbcImplTest`: 원하는 개수 만큼의 게시글과 전체 게시글 수를 정확하게 가져오는지 확인
+  - `BoardServiceImplTest`: 현재 페이지 및 보여주려는 게시글의 수에 맞게 페이지네이션 정보를 가져오는지 확인
+- `ArticleRepository`
+  - 원하는 범위와 수량의 게시글들을 가져오는 `findArticlesByStartAndWantedCountPerPage` 메소드 정의 및 구현
+- `BoardService`
+  - 현재 페이지에 해당하는 게시글들을 가져오는 `findArticlesByCurrentPageAndCountPerPage` 메소드 정의 및 구현
+- `BoardController`
+  - `GET /board/articles` 요청을 받는 메소드에 요청 파라미터로 현재 페이지와 한 페이지에 보여줄 게시글 수를 입력받도록 수정
+  - `GET /articles/pagination` 요청을 받는 메소드를 추가하여 페이징 정보들을 담아서 전달
+- `PaginationDto`를 정의하여 view에 전달할 페이징 정보들을 모두 담아서 전달할 때 사용
+- `/board/list.html`에 페이지 정보를 담을 `div` 태그 추가 및 `list.js` 작성
+### 실행 화면
+<details>
+    <summary>펼치기</summary>
+    <h4>< 페이징 확인 ></h4>
+    <img src="img/step2_5_1_paging.gif" alt="step2_5_1_paging">
+</details>
