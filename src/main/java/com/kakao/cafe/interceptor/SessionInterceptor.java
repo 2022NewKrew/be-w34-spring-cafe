@@ -29,7 +29,7 @@ import java.util.Objects;
 public class SessionInterceptor implements HandlerInterceptor {
 
     public final List<String> loginEssential =
-            Arrays.asList("/user/profile/**", "/user/logout", "/article/*", "/article/**", "/reply/*", "/reply/**");
+            Arrays.asList("/user/profile/**", "/user/logout", "/article/**", "/reply/**");
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
