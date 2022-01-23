@@ -7,8 +7,9 @@
         <div class="panel panel-default content-main">
             <form name="question" method="post" action="/articles">
                 <div class="form-group">
-                    <label for="author">글쓴이</label>
-                    <input class="form-control" id="author" name="author" placeholder="글쓴이" value="{{sessionUser.name}}" readonly/>
+                    <label for="authorName">글쓴이</label>
+                    <input type="hidden" id="author" name="author" value="{{sessionUser.userId}}"/>
+                    <input class="form-control" id="authorName" name="authorName" placeholder="글쓴이" value="{{sessionUser.name}}" readonly/>
                 </div>
                 <div class="form-group">
                     <label for="title">제목</label>

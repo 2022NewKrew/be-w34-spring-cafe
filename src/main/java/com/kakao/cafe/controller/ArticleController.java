@@ -54,10 +54,11 @@ public class ArticleController {
     @GetMapping("/articles/{id}/form")
     public String updateArticleForm(@PathVariable Long id, @Validated ArticleRequestDTO articleRequestDTO, HttpSession session, Model model) {
         UserResponseDTO user = (UserResponseDTO) session.getAttribute(SESSION_USER);
-        if(!user.getName().equals(articleRequestDTO.getAuthor())) {
+        if(!user.getUserId().equals(articleRequestDTO.getAuthor())) {
             throw new AuthorizationException();
         }
-        model.addAttribute("article", articleRequestDTO);
+        ArticleResponseDTO article = articleService.read(id);
+        model.addAttribute("article", article);
         return "article/updateForm";
     }
 
@@ -72,7 +73,7 @@ public class ArticleController {
     @DeleteMapping("/articles/{id}")
     public String deleteArticle(@PathVariable Long id, @Validated ArticleRequestDTO articleRequestDTO, HttpSession session) {
         UserResponseDTO user = (UserResponseDTO) session.getAttribute(SESSION_USER);
-        if(!user.getName().equals(articleRequestDTO.getAuthor())) {
+        if(!user.getUserId().equals(articleRequestDTO.getAuthor())) {
             throw new AuthorizationException();
         }
         articleService.delete(id);

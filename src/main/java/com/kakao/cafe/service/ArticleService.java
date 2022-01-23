@@ -53,6 +53,7 @@ public class ArticleService {
         return ArticleResponseDTO.builder()
                 .id(article.getId())
                 .author(article.getAuthor())
+                .authorName(article.getAuthorName())
                 .title(article.getTitle())
                 .content(article.getContent())
                 .createdAt(article.getCreatedAt())

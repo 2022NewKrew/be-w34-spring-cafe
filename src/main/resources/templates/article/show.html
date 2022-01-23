@@ -17,7 +17,7 @@
                             <img src="https://graph.facebook.com/v2.3/100000059371774/picture" class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/users/{{author}}" class="article-author-name">{{author}}</a>
+                            <a href="/users/{{author}}" class="article-author-name">{{authorName}}</a>
                             <a href="/questions/413" class="article-header-time" title="퍼머링크">
                                 {{createdAt}}
                                 <i class="icon-link"></i>
@@ -31,18 +31,20 @@
                         <ul class="article-util-list">
                             <li>
                                 <form class="form-modify" action="/articles/{{id}}/form" method="GET">
-                                    <input type="hidden" id="author" name="author" value="{{author}}"/>
-                                    <input type="hidden" id="title" name="title" value="{{title}}"/>
-                                    <input type="hidden" id="content" name="content" value="{{content}}"/>
+                                    <input type="hidden" id="authorModify" name="author" value="{{author}}"/>
+                                    <input type="hidden" id="authorNameModify" name="authorName" value="{{authorName}}"/>
+                                    <input type="hidden" id="titleModify" name="title" value="{{title}}"/>
+                                    <input type="hidden" id="contentModify" name="content" value="{{content}}"/>
                                     <button class="link-modify-article" type="submit">수정</button>
                                 </form>
                             </li>
                             <li>
                                 <form class="form-delete" action="/articles/{{id}}" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <input type="hidden" id="author" name="author" value="{{author}}"/>
-                                    <input type="hidden" id="title" name="title" value="{{title}}"/>
-                                    <input type="hidden" id="content" name="content" value="{{content}}"/>
+                                    <input type="hidden" id="authorDelete" name="author" value="{{author}}"/>
+                                    <input type="hidden" id="authorNameDelete" name="authorName" value="{{authorName}}"/>
+                                    <input type="hidden" id="titleDelete" name="title" value="{{title}}"/>
+                                    <input type="hidden" id="contentDelete" name="content" value="{{content}}"/>
                                     <button class="link-delete-article" type="submit">삭제</button>
                                 </form>
                             </li>

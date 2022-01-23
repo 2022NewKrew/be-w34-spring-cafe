@@ -11,6 +11,8 @@ public class ArticleResponseDTO {
     @NotBlank
     private final String author;
     @NotBlank
+    private final String authorName;
+    @NotBlank
     private final String title;
     @NotBlank
     private final String content;
@@ -20,9 +22,10 @@ public class ArticleResponseDTO {
     private final LocalDateTime updatedAt;
 
     @Builder
-    public ArticleResponseDTO(Long id, String author, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ArticleResponseDTO(Long id, String author, String authorName, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.author = author;
+        this.authorName = authorName;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
@@ -35,6 +38,10 @@ public class ArticleResponseDTO {
 
     public String getAuthor() {
         return author;
+    }
+
+    public String getAuthorName() {
+        return authorName;
     }
 
     public String getTitle() {
