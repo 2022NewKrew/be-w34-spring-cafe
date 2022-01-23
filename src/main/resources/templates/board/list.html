@@ -15,7 +15,7 @@
             {{#articles}}
             <tr>
                 <td>{{articleId}}</td>
-                <td><a href="/board/view/{{articleId}}">{{title}}</a></td>
+                <td><a href="/board/articles/{{articleId}}">{{title}}</a></td>
                 <td>{{writerId}}</a></td>
                 <td>{{formattedCreatedDate}}</td>
             </tr>
@@ -23,11 +23,17 @@
             </tbody>
         </table>
         {{^articles}}
-        <h3 class="mt-5 text-center">글이 존재하지 않습니다.</h3>
+        <h3 class="mt-5 mb-5 text-center">글이 존재하지 않습니다.</h3>
         {{/articles}}
-        <div class="mt-5 float-end">
-            <button class="btn btn-dark" onclick="location.href='/board/write'" type="button">글쓰기</button>
+        <div id="pagination">
+            <form id="pageForm" method="get" action="">
+                <input type=hidden name="page" value="">
+            </form>
+        </div>
+        <div class="float-end">
+            <button class="btn btn-dark" onclick="location.href='/board/articles/form'" type="button">글쓰기</button>
         </div>
     </article>
 </div>
+<script src="/assets/js/board/list.js"></script>
 {{>template/footer}}

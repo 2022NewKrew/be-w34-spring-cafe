@@ -6,13 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ArticleDto {
+    boolean isDeleted;
     private long articleId;
     private String title;
     private String writerId;
@@ -21,6 +21,5 @@ public class ArticleDto {
     private String formattedCreatedDate;
     private Long hits;
     private int commentsCount;
-    boolean isDeleted;
 }
 

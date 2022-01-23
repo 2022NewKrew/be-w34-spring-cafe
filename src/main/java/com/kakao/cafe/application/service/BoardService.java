@@ -2,6 +2,7 @@ package com.kakao.cafe.application.service;
 
 import com.kakao.cafe.application.dto.ArticleDto;
 import com.kakao.cafe.application.dto.CommentDto;
+import com.kakao.cafe.application.dto.PaginationDto;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ public interface BoardService {
     ArticleDto findArticleByArticleId(long articleId);
 
     List<ArticleDto> findArticlesByWriterId(String writerId);
+
+    List<ArticleDto> findArticlesByCurrentPageAndCountPerPage(long currentPage, int countPerPage);
 
     List<CommentDto> findCommentsByArticleId(long articleId);
 
@@ -35,4 +38,6 @@ public interface BoardService {
     boolean isSameArticleWriter(long articleId, String writerId);
 
     boolean isSameCommentWriter(long articleId, long commentId, String writerId);
+
+    PaginationDto makePaginationInfo(long currentPage, long countPerPage);
 }

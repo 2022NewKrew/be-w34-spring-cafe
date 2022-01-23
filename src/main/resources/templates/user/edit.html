@@ -3,7 +3,7 @@
     <article class="card-body mx-auto" style="max-width: 500px; min-width:300px;">
         <h2 class="card-title m-3 text-center">회원정보 수정</h2>
         {{#user}}
-        <form action="/user/modify" method="post">
+        <form action="/user/{{userId}}/edit" method="post">
             <input name="_method" type="hidden" value="put">
             <table class="table align-middle">
                 <tr>

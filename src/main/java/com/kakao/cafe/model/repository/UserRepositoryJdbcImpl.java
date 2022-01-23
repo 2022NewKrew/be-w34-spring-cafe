@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Repository("UserRepositoryJdbcImpl")
 public class UserRepositoryJdbcImpl implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 

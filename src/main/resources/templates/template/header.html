@@ -31,12 +31,9 @@
             <li class="nav-item">
                 <button class="btn btn-dark" onclick="location.href='/user/logout'" type="button">로그아웃</button>
             </li>
-            <form action="/user/modify" method="post">
-                <li class="nav-item">
-                    <input name="userId" type="hidden" value="{{USER_ID}}">
-                    <button class="btn btn-dark" style="width: 120px;" type="submit">회원정보 수정</button>
-                </li>
-            </form>
+            <li class="nav-item">
+                <button class="btn btn-dark" onclick="location.href='/user/{{USER_ID}}/edit'" style="width: 120px;" type="button">회원정보 수정</button>
+            </li>
             {{/USER_ID}}
             {{#IS_ADMIN}}
             <li class="nav-item">
@@ -52,7 +49,7 @@
             </li>
             {{/USER_ID}}
             <li class="nav-item">
-                <button class="btn btn-dark" onclick="location.href='/board/list'" type="button">게시판</button>
+                <button class="btn btn-dark" onclick="location.href='/board/articles'" type="button">게시판</button>
             </li>
         </ul>
     </div>
@@ -61,3 +58,4 @@
     <h2>안녕하세요,</h2>
     <h1>카카오 카페입니다!</h1>
 </div>
+<div id="mainContents">

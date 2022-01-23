@@ -35,6 +35,27 @@ public class UserController {
         return "redirect:/";
     }
 
+    @LoginCheck(type = LoginCheck.UserType.ADMIN)
+    @GetMapping("/list")
+    public String userList(Model model) {
+        model.addAttribute("users", userService.findAllUsers());
+        return "/user/list";
+    }
+
+    @LoginCheck(type = LoginCheck.UserType.ADMIN)
+    @GetMapping("/{userId}")
+    public String userView(@PathVariable("userId") String userId, Model model) {
+        model.addAttribute("user", userService.findUserByUserId(userId));
+        return "/user/view";
+    }
+
+    @LoginCheck
+    @GetMapping("/{userId}/edit")
+    public String goUserModifyView(@PathVariable("userId") String userId, Model model) {
+        model.addAttribute("user", userService.findUserByUserId(userId));
+        return "user/edit";
+    }
+
     @PostMapping("/register")
     public String userRegister(UserDto userDto, Model model) {
         try {
@@ -49,7 +70,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String userLogin(String userId, String password, HttpSession session, Model model) {
-        UserDto userDto = null;
+        UserDto userDto;
 
         try {
             userDto = userService.findUserByLoginInfo(userId, password, "일치하는 회원 정보가 없습니다.");
@@ -69,36 +90,15 @@ public class UserController {
         return "redirect:/";
     }
 
-    @LoginCheck(type = LoginCheck.UserType.ADMIN)
-    @GetMapping("/list")
-    public String userList(Model model) {
-        model.addAttribute("users", userService.findAllUsers());
-        return "/user/list";
-    }
-
-    @LoginCheck(type = LoginCheck.UserType.ADMIN)
-    @GetMapping("/view/{userId}")
-    public String userView(@PathVariable("userId") String userId, Model model) {
-        model.addAttribute("user", userService.findUserByUserId(userId));
-        return "/user/view";
-    }
-
     @LoginCheck
-    @PostMapping("/modify")
-    public String goUserModifyView(String userId, Model model) {
-        model.addAttribute("user", userService.findUserByUserId(userId));
-        return "/user/modify";
-    }
-
-    @LoginCheck
-    @PutMapping("/modify")
+    @PutMapping("/{userId}/edit")
     public String userModify(UserDto userDto, String newPassword, Model model) {
         try {
             userService.findUserByLoginInfo(userDto.getUserId(), userDto.getPassword(), "비밀번호가 일치하지 않습니다.");
         } catch (UserNotFoundException e) {
             model.addAttribute("user", userDto);
             model.addAttribute("notMatchedErrorMessage", e.getMessage());
-            return "/user/modify";
+            return "user/edit";
         }
 
         userService.modifyUser(UserDto.builder()
@@ -106,6 +106,6 @@ public class UserController {
                 .password(newPassword)
                 .name(userDto.getName())
                 .email(userDto.getEmail()).build());
-        return "redirect:/user/list";
+        return "redirect:/";
     }
 }

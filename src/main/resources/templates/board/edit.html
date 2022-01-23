@@ -2,7 +2,7 @@
 <div class="card" style="border: 0;">
     <article class="card-body mx-auto" style="width: 1000px;">
         <h2 class="card-title m-3 text-center">글쓰기</h2>
-        <form action="/board/article/modify/{{articleId}}" method="post">
+        <form action="/board/articles/{{articleId}}" method="post">
             <input name="_method" type="hidden" value="put"/>
             {{#article}}
             <table class="table align-middle">
@@ -34,7 +34,7 @@
             </table>
             <div class="mt-1 float-end">
                 <button class="btn btn-dark" type="submit">수정</button>
-                <button class="btn btn-dark" onclick="location.href='/board/view/{{articleId}}'" type="button">취소
+                <button class="btn btn-dark" onclick="location.href='/board/articles/{{articleId}}'" type="button">취소
                 </button>
             </div>
             {{/article}}
