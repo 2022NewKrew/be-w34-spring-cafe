@@ -20,7 +20,7 @@ public class ArticleSameUserInterceptor implements HandlerInterceptor {
 
     private final ArticleService articleService;
 
-    public final List<String> sameUserEssential = Arrays.asList("/article/modify/*", "/article/delete/*");
+    public final List<String> sameUserEssential = List.of("/article/modify/*", "/article/delete/*");
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

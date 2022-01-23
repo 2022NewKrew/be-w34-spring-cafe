@@ -20,7 +20,7 @@ public class ReplySameUserInterceptor implements HandlerInterceptor {
 
     private final ReplyService replyService;
 
-    public final List<String> sameUserEssential = Arrays.asList("/reply/*/*");
+    public final List<String> sameUserEssential = List.of("/reply/*/*");
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
