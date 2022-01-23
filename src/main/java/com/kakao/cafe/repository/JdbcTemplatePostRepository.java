@@ -39,25 +39,25 @@ public class JdbcTemplatePostRepository implements PostRepository{
 
     @Override
     public Optional<Post> findById(int id) {
-        List<Post> result = jdbcTemplate.query("select * from post where postid = ? and isDeleted=false", memberRowMapper(), id);
+        List<Post> result = jdbcTemplate.query("select * from post where postid = ? and isDeleted=false", postRowMapper(), id);
         return result.stream().findAny();
     }
 
     @Override
     public Optional<Post> findByTitle(String title) {
-        List<Post> result = jdbcTemplate.query("select * from post where title = ? and isDeleted=false", memberRowMapper(), title);
+        List<Post> result = jdbcTemplate.query("select * from post where title = ? and isDeleted=false", postRowMapper(), title);
         return result.stream().findAny();
     }
 
     @Override
     public Optional<Post> findByWriter(String writer) {
-        List<Post> result = jdbcTemplate.query("select * from post where title = ? and isDeleted=false", memberRowMapper(), writer);
+        List<Post> result = jdbcTemplate.query("select * from post where title = ? and isDeleted=false", postRowMapper(), writer);
         return result.stream().findAny();
     }
 
     @Override
     public List<Post> findAll() {
-        return jdbcTemplate.query("select * from post where isDeleted=false", memberRowMapper());
+        return jdbcTemplate.query("select * from post where isDeleted=false", postRowMapper());
     }
 
     @Override
@@ -72,7 +72,7 @@ public class JdbcTemplatePostRepository implements PostRepository{
         jdbcTemplate.update(query,post.isDeleted(), post.getPostId());
     }
 
-    private RowMapper<Post> memberRowMapper(){
+    private RowMapper<Post> postRowMapper(){
         return (rs, rowNum) -> {
             Post post = new Post();
             post.setPostId(rs.getInt("postid"));

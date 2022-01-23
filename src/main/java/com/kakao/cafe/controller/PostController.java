@@ -34,9 +34,9 @@ public class PostController {
 
     Logger logger = LoggerFactory.getLogger(PostController.class);
 
-    @GetMapping("/questions")
+    @GetMapping("/post")
     public String getPostForm(Model model,HttpSession session){
-        logger.info("GET /questions : 글쓰기");
+        logger.info("GET /post : 글쓰기");
         Object value = session.getAttribute("sessionedUser");
         if(value!=null){
             return "post/form";
@@ -44,9 +44,9 @@ public class PostController {
         return "user/login-error";
     }
 
-    @PostMapping("/questions")
+    @PostMapping("/post")
     public String createPost(HttpSession session, PostCreationForm form){
-        logger.info("POST /questions : {} 생성", form.getTitle());
+        logger.info("POST /post : {} 생성", form.getTitle());
         Object value = session.getAttribute("sessionedUser");
         User user = (User)value;
         Post post = new Post();
@@ -67,7 +67,7 @@ public class PostController {
         return "index";
     }
 
-    @GetMapping("/articles/{ID}")
+    @GetMapping("/post/{ID}")
     public String getPost(@PathVariable int ID, Model model){
         logger.info("GET /users/{} : {} 게시글 조회",ID,ID);
         Optional<Post> post = postService.findOne(ID);
