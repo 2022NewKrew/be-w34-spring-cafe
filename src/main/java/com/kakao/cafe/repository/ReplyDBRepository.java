@@ -39,6 +39,16 @@ public class ReplyDBRepository implements ReplyRepository{
         return jdbcTemplate.query("SELECT RT.ID, RT.USERID, RT.ARTICLEID, RT.CONTENT, RT.CREATED_AT, UT.NAME FROM REPLY_TABLE RT JOIN ARTICLE_TABLE AT ON RT.ARTICLEID = AT.ID JOIN USER_TABLE UT on RT.USERID = UT.USERID and ARTICLEID = ? ", replyRowMapper() ,articleId);
     }
 
+    @Override
+    public void deleteReply(String id) {
+        jdbcTemplate.update("DELETE FROM REPLY_TABLE WHERE ID = ?", id);
+    }
+
+    @Override
+    public String findUserIdOfReply(String id) {
+        return jdbcTemplate.queryForObject("SELECT USERID FROM REPLY_TABLE WHERE ID = ?", String.class, id);
+    }
+
     private RowMapper<Reply> replyRowMapper(){
         return (rs, rowNum) ->
             new Reply(rs.getInt("ID"),

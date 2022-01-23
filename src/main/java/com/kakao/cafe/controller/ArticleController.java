@@ -26,10 +26,10 @@ public class ArticleController {
     private final ArticleService articleService;
     private final ReplyService replyService;
 
-    @GetMapping("/{id}")
-    public String findArticleById(@PathVariable String id, Model model){
-        Article article = articleService.findArticleById(id);
-        List<Reply> replies = replyService.findAllReplies(id);
+    @GetMapping("/{articleId}")
+    public String findArticleById(@PathVariable String articleId, Model model){
+        Article article = articleService.findArticleById(articleId);
+        List<Reply> replies = replyService.findAllReplies(articleId);
 
         model.addAttribute("article", article);
         model.addAttribute("replies", replies);
@@ -52,23 +52,23 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/modify/{id}")
-    public String getModifyArticleView(@PathVariable String id, Model model){
-        Article article = articleService.findArticleById(id);
+    @GetMapping("/modify/{articleId}")
+    public String getModifyArticleView(@PathVariable String articleId, Model model){
+        Article article = articleService.findArticleById(articleId);
         model.addAttribute("article", article);
         return "article/modify";
     }
 
-    @PutMapping("/modify/{id}")
-    public String modifyArticle(@Valid ArticleModifyDto articleModifyDto, @PathVariable String id){;
-        articleModifyDto.setId(Integer.parseInt(id.trim()));
+    @PutMapping("/modify/{articleId}")
+    public String modifyArticle(@Valid ArticleModifyDto articleModifyDto, @PathVariable String articleId){;
+        articleModifyDto.setId(Integer.parseInt(articleId.trim()));
         articleService.modifyArticle(articleModifyDto);
-        return "redirect:/article/" + id;
+        return "redirect:/article/" + articleId;
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteArticle(@PathVariable String id){
-        articleService.deleteArticle(id);
+    @DeleteMapping("/delete/{articleId}")
+    public String deleteArticle(@PathVariable String articleId){
+        articleService.deleteArticle(articleId);
         return "redirect:/";
     }
 }

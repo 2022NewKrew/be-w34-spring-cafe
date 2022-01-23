@@ -22,4 +22,12 @@ public class ReplyService {
     public List<Reply> findAllReplies(String articleId){
         return replyRepository.findAllReplies(articleId);
     }
+
+    public void deleteReply(String id){
+        replyRepository.deleteReply(id);
+    }
+
+    public String findUserIdOfReply(String id){
+        return replyRepository.findUserIdOfReply(id);
+    }
 }

@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.model.User;
 import com.kakao.cafe.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,12 @@ public class ReplyController {
 
         replyService.postReply(replyWriteDto);
 
+        return "redirect:/article/" + articleId;
+    }
+
+    @DeleteMapping("/{articleId}/{replyId}")
+    public String deleteReply(@PathVariable String articleId, @PathVariable String replyId){
+        replyService.deleteReply(replyId);
         return "redirect:/article/" + articleId;
     }
 }
