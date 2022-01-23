@@ -27,7 +27,7 @@ class BoardServiceImplTest {
     }
 
     @Test
-    @DisplayName("현재 페이지 및 보여주려는 글에 맞게 페이지네이션 정보를 가져오는지 확인")
+    @DisplayName("현재 페이지 및 보여주려는 게시글의 수에 맞게 페이지네이션 정보를 가져오는지 확인")
     void makePaginationInfo() {
         long currentPage = 13;
         int countPerPage = 15;
