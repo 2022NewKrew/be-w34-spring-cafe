@@ -1,9 +1,11 @@
 package com.kakao.cafe.interceptor;
 
 import com.kakao.cafe.domain.model.Article;
+import com.kakao.cafe.domain.model.Reply;
 import com.kakao.cafe.domain.model.User;
 import com.kakao.cafe.exception.InvalidUserException;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +29,7 @@ import java.util.Objects;
 public class SessionInterceptor implements HandlerInterceptor {
 
     public final List<String> loginEssential =
-            Arrays.asList("/user/profile/**", "/user/logout",  "/article/*", "/article/**");
-
-    private final String[] sameUserEssential = {"/article/modify/*", "/article/delete/*"};
-
-    private final ArticleService articleService;
+            List.of("/user/profile/**", "/user/logout", "/article/**", "/reply/**");
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -43,20 +41,7 @@ public class SessionInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        // 본인 인증이 필요한 uri인지 검사
-        if (!PatternMatchUtils.simpleMatch(sameUserEssential, request.getRequestURI())) {
-            return true;
-        }
-
-        // 본인 검사 - article에서만 현재 필요, reply 구현 예정
-        User user = (User) value;
-        Map<?, ?> pathVariables = (Map<?, ?>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-        String articleId = (String) pathVariables.get("id");
-        if (articleId == null || articleId.isBlank()) return false;
-
-        Article article = articleService.findArticleById(articleId);
-
-        return user.isSameUser(article.getUserId());
+        return true;
     }
 
     @Override
