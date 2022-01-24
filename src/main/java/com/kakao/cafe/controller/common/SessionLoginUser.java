@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -34,8 +35,9 @@ public class SessionLoginUser {
     }
 
     public Long getMemberId() {
+
         LoginUser loginUser = getLoginUser();
-        return loginUser == null ? NOT_FOUND_MEMBER_ID : loginUser.getId();
+        return Optional.ofNullable(loginUser).map(LoginUser::getId).orElse(NOT_FOUND_MEMBER_ID);
     }
 
     public String getUserId() {
