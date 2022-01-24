@@ -11,5 +11,5 @@ public class Reply {
     private String writer;
     private Long writerId;
     private Long articleId;
-    private Boolean deleted;
+    private Boolean deleted = false;
 }
