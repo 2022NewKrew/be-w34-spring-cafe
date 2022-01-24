@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.kakao.cafe.util.SqlArticle.*;
+
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
 
@@ -33,14 +35,13 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        final String INSERT_ARTICLE = "INSERT INTO `ARTICLE`(userId, title, body, createdAt) VALUES(:userId, :title, :body, :createdAt)";
         SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(article);
 
         if (findById(article.getId()).isPresent()) {
             return update(article, namedParameters);
         }
 
-        namedParameterJdbcTemplate.update(INSERT_ARTICLE, namedParameters, keyHolder, new String[]{"id"});
+        namedParameterJdbcTemplate.update(INSERT_ARTICLE.query(), namedParameters, keyHolder, new String[]{"id"});
         long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         article.setId(id);
         return article;
@@ -48,34 +49,30 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Long delete(Long id) {
-        final String DELETE_ARTICLE = "DELETE FROM `ARTICLE` where id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
-        namedParameterJdbcTemplate.update(DELETE_ARTICLE, namedParameters);
+        namedParameterJdbcTemplate.update(DELETE_ARTICLE.query(), namedParameters);
         return id;
     }
 
     @Override
     public Article increaseViewCount(Article article) {
-        final String UPDATE_ARTICLE_VIEW = "UPDATE `ARTICLE` SET views=:views WHERE id=:id";
         SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(article);
-        namedParameterJdbcTemplate.update(UPDATE_ARTICLE_VIEW, namedParameters);
+        namedParameterJdbcTemplate.update(UPDATE_ARTICLE_VIEW.query(), namedParameters);
         return article;
     }
 
     @Override
     public Optional<Article> findById(Long id) {
-        final String FIND_ARTICLE_BY_ID = "SELECT * FROM `ARTICLE` WHERE id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
-        return selectArticleWhereCondition(FIND_ARTICLE_BY_ID, namedParameters);
+        return selectArticleWhereCondition(FIND_ARTICLE_BY_ID.query(), namedParameters);
     }
 
     @Override
     public Optional<Long> findUidById(Long id) {
-        final String FIND_UID_BY_ID = "SELECT userId FROM `ARTICLE` WHERE id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
         try {
             return Optional.ofNullable(
-                    namedParameterJdbcTemplate.queryForObject(FIND_UID_BY_ID, namedParameters, Long.class));
+                    namedParameterJdbcTemplate.queryForObject(FIND_UID_BY_ID.query(), namedParameters, Long.class));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -83,11 +80,10 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<String> findUserNicknameById(Long id) {
-        final String FIND_NICKNAME_BY_USERID = "SELECT USER.nickname FROM `ARTICLE` JOIN `USER` ON USER.id = ARTICLE.userId WHERE ARTICLE.id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
         try {
             return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(
-                    FIND_NICKNAME_BY_USERID, namedParameters, String.class));
+                    FIND_NICKNAME_BY_USERID.query(), namedParameters, String.class));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -95,8 +91,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        final String FIND_ALL_ARTICLE = "SELECT * FROM `ARTICLE`";
-        return jdbcTemplate.query(FIND_ALL_ARTICLE, articleRowMapper());
+        return jdbcTemplate.query(FIND_ALL_ARTICLE.query(), articleRowMapper());
     }
 
     private Optional<Article> selectArticleWhereCondition(String sql, SqlParameterSource namedParameters) {
@@ -109,8 +104,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     private Article update(Article article, SqlParameterSource namedParameters) {
-        final String UPDATE_ARTICLE = "UPDATE `ARTICLE` SET title=:title, body=:body WHERE id=:id";
-        namedParameterJdbcTemplate.update(UPDATE_ARTICLE, namedParameters);
+        namedParameterJdbcTemplate.update(UPDATE_ARTICLE.query(), namedParameters);
         return article;
     }
 

@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.kakao.cafe.util.SqlReply.*;
+
 @Repository
 public class JdbcReplyRepository implements ReplyRepository {
 
@@ -31,9 +33,8 @@ public class JdbcReplyRepository implements ReplyRepository {
 
     @Override
     public Reply save(Reply reply) {
-        final String INSERT_REPLY = "INSERT INTO `REPLY`(userId, articleId, comments, createdAt) VALUES (:userId, :articleId, :comments, :createdAt)";
         SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(reply);
-        namedParameterJdbcTemplate.update(INSERT_REPLY, namedParameters, keyHolder, new String[]{"id"});
+        namedParameterJdbcTemplate.update(INSERT_REPLY.query(), namedParameters, keyHolder, new String[]{"id"});
         long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         reply.setId(id);
         return reply;
@@ -41,33 +42,29 @@ public class JdbcReplyRepository implements ReplyRepository {
 
     @Override
     public long delete(long id) {
-        final String DELETE_REPLY = "DELETE FROM `REPLY` WHERE id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
-        namedParameterJdbcTemplate.update(DELETE_REPLY, namedParameters);
+        namedParameterJdbcTemplate.update(DELETE_REPLY.query(), namedParameters);
         return id;
     }
 
     @Override
     public long deleteByArticleId(long articleId) {
-        final String DELETE_REPLY = "DELETE FROM `REPLY` WHERE articleId = :articleId";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("articleId", articleId);
-        return namedParameterJdbcTemplate.update(DELETE_REPLY, namedParameters);
+        return namedParameterJdbcTemplate.update(DELETE_REPLY_BY_ARTICLEID.query(), namedParameters);
     }
 
     @Override
     public List<Reply> findAllReply(long articleId) {
-        final String FIND_ALL_REPLY = "SELECT * FROM `REPLY` WHERE articleId = :articleId";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("articleId", articleId);
-        return namedParameterJdbcTemplate.query(FIND_ALL_REPLY, namedParameters, replyRowMapper());
+        return namedParameterJdbcTemplate.query(FIND_ALL_REPLY.query(), namedParameters, replyRowMapper());
     }
 
     @Override
     public Optional<String> findUserNicknameById(Long id) {
-        final String FIND_NICKNAME_BY_USERID = "SELECT USER.nickname FROM `REPLY` JOIN `USER` ON USER.id = REPLY.userId WHERE REPLY.id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
         try {
             return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(
-                    FIND_NICKNAME_BY_USERID, namedParameters, String.class));
+                    FIND_NICKNAME_BY_USERID.query(), namedParameters, String.class));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }

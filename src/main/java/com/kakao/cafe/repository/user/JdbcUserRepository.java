@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.util.SqlUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static com.kakao.cafe.util.SqlUser.*;
 
 @Repository
 public class JdbcUserRepository implements UserRepository {
@@ -33,50 +36,44 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        final String INSERT_USER = "INSERT INTO `USER`(email, nickname, password, createdAt) VALUES(:email, :nickname, :password, :createdAt)";
         SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(user);
 
         if (findByEmail(user.getEmail()).isPresent()) {
             return update(user, namedParameters);
         }
 
-        namedParameterJdbcTemplate.update(INSERT_USER, namedParameters, keyHolder, new String[]{"id"});
+        namedParameterJdbcTemplate.update(SqlUser.INSERT_USER.query(), namedParameters, keyHolder, new String[]{"id"});
         long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         user.setId(id);
         return user;
     }
 
     private User update(User user, SqlParameterSource namedParameters) {
-        final String UPDATE_USER = "UPDATE `USER` SET nickname=:nickname, password=:password WHERE id=:id";
-        namedParameterJdbcTemplate.update(UPDATE_USER, namedParameters);
+        namedParameterJdbcTemplate.update(SqlUser.UPDATE_USER.query(), namedParameters);
         return user;
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        final String FIND_USER_BY_ID = "SELECT * FROM `USER` WHERE id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
-        return selectUserWhereCondition(FIND_USER_BY_ID, namedParameters);
+        return selectUserWhereCondition(FIND_USER_BY_ID.query(), namedParameters);
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        final String FIND_USER_BY_EMAIL = "SELECT * FROM `USER` WHERE email = :email";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("email", email);
-        return selectUserWhereCondition(FIND_USER_BY_EMAIL, namedParameters);
+        return selectUserWhereCondition(FIND_USER_BY_EMAIL.query(), namedParameters);
     }
 
     @Override
     public Optional<User> findByNickname(String nickname) {
-        final String FIND_USER_BY_NICKNAME = "SELECT * FROM `USER` WHERE nickname = :nickname";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("nickname", nickname);
-        return selectUserWhereCondition(FIND_USER_BY_NICKNAME, namedParameters);
+        return selectUserWhereCondition(FIND_USER_BY_NICKNAME.query(), namedParameters);
     }
 
     @Override
     public List<User> findAll() {
-        final String FIND_ALL_USER = "SELECT * FROM `USER`";
-        return jdbcTemplate.query(FIND_ALL_USER, userRowMapper());
+        return jdbcTemplate.query(FIND_ALL_USER.query(), userRowMapper());
     }
 
     private Optional<User> selectUserWhereCondition(String sql, SqlParameterSource namedParameters) {
