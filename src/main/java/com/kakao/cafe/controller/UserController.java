@@ -45,7 +45,12 @@ public class UserController {
                     .collect(Collectors.toList()));
             return "user/form_failed";
         }
-        userService.save(userDto);
+        try {
+            userService.save(userDto);
+        }catch (Exception e){
+            model.addAttribute("saveError", "같은 아이디의 유저가 존재합니다");
+            return "user/form_failed";
+        }
         return "redirect:/login/form";
     }
 
@@ -73,7 +78,7 @@ public class UserController {
         try {
             User user = userService.validate(userDto);
             session.setAttribute("sessionUser", user);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "/user/login_failed";
         }

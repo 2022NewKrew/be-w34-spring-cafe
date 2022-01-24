@@ -7,6 +7,9 @@
           {{#errors}}
           <div class="alert alert-danger" role="alert">{{.}}</div>
           {{/errors}}
+          {{#saveError}}
+          <div class="alert alert-danger" role="alert">{{.}}</div>
+          {{/saveError}}
           <form name="question" method="post" action="/user/create">
               <div class="form-group">
                   <label for="userId">사용자 아이디</label>
