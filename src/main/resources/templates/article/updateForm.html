@@ -10,7 +10,8 @@
                 <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
                     <label for="author">글쓴이</label>
-                    <input class="form-control" id="author" name="author" placeholder="글쓴이" value="{{author}}" readonly/>
+                    <input type="hidden" id="author" name="author" value="{{author}}"/>
+                    <input class="form-control" id="authorName" name="authorName" value="{{authorName}}" readonly/>
                 </div>
                 <div class="form-group">
                     <label for="title">제목</label>

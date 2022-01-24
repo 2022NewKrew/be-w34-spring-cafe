@@ -5,6 +5,7 @@ import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Article {
     @NotBlank
@@ -12,18 +13,23 @@ public class Article {
     @NotBlank
     private final String author;
     @NotBlank
+    private String authorName;
+    @NotBlank
     private String title;
     @NotBlank
     private String content;
+    @Nullable
+    private List<Reply> replies;
     @NotBlank
     private final LocalDateTime createdAt;
     @Nullable
     private LocalDateTime updatedAt;
 
     @Builder
-    public Article(Long id, String author, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Article(Long id, String author, String authorName, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.author = author;
+        this.authorName = authorName;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
@@ -36,6 +42,14 @@ public class Article {
 
     public String getAuthor() {
         return author;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public String getTitle() {
@@ -52,6 +66,15 @@ public class Article {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Nullable
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(@Nullable List<Reply> replies) {
+        this.replies = replies;
     }
 
     public LocalDateTime getCreatedAt() {

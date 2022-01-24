@@ -19,13 +19,13 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public void save(ArticleRequestDTO article) {
-        String sql = "INSERT INTO ARTICLE (author, title, content, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ARTICLE (author, title, content, createdAt, updatedAt, deleted) VALUES (?, ?, ?, ?, ?, 0)";
         jdbcTemplate.update(sql, article.getAuthor(), article.getTitle(), article.getContent(), LocalDateTime.now(), LocalDateTime.now());
     }
 
     @Override
     public Optional<Article> findById(Long id) {
-        String sql = "SELECT * FROM ARTICLE WHERE id = ?";
+        String sql = "SELECT a.id, a.author, u.name, a.title, a.content, a.createdAt, a.updatedAt FROM ARTICLE a join USERS u on a.author = u.userId WHERE a.id = ? AND NOT a.deleted";
         return jdbcTemplate.query(sql, this::articleRowMapper, id)
                 .stream()
                 .findFirst();
@@ -33,7 +33,7 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public List<Article> findAll() {
-        String sql = "SELECT * FROM ARTICLE";
+        String sql = "SELECT a.id, a.author, u.name, a.title, a.content, a.createdAt, a.updatedAt FROM ARTICLE a join USERS u on a.author = u.userId WHERE NOT a.deleted";
         return jdbcTemplate.query(sql, this::articleRowMapper);
     }
 
@@ -45,7 +45,7 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE FROM ARTICLE WHERE id = ?";
+        String sql = "UPDATE ARTICLE SET deleted = 1 WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
 
@@ -53,6 +53,7 @@ public class JdbcArticleRepository implements ArticleRepository{
         return Article.builder()
                 .id(rs.getLong("id"))
                 .author(rs.getString("author"))
+                .authorName(rs.getString("name"))
                 .title(rs.getString("title"))
                 .content(rs.getString("content"))
                 .createdAt(rs.getTimestamp("createdAt").toLocalDateTime())

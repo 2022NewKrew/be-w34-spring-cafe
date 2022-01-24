@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.controller.interceptor.LoginRequired;
 import com.kakao.cafe.dto.ArticleRequestDTO;
 import com.kakao.cafe.dto.ArticleResponseDTO;
+import com.kakao.cafe.dto.ReplyRequestDTO;
 import com.kakao.cafe.dto.UserResponseDTO;
 import com.kakao.cafe.error.exception.AuthorizationException;
 import com.kakao.cafe.service.ArticleService;
@@ -31,6 +32,21 @@ public class ArticleController {
         return "article/form";
     }
 
+    @LoginRequired
+    @PostMapping("/articles")
+    public String createArticle(@Validated ArticleRequestDTO articleRequestDto) {
+        articleService.create(articleRequestDto);
+        return "redirect:/";
+    }
+
+    @LoginRequired
+    @PostMapping("/articles/{articleId}/reply")
+    public String createReply(@PathVariable Long articleId, @Validated ReplyRequestDTO replyRequestDTO) {
+        logger.info("createReply: {}, {}, {}, {}", articleId, replyRequestDTO.getArticleId(), replyRequestDTO.getAuthor(), replyRequestDTO.getContent());
+        articleService.create(replyRequestDTO);
+        return "redirect:/articles/" + articleId;
+    }
+
     @GetMapping()
     public String getArticleList(Model model) {
         logger.info("index test");
@@ -54,10 +70,11 @@ public class ArticleController {
     @GetMapping("/articles/{id}/form")
     public String updateArticleForm(@PathVariable Long id, @Validated ArticleRequestDTO articleRequestDTO, HttpSession session, Model model) {
         UserResponseDTO user = (UserResponseDTO) session.getAttribute(SESSION_USER);
-        if(!user.getName().equals(articleRequestDTO.getAuthor())) {
+        if(!user.getUserId().equals(articleRequestDTO.getAuthor())) {
             throw new AuthorizationException();
         }
-        model.addAttribute("article", articleRequestDTO);
+        ArticleResponseDTO article = articleService.read(id);
+        model.addAttribute("article", article);
         return "article/updateForm";
     }
 
@@ -72,7 +89,7 @@ public class ArticleController {
     @DeleteMapping("/articles/{id}")
     public String deleteArticle(@PathVariable Long id, @Validated ArticleRequestDTO articleRequestDTO, HttpSession session) {
         UserResponseDTO user = (UserResponseDTO) session.getAttribute(SESSION_USER);
-        if(!user.getName().equals(articleRequestDTO.getAuthor())) {
+        if(!user.getUserId().equals(articleRequestDTO.getAuthor())) {
             throw new AuthorizationException();
         }
         articleService.delete(id);
@@ -80,9 +97,13 @@ public class ArticleController {
     }
 
     @LoginRequired
-    @PostMapping("/articles")
-    public String createArticle(@Validated ArticleRequestDTO articleRequestDto) {
-        articleService.create(articleRequestDto);
-        return "redirect:/";
+    @DeleteMapping("/articles/{articleId}/{replyId}")
+    public String deleteReply(@PathVariable Long articleId, @PathVariable Long replyId, @Validated ReplyRequestDTO replyRequestDTO, HttpSession session) {
+        UserResponseDTO user = (UserResponseDTO) session.getAttribute(SESSION_USER);
+        if(!user.getUserId().equals(replyRequestDTO.getAuthor())) {
+            throw new AuthorizationException();
+        }
+        articleService.deleteReply(replyId);
+        return "redirect:/articles/" + articleId;
     }
 }
