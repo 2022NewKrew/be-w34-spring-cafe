@@ -1,8 +1,11 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.dto.ReplyDto;
+import com.kakao.cafe.model.Reply;
 import com.kakao.cafe.model.User;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -20,9 +24,11 @@ import java.util.stream.Collectors;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @GetMapping("/questions/form")
@@ -67,8 +73,11 @@ public class ArticleController {
     public String getArticle(@PathVariable Integer id, Model model, HttpSession session) {
         ArticleDto article = articleService.findOne(id);
         User sessionUser = (User)session.getAttribute("sessionUser");
+        List<Reply> replies = replyService.findAll();
         model.addAttribute("isWriter", sessionUser.getUserId().equals(article.getUser().getUserId()));
         model.addAttribute("article", article);
+        model.addAttribute("replies", replies);
+        model.addAttribute("len", replies.size());
         return "qna/show";
     }
 
@@ -91,6 +100,15 @@ public class ArticleController {
     public String deleteArticle(@PathVariable Integer id){
         articleService.delete(id);
         return "redirect:/";
+    }
+
+    @PostMapping("/questions/{id}/reply/create")
+    public String addReply(@PathVariable Integer id,
+                            @ModelAttribute("contents") String contents, HttpSession session){
+        ReplyDto replyDto = new ReplyDto(id, (User)session.getAttribute("sessionUser"), contents);
+        System.out.println(replyDto);
+        replyService.save(replyDto);
+        return "redirect:/questions/{id}";
     }
 
 }
