@@ -1,6 +1,7 @@
 package com.kakao.cafe.exception;
 
-public class IllegalPermissionException extends RuntimeException{
+public class IllegalPermissionException extends RuntimeException {
+
     public IllegalPermissionException() {
         super();
     }

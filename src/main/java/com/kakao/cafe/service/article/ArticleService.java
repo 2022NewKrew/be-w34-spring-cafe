@@ -1,6 +1,7 @@
 package com.kakao.cafe.service.article;
 
 import com.kakao.cafe.dao.article.ArticleDao;
+import com.kakao.cafe.exception.IllegalPermissionException;
 import com.kakao.cafe.model.article.Article;
 import com.kakao.cafe.model.article.ArticleFactory;
 import com.kakao.cafe.service.Constant;
@@ -11,7 +12,6 @@ import com.kakao.cafe.service.reply.dto.ReplyDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.naming.NoPermissionException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -54,13 +54,13 @@ public class ArticleService {
         articleDao.addArticle(ArticleFactory.getArticle(articleCreateDto));
     }
 
-    public void deleteArticle(int id, String userId) throws NoPermissionException {
+    public void deleteArticle(int id, String userId) {
         checkArticleWriter(id, userId);
         if (isArticleHasOnlyUserIdReply(id, userId)) {
             articleDao.deleteArticle(id);
             return;
         }
-        throw new NoPermissionException(Constant.OTHER_REPLY_EXIST);
+        throw new IllegalPermissionException(Constant.OTHER_REPLY_EXIST);
     }
 
     public void updateArticle(int id, ArticleUpdateDto articleUpdateDto) {
@@ -97,12 +97,12 @@ public class ArticleService {
         }
     }
 
-    private void checkArticleWriter(int id, String userId) throws NoPermissionException {
+    private void checkArticleWriter(int id, String userId) {
         Article article = articleDao.findArticleById(id)
                 .orElseThrow(() -> new IllegalArgumentException(Constant.ARTICLE_IS_NOT_EXIST));
 
         if (!article.getUserId().getValue().equals(userId)) {
-            throw new NoPermissionException(Constant.DELETE_ARTICLE_ONLY_WRITER);
+            throw new IllegalPermissionException(Constant.DELETE_ARTICLE_ONLY_WRITER);
         }
     }
 

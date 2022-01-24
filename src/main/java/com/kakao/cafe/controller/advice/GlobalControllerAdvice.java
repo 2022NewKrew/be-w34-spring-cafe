@@ -1,8 +1,6 @@
 package com.kakao.cafe.controller.advice;
 
-import static com.kakao.cafe.controller.Constant.UNEXPECTED_EXCEPTION_MESSAGE;
-
-import javax.naming.NoPermissionException;
+import com.kakao.cafe.exception.IllegalPermissionException;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +27,9 @@ public class GlobalControllerAdvice {
                 .getRedirect();
     }
 
-    @ExceptionHandler(NoPermissionException.class)
+    @ExceptionHandler(IllegalPermissionException.class)
     public String handlePermissionException(HttpServletRequest request,
-            NoPermissionException exception, RedirectAttributes redirectAttributes) {
+            IllegalPermissionException exception, RedirectAttributes redirectAttributes) {
         logger.info("permission exception, method : {}, url : {}, exceptionMsg : {}",
                 request.getMethod(),
                 request.getRequestURI(), exception.getMessage());
