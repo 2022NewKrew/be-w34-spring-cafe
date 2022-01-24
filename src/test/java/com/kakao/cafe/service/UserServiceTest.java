@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
@@ -64,13 +65,8 @@ class UserServiceTest {
 
 		when(mockUserRepository.findByUserId("testId")).thenReturn(user);
 
-		// when
-		try {
+		assertThrows(IllegalArgumentException.class, () -> {
 			userService.checkPassword(userId, password);
-
-			// then - exception 발생하지 않을 시 fail
-			fail();
-		} catch (IllegalArgumentException e) {
-		}
+		});
 	}
 }
