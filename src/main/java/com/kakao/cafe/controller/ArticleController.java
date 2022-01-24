@@ -73,6 +73,9 @@ public class ArticleController {
     public String getArticle(@PathVariable Integer id, Model model, HttpSession session) {
         ArticleDto article = articleService.findOne(id);
         User sessionUser = (User)session.getAttribute("sessionUser");
+        if(sessionUser == null){
+            return "user/login";
+        }
         List<Reply> replies = replyService.findAll();
         model.addAttribute("isWriter", sessionUser.getUserId().equals(article.getUser().getUserId()));
         model.addAttribute("article", article);
