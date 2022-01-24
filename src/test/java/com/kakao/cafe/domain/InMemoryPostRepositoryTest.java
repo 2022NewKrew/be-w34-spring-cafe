@@ -51,13 +51,14 @@ class InMemoryPostRepositoryTest {
     @DisplayName("[성공] Post 목록")
     void findAll() {
         InMemoryPostRepository inMemoryPostRepository = new InMemoryPostRepository();
-        Post post = new Post(INITIAL_ID, userId, title, content, new Date());
-        Post post2 = new Post(INITIAL_ID, userId, title, content, new Date());
+        Post post = new Post(1, userId, title, content, new Date());
+        Post post2 = new Post(2, userId, title, content, new Date());
 
         inMemoryPostRepository.save(post);
         inMemoryPostRepository.save(post2);
 
         List<Post> postResult = inMemoryPostRepository.findAll();
+
         Assertions.assertEquals(post, postResult.get(0));
         Assertions.assertEquals(post2, postResult.get(1));
     }
@@ -66,7 +67,7 @@ class InMemoryPostRepositoryTest {
     @DisplayName("[성공] 게시글 Id로 게시글 찾기")
     void findByPostId() {
         InMemoryPostRepository inMemoryPostRepository = new InMemoryPostRepository();
-        Post post = new Post(INITIAL_ID, userId, title, content, new Date());
+        Post post = new Post(1, userId, title, content, new Date());
         inMemoryPostRepository.save(post);
 
         Post post_Result = inMemoryPostRepository.findByPostId(1);
