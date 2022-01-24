@@ -1,26 +1,12 @@
-package com.kakao.cafe;
-
-import com.kakao.cafe.constants.ArticleDBConstants;
-import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.repository.ArticleDao;
-import com.kakao.cafe.repository.ArticleRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.sql.SQLException;
-import java.util.List;
-import java.util.NoSuchElementException;
+package com.kakao.cafe.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@JdbcTest
+//@JdbcTest
 public class ArticleRepositoryTest {
+    /*
     private final int TEST_ARTICLE_COUNT = 5;
     private ArticleRepository articleRepository;
     private JdbcTemplate jdbcTemplate;
@@ -52,11 +38,10 @@ public class ArticleRepositoryTest {
 
     @DisplayName("게시글 저장 테스트")
     @Test
-    public void saveTest() {
+    public void saveTest() throws SQLException {
         Article article = new Article(0, "id0","newArticle", "contents");
-        try {
-            articleRepository.save(article);
-        } catch (SQLException e) { fail(); }
+
+        articleRepository.save(article);
 
         // ?
     }
@@ -71,16 +56,11 @@ public class ArticleRepositoryTest {
 
     @DisplayName("id로 게시글 찾기 테스트 - 존재하는 case")
     @Test
-    public void findByIdTest() {
+    public void findByIdTest() throws SQLException {
         // given
         Article newArticle = new Article(0, "id0","newArticle", "contents");
         int id;
-        try {
-            id = articleRepository.save(newArticle);
-        } catch (SQLException e) {
-            fail();
-            return;
-        }
+        id = articleRepository.save(newArticle);
 
         // when
         Article article = articleRepository.findById(id);
@@ -94,9 +74,10 @@ public class ArticleRepositoryTest {
     public void findByIdNotExistTest() {
         int id = -1;
 
-        try {
-            Article article = articleRepository.findById(id);
-            fail();
-        } catch (NoSuchElementException e) { } // 예외 정상 발생하면 성공
+        assertThrows(NoSuchElementException.class, () -> {
+            articleRepository.findById(id);
+        });
     }
+
+     */
 }

@@ -1,4 +1,4 @@
-package com.kakao.cafe;
+package com.kakao.cafe.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.controller.UserController;
@@ -54,7 +54,7 @@ public class UserControllerTest {
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl( "list"));
+                .andExpect(redirectedUrl( "/list"));
     }
 
     @DisplayName("Get /list 유저 리스트 반환 테스트")
@@ -86,7 +86,7 @@ public class UserControllerTest {
 
         mockMvc.perform(get(testUrl))
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl(""));
+                .andExpect(redirectedUrl("/"));
     }
 
     @DisplayName("Get /{userId}/form 특정 사용자 정보 수정 화면으로 이동")
@@ -111,6 +111,6 @@ public class UserControllerTest {
 
         mockMvc.perform(get(testUrl))
                 .andExpect(status().isFound())
-                .andExpect(redirectedUrl(""));
+                .andExpect(redirectedUrl("/"));
     }
 }

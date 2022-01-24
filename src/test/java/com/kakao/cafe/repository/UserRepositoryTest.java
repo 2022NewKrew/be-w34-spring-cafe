@@ -1,22 +1,14 @@
-package com.kakao.cafe;
+package com.kakao.cafe.repository;
 
-import com.kakao.cafe.constants.UserDBConstants;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.UserDao;
-import com.kakao.cafe.repository.UserRepository;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @JdbcTest
 public class UserRepositoryTest {
+    /*
     private final int TEST_USER_COUNT = 5;
     private UserRepository userRepository;
     private JdbcTemplate jdbcTemplate;
@@ -66,13 +58,9 @@ public class UserRepositoryTest {
         // given
         String userId = "wrongId";
 
-        // when
-        try {
-            User user = userRepository.findByUserId(userId);
-
-            // then
-            fail();
-        } catch (NoSuchElementException e) { }
+        assertThrows(NoSuchElementException.class, () -> {
+            userRepository.findByUserId(userId);
+        });
     }
 
     @DisplayName("name으로 유저 찾기 테스트 - 존재하는 case")
@@ -94,13 +82,9 @@ public class UserRepositoryTest {
         // given
         String name = "wrongName";
 
-        // when
-        try {
-            User user = userRepository.findByName(name);
-
-            // then
-            fail();
-        } catch (NoSuchElementException e) { }
+        assertThrows(NoSuchElementException.class, () -> {
+            userRepository.findByName(name);
+        });
     }
 
     @DisplayName("유저 목록 반환 테스트")
@@ -121,4 +105,6 @@ public class UserRepositoryTest {
         User testUser = userRepository.findByUserId("id0");
         assertThat(testUser.getEmail()).isEqualTo("newEmail");
     }
+
+     */
 }

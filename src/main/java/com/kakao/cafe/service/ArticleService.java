@@ -2,6 +2,8 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticlePostDto;
+import com.kakao.cafe.dto.ReplyContentsDto;
+import com.kakao.cafe.dto.ReplyDto;
 
 import java.sql.SQLException;
 import java.util.List;

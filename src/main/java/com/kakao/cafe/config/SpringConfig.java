@@ -1,24 +1,24 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.repository.ArticleDao;
-import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.UserDao;
-import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.ArticleServiceImpl;
-import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.service.UserServiceImpl;
+import com.kakao.cafe.repository.*;
+import com.kakao.cafe.service.*;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
 
 @Configuration
 public class SpringConfig {
+
+    @Bean
+    public ReplyRepository replyDao() {
+        return new ReplyDao(jdbcTemplate());
+    }
+
+    @Bean
+    public ReplyService replyService() { return new ReplyServiceImpl(replyDao()); }
 
     @Bean
     public ArticleService articleService() {
@@ -56,7 +56,6 @@ public class SpringConfig {
                 .build();
 
          */
-
         return DataSourceBuilder.create()
                 .url("jdbc:mysql://test-cafe-ed.ay1.krane.9rum.cc:3306/cafedb") // ?useUnicode=yes&characterEncoding=UTF-8
                 .username("ed2")

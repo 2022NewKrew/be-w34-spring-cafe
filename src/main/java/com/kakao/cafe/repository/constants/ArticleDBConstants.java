@@ -1,4 +1,4 @@
-package com.kakao.cafe.constants;
+package com.kakao.cafe.repository.constants;
 
 public class ArticleDBConstants {
     public static final String TABLE_NAME = "ARTICLE";

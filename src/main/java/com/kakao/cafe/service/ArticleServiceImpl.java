@@ -1,9 +1,13 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.ArticlePostDto;
+import com.kakao.cafe.dto.ReplyContentsDto;
+import com.kakao.cafe.dto.ReplyDto;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.repository.UserRepository;
 
 import java.sql.SQLException;
@@ -35,7 +39,7 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.update(modifiedArticleEntity);
     }
 
-    public void delete(int id) throws  NoSuchElementException {
+    public void delete(int id) throws NoSuchElementException {
         articleRepository.findById(id); // id값을 갖는 article이 존재하는지 확인
 
         articleRepository.delete(id);
