@@ -37,13 +37,16 @@ public class ArticleController {
 
     @GetMapping("/index/{page}")
     public String getIndexByPage(@PathVariable int page, Model model) {
+        int previousPage = page - 1;
+        int nextPage = page + 1;
+
         model.addAttribute("articles", articleService.getPartOfArticles(page, MAX_ARTICLES));
         model.addAttribute("pages", articleService.getPages(MAX_ARTICLES, Constant.PAGE_LIMIT, page));
-        if (page - 1 >= 1) {
-            model.addAttribute("previousPage", page - 1);
+        if (previousPage >= 1) {
+            model.addAttribute("previousPage", previousPage);
         }
-        if (articleService.getLastPageNumber(MAX_ARTICLES) >= page + 1) {
-            model.addAttribute("nextPage", page + 1);
+        if (articleService.getLastPageNumber(MAX_ARTICLES) >= nextPage) {
+            model.addAttribute("nextPage", nextPage);
         }
         return "index";
     }
