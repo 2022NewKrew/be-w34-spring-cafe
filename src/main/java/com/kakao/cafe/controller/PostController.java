@@ -34,7 +34,7 @@ public class PostController {
 
     @PostMapping("/posts")
     public String write(@Valid WritePostRequest postDto, BindingResult errors, HttpSession session) {
-        logger.debug("[POST] /posts 게시글 작성");
+        logger.info("[POST] /posts 게시글 작성");
         if (errors.hasErrors()) {
             String errorMessage = errors.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -49,7 +49,7 @@ public class PostController {
 
     @GetMapping
     public String postList(Model model) {
-        logger.debug("[GET] / 게시글 리스트");
+        logger.info("[GET] / 게시글 리스트");
         List<Post> postList = postService.getPostList();
         model.addAttribute("postList", postList);
         return "post/list";
@@ -57,7 +57,7 @@ public class PostController {
 
     @GetMapping("/posts/{postId}")
     public String postById(@PathVariable int postId, Model model) {
-        logger.debug("[GET] /posts/{postId} 게시글 보기");
+        logger.info("[GET] /posts/{postId} 게시글 보기");
         Post post = postService.getPostById(postId);
 
         model.addAttribute("post", post);
@@ -67,7 +67,7 @@ public class PostController {
     @PutMapping("/posts/{postId}")
     public String postById(@Valid UpdatePostRequest postDto, @PathVariable int postId, Model model,
             HttpSession session) {
-        logger.debug("[PUT] /posts/{postId} 게시글 수정");
+        logger.info("[PUT] /posts/{postId} 게시글 수정");
         SessionUser sessionUser = (SessionUser) session.getAttribute(SESSION);
         Post post = postDto.toEntity(sessionUser.getId(), postId);
         postService.updatePost(post);
@@ -78,7 +78,7 @@ public class PostController {
 
     @GetMapping("/posts/{postId}/update")
     public String updatePostGetContent(@PathVariable int postId, Model model, HttpSession session) {
-        logger.debug("[GET] /posts/{postId}/update 게시글 수정 페이지");
+        logger.info("[GET] /posts/{postId}/update 게시글 수정 페이지");
 
         SessionUser sessionUser = (SessionUser) session.getAttribute(SESSION);
         Post post = postService.getUpdatePostById(postId, sessionUser.getId());
@@ -89,7 +89,7 @@ public class PostController {
 
     @DeleteMapping("/posts/{postId}")
     public String deletePost(@PathVariable int postId, HttpSession session) {
-        logger.debug("[DELETE] /posts/{postId} 게시글 삭제");
+        logger.info("[DELETE] /posts/{postId} 게시글 삭제");
 
         SessionUser sessionUser = (SessionUser) session.getAttribute(SESSION);
         postService.deletePost(postId, sessionUser.getId());
