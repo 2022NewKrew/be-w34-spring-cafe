@@ -2,23 +2,31 @@ package com.kakao.cafe.domain;
 
 import com.kakao.cafe.dto.SampleArticleForm;
 
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Article {
 
-    private static AtomicInteger currentIdx = new AtomicInteger();
-    private Integer articleID;
+    private Long articleID;
     private String title;
     private String content;
 
     private Article(String title, String content) {
-        this.articleID = currentIdx.get();
-        currentIdx.set(currentIdx.get() + 1);
         this.title = title;
         this.content = content;
     }
 
-    public Integer getArticleID() {
+    public void setArticleID(Long articleID) {
+        this.articleID = articleID;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Long getArticleID() {
         return articleID;
     }
 

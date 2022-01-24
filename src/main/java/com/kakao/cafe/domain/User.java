@@ -4,22 +4,31 @@ import com.kakao.cafe.dto.SampleUserForm;
 
 public class User {
 
-    private String id;
+    private Long id;
+    private String uid;
     private String passWord;
     private String name;
     private String email;
     private String content;
 
-    private User(String id, String passWord, String name, String email, String content) {
-        this.id = id;
+    private User(String uid, String passWord, String name, String email, String content) {
+        this.uid = uid;
         this.passWord = passWord;
         this.name = name;
         this.email = email;
         this.content = content;
     }
 
-    public String getId() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
         return id;
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     public String getPassWord() {

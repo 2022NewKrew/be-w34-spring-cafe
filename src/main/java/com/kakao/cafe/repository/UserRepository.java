@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    boolean addUser(SampleUserForm form);
-    User findUser(String userID);
-    boolean updateUser(SampleUserForm form);
-    boolean checkUser(String userID);
-    List<User> getUserList();
+    User save(SampleUserForm form);
+    void update(User user);
+    Optional<User> findByUserID(String uID);
+    Optional<User> findByNumID(Long ID);
+    List<User> findAll();
 }

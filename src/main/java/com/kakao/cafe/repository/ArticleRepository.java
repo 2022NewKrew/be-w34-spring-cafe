@@ -4,10 +4,12 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.SampleArticleForm;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository {
 
-    void addArticle(SampleArticleForm form);
-    Article findArticle(int articleID);
-    List<Article> getArticles();
+    Article save(SampleArticleForm form);
+    Optional<Article> findByID(Long articleID);
+    List<Article> findAll();
+
 }

@@ -7,28 +7,27 @@ import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 
-@Service
+
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    @Autowired
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
-
     public void addArticle(SampleArticleForm form){
-        articleRepository.addArticle(form);
+        articleRepository.save(form);
     }
 
-    public Article findArticle(int articleID){
-        return articleRepository.findArticle(articleID);
+    public Article findArticle(Long articleID){
+        return articleRepository.findByID(articleID).get();
     }
 
     public List<Article> getArticles(){
-        return articleRepository.getArticles();
+        return articleRepository.findAll();
     }
 }

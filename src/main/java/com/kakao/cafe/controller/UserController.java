@@ -3,7 +3,6 @@ package com.kakao.cafe.controller;
 
 
 import com.kakao.cafe.dto.SampleUserForm;
-import com.kakao.cafe.repository.MemoryUser;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,18 +30,18 @@ public class UserController {
         return "user/userListPage";
     }
 
-    @GetMapping("/{userID}")
-    public String userProfile(Model model, @PathVariable String userID){
-        logger.info("userprofile print userID : {}", userID);
-        model.addAttribute("userprofile", userService.findUser(userID));
+    @GetMapping("/{numID}")
+    public String userProfile(Model model, @PathVariable Long numID){
+        logger.info("userprofile print numID : {}", numID);
+        model.addAttribute("userprofile", userService.findUser(numID));
 
         return "user/userPage";
     }
 
-    @GetMapping("/{userID}/update")
-    public String updateProfile(Model model, @PathVariable String userID){
-        logger.info("updateProfile print userID : {}", userID);
-        model.addAttribute("userprofile", userService.findUser(userID));
+    @GetMapping("/{numID}/update")
+    public String updateProfile(Model model, @PathVariable Long numID){
+        logger.info("updateProfile print userID : {}", numID);
+        model.addAttribute("userprofile", userService.findUser(numID));
 
         return "user/userUpdateForm";
     }
