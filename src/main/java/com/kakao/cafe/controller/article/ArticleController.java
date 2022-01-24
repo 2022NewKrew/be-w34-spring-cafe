@@ -30,6 +30,11 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    @GetMapping("/questions/form")
+    public String postForm() {
+        return "qna/form";
+    }
+
     @GetMapping("/index/{page}")
     public String getIndexByPage(@PathVariable int page, Model model) {
         model.addAttribute("articles", articleService.getPartOfArticles(page, MAX_ARTICLES));

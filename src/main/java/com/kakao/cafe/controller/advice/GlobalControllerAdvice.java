@@ -48,7 +48,7 @@ public class GlobalControllerAdvice {
             RedirectAttributes redirectAttributes) {
         logger.info("unexpected Exception, method : {}, url : {}, exceptionMsg : {}",
                 request.getMethod(),
-                request.getRequestURI(), UNEXPECTED_EXCEPTION_MESSAGE);
+                request.getRequestURI(), exception.getMessage());
 
         addCommonAttribute(request, exception, redirectAttributes);
 
