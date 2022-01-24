@@ -27,8 +27,6 @@ services:
       MYSQL_USER: "kakao"
       MYSQL_PASSWORD: "kakao"
       MYSQL_DATABASE: "kakaodb"
-#    volumes:
-#      - /tmp/mysql:/var/lib/mysql
     healthcheck:
       test: ["CMD", 'mysqladmin', 'ping' ]
       interval: 3s
