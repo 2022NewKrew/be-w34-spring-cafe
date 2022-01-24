@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.Article;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +24,30 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public Long delete(Long id) {
+        return null;
+    }
+
+    @Override
+    public Article increaseViewCount(Article article) {
+        return null;
+    }
+
+    @Override
     public Optional<Article> findById(Long id) {
         return store.stream()
                 .filter(article -> article.getId() == id)
                 .findAny();
+    }
+
+    @Override
+    public Optional<Long> findUidById(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<String> findUserNicknameById(Long userId) {
+        return Optional.empty();
     }
 
     @Override

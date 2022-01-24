@@ -1,16 +1,16 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.dto.user.UserCreationDTO;
-import com.kakao.cafe.dto.user.UserDTO;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.kakao.cafe.dto.user.UserCreationDto;
+import com.kakao.cafe.dto.user.UserDto;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
     private long id;
     private String email;
@@ -18,14 +18,14 @@ public class User {
     private String password;
     private LocalDate createdAt;
 
-    public User(UserCreationDTO dto) {
+    public User(UserCreationDto dto) {
         this.email = dto.getEmail();
         this.nickname = dto.getNickname();
         this.password = dto.getPassword();
         createdAt = LocalDate.now();
     }
 
-    public User(UserDTO dto) {
+    public User(UserDto dto) {
         this.id = dto.getId();
         this.email = dto.getEmail();
         this.nickname = dto.getNickname();

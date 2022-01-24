@@ -31,7 +31,7 @@
                     {{#articleList}}
                     <tr>
                         <td><a href="/articles/{{id}}">{{title}}</a></td>
-                        <td>유저닉네임</td>
+                        <td>{{author}}</td>
                         <td>{{formattedCreatedAt}}</td>
                         <td>{{views}}</td>
                     </tr>
@@ -123,4 +123,4 @@
 </div>
 -->
 </body>
-</html>
+{{> layout/footer}}

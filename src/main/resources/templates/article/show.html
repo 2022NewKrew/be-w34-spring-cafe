@@ -16,7 +16,7 @@
                       <article class="article">
                           <div class="article-header">
                               <div class="article-header-text">
-                                  <p class="article-content">멋진삼</p>
+                                  <p class="article-content">{{author}}</p>
                                   <p class="article-content">
                                       작성일자:{{formattedCreatedAt}}
                                   </p>
@@ -31,30 +31,45 @@
 
                       <div class="post-comment">
                           <div class="post-comment-slipp">
-                              <p class="post-comment-count">댓글 2개</p>
+                              <p class="post-comment-count">댓글 {{replyListSize}}개</p>
                               <div class="post-comment-slipp-articles">
 
                                   <article class="comment">
+                                      {{#replyList}}
                                       <div class="article-text">
-                                          <p class="comment-content comment-author-name">자바지기</p>
+                                          <p class="comment-content comment-author-name">{{nickname}}</p>
                                           <div class="comment-content comment-doc">
-                                              <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
+                                              <p>{{comments}}</p>
                                           </div>
                                           <p class="comment-content comment-time">
-                                              2016-01-12 14:06
+                                              {{formattedCreatedAt}}
                                           </p>
+                                          {{#canEdit}}
+                                          <form method="post" action="/articles/{{articleId}}/replies/{{id}}">
+                                              <input type="hidden" name="_method" value="DELETE" />
+                                              <input class="post-write-btn" type="submit" value="삭제" />
+                                          </form>
+                                          {{/canEdit}}
                                       </div>
+                                      {{/replyList}}
                                   </article>
 
-                                  <form class="submit-write" method="get" action="../../templates/index.html ">
+                                  <form class="submit-write" method="post" action="/articles/{{article.id}}/replies">
                                       <div class="comment-writer-container">
                                           <input class="comment-writer" id="writer" name="writer" value="멋진상" readonly/>
                                       </div>
                                       <div class="form-group">
-                                          <textarea class="form-control" id="comment" name="comment" placeholder="내용을 입력하세요"></textarea>
+                                          <textarea class="form-control" id="comments" name="comments" placeholder="내용을 입력하세요"></textarea>
                                       </div>
                                       <input class="post-write-btn" type="submit" value="등록"/>
                                   </form>
+                                  {{#canEdit}}
+                                  <a href="/articles/form/{{article.id}}" class="post-write-btn">수정</a>
+                                  <form method="post" action="/articles/{{article.id}}">
+                                      <input type="hidden" name="_method" value="DELETE" />
+                                      <input class="post-write-btn" type="submit" value="삭제" />
+                                  </form>
+                                  {{/canEdit}}
                               </div>
                           </div>
                       </div>
@@ -63,4 +78,4 @@
             </div>
         </div>
 	</body>
-</html>
+{{> layout/footer}}

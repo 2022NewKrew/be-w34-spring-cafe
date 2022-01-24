@@ -1,8 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.user.UserCreationDTO;
-import com.kakao.cafe.dto.user.UserDTO;
+import com.kakao.cafe.dto.user.UserCreationDto;
+import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.repository.user.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public long join(UserCreationDTO dto) throws IllegalArgumentException {
+    public long join(UserCreationDto dto) throws IllegalArgumentException {
         User newUser = new User(dto);
 
         validateDuplicateNickname(newUser);
@@ -38,9 +38,9 @@ public class UserService {
         return newUser.getId();
     }
 
-    public long update(Long id, UserCreationDTO dto) throws Exception {
+    public long update(Long id, UserCreationDto dto) throws Exception {
         var user = userRepository.findById(id)
-                .orElseThrow(()-> new IllegalAccessException("아이디가 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalAccessException("아이디가 존재하지 않습니다."));
         validatePassword(dto.getPrevPassword(), user.getPassword());
 
         user.setNickname(dto.getNickname());
@@ -50,22 +50,22 @@ public class UserService {
         return user.getId();
     }
 
-    public List<UserDTO> findAllUsers() {
+    public List<UserDto> findAllUsers() {
         return userRepository.findAll().stream()
-                .map(m -> modelMapper.map(m, UserDTO.class))
+                .map(m -> modelMapper.map(m, UserDto.class))
                 .collect(Collectors.toList());
     }
 
-    public UserDTO findById(long id) {
+    public UserDto findById(long id) {
         return userRepository.findById(id)
-                .map(m -> modelMapper.map(m, UserDTO.class))
-                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 회원입니다"));
+                .map(m -> modelMapper.map(m, UserDto.class))
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다"));
     }
 
-    public UserDTO findByEmail(String userId) {
+    public UserDto findByEmail(String userId) {
         return userRepository.findByEmail(userId)
-                .map(m -> modelMapper.map(m, UserDTO.class))
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+                .map(m -> modelMapper.map(m, UserDto.class))
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
     }
 
     public void validatePassword(String inputRawPassword, String currentHashedPassword) {

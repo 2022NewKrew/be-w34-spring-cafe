@@ -1,4 +1,4 @@
-package com.kakao.cafe.aop;
+package com.kakao.cafe.system;
 
 import com.kakao.cafe.util.Url;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +20,7 @@ import java.util.Optional;
 @Component
 @Slf4j
 public class Aspects {
+
     @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")
     public void getMappingPoint() {
     }
@@ -38,20 +39,6 @@ public class Aspects {
 
         log.info("Method Called ... {} ... {}ms", joinPoint.getSignature().getName(), stopWatch.getTotalTimeMillis());
         return result;
-    }
-
-    @Around("@annotation(com.kakao.cafe.util.SessionIdRequired)")
-    public Object checkSessionId(ProceedingJoinPoint pjp) throws Throwable {
-        HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest().getSession();
-
-        if (session.getAttribute("sessionedUserId") == null) {
-            findRedirectAttribuesParameter(pjp)
-                    .ifPresent(o -> o.addFlashAttribute("errorMsg", "로그인이 필요한 서비스입니다."));
-
-            return "redirect:" + Url.USER_LOGIN;
-        }
-
-        return pjp.proceed();
     }
 
     private Optional<RedirectAttributes> findRedirectAttribuesParameter(ProceedingJoinPoint pjp) {

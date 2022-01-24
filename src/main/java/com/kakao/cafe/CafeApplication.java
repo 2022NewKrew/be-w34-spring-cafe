@@ -8,8 +8,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 public class CafeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CafeApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CafeApplication.class, args);
+    }
 
 }
