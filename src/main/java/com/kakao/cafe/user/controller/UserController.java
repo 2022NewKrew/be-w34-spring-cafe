@@ -34,12 +34,12 @@ public class UserController {
 
     @GetMapping
     public String getAllUsers(@LoginUser SessionUser user, Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("users", userService.getProfiles());
         return "user/list";
     }
 
     @GetMapping("/{userId}")
-    public String getUserById(@PathVariable Long userId, Model model) {
+    public String getUserById(@LoginUser SessionUser user, @PathVariable Long userId, Model model) {
         model.addAttribute("user", userService.getProfileById(userId));
         return "user/profile";
     }

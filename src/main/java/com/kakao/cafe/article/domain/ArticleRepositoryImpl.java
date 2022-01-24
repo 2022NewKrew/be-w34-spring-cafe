@@ -2,10 +2,12 @@ package com.kakao.cafe.article.domain;
 
 import com.kakao.cafe.article.dto.MultipleArticle;
 import com.kakao.cafe.article.dto.SingleArticle;
+import com.kakao.cafe.article.exception.ArticleNotFoundException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Repository;
 public class ArticleRepositoryImpl implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final ArticleMapper articleMapper;
 
     @Override
     public void save(Article article) {
@@ -42,13 +45,14 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                     .articleId(rs.getLong("article_id"))
                     .title(rs.getString("title"))
                     .body(rs.getString("body"))
-                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")))
                     .viewCount(rs.getInt("view_count"))
                     .authorId(rs.getLong("author_id"))
                     .authorName(rs.getString("author_nickname"))
                     .build(),
                 id));
-        } catch (DataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -58,18 +62,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         final String sql = "select * from articles where article_id = ?";
 
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(
-                sql,
-                (rs, rowNum) -> Article.builder()
-                    .id(rs.getLong("article_id"))
-                    .title(rs.getString("title"))
-                    .body(rs.getString("body"))
-                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                    .viewCount(rs.getInt("view_count"))
-                    .authorId(rs.getLong("author_id"))
-                    .build(),
-                id));
-        } catch (DataAccessException e) {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, articleMapper, id));
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -84,14 +78,15 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             + "u.nickname as author_nickname "
             + "from articles as a inner join users u "
             + "on a.author_id = u.user_id "
-            + "order by a.created_at";
+            + "order by a.created_at desc";
 
         return jdbcTemplate.query(
             sql,
             (rs, rowNum) -> MultipleArticle.builder()
                 .articleId(rs.getLong("article_id"))
                 .title(rs.getString("title"))
-                .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                .createdAt(rs.getTimestamp("created_at").toLocalDateTime()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .viewCount(rs.getInt("view_count"))
                 .authorId(rs.getLong("author_id"))
                 .authorName(rs.getString("author_nickname"))
@@ -99,10 +94,14 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public void increaseViewCount(Long id) {
+    public boolean increaseViewCount(Long id) {
         final String sql = "update articles set view_count = view_count + 1 where article_id = ?";
 
-        jdbcTemplate.update(sql, id);
+        try {
+            return jdbcTemplate.update(sql, id) > 0;
+        } catch (EmptyResultDataAccessException e) {
+            throw new ArticleNotFoundException();
+        }
     }
 
     @Override

@@ -4,7 +4,9 @@ import com.kakao.cafe.user.domain.User;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import lombok.Builder;
 
+@Builder
 public class SignupRequest {
 
     @NotBlank

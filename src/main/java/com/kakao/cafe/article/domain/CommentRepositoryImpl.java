@@ -1,10 +1,11 @@
 package com.kakao.cafe.article.domain;
 
 import com.kakao.cafe.article.dto.SingleComment;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 public class CommentRepositoryImpl implements CommentRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final CommentMapper commentMapper;
 
     @Override
     public void save(Comment comment) {
@@ -26,17 +28,8 @@ public class CommentRepositoryImpl implements CommentRepository {
         final String sql = "select * from comments where comment_id = ?";
 
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(
-                sql,
-                (rs, rowNum) -> Comment.builder()
-                    .id(rs.getLong("comment_id"))
-                    .body(rs.getString("body"))
-                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                    .authorId(rs.getLong("author_id"))
-                    .articleId(rs.getLong("article_id"))
-                    .build(),
-                id));
-        } catch (DataAccessException e) {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, commentMapper, id));
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -58,7 +51,8 @@ public class CommentRepositoryImpl implements CommentRepository {
             (rs, rowNum) -> SingleComment.builder()
                 .commentId(rs.getLong("comment_id"))
                 .body(rs.getString("body"))
-                .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                .createdAt(rs.getTimestamp("created_at").toLocalDateTime()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")))
                 .authorId(rs.getLong("author_id"))
                 .authorName(rs.getString("nickname"))
                 .build(),

@@ -7,11 +7,13 @@ import com.kakao.cafe.article.dto.SingleArticle;
 import com.kakao.cafe.article.exception.ArticleNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
@@ -26,7 +28,9 @@ public class ArticleService {
     }
 
     public SingleArticle getSingleArticle(Long id) {
-        articleRepository.increaseViewCount(id);
+        if (!articleRepository.increaseViewCount(id)) {
+            log.error("조회 수 증가 실패");
+        }
         return articleRepository.findSingleArticle(id).orElseThrow(ArticleNotFoundException::new);
     }
 
@@ -46,3 +50,4 @@ public class ArticleService {
         return articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
     }
 }
+
