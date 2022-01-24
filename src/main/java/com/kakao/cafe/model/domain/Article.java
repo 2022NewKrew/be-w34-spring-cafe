@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Article {
     @Setter
     private long articleId;

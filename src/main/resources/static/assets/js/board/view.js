@@ -4,12 +4,12 @@ function deleteCommentEvent(currentElement) {
     let articleId = splited[1];
     let commentId = splited[2];
 
-    axios.delete(`/board/comment/delete/${articleId}/${commentId}`)
+    axios.delete(`/board/articles/${articleId}/comments/${commentId}`)
         .then(() => {
             rowElement.remove();
         })
         .catch((error) => {
-            console.log(error);
+            alert(error.response.data);
         });
 }
 
@@ -25,7 +25,7 @@ window.onload = function () {
             content,
         };
 
-        axios.post("/board/comment/write", data)
+        axios.post(`/board/articles/${articleId}/comments`, data)
             .then(({data}) => {
                 let newComment = document.createElement("tr");
                 newComment.setAttribute("id", `comment-${articleId}-${data.commentId}`);
@@ -44,12 +44,7 @@ window.onload = function () {
                     </td>
                 `
                 document.getElementById("commentsTableBody").appendChild(newComment);
-            })
-            .catch((error) => {
-                console.log(error);
             });
-
-        console.log(data);
     };
 
     let deleteButtons = document.getElementsByClassName("commentDeleteButton");
@@ -61,7 +56,7 @@ window.onload = function () {
             let articleId = splited[1];
             let commentId = splited[2];
 
-            axios.delete(`/board/comment/delete/${articleId}/${commentId}`)
+            axios.delete(`/board/articles/${articleId}/comments/${commentId}`)
                 .then(() => {
                     rowElement.remove();
                 })

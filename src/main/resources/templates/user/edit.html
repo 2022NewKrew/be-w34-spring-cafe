@@ -1,0 +1,61 @@
+{{>template/header}}
+<div class="card" style="border: 0;">
+    <article class="card-body mx-auto" style="max-width: 500px; min-width:300px;">
+        <h2 class="card-title m-3 text-center">회원정보 수정</h2>
+        {{#user}}
+        <form action="/user/{{userId}}/edit" method="post">
+            <input name="_method" type="hidden" value="put">
+            <table class="table align-middle">
+                <tr>
+                    <th class="text-end">
+                        ID: &nbsp;
+                    </th>
+                    <td>
+                        <input class="form-control" name="userId" readonly type="text" value="{{userId}}">
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-end">
+                        Old PW: &nbsp;
+                    </th>
+                    <td>
+                        <input class="form-control" name="password" placeholder="기존 비밀번호" required type="password">
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-end">
+                        New PW: &nbsp;
+                    </th>
+                    <td>
+                        <input class="form-control" name="newPassword" placeholder="새로운 비밀번호" required type="password">
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-end">
+                        Name: &nbsp;
+                    </th>
+                    <td>
+                        <input class="form-control" name="name" placeholder="이름" required type="text" value="{{name}}">
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-end">
+                        Email: &nbsp;
+                    </th>
+                    <td>
+                        <input class="form-control" name="email" placeholder="이메일" required type="email"
+                               value="{{email}}">
+                    </td>
+                </tr>
+            </table>
+            {{#notMatchedErrorMessage}}
+            <div class="alert alert-light p-0 m-0" role="alert">{{this}}</div>
+            {{/notMatchedErrorMessage}}
+            <div class="row mt-3">
+                <button class="btn btn-dark" type="submit">회원정보 수정</button>
+            </div>
+        </form>
+        {{/user}}
+    </article>
+</div>
+{{>template/footer}}

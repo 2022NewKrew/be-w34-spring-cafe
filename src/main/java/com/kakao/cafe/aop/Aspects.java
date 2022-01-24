@@ -1,8 +1,8 @@
 package com.kakao.cafe.aop;
 
 import com.kakao.cafe.application.service.BoardService;
-import com.kakao.cafe.util.annotation.LoginCheck;
 import com.kakao.cafe.util.annotation.BoardCheck;
+import com.kakao.cafe.util.annotation.LoginCheck;
 import com.kakao.cafe.util.exception.NoAdminException;
 import com.kakao.cafe.util.exception.NotLoggedInException;
 import com.kakao.cafe.util.exception.NotMyArticleException;
@@ -43,11 +43,11 @@ public class Aspects {
         String loggedInId = (String) session.getAttribute("USER_ID");
 
         if (loggedInId == null) {
-            throw new NotLoggedInException("로그인하지 않은 상태이므로 접근할 수 없습니다.");
+            throw new NotLoggedInException();
         }
 
         if (loginCheck.type().toString().equals("ADMIN") && !loggedInId.equals("admin")) {
-            throw new NoAdminException("관리자만 접근할 수 있는 페이지입니다.");
+            throw new NoAdminException();
         }
     }
 
@@ -57,7 +57,7 @@ public class Aspects {
         String loggedInId = (String) session.getAttribute("USER_ID");
 
         if (loggedInId == null) {
-            throw new NotLoggedInException("로그인하지 않은 상태이므로 접근할 수 없습니다.");
+            throw new NotLoggedInException();
         }
     }
 
@@ -67,12 +67,12 @@ public class Aspects {
         String loggedInId = (String) session.getAttribute("USER_ID");
 
         if (boardCheck.type().toString().equals("ARTICLE") && !(boardService.isSameArticleWriter((long) joinPoint.getArgs()[0], loggedInId))) {
-            throw new NotMyArticleException("해당 게시글의 작성자가 아니므로 수정하거나 삭제할 수 없습니다.");
+            throw new NotMyArticleException();
         }
 
         if (boardCheck.type().toString().equals("COMMENT")
                 && !(boardService.isSameCommentWriter((long) joinPoint.getArgs()[0], (long) joinPoint.getArgs()[1], loggedInId))) {
-            throw new NotMyCommentException("해당 댓글의 작성자가 아니므로 삭제할 수 없습니다.");
+            throw new NotMyCommentException();
         }
     }
 }

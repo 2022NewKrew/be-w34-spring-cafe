@@ -10,3 +10,14 @@
 #mainJumbotron {
     background-color: #FFCD00;
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer {
+    flex: 0 0 70px;
+    margin-top: auto;
+}

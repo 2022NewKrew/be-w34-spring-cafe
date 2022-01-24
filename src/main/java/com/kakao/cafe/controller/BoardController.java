@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.application.dto.ArticleDto;
 import com.kakao.cafe.application.dto.CommentDto;
+import com.kakao.cafe.application.dto.PaginationDto;
 import com.kakao.cafe.application.service.BoardService;
 import com.kakao.cafe.util.annotation.BoardCheck;
 import com.kakao.cafe.util.exception.NotMyArticleException;
@@ -12,6 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
+import static com.kakao.cafe.util.Constants.DEFAULT_COUNT_PER_PAGE;
 
 @RequiredArgsConstructor
 @Controller
@@ -19,20 +23,45 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
 
-    @GetMapping("/list")
-    public String goAllView(Model model) {
-        List<ArticleDto> articleList = boardService.findAllArticle();
-        articleList.sort((a1, a2) -> Long.compare(a2.getArticleId(), a1.getArticleId()));
+    @GetMapping("/articles")
+    public String goAllArticlesView(@RequestParam(required = false) Map<String, String> params, Model model) {
+        long currentPage = params.get("page") == null ? 1 : Long.parseLong(params.get("page"));
+        int countPerPage = params.get("cpp") == null ? DEFAULT_COUNT_PER_PAGE : Integer.parseInt(params.get("cpp"));
+
+        List<ArticleDto> articleList = boardService.findArticlesByCurrentPageAndCountPerPage(currentPage, countPerPage);
         model.addAttribute("articles", articleList);
         return "board/list";
     }
 
-    @GetMapping("/write")
-    public String goWriteView() {
-        return "board/write";
+    @GetMapping("/articles/pagination")
+    @ResponseBody
+    public ResponseEntity<PaginationDto> getPaginationInfos(@RequestParam(required = false) Map<String, String> params) {
+        long currentPage = params.get("page") == null ? 1 : Long.parseLong(params.get("page"));
+        int countPerPage = params.get("cpp") == null ? DEFAULT_COUNT_PER_PAGE : Integer.parseInt(params.get("cpp"));
+
+        return ResponseEntity.ok(boardService.makePaginationInfo(currentPage, countPerPage));
     }
 
-    @PostMapping("/write")
+    @GetMapping("/articles/form")
+    public String goWriteView() {
+        return "board/form";
+    }
+
+    @GetMapping("/articles/{articleId}")
+    public String viewArticle(@PathVariable long articleId, Model model) {
+        model.addAttribute("article", boardService.findArticleByArticleId(articleId));
+        model.addAttribute("comments", boardService.findCommentsByArticleId(articleId));
+        return "board/view";
+    }
+
+    @GetMapping("/articles/{articleId}/edit")
+    @BoardCheck
+    public String goModifyArticleView(@PathVariable long articleId, Model model) {
+        model.addAttribute("article", boardService.findArticleByArticleId(articleId));
+        return "board/edit";
+    }
+
+    @PostMapping("/articles")
     public String writeArticle(String title, String writerId, String content) {
         ArticleDto articleDto = ArticleDto.builder()
                 .title(title)
@@ -41,34 +70,26 @@ public class BoardController {
 
         boardService.writeArticle(articleDto);
 
-        return "redirect:/board/list";
+        return "redirect:/board/articles";
     }
 
-    @GetMapping("/view/{articleId}")
-    public String viewArticle(@PathVariable long articleId, Model model) {
-        model.addAttribute("article", boardService.findArticleByArticleId(articleId));
-        model.addAttribute("comments", boardService.findCommentsByArticleId(articleId));
-        return "board/view";
+    @PostMapping("/articles/{articleId}/comments")
+    @ResponseBody
+    public ResponseEntity<CommentDto> writeComment(@PathVariable("articleId") long articleId, @RequestBody CommentDto commentDto) {
+        return ResponseEntity.ok(boardService.writeComment(articleId, commentDto));
     }
 
-    @GetMapping("/article/modify/{articleId}")
-    @BoardCheck
-    public String goModifyArticleView(@PathVariable long articleId, Model model) {
-        model.addAttribute("article", boardService.findArticleByArticleId(articleId));
-        return "board/modify";
-    }
-
-    @PutMapping("/article/modify/{articleId}")
+    @PutMapping("/articles/{articleId}")
     @BoardCheck
     public String modifyArticle(@PathVariable long articleId, String title, String content) {
         boardService.modifyArticle(ArticleDto.builder()
                 .articleId(articleId)
                 .title(title)
                 .content(content).build());
-        return "redirect:/board/view/" + articleId;
+        return "redirect:/board/articles/" + articleId;
     }
 
-    @DeleteMapping("/article/delete/{articleId}")
+    @DeleteMapping("/articles/{articleId}")
     @BoardCheck
     public String deleteArticle(@PathVariable long articleId, String writerId) {
         List<CommentDto> allComments = boardService.findCommentsByArticleId(articleId);
@@ -80,20 +101,14 @@ public class BoardController {
 
         boardService.deleteCommentByArticleId(articleId);
         boardService.deleteArticle(articleId);
-        return "redirect:/board/list";
+        return "redirect:/board/articles";
     }
 
-    @PostMapping("/comment/write")
-    @ResponseBody
-    public ResponseEntity<CommentDto> writeComment(@RequestBody CommentDto commentDto) {
-        return ResponseEntity.ok(boardService.writeComment(commentDto.getArticleId(), commentDto));
-    }
-
-    @DeleteMapping("/comment/delete/{articleId}/{commentId}")
+    @DeleteMapping("/articles/{articleId}/comments/{commentId}")
     @BoardCheck(type = BoardCheck.Type.COMMENT)
     @ResponseBody
     public ResponseEntity<Object> deleteComment(@PathVariable("articleId") long articleId,
-                                @PathVariable("commentId") long commentId) {
+                                                @PathVariable("commentId") long commentId) {
         boardService.deleteComment(articleId, commentId);
 
         return ResponseEntity.ok().build();

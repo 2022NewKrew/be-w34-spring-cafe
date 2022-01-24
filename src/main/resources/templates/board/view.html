@@ -4,10 +4,10 @@
         <h2 class="card-title m-3 text-center">글 조회</h2>
         {{#article}}
         <div class="mt-1 mb-1 float-end">
-            <form action="/board/article/delete/{{articleId}}" method="post">
+            <form action="/board/articles/{{articleId}}" method="post">
                 <input name="_method" type="hidden" value="delete"/>
                 <input name="writerId" type="hidden" value="{{writerId}}"/>
-                <button class="btn btn-dark" onclick="location.href='/board/article/modify/{{articleId}}'" type="button">수정
+                <button class="btn btn-dark" onclick="location.href='/board/articles/{{articleId}}/edit'" type="button">수정
                 </button>
                 <button class="btn btn-dark" type="submit">삭제</button>
             </form>
