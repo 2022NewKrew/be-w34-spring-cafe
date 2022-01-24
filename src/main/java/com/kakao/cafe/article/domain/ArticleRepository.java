@@ -1,7 +1,5 @@
 package com.kakao.cafe.article.domain;
 
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 public interface ArticleRepository {

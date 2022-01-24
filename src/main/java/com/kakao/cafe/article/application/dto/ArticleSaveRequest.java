@@ -1,7 +1,6 @@
 package com.kakao.cafe.article.application.dto;
 
 import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 

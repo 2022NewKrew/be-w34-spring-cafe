@@ -17,6 +17,7 @@ public class ArticleShowResponse {
     public final String content;
     public final String createdAt;
     public final List<CommentListResponse> comments;
+    public final int commentCount;
 
     public static ArticleShowResponse valueOf(Article article, List<CommentListResponse> commentListResponses) {
         User author = article.getAuthor();
@@ -28,6 +29,7 @@ public class ArticleShowResponse {
                 .content(article.getContent())
                 .createdAt(article.getCreatedAt())
                 .comments(commentListResponses)
+                .commentCount(commentListResponses.size())
                 .build();
     }
 }

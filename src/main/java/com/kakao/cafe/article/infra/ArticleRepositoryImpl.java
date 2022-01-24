@@ -2,7 +2,6 @@ package com.kakao.cafe.article.infra;
 
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.domain.ArticleRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;

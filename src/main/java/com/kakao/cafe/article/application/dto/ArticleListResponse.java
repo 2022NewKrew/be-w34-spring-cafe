@@ -12,8 +12,9 @@ public class ArticleListResponse {
     public final String authorName;
     public final String title;
     public final String createdAt;
+    public final int commentCount;
 
-    public static ArticleListResponse valueOf(Article article) {
+    public static ArticleListResponse valueOf(Article article, int commentCount) {
         User author = article.getAuthor();
         return ArticleListResponse.builder()
                 .articleId(article.getId())
@@ -21,6 +22,7 @@ public class ArticleListResponse {
                 .authorName(author.getName())
                 .title(article.getTitle())
                 .createdAt(article.getCreatedAt())
+                .commentCount(commentCount)
                 .build();
     }
 }
