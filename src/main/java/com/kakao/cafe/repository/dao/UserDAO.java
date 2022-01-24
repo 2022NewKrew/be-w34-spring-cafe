@@ -1,13 +1,11 @@
 package com.kakao.cafe.repository.dao;
 
-import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.user.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,8 +14,8 @@ public class UserDAO {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public UserDAO(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public UserDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public void create(User user) {

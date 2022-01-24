@@ -14,19 +14,19 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
+    public ArticleService(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
+
     public ArticleResponseDTO articleResponseDTOFromArticle(Article article){
         return ArticleResponseDTO.builder()
                 .id(article.getId())
                 .title(article.getTitle())
-                .content(article.getTitle())
+                .content(article.getContent())
                 .createUserId(article.getCreateUserId())
                 .createDate(article.getCreateDate())
                 .views(article.getViews())
                 .build();
-    }
-
-    public ArticleService(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
     }
 
     public void createArticle(ArticleDTO articleDTO) {
