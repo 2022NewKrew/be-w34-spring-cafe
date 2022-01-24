@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>users</title>
+</head>
+<body>
+
+{{ #users }}
+    <p>
+        <a href="/user/{{ id }}"> {{ uid }} </a>
+    </p>
+{{ /users }}
+
+<a href="/" role="button" class="btn btn-primary">홈으로</a>
+<a href="/user/signup" role="button" class="btn btn-primary">회원가입</a>
+
+</body>
+</html>
