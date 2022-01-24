@@ -1,7 +1,6 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.SampleArticleForm;
-import com.kakao.cafe.repository.MemoryArticle;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
