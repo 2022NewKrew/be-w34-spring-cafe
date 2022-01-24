@@ -2,7 +2,6 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.exception.LoginException;
-import com.kakao.cafe.exception.UpdateForbiddenException;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.util.Constant;
 import com.kakao.cafe.util.ErrorMessage;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpSession;
 
 
@@ -32,15 +32,15 @@ public class UserController {
     public String viewUserList(Model model) {
         log.info("viewUserList");
         model.addAttribute("users", userService.findUsers());
-        return "/users/list";
+        return "users/list";
     }
 
     @GetMapping("/{userId}/updateForm")
-    public String updateForm(@PathVariable Long userId, Model model, HttpSession session) throws UpdateForbiddenException {
+    public String updateForm(@PathVariable Long userId, Model model, HttpSession session) throws AuthenticationException {
         User user = userService.findOne(userId);
         User sessionUser = (User) session.getAttribute(Constant.LOGIN_SESSION);
         if (sessionUser == null) {
-            throw new UpdateForbiddenException(ErrorMessage.UPDATE_NON_LOGIN.getMsg());
+            throw new AuthenticationException(ErrorMessage.NO_AUTH.getMsg());
         }
 
         if (sessionUser.getUserId().equals(userId)) {
@@ -49,9 +49,9 @@ public class UserController {
             model.addAttribute("email", user.getEmail());
             model.addAttribute("password", user.getPassword());
 
-            return "/users/updateForm";
+            return "users/updateForm";
         }
-        throw new UpdateForbiddenException(ErrorMessage.UPDATE_FORBIDDEN.getMsg());
+        throw new AuthenticationException(ErrorMessage.USER_PROFILE_UPDATE_FORBIDDEN.getMsg());
     }
 
     @PutMapping("/{userId}/updateForm")
@@ -78,7 +78,7 @@ public class UserController {
     @GetMapping("/profile/{userId}")
     public String profile(@PathVariable Long userId, Model model) {
         model.addAttribute("user", userService.findOne(userId));
-        return "/users/profile";
+        return "users/profile";
     }
 
     @GetMapping("/logout")

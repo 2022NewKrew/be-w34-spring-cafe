@@ -1,19 +1,15 @@
 package com.kakao.cafe.domain.article;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
+@Data
 public class Article {
-    private Long index;
+    private Long articleId;
     private String title;
     private String content;
     private String date;
     private String writer;
     private Long writerId;
     private Long view;
-    private boolean deleted = false;
+    private Boolean deleted = false;
 }

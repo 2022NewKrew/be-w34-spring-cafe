@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.repository.RepositoryInterface;
+import com.kakao.cafe.util.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -30,6 +31,12 @@ public class ArticleService {
             return article.get();
         }
         throw new IllegalStateException("not valid index");
+    }
+
+    public void checkWriterByLoginUserid(Article article, Long userId) {
+        if (!userId.equals(article.getWriterId())) {
+            throw new IllegalStateException(ErrorMessage.ARTICLE_FORBIDDEN.getMsg());
+        }
     }
 
     public int numOfArticles() {
