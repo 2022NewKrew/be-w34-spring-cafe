@@ -1,12 +1,7 @@
 package com.kakao.cafe.user.repository;
 
-import com.kakao.cafe.exception.CustomEmptyDataAccessException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.Users;
-import com.kakao.cafe.user.exception.CustomDuplicateUserException;
-import com.kakao.cafe.user.exception.CustomLoginFailException;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -23,17 +18,13 @@ public class UserH2Repository implements UserRepository {
 
     public void save(User user) {
         String sql = "INSERT INTO users (user_id, password, name, email) values (?, ?, ?, ?)";
-        try {
-            jdbcTemplate.update(
-                sql,
-                user.getUserId(),
-                user.getPassword(),
-                user.getName(),
-                user.getEmail()
-            );
-        } catch (DuplicateKeyException e) {
-            throw new CustomDuplicateUserException(e);
-        }
+        jdbcTemplate.update(
+            sql,
+            user.getUserId(),
+            user.getPassword(),
+            user.getName(),
+            user.getEmail()
+        );
     }
 
     public Users findAll() {
@@ -43,21 +34,13 @@ public class UserH2Repository implements UserRepository {
 
     public User findById(String userId) {
         String sql = "SELECT * FROM users WHERE user_id = ?";
-        try {
-            return jdbcTemplate.queryForObject(sql, userRowMapper, userId);
-        } catch (EmptyResultDataAccessException e) {
-            throw new CustomEmptyDataAccessException(e);
-        }
+        return jdbcTemplate.queryForObject(sql, userRowMapper, userId);
     }
 
     @Override
     public User findByIdAndPassword(String userId, String password) {
         String sql = "SELECT * FROM users WHERE user_id = ? AND password = ?";
-        try {
-            return jdbcTemplate.queryForObject(sql, userRowMapper, userId, password);
-        } catch (EmptyResultDataAccessException e) {
-            throw new CustomLoginFailException();
-        }
+        return jdbcTemplate.queryForObject(sql, userRowMapper, userId, password);
     }
 
     private RowMapper<User> getUserMapper() {

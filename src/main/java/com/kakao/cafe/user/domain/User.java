@@ -1,7 +1,5 @@
 package com.kakao.cafe.user.domain;
 
-import com.kakao.cafe.user.exception.CustomLoginFailException;
-
 public class User {
 
     private final String userId;
@@ -14,12 +12,6 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
-    }
-
-    public void validatePassword(String inputPassword) {
-        if (!password.equals(inputPassword)) {
-            throw new CustomLoginFailException();
-        }
     }
 
     public String getUserId() {
