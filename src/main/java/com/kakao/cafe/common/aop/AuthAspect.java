@@ -36,12 +36,10 @@ public class AuthAspect {
         try {
             Auth auth = getAuth(joinPoint);
 
-            if (auth.role() == Auth.Role.ADMIN) {
-                LoginUser user = getLoginUser();
+            LoginUser user = getLoginUser();
 
-                if (user == null || user.getRole() != UserStatus.ADMIN) {
-                    throw new BaseException("권한 없는 사용자가 접근했습니다.");
-                }
+            if (user == null || user.getRole() != UserStatus.ADMIN) {
+                throw new BaseException("권한 없는 사용자가 접근했습니다.");
             }
 
             return joinPoint.proceed();

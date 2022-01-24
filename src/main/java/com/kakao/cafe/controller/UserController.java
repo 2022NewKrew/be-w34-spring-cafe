@@ -95,14 +95,14 @@ public class UserController {
 
     @Auth(role = Role.ADMIN)
     @GetMapping("/{id}/update")
-    public String viewUserUpdateForm(@PathVariable("id") Long id, Model model) {
+    public String viewUserAdminUpdateForm(@PathVariable("id") Long id, Model model) {
 
         User user = userService.findOne(id);
         UserDto userDto = modelMapper.map(user, UserDto.class);
 
         model.addAttribute("user", userDto);
 
-        return "user/update_form";
+        return "user/update_admin_form";
     }
 
     @PostMapping("/updateAuth")
