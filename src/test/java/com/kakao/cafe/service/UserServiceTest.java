@@ -1,43 +1,30 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.user.JdbcUserRepository;
-import com.kakao.cafe.domain.user.MemoryUserRepository;
-import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.dto.user.CreateUserDto;
+import com.kakao.cafe.dto.user.LoginDto;
 import com.kakao.cafe.dto.user.ShowUserDto;
 import com.kakao.cafe.dto.user.UpdateUserDto;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.kakao.cafe.util.exception.NotFoundException;
+import com.kakao.cafe.util.exception.UnAuthorizedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Transactional
+@SpringBootTest
 class UserServiceTest {
 
+    @Autowired
     UserService userService;
-    MemoryUserRepository userRepository;
-
-    @BeforeEach
-    void setUp(){
-        userRepository = new MemoryUserRepository();
-        userService = new UserService(userRepository);
-    }
-
-    @AfterEach
-    void tearDown(){
-        userRepository.clear();
-    }
 
     @Test
     @DisplayName("회원 가입 성공")
@@ -52,7 +39,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("아이디 중복 시 회원가입 실패")
-    void duplicateUserId(){
+    void duplicateUserId() {
         CreateUserDto createUser1 = userBuilder("test");
         CreateUserDto createUser2 = userBuilder("test");
 
@@ -70,9 +57,11 @@ class UserServiceTest {
 
         userList.forEach(user -> userService.join(user));
 
-        List<ShowUserDto> allUser = userService.findAllUser();
+        List<String> findAllUserId = userService.findAllUser().stream()
+                .map(ShowUserDto::getUserId)
+                .collect(Collectors.toList());
 
-        assertThat(userList.size()).isEqualTo(allUser.size());
+        userList.forEach(user -> assertThat(findAllUserId).contains(user.getUserId()));
     }
 
     @Test
@@ -87,14 +76,14 @@ class UserServiceTest {
                 .email("test2@test.com")
                 .build();
 
-        ShowUserDto user = userService.editProfile(userDto.getUserId(), updateUserDto);
+        ShowUserDto user = userService.updateProfile(userDto.getUserId(), updateUserDto);
         assertThat(user.getName()).isEqualTo(updateUserDto.getName());
         assertThat(user.getEmail()).isEqualTo(updateUserDto.getEmail());
     }
 
     @Test
     @DisplayName("현재 비밀번호가 맞지 않으면 수정 실패")
-    void failEditByWrongPassword(){
+    void failEditByWrongPassword() {
         CreateUserDto userDto = userBuilder("test");
         userService.join(userDto);
         UpdateUserDto updateUserDto = UpdateUserDto.builder()
@@ -103,10 +92,49 @@ class UserServiceTest {
                 .email("test2@test.com")
                 .build();
 
-        assertThrows(IllegalArgumentException.class, () -> userService.editProfile(userDto.getUserId(), updateUserDto));
+        assertThrows(UnAuthorizedException.class, () -> userService.updateProfile(userDto.getUserId(), updateUserDto));
     }
 
-    private CreateUserDto userBuilder(String userId){
+    @Test
+    @DisplayName("로그인 성공")
+    void successLogin() {
+        CreateUserDto user = userBuilder("test");
+        userService.join(user);
+
+        LoginDto loginDto = new LoginDto();
+        loginDto.setUserId(user.getUserId());
+        loginDto.setPassword(user.getPassword());
+        ShowUserDto loginUser = userService.login(loginDto);
+
+        assertThat(loginUser.getName()).isEqualTo(user.getName());
+        assertThat(loginUser.getEmail()).isEqualTo(user.getEmail());
+    }
+
+    @Test
+    @DisplayName("로그인 실패 - 아이디 오류")
+    void notFoundByUserId() {
+        CreateUserDto user = userBuilder("test");
+        userService.join(user);
+
+        LoginDto loginDto = new LoginDto();
+        loginDto.setUserId("test2");
+        loginDto.setPassword(user.getPassword());
+        assertThrows(NotFoundException.class, () -> userService.login(loginDto));
+    }
+
+    @Test
+    @DisplayName("로그인 실패 - 비밀번호 오류")
+    void incorrectPassword() {
+        CreateUserDto user = userBuilder("test");
+        userService.join(user);
+
+        LoginDto loginDto = new LoginDto();
+        loginDto.setUserId(user.getUserId());
+        loginDto.setPassword("wrongPassword");
+        assertThrows(UnAuthorizedException.class, () -> userService.login(loginDto));
+    }
+
+    private CreateUserDto userBuilder(String userId) {
         return CreateUserDto.builder()
                 .userId(userId)
                 .password("1234")

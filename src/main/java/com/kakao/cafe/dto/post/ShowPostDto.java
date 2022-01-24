@@ -1,13 +1,11 @@
 package com.kakao.cafe.dto.post;
 
 import com.kakao.cafe.domain.post.Post;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.format.DateTimeFormatter;
 
-@Getter
-@Setter
+@Data
 public class ShowPostDto {
     private Long id;
     private String title;
@@ -21,16 +19,5 @@ public class ShowPostDto {
         content = post.getContent();
         writer = post.getWriter();
         regDateTime = post.getRegDateTime().format(DateTimeFormatter.ofPattern("[yyyy-MM-dd] HH:mm:ss"));
-    }
-
-    @Override
-    public String toString() {
-        return "ShowPostDto{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", writer='" + writer + '\'' +
-                ", regDateTime='" + regDateTime + '\'' +
-                '}';
     }
 }

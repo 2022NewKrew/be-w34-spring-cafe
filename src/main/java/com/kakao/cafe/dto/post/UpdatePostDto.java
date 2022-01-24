@@ -13,14 +13,10 @@ public class UpdatePostDto {
     private String title;
     @NotNull
     private String content;
-    private String writer;
 
     @Builder
-    public UpdatePostDto(String title, String content, String writer) {
+    public UpdatePostDto(String title, String content) {
         this.title = title;
         this.content = content;
-        this.writer = writer;
     }
-
-
 }

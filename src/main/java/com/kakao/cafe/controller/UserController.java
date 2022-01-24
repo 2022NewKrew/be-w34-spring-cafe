@@ -5,7 +5,7 @@ import com.kakao.cafe.dto.user.LoginDto;
 import com.kakao.cafe.dto.user.ShowUserDto;
 import com.kakao.cafe.dto.user.UpdateUserDto;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.util.exception.ForbiddenException;
+import com.kakao.cafe.util.consts.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,20 +49,15 @@ public class UserController {
         return "users/profile";
     }
 
-    @GetMapping("/users/{userId}/form")
-    public String userUpdateForm(@PathVariable String userId, Model model, HttpSession session) {
-        ShowUserDto sessionUser = (ShowUserDto) session.getAttribute("sessionUser");
-        if (sessionUser == null || !sessionUser.getUserId().equals(userId)) {
-            throw new ForbiddenException("접근 권한이 없는 사용자 입니다.");
-        }
-
-        model.addAttribute("user", sessionUser);
+    @GetMapping("/users/me/form")
+    public String updateUserForm(Model model, @SessionAttribute(name = SessionConst.LOGIN_USER, required = false) ShowUserDto loginUser) {
+        model.addAttribute("user", loginUser);
         return "users/editForm";
     }
 
     @PutMapping("/users/{userId}")
-    public String userUpdate(@PathVariable String userId, @ModelAttribute @Validated UpdateUserDto updateUserDto) {
-        ShowUserDto editUser = userService.editProfile(userId, updateUserDto);
+    public String updateUser(@PathVariable String userId, @ModelAttribute @Validated UpdateUserDto updateUserDto) {
+        ShowUserDto editUser = userService.updateProfile(userId, updateUserDto);
         log.info("Update User - {}", editUser);
         return "redirect:/users";
     }
@@ -70,8 +65,14 @@ public class UserController {
     @PostMapping("/login")
     public String login(@ModelAttribute LoginDto loginDto, HttpSession session) {
         ShowUserDto loginUser = userService.login(loginDto);
-        session.setAttribute("sessionUser", loginUser);
+        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
         return "redirect:/";
     }
 }

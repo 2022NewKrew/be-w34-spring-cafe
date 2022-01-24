@@ -1,13 +1,11 @@
 package com.kakao.cafe.dto.user;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter
-@Setter
+@Data
 public class CreateUserDto {
     @NotBlank(message = "아이디를 입력하세요")
     private String userId;
@@ -27,15 +25,5 @@ public class CreateUserDto {
         this.password = password;
         this.name = name;
         this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return "CreateUserDto{" +
-                "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 }

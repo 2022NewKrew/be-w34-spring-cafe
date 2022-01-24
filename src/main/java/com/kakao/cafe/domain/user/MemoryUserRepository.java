@@ -7,14 +7,12 @@ public class MemoryUserRepository implements UserRepository {
     private static final Map<String, User> userStore = new HashMap<>();
 
     @Override
-    public void save(User user) {
-        user.setId((long) userStore.size() + 1);
+    public void insert(User user) {
         userStore.put(user.getUserId(), user);
     }
 
     @Override
-    public User edit(String userId, User user) {
-        user.setId(userStore.get(userId).getId());
+    public User update(String userId, User user) {
         userStore.put(userId, user);
         return user;
     }

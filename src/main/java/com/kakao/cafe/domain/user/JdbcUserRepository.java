@@ -15,7 +15,7 @@ public class JdbcUserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void save(User user) {
+    public void insert(User user) {
         String sql = "INSERT INTO `USER` (userId, password, name, email) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
 
@@ -23,7 +23,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public User edit(String userId, User user) {
+    public User update(String userId, User user) {
         String sql = "UPDATE `USER` SET password=?, name=?, email=? WHERE userId=?";
         jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getEmail(), userId);
         return user;

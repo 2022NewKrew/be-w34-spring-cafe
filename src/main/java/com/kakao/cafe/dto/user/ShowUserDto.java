@@ -1,11 +1,9 @@
 package com.kakao.cafe.dto.user;
 
 import com.kakao.cafe.domain.user.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class ShowUserDto {
     private String userId;
     private String email;
@@ -17,12 +15,4 @@ public class ShowUserDto {
         name = user.getName();
     }
 
-    @Override
-    public String toString() {
-        return "ShowUserDto{" +
-                "userId='" + userId + '\'' +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

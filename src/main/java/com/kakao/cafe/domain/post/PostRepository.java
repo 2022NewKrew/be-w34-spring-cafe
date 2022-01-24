@@ -4,13 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository {
-    void save(Post post);
+    Post insert(Post post);
 
-    List<Post> findAll();
+    List<Post> findAll(int pageNumber);
 
     Optional<Post> findById(Long id);
 
-    Post edit(Long id, Post post);
+    Post update(Long id, Post post);
 
     void remove(Long id);
+
+    int count();
 }

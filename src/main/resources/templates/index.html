@@ -9,7 +9,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="/css/index.css" rel="stylesheet">
+    <link href="/css/index.css?version=v1" rel="stylesheet">
     {{#success}}
     <script>alert("{{successMessage}}")</script>
     {{/success}}
@@ -43,6 +43,17 @@
                     {{/posts}}
                     </tbody>
                 </table>
+            </div>
+            <div class="page_wrap">
+                {{#page}}
+                <div class="page_nation">
+                    <a class="arrow prev" href="/?pageNumber={{prevPage}}">&lt;</a>
+                        {{#pageList}}
+                            <a href="/?pageNumber={{.}}">{{.}}</a>
+                        {{/pageList}}
+                    <a class="arrow next" href="/?pageNumber={{nextPage}}">&gt;</a>
+                </div>
+                {{/page}}
             </div>
         </div>
     </div>

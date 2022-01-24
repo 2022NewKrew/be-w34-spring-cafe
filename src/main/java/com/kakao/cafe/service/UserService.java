@@ -35,7 +35,7 @@ public class UserService {
                 .email(createUserDto.getEmail())
                 .build();
 
-        userRepository.save(user);
+        userRepository.insert(user);
     }
 
     public ShowUserDto findProfile(String userId) {
@@ -45,7 +45,7 @@ public class UserService {
         return new ShowUserDto(user);
     }
 
-    public ShowUserDto editProfile(String userId, UpdateUserDto userDto) {
+    public ShowUserDto updateProfile(String userId, UpdateUserDto userDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("등록되지 않은 사용자 입니다."));
 
@@ -62,7 +62,7 @@ public class UserService {
                 .email(userDto.getEmail())
                 .build();
 
-        return new ShowUserDto(userRepository.edit(userId, editUser));
+        return new ShowUserDto(userRepository.update(userId, editUser));
 
     }
 
