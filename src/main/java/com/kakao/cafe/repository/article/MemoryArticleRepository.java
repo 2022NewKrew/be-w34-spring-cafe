@@ -46,6 +46,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public Optional<String> findUserNicknameById(Long userId) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<Article> findAll() {
         return store;
     }

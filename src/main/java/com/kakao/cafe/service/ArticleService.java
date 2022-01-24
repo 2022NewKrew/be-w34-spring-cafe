@@ -1,8 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.dto.article.ArticleCreationDTO;
-import com.kakao.cafe.dto.article.ArticleDTO;
+import com.kakao.cafe.dto.article.ArticleCreationDto;
+import com.kakao.cafe.dto.article.ArticleDto;
 import com.kakao.cafe.repository.article.ArticleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,14 @@ public class ArticleService {
         this.modelMapper = modelMapper;
     }
 
-    public long post(ArticleCreationDTO dto) {
+    public long post(ArticleCreationDto dto) {
         Article newArticle = new Article(dto);
         newArticle = articleRepository.save(newArticle);
 
         return newArticle.getId();
     }
 
-    public long update(long id, long sessionUid, ArticleCreationDTO dto) throws Exception {
+    public long update(long id, long sessionUid, ArticleCreationDto dto) throws Exception {
         var article = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         validateAuth(sessionUid, article.getUserId());
@@ -48,21 +48,21 @@ public class ArticleService {
         articleRepository.delete(id);
     }
 
-    public List<ArticleDTO> getAllArticles() {
+    public List<ArticleDto> getAllArticles() {
         return articleRepository.findAll().stream()
-                .map(m -> modelMapper.map(m, ArticleDTO.class))
+                .map(m -> modelMapper.map(m, ArticleDto.class))
                 .collect(Collectors.toList());
     }
 
-    public ArticleDTO getById(long id) {
+    public ArticleDto getById(long id) {
         return articleRepository.findById(id)
-                .map(m -> modelMapper.map(m, ArticleDTO.class))
+                .map(m -> modelMapper.map(m, ArticleDto.class))
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
     }
 
-    public long getUidById(long id) {
-        return articleRepository.findUidById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+    public String findNicknameById(long id) {
+        return articleRepository.findUserNicknameById(id)
+                .orElse("탈퇴한 사용자");
     }
 
     private void validateAuth(long articleUid, long sessionUid) throws IllegalAccessException {

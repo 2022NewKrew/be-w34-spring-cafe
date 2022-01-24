@@ -16,5 +16,7 @@ public interface ArticleRepository {
 
     Optional<Long> findUidById(Long id);
 
+    Optional<String> findUserNicknameById(Long userId);
+
     List<Article> findAll();
 }

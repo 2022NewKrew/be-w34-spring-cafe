@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.user.UserCreationDTO;
-import com.kakao.cafe.dto.user.UserDTO;
+import com.kakao.cafe.dto.user.UserCreationDto;
+import com.kakao.cafe.dto.user.UserDto;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.util.SessionIdRequired;
 import com.kakao.cafe.util.Url;
@@ -14,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String createUser(@Valid UserCreationDTO userCreationDTO,
+    public String createUser(@Valid UserCreationDto userCreationDTO,
                              Errors errors) {
         validateParams(errors);
         userService.join(userCreationDTO);
@@ -55,8 +56,8 @@ public class UserController {
     }
 
     @SessionIdRequired
-    @PostMapping("/users/profile")
-    public String updateUserProfile(@Valid UserCreationDTO dto,
+    @PutMapping("/users/profile")
+    public String updateUserProfile(@Valid UserCreationDto dto,
                                     Errors errors,
                                     HttpSession session) throws Exception {
         validateParams(errors);
@@ -97,7 +98,7 @@ public class UserController {
         return "redirect:" + Url.USER_LOGIN;
     }
 
-    private UserDTO getUserById(Long id) {
+    private UserDto getUserById(Long id) {
         return userService.findById(id);
     }
 

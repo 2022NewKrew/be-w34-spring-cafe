@@ -1,9 +1,10 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.article.ArticleCreationDTO;
-import com.kakao.cafe.dto.article.ArticleDTO;
+import com.kakao.cafe.dto.article.ArticleCreationDto;
+import com.kakao.cafe.dto.article.ArticleDto;
+import com.kakao.cafe.dto.reply.ReplyDto;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.util.SessionIdRequired;
 import com.kakao.cafe.util.Url;
 import com.kakao.cafe.util.View;
@@ -11,10 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -25,12 +23,12 @@ import java.util.stream.Collectors;
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final UserService userService;
+    private final ReplyService replyService;
 
     @Autowired
-    public ArticleController(ArticleService articleService, UserService userService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
-        this.userService = userService;
+        this.replyService = replyService;
     }
 
     @GetMapping("/articles")
@@ -51,7 +49,7 @@ public class ArticleController {
 
     @SessionIdRequired
     @PostMapping("/articles")
-    public String createArticle(ArticleCreationDTO dto, HttpSession session) {
+    public String createArticle(ArticleCreationDto dto, HttpSession session) {
         long userId = (long) session.getAttribute("sessionedUserId");
         dto.setUserId(userId);
         long id = articleService.post(dto);
@@ -62,14 +60,20 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String getArticlePage(@PathVariable long id, HttpSession session, Model model) {
         var article = setAuthorNickname(articleService.getById(id));
+        var replyList = replyService.findAllReplyByArticleId(id);
+        replyList = replyList.stream()
+                .map(reply -> getCompleteDto(session, reply))
+                .collect(Collectors.toList());
         model.addAttribute("article", article);
-        addAtributesIfUidEqualToArticleUid(session, article, model);
+        model.addAttribute("canEdit", canEdit(session, article.getUserId()));
+        model.addAttribute("replyList", replyList);
+        model.addAttribute("replyListSize", replyList.size());
         return View.ARTICLES_SHOW;
     }
 
     @SessionIdRequired
-    @PostMapping("/articles/{id}")
-    public String updateArticle(@PathVariable long id, HttpSession session, ArticleCreationDTO dto) throws Exception {
+    @PutMapping("/articles/{id}")
+    public String updateArticle(@PathVariable long id, HttpSession session, ArticleCreationDto dto) throws Exception {
         long uid = (long) session.getAttribute("sessionedUserId");
         articleService.update(id, uid, dto);
         return "redirect:/articles/" + id;
@@ -88,19 +92,39 @@ public class ArticleController {
     public String deleteArticle(@PathVariable long id, HttpSession session) throws Exception {
         long sessionUid = (long) session.getAttribute("sessionedUserId");
         articleService.delete(id, sessionUid);
+        replyService.deleteByArticleId(id);
         return "redirect:" + Url.ARTICLES;
     }
 
-    private ArticleDTO setAuthorNickname(ArticleDTO article) {
+    @SessionIdRequired
+    @PostMapping("/articles/{articleId}/replies")
+    public String postReply(@PathVariable long articleId, String comments, HttpSession session) {
+        long sessionUid = (long) session.getAttribute("sessionedUserId");
+        replyService.create(sessionUid, articleId, comments);
+        return "redirect:/articles/" + articleId;
+    }
+
+    @SessionIdRequired
+    @DeleteMapping("/articles/{articleId}/replies/{id}")
+    public String deleteReply(@PathVariable long articleId, @PathVariable long id, HttpSession session) {
+        replyService.delete(id);
+        return "redirect:/articles/" +articleId;
+    }
+
+    private ArticleDto setAuthorNickname(ArticleDto article) {
         long authorId = article.getUserId();
-        article.setAuthor(userService.findNicknameById(authorId));
+        article.setAuthor(articleService.findNicknameById(authorId));
         return article;
     }
 
-    private void addAtributesIfUidEqualToArticleUid(HttpSession session, ArticleDTO article, Model model) {
+    private ReplyDto getCompleteDto(HttpSession session, ReplyDto reply) {
+        reply.setCanEdit(canEdit(session, reply.getUserId()));
+        reply.setNickname(replyService.findUserNicknameById(reply.getId()));
+        return reply;
+    }
+
+    private boolean canEdit(HttpSession session, long userId) {
         long uid = (long) session.getAttribute("sessionedUserId");
-        if (uid == article.getUserId()) {
-            model.addAttribute("canEdit", true);
-        }
+        return uid == userId;
     }
 }

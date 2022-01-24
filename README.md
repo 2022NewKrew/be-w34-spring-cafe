@@ -161,8 +161,8 @@ Spring + mustache 템플릿 엔진을 사용하여 MVC 디자인패턴으로 설
 2. jdbcTemplate을 사용하여 테이블에 insert 및 update를 수행했을 때, keyholer를 사용하여 id값을 리턴하도록 수정
 3. 게시글 업데이트, 삭제 기능 구현
 4. 각각의 메서드에서 수행하던 예외 처리를 ControllerAdvice 를 사용하여 처리
-5. DB는 아직 H2 사용
+5. DB 로컬 H2 -> Krane mysql 연결
+   - H2 미사용으로 SpringJdbcConfig 클래스 삭제
 
 ### 구현 필요 사항
-1. 서버 MySQL 연동 및 DB MySQL로 변경 작업 필요
-2. 테스트코드는 2-3까지 구현 후 작성 예정!
+1. 테스트코드는 2-3까지 구현 후 작성 예정!

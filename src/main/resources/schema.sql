@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS `USER`;
 DROP TABLE IF EXISTS `ARTICLE`;
-
+DROP TABLE IF EXISTS `REPLY`;
 
 CREATE TABLE IF NOT EXISTS `USER`
 (
@@ -20,5 +20,15 @@ CREATE TABLE IF NOT EXISTS `ARTICLE`
     body      TEXT        NOT NULL,
     createdAt DATETIME,
     views     INT DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS `REPLY`
+(
+    id        BIGINT AUTO_INCREMENT,
+    userId    BIGINT       NOT NULL,
+    articleId BIGINT       NOT NULL,
+    comments  VARCHAR(255) NOT NULL,
+    createdAt DATETIME,
     PRIMARY KEY (id)
 );

@@ -1,11 +1,10 @@
 package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.util.ArticleRowMapper;
-import com.kakao.cafe.util.Sql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -34,13 +33,14 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
+        final String INSERT_ARTICLE = "INSERT INTO `ARTICLE`(userId, title, body, createdAt) VALUES(:userId, :title, :body, :createdAt)";
         SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(article);
 
         if (findById(article.getId()).isPresent()) {
             return update(article, namedParameters);
         }
 
-        namedParameterJdbcTemplate.update(Sql.INSERT_ARTICLE, namedParameters, keyHolder, new String[]{"id"});
+        namedParameterJdbcTemplate.update(INSERT_ARTICLE, namedParameters, keyHolder, new String[]{"id"});
         long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         article.setId(id);
         return article;
@@ -48,30 +48,46 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Long delete(Long id) {
+        final String DELETE_ARTICLE = "DELETE FROM `ARTICLE` where id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
-        namedParameterJdbcTemplate.update(Sql.DELETE_ARTICLE, namedParameters);
+        namedParameterJdbcTemplate.update(DELETE_ARTICLE, namedParameters);
         return id;
     }
 
     @Override
     public Article increaseViewCount(Article article) {
+        final String UPDATE_ARTICLE_VIEW = "UPDATE `ARTICLE` SET views=:views WHERE id=:id";
         SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(article);
-        namedParameterJdbcTemplate.update(Sql.UPDATE_ARTICLE_VIEW, namedParameters);
+        namedParameterJdbcTemplate.update(UPDATE_ARTICLE_VIEW, namedParameters);
         return article;
     }
 
     @Override
     public Optional<Article> findById(Long id) {
+        final String FIND_ARTICLE_BY_ID = "SELECT * FROM `ARTICLE` WHERE id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
-        return selectArticleWhereCondition(Sql.FIND_ARTICLE_BY_ID, namedParameters);
+        return selectArticleWhereCondition(FIND_ARTICLE_BY_ID, namedParameters);
     }
 
     @Override
     public Optional<Long> findUidById(Long id) {
+        final String FIND_UID_BY_ID = "SELECT userId FROM `ARTICLE` WHERE id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
         try {
             return Optional.ofNullable(
-                    namedParameterJdbcTemplate.queryForObject(Sql.FIND_UID_BY_ID, namedParameters, Long.class));
+                    namedParameterJdbcTemplate.queryForObject(FIND_UID_BY_ID, namedParameters, Long.class));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<String> findUserNicknameById(Long id) {
+        final String FIND_NICKNAME_BY_USERID = "SELECT USER.nickname FROM `ARTICLE` JOIN `USER` ON USER.id = ARTICLE.userId WHERE ARTICLE.id = :id";
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", id);
+        try {
+            return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(
+                    FIND_NICKNAME_BY_USERID, namedParameters, String.class));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -79,20 +95,34 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query(Sql.FIND_ALL_ARTICLE, new ArticleRowMapper());
+        final String FIND_ALL_ARTICLE = "SELECT * FROM `ARTICLE`";
+        return jdbcTemplate.query(FIND_ALL_ARTICLE, articleRowMapper());
     }
 
     private Optional<Article> selectArticleWhereCondition(String sql, SqlParameterSource namedParameters) {
         try {
             return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(
-                    sql, namedParameters, new ArticleRowMapper()));
+                    sql, namedParameters, articleRowMapper()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
     private Article update(Article article, SqlParameterSource namedParameters) {
-        namedParameterJdbcTemplate.update(Sql.UPDATE_ARTICLE, namedParameters);
+        final String UPDATE_ARTICLE = "UPDATE `ARTICLE` SET title=:title, body=:body WHERE id=:id";
+        namedParameterJdbcTemplate.update(UPDATE_ARTICLE, namedParameters);
         return article;
+    }
+
+    private RowMapper<Article> articleRowMapper() {
+        return (rs, rowNum) ->
+                Article.builder()
+                        .id(rs.getLong("id"))
+                        .userId(rs.getLong("userId"))
+                        .title(rs.getString("title"))
+                        .body(rs.getString("body"))
+                        .createdAt(rs.getTimestamp("createdAt").toLocalDateTime())
+                        .views(rs.getInt("views"))
+                        .build();
     }
 }

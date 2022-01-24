@@ -14,6 +14,7 @@
         {{/article}}
         {{#article}}
         <form class="submit-write" method="post" action="/articles/{{id}}">
+            <input type="hidden" name="_method" value="PUT" />
         {{/article}}
             <div class="text-box">
                 <div class="comment-writer-container">
@@ -38,7 +39,12 @@
                     <textarea class="form-control" id="body" name="body" placeholder="내용을 입력하세요">{{#article}}{{body}}{{/article}}</textarea>
                 </div>
             </div>
+            {{&article}}
             <input class="post-write-btn" type="submit" value="등록"/>
+            {{/article}}
+            {{#article}}
+            <input class="post-write-btn" type="submit" value="수정"/>
+            {{/article}}
         </form>
     </div>
 </div>

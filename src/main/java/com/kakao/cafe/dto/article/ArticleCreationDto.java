@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
-public class ArticleCreationDTO {
+public class ArticleCreationDto {
     private long userId;
     @NotEmpty(message="제목을 입력해주세요.")
     private String title;
