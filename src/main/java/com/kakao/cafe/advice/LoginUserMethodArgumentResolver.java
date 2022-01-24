@@ -17,17 +17,16 @@ import javax.servlet.http.HttpSession;
 public class LoginUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().equals(UserDto.UserSessionDto.class);
+        return parameter.getParameterType().isAssignableFrom(UserDto.UserSessionDto.class) && parameter.hasParameterAnnotation(LoginUser.class);
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         HttpSession session = request.getSession();
         UserDto.UserSessionDto userSessionDto = (UserDto.UserSessionDto) session.getAttribute("sessionedUser");
-        LoginUser loginUser = parameter.getParameterAnnotation(LoginUser.class);
 
-        if (loginUser == null || userSessionDto == null) {
+        if (userSessionDto == null) {
             throw new LoginUserNotFoundException();
         }
 

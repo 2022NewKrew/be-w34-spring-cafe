@@ -3,8 +3,6 @@ package com.kakao.cafe.domain;
 import com.kakao.cafe.exception.AlreadyDeletedQnaException;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 public class Qna {
 
@@ -20,7 +18,7 @@ public class Qna {
         this.title = title;
         this.contents = contents;
         this.deleted = false;
-        this.createdAt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.createdAt = LocalDateTime.now();
     }
 
     public Qna(Integer id, String writer, String title, String contents, LocalDateTime createdAt) {
