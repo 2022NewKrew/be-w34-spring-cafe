@@ -6,13 +6,13 @@ import static com.kakao.cafe.controller.Constant.PERMISSION_EXCEPTION_MESSAGE_UP
 import static com.kakao.cafe.controller.Constant.SESSION_USER_ID;
 
 import com.kakao.cafe.controller.Constant;
+import com.kakao.cafe.exception.IllegalPermissionException;
 import com.kakao.cafe.service.article.ArticleService;
 import com.kakao.cafe.service.article.dto.ArticleCreateDto;
 import com.kakao.cafe.service.article.dto.ArticleDto;
 import com.kakao.cafe.service.article.dto.ArticleUpdateDto;
 import com.kakao.cafe.service.reply.dto.ReplyDto;
 import java.util.List;
-import javax.naming.NoPermissionException;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,21 +24,31 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class ArticleController {
+
     private final ArticleService articleService;
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
+    @GetMapping("/questions/form")
+    public String postForm() {
+        return "qna/form";
+    }
+
     @GetMapping("/index/{page}")
     public String getIndexByPage(@PathVariable int page, Model model) {
+        int previousPage = page - 1;
+        int nextPage = page + 1;
+
         model.addAttribute("articles", articleService.getPartOfArticles(page, MAX_ARTICLES));
-        model.addAttribute("pages", articleService.getPages(MAX_ARTICLES, Constant.PAGE_LIMIT, page));
-        if (page - 1 >= 1) {
-            model.addAttribute("previousPage", page - 1);
+        model.addAttribute("pages",
+                articleService.getPages(MAX_ARTICLES, Constant.PAGE_LIMIT, page));
+        if (previousPage >= 1) {
+            model.addAttribute("previousPage", previousPage);
         }
-        if (articleService.getLastPageNumber(MAX_ARTICLES) >= page + 1) {
-            model.addAttribute("nextPage", page + 1);
+        if (articleService.getLastPageNumber(MAX_ARTICLES) >= nextPage) {
+            model.addAttribute("nextPage", nextPage);
         }
         return "index";
     }
@@ -60,14 +70,13 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/form")
-    public String showArticleForm(HttpSession session) throws NoPermissionException {
+    public String showArticleForm(HttpSession session) {
         checkLogin(session, PERMISSION_EXCEPTION_MESSAGE_ONLY_LOGIN_USER);
         return "qna/form";
     }
 
     @GetMapping("/articles/update")
-    public String showArticleUpdateForm(int id, HttpSession session, Model model)
-            throws NoPermissionException {
+    public String showArticleUpdateForm(int id, HttpSession session, Model model) {
         ArticleDto articleDto = articleService.findArticleById(id);
 
         checkLogin(session, PERMISSION_EXCEPTION_MESSAGE_ONLY_LOGIN_USER);
@@ -85,7 +94,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("/articles/delete")
-    public String deleteArticle(int id, HttpSession session) throws NoPermissionException {
+    public String deleteArticle(int id, HttpSession session) {
         checkLogin(session, PERMISSION_EXCEPTION_MESSAGE_ONLY_LOGIN_USER);
 
         String userId = (String) session.getAttribute(SESSION_USER_ID);
@@ -93,18 +102,18 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    private void checkLogin(HttpSession session, String errorMessage) throws NoPermissionException {
+    private void checkLogin(HttpSession session, String errorMessage) {
         String loginUserId = (String) session.getAttribute(SESSION_USER_ID);
         if (loginUserId == null) {
-            throw new NoPermissionException(errorMessage);
+            throw new IllegalPermissionException(errorMessage);
         }
     }
 
     private void checkUserId(HttpSession session, String userId, String errorMessage)
-            throws NoPermissionException {
+            throws IllegalPermissionException {
         String loginUserId = (String) session.getAttribute(SESSION_USER_ID);
         if (!userId.equals(loginUserId)) {
-            throw new NoPermissionException(errorMessage);
+            throw new IllegalPermissionException(errorMessage);
         }
     }
 }

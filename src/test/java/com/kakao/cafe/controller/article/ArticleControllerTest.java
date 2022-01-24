@@ -17,8 +17,6 @@ import com.kakao.cafe.service.article.ArticleService;
 import com.kakao.cafe.service.article.dto.ArticleCreateDto;
 import com.kakao.cafe.service.article.dto.ArticleDto;
 import com.kakao.cafe.service.article.dto.ArticleUpdateDto;
-import com.kakao.cafe.service.reply.ReplyService;
-import com.kakao.cafe.service.reply.dto.ReplyDto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.kakao.cafe.controller.UnexpectedException;
 import com.kakao.cafe.controller.advice.GlobalControllerAdvice;
 import com.kakao.cafe.controller.article.ArticleController;
-import javax.naming.NoPermissionException;
+import com.kakao.cafe.exception.IllegalPermissionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,10 +56,10 @@ class ArticleControllerAdviceTest {
                 .andReturn();
     }
 
-    @DisplayName("NoPermissionException 발생 시 UserControllerAdvice에 의해서 예외 처리")
+    @DisplayName("IllegalPermissionException 발생 시 UserControllerAdvice에 의해서 예외 처리")
     @Test
     void handlePermissionException() throws Exception {
-        doThrow(new NoPermissionException("Exception"))
+        doThrow(new IllegalPermissionException("Exception"))
                 .when(articleController).showArticleUpdateForm(anyInt(), any(), any());
         String paramQuery = "?id=1";
         mockMvc.perform(get("/articles/update" + paramQuery))

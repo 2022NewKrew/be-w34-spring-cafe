@@ -26,6 +26,10 @@ public class Reply {
         this(id, articleId, userId, comment, LocalDateTime.now(), false);
     }
 
+    public boolean isUserId(UserId userId) {
+        return this.userId.equals(userId);
+    }
+
     public int getId() {
         return id;
     }

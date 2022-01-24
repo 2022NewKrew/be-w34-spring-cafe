@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 public class Constant {
+
     //article
     public static final String ARTICLE_IS_NOT_EXIST = "찾는 게시물이 없습니다.";
     public static final String DELETE_ARTICLE_ONLY_WRITER = "작성자만 게시글을 삭제할 수 있습니다.";
@@ -14,5 +15,4 @@ public class Constant {
     public static final String USER_IS_NOT_EXIST = "찾는 사용자가 존재하지 않습니다.";
     public static final String ALREADY_EXIST_USER = "이미 존재하는 사용자입니다.";
     public static final String NOT_MATCH_PASSWORD = "비밀번호가 일치하지 않습니다.";
-
 }

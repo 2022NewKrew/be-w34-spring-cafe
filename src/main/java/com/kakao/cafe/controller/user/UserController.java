@@ -23,6 +23,21 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/")
+    public String startPage() {
+        return "redirect:/index/1";
+    }
+
+    @GetMapping("/users/form")
+    public String registerForm() {
+        return "user/form";
+    }
+
+    @GetMapping("/login/form")
+    public String loginForm() {
+        return "user/login";
+    }
+
     @GetMapping("/users")
     public String showUsers(Model model) {
         List<UserElementDto> userElementDtos = userService.getUsers();
