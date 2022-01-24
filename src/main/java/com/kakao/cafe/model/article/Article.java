@@ -31,6 +31,12 @@ public class Article {
         this(id, title, userId, contents, LocalDateTime.now(), false, new ArrayList<>());
     }
 
+    public boolean hasOnlyReplyByWriter() {
+        return replies
+                .stream()
+                .allMatch(reply -> reply.isUserId(userId));
+    }
+
     public int getId() {
         return id;
     }

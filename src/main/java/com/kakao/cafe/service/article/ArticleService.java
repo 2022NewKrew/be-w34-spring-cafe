@@ -110,9 +110,7 @@ public class ArticleService {
         return articleDao
                 .findArticleById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException(Constant.ARTICLE_IS_NOT_EXIST))
-                .getReplies()
-                .stream()
-                .allMatch(reply -> reply.getUserId().getValue().equals(userId));
+                .hasOnlyReplyByWriter();
     }
 
     private int calculatePageBaseNumber(int page, int pageLimit) {
