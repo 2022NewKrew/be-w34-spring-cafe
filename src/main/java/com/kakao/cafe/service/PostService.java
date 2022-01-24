@@ -27,17 +27,25 @@ public class PostService {
         return postRepository.findByPostId(id);
     }
 
+    private void validAuth(int postId, int userId, String errorMessage) {
+        Post originalPost = getPostById(postId);
+        if (originalPost.getUserId() != userId) {
+            throw new UnauthenticatedArticleAccessException(errorMessage);
+        }
+    }
+
+    public Post getUpdatePostById(int postId, int userId) {
+        validAuth(postId, userId, "본인 게시글만 수정할 수 있습니다");
+        return postRepository.findByPostId(postId);
+    }
+
     public void updatePost(Post updatePost) {
-        Post originalPost = getPostById(updatePost.getId());
-        if (originalPost.getUserId() != updatePost.getUserId())
-            throw new UnauthenticatedArticleAccessException("본인 게시글만 수정할 수 있습니다");
+        validAuth(updatePost.getId(), updatePost.getUserId(), "본인 게시글만 수정할 수 있습니다");
         postRepository.update(updatePost);
     }
 
     public void deletePost(int postId, int userId) {
-        Post originalPost = getPostById(postId);
-        if (originalPost.getUserId() != userId)
-            throw new UnauthenticatedArticleAccessException("본인 게시글만 삭제할 수 있습니다");
+        validAuth(postId, userId, "본인 게시글만 삭제할 수 있습니다");
         postRepository.delete(postId);
     }
 }

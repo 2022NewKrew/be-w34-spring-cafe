@@ -77,9 +77,11 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}/update")
-    public String updatePostGetContent(@PathVariable int postId, Model model) {
+    public String updatePostGetContent(@PathVariable int postId, Model model, HttpSession session) {
         logger.debug("[GET] /posts/{postId}/update 게시글 수정 페이지");
-        Post post = postService.getPostById(postId);
+
+        SessionUser sessionUser = (SessionUser) session.getAttribute(SESSION);
+        Post post = postService.getUpdatePostById(postId, sessionUser.getId());
 
         model.addAttribute("post", post);
         return "post/form_update";
