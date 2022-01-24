@@ -6,6 +6,7 @@ import com.kakao.cafe.domain.reply.Reply;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.ReplyService;
+import com.kakao.cafe.util.AuthUtils;
 import com.kakao.cafe.util.Constant;
 import com.kakao.cafe.util.ErrorMessage;
 import com.kakao.cafe.util.PageUtils;
@@ -45,7 +46,7 @@ public class ArticleController {
         articles.setTotalCount(numOfArticles);
         articles.setPageList(PageUtils.makePageList(numOfArticles));
         articles.setHasPrev(page != 1);
-        articles.setHasNext(page != ((numOfArticles - 1) / 10) + 1);
+        articles.setHasNext(page != ((numOfArticles - 1) / Constant.ARTICLE_PER_PAGE) + 1);
         articles.setPrev(page - 1);
         articles.setNext(page + 1);
 
@@ -55,16 +56,16 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("/articles/{index}")
-    public String show(@PathVariable Long index, Model model) {
-        Article article = articleService.findOne(index);
-        List<Reply> replies = replyService.findReplyList(index);
+    @GetMapping("/articles/{articleId}")
+    public String show(@PathVariable Long articleId, Model model) {
+        Article article = articleService.findOne(articleId);
+        List<Reply> replies = replyService.findReplyList(articleId);
         model.addAttribute("title", article.getTitle());
         model.addAttribute("writer", article.getWriter());
         model.addAttribute("content", article.getContent());
         model.addAttribute("replies", replies);
 
-        return "/qna/show";
+        return "qna/show";
     }
 
     @GetMapping("/qna/form")
@@ -73,53 +74,50 @@ public class ArticleController {
         if (user == null) {
             return "redirect:/users/login";
         }
-        return "/qna/form";
+        return "qna/form";
     }
 
-    @PostMapping("/qna/update/{index}")
-    public String updateForm(@PathVariable Long index, Model model, HttpSession session) {
-        Article article = checkWriter(session, index);
-        model.addAttribute("index", index);
+    @PostMapping("/qna/update/{articleId}")
+    public String updateForm(@PathVariable Long articleId, Model model, HttpSession session) {
+        Long userId = AuthUtils.checkLogin(session);
+        Article article = articleService.findOne(articleId);
+        articleService.checkWriterByLoginUserid(article, userId);
+
+        model.addAttribute("articleId", articleId);
         model.addAttribute("title", article.getTitle());
         model.addAttribute("content", article.getContent());
-        return "/qna/updateForm";
+        return "qna/updateForm";
     }
 
-    @PutMapping("/qna/updateArticle/{index}")
-    public String updateArticle(@PathVariable Long index, Article article, HttpSession session) {
-        checkWriter(session, index);
-        article.setIndex(index);
+    @PutMapping("/qna/updateArticle/{articleid}")
+    public String updateArticle(@PathVariable Long articleid, Article article, HttpSession session) {
+        Long userId = AuthUtils.checkLogin(session);
+
+        article.setArticleId(articleid);
+        article.setWriterId(userId);
+        articleService.checkWriterByLoginUserid(article, userId);
         articleService.updateArticle(article);
-        return "redirect:/articles/" + index;
+        return "redirect:/articles/" + articleid;
     }
 
-    @DeleteMapping("/qna/deleteArticle/{index}")
-    public String deleteArticle(@PathVariable Long index, HttpSession session) {
-        Article article = checkWriter(session, index);
-        List<Reply> replies = replyService.findReplyList(index);
-        for (Reply reply : replies) {
-            if (!reply.getWriterId().equals(article.getWriterId())) {
-                throw new IllegalStateException(ErrorMessage.DELETE_NOT_MY_REPLY.getMsg());
-            }
-        }
-        articleService.deleteArticle(index);
-        replyService.deleteAllRepliesOnArticle(index);
+    @DeleteMapping("/qna/deleteArticle/{articleid}")
+    public String deleteArticle(@PathVariable Long articleid, HttpSession session) {
+        Long userId = AuthUtils.checkLogin(session);
+        Article article = articleService.findOne(articleid);
+        articleService.checkWriterByLoginUserid(article, userId);
+
+        checkArticleReplies(articleid, article.getWriterId());
+        articleService.deleteArticle(articleid);
+        replyService.deleteAllRepliesOnArticle(articleid);
         return "redirect:/";
     }
 
-    private Article checkWriter(HttpSession session, Long index) {
-        User user = (User) session.getAttribute(Constant.LOGIN_SESSION);
-        if (user == null) {
-            throw new IllegalStateException(ErrorMessage.UPDATE_NON_LOGIN.getMsg());
+    private void checkArticleReplies(Long articleid, Long writerId) {
+        List<Reply> replies = replyService.findReplyList(articleid);
+        for (Reply reply : replies) {
+            if (!reply.getWriterId().equals(writerId)) {
+                throw new IllegalStateException(ErrorMessage.ARTICLE_DELETE_NOT_MY_REPLY.getMsg());
+            }
         }
-
-        Article article = articleService.findOne(index);
-
-        if (!user.getUserId().equals(article.getWriterId())) {
-            throw new IllegalStateException(ErrorMessage.UPDATE_FORBIDDEN.getMsg());
-        }
-
-        article.setWriterId(user.getUserId());
-        return article;
     }
 }

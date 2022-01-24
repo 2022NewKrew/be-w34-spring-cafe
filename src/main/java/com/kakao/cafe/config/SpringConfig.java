@@ -1,8 +1,8 @@
 package com.kakao.cafe.config;
 
-import com.kakao.cafe.repository.JdbcArticleRepository;
-import com.kakao.cafe.repository.JdbcReplyRepository;
-import com.kakao.cafe.repository.JdbcUserRepository;
+import com.kakao.cafe.repository.JdbcTemplateArticleRepository;
+import com.kakao.cafe.repository.JdbcTemplateReplyRepository;
+import com.kakao.cafe.repository.JdbcTemplateUserRepository;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.service.UserService;
@@ -23,8 +23,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public JdbcUserRepository userRepository() {
-        return new JdbcUserRepository(dataSource);
+    public JdbcTemplateUserRepository userRepository() {
+        return new JdbcTemplateUserRepository(dataSource);
     }
 
     @Bean
@@ -33,8 +33,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public JdbcArticleRepository articleRepository() {
-        return new JdbcArticleRepository(dataSource);
+    public JdbcTemplateArticleRepository articleRepository() {
+        return new JdbcTemplateArticleRepository(dataSource);
     }
 
     @Bean
@@ -43,7 +43,7 @@ public class SpringConfig {
     }
 
     @Bean
-    public JdbcReplyRepository replyRepository() {
-        return new JdbcReplyRepository(dataSource);
+    public JdbcTemplateReplyRepository replyRepository() {
+        return new JdbcTemplateReplyRepository(dataSource);
     }
 }

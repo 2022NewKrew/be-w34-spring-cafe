@@ -2,7 +2,7 @@
 {{>layout/navbar}}
 <main class="">
     <section>
-        <form name="question" method="post" action="/qna/update/{{index}}">
+        <form name="question" method="post" action="/qna/update/{{articleId}}">
             <div class="container border p-4">
                 <div class="row p-3 m-3 fs-2">
                     <div class="col">
@@ -24,7 +24,7 @@
                 </div>
             </div>
         </form>
-        <form action="/qna/deleteArticle/{{index}}" method="post">
+        <form action="/qna/deleteArticle/{{articleId}}" method="post">
             <input type="hidden" name="_method" value="delete"/>
             <div class="d-flex flex-column w-25 mt-5">
                 <button type="submit" class="btn btn-dark p-3">삭제하기</button>
@@ -32,7 +32,7 @@
         </form>
         <div>
             {{#replies}}
-            <form action="/qna/{{index}}/replies/{{this.id}}" method="post">
+            <form action="/qna/{{articleId}}/replies/{{this.id}}" method="post">
                 <input type="hidden" name="_method" value="delete"/>
                 <div>
                     <p>
@@ -43,7 +43,7 @@
             </form>
             {{/replies}}
         </div>
-        <form action="/qna/{{index}}/reply" method="post">
+        <form action="/qna/{{articleId}}/reply" method="post">
             <div>
                 <textarea id="content" name="content" placeholder="댓글을 입력하세요."></textarea>
             </div>

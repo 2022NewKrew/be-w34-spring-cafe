@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.naming.AuthenticationException;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -12,7 +13,7 @@ import java.util.NoSuchElementException;
 public class KakaoCafeExceptionHandler {
 
     @ExceptionHandler({IllegalStateException.class, NoSuchElementException.class,
-            UpdateForbiddenException.class})
+            AuthenticationException.class})
     public Object redirectToIndexException(Exception e, Model model) {
         log.info(e.getMessage());
         e.printStackTrace();
