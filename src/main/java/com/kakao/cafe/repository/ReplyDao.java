@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.constants.ReplyDBConstants;
+import com.kakao.cafe.repository.constants.ReplyDBConstants;
 import com.kakao.cafe.domain.Reply;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

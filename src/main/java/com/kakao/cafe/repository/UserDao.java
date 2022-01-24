@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.constants.UserDBConstants;
+import com.kakao.cafe.repository.constants.UserDBConstants;
 import com.kakao.cafe.domain.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

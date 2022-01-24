@@ -52,10 +52,10 @@ public class ArticleController {
         try {
             articleService.post(article);
         } catch (SQLException e) {
-            logger.error("/articles/questions, failed to create article (article = {})", article, e);
+            logger.error("POST /articles/questions, failed to create article (article = {})", article, e);
             return "redirect:/";
         } catch (NoSuchElementException e) {
-            logger.info("/articles/questions, failed to create article. writer(id = {}) does not exist", article.getWriter(), e);
+            logger.info("POST /articles/questions, failed to create article. writer(id = {}) does not exist", article.getWriter(), e);
             return "redirect:/";
         }
         return "redirect:/";
@@ -72,7 +72,7 @@ public class ArticleController {
             model.addAttribute("article", article);
             model.addAttribute("reply", replyDtoList);
         } catch (NoSuchElementException e) {
-            logger.error("/articles/index, article id = {}", id, e);
+            logger.error("GET /articles/index, article id = {}", id, e);
             return "redirect:/";
         }
 
@@ -84,6 +84,7 @@ public class ArticleController {
         try {
             articleService.update(id, articlePostDto);
         } catch (NoSuchElementException e) {
+            logger.debug("PUT /aritcles/{id}, id = {}", id, e);
             return "redirect:/";
         }
 
@@ -95,12 +96,13 @@ public class ArticleController {
         try {
             articleService.delete(id);
         } catch (NoSuchElementException e) {
+            logger.info("DELETE /articles/{id}, id = {}", id, e);
             return "redirect:/";
         }
-
         return "redirect:/";
     }
 
+    // 글 수정 버튼을 눌렀을 때, 로그인한 사용자와 작성자가 일치하는지 확인하고 수정 폼으로 연결
     @GetMapping("/{id}/form")
     public String modifyForm(@PathVariable int id, Model model, HttpSession session) {
         ArticleDto articleDto = articleService.findById(id);
@@ -120,9 +122,10 @@ public class ArticleController {
     @PostMapping("/{aid}/reply")
     public String reply(@PathVariable int aid, ReplyContentsDto replyContentsDto, HttpSession session) {
         try {
-            replyService.insertReply(aid, userService.getUserIdFromSession(session), replyContentsDto);
+            String replyWriter = userService.getUserIdFromSession(session);
+            replyService.insertReply(aid, replyWriter, replyContentsDto);
         } catch (SQLException e) {
-
+            logger.error("POST /articles/{aid}/reply, SQL INSERT failed", e);
         }
         return String.format("redirect:/articles/%d", aid);
     }
@@ -137,7 +140,7 @@ public class ArticleController {
                 replyService.deleteReply(id);
             }
         } catch (NoSuchElementException e){
-            logger.info("DELETE /articles/{aid}/reply/{id} failed", e);
+            logger.info("DELETE /articles/{aid}/reply/{id}, writer != sessionedUser.");
         }
 
         return String.format("redirect:/articles/%d", aid);

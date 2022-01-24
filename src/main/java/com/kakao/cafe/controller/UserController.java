@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.aop.UserAuthCheck;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.dto.UserProfileDto;
 import com.kakao.cafe.dto.UserUpdateDto;
@@ -59,29 +60,25 @@ public class UserController {
             user = userService.findById(userId);
             model.addAttribute("user", user);
         } catch (NoSuchElementException e) {
-            logger.debug("/users/{userId}, userId = {}. User does not exist.", userId, e);
+            logger.debug("GET /users/{userId}, userId = {}. User does not exist.", userId, e);
             return "redirect:/";
         }
-        logger.debug("/users/{userId}, User(id = {}) founded.", userId);
+        logger.debug("GET /users/{userId}, User(id = {}) founded.", userId);
 
         return "user/profile";
     }
 
     // 사용자 리스트에서 수정 버튼을 누르면, 해당 사용자의 회원정보 수정 화면으로 이동
+    @UserAuthCheck
     @GetMapping("/{userId}/form")
     public String updateForm(@PathVariable String userId, Model model, HttpSession session){
         UserProfileDto user;
-
-        if (!userService.checkSessionUser(userId, session)) {
-            logger.debug("/users/{userId}/form, Invalid session.");
-            return "redirect:/";
-        }
 
         try {
             user = userService.findById(userId);
             model.addAttribute("user", user);
         } catch (NoSuchElementException e) {
-            logger.debug("/users/{userId}/form, userId = {}. User does not exist.", userId, e);
+            logger.debug("GET /users/{userId}/form, userId = {}. User does not exist.", userId, e);
             return "redirect:/";
         }
 
@@ -89,22 +86,18 @@ public class UserController {
     }
 
     // 회원정보 수정하고, 수정 버튼을 눌렀을 때
+    @UserAuthCheck
     @PostMapping("/{userId}/update")
     public String update(@PathVariable String userId, UserUpdateDto userUpdateDto, HttpSession session) {
         UserProfileDto newProfile = new UserProfileDto(userId, userUpdateDto.getEmail(), userUpdateDto.getName());
 
-        if (!userService.checkSessionUser(userId, session)) {
-            logger.debug("/users/{userId}/update, User(id = {}) failed to update profile. Invalid session.", userId);
-            return "redirect:/list";
-        }
-
         try {
             userService.updateUserProfile(newProfile, userUpdateDto.getPassword());
-            logger.info("/users/{userId}/update, User(id = {}) updated profile.", userId);
+            logger.info("POST /users/{userId}/update, User(id = {}) updated profile.", userId);
         } catch (NoSuchElementException e) {
-            logger.debug("/users/{userId}/update, User(id = {}) failed to update Profile. User does not exist.", userId, e);
+            logger.debug("POST /users/{userId}/update, User(id = {}) failed to update Profile. User does not exist.", userId, e);
         } catch (IllegalArgumentException e) {
-            logger.debug("/users/{userId}/update, User(id = {}) failed to update Profile. Incorrect password.", userId, e);
+            logger.debug("POST /users/{userId}/update, User(id = {}) failed to update Profile. Incorrect password.", userId, e);
         }
 
         return "redirect:/list";
@@ -114,12 +107,12 @@ public class UserController {
     public String login(String userId, String password, HttpSession session) {
         try {
             session.setAttribute("sessionedUser", userService.checkPassword(userId, password));
-            logger.info("/users/login, User(id = {}) login.", userId);
+            logger.info("POST /users/login, User(id = {}) login.", userId);
         } catch (IllegalArgumentException e) {
-            logger.debug("/users/login, User(id = {}) failed to login. Incorrect password.", userId, e);
+            logger.debug("POST /users/login, User(id = {}) failed to login. Incorrect password.", userId, e);
             return "/user/login_failed";
         } catch (NoSuchElementException e) {
-            logger.debug("/users/login, User(id = {}) failed to login. User does not exist.", userId, e);
+            logger.debug("POST /users/login, User(id = {}) failed to login. User does not exist.", userId, e);
             return "/user/login_failed";
         }
 

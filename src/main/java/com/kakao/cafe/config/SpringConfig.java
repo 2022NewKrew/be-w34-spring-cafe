@@ -6,9 +6,6 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
 
@@ -59,17 +56,6 @@ public class SpringConfig {
                 .build();
 
          */
-
-        /*
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://test-cafe-ed.ay1.krane.9rum.cc:3306/cafedb");
-        dataSource.setUsername("ed2");
-        dataSource.setPassword("Shim7414!");
-
-        return dataSource;
-         */
-
         return DataSourceBuilder.create()
                 .url("jdbc:mysql://test-cafe-ed.ay1.krane.9rum.cc:3306/cafedb") // ?useUnicode=yes&characterEncoding=UTF-8
                 .username("ed2")
