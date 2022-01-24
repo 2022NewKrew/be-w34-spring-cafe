@@ -31,6 +31,7 @@ public class JdbcUserRepository implements UserRepository {
         try {
             jdbcTemplate.update(sql,
                     user.getUserId(), user.getPassword(), user.getUserName(), user.getEmail());
+            logger.debug("[Jdbc] user save success: {}", user);
         } catch (DuplicateKeyException e) {
             throw new DuplicateUserException("사용자가 이미 존재합니다");
         }
@@ -42,11 +43,13 @@ public class JdbcUserRepository implements UserRepository {
         logger.debug("[Jdbc] user findAll");
         String sql = "select * from users";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(rs.getInt("id"),
+        List<User> userList = jdbcTemplate.query(sql, (rs, rowNum) -> new User(rs.getInt("id"),
                 rs.getString("user_id"),
                 rs.getString("password"),
                 rs.getString("name"),
                 rs.getString("email")));
+        logger.debug("[Jdbc] user findAll success: {}", userList);
+        return userList;
     }
 
     @Override
@@ -55,12 +58,14 @@ public class JdbcUserRepository implements UserRepository {
         String sql = "select * from users where user_id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getInt("id"),
+            User user = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getInt("id"),
                             rs.getString("user_id"),
                             rs.getString("password"),
                             rs.getString("name"),
                             rs.getString("email")),
                     userId);
+            logger.debug("[Jdbc] user findByUserId success: {}", user);
+            return user;
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("사용자 ID가 없습니다");
         }
@@ -72,12 +77,14 @@ public class JdbcUserRepository implements UserRepository {
         String sql = "select * from users where id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getInt("id"),
+            User user = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(rs.getInt("id"),
                             rs.getString("user_id"),
                             rs.getString("password"),
                             rs.getString("name"),
                             rs.getString("email")),
                     id);
+            logger.debug("[Jdbc] user findByid success: {}", user);
+            return user;
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("사용자 ID가 없습니다");
         }
