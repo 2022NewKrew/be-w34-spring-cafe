@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,14 +49,13 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public String showArticle(Model model, @PathVariable Long id, HttpSession session) {
+    public String showArticle(Model model, @PathVariable Long id, @SessionAttribute("sessionUser") User user) {
         logger.info("GET /articles/{}: response article detail page", id);
 
         // article 조회
         Article article = articleService.findArticle(id);
 
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        boolean isWriter = Objects.equals(article.getWriter(), sessionUser.getUserId());
+        boolean isWriter = Objects.equals(article.getWriter(), user.getUserId());
 
         // comments 조회
         List<Comment> comments = commentService.findComments(id);
@@ -69,12 +67,11 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}/form")
-    public String updateForm(Model model, @PathVariable Long id, HttpSession session) {
+    public String updateForm(Model model, @PathVariable Long id, @SessionAttribute("sessionUser") User user) {
         // article 찾기
         Article article = articleService.findArticle(id);
 
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        if (!article.getWriter().equals(sessionUser.getUserId())) {
+        if (!article.getWriter().equals(user.getUserId())) {
             throw new UnauthorizedException("글을 수정할 권한이 없습니다.");
         }
 
@@ -85,12 +82,11 @@ public class ArticleController {
     }
 
     @PutMapping("/articles/{id}/update")
-    public String updateArticle(Article newArticle, @PathVariable Long id, HttpSession session) {
+    public String updateArticle(Article newArticle, @PathVariable Long id, @SessionAttribute("sessionUser") User user) {
         // article 찾기
         Article article = articleService.findArticle(id);
 
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        if (!article.getWriter().equals(sessionUser.getUserId())) {
+        if (!article.getWriter().equals(user.getUserId())) {
             throw new UnauthorizedException("글을 수정할 권한이 없습니다.");
         }
 
@@ -101,12 +97,11 @@ public class ArticleController {
     }
 
     @DeleteMapping("/articles/{id}/delete")
-    public String deleteArticle(@PathVariable Long id, HttpSession session) {
+    public String deleteArticle(@PathVariable Long id, @SessionAttribute("sessionUser") User user) {
         // article 찾기
         Article article = articleService.findArticle(id);
 
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        if (!article.getWriter().equals(sessionUser.getUserId())) {
+        if (!article.getWriter().equals(user.getUserId())) {
             throw new UnauthorizedException("글을 삭제할 권한이 없습니다.");
         }
 

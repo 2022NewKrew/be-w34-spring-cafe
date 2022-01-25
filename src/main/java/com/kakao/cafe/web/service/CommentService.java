@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional(readOnly = true)
 @Service
 public class CommentService {
 
@@ -17,6 +18,7 @@ public class CommentService {
     public CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
     }
+
     @Transactional
     public void write(Comment comment) {
         commentRepository.save(comment);
