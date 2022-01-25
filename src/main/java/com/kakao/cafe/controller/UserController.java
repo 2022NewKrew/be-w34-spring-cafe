@@ -5,6 +5,7 @@ import com.kakao.cafe.exceptions.InvalidLoginRequestException;
 import com.kakao.cafe.exceptions.InvalidUserRequestException;
 import com.kakao.cafe.request.LoginRequest;
 import com.kakao.cafe.request.UserSignupRequest;
+import com.kakao.cafe.response.ProfileResponse;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,12 +60,12 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/{userId}")
-    public String userProfile(@PathVariable String userId, Model model) {
-        logger.info("[GET] /{userId} 프로필 조회");
+    @GetMapping("/{id}")
+    public String userProfile(@PathVariable int id, Model model) {
+        logger.info("[GET] /{id} 프로필 조회");
 
-        User user = userService.getUserById(userId);
-        model.addAttribute("user", user);
+        ProfileResponse profile = userService.getProfile(id);
+        model.addAttribute("profile", profile);
 
         return "user/profile";
     }

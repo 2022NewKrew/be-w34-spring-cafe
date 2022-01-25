@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exceptions.WrongPasswordException;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.request.LoginRequest;
+import com.kakao.cafe.response.ProfileResponse;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +26,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUserById(String userId) {
-        return userRepository.findByUserId(userId);
+    public ProfileResponse getProfile(int id) {
+        User user = userRepository.findById(id);
+        return ProfileResponse.of(user);
     }
 
     public SessionUser login(LoginRequest request) {
