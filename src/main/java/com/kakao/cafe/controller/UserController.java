@@ -6,6 +6,7 @@ import com.kakao.cafe.exceptions.InvalidUserRequestException;
 import com.kakao.cafe.request.LoginRequest;
 import com.kakao.cafe.request.UserSignupRequest;
 import com.kakao.cafe.response.ProfileResponse;
+import com.kakao.cafe.response.UserListResponse;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,7 +55,7 @@ public class UserController {
     public String userList(Model model) {
         logger.info("[GET] 회원 목록 조회");
 
-        List<User> userList = userService.getUserList();
+        List<UserListResponse> userList = userService.getUserList();
         model.addAttribute("userList", userList);
 
         return "user/list";

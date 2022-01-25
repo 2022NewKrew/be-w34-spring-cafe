@@ -25,8 +25,9 @@ public class ReplyService {
     }
 
     public List<ReplyDetailResponse> getReplyListOfPost(int postId) {
-        return replyRepository.findAllByPostId(postId).stream().map(reply -> ReplyDetailResponse.of(reply,
-                userRepository.findById(reply.getUserId()))).collect(Collectors.toList());
+        return replyRepository.findAllByPostId(postId).stream()
+                .map(reply -> ReplyDetailResponse.of(reply, userRepository.findById(reply.getUserId())))
+                .collect(Collectors.toList());
     }
 
     public void deleteReplyByIdAndAuthor(int replyId, int userId) {

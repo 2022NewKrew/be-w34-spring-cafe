@@ -6,7 +6,9 @@ import com.kakao.cafe.exceptions.WrongPasswordException;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.request.LoginRequest;
 import com.kakao.cafe.response.ProfileResponse;
+import com.kakao.cafe.response.UserListResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,8 +24,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<User> getUserList() {
-        return userRepository.findAll();
+    public List<UserListResponse> getUserList() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserListResponse::of)
+                .collect(Collectors.toList());
     }
 
     public ProfileResponse getProfile(int id) {
