@@ -1,52 +1,56 @@
 <!DOCTYPE html>
 <html lang="kr">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <title>☕️</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="css/reset.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link href="css/index.css" rel="stylesheet">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>☕️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link href="css/reset.css" rel="stylesheet">
+  <!--[if lt IE 9]>
+  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="css/index.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
-    {{>layout/nav}}
+  {{>layout/nav}}
 
-    <div class="description">
-        <div class="desc-container">
-            <p class="desc-small">안녕하세요</p>
-            <p class="desc-big">카카오 교육 페이지 입니다.</p>
-        </div>
+  <div class="description">
+    <div class="desc-container">
+      <p class="desc-small">안녕하세요</p>
+      <p class="desc-big">카카오 교육 페이지 입니다.</p>
     </div>
+  </div>
 
-    <p class="total_num">전체 글 10명</p>
+  <p class="total_num">전체 글 {{postList.size}}개</p>
 
-    <div class="container" id="main">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>제목</th> <th>작성자</th> <th>작성일자</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {{#postList}}
-                    <tr>
-                        <td><a href="/posts/{{postId}}">{{title}}</a></td> <td><a href="/users/{{userId}}">{{name}}</a></td> <td>{{createdAt}}</td>
-                    </tr>
-                    {{/postList}}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="container" id="main">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="panel panel-default">
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일자</th>
+          </tr>
+          </thead>
+          <tbody>
+          {{#postList}}
+          <tr>
+            <td><a href="/posts/{{postId}}">{{title}}</a></td>
+            <td><a href="/users/{{userId}}">{{name}}</a></td>
+            <td>{{createdAt}}</td>
+          </tr>
+          {{/postList}}
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="post-btn-container">
-      <a class="post-write-btn" href="/post/write" class="btn btn-primary pull-right" role="button">글쓰기</a>
-    </div>
+  </div>
+  <div class="post-btn-container">
+    <a class="post-write-btn" href="/post/write" class="btn btn-primary pull-right" role="button">글쓰기</a>
+  </div>
 </div>
 
 <!--login modal-->
@@ -125,5 +129,5 @@
   </div>
 </div>
 -->
-	</body>
+</body>
 </html>
