@@ -9,15 +9,12 @@
     {{>layout/navigation_bar}}
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">로그인이 완료되었습니다!</p>
+            <p class="title">아이디 혹은 비밀번호가 일치하지 않습니다.!</p>
         </header>
 
-        {{#sessionUser}}
-            <p class="user-info"> 이메일: {{email}}</p>
-            <p class="user-info"> 닉네임: {{userId}}</p>
-        {{/sessionUser}}
-
+        <a href="/user/login" class="btn">로그인</a>
         <a href="/index" class="btn">홈으로</a>
+
     </div>
 </div>
 </body>

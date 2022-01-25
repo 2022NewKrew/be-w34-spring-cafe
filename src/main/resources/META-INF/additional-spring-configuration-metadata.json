@@ -11,8 +11,13 @@
       "description": "Description for handlebars.cache."
     },
     {
-      "name": "handlebars.suffix",
+      "name": "mustache.expose-session-attributes",
       "type": "java.lang.String",
-      "description": "Description for handlebars.suffix."
+      "description": "Description for mustache.expose-session-attributes."
+    },
+    {
+      "name": "handlebars.expose-session-attributes",
+      "type": "java.lang.String",
+      "description": "Description for handlebars.expose-session-attributes."
     }
   ] }

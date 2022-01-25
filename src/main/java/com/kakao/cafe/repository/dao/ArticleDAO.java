@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 @Component
@@ -13,8 +12,8 @@ public class ArticleDAO {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public ArticleDAO(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public ArticleDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public void create(Article article) {
@@ -33,6 +32,13 @@ public class ArticleDAO {
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> Article.newInstance(rs.getLong("id"), rs.getString("title"), rs.getString("content"), rs.getString("create_user_id"), rs.getString("create_date"), rs.getInt("views"));
+        return (rs, rowNum) -> Article.builder()
+                .id(rs.getLong("id"))
+                .title(rs.getString("title"))
+                .content(rs.getString("content"))
+                .createUserId(rs.getString("create_user_id"))
+                .createDate(rs.getString("create_date"))
+                .views(rs.getInt("views"))
+                .build();
     }
 }

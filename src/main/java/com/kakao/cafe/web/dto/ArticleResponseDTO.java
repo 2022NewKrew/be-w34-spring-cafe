@@ -1,13 +1,11 @@
 package com.kakao.cafe.web.dto;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
-import java.time.LocalDate;
-
-@ToString
 @Getter
-public class ArticleDTO {
+public class ArticleResponseDTO {
+
     private final long id;
     private final String title;
     private final String content;
@@ -15,13 +13,13 @@ public class ArticleDTO {
     private final String createDate;
     private final int views;
 
-    public ArticleDTO(String title, String content) {
-        this.id = 0;
+    @Builder
+    public ArticleResponseDTO(long id, String title, String content, String createUserId, String createDate, int views) {
+        this.id = id;
         this.title = title;
         this.content = content;
-        this.createUserId = "unknown";
-        this.createDate = LocalDate.now().toString();
-        this.views = 0;
+        this.createUserId = createUserId;
+        this.createDate = createDate;
+        this.views = views;
     }
-
 }

@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.time.LocalDate;
-
 @ToString
 @Getter
 public class User {
@@ -16,14 +14,6 @@ public class User {
     private final String registerDate;
 
     @Builder
-    public User(String userId, String password, String email) {
-        this.id = 0;
-        this.userId = userId;
-        this.password = password;
-        this.email = email;
-        this.registerDate = LocalDate.now().toString();
-    }
-
     private User(long id, String userId, String password, String email, String registerDate) {
         this.id = id;
         this.userId = userId;
@@ -32,7 +22,7 @@ public class User {
         this.registerDate = registerDate;
     }
 
-    public static User newInstance(long id, String userId, String password, String email, String registerDate) {
-        return new User(id, userId, password, email, registerDate);
+    public boolean isPasswordMatching(String password) {
+        return this.password.equals(password);
     }
 }
