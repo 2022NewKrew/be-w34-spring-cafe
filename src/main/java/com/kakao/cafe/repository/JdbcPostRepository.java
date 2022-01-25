@@ -31,6 +31,7 @@ public class JdbcPostRepository implements PostRepository {
         User user = userRepository.findById(post.getUserId());
         String sql = "insert into post(title, content, user_id) values(?, ?, ?)";
         jdbcTemplate.update(sql, post.getTitle(), post.getContent(), user.getId());
+        logger.debug("[Jdbc] post save success : {}", post);
         return post;
     }
 
@@ -38,11 +39,13 @@ public class JdbcPostRepository implements PostRepository {
     public List<Post> findAll() {
         logger.debug("[Jdbc] post findAll");
         String sql = "select * from post";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new Post(rs.getInt("id"),
+        List<Post> postList = jdbcTemplate.query(sql, (rs, rowNum) -> new Post(rs.getInt("id"),
                 rs.getInt("user_id"),
                 rs.getString("title"),
                 rs.getString("content"),
                 rs.getDate("created_at")));
+        logger.debug("[Jdbc] post findAll success: {}", postList);
+        return postList;
     }
 
     @Override
@@ -51,12 +54,14 @@ public class JdbcPostRepository implements PostRepository {
         String sql = "select * from post where id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Post(rs.getInt("id"),
+            Post post = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Post(rs.getInt("id"),
                             rs.getInt("user_id"),
                             rs.getString("title"),
                             rs.getString("content"),
                             rs.getDate("created_at")),
                     id);
+            logger.debug("[Jdbc] post findByPostId success : {}", post);
+            return post;
         } catch (EmptyResultDataAccessException e) {
             throw new PostNotFoundException("없는 게시글 입니다");
         }
@@ -68,6 +73,7 @@ public class JdbcPostRepository implements PostRepository {
         String sql = "update post set title = ?, content = ? where id = ?";
 
         jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getId());
+        logger.debug("[Jdbc] post update success");
     }
 
     @Override
@@ -76,5 +82,6 @@ public class JdbcPostRepository implements PostRepository {
         String sql = "delete from post where id = ?";
 
         jdbcTemplate.update(sql, id);
+        logger.debug("[Jdbc] post delete success");
     }
 }

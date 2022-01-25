@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.exceptions.PostNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
@@ -29,9 +30,9 @@ public class InMemoryPostRepository implements PostRepository {
     @Override
     public Post save(Post post) {
         logger.debug("[InMemory] post save");
-        post.setId(nextId());
-        postList.add(post);
-        return post;
+        Post savePost = new Post(nextId(), post.getUserId(), post.getTitle(), post.getContent(), new Date());
+        postList.add(savePost);
+        return savePost;
     }
 
     @Override
@@ -43,8 +44,9 @@ public class InMemoryPostRepository implements PostRepository {
     @Override
     public Post findByPostId(int id) {
         logger.debug("[InMemory] post findByPostId");
-        if (id <= 0 || postList.size() < id)
+        if (id <= 0 || postList.size() < id) {
             throw new PostNotFoundException("없는 게시글 입니다");
+        }
         return postList.get(id - 1);
     }
 

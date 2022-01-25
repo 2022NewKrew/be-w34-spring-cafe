@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.request.WritePostRequest;
 import java.util.Date;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

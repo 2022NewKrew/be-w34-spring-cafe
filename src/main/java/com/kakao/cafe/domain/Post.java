@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Post {
 
-    private int id;
+    private final int id;
     private final int userId;
     private final String title;
     private final String content;
@@ -17,10 +17,6 @@ public class Post {
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getId() {
@@ -37,6 +33,10 @@ public class Post {
 
     public String getContent() {
         return content;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     @Override

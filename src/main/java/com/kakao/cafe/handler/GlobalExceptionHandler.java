@@ -6,7 +6,7 @@ import com.kakao.cafe.exceptions.InvalidLoginRequestException;
 import com.kakao.cafe.exceptions.InvalidUserRequestException;
 import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.exceptions.PostNotFoundException;
-import com.kakao.cafe.exceptions.UnauthenticatedArticleAccessException;
+import com.kakao.cafe.exceptions.UnauthenticatedPostAccessException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
 import com.kakao.cafe.exceptions.WrongPasswordException;
 import java.util.Map;
@@ -67,14 +67,20 @@ public class GlobalExceptionHandler {
         return errorModelAndView(exception);
     }
 
-    @ExceptionHandler(UnauthenticatedArticleAccessException.class)
+    @ExceptionHandler(UnauthenticatedPostAccessException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ModelAndView unauthenticatedArticleAccess(UnauthenticatedArticleAccessException exception) {
+    public ModelAndView unauthenticatedArticleAccess(UnauthenticatedPostAccessException exception) {
         return errorModelAndView(exception);
     }
 
+    private void logHandlingException(RuntimeException e) {
+        logger.info("Exception Handled: class={}, message={}",
+                e.getClass().getName(),
+                e.getMessage());
+    }
+
     private ModelAndView errorModelAndView(RuntimeException exception) {
-        logger.error("[ERROR] " + exception.getMessage());
+        logHandlingException(exception);
         Map<String, Object> model = mv.getModel();
         model.put("message", exception.getMessage());
         return mv;

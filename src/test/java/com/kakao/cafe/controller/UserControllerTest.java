@@ -29,7 +29,7 @@ class UserControllerTest {
     private static final int firstId = 1;
     private static final String userId = "testUserId";
     private static final String duplicateUserId = userId;
-    private static final String notExistUserId = "notExistUserId";
+    private static final int notExistId = 9999;
     private static final String password = "testPassword";
     private static final String name = "testName";
     private static final String email = "testEmail@kakaocorp.com";
@@ -145,7 +145,7 @@ class UserControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
 
-        mockMvc.perform(get("/users/" + userId))
+        mockMvc.perform(get("/users/" + firstId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/profile"));
     }
@@ -153,7 +153,7 @@ class UserControllerTest {
     @Test
     @DisplayName("[실패] 프로필 조회 - userId 없음")
     void userProfile_FailedBy_NotExistUserId() throws Exception {
-        mockMvc.perform(get("/users/" + notExistUserId))
+        mockMvc.perform(get("/users/" + notExistId))
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("errors/error"));
     }
@@ -170,7 +170,7 @@ class UserControllerTest {
                 .andExpect(redirectedUrl("/users"));
 
         MockHttpSession session = new MockHttpSession();
-        SessionUser sessionUser = new SessionUser(firstId);
+        SessionUser sessionUser = new SessionUser(firstId, userId);
 
         mockMvc.perform(post("/users/login")
                         .session(session)
@@ -197,7 +197,7 @@ class UserControllerTest {
                 .andExpect(redirectedUrl("/users"));
 
         MockHttpSession session = new MockHttpSession();
-        SessionUser sessionUser = new SessionUser(firstId);
+        SessionUser sessionUser = new SessionUser(firstId, userId);
         session.setAttribute(SESSION, sessionUser);
 
         mockMvc.perform(get("/users/logout")
