@@ -82,8 +82,7 @@ public class PostController {
         Post post = postDto.toEntity(sessionUser.getId(), postId);
         postService.updatePost(post);
 
-        model.addAttribute("post", post);
-        return "post/show";
+        return "redirect:/posts/" + postId;
     }
 
     @GetMapping("/posts/{postId}/update")
