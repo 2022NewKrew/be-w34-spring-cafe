@@ -2,9 +2,11 @@ package com.kakao.cafe.domain;
 
 public class SessionUser {
     private final int id;
+    private final String userName;
 
-    public SessionUser(int id) {
+    public SessionUser(int id, String userName) {
         this.id = id;
+        this.userName = userName;
     }
 
     public int getId() {
@@ -12,6 +14,6 @@ public class SessionUser {
     }
 
     public static SessionUser from(User user) {
-        return new SessionUser(user.getId());
+        return new SessionUser(user.getId(), user.getUserName());
     }
 }
