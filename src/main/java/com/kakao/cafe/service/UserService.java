@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.SampleLoginForm;
 import com.kakao.cafe.dto.SampleUserForm;
 import com.kakao.cafe.repository.UserRepository;
 import org.slf4j.Logger;
@@ -59,4 +60,20 @@ public class UserService {
         logger.info("addUser not executed, already has userID");
         return false;
     }
+
+    public Optional<User> loginUser(SampleLoginForm form){
+        logger.info("loginUser with ID : {}", form.getId());
+        Optional<User> user = userRepository.findByUserID(form.getId());
+        if (!user.isPresent()){
+            throw new RuntimeException("Login할 user가 없습니다.");
+        }
+
+        if (user.get().getPassWord().equals(form.getPassWord())){
+            // login 성공
+            return user;
+        }
+        // login 실패
+        return Optional.ofNullable(null);
+    }
+
 }

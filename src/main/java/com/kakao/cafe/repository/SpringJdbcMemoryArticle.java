@@ -26,13 +26,13 @@ public class SpringJdbcMemoryArticle implements ArticleRepository {
     }
 
     @Override
-    public Article save(SampleArticleForm form) {
+    public Article save(Article article) {
 
-        Article article = Article.add(form);
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("articles").usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new HashMap<>();
+        parameters.put("author", article.getAuthor());
         parameters.put("title", article.getTitle());
         parameters.put("content", article.getContent());
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
@@ -56,7 +56,10 @@ public class SpringJdbcMemoryArticle implements ArticleRepository {
         return new RowMapper<Article>() {
             @Override
             public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Article article = Article.add(new SampleArticleForm(rs.getString("title"), rs.getString("content")));
+                String author = rs.getString("author");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                Article article = Article.add(author, new SampleArticleForm(title, content));
                 article.setArticleID(rs.getLong("id"));
                 return article;
             }

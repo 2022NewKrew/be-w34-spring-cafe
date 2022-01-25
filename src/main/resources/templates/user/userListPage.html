@@ -6,6 +6,10 @@
 </head>
 <body>
 
+{{#currentUser}}
+    <p>{{ uid }}</p>
+{{/currentUser}}
+
 {{ #users }}
     <p>
         <a href="/user/{{ id }}"> {{ uid }} </a>

@@ -12,8 +12,10 @@
 <p> {{userprofile.content}} </p>
 
 <a href="/" role="button" class="btn btn-primary">홈으로</a>
-<a href="/user/{{userprofile.id}}/update" role="button" class="btn btn-primary">수정</a>
 
+{{#currentUser}}
+<a href="/user/{{userprofile.id}}/update" role="button" class="btn btn-primary">수정</a>
+{{/currentUser}}
 
 </body>
 </html>

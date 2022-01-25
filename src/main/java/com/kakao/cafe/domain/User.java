@@ -53,6 +53,16 @@ public class User {
         this.content = form.getContent();
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
+
     public static User add(SampleUserForm form){
         return new User(form.getId(), form.getPassWord(), form.getName(), form.getEmail(), form.getContent());
     }
