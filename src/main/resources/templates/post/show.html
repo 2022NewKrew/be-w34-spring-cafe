@@ -56,7 +56,7 @@
                 {{#replies}}
                 <article class="comment">
                   <div class="article-text">
-                    <p class="comment-content comment-author-name">{{userId}}</p>
+                    <p class="comment-content comment-author-name">{{name}}</p>
                     <div class="comment-content comment-doc">
                       <p>{{comment}}</p>
                     </div>
@@ -64,7 +64,7 @@
                       {{createdAt}}
                     </p>
                   </div>
-                  <form action="/posts/{{post.postId}}/replies/{{postId}}" method="post">
+                  <form action="/posts/{{post.postId}}/replies/{{replyId}}" method="post">
                     <input type="hidden" name="_method" value="delete"/>
                     <button class="black-component" type="submit">삭제</button>
                   </form>

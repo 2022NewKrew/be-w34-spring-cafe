@@ -26,12 +26,20 @@ public class Reply {
         return comment;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public int getUserId() {
         return userId;
     }
 
     public int getPostId() {
         return postId;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     @Override

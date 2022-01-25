@@ -9,6 +9,7 @@ import com.kakao.cafe.request.WritePostRequest;
 import com.kakao.cafe.request.WriteReplyRequest;
 import com.kakao.cafe.response.PostDetailResponse;
 import com.kakao.cafe.response.PostListResponse;
+import com.kakao.cafe.response.ReplyDetailResponse;
 import com.kakao.cafe.service.PostService;
 import com.kakao.cafe.service.ReplyService;
 import java.util.List;
@@ -69,7 +70,7 @@ public class PostController {
         PostDetailResponse post = postService.getPostById(postId);
         model.addAttribute("post", post);
 
-        List<Reply> replyList = replyService.getReplyListOfPost(postId);
+        List<ReplyDetailResponse> replyList = replyService.getReplyListOfPost(postId);
         model.addAttribute("replies", replyList);
         return "post/show";
     }
