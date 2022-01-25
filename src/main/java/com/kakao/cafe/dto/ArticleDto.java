@@ -23,8 +23,7 @@ public class ArticleDto {
     private String contents;
     private String createTime;
 
-    public ArticleDto(@NotBlank(message = "제목을 입력해주세요")String title,
-                      @NotBlank(message = "내용을 입력해주세요")String contents) {
+    public ArticleDto(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }

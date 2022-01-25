@@ -27,7 +27,7 @@ public class ArticleJdbcRepository implements ArticleRepository{
 
     public void save(Article article){
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String sql = "insert into article(writer, title, contents, createTime) values ( ?, ?, ?, ? )";
+        String sql = "insert into articles(writer, title, contents, createTime) values ( ?, ?, ?, ? )";
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
@@ -43,7 +43,7 @@ public class ArticleJdbcRepository implements ArticleRepository{
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query(
-                "select * from article join users on article.writer = users.userName order by article_id desc",
+                "select * from articles join users on articles.writer = users.userName order by article_id desc",
                 mapper
         );
     }
@@ -51,7 +51,7 @@ public class ArticleJdbcRepository implements ArticleRepository{
     @Override
     public Optional<Article> findOne(Integer id) {
         return jdbcTemplate.query(
-                "select * from article join users on article.writer = users.userName where article_id = ?",
+                "select * from articles join users on articles.writer = users.userName where article_id = ?",
                 mapper,
                 id
         ).stream().findAny();
@@ -60,7 +60,7 @@ public class ArticleJdbcRepository implements ArticleRepository{
 
     public void update(Article article){
         jdbcTemplate.update(
-                "update article set writer = ?, title = ?, contents = ? where article_id = ?",
+                "update articles set writer = ?, title = ?, contents = ? where article_id = ?",
                 article.getUser().getUserName(),
                 article.getTitle(),
                 article.getContents(),
@@ -70,7 +70,7 @@ public class ArticleJdbcRepository implements ArticleRepository{
 
     public void delete(Integer id){
         jdbcTemplate.update(
-                "delete article where article_id = ?",
+                "delete articles where article_id = ?",
                 id
         );
     }
