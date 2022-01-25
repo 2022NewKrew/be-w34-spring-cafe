@@ -19,15 +19,15 @@
 
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">글쓰기</p>
+            <p class="title">글 수정</p>
         </header>
-        <form class="submit-write" method="post" action="/articles">
+        <form class="submit-write" method="post" action="/articles/{{articleIndex}}">
             <div class="text-box">
                 <div class="comment-writer-container">
                     <p class="post-title">제목</p>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요"></textarea>
+                    <textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요">{{article.title}}</textarea>
                 </div>
             </div>
 
@@ -36,10 +36,16 @@
                     <p class="post-content">내용</p>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
+                    <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요">{{article.content}}</textarea>
                 </div>
             </div>
-            <input class="post-write-btn" type="submit" value="등록"/>
+            <input type="hidden" name="_method" value="PUT"/>
+            <button class="post-write-btn" type="submit">수정하기</button>
+        </form>
+
+        <form class="submit-write" method="post" action="/articles/{{articleIndex}}">
+            <input type="hidden" name="_method" value="DELETE"/>
+            <button class="post-write-btn" type="submit">삭제</button>
         </form>
     </div>
 </div>

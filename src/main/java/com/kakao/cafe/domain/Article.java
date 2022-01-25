@@ -1,20 +1,25 @@
 package com.kakao.cafe.domain;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class Article {
     private String title;
     private String content;
+    private String writer;
     private Integer articleIndex;
 
-    public Article(String title, String content, Integer articleIndex) {
+    @Autowired
+    public Article(String title, String content, String writer, Integer articleIndex) {
         this.title = title;
         this.content = content;
+        this.writer = writer;
         this.articleIndex = articleIndex;
     }
 
-    public Article(Article article) {
-        this.title = article.getTitle();
-        this.content = article.getContent();
-        this.articleIndex = article.getArticleIndex();
+    public Article(String title, String content, String writer) {
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
     }
 
     public String getTitle() {
@@ -29,6 +34,10 @@ public class Article {
         return content;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public Integer getArticleIndex() {
         return articleIndex;
     }
@@ -37,8 +46,14 @@ public class Article {
         this.articleIndex = articleIndex;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 }
+
+
 
