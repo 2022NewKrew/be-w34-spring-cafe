@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Post;
-import com.kakao.cafe.exceptions.UnauthenticatedArticleAccessException;
+import com.kakao.cafe.exceptions.UnauthenticatedPostAccessException;
 import com.kakao.cafe.repository.PostRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class PostService {
     private void validAuth(int postId, int userId, String errorMessage) {
         Post originalPost = getPostById(postId);
         if (originalPost.getUserId() != userId) {
-            throw new UnauthenticatedArticleAccessException(errorMessage);
+            throw new UnauthenticatedPostAccessException(errorMessage);
         }
     }
 

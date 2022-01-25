@@ -6,7 +6,7 @@ import com.kakao.cafe.exceptions.InvalidLoginRequestException;
 import com.kakao.cafe.exceptions.InvalidUserRequestException;
 import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.exceptions.PostNotFoundException;
-import com.kakao.cafe.exceptions.UnauthenticatedArticleAccessException;
+import com.kakao.cafe.exceptions.UnauthenticatedPostAccessException;
 import com.kakao.cafe.exceptions.UserNotFoundException;
 import com.kakao.cafe.exceptions.WrongPasswordException;
 import java.util.Map;
@@ -67,9 +67,9 @@ public class GlobalExceptionHandler {
         return errorModelAndView(exception);
     }
 
-    @ExceptionHandler(UnauthenticatedArticleAccessException.class)
+    @ExceptionHandler(UnauthenticatedPostAccessException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ModelAndView unauthenticatedArticleAccess(UnauthenticatedArticleAccessException exception) {
+    public ModelAndView unauthenticatedArticleAccess(UnauthenticatedPostAccessException exception) {
         return errorModelAndView(exception);
     }
 
