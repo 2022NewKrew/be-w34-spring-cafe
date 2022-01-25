@@ -7,6 +7,7 @@ import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.request.UpdatePostRequest;
 import com.kakao.cafe.request.WritePostRequest;
 import com.kakao.cafe.request.WriteReplyRequest;
+import com.kakao.cafe.response.PostDetailResponse;
 import com.kakao.cafe.response.PostListResponse;
 import com.kakao.cafe.service.PostService;
 import com.kakao.cafe.service.ReplyService;
@@ -65,7 +66,7 @@ public class PostController {
     @GetMapping("/posts/{postId}")
     public String postById(@PathVariable int postId, Model model) {
         logger.info("[GET] /posts/{postId} 게시글 보기");
-        Post post = postService.getPostById(postId);
+        PostDetailResponse post = postService.getPostById(postId);
         model.addAttribute("post", post);
 
         List<Reply> replyList = replyService.getReplyListOfPost(postId);

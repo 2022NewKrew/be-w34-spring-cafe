@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.exceptions.UnauthenticatedPostAccessException;
 import com.kakao.cafe.repository.PostRepository;
 import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.response.PostDetailResponse;
 import com.kakao.cafe.response.PostListResponse;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,12 +34,13 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public Post getPostById(int id) {
-        return postRepository.findByPostId(id);
+    public PostDetailResponse getPostById(int id) {
+        Post post = postRepository.findByPostId(id);
+        return PostDetailResponse.of(post, userRepository.findById(post.getUserId()));
     }
 
     private void validAuth(int postId, int userId, String errorMessage) {
-        Post originalPost = getPostById(postId);
+        Post originalPost = postRepository.findByPostId(postId);
         if (originalPost.getUserId() != userId) {
             throw new UnauthenticatedPostAccessException(errorMessage);
         }

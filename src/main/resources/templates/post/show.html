@@ -25,11 +25,10 @@
           <article class="article">
             <div class="article-header">
               <div class="article-header-text">
-                <p class="article-content">{{post.userId}}</p>
+                <p class="article-content"><a href="/users/{{post.userId}}">{{post.name}}</a></p>
                 <p class="article-content">
                   작성일자:{{post.createdAt}}
                 </p>
-                <p class="article-content">조회 4</p>
               </div>
             </div>
             <div class="article-doc">
@@ -39,15 +38,14 @@
 
           <ul class="nav navbar-nav navbar-right">
             {{#sessionUser}}
-            <li><a class="black-component" href="/posts/{{post.id}}/update" role="button">수정</a>
+            <li><a class="black-component" href="/posts/{{post.postId}}/update" role="button">수정</a>
             </li>
             <li>
-              <form action="/posts/{{post.id}}" method="post">
+              <form action="/posts/{{post.postId}}" method="post">
                 <input type="hidden" name="_method" value="delete"/>
                 <button class="black-component" type="submit">삭제</button>
               </form>
             </li>
-
             {{/sessionUser}}
           </ul>
 
@@ -66,7 +64,7 @@
                       {{createdAt}}
                     </p>
                   </div>
-                  <form action="/posts/{{post.id}}/replies/{{id}}" method="post">
+                  <form action="/posts/{{post.postId}}/replies/{{postId}}" method="post">
                     <input type="hidden" name="_method" value="delete"/>
                     <button class="black-component" type="submit">삭제</button>
                   </form>
@@ -74,7 +72,7 @@
                 {{/replies}}
 
                 <form class="submit-write" method="post"
-                      action="/posts/{{post.id}}/replies">
+                      action="/posts/{{post.postId}}/replies">
                   <div class="comment-writer-container">
                     <p class="comment-writer" id="writer">{{sessionUser.id}}</p>
                   </div>
