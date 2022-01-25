@@ -1,5 +1,6 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.request;
 
+import com.kakao.cafe.domain.User;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 

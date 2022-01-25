@@ -1,10 +1,10 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.LoginRequest;
 import com.kakao.cafe.domain.SessionUser;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exceptions.WrongPasswordException;
 import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.request.LoginRequest;
 import java.util.List;
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,6 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.request;
 
+import com.kakao.cafe.domain.Post;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
 

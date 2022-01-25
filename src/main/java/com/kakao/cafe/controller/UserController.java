@@ -1,10 +1,10 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.LoginRequest;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserSignupRequest;
 import com.kakao.cafe.exceptions.InvalidLoginRequestException;
 import com.kakao.cafe.exceptions.InvalidUserRequestException;
+import com.kakao.cafe.request.LoginRequest;
+import com.kakao.cafe.request.UserSignupRequest;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
