@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.domain.SessionUser;
+import com.kakao.cafe.exceptions.InvalidReplyException;
 import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.request.UpdatePostRequest;
 import com.kakao.cafe.request.WritePostRequest;
@@ -13,6 +14,7 @@ import com.kakao.cafe.response.ReplyDetailResponse;
 import com.kakao.cafe.service.PostService;
 import com.kakao.cafe.service.ReplyService;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -46,7 +48,7 @@ public class PostController {
         if (errors.hasErrors()) {
             String errorMessage = errors.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .reduce("", (total, element) -> total + element + "\n");
+                    .collect(Collectors.joining("\n"));
             throw new InvalidWritePostException(errorMessage);
         }
         SessionUser sessionUser = (SessionUser) session.getAttribute(SESSION);
@@ -114,8 +116,8 @@ public class PostController {
         if (errors.hasErrors()) {
             String errorMessage = errors.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .reduce("", (total, element) -> total + element + "\n");
-            throw new InvalidWritePostException(errorMessage);
+                    .collect(Collectors.joining("\n"));
+            throw new InvalidReplyException(errorMessage);
         }
         SessionUser sessionUser = (SessionUser) session.getAttribute(SESSION);
         Reply reply = replyDto.toEntity(sessionUser.getId(), postId);
