@@ -6,12 +6,18 @@ import com.kakao.cafe.dto.SampleArticleForm;
 public class Article {
 
     private Long articleID;
+    private String author;
     private String title;
     private String content;
 
-    private Article(String title, String content) {
+    private Article(String author, String title, String content) {
+        this.author = author;
         this.title = title;
         this.content = content;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public void setArticleID(Long articleID) {
@@ -26,6 +32,10 @@ public class Article {
         this.content = content;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
     public Long getArticleID() {
         return articleID;
     }
@@ -38,7 +48,7 @@ public class Article {
         return content;
     }
 
-    public static Article add(SampleArticleForm form){
-        return new Article(form.getTitle(), form.getContent());
+    public static Article add(String author, SampleArticleForm form){
+        return new Article(author, form.getTitle(), form.getContent());
     }
 }

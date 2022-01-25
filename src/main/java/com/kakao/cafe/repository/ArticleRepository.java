@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ArticleRepository {
 
-    Article save(SampleArticleForm form);
+    Article save(Article form);
     Optional<Article> findByID(Long articleID);
     List<Article> findAll();
 

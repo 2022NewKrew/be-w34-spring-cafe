@@ -19,8 +19,9 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void addArticle(SampleArticleForm form){
-        articleRepository.save(form);
+    public void addArticle(String author, SampleArticleForm form){
+        Article article = Article.add(author, form);
+        articleRepository.save(article);
     }
 
     public Article findArticle(Long articleID){

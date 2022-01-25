@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.SampleArticleForm;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/article")
@@ -35,7 +38,6 @@ public class ArticleController {
     public String article(Model model, @PathVariable Long articleID){
         logger.info("article print articleID : {}", articleID);
         model.addAttribute("article", articleService.findArticle(articleID));
-
         return "article/articlePage";
     }
 
@@ -46,9 +48,15 @@ public class ArticleController {
     }
 
     @PostMapping("/create")
-    public String createArticle(SampleArticleForm form){
-        logger.info("userCreate print {}" ,form.toString());
-        articleService.addArticle(form);
+    public String createArticle(SampleArticleForm form, HttpSession session){
+        logger.info("userCreate print details : {}" ,form.toString());
+
+        Object value = session.getAttribute("user");
+        String author = "testUser";
+        if (value != null){
+            author = ((User) value).getUid();
+        }
+        articleService.addArticle(author, form);
         return "redirect:/article";
     }
 }
