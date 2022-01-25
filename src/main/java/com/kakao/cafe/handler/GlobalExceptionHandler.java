@@ -73,8 +73,14 @@ public class GlobalExceptionHandler {
         return errorModelAndView(exception);
     }
 
+    private void logHandlingException(RuntimeException e) {
+        logger.info("Exception Handled: class={}, message={}",
+                e.getClass().getName(),
+                e.getMessage());
+    }
+
     private ModelAndView errorModelAndView(RuntimeException exception) {
-        logger.error("[ERROR] " + exception.getMessage());
+        logHandlingException(exception);
         Map<String, Object> model = mv.getModel();
         model.put("message", exception.getMessage());
         return mv;
