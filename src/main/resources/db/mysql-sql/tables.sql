@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS replies;
 DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS users;
 
@@ -20,4 +21,16 @@ CREATE TABLE post
     user_id     int,
     PRIMARY KEY(id),
     FOREIGN KEY(user_id) REFERENCES users (id)
+);
+
+CREATE TABLE replies
+(
+    id          int     NOT NULL AUTO_INCREMENT,
+    comment     TEXT,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id    int,
+    post_id    int,
+    PRIMARY KEY(id),
+    FOREIGN KEY(user_id) REFERENCES users (id),
+    FOREIGN KEY(post_id) REFERENCES post (id)
 );
