@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.auth.AuthControl;
 import com.kakao.cafe.controller.page.PageControl;
+import com.kakao.cafe.domain.Page;
 import com.kakao.cafe.domain.PageSelector;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.CommentDto;
@@ -50,11 +51,15 @@ public class ArticleController {
         if (page <= 0) {
             return "redirect:/pages/1";
         }
-        // get count and check idx and actualPage
-        // if actualPage < idx, redirect to actualPage
-        model.addAttribute("page_selector", new PageSelector(page, 150));
-        // get only actualPage's articles
-        model.addAttribute("articles", articleService.getDtoList());
+
+        final PageSelector pageSelector = new PageSelector(page, articleService.countOfValid());
+        final int actualPage = pageSelector.getActivePage().getPage();
+        if (actualPage < page) {
+            return "redirect:/pages/" + actualPage;
+        }
+
+        model.addAttribute("page_selector", pageSelector);
+        model.addAttribute("articles", articleService.getDtoList(Page.MAX_ARTICLES, (actualPage - 1L) * Page.MAX_ARTICLES));
 
         // force update lastPage cookie value
         response.addCookie(PageControl.createLastPageCookie(page));

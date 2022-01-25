@@ -45,6 +45,27 @@ public class ArticleJdbc implements ArticleRepository {
     }
 
     @Override
+    public long countOfValid() {
+        final List<Long> list = jdbcTemplate.query(
+                con -> con.prepareStatement(
+                        "SELECT COUNT(idx)" +
+                                "FROM article " +
+                                "WHERE deleted = false"
+                ),
+                (rs, count) -> rs.getLong(1)
+        );
+
+        if (list.size() == 0) {
+            return 0L;
+        }
+        else if (list.size() > 1) {
+            throw new IllegalStateException("Selected record(s) is not 1 for COUNT(article.idx)! - " + list.size());
+        }
+
+        return list.get(0);
+    }
+
+    @Override
     public ArticleDto getDto(final long idx) {
         final List<ArticleDto> list = jdbcTemplate.query(
                 con -> {
@@ -80,17 +101,29 @@ public class ArticleJdbc implements ArticleRepository {
     }
 
     @Override
-    public List<ArticleDto> getDtoList() {
+    public List<ArticleDto> getDtoList(final long limit, final long offset) {
         return Collections.unmodifiableList(
                 jdbcTemplate.query(
-                        con -> con.prepareStatement(
-                                "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at, a.count_comments " +
-                                        "FROM userlist AS u " +
-                                        "JOIN article AS a " +
-                                        "ON u.id = a.user_id " +
-                                        "WHERE a.deleted = false " +
-                                        "ORDER BY a.created_at DESC"
-                        ),
+                        con -> {
+                            final PreparedStatement pstmt = con.prepareStatement(
+                                    "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at, a.count_comments " +
+                                            "FROM article AS a " +
+                                            "JOIN (SELECT idx " +
+                                            "       FROM article " +
+                                            "       WHERE deleted = false " +
+                                            "       ORDER BY created_at DESC " +
+                                            "       LIMIT ? " +
+                                            "       OFFSET ?) as t " +
+                                            "ON t.idx = a.idx " +
+                                            "JOIN userlist u " +
+                                            "ON a.user_id = u.id " +
+                                            "ORDER BY a.created_at DESC"
+                            );
+
+                            pstmt.setLong(1, limit);
+                            pstmt.setLong(2, offset);
+                            return pstmt;
+                        },
                         (rs, count) -> ArticleDto.from(
                                 rs.getLong("idx"),
                                 rs.getString("user_id"),

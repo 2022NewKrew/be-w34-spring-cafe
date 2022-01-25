@@ -14,7 +14,7 @@ public class PageSelector {
     private final Page nextPage;
     private final boolean hasNext;
 
-    public PageSelector(final int page, final int totalArticles) {
+    public PageSelector(final int page, final long totalArticles) {
         Checker.checkPage(page);
         final int maxPage = (int)Math.ceil((double)totalArticles / Page.MAX_ARTICLES);
         Checker.checkPage(maxPage);
