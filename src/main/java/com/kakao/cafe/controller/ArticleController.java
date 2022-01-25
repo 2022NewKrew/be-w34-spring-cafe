@@ -1,6 +1,9 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.auth.AuthControl;
+import com.kakao.cafe.controller.page.PageControl;
+import com.kakao.cafe.domain.Page;
+import com.kakao.cafe.domain.PageSelector;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.dto.CommentDto;
 import com.kakao.cafe.service.ArticleService;
@@ -14,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -37,16 +41,33 @@ public class ArticleController {
         this.userService = Objects.requireNonNull(userService);
     }
 
-    @GetMapping("/")
-    public String getArticles(final Model model) {
-        model.addAttribute("articles", articleService.getDtoList());
+    @GetMapping("/pages/{page}")
+    public String getArticles(
+            final HttpServletResponse response,
+            final Model model,
+            @PathVariable("page") final int page
+    )
+    {
+        if (page <= 0) {
+            return "redirect:/pages/1";
+        }
+
+        final PageSelector pageSelector = new PageSelector(page, articleService.countOfValid());
+        final int actualPage = pageSelector.getActivePage().getPage();
+        if (actualPage < page) {
+            return "redirect:/pages/" + actualPage;
+        }
+
+        model.addAttribute("page_selector", pageSelector);
+        model.addAttribute("articles", articleService.getDtoList(Page.MAX_ARTICLES, (actualPage - 1L) * Page.MAX_ARTICLES));
+
+        // force update lastPage cookie value
+        response.addCookie(PageControl.createLastPageCookie(page));
+
         return "articles/index";
     }
 
-    @GetMapping("/articles")
-    public String getArticlesExplicit(final Model model) {
-        return getArticles(model);
-    }
+    // / -> redirect:/pages/1
 
     @GetMapping("/articles/new")
     public String getArticles(final HttpServletRequest request) {
@@ -81,6 +102,7 @@ public class ArticleController {
         if (checkNotLogin(request)) {
             return getRedirectLoginWithMsg(request);
         }
+        model.addAttribute("lastPage", PageControl.getLastPage(request));
 
         final String currentUserId = AuthControl.getLogonId(request);
         try {

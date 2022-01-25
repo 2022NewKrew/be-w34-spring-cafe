@@ -1,6 +1,6 @@
 package com.kakao.cafe.repo;
 
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.entity.Article;
 import com.kakao.cafe.dto.ArticleDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.lang.NonNull;
@@ -45,6 +45,27 @@ public class ArticleJdbc implements ArticleRepository {
     }
 
     @Override
+    public long countOfValid() {
+        final List<Long> list = jdbcTemplate.query(
+                con -> con.prepareStatement(
+                        "SELECT COUNT(idx)" +
+                                "FROM article " +
+                                "WHERE deleted = false"
+                ),
+                (rs, count) -> rs.getLong(1)
+        );
+
+        if (list.size() == 0) {
+            return 0L;
+        }
+        else if (list.size() > 1) {
+            throw new IllegalStateException("Selected record(s) is not 1 for COUNT(article.idx)! - " + list.size());
+        }
+
+        return list.get(0);
+    }
+
+    @Override
     public ArticleDto getDto(final long idx) {
         final List<ArticleDto> list = jdbcTemplate.query(
                 con -> {
@@ -80,17 +101,29 @@ public class ArticleJdbc implements ArticleRepository {
     }
 
     @Override
-    public List<ArticleDto> getDtoList() {
+    public List<ArticleDto> getDtoList(final long limit, final long offset) {
         return Collections.unmodifiableList(
                 jdbcTemplate.query(
-                        con -> con.prepareStatement(
-                                "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at, a.count_comments " +
-                                        "FROM userlist AS u " +
-                                        "JOIN article AS a " +
-                                        "ON u.id = a.user_id " +
-                                        "WHERE a.deleted = false " +
-                                        "ORDER BY a.created_at DESC"
-                        ),
+                        con -> {
+                            final PreparedStatement pstmt = con.prepareStatement(
+                                    "SELECT a.idx, a.user_id, u.name AS user_name, a.title, a.body, a.created_at, a.modified_at, a.count_comments " +
+                                            "FROM article AS a " +
+                                            "JOIN (SELECT idx " +
+                                            "       FROM article " +
+                                            "       WHERE deleted = false " +
+                                            "       ORDER BY created_at DESC " +
+                                            "       LIMIT ? " +
+                                            "       OFFSET ?) as t " +
+                                            "ON t.idx = a.idx " +
+                                            "JOIN userlist u " +
+                                            "ON a.user_id = u.id " +
+                                            "ORDER BY a.created_at DESC"
+                            );
+
+                            pstmt.setLong(1, limit);
+                            pstmt.setLong(2, offset);
+                            return pstmt;
+                        },
                         (rs, count) -> ArticleDto.from(
                                 rs.getLong("idx"),
                                 rs.getString("user_id"),
@@ -132,17 +165,15 @@ public class ArticleJdbc implements ArticleRepository {
         final int result = jdbcTemplate.update(con -> {
             final PreparedStatement pstmt = con.prepareStatement(
                     "UPDATE comment co " +
-                            "JOIN article ao " +
-                            "ON ao.idx = co.article_idx " +
+                            "RIGHT JOIN article ao " +
+                            "ON ao.idx = ? AND ao.idx = co.article_idx AND co.deleted = false " +
                             "SET ao.deleted = true, ao.count_comments = 0, co.deleted = true " +
-                            "WHERE ao.idx = ? AND ao.deleted = false AND " +
-                            "       co.article_idx = ? AND co.deleted = false AND " +
-                            "       0 = (SELECT cnt FROM (SELECT COUNT(c.user_id) cnt " +
-                            "           FROM comment c " +
-                            "           JOIN (SELECT * FROM article WHERE idx = ? AND deleted = false LIMIT 1) a " +
-                            "           ON c.article_idx = a.idx " +
-                            "           WHERE c.user_id != a.user_id " +
-                            "           LIMIT 1) tmp)"
+                            "WHERE ao.idx = ? AND ao.deleted = false AND 0 = (SELECT t2.cnt FROM (SELECT COUNT(c2.idx) cnt " +
+                            "   FROM comment c2 " +
+                            "   JOIN (SELECT * FROM article WHERE idx = ? AND deleted = false LIMIT 1) a2 " +
+                            "   ON c2.article_idx = a2.idx " +
+                            "   WHERE c2.user_id != a2.user_id " +
+                            "   LIMIT 1) t2)"
             );
             pstmt.setLong(1, idx);
             pstmt.setLong(2, idx);

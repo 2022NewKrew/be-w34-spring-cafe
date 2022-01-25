@@ -48,7 +48,7 @@
                           </li>
                           {{/isOwner}}
                           <li>
-                              <a class="link-modify-article" href="/">목록</a>
+                              <a class="link-modify-article" href="/pages/{{lastPage}}">목록</a>
                           </li>
                       </ul>
                   </div>
@@ -123,7 +123,7 @@
         {{^article}}
         <h2 class="qna-title">존재하지 않는 글입니다.</h2>
         <div class="content-main">
-            <a href="/" class="btn btn-primary" role="button">돌아가기</a>
+            <a href="/pages/{{lastPage}}" class="btn btn-primary" role="button">돌아가기</a>
         </div>
         {{/article}}
     </div>

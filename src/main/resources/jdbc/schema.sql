@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS article (
     modified_at BIGINT NOT NULL,
     deleted BOOL DEFAULT false,
     count_comments MEDIUMINT DEFAULT 0,
-    FOREIGN KEY(user_id) REFERENCES userlist(id)
+    FOREIGN KEY(user_id) REFERENCES userlist(id),
+    INDEX deleted(deleted)
 );
 
 CREATE TABLE IF NOT EXISTS comment (
@@ -27,5 +28,6 @@ CREATE TABLE IF NOT EXISTS comment (
     modified_at BIGINT NOT NULL,
     deleted BOOL DEFAULT false,
     FOREIGN KEY(user_id) REFERENCES userlist(id),
-    FOREIGN KEY(article_idx) REFERENCES article(idx)
+    FOREIGN KEY(article_idx) REFERENCES article(idx),
+    INDEX deleted(deleted)
 );

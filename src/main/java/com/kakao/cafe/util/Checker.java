@@ -15,6 +15,15 @@ public final class Checker {
         }
     }
 
+    public static void checkPage (
+            final int page
+    ) throws IllegalStateException
+    {
+        if (page <= 0) {
+            throw new IllegalStateException("page is not positive integer! - " + page);
+        }
+    }
+
     public static void checkIntMinMax (
             final int min,
             final int max

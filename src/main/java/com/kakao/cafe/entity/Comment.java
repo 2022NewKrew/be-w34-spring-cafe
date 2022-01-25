@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.entity;
 
 import com.kakao.cafe.util.Checker;
 import org.springframework.lang.NonNull;
@@ -6,46 +6,42 @@ import org.springframework.lang.NonNull;
 import java.time.Instant;
 import java.util.Objects;
 
-public class Article {
-    public static final int TITLE_MIN = 1;
-    public static final int TITLE_MAX = 255;
+public class Comment {
     public static final int BODY_MIN = 1;
-    public static final int BODY_MAX = 4095;
+    public static final int BODY_MAX = 400;
 
     private final long idx;
     private final String userId;
-    private final String title;
+    private final long articleIdx;
     private final String body;
     private final long createdAt;
     private final long modifiedAt;
     private final boolean deleted;
-    private final int countComments;
 
-    public Article(
+    public Comment(
             @NonNull final String userId,
-            @NonNull final String title,
+            @NonNull final long articleIdx,
             @NonNull final String body
     ) throws IllegalArgumentException
     {
-        validate(userId, title, body);
+        validate(userId, articleIdx, body);
         this.idx = 0;
         this.userId = userId;
-        this.title = title.trim();
+        this.articleIdx = articleIdx;
         this.body = body.trim();
         this.createdAt = Instant.now().getEpochSecond();
         this.modifiedAt = 0L;
         this.deleted = false;
-        this.countComments = 0;
     }
 
     private void validate(
             final String userId,
-            final String title,
+            final long articleIdx,
             final String body
     )
     {
         Checker.checkString("userId", userId, User.ID_REGEX, User.ID_MIN, User.ID_MAX);
-        Checker.checkString("title", title, TITLE_MIN, TITLE_MAX);
+        Checker.checkIndex(articleIdx);
         Checker.checkString("body", body, BODY_MIN, BODY_MAX);
     }
 
@@ -57,8 +53,8 @@ public class Article {
         return userId;
     }
 
-    public String getTitle() {
-        return title;
+    public long getArticleIdx() {
+        return articleIdx;
     }
 
     public String getBody() {
@@ -77,34 +73,29 @@ public class Article {
         return deleted;
     }
 
-    public int getCountComments() {
-        return countComments;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Article article = (Article) o;
-        return idx == article.idx && createdAt == article.createdAt && modifiedAt == article.modifiedAt && deleted == article.deleted && countComments == article.countComments && userId.equals(article.userId) && title.equals(article.title) && body.equals(article.body);
+        Comment comment = (Comment) o;
+        return idx == comment.idx && articleIdx == comment.articleIdx && createdAt == comment.createdAt && modifiedAt == comment.modifiedAt && deleted == comment.deleted && userId.equals(comment.userId) && body.equals(comment.body);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idx, userId, title, body, createdAt, modifiedAt, deleted, countComments);
+        return Objects.hash(idx, userId, articleIdx, body, createdAt, modifiedAt, deleted);
     }
 
     @Override
     public String toString() {
-        return "Article{" +
+        return "Comment{" +
                 "idx=" + idx +
                 ", userId='" + userId + '\'' +
-                ", title='" + title + '\'' +
+                ", articleIdx=" + articleIdx +
                 ", body='" + body + '\'' +
                 ", createdAt=" + createdAt +
                 ", modifiedAt=" + modifiedAt +
                 ", deleted=" + deleted +
-                ", countComments=" + countComments +
                 '}';
     }
 }

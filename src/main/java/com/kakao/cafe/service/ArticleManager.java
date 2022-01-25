@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.entity.Article;
 import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.repo.ArticleRepository;
 import org.springframework.lang.NonNull;
@@ -37,8 +37,14 @@ public class ArticleManager implements ArticleService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<ArticleDto> getDtoList() {
-        return articleRepository.getDtoList();
+    public long countOfValid() {
+        return articleRepository.countOfValid();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ArticleDto> getDtoList(final long size, final long offset) {
+        return articleRepository.getDtoList(size, offset);
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.entity.User;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.repo.UserRepository;
 import com.kakao.cafe.util.SecurePassword;
