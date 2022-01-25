@@ -1,11 +1,14 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Post;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.domain.SessionUser;
 import com.kakao.cafe.domain.UpdatePostRequest;
 import com.kakao.cafe.domain.WritePostRequest;
+import com.kakao.cafe.domain.WriteReplyRequest;
 import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.service.PostService;
+import com.kakao.cafe.service.ReplyService;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -26,10 +29,12 @@ public class PostController {
 
     private static final String SESSION = "sessionUser";
     private final PostService postService;
+    private final ReplyService replyService;
     private final Logger logger = LoggerFactory.getLogger(PostController.class);
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, ReplyService replyService) {
         this.postService = postService;
+        this.replyService = replyService;
     }
 
     @PostMapping("/posts")
@@ -59,8 +64,10 @@ public class PostController {
     public String postById(@PathVariable int postId, Model model) {
         logger.info("[GET] /posts/{postId} 게시글 보기");
         Post post = postService.getPostById(postId);
-
         model.addAttribute("post", post);
+
+        List<Reply> replyList = replyService.getReplyListOfPost(postId);
+        model.addAttribute("replies", replyList);
         return "post/show";
     }
 
@@ -95,5 +102,32 @@ public class PostController {
         postService.deletePost(postId, sessionUser.getId());
 
         return "redirect:/";
+    }
+
+    @PostMapping("/posts/{postId}/replies")
+    public String createReplies(@Valid WriteReplyRequest replyDto, @PathVariable int postId, Model model,
+            HttpSession session, BindingResult errors) {
+        logger.info("[POST] /posts/{postId}/replies 댓글 달기");
+        if (errors.hasErrors()) {
+            String errorMessage = errors.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .reduce("", (total, element) -> total + element + "\n");
+            throw new InvalidWritePostException(errorMessage);
+        }
+        SessionUser sessionUser = (SessionUser) session.getAttribute(SESSION);
+        Reply reply = replyDto.toEntity(sessionUser.getId(), postId);
+        replyService.registerReply(reply);
+
+        return "redirect:/posts/" + postId;
+    }
+
+    @DeleteMapping("/posts/{postId}/replies/{replyId}")
+    public String deleteReplies(@PathVariable int postId, @PathVariable int replyId, HttpSession session) {
+        logger.info("[DELETE] /posts/{}/replies/{} 댓글 삭제", postId, replyId);
+
+        SessionUser sessionUser = (SessionUser) session.getAttribute(SESSION);
+        replyService.deleteReplyByIdAndAuthor(replyId, sessionUser.getId());
+
+        return "redirect:/posts/" + postId;
     }
 }

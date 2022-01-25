@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final ReplyService replyService;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, ReplyService replyService) {
         this.postRepository = postRepository;
+        this.replyService = replyService;
     }
 
     public void writePost(Post post) {
@@ -46,6 +48,7 @@ public class PostService {
 
     public void deletePost(int postId, int userId) {
         validAuth(postId, userId, "본인 게시글만 삭제할 수 있습니다");
+        replyService.deleteReplyByPostId(postId);
         postRepository.delete(postId);
     }
 }
