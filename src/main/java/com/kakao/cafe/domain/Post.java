@@ -35,6 +35,10 @@ public class Post {
         return content;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

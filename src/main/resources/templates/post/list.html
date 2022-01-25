@@ -30,13 +30,13 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>제목</th> <th>작성자</th> <th>작성일자</th> <th>조회수</th>
+                        <th>제목</th> <th>작성자</th> <th>작성일자</th>
                     </tr>
                     </thead>
                     <tbody>
                     {{#postList}}
                     <tr>
-                        <td><a href="/posts/{{id}}">{{title}}</a></td> <td><a href="/users/{{userId}}">{{userId}}</a></td> <td>{{createdAt}}</td> <td>{{id}}</td>
+                        <td><a href="/posts/{{postId}}">{{title}}</a></td> <td><a href="/users/{{userId}}">{{name}}</a></td> <td>{{createdAt}}</td>
                     </tr>
                     {{/postList}}
                     </tbody>

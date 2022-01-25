@@ -3,17 +3,22 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.Post;
 import com.kakao.cafe.exceptions.UnauthenticatedPostAccessException;
 import com.kakao.cafe.repository.PostRepository;
+import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.response.PostListResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private final ReplyService replyService;
 
-    public PostService(PostRepository postRepository, ReplyService replyService) {
+    public PostService(PostRepository postRepository, UserRepository userRepository, ReplyService replyService) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
         this.replyService = replyService;
     }
 
@@ -21,8 +26,11 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public List<Post> getPostList() {
-        return postRepository.findAll();
+    public List<PostListResponse> getPostList() {
+        return postRepository.findAll()
+                .stream()
+                .map(post -> PostListResponse.of(post, userRepository.findById(post.getUserId())))
+                .collect(Collectors.toList());
     }
 
     public Post getPostById(int id) {

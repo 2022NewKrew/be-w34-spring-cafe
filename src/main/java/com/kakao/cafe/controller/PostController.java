@@ -7,6 +7,7 @@ import com.kakao.cafe.exceptions.InvalidWritePostException;
 import com.kakao.cafe.request.UpdatePostRequest;
 import com.kakao.cafe.request.WritePostRequest;
 import com.kakao.cafe.request.WriteReplyRequest;
+import com.kakao.cafe.response.PostListResponse;
 import com.kakao.cafe.service.PostService;
 import com.kakao.cafe.service.ReplyService;
 import java.util.List;
@@ -55,8 +56,9 @@ public class PostController {
     @GetMapping
     public String postList(Model model) {
         logger.info("[GET] / 게시글 리스트");
-        List<Post> postList = postService.getPostList();
+        List<PostListResponse> postList = postService.getPostList();
         model.addAttribute("postList", postList);
+        logger.info("[GET] / 게시글 리스트 success: {}", postList);
         return "post/list";
     }
 
