@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -87,9 +84,8 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/form")
-    public String updateForm(Model model, @PathVariable String userId, HttpSession session) {
+    public String updateForm(Model model, @PathVariable String userId, @SessionAttribute("sessionUser") User sessionUser) {
 
-        User sessionUser = (User) session.getAttribute("sessionUser");
         if (!userId.equals(sessionUser.getUserId())) {
             throw new UnauthorizedException("정보를 수정할 권한이 없습니다.");
         }
@@ -103,9 +99,8 @@ public class UserController {
     }
 
     @PutMapping("/users/{userId}/update")
-    public String updateUser(User newUser, @PathVariable String userId, HttpSession session) {
+    public String updateUser(User newUser, @PathVariable String userId, @SessionAttribute("sessionUser") User sessionUser) {
 
-        User sessionUser = (User) session.getAttribute("sessionUser");
         if (!userId.equals(sessionUser.getUserId())) {
             throw new UnauthorizedException("정보를 수정할 권한이 없습니다.");
         }
