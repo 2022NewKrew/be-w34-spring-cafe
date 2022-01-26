@@ -3,7 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.web.dto.ArticleRequest;
-import com.kakao.cafe.web.dto.ArticleResponseDTO;
+import com.kakao.cafe.web.dto.ArticleResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,18 +28,18 @@ public class ArticleService {
         return articleRepository.getArticleList().size();
     }
 
-    public List<ArticleResponseDTO> getArticleList() {
+    public List<ArticleResponse> getArticleList() {
         return articleRepository.getArticleList().stream().map(
                 this::articleResponseDTOFromArticle).collect(Collectors.toList()
         );
     }
 
-    public ArticleResponseDTO getArticleByIndex(int id) {
+    public ArticleResponse getArticleByIndex(int id) {
         return this.articleResponseDTOFromArticle(articleRepository.findById(id));
     }
 
-    private ArticleResponseDTO articleResponseDTOFromArticle(Article article){
-        return ArticleResponseDTO.builder()
+    private ArticleResponse articleResponseDTOFromArticle(Article article){
+        return ArticleResponse.builder()
                 .id(article.getId())
                 .title(article.getTitle())
                 .content(article.getContent())
