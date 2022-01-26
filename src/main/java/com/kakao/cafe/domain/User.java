@@ -2,11 +2,8 @@ package com.kakao.cafe.domain;
 
 public class User {
     private String userId;
-
     private String userPassword;
-
     private String userName;
-
     private String email;
 
     public User() {}
