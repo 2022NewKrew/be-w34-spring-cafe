@@ -12,16 +12,15 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
+import javax.xml.crypto.Data;
 
 @Configuration
 public class SpringJdbcConfig {
-    @Bean
-    public DataSource dataSource() {
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .setName("kakaodb")
-                .addScript("classpath:schema.sql")
-                .build();
+
+    private final DataSource dataSource;
+
+    public SpringJdbcConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Bean
@@ -31,7 +30,7 @@ public class SpringJdbcConfig {
 
     @Bean
     public ArticleRepository articleRepository(){
-        return new SpringJdbcMemoryArticle(dataSource());
+        return new SpringJdbcMemoryArticle(dataSource);
     }
 
     @Bean
@@ -41,6 +40,6 @@ public class SpringJdbcConfig {
 
     @Bean
     public UserRepository userRepository(){
-        return new SpringJdbcMemoryUser(dataSource());
+        return new SpringJdbcMemoryUser(dataSource);
     }
 }
