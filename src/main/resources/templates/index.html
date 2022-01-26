@@ -38,7 +38,11 @@
         </div>
     </div>
     <div class="post-btn-container">
-      <a class="post-write-btn" href="article/form" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{#if sessionUser}}
+            <a class="post-write-btn" href="article/form" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{else}}
+            <a class="post-write-btn" href="user/login" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{/if}}
     </div>
 </div>
 

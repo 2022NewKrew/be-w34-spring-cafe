@@ -1,5 +1,6 @@
 package com.kakao.cafe.web.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -15,13 +16,23 @@ public class ArticleRequest {
     private final String createDate;
     private final int views;
 
-    public ArticleRequest(String title, String content) {
-        this.id = 0;
+    @Builder
+    private ArticleRequest(long id, String title, String content, String createUserId, String createDate, int views) {
+        this.id = id;
         this.title = title;
         this.content = content;
-        this.createUserId = "unknown";
-        this.createDate = LocalDate.now().toString();
-        this.views = 0;
+        this.createUserId = createUserId;
+        this.createDate = createDate;
+        this.views = views;
     }
 
+    public static ArticleRequest newInstance(String title, String content, String createUserId) {
+        return ArticleRequest.builder()
+                .title(title)
+                .content(content)
+                .createUserId(createUserId)
+                .createDate(LocalDate.now().toString())
+                .views(0)
+                .build();
+    }
 }

@@ -3,12 +3,15 @@ package com.kakao.cafe.web.controller;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.web.dto.ArticleRequest;
 import com.kakao.cafe.web.dto.ArticleResponse;
+import com.kakao.cafe.web.dto.UserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Controller
@@ -20,7 +23,9 @@ public class ArticleController {
     }
 
     @PostMapping(value = "/article/create")
-    public String postCreateArticle(ArticleRequest articleRequest) {
+    public String postCreateArticle(String title, String content, HttpSession session) {
+        UserResponse userResponse = (UserResponse) session.getAttribute("sessionUser");
+        ArticleRequest articleRequest = ArticleRequest.newInstance(title, content, userResponse.getUserId());
         articleService.createArticle(articleRequest);
         return "redirect:/index";
     }

@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.web.dto.ArticleRequest;
 import com.kakao.cafe.web.dto.ArticleResponse;
+import com.kakao.cafe.web.dto.UserResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class ArticleService {
 
     public void createArticle(ArticleRequest articleRequest) {
         articleRepository.create(
-                articleFromArticleDTO(articleRequest)
+                articleFromArticleRequest(articleRequest)
         );
     }
 
@@ -30,15 +31,15 @@ public class ArticleService {
 
     public List<ArticleResponse> getArticleList() {
         return articleRepository.getArticleList().stream().map(
-                this::articleResponseDTOFromArticle).collect(Collectors.toList()
+                this::articleResponseFromArticle).collect(Collectors.toList()
         );
     }
 
     public ArticleResponse getArticleByIndex(int id) {
-        return this.articleResponseDTOFromArticle(articleRepository.findById(id));
+        return this.articleResponseFromArticle(articleRepository.findById(id));
     }
 
-    private ArticleResponse articleResponseDTOFromArticle(Article article){
+    private ArticleResponse articleResponseFromArticle(Article article) {
         return ArticleResponse.builder()
                 .id(article.getId())
                 .title(article.getTitle())
@@ -49,7 +50,7 @@ public class ArticleService {
                 .build();
     }
 
-    private Article articleFromArticleDTO(ArticleRequest articleRequest){
+    private Article articleFromArticleRequest(ArticleRequest articleRequest) {
         return Article.builder()
                 .title(articleRequest.getTitle())
                 .content(articleRequest.getContent())
