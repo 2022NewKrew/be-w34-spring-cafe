@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserDao {
@@ -31,9 +32,11 @@ public class UserDao {
                 userInfo.getName(), userInfo.getEmail(), userInfo.getSignUpDate());
     }
 
-    public UserInfo selectById(String id) {
+    public Optional<UserInfo> selectById(String id) {
         String sql = "SELECT userId,password,name,email,signUpDate FROM USERS WHERE userID=?";
-        return jdbcTemplate.queryForObject(sql, userMapper, id);
+        List<UserInfo> resultList = jdbcTemplate.query(sql, userMapper, id);
+        return Optional.ofNullable(resultList.isEmpty() ? null : resultList.get(0));
+
     }
 
     public List<UserInfo> selectAll() {
