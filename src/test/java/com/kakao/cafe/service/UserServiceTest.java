@@ -1,8 +1,7 @@
 package com.kakao.cafe.service;
 import java.util.Optional;
 
-import com.kakao.cafe.web.dto.UserDTO;
-import com.kakao.cafe.web.dto.UserResponseDTO;
+import com.kakao.cafe.web.dto.UserResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,11 +17,11 @@ class UserServiceTest {
     @Test
     void getUserByUserId() {
         //when
-        UserResponseDTO userResponseDTO = userService.getUserByUserId("admin");
+        UserResponse userResponse = userService.getUserByUserId("admin");
 
         //then
-        assertEquals(userResponseDTO.getUserId(),"admin");
-        assertEquals(userResponseDTO.getEmail(),"admin@kakaocorp.com");
+        assertEquals(userResponse.getUserId(),"admin");
+        assertEquals(userResponse.getEmail(),"admin@kakaocorp.com");
     }
 
     @Test
@@ -38,10 +37,10 @@ class UserServiceTest {
     @Test
     void getSessionUserDTO(){
         //given
-        UserResponseDTO userResponseDTO = userService.getSessionUserDTO("test","1111").get();
+        UserResponse userResponse = userService.getSessionUserDTO("test","1111").get();
 
         //then
-        assertEquals(userResponseDTO.getEmail(), "test@kakaocorp.com");
+        assertEquals(userResponse.getEmail(), "test@kakaocorp.com");
         assertEquals(userService.getSessionUserDTO("test","1234"),Optional.empty());
         assertEquals(userService.getSessionUserDTO("test1","1111"),Optional.empty());
     }

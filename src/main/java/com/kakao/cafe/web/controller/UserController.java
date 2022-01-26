@@ -3,8 +3,8 @@ package com.kakao.cafe.web.controller;
 import com.kakao.cafe.exception.IllegalUserInputException;
 import com.kakao.cafe.exception.IllegalLoginInputException;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.web.dto.UserDTO;
-import com.kakao.cafe.web.dto.UserResponseDTO;
+import com.kakao.cafe.web.dto.UserRequest;
+import com.kakao.cafe.web.dto.UserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,14 +36,14 @@ public class UserController {
 
     @PostMapping(value = "/user/create")
     public String postSignUp(String userId, String password, String email) {
-        userService.createUser(UserDTO.newInstance(userId, password, email));
+        userService.createUser(UserRequest.newInstance(userId, password, email));
         log.info("userList:{}", userService.getUserDTOList());
         return "redirect:/user/list";
     }
 
     @PostMapping(value = "/user/login_check")
     public String login(String userId, String password, HttpSession session) {
-        Optional<UserResponseDTO> userResponseDTO = userService.getSessionUserDTO(userId, password);
+        Optional<UserResponse> userResponseDTO = userService.getSessionUserDTO(userId, password);
 
         if (userResponseDTO.isPresent()) {
             session.setAttribute("sessionUser", userResponseDTO.get());
@@ -60,9 +60,9 @@ public class UserController {
 
     @GetMapping(value = "user/profile/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model) {
-        UserResponseDTO userResponseDTO = userService.getUserByUserId(userId);
-        log.info("userDTO:{}", userResponseDTO);
-        model.addAttribute("user", userResponseDTO);
+        UserResponse userResponse = userService.getUserByUserId(userId);
+        log.info("userDTO:{}", userResponse);
+        model.addAttribute("user", userResponse);
         return "/user/profile";
     }
 
