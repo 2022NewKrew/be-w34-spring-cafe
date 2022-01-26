@@ -26,24 +26,16 @@ public class UserService {
     }
 
     public User findUser(Long numID){
-        Optional<User> user = userRepository.findByNumID(numID);
-        if (user.isPresent()){
-            return user.get();
-        }
-        throw new RuntimeException("일치하는 userID가 없습니다.");
+        return userRepository.findByNumID(numID);
     }
 
     public boolean updateUser(SampleUserForm form){
         logger.info("updateUser Input user getID {}", form.getId());
 
-        Optional<User> user = userRepository.findByUserID(form.getId());
-        if (!user.isPresent()){
-            throw new RuntimeException("Update할 user가 없습니다.");
-        }
-
-        if (user.get().getPassWord().equals(form.getPassWord())){
-            user.get().update(form);
-            userRepository.update(user.get());
+        User user = userRepository.findByUserID(form.getId());
+        if (user.getPassWord().equals(form.getPassWord())){
+            user.update(form);
+            userRepository.update(user);
             return true;
         }
         logger.info("UpdateUser update not executed, Invalid password");
@@ -52,8 +44,7 @@ public class UserService {
 
     public boolean addUser(SampleUserForm form){
         logger.info("addUser with ID : {}", form.getId());
-        Optional<User> user = userRepository.findByUserID(form.getId());
-        if (!user.isPresent()){
+        if (!userRepository.checkExistenceByUserID(form.getId())){
             userRepository.save(form);
             return true;
         }
@@ -61,19 +52,15 @@ public class UserService {
         return false;
     }
 
-    public Optional<User> loginUser(SampleLoginForm form){
+    public User loginUser(SampleLoginForm form){
         logger.info("loginUser with ID : {}", form.getId());
-        Optional<User> user = userRepository.findByUserID(form.getId());
-        if (!user.isPresent()){
-            throw new RuntimeException("Login할 user가 없습니다.");
-        }
-
-        if (user.get().getPassWord().equals(form.getPassWord())){
+        User user = userRepository.findByUserID(form.getId());
+        if (user.getPassWord().equals(form.getPassWord())){
             // login 성공
             return user;
         }
         // login 실패
-        return Optional.ofNullable(null);
+        return null;
     }
 
 }

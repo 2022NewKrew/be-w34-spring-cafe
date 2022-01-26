@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import javax.swing.text.html.Option;
 import java.util.List;
 
-
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
@@ -25,7 +24,7 @@ public class ArticleService {
     }
 
     public Article findArticle(Long articleID){
-        return articleRepository.findByID(articleID).get();
+        return articleRepository.findByID(articleID);
     }
 
     public List<Article> getArticles(){

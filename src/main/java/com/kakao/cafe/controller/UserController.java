@@ -3,6 +3,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.SampleLoginForm;
 import com.kakao.cafe.dto.SampleUserForm;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.util.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,12 +109,18 @@ public class UserController {
     @ResponseBody
     public String userLogin(SampleLoginForm form, HttpSession session){
         logger.info("userLogin print {}" ,form.toString());
-        Optional<User> loginUser = userService.loginUser(form);
-        if (loginUser.isPresent()){
-            session.setAttribute("user", loginUser.get());
+        User loginUser = userService.loginUser(form);
+        if (loginUser != null){
+            session.setAttribute("user", loginUser);
             return "<script>alert('Login Success');location.href='/'</script>";
         }
         return "<script>alert('Login failed : Invalid Password');location.href='/'</script>";
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public Object exceptionHandle(Exception e){
+        logger.error("Error exception");
+        return "error";
     }
 
 

@@ -42,9 +42,9 @@ public class SpringJdbcMemoryArticle implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findByID(Long articleID) {
+    public Article findByID(Long articleID) {
         List<Article> result =  jdbcTemplate.query("select * from articles where id = ?",articleRowMapper(), articleID);
-        return result.stream().findAny();
+        return result.stream().findAny().orElseThrow();
     }
 
     @Override

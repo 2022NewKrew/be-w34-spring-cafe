@@ -10,7 +10,8 @@ public interface UserRepository {
 
     User save(SampleUserForm form);
     void update(User user);
-    Optional<User> findByUserID(String uID);
-    Optional<User> findByNumID(Long ID);
+    User findByUserID(String uID);
+    User findByNumID(Long ID);
+    Boolean checkExistenceByUserID(String uID);
     List<User> findAll();
 }

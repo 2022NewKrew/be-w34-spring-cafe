@@ -23,6 +23,15 @@ public class SpringJdbcConfig {
         this.dataSource = dataSource;
     }
 
+    //    @Bean
+//    public DataSource dataSource() {
+//        return new EmbeddedDatabaseBuilder()
+//                .setType(EmbeddedDatabaseType.H2)
+//                .setName("kakaodb")
+//                .addScript("classpath:schema.sql")
+//                .build();
+//    }
+
     @Bean
     public ArticleService articleService(){
         return new ArticleService(articleRepository());
