@@ -1,6 +1,5 @@
 package com.kakao.cafe.domain.article;
 
-import com.kakao.cafe.web.dto.ArticleDTO;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -21,15 +20,5 @@ public class Article {
         this.createUserId = createUserId;
         this.createDate = createDate;
         this.views = views;
-    }
-
-    public static Article noneIdInstance(ArticleDTO articleDTO) {
-        return Article.builder()
-                .title(articleDTO.getTitle())
-                .content(articleDTO.getContent())
-                .createUserId(articleDTO.getCreateUserId())
-                .createDate(articleDTO.getCreateDate())
-                .views(articleDTO.getViews())
-                .build();
     }
 }
