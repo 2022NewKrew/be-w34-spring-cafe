@@ -81,4 +81,6 @@
 - 데이터 베이스를 MySQL로 변경.
 - ![img_9.png](img_9.png)
 
-##
+## 구현 내용
+- UserService에 있던 도메인 로직을 UserRepository 및 User 로 이동.
+- 
