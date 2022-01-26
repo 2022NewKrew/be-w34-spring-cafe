@@ -1,0 +1,11 @@
+<li class="active"><a href="/users">멤버 리스트</a></li>
+{{^userId}}
+<li><a href="/user/login" role="button">로그인</a></li>
+<li><a href="/user/form" role="button">회원가입</a></li>
+{{/userId}}
+{{#userId}}
+<form name="logout" action="/users/logout" method="post">
+  <li><button type="submit">로그아웃</button></li>
+</form>
+<li><a href="#" role="button">개인정보수정</a></li>
+{{/userId}}

@@ -6,15 +6,13 @@
   <nav class="navbar navbar-fixed-top header">
     <div class="col-md-12">
       <div class="navbar-header">
-        <a href="index.html" class="navbar-brand">
+        <a href="/" class="navbar-brand">
           <img src="/images/KakaoCI.png" />
         </a>
 
       </div>
       <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a href="/users/list">멤버 리스트</a></li>
-        <li><a class="black-component" href="/users/login" role="button">로그인</a></li>
-        <li><a class="black-component" href="/users/form" role="button">회원가입</a></li>
+        {{>layout/session}}
       </ul>
     </div>
   </nav>
@@ -40,7 +38,7 @@
           <tbody>
           {{#articles}}
           <tr>
-            <td><a href="/articles/{{articleIndex}}" />{{title}}</td> <td>닉네임 1</td> <td>2021-12-14</td> <td>0</td>
+            <td><a href="/articles/{{articleIndex}}" />{{title}}</td> <td>{{writer}}</td> <td>2021-12-14</td> <td>0</td>
           </tr>
           {{/articles}}
           </tbody>
@@ -49,7 +47,7 @@
     </div>
   </div>
   <div class="post-btn-container">
-    <a class="post-write-btn" href="/qna/form" class="btn btn-primary pull-right" role="button">글쓰기</a>
+    <a class="post-write-btn" href="/articles/write" class="btn btn-primary pull-right" role="button">글쓰기</a>
   </div>
 </div>
 
@@ -131,3 +129,4 @@
 -->
 </body>
 </html>
+

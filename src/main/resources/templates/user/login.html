@@ -63,11 +63,8 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="../index.html">Posts</a></li>
-                <li><a href="tml" role="button">로그인</a></li>
-                <li><a href="ml" role="button">회원가입</a></li>
-                <li><a href="#" role="button">로그아웃</a></li>
-                <li><a href="#" role="button">개인정보수정</a></li>
+                <li class="active"><a href="/">Posts</a></li>
+                {{>layout/session}}
             </ul>
         </div>
     </div>
@@ -76,7 +73,7 @@
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
-          <form name="question" method="post" action="/user/login">
+          <form name="question" method="post" action="/users/login">
               <div class="form-group">
                   <label for="userId">사용자 아이디</label>
                   <input class="form-control" id="userId" name="userId" placeholder="User ID">
@@ -91,4 +88,5 @@
         </div>
     </div>
 </div>
-{{layout->footer}}
+{{>layout/footer}}
+

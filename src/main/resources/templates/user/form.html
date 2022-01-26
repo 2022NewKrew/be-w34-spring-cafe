@@ -12,6 +12,7 @@
 
             </div>
             <ul class="nav navbar-nav navbar-right">
+                {{>layout/session}}
                 <li class="active"><a href="/users/list">멤버 리스트</a></li>
                 <li><a class="black-component" href="/users/login" role="button">로그인</a></li>
                 <li><a class="black-component" href="/users/form" role="button">회원가입</a></li>
@@ -26,11 +27,11 @@
         <form name="question" class="info-container" method="post" action="/users/create">
             <div class="form-group">
                 <label for="userId">ID</label>
-                <input type="form-control" class="form-control" id="userId" name="userId" placeholder="이메일을 입력하세요">
+                <input type="form-control" class="form-control" id="userId" name="userId" placeholder="ID를 입력하세요">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="이메일을 입력하세요">
+                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요">
             </div>
             <div class="form-group">
                 <label for="name">닉네임</label>
@@ -38,7 +39,7 @@
             </div>
             <div class="form-group">
                 <label for="email">E-Mail</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="비밀번호를 입력하세요">
+                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
             </div>
             <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
         </form>
@@ -46,3 +47,4 @@
 </div>
 </body>
 </html>
+
