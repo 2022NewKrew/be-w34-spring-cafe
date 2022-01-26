@@ -16,6 +16,7 @@ public class ArticleDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    //ARTICLES TABLE의 Id는 ARTICLES TABLE의 AUTO_INCREMENT 옵션으로 자동 생성.
     public void create(Article article) {
         String sql = "INSERT INTO ARTICLES (TITLE,CONTENT,CREATE_USER_ID,CREATE_DATE,VIEWS) VALUES (?,?,?,?,?)";
         jdbcTemplate.update(sql, article.getTitle(), article.getContent(), article.getCreateUserId(), article.getCreateDate(), article.getViews());
