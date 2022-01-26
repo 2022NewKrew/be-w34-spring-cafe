@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @ToString
 @Getter
-public class ArticleDTO {
+public class ArticleRequest {
     private final long id;
     private final String title;
     private final String content;
@@ -15,7 +15,7 @@ public class ArticleDTO {
     private final String createDate;
     private final int views;
 
-    public ArticleDTO(String title, String content) {
+    public ArticleRequest(String title, String content) {
         this.id = 0;
         this.title = title;
         this.content = content;
