@@ -21,7 +21,7 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>#</th> <th>제목</th> <th>내용</th> <th>작성일자</th>
+                        <th>#</th> <th>제목</th> <th>내용</th> <th>작성자ID</th> <th>작성일자</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -30,6 +30,7 @@
                         <td><a href="article/{{id}}">{{id}}</a></td>
                         <td>{{title}}</td>
                         <td>{{content}}</td>
+                        <td>{{userId}}</td>
                         <td>{{date}}</td>
                     </tr>
                     {{/articles}}
@@ -39,7 +40,7 @@
         </div>
     </div>
     <div class="post-btn-container">
-        <a class="post-write-btn" href="article/form.html" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        <a class="post-write-btn" href="article/form" class="btn btn-primary pull-right" role="button">글쓰기</a>
     </div>
 </div>
 

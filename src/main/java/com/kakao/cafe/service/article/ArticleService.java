@@ -5,7 +5,9 @@ import com.kakao.cafe.error.ErrorCode;
 import com.kakao.cafe.exception.UnauthorizedException;
 import com.kakao.cafe.repository.article.ArticleRepository;
 import com.kakao.cafe.repository.article.DbArticleRepository;
+import com.kakao.cafe.web.dto.article.ArticleCreateRequestDto;
 import com.kakao.cafe.web.dto.article.ArticleResponseDto;
+import com.kakao.cafe.web.dto.user.UserResponseDto;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -23,7 +25,7 @@ public class ArticleService {
         return session.getAttribute("sessionUser") == null;
     }
 
-    private void preventNotLoggedInUser(HttpSession session) {
+    public void preventNotLoggedInUser(HttpSession session) {
         if (hasLogInUser(session))
             throw new UnauthorizedException("SESSION NOT LOGGED IN", ErrorCode.UNAUTHORIZED);
     }
@@ -32,32 +34,22 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void postArticle(Article article, HttpSession session) {
+    public void postArticle(ArticleCreateRequestDto articleCreateRequestDto, HttpSession session) {
+        UserResponseDto userResponseDto = (UserResponseDto) session.getAttribute("sessionUser");
         preventNotLoggedInUser(session);
-        articleRepository.create(article);
+        articleRepository.create(Article.fromPost(articleCreateRequestDto.getTitle(), articleCreateRequestDto.getContent(), userResponseDto.getUserId()));
     }
 
     public List<ArticleResponseDto> readAll() {
         return articleRepository.readAll().stream().map(
-                article -> ArticleResponseDto.builder()
-                        .id(article.getId())
-                        .title(article.getTitle())
-                        .content(article.getContent())
-                        .date(article.getDate())
-                        .build()
+                this::articleToDto
         ).collect(Collectors.toList());
     }
 
     public ArticleResponseDto findById(String id) {
         Optional<Article> foundArticleOptional = articleRepository.read(Long.parseLong(id));
         Article foundArticle = foundArticleOptional.orElseThrow(() -> new IllegalArgumentException("Illegal ID Params: Article"));
-
-        return ArticleResponseDto.builder()
-                .title(foundArticle.getTitle())
-                .id(foundArticle.getId())
-                .content(foundArticle.getContent())
-                .date(foundArticle.getDate())
-                .build();
+        return articleToDto(foundArticle);
     }
 
     public void ArticleDetail(String articleIndex, HttpSession session, Model model) {
@@ -65,5 +57,14 @@ public class ArticleService {
         model.addAttribute("article", findById(articleIndex));
     }
 
+    private ArticleResponseDto articleToDto(Article article) {
+        return ArticleResponseDto.builder()
+                .id(article.getId())
+                .title(article.getTitle())
+                .content(article.getContent())
+                .userId(article.getUserId())
+                .date(article.getDate())
+                .build();
+    }
 
 }

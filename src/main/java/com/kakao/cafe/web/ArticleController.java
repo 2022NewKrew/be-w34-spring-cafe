@@ -1,6 +1,5 @@
 package com.kakao.cafe.web;
 
-import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.error.ErrorResponse;
 import com.kakao.cafe.exception.UnauthorizedException;
 import com.kakao.cafe.service.article.ArticleService;
@@ -26,10 +25,17 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    @GetMapping("article/form")
+    public String articleWritePage(HttpSession session) {
+        this.articleService.preventNotLoggedInUser(session);
+        return "/article/form.html";
+    }
+
+
     @PostMapping("article/create")
     public String articleWrite(ArticleCreateRequestDto articleCreateRequestDto, HttpSession session) {
         logger.info("article: {}", articleCreateRequestDto);
-        this.articleService.postArticle(Article.fromPost(articleCreateRequestDto.getTitle(), articleCreateRequestDto.getContent()), session);
+        this.articleService.postArticle(articleCreateRequestDto, session);
         return "redirect:/";
     }
 
