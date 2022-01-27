@@ -5,8 +5,11 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class QuestionDTO {
+public class ArticleDTO {
     private final String writer;
+    private final String writerProfileAddress;
+    private final String writtenTime;
+    private final String content;
     private final String title;
-    private final String contents;
+    private final int articleId;
 }

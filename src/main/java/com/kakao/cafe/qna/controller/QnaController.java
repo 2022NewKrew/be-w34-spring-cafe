@@ -4,8 +4,6 @@ import com.kakao.cafe.qna.DTO.QuestionDTO;
 import com.kakao.cafe.qna.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +19,8 @@ public class QnaController {
 
     @PostMapping("/questions")
     public String submitArticle(@ModelAttribute QuestionDTO newQuestion) {
-        log.debug("Article submitted. Title : {}, Writer : {}", newQuestion.getTitle(), newQuestion.getWriter());
+        log.debug("Article submitted. Title : {}, Writer : {}, Content : {}", newQuestion.getTitle(),
+                newQuestion.getWriter(), newQuestion.getContents());
         questionService.submitArticle(newQuestion);
         return "redirect:/";
     }
@@ -31,5 +30,12 @@ public class QnaController {
         log.debug("Article List Request");
         model.addAttribute("articles", questionService.getArticleSummaryLst());
         return "index";
+    }
+
+    @GetMapping("/articles/{index}")
+    public String getArticle(Model model, @PathVariable int index) {
+        log.debug("Article List Request. Index : {}", index);
+        model.addAttribute("pack", questionService.getPackedArticle(index));
+        return "qna/show";
     }
 }
