@@ -1,12 +1,15 @@
 package com.kakao.cafe.service.article;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.repository.article.ArticleDao;
+import com.kakao.cafe.error.ErrorCode;
+import com.kakao.cafe.exception.UnauthorizedException;
 import com.kakao.cafe.repository.article.ArticleRepository;
 import com.kakao.cafe.repository.article.DbArticleRepository;
 import com.kakao.cafe.web.dto.article.ArticleResponseDto;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,11 +19,21 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
+    private boolean hasLogInUser(HttpSession session) {
+        return session.getAttribute("sessionUser") == null;
+    }
+
+    private void preventNotLoggedInUser(HttpSession session) {
+        if (hasLogInUser(session))
+            throw new UnauthorizedException("SESSION NOT LOGGED IN", ErrorCode.UNAUTHORIZED);
+    }
+
     public ArticleService(DbArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
-    public void postArticle(Article article) {
+    public void postArticle(Article article, HttpSession session) {
+        preventNotLoggedInUser(session);
         articleRepository.create(article);
     }
 
@@ -46,4 +59,11 @@ public class ArticleService {
                 .date(foundArticle.getDate())
                 .build();
     }
+
+    public void ArticleDetail(String articleIndex, HttpSession session, Model model) {
+        preventNotLoggedInUser(session);
+        model.addAttribute("article", findById(articleIndex));
+    }
+
+
 }
