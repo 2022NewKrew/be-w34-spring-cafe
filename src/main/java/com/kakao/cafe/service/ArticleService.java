@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.exception.IllegalArticleUpdateException;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.web.dto.ArticleRequest;
 import com.kakao.cafe.web.dto.ArticleResponse;
@@ -60,7 +61,12 @@ public class ArticleService {
                 .build();
     }
 
-    public void updateArticle(long id,String title,String content){
-        articleRepository.update(id,title,content);
+    public void updateArticle(long id, String title, String content) {
+        articleRepository.update(id, title, content);
+    }
+
+    public void checkLoginUser(Object sessionUser) throws IllegalArticleUpdateException {
+        if (sessionUser == null)
+            throw new IllegalArticleUpdateException("로그인이 필요합니다");
     }
 }

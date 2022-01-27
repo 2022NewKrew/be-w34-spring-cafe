@@ -1,17 +1,19 @@
 package com.kakao.cafe.web.controller;
 
+import com.kakao.cafe.exception.IllegalArticleUpdateException;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.web.dto.ArticleRequest;
 import com.kakao.cafe.web.dto.ArticleResponse;
 import com.kakao.cafe.web.dto.UserRequest;
 import com.kakao.cafe.web.dto.UserResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -39,8 +41,8 @@ public class ArticleController {
     }
 
     @GetMapping(value = "/articles/{index}")
-    public String getArticleShow(@PathVariable int index, Model model,HttpSession session) {
-        Optional<UserRequest> userRequest = (Optional<UserRequest>) session.getAttribute("sessionUser");
+    public String getArticleShow(@PathVariable int index, Model model, HttpSession session) {
+        articleService.checkLoginUser(session.getAttribute("sessionUser"));
         ArticleResponse articleResponse = articleService.getArticleByIndex(index);
         model.addAttribute("article", articleResponse);
         return "/article/show";
@@ -53,12 +55,14 @@ public class ArticleController {
         return "/article/updateForm";
     }
 
-    @PutMapping(value= "/article/{index}/edit")
-    public String putArticleUpdate(@PathVariable int index,String title,String content){
-        articleService.updateArticle(index,title,content);
+    @PutMapping(value = "/article/{index}/edit")
+    public String putArticleUpdate(@PathVariable int index, String title, String content) {
+        articleService.updateArticle(index, title, content);
         return "redirect:/articles/{index}";
     }
 
-//    @ExceptionHandler(IllegalArticleUpdateException e)
-
+    @ExceptionHandler(IllegalArticleUpdateException.class)
+    ResponseEntity<String> handleArticleUpdate(IllegalArticleUpdateException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
