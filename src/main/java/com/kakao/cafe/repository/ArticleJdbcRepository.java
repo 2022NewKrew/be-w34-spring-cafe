@@ -10,13 +10,14 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
 
 @Repository
-public class ArticleJdbcRepository implements ArticleRepository{
+public class ArticleJdbcRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -25,16 +26,15 @@ public class ArticleJdbcRepository implements ArticleRepository{
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void save(Article article){
+    public void save(Article article) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "insert into articles(writer, title, contents, createTime) values ( ?, ?, ?, ? )";
 
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection
-                    .prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, article.getUser().getUserName());
             ps.setString(2, article.getTitle());
-            ps.setString(3,article.getContents());
+            ps.setString(3, article.getContents());
             ps.setObject(4, Timestamp.valueOf(article.getCreateTime()));
             return ps;
         }, keyHolder);
@@ -58,7 +58,7 @@ public class ArticleJdbcRepository implements ArticleRepository{
     }
 
 
-    public void update(Article article){
+    public void update(Article article) {
         jdbcTemplate.update(
                 "update articles set writer = ?, title = ?, contents = ? where article_id = ?",
                 article.getUser().getUserName(),
@@ -68,7 +68,7 @@ public class ArticleJdbcRepository implements ArticleRepository{
         );
     }
 
-    public void delete(Integer id){
+    public void delete(Integer id) {
         jdbcTemplate.update(
                 "delete articles where article_id = ?",
                 id
@@ -79,7 +79,7 @@ public class ArticleJdbcRepository implements ArticleRepository{
     private final RowMapper<Article> mapper = (rs, rowNum) -> Article.builder()
             .id(rs.getInt("article_id"))
             .user(User.builder()
-                    .id(rs.getInt("id"))
+                    .user_id(rs.getInt("user_id"))
                     .userId(rs.getString("userID"))
                     .password(rs.getString("password"))
                     .userName(rs.getString("userName"))

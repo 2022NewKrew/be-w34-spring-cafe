@@ -13,7 +13,7 @@ public class UserMemoryRepository implements UserRepository{
     private static Integer seq = 0;
 
     public void save(User user){
-        user.setId(seq++);
+        user.setUser_id(seq++);
         userList.add(user);
     }
 

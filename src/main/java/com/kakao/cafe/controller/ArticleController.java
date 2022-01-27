@@ -76,7 +76,7 @@ public class ArticleController {
         if(sessionUser == null){
             return "user/login";
         }
-        List<Reply> replies = replyService.findAll();
+        List<Reply> replies = replyService.findAll(id);
         model.addAttribute("isWriter", sessionUser.getUserId().equals(article.getUser().getUserId()));
         model.addAttribute("article", article);
         model.addAttribute("replies", replies);

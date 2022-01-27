@@ -9,15 +9,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User {
-    private Integer id;
+    private Integer user_id;
     private String userId;
     private String password;
     private String userName;
     private String email;
 
     @Builder
-    public User(int id, String userId, String password, String userName, String email) {
-        this.id = id;
+    public User(int user_id, String userId, String password, String userName, String email) {
+        this.user_id = user_id;
         this.userId = userId;
         this.password = password;
         this.userName = userName;
@@ -29,7 +29,7 @@ public class User {
     }
 
     public UserDto toDto() {
-        return new UserDto(id, userId, password, userName, email);
+        return new UserDto(user_id, userId, password, userName, email);
     }
 
     @Override
