@@ -10,6 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class UserJdbcRepository implements UserRepository {
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
-                    .prepareStatement(sql);
+                    .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getUserId());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getUserName());

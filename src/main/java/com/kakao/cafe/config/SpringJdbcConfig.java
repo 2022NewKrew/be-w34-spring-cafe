@@ -1,6 +1,6 @@
 package com.kakao.cafe.config;
 
-
+/*
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -20,3 +20,4 @@ public class SpringJdbcConfig {
                 .build();
     }
 }
+*/

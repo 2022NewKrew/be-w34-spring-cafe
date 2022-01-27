@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class ReplyJdbcRepository {
         String sql = "insert into replies(article_id, writer, contents, createTime) values ( ?, ?, ?, ? )";
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
-                    .prepareStatement(sql);
+                    .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, reply.getArticleId());
             ps.setString(2,reply.getUser().getUserId());
             ps.setString(3,reply.getContents());
