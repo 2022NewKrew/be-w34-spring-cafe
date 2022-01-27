@@ -7,14 +7,25 @@
 <body>
 
 {{ #articles }}
+{{ ^currentUser }}
+<p>
+    <a href="/user/login"> {{ author }} {{ title }} </a>
+</p>
+{{ /currentUser }}
+{{ #currentUser }}
 <p>
     <a href="/article/{{ articleID }}"> {{ author }} {{ title }} </a>
 </p>
+{{ /currentUser }}
 {{ /articles }}
 
 <a href="/" role="button" class="btn btn-primary">홈으로</a>
+{{ ^currentUser }}
+<a href="/user/login" role="button" class="btn btn-primary">글작성</a>
+{{ /currentUser }}
+{{ #currentUser }}
 <a href="/article/write" role="button" class="btn btn-primary">글작성</a>
-
+{{ /currentUser }}
 
 </body>
 </html>

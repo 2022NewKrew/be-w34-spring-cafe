@@ -7,6 +7,7 @@
 <body>
 
 <form class="container" action="/user/update" method="post">
+    <input type="hidden" name="_method" value="PUT"/>
     <div class="mb-3">
         <label class="form-label">아이디</label>
         <input type="text" class="form-control" name="id" value="{{userprofile.uid}}" readonly>

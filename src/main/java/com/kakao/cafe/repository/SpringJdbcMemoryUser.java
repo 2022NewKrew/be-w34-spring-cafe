@@ -73,6 +73,12 @@ public class SpringJdbcMemoryUser implements UserRepository {
         return result.stream().findAny().isPresent();
     }
 
+    @Override
+    public User checkMatchIDnPW(String uID, String password){
+        List<User> result =  jdbcTemplate.query("select * from members where uid = ? and password = ?", userRowMapper(), uID, password);
+        return result.stream().findAny().orElseGet(()->null);
+    }
+
 
     @Override
     public List<User> findAll() {

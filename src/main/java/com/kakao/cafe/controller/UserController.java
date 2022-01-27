@@ -95,7 +95,7 @@ public class UserController {
         return "<script>alert('ID already exists');location.href='/user/signup'</script>";
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     @ResponseBody
     public String userUpdate(SampleUserForm form){
         logger.info("userUpdate print {}" ,form.toString());
@@ -114,12 +114,14 @@ public class UserController {
             session.setAttribute("user", loginUser);
             return "<script>alert('Login Success');location.href='/'</script>";
         }
-        return "<script>alert('Login failed : Invalid Password');location.href='/'</script>";
+        return "<script>alert('Login failed : Not exist ID or Invalid Password');location.href='/user/login'</script>";
     }
 
     @ExceptionHandler(CustomException.class)
-    public Object exceptionHandle(Exception e){
-        logger.error("Error exception");
+    public Object exceptionHandle(Model model, CustomException e){
+        logger.error("Error exception, {}", e.getErrorCode());
+        model.addAttribute("ErrorCode", e.getErrorCode().getHttpStatus());
+        model.addAttribute("ErrorMessage", e.getErrorCode().getDetail());
         return "error";
     }
 

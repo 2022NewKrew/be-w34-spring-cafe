@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.web.context.request.RequestContextListener;
 
 import javax.sql.DataSource;
 import javax.xml.crypto.Data;
@@ -51,4 +52,5 @@ public class SpringJdbcConfig {
     public UserRepository userRepository(){
         return new SpringJdbcMemoryUser(dataSource);
     }
+
 }

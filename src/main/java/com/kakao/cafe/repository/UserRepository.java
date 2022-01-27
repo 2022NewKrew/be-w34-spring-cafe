@@ -12,6 +12,7 @@ public interface UserRepository {
     void update(User user);
     User findByUserID(String uID);
     User findByNumID(Long ID);
+    User checkMatchIDnPW(String uID, String PW);
     Boolean checkExistenceByUserID(String uID);
     List<User> findAll();
 }

@@ -6,11 +6,19 @@
 </head>
 <body>
 
+<h3> {{article.title}} </h3>
 <p> {{article.author}} </p>
-<p> {{article.title}} </p>
 <p> {{article.content}} </p>
 
 <a href="/article" role="button" class="btn btn-primary">목록</a>
+{{ #currentUser }}
+    <a href="/article/{{article.articleID}}/update"> 수정하기 </a>
 
+    <form class="container" action="/article/{{article.articleID}}" method="post">
+    <input type="hidden" name="_method" value="DELETE" />
+        <button type="submit" class="btn btn-primary">Delete</button>
+    </form>
+
+{{ /currentUser }}
 </body>
 </html>

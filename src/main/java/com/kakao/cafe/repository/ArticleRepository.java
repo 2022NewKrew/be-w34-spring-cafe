@@ -10,6 +10,8 @@ public interface ArticleRepository {
 
     Article save(Article form);
     Article findByID(Long articleID);
+    void update(Article form);
+    void delete(Long articleID);
     List<Article> findAll();
 
 }

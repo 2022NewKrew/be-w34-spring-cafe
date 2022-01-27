@@ -48,6 +48,11 @@ public class Article {
         return content;
     }
 
+    public void update(SampleArticleForm form){
+        this.title = form.getTitle();
+        this.content = form.getContent();
+    }
+
     public static Article add(String author, SampleArticleForm form){
         return new Article(author, form.getTitle(), form.getContent());
     }

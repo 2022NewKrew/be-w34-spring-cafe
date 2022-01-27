@@ -54,13 +54,7 @@ public class UserService {
 
     public User loginUser(SampleLoginForm form){
         logger.info("loginUser with ID : {}", form.getId());
-        User user = userRepository.findByUserID(form.getId());
-        if (user.getPassWord().equals(form.getPassWord())){
-            // login 성공
-            return user;
-        }
-        // login 실패
-        return null;
+        return userRepository.checkMatchIDnPW(form.getId(), form.getPassWord());
     }
 
 }
