@@ -20,8 +20,8 @@ public class ReplyService {
         replyJdbcRepository.save(replyDto.toEntity());
     }
 
-    public List<Reply> findAll() {
-        return replyJdbcRepository.findAll();
+    public List<Reply> findAll(Integer article_id) {
+        return replyJdbcRepository.findAll(article_id);
     }
 
 }

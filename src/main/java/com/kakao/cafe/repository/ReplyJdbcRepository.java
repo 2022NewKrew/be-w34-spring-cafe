@@ -37,21 +37,13 @@ public class ReplyJdbcRepository {
     }
 
 
-    public List<Reply> findAll() {
+    public List<Reply> findAll(Integer article_id) {
         return jdbcTemplate.query(
                 "select * from replies join articles on replies.article_id = articles.article_id" +
-                        " join users on replies.writer = users.userId order by id desc",
-                mapper
-        );
-    }
-
-    public Optional<Reply> findOne(Integer id) {
-        return jdbcTemplate.query(
-                "select * from replies join articles on replies.article_id = articles.article_id" +
-                        " join users on replies.writer = users.userId order by id desc",
+                        " join users on replies.writer = users.userId where replies.article_id = ? order by id desc",
                 mapper,
-                id
-        ).stream().findAny();
+                article_id
+        );
     }
 
 
