@@ -1,0 +1,9 @@
+### Post Article Test
+POST http://localhost:8080/questions?writer=a&title=b&content=c
+
+### Article List Test
+GET http://localhost:8080/
+
+### Article List Test
+
+GET http://localhost:8080/articles/1
