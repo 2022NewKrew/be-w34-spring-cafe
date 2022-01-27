@@ -32,7 +32,7 @@ public class ArticleDto {
     public Article toEntity() {
         return Article.builder().id(id)
                 .user(User.builder()
-                        .id(user.getId())
+                        .user_id(user.getUser_id())
                         .userId(user.getUserId())
                         .password(user.getPassword())
                         .userName(user.getUserName())

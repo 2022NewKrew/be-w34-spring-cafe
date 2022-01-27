@@ -39,7 +39,8 @@ public class ReplyJdbcRepository {
 
     public List<Reply> findAll() {
         return jdbcTemplate.query(
-                "select * from replies join articles on replies.article_id = articles.article_id order by id desc",
+                "select * from replies join articles on replies.article_id = articles.article_id" +
+                        " join users on replies.writer = users.userId order by id desc",
                 mapper
         );
     }
@@ -57,7 +58,11 @@ public class ReplyJdbcRepository {
             .id(rs.getInt("id"))
             .articleId(rs.getInt("article_id"))
             .user(User.builder()
-                    .userId(rs.getString("writer"))
+                    .user_id(rs.getInt("user_id"))
+                    .userId(rs.getString("userID"))
+                    .password(rs.getString("password"))
+                    .userName(rs.getString("userName"))
+                    .email(rs.getString("email"))
                     .build())
             .contents(rs.getString("contents"))
             .createTime(rs.getString("createTime"))

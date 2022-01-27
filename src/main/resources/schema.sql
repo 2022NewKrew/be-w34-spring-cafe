@@ -12,12 +12,12 @@ CREATE TABLE IF NOT EXISTS articles (
                                    );
 
 CREATE TABLE IF NOT EXISTS users(
-    id INT AUTO_INCREMENT,
+    user_id INT AUTO_INCREMENT,
     userId VARCHAR(32),
     password VARCHAR(32),
     userName VARCHAR(32),
     email VARCHAR(64),
-    PRIMARY KEY (id),
+    PRIMARY KEY (user_id),
     UNIQUE KEY (userId)
                                 );
 

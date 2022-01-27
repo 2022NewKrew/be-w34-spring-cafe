@@ -54,7 +54,7 @@ public class UserJdbcRepository implements UserRepository {
     @Override
     public Optional<User> findOne(Integer id) {
         return jdbcTemplate.query(
-                "select id, userId, password, userName, email from users where id = ?",
+                "select user_id, userId, password, userName, email from users where user_id = ?",
                 mapper,
                 id
         ).stream().findAny();
@@ -62,7 +62,7 @@ public class UserJdbcRepository implements UserRepository {
 
     public Optional<User> findByUserId(String userId) {
         return jdbcTemplate.query(
-                "select id, userId, password, userName, email from users where userId = ?",
+                "select user_id, userId, password, userName, email from users where userId = ?",
                 mapper,
                 userId
         ).stream().findAny();
@@ -81,7 +81,7 @@ public class UserJdbcRepository implements UserRepository {
 
     private final RowMapper<User> mapper = (rs, rowNum) -> {
         User user = new User(
-                rs.getInt("id"),
+                rs.getInt("user_id"),
                 rs.getString("userId"),
                 rs.getString("password"),
                 rs.getString("userName"),

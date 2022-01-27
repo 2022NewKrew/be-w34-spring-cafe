@@ -24,7 +24,7 @@ public class UserDto {
 
 
     public User toEntity() {
-        return User.builder().id(0)
+        return User.builder().user_id(0)
                 .userId(userId)
                 .password(password)
                 .userName(userName)

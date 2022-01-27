@@ -79,7 +79,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
     private final RowMapper<Article> mapper = (rs, rowNum) -> Article.builder()
             .id(rs.getInt("article_id"))
             .user(User.builder()
-                    .id(rs.getInt("id"))
+                    .user_id(rs.getInt("user_id"))
                     .userId(rs.getString("userID"))
                     .password(rs.getString("password"))
                     .userName(rs.getString("userName"))
