@@ -1,6 +1,7 @@
 package com.kakao.cafe.dto;
 
 import com.kakao.cafe.model.User;
+import com.kakao.cafe.utils.EncryptionUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +27,7 @@ public class UserDto {
     public User toEntity() {
         return User.builder().user_id(0)
                 .userId(userId)
-                .password(password)
+                .password(EncryptionUtils.encryptMD5(password))
                 .userName(userName)
                 .email(email)
                 .build();

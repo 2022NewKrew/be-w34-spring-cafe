@@ -47,7 +47,8 @@ public class ReplyJdbcRepository {
 
     public Optional<Reply> findOne(Integer id) {
         return jdbcTemplate.query(
-                "select * from replies join articles on replies.article_id = articles.article_id where article_id = ?",
+                "select * from replies join articles on replies.article_id = articles.article_id" +
+                        " join users on replies.writer = users.userId order by id desc",
                 mapper,
                 id
         ).stream().findAny();
