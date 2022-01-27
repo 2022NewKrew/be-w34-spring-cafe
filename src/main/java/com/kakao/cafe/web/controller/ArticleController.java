@@ -4,7 +4,6 @@ import com.kakao.cafe.exception.IllegalArticleUpdateException;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.web.dto.ArticleRequest;
 import com.kakao.cafe.web.dto.ArticleResponse;
-import com.kakao.cafe.web.dto.UserRequest;
 import com.kakao.cafe.web.dto.UserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -49,14 +48,18 @@ public class ArticleController {
     }
 
     @GetMapping(value = "/article/{index}/update")
-    public String getArticleUpdateForm(@PathVariable int index, Model model) {
+    public String getArticleUpdateForm(@PathVariable int index, Model model, HttpSession session) {
         ArticleResponse articleResponse = articleService.getArticleByIndex(index);
+        articleService.checkLoginUser(session.getAttribute("sessionUser"));
+        articleService.checkSameCreateUser(session.getAttribute("sessionUser"), index);
         model.addAttribute("article", articleResponse);
         return "/article/updateForm";
     }
 
     @PutMapping(value = "/article/{index}/edit")
-    public String putArticleUpdate(@PathVariable int index, String title, String content) {
+    public String putArticleUpdate(@PathVariable int index, String title, String content, HttpSession session) {
+        articleService.checkLoginUser(session.getAttribute("sessionUser"));
+        articleService.checkSameCreateUser(session.getAttribute("sessionUser"), index);
         articleService.updateArticle(index, title, content);
         return "redirect:/articles/{index}";
     }

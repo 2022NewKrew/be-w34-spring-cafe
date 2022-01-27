@@ -69,4 +69,14 @@ public class ArticleService {
         if (sessionUser == null)
             throw new IllegalArticleUpdateException("로그인이 필요합니다");
     }
+
+    public void checkSameCreateUser(Object sessionUser, int id) throws IllegalArticleUpdateException {
+        UserResponse userResponse = (UserResponse) sessionUser;
+        if (userResponse.getUserId().equals(
+                articleRepository.findById(id).getCreateUserId()
+        )) {
+        } else
+            throw new IllegalArticleUpdateException("다른 사람의 글을 수정 할 수 없습니다.");
+
+    }
 }
