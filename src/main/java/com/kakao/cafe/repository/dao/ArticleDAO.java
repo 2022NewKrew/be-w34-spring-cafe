@@ -42,4 +42,11 @@ public class ArticleDAO {
                 .views(rs.getInt("views"))
                 .build();
     }
+
+    public void update(Long id,String title,String content){
+        String sql = "UPDATE ARTICLES " +
+                "SET TITLE=?, CONTENT=?" +
+                "WHERE ID = ?";
+        jdbcTemplate.update(sql,title,content,id);
+    }
 }

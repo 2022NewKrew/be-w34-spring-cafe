@@ -59,4 +59,8 @@ public class ArticleService {
                 .views(articleRequest.getViews())
                 .build();
     }
+
+    public void updateArticle(long id,String title,String content){
+        articleRepository.update(id,title,content);
+    }
 }
