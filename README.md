@@ -50,7 +50,7 @@
 - [x] `Article` 생성자 사용 시 `@AllArgsConstructor` 사용하여 코드를 줄이고 
 `UNDEFINED_ID`를 설정하거나 박스형을 사용해 `null`로 명시적 초기화 권장  
 - [x] `ArticleService::saveArticle`에서 `save()`의 리턴값 그대로 반환
-- [ ] 유효성 검사 추가
+- [x] 유효성 검사 추가
 
 ### 3일차 구현
 
