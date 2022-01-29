@@ -51,7 +51,7 @@ public class SpringJdbcMemoryArticle implements ArticleRepository {
 
     @Override
     public void delete(Long articleID) {
-        jdbcTemplate.update("delete articles where id=?", articleID);
+        jdbcTemplate.update("delete from articles where id=?", articleID);
     }
 
     @Override

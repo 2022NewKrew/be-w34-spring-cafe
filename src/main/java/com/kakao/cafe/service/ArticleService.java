@@ -28,17 +28,19 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void addArticle(String author, SampleArticleForm form){
+    public Article addArticle(String author, SampleArticleForm form){
         logger.info("addArticle author : {}, title : {}", author, form.getTitle());
         Article article = Article.add(author, form);
         articleRepository.save(article);
+        return article;
     }
 
-    public void updateArticle(Long articleID, SampleArticleForm form){
+    public Article updateArticle(Long articleID, SampleArticleForm form){
         logger.info("updateArticle articleID : {}, title : {}",articleID, form.getTitle());
         Article article = articleRepository.findByID(articleID);
         article.update(form);
         articleRepository.update(article);
+        return article;
     }
 
     public Article findArticle(Long articleID){
