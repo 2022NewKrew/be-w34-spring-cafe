@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 /**
  * Created by melodist
@@ -20,8 +21,8 @@ public class LoginController {
     private final HttpSession session;
 
     @PostMapping("/login")
-    public String login(String userId, String password) {
-        User loginUser = loginService.login(userId, password);
+    public String login(@Valid LoginDto loginDto) {
+        User loginUser = loginService.login(loginDto.getUserId(), loginDto.getPassword());
 
         if (loginUser == null) {
             return "/user/login_failed";
