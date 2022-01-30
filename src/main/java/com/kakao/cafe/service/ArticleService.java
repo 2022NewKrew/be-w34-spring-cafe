@@ -2,9 +2,12 @@ package com.kakao.cafe.service;
 
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.SampleArticleForm;
+import com.kakao.cafe.dto.SampleReplyForm;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.util.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +26,12 @@ public class ArticleService {
 
     private final static Logger logger = LoggerFactory.getLogger(ArticleService.class);
     private final ArticleRepository articleRepository;
+    private final ReplyRepository replyRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+
+    public ArticleService(ArticleRepository articleRepository, ReplyRepository replyRepository) {
         this.articleRepository = articleRepository;
+        this.replyRepository = replyRepository;
     }
 
     public Article addArticle(String author, SampleArticleForm form){
@@ -54,6 +60,15 @@ public class ArticleService {
     public void deleteArticle(Long articleID){
         logger.info("deleteArticle articleID : {}", articleID);
         articleRepository.delete(articleID);
+    }
+
+    public void addReply(SampleReplyForm form, User user){
+        Reply reply = Reply.add(form, user.getUid());
+        replyRepository.save(reply);
+    }
+
+    public List<Reply> getReplies(Long articleID){
+        return replyRepository.findByArticleID(articleID);
     }
 
 }

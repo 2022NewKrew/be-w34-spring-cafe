@@ -1,9 +1,6 @@
 package com.kakao.cafe;
 
-import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.SpringJdbcMemoryArticle;
-import com.kakao.cafe.repository.SpringJdbcMemoryUser;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.*;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +32,7 @@ public class SpringJdbcConfig {
 
     @Bean
     public ArticleService articleService(){
-        return new ArticleService(articleRepository());
+        return new ArticleService(articleRepository(), replyRepository());
     }
 
     @Bean
@@ -52,5 +49,10 @@ public class SpringJdbcConfig {
     public UserRepository userRepository(){
         return new SpringJdbcMemoryUser(dataSource);
     }
+
+    @Bean
+    public ReplyRepository replyRepository() {return new SpringJdbcMemoryReply(dataSource);};
+
+
 
 }

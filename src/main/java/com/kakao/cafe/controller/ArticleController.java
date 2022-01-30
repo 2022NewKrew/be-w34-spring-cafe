@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.SampleArticleForm;
+import com.kakao.cafe.dto.SampleReplyForm;
 import com.kakao.cafe.dto.SampleUserForm;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.CustomException;
@@ -49,6 +50,7 @@ public class ArticleController {
 
         Article article = articleService.findArticle(articleID);
         model.addAttribute("article", article);
+        model.addAttribute("replies", articleService.getReplies(articleID));
 
         Object value = session.getAttribute("user");
         if (value != null && ((User) value).getUid().equals(article.getAuthor())){
@@ -91,6 +93,19 @@ public class ArticleController {
         model.addAttribute("article", article);
         return "article/articleUpdateForm";
     }
+
+    @PostMapping("/reply")
+    public String addReply(SampleReplyForm form, HttpSession session) {
+
+        Object value = session.getAttribute("user");
+        if (value != null){
+            User user = (User) value;
+            articleService.addReply(form, user);
+            logger.info("User session get {}", user);
+        }
+        return "redirect:/article";
+    }
+
 
     @PutMapping("/{articleID}/update")
     @ResponseBody
