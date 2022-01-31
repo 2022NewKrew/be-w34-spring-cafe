@@ -1,6 +1,8 @@
 package com.kakao.cafe.system;
 
 import com.kakao.cafe.user.User;
+import com.kakao.cafe.user.UserDto;
+import com.kakao.cafe.user.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ class LoginServiceTest {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private UserService userService;
 
     @Test
     @DisplayName("로그인 성공")
@@ -60,5 +65,31 @@ class LoginServiceTest {
         // then
         assertThat(loginUser).isNull();
     }
+
+    @Test
+    @DisplayName("유저 생성 후 로그인")
+    public void test(){
+        // given
+        String userId = "melodist";
+        String password = "test";
+        String name = "test";
+        String email = "test@email.com";
+
+        UserDto userDto = new UserDto();
+
+        userDto.setUserId(userId);
+        userDto.setPassword(password);
+        userDto.setName(name);
+        userDto.setEmail(email);
+
+        userService.addUser(userDto);
+
+        // when
+        User loggedInUser = loginService.login(userId, password);
+
+        // then
+        assertThat(loggedInUser.getUserId()).isEqualTo(userId);
+    }
+
 
 }
