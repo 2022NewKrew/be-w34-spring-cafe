@@ -80,7 +80,12 @@
 > 참고 : https://pinokio0702.tistory.com/189?category=414017
 - [x] 로그아웃은 GET인가? POST인가?
 > 참고 : https://stackoverflow.com/questions/3521290/logout-get-or-post
-- [ ] 패스워드 암호화 (DB, 백엔드)
+- [x] 패스워드 암호화 (DB or 백엔드)
+  - [x] 가입 시 패스워드 암호화
+  - [x] 로그인 시 암호화 된 패스워드와 일반 패스워드 비교
+> 참고
+> - https://www.whiteship.me/springboot-no-more-runwith/
+> - https://jojoldu.tistory.com/226
 
 ### 2일차 구현
 
