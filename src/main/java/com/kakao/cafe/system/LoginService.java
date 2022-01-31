@@ -3,6 +3,7 @@ package com.kakao.cafe.system;
 import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User login(String userId, String password) {
         User loginUser = userRepository.findUserByUserId(userId);
@@ -23,7 +25,7 @@ public class LoginService {
             return null;
         }
 
-        if (loginUser.getPassword().equals(password)) {
+        if (passwordEncoder.matches(password, loginUser.getPassword())) {
             return loginUser;
         }
         return null;
