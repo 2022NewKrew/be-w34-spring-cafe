@@ -1,0 +1,29 @@
+server:
+  port: 8082
+
+handlebars:
+  suffix: .hbs
+  cache: false
+  expose-session-attributes: true
+
+spring:
+  datasource:
+    driver-class:name: com.mysql.cj.jdbc.Driver
+    username: more
+    password: erom
+    url: jdbc:mysql://localhost:3306/kakaodb?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+  messages:
+    basename: errors
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  sql:
+
+    init:
+      mode: always
+      schema-locations: classpath:schema-mysql.sql
+      data-locations: classpath:data-mysql.sql
+logging:
+  level:
+    com.kakao: debug
