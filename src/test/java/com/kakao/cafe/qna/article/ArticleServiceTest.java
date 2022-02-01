@@ -1,7 +1,5 @@
-package com.kakao.cafe.qna;
+package com.kakao.cafe.qna.article;
 
-import com.kakao.cafe.qna.article.Article;
-import com.kakao.cafe.qna.article.ArticleService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
