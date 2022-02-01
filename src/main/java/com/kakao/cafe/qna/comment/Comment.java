@@ -2,6 +2,7 @@ package com.kakao.cafe.qna.comment;
 
 import com.kakao.cafe.qna.BaseEntity;
 import lombok.Getter;
+import lombok.experimental.Delegate;
 
 import java.time.LocalDateTime;
 
@@ -11,13 +12,16 @@ import java.time.LocalDateTime;
  * Time: 오후 5:40
  */
 @Getter
-public class Comment extends BaseEntity {
+public class Comment  {
 
     private Integer writerId;
     private Integer articleId;
 
+    @Delegate
+    private BaseEntity baseEntity;
+
     public Comment(Integer writerId, Integer articleId, String writer, String contents) {
-        super(writer, contents);
+        this.baseEntity = new BaseEntity(writer, contents);
         this.writerId = writerId;
         this.articleId = articleId;
     }
@@ -30,12 +34,12 @@ public class Comment extends BaseEntity {
                    Boolean isDeleted,
                    LocalDateTime createdDate,
                    LocalDateTime modifiedDate) {
-        super(id, writer, contents, isDeleted, createdDate, modifiedDate);
+        this.baseEntity = new BaseEntity(id, writer, contents, isDeleted, createdDate, modifiedDate);
         this.writerId = writerId;
         this.articleId = articleId;
     }
 
     public void deleteComment() {
-        deleteEntity();
+        this.baseEntity.deleteEntity();
     }
 }
