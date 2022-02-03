@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.kakao.cafe.util.ErrorCode.NOT_EXIST_ARTICLE;
+import static com.kakao.cafe.util.ErrorCode.NOT_EXIST_REPLY;
 
 public class SpringJdbcMemoryReply implements ReplyRepository {
 
@@ -43,6 +44,18 @@ public class SpringJdbcMemoryReply implements ReplyRepository {
         reply.setReplyID(key.longValue());
 
         return reply;
+    }
+
+    @Override
+    public void delete(Long replyID) {
+        jdbcTemplate.update("delete from replies where id=?", replyID);
+    }
+
+    @Override
+    public Reply findByReplyID(Long replyID){
+        List<Reply> result =  jdbcTemplate.query("select * from replies where id = ?",replyRowMapper(), replyID);
+        return result.stream().findAny().orElseThrow(() -> new CustomException(NOT_EXIST_REPLY));
+
     }
 
     @Override

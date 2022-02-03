@@ -23,6 +23,10 @@
 
 {{ #replies }}
 <p>{{author}} {{content}}</p>
+<form class="container" action="/article/{{article.articleID}}/{{replyID}}" method="post">
+    <input type="hidden" name="_method" value="DELETE" />
+    <button type="submit" class="btn btn-primary">Delete</button>
+</form>
 {{ /replies }}
 
 

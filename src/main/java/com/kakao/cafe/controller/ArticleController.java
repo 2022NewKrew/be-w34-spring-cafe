@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.SampleArticleForm;
 import com.kakao.cafe.dto.SampleReplyForm;
@@ -127,6 +128,21 @@ public class ArticleController {
         }
         articleService.deleteArticle(articleID);
         return "redirect:/article";
+    }
+
+    @DeleteMapping("/{articleID}/{replyID}")
+    @ResponseBody
+    public String deleteReply(@PathVariable Long articleID, @PathVariable Long replyID, HttpSession session){
+        logger.info("delete Reply ID {} in article {}", replyID, articleID);
+
+        Object value = session.getAttribute("user");
+        Reply reply = articleService.findReply(replyID);
+
+        if ((value == null) || (!((User) value).getUid().equals(reply.getAuthor()))){
+            return "<script>alert('Can not delete reply');location.href='/article/"+ articleID +"'</script>";
+        }
+        articleService.deleteReply(replyID);
+        return "<script>alert('Successfully deleted');location.href='/article/"+articleID+"'</script>";
     }
 
     @ExceptionHandler(CustomException.class)

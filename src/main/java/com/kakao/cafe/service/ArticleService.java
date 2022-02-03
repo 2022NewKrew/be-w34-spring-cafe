@@ -57,6 +57,10 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
+    public Reply findReply(Long replyID){
+        return replyRepository.findByReplyID(replyID);
+    }
+
     public void deleteArticle(Long articleID){
         logger.info("deleteArticle articleID : {}", articleID);
         articleRepository.delete(articleID);
@@ -65,6 +69,12 @@ public class ArticleService {
     public void addReply(SampleReplyForm form, User user){
         Reply reply = Reply.add(form, user.getUid());
         replyRepository.save(reply);
+    }
+
+    public void deleteReply(Long replyID){
+        logger.info("deleteArticle articleID : {}", replyID);
+        replyRepository.delete(replyID);
+        logger.info("delete success");
     }
 
     public List<Reply> getReplies(Long articleID){
