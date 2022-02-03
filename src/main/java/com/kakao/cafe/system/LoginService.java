@@ -1,6 +1,6 @@
 package com.kakao.cafe.system;
 
-import com.kakao.cafe.exception.NoSuchUserException;
+import com.kakao.cafe.exception.NoSuchUserIdException;
 import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class LoginService {
 
         } catch (DataAccessException e) {
             log.error("일치하는 userId가 존재하지 않습니다.");
-            throw new NoSuchUserException();
+            throw new NoSuchUserIdException();
         }
         return null;
     }
