@@ -1,7 +1,6 @@
 package com.kakao.cafe.user;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -64,12 +63,7 @@ public class JdbcUserRepository implements UserRepository{
 
     @Override
     public User findUserByUserId(String userId) {
-        try {
-            String sql = "SELECT * FROM USERS WHERE USER_ID = ?";
-            return jdbcTemplate.queryForObject(sql, new UserMapper(), userId);
-        } catch (DataAccessException e) {
-            log.error("일치하는 userId가 존재하지 않습니다.");
-        }
-        return null;
+        String sql = "SELECT * FROM USERS WHERE USER_ID = ?";
+        return jdbcTemplate.queryForObject(sql, new UserMapper(), userId);
     }
 }
