@@ -1,6 +1,6 @@
 package com.kakao.cafe.system;
 
-import com.kakao.cafe.exception.NoSuchUserException;
+import com.kakao.cafe.exception.NoSuchUserIdException;
 import com.kakao.cafe.user.User;
 import com.kakao.cafe.user.UserDto;
 import com.kakao.cafe.user.UserService;
@@ -81,7 +81,7 @@ class LoginServiceTest {
 
         // when, then
         assertThatThrownBy(() -> loginService.login(loginId, password))
-                .isInstanceOf(NoSuchUserException.class);
+                .isInstanceOf(NoSuchUserIdException.class);
     }
 
     @Test
