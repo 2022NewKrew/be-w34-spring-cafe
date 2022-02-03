@@ -4,6 +4,8 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.SampleArticleForm;
 import com.kakao.cafe.dto.SampleUserForm;
+import com.kakao.cafe.util.CustomException;
+import com.kakao.cafe.util.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.kakao.cafe.util.ErrorCode.NOT_EXIST_USER;
 
 public class SpringJdbcMemoryUser implements UserRepository {
 
@@ -52,16 +56,29 @@ public class SpringJdbcMemoryUser implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUserID(String uID) {
+    public User findByUserID(String uID) {
         List<User> result =  jdbcTemplate.query("select * from members where uid = ?", userRowMapper(), uID);
-        return result.stream().findAny();
+        return result.stream().findAny().orElseThrow(() -> new CustomException(NOT_EXIST_USER));
     }
 
     @Override
-    public Optional<User> findByNumID(Long ID) {
+    public User findByNumID(Long ID) {
         List<User> result =  jdbcTemplate.query("select * from members where id = ?", userRowMapper(), ID);
-        return result.stream().findAny();
+        return result.stream().findAny().orElseThrow(() -> new CustomException(NOT_EXIST_USER));
     }
+
+    @Override
+    public Boolean checkExistenceByUserID(String uID) {
+        List<User> result =  jdbcTemplate.query("select * from members where uid = ?", userRowMapper(), uID);
+        return result.stream().findAny().isPresent();
+    }
+
+    @Override
+    public User checkMatchIDnPW(String uID, String password){
+        List<User> result =  jdbcTemplate.query("select * from members where uid = ? and password = ?", userRowMapper(), uID, password);
+        return result.stream().findAny().orElseGet(()->null);
+    }
+
 
     @Override
     public List<User> findAll() {

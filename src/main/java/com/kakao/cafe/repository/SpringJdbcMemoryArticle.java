@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.SampleArticleForm;
+import com.kakao.cafe.util.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.kakao.cafe.util.ErrorCode.NOT_EXIST_ARTICLE;
 
 public class SpringJdbcMemoryArticle implements ArticleRepository {
 
@@ -42,9 +45,19 @@ public class SpringJdbcMemoryArticle implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findByID(Long articleID) {
+    public void update(Article article){
+        jdbcTemplate.update("update articles set title=?, content=? where id=?",article.getTitle(), article.getContent(),article.getArticleID());
+    }
+
+    @Override
+    public void delete(Long articleID) {
+        jdbcTemplate.update("delete from articles where id=?", articleID);
+    }
+
+    @Override
+    public Article findByID(Long articleID) {
         List<Article> result =  jdbcTemplate.query("select * from articles where id = ?",articleRowMapper(), articleID);
-        return result.stream().findAny();
+        return result.stream().findAny().orElseThrow(() -> new CustomException(NOT_EXIST_ARTICLE));
     }
 
     @Override
