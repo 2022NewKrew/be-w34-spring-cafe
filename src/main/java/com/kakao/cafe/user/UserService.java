@@ -1,6 +1,8 @@
 package com.kakao.cafe.user;
 
+import com.kakao.cafe.exception.NoSuchIdException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +36,11 @@ public class UserService {
     }
 
     public User findUserById(Integer id) {
-        return userRepository.findUserById(id);
+        try {
+            return userRepository.findUserById(id);
+        } catch (DataAccessException e) {
+            throw new NoSuchIdException();
+        }
     }
 
     public User updateUser(UserDto userDto, int id) {
