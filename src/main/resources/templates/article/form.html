@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="kr" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <title>kakao Java Web Programming</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="../css/reset.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="../css/article/form.css" rel="stylesheet">
+    <link href="/css/article/form.css" rel="stylesheet">
 </head>
 
 <body>
@@ -20,15 +20,21 @@
 
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">글쓰기</p>
+            <p class="title">{{title}}</p>
         </header>
+        {{^article}}
         <form class="submit-write" method="post" action="/article/create ">
+        {{/article}}
+        {{#article}}
+        <form class="submit-write" method="post" action="/article/{{article.id}}/edit">
+            <input type="hidden" name="_method" value="PUT"/>
+        {{/article}}
             <div class="text-box">
                 <div class="comment-writer-container">
                     <p class="post-title">제목</p>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요"></textarea>
+                    <textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요">{{article.title}}</textarea>
                 </div>
             </div>
 
@@ -37,11 +43,17 @@
                     <p class="post-content">내용</p>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
+                    <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요">{{article.content}}</textarea>
                 </div>
             </div>
+        {{^article}}
             <input class="post-write-btn" type="submit" value="등록"/>
         </form>
+        {{/article}}
+        {{#article}}
+            <input class="post-write-btn" type="submit" value="수정"/>
+        </form>
+        {{/article}}
     </div>
 </div>
 </body>

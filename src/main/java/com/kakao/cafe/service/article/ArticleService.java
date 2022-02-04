@@ -19,15 +19,34 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleService {
 
+    public static final String SESSION_USER = "sessionUser";
+    private static final String ARTICLE_EDIT = "게시물 수정";
     private final ArticleRepository articleRepository;
 
     private boolean hasLogInUser(HttpSession session) {
-        return session.getAttribute("sessionUser") == null;
+        return session.getAttribute(SESSION_USER) == null;
+    }
+
+    private ArticleResponseDto articleToDto(Article article) {
+        return ArticleResponseDto.builder()
+                .id(article.getId())
+                .title(article.getTitle())
+                .content(article.getContent())
+                .userId(article.getUserId())
+                .date(article.getDate())
+                .build();
     }
 
     public void preventNotLoggedInUser(HttpSession session) {
         if (hasLogInUser(session))
             throw new UnauthorizedException("SESSION NOT LOGGED IN", ErrorCode.UNAUTHORIZED);
+    }
+
+    public void checkCorrUser(HttpSession session, String userId) {
+        preventNotLoggedInUser(session);
+        if (!((UserResponseDto) session.getAttribute(SESSION_USER)).getUserId().equals(userId)) {
+            throw new UnauthorizedException("USER MISMATCH", ErrorCode.UNAUTHORIZED);
+        }
     }
 
     public ArticleService(DbArticleRepository articleRepository) {
@@ -52,19 +71,27 @@ public class ArticleService {
         return articleToDto(foundArticle);
     }
 
-    public void ArticleDetail(String articleIndex, HttpSession session, Model model) {
+    public void articleDetail(String articleIndex, HttpSession session, Model model) {
         preventNotLoggedInUser(session);
         model.addAttribute("article", findById(articleIndex));
     }
 
-    private ArticleResponseDto articleToDto(Article article) {
-        return ArticleResponseDto.builder()
-                .id(article.getId())
-                .title(article.getTitle())
-                .content(article.getContent())
-                .userId(article.getUserId())
-                .date(article.getDate())
-                .build();
+    public void articleEditPage(String articleIndex, HttpSession session, Model model) {
+        checkCorrUser(session, findById(articleIndex).getUserId());
+        model.addAttribute("title", ARTICLE_EDIT);
+        model.addAttribute("article", findById(articleIndex));
     }
+
+    public void articleEdit(String articleIndex, ArticleCreateRequestDto forUpdate) {
+        ArticleResponseDto beforeArticle = findById(articleIndex);
+        Article article = Article.builder()
+                .id(beforeArticle.getId())
+                .userId(beforeArticle.getUserId())
+                .title(forUpdate.getTitle())
+                .content(forUpdate.getContent())
+                .build();
+        articleRepository.update(article);
+    }
+
 
 }

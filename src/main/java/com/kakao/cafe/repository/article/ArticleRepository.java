@@ -7,6 +7,10 @@ import java.util.Optional;
 
 public interface ArticleRepository {
     void create(Article article);
+
     List<Article> readAll();
+
     Optional<Article> read(long id);
+
+    void update(Article article);
 }

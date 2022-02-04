@@ -37,4 +37,9 @@ public class ArticleDao {
         String sql = "SELECT id,title,content,userId,date FROM ARTICLES";
         return jdbcTemplate.query(sql, articleMapper);
     }
+
+    public void update(Article article) {
+        String sql = "UPDATE ARTICLES SET title = ? ,content = ? WHERE id=?";
+        jdbcTemplate.update(sql, article.getTitle(), article.getContent(), article.getId());
+    }
 }

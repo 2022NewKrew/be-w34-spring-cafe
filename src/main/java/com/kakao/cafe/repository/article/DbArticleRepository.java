@@ -29,4 +29,11 @@ public class DbArticleRepository implements ArticleRepository {
     public Optional<Article> read(long id) {
         return Optional.ofNullable(articleDao.selectById(id));
     }
+
+    @Override
+    public void update(Article article) {
+        articleDao.update(article);
+    }
+
+
 }

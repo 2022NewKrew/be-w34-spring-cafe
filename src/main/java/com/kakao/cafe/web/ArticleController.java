@@ -19,6 +19,7 @@ import java.util.List;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
+    private static final String ARTICLE_WRITE = "게시물 쓰기";
     Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     public ArticleController(ArticleService articleService) {
@@ -26,9 +27,10 @@ public class ArticleController {
     }
 
     @GetMapping("article/form")
-    public String articleWritePage(HttpSession session) {
+    public String articleWritePage(HttpSession session, Model model) {
         this.articleService.preventNotLoggedInUser(session);
-        return "/article/form.html";
+        model.addAttribute("title", ARTICLE_WRITE);
+        return "/article/form";
     }
 
 
@@ -49,8 +51,20 @@ public class ArticleController {
 
     @GetMapping("article/{articleIndex}")
     public String articleDetail(@PathVariable String articleIndex, HttpSession httpSession, Model model) {
-        this.articleService.ArticleDetail(articleIndex, httpSession, model);
+        this.articleService.articleDetail(articleIndex, httpSession, model);
         return "/article/show";
+    }
+
+    @GetMapping("article/{articleIndex}/editPage")
+    public String articleEditPage(@PathVariable String articleIndex, HttpSession httpSession, Model model) {
+        this.articleService.articleEditPage(articleIndex, httpSession, model);
+        return "/article/form";
+    }
+
+    @PutMapping("/article/{articleIndex}/edit")
+    public String articleEdit(@PathVariable String articleIndex, ArticleCreateRequestDto articleCreateRequestDto) {
+        this.articleService.articleEdit(articleIndex, articleCreateRequestDto);
+        return "redirect:/";
     }
 
     @ExceptionHandler({UnauthorizedException.class})
