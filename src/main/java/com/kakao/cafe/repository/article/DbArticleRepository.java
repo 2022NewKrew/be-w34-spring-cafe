@@ -35,5 +35,10 @@ public class DbArticleRepository implements ArticleRepository {
         articleDao.update(article);
     }
 
+    @Override
+    public void delete(Long articleId) {
+        articleDao.delete(articleId);
+    }
+
 
 }

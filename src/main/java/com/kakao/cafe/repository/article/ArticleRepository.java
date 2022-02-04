@@ -13,4 +13,6 @@ public interface ArticleRepository {
     Optional<Article> read(long id);
 
     void update(Article article);
+
+    void delete(Long articleId);
 }

@@ -2,6 +2,7 @@ package com.kakao.cafe.web;
 
 import com.kakao.cafe.error.ErrorResponse;
 import com.kakao.cafe.exception.UnauthorizedException;
+import com.kakao.cafe.exception.UserUnmatchedException;
 import com.kakao.cafe.service.article.ArticleService;
 import com.kakao.cafe.web.dto.article.ArticleCreateRequestDto;
 import com.kakao.cafe.web.dto.article.ArticleResponseDto;
@@ -62,8 +63,14 @@ public class ArticleController {
     }
 
     @PutMapping("/article/{articleIndex}/edit")
-    public String articleEdit(@PathVariable String articleIndex, ArticleCreateRequestDto articleCreateRequestDto) {
-        this.articleService.articleEdit(articleIndex, articleCreateRequestDto);
+    public String editArticle(@PathVariable String articleIndex, ArticleCreateRequestDto articleCreateRequestDto) {
+        this.articleService.editArticle(articleIndex, articleCreateRequestDto);
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/article/{articleIndex}/delete")
+    public String deleteArticle(@PathVariable String articleIndex, HttpSession session) {
+        this.articleService.deleteArticle(articleIndex, session);
         return "redirect:/";
     }
 
@@ -72,4 +79,8 @@ public class ArticleController {
         return new ResponseEntity<>(new ErrorResponse(ex.getErrorCode()), HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
 
+    @ExceptionHandler({UserUnmatchedException.class})
+    public ResponseEntity<ErrorResponse> handleUserUnmatchedException(UserUnmatchedException ex) {
+        return new ResponseEntity<>(new ErrorResponse(ex.getErrorCode()), HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
 }

@@ -45,7 +45,7 @@ public class ArticleService {
     public void checkCorrUser(HttpSession session, String userId) {
         preventNotLoggedInUser(session);
         if (!((UserResponseDto) session.getAttribute(SESSION_USER)).getUserId().equals(userId)) {
-            throw new UnauthorizedException("USER MISMATCH", ErrorCode.UNAUTHORIZED);
+            throw new UnauthorizedException("USER MISMATCH", ErrorCode.USER_UNMATCHED);
         }
     }
 
@@ -82,7 +82,7 @@ public class ArticleService {
         model.addAttribute("article", findById(articleIndex));
     }
 
-    public void articleEdit(String articleIndex, ArticleCreateRequestDto forUpdate) {
+    public void editArticle(String articleIndex, ArticleCreateRequestDto forUpdate) {
         ArticleResponseDto beforeArticle = findById(articleIndex);
         Article article = Article.builder()
                 .id(beforeArticle.getId())
@@ -91,6 +91,11 @@ public class ArticleService {
                 .content(forUpdate.getContent())
                 .build();
         articleRepository.update(article);
+    }
+
+    public void deleteArticle(String articleIndex, HttpSession session) {
+        checkCorrUser(session, findById(articleIndex).getUserId());
+        articleRepository.delete(Long.parseLong(articleIndex));
     }
 
 

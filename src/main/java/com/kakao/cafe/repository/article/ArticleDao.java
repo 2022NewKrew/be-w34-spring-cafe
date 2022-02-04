@@ -42,4 +42,9 @@ public class ArticleDao {
         String sql = "UPDATE ARTICLES SET title = ? ,content = ? WHERE id=?";
         jdbcTemplate.update(sql, article.getTitle(), article.getContent(), article.getId());
     }
+
+    public void delete(Long articleId) {
+        String sql = "DELETE FROM ARTICLES WHERE id=?";
+        jdbcTemplate.update(sql, articleId);
+    }
 }
