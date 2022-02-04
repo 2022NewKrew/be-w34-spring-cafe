@@ -6,17 +6,20 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final RowMapper<UserInfo> userMapper = (rs, rowNum) -> new UserInfo(rs.getString("userId"),
-            rs.getString("password"),
-            rs.getString("name"),
-            rs.getString("email"),
-            rs.getString("signUpDate"));
+    private final RowMapper<UserInfo> userMapper = (rs, rowNum) -> UserInfo.builder()
+            .userId(rs.getString("userId"))
+            .password(rs.getString("password"))
+            .name(rs.getString("name"))
+            .email(rs.getString("email"))
+            .signUpDate(rs.getString("signUpDate"))
+            .build();
 
     public UserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -29,9 +32,11 @@ public class UserDao {
                 userInfo.getName(), userInfo.getEmail(), userInfo.getSignUpDate());
     }
 
-    public UserInfo selectById(String id) {
+    public Optional<UserInfo> selectById(String id) {
         String sql = "SELECT userId,password,name,email,signUpDate FROM USERS WHERE userID=?";
-        return jdbcTemplate.queryForObject(sql, userMapper, id);
+        List<UserInfo> resultList = jdbcTemplate.query(sql, userMapper, id);
+        return Optional.ofNullable(resultList.isEmpty() ? null : resultList.get(0));
+
     }
 
     public List<UserInfo> selectAll() {

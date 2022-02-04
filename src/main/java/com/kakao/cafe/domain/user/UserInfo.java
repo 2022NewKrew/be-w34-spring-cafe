@@ -1,45 +1,18 @@
 package com.kakao.cafe.domain.user;
 
 import com.kakao.cafe.utils.TimeGenerator;
-import com.kakao.cafe.web.dto.user.UserCreateRequestDto;
 import lombok.*;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 
 @ToString
 @Getter
+@Builder
 public class UserInfo {
     private final String userId;
-    private final String signUpDate;
+    @Builder.Default
+    private String signUpDate = TimeGenerator.todayDate();
     private final String password;
     private final String name;
     private final String email;
-
-    @Builder
-    public UserInfo(String userId, String password, String name, String email) {
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.signUpDate = TimeGenerator.todayDate();
-    }
-    public UserInfo(String userId, String password, String name, String email, String signUpDate) {
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.signUpDate = signUpDate;
-    }
-
-    public static UserInfoBuilder builder(UserCreateRequestDto userCreateRequestDto) {
-        return new UserInfoBuilder()
-                .userId(userCreateRequestDto.getUserId())
-                .name(userCreateRequestDto.getName())
-                .email(userCreateRequestDto.getEmail())
-                .password(userCreateRequestDto.getPassword());
-    }
 
 
     public boolean hasEqualId(String otherId) {

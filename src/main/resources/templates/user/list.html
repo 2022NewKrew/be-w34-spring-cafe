@@ -9,14 +9,20 @@
         <div class="col-md-12">
             <div class="navbar-header">
                 <a href="../" class="navbar-brand">
-                    <img src="../images/KakaoCI.png" />
+                    <img src="../images/KakaoCI.png"/>
                 </a>
 
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="../">메인 페이지</a></li>
+                {{^sessionUser}}
                 <li><a class="black-component" href="/user/login.html" role="button">로그인</a></li>
                 <li><a class="black-component" href="/user/form.html" role="button">회원가입</a></li>
+                {{/sessionUser}}
+                {{#sessionUser}}
+                <li><a class="black-component" href="/user/logout" role="button">로그아웃</a></li>
+                <li><a class="black-component" href="/user/form.html" role="button">정보수정</a></li>
+                {{/sessionUser}}
             </ul>
         </div>
     </nav>
@@ -35,14 +41,23 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>#</th> <th>ID</th> <th>닉네임</th> <th>이메일</th> <th>회원가입일</th><th></th>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>닉네임</th>
+                        <th>이메일</th>
+                        <th>회원가입일</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     {{#users}}
-                        <tr>
-                            <td>{{@index_1}}</td>  <td><a href="/users/{{userId}}"/>{{userId}}</a> </td> <td>{{name}}</td> <td>{{email}}</td><td>{{signUpDate}}</td>
-                        </tr>
+                    <tr>
+                        <td>{{@index_1}}</td>
+                        <td><a href="/users/{{userId}}"/>{{userId}}</a> </td>
+                        <td>{{name}}</td>
+                        <td>{{email}}</td>
+                        <td>{{signUpDate}}</td>
+                    </tr>
                     {{/users}}
                     </tbody>
                 </table>

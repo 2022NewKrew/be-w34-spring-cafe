@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="kr">
 
-{{>header}}
+{{> header}}
 
 <body>
 <div class="background">
-
-    {{>navbar}}
+    {{> navbar}}
 
     <div class="description">
         <div class="desc-container">
@@ -14,7 +13,6 @@
             <p class="desc-big">카카오 교육 페이지 입니다.</p>
         </div>
     </div>
-
     <p class="total_num">전체 글 {{size}} 개</p>
 
     <div class="container" id="main">
@@ -23,7 +21,11 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>#</th> <th>제목</th> <th>내용</th> <th>작성일자</th>
+                        <th>게시글번호</th>
+                        <th>제목</th>
+                        <th>내용</th>
+                        <th>작성자ID</th>
+                        <th>작성일자</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,7 +34,14 @@
                         <td><a href="article/{{id}}">{{id}}</a></td>
                         <td>{{title}}</td>
                         <td>{{content}}</td>
+                        <td>{{userId}}</td>
                         <td>{{date}}</td>
+                        <td>
+                            <form class="delete-answer-form" action="/article/{{id}}/delete" method="POST">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="black-component">삭제</button>
+                            </form>
+                        </td>
                     </tr>
                     {{/articles}}
                     </tbody>
@@ -41,7 +50,7 @@
         </div>
     </div>
     <div class="post-btn-container">
-        <a class="post-write-btn" href="article/form.html" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        <a class="post-write-btn" href="article/form" role="button">글쓰기</a>
     </div>
 </div>
 

@@ -26,4 +26,14 @@ public class MemoryArticleRepository implements ArticleRepository {
     public Optional<Article> read(long id) {
         return articleList.findById(id);
     }
+
+    @Override
+    public void update(Article article) {
+
+    }
+
+    @Override
+    public void delete(Long articleId) {
+
+    }
 }

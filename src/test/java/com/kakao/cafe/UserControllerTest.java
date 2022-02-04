@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
-public class UserTest {
+public class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,10 +37,10 @@ public class UserTest {
     @DisplayName("user form post Test")
     void userCreateTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/user/create")
-                .param("email","justin@kakaocorp.com")
-                .param("userId", "justin123")
-                .param("name","justin")
-                .param("password","1234"))
+                        .param("email", "justin@kakaocorp.com")
+                        .param("userId", "justin123")
+                        .param("name", "justin")
+                        .param("password", "1234"))
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/users"));
     }
 

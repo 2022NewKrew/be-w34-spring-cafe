@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="kr">
 
-{{>header}}
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>kakao Java Web Programming</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="../css/reset.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../css/article/show.css" rel="stylesheet">
+</head>
 
 <body>
 <div class="background">
@@ -28,6 +38,11 @@
                         <div class="article-doc">
                             <p>{{article.content}}</p>
                         </div>
+                        <ul class="article-util-list">
+                            <li>
+                                <a class="black-component" href="/article/{{article.id}}/editPage">수정</a>
+                            </li>
+                        </ul>
                     </article>
 
                     <div class="post-comment">

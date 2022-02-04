@@ -21,7 +21,7 @@ public class DbUserRepository implements UserRepository {
 
     @Override
     public Optional<UserInfo> read(String id) {
-        return Optional.ofNullable(userDao.selectById(id));
+        return userDao.selectById(id);
     }
 
     @Override

@@ -1,9 +1,10 @@
 DROP TABLE IF EXISTS articles, users;
 
 CREATE TABLE ARTICLES (
-                          id LONG AUTO_INCREMENT PRIMARY KEY,
+                          ID BIGINT AUTO_INCREMENT PRIMARY KEY,
                           title VARCHAR(64) NOT NULL,
                           content VARCHAR(1024) NOT NULL,
+                          userId VARCHAR(16) NOT NULL,
                           date  DATE NOT NULL
 );
 
