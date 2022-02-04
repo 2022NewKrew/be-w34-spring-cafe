@@ -66,15 +66,14 @@ public class ArticleService {
         articleRepository.delete(articleID);
     }
 
-    public void addReply(SampleReplyForm form, User user){
+    public Reply addReply(SampleReplyForm form, User user){
         Reply reply = Reply.add(form, user.getUid());
-        replyRepository.save(reply);
+        return replyRepository.save(reply);
     }
 
     public void deleteReply(Long replyID){
         logger.info("deleteArticle articleID : {}", replyID);
         replyRepository.delete(replyID);
-        logger.info("delete success");
     }
 
     public List<Reply> getReplies(Long articleID){

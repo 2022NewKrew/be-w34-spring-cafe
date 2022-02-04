@@ -1,9 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <meta charset="UTF-8">
     <title>Article</title>
 </head>
+<script type="text/javascript">
+    function replyUpdate(){
+            $.ajax({
+                url: "/article/reply.do",
+                type: "POST",
+                data: $("#frm").serialize(),
+                success: function(data){
+                    $('#result').append(data);
+                },
+                error: function(){
+                    alert("replyUpdate err");
+                }
+            });
+    };
+
+    function confirmDelete(id){
+        if(confirm("선택한 댓글을 삭제 하시겠습니까?")){
+            replyDelete(id);
+        }
+    };
+
+    function replyDelete(id){
+            $.ajax({
+                url: "/article/replyDelete.do",
+                type: "POST",
+                data: $("#delete"+id).serialize(),
+                success: function(data){
+                    const data1 = $.trim(data);
+                    if(data1 == 'true'){
+                        $("#div"+id).remove();
+                        alert("Success delete reply");
+                    }
+                    else{
+                        alert("can not delete");
+                    }
+                },
+                error: function(){
+                    alert("replyUpdate err");
+                }
+            });
+    };
+</script>
 <body>
 
 <h3> {{article.title}} </h3>
@@ -21,23 +65,26 @@
 
 {{ /currentUser }}
 
+<div id="result">
 {{ #replies }}
-<p>{{author}} {{content}}</p>
-<form class="container" action="/article/{{article.articleID}}/{{replyID}}" method="post">
-    <input type="hidden" name="_method" value="DELETE" />
-    <button type="submit" class="btn btn-primary">Delete</button>
-</form>
+<div id="div{{replyID}}">
+    <p><h5>{{author}}</h5> <br> {{content}}</p>
+    <form id="delete{{replyID}}">
+        <input type="hidden" class="form-control" name="articleID" value="{{article.articleID}}">
+        <input type="hidden" class="form-control" name="replyID" value="{{replyID}}">
+    </form>
+    <button id="dltRep" onclick="confirmDelete({{replyID}})">Delete</button>
+</div>
 {{ /replies }}
+</div>
 
-
-<form class="container" action="/article/reply" method="post">
+<form id="frm">
     <input type="hidden" class="form-control" name="articleID" value="{{article.articleID}}">
     <div class="mb-3">
         <textarea class="form-control" rows="3" name="content"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-
+<button id="btn1" onclick="replyUpdate()">Submit</button>
 
 </body>
 </html>

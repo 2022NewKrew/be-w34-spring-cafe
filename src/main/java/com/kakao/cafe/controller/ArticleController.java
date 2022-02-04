@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.ReplyDeleteAjaxForm;
 import com.kakao.cafe.dto.SampleArticleForm;
 import com.kakao.cafe.dto.SampleReplyForm;
 import com.kakao.cafe.dto.SampleUserForm;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
 
 import static com.kakao.cafe.util.ErrorCode.NOT_EXIST_USER;
@@ -95,18 +97,45 @@ public class ArticleController {
         return "article/articleUpdateForm";
     }
 
-    @PostMapping("/reply")
+    @PostMapping("/reply.do")
+    @ResponseBody
     public String addReply(SampleReplyForm form, HttpSession session) {
 
         Object value = session.getAttribute("user");
         if (value != null){
             User user = (User) value;
-            articleService.addReply(form, user);
-            logger.info("User session get {}", user);
+            Reply reply = articleService.addReply(form, user);
+            logger.info("User session get {}", reply.getAuthor());
+
+            String returnStr = String.format(
+                    "<div id=\"div%d\">" +
+                    "<p><h5>%s</h5><br>%s</p>" +
+                    "<form id=\"delete%d\">\n" +
+                    "<input type=\"hidden\" class=\"form-control\" name=\"articleID\" value=\"%d\">\n" +
+                    "<input type=\"hidden\" class=\"form-control\" name=\"replyID\" value=\"%d\">\n" +
+                    "</form>\n" +
+                    "<button id=\"dltRep\" onclick=\"confirmDelete(%d)\">Delete</button>\n" +
+                    "</div>"
+                    ,reply.getReplyID(),reply.getAuthor(),reply.getContent(), reply.getReplyID(), reply.getArticleID(), reply.getReplyID(), reply.getReplyID());
+            return returnStr;
         }
-        return "redirect:/article";
+        return null;
     }
 
+    @PostMapping("/replyDelete.do")
+    @ResponseBody
+    public String addReply(ReplyDeleteAjaxForm form, HttpSession session) {
+        logger.info("delete Reply ID {} in article {}", form.getReplyID(), form.getArticleID());
+
+        Object value = session.getAttribute("user");
+        Reply reply = articleService.findReply(form.getReplyID());
+
+        if ((value == null) || (!((User) value).getUid().equals(reply.getAuthor()))){
+            return "false";
+        }
+        articleService.deleteReply(form.getReplyID());
+        return "true";
+    }
 
     @PutMapping("/{articleID}/update")
     @ResponseBody
@@ -128,21 +157,6 @@ public class ArticleController {
         }
         articleService.deleteArticle(articleID);
         return "redirect:/article";
-    }
-
-    @DeleteMapping("/{articleID}/{replyID}")
-    @ResponseBody
-    public String deleteReply(@PathVariable Long articleID, @PathVariable Long replyID, HttpSession session){
-        logger.info("delete Reply ID {} in article {}", replyID, articleID);
-
-        Object value = session.getAttribute("user");
-        Reply reply = articleService.findReply(replyID);
-
-        if ((value == null) || (!((User) value).getUid().equals(reply.getAuthor()))){
-            return "<script>alert('Can not delete reply');location.href='/article/"+ articleID +"'</script>";
-        }
-        articleService.deleteReply(replyID);
-        return "<script>alert('Successfully deleted');location.href='/article/"+articleID+"'</script>";
     }
 
     @ExceptionHandler(CustomException.class)
