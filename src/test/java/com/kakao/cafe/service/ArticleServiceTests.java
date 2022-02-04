@@ -1,12 +1,9 @@
-package com.kakao.cafe;
+package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.ArticleController;
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.SampleArticleForm;
-import com.kakao.cafe.service.ArticleService;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
+import com.kakao.cafe.dto.SampleReplyForm;
 import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
@@ -21,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class CafeApplicationTests {
+class ArticleServiceTests {
 
-	private final static Logger logger = LoggerFactory.getLogger(CafeApplicationTests.class);
+	private final static Logger logger = LoggerFactory.getLogger(ArticleServiceTests.class);
 
 	@Autowired
 	private ArticleService articleService;

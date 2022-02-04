@@ -29,17 +29,23 @@ public class UserService {
         return userRepository.findByNumID(numID);
     }
 
-    public boolean updateUser(SampleUserForm form){
-        logger.info("updateUser Input user getID {}", form.getId());
-
-        User user = userRepository.findByUserID(form.getId());
-        if (user.getPassWord().equals(form.getPassWord())){
-            user.update(form);
-            userRepository.update(user);
+    public boolean checkPassword(Long numID, String password){
+        logger.info("checkPassword for numID : {}", numID);
+        User user = userRepository.findByNumID(numID);
+        logger.info(user.getPassWord(), password);
+        if (user.getPassWord().equals(password)){
+            logger.info("Correct password");
             return true;
         }
-        logger.info("UpdateUser update not executed, Invalid password");
+        logger.info("Invalid password");
         return false;
+    }
+
+    public boolean updateUser(SampleUserForm form){
+        logger.info("updateUser Input user getID {}", form.getId());
+        User user = userRepository.findByUserID(form.getId());
+        userRepository.update(user);
+        return true;
     }
 
     public boolean addUser(SampleUserForm form){

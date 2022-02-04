@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.SampleLoginForm;
 import com.kakao.cafe.dto.SampleUserForm;
+import com.kakao.cafe.dto.UserValidateAjaxForm;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.util.CustomException;
 import org.slf4j.Logger;
@@ -59,6 +60,16 @@ public class UserController {
         return "user/userPage";
     }
 
+    @PostMapping("/{numID}/validate.do")
+    @ResponseBody
+    public String checkPW4Update(UserValidateAjaxForm form, @PathVariable Long numID){
+        logger.info("check password for updateProfile {} {}", numID, form.getPassword());
+        if (userService.checkPassword(numID, form.getPassword())){
+            return "true";
+        }
+        return "false";
+    }
+
     @GetMapping("/{numID}/update")
     public String updateProfile(Model model, @PathVariable Long numID){
         logger.info("updateProfile print userID : {}", numID);
@@ -70,12 +81,10 @@ public class UserController {
     @GetMapping("/{numID}/logout")
     public String logoutUser(Model model, @PathVariable Long numID, HttpSession session){
         logger.info("logoutUser print userID : {}", numID);
-
         Object value = session.getAttribute("user");
         if (value != null ) {
             session.invalidate();
         }
-
         return "redirect:/";
     }
 
@@ -102,7 +111,7 @@ public class UserController {
         if (userService.updateUser(form)){
             return "<script>alert('Update Success');location.href='/user'</script>";
         }
-        return "<script>alert('Invalid Password');location.href='/user'</script>";
+        return "<script>alert('Update failed');location.href='/user'</script>";
     }
 
     @PostMapping("/login")
@@ -110,11 +119,11 @@ public class UserController {
     public String userLogin(SampleLoginForm form, HttpSession session){
         logger.info("userLogin print {}" ,form.toString());
         User loginUser = userService.loginUser(form);
-        if (loginUser != null){
-            session.setAttribute("user", loginUser);
-            return "<script>alert('Login Success');location.href='/'</script>";
+        if (loginUser.isVoid()){
+            return "<script>alert('Login failed : Not exist ID or Invalid Password');location.href='/user/login'</script>";
         }
-        return "<script>alert('Login failed : Not exist ID or Invalid Password');location.href='/user/login'</script>";
+        session.setAttribute("user", loginUser);
+        return "<script>alert('Login Success');location.href='/'</script>";
     }
 
     @ExceptionHandler(CustomException.class)
