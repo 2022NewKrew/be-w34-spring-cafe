@@ -5,5 +5,5 @@ package com.kakao.cafe.exception;
  * Date: 2022-02-03 003
  * Time: 오후 7:58
  */
-public class NoSuchUserIdException extends RuntimeException {
+public class NoSuchUserException extends RuntimeException {
 }
