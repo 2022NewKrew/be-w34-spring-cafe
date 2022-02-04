@@ -1,6 +1,7 @@
 package com.kakao.cafe.qna.article;
 
 import com.kakao.cafe.qna.BaseEntity;
+import com.kakao.cafe.qna.BaseEntityTrait;
 import com.kakao.cafe.qna.comment.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 @Getter
 @AllArgsConstructor
-public class Article {
+public class Article implements BaseEntityTrait {
 
     private String title;
     private Integer commentsCount;
@@ -49,7 +50,7 @@ public class Article {
 
     public void updateContents(String title, String contents) {
         this.title = title;
-        this.baseEntity.updateContents(contents);
+        updateContents(contents);
     }
 
     public void addComments(Comment comment) {
@@ -57,6 +58,6 @@ public class Article {
     }
 
     public void deleteArticle() {
-        this.baseEntity.deleteEntity();
+        deleteEntity();
     }
 }

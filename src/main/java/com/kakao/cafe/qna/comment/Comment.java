@@ -1,6 +1,7 @@
 package com.kakao.cafe.qna.comment;
 
 import com.kakao.cafe.qna.BaseEntity;
+import com.kakao.cafe.qna.BaseEntityTrait;
 import lombok.Getter;
 import lombok.experimental.Delegate;
 
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
  * Time: 오후 5:40
  */
 @Getter
-public class Comment  {
+public class Comment implements BaseEntityTrait {
 
     private Integer writerId;
     private Integer articleId;
@@ -40,6 +41,6 @@ public class Comment  {
     }
 
     public void deleteComment() {
-        this.baseEntity.deleteEntity();
+        deleteEntity();
     }
 }

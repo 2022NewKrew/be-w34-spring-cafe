@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * Time: 오후 1:58
  */
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -25,6 +27,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public void addUser(UserDto userDto) {
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User user = userDto.toEntity();
@@ -43,9 +46,14 @@ public class UserService {
         }
     }
 
+    @Transactional
     public User updateUser(UserDto userDto, int id) {
-        User user = userDto.toEntity();
-        user.setId(id);
-        return userRepository.update(user);
+        User expectedUser = findUserById(id);
+        if (!passwordEncoder.matches(userDto.getPassword(), expectedUser.getPassword())) {
+            return null;
+        }
+        User updatedUser = userDto.toEntity();
+        updatedUser.setId(id);
+        return userRepository.update(updatedUser);
     }
 }

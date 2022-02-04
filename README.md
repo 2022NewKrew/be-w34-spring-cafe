@@ -83,9 +83,12 @@
 - [x] 패스워드 암호화 (DB or 백엔드)
   - [x] 가입 시 패스워드 암호화
   - [x] 로그인 시 암호화 된 패스워드와 일반 패스워드 비교
+  - [x] 회원 정보 수정 시 암호화 된 패스워드와 일반 패스워드 비교
+    - 테스트에서 `@Transactional` 사용 시 `AUTO_INCREMENT` 값은 `ROLLBACK`되지 않음 
 > 참고
 > - https://www.whiteship.me/springboot-no-more-runwith/
 > - https://jojoldu.tistory.com/226
+> - https://stackoverflow.com/questions/449346/mysql-auto-increment-does-not-rollback
 
 ### 2일차 구현
 
@@ -95,9 +98,9 @@
 
 #### 코드 리뷰 및 자체 피드백
 
-- [ ] 요청한 값이 DB에 존재하지 않을 경우의 예외 처리
+- [x] 요청한 값이 DB에 존재하지 않을 경우의 예외 처리
   - [x] Service 레이어 예외 처리
-  - [ ] Controller 레이어 예외 처리
+  - [x] Controller 레이어 예외 처리
 - [x] `<br>` 태그가 수정 화면에서 노출되는 문제 해결 필요
   - `ArticleDto`를 `ArticleViewDto`와 `ArticleEditDto`로 분리
 

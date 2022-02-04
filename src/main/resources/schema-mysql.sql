@@ -8,7 +8,7 @@ CREATE TABLE USERS
 (
     ID bigint(5) AUTO_INCREMENT NOT NULL PRIMARY KEY,
     USER_ID varchar(10) NOT NULL,
-    PASSWORD varchar(10) NOT NULL,
+    PASSWORD varchar(60) NOT NULL,
     NAME varchar(100) NOT NULL,
     EMAIL varchar(100) NOT NULL
 );
