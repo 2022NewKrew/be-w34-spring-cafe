@@ -1,9 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <meta charset="UTF-8">
     <title>Profile</title>
 </head>
+<script type="text/javascript">
+function checkPW(numID){
+    var inputPassword = prompt('비밀번호를 입력하세요');
+    $.ajax({
+        url:"/user/"+numID+"/validate.do",
+        type:"POST",
+        data:{"password":inputPassword},
+        success: function(data){
+            const data1 = $.trim(data);
+            if(data1 == 'true'){
+                location.href="/user/"+numID+"/update";
+            }
+            else{
+                alert("비밀번호가 다릅니다.");
+            }
+        },
+        error: function(){
+            alert("checkPW err");
+        }
+    });
+}
+</script>
 <body>
 
 <p> {{userprofile.uid}} </p>
@@ -14,7 +38,7 @@
 <a href="/" role="button" class="btn btn-primary">홈으로</a>
 
 {{#currentUser}}
-<a href="/user/{{userprofile.id}}/update" role="button" class="btn btn-primary">수정</a>
+<a role="button" class="btn btn-primary" onclick="checkPW({{userprofile.id}})">수정</a>
 {{/currentUser}}
 
 </body>
