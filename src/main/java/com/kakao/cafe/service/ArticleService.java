@@ -8,19 +8,10 @@ import com.kakao.cafe.dto.SampleArticleForm;
 import com.kakao.cafe.dto.SampleReplyForm;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.ReplyRepository;
-import com.kakao.cafe.util.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpSession;
-import javax.swing.text.html.Option;
 import java.util.List;
-
-import static com.kakao.cafe.util.ErrorCode.NOT_EXIST_USER;
 
 public class ArticleService {
 
@@ -53,7 +44,7 @@ public class ArticleService {
         return articleRepository.findByID(articleID);
     }
 
-    public List<Article> getArticles(){
+    public List<Article> findAllArticles(){
         return articleRepository.findAll();
     }
 

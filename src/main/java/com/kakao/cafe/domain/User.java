@@ -63,8 +63,21 @@ public class User {
                 '}';
     }
 
+    public boolean isVoid(){
+        if(id.equals(Long.valueOf(-1))){
+            return true;
+        }
+        return false;
+    }
+
     public static User add(SampleUserForm form){
         return new User(form.getId(), form.getPassWord(), form.getName(), form.getEmail(), form.getContent());
+    }
+
+    public static User voidUser(){
+        User user = new User("","","","","");
+        user.setId(Long.valueOf(-1));
+        return user;
     }
 
 }

@@ -6,7 +6,6 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ReplyDeleteAjaxForm;
 import com.kakao.cafe.dto.SampleArticleForm;
 import com.kakao.cafe.dto.SampleReplyForm;
-import com.kakao.cafe.dto.SampleUserForm;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.util.CustomException;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
 
 import static com.kakao.cafe.util.ErrorCode.NOT_EXIST_USER;
@@ -43,7 +41,7 @@ public class ArticleController {
             model.addAttribute("currentUser", user);
             logger.info("User session get {}", user);
         }
-        model.addAttribute("articles", articleService.getArticles());
+        model.addAttribute("articles", articleService.findAllArticles());
         return "article/articleListPage";
     }
 
